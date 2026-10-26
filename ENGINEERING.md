@@ -1,3 +1,43 @@
+## Native zone repaint effects
+
+Zone repaint now shares the native relationship sequence used by creation:
+0x558550,0x558690,0x558830, followed by the owned overlap calculation. Native
+repaint call sites at0x35857e,0x358a23,0x35953c and0x3596f3 establish this
+sequence. It replaces DFHack notifyCivzoneModified on the repaint route,
+including native x1/y1 membership eligibility and reciprocal relationships.
+Compatibility is checked before geometry mutation. Failures after mutation
+remain unknown/partial outcomes and are not replayed.
+
+Native `build/stockpile-storage-native-zone-defaults-20261025-204750` verifies
+that last-cell erase retains the zone and clears both overlap flags, regrow
+restores both, and native removal clears the survivor. Owned DF121116 closes
+unsaved with its source unchanged. An earlier204644 capture failed because
+the harness clicked stockpile toolbar coordinates; the corrected zone-toolbar
+replay establishes the reference. Native empty-paint capture was inspected.
+
+Offline `build/qa/zone-native-repaint` passes root CTest19/19, the zone paint
+session and Lua adapter; the matching MSVC bridge builds. Main-scene
+`build/areas-acceptance-20261025-205102` passes26 native observations, including
+erase/regrow and55,584 guards covering all loaded map-block path_cost/path_tag
+arrays. Those arrays remain unchanged. Owned DF125888 closes unsaved and both
+save manifests match; only the known Godot separate-thread notice remains.
+The empty-paint and regrown-heading captures were inspected. This run does
+not prove the asynchronous paint-count caption: its empty capture precedes
+that observation and shows no count, which needs focused verification.
+
+Semantic `build/areas-acceptance-20261025-205211` passes117 observations with
+clean diagnostics, including real furniture membership and reciprocal
+relations removed on erase and restored on regrow. Owned DF84644 closes
+unsaved and both manifests match. Evidence is retained in
+`fixtures/areas/native_zone_overlap.json`.
+
+Removal remains unfinished: Buildings::deconstruct invokes native zone
+removeUses0x5874f0, whose0x58752a call enters shared-search overlap recomputation.
+Calling the generic native destructor0x587d80 has the same virtual call and
+cannot solve that ownership issue. Audit/replace this route before exposing
+Zones. Location-specific repaint effects after the relationship sequence,
+Multi, assignment and full Zones acceptance remain separate work.
+
 ## Native zone headings
 
 Zone names come from the bridge observation, replacing the fixed Lua default
@@ -92,7 +132,7 @@ retains observations, code hashes, evidence and verification limits.
 
 The native red Overlapping caption and revision tracking are exposed through
 the observation contract described above.
-Repaint/removal/Multi overlap lifecycle remains a separate audit. Zones is
+Removal/Multi and location-specific repaint effects remain under audit. Zones is
 still staged; this is creation-effect verification, not full Zones acceptance.
 
 ## Native single-zone allocation and registration

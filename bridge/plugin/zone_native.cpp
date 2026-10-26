@@ -149,12 +149,19 @@ bool nativeZoneComplete(df::building_civzonest& zone) {
     if(!df::global::world || !nativeZoneCreateReady())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     using Complete=void (*)(df::building*,bool);
-    using Relationships=void (*)(df::building*);
     // Native357948..3579a4: completion, categorization, relationship refresh.
     // The relationship routines use semantic world lists and supplied extents.
     // In particular558830 tests candidate x1/y1, not the DFHack center heuristic.
     reinterpret_cast<Complete>(base+0x577040)(&zone,true);
     zone.categorize(true);
+    return nativeZoneRefresh(zone);
+}
+bool nativeZoneRefresh(df::building_civzonest& zone) {
+    if(!df::global::world || !nativeZoneCreateReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Relationships=void (*)(df::building*);
+    // Native repaint35857e..35859d,358a23..358a42,35953c..35955b and
+    //3596f3..359712 use the same semantic sequence after changing extents.
     reinterpret_cast<Relationships>(base+0x558550)(&zone);
     reinterpret_cast<Relationships>(base+0x558690)(&zone);
     reinterpret_cast<Relationships>(base+0x558830)(&zone);

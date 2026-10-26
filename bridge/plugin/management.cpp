@@ -1579,6 +1579,7 @@ int areaRepaint(lua_State* L) {
   auto* pile=virtual_cast<df::building_stockpilest>(b);
   auto* zone=virtual_cast<df::building_civzonest>(b);
   if(!pile && !zone)return fail("Area no longer exists");
+  if(zone && !df3d_area::nativeZoneCreateReady())return fail("Native zone refresh unavailable");
   if(areaHoldingCount==areaHolding.size())return fail("Area retire capacity reached; restart DF3D bridge");
   if(!lua_isinteger(L,3) || lua_tointeger(L,3)<1 || lua_tointeger(L,3)>2 || !lua_istable(L,2))
     return fail("Invalid paint arguments");
@@ -1743,7 +1744,7 @@ int areaRepaint(lua_State* L) {
   }
   if(zone) {
     unknownWork=true;
-    try {Buildings::notifyCivzoneModified(zone);}
+    try {if(!df3d_area::nativeZoneRefresh(*zone))return fail("Native zone refresh unavailable",spent+uint32_t(changes.size())+1);}
     catch(...) {return fail("Native zone notification failed; inspect before retrying",spent+uint32_t(changes.size())+1);}
   }
   lua_newtable(L);field(L,"ok",true);field(L,"message","");

@@ -140,7 +140,22 @@ require('gui.script').start(function()
      first_collision=first.flags.room_collision,second_collision=second.flags.room_collision,x=site.x,y=site.y,z=site.z}
     assert(first.flags.room_collision==case[4] and second.flags.room_collision==case[4],'native overlap mismatch '..case[1])
     capture('overlap-'..case[1])
-    assert(dfhack.buildings.deconstruct(second));assert(dfhack.buildings.deconstruct(first))
+    if case[1]=='floor' then
+     click(34,9);capture('zone-repaint-before')
+     click(14,12);map_click(site.x,site.y);map_click(site.x,site.y)
+     records[#records+1]={name='zone-erased-overlap',first_collision=first.flags.room_collision,second_collision=second.flags.room_collision,
+      second_tiles=dfhack.buildings.countExtentTiles(second,-1),exists=df.building.find(second.id)~=nil}
+     capture('zone-erased-overlap')
+     assert(not first.flags.room_collision and not second.flags.room_collision and dfhack.buildings.countExtentTiles(second,-1)==0,'erase did not refresh overlap')
+     click(14,12);map_click(site.x,site.y);map_click(site.x,site.y)
+     assert(first.flags.room_collision and second.flags.room_collision,'regrow did not restore overlap')
+     records[#records+1]={name='zone-regrown-overlap',first_collision=first.flags.room_collision,second_collision=second.flags.room_collision}
+     capture('zone-regrown-overlap');click(38,9)
+     local second_id=second.id;click(42,9);assert(not df.building.find(second_id),'native Remove retained zone')
+     records[#records+1]={name='zone-remove-overlap',first_collision=first.flags.room_collision}
+     b=first;pile_id=b.id;map_click(site.x,site.y);capture('zone-remove-overlap')
+    else assert(dfhack.buildings.deconstruct(second))end
+    assert(dfhack.buildings.deconstruct(first))
     if door then local doors=df.global.world.buildings.other.DOOR;doors:erase(#doors-1);door:delete()end
     block.tiletype[tx][ty]=original_tile
    end

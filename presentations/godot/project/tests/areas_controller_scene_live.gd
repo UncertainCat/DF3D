@@ -1377,6 +1377,8 @@ func pointer_zone_overlap(origin: Vector3i, first_id: int) -> void:
 	await capture("zone_overlapping")
 	await pointer_zone_names(second_id,position)
 	if stopped: return
+	await pointer_zone_overlap_repaint(origin,first_id,second_id,position)
+	if stopped: return
 	await request({"action":11,"kind":1,"id":first_id,"expected_revision":first_revision,"active":0},"Area changed; inspect again")
 	if stopped: return
 	await native("snapshot",{"id":first_id,"expected":{"active":true,"overlapping":1}})
@@ -1422,3 +1424,27 @@ func pointer_zone_names(id: int, position: Vector2) -> void:
 	await pointer_click(position)
 	if not await wait_ui(settled,"restored meeting contents"): return
 	if not check(editor.selected.name == "Unnamed meeting hall","restored empty meeting heading"): return
+
+func pointer_zone_overlap_repaint(origin: Vector3i, first_id: int, second_id: int, position: Vector2) -> void:
+	step = "viewport native repaint overlap effects"
+	await native("overlap_prepare",{"scenario":"floor","site":{"x":origin.x,"y":origin.y,"z":origin.z}})
+	await click_control(editor.zone_menu.controls.repaint)
+	await click_control(editor.paint_view.buttons.erase)
+	for corner in 2:
+		await pointer_click(position)
+		if not await wait_ui(settled,"zone erase corner"): return
+	await native("snapshot",{"id":second_id,"expected":{"overlapping":0,"tile_count":0}})
+	await native("overlap_result",{"ids":[first_id,second_id],"expected":false})
+	if not check(editor.paint_session != null and int(editor.paint_session.area.overlapping) == 0 and editor.paint_view.accept_button.disabled,"empty repaint must retain clear zone with disabled Accept"): return
+	await capture("zone_repaint_overlap_erased")
+	await click_control(editor.paint_view.buttons.erase)
+	for corner in 2:
+		await pointer_click(position)
+		if not await wait_ui(settled,"zone regrow corner"): return
+	await native("snapshot",{"id":second_id,"expected":{"overlapping":1,"tile_count":1}})
+	await native("overlap_result",{"ids":[first_id,second_id],"expected":true})
+	await native("overlap_clear")
+	await click_control(editor.paint_view.accept_button)
+	if not await wait_ui(func(): return settled() and editor.mode == "inspect","zone regrow Accept"): return
+	if not check(editor.zone_menu.overlap_label.visible,"regrown zone warning missing"): return
+	await capture("zone_repaint_overlap_regrown")

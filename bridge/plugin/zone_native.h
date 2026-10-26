@@ -16,4 +16,6 @@ bool nativeZoneCreateReady();
 // callers must prepare all local allocations before entering and never delete it.
 df::building_civzonest* nativeZoneAllocate();
 bool nativeZoneComplete(df::building_civzonest& zone);
+// Rebuild native reciprocal room membership and owned overlap observations.
+bool nativeZoneRefresh(df::building_civzonest& zone);
 }

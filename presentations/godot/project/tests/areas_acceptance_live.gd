@@ -384,6 +384,14 @@ func created_zone_membership() -> void:
 	if stopped: return
 	var area: Dictionary = made.areas[0]
 	await native("zone_publication", {"id":int(area.id),"member_id":int(site.member_id)})
+	for mode in [2,1]:
+		var changed := await request({"action":11,"kind":1,"id":int(area.id),"expected_revision":area.revision,
+			"operation":5,"paint_mode":mode,"paint_z":int(site.z),"spans":[{"x":int(site.x),"y":int(site.y),"length":1}]})
+		if stopped: return
+		area = changed.areas[0]
+		var observation := await native("zone_publication",{"id":int(area.id)})
+		if stopped: return
+		if not check(int(observation.members) == (0 if mode == 2 else 1),"repaint membership count"): return
 	await request({"action":12,"kind":1,"id":int(area.id),"expected_revision":area.revision})
 	await native("removed", {"id":int(area.id)})
 

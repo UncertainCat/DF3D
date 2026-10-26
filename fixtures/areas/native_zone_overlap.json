@@ -80,8 +80,7 @@
   "limits": [
     "Native pair reference covers same-tile floor, wall, gathering exclusion, Tomb inclusion and a controlled Door-list fixture.",
     "Door fixture supplies its semantic center/list entry; it does not claim door construction/job completion.",
-    "Removal and repaint overlap refresh remain separate routes pending audit.",
-    "Removal/repaint/Multi lifecycle and full Zones acceptance remain pending. The unnamed Meeting Area mismatch found here is resolved by the native_zone_names fixture and provider."
+    "Removal, Multi and location-specific repaint effects remain under audit. The existing removal helper invokes native removeUses and thus shared-search overlap scratch; it is not accepted as an owned runtime route."
   ],
   "df3d_verification": {
     "path": "build/areas-acceptance-20261025-202059",
@@ -128,6 +127,62 @@
       "scene_zone_overlapping.png": "6e6db169008540ada97c656aa6706be21b9b67aee4062206a47d21f9d0754380",
       "scene_zone_overlap_previous.png": "e6172502ae4cab5461199ade7ecffee99b762fd8eaad9d5076057388b06d2df7",
       "scene_zone_overlap_clear.png": "8f096836b63c72a120974bff53a28dc0f077e9d7265da3b003d5496dab8f1027"
+    }
+  },
+  "repaint_native_reference": {
+    "path": "build/stockpile-storage-native-zone-defaults-20261025-204750",
+    "status": "passed",
+    "owned_df_pid": 121116,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "observations": [
+      {
+        "exists": true,
+        "first_collision": false,
+        "name": "zone-erased-overlap",
+        "second_collision": false,
+        "second_tiles": 0
+      },
+      {
+        "first_collision": true,
+        "name": "zone-regrown-overlap",
+        "second_collision": true
+      },
+      {
+        "first_collision": false,
+        "name": "zone-remove-overlap"
+      }
+    ]
+  },
+  "repaint_scene_verification": {
+    "path": "build/areas-acceptance-20261025-205102",
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 125888,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "native_observations": 26,
+    "bridge_sha256": "6bffd52737fb05796f4f09d1a6eec29527a57b80e9b28fd16064ea3dd69e5094",
+    "evidence_sha256": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "scene_zone_repaint_overlap_erased.png": "794644d365c03582be4ba6ed369ba1b9c9eb4863b3ab3bdebe43b10a45c7b467",
+      "scene_zone_repaint_overlap_regrown.png": "06575a99f946396d6255fd14f23ceb1ca00d105059e3e36542465b8b293b5107"
+    },
+    "scratch_guards": 55584
+  },
+  "repaint_membership_verification": {
+    "path": "build/areas-acceptance-20261025-205211",
+    "status": "passed",
+    "owned_df_pid": 84644,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "native_observations": 117,
+    "bridge_sha256": "6bffd52737fb05796f4f09d1a6eec29527a57b80e9b28fd16064ea3dd69e5094",
+    "evidence_sha256": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     }
   }
 }

@@ -152,6 +152,16 @@ local function capture(name)
      local effective_profession=sources.identity_profession>=0 and sources.identity_profession or unit.profession
      local color_text,color_code=dfhack.run_command_silent('df3d','zone-owner-profession-color-read',tostring(row.unit_id),tostring(effective_profession));assert(color_code==0,color_text)
      sources.profession_color=require('json').decode(color_text)
+     local hf=df.historical_figure.find(unit.hist_figure_id)
+     local function strength(links,kind)
+      if links then for _,link in ipairs(links)do if link:getType()==kind then return link.link_strength end end end
+      return 0
+     end
+     assert(sources.slave_strength==strength(hf and hf.entity_links,df.histfig_entity_link_type.SLAVE),'native slave strength differs')
+     assert(sources.prisoner_strength==strength(hf and hf.entity_links,df.histfig_entity_link_type.PRISONER),'native prisoner strength differs')
+     assert(sources.imprisoner_strength==strength(hf and hf.histfig_links,df.histfig_hf_link_type.IMPRISONER),'native imprisoner strength differs')
+     local deity_hf=df.historical_figure.find(sources.deity_histfig_id)
+     assert(sources.deity==(deity_hf~=nil and deity_hf.flags.deity),'native deity source differs')
      if sources.identity_id>=0 then
       local identity=assert(df.identity.find(sources.identity_id),'native identity missing')
       assert(identity.profession==sources.identity_profession and identity.impersonated_hf==sources.identity_impersonated_histfig,'identity facts differ')
@@ -404,6 +414,10 @@ local ok,why=pcall(function()
     end
    end
    assert(observed,'color fixture has no glyphs')
+   if name~='override' and name~='override-before-ghost' and name~='ghost' then
+    local ordinary=sample.color_facts.native_sources.ordinary_color
+    assert(ordinary[1]==fg and ordinary[2]==bg and (ordinary[3]~=0)==bright,'owned ordinary color differs: '..name)
+   end
    if name:find('^profession%-') or name:find('^raw%-') or name=='identity-before-noble' then
     local base=sample.color_facts.native_sources.profession_color
     assert(base[1]==fg and base[2]==bg and (base[3]~=0)==bright,'owned base color differs: '..name)
@@ -460,6 +474,42 @@ local ok,why=pcall(function()
    for i=0,2 do creature.color[i]=saved_raw[i+1];caste.caste_color[i]=saved_raw[i+4]end
    caste.flags.HAS_COLOR=saved_raw[7];caste.flags.NO_UNIT_TYPE_COLOR=saved_raw[8]
    assert(raw_ok,raw_error)
+   -- Native relationship readers preserve first-match strength, including zero.
+   -- Own only appended test links and restore flags/identity even on failure.
+   local saved_deity=hf.flags.deity
+   local owned_links={}
+   local relation_ok,relation_error=pcall(function()
+    reputation.cur_identity=-1;identity.profession=-1;hf.flags.deity=false
+    color_case('noble',5,0,true)
+    local function append_link(vector,kind,strength)
+     local link=kind:new();link.link_strength=strength
+     vector:insert('#',link);owned_links[#owned_links+1]={vector=vector,link=link}
+     return link
+    end
+    local slave=append_link(hf.entity_links,df.histfig_entity_link_slavest,0)
+    local slave_later=append_link(hf.entity_links,df.histfig_entity_link_slavest,50)
+    color_case('slave-first-zero',5,0,true)
+    slave.link_strength=-1;color_case('slave-negative',5,0,true)
+    slave.link_strength=50;color_case('slave',7,0,false)
+    reputation.cur_identity=identity.id;identity.profession=1
+    color_case('identity-before-slave',6,0,true)
+    reputation.cur_identity=-1;slave.link_strength=0;slave_later.link_strength=0
+    local prisoner=append_link(hf.entity_links,df.histfig_entity_link_prisonerst,50)
+    color_case('prisoner',7,0,false)
+    prisoner.link_strength=0
+    local imprisoner=append_link(hf.histfig_links,df.histfig_hf_link_imprisonerst,50)
+    color_case('imprisoner',7,0,false)
+    hf.flags.deity=true;color_case('deity-after-imprisoner',6,0,true)
+    reputation.cur_identity=identity.id;identity.profession=0;identity.impersonated_hf=-1
+    color_case('identity-hides-original-deity',7,0,false)
+    identity.impersonated_hf=hf.id;color_case('identity-impersonates-deity',6,0,true)
+   end)
+   for i=#owned_links,1,-1 do
+    local owned=owned_links[i];assert(owned.vector[#owned.vector-1]==owned.link,'relationship fixture ownership changed')
+    owned.vector:erase(#owned.vector-1);owned.link:delete()
+   end
+   hf.flags.deity=saved_deity
+   assert(relation_ok,relation_error)
   end)
   reputation.cur_identity=old_identity
   if inserted then

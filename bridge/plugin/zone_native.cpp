@@ -21,6 +21,8 @@
 #include "df/creature_raw.h"
 #include "df/caste_raw.h"
 #include "df/histfig_site_link.h"
+#include "df/histfig_entity_link.h"
+#include "df/histfig_hf_link.h"
 #include "df/squad.h"
 #include "df/squad_barracks_infost.h"
 #include "df/building_squad_infost.h"
@@ -230,14 +232,35 @@ std::optional<ZoneOwnerColorSources> nativeZoneOwnerColorSources(df::unit& candi
         hash(base+0x13b3030,0x56)==UINT64_C(0xf9404dd6eb50e2af) &&
         hash(base+0x72570,0x98)==UINT64_C(0xa69932c0f279084a) &&
         hash(base+0xbeb780,0x114)==UINT64_C(0x2bea0cd9ba41c566) &&
-        hash(base+0x1ba140,0xa8)==UINT64_C(0xdb6eb9072d509b29);
+        hash(base+0x1ba140,0xa8)==UINT64_C(0xdb6eb9072d509b29) &&
+        hash(base+0xb973c0,0x79)==UINT64_C(0xe30c0166fa2e4d2a) &&
+        hash(base+0xb98d90,0x79)==UINT64_C(0x043fd29d5a07e88a) &&
+        hash(base+0x1333bc0,0xa0d)==UINT64_C(0x8d3fa1210a66c482);
     if(!compatible)return std::nullopt;
+    static_assert(offsetof(df::historical_figure,entity_links)==0xe8 && offsetof(df::historical_figure,histfig_links)==0x118);
+    static const bool linkTypesCompatible=[](const uint8_t* base) {
+        // All entity/HF link type leaves in the supported executable's vtables.
+        constexpr uint32_t leaves[]{0x66e90,0x67500,0x67540,0x67520,0x67a40,0x67a50,0x67b90,0x67530,
+            0x67860,0x676d0,0x671f0,0x67270,0x67490,0x673c0,0x7b7a0,0x79ce0,0x7a270};
+        const uint8_t zero[]{0x33,0xc0,0xc3};
+        if(std::memcmp(base+leaves[0],zero,sizeof(zero)))return false;
+        for(uint8_t i=1;i<std::size(leaves);++i) {
+            const uint8_t code[]{0xb8,i,0,0,0,0xc3};
+            if(std::memcmp(base+leaves[i],code,sizeof(code)))return false;
+        }
+        const uint8_t none[]{0xb8,0xff,0xff,0xff,0xff,0xc3};
+        return std::memcmp(base+0x66e60,none,sizeof(none))==0;
+    }(base);
+    if(!linkTypesCompatible)return std::nullopt;
+    static_assert(offsetof(df::histfig_entity_link,link_strength)==0x10 && offsetof(df::histfig_hf_link,link_strength)==0xc);
+    static_assert(int(df::histfig_flags::deity)==2 && offsetof(df::historical_figure,flags)==0xc8);
     static_assert(offsetof(df::identity,profession)==0xac && offsetof(df::identity,impersonated_hf)==0x88);
     static_assert(offsetof(df::entity_position,precedence)==0x2d0 && offsetof(df::entity_position,color)==0x378);
     static_assert(offsetof(df::historical_entity,positions)+offsetof(decltype(df::historical_entity::positions),own)==0x10c0);
     static_assert(offsetof(df::historical_entity,positions)+offsetof(decltype(df::historical_entity::positions),assignments)==0x1110);
     using Identity=df::identity* (*)(df::unit*);
     using Position=df::entity_position* (*)(df::historical_figure*,int32_t,df::historical_entity**,df::entity_position_assignment**);
+    using Strength=int16_t (*)(df::historical_figure*,int16_t,int32_t);
     ZoneOwnerColorSources result;
     // Native identity lookup may refresh the unit's semantic HF index. Native
     // position selection scans current position links and keeps minimum
@@ -251,7 +274,25 @@ std::optional<ZoneOwnerColorSources> nativeZoneOwnerColorSources(df::unit& candi
             result.positionId=position->id;result.entityId=entity?entity->id:-1;result.assignmentId=assignment?assignment->id:-1;
             result.positionHasColor=position->flags.is_set(df::entity_position_flags::COLOR);result.positionColor=position->color;
         }
+        // Native helpers return the first matching link's signed strength,
+        // including zero; they do not search for the strongest/positive link.
+        // Virtual dependencies only return the link-type enum.
+        result.slaveStrength=reinterpret_cast<Strength>(base+0xb973c0)(hf,4,-1);
+        result.prisonerStrength=reinterpret_cast<Strength>(base+0xb973c0)(hf,6,-1);
+        result.imprisonerStrength=reinterpret_cast<Strength>(base+0xb98d90)(hf,7,-1);
+        result.deityHistfigId=result.identityId>=0?result.identityImpersonatedHistfig:hf->id;
+        if(const auto* displayed=df::historical_figure::find(result.deityHistfigId))
+            result.deity=displayed->flags.is_set(df::histfig_flags::deity);
     }
+    const auto baseColor=nativeZoneOwnerProfessionColor(candidate,int16_t(result.identityProfession!=-1?result.identityProfession:int(candidate.profession)));
+    if(!baseColor)return std::nullopt;
+    result.ordinaryColor=*baseColor;
+    if(result.identityProfession==-1) {
+        if(result.positionHasColor)for(size_t i=0;i<3;++i)result.ordinaryColor[i]=uint8_t(result.positionColor[i]);
+        if(result.slaveStrength>0 || result.prisonerStrength>0 || result.imprisonerStrength>0)result.ordinaryColor={7,0,0};
+    }
+    if(result.deity)result.ordinaryColor={6,0,1};
+    if(result.ordinaryColor[0]==result.ordinaryColor[1] && !result.ordinaryColor[2] && result.ordinaryColor[1])result.ordinaryColor[0]=0;
     return result;
 }
 std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzonest& zone,df::unit& candidate) {

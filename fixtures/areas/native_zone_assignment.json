@@ -2048,7 +2048,7 @@
     ],
     "dependencies": "Reuses owner-candidate guards for HF/entity/assignment lookup and native position-link type/accessor. Other virtual type leaves only return their enum. Identity helper may refresh semantic unit HF lookup index. No graphics/menu/search state.",
     "checks": "Identity/position/assignment IDs and values resolve against semantic records; UI/gps and initial map path_cost/path_tag guards unchanged. Native identity profession takes precedence over actual noble color.",
-    "remaining": "Final owned color precedence/effects, slave/prisoner/deity/undead/water/fire, legendary animation, production contract/rendering and full picker acceptance. Base profession/raw reader evidence follows."
+    "remaining": "Ordinary precedence evidence follows. Early overrides/animation, production contract/rendering and full picker acceptance remain."
   },
   "owner_profession_color": {
     "status": "Owned base profession/raw color reader verified; final name color/effects unfinished",
@@ -2238,6 +2238,178 @@
     ],
     "ownership": "Reads pinned immutable profession dispatch and semantic creature/caste raws with owner background0. Neither gps-writing routine is executed. Returns owned color components.",
     "coverage": "All16 dispatch destinations plus profession134; STANDARD raw fallback; NO_UNIT_TYPE_COLOR, HAS_COLOR and equal foreground/background brightness. Controlled identity and lowered legendary skills isolate base color. Raw fields and flags restored even on failure. UI/gps and initial map-search guards unchanged.",
-    "remaining": "Invalid race/profession fallbacks have static audit only. Final identity/noble/slave/prisoner/deity/undead/water/fire precedence, animation and production row rendering remain separate."
+    "remaining": "Invalid race/profession fallbacks have static audit only. Ordinary precedence evidence follows; early overrides/animation and production rendering remain."
+  },
+  "owner_ordinary_color": {
+    "status": "Ordinary identity/profession/noble/link/deity precedence verified; early overrides and animation unfinished",
+    "diagnostic": "df3d zone-owner-color-sources-read <unit id>",
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-015227",
+    "result_sha256": "72f13ad33dd58c62795f4570c910d45766e6ae282aedd7d2eea4a81bed161d72",
+    "plugin_sha256": "53c14658321bb6fbd79bef058b8cd6d3200ba7435505e3fb25431d156c3b82bc",
+    "owned_df_pid": 127084,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "display_samples": 169,
+    "cases": [
+      {
+        "case": "noble",
+        "ordinary_color": [
+          5,
+          0,
+          1
+        ],
+        "slave_strength": 0,
+        "prisoner_strength": 0,
+        "imprisoner_strength": 0,
+        "deity": false,
+        "deity_histfig_id": 9492,
+        "identity_profession": -1
+      },
+      {
+        "case": "slave-first-zero",
+        "ordinary_color": [
+          5,
+          0,
+          1
+        ],
+        "slave_strength": 0,
+        "prisoner_strength": 0,
+        "imprisoner_strength": 0,
+        "deity": false,
+        "deity_histfig_id": 9492,
+        "identity_profession": -1
+      },
+      {
+        "case": "slave-negative",
+        "ordinary_color": [
+          5,
+          0,
+          1
+        ],
+        "slave_strength": -1,
+        "prisoner_strength": 0,
+        "imprisoner_strength": 0,
+        "deity": false,
+        "deity_histfig_id": 9492,
+        "identity_profession": -1
+      },
+      {
+        "case": "slave",
+        "ordinary_color": [
+          7,
+          0,
+          0
+        ],
+        "slave_strength": 50,
+        "prisoner_strength": 0,
+        "imprisoner_strength": 0,
+        "deity": false,
+        "deity_histfig_id": 9492,
+        "identity_profession": -1
+      },
+      {
+        "case": "identity-before-slave",
+        "ordinary_color": [
+          6,
+          0,
+          1
+        ],
+        "slave_strength": 50,
+        "prisoner_strength": 0,
+        "imprisoner_strength": 0,
+        "deity": false,
+        "deity_histfig_id": -1,
+        "identity_profession": 1
+      },
+      {
+        "case": "prisoner",
+        "ordinary_color": [
+          7,
+          0,
+          0
+        ],
+        "slave_strength": 0,
+        "prisoner_strength": 50,
+        "imprisoner_strength": 0,
+        "deity": false,
+        "deity_histfig_id": 9492,
+        "identity_profession": -1
+      },
+      {
+        "case": "imprisoner",
+        "ordinary_color": [
+          7,
+          0,
+          0
+        ],
+        "slave_strength": 0,
+        "prisoner_strength": 0,
+        "imprisoner_strength": 50,
+        "deity": false,
+        "deity_histfig_id": 9492,
+        "identity_profession": -1
+      },
+      {
+        "case": "deity-after-imprisoner",
+        "ordinary_color": [
+          6,
+          0,
+          1
+        ],
+        "slave_strength": 0,
+        "prisoner_strength": 0,
+        "imprisoner_strength": 50,
+        "deity": true,
+        "deity_histfig_id": 9492,
+        "identity_profession": -1
+      },
+      {
+        "case": "identity-hides-original-deity",
+        "ordinary_color": [
+          7,
+          0,
+          0
+        ],
+        "slave_strength": 0,
+        "prisoner_strength": 0,
+        "imprisoner_strength": 50,
+        "deity": false,
+        "deity_histfig_id": -1,
+        "identity_profession": 0
+      },
+      {
+        "case": "identity-impersonates-deity",
+        "ordinary_color": [
+          6,
+          0,
+          1
+        ],
+        "slave_strength": 0,
+        "prisoner_strength": 0,
+        "imprisoner_strength": 50,
+        "deity": true,
+        "deity_histfig_id": 9492,
+        "identity_profession": 0
+      }
+    ],
+    "ranges": [
+      {
+        "rva": "0xb973c0",
+        "length": "0x79",
+        "fnv1a64": "e30c0166fa2e4d2a",
+        "role": "first matching entity-link signed strength"
+      },
+      {
+        "rva": "0xb98d90",
+        "length": "0x79",
+        "fnv1a64": "043fd29d5a07e88a",
+        "role": "first matching HF-link signed strength"
+      }
+    ],
+    "virtual_leaves": "Supported entity/HF link vtables only call constant enum-return leaves. Runtime verifies leaves for -1 and0..16 (66e60;66e90,67500,67540,67520,67a40,67a50,67b90,67530,67860,676d0,671f0,67270,67490,673c0,7b7a0,79ce0,7a270).",
+    "ownership": "Native link helpers read semantic historical records and return first-match strength without mutation. Inline ordinary precedence reads owned source values; full1333bc0 fingerprint guards reference behavior but the drawing routine is never executed. No UI/gps/search state is borrowed.",
+    "fixture": "Paused king; legendary skills temporarily lowered. Appended owned slave/prisoner/imprisoner links erased and deleted in reverse order even after failure; original deity flag restored. Existing temporary identity cleanup restores reputation and skills. Includes first zero before positive duplicate, negative strength, identity precedence and identity deity source selection.",
+    "checks": "All139 previous and30 additional display samples pass text/status/source checks; all ordinary controlled colors match native glyphs. UI/gps and initial map search guards unchanged. Deity impersonation capture inspected. MSVC build and core19/19 pass.",
+    "remaining": "Unit-specific override/ghost/undead/water/fire precedence, legendary/tame animation, production contract/rendering, portraits, background/input/lifecycle and remaining management goal."
   }
 }

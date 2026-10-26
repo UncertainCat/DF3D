@@ -327,6 +327,29 @@ inspected. Invalid race/profession fallbacks have static audit only. This reader
 does not yet supply final name-color precedence, animation or production rows.
 Compact provenance is in `native_zone_assignment.json.owner_profession_color`.
 
+The color-source reader also calls native0xb973c0/0xb98d90 for first-match
+historical link strengths. These read semantic vectors and return signed
+strengths; their virtual dependencies only return type enums and are pinned.
+The owned ordinary color stage combines profession, identity and noble sources
+with slave/prisoner/imprisoner overrides, followed by deity status. A profession
+identity skips noble and relationship colors. An identity also selects the
+impersonated historical figure for deity coloring; an absent impersonated figure
+does not inherit the original figure's deity flag. This is the deity flag, not
+a curse check. No drawing routine or graphics state is used.
+
+Protected `build/stockpile-storage-native-zone-owner-20261026-015227` passes169
+row samples, including ten new controlled ordinary-color cases. A zero first
+slave link masks a later positive link; negative strength also leaves noble
+color intact. Positive slave, prisoner and imprisoner links render gray.
+Identity and deity precedence match native glyph colors in every tested case.
+Appended owned links, deity flags, identity and skills are restored. UI/gps and
+initial search guards pass. DF127084 closes unsaved with source unchanged.
+The deity impersonation capture was inspected. MSVC and
+`build/qa/owner-ordinary-color` core19/19 pass. Evidence is retained in
+`native_zone_assignment.json.owner_ordinary_color`. Early color overrides,
+animation and production rendering remain unfinished; this is not final row
+acceptance or permission to expose the staged picker.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

@@ -2024,6 +2024,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["position_id"]=facts->positionId;output["entity_id"]=facts->entityId;output["assignment_id"]=facts->assignmentId;
         output["position_has_color"]=facts->positionHasColor;output["position_color"]=Json::Value(Json::arrayValue);
         for(auto color:facts->positionColor)output["position_color"].append(int(color));
+        output["slave_strength"]=facts->slaveStrength;output["prisoner_strength"]=facts->prisonerStrength;output["imprisoner_strength"]=facts->imprisonerStrength;
+        output["deity_histfig_id"]=facts->deityHistfigId;output["deity"]=facts->deity;
+        output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="zone-owner-text-read") {

@@ -35,9 +35,14 @@ struct ZoneOwnerColorSources {
     int32_t positionId=-1,entityId=-1,assignmentId=-1;
     bool positionHasColor=false;
     std::array<int16_t,3> positionColor{};
+    int16_t slaveStrength=0,prisonerStrength=0,imprisonerStrength=0;
+    int32_t deityHistfigId=-1;
+    bool deity=false;
+    // Ordinary stage only: early overrides and animated effects are separate.
+    std::array<uint8_t,3> ordinaryColor{};
 };
-// Semantic identity and highest-priority noble position used by native name
-// coloring. This is not a final color: precedence/effects remain separate.
+// Native identity, noble position and historical-link strengths, plus owned
+// ordinary color precedence. Early overrides and animated effects are separate.
 std::optional<ZoneOwnerColorSources> nativeZoneOwnerColorSources(df::unit& candidate);
 // Base profession/raw color from pinned native inline dispatch, with the
 // owner widget's background0. No identity/noble/status precedence or animation.

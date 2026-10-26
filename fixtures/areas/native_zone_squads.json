@@ -1,0 +1,1738 @@
+{
+  "source": "DF53.16 native Barracks and Archery Range squad selectors; protected paused unsaved session",
+  "run": "build/stockpile-storage-native-zone-squads-20261026-161857",
+  "scope": "Native UI opening/closing, four Barracks use bits and Archery training bit on two squads; creation, toggles and clearing reciprocal room records. Source save unchanged. Diagnostic parent selection only; range created through native viewport input. No product integration or nonempty rack-membership verification claimed.",
+  "native_toggle": {
+    "rva": "0x10efa80",
+    "end_exclusive": "0x10efe7b",
+    "sha256": "5e866690ce7b50d7be146124f689af7d5087590df4c86962e3031190a7e1b14a",
+    "signature": "void(squad*, int32_t building_id, uint32_t xor_mask)",
+    "caller": "0x334d63..0x334d83",
+    "ownership": "Semantic squad and building inputs; no selector/menu scratch read in the audited body. Uses native world buildings and weapon racks, native allocators and virtual isValidSquadAssignment; transitive compatibility and live direct-call parity remain pending.",
+    "effects": [
+      "XOR squad room mode; native sorted insertion when needed.",
+      "Copy mode to zone squad record; retain existing zone record when zero.",
+      "Remove and free squad-side room record when zero.",
+      "Set plotinfo equipment update buildings bit (0x1000).",
+      "Recalculate squad rack_combat and rack_training using each weapon rack virtual isValidSquadAssignment for masks4 and2."
+    ]
+  },
+  "files_sha256": {
+    "result.json": "efbce51799b53f6acadd0b7ab653021735168d5bf8873c539bf270e62a975999",
+    "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+    "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+    "Barracks-picker.png": "aafb6b4681baba92ccd115e2c054d98c35ffcb66dac5eaa5285469e804b89aac",
+    "ArcheryRange-picker.png": "5bbfd06b55f5a1e4ae5c80db9a4fc2ff14b218b377bbe20db0a38cea517745a1"
+  },
+  "observations": [
+    {
+      "context": -1,
+      "equipment_update_flags": 0,
+      "ids": [],
+      "name": "Barracks-zone",
+      "open": false,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": -1,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 0,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-picker",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 15,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-first-sleep-1",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 15
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 15
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 14,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-first-sleep-2",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 12,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-first-train-1",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 12
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 12
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 14,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-first-train-2",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 10,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-first-equipment-1",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 10
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 10
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 14,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-first-equipment-2",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 6,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-first-individual-1",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 6
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 6
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 14,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-first-individual-2",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 1,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-second-sleep-on",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 1
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        },
+        {
+          "id": 125,
+          "mode": 1
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 3,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-second-train-on",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 3
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        },
+        {
+          "id": 125,
+          "mode": 3
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 7,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-second-equipment-on",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 7
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        },
+        {
+          "id": 125,
+          "mode": 7
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 15,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-second-individual-on",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 15
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        },
+        {
+          "id": 125,
+          "mode": 15
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 14,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-second-sleep-off",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        },
+        {
+          "id": 125,
+          "mode": 14
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 12,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-second-train-off",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 12
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        },
+        {
+          "id": 125,
+          "mode": 12
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 8,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-second-equipment-off",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 8
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        },
+        {
+          "id": 125,
+          "mode": 8
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "expected_mode": 0,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-second-individual-off",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        },
+        {
+          "id": 125,
+          "mode": 0
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "Barracks-closed",
+      "open": false,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 536,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 14
+        },
+        {
+          "id": 125,
+          "mode": 0
+        }
+      ],
+      "zone_type": "95"
+    },
+    {
+      "context": 0,
+      "equipment_update_flags": 4096,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "ArcheryRange-zone",
+      "open": false,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 536,
+      "zone": 1490,
+      "zone_assignments": [],
+      "zone_type": "94"
+    },
+    {
+      "context": 1,
+      "equipment_update_flags": 4096,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "ArcheryRange-picker",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 1490,
+      "zone": 1490,
+      "zone_assignments": [],
+      "zone_type": "94"
+    },
+    {
+      "context": 1,
+      "equipment_update_flags": 4096,
+      "expected_mode": 2,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "ArcheryRange-first-train-1",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            },
+            {
+              "id": 1490,
+              "mode": 2
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 1490,
+      "zone": 1490,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 2
+        }
+      ],
+      "zone_type": "94"
+    },
+    {
+      "context": 1,
+      "equipment_update_flags": 4096,
+      "expected_mode": 0,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "ArcheryRange-first-train-2",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 1490,
+      "zone": 1490,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 0
+        }
+      ],
+      "zone_type": "94"
+    },
+    {
+      "context": 1,
+      "equipment_update_flags": 4096,
+      "expected_mode": 2,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "ArcheryRange-second-train-on",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 1490,
+              "mode": 2
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 1490,
+      "zone": 1490,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 0
+        },
+        {
+          "id": 125,
+          "mode": 2
+        }
+      ],
+      "zone_type": "94"
+    },
+    {
+      "context": 1,
+      "equipment_update_flags": 4096,
+      "expected_mode": 0,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "ArcheryRange-second-train-off",
+      "open": true,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 1490,
+      "zone": 1490,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 0
+        },
+        {
+          "id": 125,
+          "mode": 0
+        }
+      ],
+      "zone_type": "94"
+    },
+    {
+      "context": 1,
+      "equipment_update_flags": 4096,
+      "ids": [
+        120,
+        125,
+        128,
+        132
+      ],
+      "name": "ArcheryRange-closed",
+      "open": false,
+      "scroll": 0,
+      "selector_rva": 25837536,
+      "squads": [
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 120,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": [
+            {
+              "id": 536,
+              "mode": 14
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 125,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 128,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        },
+        {
+          "alias": "",
+          "entity": 865,
+          "id": 132,
+          "rack_combat": [],
+          "rack_training": [],
+          "rooms": []
+        }
+      ],
+      "target": 1490,
+      "zone": 1490,
+      "zone_assignments": [
+        {
+          "id": 120,
+          "mode": 0
+        },
+        {
+          "id": 125,
+          "mode": 0
+        }
+      ],
+      "zone_type": "94"
+    }
+  ]
+}

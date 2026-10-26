@@ -15,6 +15,30 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 | Animal picker blank right edge lets clicks select the map behind the visible panel, changing the parent zone while assignments still target the original zone. | Consume clicks inside the visible panel while releasing search focus and preserving the picker target. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_blank_input`, native `build/stockpile-storage-native-zone-animals-20261026-150439`, rendered `build/areas-acceptance-20261026-150814`. |
 | Animal picker remains active after selecting another zone or empty terrain, so Enter assigns to an old, no-longer-shown zone. | Close the picker and retire its assignment target when map selection changes. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_outside_panel_selection`, native `build/stockpile-storage-native-zone-animals-20261026-153041`, rendered `build/areas-acceptance-20261026-153847`. |
 
+## Native squad assignment reference
+
+`fixtures/areas/native_zone_squads.json` records protected native run
+`build/stockpile-storage-native-zone-squads-20261026-161857`. Native Barracks
+and Archery Range pickers show four fortress squads in the same order, with
+four use controls for Barracks and training alone for Archery. The range is
+created through native viewport input. Both first-row toggles and a second
+squad's full assign/clear sequence preserve reciprocal modes. Clearing the
+last bit retains a zero-valued zone-side record but removes the squad-side
+room record. The source save remains unchanged; DF129036 exits unsaved.
+Repeat with `tools/smoke/stockpile_storage_native.ps1 -ZoneSquads`.
+
+The native input handler calls `0x10efa80(squad*, building_id, xor_mask)`.
+Its audited body uses semantic inputs and world buildings without reading
+selector state. Besides updating records with native sorted insertion and
+allocation, it sets the equipment buildings-update bit and recalculates combat
+and training rack membership through `building::isValidSquadAssignment`.
+The fixture pins the full body through `0x10efe7b` and records the update flag
+and rack vectors. This fortress has empty rack vectors; nonempty rack effects
+and direct-call parity remain unverified. The current bridge still reconstructs
+assignment records and incorrectly removes both sides at zero. Native helper
+integration, candidate/name/artwork sourcing and rendered selector fidelity
+remain outstanding; this reference does not establish a completed squad UI.
+
 ## Animal keyboard activation and portrait reference
 
 `native_zone_animals.json.animal_container_reference_order` records seven

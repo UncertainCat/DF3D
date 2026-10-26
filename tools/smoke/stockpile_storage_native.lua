@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile (or ZoneRename zone) through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,repaint,gestures,eligibility_case,test_predicates,test_links,test_rename,test_tooltips,test_rename_text,test_zone_rename,test_zone_gather,test_zone_defaults,test_multi_discovery,test_zone_owner,test_zone_animals=...
+local out,repaint,gestures,eligibility_case,test_predicates,test_links,test_rename,test_tooltips,test_rename_text,test_zone_rename,test_zone_gather,test_zone_defaults,test_multi_discovery,test_zone_owner,test_zone_animals,test_zone_squads=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -9,6 +9,12 @@ require('gui.script').start(function()
   local view=dfhack.gui.getDFViewscreen(true)
   assert(df.global.pause_state);local frame=df.global.world.frame_counter
   assert(dfhack.run_command('disable','overlay')==0)
+  if test_zone_squads then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','areas-squads-native.lua')
+   assert(loadfile(source))(out,view,records)
+   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+   return
+  end
   if test_zone_animals then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','areas-animals-native.lua')
    assert(loadfile(source))(out,view,records)

@@ -944,7 +944,7 @@ local function native_operation(r)
  sync_epoch(r.epoch)
  local a=r.area or {};local op=default(a,'operation',0);local steps=0
  local synchronous=r.synchronous_read==true and r.action==9 and (op==0 or op==1 or op==26) or
-  r.synchronous_write==true and (r.action==13 and (op==0 or op==15) or r.action==11 and (op==0 or op==2 or op==3 or op==5 or op==7 or op==8 or op==9) or r.action==12 and op==0 or r.action==10 and (op==0 or op==5))
+  r.synchronous_write==true and (r.action==13 and (op==0 or op==15) or r.action==11 and (op==0 or op==2 or op==3 or op==5 or op==7 or op==8 or op==9 or op==11) or r.action==12 and op==0 or r.action==10 and (op==0 or op==5))
  local budget=synchronous and math.huge or default(r,'step_budget',0)
  local unknown_work=false
  local function finish(result)
@@ -974,7 +974,7 @@ local function native_operation(r)
   end
   unknown_work=unknown_work or result.work_unknown==true
   steps=steps+result.steps
-  if not result.ok then return nil,result.message or 'Native area operation rejected' end
+  if not result.ok then return nil,result.message or 'Native area operation rejected',result.work_unknown==true end
   return result
  end
  local function observe(b,visibility)
@@ -1028,7 +1028,7 @@ local function native_operation(r)
    out.organic=b.settings.misc.allow_organic and 1 or 0;out.inorganic=b.settings.misc.allow_inorganic and 1 or 0
   else
    out.zone_type=b.type;out.zone_label=zone_labels[label] or '';out.active=b.spec_sub_flag.active
-   out.owner_id=b.assigned_unit_id;out.assigned_count=#(snapshot.assigned_units or {})
+   out.owner_id=b.assigned_unit_id;out.assigned_count=#(snapshot.assigned_units or {})+#(snapshot.assigned_items or {})
    local owner=df.unit.find(out.owner_id)
    if owner then
     out.owner_name=unit_name(owner)
@@ -1349,17 +1349,17 @@ local function native_operation(r)
  if op==11 then
   local zone_type=df.civzone_type[b.type]
   if zone_type~='Pen' and zone_type~='Pond' then return reject('This operation does not apply to this zone type') end
-  -- Wire migration precedes the native item integration. Never reinterpret
-  -- an item identity as a unit while the new runtime path is unavailable.
-  if default(a,'item_id',-1)>=0 then return reject('Unsupported area operation') end
-  local unit=df.unit.find(a.unit_id)
-  if not unit then return reject('Unit no longer exists') end
-  local changed,problem,unknown=invoke(r.assign_unit,reply_reserve,b,unit,a.assign)
+  local is_item=default(a,'item_id',-1)>=0
+  local target,callback
+  if is_item then target=df.item.find(a.item_id);callback=r.assign_item
+  else target=df.unit.find(a.unit_id);callback=r.assign_unit end
+  if not target then return reject(is_item and 'Item no longer exists' or 'Unit no longer exists') end
+  local changed,problem,unknown=invoke(callback,reply_reserve,b,target,a.assign)
   if changed or unknown then clear_lists() end
   if not changed then return reject(problem) end
   local after,why=observe(b,false)
   if not after then return reject(why..'; native edit may have completed; inspect before retrying') end
-  return finish{ok=true,message='Native unit assignment updated',areas={info(b,after)},building_id=b.id,retired=changed.retired}
+  return finish{ok=true,message='',areas={info(b,after)},building_id=b.id,retired=changed.retired}
  end
  if op==12 then
   local zone_type=df.civzone_type[b.type]

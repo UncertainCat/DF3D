@@ -697,6 +697,36 @@ elseif request.op=='status' then
  result=json.decode(assert(read(out..'/status-'..index..'.json')));result.status='passed'
 elseif request.op=='stale_edit' then
  local b=building();b.name=b.name..' stale fixture edit';print('FIXTURE_WRITE out-of-band name '..b.id)
+elseif request.op=='item_assignment_before' then
+ local item=assert(df.item.find(request.item_id));local refs={}
+ for _,ref in ipairs(item.general_refs)do
+  if df.general_ref_contained_in_itemst:is_instance(ref)then refs[#refs+1]=ref.item_id end
+ end
+ local cages=0
+ for _,cage in ipairs(df.global.world.buildings.other.CAGE)do
+  if contains(cage.assigned_items,item.id)then cages=cages+1 end
+ end
+ assert(cages>0,'item fixture needs a cage assignment')
+ _G.df3d_item_containment={id=item.id,refs=canonical(refs)}
+ result.item=item.id;result.cage_assignments=cages
+elseif request.op=='item_assignment' then
+ local b,item=building(),assert(df.item.find(request.item_id));local refs={};local found=0
+ for _,ref in ipairs(item.general_refs)do
+  if df.general_ref_contained_in_itemst:is_instance(ref)then refs[#refs+1]=ref.item_id end
+  if df.general_ref_building_civzone_assignedst:is_instance(ref)then
+   found=found+1;assert(request.assign and ref.building_id==b.id,'wrong item zone reference')
+  end
+  assert(not df.general_ref_building_cagedst:is_instance(ref),'item cage assignment reference remains')
+ end
+ assert(found==(request.assign and 1 or 0),'item zone reference count differs')
+ assert(contains(b.assigned_items,item.id)==request.assign,'item membership differs')
+ for _,zone in ipairs(df.global.world.buildings.other.ANY_ZONE)do
+  if zone.id~=b.id then assert(not contains(zone.assigned_items,item.id),'prior zone retains item')end
+ end
+ for _,cage in ipairs(df.global.world.buildings.other.CAGE)do assert(not contains(cage.assigned_items,item.id),'cage retains item')end
+ local before=assert(_G.df3d_item_containment)
+ assert(before.id==item.id and before.refs==canonical(refs),'physical item containment changed')
+ result.item=item.id;result.assigned=request.assign;result.assigned_count=#b.assigned_units+#b.assigned_items
 elseif request.op=='assignment_before' then
  local u=assert(df.unit.find(request.unit_id));local refs={}
  for _,r in ipairs(u.general_refs) do if df.general_ref_contained_in_itemst:is_instance(r) then refs[#refs+1]=r.item_id end end

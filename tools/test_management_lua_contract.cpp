@@ -288,6 +288,7 @@ int main(int argc,char** argv) {
     test(A::AreaInspect,("return {"+envelope+"work_unknown=true}").c_str(),false,O::LocationSet);
     test(A::AreaUpdate,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,O::LocationCreate,0);
     test(A::AreaUpdate,("return {"+envelope+"operation=4}").c_str(),false,O::Paint);
+    test(A::AreaUpdate,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,O::AssignUnits,0);
     for(auto operation:{O::Paint,O::AssignUnits,O::SquadUse}) {
       test(A::AreaUpdate,("return {"+envelope+"retired={}}").c_str(),true,operation);
       test(A::AreaUpdate,("return {"+envelope+"retired={1}}").c_str(),false,operation);

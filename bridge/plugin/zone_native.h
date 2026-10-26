@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <array>
-namespace df { struct building_civzonest; struct unit; }
+namespace df { struct building_civzonest; struct unit; struct item; }
 namespace df3d_area {
 // Caller supplies a newly allocated zone and its selected type, at one safe point.
 // Includes native initial range direction from supplied extents and target
@@ -69,6 +69,8 @@ bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner);
 // Call only at a safe point after request/admission/staleness validation.
 // Entering this function can partially mutate; never retry an unknown result.
 bool nativeZoneAnimalAssignmentReady();
+bool nativeZoneItemEligible(const df::building_civzonest& zone,const df::item& item);
+bool nativeZoneAssignItem(df::building_civzonest& zone,df::item& item,bool assign);
 bool nativeZoneAssignUnit(df::building_civzonest& zone,df::unit& unit,bool assign);
 bool nativeZoneCreateReady();
 bool nativeZoneMultiReady();

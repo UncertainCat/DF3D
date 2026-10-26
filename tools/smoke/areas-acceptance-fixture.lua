@@ -27,6 +27,7 @@ if mode=='multi' or mode=='location' then
  return
 end
 local state={zones={},missing={},pile=-1,workshop=-1,grazer=-1,caged=-1,squad=-1,tavern=-1,owner=-1}
+state.critter=df.global.world.items.other.ANY_CRITTER[0] and df.global.world.items.other.ANY_CRITTER[0].id or -1
 local function missing(key,why)
  state.missing[key]=why;print('FIXTURE_INCOMPLETE '..key..': '..why)
 end

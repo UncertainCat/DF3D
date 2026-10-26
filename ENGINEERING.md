@@ -14,9 +14,9 @@ now supply their explicit entity. No native item rows are emitted yet.
 AreaRequest appends item_id with default -1. AssignUnits requires exactly one
 nonnegative unit_id or item_id, with all other operations rejecting item_id.
 The model and Godot dictionaries preserve it without conversion to a unit ID.
-This commit establishes the contract: item requests currently return the
-existing Unsupported area operation refusal before any unit lookup/mutation.
-Native item integration and typed chooser state/selection remain unfinished.
+Item requests dispatch through a separate native item handler; there is no
+unit lookup or handler fallback. Typed chooser state/selection and native item
+candidate display remain unfinished.
 
 Core CTest 19/19, areas adapter and the headless Godot management contract pass
 in build/qa/area-typed-candidates-final. Tests cover ambiguous/missing IDs,
@@ -30,6 +30,47 @@ chain-job/containment/cursor assertions. Both save manifests remain unchanged
 after unsaved exit. Installed plugin SHA256:
 ef81034ca40f957651f3ec782852a42b06755fae2b3bfdfb43f25052ff5efb0e.
 This proves the migration's semantic path, not complete animal UI parity.
+
+## Native zone item assignment
+
+Item assignment uses the item branch of pinned native 0x3ce1b0 with an owned
+zone-pointer context and tag1 item_or_unit entry. Native 0x8bfbd0 removes cage
+membership and BUILDING_CAGED references; native code then transfers zone
+membership/references or clears them. This branch does not enter chain cleanup.
+Admission retains existing assigned items; Pond additionally accepts the
+semantic world.items.other.ANY_CRITTER vector. Protected native090124 with
+DF80872 verifies that vector occupies the producer's RVA0x23e5cc0 and supplies
+item5969. Do not substitute VERMIN or PET lists.
+
+Zone snapshot membership, work charges, revision hashing and assigned_count
+include assigned_items. The combined unit/item membership bound remains4096.
+Request callbacks independently validate item identity, previous-zone references
+and stale removal, and never reinterpret an item ID as a unit. Physical
+containment is not changed. Existing Pen assigned items can be cleared; new
+admission follows the producer's assigned-first/Pond-ANY_CRITTER rules.
+
+Unit and item assignment use the synchronous native-write accounting path.
+Measured validation work and opaque native work are reported separately;
+native failures after entry retain uncertain effects, invalidate lists, and
+must not be automatically replayed. Missing item callbacks never fall back to
+unit callbacks. Synthetic adapter tests cover equal unit/item IDs, membership
+counts/revisions, missing callbacks, and partial/unknown edits.
+
+Protected build/areas-acceptance-20261026-091425 passes with DF119128, including
+the unit/cage/chain cases plus item5969 cage-to-Pond assignment, transfer to a
+second Pond, clearing, previous-zone removal, preserved containment, changed
+counts/revisions and stale/cross-zone clear refusals. Both save manifests
+match after unsaved exit. Native item effects match the earlier native oracle.
+The090914 probe found incorrect bounded-work accounting after native item
+entry; its owned session exited unsaved and the accounting path was corrected.
+
+MSVC builds in build/notes/pm/zone-item-native-accounting-build.log.
+Root CTest19/19 and areas adapter pass in build/qa/zone-item-native-verified.
+Installed plugin SHA256:
+5ae7c6b89548e4bc8b9a05630a7fe9d4e4cc7593aa5feb47b5ec482dee209a84.
+Management remains68. Item effects are integrated; full typed candidate
+generation, native display/search/order and actual animal-picker acceptance
+remain required before exposing Zones/Locations.
 
 ## Native zone animal assignment audit
 
@@ -94,10 +135,10 @@ Filter callback 0x1435b40 invokes widget-dependent search 0x1424c30; it is not a
 eligibility predicate. Reusable semantic admission helpers and inline selection
 branches remain to be integrated.
 
-Current animal candidates and AssignUnits requests still represent units only.
-Full native parity requires
-typed unit/item identities and native effects, including the observed vermin
-case. This is unfinished work, not an accepted exclusion. Ordering, descriptions,
+Animal candidates still emit units only; requests and native effects now
+support typed units/items. Full native parity still requires the observed
+vermin choices in the actual picker. This is unfinished work, not an accepted
+exclusion. Ordering, descriptions,
 portraits/status graphics, input/lifecycle, richer chain-job fixtures, stale state
 and unknown outcomes remain in scope. Zones/Locations stays staged.
 

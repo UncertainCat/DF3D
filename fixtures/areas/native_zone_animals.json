@@ -6,7 +6,7 @@
   "evidence": "build/stockpile-storage-native-zone-animals-20261026-080835",
   "owned_df_pid": 128092,
   "source_unchanged": true,
-  "status": "Native unit assignment integrated; typed item admission/assignment and full animal UI parity pending",
+  "status": "Native unit/item assignment integrated; typed item candidates and full animal UI parity pending",
   "ranges": [
     {
       "name": "pen_picker_builder",
@@ -34,7 +34,7 @@
       "rva": "0x3ce1b0",
       "size": "0x36e",
       "fnv1a64": "f4022a51bef4e82f",
-      "role": "Native assignment invoked for units only after independent semantic chain-job cleanup"
+      "role": "Unit wrapper first performs independent chain-job cleanup; item branch called directly with owned context."
     },
     {
       "name": "search_filter",
@@ -731,7 +731,7 @@
     "Exercise unit cage/chain cleanup, stale state, repeated requests, and unknown outcomes."
   ],
   "assignment_dependency_audit": {
-    "runtime_ready": false,
+    "runtime_ready": true,
     "ranges": [
       {
         "name": "item_cage_assignment_cleanup",
@@ -807,13 +807,14 @@
       "instructions": "0xd02575..0xd025b0",
       "observed": "Building-holder job detachment reads native mode and selected building; may change ui_workshop_job_cursor at RVA 0x2131b60.",
       "consequence": "Do not expose the top-level callback action as an independently semantic routine until this reachable UI dependency is resolved without borrowing or changing native UI state.",
-      "remaining": "Direct top-level calls with pending chain jobs remain prohibited. Typed item integration and fuller job-worker/item fixtures remain required.",
+      "remaining": "Direct unit calls with pending chain jobs remain prohibited; use the semantic wrapper. Fuller job worker/item fixtures remain required.",
       "dfhack_alternative": "DFHack Job::removeJob reconstructs item disconnection then calls job_handler::cancel_job. Supported vtable 0x16d04a8 points to 0xd032a0, a null check and tail jump to 0xa67820. This does not avoid the native UI dependency.",
       "resolution": "Unit wrapper removes real BUILDING_HOLDER reciprocal job membership/reference before native job deletion. With those references absent, d022c0 cannot enter the native UI-dependent branch. Remaining deletion and zone-transfer effects stay native."
     },
     "failure_contract": "Native action removes prior assignments before appending/allocating the destination reference. Once entered, failure can leave partial effects; report unknown outcome and never auto-replay.",
     "evidence_limits": "Cage/chain cleanup bodies inspected statically. Live chain fixture and unit cage-assignment fixture still required. Existing native run covers item cage cleanup and unit containment only.",
-    "unit_assignment_ready": true
+    "unit_assignment_ready": true,
+    "item_assignment_ready": true
   },
   "chain_reference": {
     "evidence": "build/stockpile-storage-native-zone-animals-20261026-083036",
@@ -992,5 +993,54 @@
       "existing unit/cage/chain transfer and clearing"
     ],
     "limits": "Item mutation/candidates and full typed chooser behavior remain pending."
+  },
+  "native_item_source": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-090124",
+    "owned_df_pid": 80872,
+    "record": {
+      "field": "ANY_CRITTER",
+      "ids": [
+        5969
+      ],
+      "name": "pond-item-source",
+      "vector_rva": 37641408
+    },
+    "source_unchanged": true
+  },
+  "bridge_item_assignment": {
+    "evidence": "build/areas-acceptance-20261026-091425",
+    "owned_df_pid": 119128,
+    "management_version": 68,
+    "plugin_sha256": "5ae7c6b89548e4bc8b9a05630a7fe9d4e4cc7593aa5feb47b5ec482dee209a84",
+    "status": "passed",
+    "save_manifests_unchanged": 2,
+    "checks": [
+      {
+        "assigned": true,
+        "assigned_count": 1,
+        "item": 5969,
+        "status": "passed"
+      },
+      {
+        "assigned": true,
+        "assigned_count": 1,
+        "item": 5969,
+        "status": "passed"
+      },
+      {
+        "assigned": false,
+        "assigned_count": 0,
+        "item": 5969,
+        "status": "passed"
+      },
+      {
+        "cage_assignments": 1,
+        "item": 5969,
+        "status": "passed"
+      }
+    ],
+    "scope": "Cage-to-Pond item assignment, second-Pond transfer, clear, reference/membership/containment checks, counts and revision invalidation, stale and wrong-zone clear refusal.",
+    "offline": "build/qa/zone-item-native-verified",
+    "limits": "Item candidates and rendered picker workflow remain pending; this is semantic effect acceptance."
   }
 }

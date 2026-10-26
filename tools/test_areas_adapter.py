@@ -72,6 +72,7 @@ def main():
       for _,room in ipairs(b.squad_room_info)do revision=revision+room.squad_id*83+room.mode.whole*97 end
      end
      if b.kind==1 and b.assigned_units then for _,id in ipairs(b.assigned_units)do revision=revision+id*101 end end
+     if b.kind==1 and b.assigned_items then for _,id in ipairs(b.assigned_items)do revision=revision+id*103 end end
      for i=1,#b.name do revision=revision+b.name:byte(i)*i end
      if b.kind==0 then revision=revision+(b.settings.misc.allow_organic and 100000 or 0)+(b.settings.misc.allow_inorganic and 200000 or 0) end
      if b.kind==0 then
@@ -99,7 +100,7 @@ def main():
      return {ok=true,steps=cost,revision=revision,visible=not force_hidden and not b.hidden,
       x=b.x1,y=b.y1,z=b.z,width=b.x2-b.x1+1,height=b.y2-b.y1+1,extents=extents,
       zone_name=b.kind==1 and (b.name~="" and b.name or (b.type==0 and "Unnamed bedroom" or "Unnamed meeting hall")) or nil,
-      tile_count=tiles,overlapping=b.observed_overlap,storage_limit=b.kind==0 and tiles or -1,gives={},takes={},assigned_units=b.assigned_units or {}}
+      tile_count=tiles,overlapping=b.observed_overlap,storage_limit=b.kind==0 and tiles or -1,gives={},takes={},assigned_units=b.assigned_units or {},assigned_items=b.assigned_items or {}}
     end
     function repaint(b,spans,mode,budget)
      budget=budget or math.huge
@@ -184,7 +185,7 @@ def main():
      r.create_area=create_area
      r.remove_area=remove_area
      r.synchronous_read=action==9 and (r.area.operation==1 or r.area.operation==26)
-     r.synchronous_write=action==13 or action==10 or action==12 or action==11 and (r.area.operation==nil or r.area.operation==0 or r.area.operation==3 or r.area.operation==5 or r.area.operation==7 or r.area.operation==8 or r.area.operation==9 or r.area.operation==2 and (r.area.scope==3 or r.area.scope==4))
+     r.synchronous_write=action==13 or action==10 or action==12 or action==11 and (r.area.operation==nil or r.area.operation==0 or r.area.operation==3 or r.area.operation==5 or r.area.operation==7 or r.area.operation==8 or r.area.operation==9 or r.area.operation==11 or r.area.operation==2 and (r.area.scope==3 or r.area.scope==4))
      return r
     end
     """)
@@ -1177,13 +1178,13 @@ def main():
     uncertain = call(11, dict(squad_request, squad_use=2, expected_revision=zone_revision()))
     assert not uncertain["ok"] and uncertain["steps"] == 1536 and "inspect before retrying" in uncertain["message"]
     lua.execute("""
-    zone.type=2;zone.assigned_units={};assign_calls=0
+    zone.type=2;zone.assigned_units={};assign_calls=0;df.item={find=function() return nil end}
     local previous_request=request
     function request(action,extra)
      local r=previous_request(action,extra)
      r.assign_unit=function(b,u,assign,budget)
       assign_calls=assign_calls+1;assert(b==zone and u.id==20)
-      if budget<17 then return {ok=false,message='assignment budget',steps=1} end
+      if budget and budget<17 then return {ok=false,message='assignment budget',steps=1} end
       if refuse_assign then return {ok=false,message='cage limit',steps=17} end
       b.assigned_units=assign==1 and {u.id} or {}
       if fail_assign then error('assignment fixture exception') end
@@ -1196,7 +1197,8 @@ def main():
                       "expected_revision": zone_revision()}
     no_capacity = lua.globals().request(11, lua.table_from(animal_request))
     no_capacity["area_retire_capacity"] = 0
-    assert call(11, dict(animal_request, unit_id=-1, item_id=20))["message"] == "Unsupported area operation"
+    no_capacity["synchronous_write"] = False
+    assert call(11, dict(animal_request, unit_id=-1, item_id=20))["message"] == "Item no longer exists"
     for bad in [{"expected_revision": 0}, {"expected_revision": 1}, {"unit_id": 999},
                 {"unit_id": -1}, {"unit_id": 20, "item_id": 20}, {"item_id": -2}, {"assign": -1}, {"assign": 2}, {"assign": 0.5}]:
         assert not call(11, dict(animal_request, **bad))["ok"]
@@ -1220,7 +1222,38 @@ def main():
     assert lua.eval("#zone.assigned_units") == 1
     lua.execute("refuse_assign=false;fail_assign=true")
     unknown = call(11, dict(animal_request, assign=0, expected_revision=zone_revision()))
-    assert not unknown["ok"] and unknown["steps"] == 1536 and "inspect before retrying" in unknown["message"]
+    assert not unknown["ok"] and unknown["work_unknown"] and "inspect before retrying" in unknown["message"]
+    lua.execute("""
+    fail_assign=false;zone.assigned_units={20};zone.assigned_items={};item_fixture={id=20};item_calls=0
+    df.item.find=function(id) if id==20 then return item_fixture end end
+    local previous_request=request
+    function request(action,extra)
+     local r=previous_request(action,extra)
+     if not missing_item_helper then r.assign_item=function(b,it,assign,budget)
+      assert(it==item_fixture and it~=df.unit.find(20));item_calls=item_calls+1
+      b.assigned_items=assign==1 and {it.id} or {}
+      if fail_item then return {ok=false,message='item outcome unknown',steps=1,work_unknown=true}end
+      return {ok=true,steps=1}
+     end end
+     return r
+    end
+    """)
+    item_request = dict(animal_request, unit_id=-1, item_id=20, expected_revision=zone_revision())
+    item_result = call(11, item_request)
+    assert item_result["ok"] and item_result["areas"][1]["assigned_count"] == 2
+    assert lua.eval("#zone.assigned_units") == 1 and lua.eval("item_calls") == 1
+    assert not call(11, dict(item_request, assign=0))["ok"]  # Item membership invalidates revision.
+    cleared = call(11, dict(item_request, assign=0, expected_revision=zone_revision()))
+    assert cleared["ok"] and cleared["areas"][1]["assigned_count"] == 1
+    lua.execute("missing_item_helper=true")
+    before_calls = lua.eval("assign_calls")
+    assert not call(11, dict(item_request, expected_revision=zone_revision()))["ok"]
+    assert lua.eval("assign_calls") == before_calls  # Missing item callback never falls back to units.
+    lua.execute("missing_item_helper=false;fail_item=true")
+    unknown_item = call(11, dict(item_request, expected_revision=zone_revision()))
+    assert not unknown_item["ok"] and unknown_item["work_unknown"] and unknown_item["message"] == "item outcome unknown"
+    assert lua.eval("#zone.assigned_items") == 1 and lua.eval("#zone.assigned_units") == 1
+    lua.execute("zone.assigned_items={};fail_item=false")
     # Settings label jobs use kind5 and share the cache/scheduler with kind7.
     # Raw objects below are synthetic; native caption/effect acceptance is D.
     lua.execute(r"""

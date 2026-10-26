@@ -3,6 +3,15 @@ local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local main=df.global.game.main_interface;local ui=main.civzone
 local image_base=dfhack.internal.getImageBase()
+-- Identify the semantic item vector read by the pinned Pond producer.
+for key,values in pairs(df.global.world.items.other)do
+ local _,address=df.sizeof(values)
+ if address-image_base==0x23e5cc0 then
+  local ids={};for _,item in ipairs(values)do ids[#ids+1]=item.id end
+  records[#records+1]={name='pond-item-source',field=tostring(key),vector_rva=address-image_base,ids=ids}
+ end
+end
+
 local function pixel(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//(g.screen_pixel_x//g.dimx);g.mouse_y=y//(g.screen_pixel_y//g.dimy)
  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())

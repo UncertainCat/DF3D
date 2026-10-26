@@ -53,6 +53,7 @@
 #include "df/squad_barracks_infost.h"
 #include "df/squad.h"
 #include "df/unit.h"
+#include "df/item.h"
 #include "df/building_cagest.h"
 #include "df/general_ref_building_civzone_assignedst.h"
 #include "df/furniture_type.h"
@@ -1478,8 +1479,8 @@ int areaAssignUnit(lua_State* L) {
   const auto fail=[&](const char* reason,uint32_t steps=1) {
     lua_newtable(L);field(L,"ok",false);field(L,"message",reason);field(L,"steps",steps);return 1;
   };
-  if(!lua_isinteger(L,4) || lua_tointeger(L,4)<0 || lua_tointeger(L,4)>1536)return fail("Invalid assignment budget",0);
-  const uint32_t budget=uint32_t(lua_tointeger(L,4));if(!budget)return fail("Unit assignment exceeds remaining step budget",0);
+  if(!lua_isnil(L,4) && (!lua_isinteger(L,4) || lua_tointeger(L,4)<0 || lua_tointeger(L,4)>1536))return fail("Invalid assignment budget",0);
+  const uint32_t budget=lua_isnil(L,4)?UINT32_MAX:uint32_t(lua_tointeger(L,4));if(!budget)return fail("Unit assignment exceeds remaining step budget",0);
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);auto* unit=Lua::GetDFObject<df::unit>(L,2);
   if(!zone || !unit || !df::global::world)return fail("Area or unit no longer exists");
   if(!lua_isinteger(L,3) || lua_tointeger(L,3)<0 || lua_tointeger(L,3)>1)return fail("invalid area unit assignment");
@@ -1502,9 +1503,9 @@ int areaAssignUnit(lua_State* L) {
   auto* oldZone=oldRef?virtual_cast<df::building_civzonest>(df::building::find(oldRef->building_id)):nullptr;
   if(oldRef && !oldZone)return fail("Previous zone no longer exists",steps);
   if(!assign && oldZone && oldZone!=zone)return fail("Unit assignment changed; inspect again",steps);
-  if(zone->assigned_units.size()>4096 || (oldZone && oldZone->assigned_units.size()>4096))return fail("Zone exceeds 4,096 assigned units",steps);
+  if(zone->assigned_units.size()+zone->assigned_items.size()>4096 || (oldZone && oldZone->assigned_units.size()+oldZone->assigned_items.size()>4096))return fail("Zone exceeds 4,096 assigned units",steps);
   if(assign && !oldRef && unit->general_refs.size()==256)return fail("Zone assignment list exceeds 256 entries",steps);
-  if(assign && zone->assigned_units.size()==4096 &&
+  if(assign && zone->assigned_units.size()+zone->assigned_items.size()==4096 &&
       std::find(zone->assigned_units.begin(),zone->assigned_units.end(),unit->id)==zone->assigned_units.end())
     return fail("Zone exceeds 4,096 assigned units",steps);
   const auto cageScan=df3d_area::scanAssignedCages(df::global::world->buildings.other.CAGE,unit->id,budget-steps);
@@ -1522,8 +1523,51 @@ int areaAssignUnit(lua_State* L) {
     lua_newtable(L);field(L,"ok",false);field(L,"message","Native animal assignment failed; inspect before retrying");
     field(L,"steps",steps);field(L,"work_unknown",true);return 1;
   }
-  lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",steps);
+  lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",steps);field(L,"work_unknown",true);
   return 1;
+}
+int areaAssignItem(lua_State* L) {
+  bool entered=false;uint32_t steps=1;
+  const auto result=[&](bool ok,const char* reason) {
+    lua_newtable(L);field(L,"ok",ok);field(L,"message",reason);field(L,"steps",steps);
+    field(L,"work_unknown",entered);return 1;
+  };
+  if(!lua_isnil(L,4) && (!lua_isinteger(L,4) || lua_tointeger(L,4)<1 || lua_tointeger(L,4)>1536))
+    return result(false,"Invalid assignment budget");
+  const uint32_t budget=lua_isnil(L,4)?UINT32_MAX:uint32_t(lua_tointeger(L,4));
+  auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);auto* item=Lua::GetDFObject<df::item>(L,2);
+  if(!zone || !item || !df::global::world)return result(false,"Area or item no longer exists");
+  if(!lua_isinteger(L,3) || lua_tointeger(L,3)<0 || lua_tointeger(L,3)>1)
+    return result(false,"Invalid area item assignment");
+  const bool assign=lua_tointeger(L,3)!=0;
+  if(action!=m::ManagementAction::AreaUpdate || request.empty())return result(false,"Item assignment request required");
+  const auto* op=flatbuffers::GetRoot<m::ConstructionRequest>(request.data())->area();
+  if(!op || op->operation()!=m::AreaOperation::AssignUnits || op->id()!=zone->id ||
+      op->item_id()!=item->id || op->unit_id()!=-1 || bool(op->assign())!=assign)
+    return result(false,"Item assignment request required");
+  if(zone->type!=df::civzone_type::Pen && zone->type!=df::civzone_type::Pond)
+    return result(false,"This operation does not apply to this zone type");
+  if(!df3d_area::nativeZoneAnimalAssignmentReady())return result(false,"Native animal assignment unavailable");
+  if(assign && !df3d_area::nativeZoneItemEligible(*zone,*item))return result(false,"Invalid area item assignment");
+  const auto scan=df3d_area::scanZoneReferences(item->general_refs,
+      [](auto* ref){return virtual_cast<df::general_ref_building_civzone_assignedst>(ref)!=nullptr;},budget-1);
+  steps+=scan.steps;
+  if(scan.error!=df3d_area::AssignmentScanError::None)return result(false,"Invalid or excessive native item references");
+  auto* oldRef=scan.previous?virtual_cast<df::general_ref_building_civzone_assignedst>(scan.previous):nullptr;
+  auto* oldZone=oldRef?virtual_cast<df::building_civzonest>(df::building::find(oldRef->building_id)):nullptr;
+  if(oldRef && !oldZone)return result(false,"Previous zone no longer exists");
+  if(!assign && oldZone && oldZone!=zone)return result(false,"Item assignment changed; inspect again");
+  const auto assigned=zone->assigned_units.size()+zone->assigned_items.size();
+  const bool present=std::find(zone->assigned_items.begin(),zone->assigned_items.end(),item->id)!=zone->assigned_items.end();
+  if(assigned>4096 || (assign && !present && assigned==4096))
+    return result(false,"Zone assignment list exceeds 4,096 entries");
+  if(assign && !oldRef && item->general_refs.size()==256)return result(false,"Zone assignment list exceeds 256 entries");
+  try {
+    entered=true;mutated=true;
+    if(!df3d_area::nativeZoneAssignItem(*zone,*item,assign))
+      return result(false,"Native animal assignment failed; inspect before retrying");
+  } catch(...) {return result(false,"Native animal assignment failed; inspect before retrying");}
+  return result(true,"");
 }
 // Allocate both squad records and replacement vectors before committing. Hold
 // detached records immediately so a later Lua failure cannot lose ownership.
@@ -1883,9 +1927,9 @@ int areaSnapshot(lua_State* L) {
     for(const auto& setting:areaFixedSettings(pile))members+=setting.count;
     members+=settingsSizes.size();
   } else {
-    if(zone->assigned_units.size()>4096)return fail("Zone exceeds 4,096 assigned units");
+    if(zone->assigned_units.size()+zone->assigned_items.size()>4096)return fail("Zone assignment list exceeds 4,096 entries");
     if(zone->squad_room_info.size()>256)return fail("Zone assignment list exceeds 256 entries");
-    members=zone->assigned_units.size()+zone->squad_room_info.size()+zone->contained_buildings.size();
+    members=zone->assigned_units.size()+zone->assigned_items.size()+zone->squad_room_info.size()+zone->contained_buildings.size();
   }
   if(b->name.size()>512)return fail("Area name exceeds bounded snapshot");
   const size_t cells=size_t(width*height);
@@ -1962,6 +2006,7 @@ int areaSnapshot(lua_State* L) {
     hash.add(zone->type);hash.add(zone->spec_sub_flag.whole);hash.add(zone->assigned_unit_id);
     hash.add(zone->zone_settings.whole.i1);hash.add(zone->zone_settings.whole.i2);
     hash.add(zone->assigned_units.size());for(auto id:zone->assigned_units)hash.add(id);
+    hash.add(zone->assigned_items.size());for(auto id:zone->assigned_items)hash.add(id);
     hash.add(zone->squad_room_info.size());for(const auto* squad:zone->squad_room_info) {
       if(!squad)return fail("Area no longer exists",steps);
       hash.add(squad->squad_id);hash.add(squad->mode.whole);
@@ -1986,7 +2031,7 @@ int areaSnapshot(lua_State* L) {
   };
   array("extents",extents);if(visibility)array("visible_mask",visible);
   array("gives",gives);array("takes",takes);array("gives_workshops",givesWorkshops);array("takes_workshops",takesWorkshops);
-  if(zone)array("assigned_units",zone->assigned_units);
+  if(zone){array("assigned_units",zone->assigned_units);array("assigned_items",zone->assigned_items);}
   return 1;
 }
 // Restore temporarily borrowed input before dropping a pending native adapter.
@@ -2235,6 +2280,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaLinkTarget);lua_setfield(L,-2,"link_target");
     lua_pushcfunction(L,areaSquadUse);lua_setfield(L,-2,"squad_use");
     lua_pushcfunction(L,areaAssignUnit);lua_setfield(L,-2,"assign_unit");
+    lua_pushcfunction(L,areaAssignItem);lua_setfield(L,-2,"assign_item");
     lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
     lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
     lua_pushcfunction(L,areaNewOwnerEligible);lua_setfield(L,-2,"new_owner_eligible");

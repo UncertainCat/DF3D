@@ -305,11 +305,6 @@ func animal_assignments() -> void:
 	if not check(not candidates.candidates.is_empty(), "animal candidates missing"): return
 	for candidate in candidates.candidates:
 		if not check(candidate.entity == Contract.AreaCandidateEntity.Unit, "unit candidate identity missing"): return
-	var current := await inspect(pond,1)
-	if stopped: return
-	await refusal({"action":11,"kind":1,"id":pond,"operation":11,"expected_revision":current.revision,
-		"item_id":int(fixture.caged),"assign":1}, "Unsupported area operation")
-	if stopped: return
 	for key in ["grazer", "caged"]:
 		var unit := int(fixture[key])
 		if not check(unit >= 0, "animal fixture missing: " + key): return
@@ -320,6 +315,40 @@ func animal_assignments() -> void:
 			await edit(id, 1, {"operation":11, "unit_id":unit, "assign":value})
 			await native("assignment", {"id":id, "unit_id":unit, "assign":value == 1})
 			if stopped: return
+
+func item_assignments() -> void:
+	step = "item assignment effects"
+	var pond := zone("Pond")
+	var item := int(fixture.get("critter",-1))
+	if not check(pond>=0 and item>=0,"native critter fixture missing"): return
+	await native("item_assignment_before",{"item_id":item})
+	var source := await inspect(pond,1)
+	if stopped: return
+	var p: Dictionary = fixture.origin
+	var made := await request({"action":10,"kind":1,"zone_type":source.zone_type,
+		"origin":Vector3i(int(p.x)+21,int(p.y)+4,int(p.z)),"width":1,"height":1})
+	if stopped: return
+	var second: int = made.areas[0].id
+	var baseline: Dictionary = await inspect(second,1)
+	await edit(pond,1,{"operation":11,"item_id":item,"assign":1})
+	await native("item_assignment",{"id":pond,"item_id":item,"assign":true})
+	if stopped: return
+	var assigned := await inspect(pond,1)
+	if not check(assigned.assigned_count==source.assigned_count+1 and assigned.revision!=source.revision,"item membership missing from snapshot"): return
+	await refusal({"action":11,"kind":1,"id":second,"operation":11,"item_id":item,"assign":0,
+		"expected_revision":baseline.revision},"Item assignment changed; inspect again")
+	await edit(second,1,{"operation":11,"item_id":item,"assign":1})
+	await native("item_assignment",{"id":second,"item_id":item,"assign":true})
+	if stopped: return
+	await refusal({"action":11,"kind":1,"id":second,"operation":11,"item_id":item,"assign":0,
+		"expected_revision":baseline.revision},"Area changed; inspect again")
+	var transferred := await inspect(pond,1)
+	if not check(transferred.assigned_count==source.assigned_count and transferred.revision!=assigned.revision,"source item transfer not reflected"): return
+	await edit(second,1,{"operation":11,"item_id":item,"assign":0})
+	await native("item_assignment",{"id":second,"item_id":item,"assign":false})
+	if stopped: return
+	var cleared := await inspect(second,1)
+	check(cleared.assigned_count==baseline.assigned_count,"item clear count differs")
 
 func workshop_links() -> void:
 	step = "8 workshop links"
@@ -701,6 +730,7 @@ func exercise() -> void:
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
 	if FileAccess.file_exists(directory + "/zone-animals-only.json"):
 		await animal_assignments()
+		if not stopped: await item_assignments()
 		if not stopped: await native("final")
 		return
 	if FileAccess.file_exists(directory + "/zone-defaults-only.json"):

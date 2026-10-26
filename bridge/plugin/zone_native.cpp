@@ -11,6 +11,7 @@
 #include "df/unit.h"
 #include "df/unit_soul.h"
 #include "df/item.h"
+#include "df/item_critter.h"
 #include "df/job.h"
 #include "df/plotinfost.h"
 #include "df/punishment.h"
@@ -99,11 +100,16 @@ bool refreshOverlaps(const uint8_t* base,const df::building_civzonest* excluded=
 bool nativeZoneAnimalAssignmentReady() {
     static_assert(offsetof(df::building_chainst,assigned)==0x148);
     static_assert(offsetof(df::building_civzonest,assigned_units)==0x120);
+    static_assert(offsetof(df::item,general_refs)==0x38);
+    static_assert(offsetof(df::building_civzonest,assigned_items)==0x138);
     static_assert(offsetof(df::job,general_refs)==0xb0);
     static_assert(offsetof(df::unit,general_refs)==0x1d8);
     if(!nativeZoneRemoveReady() || !nativeZoneOwnerReady())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     static const bool compatible=
+        hash(base+0x8bfbd0,0x113)==0x3e51e038d97579d3ULL &&
+        hash(base+0x72660,0x7d)==0x2414953f9e9e9670ULL &&
+        hash(base+0x3a6780,0x567)==0x8e96382099041ad4ULL &&
         hash(base+0x3ce1b0,0x36e)==0xf4022a51bef4e82fULL &&
         hash(base+0x8bfcf0,0xfc)==0x33e02893abe20204ULL &&
         hash(base+0x8bfdf0,0xe1)==0xd59a5f62e8bbe548ULL &&
@@ -122,6 +128,28 @@ bool nativeZoneAnimalAssignmentReady() {
         hash(base+0x5be930,0x4)==0x1d6faef6ff900168ULL &&
         hash(base+0x723f0,0x2b)==0x025ba84042f1157dULL;
     return compatible;
+}
+bool nativeZoneItemEligible(const df::building_civzonest& zone,const df::item& item) {
+    if(!df::global::world || !nativeZoneAnimalAssignmentReady())return false;
+    if(zone.type!=df::civzone_type::Pen && zone.type!=df::civzone_type::Pond)return false;
+    if(std::find(zone.assigned_items.begin(),zone.assigned_items.end(),item.id)!=zone.assigned_items.end())return true;
+    if(zone.type!=df::civzone_type::Pond)return false;
+    // Native Pond producer3a6bb3..3a6c42 appends ANY_CRITTER without further
+    // filtering. Both producers first retain existing assigned items.
+    const auto& items=df::global::world->items.other.ANY_CRITTER;
+    return std::find(items.begin(),items.end(),&item)!=items.end();
+}
+bool nativeZoneAssignItem(df::building_civzonest& zone,df::item& item,bool assign) {
+    if(!df::global::world || !nativeZoneAnimalAssignmentReady())return false;
+    if(zone.type!=df::civzone_type::Pen && zone.type!=df::civzone_type::Pond)return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    struct Entry { df::item* item; uint8_t kind; uint8_t padding[7]; };
+    static_assert(sizeof(Entry)==16);
+    Entry entry{&item,1,{}};auto* context=&zone;
+    // Item branch is semantic: cage and prior zone membership/reference cleanup,
+    // followed by destination membership/reference allocation. No chain/UI path.
+    reinterpret_cast<void (*)(df::building_civzonest**,Entry*,bool)>(base+0x3ce1b0)(&context,&entry,assign);
+    return true;
 }
 bool nativeZoneAssignUnit(df::building_civzonest& zone,df::unit& unit,bool assign) {
     if(!df::global::world || !nativeZoneAnimalAssignmentReady())return false;

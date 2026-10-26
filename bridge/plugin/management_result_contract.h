@@ -26,7 +26,8 @@ inline bool synchronousAreaWrite(df3d::mirror::ManagementAction action,df3d::mir
         (action==df3d::mirror::ManagementAction::AreaUpdate &&
         (operation==df3d::mirror::AreaOperation::SettingsSet || operation==df3d::mirror::AreaOperation::Preset || operation==df3d::mirror::AreaOperation::LocationSet ||
          operation==df3d::mirror::AreaOperation::LocationCreate || operation==df3d::mirror::AreaOperation::None ||
-         operation==df3d::mirror::AreaOperation::ZoneSettings || operation==df3d::mirror::AreaOperation::Paint));
+         operation==df3d::mirror::AreaOperation::ZoneSettings || operation==df3d::mirror::AreaOperation::Paint ||
+         operation==df3d::mirror::AreaOperation::AssignUnits));
 }
 inline std::string areaWorkResultError(lua_State* L,uint64_t budget) {
     const int top=lua_gettop(L);

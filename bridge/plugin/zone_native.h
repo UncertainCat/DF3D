@@ -74,6 +74,10 @@ struct ZoneAnimalCandidate { int32_t id; bool item; bool assigned; };
 // Raw native producer order, before widget search/sorting. Owns all output;
 // never reads the native selector. Unsupported/oversized lists fail closed.
 std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalCandidates(const df::building_civzonest& zone);
+// Owned native description search and selected-first ordering. Query is DF
+// encoded. sort0/2 Category,1 Name,3 Profession; no sort keys leave the bridge.
+std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalPickerCandidates(
+    const df::building_civzonest& zone,int32_t sort,bool descending,std::string query);
 // Native decorated critter text in DF encoding, written to an owned string.
 // Does not call the item-name widget or its display-color method.
 std::optional<std::string> nativeZoneAnimalItemText(df::item& item);

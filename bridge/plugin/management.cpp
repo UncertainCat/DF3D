@@ -1320,7 +1320,12 @@ int areaCreate(lua_State* L) {
 int areaAnimalCandidates(lua_State* L) {
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
   std::optional<std::vector<df3d_area::ZoneAnimalCandidate>> rows;
-  if(zone) {try {rows=df3d_area::nativeZoneAnimalCandidates(*zone);} catch(...) {}}
+  size_t querySize=0;const char* query=lua_tolstring(L,4,&querySize);
+  const auto sort=lua_tointeger(L,2);
+  if(zone && lua_isinteger(L,2) && sort>=0 && sort<=3 && lua_isboolean(L,3) && query && querySize<=128) {
+    try {rows=df3d_area::nativeZoneAnimalPickerCandidates(*zone,int32_t(sort),lua_toboolean(L,3)!=0,
+      UTF2DF(std::string(query,querySize)));} catch(...) {}
+  }
   if(!rows){lua_pushnil(L);return 1;}
   lua_newtable(L);int index=0;
   for(const auto& row:*rows) {

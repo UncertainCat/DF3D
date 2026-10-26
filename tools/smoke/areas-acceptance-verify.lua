@@ -657,7 +657,7 @@ elseif request.op=='zone_settings' then
  check_properties(actual,request.expected,'zone_settings')
 elseif request.op=='animal_candidates' then
  local b=building()
- local text,code=dfhack.run_command_silent('df3d','zone-animal-candidates-read',tostring(b.id))
+ local text,code=dfhack.run_command_silent('df3d','zone-animal-picker-read',tostring(b.id),tostring(request.sort or 0),request.descending and '1' or '0',dfhack.utf2df(request.query or ''))
  assert(code==0,text)
  local expected=require('json').decode(text)
  assert(#expected==#request.rows,'native animal candidate count differs')

@@ -172,6 +172,62 @@ std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalCandidates(const
         if(item && !items.count(item->id) && !append(item->id,true,false))return std::nullopt;
     return result;
 }
+std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalPickerCandidates(
+    const df::building_civzonest& zone,int32_t sort,bool descending,std::string query) {
+    const auto& readers=staffOrderingFunctions();
+    if(!readers || sort<0 || sort>3 || query.size()>128)return std::nullopt;
+    auto candidates=nativeZoneAnimalCandidates(zone);if(!candidates)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=
+        hash(base+0x1435a10,0x110)==0x98ce3d80a8c10b09ULL &&
+        hash(base+0x14358c0,0x110)==0x7476642b05457b5bULL &&
+        hash(base+0x1431370,0x64)==0x5854757b83da8810ULL &&
+        hash(base+0x14240d0,0x89)==0x4b41b81d7b2cdc3eULL &&
+        hash(base+0x1425170,0x89)==0x86b6c3e85719b169ULL &&
+        hash(base+0x1424c30,0x218)==0x14952fd1a693777fULL;
+    if(!compatible)return std::nullopt;
+    readers.normalize(&query);
+    struct Ranked { ZoneAnimalCandidate candidate; std::string key; std::array<int32_t,2> category{}; };
+    struct Entry { void* object; uint8_t kind; uint8_t padding[7]{}; };
+    static_assert(sizeof(Entry)==16);
+    std::vector<Ranked> rows;rows.reserve(candidates->size());
+    for(const auto& candidate:*candidates) {
+        Ranked row{candidate};std::string name;
+        Entry entry{};
+        if(candidate.item) {
+            auto* item=df::item::find(candidate.id);if(!item)return std::nullopt;
+            const auto text=nativeZoneAnimalItemText(*item);if(!text)return std::nullopt;
+            name=*text;entry.object=item;entry.kind=1;
+            if(sort==3)row.key=name;
+        } else {
+            auto* unit=df::unit::find(candidate.id);if(!unit)return std::nullopt;
+            readers.name(unit,&name,false);entry.object=unit;
+            if(sort==3)readers.profession(unit,&row.key,false);
+        }
+        if(name.size()>2048 || row.key.size()>2048)return std::nullopt;
+        readers.normalize(&name);
+        // Animal lists have no current-job option or secondary job search text.
+        // Never consult the widget cache, and do not add numeric-ID matching.
+        if(name.find(query)==std::string::npos)continue;
+        if(sort==1)row.key=std::move(name);
+        else if(sort==3)readers.normalize(&row.key);
+        else {
+            // Native item category keys contain masked pointer bits. They stay
+            // within this safe-point call; only the resulting ID order escapes.
+            using Category=void (*)(std::array<int32_t,2>*,const Entry*);
+            reinterpret_cast<Category>(base+0x1425050)(&row.category,&entry);
+        }
+        rows.push_back(std::move(row));
+    }
+    std::stable_sort(rows.begin(),rows.end(),[&](const auto& a,const auto& b) {
+        if(a.candidate.assigned!=b.candidate.assigned)return a.candidate.assigned;
+        if(sort==0 || sort==2)return descending?a.category>b.category:a.category<b.category;
+        const int compared=a.key.compare(b.key);
+        return descending?compared>0:compared<0;
+    });
+    candidates->clear();for(const auto& row:rows)candidates->push_back(row.candidate);
+    return candidates;
+}
 std::optional<std::string> nativeZoneAnimalItemText(df::item& item) {
     if(!nativeZoneOwnerCandidatesReady())return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

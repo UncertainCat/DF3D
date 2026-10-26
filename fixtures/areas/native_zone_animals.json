@@ -2739,5 +2739,1057 @@
       "Secondary job-text search cache empty for every observed animal picker"
     ],
     "limits": "Reference only; product sorting/filtering still pending. Multi-item address ordering and equal-key stability need broader fixtures."
+  },
+  "native_picker_integration": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-095939",
+    "owned_df_pid": 106960,
+    "status": "passed",
+    "source_unchanged": true,
+    "samples": [
+      {
+        "name": "Pen-picker",
+        "query": "",
+        "displayed": [
+          {
+            "id": 6545,
+            "kind": 0
+          },
+          {
+            "id": 6548,
+            "kind": 0
+          },
+          {
+            "id": 6686,
+            "kind": 0
+          },
+          {
+            "id": 6821,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7119,
+            "kind": 0
+          },
+          {
+            "id": 7121,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7269,
+            "kind": 0
+          },
+          {
+            "id": 7270,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7265,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7347,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pen-assigned-picker",
+        "query": "",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6545,
+            "kind": 0
+          },
+          {
+            "id": 6548,
+            "kind": 0
+          },
+          {
+            "id": 6686,
+            "kind": 0
+          },
+          {
+            "id": 6821,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7119,
+            "kind": 0
+          },
+          {
+            "id": 7121,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7269,
+            "kind": 0
+          },
+          {
+            "id": 7270,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7265,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7347,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-picker",
+        "query": "",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-sort-name-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 1,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-sort-name-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 1,
+          "exact": true,
+          "sort": 1,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-sort-category-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-sort-category-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 48520,
+            "kind": 1
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 1,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-sort-profession-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 3,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-sort-profession-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 1,
+          "exact": true,
+          "sort": 3,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-filter-1",
+        "query": "yak",
+        "displayed": [
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-filter-2",
+        "query": "grazer",
+        "displayed": [],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-filter-3",
+        "query": "tame",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-filter-4",
+        "query": "lovebird",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-filter-5",
+        "query": "5969",
+        "displayed": [],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-filter-6",
+        "query": "stray",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-filter-7",
+        "query": "female",
+        "displayed": [],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-controls-reset-picker",
+        "query": "",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-assigned-picker",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-selected-sort-name-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 1,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-selected-sort-name-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 1,
+          "exact": true,
+          "sort": 1,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-selected-sort-category-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-selected-sort-category-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 1,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-selected-sort-profession-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 3,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-selected-sort-profession-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 1,
+          "exact": true,
+          "sort": 3,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-transfer-picker",
+        "query": "",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 0,
+          "exact": true,
+          "sort": 2,
+          "ui_unchanged": true
+        }
+      }
+    ],
+    "equal_name_fixture": {
+      "extra": 48520,
+      "item_type": "52",
+      "name": "equal-name-item-fixture",
+      "original": 5969
+    },
+    "equal_name_bytes": [
+      40,
+      116,
+      97,
+      109,
+      101,
+      32,
+      109,
+      97,
+      115,
+      107,
+      101,
+      100,
+      32,
+      108,
+      111,
+      118,
+      101,
+      98,
+      105,
+      114,
+      100,
+      41
+    ],
+    "item_subtype": "PET (52); earlier vermin descriptions were incorrect",
+    "product_evidence": "build/areas-acceptance-20261026-100024",
+    "product_owned_df_pid": 94984,
+    "product_status": "passed",
+    "save_manifests_unchanged": 2,
+    "plugin_sha256": "f0fdc7aa7cb561975660f1f6866f129b1c66094e546e3dd2cdf65e26d11e5cca",
+    "management_version": 68,
+    "scope": "Owned native description search, Category/Name/Profession sorting, selected-first partition and stable equal keys; pointer-derived category keys remain local.",
+    "limits": "Visual/input/hover parity and broader unit display variants remain pending. VERMIN subtype is supported by pinned vtable but was not the observed PET fixture."
   }
 }

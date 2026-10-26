@@ -158,7 +158,7 @@ def main():
      p.name='Linked fixture'
      return {ok=true,steps=31,work_unknown=budget==nil}
     end
-    function animal_candidates(b)return animal_fixture or {}end
+    function animal_candidates(b,sort,descending,query) animal_args={sort,descending,query};return animal_fixture or {}end
     function animal_item_text(item)return item.label end
     function owner_eligible(b,u) return u.citizen==true end
     local old_request=request
@@ -780,6 +780,10 @@ def main():
     assert animals["candidates"][3]["name"] == "Native critter"
     assert not animals["candidates"][3]["assigned"]
     animal_request = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2}
+    # Native results are authoritative even when local names/order would differ.
+    native_ordered = call(14, dict(animal_request, sort=1, sort_descending=True, query="Native Search"))
+    assert [(v["entity"], v["id"]) for v in native_ordered["candidates"].values()] == [(1, 10), (1, 12), (2, 10)]
+    assert list(lua.globals().animal_args.values()) == [1, True, "Native Search"]
     # Reopening at the same paused tick reads current native membership.
     lua.execute("animal_fixture={{id=10,entity=2,assigned=true}}")
     reopened_animals = call(14, animal_request)

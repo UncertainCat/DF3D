@@ -616,6 +616,7 @@ local function compare_native_bytes(a,b)
  return #a==#b and 0 or #a<#b and -1 or 1
 end
 local function row_less(job,a,b)
+ if job.native_animals then return a.ordinal<b.ordinal end
  if job.native_owner then
   local x,y=a.owner_order,b.owner_order
   if x.without_room~=y.without_room then return x.without_room end
@@ -725,7 +726,7 @@ local function step_list(job,r)
   end
   local row=job.rows[job.filter_index];job.filter_index=job.filter_index+1;job.done=job.done+1
   local label=job.native_owner and row.owner_order.name_key or row.name:lower()
-  if label:find(job.query,1,true) or not job.native_owner and tostring(row.id)==job.query then
+  if job.native_animals or label:find(job.query,1,true) or not job.native_owner and tostring(row.id)==job.query then
    job.filtered[#job.filtered+1]=row
    job.hash=hash_integer(job.hash,row.id)
    if job.native_animals then job.hash=hash_integer(hash_integer(job.hash,row.entity),row.assigned and 1 or 0) end
@@ -849,6 +850,7 @@ local function candidate_page(r,a,b,area_revision,available)
  local site=locations and dfhack.world.getCurrentSite() or nil
  if locations and not site then return fail('Location site no longer exists'),0 end
  local query=default(a,'query',''):lower()
+ if not legacy and candidate_kind==2 then query=default(a,'query','') end
  if not legacy and not links and not locations and candidate_kind==1 then
   if type(r.owner_query)~='function' then return fail('Native area helper unavailable'),0 end
   local worked,value=pcall(r.owner_query,a.query_bytes~=nil and a.query_bytes or default(a,'query',''))
@@ -886,7 +888,7 @@ local function candidate_page(r,a,b,area_revision,available)
    job.native_owner=not legacy and candidate_kind==1
    job.zone_type=b.type
    if candidate_kind==2 then
-    local entries=type(r.animal_candidates)=='function' and r.animal_candidates(b) or nil
+    local entries=type(r.animal_candidates)=='function' and r.animal_candidates(b,job.sort,job.descending,query) or nil
     if type(entries)~='table' or #entries>4096 then return fail('Native area helper unavailable'),0 end
     for _,entry in ipairs(entries)do
      if type(entry)~='table' or not integer(entry.id) or entry.id<0 or entry.id>2147483647 or

@@ -87,6 +87,29 @@ local function capture(label)
     record.displayed[#record.displayed+1]={kind=row.item_id and 1 or 0,id=row.item_id or row.unit_id}
    end
   end
+  if label:find('%-picker$') or label:find('%-sort%-') or label:find('%-filter%-')then
+   local key,direction=label:match('%-sort%-(%a+)%-(%d+)$')
+   local sort=key=='name' and 1 or key=='profession' and 3 or 2
+   local descending=direction=='2' and 1 or 0
+   local guards={}
+   for _,value in ipairs{g,main}do
+    local size,address=df.sizeof(value);local copy=df.new('uint8_t',size)
+    dfhack.internal.memmove(copy,address,size);guards[#guards+1]={copy=copy,address=address,size=size}
+   end
+   local text,code=dfhack.run_command_silent('df3d','zone-animal-picker-read',tostring(record.zone),
+    tostring(sort),tostring(descending),record.query)
+   assert(code==0,text);local expected=require('json').decode(text)
+   assert(#expected==#record.displayed,'native animal picker count differs: '..label)
+   for i,entry in ipairs(expected)do
+    assert(entry.kind==record.displayed[i].kind and entry.id==record.displayed[i].id,
+     'native animal picker order differs: '..label..' row '..i)
+   end
+   for _,guard in ipairs(guards)do
+    assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'animal ordering read changed native UI/drawing state')
+    df.delete(guard.copy)
+   end
+   record.picker_parity={sort=sort,descending=descending,exact=true,ui_unchanged=true}
+  end
   record.item_text={}
   for _,row in ipairs(rows)do
    if row.item_id and row.active and (row.flags&2)~=0 and row.y>0 and row.y<g.dimy then
@@ -152,10 +175,27 @@ local function controls(prefix,searches)
   if query=='GRAZER' or query=='5969' or query=='female' then
    assert(#observed.displayed==0,'native search matched absent description text')
   elseif query=='lovebird' then
-   assert(#observed.displayed==1 and observed.displayed[1].kind==1,'native item description search failed')
+   assert(#observed.displayed==2 and observed.displayed[1].kind==1 and observed.displayed[2].kind==1,'native item description search failed')
   end
  end
  reopen()
+end
+-- Paused disposable-clone fixture: a second critter with the same description
+-- exercises equal text keys and native item Category address ordering.
+do
+ local original=assert(df.global.world.items.other.ANY_CRITTER[0])
+ local pet=df.item_petst:is_instance(original)
+ assert(pet or df.item_verminst:is_instance(original),'duplicate text fixture requires a critter item')
+ local extra=pet and df.item_petst:new() or df.item_verminst:new()
+ extra.id=df.global.item_next_id;df.global.item_next_id=extra.id+1
+ extra.race=original.race;extra.caste=original.caste
+ extra.flags.whole=original.flags.whole;extra.flags2.whole=original.flags2.whole
+ extra.pos:assign(original.pos)
+ df.global.world.items.all:insert('#',extra)
+ df.global.world.items.other.ANY_CRITTER:insert('#',extra)
+ if pet then df.global.world.items.other.PET:insert('#',extra)
+ else df.global.world.items.other.VERMIN:insert('#',extra)end
+ records[#records+1]={name='equal-name-item-fixture',original=original.id,extra=extra.id,item_type=tostring(original:getType())}
 end
 local base=assert(df.global.world.buildings.other.ANY_ZONE[0])
 local p={x=base.centerx,y=base.centery,z=base.z}

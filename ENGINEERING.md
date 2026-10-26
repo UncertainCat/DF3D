@@ -1,3 +1,43 @@
+## Native animal search and sorting integration
+
+nativeZoneAnimalPickerCandidates builds on native admission, reads native
+unit/item name and profession keys with owned strings, normalizes descriptions
+and query with52cee0, and performs selected-first stable ordering. Sort0 and2
+mean Category;1 Name;3 Profession. Native Category's address-derived item keys
+stay local to the bridge. Only ordered typed IDs and assigned flags leave it.
+The reader uses no widget cache. Animal pickers have no secondary current-job
+text; numeric-ID matching is not added.
+
+The product callback converts its UTF-8 query to DF encoding before native
+normalization. Lua retains the native order and filtered membership; its old
+lowercase name/ID filter and local sort no longer override animal results.
+Request query spelling remains intact for cache identity and reply matching.
+The raw admission diagnostic remains separate; zone-animal-picker-read tests
+the actual sorted/filtered reader.
+
+Protected native095559 DF116940 passed25 picker comparisons with one item.
+Native095939 DF106960 passes25 comparisons with two PET items,5969 and48520,
+having exactly the same22 description bytes. Both sort directions, selected
+partition, equal text keys and item Category ordering match the rendered
+native widgets. gps/main_interface guards remain unchanged; source saves are
+unchanged after unsaved exits. Initial095853 DF130700 rejected a fixture's
+incorrect VERMIN subtype assumption before its allocation; its source was
+preserved. Item5969 is PET, despite earlier notes calling it vermin. VERMIN
+still has a pinned supported vtable but is not covered by that PET fixture.
+
+Protected product build/areas-acceptance-20261026-100024 passes cleanly with
+DF94984. Six sort directions and seven query cases match the native-verified
+reader, alongside the unit/item effects and refusal checks. Both save manifests
+remain unchanged. Core CTest19/19, areas adapter, candidate state and management
+contract pass in build/qa/animal-native-picker-final. MSVC builds in
+build/notes/pm/animal-native-picker-product-build.log. Management remains68;
+installed plugin SHA256:
+f0fdc7aa7cb561975660f1f6866f129b1c66094e546e3dd2cdf65e26d11e5cca.
+
+Animal layout, default active header/direction feedback, exact textbox editing,
+unit display/portraits/colors, item artwork, scrolling and hover remain
+unfinished. These semantic checks do not establish complete picker parity.
+
 ## Native animal picker search and sort reference
 
 Protected build/stockpile-storage-native-zone-animals-20261026-095155 passes
@@ -28,8 +68,8 @@ The fixture stores19 control observations and callback identities. Earlier
 094843 and095023 runs established baseline controls and selected partition
 behavior; final095155 asserts empty secondary cache and selected-first
 invariance. Root CTest19/19 passes in build/qa/animal-native-controls-reference.
-Product sorting/filtering is not changed by this reference capture. Multiple
-items and equal-key stability need additional evidence during integration.
+The reference capture itself does not change product behavior. Subsequent
+integration and multi-item/equal-key evidence are documented above.
 
 ## Native animal candidates in the product chooser
 
@@ -54,8 +94,8 @@ Typed lists, raw order and item text match the independently native-verified
 readers; unit/item assignment, transfer, clear, stale and wrong-zone refusal,
 cage/chain cleanup and containment checks pass. Both save manifests remain
 unchanged. This is semantic acceptance, not full animal picker UI acceptance.
-Search normalization, displayed sorting, unit display, item artwork, colors,
-grazer indicators, input and hover still require native parity work.
+Native search and sorting are integrated as documented above. Unit display,
+item artwork, colors, grazer indicators, input and hover still require parity.
 
 Root CTest19/19, areas adapter, candidate state and management contract pass
 in build/qa/animal-native-product-final. Adapter cases include colliding IDs,
@@ -83,8 +123,8 @@ classes. Widget colors and item portraits are separate unfinished work.
 Protected build/stockpile-storage-native-zone-animals-20261026-093649 passes
 with DF119940, unchanged source and unsaved exit. Eight visible picker states
 match all22 bytes of item5969's native displayed description. Each call leaves
-gps and main_interface memory unchanged. This fixture covers one vermin item;
-named/quality/decoration variants and PET subtype still require coverage.
+gps and main_interface memory unchanged. This fixture covers one PET critter (the earlier vermin label was incorrect);
+named/quality/decoration variants and VERMIN subtype still require coverage.
 Core19/19 and areas adapter pass in build/qa/animal-item-text. MSVC builds in
 build/notes/pm/zone-animal-item-text-build.log. Installed plugin SHA256:
 e84a44bc037f92461d524374e8db5c5ecb4e157f795d65c0c560f61a1ae0a22b.

@@ -2101,14 +2101,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         Json::Value bytes(Json::arrayValue);for(unsigned char byte:*text)bytes.append(int(byte));
         out.print("{}",Json::FastWriter().write(bytes));return CR_OK;
       }
-      if(parameters[0]=="zone-animal-candidates-read") {
-        if(parameters.size()!=2)return CR_WRONG_USAGE;
+      if(parameters[0]=="zone-animal-candidates-read" || parameters[0]=="zone-animal-picker-read") {
+        const bool picker=parameters[0]=="zone-animal-picker-read";
+        if(parameters.size()!=(picker?5:2))return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
         const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
         if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
         auto* zone=virtual_cast<df::building_civzonest>(df::building::find(id));
         if(!zone)return CR_FAILURE;
-        const auto candidates=df3d_area::nativeZoneAnimalCandidates(*zone);
+        int32_t sort=0,descending=0;
+        if(picker) {
+          for(auto pair:{std::pair<size_t,int32_t*>(2,&sort),{3,&descending}}) {
+            const auto& arg=parameters[pair.first];const auto parsed=std::from_chars(arg.data(),arg.data()+arg.size(),*pair.second);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=arg.data()+arg.size())return CR_WRONG_USAGE;
+          }
+          if(descending<0 || descending>1)return CR_WRONG_USAGE;
+        }
+        const auto candidates=picker?df3d_area::nativeZoneAnimalPickerCandidates(*zone,sort,descending!=0,parameters[4]):
+          df3d_area::nativeZoneAnimalCandidates(*zone);
         if(!candidates)return CR_FAILURE;
         Json::Value output(Json::arrayValue);
         for(const auto& candidate:*candidates) {

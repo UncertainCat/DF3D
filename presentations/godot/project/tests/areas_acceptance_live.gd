@@ -348,6 +348,18 @@ func item_assignments() -> void:
 	for row in candidates.candidates:
 		if row.entity == Contract.AreaCandidateEntity.Item and row.id == item: found = true
 	if not check(found,"Pond critter item candidate missing"): return
+	for order in [1,2,3]:
+		for descending in [false,true]:
+			var ordered := await pages({"action":14,"kind":1,"id":pond,"operation":14,"candidate_kind":2,
+				"sort":order,"sort_descending":descending},"candidates")
+			if stopped: return
+			await native("animal_candidates",{"id":pond,"rows":ordered.candidates,"sort":order,"descending":descending})
+			if stopped: return
+	for query in ["yak","GRAZER","tame","lovebird","5969","stray","female"]:
+		var filtered := await pages({"action":14,"kind":1,"id":pond,"operation":14,"candidate_kind":2,"query":query},"candidates")
+		if stopped: return
+		await native("animal_candidates",{"id":pond,"rows":filtered.candidates,"query":query})
+		if stopped: return
 	await native("item_assignment_before",{"item_id":item})
 	var source := await inspect(pond,1)
 	if stopped: return

@@ -4,6 +4,7 @@ local gui=require('gui');local script=require('gui.script');local g=df.global.gp
 local main=df.global.game.main_interface;local ui=main.civzone
 local image_base=dfhack.internal.getImageBase()
 local dumped_portraits={}
+local chosen_status_unit,chosen_status_item
 -- Identify the semantic item vector read by the pinned Pond producer.
 for key,values in pairs(df.global.world.items.other)do
  local _,address=df.sizeof(values)
@@ -198,7 +199,7 @@ local function capture(label,keep_mouse)
     end
    end
   end
-  if label=='Pen-picker' or label=='Pond-picker' or label=='Pen-assigned-picker' or label=='Pond-assigned-picker' or label=='Pond-filled-status' then
+  if label=='Pen-picker' or label=='Pond-picker' or label=='Pen-assigned-picker' or label=='Pond-assigned-picker' or label=='Pond-filled-status' or label:find('^Pen%-status%-') then
    record.status_icons={}
    record.status_globals={}
    for key,rva in pairs{pasture=0x264aff8,pit=0x264affc,pond=0x264b000,fallback=0x2687a00}do
@@ -242,6 +243,35 @@ local function capture(label,keep_mouse)
        end
       end
      end end
+     local guards={}
+     for _,value in ipairs{g,main}do
+      local size,address=df.sizeof(value);local copy=df.new('uint8_t',size)
+      dfhack.internal.memmove(copy,address,size);guards[#guards+1]={copy=copy,address=address,size=size}
+     end
+     local text,code=dfhack.run_command_silent('df3d','zone-animal-status-read',tostring(record.zone),tostring(status.entity),tostring(status.id))
+     assert(code==0,text);local semantic=require('json').decode(text)
+     for _,guard in ipairs(guards)do
+      assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'animal status reader changed native UI/drawing state')
+      df.delete(guard.copy)
+     end
+     local expected=0
+     if #status.cells>0 then
+      local texture=status.cells[1].texture
+      expected=texture==record.status_globals.pasture.texture and 1 or
+       texture==record.status_globals.pit.texture and 2 or texture==record.status_globals.pond.texture and 3 or
+       texture==record.status_globals.fallback.texture and 5 or 4
+     end
+     assert(semantic.kind==expected,'animal status differs from native rendered indicator: '..label..'/'..status.id)
+     if expected==4 then
+      local item_id=-1
+      for _,ref in ipairs(status.refs)do if ref.kind==11 then item_id=ref.item;break end end
+      local expected_relation=label=='Pen-status-current-chain' and status.id==chosen_status_unit and 1 or
+       label=='Pen-status-pending-chain' and status.id==chosen_status_unit and 3 or
+       label=='Pen-status-pending-cage' and status.id==chosen_status_unit and 4 or 2
+      if expected_relation~=2 then item_id=chosen_status_item end
+      assert(semantic.containment==expected_relation and semantic.item_id==item_id and item_id>=0,'native container subject differs')
+     else assert(semantic.containment==0 and semantic.item_id==-1,'non-container status retained item facts') end
+     status.semantic=semantic;status.ui_unchanged=true
      record.status_icons[#record.status_icons+1]=status
     end
    end
@@ -506,6 +536,36 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   local retained=job(df.job_type.UnchainAnimal)
   records[#records+1]={name='controlled-chain-fixture',chain=chain.id,cage=cage.id,
    unit=animal.id,cancelled_job=cancelled,retained_job=retained}
+  -- Exercise every containment fallback against the actual native renderer.
+  -- All changes are paused, temporary fixture state in this never-saved session.
+  chosen_status_unit=animal.id
+  local contained
+  for _,ref in ipairs(animal.general_refs)do if ref:getType()==df.general_ref_type.CONTAINED_IN_ITEM then contained=ref;break end end
+  assert(contained and contained:getItem(),'status fixture needs current cage')
+  local original_item_id=contained.item_id
+  local original_flags=animal.flags1.whole
+  local chain_item=df.buildingitemst:new();chain_item.item=contained:getItem();chain.contained_items:insert('#',chain_item)
+  local chain_ref=df.general_ref_building_chainst:new();chain_ref.building_id=chain.id
+  animal.general_refs:insert('#',chain_ref);animal.flags1.chained=true
+  chosen_status_item=original_item_id
+  capture('Pen-status-current-chain')
+  animal.flags1.whole=original_flags
+  animal.general_refs:erase(#animal.general_refs-1);chain_ref:delete()
+  contained.item_id=-1
+  capture('Pen-status-pending-chain')
+  chain.assigned=nil
+  assert(#cage.contained_items>0 and cage.contained_items[0].item,'status fixture needs installed cage item')
+  chosen_status_item=cage.contained_items[0].item.id
+  capture('Pen-status-pending-cage')
+  cage.assigned_units:erase(#cage.assigned_units-1)
+  capture('Pen-status-missing-container')
+  chain.assigned=animal
+  animal.flags1.caged=false;animal.flags1.chained=false
+  capture('Pen-status-uncontained-pending')
+  animal.flags1.whole=original_flags;contained.item_id=original_item_id
+  cage.assigned_units:insert('#',animal.id)
+  chain.contained_items:erase(#chain.contained_items-1);chain_item:delete()
+  chosen_status_unit=nil;chosen_status_item=nil
   effects('unit-before-pen',0,chosen_unit)
   click_entry(opened,0,chosen_unit);capture('Pen-assigned')
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)

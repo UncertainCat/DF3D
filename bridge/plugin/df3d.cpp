@@ -2039,6 +2039,27 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="zone-animal-status-read") {
+        if(parameters.size()!=4)return CR_WRONG_USAGE;
+        int32_t values[3];
+        for(int i=0;i<3;++i) {
+          const auto& value=parameters[i+1];const auto parsed=std::from_chars(value.data(),value.data()+value.size(),values[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        }
+        auto* zone=virtual_cast<df::building_civzonest>(df::building::find(values[0]));if(!zone)return CR_FAILURE;
+        std::optional<df3d_area::ZoneAnimalStatus> status;
+        if(values[1]==1) {
+          auto* unit=df::unit::find(values[2]);if(!unit)return CR_FAILURE;
+          status=df3d_area::nativeZoneAnimalStatus(*zone,*unit);
+        } else if(values[1]==2) {
+          if(!df::item::find(values[2]))return CR_FAILURE;
+          status=df3d_area::nativeZoneAnimalItemStatus(*zone,
+            std::find(zone->assigned_items.begin(),zone->assigned_items.end(),values[2])!=zone->assigned_items.end());
+        } else return CR_WRONG_USAGE;
+        if(!status)return CR_FAILURE;
+        Json::Value output;output["kind"]=int(status->kind);output["containment"]=int(status->containment);output["item_id"]=status->itemId;
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-animal-unit-display-read") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t values[2];
@@ -2427,6 +2448,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d zone-owner-status-read <zone id> <unit id>\n"
         "df3d zone-owner-text-read <unit id> <columns>\n"
         "df3d zone-owner-color-sources-read <unit id>\n"
+        "df3d zone-animal-status-read <zone id> <entity 1|2> <id>\n"
         "df3d zone-animal-unit-display-read <unit id> <columns>\n"
         "df3d zone-owner-name-color-read <unit id>\n"
         "df3d zone-owner-profession-color-read <unit id> <profession>\n"

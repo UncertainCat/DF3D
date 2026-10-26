@@ -70,6 +70,17 @@ struct ZoneAnimalUnitDisplay {
 // Animal variant of the same semantic text/color readers. The cached native
 // caste flag and immutable warning are independent of widgets and drawing.
 std::optional<ZoneAnimalUnitDisplay> nativeZoneAnimalUnitDisplay(df::unit& candidate,int32_t columns);
+// Native row-status facts; no artwork, widget state or drawing-cache references.
+struct ZoneAnimalStatus {
+    // 0 none, 1 pasture, 2 pit, 3 pond, 4 item, 5 native missing-container fallback.
+    uint8_t kind=0;
+    // 0 no containment help, 1 chained, 2 caged, 3 assigned chain, 4 assigned cage.
+    uint8_t containment=0;
+    int32_t itemId=-1;
+};
+std::optional<ZoneAnimalStatus> nativeZoneAnimalStatus(df::building_civzonest& picker,df::unit& candidate);
+// Item rows use caller-owned selection membership, never the native widget set.
+std::optional<ZoneAnimalStatus> nativeZoneAnimalItemStatus(df::building_civzonest& picker,bool selected);
 // Normalize caller-owned textbox bytes with the native search routine.
 std::optional<std::string> nativeZoneOwnerQuery(std::string query);
 // Native may allocate and transfer ownership from another tomb. Callers mark

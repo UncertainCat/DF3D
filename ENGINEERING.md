@@ -7,9 +7,16 @@ passed and preserved the source after unsaved exit. Unit zone references take
 precedence over containment, but the badge uses the current picker type and
 keep-filled flag. Native status art overlaps the final name columns. Cage
 indicators include the contained subject under tinted occupied-cage artwork;
-they cannot be replaced by a generic cage tile. Status transport/rendering and
-live chain/planned-container cases remain unfinished. Native widget selection
-sets and composed textures are diagnostic references only.
+they cannot be replaced by a generic cage tile. `nativeZoneAnimalStatus` and
+`nativeZoneAnimalItemStatus` expose pointer-free status kind, containment
+relationship and item ID. They pin the native branches but never call rendering
+or read widgets. Protected `build/stockpile-storage-native-zone-animals-20261026-114631`
+compares all returned statuses with native indicators and guards UI/gps memory.
+Controlled current-chain, assigned-chain, assigned-cage, missing-container and
+uncontained-pending cases also pass; the chain fixture uses an existing cage
+item to isolate selection, so it does not establish restraint artwork parity.
+Status transport, artwork composition and viewer rendering remain unfinished.
+Native widget selection sets and composed textures are diagnostic references only.
 
 Animal item portrait source: protected
 `build/stockpile-storage-native-zone-animals-20261026-112207` verifies both PET

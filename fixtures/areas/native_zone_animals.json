@@ -12113,5 +12113,256 @@
       "Live chained, planned cage/chain and missing-reference fallback cases are not covered.",
       "Captured texture IDs/pixels are diagnostic only; no runtime rendering cache inputs."
     ]
+  },
+  "animal_status_reader": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-114631",
+    "owned_df_pid": 131240,
+    "source_unchanged": true,
+    "ui_and_gps_unchanged": true,
+    "pins": [
+      {
+        "rva": "0x3d0260",
+        "size": "0x156",
+        "fnv1a64": "968a686c50852edc"
+      },
+      {
+        "rva": "0x3acdc0",
+        "size": "0x3dd",
+        "fnv1a64": "e237949d71a1e280"
+      },
+      {
+        "rva": "0x3a8200",
+        "size": "0x1d9",
+        "fnv1a64": "47f2c45f78dc3f23"
+      }
+    ],
+    "limitations": [
+      "Controlled chain fixture uses an existing cage item as the building item to isolate subject selection; actual rope/metal restraint artwork remains unverified.",
+      "Transport, cage appearance composition, hover help and viewer status rendering remain unfinished."
+    ],
+    "comparison_count": 136,
+    "comparisons_sha256": "37bffffbf1b5b563b77a6f03cfb7c27b4affd3e9535f1ca6704f21c62670b04d",
+    "representative_checks": [
+      {
+        "capture": "Pen-picker",
+        "entity": 1,
+        "id": 6545,
+        "status": {
+          "containment": 0,
+          "item_id": -1,
+          "kind": 0
+        }
+      },
+      {
+        "capture": "Pen-picker",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 2,
+          "item_id": 28448,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-picker",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-status-current-chain",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 1,
+          "item_id": 28448,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-status-current-chain",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-status-pending-chain",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 3,
+          "item_id": 28448,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-status-pending-chain",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-status-pending-cage",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 4,
+          "item_id": 5968,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-status-pending-cage",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-status-missing-container",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 0,
+          "item_id": -1,
+          "kind": 5
+        }
+      },
+      {
+        "capture": "Pen-status-missing-container",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-status-uncontained-pending",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 0,
+          "item_id": -1,
+          "kind": 0
+        }
+      },
+      {
+        "capture": "Pen-status-uncontained-pending",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pen-assigned-picker",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 0,
+          "item_id": -1,
+          "kind": 1
+        }
+      },
+      {
+        "capture": "Pen-assigned-picker",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pond-picker",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 0,
+          "item_id": -1,
+          "kind": 2
+        }
+      },
+      {
+        "capture": "Pond-picker",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pond-filled-status",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 0,
+          "item_id": -1,
+          "kind": 3
+        }
+      },
+      {
+        "capture": "Pond-filled-status",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pond-assigned-picker",
+        "entity": 2,
+        "id": 5969,
+        "status": {
+          "containment": 0,
+          "item_id": -1,
+          "kind": 2
+        }
+      },
+      {
+        "capture": "Pond-assigned-picker",
+        "entity": 1,
+        "id": 6960,
+        "status": {
+          "containment": 2,
+          "item_id": 28448,
+          "kind": 4
+        }
+      },
+      {
+        "capture": "Pond-assigned-picker",
+        "entity": 1,
+        "id": 6961,
+        "status": {
+          "containment": 2,
+          "item_id": 28459,
+          "kind": 4
+        }
+      }
+    ]
   }
 }

@@ -7,6 +7,8 @@
 #include "df/building_archerytargetst.h"
 #include "df/building_doorst.h"
 #include "df/building_chainst.h"
+#include "df/building_cagest.h"
+#include "df/buildingitemst.h"
 #include "df/world.h"
 #include "df/unit.h"
 #include "df/unit_soul.h"
@@ -705,6 +707,58 @@ std::optional<ZoneAnimalUnitDisplay> nativeZoneAnimalUnitDisplay(df::unit& candi
     // Inline warning copies at1423dda/1423de4 refer to this immutable literal.
     if(result.grazer)result.warning.assign(reinterpret_cast<const char*>(base+0x1786f68),24);
     return result;
+}
+namespace {
+bool animalStatusReady() {
+    if(!df::global::world || !nativeZoneDefaultsReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    // Pin the render branches as evidence; never invoke them or read their UI.
+    static const bool compatible=hash(base+0x3d0260,0x156)==UINT64_C(0x968a686c50852edc) &&
+        hash(base+0x3acdc0,0x3dd)==UINT64_C(0xe237949d71a1e280) &&
+        hash(base+0x3a8200,0x1d9)==UINT64_C(0x47f2c45f78dc3f23);
+    return compatible;
+}
+ZoneAnimalStatus animalZoneStatus(const df::building_civzonest& picker) {
+    return {uint8_t(picker.type==df::civzone_type::Pond?
+        (picker.zone_settings.pond.flag.bits.keep_filled?3:2):1),0,-1};
+}
+df::item* firstBuildingItem(df::building_actual* building) {
+    if(!building || building->contained_items.empty() || !building->contained_items.front())return nullptr;
+    return building->contained_items.front()->item;
+}
+}
+std::optional<ZoneAnimalStatus> nativeZoneAnimalItemStatus(df::building_civzonest& picker,bool selected) {
+    if(!animalStatusReady() || (picker.type!=df::civzone_type::Pen && picker.type!=df::civzone_type::Pond))return std::nullopt;
+    return selected?animalZoneStatus(picker):ZoneAnimalStatus{};
+}
+std::optional<ZoneAnimalStatus> nativeZoneAnimalStatus(df::building_civzonest& picker,df::unit& candidate) {
+    if(!animalStatusReady() || (picker.type!=df::civzone_type::Pen && picker.type!=df::civzone_type::Pond))return std::nullopt;
+    const auto firstRef=[&](df::general_ref_type kind)->df::general_ref* {
+        for(auto* ref:candidate.general_refs)if(ref && ref->getType()==kind)return ref;
+        return nullptr;
+    };
+    if(auto* ref=firstRef(df::general_ref_type::BUILDING_CIVZONE_ASSIGNED))
+        if(ref->getBuilding())return animalZoneStatus(picker);
+    if(!candidate.flags1.bits.chained && !candidate.flags1.bits.caged)return ZoneAnimalStatus{};
+    const auto status=[](df::item* item,uint8_t relation) {return ZoneAnimalStatus{4,relation,item->id};};
+    if(candidate.flags1.bits.chained) {
+        if(auto* ref=firstRef(df::general_ref_type::BUILDING_CHAIN)) {
+            auto* building=ref->getBuilding();
+            if(building && building->isActual())
+                if(auto* item=firstBuildingItem(static_cast<df::building_actual*>(building)))return status(item,1);
+        }
+    }
+    if(candidate.flags1.bits.caged)
+        if(auto* ref=firstRef(df::general_ref_type::CONTAINED_IN_ITEM))
+            if(auto* item=ref->getItem())return status(item,2);
+    // Native falls back to pending assignments only while containment flags are set.
+    for(auto* chain:df::global::world->buildings.other.CHAIN)
+        if(chain && chain->assigned==&candidate)
+            if(auto* item=firstBuildingItem(chain))return status(item,3);
+    for(auto* cage:df::global::world->buildings.other.CAGE)
+        if(cage && std::find(cage->assigned_units.begin(),cage->assigned_units.end(),candidate.id)!=cage->assigned_units.end())
+            if(auto* item=firstBuildingItem(cage))return status(item,4);
+    return ZoneAnimalStatus{5,0,-1};
 }
 std::optional<std::string> nativeZoneOwnerQuery(std::string query) {
     const auto& order=staffOrderingFunctions();

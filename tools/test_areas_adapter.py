@@ -1196,8 +1196,9 @@ def main():
                       "expected_revision": zone_revision()}
     no_capacity = lua.globals().request(11, lua.table_from(animal_request))
     no_capacity["area_retire_capacity"] = 0
+    assert call(11, dict(animal_request, unit_id=-1, item_id=20))["message"] == "Unsupported area operation"
     for bad in [{"expected_revision": 0}, {"expected_revision": 1}, {"unit_id": 999},
-                {"unit_id": -1}, {"assign": -1}, {"assign": 2}, {"assign": 0.5}]:
+                {"unit_id": -1}, {"unit_id": 20, "item_id": 20}, {"item_id": -2}, {"assign": -1}, {"assign": 2}, {"assign": 0.5}]:
         assert not call(11, dict(animal_request, **bad))["ok"]
     assert lua.eval("assign_calls") == 0
     # Native destruction no longer consumes bridge retirement storage.

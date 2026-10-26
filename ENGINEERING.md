@@ -1,3 +1,36 @@
+## Typed area candidate identities (Management 68)
+
+Management 68 uses Local\df3d_management_v68. Rebuild and replace the bridge,
+neutral clients and Godot extension together; version 67 live peers do not share
+this channel. Generated enum vocabulary is updated through
+tools/generate_management_contract.py.
+
+AreaCandidateRow appends entity: Unknown, Unit, Item or Squad. The row id is
+interpreted only within that entity namespace. Equal unit/item numeric IDs are
+distinct candidates. Absent entity fields in older records remain Unknown;
+the decoder does not invent a unit type. Existing product unit and squad rows
+now supply their explicit entity. No native item rows are emitted yet.
+
+AreaRequest appends item_id with default -1. AssignUnits requires exactly one
+nonnegative unit_id or item_id, with all other operations rejecting item_id.
+The model and Godot dictionaries preserve it without conversion to a unit ID.
+This commit establishes the contract: item requests currently return the
+existing Unsupported area operation refusal before any unit lookup/mutation.
+Native item integration and typed chooser state/selection remain unfinished.
+
+Core CTest 19/19, areas adapter and the headless Godot management contract pass
+in build/qa/area-typed-candidates-final. Tests cover ambiguous/missing IDs,
+out-of-scope item IDs, colliding typed row IDs, invalid entity/selector pairs,
+and unknown legacy row identity. Both MSVC bridge and Godot extension build.
+
+Protected build/areas-acceptance-20261026-085741 passes with owned DF131652.
+It checks nonempty typed native unit candidates, explicit item-path refusal,
+and the existing grazer/caged Pen assignment, Pond transfer and clearing with
+chain-job/containment/cursor assertions. Both save manifests remain unchanged
+after unsaved exit. Installed plugin SHA256:
+ef81034ca40f957651f3ec782852a42b06755fae2b3bfdfb43f25052ff5efb0e.
+This proves the migration's semantic path, not complete animal UI parity.
+
 ## Native zone animal assignment audit
 
 The protected oracle runs with stockpile_storage_native.ps1 -ZoneAnimals.

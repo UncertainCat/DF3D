@@ -968,5 +968,29 @@
     ],
     "scope": "Grazer and caged unit: Pen assignment, Pond transfer and clearing. Chain assignment cleared, actual chained/containment preserved, ChainAnimal removed, UnchainAnimal retained, native job cursor unchanged.",
     "limits": "Semantic driver only; no new full animal UI acceptance. Worker/item cancellation fixtures, typed item bridge schema, native admission/search/display/input/lifecycle remain pending."
+  },
+  "typed_identity_migration": {
+    "management_version": 68,
+    "region": "Local\\df3d_management_v68",
+    "entity_values": {
+      "Unknown": 0,
+      "Unit": 1,
+      "Item": 2,
+      "Squad": 3
+    },
+    "request": "Exactly one of unit_id/item_id >= 0 for AssignUnits; item requests explicitly unsupported until runtime integration.",
+    "legacy": "Absent row entity remains Unknown; no inferred identity.",
+    "offline_evidence": "build/qa/area-typed-candidates-final",
+    "live_evidence": "build/areas-acceptance-20261026-085741",
+    "owned_df_pid": 131652,
+    "status": "passed",
+    "plugin_sha256": "ef81034ca40f957651f3ec782852a42b06755fae2b3bfdfb43f25052ff5efb0e",
+    "save_manifests_unchanged": 2,
+    "checks": [
+      "typed unit candidate rows",
+      "item request refusal before unit lookup",
+      "existing unit/cage/chain transfer and clearing"
+    ],
+    "limits": "Item mutation/candidates and full typed chooser behavior remain pending."
   }
 }

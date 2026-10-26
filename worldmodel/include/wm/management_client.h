@@ -83,6 +83,7 @@ struct AreaRequest {
   bool categoryOpening=false;
   std::optional<std::vector<uint8_t>> queryBytes;
   uint16_t candidateLimit=0;
+  int32_t itemId=-1;
 };
 struct AreaInfo {
   int32_t id=-1,x=0,y=0,z=0;
@@ -125,6 +126,7 @@ struct AreaCandidateRow {
   int8_t squadUse=-1;
   std::optional<AreaOwnerDisplay> ownerDisplay;
   std::optional<SelectionAppearance> sheetIcon;
+  AreaCandidateEntity entity=AreaCandidateEntity::Unknown;
 };
 struct AreaLinkRow { int32_t id=-1; AreaKind kind=AreaKind::Stockpile; uint8_t direction=0; std::string name; };
 struct LocationSupplyQuantity { uint8_t kind=0; int32_t stored=0,desired=0; };

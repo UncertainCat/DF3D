@@ -62,7 +62,7 @@ local function validate_operation(r,a)
   {'expected_list_revision',0,{1,6,10,14}},{'list_key','',{1,2}},{'row_key','',{2}},{'scope',0,{2}},
   {'value',0,{2}},{'preset',0,{3}},{'name','',{4}},{'spans',false,{5}},{'paint_mode',0,{5}},
   {'paint_z',-1,{5}},{'location_id',-2,{7}},{'location_kind',0,{8}},{'profession',-1,{8}},
-  {'deity_kind',-1,{8}},{'deity_id',-1,{8}},{'zone_settings',false,{9}},{'unit_id',-1,{11}},
+  {'deity_kind',-1,{8}},{'deity_id',-1,{8}},{'zone_settings',false,{9}},{'unit_id',-1,{11}},{'item_id',-1,{11}},
   {'assign',-1,{11}},{'squad_id',-1,{12}},{'squad_use',-1,{12}},{'organic',-1,{13}},
   {'inorganic',-1,{13}},{'candidate_kind',0,{14}},{'sort',0,{14}},{'sort_descending',false,{14}},
   {'occupation_id',-1,{}},{'category_opening',false,{1}}}
@@ -133,7 +133,9 @@ local function validate_operation(r,a)
  end
  if op==12 and (not integer(default(a,'squad_id',-1)) or default(a,'squad_id',-1)<0 or
   not integer(default(a,'squad_use',-1)) or default(a,'squad_use',-1)<0 or a.squad_use>15) then return 'invalid area squad use' end
- if op==11 and (not integer(default(a,'unit_id',-1)) or default(a,'unit_id',-1)<0 or
+ if op==11 and (not integer(default(a,'unit_id',-1)) or default(a,'unit_id',-1)<-1 or
+  not integer(default(a,'item_id',-1)) or default(a,'item_id',-1)<-1 or
+  ((default(a,'unit_id',-1)>=0)==(default(a,'item_id',-1)>=0)) or
   not integer(default(a,'assign',-1)) or default(a,'assign',-1)<0 or a.assign>1) then return 'invalid area unit assignment' end
  if r.action==13 and (not integer(default(a,'link_id',-1)) or default(a,'link_id',-1)<0 or a.link_id==a.id or
   type(default(a,'give',true))~='boolean' or type(default(a,'unlink',false))~='boolean') then return 'invalid area link' end
@@ -527,7 +529,7 @@ local function candidate_row(job,v,r,refresh_display)
  if job.candidate_kind==3 then
   if v.entity_id~=df.global.plotinfo.group_id then return nil end
   local label=v.alias~='' and v.alias or dfhack.translation.translateName(v.name,true)
-  return {id=v.id,name=dfhack.df2utf(label),profession='',sex=-1,mood=0,grazer=false,
+  return {id=v.id,entity=3,name=dfhack.df2utf(label),profession='',sex=-1,mood=0,grazer=false,
    assigned=job.assigned[v.id]~=nil,squad_use=job.assigned[v.id] or 0}
  end
  if job.native_owner then
@@ -573,7 +575,7 @@ local function candidate_row(job,v,r,refresh_display)
  end
  local label=display and display.name or job.candidate_kind==1 and not job.legacy and unit_name(v) or dfhack.df2utf(U.getReadableName(v))
  if job.legacy then return {id=v.id,name=label..' #'..v.id,label=''} end
- return {id=v.id,name=label,profession=display and display.profession or dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,owner_display=display,sheet_icon=display and display.sheet_icon or nil,
+ return {id=v.id,entity=1,name=label,profession=display and display.profession or dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,owner_display=display,sheet_icon=display and display.sheet_icon or nil,
   mood=U.getStressCategory(v)+1,grazer=job.candidate_kind==2 and U.isGrazer(v) or false,
   assigned=job.candidate_kind==1 and v.id==job.owner_id or (job.assigned~=nil and job.assigned[v.id]~=nil),squad_use=-1,owner_order=order_facts}
 end
@@ -1347,6 +1349,9 @@ local function native_operation(r)
  if op==11 then
   local zone_type=df.civzone_type[b.type]
   if zone_type~='Pen' and zone_type~='Pond' then return reject('This operation does not apply to this zone type') end
+  -- Wire migration precedes the native item integration. Never reinterpret
+  -- an item identity as a unit while the new runtime path is unavailable.
+  if default(a,'item_id',-1)>=0 then return reject('Unsupported area operation') end
   local unit=df.unit.find(a.unit_id)
   if not unit then return reject('Unit no longer exists') end
   local changed,problem,unknown=invoke(r.assign_unit,reply_reserve,b,unit,a.assign)

@@ -655,7 +655,7 @@ func test_area_operations() -> void:
 		assert(area.rooms_unenclosed == (2000 if operation == Contract.AreaOperation.MultiCreate else 0))
 		assert(area.rooms_dormitories == (7 if operation == Contract.AreaOperation.MultiCreate else 0))
 	for key in ["operation","expected_revision","expected_list_revision","scope","value","preset","paint_mode","paint_z",
-		"location_id","location_kind","profession","deity_kind","deity_id","unit_id","assign","squad_id","squad_use","organic","inorganic","candidate_kind","sort",
+		"location_id","location_kind","profession","deity_kind","deity_id","unit_id","item_id","assign","squad_id","squad_use","organic","inorganic","candidate_kind","sort",
 		"room_furniture","interaction_id","undo_token","count_generation","location_site_id","occupation_id"]:
 		for bad in [1.5,"1",true]:
 			var request := {"action":A.AreaInspect,"id":7}
@@ -725,7 +725,7 @@ func test_area_operations() -> void:
 		if operation == 10: assert(area.links == [{"id":9,"kind":2,"direction":2,"name":"observed"}])
 		if operation == 14:
 			assert(area.candidate_kind == 1 and area.sort == 3 and area.sort_descending)
-			assert(area.candidates == [{"id":8,"name":"observed","profession":"observed","sex":1,"mood":7,"grazer":true,"assigned":true,"squad_use":15,"owner_display":{"columns":45,"first_line":"Native first line","second_line":"Native second line","status":"Has Quarters","room_value":343,"name_color":{"color":[3,3,1],"alternate":[0,3,0],"effect":1}},"sheet_icon":{"tile_pages":["OWNER_PAGE"],"palettes":["OWNER_PALETTE"],"layers":[[0,2,3,1,1,0,4,5,-1,2]]}}])
+			assert(area.candidates == [{"id":8,"entity":Contract.AreaCandidateEntity.Unknown,"name":"observed","profession":"observed","sex":1,"mood":7,"grazer":true,"assigned":true,"squad_use":15,"owner_display":{"columns":45,"first_line":"Native first line","second_line":"Native second line","status":"Has Quarters","room_value":343,"name_color":{"color":[3,3,1],"alternate":[0,3,0],"effect":1}},"sheet_icon":{"tile_pages":["OWNER_PAGE"],"palettes":["OWNER_PALETTE"],"layers":[[0,2,3,1,1,0,4,5,-1,2]]}}])
 	for variant in 3:
 		var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.PaintCounts,
 			"zone_type":92,"paint_z":32767,"count_generation":9223372036854775807 - variant}

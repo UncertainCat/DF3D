@@ -1199,7 +1199,9 @@ table AreaLocationRow { id:int32 = -1; name:string; location_kind:uint8; religio
 // Installed palette components; effect0 steady,1 legendary,2 nemesis,3 fire.
 table AreaNameColor { foreground:uint8; background:uint8; bright:uint8; alternate_foreground:uint8; alternate_background:uint8; alternate_bright:uint8; effect:uint8; }
 table AreaOwnerDisplay { columns:uint16; first_line:string; second_line:string; status:string; room_value:int32; name_color:AreaNameColor; }
-table AreaCandidateRow { id:int32 = -1; name:string; profession:string; sex:int8 = -1; mood:uint8; grazer:bool; assigned:bool; squad_use:int8 = -1; owner_display:AreaOwnerDisplay; sheet_icon:SelectionAppearance; }
+// Unknown preserves absent identity in older recordings; never infer a unit/item.
+enum AreaCandidateEntity:uint8 { Unknown=0, Unit=1, Item=2, Squad=3 }
+table AreaCandidateRow { id:int32 = -1; name:string; profession:string; sex:int8 = -1; mood:uint8; grazer:bool; assigned:bool; squad_use:int8 = -1; owner_display:AreaOwnerDisplay; sheet_icon:SelectionAppearance; entity:AreaCandidateEntity; }
 table AreaLinkRow { id:int32 = -1; kind:AreaKind; direction:uint8; name:string; }
 table AreaPaintPreview { x:int16; y:int16; width:uint16; height:uint16; }
 table AreaRequest {
@@ -1274,6 +1276,8 @@ table AreaRequest {
   // Owner CandidateList only: 0 retains the default128-row page, 1..128 bounds
   // returned facts without changing the cached list's identity or ordering.
   candidate_limit:uint16;
+  // AssignUnits: exactly one of unit_id/item_id must be nonnegative.
+  item_id:int32 = -1;
 }
 table AreaInfo {
   id:int32;
@@ -1717,7 +1721,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 67;
+  schema_version:uint32 = 68;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1763,7 +1767,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 67;
+  schema_version:uint32 = 68;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

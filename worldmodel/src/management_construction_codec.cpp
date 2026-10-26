@@ -159,6 +159,7 @@ AreaState decodeArea(const m::AreaState* a) {
       for(const auto* l:*p->layers())row.sheetIcon->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
         l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
     }
+    row.entity=AreaCandidateEntity(v->entity());
     out.candidates.push_back(std::move(row));
   }
   if(a->links())for(const auto* v:*a->links())out.links.push_back({v->id(),AreaKind(v->kind()),v->direction(),text(v->name())});
@@ -239,7 +240,7 @@ flatbuffers::Offset<m::AreaRequest> encodeArea(flatbuffers::FlatBufferBuilder& b
   r.add_location_site_id(a.locationSiteId);r.add_occupation_id(a.occupationId);
   r.add_category_opening(a.categoryOpening);
   r.add_query_bytes(queryBytes);
-  r.add_candidate_limit(a.candidateLimit);
+  r.add_candidate_limit(a.candidateLimit);r.add_item_id(a.itemId);
   return r.Finish();
 }
 }  // namespace wm::detail::management

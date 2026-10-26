@@ -91,6 +91,12 @@ enum AreaKind {
 	Zone = 1,
 	Workshop = 2,
 }
+enum AreaCandidateEntity {
+	Unknown = 0,
+	Unit = 1,
+	Item = 2,
+	Squad = 3,
+}
 enum AreaOperation {
 	None = 0,
 	SettingsPage = 1,

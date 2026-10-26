@@ -225,7 +225,7 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
   }
   for(const auto& v:s.candidates) {
     Dictionary row;row["id"]=v.id;row["name"]=String::utf8(v.name.c_str());row["profession"]=String::utf8(v.profession.c_str());
-    row["sex"]=v.sex;row["mood"]=v.mood;row["grazer"]=v.grazer;row["assigned"]=v.assigned;row["squad_use"]=v.squadUse;
+    row["entity"]=int(v.entity);row["sex"]=v.sex;row["mood"]=v.mood;row["grazer"]=v.grazer;row["assigned"]=v.assigned;row["squad_use"]=v.squadUse;
     if(v.ownerDisplay) {const auto& d=*v.ownerDisplay;Dictionary display;
       display["columns"]=d.columns;display["first_line"]=String::utf8(d.firstLine.c_str());display["second_line"]=String::utf8(d.secondLine.c_str());
       display["status"]=String::utf8(d.status.c_str());display["room_value"]=d.roomValue;
@@ -388,7 +388,7 @@ bool validateAreaShape(const Dictionary& data, String& error) {
                                   "links_only", "owner_id", "link_id", "cursor", "operation", "expected_revision",
                                   "expected_list_revision", "scope", "value", "preset", "paint_mode", "paint_z",
                                   "location_id", "location_kind", "profession", "deity_kind", "deity_id",
-                                  "unit_id", "assign", "squad_id", "squad_use", "organic", "inorganic", "candidate_kind", "sort",
+                                  "unit_id", "item_id", "assign", "squad_id", "squad_use", "organic", "inorganic", "candidate_kind", "sort",
                                   "room_furniture", "interaction_id", "undo_token", "count_generation", "location_site_id", "occupation_id", "candidate_limit"},
                                  error) ||
       !managementRequiredFields(data, error))
@@ -500,7 +500,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   a.paintMode=uint8_t(n("paint_mode",0,0,2));a.paintZ=int16_t(n("paint_z",-1,-1,INT16_MAX));
   a.locationId=int32_t(n("location_id",-2,-2,INT32_MAX));a.locationKind=uint8_t(n("location_kind",0,0,5));
   a.profession=int16_t(n("profession",-1,-1,INT16_MAX));a.deityKind=int8_t(n("deity_kind",-1,-1,3));
-  a.deityId=int32_t(n("deity_id",-1,-1,INT32_MAX));a.unitId=int32_t(n("unit_id",-1,-1,INT32_MAX));
+  a.deityId=int32_t(n("deity_id",-1,-1,INT32_MAX));a.unitId=int32_t(n("unit_id",-1,-1,INT32_MAX));a.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));
   a.assign=int8_t(n("assign",-1,-1,1));a.squadId=int32_t(n("squad_id",-1,-1,INT32_MAX));
   a.squadUse=int8_t(n("squad_use",-1,-1,15));a.organic=int8_t(n("organic",-1,-1,1));a.inorganic=int8_t(n("inorganic",-1,-1,1));
   a.candidateKind=uint8_t(n("candidate_kind",0,0,3));a.sort=uint8_t(n("sort",0,0,a.candidateKind==1?4:3));a.sortDescending=data.get("sort_descending",false);

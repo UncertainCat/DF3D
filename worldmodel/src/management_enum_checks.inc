@@ -86,6 +86,11 @@ static_assert(static_cast<int>(wm::AreaKind::Stockpile) == static_cast<int>(df3d
 static_assert(static_cast<int>(wm::AreaKind::Zone) == static_cast<int>(df3d::mirror::AreaKind::Zone));
 static_assert(static_cast<int>(wm::AreaKind::Workshop) == static_cast<int>(df3d::mirror::AreaKind::Workshop));
 static_assert(sizeof(df3d::mirror::EnumValuesAreaKind()) / sizeof(df3d::mirror::AreaKind) == 3);
+static_assert(static_cast<int>(wm::AreaCandidateEntity::Unknown) == static_cast<int>(df3d::mirror::AreaCandidateEntity::Unknown));
+static_assert(static_cast<int>(wm::AreaCandidateEntity::Unit) == static_cast<int>(df3d::mirror::AreaCandidateEntity::Unit));
+static_assert(static_cast<int>(wm::AreaCandidateEntity::Item) == static_cast<int>(df3d::mirror::AreaCandidateEntity::Item));
+static_assert(static_cast<int>(wm::AreaCandidateEntity::Squad) == static_cast<int>(df3d::mirror::AreaCandidateEntity::Squad));
+static_assert(sizeof(df3d::mirror::EnumValuesAreaCandidateEntity()) / sizeof(df3d::mirror::AreaCandidateEntity) == 4);
 static_assert(static_cast<int>(wm::AreaOperation::None) == static_cast<int>(df3d::mirror::AreaOperation::None));
 static_assert(static_cast<int>(wm::AreaOperation::SettingsPage) == static_cast<int>(df3d::mirror::AreaOperation::SettingsPage));
 static_assert(static_cast<int>(wm::AreaOperation::SettingsSet) == static_cast<int>(df3d::mirror::AreaOperation::SettingsSet));

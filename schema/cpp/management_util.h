@@ -18,8 +18,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 67;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v67";
+inline constexpr uint32_t kManagementVersion = 68;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v68";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -121,7 +121,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     {a.location_kind()!=0 && op!=8 && !locationChoices, "location_kind"}, {a.profession()!=-1 && op!=8, "profession"},
     {a.deity_kind()!=-1 && op!=8, "deity_kind"}, {a.deity_id()!=-1 && op!=8, "deity_id"},
     {areaZoneSettingsPresent(a.zone_settings()) && op!=9, "zone_settings"},
-    {a.unit_id()!=-1 && op!=11 && !staffEdit, "unit_id"}, {a.assign()!=-1 && op!=11, "assign"},
+    {a.item_id()!=-1 && op!=11, "item_id"}, {a.unit_id()!=-1 && op!=11 && !staffEdit, "unit_id"}, {a.assign()!=-1 && op!=11, "assign"},
     {a.squad_id()!=-1 && op!=12, "squad_id"}, {a.squad_use()!=-1 && op!=12, "squad_use"},
     {a.organic()!=-1 && op!=13, "organic"}, {a.inorganic()!=-1 && op!=13, "inorganic"},
     {a.candidate_kind()!=0 && op!=14, "candidate_kind"}, {a.sort()!=0 && op!=14, "sort"},
@@ -158,7 +158,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     return "invalid area location creation";
   if(op==9 && (!areaZoneSettingsPresent(a.zone_settings()) || !validAreaZoneSettings(a.zone_settings())))
     return "invalid area zone settings";
-  if(op==11 && (a.unit_id()<0 || a.assign()<0 || a.assign()>1)) return "invalid area unit assignment";
+  if(op==11 && ((a.unit_id()>=0)==(a.item_id()>=0) || a.assign()<0 || a.assign()>1)) return "invalid area unit assignment";
   if(op==12 && (a.squad_id()<0 || a.squad_use()<0 || a.squad_use()>15)) return "invalid area squad use";
   if(op==13 && ((a.organic()==-1 && a.inorganic()==-1) || a.organic()<-1 || a.organic()>1 ||
       a.inorganic()<-1 || a.inorganic()>1)) return "invalid area toggles";
@@ -175,7 +175,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
         uint64_t(a.origin()->y())+a.height()>32768 || a.room_furniture()<1 || a.room_furniture()>4))
       return "invalid room selection";
   }
-  if(a.id()<-1 || a.unit_id()<-1 || a.squad_id()<-1 || a.deity_id()<-1 ||
+  if(a.id()<-1 || a.item_id()<-1 || a.unit_id()<-1 || a.squad_id()<-1 || a.deity_id()<-1 ||
       a.location_id()<-2 || a.paint_z()<-1) return "invalid area identity";
   if(counts) {
     if(!a.count_generation() || a.count_generation()>INT64_MAX || a.paint_z()<0 ||
@@ -985,7 +985,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       payload+=15+textSize(row->name())+textSize(row->religion());
     }
     if(a->candidates()) for(const auto* row:*a->candidates()) {
-      if(!row || row->id()<-1 || textSize(row->name())>512 || textSize(row->profession())>512 ||
+      if(!row || row->id()<-1 || row->entity()>AreaCandidateEntity::Squad ||
+          (row->entity()==AreaCandidateEntity::Item && (row->id()<0 || a->candidate_kind()!=2)) ||
+          (row->entity()==AreaCandidateEntity::Squad && (row->id()<0 || a->candidate_kind()!=3)) ||
+          (row->entity()==AreaCandidateEntity::Unit && a->candidate_kind()!=1 && a->candidate_kind()!=2) || textSize(row->name())>512 || textSize(row->profession())>512 ||
           row->sex()<-1 || row->sex()>1 || row->mood()>7 || row->squad_use()<-1 || row->squad_use()>15)
         return "invalid area candidate row";
       if(const auto* display=row->owner_display()) {
@@ -1008,7 +1011,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
            !p->layers() || p->layers()->size()>256)return "invalid owner sheet icon references";
         if(const auto* error=validateOwnerAppearance(*p,payload))return error;
       }
-      payload+=9+textSize(row->name())+textSize(row->profession());
+      payload+=10+textSize(row->name())+textSize(row->profession());
     }
     if(a->links()) for(const auto* row:*a->links()) {
       if(!row || row->id()<0 || (row->kind()!=AreaKind::Stockpile && row->kind()!=AreaKind::Workshop) ||

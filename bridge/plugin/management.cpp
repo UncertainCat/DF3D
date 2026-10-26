@@ -280,7 +280,7 @@ std::vector<NativeAreaChoice> areaChoices;
 struct NativeAreaSetting { std::string key,label; int32_t index=-1; uint8_t kind=0,state=0; bool estimated=false; };
 struct NativeAreaLocation { int32_t id=-1; std::string name,religion; uint8_t kind=0; int16_t guildProfession=-1; int32_t locationTier=-1; int32_t siteId=-1; };
 struct NativeOwnerDisplay { uint16_t columns=45; std::string firstLine,secondLine,status; int32_t roomValue=0; std::optional<df3d_area::ZoneOwnerNameColor> nameColor; };
-struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; };
+struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; m::AreaCandidateEntity entity=m::AreaCandidateEntity::Unknown; };
 struct NativeAreaLink { int32_t id=-1; uint8_t kind=0,direction=0; std::string name; };
 struct NativeAreaPage {
   m::LocationEntryOutcome locationEntryOutcome=m::LocationEntryOutcome::None;
@@ -403,7 +403,7 @@ void publish() {
     if(v.ownerDisplay) {const auto& d=*v.ownerDisplay;flatbuffers::Offset<m::AreaNameColor> color;
       if(d.nameColor) {const auto& c=*d.nameColor;color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);}
       display=m::CreateAreaOwnerDisplay(b,d.columns,b.CreateString(d.firstLine),b.CreateString(d.secondLine),b.CreateString(d.status),d.roomValue,color);}
-    candidates.push_back(m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse,display,v.sheetIcon.build(b)));
+    candidates.push_back(m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse,display,v.sheetIcon.build(b),v.entity));
   }
   for(const auto& v:areaPage.links)links.push_back(m::CreateAreaLinkRow(b,v.id,m::AreaKind(v.kind),v.direction,b.CreateString(v.name)));
   flatbuffers::Offset<m::LocationCatalog> locationCatalog;
@@ -2336,7 +2336,7 @@ void run(color_ostream& out) {
     field(L,"paint_mode",a->paint_mode());field(L,"paint_z",a->paint_z());
     field(L,"location_id",a->location_id());field(L,"location_kind",a->location_kind());field(L,"profession",a->profession());
     field(L,"deity_kind",a->deity_kind());field(L,"deity_id",a->deity_id());
-    field(L,"unit_id",a->unit_id());field(L,"assign",a->assign());field(L,"squad_id",a->squad_id());field(L,"squad_use",a->squad_use());
+    field(L,"item_id",a->item_id());field(L,"unit_id",a->unit_id());field(L,"assign",a->assign());field(L,"squad_id",a->squad_id());field(L,"squad_use",a->squad_use());
     field(L,"organic",a->organic());field(L,"inorganic",a->inorganic());field(L,"candidate_kind",a->candidate_kind());
     field(L,"sort",a->sort());field(L,"sort_descending",a->sort_descending());
     lua_newtable(L);if(a->spans()){int i=0;for(const auto* v:*a->spans()) {
@@ -2563,6 +2563,7 @@ void run(color_ostream& out) {
     each("locations",[&](){areaPage.locations.push_back({int32_t(number(L,"id",-1)),str("name"),str("religion"),uint8_t(number(L,"location_kind")),int16_t(number(L,"guild_profession",-1)),int32_t(number(L,"location_tier",-1)),int32_t(number(L,"site_id",-1))});});
     each("candidates",[&](){
       NativeAreaCandidate row{int32_t(number(L,"id",-1)),str("name"),str("profession"),int8_t(number(L,"sex",-1)),int8_t(number(L,"squad_use",-1)),uint8_t(number(L,"mood")),boolean(L,"grazer"),boolean(L,"assigned")};
+      row.entity=m::AreaCandidateEntity(number(L,"entity",0));
       lua_getfield(L,-1,"owner_display");
       if(lua_istable(L,-1)) {
         row.ownerDisplay=NativeOwnerDisplay{uint16_t(number(L,"columns")),str("first_line"),str("second_line"),str("status"),int32_t(number(L,"room_value"))};

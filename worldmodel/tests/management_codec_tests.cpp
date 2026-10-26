@@ -2679,3 +2679,41 @@ TEST_CASE("owner raw query transport preserves absence empty and partial UTF-8")
     }
   }
 }
+
+TEST_CASE("animal assignment identities are exclusive and preserve item IDs") {
+  for(int mode=0;mode<7;++mode) {
+    CAPTURE(mode);
+    wm::ManagementRequest request;request.action=wm::ManagementAction::AreaUpdate;
+    auto& a=request.area;a.operation=wm::AreaOperation::AssignUnits;
+    a.kind=wm::AreaKind::Zone;a.id=7;a.expectedRevision=5;a.assign=1;
+    a.unitId=mode==0 || mode==2?42:-1;
+    a.itemId=mode==1 || mode==2 || mode==5?42:mode==4?-2:mode==6?INT32_MAX:-1;
+    if(mode==5)a.operation=wm::AreaOperation::Rename;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* r=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(r->area()->item_id()==a.itemId);CHECK(r->area()->unit_id()==a.unitId);
+    CHECK(bool(wire::validateConstructionRequest(*r))==(mode>=2 && mode<=5));
+  }
+}
+TEST_CASE("area candidate typed identities preserve collisions and unknown legacy facts") {
+  for(int mode=0;mode<5;++mode) {
+    CAPTURE(mode);
+    flatbuffers::FlatBufferBuilder b;
+    const auto first=wire::CreateAreaCandidateRow(b,7,0,0,-1,0,false,false,-1,0,0,wire::AreaCandidateEntity::Unit);
+    const auto second=wire::CreateAreaCandidateRow(b,7,0,0,-1,0,false,false,-1,0,0,
+      mode==0?wire::AreaCandidateEntity::Item:mode==1?wire::AreaCandidateEntity::Unknown:
+      mode==2?wire::AreaCandidateEntity::Squad:mode==3?wire::AreaCandidateEntity(255):wire::AreaCandidateEntity::Item);
+    auto rows=b.CreateVector(std::vector{first,second});
+    wire::AreaStateBuilder area(b);area.add_operation(wire::AreaOperation::CandidateList);
+    area.add_candidate_kind(mode==4?1:2);area.add_candidates(rows);auto value=area.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(value);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*state))==(mode>=2));
+    if(mode<2) {
+      const auto decoded=codec::decodeArea(state->area());
+      REQUIRE(decoded.candidates.size()==2);CHECK(decoded.candidates[0].id==decoded.candidates[1].id);
+      CHECK(decoded.candidates[0].entity==wm::AreaCandidateEntity::Unit);
+      CHECK(decoded.candidates[1].entity==(mode==0?wm::AreaCandidateEntity::Item:wm::AreaCandidateEntity::Unknown));
+    }
+  }
+}

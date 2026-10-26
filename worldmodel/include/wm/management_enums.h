@@ -93,6 +93,12 @@ enum class AreaKind : uint8_t {
   Zone = 1,
   Workshop = 2,
 };
+enum class AreaCandidateEntity : uint8_t {
+  Unknown = 0,
+  Unit = 1,
+  Item = 2,
+  Squad = 3,
+};
 enum class AreaOperation : uint8_t {
   None = 0,
   SettingsPage = 1,

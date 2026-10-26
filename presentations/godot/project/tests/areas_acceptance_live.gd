@@ -300,6 +300,16 @@ func animal_assignments() -> void:
 	var pen := zone("Pen")
 	var pond := zone("Pond")
 	if not check(pen >= 0 and pond >= 0, "animal zones missing"): return
+	var candidates := await pages({"action":14,"kind":1,"id":pen,"operation":14,"candidate_kind":2}, "candidates")
+	if stopped: return
+	if not check(not candidates.candidates.is_empty(), "animal candidates missing"): return
+	for candidate in candidates.candidates:
+		if not check(candidate.entity == Contract.AreaCandidateEntity.Unit, "unit candidate identity missing"): return
+	var current := await inspect(pond,1)
+	if stopped: return
+	await refusal({"action":11,"kind":1,"id":pond,"operation":11,"expected_revision":current.revision,
+		"item_id":int(fixture.caged),"assign":1}, "Unsupported area operation")
+	if stopped: return
 	for key in ["grazer", "caged"]:
 		var unit := int(fixture[key])
 		if not check(unit >= 0, "animal fixture missing: " + key): return

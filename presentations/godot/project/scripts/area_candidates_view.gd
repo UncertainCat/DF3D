@@ -265,6 +265,11 @@ func owner_pointer(event: InputEvent) -> void:
 func feed_animal_key(event: InputEvent) -> bool:
 	if not is_visible_in_tree() or state.kind != 2 or not event is InputEventKey or not event.pressed or search.has_focus(): return false
 	if event.alt_pressed or event.ctrl_pressed or event.meta_pressed or event.shift_pressed: return false
+	if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:
+		if not event.echo and not state.busy() and owner_selected >= 0 and owner_selected < state.rows.size():
+			var row: Dictionary = state.rows[owner_selected]
+			state.toggle_animal(int(row.get("entity",0)),int(row.id))
+		return true
 	var delta := 0
 	match event.keycode:
 		KEY_UP,KEY_8,KEY_KP_8: delta = -1

@@ -9726,5 +9726,544 @@
       }
     ],
     "coverage": "Standard navigation and hover retention; keyboard activation, scrolling, portrait/cage artwork and full panel remain unfinished."
+  },
+  "animal_activation_portraits": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-105537",
+    "owned_df_pid": 130108,
+    "source_unchanged": true,
+    "activation": [
+      {
+        "name": "Pen-keyboard-assigned",
+        "cursor": 0,
+        "assigned": [
+          6545
+        ]
+      },
+      {
+        "name": "Pen-keyboard-cleared",
+        "cursor": 0,
+        "assigned": []
+      }
+    ],
+    "portraits": [
+      {
+        "picker": "Pen-picker",
+        "unit_id": 6545,
+        "widget_rect": [
+          47,
+          7,
+          50,
+          9
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73673,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73673,
+        "native_rgba_sha256": "4bd87318287ffac1f90427206c0be66b875e5ea978c5f518473933e985ca36d2"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 6548,
+        "widget_rect": [
+          47,
+          10,
+          50,
+          12
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73517,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73517,
+        "native_rgba_sha256": "fad4dbe47c70ed2a2346f3cbc410e723299950d0fc9691ea447ca0c01df28a0f"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 6686,
+        "widget_rect": [
+          47,
+          13,
+          50,
+          15
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73673,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73673,
+        "native_rgba_sha256": "4bd87318287ffac1f90427206c0be66b875e5ea978c5f518473933e985ca36d2"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 6821,
+        "widget_rect": [
+          47,
+          16,
+          50,
+          18
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73553,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73553,
+        "native_rgba_sha256": "57a2090206dd20c49bef19e8166dcf2f0c869cc1354a1ed2b8615c50d37085b1"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 6960,
+        "widget_rect": [
+          47,
+          19,
+          50,
+          21
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73529,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73529,
+        "native_rgba_sha256": "fe02d8849727197c8349b5933aa3306308ef6d6b8ca63b7a6010269b1cb920f8"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 6961,
+        "widget_rect": [
+          47,
+          22,
+          50,
+          24
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73457,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73457,
+        "native_rgba_sha256": "ee3794579af485527f9a98dfce4016ff829ffef104c0208e20f36a919b8570b4"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7119,
+        "widget_rect": [
+          47,
+          25,
+          50,
+          27
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73625,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73625,
+        "native_rgba_sha256": "d72193b3eca9c4e574e9a135af8c4c6c255ba2ce3891364bb3cf093375cbb72f"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7121,
+        "widget_rect": [
+          47,
+          28,
+          50,
+          30
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73469,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73469,
+        "native_rgba_sha256": "d976ea3e4f1a21b6c0239dd79fe359fec6d2b2e7f7316fe1e73775de3f51737c"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7122,
+        "widget_rect": [
+          47,
+          31,
+          50,
+          33
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73463,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73463,
+        "native_rgba_sha256": "339454c48998de311ddeb9695d2ee078818b66c1dfe7bad999975d496294bf59"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7269,
+        "widget_rect": [
+          47,
+          34,
+          50,
+          36
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73553,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73553,
+        "native_rgba_sha256": "57a2090206dd20c49bef19e8166dcf2f0c869cc1354a1ed2b8615c50d37085b1"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7270,
+        "widget_rect": [
+          47,
+          37,
+          50,
+          39
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73553,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73553,
+        "native_rgba_sha256": "57a2090206dd20c49bef19e8166dcf2f0c869cc1354a1ed2b8615c50d37085b1"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7277,
+        "widget_rect": [
+          47,
+          40,
+          50,
+          42
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 162299,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 162299,
+        "native_rgba_sha256": "a49ef0494907dbfad5a33c259a57b6a3c2ebc7e000509561201bccee24617d50"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7264,
+        "widget_rect": [
+          47,
+          43,
+          50,
+          45
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73470,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73470,
+        "native_rgba_sha256": "8947b7d9bd6aebf399a710f75016fa91d1f6c4181819d4611c4728eb1c08124c"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7265,
+        "widget_rect": [
+          47,
+          46,
+          50,
+          48
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73674,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73674,
+        "native_rgba_sha256": "e1927d41fad3095ac00775658af46212517374612d1ea8b87e5ad998cc762339"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7346,
+        "widget_rect": [
+          47,
+          49,
+          50,
+          51
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 162301,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 162301,
+        "native_rgba_sha256": "3ee3eec6efb5a2f2e73e338a0358ce86959353faa170cce712a30bf64ca97998"
+      },
+      {
+        "picker": "Pen-picker",
+        "unit_id": 7347,
+        "widget_rect": [
+          47,
+          52,
+          50,
+          54
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73566,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73566,
+        "native_rgba_sha256": "ac57a21fcc3109b07cf8dc9dd686e21e1c2b56ef44543c6b760a83019e8a7991"
+      },
+      {
+        "picker": "Pond-picker",
+        "unit_id": 6960,
+        "widget_rect": [
+          47,
+          7,
+          50,
+          9
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73529,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73529,
+        "native_rgba_sha256": "fe02d8849727197c8349b5933aa3306308ef6d6b8ca63b7a6010269b1cb920f8"
+      },
+      {
+        "picker": "Pond-picker",
+        "unit_id": 6961,
+        "widget_rect": [
+          47,
+          10,
+          50,
+          12
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73457,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73457,
+        "native_rgba_sha256": "ee3794579af485527f9a98dfce4016ff829ffef104c0208e20f36a919b8570b4"
+      },
+      {
+        "picker": "Pond-picker",
+        "unit_id": 7122,
+        "widget_rect": [
+          47,
+          13,
+          50,
+          15
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73463,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73463,
+        "native_rgba_sha256": "339454c48998de311ddeb9695d2ee078818b66c1dfe7bad999975d496294bf59"
+      },
+      {
+        "picker": "Pond-picker",
+        "unit_id": 7277,
+        "widget_rect": [
+          47,
+          16,
+          50,
+          18
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 162299,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 162299,
+        "native_rgba_sha256": "a49ef0494907dbfad5a33c259a57b6a3c2ebc7e000509561201bccee24617d50"
+      },
+      {
+        "picker": "Pond-picker",
+        "unit_id": 7264,
+        "widget_rect": [
+          47,
+          19,
+          50,
+          21
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 73470,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 73470,
+        "native_rgba_sha256": "8947b7d9bd6aebf399a710f75016fa91d1f6c4181819d4611c4728eb1c08124c"
+      },
+      {
+        "picker": "Pond-picker",
+        "unit_id": 7346,
+        "widget_rect": [
+          47,
+          22,
+          50,
+          24
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "native_texture": {
+          "texpos": 162301,
+          "width": 32,
+          "height": 32,
+          "format": "RGBA8",
+          "bytes": 4096
+        },
+        "diagnostic_texture_id": 162301,
+        "native_rgba_sha256": "3ee3eec6efb5a2f2e73e338a0358ce86959353faa170cce712a30bf64ca97998"
+      }
+    ],
+    "unit_portrait_render_rva": "0x1423240",
+    "native_graphics_rva": "0x6d6560",
+    "graphics_flags": "0x400",
+    "draw_box_cells": [
+      5,
+      3
+    ],
+    "limitations": [
+      "Portrait textures/anchors are diagnostic reference only; product must supply owned original-asset recipes.",
+      "Native keyboard activation was checked for a unit; item dispatch has typed viewer coverage only.",
+      "Complete frames and picture rendering remain unfinished."
+    ]
   }
 }

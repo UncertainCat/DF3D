@@ -3,6 +3,7 @@ local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local main=df.global.game.main_interface;local ui=main.civzone
 local image_base=dfhack.internal.getImageBase()
+local dumped_portraits={}
 -- Identify the semantic item vector read by the pinned Pond producer.
 for key,values in pairs(df.global.world.items.other)do
  local _,address=df.sizeof(values)
@@ -46,6 +47,7 @@ local function walk(container,rows,depth,active)
   row.unit_id=name.u.id;row.one_line_only=name.one_line_only
   row.show_gender=name.show_gender;row.show_profession=name.show_profession
  end
+ if df.widget_unit_portrait:is_instance(container)then row.portrait_unit_id=df.reinterpret_cast(df.widget_unit_portrait,container).u.id end
  if df.widget_item_name:is_instance(container)then row.item_id=df.reinterpret_cast(df.widget_item_name,container).it.id end
  if df.widget_text:is_instance(container)then row.text=dfhack.df2utf(df.reinterpret_cast(df.widget_text,container).str)end
  rows[#rows+1]=row
@@ -118,6 +120,23 @@ local function capture(label,keep_mouse)
    record.picker_parity={sort=sort,descending=descending,exact=true,ui_unchanged=true}
   end
   if label=='Pen-picker' or label=='Pond-picker'then
+   record.portrait_anchors={}
+   for _,row in ipairs(rows)do
+    if row.portrait_unit_id and row.active and (row.flags&2)~=0 then
+     local cells={}
+     for y=row.y,math.min(row.y2,g.dimy-1)do for x=row.x,row.x2 do
+      local idx=x*g.dimy+y;local cell={x=x,y=y,tile=dfhack.screen.readTile(x,y).tile}
+      for _,field in ipairs{'screentexpos_anchored','screentexpos_anchored_x','screentexpos_anchored_y','screentexpos_top_anchored','screentexpos_top_anchored_x','screentexpos_top_anchored_y'}do cell[field]=g[field][idx]end
+      local texture=cell.screentexpos_anchored
+      if texture and texture>0 and not dumped_portraits[texture]then
+       local text,code=dfhack.run_command_silent('df3d','appearance','texture',tostring(texture),out..'/animal-body-'..texture)
+       assert(code==0 and text:find('DF3D_TEXTURE_DUMP_PASS',1,true),text);dumped_portraits[texture]=true
+      end
+      cells[#cells+1]=cell
+     end end
+     record.portrait_anchors[#record.portrait_anchors+1]={id=row.portrait_unit_id,rect={row.x,row.y,row.x2,row.y2},cells=cells}
+    end
+   end
    record.unit_display={}
    for _,row in ipairs(rows)do
     if row.unit_id and row.active and (row.flags&2)~=0 and row.y>=2 and row.y<g.dimy then
@@ -267,6 +286,17 @@ local function navigation(prefix,opened)
   assert(observed.cursor==0,'animal hover changed keyboard selection: '..probe[1])
  end
  capture(prefix..'-navigation-restored')
+ if prefix=='Pen' then
+  local target=opened.displayed[1];assert(target.kind==0,'Pen keyboard fixture requires unit')
+  local zone=ui.cur_bld;assert(#zone.assigned_units==0,'Pen keyboard fixture must start unassigned')
+  gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+  local assigned=capture(prefix..'-keyboard-assigned')
+  assert(#zone.assigned_units==1 and zone.assigned_units[0]==target.id,'SELECT did not assign focused animal')
+  gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+  local cleared=capture(prefix..'-keyboard-cleared')
+  assert(#zone.assigned_units==0,'SELECT did not clear focused animal')
+  assert(assigned.cursor==0 and cleared.cursor==0,'SELECT moved first-row cursor')
+ end
 end
 -- Paused disposable-clone fixture: a second critter with the same description
 -- exercises equal text keys and native item Category address ordering.

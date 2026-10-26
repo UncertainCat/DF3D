@@ -1,3 +1,24 @@
+## Animal keyboard activation and portrait reference
+
+Enter/keypad Enter activates the locally selected animal through the existing
+typed unit/item toggle. It suppresses key repeats and sends nothing while busy.
+Protected native build/stockpile-storage-native-zone-animals-20261026-105537
+with DF130108 verifies SELECT assigns and clears the first Pen unit without
+moving cursor0. The source save is unchanged after unsaved exit. GPU and core
+checks in build/qa/animal-keyboard-activation pass (GPU retains the three known
+engine signatures); viewer tests check unit/item identity and duplicate-event
+suppression. Native item keyboard activation still needs direct live coverage.
+
+The same protected run records animal widget_unit_portrait anchors and dumps
+reference textures into ignored output. The widget at1423240 uses native6d6560
+with flag400, the same full-body selector variant as owner rows. Its call to
+adad70 supplies offsets2,2 and a5x3-cell draw box, despite the animal widget's
+4x3-cell rectangle. Captured textures are32x32 RGBA. Fixture hashes/geometry are
+diagnostic evidence, never runtime inputs or distributed artwork. Product
+animal portraits still need owned selector recipes and matching frame/render
+placement; current generic portrait rendering is unfinished. Bridge/wire and
+installed plugin remain unchanged.
+
 ## Animal row selection and background
 
 Native Pen/Pond selectors start at cursor0. STANDARDSCROLL up/down moves one

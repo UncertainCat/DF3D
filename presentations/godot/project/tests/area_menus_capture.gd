@@ -717,6 +717,17 @@ func run() -> void:
 		animal_view.feed_owner_key(key)
 		if animal_view.owner_selected != (1 if keycode==KEY_PAGEDOWN else 0):
 			push_error("Animal navigation clamp differs"); quit(1); return
+	for entity in [1,2]:
+		animal_state.pending={}; animal_state.mutating=false
+		animal_state.rows=[{"id":24,"entity":entity,"assigned":false}]
+		animal_state.receipt+=1; animal_state.changed.emit()
+		var enter := InputEventKey.new(); enter.pressed=true; enter.keycode=KEY_ENTER
+		var before := animal_requests.size()
+		if not animal_view.feed_owner_key(enter): push_error("Animal Enter not handled");quit(1);return
+		enter.echo=true; animal_view.feed_owner_key(enter)
+		var identity := "unit_id" if entity==1 else "item_id"
+		if animal_requests.size()!=before+1 or int(animal_requests[-1].get(identity,-1))!=24 or animal_requests[-1].assign!=1:
+			push_error("Animal keyboard assignment lost identity or repeated");quit(1);return
 	animal_view.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

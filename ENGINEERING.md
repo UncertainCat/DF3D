@@ -11,9 +11,25 @@ first prior owned tomb and sets both tomb admission restriction bits. Clearing
 also sets those bits. The native picker calls this routine directly without
 rebuilding zone membership. These effects differ from Buildings::setOwner.
 
-The current runtime still uses that DFHack helper. Native picker captures,
-candidate eligibility/order, protected effect comparisons and full assignment
-UI acceptance remain required before replacement. In particular, creation must
+Protected native `build/stockpile-storage-native-zone-owner-20261025-225918`
+verifies actual Tomb assignment, replacement and transfer, plus Bedroom
+assignment/removal with a controlled spouse pair. Native transfer clears the
+previous tomb; bedroom membership is added once to each spouse and removed
+from both by Remove assignment. Rendered assigned/cleared captures were
+inspected. Owned DF120124 closes unsaved with its source manifest unchanged.
+The fixture restores both spouse IDs; the simulation stays paused throughout.
+
+Native excludes the current owner from candidates and groups existing graves
+separately. Tomb candidates include deceased dwarves and non-citizens.
+Remove assignment is the first Bedroom list entry; immutable context dispatch
+at0x3a7c70 skips its creation for Tomb. Thus the clear callback's existence does
+not establish a native Tomb clear action. Exploratory captures exposed wrong
+row assumptions and missing frame processing for widget text; the final oracle
+searches for the intended existing grave owner before transfer.
+
+The current runtime still uses the DFHack helper. Candidate eligibility/order,
+bridge effect comparisons, search-array preservation and full assignment UI
+acceptance remain required. In particular, creation must
 not unconditionally clear an unspecified owner: native clear changes tomb
 defaults. Native allocation can fail after mutation, requiring unknown-outcome
 handling without automatic retry or rollback.

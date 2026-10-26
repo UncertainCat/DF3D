@@ -2,7 +2,7 @@
   "supported_df": "53.16 Steam Windows x64",
   "pe_timestamp": "0x6a70a6d9",
   "image_size": "0x2711000",
-  "status": "static audit only; runtime replacement and live acceptance pending",
+  "status": "native picker reference verified; runtime replacement and bridge acceptance pending",
   "ranges": [
     {
       "name": "set_owner",
@@ -80,6 +80,20 @@
       "size": "0x34",
       "fnv1a64": "95a6565ce0c2c8a5",
       "role": "reference only: native UI"
+    },
+    {
+      "name": "picker_context_dispatch",
+      "rva": "0x3a7c70",
+      "size": "0x34",
+      "fnv1a64": "d70164dbcfe42b2c",
+      "role": "immutable reference table"
+    },
+    {
+      "name": "owner_candidate_filter",
+      "rva": "0x3a6610",
+      "size": "0x162",
+      "fnv1a64": "41362e655e075244",
+      "role": "reference only; candidate transitive audit pending"
     }
   ],
   "signature": "void(building_civzonest*, unit*); null unit clears ownership",
@@ -91,7 +105,7 @@
     ],
     "scratch": "No native menu or map search scratch referenced in the audited semantic body.",
     "allocation": "Native vector insertion may allocate after ownership mutation. Enter with unknown-outcome handling; do not retry or roll back automatically.",
-    "ui_callers": "Assign and clear call 0x557a60 directly, then close the picker and request redraw. They do not call notifyCivzoneModified."
+    "ui_callers": "Assign calls0x557a60 directly. Clear callback does too, but context dispatch0x3a7c70 creates Remove assignment only for Bedroom/Office/DiningHall contexts2/3/4; Tomb5 skips it. Callbacks then close/redraw without notifyCivzoneModified."
   },
   "effects": [
     "Ownability virtual accepts types 80,87,92,93,97; other types return without mutation.",
@@ -111,11 +125,34 @@
     "DF3D follows owner updates with reconstructed notifyCivzoneModified despite no such native picker call."
   ],
   "acceptance_required": [
-    "Actual native picker assignment, transfer and clear captures for spouse-shared rooms and tombs.",
+    "Bridge replay of recorded native Tomb assignment/transfer and Bedroom spouse assignment/clear effects.",
     "Controlled native effects compared with the bridge, including same-owner assignment, prior tomb, spouse membership and flags.",
     "Search-array preservation and protected save manifests.",
-    "Candidate eligibility/order audit: current bridge universally requires active living citizens; native Tomb handling must be established independently.",
+    "Complete candidate eligibility/order audit, including native deceased/non-citizen tomb choices, current-owner/spouse exclusion and existing-room grouping.",
     "Creation initializer semantics: do not blindly clear a new tomb owner and thereby replace native defaults.",
     "Full Zones/Locations rendered and lifecycle acceptance remains outstanding."
-  ]
+  ],
+  "native_reference": {
+    "evidence": "build/stockpile-storage-native-zone-owner-20261025-225918",
+    "owned_df_pid": 120124,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "result_sha256": "5c3f0e96de4af3d14c056465bdf700a047ef9bca2cfcabe060ad61989789cf9b",
+    "records": 9,
+    "effects": [
+      "New Tomb settings 1; owner assignment changes settings to 3.",
+      "Replacing owner removes old membership and adds new membership.",
+      "Moving owner 5813 from Tomb1490 to Tomb1491 clears1490 and preserves settings3 on both.",
+      "Controlled reciprocal spouses5981/5813 both receive Bedroom1492 exactly once.",
+      "Native Remove assignment clears Bedroom1492 and removes both memberships. Fixture spouse IDs are restored."
+    ],
+    "picker_observations": [
+      "Current owner excluded from choices.",
+      "Existing graves grouped separately with Has Grave caption.",
+      "Tomb list includes deceased dwarves and non-citizens; current living-citizen filter is incomplete.",
+      "Bedroom list begins with Remove assignment; Tomb skips this entry.",
+      "Query mayor finds the intended existing grave owner. Widget text input requires frame processing between characters."
+    ],
+    "scope": "Actual native input and rendered reference only. No bridge assignment or search-array preservation claim."
+  }
 }

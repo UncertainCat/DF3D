@@ -3694,7 +3694,7 @@
       "live_run": "build/areas-acceptance-20261026-043030",
       "live_df_pid": 85284,
       "save_preservation": "Both manifests unchanged; owned DF closed unsaved",
-      "scope": "33-byte editing, partial UTF-8, focus and exact glyphs; control-F, unfocused Enter and Escape remain open."
+      "scope": "33-byte editing, partial UTF-8, focus and exact glyphs. Later key activation evidence is recorded separately; Escape/Options remains open."
     }
   },
   "owner_raw_query_integration": {
@@ -3776,5 +3776,63 @@
     ],
     "save_preservation": "Both manifests unchanged; owned process closed unsaved",
     "scope": "Semantic candidate requests and exact raw echo. Byte editor remains pending."
+  },
+  "owner_key_activation": {
+    "native_run": "build/stockpile-storage-native-zone-owner-20261026-044300",
+    "owned_native_df_pid": 131720,
+    "observations": [
+      {
+        "active": false,
+        "bottom_mode": 3,
+        "name": "owner-unfocused-enter",
+        "owner": 5981
+      },
+      {
+        "bottom_mode": 3,
+        "focused": true,
+        "name": "owner-before-right-click",
+        "selected_id": 1496,
+        "selector_active": true
+      },
+      {
+        "bottom_mode": 3,
+        "focused": false,
+        "name": "owner-after-right-click",
+        "selected_id": 1496,
+        "selector_active": true
+      },
+      {
+        "bottom_mode": 3,
+        "focused": false,
+        "name": "owner-after-second-right-click",
+        "selected_id": 1496,
+        "selector_active": false
+      },
+      {
+        "bottom_mode": 3,
+        "focused": false,
+        "name": "owner-before-real-escape",
+        "selected_id": 1496,
+        "selector_active": true
+      },
+      {
+        "bottom_mode": -1,
+        "focused": false,
+        "name": "owner-after-real-escape",
+        "selected_id": 1496,
+        "selector_active": false
+      }
+    ],
+    "control_f": "Real window key messages focus the filter. Posted Control does not suppress the Windows-translated plain f; probe clears this injection artifact before continuing.",
+    "escape": "Native Escape closes Zones and opens Options (screenshot inspected); DF3D integration remains unfinished.",
+    "live_run": "build/areas-acceptance-20261026-045402",
+    "owned_live_df_pid": 47344,
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "save_preservation": "Both live save manifests unchanged; owned processes closed unsaved; native source manifest unchanged.",
+    "scope": "Ctrl+F focus, focused Enter releases focus, unfocused Enter assignment, two-stage right-click, recenter retains pending assignment receipt, native effect and removal.",
+    "offline": "build/qa/owner-key-recenter: core19/19, areas, candidates and GPU passed; GPU has three known notices."
   }
 }

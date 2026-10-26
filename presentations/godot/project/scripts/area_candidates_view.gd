@@ -218,9 +218,19 @@ func owner_pointer(event: InputEvent) -> void:
 
 func feed_owner_key(event: InputEvent) -> bool:
 	if not is_visible_in_tree() or state.kind != 1 or not event is InputEventKey or not event.pressed: return false
+	if event.keycode == KEY_F and event.ctrl_pressed and not (event.alt_pressed or event.meta_pressed or event.shift_pressed):
+		if owner_search.editable and not event.echo: owner_search.grab_focus()
+		return true
 	if owner_search.has_focus():
 		owner_search.feed_key(event); return true
 	if event.alt_pressed or event.ctrl_pressed or event.meta_pressed or event.shift_pressed: return false
+	if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:
+		if event.echo or state.busy(): return true
+		if remove.visible and owner_selected == 0: state.assign_owner(-1)
+		else:
+			var index := owner_selected - (1 if remove.visible else 0)
+			if index >= 0 and index < state.rows.size(): state.assign_owner(int(state.rows[index].id))
+		return true
 	var delta := 0
 	match event.keycode:
 		KEY_UP,KEY_8,KEY_KP_8: delta = -1

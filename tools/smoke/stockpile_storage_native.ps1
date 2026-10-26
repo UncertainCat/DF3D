@@ -57,6 +57,20 @@ public static class Shot {
    if(!PostMessage(h,0x101,(IntPtr)key,(IntPtr)up)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
    System.Threading.Thread.Sleep(80);
   }
+  public static void ControlF(IntPtr h) {
+   if(!PostMessage(h,0x100,(IntPtr)17,(IntPtr)(1L+(29L<<16)))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(80);
+   Key(h,70,33);
+   if(!PostMessage(h,0x101,(IntPtr)17,(IntPtr)(1L+(29L<<16)+0xc0000000L))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(80);
+  }
+  public static void RightClick(IntPtr h) {
+   IntPtr point=(IntPtr)(800+(700<<16));
+   if(!PostMessage(h,0x204,(IntPtr)2,point)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(40);
+   if(!PostMessage(h,0x205,IntPtr.Zero,point)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(80);
+  }
   public static string Windows="";
   public static IntPtr Find(uint pid) {
     IntPtr result=IntPtr.Zero, desk=OpenDesktop("df3d_hidden",0,false,0x41);
@@ -100,6 +114,9 @@ try {
    switch($action) {
     'down' {[Shot]::Key($window,40,80)}
     'enter' {[Shot]::Key($window,13,28)}
+    'escape' {[Shot]::Key($window,27,1)}
+    'control-f' {[Shot]::ControlF($window)}
+    'right-click' {[Shot]::RightClick($window)}
     'limit' {[Shot]::Text($window,('x'*40))}
     'backspace' {[Shot]::Key($window,8,14)}
     'clear' {for($i=0;$i -lt 33;$i++){[Shot]::Key($window,8,14)}}

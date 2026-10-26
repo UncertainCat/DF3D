@@ -397,8 +397,8 @@ controller, updates selection artwork and scrolls in36-pixel rows with a16-row
 page. New receipts reset selection; continuation pages retain it. Pending
 requests suppress navigation. `build/qa/owner-keyboard-final` passes root19/19
 and actual viewport key routing, selected-frame pixels, paging and pending-write
-checks, with only the three documented Godot notices. Unfocused Enter and full
-scrollbar/end-of-list geometry remain unfinished.
+checks, with only the three documented Godot notices. Full scrollbar/end-of-list
+geometry remains unfinished.
 Owner textbox window-input capture040328 verifies focused Down retains cursor0,
 Enter releases focus without assignment, a blank interior click unfocuses and a
 header click retains focus. Forty ASCII bytes stop at33; Backspace leaves32.
@@ -413,8 +413,14 @@ blinking underscore and16-pixel text inset. It appends SDL UTF-8 bytes up to the
 limit and removes one byte per Backspace, preserving even partial sequences.
 Focused navigation keys are consumed; Enter releases focus without assignment.
 Header clicks retain focus and other left clicks release it. Animal filtering
-retains its existing separate LineEdit. Ctrl+F, unfocused Enter and real Escape
-lifecycle remain unfinished.
+retains its existing separate LineEdit. Ctrl+F focuses the owner filter;
+unfocused Enter activates the selected candidate or Remove assignment, with
+repeat/pending-write suppression. Right-click first releases filter focus, then
+closes the picker on the next press. Native window-input capture044300 verifies
+these routes. Its posted Ctrl+F also generated a plain `f` through Windows text
+translation; that injection artifact is cleared in the probe and is not product
+behavior. Actual Escape closes Zones and opens native Options; that integration
+remains unfinished, so current picker Back behavior is not full Escape parity.
 
 The candidate state owns raw query bytes, debounces edits, rejects old-query
 replies and requires an exact raw echo on both builder and completed replies.
@@ -431,6 +437,16 @@ assignment, reopens unfiltered and exercises recenter/assign/remove. Owned
 DF85284 closes unsaved; both save manifests match. Its only diagnostics are
 known Godot notices. Run this focused lane with `areas_acceptance.ps1
 -ControllerScene -ZoneOwnerOnly -SaveId <new df3d-areas- name>`.
+
+Owner assignment requests retain ownership when recentering changes the viewed
+elevation. The target is the selected zone, so clearing placement geometry must
+not detach that pending receipt. The main-scene keyboard test exposed this race;
+`build/qa/owner-key-recenter` verifies it along with core19/19, areas, candidates
+and GPU checks (known notices only). Protected main-scene045402 verifies Ctrl+F,
+two-stage right-click, keyboard assignment immediately after recenter, native
+receipt/effect and removal. DF47344 closes unsaved; both manifests match, with
+only the known rendering-thread notice. Escape/Options remains outside this
+acceptance.
 
 Management66 appends optional `query_bytes` to AreaRequest and AreaState. It is
 limited to33 bytes and scoped to an identified Zone owner CandidateList; a

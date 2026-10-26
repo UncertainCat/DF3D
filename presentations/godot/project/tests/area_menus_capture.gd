@@ -274,7 +274,14 @@ func run() -> void:
 			var selected_button: Button = controller.candidates_view.choices[15]
 			if not controller.candidates_view.scroll.get_global_rect().encloses(selected_button.get_global_rect()):
 				push_error("Owner keyboard selection is outside viewport"); quit(1); return
-	controller.candidates_view.owner_search.grab_focus()
+	var filter_shortcut := InputEventKey.new(); filter_shortcut.keycode = KEY_F; filter_shortcut.ctrl_pressed = true; filter_shortcut.pressed = true
+	root.push_input(filter_shortcut,true)
+	if not controller.candidates_view.owner_search.has_focus(): push_error("Ctrl+F did not focus owner filter"); quit(1); return
+	var leave_filter := InputEventMouseButton.new(); leave_filter.button_index=MOUSE_BUTTON_RIGHT;leave_filter.pressed=true;leave_filter.position=Vector2(800,700)
+	root.push_input(leave_filter,true);leave_filter.pressed=false;root.push_input(leave_filter,true)
+	if controller.candidates_view.owner_search.has_focus() or controller.stockpile_page != "owner":
+		push_error("First owner right-click must only leave textbox focus");quit(1);return
+	root.push_input(filter_shortcut,true)
 	var before_focus_calls: int = world.calls.size()
 	for code in [KEY_DOWN,KEY_ENTER]:
 		var focused_key := InputEventKey.new(); focused_key.keycode = code; focused_key.pressed = true
@@ -370,12 +377,21 @@ func run() -> void:
 			var point: Vector2 = button.get_global_rect().get_center()
 			var before: int = world.calls.size()
 			for repeat_click in 2:
-				var event := InputEventMouseButton.new(); event.position=point; event.global_position=point
-				event.button_index=MOUSE_BUTTON_LEFT; event.pressed=true; root.push_input(event,true)
-				event.pressed=false; root.push_input(event,true); service.poll()
+				if owner == -1:
+					var activation := InputEventKey.new(); activation.keycode = KEY_ENTER; activation.pressed = true
+					root.push_input(activation,true); service.poll()
+				else:
+					var event := InputEventMouseButton.new(); event.position=point; event.global_position=point
+					event.button_index=MOUSE_BUTTON_LEFT; event.pressed=true; root.push_input(event,true)
+					event.pressed=false; root.push_input(event,true); service.poll()
 			var target: int = -1 if clear_expected else int(header_rows[0].id)
 			if world.calls.size() != before+1 or int(world.calls[-1].get("owner_id",-2)) != target or controller.stockpile_page != "owner":
 				push_error("Owner pointer action duplicated, wrong, or closed before native receipt"); quit(1); return
+			if type_name == "Tomb" and owner == -1:
+				var pending_owner_ticket: int = controller.request_ticket
+				world.top_z += 1; controller._process(0)
+				if controller.request_ticket != pending_owner_ticket or not controller.candidates_state.mutating:
+					push_error("Recenter discarded pending owner assignment");quit(1);return
 			room.owner_id = target
 			world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":11,"status":2,"areas":[room]}
 			service.poll(); controller._process(0)

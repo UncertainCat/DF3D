@@ -355,7 +355,7 @@ local function input_state(label)
  local focused=label~='initial' and label~='focused-enter' and label~='blank-click'
  assert((df.global.gview.cur_textbox==filter)==focused,'textbox focus changed: '..label)
 end
-local function window_input(label,action)
+local function window_input(label,action,observe)
  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write(action);f:close()
  assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
  local limit=dfhack.getTickCount()+30000
@@ -363,9 +363,15 @@ local function window_input(label,action)
   local ack=io.open(out..'/owner-input-ack','r');if ack then ack:close();break end
   assert(dfhack.getTickCount()<limit,'window input timeout');script.sleep(1,'frames')
  end
- assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');input_state(label)
+ assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');if observe~=false then input_state(label)end
 end
 input_state('initial')
+window_input('ctrl-f','control-f')
+-- PostMessage modifier state is tracked by SDL, but Windows TranslateMessage
+-- can still emit a plain f because no physical Control key is held. Clear the
+-- diagnostic text before continuing; only focus is asserted for this probe.
+window_input('clear','clear')
+window_input('focused-enter','enter')
 pixel(500,730);script.sleep(3,'frames');input_state('focus')
 window_input('focused-down','down')
 window_input('focused-enter','enter')
@@ -406,7 +412,9 @@ end
 gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
 last_search_input=''
 snapshot('before-assignment')
-pixel(520,106)
+window_input('unfocused-enter','enter',false)
+records[#records+1]={name='owner-unfocused-enter',owner=zone.assigned_unit_id,active=selector.flag.VISIBILITY_ACTIVE,bottom_mode=df.global.game.main_interface.bottom_mode_selected}
+assert(not selector.flag.VISIBILITY_ACTIVE,'Enter did not close owner picker')
 assert(zone.assigned_unit_id>=0 and zone.zone_settings.whole.i1==3,'native tomb assignment failed')
 local owner=zone.assigned_unit_id
 snapshot('assigned');capture('tomb-assigned')
@@ -741,3 +749,20 @@ end)
 first_unit.relationship_ids.Spouse=old_first;spouse.relationship_ids.Spouse=old_spouse
 df.global.plotinfo.economy_active=old_economy
 assert(ok,why)
+
+-- Observe real Escape after all effect/color fixtures have restored their inputs.
+local function closing_state(label)
+ records[#records+1]={name=label,selector_active=selector.flag.VISIBILITY_ACTIVE,
+  selected_id=ui.cur_bld and ui.cur_bld.id or -1,focused=df.global.gview.cur_textbox~=nil,
+  bottom_mode=df.global.game.main_interface.bottom_mode_selected}
+end
+closing_state('owner-before-right-click')
+window_input('right-click','right-click',false)
+closing_state('owner-after-right-click');capture('owner-after-right-click')
+window_input('right-click-again','right-click',false)
+closing_state('owner-after-second-right-click');capture('owner-after-second-right-click')
+if df.global.game.main_interface.bottom_mode_selected==3 then pixel(336,154)end
+closing_state('owner-before-real-escape')
+window_input('escape','escape',false)
+closing_state('owner-after-real-escape')
+capture('owner-after-real-escape')

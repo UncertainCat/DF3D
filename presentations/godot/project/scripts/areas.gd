@@ -380,9 +380,9 @@ func set_play_enabled(value: bool) -> void:
 		if panel.visible: close_panel()
 
 
-func cancel_drag() -> void:
+func cancel_drag(retire_draft := true) -> void:
 	if paint_preview != null: paint_preview.mesh = null
-	_detach_draft()
+	if retire_draft: _detach_draft()
 	dragging = false
 	rectangle = Rect2i()
 	origin = Vector3i(-1, -1, -1)
@@ -1395,7 +1395,9 @@ func _process(delta: float) -> void:
 			draw_outline(); update_controls()
 		else:
 			zone_overlaps.clear(); zone_lookup_rows.clear()
-			cancel_drag(); update_controls()
+			# Owner choices/assignments target the selected zone, not the viewed
+			# elevation. Recenter must not discard an in-flight assignment receipt.
+			cancel_drag(stockpile_page != "owner"); update_controls()
 	if stockpile_page in ["owner","animals","squads"] and request_ticket == 0: candidates_state.poll(delta)
 	_sync_paint_counts()
 	paint_counts.poll(delta)
@@ -1604,7 +1606,9 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion: paint_hover = Vector3i(-1,-1,-1)
 	if not ui_host.allows_panel_input(self): return
 	if panel.visible and ((event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT)):
-		handle_back()
+		if event is InputEventMouseButton and candidates_view.visible and candidates_state.kind == 1 and candidates_view.owner_search.has_focus():
+			candidates_view.owner_search.release_focus()
+		else: handle_back()
 		get_viewport().set_input_as_handled()
 		return
 	if panel.visible: candidates_view.owner_pointer(event)

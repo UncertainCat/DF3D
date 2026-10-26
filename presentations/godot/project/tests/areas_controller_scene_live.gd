@@ -1254,7 +1254,9 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	step = "pointer owner selector"
 	await click_control(editor.zone_menu.controls.owner)
 	if not await wait_ui(func(): return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner rows"): return
-	await click_control(editor.candidates_view.owner_search)
+	var shortcut := InputEventKey.new(); shortcut.pressed=true; shortcut.keycode=KEY_F; shortcut.ctrl_pressed=true
+	root.push_input(shortcut,true)
+	if not check(editor.candidates_view.owner_search.has_focus(),"Ctrl+F did not focus owner filter"):return
 	for sample in [233,-1,-1,77,73,78,69,82]:
 		var key := InputEventKey.new(); key.pressed = true
 		if sample < 0: key.keycode = KEY_BACKSPACE
@@ -1276,7 +1278,12 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	if not check(not editor.candidates_view.owner_search.has_focus() and editor.stockpile_page=="owner","focused Enter assigned owner"):return
 	await native("snapshot",{"id":id,"expected":{"owner_id":-1}})
 	# Cancel and reopen restores the unfiltered candidate snapshot.
-	editor.handle_back(); await click_control(editor.zone_menu.controls.owner)
+	root.push_input(shortcut,true)
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(editor.stockpile_page=="owner" and not editor.candidates_view.owner_search.has_focus(),"first right-click must leave only textbox focus"):return
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(editor.stockpile_page=="types" and editor.panel.visible,"second right-click must close only owner picker"):return
+	await click_control(editor.zone_menu.controls.owner)
 	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"reopened owner rows"):return
 	await verify_candidate_rows(id,1)
 	if stopped: return
@@ -1301,7 +1308,14 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	await click_control(editor.candidates_view.focus_buttons[index])
 	if not check(is_equal_approx(scene.camera_rig.position.x,tile.x+0.5) and is_equal_approx(scene.camera_rig.position.z,tile.y+0.5),"owner recenter did not focus observed unit"): return
 	await native("snapshot",{"id":id,"expected":{"owner_id":-1}})
-	await click_control(editor.candidates_view.choices[index])
+	write_json("owner-key-before.json",{"index":index,"selected":editor.candidates_view.owner_selected,"busy":editor.candidates_state.busy(),"focused":editor.candidates_view.owner_search.has_focus(),"allowed":host.allows_panel_input(editor),"visible":editor.candidates_view.is_visible_in_tree(),"ticket":editor.request_ticket,"page":editor.stockpile_page})
+	for row_step in index+1:
+		var down := InputEventKey.new(); down.pressed=true; down.keycode=KEY_DOWN;root.push_input(down,true)
+	if not check(editor.candidates_view.owner_selected==index+1,"owner Down did not select intended row"):return
+	var choose := InputEventKey.new(); choose.pressed=true; choose.keycode=KEY_ENTER
+	root.push_input(choose,true); root.push_input(choose,true)
+	write_json("owner-key-after.json",{"selected":editor.candidates_view.owner_selected,"busy":editor.candidates_state.busy(),"mutating":editor.candidates_state.mutating,"ticket":editor.request_ticket,"page":editor.stockpile_page})
+	if not check(editor.candidates_state.mutating,"owner Enter did not submit assignment"):return
 	if not await wait_ui(func(): return settled() and editor.stockpile_page=="types","pointer owner assignment"): return
 	await native("snapshot",{"id":id,"expected":{"owner_id":unit,"owner_name":str(editor.selected.owner_name),"owner_profession":str(editor.selected.owner_profession)}})
 	if not await wait_ui(func(): return editor.zone_menu.owner_portrait.texture != null,"assigned owner portrait"): return

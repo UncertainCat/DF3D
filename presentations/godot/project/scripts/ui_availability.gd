@@ -16,8 +16,8 @@ const TILE_HOVER_AVAILABLE = true
 
 const READ_ONLY = ["Residents", "Work Details", "Work orders"]
 const READ_LAUNCHERS = {"Citizens":"Residents", "Labor":"Work Details", "Work Details":"Work Details", "Work orders":"Work orders"}
-# Reports/alerts and construction are exposed for RC2. Area editors remain staged.
-const HIDDEN_LAUNCHERS = ["Stockpiles / zones", "Stockpiles", "Zones"]
+# Stockpiles uses the native semantic workflow; Zones remains staged.
+const HIDDEN_LAUNCHERS = ["Stockpiles / zones", "Zones"]
 
 static func allows_launcher(destination: String) -> bool:
 	return allows(destination) and destination not in HIDDEN_LAUNCHERS

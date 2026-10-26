@@ -49,6 +49,8 @@ func click_control(control: Control, staged_launcher := false) -> void:
 	# actual scene would before clicking controls after a mode transition.
 	for frame in 2:
 		editor._process(0); await process_frame
+	if control == scene._fortress_hud.navigation.Stockpiles:
+		if not check(not staged_launcher and control.visible and not control.disabled,"Stockpiles must be reachable through its unmodified public launcher"): return
 	if staged_launcher:
 		# HUD availability refreshes every frame and leaves staged slots
 		# disabled. Enable only this test click after normal layout settles.
@@ -78,9 +80,10 @@ func pointer_areas() -> void:
 		step = "viewport "+destination
 		var launcher: Button = scene._fortress_hud.navigation[destination]
 		for frame in 12:
-			launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-		# Candidate launchers are exposed only in this acceptance process.
-		launcher.show(); await click_control(launcher,true)
+			scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+		# Zones is still staged; Stockpiles must use ordinary public availability.
+		if destination == "Zones": launcher.show()
+		await click_control(launcher,destination == "Zones")
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"pointer launcher"): return
 		if destination == "Zones":
 			await click_control(editor.zone_menu.buttons.Bedroom)
@@ -219,7 +222,7 @@ func pointer_stockpile_name(origin: Vector3i) -> void:
 	if not check(not editor.panel.visible,"Escape did not close palette"): return
 	if not await wait_ui(func(): return actions._active == 0 and actions._queue.is_empty(),"closed rename drain"): return
 	await native("snapshot",{"id":id,"expected":{"custom_name":""}})
-	await click_control(scene._fortress_hud.navigation.Stockpiles,true)
+	await click_control(scene._fortress_hud.navigation.Stockpiles)
 	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"rename reopen launcher"): return
 	await pointer_click(tile_screen(origin))
 	if not await wait_ui(func(): return settled() and int(editor.selected.get("id",-1)) == id,"renamed pile reselection"): return
@@ -230,7 +233,7 @@ func pointer_stockpile_name(origin: Vector3i) -> void:
 	if not check(not editor.panel.visible,"right-click did not close rename palette"): return
 	if not await wait_ui(func(): return actions._active == 0 and actions._queue.is_empty(),"right-click rename drain"): return
 	await native("snapshot",{"id":id,"expected":{"custom_name":"R"}})
-	await click_control(scene._fortress_hud.navigation.Stockpiles,true)
+	await click_control(scene._fortress_hud.navigation.Stockpiles)
 	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"right-click reopen launcher"): return
 	await pointer_click(tile_screen(origin))
 	if not await wait_ui(func(): return settled() and int(editor.selected.get("id",-1)) == id,"right-click pile reselection"): return
@@ -367,13 +370,16 @@ func pointer_stockpile_fit(origin: Vector3i) -> void:
 					editor.settings_view.scrolls[0].ensure_control_visible(button)
 					await click_control(button); break
 			if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"minimum width Food rows"): return
-			var overflow: Control = editor.settings_view.leaf_overflow
-			if not check(overflow.get_child_count() > 0 and overflow.clip_contents,"native narrow text overflow missing"): return
-			await capture("stockpile_native_text_overflow")
+			if not check(editor.settings_view.scrolls[2].clip_contents,"narrow item column is not clipped"): return
+			if not check(not editor.settings_view.rendered_rows[2].is_empty(),"narrow item names missing"): return
+			for button in editor.settings_view.rendered_rows[2]:
+				var label: Label = button.get_child(0)
+				if not check(label.visible and label.clip_text and label.position.x+label.size.x <= editor.settings_view.scrolls[2].size.x,"narrow item name exceeds column"): return
+			await capture("stockpile_clipped_text")
 			var bar: Control = editor.settings_view.native_scrolls[2]
 			await pointer_click(bar.get_global_transform_with_canvas()*Vector2(8,bar.size.y-6))
-			if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"overflow leaf scroll"): return
-			await capture("stockpile_native_text_overflow_scrolled")
+			if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"clipped leaf scroll"): return
+			await capture("stockpile_clipped_text_scrolled")
 		await pointer_key(KEY_ESCAPE)
 		if not await wait_ui(func(): return settled() and editor.stockpile_page=="types","scaled settings close"): return
 		await pointer_stockpile_fit_actions(origin,dimensions)
@@ -860,8 +866,9 @@ func pointer_repaint(origin: Vector3i, id: int, destination: String) -> void:
 				if not check(not editor.panel.visible and editor.paint_state.cells.is_empty(),"UI reset retained a paint draft"): return
 				var launcher: Button = scene._fortress_hud.navigation[destination]
 				for frame in 4:
-					launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-				launcher.show(); await click_control(launcher,true)
+					scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+				if destination == "Zones": launcher.show()
+				await click_control(launcher,destination == "Zones")
 				if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"reopen after reset"): return
 				await pointer_click(tile_screen(origin))
 				if not await wait_ui(func(): return settled() and not editor.selected.is_empty(),"reinspect after reset"): return
@@ -912,8 +919,8 @@ func pointer_stockpile_repaint(origin: Vector3i, id: int) -> void:
 			await native("snapshot",{"id":id,"expected":{"tile_count":1,"extents":[0,0,1]}})
 			var launcher: Button = scene._fortress_hud.navigation.Stockpiles
 			for frame in 4:
-				launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-			launcher.show(); await click_control(launcher,true)
+				scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+			await click_control(launcher)
 			if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"reopen stockpiles"): return
 			# Exercise initial brush-hit lookup against an existing pile.
 			await click_control(editor.paint_view.buttons.brush)
@@ -928,8 +935,8 @@ func pointer_stockpile_empty(origin: Vector3i) -> void:
 		if not editor.panel.visible:
 			var launcher: Button = scene._fortress_hud.navigation.Stockpiles
 			for frame in 4:
-				launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-			launcher.show(); await click_control(launcher,true)
+				scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+			await click_control(launcher)
 			if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"empty test launcher"): return
 		await pointer_click(tile_screen(origin)); await pointer_click(tile_screen(origin))
 		if not await wait_ui(func(): return settled(),"empty test creation"): return
@@ -961,8 +968,8 @@ func pointer_stockpile_noop(origin: Vector3i) -> void:
 	step = "viewport all-clipped stockpile creation"
 	var launcher: Button = scene._fortress_hud.navigation.Stockpiles
 	for frame in 4:
-		launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-	launcher.show(); await click_control(launcher,true)
+		scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+	await click_control(launcher)
 	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"no-op test launcher"): return
 	await native("creation_noop_prepare",{"x":origin.x,"y":origin.y,"z":origin.z})
 	await pointer_click(tile_screen(origin)); await pointer_click(tile_screen(origin))
@@ -1003,8 +1010,8 @@ func pointer_stockpile_transfer(origin: Vector3i) -> void:
 			if stopped: return
 	var launcher: Button = scene._fortress_hud.navigation.Stockpiles
 	for frame in 4:
-		launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-	launcher.show(); await click_control(launcher,true)
+		scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+	await click_control(launcher)
 	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"transfer launcher"): return
 	await pointer_click(tile_screen(origin))
 	if not await wait_ui(func(): return settled() and editor.mode=="inspect" and int(editor.selected.get("id",-1))==ids[0],"select transfer recipient"): return
@@ -1268,7 +1275,7 @@ func pointer_zone_boundary_cells() -> void:
 		# Reopening after removal must settle the deferred HUD layout, just as
 		# the first launcher in pointer_areas does.
 		for frame in 12:
-			launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+			scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
 		launcher.show()
 		await click_control(launcher)
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"boundary zone launcher"):

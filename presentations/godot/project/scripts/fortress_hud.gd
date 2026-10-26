@@ -94,7 +94,7 @@ var utility_buttons: Array[Button] = []
 var map_tools: Control
 var military: HBoxContainer
 # Visible native slots do not promote unfinished semantic routes.
-const DISPLAY_ONLY_SLOTS = ["Stocks", "Tasks", "Places", "Nobles and administrators", "Objects", "Justice", "Stockpiles", "Zones"]
+const DISPLAY_ONLY_SLOTS = ["Stocks", "Tasks", "Places", "Nobles and administrators", "Objects", "Justice", "Zones"]
 
 
 func _ready():

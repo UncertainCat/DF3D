@@ -118,6 +118,10 @@ copy, fabricated progress percentages or broader native-UI departures.
   raised spikes instead of reproducing the confirmed native graphics-selector
   mask bug. This is an appearance-only exception; construction and trap behavior
   remain unchanged. It does not authorize native rendering-cache access.
+- Maintainer decision, 2026-10-25: keep stockpile item names clipped inside
+  the panel at narrow window widths instead of reproducing native negative-width
+  text spilling onto the map. This is a display-only exception for item names;
+  native captions, order, settings and placement validation remain unchanged.
 - Before extending an incomplete gameplay UI, locate the DF routine or existing
   semantic API that supplies its choices, eligibility, ordering and actions.
   Prefer exposing that behavior over reconstructing it in Godot or the bridge.

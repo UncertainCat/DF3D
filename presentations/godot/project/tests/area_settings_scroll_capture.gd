@@ -132,10 +132,12 @@ func run() -> void:
 			var expected: String = sample.rows[index].label if sample.native_overflow else sample.rows[index].display
 			check(view.rendered_rows[2][index].get_child(0).text == expected,"native truncation differs at "+str(sample.layout)+" "+str(sample.kind)+" row "+str(index))
 		if sample.native_overflow:
-			check(view.leaf_overflow.get_child_count() == rows.size(),"negative-width captions use horizontal overflow")
-			check(view.leaf_overflow.clip_contents and view.leaf_overflow.size.y == int(sample.page)*36,"overflow retains vertical page clipping")
-			check(view.leaf_overflow.get_index() < view.native_scrolls[2].get_index(),"native scrollbar occludes overflow text")
-			root.get_texture().get_image().save_png(directory.path_join("overflow-"+str(sample.layout)+".png"))
+			check(view.scrolls[2].clip_contents,"narrow item column must clip its contents")
+			for button in view.rendered_rows[2]:
+				var label: Label = button.get_child(0)
+				check(label.visible and label.clip_text,"narrow item caption must remain visible and clipped")
+				check(label.position.x + label.size.x <= view.scrolls[2].size.x,"narrow item caption exceeds column")
+			root.get_texture().get_image().save_png(directory.path_join("clipped-"+str(sample.layout)+".png"))
 		if sample.layout=="960x600-0": root.get_texture().get_image().save_png(directory.path_join("truncated-"+str(sample.kind)+".png"))
 	view.free(); assets.free(); await process_frame
 	print("AREA_SETTINGS_SCROLL_CAPTURE_PASS" if failures == 0 else "AREA_SETTINGS_SCROLL_CAPTURE_FAIL")

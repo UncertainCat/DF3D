@@ -25,8 +25,8 @@ func open_fixture() -> void:
 	scene.camera_rig.focus_on(Vector3(tile.x+0.5,tile.z+1.0,tile.y+0.5),30)
 	var launcher: Button = scene._fortress_hud.navigation.Stockpiles
 	for frame in 12:
-		launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-	launcher.show(); await click_control(launcher)
+		scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+	await click_control(launcher)
 	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"restart pointer launcher"): return
 	await pointer_click(tile_screen(tile))
 	if not await wait_ui(func(): return settled() and not editor.selected.is_empty(),"restart pointer inspect"): return

@@ -2888,17 +2888,19 @@
         "native_overflow": false
       }
     ],
-    "overflow_acceptance": {
-      "run": "build/areas-acceptance-20261025-182558",
-      "offline_gate": "build/qa/stockpile-native-text-overflow-ready",
+    "clipping_acceptance": {
+      "run": "build/areas-acceptance-20261025-191432",
       "files_sha256": {
+        "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
         "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
         "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
         "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
-        "scene_stockpile_native_text_overflow.png": "51e44c56b10fc39c9d72154520d21fde3747f6e448eecc8d972feb0df0e70644",
-        "scene_stockpile_native_text_overflow_scrolled.png": "dbcff804daee7be328edfdee121217819e9e2e924d34757521f9a2fceda14525"
+        "scene_stockpile_clipped_text.png": "910df8200946f3365c2ebb5257d8b886bc7d6d06c94dca586482083c3815b4f6",
+        "scene_stockpile_clipped_text_scrolled.png": "0f8d3e90827b844945b206987357e6293116df5a59ec87672c258b5280ac1095"
       },
-      "scope": "Native negative-width horizontal spill at912/920 in renderer; actual Food selection and scrolling at912 in main scene. Vertical page clipping and scrollbar occlusion retained; no clipping exception assumed."
+      "offline_gate": "build/qa/stockpile-public-clipped-final",
+      "maintainer_decision": "2026-10-25: Keep text inside the panel.",
+      "scope": "Display-only exception: native negative-width item captions remain clipped inside their column. Native caption data and ordering are unchanged. Renderer checks cover912/920; actual public main-scene Food selection and scrolling cover912. All five viewport fits and77 native observations pass; owned DF117000 closes unsaved and both save manifests match. Only the known Godot separate-thread notice remains."
     }
   },
   "windows_text_messages": {

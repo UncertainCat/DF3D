@@ -65,10 +65,8 @@ func run():
 	ui.open_destination("Stockpiles")
 	check(areas.kind_picker.selected == 0 and areas.mode == "paint" and areas.panel.visible,"Stockpile route switches out of zone mode")
 	hud.update_state(true,true,{})
-	hud.navigation.Stockpiles.show()
 	await process_frame
 	hud.update_state(true,true,{})
-	hud.navigation.Stockpiles.show()
 	hud.layout(hud.logical_view_size()); areas._process(0)
 	var anchor: Rect2 = hud.launcher_rect("Stockpiles")
 	check(anchor.has_area() and is_equal_approx(areas.paint_view.tools.position.x,anchor.position.x),"paint tools use actual HUD launcher anchor: %s / %s visible=%s" % [anchor,areas.paint_view.tools.position,areas.paint_view.tools.visible])

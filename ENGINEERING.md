@@ -1,3 +1,52 @@
+## Stockpile acceptance
+
+Stockpiles is available from the normal fortress HUD. Its public launcher is
+visible and enabled; Zones remains staged. The completed workflow covers native
+creation, rectangle/brush painting, resizing and removal; all 17 category settings
+and native material/item providers; search and scroll; container limits and
+links-only mode; give/take links; inspection and immediate inline renaming.
+DF supplies semantic choices, ordering, eligibility, captions and effects using
+owned inputs. Presentation code owns navigation, input drafts and drawing.
+The native service, ownership and per-feature evidence are documented below.
+
+Protected `build/areas-acceptance-20261025-190250` exercises the normal public
+launcher through actual main-scene viewport input and 252 native observations.
+It covers settings, storage, creation/painting/removal, reciprocal links, stale
+receipts, empty/no-op and transfer cases, rename text, nine instruction hovers
+and five viewport fits. The launcher is never forced visible or enabled by the
+Stockpiles driver. Owned DF112664 closes unsaved and both save manifests match.
+
+Protected `build/areas-acceptance-20261025-190902` tests actual producer loss
+and replacement with a successful link query deliberately held undelivered.
+The old ticket retires without replay; selection, picker and panel clear. A
+fresh claim reopens through the public launcher and verifies reciprocal link
+and unlink effects. The epoch changes, transport loss and three invalidations
+are recorded in `link-restart-evidence.json`. Replacement DF122664 closes
+unsaved; both save manifests match. The reopened link panel was inspected.
+Both public runs report passed_with_known_issues with only the documented
+Godot separate-thread notice and no unclassified diagnostics.
+
+Offline `build/qa/stockpile-public-ready` passes root CTest19/19, HUD/UI
+composition, area/menu/settings/rename/storage/links/scrollbar checks and the
+Lua adapter. `build/qa/stockpile-public-clipped-final` repeats root CTest19/19,
+area/settings controllers and GPU settings captures after the approved narrow
+item-name clipping change. The rendered 912/920-pixel cases were inspected;
+only documented Godot thread/device-finalization/shutdown diagnostics remain.
+
+Protected `build/areas-acceptance-20261025-191432` verifies the final clipped
+item names before and after scrolling at912 pixels, plus the five viewport fits,
+rename input, repeated hovers and native actions (77 observations). Both narrow
+main-scene captures were inspected. Owned DF117000 closes unsaved, both save
+manifests match, and only the known separate-thread notice remains. Bounded
+hashes are retained in `native_stockpile_layout.json.public_acceptance` and
+`native_stockpile_search.json.caption_truncation.clipping_acceptance`.
+
+This acceptance does not claim OS clipboard or IME composition coverage.
+Recorded Windows text delivery and actual viewer text events are scoped in the
+rename/search sections. Item-name clipping at negative native text widths is
+an explicit maintainer-approved display exception. Known Godot diagnostics
+remain deferred under the project rules.
+
 ## Native stockpile rename reference (DF 53.16)
 
 `tools/smoke/stockpile_storage_native.ps1 -Rename` captures the native inline
@@ -65,7 +114,7 @@ from the preceding181707 run were inspected against the native heading.
 Owned DF90116 closes unsaved and both save manifests match; the only diagnostic
 is the known separate-thread notice. The viewport text scenarios use ASCII;
 the earlier native high-byte oracle is helper evidence, not OS clipboard/IME
-acceptance. Stockpiles remains hidden while the broader completion audit proceeds.
+acceptance. Public-launcher verification is described in the stockpile acceptance section.
 
 `tools/smoke/stockpile_storage_native.ps1 -RenameText` verifies the name helper
 through paced Windows WM_CHAR input and SDL. Native run
@@ -125,7 +174,7 @@ and paint Remove captures were inspected against native. Tooltip captures use
 known separate-thread notice remains; owned DF122604 closes unsaved and both
 save manifests match. `native_stockpile_layout.json.instruction_hovers` records
 hashes and native instruction observations. This closes the control-help gap;
-Stockpiles remains staged during the completion audit.
+Public-launcher verification is described in the stockpile acceptance section.
 
 Repeated-hover acceptance now checks exact text against a fresh native source,
 not visibility alone. The full main-scene run
@@ -186,7 +235,7 @@ duplicate selection leaves the endpoints unchanged. Both endpoints are published
 after preparation. Capacity is reserved before native insertion so its allocator
 branch is not entered. The former local two-vector editor has been removed.
 The picker retains duplicate/self selection without showing a self-link error.
-Stockpiles remains hidden pending the remaining workflow acceptance.
+The public workflow uses these native link operations.
 
 Native target handler `0x3c2a70` reads global link UI despite taking an interface
 pointer and is prohibited as a runtime service. Its stockpile pair branch uses
@@ -231,8 +280,8 @@ diagnostics were reported. Offline `build/qa/stockpile-link-boundaries-final`
 passes root CTest19/19 and link-controller tests, including null, negative,
 duplicate, unsorted, self and oversized vector validation. Negative/self pointer
 fixtures remain unit evidence; the live malformed matrix covers null/duplicate/
-unsorted entries. Actual transport interruption during link picking and unloaded
-in-map target coverage remain separate acceptance gaps.
+unsorted entries. Actual producer interruption during link picking and unloaded in-map targets
+are covered by the subsequent protected cases below.
 
 Native invalid-target run `build/stockpile-storage-native-links-20261025-124453`
 also verifies empty ground and a non-linkable door: neither changes links or
@@ -329,8 +378,8 @@ only the known separate-thread notice remains. Offline
 `build/qa/stockpile-link-order` passes root CTest19/19, controller and adapter
 checks, including4096-row pagination. The production four-group capture was
 inspected and identified incorrect workshop-row icons and missing row backgrounds;
-the subsequent long-list acceptance below covers their correction. Broader live
-lifecycle remains unfinished.
+the subsequent long-list acceptance below covers their correction. Producer
+replacement and unloaded-target acceptance are recorded below.
 
 The protected native long-list oracle is retained in
 `fixtures/areas/native_stockpile_links.json.scroll_oracle`. Run
@@ -378,7 +427,7 @@ PowerShell log, which can briefly deny its writer access.
 This earlier scaled-input test scales the links view directly. The responsive
 acceptance below now covers link input through the product canvas at four sizes;
 producer replacement and malformed/capacity boundaries are covered above.
-Stockpiles stays hidden.
+The public workflow retains these responsive layouts.
 
 Protected `build/areas-acceptance-20261025-162744` covers an unavailable in-map
 target through the semantic command path. The same workshop query returns one
@@ -756,7 +805,8 @@ empty and stale vectors. Exact row identities, names, order, visibility and
 selection matched; probe calls preserved native UI bytes and source settings.
 Owned DF closed without saving and source save hashes were unchanged. Bounded
 row digests and samples are retained in `native_stockpile_filters.json.wood_lists`.
-Non-ASCII search and rendered settings-panel parity remain unverified.
+These provider-only runs do not establish rendered or non-ASCII input behavior;
+see the viewport and text-input acceptance references for those scopes.
 Focused command run `build/stockpile-initialization-20261025-041402` passed26
 native observations, including three page reads and nine edits, plus creation
 and removal. Complete settings and unrelated state matched, diagnostics were
@@ -823,7 +873,8 @@ and stale vectors. It checks exact backing-pointer identity, names, order,
 visibility, enabled state and unchanged native UI/source settings around probes.
 Source save hashes were unchanged and owned DF closed without saving. The
 fixture retains bounded digests and samples; full records remain in that run.
-Rendered and non-ASCII cases remain unverified.
+These provider-only runs do not establish rendered or non-ASCII input behavior;
+see the viewport and text-input acceptance references for those scopes.
 
 Focused command run `build/stockpile-initialization-20261025-040235` passed233
 native observations for these ten lists:30 page reads,90 edits, creation and
@@ -871,7 +922,8 @@ indices. Probe calls preserved native UI bytes and source settings; owned DF
 closed without saving and source hashes were unchanged. Bounded comparisons
 are in `native_stockpile_filters.json.itemtype_provider`; the separate
 `itemtype_reference` captures35/25/85 native rows and18 actual All/None actions.
-Non-ASCII search and rendered settings-panel parity remain unverified.
+These provider-only runs do not establish rendered or non-ASCII input behavior;
+see the viewport and text-input acceptance references for those scopes.
 
 Adapter tests cover mixed-field ordering, filtered bulk and individual effects,
 invalid/missing/duplicate rows, and receipt invalidation when scalar identities
@@ -907,7 +959,8 @@ or314 with the extra stored fallback slot. Names, ordering, backing identity,
 visibility and state matched; probes preserved native UI/source settings.
 Source save hashes were unchanged and owned DF closed without saving. Bounded
 digests/samples are in `native_stockpile_filters.json.inorganic_lists`.
-Non-ASCII and rendered-panel acceptance remain unverified.
+These provider-only runs do not establish rendered or non-ASCII input behavior;
+see the viewport and text-input acceptance references for those scopes.
 Focused command run `build/stockpile-initialization-20261025-044859` passed315
 native observations,39 page reads and117 edits, plus creation/removal. Complete
 settings and unrelated-state snapshots matched; diagnostics were clean, source
@@ -947,8 +1000,8 @@ materials. Names come from DF's stone-name formatter with material-name fallback
 All formatting uses type0 and owned output; historical-material caches are
 unreachable. Missing/stale raw indices are skipped; referenced null reaction
 product strings are rejected before the native scan. Leaf edits preserve stored
-vector size. Summary membership still uses staged logic and is not established
-by these leaf integrations.
+vector size. Summary membership uses the separate native summary service described below;
+it is not inferred from these leaf integrations.
 
 Protected run `build/stockpile-presets-native-20261025-050605` passed48 exact
 native Stone list/search comparisons and96 actual All/None actions across full,
@@ -961,8 +1014,8 @@ remain unverified.
 Focused command run `build/stockpile-initialization-20261025-051147` passed99
 native observations,12 page reads and36 edits, plus creation/removal. Complete
 settings/unrelated-state snapshots matched; diagnostics were clean. Owned DF
-closed without saving and source save hashes were unchanged. The full stockpile
-workflow and launcher exposure remain unfinished.
+closed without saving and source save hashes were unchanged. These focused commands are supplemented by the full public stockpile workflow
+acceptance described above.
 
 Protected organic reference `build/stockpile-presets-native-20261025-051600`
 captured all30 Food/Leather/Cloth/Sheet leaf routes:28 populated lists across
@@ -1100,7 +1153,7 @@ helpers and recursively invoke their default leaf; Finished goods joins the comm
 Furniture tail at `0x361c46` with its own leaf mode64. All parent paths skip category
 activation with flag0 and reuse the leaf's raw/storage guards. Protected
 `build/stockpile-all-parent-native-20261025-071638` passed90 exact comparisons:
-all17 category entries and13 default-leaf reopenings, each with three queries.
+all 17 category entries and13 default-leaf reopenings, each with three queries.
 Field/index identities, labels/order, selection and search visibility matched;
 probe calls preserved source settings/native interface bytes, saves were unchanged
 and owned DF closed unsaved. Four direct lists need no parent context. Bounded
@@ -1336,8 +1389,8 @@ visible settings row counts are14,12,21 and14 respectively. These are viewer
 clearance adaptations, not whole-screen native pixel parity. The640 window is
 below DF's observed minimum. Matching-scale native geometry fixtures remain
 unchanged. Fractional placement no longer introduces a false outer scrollbar;
-real overflow retains scrolling. Text-input boundaries and
-the remaining stockpile audit are still required before launcher exposure.
+real overflow retains scrolling. Search and rename text-input boundaries are
+covered by their separate native references.
 
 Protected `build/stockpile-layout-native-20261025-162235` repeats native Food
 leaf arrow holds at all six native layout configurations. Each press moves5
@@ -1442,22 +1495,14 @@ diagnostics only; the 960-pixel Food capture was visually inspected.
 At912 and920 pixels with a scrollbar, DF computes negative text budgets and
 draws full names across the panel border, scrollbar and map. Captured row prefixes
 end at the first zero glyph and do not represent the entire spilled string.
-DF3D reproduces this overflow with a separate text layer below the scrollbar.
-Its clip rectangle spans the full caption width but only the visible page
-height, preserving vertical clipping and asynchronous scroll positioning.
-The two negative-budget cases now join the rendered regression; their full
-native labels are checked rather than the misleading captured prefixes.
-`build/qa/stockpile-native-text-overflow-ready` passes root CTest19/19, settings
-state and rendered checks, with the documented Godot shutdown/thread diagnostics.
-The912-pixel overflow capture was inspected against the native screenshot.
-Protected `build/areas-acceptance-20261025-182558` verifies actual Food selection
-and leaf scrolling at912 pixels alongside the five-size stockpile fit workflow.
-Both main-scene overflow captures were inspected: names cross the panel border,
-the scrollbar occludes glyphs and only visible rows render. Owned DF93172 closes
-unsaved and both save manifests match; only the known separate-thread notice
-remains. This follows native behavior and does not assume approval for the
-previously proposed clipping exception. The separate minimum-width header
-reachability check is accepted below.
+The maintainer explicitly approved keeping these item names inside the panel
+on2026-10-25. DF3D retains native caption data and clips the normal row label
+inside its item column. The separate overflow text layer is removed. This
+exception changes drawing only; native ordering, settings and validation remain
+unchanged. The separate native All/None header reachability behavior is retained.
+Both negative-budget cases remain in the rendered regression, checking full
+caption data, visible clipped labels and column bounds. Current public-launcher
+and narrow-window acceptance is recorded in the stockpile acceptance section.
 
 `build/qa/stockpile-search-field-final` passes root CTest19/19, the complete
 recorded character/length map, controller caret/selection checks, and rendered
@@ -1590,7 +1635,7 @@ checks through the real bridge, including previously populated disabled filters,
 plus creation/presets/painting/removal. Its131 native observations passed, source
 save hashes stayed unchanged, diagnostics were clean and owned DF closed.
 
-Stockpile management remains staged. Preset edits call DF's clear routine at RVA
+Preset edits call DF's clear routine at RVA
 `0x30e950` and preset initializer at `0x30dde0` on independently owned settings.
 Container limits follow the native inline click dispatch, counting extents through
 DF's coordinate predicate at `0x5587b0`. Settings and limits publish together after
@@ -1600,9 +1645,9 @@ preset importer and its buffer rollback helper have been removed.
 
 New piles prepare settings before publication through DF's category initializer
 at `0x30e070`. Empty-pile defaults retain organic/inorganic allowances, matching
-native constructor `0x30d790`. Creation's geometry and publication still use the
-existing implementation and require further native audit; this migration does not
-establish complete stockpile placement parity.
+native constructor `0x30d790`. Creation's native geometry, per-gesture publication and overlap-transfer
+acceptance are documented in the placement and resize sections; this settings
+initializer reference alone does not establish placement parity.
 
 `df3d stockpile-preset-read <building-id> <preset1..19>` reports owned predicted
 flags, vectors, fixed switches and container limits without editing the pile.
@@ -4566,11 +4611,11 @@ It has three pieces: the **bridge** (a DFHack plugin running inside Dwarf Fortre
 game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++), and the
 **viewer** (a Godot project plus a native extension).
 
-**Status.** The viewer loads a fortress from a running game and renders its terrain, creatures,
-items and animations; you can pause, unpause and save. The toolbar exposes Dig, Chop trees, Gather
-plants, Smooth, Remove, Inspect and Inspect buildings, plus read-only Residents, Work Details and
-Work orders panels; build, stockpile and zone editors exist but are hidden, and other management
-screens are not implemented. Windows x64 packages bundle the viewer and a bridge setup launcher;
+**Status.** Product launches own a native DF child session and render its terrain,
+creatures, items and animations; pause, unpause and save remain available. The
+toolbar exposes designation and inspection tools, Reports/alerts, construction
+and Stockpiles, plus read-only Residents, Work Details and Work orders panels.
+Zones remains staged, and other management screens are not implemented. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.
 
 ## Viewer preferences
@@ -8145,8 +8190,9 @@ headless controller suite. Add `-BoundaryOnly` to `-ControllerScene` for a focus
 zone geometry regression, or use `-ControllerScene -StockpilesOnly` to exercise
 stockpile creation, all settings categories, filtering, refresh, repaint and
 removal without entering Zones. The stockpile scope writes
-`stockpiles-only.json` into its evidence folder. It enables the staged launcher
-only for the test click after HUD layout; product availability remains unchanged.
+`stockpiles-only.json` into its evidence folder. Stockpile clicks now require the
+ordinary visible, enabled public launcher; the driver never forces its availability.
+Zones retains its separate staged test path.
 Protected stockpile run `build/areas-acceptance-20261025-074204` passed109 native
 observations and captured59 screenshots. It exercises all17 settings categories,
 selected sublist captions, filtered and individual edits, external refresh,

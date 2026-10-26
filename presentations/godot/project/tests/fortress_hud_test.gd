@@ -160,6 +160,7 @@ func run():
 	assert(hud.navigation["Build / construction"].get_parent() != hud.navigation.Remove.get_parent(),"Build starts the next native control group")
 	assert(hud.navigation["Build / construction"].get_parent().get_parent().get_parent() == hud.actions,"Construction group belongs to bottom actions")
 	assert(hud.navigation.Stockpiles.get_index() == hud.navigation["Build / construction"].get_index()+1 and hud.navigation.Zones.get_index() == hud.navigation.Stockpiles.get_index()+1,"Stockpile and Zone follow Build in native order")
+	assert(hud.navigation.Stockpiles.visible and not hud.navigation.Stockpiles.disabled,"Completed stockpile workflow has an enabled public launcher")
 	for title in hud.DISPLAY_ONLY_SLOTS:
 		assert(hud.navigation[title].visible and hud.navigation[title].disabled,"Native slot remains visible without exposing unfinished route: " + title)
 	hud.navigation["Labor"].pressed.emit()

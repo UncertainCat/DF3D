@@ -490,5 +490,37 @@
         "scene_stockpile_help_paint_remove_640x480.png": "f5936ace171bd1a28b636ef28802d465d127e076ec01229474cdc8203e414868"
       }
     }
+  },
+  "public_acceptance": {
+    "scope": "Normal visible and enabled Stockpiles HUD launcher; no test-only exposure overrides. Zones stays staged. Full workflow252 observations, actual producer replacement with held link query, and final display-only clipping77 observations. Each lane preserves both saves and closes owned DF unsaved; known Godot separate-thread notice only.",
+    "full": {
+      "run": "build/areas-acceptance-20261025-190250",
+      "files_sha256": {
+        "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+        "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+        "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234"
+      }
+    },
+    "restart": {
+      "run": "build/areas-acceptance-20261025-190902",
+      "files_sha256": {
+        "result.json": "aa3ce1b1c68ddeb49b9428f8f32a2cec92c3cdf2b6e1bad49a9323158afab597",
+        "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+        "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+        "link-restart-evidence.json": "09ee1b40421bf99d23613441b7e999edf3d78003aa8018d0f614760488b8ac84",
+        "scene_link_restart_reopened.png": "d329b7e9b0d84e8656571a3f3f0bd8dca1a6b14478513d76c58fbb587e94bbd4"
+      }
+    },
+    "clipping": {
+      "run": "build/areas-acceptance-20261025-191432",
+      "files_sha256": {
+        "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+        "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+        "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234"
+      }
+    }
   }
 }

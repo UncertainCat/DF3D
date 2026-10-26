@@ -548,6 +548,7 @@ local function candidate_row(job,v,r)
    type(display.name)~='string' or type(display.profession)~='string' then
    job.error='Native area helper unavailable';return nil
   end
+  if display.sheet_icon~=nil and (type(display.sheet_icon)~='string' or #display.sheet_icon>200*1024)then job.error='Native area helper unavailable';return nil end
   local color=display.name_color
   if type(color)~='table' then job.error='Native area helper unavailable';return nil end
   for key,limit in pairs{foreground=7,background=7,bright=1,alternate_foreground=7,alternate_background=7,alternate_bright=1,effect=3}do
@@ -569,7 +570,7 @@ local function candidate_row(job,v,r)
  end
  local label=display and display.name or job.candidate_kind==1 and not job.legacy and unit_name(v) or dfhack.df2utf(U.getReadableName(v))
  if job.legacy then return {id=v.id,name=label..' #'..v.id,label=''} end
- return {id=v.id,name=label,profession=display and display.profession or dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,owner_display=display,
+ return {id=v.id,name=label,profession=display and display.profession or dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,owner_display=display,sheet_icon=display and display.sheet_icon or nil,
   mood=U.getStressCategory(v)+1,grazer=job.candidate_kind==2 and U.isGrazer(v) or false,
   assigned=job.candidate_kind==1 and v.id==job.owner_id or job.assigned[v.id]~=nil,squad_use=-1,owner_order=order_facts}
 end
@@ -878,7 +879,7 @@ local function candidate_page(r,a,b,area_revision,available)
  if not job.complete then return out,0 end
  if expected~=0 and expected~=job.revision then return fail('List changed; refresh'),0 end
  out.message=locations and 'Observed area locations' or links and 'Observed area links' or 'Observed area candidates';out.list_revision=job.revision
- local rows={};local cursor=default(a,'cursor',0);local used=0
+ local rows={};local cursor=default(a,'cursor',0);local used=0;local page_bytes=1024
  -- New operations use an ordinal cursor so every native/name/category order
  -- paginates correctly. Legacy candidates retain their committed ID cursor.
  local first=cursor+1
@@ -895,7 +896,14 @@ local function candidate_page(r,a,b,area_revision,available)
  for index=first,#job.rows do
   local row=job.rows[index]
   if not legacy or row.id>=cursor then
-   if #rows==128 or used==available then out.next_cursor=legacy and row.id or index-1;break end
+   local row_bytes=9+#row.name+#(row.profession or '')
+   if row.owner_display then local d=row.owner_display;row_bytes=row_bytes+13+#d.first_line+#d.second_line+#d.status end
+   -- Encoded recipes include their alignment/table overhead and exceed the
+   -- semantic payload charge. Keep room for the surrounding response too.
+   row_bytes=row_bytes+#(row.sheet_icon or '')+64
+   if #rows==128 or used==available or (#rows>0 and page_bytes+row_bytes>220*1024)then out.next_cursor=legacy and row.id or index-1;break end
+   if page_bytes+row_bytes>220*1024 then return fail('Candidate page exceeds bounded payload'),used end
+   page_bytes=page_bytes+row_bytes
    rows[#rows+1]=row;used=used+1
   end
  end

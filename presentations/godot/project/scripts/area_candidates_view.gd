@@ -150,15 +150,15 @@ func refresh() -> void:
 			frame.add_theme_stylebox_override("panel",frame_style)
 			frame.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(frame)
 			if owner: owner_frames.append(frame)
-			if (owner and world.has_method("selection_icon")) or (not owner and world.has_method("creature_portrait")):
+			if (owner and world.has_method("candidate_icon")) or (not owner and world.has_method("creature_portrait")):
 				var portrait := TextureRect.new()
-				portrait.texture = world.selection_icon(1,int(row.id),true) if owner else world.creature_portrait(int(row.id))
+				portrait.texture = null if owner else world.creature_portrait(int(row.id))
 				portrait.position = Vector2(2,2) if owner else Vector2.ZERO
 				portrait.size = Vector2(32,32) if owner else Vector2(32,36)
 				portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 				portrait.stretch_mode = TextureRect.STRETCH_SCALE if owner else TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 				portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(portrait)
-				portrait_slots.append({"id":int(row.id),"view":portrait,"body":owner})
+				portrait_slots.append({"id":int(row.id),"view":portrait,"snapshot":owner,"recipe":row.get("sheet_icon",{}),"loaded":false})
 			var focus := Button.new(); focus.position = Vector2(408,6); focus.size = Vector2(24,24)
 			focus.tooltip_text = "Show on map"
 			for key in ["normal","hover","pressed","disabled","focus"]: focus.add_theme_stylebox_override(key,StyleBoxEmpty.new())

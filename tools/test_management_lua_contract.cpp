@@ -13,6 +13,7 @@ template<class T> T function(const char* name) {
   auto address=GetProcAddress(library,name);
   // DFHack builds Lua as C++; tolerate its pinned MSVC export decoration.
   static constexpr struct {const char* name;const char* symbol;} aliases[]={
+    {"lua_tolstring","?lua_tolstring@@YAPEBDPEAUlua_State@@HPEA_K@Z"},
     {"lua_getfield","?lua_getfield@@YAHPEAUlua_State@@HPEBD@Z"},
     {"lua_settop","?lua_settop@@YAXPEAUlua_State@@H@Z"},
     {"lua_type","?lua_type@@YAHPEAUlua_State@@H@Z"},
@@ -36,6 +37,7 @@ template<class T> T function(const char* name) {
   return std::bit_cast<T>(address);
 }
 extern "C" {
+const char* lua_tolstring(lua_State* L,int index,size_t* size) {static auto f=function<decltype(&lua_tolstring)>("lua_tolstring");return f(L,index,size);}
 int lua_gettop(lua_State* L) {static auto f=function<decltype(&lua_gettop)>("lua_gettop");return f(L);}
 size_t lua_rawlen(lua_State* L,int index) {static auto f=function<decltype(&lua_rawlen)>("lua_rawlen");return f(L,index);}
 int lua_rawgeti(lua_State* L,int index,lua_Integer n) {static auto f=function<decltype(&lua_rawgeti)>("lua_rawgeti");return f(L,index,n);}
@@ -241,6 +243,17 @@ int main(int argc,char** argv) {
         "{columns=45,room_value=0,first_line='first',second_line='',status='',name_color="+color+"}}}}";
       test(A::AreaCandidates,input.c_str(),mode==0,O::CandidateList);
     }
+    {
+      namespace m=df3d::mirror;
+      flatbuffers::FlatBufferBuilder buffer;
+      buffer.Finish(m::CreateSelectionAppearance(buffer,buffer.CreateVectorOfStrings(std::vector<std::string>{"PAGE"}),
+        buffer.CreateVectorOfStrings(std::vector<std::string>{}),buffer.CreateVectorOfStructs(std::vector<m::AppearanceLayer>{m::AppearanceLayer(0,0,0,1,1,65535,-1,-1,0,0)})));
+      std::string blob="string.char(";
+      for(size_t i=0;i<buffer.GetSize();++i){if(i)blob+=",";blob+=std::to_string(buffer.GetBufferPointer()[i]);}blob+=")";
+      for(int kind:{1,2})test(A::AreaCandidates,("return {"+envelope+"candidate_kind="+std::to_string(kind)+",candidates={{id=998,name='native',profession='',sheet_icon="+blob+"}}}").c_str(),kind==1,O::CandidateList);
+    }
+    for(const char* icon:{"false","{}","''","'malformed'","string.rep('x',230000)"})
+      test(A::AreaCandidates,("return {"+envelope+"candidate_kind=1,candidates={{id=998,name='native',profession='',sheet_icon="+icon+"}}}").c_str(),false,O::CandidateList);
     test(A::AreaInspect,("return {"+envelope+"steps=513}").c_str(),true,O::None,512);
     test(A::AreaInspect,("return {"+envelope+"steps=512}").c_str(),true,O::None,512);
     test(A::AreaDelete,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,O::None,0);

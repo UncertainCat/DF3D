@@ -390,26 +390,39 @@ exactly. The GPU check passes with the three documented Godot notices. Protected
 025247 additionally observes unchanged native cursor0 after CURSOR_DOWN/UP;
 this does not establish complete keyboard behavior. Attempted hidden-window
 hover injection did not reach native mouse state and provides no hover evidence.
-Owner portrait frames now reuse the original nine BUTTON_PICTURE_BOX cells and
-the selected variant, at40x36. Native025944 records anchored offsets2,2 for the
-first two rows; GPU `build/qa/owner-picture-frame-fixed` matches all288 outer
-border pixels for each frame state and checks32x32 image placement. Owner slots
-use resident `selection_icon(1,id,true)` full-body art rather than framed creature
-portraits. Visible slots refresh every100ms, replacing changed or unavailable
-art without detail RPCs; deterministic tests cover replacement and disappearance.
-Core19/19 and candidate/portrait checks pass; GPU has only the three known notices.
-Native025944 DF59136 closes unsaved with its source manifest unchanged.
-This verifies frame/placement and refresh wiring, not live owner image content.
-The resident thumbnail API requires a known map actor. Protected030711 proves
-native renders32x32 full-body images for inactive living unit996 and killed
-unit998, each anchored2,2; this save has28 deceased eligible Tomb candidates.
-DF116880 closes unsaved with source preserved. Hashes and actual unit flags are
-in `native_zone_assignment.json.owner_candidate_imagery`. Both candidates are
-excluded from the map stream, so owner results need scoped original-asset recipes
-(the existing Residents recipe is reusable), followed by independent rendered
-image comparison. Native cached textures remain test-only observations. Hover,
-full input, semantic refresh and complete assignment lifecycle acceptance are
-also still pending.
+Owner portrait frames reuse the original nine BUTTON_PICTURE_BOX cells and the
+selected variant, at40x36. Native025944 records anchored offsets2,2 for the first
+two rows; the GPU check matches all288 outer-border pixels per frame state.
+Owner candidates carry owned original-asset recipes independently of map
+residency. The private builder retains validated FlatBuffer bytes, not DF objects
+or graphics caches. Pages stop before220KiB including encoded recipes and reply
+slack; the wire boundary independently enforces its224KiB semantic payload cap.
+Visible rows compose their snapshot recipe at32x32 offset2,2, release textures
+off-screen and never demand creature detail. Missing recipes remain unknown.
+Appearance changes require a refreshed candidate snapshot; open-panel semantic
+refresh remains outstanding.
+
+Protected030711 observes native full-body images for inactive living unit996
+and killed unit998; this save has28 deceased eligible Tomb candidates. The native
+widget1423240 calls graphics6d6560 with flag0x400. The original-assets selector
+resolver retains explicit raw conditions but omits the additional named map
+anatomy mask: that mask incorrectly removed the killed child's body layers.
+Map and Residents rendering retain their existing behavior. No native drawing
+routine or cached texture is a runtime input.
+
+Protected `build/areas-acceptance-20261026-033448` passes201 observations with clean
+diagnostics, including native owner order/text/status/colors and assignment
+workflow effects. It exports actual recipes for996/998. Owned DF119600 closes
+unsaved and both save manifests match. `build/qa/owner-icon-final` passes core19/19,
+Lua boundary, pagination, thumbnail lifecycle and GPU checks; GPU has only the
+three known notices. Both32x32 RGBA images match native exactly, including all
+transparent pixels. Recipes and hashes are retained in
+`native_zone_assignment.json.owner_candidate_imagery`. MSVC build passes; the
+installed Management65 plugin SHA256 is
+204a4d4cfbadcb2c6c7f1c473f6b87e5ff808a6db7e05d0b384c5fb57279d022.
+This proves those two image cases and transport integration, not every creature
+appearance or full picker acceptance. Hover, full input, semantic refresh and
+complete assignment lifecycle acceptance remain required.
 
 Production owner rows now carry the native reader's color alternatives/effect
 through request-local callbacks, validated Lua data, DTOs, the model and Godot.
@@ -752,8 +765,8 @@ against the existing224KiB area-response payload limit. Missing historical
 recipes remain absent; they are never inferred from names or map visibility.
 Godot receives page names, palette names and ten integer values per layer in
 schema order, preserving signed palette rows and offsets. This establishes the
-transport; production collection, rendering and native-image parity remain to
-be integrated before exposing the owner picker.
+transport; production integration and scoped native-image parity are verified
+in the owner audit above. The owner picker remains staged pending full acceptance.
 `build/qa/owner-icon-contract-fixed` passes root CTest19/19 and the real Godot
 contract test. It checks lossless recipe decoding, historical absence, wrong
 operation/kind, invalid indices/cell sizes, per-recipe caps and aggregate payload
@@ -761,7 +774,7 @@ limits. These transport tests do not establish native image parity.
 
 Bridge, model and Godot must be rebuilt together. The current contract region is
 `Local\df3d_management_v65`; version64 peers cannot share it. The installed
-version64 development plugin must be rebuilt before subsequent live checks.
+development plugin and current viewer both use version65.
 Historical version62 evidence below describes the earlier overlap migration.
 
 `build/qa/owner-display-contract-final` passes root CTest19/19 and the Godot

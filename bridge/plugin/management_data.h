@@ -41,10 +41,10 @@ inline flatbuffers::Offset<df3d::mirror::SelectionAppearance> buildSelectionAppe
 struct ResidentAppearanceRecipe {
   std::vector<std::string> pages, palettes;
   std::vector<df3d::mirror::AppearanceLayer> layers;
-  void collect(df::unit* unit) {
+  void collect(df::unit* unit,bool unitSelector=false) {
     *this = {};
     df3d_appearance::Result source;
-    if (!df3d_appearance::resolve(unit, source) || source.layers.size() > 256) return;
+    if (!(unitSelector?df3d_appearance::resolveUnitSelector(unit,source):df3d_appearance::resolve(unit,source)) || source.layers.size() > 256) return;
     for (const auto& layer : source.layers) appendAppearanceLayer(pages, palettes, layers, layer);
   }
   flatbuffers::Offset<df3d::mirror::SelectionAppearance> build(flatbuffers::FlatBufferBuilder& b) const {

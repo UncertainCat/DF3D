@@ -163,8 +163,9 @@ public:
     void reconcile_resident_icons();
     godot::Ref<godot::Texture2D> creature_portrait(int64_t id);
     godot::Ref<godot::Texture2D> resident_icon(int64_t id);
+    godot::Ref<godot::Texture2D> candidate_icon(const godot::Dictionary& recipe);
     godot::Ref<godot::Texture2D> composite_portrait(const wm::SelectionAppearance& source);
-    godot::Ref<godot::Texture2D> composite_appearance_texture(const wm::SelectionAppearance& source, bool framed);
+    godot::Ref<godot::Texture2D> composite_appearance_texture(const wm::SelectionAppearance& source, bool framed, bool bodyCell=false);
     godot::Ref<godot::Texture2D> selection_icon(int kind,int64_t id,bool body_cell=false);
     int64_t management_request(const godot::String& domain, const godot::Dictionary& request);
     int64_t report_request(const godot::Dictionary& data);

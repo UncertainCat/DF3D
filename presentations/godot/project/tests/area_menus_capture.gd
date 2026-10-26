@@ -6,7 +6,7 @@ class CaptureWorld extends Test.FakeWorld:
 	func ui_texture(token: String, index := -1): return assets.ui_texture(token,index)
 	func ui_font_path(): return assets.ui_font_path()
 	func assets_root(): return assets.assets_root()
-	func selection_icon(_kind, _id, _body): return null
+	func candidate_icon(recipe): return assets.candidate_icon(recipe)
 
 func settings_reply(controller, world, service, rows: Array) -> void:
 	service.poll()
@@ -31,7 +31,7 @@ func owner_frame_pixels(view, reference: Dictionary, selected: bool) -> bool:
 	var frame: Panel = view.owner_frames[0]
 	if frame.size != Vector2(40,36): push_error("Owner picture frame dimensions differ"); return false
 	var slot: Dictionary = view.portrait_slots[0]
-	if not slot.body or slot.view.position != Vector2(2,2) or slot.view.size != Vector2(32,32):
+	if not slot.snapshot or slot.view.position != Vector2(2,2) or slot.view.size != Vector2(32,32):
 		push_error("Owner full-body anchor differs"); return false
 	var bytes := PackedByteArray()
 	for y in 36:
@@ -61,6 +61,20 @@ func run() -> void:
 	root.size = Vector2i(1200,800)
 	var assets := Df3dWorld.new(); root.add_child(assets)
 	if not assets.load_assets(OS.get_environment("DF3D_DF_PATH")): quit(1); return
+	var native_images: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_assignment.json")).owner_candidate_imagery
+	for sample in native_images.samples:
+		var recipe: Dictionary = sample.recipe.duplicate(true)
+		for layer in recipe.layers:
+			for index in layer.size(): layer[index] = int(layer[index])
+		var icon: Texture2D = assets.candidate_icon(recipe)
+		if icon == null: push_error("Owner candidate image unavailable: "+str(sample.unit.id)); quit(1); return
+		var image := icon.get_image(); image.convert(Image.FORMAT_RGBA8); image.clear_mipmaps()
+		image.save_png(directory.path_join("owner_body_%d.png" % int(sample.unit.id)))
+		var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(image.get_data())
+		if image.get_size() != Vector2i(32,32) or digest.finish().hex_encode() != str(sample.rgba_sha256):
+			push_error("Native owner candidate image pixels differ: "+str(sample.unit.id)); quit(1); return
+	for invalid in [{},{"tile_pages":[],"palettes":[],"layers":[[0,0,0,1,1,65535,-1,-1,0,0]]}]:
+		if assets.candidate_icon(invalid) != null: push_error("Unknown owner image was fabricated"); quit(1); return
 	var art = preload("res://scripts/original_ui.gd").new(); art.configure(assets)
 	var panel := PanelContainer.new(); panel.theme = art.theme
 	panel.position = Vector2(34,54); root.add_child(panel)

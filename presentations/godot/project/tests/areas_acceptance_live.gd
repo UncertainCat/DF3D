@@ -451,7 +451,15 @@ func zone_owner_effects() -> void:
 		var candidate_ids: Array=[]
 		for candidate in candidates.candidates:candidate_ids.append(int(candidate.id))
 		var compared:=await native("zone_owner_candidates",{"id":id,"ids":candidate_ids,"display_rows":candidates.candidates})
-		if id==ids[0]:tomb_extra_owner=int(compared.nonliving_or_noncitizen)
+		if id==ids[0]:
+			tomb_extra_owner=int(compared.nonliving_or_noncitizen)
+			var icon_recipes: Array = []
+			for candidate in candidates.candidates:
+				if int(candidate.id) in [996,998]:
+					if not check(candidate.get("sheet_icon") is Dictionary and not candidate.sheet_icon.layers.is_empty(),"inactive/deceased owner recipe missing"):return
+					icon_recipes.append({"id":int(candidate.id),"recipe":candidate.sheet_icon})
+			if not check(icon_recipes.size()==2,"owner image fixture candidates missing"):return
+			write_json("owner-icon-recipes.json",icon_recipes)
 	for id in [ids[0],ids[2]]:
 		for sort in [1,2,3,4]:
 			for descending in [false,true]:

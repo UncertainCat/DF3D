@@ -1277,6 +1277,8 @@ func _poll_portraits(delta: float) -> void:
 		var clip: Rect2 = candidates_view.scroll.get_global_rect()
 		for slot in candidates_view.portrait_slots:
 			if clip.intersects(slot.view.get_global_rect()): slots.append(slot)
+			elif bool(slot.get("snapshot",false)):
+				slot.view.texture = null; slot.loaded = false
 	elif zone_menu.visible and not selected.is_empty() and int(selected.get("owner_id",-1)) >= 0:
 		slots.append({"id":int(selected.owner_id),"view":zone_menu.owner_portrait})
 	portraits.poll(world,slots)

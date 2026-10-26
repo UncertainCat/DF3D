@@ -643,6 +643,13 @@ def main():
     owner_page = call(14, next_selector)
     assert owner_page["candidates"][1]["id"] == 129 and owner_page["next_cursor"] == 256
     assert not call(14, dict(selector, expected_list_revision=owners["list_revision"] + 1))["ok"]
+    lua.execute("saved_owner_display=owner_display;function owner_display(b,u)local d=saved_owner_display(b,u);d.sheet_icon=string.rep('x',110*1024);return d end")
+    large_icons = call(14, selector)
+    assert large_icons["ok"] and len(large_icons["candidates"]) == 1 and large_icons["next_cursor"] == 1
+    assert len(large_icons["candidates"][1]["sheet_icon"]) == 110*1024
+    continuation = call(14, dict(selector, cursor=1, expected_list_revision=large_icons["list_revision"]))
+    assert continuation["ok"] and continuation["candidates"][1]["id"] == 2 and continuation["next_cursor"] == 2
+    lua.execute("owner_display=saved_owner_display")
     descending = call(14, dict(selector, sort=0, sort_descending=True))
     assert descending["candidates"][1]["id"] == 260  # native category key, not reversed source order
     lua.execute("""

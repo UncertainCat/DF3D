@@ -3,6 +3,7 @@
 #include <string>
 #include <functional>
 #include "mirror_generated.h"
+#include "management_util.h"
 extern "C" {
 #include "lua.h"
 }
@@ -154,7 +155,15 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
           lua_pop(L,1);
         }
       }
-      lua_settop(L,top);return valid || bad("invalid owner display");
+      lua_settop(L,top);if(!valid)return bad("invalid owner display");
+      lua_getfield(L,-1,"sheet_icon");
+      if(!lua_isnil(L,-1)) {
+        size_t size=0;const auto* bytes=reinterpret_cast<const uint8_t*>(lua_type(L,-1)==LUA_TSTRING?lua_tolstring(L,-1,&size):nullptr);
+        valid=bytes && size<=224*1024 && operation==df3d::mirror::AreaOperation::CandidateList && candidateKind==1;
+        if(valid) {flatbuffers::Verifier verifier(bytes,size);valid=verifier.VerifyBuffer<df3d::mirror::SelectionAppearance>(nullptr);}
+        if(valid)valid=df3d::mirror::validateOwnerAppearance(*flatbuffers::GetRoot<df3d::mirror::SelectionAppearance>(bytes),payload)==nullptr;
+      }
+      lua_settop(L,top);return valid || bad("invalid owner sheet icon");
     }))return error;
     if(!array("links",128,[&](){payload+=6;return table() && number("id",0,INT32_MAX,true) && number("kind",0,2,true) && (value("kind")!=1 || bad("area link kind must be Stockpile or Workshop")) && number("direction",1,2,true) && text("name",512);}))return error;
     const auto count=[&](const char* key){lua_getfield(L,-1,key);const size_t n=lua_istable(L,-1)?lua_rawlen(L,-1):0;lua_pop(L,1);return n;};

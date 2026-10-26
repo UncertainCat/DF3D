@@ -8,10 +8,10 @@ func clear(world) -> void:
 func poll(world, slots: Array) -> void:
 	var detail_slots: Array = []
 	for slot in slots:
-		if bool(slot.get("body",false)):
-			# Resident full-body art is refreshed even when previously available.
-			# A vanished actor must not keep its last thumbnail or start detail RPCs.
-			slot.view.texture = world.selection_icon(1,int(slot.id),true) if world.has_method("selection_icon") else null
+		if bool(slot.get("snapshot",false)):
+			if not slot.loaded:
+				slot.view.texture = world.candidate_icon(slot.recipe) if world.has_method("candidate_icon") else null
+				slot.loaded = true
 		else: detail_slots.append(slot)
 	slots = detail_slots
 	if not world.has_method("demand_creature_info"): return

@@ -138,6 +138,37 @@ Ref<Texture2D> Df3dWorld::construction_item_icon(int itemType,const Dictionary& 
     icon->set_region(Rect2(pixels.px,pixels.py,pixels.pw,pixels.ph));return icon;
 }
 
+Ref<Texture2D> Df3dWorld::candidate_icon(const Dictionary& recipe) {
+    // Only caller-owned original-asset references; no live/map identity lookup.
+    wm::SelectionAppearance source;
+    for(const char* key:{"tile_pages","palettes","layers"})
+        if(!recipe.has(key) || recipe[key].get_type()!=Variant::ARRAY || Array(recipe[key]).size()>256)return {};
+    for(const char* key:{"tile_pages","palettes"}) {
+        auto& names=std::string_view(key)=="tile_pages"?source.tilePages:source.palettes;
+        const Array values=recipe[key];
+        for(int i=0;i<values.size();++i) {
+            if(values[i].get_type()!=Variant::STRING)return {};
+            const auto name=String(values[i]).utf8();
+            if(name.length()>(std::string_view(key)=="tile_pages"?256:512))return {};
+            names.emplace_back(name.get_data(),name.length());
+        }
+    }
+    const Array layers=recipe["layers"];
+    const int low[10]={0,0,0,1,1,0,-32768,-32768,-128,-128};
+    const int high[10]={65535,65535,65535,255,255,65535,32767,32767,127,127};
+    for(int i=0;i<layers.size();++i) {
+        if(layers[i].get_type()!=Variant::ARRAY)return {};
+        const Array values=layers[i];if(values.size()!=10)return {};
+        int v[10];for(int j=0;j<10;++j) {
+            if(values[j].get_type()!=Variant::INT)return {};
+            const int64_t n=values[j];if(n<low[j] || n>high[j])return {};v[j]=int(n);
+        }
+        if(size_t(v[0])>=source.tilePages.size() || (v[5]!=65535 && size_t(v[5])>=source.palettes.size()))return {};
+        source.layers.push_back({uint16_t(v[0]),uint16_t(v[1]),uint16_t(v[2]),uint8_t(v[3]),uint8_t(v[4]),uint16_t(v[5]),int16_t(v[6]),int16_t(v[7]),int8_t(v[8]),int8_t(v[9])});
+    }
+    return composite_appearance_texture(source,false,true);
+}
+
 Ref<Texture2D> Df3dWorld::creature_portrait(int64_t id) {
     if(id<0 || id>INT32_MAX || !assets_)return {};
     const auto snapshot=creatureInfo_.snapshot(int32_t(id));
@@ -151,7 +182,7 @@ Ref<Texture2D> Df3dWorld::composite_portrait(const wm::SelectionAppearance& sour
     selectionPortraitTexture_=composite_appearance_texture(source,true);
     return selectionPortraitTexture_;
 }
-Ref<Texture2D> Df3dWorld::composite_appearance_texture(const wm::SelectionAppearance& source, bool framed) {
+Ref<Texture2D> Df3dWorld::composite_appearance_texture(const wm::SelectionAppearance& source, bool framed, bool bodyCell) {
     if(!assets_ || source.layers.empty())return {};
     auto context=compositeContext();
     context.names.page=[&source](wm::PageId id)->std::string_view {
@@ -165,6 +196,7 @@ Ref<Texture2D> Df3dWorld::composite_appearance_texture(const wm::SelectionAppear
     PackedByteArray bytes;bytes.resize(int64_t(result.image.pixels.size()));
     std::copy(result.image.pixels.begin(),result.image.pixels.end(),bytes.ptrw());
     auto portrait=Image::create_from_data(result.image.width,result.image.height,false,Image::FORMAT_RGBA8,bytes);
+    if(bodyCell)portrait=portrait->get_region(Rect2i(-result.originX,-result.originY,result.cellsX*result.tileW,result.cellsY*result.tileH));
     // Native cached portraits include these original presentation assets around
     // the creature's PORTRAIT layers (DF53.16 reference captures). Keep this
     // framing in layer 4, outside the bridge's creature appearance recipe.

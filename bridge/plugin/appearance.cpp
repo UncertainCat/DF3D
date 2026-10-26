@@ -763,7 +763,7 @@ void reset() {
 }
 
 namespace {
-bool resolveCtx(const Ctx& c, Result& out, bool portrait = false);
+bool resolveCtx(const Ctx& c, Result& out, bool portrait = false, bool mapAnatomy = true);
 }
 
 bool resolve(df::unit* u, Result& out) {
@@ -771,6 +771,15 @@ bool resolve(df::unit* u, Result& out) {
     Ctx c;
     if (!buildCtx(u, c)) return false;
     return resolveCtx(c, out);
+}
+
+bool resolveUnitSelector(df::unit* u, Result& out) {
+    out = Result{};
+    Ctx c;
+    // widget_unit_portrait1423240 selects full-body graphics with flag400.
+    // Protected030711 renders killed child998 intact despite missing anatomy.
+    // Keep explicit raw BP conditions; omit the additional named map mask.
+    return buildCtx(u,c) && resolveCtx(c,out,false,false);
 }
 
 bool resolvePortrait(df::unit* u, Result& out) {
@@ -788,7 +797,7 @@ bool resolveCorpse(df::item* it, Result& out) {
 }
 
 namespace {
-bool resolveCtx(const Ctx& c, Result& out, bool portrait) {
+bool resolveCtx(const Ctx& c, Result& out, bool portrait, bool mapAnatomy) {
     ensureTexposMap();
     const df::creature_graphics_layer_setst* set = chooseSet(c, out.role, out.prof, portrait);
     if (!set) return !portrait && resolveSimple(c, out);
@@ -808,7 +817,7 @@ bool resolveCtx(const Ctx& c, Result& out, bool portrait) {
     // Named vanilla map pieces can reflect anatomy even though vanilla's map
     // raws omit presence conditions. Portraits retain their own explicit rules.
     uint16_t missing=0;
-    if(!portrait && !c.baby && c.raw->creature_id=="DWARF" && c.u && c.u->body.body_plan) {
+    if(mapAnatomy && !portrait && !c.baby && c.raw->creature_id=="DWARF" && c.u && c.u->body.body_plan) {
         const auto& parts=c.u->body.body_plan->body_parts;
         missing=anatomy::missingRegions(parts.size(),[&](size_t i) {
             const auto* p=parts[i];

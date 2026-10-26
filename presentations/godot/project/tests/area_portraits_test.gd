@@ -5,7 +5,10 @@ class World extends RefCounted:
 	var images: Dictionary = {}
 	var states: Dictionary = {}
 	var bodies: Dictionary = {}
-	func selection_icon(kind, id, body): return bodies.get(id) if kind == 1 and body else null
+	var compositions := 0
+	func candidate_icon(recipe):
+		compositions += 1
+		return bodies.get(recipe.get("id",-1))
 	func demand_creature_info(id): calls.append(id)
 	func creature_portrait(id): return images.get(id)
 	func creature_info_state(id): return states.get(id,{})
@@ -38,13 +41,13 @@ func run() -> void:
 	reader.clear(world)
 	check(reader.active==-1 and reader.attempted.is_empty() and world.calls[-1]==-1,"Close/session retirement releases demand and identities")
 	world.calls.clear(); world.bodies[7] = GradientTexture2D.new()
-	var bodies := [{"id":7,"view":first,"body":true}]
-	reader.poll(world,bodies)
-	check(first.texture == world.bodies[7] and world.calls.is_empty(),"Full-body rows use resident art without detail demand")
-	world.bodies[7] = GradientTexture2D.new(); reader.poll(world,bodies)
-	check(first.texture == world.bodies[7],"Full-body rows refresh changed appearance")
-	world.bodies.clear(); reader.poll(world,bodies)
-	check(first.texture == null and world.calls.is_empty(),"Unavailable full-body art clears rather than retaining or requesting a portrait")
+	var bodies := [{"id":7,"view":first,"snapshot":true,"recipe":{"id":7},"loaded":false}]
+	reader.poll(world,bodies); reader.poll(world,bodies)
+	check(first.texture == world.bodies[7] and world.calls.is_empty() and world.compositions == 1,"Owned candidate recipe is composed once without detail demand")
+	first.texture = null; bodies[0].loaded = false; reader.poll(world,bodies)
+	check(first.texture == world.bodies[7] and world.compositions == 2,"Returning visible row recomposes released texture")
+	world.bodies.clear(); bodies[0].loaded = false; reader.poll(world,bodies); reader.poll(world,bodies)
+	check(first.texture == null and world.calls.is_empty() and world.compositions == 3,"Unavailable recipe stays unknown without repeated composition or detail requests")
 	first.free(); second.free()
 	print("AREA_PORTRAITS_PASS" if failures==0 else "AREA_PORTRAITS_FAIL")
 	quit(failures)

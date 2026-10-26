@@ -60,6 +60,8 @@ void reset();
 bool resolve(df::unit* u, Result& out);
 // Native PORTRAIT layer sets; never substitute the map sprite.
 bool resolvePortrait(df::unit* u, Result& out);
+// Full-body selector image: native raw conditions, without map-only anatomy masks.
+bool resolveUnitSelector(df::unit* u, Result& out);
 
 // Cheap per-frame change hint: a hash of the unit fields the layer
 // conditions read that can change between frames (profession, inventory

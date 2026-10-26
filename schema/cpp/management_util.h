@@ -6,6 +6,18 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
+// Shared by wire validation and the private Lua builder's owned recipe blobs.
+inline const char* validateOwnerAppearance(const SelectionAppearance& image,size_t& payload) {
+  const auto* p=&image;
+  if(!p->tile_pages() || p->tile_pages()->size()>256 || !p->palettes() || p->palettes()->size()>256 ||
+     !p->layers() || p->layers()->size()>256)return "invalid owner sheet icon references";
+  payload+=12+p->layers()->size()*sizeof(AppearanceLayer);
+  for(const auto* t:*p->tile_pages()) {if(!t || t->size()>256)return "invalid owner sheet icon page";payload+=4+t->size();}
+  for(const auto* t:*p->palettes()) {if(!t || t->size()>512)return "invalid owner sheet icon palette";payload+=4+t->size();}
+  for(const auto* l:*p->layers())if(l->page()>=p->tile_pages()->size() || !l->cells_x() || !l->cells_y() ||
+     (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
+  return nullptr;
+}
 inline constexpr uint32_t kManagementVersion = 65;
 inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v65";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
@@ -982,11 +994,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=1 || row->id()<0 ||
            !p->tile_pages() || p->tile_pages()->size()>256 || !p->palettes() || p->palettes()->size()>256 ||
            !p->layers() || p->layers()->size()>256)return "invalid owner sheet icon references";
-        payload+=12+p->layers()->size()*sizeof(AppearanceLayer);
-        for(const auto* t:*p->tile_pages()) {if(!t || textSize(t)>256)return "invalid owner sheet icon page";payload+=4+textSize(t);}
-        for(const auto* t:*p->palettes()) {if(!t || textSize(t)>512)return "invalid owner sheet icon palette";payload+=4+textSize(t);}
-        for(const auto* l:*p->layers())if(l->page()>=p->tile_pages()->size() || !l->cells_x() || !l->cells_y() ||
-           (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
+        if(const auto* error=validateOwnerAppearance(*p,payload))return error;
       }
       payload+=9+textSize(row->name())+textSize(row->profession());
     }

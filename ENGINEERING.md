@@ -292,6 +292,22 @@ both save manifests. Repeat with `areas_acceptance.ps1 -ControllerScene
 in `build/qa/squad-scroll-final-core`. These focused lanes use25 existing squads
 as diagnostic fortress membership only in an owned, never-saved clone.
 
+Native `build/stockpile-storage-native-zone-squads-20261026-183821` establishes
+the squad picker's map boundary separately from animal selectors. In both
+Barracks and Archery, clicks at(1000,250) and(1100,700) keep the picker open and
+retain its parent zone. Paired clicks with the picker closed select empty
+terrain and zone420 respectively. Name, emblem and blank panel clicks are inert;
+Escape and right-click close only the picker. DF140196 exits unsaved and the
+source save remains unchanged. DF3D consumes outside left map clicks while the
+squad picker is visible. This matches native behavior and does not extend the
+animal-picker exception. `lifecycle_reference` retains all20 paired observations.
+Rendered main-scene runs `build/areas-acceptance-20261026-184029` (Barracks) and
+`build/areas-acceptance-20261026-184134` (Archery) verify all six inert pointer
+positions without issuing commands or changing target, Escape dismissal,
+reopening at row0 and right-click dismissal, alongside the scrolled assignments.
+Both pass with known Godot diagnostics and unchanged source/clone manifests.
+Core19/19 passes in `build/qa/squad-lifecycle-core`.
+
 ## Animal keyboard activation and portrait reference
 
 `native_zone_animals.json.animal_container_reference_order` records seven

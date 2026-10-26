@@ -45,7 +45,8 @@ local function capture(name,b,keep_mouse)
  if keep_mouse then restore_mouse();view:render(dfhack.getTickCount())end
  local ui=main.squad_selector
  local row={name=name,zone=b.id,zone_type=tostring(b.type),open=ui.open,context=ui.context,
-  target=ui.bld_id,scroll=ui.scroll_position,ids={},zone_assignments={},squads={},lines={},
+  target=ui.bld_id,parent_zone=main.civzone.cur_bld and main.civzone.cur_bld.id or -1,
+  parent_mode=main.bottom_mode_selected,scroll=ui.scroll_position,ids={},zone_assignments={},squads={},lines={},
   hover=main.current_hover,hover_enabled=main.hover_instructions_on}
  for _,id in ipairs(ui.squad_id)do row.ids[#row.ids+1]=id end
  if ui.open then
@@ -357,4 +358,30 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
  entity.squads:resize(0);for _,id in ipairs(original)do entity.squads:insert('#',id)end
  capture(kind..'-closed',b)
  rack_fixture.finish()
+ -- Independent native input probes. Restore only diagnostic parent selection
+ -- between cases; each picker is opened through its visible native button.
+ for _,probe in ipairs{{'name',440,118},{'emblem',392,118},{'blank-bottom',500,465},
+  {'blank-right',940,200},{'outside-upper',1000,250},{'outside-lower',1100,700},
+  {'escape',0,0,'LEAVESCREEN'},{'right-click',500,150,'_MOUSE_R'}}do
+  if main.squad_selector.open then gui.simulateInput(view,'LEAVESCREEN')end
+  main.civzone.cur_bld=b;main.bottom_mode_selected=3;view:render(dfhack.getTickCount())
+  if probe[1]:find('outside',1,true)then
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   pixel(probe[2],probe[3])
+   local baseline=capture(kind..'-lifecycle-'..probe[1]..'-without-picker',b)
+   baseline.input_probe={name=probe[1],x=probe[2],y=probe[3],key='_MOUSE_L',without_picker=true}
+   main.civzone.cur_bld=b;main.bottom_mode_selected=3;view:render(dfhack.getTickCount())
+  end
+  pixel(336,154)
+  assert(main.squad_selector.open and main.squad_selector.bld_id==b.id,'lifecycle picker failed to open')
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  if probe[4]then
+   g.mouse_x=probe[2]//8;g.mouse_y=probe[3]//12;g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3]
+   gui.simulateInput(view,probe[4]);view:render(dfhack.getTickCount())
+  else pixel(probe[2],probe[3])end
+  local observed=capture(kind..'-lifecycle-'..probe[1],b)
+  observed.input_probe={name=probe[1],x=probe[2],y=probe[3],key=probe[4] or '_MOUSE_L'}
+ end
+ if main.squad_selector.open then gui.simulateInput(view,'LEAVESCREEN')end
+ main.civzone.cur_bld=b;main.bottom_mode_selected=3;view:render(dfhack.getTickCount())
 end

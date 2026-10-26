@@ -213,6 +213,15 @@ func pointer_squads(id: int) -> void:
 		if not check(view.owner_scrollbar.first==15,"squad assignment reset native scroll position"):return
 		await capture("squad_scrolled_use_"+str(use))
 	await native("squad_finish")
+	for position in [Vector2(440,118),Vector2(392,118),Vector2(500,465),Vector2(940,200),Vector2(1000,250),Vector2(1100,700)]:
+		var receipt_count:=receipts.size()
+		await pointer_click(position)
+		if not check(view.visible and int(editor.selected.id)==id and int(editor.candidates_state.area.id)==id and receipts.size()==receipt_count,"inert squad panel click changed target or sent an action"):return
+	var escape:=InputEventKey.new();escape.keycode=KEY_ESCAPE;escape.pressed=true;root.push_input(escape,true)
+	if not await wait_ui(func():return not view.visible and editor.panel.visible and settled(),"Escape closes only squad picker"):return
+	await click_control(editor.zone_menu.controls.squads)
+	if not await wait_ui(func():return view.visible and not editor.candidates_state.busy() and editor.candidates_state.cursor==0 and settled(),"reopen squad picker"):return
+	if not check(view.owner_scrollbar.first==0,"reopened squad picker retained old scroll"):return
 	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
 	if not await wait_ui(func():return not view.visible and settled(),"close squad picker"):return
 

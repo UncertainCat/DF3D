@@ -1633,6 +1633,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not details_origin.is_empty():return
 	if not panel.visible:
 		return
+	# Native squad selectors retain the parent zone on outside map clicks.
+	# Escape/right-click are handled above and retire only the picker.
+	if stockpile_page == "squads" and candidates_view.visible and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		get_viewport().set_input_as_handled(); return
 	if not available or request_ticket != 0: return
 	var focus := get_viewport().gui_get_focus_owner()
 	if focus is LineEdit or focus is TextEdit:

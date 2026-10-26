@@ -4754,5 +4754,343 @@
         }
       ]
     }
+  },
+  "lifecycle_reference": {
+    "run": "build/stockpile-storage-native-zone-squads-20261026-183821",
+    "result_sha256": "8f9a3ed7382e9a017aae3183e9cc2e1cc27adca7a156d34b3cefae7b1c1b582c",
+    "scope": "Native pointer input, paired outside-map baseline, Escape and right-click; no runtime selector access",
+    "source_save_unchanged": true,
+    "observations": [
+      {
+        "name": "Barracks-lifecycle-name",
+        "zone": 536,
+        "open": true,
+        "target": 536,
+        "parent_zone": 536,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "name",
+          "x": 440,
+          "y": 118
+        }
+      },
+      {
+        "name": "Barracks-lifecycle-emblem",
+        "zone": 536,
+        "open": true,
+        "target": 536,
+        "parent_zone": 536,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "emblem",
+          "x": 392,
+          "y": 118
+        }
+      },
+      {
+        "name": "Barracks-lifecycle-blank-bottom",
+        "zone": 536,
+        "open": true,
+        "target": 536,
+        "parent_zone": 536,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "blank-bottom",
+          "x": 500,
+          "y": 465
+        }
+      },
+      {
+        "name": "Barracks-lifecycle-blank-right",
+        "zone": 536,
+        "open": true,
+        "target": 536,
+        "parent_zone": 536,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "blank-right",
+          "x": 940,
+          "y": 200
+        }
+      },
+      {
+        "name": "Barracks-lifecycle-outside-upper-without-picker",
+        "zone": 536,
+        "open": false,
+        "target": 536,
+        "parent_zone": -1,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "outside-upper",
+          "without_picker": true,
+          "x": 1000,
+          "y": 250
+        }
+      },
+      {
+        "name": "Barracks-lifecycle-outside-upper",
+        "zone": 536,
+        "open": true,
+        "target": 536,
+        "parent_zone": 536,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "outside-upper",
+          "x": 1000,
+          "y": 250
+        }
+      },
+      {
+        "name": "Barracks-lifecycle-outside-lower-without-picker",
+        "zone": 536,
+        "open": false,
+        "target": 536,
+        "parent_zone": 420,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "outside-lower",
+          "without_picker": true,
+          "x": 1100,
+          "y": 700
+        }
+      },
+      {
+        "name": "Barracks-lifecycle-outside-lower",
+        "zone": 536,
+        "open": true,
+        "target": 536,
+        "parent_zone": 536,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "outside-lower",
+          "x": 1100,
+          "y": 700
+        }
+      },
+      {
+        "name": "Barracks-lifecycle-escape",
+        "zone": 536,
+        "open": false,
+        "target": 536,
+        "parent_zone": 536,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "LEAVESCREEN",
+          "name": "escape",
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "name": "Barracks-lifecycle-right-click",
+        "zone": 536,
+        "open": false,
+        "target": 536,
+        "parent_zone": 536,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_R",
+          "name": "right-click",
+          "x": 500,
+          "y": 150
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-name",
+        "zone": 1494,
+        "open": true,
+        "target": 1494,
+        "parent_zone": 1494,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "name",
+          "x": 440,
+          "y": 118
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-emblem",
+        "zone": 1494,
+        "open": true,
+        "target": 1494,
+        "parent_zone": 1494,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "emblem",
+          "x": 392,
+          "y": 118
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-blank-bottom",
+        "zone": 1494,
+        "open": true,
+        "target": 1494,
+        "parent_zone": 1494,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "blank-bottom",
+          "x": 500,
+          "y": 465
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-blank-right",
+        "zone": 1494,
+        "open": true,
+        "target": 1494,
+        "parent_zone": 1494,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "blank-right",
+          "x": 940,
+          "y": 200
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-outside-upper-without-picker",
+        "zone": 1494,
+        "open": false,
+        "target": 1494,
+        "parent_zone": -1,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "outside-upper",
+          "without_picker": true,
+          "x": 1000,
+          "y": 250
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-outside-upper",
+        "zone": 1494,
+        "open": true,
+        "target": 1494,
+        "parent_zone": 1494,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "outside-upper",
+          "x": 1000,
+          "y": 250
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-outside-lower-without-picker",
+        "zone": 1494,
+        "open": false,
+        "target": 1494,
+        "parent_zone": 420,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "outside-lower",
+          "without_picker": true,
+          "x": 1100,
+          "y": 700
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-outside-lower",
+        "zone": 1494,
+        "open": true,
+        "target": 1494,
+        "parent_zone": 1494,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_L",
+          "name": "outside-lower",
+          "x": 1100,
+          "y": 700
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-escape",
+        "zone": 1494,
+        "open": false,
+        "target": 1494,
+        "parent_zone": 1494,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "LEAVESCREEN",
+          "name": "escape",
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "name": "ArcheryRange-lifecycle-right-click",
+        "zone": 1494,
+        "open": false,
+        "target": 1494,
+        "parent_zone": 1494,
+        "parent_mode": 3,
+        "scroll": 0,
+        "input_probe": {
+          "key": "_MOUSE_R",
+          "name": "right-click",
+          "x": 500,
+          "y": 150
+        }
+      }
+    ],
+    "main_scene": [
+      {
+        "zone": "Barracks",
+        "run": "build/areas-acceptance-20261026-184029",
+        "status": "passed_with_known_issues",
+        "save_manifests_unchanged": true,
+        "checks": [
+          "six inert pointer positions preserve target and issue no command",
+          "Escape closes only picker",
+          "reopen resets first row",
+          "right-click closes picker"
+        ]
+      },
+      {
+        "zone": "ArcheryRange",
+        "run": "build/areas-acceptance-20261026-184134",
+        "status": "passed_with_known_issues",
+        "save_manifests_unchanged": true,
+        "checks": [
+          "six inert pointer positions preserve target and issue no command",
+          "Escape closes only picker",
+          "reopen resets first row",
+          "right-click closes picker"
+        ]
+      }
+    ]
   }
 }

@@ -184,5 +184,77 @@
       "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     }
+  },
+  "repaint_location_refresh": {
+    "native_reference": "build/stockpile-storage-native-zone-defaults-20261025-212941",
+    "native_owned_df_pid": 120512,
+    "native_closed_unsaved": true,
+    "native_source_unchanged": true,
+    "observations": [
+      {
+        "goblets": 0,
+        "name": "zone-location-erase",
+        "update_count": 0,
+        "update_timer": 100,
+        "value": 0
+      },
+      {
+        "goblets": 0,
+        "name": "zone-location-regrow",
+        "update_count": 0,
+        "update_timer": 100,
+        "value": 0
+      }
+    ],
+    "ranges": [
+      {
+        "rva": "0x359718",
+        "size": "0xc5",
+        "fnv1a64": "0x8d6f08d35500c848",
+        "sha256": "76c36b027e5b675ca0d6d817d1b4a8e023566e016386729e13af62e22eccfffc"
+      },
+      {
+        "rva": "0x67e80",
+        "size": "0x10",
+        "fnv1a64": "0x7580a2b541177a3a",
+        "sha256": "fe56d95903a6f109f23ef7711b8cd3b0b90c65c28bd7b442154cc46d8f6568bd"
+      },
+      {
+        "rva": "0x6ff00",
+        "size": "0xa8",
+        "fnv1a64": "0x95c810961f82c229",
+        "sha256": "949a3c521c0af8c5aac7868458e19ee0a6831508cd36ab29aa6f6fc97a8157b6"
+      },
+      {
+        "rva": "0x6b290",
+        "size": "0x1310",
+        "fnv1a64": "0xe64d95c3fb4ca692",
+        "sha256": "eb915c3f7524106a789a7c50b52336e2eee779e2ca587b5ac2eb9ccbe460040d"
+      }
+    ],
+    "df3d_evidence": "build/areas-acceptance-20261025-213213",
+    "df3d_owned_df_pid": 122572,
+    "df3d_closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "native_observations": 135,
+    "diagnostics": "clean",
+    "bridge_sha256": "8085b5a931a8b87b1b6c7e9a6c797ad6d93f95f694f44e4765e88882a4af7cb2",
+    "erase": {
+      "goblets": 0,
+      "status": "passed",
+      "update_count": 0,
+      "update_timer": 100,
+      "value": 0
+    },
+    "regrow": {
+      "goblets": 0,
+      "status": "passed",
+      "update_count": 0,
+      "update_timer": 100,
+      "value": 0
+    },
+    "scratch_guards": 55584,
+    "changed_guards": 0,
+    "scope": "Controlled floor-only Tavern attached to a Meeting Area; poisons cached value, goblets and update scheduling before each repaint. Does not accept Location assignment/Details UI workflows or supplies populated by simulation."
   }
 }

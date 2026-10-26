@@ -251,6 +251,29 @@ elseif request.op=='zone_removal_result' then
  result.effects={'typed registration','assigned unit','assigned item','duplicate ownership','destroy target',
   'duplicate squad rooms','historical-figure link','duplicate tax rooms','punishment chain','owned job','independent job reference'}
  _G.df3d_zone_removal_fixture=nil
+elseif request.op=='zone_location_prepare' then
+ local b=building();local site=assert(dfhack.world.getCurrentSite())
+ assert(not _G.df3d_zone_location_fixture)
+ local location=df.abstract_building_inn_tavernst:new()
+ location.id=(#site.buildings>0 and site.buildings[#site.buildings-1].id or -1)+1
+ location.site_id=site.id;site.buildings:insert('#',location)
+ _G.df3d_zone_location_fixture={zone=b,site=site,location=location,old_site=b.site_id,old_location=b.location_id}
+ b.site_id=site.id;b.location_id=location.id;location.contents.building_ids:insert('#',b.id)
+ location.contents.location_value=654321;location.contents.count_goblets=123
+ location.contents.update_timer=13;location.contents.update_count=19
+elseif request.op=='zone_location_result' then
+ local saved=assert(_G.df3d_zone_location_fixture);local c=saved.location.contents
+ result.value=c.location_value;result.goblets=c.count_goblets
+ result.update_timer=c.update_timer;result.update_count=c.update_count
+ -- Native212941: the empty/floor-only location remains zero-valued; each
+ -- actual erase/regrow replaces poisoned caches and resets the scheduler.
+ assert(c.location_value==0 and c.count_goblets==0 and c.update_timer==100 and c.update_count==0,'location repaint effects differ from native')
+ c.location_value=654321;c.count_goblets=123;c.update_timer=13;c.update_count=19
+elseif request.op=='zone_location_clear' then
+ local saved=assert(_G.df3d_zone_location_fixture)
+ saved.zone.site_id=saved.old_site;saved.zone.location_id=saved.old_location
+ local values=saved.site.buildings;assert(values[#values-1]==saved.location)
+ values:erase(#values-1);saved.location:delete();_G.df3d_zone_location_fixture=nil
 elseif request.op=='zone_membership_site' then
  for _,candidate in ipairs(df.global.world.buildings.other.IN_PLAY)do
   if candidate:canMakeRoom() then

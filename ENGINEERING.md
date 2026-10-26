@@ -75,9 +75,38 @@ the original defect and replacement evidence.
 
 These controlled link fixtures do not accept assignment UI workflows. They do
 not create a reciprocal site-building inhabitant record, and the in-update
-branch has static coverage only. Location-specific repaint effects, Multi,
-assignment and full Zones/Locations acceptance remain separate work. Zones
+branch has static coverage only. Multi, assignment and full Zones/Locations
+acceptance remain separate work. Location repaint refresh is covered below. Zones
 remains staged.
+
+## Zone repaint Location refresh
+
+After zone relationship and overlap updates, the bridge now follows native
+repaint's Location tail at0x359718..0x3597dd (also0x3585a3,0x358a48,0x359561).
+It resolves the current semantic site and the zone's Location ID, calls the
+existing pinned native contents refresh0x6b290 with that Location's contents,
+ID and true, then sets update_timer=100/update_count=0. Lookup0x67e80/0x6ff00
+uses only the supplied site's building vector. Missing IDs/contents and other
+sites retain native no-op behavior. Native menu/selected-zone state is not an
+input. All new fingerprints, including the existing full refresh guard, are
+checked before geometry mutation. The cache helper is shared with existing
+Location assignment and Details flows, not a replacement value calculation.
+
+Native `build/stockpile-storage-native-zone-defaults-20261025-212941` confirms
+that both actual erase and regrow replace poisoned Location value/goblet caches
+and reset scheduling to100/0. The controlled floor-only Tavern returns zero
+value/goblets in both states. Owned DF120512 closes unsaved; source unchanged.
+The lane requires Windows PowerShell5 for its System.Drawing Add-Type host;
+a PowerShell7 attempt failed compilation before launching DF.
+
+Protected DF3D `build/areas-acceptance-20261025-213213` matches both native
+observations and passes135 observations overall with clean diagnostics. All
+55,584 path_cost/path_tag guards remain unchanged through Location repaint and
+zone removal. Owned DF122572 closes unsaved and both save manifests match.
+MSVC builds and offline `build/qa/zone-location-refresh` core19/19 plus Lua
+adapter checks pass. `fixtures/areas/native_zone_overlap.json` retains ranges,
+observations and scope. These controlled caches do not accept the Location
+assignment/Details UI or populated-supply simulation workflows.
 
 ## Native zone headings
 
@@ -173,8 +202,8 @@ retains observations, code hashes, evidence and verification limits.
 
 The native red Overlapping caption and revision tracking are exposed through
 the observation contract described above.
-Removal/Multi and location-specific repaint effects remain under audit. Zones is
-still staged; this is creation-effect verification, not full Zones acceptance.
+Removal and repaint evidence is documented above; Multi and assignments remain
+under audit. Zones is still staged; creation evidence is not full Zones acceptance.
 
 ## Native single-zone allocation and registration
 

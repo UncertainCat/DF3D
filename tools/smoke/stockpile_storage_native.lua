@@ -141,16 +141,35 @@ require('gui.script').start(function()
     assert(first.flags.room_collision==case[4] and second.flags.room_collision==case[4],'native overlap mismatch '..case[1])
     capture('overlap-'..case[1])
     if case[1]=='floor' then
-     click(34,9);capture('zone-repaint-before')
+     local site_owner=assert(dfhack.world.getCurrentSite())
+     local location=df.abstract_building_inn_tavernst:new()
+     location.id=(#site_owner.buildings>0 and site_owner.buildings[#site_owner.buildings-1].id or -1)+1
+     location.site_id=site_owner.id;site_owner.buildings:insert('#',location)
+     local old_site,old_location=second.site_id,second.location_id
+     second.site_id=site_owner.id;second.location_id=location.id
+     location.contents.building_ids:insert('#',second.id)
+     local function poison_location()
+      location.contents.location_value=654321;location.contents.count_goblets=123
+      location.contents.update_timer=13;location.contents.update_count=19
+     end
+     local function observe_location(phase)
+      local c=location.contents
+      records[#records+1]={name='zone-location-'..phase,value=c.location_value,goblets=c.count_goblets,
+       update_timer=c.update_timer,update_count=c.update_count}
+      assert(c.location_value~=654321 and c.count_goblets~=123 and c.update_timer==100 and c.update_count==0,'native location repaint did not refresh')
+     end
+     click(34,9);capture('zone-repaint-before');poison_location()
      click(14,12);map_click(site.x,site.y);map_click(site.x,site.y)
      records[#records+1]={name='zone-erased-overlap',first_collision=first.flags.room_collision,second_collision=second.flags.room_collision,
       second_tiles=dfhack.buildings.countExtentTiles(second,-1),exists=df.building.find(second.id)~=nil}
-     capture('zone-erased-overlap')
+     observe_location('erase');capture('zone-erased-overlap');poison_location()
      assert(not first.flags.room_collision and not second.flags.room_collision and dfhack.buildings.countExtentTiles(second,-1)==0,'erase did not refresh overlap')
      click(14,12);map_click(site.x,site.y);map_click(site.x,site.y)
      assert(first.flags.room_collision and second.flags.room_collision,'regrow did not restore overlap')
      records[#records+1]={name='zone-regrown-overlap',first_collision=first.flags.room_collision,second_collision=second.flags.room_collision}
-     capture('zone-regrown-overlap');click(38,9)
+     observe_location('regrow');capture('zone-regrown-overlap');click(38,9)
+     second.site_id=old_site;second.location_id=old_location
+     assert(site_owner.buildings[#site_owner.buildings-1]==location);site_owner.buildings:erase(#site_owner.buildings-1);location:delete()
      local second_id=second.id;click(42,9);assert(not df.building.find(second_id),'native Remove retained zone')
      records[#records+1]={name='zone-remove-overlap',first_collision=first.flags.room_collision}
      b=first;pile_id=b.id;map_click(site.x,site.y);capture('zone-remove-overlap')

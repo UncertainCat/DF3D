@@ -395,6 +395,35 @@ func created_zone_membership() -> void:
 	await request({"action":12,"kind":1,"id":int(area.id),"expected_revision":area.revision})
 	await native("removed", {"id":int(area.id)})
 
+func created_zone_location_repaint() -> void:
+	step = "native Location repaint refresh"
+	var catalog := await request({"action":7})
+	if stopped: return
+	var kind := -1
+	for choice in catalog.choices:
+		if str(choice.name)=="MeetingHall": kind=int(choice.id)
+	var p: Dictionary=fixture.origin
+	var origin:=Vector3i(int(p.x)+25,int(p.y)+4,int(p.z))
+	await native("overlap_prepare",{"scenario":"floor","site":{"x":origin.x,"y":origin.y,"z":origin.z}})
+	var made:=await request({"action":10,"kind":1,"zone_type":kind,"origin":origin,"width":1,"height":1})
+	if stopped:return
+	var id:=int(made.areas[0].id)
+	await native("zone_location_prepare",{"id":id})
+	for mode in [2,1]:
+		var current:=await inspect(id,1)
+		if stopped:return
+		await request({"action":11,"kind":1,"id":id,"expected_revision":current.revision,
+			"operation":5,"paint_mode":mode,"paint_z":origin.z,"spans":[{"x":origin.x,"y":origin.y,"length":1}]})
+		if stopped:return
+		await native("zone_location_result")
+	await native("zone_location_clear")
+	var current:=await inspect(id,1)
+	if stopped:return
+	await request({"action":12,"kind":1,"id":id,"expected_revision":current.revision})
+	await native("removed",{"id":id})
+	await native("overlap_measure",{"require_unchanged":true})
+	await native("overlap_clear")
+
 func created_zone_removal() -> void:
 	step = "native zone removal effects"
 	var catalog := await request({"action":7})
@@ -540,6 +569,7 @@ func exercise() -> void:
 		if not stopped: await created_zone_membership()
 		if not stopped: await created_zone_overlaps()
 		if not stopped: await created_zone_removal()
+		if not stopped: await created_zone_location_repaint()
 		return
 	for key in fixture.missing:
 		incomplete(str(key) + ": " + str(fixture.missing[key]))

@@ -1,4 +1,7 @@
 #include "zone_native.h"
+#include "location_value_native.h"
+#include "df/world_site.h"
+#include "df/abstract_building.h"
 #include "df/building_civzonest.h"
 #include "df/building_archerytargetst.h"
 #include "df/building_doorst.h"
@@ -148,7 +151,11 @@ bool nativeZoneCreateReady() {
         hash(base+0x558830,0xfa)==0xc5a7534fb1c71db4ULL &&
         hash(base+0xac8490,0xd2f)==0x25176e90bd30f8cfULL &&
         hash(base+0x14adea0,0xcb4)==0x1818a722f3967dcbULL &&
-        hash(base+0x5a8390,0x230)==0xabed683b2febe641ULL;
+        hash(base+0x5a8390,0x230)==0xabed683b2febe641ULL &&
+        hash(base+0x359718,0xc5)==0x8d6f08d35500c848ULL &&
+        hash(base+0x67e80,0x10)==0x7580a2b541177a3aULL &&
+        hash(base+0x6ff00,0xa8)==0x95c810961f82c229ULL &&
+        locationRefreshFunction()!=nullptr;
     return compatible;
 }
 df::building_civzonest* nativeZoneAllocate() {
@@ -261,7 +268,22 @@ bool nativeZoneRefresh(df::building_civzonest& zone) {
     reinterpret_cast<Relationships>(base+0x558550)(&zone);
     reinterpret_cast<Relationships>(base+0x558690)(&zone);
     reinterpret_cast<Relationships>(base+0x558830)(&zone);
-    return refreshOverlaps(base);
+    if(!refreshOverlaps(base))return false;
+    // Native359718..3597dd (also3585a3,358a48,359561): a repaint
+    // refreshes its current site's Location contents after membership changes.
+    // Resolve the semantic site identity, never the native selected-zone state.
+    if(zone.location_id!=-1 && df::global::plotinfo && zone.site_id==df::global::plotinfo->site_id) {
+        if(auto* site=df::world_site::find(zone.site_id)) {
+            using Find=df::abstract_building* (*)(df::world_site*,int32_t);
+            if(auto* location=reinterpret_cast<Find>(base+0x67e80)(site,zone.location_id)) {
+                if(auto* contents=location->getContents()) {
+                    locationRefreshFunction()(contents,location->id,true);
+                    contents->update_timer=100;contents->update_count=0;
+                }
+            }
+        }
+    }
+    return true;
 }
 }
 

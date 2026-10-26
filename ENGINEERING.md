@@ -289,6 +289,27 @@ not establish full row pixel parity.
 including the native foreground-mask hash. GPU status is
 passed_with_known_issues for the three documented Godot notices.
 
+`df3d zone-owner-color-sources-read <unit id>` exposes two verified semantic
+readers used by native name coloring:0x13b3030 resolves the current identity
+through historical-figure reputation, and0xbeb780 selects the minimum-precedence
+current noble position, retaining the first equal-priority link. Owned outputs
+contain identity/profession/impersonated-HF and entity/position/assignment IDs,
+the position's color flag and its three color components. The identity HF field
+at0x88 is impersonated_hf, not the identity's originating histfig_id at0x8c.
+No pointers cross the diagnostic boundary. The identity lookup may update the
+same semantic unit HF cache index as the existing owner predicate.
+
+Protected `build/stockpile-storage-native-zone-owner-20261026-013158` verifies79
+row samples, including24 with a noble position and one controlled identity.
+The king's temporary Miner identity yields native fg7/bg0/not bright, despite
+the returned noble position retaining fg5/bg0/bright. Legendary skills are
+temporarily lowered to isolate precedence. All fixture fields are restored;
+the owned identity is erased and deleted. The native capture was inspected.
+UI/gps and initial map-search guards remain unchanged. DF131904 closes unsaved
+with source preserved. MSVC and `build/qa/owner-color-sources` core19/19 plus
+adapter pass. This establishes semantic source readers and identity precedence,
+not a complete final name-color reader or production row coloring.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

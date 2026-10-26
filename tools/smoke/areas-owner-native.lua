@@ -147,6 +147,20 @@ local function capture(name)
       for x=1,width do assert(lines[line+1].bytes[x]==(expected[line][x] or 0),'native display reader mismatch: '..name..'/'..row.unit_id..'/'..line..'/'..x)end
      end
      local unit=assert(df.unit.find(row.unit_id))
+     local source_text,source_code=dfhack.run_command_silent('df3d','zone-owner-color-sources-read',tostring(row.unit_id));assert(source_code==0,source_text)
+     local sources=require('json').decode(source_text)
+     if sources.identity_id>=0 then
+      local identity=assert(df.identity.find(sources.identity_id),'native identity missing')
+      assert(identity.profession==sources.identity_profession and identity.impersonated_hf==sources.identity_impersonated_histfig,'identity facts differ')
+     end
+     if sources.position_id>=0 then
+      local entity=assert(df.historical_entity.find(sources.entity_id),'native position entity missing')
+      local position,assignment
+      for _,value in ipairs(entity.positions.own)do if value.id==sources.position_id then position=value end end
+      for _,value in ipairs(entity.positions.assignments)do if value.id==sources.assignment_id then assignment=value end end
+      assert(position and assignment and assignment.position_id==position.id,'native position source differs')
+      for i=0,2 do assert(position.color[i]==sources.position_color[i+1],'native position color differs')end
+     end
      local skills={}
      if unit.status.current_soul then
       for _,skill in ipairs(unit.status.current_soul.skills)do
@@ -158,7 +172,7 @@ local function capture(name)
        flags1=unit.flags1.whole,flags2=unit.flags2.whole,flags3=unit.flags3.whole,
        override_tile=unit.uwss_display_tile,override_fg=unit.uwss_display_color_f,override_bg=unit.uwss_display_color_b,
        override_bright=unit.uwss_display_color_br,legendary_skills=skills,
-       dfhack_profession_color=dfhack.units.getProfessionColor(unit)}}
+       dfhack_profession_color=dfhack.units.getProfessionColor(unit),native_sources=sources}}
     end
    end
    records[#records+1]={name=name..'-display-text',samples=samples}
@@ -395,6 +409,37 @@ local ok,why=pcall(function()
   color_case('override-before-ghost',1,2,true)
   first_unit.uwss_display_tile=0
   color_case('ghost',7,0,true)
+  first_unit.flags3.ghostly=false
+  local saved_skills={}
+  for _,skill in ipairs(first_unit.status.current_soul.skills)do
+   saved_skills[#saved_skills+1]={skill=skill,rating=skill.rating}
+  end
+  local hf=assert(df.historical_figure.find(first_unit.hist_figure_id))
+  local info=assert(hf.info);local old_reputation=info.reputation
+  local reputation=old_reputation or df.reputation_profilest:new()
+  local old_identity=reputation.cur_identity
+  local identity,inserted
+  local identity_ok,identity_error=pcall(function()
+   for _,saved in ipairs(saved_skills)do if saved.skill.rating>=15 then saved.skill.rating=14 end end
+   info.reputation=reputation
+   local all=df.global.world.identities.all
+   identity=df.identity:new();identity.id=#all>0 and all[#all-1].id+1 or 0
+   identity.name:assign(first_unit.name);identity.race=first_unit.race;identity.caste=first_unit.caste
+   identity.type=df.identity_type.FalseIdentity;identity.profession=df.profession.MINER
+   identity.histfig_id=first_unit.hist_figure_id;identity.impersonated_hf=-1
+   all:insert('#',identity);inserted=true;reputation.cur_identity=identity.id
+   color_case('identity-before-noble',7,0,false)
+  end)
+  reputation.cur_identity=old_identity
+  if inserted then
+   local all=df.global.world.identities.all
+   assert(all[#all-1]==identity,'identity fixture ownership changed');all:erase(#all-1)
+  end
+  if identity then identity:delete()end
+  info.reputation=old_reputation
+  if not old_reputation then reputation:delete()end
+  for _,saved in ipairs(saved_skills)do saved.skill.rating=saved.rating end
+  assert(identity_ok,identity_error)
  end)
  first_unit.uwss_display_tile=old_color[1];first_unit.uwss_display_color_f=old_color[2]
  first_unit.uwss_display_color_b=old_color[3];first_unit.uwss_display_color_br=old_color[4]

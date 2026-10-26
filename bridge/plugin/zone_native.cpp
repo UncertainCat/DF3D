@@ -14,6 +14,10 @@
 #include "df/plotinfost.h"
 #include "df/punishment.h"
 #include "df/historical_figure.h"
+#include "df/identity.h"
+#include "df/historical_entity.h"
+#include "df/entity_position.h"
+#include "df/entity_position_assignment.h"
 #include "df/histfig_site_link.h"
 #include "df/squad.h"
 #include "df/squad_barracks_infost.h"
@@ -183,6 +187,37 @@ std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzon
     // its missing-soul sentinel is -200000, not a derived happiness category.
     if(candidate.status.current_soul)facts.stress=candidate.status.current_soul->personality.stress;
     return facts;
+}
+std::optional<ZoneOwnerColorSources> nativeZoneOwnerColorSources(df::unit& candidate) {
+    if(!df::global::world || !nativeZoneOwnerCandidatesReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=
+        hash(base+0x13b3030,0x56)==UINT64_C(0xf9404dd6eb50e2af) &&
+        hash(base+0x72570,0x98)==UINT64_C(0xa69932c0f279084a) &&
+        hash(base+0xbeb780,0x114)==UINT64_C(0x2bea0cd9ba41c566) &&
+        hash(base+0x1ba140,0xa8)==UINT64_C(0xdb6eb9072d509b29);
+    if(!compatible)return std::nullopt;
+    static_assert(offsetof(df::identity,profession)==0xac && offsetof(df::identity,impersonated_hf)==0x88);
+    static_assert(offsetof(df::entity_position,precedence)==0x2d0 && offsetof(df::entity_position,color)==0x378);
+    static_assert(offsetof(df::historical_entity,positions)+offsetof(decltype(df::historical_entity::positions),own)==0x10c0);
+    static_assert(offsetof(df::historical_entity,positions)+offsetof(decltype(df::historical_entity::positions),assignments)==0x1110);
+    using Identity=df::identity* (*)(df::unit*);
+    using Position=df::entity_position* (*)(df::historical_figure*,int32_t,df::historical_entity**,df::entity_position_assignment**);
+    ZoneOwnerColorSources result;
+    // Native identity lookup may refresh the unit's semantic HF index. Native
+    // position selection scans current position links and keeps minimum
+    // precedence, preserving the first equal-priority link. Outputs are owned.
+    if(auto* identity=reinterpret_cast<Identity>(base+0x13b3030)(&candidate)) {
+        result.identityId=identity->id;result.identityProfession=int32_t(identity->profession);result.identityImpersonatedHistfig=identity->impersonated_hf;
+    }
+    if(auto* hf=df::historical_figure::find(candidate.hist_figure_id)) {
+        df::historical_entity* entity=nullptr;df::entity_position_assignment* assignment=nullptr;
+        if(auto* position=reinterpret_cast<Position>(base+0xbeb780)(hf,-1,&entity,&assignment)) {
+            result.positionId=position->id;result.entityId=entity?entity->id:-1;result.assignmentId=assignment?assignment->id:-1;
+            result.positionHasColor=position->flags.is_set(df::entity_position_flags::COLOR);result.positionColor=position->color;
+        }
+    }
+    return result;
 }
 std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzonest& zone,df::unit& candidate) {
     if(!df::global::world || !staffOrderingFunctions())return std::nullopt;

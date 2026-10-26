@@ -1984,5 +1984,70 @@
     ],
     "ownership": "None of these drawing routines is a callable runtime semantic API. Native widget14237a0 calls1333bc0(unit,background0,blink1,ignore_identity0). DFHack getProfessionColor is a reconstruction and disagrees with all three controlled color cases.",
     "remaining": "Independent native semantic leaf audit and owned color/effect description; identity/noble/prisoner/slave/undead/water/on-fire cases, legendary animation, portraits and row background/selection."
+  },
+  "owner_color_sources": {
+    "status": "Native identity and noble-position source readers verified; final name color/effects unfinished",
+    "diagnostic": "df3d zone-owner-color-sources-read <unit id>",
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-013158",
+    "result_sha256": "218eec53ae66406f793dcc2ca8b4020fa7d7ca4afee5659c8fdcec635063609d",
+    "owned_df_pid": 131904,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "plugin_sha256": "2afc34be85b803b4abc430066b1a39c765f2c28c78c60f23ed677fcebbe099f5",
+    "sample_count": 79,
+    "position_samples": 24,
+    "identity_samples": 1,
+    "identity_before_noble": {
+      "unit_id": 5981,
+      "sources": {
+        "assignment_id": 3,
+        "entity_id": 245,
+        "identity_id": 294,
+        "identity_impersonated_histfig": -1,
+        "identity_profession": 0,
+        "position_color": [
+          5,
+          0,
+          1
+        ],
+        "position_has_color": true,
+        "position_id": 0
+      },
+      "native_color": [
+        7,
+        0,
+        false
+      ],
+      "fixture": "Owned temporary FalseIdentity with Miner profession; legendary skill ratings temporarily14. Original identity pointer, skills, override and ghost fields restored; temporary identity erased and deleted."
+    },
+    "ranges": [
+      {
+        "rva": "0x13b3030",
+        "length": "0x56",
+        "fnv1a64": "f9404dd6eb50e2af",
+        "role": "current identity through HF reputation"
+      },
+      {
+        "rva": "0x72570",
+        "length": "0x98",
+        "fnv1a64": "a69932c0f279084a",
+        "role": "identity vector lookup"
+      },
+      {
+        "rva": "0xbeb780",
+        "length": "0x114",
+        "fnv1a64": "2bea0cd9ba41c566",
+        "role": "minimum-precedence current noble position; first tie retained"
+      },
+      {
+        "rva": "0x1ba140",
+        "length": "0xa8",
+        "fnv1a64": "db6eb9072d509b29",
+        "role": "entity own-position lookup"
+      }
+    ],
+    "dependencies": "Reuses owner-candidate guards for HF/entity/assignment lookup and native position-link type/accessor. Other virtual type leaves only return their enum. Identity helper may refresh semantic unit HF lookup index. No graphics/menu/search state.",
+    "checks": "Identity/position/assignment IDs and values resolve against semantic records; UI/gps and initial map path_cost/path_tag guards unchanged. Native identity profession takes precedence over actual noble color.",
+    "remaining": "Final owned color precedence/effects, ordinary profession table/raw fallback, slave/prisoner/curse/undead/water/fire, legendary animation, production contract/rendering and full picker acceptance."
   }
 }

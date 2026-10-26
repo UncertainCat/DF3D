@@ -1999,6 +1999,20 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         for(unsigned char byte:result->label)bytes.append(int(byte));output.append(bytes);
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="zone-owner-color-sources-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* unit=df::unit::find(id);if(!unit)return CR_FAILURE;
+        const auto facts=df3d_area::nativeZoneOwnerColorSources(*unit);if(!facts)return CR_FAILURE;
+        Json::Value output;
+        output["identity_id"]=facts->identityId;output["identity_profession"]=facts->identityProfession;output["identity_impersonated_histfig"]=facts->identityImpersonatedHistfig;
+        output["position_id"]=facts->positionId;output["entity_id"]=facts->entityId;output["assignment_id"]=facts->assignmentId;
+        output["position_has_color"]=facts->positionHasColor;output["position_color"]=Json::Value(Json::arrayValue);
+        for(auto color:facts->positionColor)output["position_color"].append(int(color));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-owner-text-read") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
@@ -2328,6 +2342,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d zone-owner-order-read <zone id>\n"
         "df3d zone-owner-status-read <zone id> <unit id>\n"
         "df3d zone-owner-text-read <unit id> <columns>\n"
+        "df3d zone-owner-color-sources-read <unit id>\n"
         "df3d zone-owner-query-read <query>\n"
         "    Read-only diagnostic: semantic room observation and traversal mask as JSON.\n"
           "df3d room-seed <building id>\n"

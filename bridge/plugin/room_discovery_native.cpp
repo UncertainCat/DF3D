@@ -1,4 +1,5 @@
 #include "room_discovery_native.h"
+#include "room_multiseed.h"
 #include "zone_native.h"
 #include "modules/Maps.h"
 #include "df/building_doorst.h"
@@ -88,10 +89,7 @@ RoomPlan observeNativeRoomPlan(RoomFurniture kind,const Bounds& selection,int32_
     auto seed=observeNativeRoomSeed(building->id);
     if(seed.furniture==kind)seeds.push_back(seed);
   }
-  return planRooms(seeds,kind,selection,z,[](const RoomSeed& seed) {
-    const auto observed=observeNativeRoom(seed.x,seed.y,seed.z);
-    return RoomDiscovery{observed.traversal.status,
-      compactRoom(observed.x,observed.y,observed.z,observed.width,observed.height,observed.traversal)};
-  });
+  return planRoomSet(seeds,kind,selection,z,df::global::world->map.x_count,
+    df::global::world->map.y_count,observeCell);
 }
 }

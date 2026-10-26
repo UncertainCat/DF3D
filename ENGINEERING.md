@@ -118,7 +118,7 @@ mixed sets and scoped/stale Undo checks pass. Owned DF128804 closes unsaved and
 both save manifests match. Evidence is retained in
 `fixtures/areas/native_zone_publication.json`. Discovery is still owned inline
 orchestration: native's shared search generations cannot be borrowed. Its tile
-hidden-map/traversal audit and full Zones/Locations acceptance remain outstanding.
+full Zones/Locations acceptance remains outstanding.
 
 Main-scene `build/areas-acceptance-20261025-220051` passes35 observations
 through viewport input, covering creation, partial cancellation, cross-elevation
@@ -137,8 +137,7 @@ occupancy and liquid classification. The subsequent native door rule is inline:
 when occupancy is nonzero, a matching center in world.buildings.other.DOOR stops
 expansion regardless of animation. Its reference0x355c53..0x355e23 is pinned.
 The flood queue and visited cells remain independently owned. Missing-map observation guards remain. Hidden-map and seed behavior is verified
-below; remaining traversal boundaries and multiple-seed propagation still need
-final full-Multi audit.
+below; the shared-frontier behavior is verified below.
 
 Protected `build/areas-acceptance-20261025-220802` passes193 observations with
 clean diagnostics, including exact masks from36 recorded native terrain,
@@ -182,6 +181,39 @@ map search arrays. Owned DF118444 closes unsaved and both save manifests match.
 MSVC builds; `build/qa/multi-hidden-seed` core19/19 and Lua adapter checks pass.
 `fixtures/areas/native_zone_publication.json` retains compact native results,
 source hashes, the seed-initialization fingerprint and verification scope.
+
+## Multi shared search frontiers
+
+Multi discovery now uses one owned label map and alternating frontiers for all
+selected furniture. Native0x35568f..0x356ee8 is inline and uses global search
+storage, so it cannot be called wholesale. The owned orchestration preserves
+seed order, reads each parent's current label for every neighbor, replaces higher
+labels with lower labels, runs twenty rounds and retains native's120000-entry
+frontier capacity. Each surviving label is checked for enclosure and includes
+its reached boundaries. Native tile eligibility remains the semantic authority.
+The old independent per-seed planner has been removed; grouping tests now call
+the shared planner. The full inline reference is fingerprinted.
+
+Native `build/stockpile-storage-native-multi-discovery-20261025-222644` exposed
+the defect in a controlled35x5 enclosed room: selecting two distant beds and a
+middle bed produces two native enclosure refusals, while the old bridge created
+a Dormitory using the middle bed's independent radius. Selecting either end,
+both ends or reversing their priority also supplies reference refusal counts.
+The fixture restores tile/designation/occupancy fields, furniture coordinates
+and temporarily changed zone types/flags. Owned DF124232 closes unsaved with its
+source unchanged.
+
+Final native comparison223509 matches all five long-room cases. Its actual native
+UI is compared with bridge read-only plans; the native two-refusal capture was
+inspected. Owned DF127816 closes unsaved, source unchanged. Protected semantic
+`build/areas-acceptance-20261025-223144` passes256 actual bridge observations
+with clean diagnostics, including the existing creation/Undo, geometry, furniture,
+hidden-tile, liquid, stale and client-ownership cases. All66 guards preserve55,584
+search arrays; owned DF117904 closes unsaved and both save manifests match.
+MSVC and core19/19 plus Lua adapter checks pass. Open map-edge rejection has
+native static evidence at0x3562ee..0x35633b and a focused core regression; no fresh
+controlled map-edge UI capture is claimed. Full Zones/Locations assignment and
+lifecycle acceptance remains outstanding.
 
 ## Zone repaint Location refresh
 

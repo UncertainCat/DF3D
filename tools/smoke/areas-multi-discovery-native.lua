@@ -60,3 +60,48 @@ for _,case in ipairs{{'visible'},{'hidden-floor',172,58},{'hidden-boundary',169,
  seed_block.tiletype[12][9]=seed_tile;seed_block.designation[12][9].whole=seed_designation
  assert(ok,why)
 end
+-- Controlled long-room probes: isolate selected seeds without borrowing runtime
+-- menu state. Native UI below remains the oracle; all fixture facts are restored.
+local beds={};local chosen={bed}
+for _,b in ipairs(df.global.world.buildings.other.BED)do
+ beds[#beds+1]={b=b,x1=b.x1,x2=b.x2,y1=b.y1,y2=b.y2,z=b.z,cx=b.centerx,cy=b.centery}
+ if b.id~=bed.id and #chosen<3 then chosen[#chosen+1]=b end
+end
+assert(#chosen==3)
+local zones={};for _,z in ipairs(df.global.world.buildings.other.ANY_ZONE)do zones[#zones+1]={z=z,type=z.type,flags=z.flags.whole};z.type=df.civzone_type.WaterSource end
+local tiles={}
+for y=55,59 do for x=148,182 do
+ local b=assert(dfhack.maps.getTileBlock({x=x,y=y,z=164}));local xx,yy=x%16,y%16
+ tiles[#tiles+1]={b=b,x=xx,y=yy,tile=b.tiletype[xx][yy],des=b.designation[xx][yy].whole,occ=b.occupancy[xx][yy].whole}
+ b.tiletype[xx][yy]=(x==148 or x==182 or y==55 or y==59)and 430 or 43
+ b.designation[xx][yy].hidden=false;b.designation[xx][yy].flow_size=0;b.occupancy[xx][yy].building=0
+end end
+local ok,why=pcall(function()
+ local function move(b,x)
+  b.x1=x;b.x2=x;b.centerx=x;b.y1=57;b.y2=57;b.centery=57;b.z=164
+ end
+ local function corner(x)
+  dfhack.gui.revealInDwarfmodeMap({x=x,y=57,z=164},true);view:render(dfhack.getTickCount());mapclick(x,57,164)
+ end
+ for _,case in ipairs{{'long-first',152,152,2,false},{'long-second',178,178,2,false},{'long-both',152,178,2,false},
+   {'long-both-reversed',152,178,2,true},{'long-three',152,178,3,false}}do
+  for _,v in ipairs(beds)do v.b.centery=0 end
+  move(chosen[1],case[5]and 178 or 152);move(chosen[2],case[5]and 152 or 178)
+  if case[4]==3 then move(chosen[3],165)end
+  local text,code=dfhack.run_command_silent('df3d','room-plan','1',tostring(case[2]),'57','164',tostring(case[3]-case[2]+1),'1');assert(code==0,text)
+  corner(case[2]);corner(case[3])
+  local row={name=case[1],bridge_plan=json.decode(text),in_use=ui.furniture_rejected_in_use,unenclosed=ui.furniture_rejected_not_enclosed,rooms={},seed_ids={chosen[1].id,chosen[2].id,chosen[3].id}}
+  for _,z in ipairs(ui.zone_just_created)do
+   local r={x=z.x1,y=z.y1,z=z.z,width=z.x2-z.x1+1,height=z.y2-z.y1+1,extents={}}
+   for y=z.y1,z.y2 do for x=z.x1,z.x2 do r.extents[#r.extents+1]=z.room.extents[(y-z.room.y)*z.room.width+x-z.room.x]end end
+   row.rooms[#row.rooms+1]=r
+  end
+  records[#records+1]=row
+  if case[1]=='long-both'or case[1]=='long-three'then capture(case[1])end
+  if #ui.zone_just_created>0 then pixel(310,118);assert(#ui.zone_just_created==0,'long-room Undo failed')end
+ end
+end)
+for _,v in ipairs(tiles)do v.b.tiletype[v.x][v.y]=v.tile;v.b.designation[v.x][v.y].whole=v.des;v.b.occupancy[v.x][v.y].whole=v.occ end
+for _,v in ipairs(beds)do local b=v.b;b.x1=v.x1;b.x2=v.x2;b.y1=v.y1;b.y2=v.y2;b.z=v.z;b.centerx=v.cx;b.centery=v.cy end
+for _,v in ipairs(zones)do v.z.type=v.type;v.z.flags.whole=v.flags end
+assert(ok,why)

@@ -117,7 +117,7 @@
       "bridge_sha256": "d844e07e4a37d3dcb1f61e45d94bee5dc9189ef6cd077bda5664b05585f91be7"
     },
     "native_reference": "tools/smoke/areas-multi-reference.json",
-    "remaining_scope": "Remaining traversal boundaries, multiple-seed propagation and full Zones/Locations lifecycle acceptance remain outstanding.",
+    "remaining_scope": "Full Zones/Locations assignment and lifecycle acceptance remain outstanding.",
     "viewport_evidence": {
       "directory": "build/areas-acceptance-20261025-220051",
       "observations": 35,
@@ -160,8 +160,8 @@
     },
     "tile_reference": "tools/smoke/areas-multi-tiles-reference.json",
     "remaining_scope": [
-      "Remaining traversal boundaries and multiple-seed propagation need final full-Multi audit.",
-      "Zone assignment and full Zones/Locations lifecycle acceptance remain outstanding."
+      "Full Zones/Locations assignment and lifecycle acceptance remain outstanding.",
+      "Open map-edge rejection has static native evidence and a core regression, not a fresh controlled native UI capture."
     ],
     "semantic_evidence": {
       "directory": "build/areas-acceptance-20261025-220802",
@@ -392,6 +392,110 @@
         "diagnostics": "clean",
         "bridge_sha256": "b56550de91e59fc016d507f21e457ff930a805172a93c3af3d960ca2c216117f",
         "coverage": "Actual creation and scoped Undo in four hidden cases and three blocked-seed cases; exact room footprint/defaults/relationships, native terrain effects, hidden flags and designation preservation."
+      }
+    },
+    "shared_frontiers": {
+      "native_reference": "build\\stockpile-storage-native-multi-discovery-20261025-222644",
+      "result_sha256": "241f906bc76d16e2950969c7739e3190215b92a7e2e0eea5d8778f81bf1761a4",
+      "owned_df_pid": 124232,
+      "closed_unsaved": true,
+      "source_save_unchanged": true,
+      "room_bounds": {
+        "x": 148,
+        "y": 55,
+        "z": 164,
+        "width": 35,
+        "height": 5
+      },
+      "cases": [
+        {
+          "name": "long-first",
+          "seed_ids": [
+            1310,
+            9,
+            10
+          ],
+          "native_created": 0,
+          "native_unenclosed": 1,
+          "prior_bridge_created": 0,
+          "prior_bridge_unenclosed": 1
+        },
+        {
+          "name": "long-second",
+          "seed_ids": [
+            1310,
+            9,
+            10
+          ],
+          "native_created": 0,
+          "native_unenclosed": 1,
+          "prior_bridge_created": 0,
+          "prior_bridge_unenclosed": 1
+        },
+        {
+          "name": "long-both",
+          "seed_ids": [
+            1310,
+            9,
+            10
+          ],
+          "native_created": 0,
+          "native_unenclosed": 2,
+          "prior_bridge_created": 0,
+          "prior_bridge_unenclosed": 2
+        },
+        {
+          "name": "long-both-reversed",
+          "seed_ids": [
+            1310,
+            9,
+            10
+          ],
+          "native_created": 0,
+          "native_unenclosed": 2,
+          "prior_bridge_created": 0,
+          "prior_bridge_unenclosed": 2
+        },
+        {
+          "name": "long-three",
+          "seed_ids": [
+            1310,
+            9,
+            10
+          ],
+          "native_created": 0,
+          "native_unenclosed": 2,
+          "prior_bridge_created": 1,
+          "prior_bridge_unenclosed": 1
+        }
+      ],
+      "native_reference_pin": {
+        "rva": "0x35568f",
+        "size": 6233,
+        "fnv1a64": "0xa9a811e14015b6d3"
+      },
+      "runtime": "Owned labels and alternating frontiers; native seed order, current parent-label reads for each neighbor, twenty rounds,120000 frontier capacity, per-label enclosure validation and boundary inclusion. Native tile eligibility remains authoritative.",
+      "semantic_regression": {
+        "directory": "build/areas-acceptance-20261025-223144",
+        "observations": 256,
+        "owned_df_pid": 117904,
+        "closed_unsaved": true,
+        "unchanged_save_manifests": 2,
+        "guards": 66,
+        "changed_search_arrays": 0,
+        "diagnostics": "clean",
+        "bridge_sha256": "c2f536ef0f43cd8b6609b7a16d4c0bda4072260ccafe5834c6a7a181ab0d7e08"
+      },
+      "final_native_comparison": {
+        "directory": "build\\stockpile-storage-native-multi-discovery-20261025-223509",
+        "owned_df_pid": 127816,
+        "closed_unsaved": true,
+        "source_save_unchanged": true,
+        "matching_cases": 5,
+        "result_sha256": "72d2e78d7ab2e4fa9c6cac08eb619d9206b7f776a758ac8bded47772872ee141",
+        "bridge_sha256": "b15304140b8755c772294ab93fe3c36bdce045421fa1a07259cc04b1b7916854",
+        "capture_inspected": "long-three.png",
+        "scope": "Native UI creation/refusal compared with bridge read-only plans; standard actual bridge creation/Undo covered by semantic regression."
       }
     }
   }

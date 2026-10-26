@@ -1,6 +1,7 @@
 #include "doctest.h"
 #include "../bridge/plugin/room_discovery.h"
 #include "../bridge/plugin/room_plan.h"
+#include "../bridge/plugin/room_multiseed.h"
 // Historical fixture decoder for traversal-only tests. Runtime tile eligibility
 // comes from DF; these synthetic facts do not verify the native predicate.
 namespace df3d_area {
@@ -81,56 +82,51 @@ TEST_CASE("room plans match native shared furniture and bed selection semantics"
     if(coffin)seeds={{220,93,124,165,kind,true,false},{1613,92,124,165,kind,true,false}};
     else for(int32_t i=0;i<3;++i)seeds.push_back({chair?(i==2?69:65+i):62+i,x+i,y,165,kind,true,false});
     const auto footprint=coffin?capturedRectangle(91,122,165,5,5):capturedRectangle(121,87,165,7,7);
-    int discoveries=0;
-    const auto plan=area::planRooms(seeds,kind,{x,y,coffin?2:3,1},165,[&](const area::RoomSeed&) {
-      ++discoveries;return area::RoomDiscovery{area::RoomTraversalStatus::Complete,footprint};
+    const auto plan=area::planRoomSet(seeds,kind,{x,y,coffin?2:3,1},165,192,192,[&](int32_t tx,int32_t ty,int32_t) {
+      const auto& b=footprint.bounds;
+      return tx>b.x && tx<b.x+b.width-1 && ty>b.y && ty<b.y+b.height-1?area::RoomCell::Open:area::RoomCell::Boundary;
     });
     REQUIRE(plan.status==area::RoomPlanStatus::Complete);
     REQUIRE(plan.rooms.size()==1);
-    CHECK(discoveries==1);CHECK(plan.rooms[0].seedId==seeds.front().id);
+    CHECK(plan.rooms[0].seedId==seeds.front().id);
     CHECK_FALSE(plan.rooms[0].dormitory);CHECK(area::sameRoom(plan.rooms[0].footprint,footprint));
     CHECK(plan.rejectedInUse==0);CHECK(plan.rejectedUnenclosed==0);
   }
   std::vector<area::RoomSeed> beds{{1183,176,57,164,F::Bed,true,true},{1310,172,57,164,F::Bed,true,false}};
   const auto merged=capturedRectangle(169,56,164,9,5);
-  auto plan=area::planRooms(beds,F::Bed,{172,57,1,1},164,[&](const area::RoomSeed&) {
-    return area::RoomDiscovery{area::RoomTraversalStatus::Complete,merged};
-  });
+  auto mergedTiles=[](int32_t x,int32_t y,int32_t) {
+    return x>169 && x<177 && y>56 && y<60?area::RoomCell::Open:area::RoomCell::Boundary;
+  };
+  auto plan=area::planRoomSet(beds,F::Bed,{172,57,1,1},164,192,192,mergedTiles);
   REQUIRE(plan.rooms.size()==1);CHECK(plan.rooms[0].dormitory);
   CHECK(plan.rejectedInUse==0);CHECK(plan.rooms[0].seedId==1310);
-  auto split=[](const area::RoomSeed& seed) {
-    return area::RoomDiscovery{area::RoomTraversalStatus::Complete,
-      capturedRectangle(seed.id==1183?173:169,56,164,5,5)};
+  auto split=[&](int32_t x,int32_t y,int32_t z) {
+    return x==173?area::RoomCell::Boundary:mergedTiles(x,y,z);
   };
-  plan=area::planRooms(beds,F::Bed,{171,57,7,1},164,split);
+  plan=area::planRoomSet(beds,F::Bed,{171,57,7,1},164,192,192,split);
   REQUIRE(plan.rooms.size()==1);CHECK_FALSE(plan.rooms[0].dormitory);
   CHECK(plan.rejectedInUse==1);CHECK(plan.rooms[0].seedId==1310);
   beds[0].inUse=false;
-  plan=area::planRooms(beds,F::Bed,{172,57,5,1},164,split);
+  plan=area::planRoomSet(beds,F::Bed,{172,57,5,1},164,192,192,split);
   REQUIRE(plan.rooms.size()==2);
   CHECK(plan.rooms[0].seedId==1183);CHECK(plan.rooms[1].seedId==1310);
   CHECK_FALSE(plan.rooms[0].dormitory);CHECK_FALSE(plan.rooms[1].dormitory);
   CHECK(plan.rejectedInUse==0);
 }
 
-TEST_CASE("room planning distinguishes holes elevation rejection and unknown observations") {
+TEST_CASE("shared room planning rejects unknown observations and ignores other elevations") {
   using F=area::RoomFurniture;
-  std::vector<area::RoomSeed> seeds{{1,11,11,5,F::Bed,true,false},{2,13,11,5,F::Bed,true,false},
-                                   {3,11,11,6,F::Bed,true,false}};
-  auto first=capturedRectangle(10,10,5,5,3);first.extents[8]=0;
-  auto plan=area::planRooms(seeds,F::Bed,{10,10,5,3},5,[&](const area::RoomSeed& seed) {
-    return seed.id==1?area::RoomDiscovery{area::RoomTraversalStatus::Complete,first}:
-      area::RoomDiscovery{area::RoomTraversalStatus::Unenclosed,{}};
-  });
+  const std::vector<area::RoomSeed> seeds{{1,11,11,5,F::Bed,true,false},{2,11,11,6,F::Bed,true,false}};
+  auto tiles=[](int32_t x,int32_t y,int32_t) {
+    return x>10 && x<14 && y>10 && y<14?area::RoomCell::Open:area::RoomCell::Boundary;
+  };
+  const auto plan=area::planRoomSet(seeds,F::Bed,{10,10,5,5},5,32,32,tiles);
   REQUIRE(plan.rooms.size()==1);CHECK_FALSE(plan.rooms[0].dormitory);
-  CHECK(plan.rejectedUnenclosed==1);CHECK(plan.rejectedInUse==0);
-  plan=area::planRooms(seeds,F::Bed,{10,10,5,3},5,[&](const area::RoomSeed& seed) {
-    return seed.id==1?area::RoomDiscovery{area::RoomTraversalStatus::Complete,first}:
-      area::RoomDiscovery{area::RoomTraversalStatus::Incomplete,{}};
+  const auto missing=area::planRoomSet(seeds,F::Bed,{10,10,5,5},5,32,32,[&](int32_t x,int32_t y,int32_t z) {
+    return x==12 && y==12?area::RoomCell::Unobserved:tiles(x,y,z);
   });
-  CHECK(plan.status==area::RoomPlanStatus::Incomplete);CHECK(plan.rooms.empty());
-  CHECK(plan.rejectedUnenclosed==0);
-  CHECK(area::planRooms(seeds,F::None,{10,10,5,3},5,[](const auto&){return area::RoomDiscovery{};}).status==area::RoomPlanStatus::Invalid);
+  CHECK(missing.status==area::RoomPlanStatus::Incomplete);CHECK(missing.rooms.empty());
+  CHECK(area::planRoomSet(seeds,F::None,{10,10,5,5},5,32,32,tiles).status==area::RoomPlanStatus::Invalid);
 }
 
 // DF53.16 Multi captures 2026-09-29: room-limits-002445 and room-cap-003442.
@@ -316,4 +312,36 @@ TEST_CASE("room compaction preserves native bounds masks and elevation") {
     t.status=area::RoomTraversalStatus::Unenclosed;
     CHECK_FALSE(area::compactRoom(s.x,s.y,s.z,s.w,s.h,t).valid);
   }
+}
+
+TEST_CASE("ordered Multi frontiers match native long-room selected-seed probes") {
+  // Native actual UI222644:35x5 enclosed rectangle, seeds152/178 and165.
+  // Selecting the middle seed too must not invent a room from its independent
+  // radius: native's competing ordered labels leave two rejected regions.
+  using F=area::RoomFurniture;
+  struct Sample {int first,last;bool reversed,third;uint32_t rejected;};
+  for(const auto& sample:std::vector<Sample>{{152,152,false,false,1},{178,178,false,false,1},
+      {152,178,false,false,2},{152,178,true,false,2},{152,178,false,true,2}}) {
+    const std::vector<area::RoomSeed> seeds{
+      {9,sample.reversed?152:178,57,164,F::Bed,true,false},
+      {10,165,sample.third?57:0,164,F::Bed,true,false},
+      {1310,sample.reversed?178:152,57,164,F::Bed,true,false}};
+    const auto plan=area::planRoomSet(seeds,F::Bed,{sample.first,57,sample.last-sample.first+1,1},164,192,192,
+      [](int32_t x,int32_t y,int32_t) {
+        return x==148 || x==182 || y==55 || y==59?area::RoomCell::Boundary:area::RoomCell::Open;
+      });
+    CHECK(plan.status==area::RoomPlanStatus::Complete);
+    CHECK(plan.rooms.empty());CHECK(plan.rejectedInUse==0);CHECK(plan.rejectedUnenclosed==sample.rejected);
+  }
+}
+TEST_CASE("shared room search rejects an open region touching the map edge") {
+  // Native3562ee..35633b marks an open labeled map-edge cell unenclosed.
+  using F=area::RoomFurniture;
+  const std::vector<area::RoomSeed> seeds{{1,1,11,5,F::Bed,true,false}};
+  const auto plan=area::planRoomSet(seeds,F::Bed,{1,11,1,1},5,32,32,
+    [](int32_t x,int32_t y,int32_t) {
+      return x<4 && y>10 && y<14?area::RoomCell::Open:area::RoomCell::Boundary;
+    });
+  CHECK(plan.status==area::RoomPlanStatus::Complete);CHECK(plan.rooms.empty());
+  CHECK(plan.rejectedUnenclosed==1);
 }

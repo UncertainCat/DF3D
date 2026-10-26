@@ -3,6 +3,7 @@ extends "res://scripts/area_location_scrollbar.gd"
 var input_allowed:Callable
 var wheel_enabled:=true
 var use_standalone_sheet:=true
+var clamp_interior_thumb:=false
 func _input(event:InputEvent) -> void:
  if input_allowed.is_valid() and not input_allowed.call():dragging=false;return
  if event is InputEventMouseMotion and hover_cell!=-1 and not get_global_rect().has_point(event.position):
@@ -21,7 +22,7 @@ func thumb() -> Vector2i:
  var grip:Vector2i=super.thumb()
  # Native popup113212 keeps an interior thumb short of the end until the
  # final row, symmetric with the shared formula's first-row endpoint handling.
- if not use_standalone_sheet and first>0 and first<count-page:
+ if (clamp_interior_thumb or not use_standalone_sheet) and first>0 and first<count-page:
   var end_offset:int=int(size.y/12)-2-grip.y
   if end_offset>1:grip.x=mini(grip.x,end_offset)
  return grip
@@ -29,7 +30,7 @@ func thumb() -> Vector2i:
 var native_sheet:Image
 func configure(world) -> void:
  super.configure(world)
- native_sheet=Image.load_from_file(world.assets_root().path_join("data/art/scrollbar.png"))
+ if use_standalone_sheet and world.has_method("assets_root"): native_sheet=Image.load_from_file(world.assets_root().path_join("data/art/scrollbar.png"))
 func texture(token:String) -> Texture2D:
  if not use_standalone_sheet:return super.texture(token)
  if textures.has(token):return textures[token]

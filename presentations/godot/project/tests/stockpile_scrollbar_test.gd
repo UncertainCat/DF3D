@@ -46,10 +46,10 @@ func run() -> void:
 	bar._input(motion)
 	if bar.first != 5:
 		failures += 1; push_error("Scaled link thumb drag changed native row mapping")
-	# Modern owner widgets use the legacy sheet and interior endpoint clamp.
+	# Modern owner widgets use the standalone sheet and interior endpoint clamp.
 	var owner = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_assignment.json"))
 	var owner_bar = preload("res://scripts/reports_scrollbar.gd").new()
-	root.add_child(owner_bar); owner_bar.use_standalone_sheet = false
+	root.add_child(owner_bar); owner_bar.clamp_interior_thumb = true
 	owner_bar.size = Vector2(16,600); owner_bar.page = 16
 	for sample in owner.owner_scroll.samples:
 		owner_bar.set_rows(int(sample.count),int(sample.scroll))

@@ -6909,9 +6909,8 @@
     },
     "limits": [
       "Native widget reads and isolated drag starting-state writes are diagnostic only.",
-      "Tomb with 172 candidates; other counts and Remove assignment require viewer integration coverage.",
-      "Immediate feeds do not establish held-button repeat cadence.",
-      "Shared scrollbar formula/input verified separately; owner viewer integration remains unfinished."
+      "Native reference count is 172 Tomb candidates; rendered tests reproduce that count and protected live coverage exercises Bedroom with Remove assignment.",
+      "Immediate native feeds do not establish held-button repeat cadence."
     ],
     "samples": [
       {
@@ -8404,6 +8403,45 @@
         "first_visible_id": 5981,
         "last_visible_id": 5814
       }
-    ]
+    ],
+    "rendered_bar": {
+      "crop": [
+        936,
+        88,
+        16,
+        600
+      ],
+      "samples": [
+        {
+          "source": "build/stockpile-storage-native-zone-owner-20261026-072644/tomb-picker.png",
+          "first": 0,
+          "rgb_sha256": "d7dbdfe8b97e13453af6b712e8ff3486d59c00ecaf931c2399b204f2dd0be429"
+        },
+        {
+          "source": "build/stockpile-storage-native-zone-owner-20261026-072644/tomb-picker-scroll-tail.png",
+          "first": 156,
+          "rgb_sha256": "f4262857fc823463b598b021b95691b89f01e580ee62bf79b4b5230a6f49e9f8"
+        }
+      ],
+      "viewport_vertical_inset": 4
+    },
+    "viewer_verification": {
+      "offline": "build/qa/owner-scroll-verified",
+      "live": "build/areas-acceptance-20261026-074112",
+      "owned_df_pid": 56112,
+      "save_manifests_unchanged": 2,
+      "diagnostics": "passed_with_known_issues: known Godot thread notice only",
+      "art": "installed data/art/scrollbar.png; independent interior endpoint clamp",
+      "coverage": [
+        "complete membership before interaction",
+        "16 full rows and 24px blank below",
+        "exact top/tail scrollbar RGB pixels at native count",
+        "wheel and shifted wheel preserve selection",
+        "arrow and track clicks",
+        "thumb drag top/tail at scales 1 and 0.75",
+        "keyboard tail clamp and Page Up",
+        "existing assignment/removal/recenter/hover/refresh workflows"
+      ]
+    }
   }
 }

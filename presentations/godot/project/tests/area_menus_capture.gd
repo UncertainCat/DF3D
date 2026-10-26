@@ -274,6 +274,39 @@ func run() -> void:
 			var selected_button: Button = controller.candidates_view.choices[15]
 			if not controller.candidates_view.scroll.get_global_rect().encloses(selected_button.get_global_rect()):
 				push_error("Owner keyboard selection is outside viewport"); quit(1); return
+	# Compare the full owner scrollbar against native top/tail captures, including
+	# its installed artwork, thumb proportions and the 24px blank below the rows.
+	var saved_owner_area: Dictionary = controller.candidates_state.area
+	controller.candidates_state.area = saved_owner_area.duplicate(true)
+	controller.candidates_state.area.zone_type = 97
+	var full_owner_rows: Array = navigation_rows.duplicate(true)
+	while full_owner_rows.size() < 172:
+		var row: Dictionary = header_rows[0].duplicate(true); row.id = 20000+full_owner_rows.size()
+		full_owner_rows.append(row)
+	controller.candidates_state.rows = full_owner_rows
+	controller.candidates_state.receipt = 102; controller.candidates_state.changed.emit()
+	await process_frame; await RenderingServer.frame_post_draw
+	var owner_bar = controller.candidates_view.owner_scrollbar
+	for sample in header_reference.owner_scroll.rendered_bar.samples:
+		owner_bar.move_to(int(sample.first))
+		await process_frame; await RenderingServer.frame_post_draw
+		var clip: Rect2 = controller.candidates_view.scroll.get_global_rect()
+		var full := 0
+		for button in controller.candidates_view.choices:
+			if clip.encloses(button.get_global_rect()): full += 1
+			elif clip.intersects(button.get_global_rect()):
+				push_error("Owner viewport exposes a partial row"); quit(1); return
+		if full != 16 or controller.candidates_view.scroll.scroll_vertical != int(sample.first)*36:
+			push_error("Owner complete-row viewport differs from native"); quit(1); return
+		var bar_image := root.get_texture().get_image(); bar_image.convert(Image.FORMAT_RGB8)
+		var bar_crop := bar_image.get_region(Rect2i(Vector2i(owner_bar.global_position),Vector2i(16,600)))
+		bar_crop.save_png(directory.path_join("owner_bar_%d.png" % int(sample.first)))
+		var bar_hash := HashingContext.new(); bar_hash.start(HashingContext.HASH_SHA256); bar_hash.update(bar_crop.get_data())
+		if bar_hash.finish().hex_encode() != str(sample.rgb_sha256):
+			push_error("Native owner scrollbar pixels differ at "+str(sample.first)); quit(1); return
+	controller.candidates_state.area = saved_owner_area; controller.candidates_state.rows = navigation_rows
+	controller.candidates_state.receipt = 101; controller.candidates_state.changed.emit()
+	await process_frame; await RenderingServer.frame_post_draw
 	var filter_shortcut := InputEventKey.new(); filter_shortcut.keycode = KEY_F; filter_shortcut.ctrl_pressed = true; filter_shortcut.pressed = true
 	root.push_input(filter_shortcut,true)
 	if not controller.candidates_view.owner_search.has_focus(): push_error("Ctrl+F did not focus owner filter"); quit(1); return

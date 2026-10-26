@@ -499,7 +499,7 @@ the first recipe is evicted then reacquired, visible portraits render, and
 membership, receipt and row controls remain unchanged with at most36 recipes.
 Both rendered captures were inspected. Assignment/removal and native name refresh
 also pass. DF121552 closes unsaved, both save manifests match and only the known
-Godot thread notice remains. Full scrollbar acceptance remains outstanding.
+Godot thread notice remains. Owner scrollbar verification is described below.
 
 Management67 adds AreaRequest.candidate_limit for scoped owner CandidateList
 reads: zero preserves128-row pagination,1..128 bounds the returned slice. Other
@@ -549,8 +549,8 @@ controller, updates selection artwork and scrolls in36-pixel rows with a16-row
 page. New receipts reset selection; continuation pages retain it. Pending
 requests suppress navigation. `build/qa/owner-keyboard-final` passes root19/19
 and actual viewport key routing, selected-frame pixels, paging and pending-write
-checks, with only the three documented Godot notices. Full scrollbar/end-of-list
-geometry remains unfinished.
+checks, with only the three documented Godot notices. The completed scrollbar
+integration is verified below.
 
 Native owner scrollbar evidence is retained in
 `native_zone_assignment.json.owner_scroll`. Protected run 072644 records 172
@@ -562,15 +562,41 @@ selection and first row to 155. Context scroll outside the list is ignored.
 Nine isolated thumb drags establish endpoint and interior mappings. Native widget
 writes only reset diagnostic drag starts; runtime must never access those widgets.
 
-The shared reports scrollbar with legacy-sheet mode matches the recorded thumb
-positions, including its interior endpoint clamp, and all nine drag outcomes.
+The shared reports scrollbar matches the recorded thumb positions, including
+its interior endpoint clamp, and all nine drag outcomes. Pixel comparison proves
+that owner widgets use the installed standalone data/art/scrollbar.png sheet;
+art selection and the interior endpoint clamp are independent properties.
 Run 072519 failed its reset assertion because repeated Page Up at selection zero
 did not reliably reset a separately scrolled viewport; it is not drag evidence.
 Both runs close owned DF unsaved with source manifests unchanged; the final run
 uses DF125520. The final tail screenshot was inspected. Root CTest (19/19) and
 the shared scrollbar engine check pass in build/qa/owner-scroll-reference.
-Owner-view integration remains unfinished: its Godot viewport exposes a partial
-17th row and sizes the scrollbar against loaded pages only.
+The owner view now uses that shared scrollbar with a 576px row clip and a 600px
+bar. Wheel input moves one row, or 16 with Shift, independently of selection.
+Keyboard navigation scrolls to reveal selection; new queries reset both.
+Owner state automatically fetches bounded continuation pages before enabling
+assignment/navigation, so scrollbar extent uses complete filtered membership,
+not scan progress or a partially loaded prefix. Search and cancellation remain
+available during loading. Portrait retention remains bounded to 36 recipes,
+with background reads limited to 18 rows.
+
+The GPU test compares all 9,600 RGB pixels at both top and tail against native
+captures, accounting for DF's four-pixel vertical grid inset. It also rejects
+any partially visible row. The initial comparison exposed that inset and the
+standalone artwork requirement; legacy artwork differed at 26 pixels after
+alignment and was replaced. build/qa/owner-scroll-verified passes root CTest
+(19/19), areas, candidate lifecycle and shared scrollbar checks. GPU acceptance
+passes with the three documented engine diagnostics.
+
+Protected main-scene run build/areas-acceptance-20261026-074112 verifies full
+membership before interaction, row/page wheel increments, arrow/track clicks,
+dragging at scales 1 and 0.75, 16 complete tail rows, keyboard endpoint clamping
+and Page Up from the tail. Existing assignment/removal, recenter, tooltip,
+byte-filter and portrait eviction/refresh workflows also pass. Top and tail
+captures were inspected. Owned DF56112 closes unsaved; both save manifests match.
+Only the known Godot thread notice remains. This completes the recorded owner
+scroll workflows; the broader Zones/Locations goal and remaining owner routes
+are still unfinished.
 
 Owner textbox window-input capture040328 verifies focused Down retains cursor0,
 Enter releases focus without assignment, a blank interior click unfocuses and a

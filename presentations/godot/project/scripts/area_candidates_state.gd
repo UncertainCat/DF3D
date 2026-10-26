@@ -49,7 +49,7 @@ func open(value: Dictionary, candidate_kind := 1, navigation: Dictionary = {}) -
 	read()
 
 func busy() -> bool:
-	return area.is_empty() or failed or mutating or not pending.is_empty() or search_delay >= 0
+	return area.is_empty() or failed or mutating or not pending.is_empty() or search_delay >= 0 or (kind == 1 and cursor != 0)
 
 func read(next_cursor := 0) -> void:
 	if area.is_empty() or failed or mutating or not pending.is_empty(): return
@@ -100,6 +100,10 @@ func poll(delta: float) -> void:
 		if delay <= 0.000001:
 			delay = -1; request_ready.emit(pending.duplicate(true))
 
+	# Owner scrollbar extent and navigation require complete retained membership.
+	# Keep transport pages bounded; fetch the next page on the next controller tick.
+	if kind == 1 and cursor != 0 and pending.is_empty(): more()
+
 func accept(page: Dictionary, sent: Dictionary) -> void:
 	if pending.is_empty() or sent != pending: return
 	if sent.get("query_bytes") != query_bytes or str(sent.query) != query or int(sent.sort) != sort or bool(sent.sort_descending) != descending:
@@ -120,7 +124,7 @@ func accept(page: Dictionary, sent: Dictionary) -> void:
 	pending = {}; delay = -1; changed.emit()
 
 func more() -> void:
-	if not busy() and cursor != 0: read(cursor)
+	if cursor != 0 and search_delay < 0: read(cursor)
 
 func accept_owner_facts(page: Dictionary, sent: Dictionary) -> void:
 	if busy() or kind != 1 or receipt == 0 or int(sent.get("expected_list_revision",0)) != receipt: return

@@ -1250,10 +1250,60 @@ func pointer_key(key: Key) -> void:
 		root.push_input(event,true)
 	await process_frame; await process_frame
 
+func owner_scroll_workflow() -> bool:
+	var view = editor.candidates_view
+	var bar = view.owner_scrollbar
+	var total: int = editor.candidates_state.rows.size()+(1 if view.remove.visible else 0)
+	if not check(editor.candidates_state.cursor==0 and bar.count==total and total>32,"owner controls enabled before complete membership"): return false
+	for factor in [1.0,0.75]:
+		view.scale = Vector2.ONE*factor
+		await process_frame
+		for probe in [[MOUSE_BUTTON_WHEEL_DOWN,false,1],[MOUSE_BUTTON_WHEEL_DOWN,true,17],[MOUSE_BUTTON_WHEEL_UP,false,16],[MOUSE_BUTTON_WHEEL_UP,true,0]]:
+			var wheel := InputEventMouseButton.new(); wheel.pressed=true; wheel.button_index=probe[0];wheel.shift_pressed=probe[1]
+			wheel.position=view.scroll.get_global_transform_with_canvas()*Vector2(20,200);wheel.global_position=wheel.position
+			root.push_input(wheel,true);await process_frame
+			if not check(bar.first==probe[2] and view.scroll.scroll_vertical==int(probe[2])*36 and view.owner_selected==0,"owner wheel row/page or selection changed at scale "+str(factor)):return false
+		for probe in [[594,1],[6,0],[400,16],[18,0]]:
+			await pointer_click(bar.get_global_transform_with_canvas()*Vector2(8,probe[0]))
+			if not check(bar.first==probe[1] and view.owner_selected==0,"owner arrow/track differs at scale "+str(factor)):return false
+		var press := InputEventMouseButton.new();press.position=bar.get_global_transform_with_canvas()*Vector2(8,30);press.global_position=press.position
+		press.button_index=MOUSE_BUTTON_LEFT;press.button_mask=MOUSE_BUTTON_MASK_LEFT;press.pressed=true;root.push_input(press,true)
+		var drag := InputEventMouseMotion.new();drag.position=bar.get_global_transform_with_canvas()*Vector2(8,590);drag.global_position=drag.position;drag.button_mask=MOUSE_BUTTON_MASK_LEFT
+		root.push_input(drag,true)
+		var release := InputEventMouseButton.new();release.position=drag.position;release.global_position=release.position;release.button_index=MOUSE_BUTTON_LEFT;release.pressed=false
+		root.push_input(release,true);await process_frame;await process_frame
+		if not check(bar.first==total-16 and view.scroll.scroll_vertical==(total-16)*36 and view.owner_selected==0 and not bar.dragging,"owner tail drag differs at scale "+str(factor)):return false
+		if factor==1.0:
+			var first_unit: int = bar.first-(1 if view.remove.visible else 0)
+			if not await wait_ui(func():return view.portrait_slots[first_unit].view.texture!=null,"owner tail portrait"):return false
+			var clip: Rect2 = view.scroll.get_global_rect()
+			var complete := 0
+			for button in view.choices:
+				if clip.encloses(button.get_global_rect()):complete+=1
+				elif clip.intersects(button.get_global_rect()):
+					check(false,"owner tail includes partial row");return false
+			if not check(complete==16,"owner tail does not show 16 complete rows"):return false
+			await capture("zone_owner_scroll_tail")
+		# Drag back to the top independently of keyboard selection.
+		press.position=bar.get_global_transform_with_canvas()*Vector2(8,570);press.global_position=press.position;root.push_input(press,true)
+		drag.position=bar.get_global_transform_with_canvas()*Vector2(8,6);drag.global_position=drag.position;root.push_input(drag,true)
+		release.position=drag.position;release.global_position=release.position;root.push_input(release,true);await process_frame
+		if not check(bar.first==0 and view.owner_selected==0,"owner drag did not return to top"):return false
+	view.scale=Vector2.ONE;await process_frame
+	for index in range(ceili(float(total)/16)+1): await pointer_key(KEY_PAGEDOWN)
+	await pointer_key(KEY_DOWN)
+	if not check(view.owner_selected==total-1 and bar.first==total-16,"owner keyboard tail clamp"):return false
+	await pointer_key(KEY_PAGEUP)
+	if not check(view.owner_selected==total-17 and bar.first==total-17,"owner Page Up from tail"):return false
+	for index in range(ceili(float(total)/16)+1): await pointer_key(KEY_PAGEUP)
+	if not check(view.owner_selected==0 and bar.first==0,"owner keyboard return to top"):return false
+	return true
+
 func pointer_owner(id: int, origin: Vector3i) -> void:
 	step = "pointer owner selector"
 	await click_control(editor.zone_menu.controls.owner)
 	if not await wait_ui(func(): return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner rows"): return
+	if not await owner_scroll_workflow(): return
 	var help = editor.candidates_view.native_help
 	var hover := InputEventMouseMotion.new()
 	hover.position=editor.candidates_view.owner_search.get_global_rect().get_center();hover.global_position=hover.position

@@ -475,7 +475,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   a.deityId=int32_t(n("deity_id",-1,-1,INT32_MAX));a.unitId=int32_t(n("unit_id",-1,-1,INT32_MAX));
   a.assign=int8_t(n("assign",-1,-1,1));a.squadId=int32_t(n("squad_id",-1,-1,INT32_MAX));
   a.squadUse=int8_t(n("squad_use",-1,-1,15));a.organic=int8_t(n("organic",-1,-1,1));a.inorganic=int8_t(n("inorganic",-1,-1,1));
-  a.candidateKind=uint8_t(n("candidate_kind",0,0,3));a.sort=uint8_t(n("sort",0,0,3));a.sortDescending=data.get("sort_descending",false);
+  a.candidateKind=uint8_t(n("candidate_kind",0,0,3));a.sort=uint8_t(n("sort",0,0,a.candidateKind==1?4:3));a.sortDescending=data.get("sort_descending",false);
   const Array spans=data.get("spans",Array());
   if(spans.size()>32768){error="Too many area spans";return false;}
   uint32_t tiles=0;

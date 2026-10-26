@@ -1327,7 +1327,9 @@ int areaOwnerOrderFacts(lua_State* L) {
   }
   if(!facts){lua_pushnil(L);return 1;}
   lua_newtable(L);field(L,"without_room",facts->withoutRoom);field(L,"priority",facts->priority);
-  field(L,"category",facts->category);field(L,"category_status",facts->categoryStatus);return 1;
+  field(L,"category",facts->category);field(L,"category_status",facts->categoryStatus);field(L,"stress",facts->stress);
+  lua_pushlstring(L,facts->nameKey.data(),facts->nameKey.size());lua_setfield(L,-2,"name_key");
+  lua_pushlstring(L,facts->professionKey.data(),facts->professionKey.size());lua_setfield(L,-2,"profession_key");return 1;
 }
 int areaSetOwner(lua_State* L) {
   bool attempted=false;

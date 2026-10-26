@@ -13,6 +13,7 @@ var kind := 1
 var query := ""
 var sort := 0
 var descending := false
+var sort_directions: Array = [false,false,false,false,false]
 var delay := -1.0
 var search_delay := -1.0
 var failed := false
@@ -22,14 +23,19 @@ var squad_mask := 15
 func clear() -> void:
 	area = {}; rows = []; pending = {}; receipt = 0; cursor = 0
 	kind = 1; query = ""; sort = 0; descending = false
+	sort_directions = [false,false,false,false,false]
 	delay = -1; search_delay = -1; failed = false; mutating = false
 	squad_mask = 15
 	changed.emit()
 
 func open(value: Dictionary, candidate_kind := 1, navigation: Dictionary = {}) -> void:
 	clear(); area = value.duplicate(true); kind = candidate_kind
-	query = str(navigation.get("query","")); sort = int(navigation.get("sort",0))
+	query = str(navigation.get("query","")); sort = int(navigation.get("sort",2 if kind == 1 else 0))
+	if kind == 1 and sort == 0: sort = 2
 	descending = bool(navigation.get("descending",false))
+	if navigation.get("sort_directions") is Array and navigation.sort_directions.size() == 5:
+		sort_directions = navigation.sort_directions.duplicate()
+	if kind == 1 and sort in [1,2,3,4]: sort_directions[sort] = descending
 	squad_mask = int(navigation.get("squad_mask",15))
 	if int(area.get("kind",-1)) != 1 or int(area.get("revision",0)) <= 0 or kind not in [1,2,3]:
 		reject("Inspect this zone before selecting assignments"); return
@@ -51,9 +57,18 @@ func queue_search(value: String) -> void:
 	query = value; invalidate(0.25)
 
 func order(value: int) -> void:
-	if area.is_empty() or failed or mutating or value not in [0,1,2,3]: return
-	descending = not descending if sort == value else false
+	if area.is_empty() or failed or mutating: return
+	if kind == 1:
+		if value not in [1,2,3,4]: return
+		if sort == value: sort_directions[value] = not bool(sort_directions[value])
+		descending = bool(sort_directions[value])
+	else:
+		if value not in [0,1,2,3]: return
+		descending = not descending if sort == value else false
 	sort = value; invalidate(0)
+
+func sort_direction(value: int) -> bool:
+	return bool(sort_directions[value]) if kind == 1 and value in [1,2,3,4] else descending
 
 func invalidate(debounce: float) -> void:
 	rows = []; receipt = 0; cursor = 0; search_delay = debounce

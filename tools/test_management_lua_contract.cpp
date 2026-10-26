@@ -223,6 +223,9 @@ int main(int argc,char** argv) {
       if(df3d_management::lua_fields::number(L,"revision")!=INT64_MAX)throw std::runtime_error("area revision rounded");
       test(action,("return {"+envelope+"steps=1537}").c_str(),action==A::AreaDelete || action==A::AreaUpdate || action==A::AreaCreate || action==A::AreaInspect || action==A::AreaLink);
     }
+    test(A::AreaCandidates,("return {"+envelope+"candidate_kind=1,sort=4}").c_str(),true,O::CandidateList);
+    test(A::AreaCandidates,("return {"+envelope+"candidate_kind=1,sort=5}").c_str(),false,O::CandidateList);
+    test(A::AreaCandidates,("return {"+envelope+"candidate_kind=2,sort=4}").c_str(),false,O::CandidateList);
     test(A::AreaInspect,("return {"+envelope+"steps=513}").c_str(),true,O::None,512);
     test(A::AreaInspect,("return {"+envelope+"steps=512}").c_str(),true,O::None,512);
     test(A::AreaDelete,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,O::None,0);

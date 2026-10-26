@@ -142,7 +142,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   if(op==12 && (a.squad_id()<0 || a.squad_use()<0 || a.squad_use()>15)) return "invalid area squad use";
   if(op==13 && ((a.organic()==-1 && a.inorganic()==-1) || a.organic()<-1 || a.organic()>1 ||
       a.inorganic()<-1 || a.inorganic()>1)) return "invalid area toggles";
-  if(op==14 && (a.candidate_kind()<1 || a.candidate_kind()>3 || a.sort()>3))
+  if(op==14 && (a.candidate_kind()<1 || a.candidate_kind()>3 || a.sort()>(a.candidate_kind()==1?4:3)))
     return "invalid area candidate selector";
   if(multi) {
     if(!a.interaction_id() || a.interaction_id()>INT64_MAX || a.undo_token()>INT64_MAX ||
@@ -810,7 +810,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     const auto textSize=[](const flatbuffers::String* v)->size_t{return v ? v->size() : 0;};
     if(a->operation()>AreaOperation::LinkTarget || a->area_id()<-1 ||
         textSize(a->list_key())>64 || textSize(a->query())>128 ||
-        a->candidate_kind()>3 || a->sort()>3 || a->list_revision()>INT64_MAX ||
+        a->candidate_kind()>3 || a->sort()>(a->candidate_kind()==1?4:3) || a->list_revision()>INT64_MAX ||
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
       return "invalid area response header";
     if(a->settings_count() < -1 || (a->settings_count() >= 0 &&

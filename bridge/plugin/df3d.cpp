@@ -2003,13 +2003,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!facts)return CR_FAILURE;
           rows.push_back({unit->id,*facts});
         }
-        out.print("[ ");
-        for(size_t i=0;i<rows.size();++i) {
-          const auto& r=rows[i];
-          out.print("{}[{},{},{},{},{}]",i?",":"",r.id,r.facts.withoutRoom?1:0,
-              r.facts.priority,r.facts.category,r.facts.categoryStatus);
+        Json::Value output(Json::arrayValue);
+        for(const auto& r:rows) {
+          Json::Value row(Json::arrayValue);
+          row.append(r.id);row.append(r.facts.withoutRoom?1:0);row.append(r.facts.priority);
+          row.append(r.facts.category);row.append(r.facts.categoryStatus);row.append(r.facts.stress);
+          for(const auto* key:{&r.facts.nameKey,&r.facts.professionKey}) {
+            Json::Value bytes(Json::arrayValue);for(unsigned char byte:*key)bytes.append(int(byte));row.append(bytes);
+          }
+          output.append(row);
         }
-        out.print(" ]\n");return CR_OK;
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="zone-owner-candidates-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;

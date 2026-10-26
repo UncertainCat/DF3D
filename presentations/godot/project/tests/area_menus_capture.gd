@@ -13,6 +13,17 @@ func settings_reply(controller, world, service, rows: Array) -> void:
 		"settings":rows,"list_revision":9007199254740993,"build_phase":3,"build_done":100,"build_total":100,"next_cursor":0}}
 	service.poll()
 
+func owner_header_pixels(reference: Dictionary, state_name: String) -> bool:
+	var image := root.get_texture().get_image(); image.convert(Image.FORMAT_RGB8)
+	var evidence: Dictionary = reference.owner_header_order.header_pixels
+	for index in evidence.boxes.size():
+		var b: Array = evidence.boxes[index]
+		var region := image.get_region(Rect2i(int(b[0]),int(b[1]),int(b[2])-int(b[0]),int(b[3])-int(b[1])))
+		var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(region.get_data())
+		if digest.finish().hex_encode() != str(evidence.reference_hashes[state_name][index]):
+			push_error("Native owner header pixels differ: "+state_name+" "+str(index)); return false
+	return true
+
 func _initialize() -> void:
 	call_deferred("run")
 
@@ -145,6 +156,27 @@ func run() -> void:
 	service.poll(); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if root.get_texture().get_image().save_png(directory.path_join("controller_zone_owner.png")) != OK: quit(1); return
+	var header_reference: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_assignment.json"))
+	if not owner_header_pixels(header_reference,"default"): quit(1); return
+	var header_rows: Array = controller.candidates_state.rows.duplicate(true)
+	for sample in header_reference.owner_header_order.sequences:
+		var sort: int = {"Name":1,"Cat":2,"Prof":3,"Stress":4}[sample.header]
+		var button: Button = controller.candidates_view.headers[sort-1]
+		var point: Vector2 = button.get_global_rect().get_center()
+		var motion := InputEventMouseMotion.new(); motion.position=point; motion.global_position=point; root.push_input(motion,true)
+		var event := InputEventMouseButton.new(); event.position=point; event.global_position=point
+		event.button_index=MOUSE_BUTTON_LEFT; event.pressed=true; root.push_input(event,true)
+		event.pressed=false; root.push_input(event,true)
+		controller._process(0); service.poll()
+		if int(world.calls[-1].get("sort",-1)) != sort or bool(world.calls[-1].get("sort_descending",false)) != bool(sample.descending):
+			push_error("Native owner header sequence differs: "+str(sample.name)); quit(1); return
+		world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":14,"status":2,
+			"area":{"list_revision":95,"build_phase":3,"sort":sort,"sort_descending":bool(sample.descending),"candidates":header_rows}}
+		service.poll(); controller._process(0)
+		await process_frame; await RenderingServer.frame_post_draw
+		if str(sample.header)=="Stress" and not bool(sample.descending):
+			if not owner_header_pixels(header_reference,"stress"): quit(1); return
+			if root.get_texture().get_image().save_png(directory.path_join("controller_zone_owner_stress.png")) != OK: quit(1); return
 	controller.handle_back()
 	# Capture each observed zone type, including panels with no extra controls.
 	for definition in controller.zone_types:

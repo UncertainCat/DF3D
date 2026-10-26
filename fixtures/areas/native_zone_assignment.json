@@ -374,7 +374,7 @@
     "unknown_outcome": "Marked before native entry. No automatic replay or rollback."
   },
   "candidate_predicate": {
-    "status": "native eligibility and default ordering integrated into scoped owner lists; selectable header sorts and full UI pending",
+    "status": "native eligibility and all four owner sorts integrated; full picker UI pending",
     "entry": "0x3a6610",
     "inputs": "Owned 24-byte context: type, spouse-sharing flag, current owner pointer, zone pointer; owned 16-byte unit/non-item entry. No native widget or picker object is supplied.",
     "globals": [
@@ -480,7 +480,7 @@
     }
   },
   "default_owner_order": {
-    "status": "native default order verified and integrated; selectable header sorts remain pending",
+    "status": "native default order verified and integrated; selectable header evidence is in owner_header_order",
     "native_evidence": "build/stockpile-storage-native-zone-owner-20261025-234339",
     "native_result_sha256": "8a86dfe866f1bb58e5706944e678ef456fb6188179e8a453de3377d1adad0d19",
     "native_bridge_sha256": "2d1aa2cf2e9ff087885cfe3b50892cc7c3c59399df06a56a4c1ab4b3e142b7f2",
@@ -567,6 +567,344 @@
     "bridge_result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
     "bridge_sha256": "745c464ac7eda5200d57e0f784c1254fed0ee997dafbc321de60ad0bf2adf149",
     "bridge_owned_df_pid": 128076,
-    "scope": "Default scoped owner picker order. Query, selectable header directions/history, row labels, legacy chooser, creation validation and full UI acceptance remain pending."
+    "scope": "Default scoped owner picker order. All-header evidence is in owner_header_order. Query, row labels, legacy chooser, creation validation and full picker UI remain pending."
+  },
+  "owner_header_order": {
+    "status": "native header keys, bridge order, direction retention and viewport header input verified; full picker acceptance remains pending",
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261025-235218",
+    "native_result_sha256": "524523ce09b03695a62e04413075b7d3724ca37cb1644ed29aaaf017d3346176",
+    "native_owned_df_pid": 104040,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "sequences": [
+      {
+        "count": 141,
+        "descending": true,
+        "exact": true,
+        "header": "Cat",
+        "name": "bedroom-picker-sort-cat-first-header-order-parity"
+      },
+      {
+        "count": 141,
+        "descending": false,
+        "exact": true,
+        "header": "Cat",
+        "name": "bedroom-picker-sort-cat-second-header-order-parity"
+      },
+      {
+        "count": 141,
+        "descending": false,
+        "exact": true,
+        "header": "Name",
+        "name": "bedroom-picker-sort-name-first-header-order-parity"
+      },
+      {
+        "count": 141,
+        "descending": true,
+        "exact": true,
+        "header": "Name",
+        "name": "bedroom-picker-sort-name-second-header-order-parity"
+      },
+      {
+        "count": 141,
+        "descending": false,
+        "exact": true,
+        "header": "Prof",
+        "name": "bedroom-picker-sort-prof-first-header-order-parity"
+      },
+      {
+        "count": 141,
+        "descending": true,
+        "exact": true,
+        "header": "Prof",
+        "name": "bedroom-picker-sort-prof-second-header-order-parity"
+      },
+      {
+        "count": 141,
+        "descending": false,
+        "exact": true,
+        "header": "Stress",
+        "name": "bedroom-picker-sort-stress-first-header-order-parity"
+      },
+      {
+        "count": 141,
+        "descending": true,
+        "exact": true,
+        "header": "Stress",
+        "name": "bedroom-picker-sort-stress-second-header-order-parity"
+      },
+      {
+        "count": 141,
+        "descending": true,
+        "exact": true,
+        "header": "Name",
+        "name": "bedroom-picker-sort-name-return-header-order-parity"
+      },
+      {
+        "count": 141,
+        "descending": false,
+        "exact": true,
+        "header": "Cat",
+        "name": "bedroom-picker-sort-cat-return-header-order-parity"
+      }
+    ],
+    "behavior": [
+      "Only one active selectable sort",
+      "Each header remembers its own direction",
+      "Room partition and position priority remain fixed when header direction reverses",
+      "Name/Prof compare native normalized CP437 bytes; equal keys retain source order",
+      "Stress compares exact soul personality.stress; missing soul uses -200000"
+    ],
+    "callbacks": {
+      "Name": "0x1435a10",
+      "Cat": "0x1431370",
+      "Prof": "0x14358c0",
+      "Stress": "0x1435ed0"
+    },
+    "bridge_evidence": "build/areas-acceptance-20261025-235928",
+    "bridge_owned_df_pid": 82416,
+    "bridge_result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "bridge_sha256": "397cc73b205288f2d2e5ee97494285c3b1c1cb6e01c6a1d0e5a4304172c9e9f5",
+    "bridge_checks": [
+      {
+        "request": "request-132.json",
+        "zone": 1546,
+        "sort": 0,
+        "descending": false,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-135.json",
+        "zone": 1546,
+        "sort": 1,
+        "descending": false,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-136.json",
+        "zone": 1546,
+        "sort": 1,
+        "descending": true,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-137.json",
+        "zone": 1546,
+        "sort": 2,
+        "descending": false,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-138.json",
+        "zone": 1546,
+        "sort": 2,
+        "descending": true,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-139.json",
+        "zone": 1546,
+        "sort": 3,
+        "descending": false,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-140.json",
+        "zone": 1546,
+        "sort": 3,
+        "descending": true,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-141.json",
+        "zone": 1546,
+        "sort": 4,
+        "descending": false,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-142.json",
+        "zone": 1546,
+        "sort": 4,
+        "descending": true,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-133.json",
+        "zone": 1547,
+        "sort": 0,
+        "descending": false,
+        "count": 172,
+        "exact": true
+      },
+      {
+        "request": "request-134.json",
+        "zone": 1548,
+        "sort": 0,
+        "descending": false,
+        "count": 139,
+        "exact": true
+      },
+      {
+        "request": "request-143.json",
+        "zone": 1548,
+        "sort": 1,
+        "descending": false,
+        "count": 139,
+        "exact": true
+      },
+      {
+        "request": "request-144.json",
+        "zone": 1548,
+        "sort": 1,
+        "descending": true,
+        "count": 139,
+        "exact": true
+      },
+      {
+        "request": "request-145.json",
+        "zone": 1548,
+        "sort": 2,
+        "descending": false,
+        "count": 139,
+        "exact": true
+      },
+      {
+        "request": "request-146.json",
+        "zone": 1548,
+        "sort": 2,
+        "descending": true,
+        "count": 139,
+        "exact": true
+      },
+      {
+        "request": "request-147.json",
+        "zone": 1548,
+        "sort": 3,
+        "descending": false,
+        "count": 139,
+        "exact": true
+      },
+      {
+        "request": "request-148.json",
+        "zone": 1548,
+        "sort": 3,
+        "descending": true,
+        "count": 139,
+        "exact": true
+      },
+      {
+        "request": "request-149.json",
+        "zone": 1548,
+        "sort": 4,
+        "descending": false,
+        "count": 139,
+        "exact": true
+      },
+      {
+        "request": "request-150.json",
+        "zone": 1548,
+        "sort": 4,
+        "descending": true,
+        "count": 139,
+        "exact": true
+      }
+    ],
+    "gpu_evidence": "build/qa/owner-header-pixels",
+    "gpu_status": "passed_with_known_issues",
+    "known_diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "header_pixels": {
+      "states": [
+        "Cat active, initial directions",
+        "Stress active, remembered Name/Prof descending"
+      ],
+      "boxes": [
+        [
+          416,
+          64,
+          496,
+          76
+        ],
+        [
+          496,
+          64,
+          568,
+          76
+        ],
+        [
+          568,
+          64,
+          648,
+          76
+        ],
+        [
+          816,
+          64,
+          848,
+          76
+        ]
+      ],
+      "different_pixels": 0,
+      "scope": "Headers only; candidate rows and the full picker are not covered",
+      "reference_hashes": {
+        "default": [
+          "662fbef6f73fe4e67f30afeb9a82df3b6498f35335ea1e5d9ffd5a9573acfc00",
+          "9989eb44ea4f3616e67e7018dc64205208fd347ab2cb8216ca46cee309983b20",
+          "c85e3f4e9ef279b0accb5846c5d23000bccf305da757edefce29ea582008aaf1",
+          "8852c5e6c45759a6f6636861d3dca84c036c00bc7aa33d37bc96f9808c6e4f8a"
+        ],
+        "stress": [
+          "cb41ffcc0e69ca2afc78c11d6a775e3ddbe859a2b52bfb7311c133d0804ff1c0",
+          "7ce33050b4fbeafb713cfca3014d7d4320c1d533ea09c62b654e60246abf1209",
+          "be42d62e935eea0b85f615d23c471f358d9b2839ab1b6648e5ef1fbd8c957032",
+          "9ad080901db8b51a5bd02a8c2b00c0e9d03099be395d616310c16e208d7b63bd"
+        ]
+      }
+    },
+    "new_fingerprints": [
+      {
+        "rva": "0x1435a10",
+        "length": "0x110",
+        "fnv1a64": "98ce3d80a8c10b09"
+      },
+      {
+        "rva": "0x14358c0",
+        "length": "0x110",
+        "fnv1a64": "7476642b05457b5b"
+      },
+      {
+        "rva": "0x1435ed0",
+        "length": "0x67",
+        "fnv1a64": "5fa2b3269858314f"
+      },
+      {
+        "rva": "0x14240d0",
+        "length": "0x89",
+        "fnv1a64": "4b41b81d7b2cdc3e"
+      },
+      {
+        "rva": "0x1425170",
+        "length": "0x89",
+        "fnv1a64": "86b6c3e85719b169"
+      },
+      {
+        "rva": "0xb9d50",
+        "length": "0x69",
+        "fnv1a64": "979704ba6b6743e5"
+      }
+    ]
   }
 }

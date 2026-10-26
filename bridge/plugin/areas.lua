@@ -122,7 +122,7 @@ local function validate_operation(r,a)
    (k==2 and d>=2 and id<0 or not(k==2 and d>=2) and id~=-1) then return 'invalid area location creation' end
  end
  if op==14 and (not integer(a.candidate_kind) or a.candidate_kind<1 or a.candidate_kind>3 or
-  not integer(default(a,'sort',0)) or default(a,'sort',0)<0 or default(a,'sort',0)>3 or
+  not integer(default(a,'sort',0)) or default(a,'sort',0)<0 or default(a,'sort',0)>(a.candidate_kind==1 and 4 or 3) or
   type(default(a,'sort_descending',false))~='boolean') then return 'invalid area candidate selector' end
  if op==13 then
   local o,i=default(a,'organic',-1),default(a,'inorganic',-1)
@@ -536,9 +536,11 @@ local function candidate_row(job,v,r)
   if type(r.owner_eligible)=='function' then eligible=r.owner_eligible(b,v) end
   if eligible==nil then job.error='Native area helper unavailable';return nil end
   if not eligible then return nil end
-  if job.sort==0 then
-   if type(r.owner_order_facts)=='function' then order_facts=r.owner_order_facts(b,v) end
-   if not order_facts then job.error='Native area helper unavailable';return nil end
+  if type(r.owner_order_facts)=='function' then order_facts=r.owner_order_facts(b,v) end
+  if not order_facts then job.error='Native area helper unavailable';return nil end
+  if type(order_facts.name_key)~='string' or #order_facts.name_key>2048 or
+   type(order_facts.profession_key)~='string' or #order_facts.profession_key>2048 then
+   job.error='Native area helper unavailable';return nil
   end
  else
   if not U.isActive(v) or U.isDead(v) then return nil end
@@ -565,18 +567,27 @@ local function append_candidate(job,row)
  if job.ids[identity] then job.error=job.links and 'Duplicate link identity' or 'Duplicate candidate identity';return end
  job.ids[identity]=true;row.ordinal=#job.rows+1;job.rows[#job.rows+1]=row
 end
+local function compare_native_bytes(a,b)
+ for i=1,math.min(#a,#b)do
+  local x,y=a:byte(i),b:byte(i);if x~=y then return x<y and -1 or 1 end
+ end
+ return #a==#b and 0 or #a<#b and -1 or 1
+end
 local function row_less(job,a,b)
- if job.native_owner and job.sort==0 then
+ if job.native_owner then
   local x,y=a.owner_order,b.owner_order
   if x.without_room~=y.without_room then return x.without_room end
   if x.priority~=y.priority then return x.priority>y.priority end
-  for _,field in ipairs{'category','category_status'}do
-   if x[field]~=y[field] then
-    if job.descending then return x[field]>y[field] end
-    return x[field]<y[field]
-   end
+  local cmp
+  if job.sort==1 then cmp=compare_native_bytes(x.name_key,y.name_key)
+  elseif job.sort==3 then cmp=compare_native_bytes(x.profession_key,y.profession_key)
+  elseif job.sort==4 then cmp=x.stress-y.stress
+  else
+   cmp=x.category-y.category
+   if cmp==0 then cmp=x.category_status-y.category_status end
   end
-  return a.ordinal<b.ordinal
+  if cmp==0 then return a.ordinal<b.ordinal end
+  return job.descending and cmp>0 or not job.descending and cmp<0
  end
  local x,y
  if job.legacy then x,y=a.id,b.id

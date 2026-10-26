@@ -217,16 +217,22 @@ elseif request.op=='zone_owner_candidates' then
  for _,id in ipairs(expected)do assert(actual[id],'native owner candidate missing')end
  local order_text,order_code=dfhack.run_command_silent('df3d','zone-owner-order-read',tostring(request.id));assert(order_code==0,order_text)
  local facts=json.decode(order_text)
- for i,row in ipairs(facts)do row[6]=i end
+ for i,row in ipairs(facts)do row[9]=i end
  table.sort(facts,function(a,b)
   if a[2]~=b[2]then return a[2]>b[2]end
   if a[3]~=b[3]then return a[3]>b[3]end
-  if a[4]~=b[4]then return a[4]<b[4]end
-  if a[5]~=b[5]then return a[5]<b[5]end
-  return a[6]<b[6]
+  local sort=request.sort or 0;local cmp=0
+  if sort==1 or sort==3 then
+   local x,y=a[sort==1 and 7 or 8],b[sort==1 and 7 or 8]
+   for i=1,math.min(#x,#y)do if x[i]~=y[i]then cmp=x[i]-y[i];break end end
+   if cmp==0 then cmp=#x-#y end
+  elseif sort==4 then cmp=a[6]-b[6]
+  else cmp=a[4]-b[4];if cmp==0 then cmp=a[5]-b[5]end end
+  if cmp==0 then return a[9]<b[9]end
+  return request.descending and cmp>0 or not request.descending and cmp<0
  end)
- for i,row in ipairs(facts)do assert(request.ids[i]==row[1],'native default owner order differs at '..i)end
- result.default_order_exact=true
+ for i,row in ipairs(facts)do assert(request.ids[i]==row[1],'native owner order differs at '..i)end
+ result.order_exact=true;result.sort=request.sort or 0;result.descending=request.descending or false
  result.count=#expected
  result.nonliving_or_noncitizen=-1
  for _,id in ipairs(expected)do

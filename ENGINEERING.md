@@ -46,8 +46,8 @@ MSVC builds and `build/qa/zone-owner-native-final` core19/19 plus adapter pass.
 Adapter coverage also checks unknown assignment outcomes preserve the newly
 created zone and owner-only input never invokes the notification helper.
 
-Candidate ordering, existing-room grouping and full assignment UI acceptance
-remain required. Zones/Locations remains staged.
+Owner candidate ordering is integrated below. Full assignment UI acceptance
+remains required. Zones/Locations remains staged.
 
 
 The independent owner-candidate predicate0x3a6610 is exposed through
@@ -113,9 +113,42 @@ Protected bridge `build/areas-acceptance-20261025-234450` verifies the paginated
 172/172/139 candidate lists in that default order, plus owner assignment,
 transfer/removal and existing zone effects. All155 observations pass with clean
 diagnostics; owned DF128076 closes unsaved and both save manifests match. MSVC
-and core19/19 plus adapter checks pass. Selectable header sorts, their direction
-and history, query, status labels and rendered assignment UI still need parity;
-this default ordering milestone does not expose Zones/Locations.
+and core19/19 plus adapter checks pass. Header ordering and input are extended below; query,
+status labels and full rendered assignment UI still need parity.
+Zones/Locations remains staged.
+
+Owner Name, Cat, Prof and Stress now preserve the native room/position priorities
+while applying their selected key/direction. Name/Prof reuse the normalized CP437
+readers in `location_staff_order_native.h`; Stress follows the pinned native
+comparator's exact soul-personality scalar and missing-soul sentinel of-200000.
+Lua compares unsigned bytes explicitly and retains native source order for ties.
+The existing sort byte accepts additive owner-only value4 for Stress; both
+request/result validators and the Godot encoder enforce that scope. Values0/2
+both use native category ordering for owners; animal/squad paths are unchanged.
+
+Protected native `build/stockpile-storage-native-zone-owner-20261025-235218`
+compares all141 rows after ten header actions: every first/repeated click and
+returning to Name/Cat. The picker has one active sort and separately remembered
+header directions. The room/position priorities never reverse with the header.
+The native callback audit and hashes are retained in
+`native_zone_assignment.json.owner_header_order`. Owned DF104040 closes unsaved
+with source preserved and native UI/search guards unchanged.
+
+The viewer starts on Cat, remembers individual owner header directions, and
+includes the native text-free stress control. `area_menus_capture` replays the
+ten reference actions through viewport mouse input and compares eight header
+regions against native RGB hashes: initial Cat and active Stress with remembered
+Name/Prof directions. All pixels match; the compared states were inspected.
+`build/qa/owner-header-pixels` passes with the three documented Godot notices.
+This is header/input evidence only; synthetic rows do not establish row parity.
+
+Protected semantic `build/areas-acceptance-20261025-235928` passes171 observations
+with clean diagnostics. Nineteen paginated list comparisons cover default lists
+and both directions of every header on a Tomb and Bedroom, followed by native
+owner transfer and removal checks. DF82416 closes unsaved; both save manifests
+remain unchanged. Root CTest19/19, adapter, candidate-state and area-menu checks
+pass. Full row labels, filtering, clear availability, creation owner validation
+and assignment lifecycle acceptance remain required before exposing the picker.
 
 ## Native zone repaint effects
 

@@ -97,7 +97,37 @@ local function capture(name)
   for _,v in ipairs(guards)do assert(dfhack.internal.memcmp(v.copy,v.address,v.size)==0,'candidate query changed native UI/search scratch');df.delete(v.copy)end
   local eligible=require('json').decode(text)
   records[#records+1]={name=name..'-candidates',source_ids=ids,displayed_ids=displayed,eligible_ids=eligible,query=list.filter_str,unchanged_guards=#guards}
-  if list.filter_str=='' then
+  if name:find('%-sort%-') then
+   assert(#sorting==1,'expected one active native header')
+   local header=sorting[1]
+   local function compare_bytes(a,b)
+    for i=1,math.min(#a,#b)do if a[i]~=b[i]then return a[i]<b[i] and -1 or 1 end end
+    return #a==#b and 0 or #a<#b and -1 or 1
+   end
+   local function matches(descending)
+    local sorted={};for i,row in ipairs(order_facts)do sorted[#sorted+1]={row=row,ordinal=i}end
+    table.sort(sorted,function(a,b)
+     local x,y=a.row,b.row
+     if x[2]~=y[2]then return x[2]>y[2]end
+     if x[3]~=y[3]then return x[3]>y[3]end
+     local cmp=0
+     if header=='Name' then cmp=compare_bytes(x[7],y[7])
+     elseif header=='Prof' then cmp=compare_bytes(x[8],y[8])
+     elseif header=='Stress' then cmp=x[6]-y[6]
+     elseif header=='Cat' then cmp=x[4]-y[4];if cmp==0 then cmp=x[5]-y[5]end
+     else error('unexpected native sort header')end
+     if cmp==0 then return a.ordinal<b.ordinal end
+     return descending and cmp>0 or not descending and cmp<0
+    end)
+    if #sorted~=#displayed then return false end
+    for i,row in ipairs(sorted)do if row.row[1]~=displayed[i]then return false end end
+    return true
+   end
+   local ascending,descending=matches(false),matches(true)
+   assert(ascending~=descending,'native header order differs or direction is ambiguous: '..name)
+   records[#records+1]={name=name..'-header-order-parity',header=header,descending=descending,count=#displayed,exact=true}
+  end
+  if list.filter_str=='' and not name:find('%-sort%-') then
    local sorted={};for i,facts in ipairs(order_facts)do sorted[#sorted+1]={id=facts[1],room=facts[2],priority=facts[3],category=facts[4],status=facts[5],ordinal=i}end
    table.sort(sorted,function(a,b)
     if a.room~=b.room then return a.room>b.room end
@@ -195,6 +225,14 @@ local ok,why=pcall(function()
  snapshot('bedroom-cleared');capture('bedroom-cleared')
  df.global.plotinfo.economy_active=true
  pixel(336,154);capture('bedroom-economy-picker')
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ df.global.plotinfo.economy_active=old_economy
+ pixel(336,154)
+ for _,header in ipairs{{'cat-first',540},{'cat-second',540},{'name-first',472},{'name-second',472},
+   {'prof-first',620},{'prof-second',620},{'stress-first',832},{'stress-second',832},
+   {'name-return',472},{'cat-return',540}}do
+  pixel(header[2],70);capture('bedroom-picker-sort-'..header[1])
+ end
 end)
 first_unit.relationship_ids.Spouse=old_first;spouse.relationship_ids.Spouse=old_spouse
 df.global.plotinfo.economy_active=old_economy

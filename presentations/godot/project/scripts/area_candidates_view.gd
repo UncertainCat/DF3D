@@ -8,6 +8,7 @@ var search: LineEdit
 var scroll: ScrollContainer
 var rows_box: VBoxContainer
 var headers: Array[Button] = []
+var header_backgrounds: Array[Panel] = []
 var choices: Array[Button] = []
 var focus_buttons: Array[Button] = []
 var portrait_slots: Array = []
@@ -24,12 +25,16 @@ func configure(source, model) -> void:
 	squad_prompt = Label.new(); squad_prompt.position = Vector2(8,0); squad_prompt.size = Vector2(544,36)
 	squad_prompt.add_theme_font_size_override("font_size",12); squad_prompt.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	body.add_child(squad_prompt)
-	for index in 3:
-		var button := Button.new(); button.text = ["Name","Cat","Prof"][index]
-		button.position = Vector2(40+index*80,0); button.size = Vector2(80,12)
+	for index in 4:
+		var button := Button.new(); button.text = ["Name","Cat","Prof",""][index]
+		button.position = Vector2([40,120,192,440][index],0); button.size = Vector2([80,72,80,32][index],12)
 		button.add_theme_font_size_override("font_size",12)
 		button.pressed.connect(func(): state.order(index+1))
 		body.add_child(button); headers.append(button)
+		var background := Panel.new(); background.position = Vector2(32,0)
+		background.size = Vector2([48,40,48,0][index],12); background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		background.show_behind_parent = true; background.visible = index < 3
+		button.add_child(background); header_backgrounds.append(background)
 	scroll = ScrollContainer.new(); scroll.position = Vector2(0,24); scroll.size = Vector2(576,600)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED; body.add_child(scroll)
 	var bar := scroll.get_v_scroll_bar(); bar.custom_minimum_size.x = 16
@@ -77,16 +82,23 @@ func refresh() -> void:
 	if search.text != state.query: search.text = state.query
 	search.editable = not state.failed and not state.mutating and not state.area.is_empty()
 	for index in headers.size():
-		headers[index].visible = state.kind != 3
+		headers[index].visible = state.kind != 3 and (index < 3 or state.kind == 1)
 		headers[index].disabled = not search.editable
 		var active := "ACTIVE" if state.sort == index+1 else "INACTIVE"
-		headers[index].icon = strip(("SORT_DESCENDING_" if state.descending else "SORT_ASCENDING_")+active,4)
+		var descending: bool = state.sort_direction(index+1)
+		var arrow_descending: bool = not descending if state.kind == 1 else descending
+		headers[index].icon = strip(("SORT_DESCENDING_" if arrow_descending else "SORT_ASCENDING_")+active,4)
 		var style := StyleBoxTexture.new(); style.texture = strip("SORT_TEXT_"+active,3)
 		for side in [SIDE_LEFT,SIDE_RIGHT,SIDE_TOP,SIDE_BOTTOM]: style.set_content_margin(side,0)
 		style.set_texture_margin(SIDE_LEFT,8); style.set_texture_margin(SIDE_RIGHT,8)
-		for key in ["normal","hover","pressed","disabled","focus"]: headers[index].add_theme_stylebox_override(key,style)
+		header_backgrounds[index].add_theme_stylebox_override("panel",style)
+		var text_color := Color.BLACK if state.sort == index+1 else Color8(160,160,160)
+		for key in ["font_color","font_hover_color","font_pressed_color","font_hover_pressed_color","font_focus_color","font_disabled_color"]:
+			headers[index].add_theme_color_override(key,text_color)
+		for key in ["normal","hover","pressed","disabled","focus"]:
+			headers[index].add_theme_stylebox_override(key,StyleBoxEmpty.new())
 		headers[index].add_theme_constant_override("h_separation",0)
-		headers[index].size = Vector2(80,12)
+		headers[index].size = Vector2([80,72,80,32][index],12)
 	remove.disabled = state.busy() or int(state.area.get("owner_id",-1)) < 0
 	if cached_rows != state.rows:
 		cached_rows = state.rows.duplicate(true)

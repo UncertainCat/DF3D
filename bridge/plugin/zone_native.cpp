@@ -8,6 +8,7 @@
 #include "df/building_doorst.h"
 #include "df/world.h"
 #include "df/unit.h"
+#include "df/unit_soul.h"
 #include "df/item.h"
 #include "df/job.h"
 #include "df/plotinfost.h"
@@ -151,7 +152,13 @@ std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzon
         hash(base+0x3d04d0,0xe0)==0x4769466e05837caaULL &&
         hash(base+0x134bc90,0x33)==0x2e15d1b196b9c323ULL &&
         hash(base+0x134bb20,0x166)==0x35dbd90ce33cd29eULL &&
-        hash(base+0x1431370,0x64)==0x5854757b83da8810ULL;
+        hash(base+0x1431370,0x64)==0x5854757b83da8810ULL &&
+        hash(base+0x1435a10,0x110)==0x98ce3d80a8c10b09ULL &&
+        hash(base+0x14358c0,0x110)==0x7476642b05457b5bULL &&
+        hash(base+0x1435ed0,0x67)==0x5fa2b3269858314fULL &&
+        hash(base+0x14240d0,0x89)==0x4b41b81d7b2cdc3eULL &&
+        hash(base+0x1425170,0x89)==0x86b6c3e85719b169ULL &&
+        hash(base+0xb9d50,0x69)==0x979704ba6b6743e5ULL;
     const auto& ordering=staffOrderingFunctions();
     if(!compatible || !ordering)return std::nullopt;
     struct Context {uint64_t unused;int32_t type;};
@@ -167,7 +174,15 @@ std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzon
     const int32_t priority=reinterpret_cast<Priority>(base+0x134bc90)(&candidate,
         df::global::plotinfo->civ_id,df::global::plotinfo->group_id);
     ordering.category(&category,&reference);
-    return ZoneOwnerOrderFacts{withoutRoom,priority,category[0],category[1]};
+    ZoneOwnerOrderFacts facts{withoutRoom,priority,category[0],category[1],-200000,{},{}};
+    ordering.name(&candidate,&facts.nameKey,false);ordering.normalize(&facts.nameKey);
+    ordering.profession(&candidate,&facts.professionKey,false);ordering.normalize(&facts.professionKey);
+    static_assert(offsetof(df::unit,status)+offsetof(decltype(df::unit::status),current_soul)==0xa98);
+    static_assert(offsetof(df::unit_soul,personality)+offsetof(df::unit_personality,stress)==0x368);
+    // The pinned native Stress comparator reads this semantic scalar inline;
+    // its missing-soul sentinel is -200000, not a derived happiness category.
+    if(candidate.status.current_soul)facts.stress=candidate.status.current_soul->personality.stress;
+    return facts;
 }
 bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner) {
     if(!df::global::world || !nativeZoneOwnerReady() || !zone.canBeRoomSubset())return false;

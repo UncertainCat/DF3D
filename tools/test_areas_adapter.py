@@ -623,7 +623,7 @@ def main():
     for _,u in ipairs(df.global.world.units.active)do u.sex=1;u.flags1={caged=false};u.profession='Worker';u.stress=u.id%7 end
     """)
     lua.execute("df.global.world.units.all=df.global.world.units.active;function owner_eligible(b,u) return u.native_eligible~=false end")
-    lua.execute("function owner_order_facts(b,u) return {without_room=true,priority=0,category=u.id,category_status=0} end")
+    lua.execute("function owner_order_facts(b,u) return {without_room=true,priority=0,category=u.id,category_status=0,stress=u.id%7,name_key=string.format('%04d',u.id),profession_key='worker'} end")
     selector = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 1, "sort": 1}
     pending = raw_call(14, selector)
     assert pending["ok"] and pending["build_phase"] == 1 and pending["build_done"] == 0
@@ -664,7 +664,9 @@ def main():
     searched = call(14, dict(selector, query="260"))
     assert len(searched["candidates"]) == 1 and searched["candidates"][1]["id"] == 260
     category = call(14, dict(selector, sort=2))
-    assert category["candidates"][1]["mood"] == 1
+    assert category["candidates"][1]["id"] == 1  # Cat is native category, not stress
+    stress = call(14, dict(selector, sort=4))
+    assert stress["candidates"][1]["mood"] == 1
     # Native eligibility is authoritative even for units absent from active.
     lua.execute("""
     local units=df.global.world.units.all

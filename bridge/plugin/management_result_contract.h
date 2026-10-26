@@ -98,7 +98,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
         !number("build_phase",0,3) || !number("build_done",0,UINT32_MAX) || !number("build_total",0,UINT32_MAX) ||
         !number("settings_count",-1,INT32_MAX) || !number("omitted",0,UINT32_MAX) || !number("captured_tick",-1,INT64_MAX) ||
         !number("operation",0,26) || !number("area_id",-1,INT32_MAX) || !number("candidate_kind",0,3) ||
-        !number("sort",0,3) || !number("next_cursor",0,UINT32_MAX) ||
+        !number("sort",0,value("candidate_kind")==1?4:3) || !number("next_cursor",0,UINT32_MAX) ||
         !boolean("sort_descending") || !boolean("truncated") || !text("list_key",64,false) || !text("query",128,false))return error;
     if(value("build_done")>value("build_total"))return "build_done exceeds build_total";
     lua_getfield(L,-1,"pending");const bool pending=lua_toboolean(L,-1);lua_pop(L,1);

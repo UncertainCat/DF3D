@@ -165,6 +165,31 @@ populated squad symbol rows compared to the actual saved fields, assignments,
 simulation and restart from DF138412 to DF140216. Both save manifests remain
 unchanged (1,368 files).
 
+Invalid squad symbol indices are confirmed to initialize during native drawing.
+The palette used by `0x40aa30` is runtime data in the custom-symbol UI, so it
+cannot be read by the product. Its producer `0x43be70..0x43c910` is independently
+usable: it writes only swatch bytes at offsets0x1a..0x452 of the supplied buffer,
+with no calls or global reads except its immutable jump table. The pinned
+`nativeZoneSquadSwatches` wrapper owns the entire buffer and checks prefix/suffix
+guards. No native menu state is borrowed.
+
+Protected `build/stockpile-storage-native-zone-squads-20261026-173918` verifies
+all1,080 owned swatch bytes against native DF while preserving main-interface
+bytes. Eight invalid-index cases (-1,23,INT_MAX) record exact native RNG state
+before/after drawing. A diagnostic calculation from those recorded words and
+owned swatches matches each resulting index/RGB tuple and exact RNG consumption;
+the final controlled stream forces a rejected same-color pair before a white
+background, then restores the original stream. All31 symbol pixel cases still
+pass, and DF143500 exits unsaved with its source manifest unchanged. Core19/19
+passes in `build/qa/squad-owned-swatches`; MSVC passes. The fixture's
+`symbol_initialization_reference` retains compact provenance and observations.
+The prior `173716` run matched outputs but lacked a random contrast-retry case;
+it is not counted as passing the complete initialization check.
+Product initialization remains unfinished: native RNG entry0xeb68b0 and the
+inline range/retry selection need integration and direct live comparison,
+including a stream refill boundary. The owned swatch generator does not itself
+change a squad or consume RNG.
+
 ## Animal keyboard activation and portrait reference
 
 `native_zone_animals.json.animal_container_reference_order` records seven

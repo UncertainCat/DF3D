@@ -3338,5 +3338,159 @@
         "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
       }
     }
+  },
+  "symbol_initialization_reference": {
+    "run": "build/stockpile-storage-native-zone-squads-20261026-173918",
+    "scope": "Eight native invalid-index initializations with exact RNG consumption and colors from owned native swatches; final controlled stream forces contrast retry and original stream is restored. Existing reader still refuses invalid indices; initializer integration remains pending.",
+    "swatch_generator": {
+      "rva": "0x43be70",
+      "size": "0xaa0",
+      "fnv1a64": "065ecb960f29fcc9",
+      "sha256": "fc4cf96afa8252bcfaf8002f29bf8e4baa87188e16650eaf263e5f53dd0bbe59",
+      "ownership": "No calls or global reads except immutable jump table. Supplied owned output bytes0x1a..0x452; prefix/suffix guards preserved; all1080bytes match native UI palette diagnostically."
+    },
+    "rng": {
+      "rva": "0xeb68b0",
+      "size": "0x1e3",
+      "fnv1a64": "4bcd46a418e7a7bb",
+      "sha256": "18472a552b158ec001ae3ae6aa6b551277c210397e527193f0a5413c73849ce9",
+      "scope": "Read-only static audit plus diagnostic before/after active stream observations. Product RNG invocation and twist-boundary parity not established yet."
+    },
+    "observations": [
+      {
+        "capture": "Barracks-initialize-1",
+        "invalid": -1,
+        "symbol": [
+          7,
+          64,
+          64,
+          255,
+          31,
+          21,
+          84
+        ],
+        "draws": 5,
+        "controlled": false,
+        "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
+      },
+      {
+        "capture": "Barracks-initialize-2",
+        "invalid": 23,
+        "symbol": [
+          19,
+          42,
+          170,
+          42,
+          84,
+          42,
+          84
+        ],
+        "draws": 5,
+        "controlled": false,
+        "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
+      },
+      {
+        "capture": "Barracks-initialize-3",
+        "invalid": 2147483647,
+        "symbol": [
+          1,
+          84,
+          73,
+          21,
+          28,
+          0,
+          170
+        ],
+        "draws": 5,
+        "controlled": false,
+        "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
+      },
+      {
+        "capture": "Barracks-initialize-4",
+        "invalid": -1,
+        "symbol": [
+          14,
+          95,
+          64,
+          255,
+          84,
+          41,
+          21
+        ],
+        "draws": 5,
+        "controlled": false,
+        "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
+      },
+      {
+        "capture": "Barracks-initialize-5",
+        "invalid": -1,
+        "symbol": [
+          11,
+          21,
+          21,
+          84,
+          0,
+          142,
+          170
+        ],
+        "draws": 5,
+        "controlled": false,
+        "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
+      },
+      {
+        "capture": "Barracks-initialize-6",
+        "invalid": -1,
+        "symbol": [
+          19,
+          128,
+          255,
+          255,
+          170,
+          255,
+          0
+        ],
+        "draws": 5,
+        "controlled": false,
+        "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
+      },
+      {
+        "capture": "Barracks-initialize-7",
+        "invalid": -1,
+        "symbol": [
+          22,
+          189,
+          189,
+          189,
+          42,
+          84,
+          84
+        ],
+        "draws": 5,
+        "controlled": false,
+        "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
+      },
+      {
+        "capture": "Barracks-initialize-8",
+        "invalid": -1,
+        "symbol": [
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          255
+        ],
+        "draws": 7,
+        "controlled": true,
+        "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
+      }
+    ],
+    "files_sha256": {
+      "result.json": "a46676fb90be3b1a45062f1d7acb04a793e00398327bd947b6af30b36d89e6cd",
+      "symbol-pixels.json": "4e9c21cfce72a751e8d08b44c73b5fa0b64a09d778424847c77bd3122a5703c2",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

@@ -2177,6 +2177,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         Json::Value output(Json::arrayValue);for(auto byte:*symbol)output.append(int(byte));
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="zone-squad-swatches-read") {
+        if(parameters.size()!=1)return CR_WRONG_USAGE;
+        const auto swatches=df3d_area::nativeZoneSquadSwatches();if(!swatches)return CR_FAILURE;
+        Json::Value output(Json::arrayValue);for(auto byte:*swatches)output.append(int(byte));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-squad-name-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
@@ -2496,6 +2502,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d room-read <x> <y> <z>\n"
         "df3d zone-squad-name-read <squad id>\n"
         "df3d zone-squad-symbol-read <squad id>\n"
+        "df3d zone-squad-swatches-read\n"
         "df3d zone-squad-candidates-read\n"
         "df3d zone-owner-candidates-read <zone id>\n"
         "df3d zone-new-owner-candidates-read <zone type>\n"

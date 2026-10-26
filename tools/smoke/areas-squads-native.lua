@@ -3,6 +3,21 @@ local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local main=df.global.game.main_interface
 local base_zone
+local function rng_snapshot()
+ -- Diagnostic observation of DF's active RNG stream; never a product input.
+ local base=dfhack.internal.getImageBase()
+ local context=df.reinterpret_cast('int16_t',base+0x2159084).value
+ assert(context>=0 and context<16,'unexpected RNG context')
+ local state={context=context,cursor=df.reinterpret_cast('uint32_t',base+0x2131b30+context*4).value,words={}}
+ for i=0,623 do state.words[#state.words+1]=df.reinterpret_cast('uint32_t',base+0x234e990+context*0x9c0+i*4).value end
+ return state
+end
+local function restore_rng(state)
+ local base=dfhack.internal.getImageBase()
+ assert(df.reinterpret_cast('int16_t',base+0x2159084).value==state.context,'RNG context changed')
+ df.reinterpret_cast('uint32_t',base+0x2131b30+state.context*4).value=state.cursor
+ for i,value in ipairs(state.words)do df.reinterpret_cast('uint32_t',base+0x234e990+state.context*0x9c0+(i-1)*4).value=value end
+end
 local rack_fixture=assert(loadfile((debug.getinfo(1,'S').source:sub(2):gsub('areas%-squads%-native.lua$','areas-squad-fixture.lua'))))()
 local function pixel(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y
@@ -195,11 +210,40 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
   local saved={}
   for _,field in ipairs{'symbol','solid_texpos','blended_texpos','foreground_r','foreground_g','foreground_b','background_r','background_g','background_b'}do saved[field]=named[field]end
   assert(#g.texpos_custom_symbol==23,'native symbol count changed')
+  local main_size,main_address=df.sizeof(main);local guard=df.new('uint8_t',main_size)
+  dfhack.internal.memmove(guard,main_address,main_size)
+  local text,code=dfhack.run_command_silent('df3d','zone-squad-swatches-read');assert(code==0,text)
+  local swatches=require('json').decode(text);assert(#swatches==1080,'owned swatch count differs')
+  assert(dfhack.internal.memcmp(guard,main_address,main_size)==0,'swatch generator changed native UI');df.delete(guard)
+  local n=1
+  for _,field in ipairs{'swatch_r','swatch_g','swatch_b'}do for _,row in ipairs(main.custom_symbol[field])do
+   for _,value in ipairs(row)do assert(swatches[n]==value,'owned native swatch differs');n=n+1 end
+  end end
+  assert(n==1081,'native swatch shape differs')
   for index=0,#g.texpos_custom_symbol-1 do
    named.symbol=index;named.solid_texpos=0;named.blended_texpos=0
    named.foreground_r=13;named.foreground_g=127;named.foreground_b=241
    named.background_r=233;named.background_g=61;named.background_b=7
    capture(kind..'-symbol-'..index,b)
+  end
+  for index,invalid in ipairs{-1,23,2147483647,-1,-1,-1,-1,-1}do
+   named.symbol=invalid;named.solid_texpos=0;named.blended_texpos=0
+   local saved_rng
+   if index==8 then
+    -- Controlled native contrast rejection: identical black first pair, then
+    -- white background. Restore the owned session's original RNG afterward.
+    saved_rng=rng_snapshot();local controlled=rng_snapshot();controlled.cursor=0
+    for i,value in ipairs{0,0,9*214748365,0,9*214748365,35*59652324,9*214748365}do controlled.words[i]=value end
+    restore_rng(controlled)
+   end
+   local before=rng_snapshot()
+   view:render(dfhack.getTickCount())
+   local after=rng_snapshot()
+   local initialized=capture(kind..'-initialize-'..index,b)
+   initialized.initialization={invalid=invalid,before=before,after=after,swatches=swatches,controlled=index==8,
+    symbol={named.symbol,named.foreground_r,named.foreground_g,named.foreground_b,named.background_r,named.background_g,named.background_b}}
+   assert(named.symbol>=0 and named.symbol<23,'native failed to initialize symbol')
+   if saved_rng then restore_rng(saved_rng)end
   end
   for field,value in pairs(saved)do named[field]=value end
  end

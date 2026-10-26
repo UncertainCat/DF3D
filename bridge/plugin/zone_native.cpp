@@ -144,6 +144,20 @@ std::optional<std::array<uint8_t,7>> nativeZoneSquadSymbol(const df::squad& squa
     return std::array<uint8_t,7>{uint8_t(squad.symbol),squad.foreground_r,squad.foreground_g,squad.foreground_b,
         squad.background_r,squad.background_g,squad.background_b};
 }
+std::optional<std::array<uint8_t,1080>> nativeZoneSquadSwatches() {
+    if(!nativeZoneDefaultsReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0x43be70,0xaa0)==0x065ecb960f29fcc9ULL;
+    if(!compatible)return std::nullopt;
+    // The generator has no calls/global reads except its immutable jump table.
+    // Only [context+0x1a,context+0x452) is output; own prefix and guard bytes too.
+    std::array<uint8_t,0x494> owned;owned.fill(0xa5);
+    reinterpret_cast<void (*)(void*)>(base+0x43be70)(owned.data()+0x20);
+    if(!std::all_of(owned.begin(),owned.begin()+0x3a,[](uint8_t x){return x==0xa5;}) ||
+       !std::all_of(owned.begin()+0x472,owned.end(),[](uint8_t x){return x==0xa5;}))return std::nullopt;
+    std::array<uint8_t,1080> result;
+    std::copy_n(owned.data()+0x3a,result.size(),result.data());return result;
+}
 bool nativeZoneSquadAssignmentReady() {
     static_assert(offsetof(df::squad,rooms)==0xf0);
     static_assert(offsetof(df::squad,rack_combat)==0x108);

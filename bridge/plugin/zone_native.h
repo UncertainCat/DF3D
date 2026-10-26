@@ -113,6 +113,8 @@ std::optional<std::vector<int32_t>> nativeZoneSquadCandidates();
 std::optional<std::string> nativeZoneSquadName(const df::squad& squad);
 // Saved index, foreground RGB, background RGB; no generated texture handles.
 std::optional<std::array<uint8_t,7>> nativeZoneSquadSymbol(const df::squad& squad);
+// Native swatch generator with owned storage: 360 red, green, blue bytes.
+std::optional<std::array<uint8_t,1080>> nativeZoneSquadSwatches();
 // Semantic set converted to DF's XOR toggle using current squad room state.
 // Native owns allocation/free, reciprocal modes and equipment/rack refresh.
 // Call at a safe point; an exception after entry is an unknown outcome.

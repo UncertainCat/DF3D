@@ -1,3 +1,27 @@
+## Native animal unit text reference
+
+The Pen/Pond unit-name widget enables gender and profession and permits two
+text lines. Its effective width is the maximum of the rectangle width and
+minimum width (27 columns in this capture). The existing owned native owner
+text reader produces the same combined or shortened split lines at that width.
+The widget render itself remains forbidden as a runtime input.
+
+In the three-cell row, fitting combined text occupies the middle line. Split
+text occupies the middle and last lines, except grazers move both lines up
+one cell. The native cached caste GRAZER flag controls the warning, which starts
+one column to the right on the last line, in bright green. Name text uses the
+existing native name-color reader. Empty first lines remain empty; for example,
+a long unnamed animal can have only its shortened profession on the last line.
+
+Protected build/stockpile-storage-native-zone-animals-20261026-101557 passes
+with DF100704. All 22 visible unit samples (seven grazers) match exact glyphs,
+blank padding, line placement and colors. Both readers preserve gps and
+main_interface; the source save is unchanged after unsaved exit. The recorded
+fixture includes byte-level samples and layout evidence. Core checks pass in
+build/qa/animal-unit-display-reference. This establishes reusable reader and
+layout evidence, not completion of the product animal rows or coverage of all
+identity/color effects. Management68 and the installed plugin are unchanged.
+
 ## Native animal sort headers
 
 The animal chooser opens with Category ascending visibly selected. Each header

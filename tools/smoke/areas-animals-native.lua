@@ -40,10 +40,11 @@ end
 local function walk(container,rows,depth,active)
  assert(depth<10 and #rows<16000,'widget observation truncated')
  local row={name=container.name,type=tostring(container._type),flags=container.flag.whole,
-  active=active and (container.flag.whole&1)~=0,x=container.rect.x1,y=container.rect.y1,x2=container.rect.x2,y2=container.rect.y2}
+  min_w=container.min_w,active=active and (container.flag.whole&1)~=0,x=container.rect.x1,y=container.rect.y1,x2=container.rect.x2,y2=container.rect.y2}
  if df.widget_unit_name:is_instance(container)then
   local name=df.reinterpret_cast(df.widget_unit_name,container)
   row.unit_id=name.u.id;row.one_line_only=name.one_line_only
+  row.show_gender=name.show_gender;row.show_profession=name.show_profession
  end
  if df.widget_item_name:is_instance(container)then row.item_id=df.reinterpret_cast(df.widget_item_name,container).it.id end
  if df.widget_text:is_instance(container)then row.text=dfhack.df2utf(df.reinterpret_cast(df.widget_text,container).str)end
@@ -109,6 +110,63 @@ local function capture(label)
     df.delete(guard.copy)
    end
    record.picker_parity={sort=sort,descending=descending,exact=true,ui_unchanged=true}
+  end
+  if label=='Pen-picker' or label=='Pond-picker'then
+   record.unit_display={}
+   for _,row in ipairs(rows)do
+    if row.unit_id and row.active and (row.flags&2)~=0 and row.y>=2 and row.y<g.dimy then
+     local width=math.max(row.x2-row.x+1,row.min_w)
+     assert(row.show_gender and row.show_profession and not row.one_line_only,'animal unit widget variant changed')
+     local guards={}
+     for _,value in ipairs{g,main}do
+      local size,address=df.sizeof(value);local copy=df.new('uint8_t',size)
+      dfhack.internal.memmove(copy,address,size);guards[#guards+1]={copy=copy,address=address,size=size}
+     end
+     local text,code=dfhack.run_command_silent('df3d','zone-owner-text-read',tostring(row.unit_id),tostring(width))
+     assert(code==0,text)
+     local sample={id=row.unit_id,columns=width,owner_reader=require('json').decode(text),lines={},
+      show_gender=row.show_gender,show_profession=row.show_profession,one_line_only=row.one_line_only}
+     for y=row.y-2,row.y do
+      local bytes,colors={},{}
+      for x=row.x,math.min(row.x2,g.dimx-1)do
+       local tile=dfhack.screen.readTile(x,y);bytes[#bytes+1]=tile.ch;colors[#colors+1]={tile.fg,tile.bg,tile.bold}
+      end
+      sample.lines[#sample.lines+1]={y=y,bytes=bytes,colors=colors}
+     end
+     local unit=assert(df.unit.find(row.unit_id))
+     sample.grazer=unit.enemy.caste_flags[df.caste_raw_flags.GRAZER]
+     local color_text,color_code=dfhack.run_command_silent('df3d','zone-owner-name-color-read',tostring(row.unit_id))
+     assert(color_code==0,color_text);sample.name_color=require('json').decode(color_text)
+     for _,guard in ipairs(guards)do
+      assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'animal unit text/color read changed native UI/drawing state')
+      df.delete(guard.copy)
+     end
+     -- Unit-name render 14237a0: fitting combined text sits at y-1;
+     -- split text moves up one row for grazers, leaving y for the warning.
+     local expected={{},{},{}}
+     if #sample.owner_reader[1]<=width then expected[2]=sample.owner_reader[4]
+     else
+      local first=sample.grazer and 1 or 2
+      expected[first]=sample.owner_reader[4];expected[first+1]=sample.owner_reader[5]
+     end
+     if sample.grazer then
+      expected[3]={0};local warning='Grazer: requires pasture'
+      for i=1,#warning do expected[3][i+1]=warning:byte(i)end
+     end
+     local function same_color(a,b)return a[1]==b[1] and a[2]==b[2] and a[3]==(b[3]~=0)end
+     for line,observed in ipairs(sample.lines)do for x,byte in ipairs(observed.bytes)do
+      assert(byte==(expected[line][x] or 0),'animal unit text/layout differs: '..label..'/'..row.unit_id..'/'..line..'/'..x)
+      if byte~=0 then
+       local color=sample.grazer and line==3 and {2,0,1} or sample.name_color.color
+       assert(same_color(observed.colors[x],color) or
+        (not (sample.grazer and line==3) and sample.name_color.effect~=0 and same_color(observed.colors[x],sample.name_color.alternate)),
+        'animal unit text color differs: '..label..'/'..row.unit_id..'/'..line..'/'..x)
+      end
+     end end
+     sample.exact=true;sample.ui_unchanged=true
+     record.unit_display[#record.unit_display+1]=sample
+    end
+   end
   end
   record.item_text={}
   for _,row in ipairs(rows)do

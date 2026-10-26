@@ -95,7 +95,7 @@ local function validate_operation(r,a)
   if default(a,'expected_revision',0)==0 or default(a,'cursor',0)~=0 or default(a,'query','')~='' or
    type(default(a,'give',true))~='boolean' then return 'invalid stockpile link target request' end
  end
- if a.query_bytes~=nil and (type(a.query_bytes)~='string' or #a.query_bytes>33 or r.action~=14 or op~=14 or a.kind~=1 or a.candidate_kind~=1 or default(a,'query','')~='') then return 'invalid owner query bytes' end
+ if a.query_bytes~=nil and (type(a.query_bytes)~='string' or #a.query_bytes>33 or r.action~=14 or op~=14 or a.kind~=1 or (a.candidate_kind~=1 and a.candidate_kind~=2) or default(a,'query','')~='') then return 'invalid selector query bytes' end
  local limit=default(a,'candidate_limit',0)
  if not integer(limit) or limit<0 or limit>128 or (limit~=0 and (r.action~=14 or op~=14 or a.kind~=1 or a.candidate_kind~=1)) then return 'invalid owner candidate limit' end
  for _,key in ipairs{'list_key','row_key','name','query'} do
@@ -880,7 +880,7 @@ local function candidate_page(r,a,b,area_revision,available)
  local site=locations and dfhack.world.getCurrentSite() or nil
  if locations and not site then return fail('Location site no longer exists'),0 end
  local query=default(a,'query',''):lower()
- if not legacy and candidate_kind==2 then query=default(a,'query','') end
+ if not legacy and candidate_kind==2 then query=a.query_bytes~=nil and a.query_bytes or default(a,'query','') end
  if not legacy and not links and not locations and candidate_kind==1 then
   if type(r.owner_query)~='function' then return fail('Native area helper unavailable'),0 end
   local worked,value=pcall(r.owner_query,a.query_bytes~=nil and a.query_bytes or default(a,'query',''))
@@ -888,7 +888,7 @@ local function candidate_page(r,a,b,area_revision,available)
   query=value
  end
  local key=table.concat({locations and 6 or links and 10 or legacy and 0 or 14,a.kind,default(a,'id',-1),candidate_kind,
-  default(a,'sort',0),default(a,'sort_descending',false) and 1 or 0,area_revision or 0,site and site.id or -1,#query,query},':')
+  default(a,'sort',0),default(a,'sort_descending',false) and 1 or 0,area_revision or 0,site and site.id or -1,a.query_bytes~=nil and 1 or 0,#query,query},':')
  local job=area_lists[key];local expected=default(a,'expected_list_revision',0)
  -- Reopening a chooser must observe current metadata even while DF is paused.
  -- Keep the completed snapshot for continuation pages; only a new first-page
@@ -918,7 +918,7 @@ local function candidate_page(r,a,b,area_revision,available)
    job.native_owner=not legacy and candidate_kind==1
    job.zone_type=b.type
    if candidate_kind==2 then
-    local entries=type(r.animal_candidates)=='function' and r.animal_candidates(b,job.sort,job.descending,query) or nil
+    local entries=type(r.animal_candidates)=='function' and r.animal_candidates(b,job.sort,job.descending,query,a.query_bytes~=nil) or nil
     if type(entries)~='table' or #entries>4096 then return fail('Native area helper unavailable'),0 end
     for _,entry in ipairs(entries)do
      if type(entry)~='table' or not integer(entry.id) or entry.id<0 or entry.id>2147483647 or

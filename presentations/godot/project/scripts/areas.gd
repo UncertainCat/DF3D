@@ -1597,7 +1597,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion: paint_hover = Vector3i(-1,-1,-1)
 	if not ui_host.allows_panel_input(self): return
 	if panel.visible and ((event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT)):
-		if event is InputEventMouseButton and candidates_view.visible and candidates_state.kind == 1 and candidates_view.owner_search.has_focus():
+		if event is InputEventMouseButton and candidates_view.visible and candidates_state.kind in [1,2] and candidates_view.owner_search.has_focus():
 			candidates_view.owner_search.release_focus()
 		elif event is InputEventKey:
 			if not event.echo: handle_escape()
@@ -1688,9 +1688,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func handle_escape() -> void:
-	# Native owner-selector Escape leaves Zones and opens Options, unlike
+	# Native owner/animal selector Escape leaves Zones and opens Options, unlike
 	# right-click, which first unfocuses the filter and then backs out one page.
-	if stockpile_page == "owner" and kind_picker.selected == 1:
+	if stockpile_page in ["owner","animals"] and kind_picker.selected == 1:
 		close_panel()
 		options_requested.emit()
 	else: handle_back()

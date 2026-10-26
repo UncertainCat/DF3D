@@ -47,7 +47,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     return "invalid owner candidate limit";
   if(const auto* bytes=a.query_bytes()) {
     if(action!=ManagementAction::AreaCandidates || a.operation()!=AreaOperation::CandidateList ||
-       a.kind()!=AreaKind::Zone || a.id()<0 || a.candidate_kind()!=1 || bytes->size()>33 ||
+       a.kind()!=AreaKind::Zone || a.id()<0 || (a.candidate_kind()!=1 && a.candidate_kind()!=2) || bytes->size()>33 ||
        (a.query() && a.query()->size()))return "invalid owner query bytes";
   }
   const auto op=static_cast<uint8_t>(a.operation());
@@ -834,7 +834,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
       return "invalid area response header";
     if(const auto* bytes=a->query_bytes()) {
-      if(a->operation()!=AreaOperation::CandidateList || a->area_id()<0 || a->candidate_kind()!=1 ||
+      if(a->operation()!=AreaOperation::CandidateList || a->area_id()<0 || (a->candidate_kind()!=1 && a->candidate_kind()!=2) ||
          bytes->size()>33 || textSize(a->query()))return "invalid owner query echo";
     }
     if(a->settings_count() < -1 || (a->settings_count() >= 0 &&

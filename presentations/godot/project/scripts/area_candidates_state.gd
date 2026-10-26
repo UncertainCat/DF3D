@@ -36,7 +36,7 @@ func clear() -> void:
 func open(value: Dictionary, candidate_kind := 1, navigation: Dictionary = {}) -> void:
 	clear(); area = value.duplicate(true); kind = candidate_kind
 	query = str(navigation.get("query","")); sort = int(navigation.get("sort",2 if kind in [1,2] else 0))
-	query_bytes = navigation.get("query_bytes") if kind == 1 else null
+	query_bytes = navigation.get("query_bytes") if kind in [1,2] else null
 	if query_bytes is PackedByteArray: query_bytes = query_bytes.duplicate(); query = ""
 	if kind in [1,2] and sort == 0: sort = 2
 	descending = bool(navigation.get("descending",false))
@@ -65,7 +65,7 @@ func queue_search(value: String) -> void:
 	query = value; query_bytes = null; invalidate(0.25)
 
 func queue_owner_search(value: PackedByteArray) -> void:
-	if kind != 1 or area.is_empty() or failed or mutating or value.size() > 33 or value == query_bytes: return
+	if kind not in [1,2] or area.is_empty() or failed or mutating or value.size() > 33 or value == query_bytes: return
 	query = ""; query_bytes = value.duplicate(); invalidate(0.25)
 
 func order(value: int) -> void:

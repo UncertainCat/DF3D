@@ -636,6 +636,21 @@ func run() -> void:
 	service.poll()
 	if controller.stockpile_page != "settings" or controller.settings_state.pending.expected_revision != 124 or controller.settings_state.category != "food":
 		push_error("Settings mutation did not refresh against new area revision while preserving navigation"); quit(1); return
+	controller.use_area(saved_owner_area)
+	controller.stockpile_page="animals";controller.candidates_state.area=saved_owner_area
+	controller.candidates_state.kind=2;controller.candidates_state.pending={};controller.candidates_state.mutating=false
+	controller.update_controls();controller.candidates_state.changed.emit();await process_frame
+	root.push_input(filter_shortcut,true)
+	if not controller.candidates_view.owner_search.has_focus():push_error("Animal controller Ctrl+F failed");quit(1);return
+	leave_filter.pressed=true;root.push_input(leave_filter,true);leave_filter.pressed=false;root.push_input(leave_filter,true)
+	if controller.candidates_view.owner_search.has_focus() or controller.stockpile_page!="animals":push_error("Animal right-click closed focused selector");quit(1);return
+	leave_filter.pressed=true;root.push_input(leave_filter,true);leave_filter.pressed=false;root.push_input(leave_filter,true)
+	if controller.stockpile_page=="animals" or not controller.panel.visible:push_error("Animal second right-click must return to Zones");quit(1);return
+	controller.stockpile_page="animals";controller.candidates_state.area=saved_owner_area;controller.candidates_state.kind=2
+	controller.update_controls();controller.candidates_state.changed.emit();root.push_input(filter_shortcut,true)
+	var animal_options_before: int=options_events[0]
+	var animal_escape:=InputEventKey.new();animal_escape.keycode=KEY_ESCAPE;animal_escape.pressed=true;root.push_input(animal_escape,true)
+	if controller.panel.visible or options_events[0]!=animal_options_before+1:push_error("Animal focused Escape must close Zones and open Options");quit(1);return
 	controller.close_panel(); controller.free(); host.free(); service.free(); interaction.free()
 	# Exercise actual view callbacks with colliding typed identities. This is
 	# input/identity coverage, not acceptance of the unfinished animal layout.
@@ -865,6 +880,28 @@ func run() -> void:
 		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=pressed
 		click.position=click_target.get_global_rect().get_center();click.global_position=click.position;root.push_input(click,true)
 	if animal_requests.size()!=before_click+1 or int(animal_requests[-1].get("unit_id",-1))!=int(restraints.samples[0].row.id):push_error("Containment hover swallowed animal assignment");quit(1);return
+	animal_state.pending={};animal_state.mutating=false;animal_state.query="";animal_state.query_bytes=null;animal_state.rows=[];animal_state.changed.emit()
+	var animal_focus:=InputEventKey.new();animal_focus.keycode=KEY_F;animal_focus.ctrl_pressed=true;animal_focus.pressed=true
+	if not animal_view.feed_animal_key(animal_focus) or not animal_view.owner_search.has_focus():push_error("Animal Ctrl+F did not focus byte editor");quit(1);return
+	var typed:=InputEventKey.new();typed.unicode=233;typed.pressed=true
+	animal_view.feed_animal_key(typed)
+	if animal_state.query_bytes!=PackedByteArray([195,169]):push_error("Animal editor converted native UTF-8 bytes");quit(1);return
+	var backspace:=InputEventKey.new();backspace.keycode=KEY_BACKSPACE;backspace.pressed=true;animal_view.feed_animal_key(backspace)
+	if animal_state.query_bytes!=PackedByteArray([195]):push_error("Animal Backspace did not remove one byte");quit(1);return
+	animal_view.owner_search.ticks_override=250
+	await process_frame;await RenderingServer.frame_post_draw
+	var search_image:=root.get_texture().get_image();search_image.convert(Image.FORMAT_RGB8)
+	var search_crop:=search_image.get_region(Rect2i(Vector2i(animal_view.owner_search.global_position),Vector2i(312,36)))
+	search_crop.save_png(directory.path_join("animal-search-partial-utf8.png"))
+	var search_hash:=HashingContext.new();search_hash.start(HashingContext.HASH_SHA256);search_hash.update(search_crop.get_data())
+	var native_search: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_search_input
+	if search_hash.finish().hex_encode()!=str(native_search.visual.filter_rgb_sha256):push_error("Animal native byte editor pixels differ");quit(1);return
+	typed.unicode=120
+	for i in 40:animal_view.feed_animal_key(typed)
+	if animal_state.query_bytes.size()!=33:push_error("Animal editor byte limit differs");quit(1);return
+	var enter:=InputEventKey.new();enter.pressed=true;enter.keycode=KEY_ENTER
+	var calls_before:=animal_requests.size();animal_view.feed_animal_key(enter)
+	if animal_view.owner_search.has_focus() or animal_requests.size()!=calls_before:push_error("Focused animal Enter assigned instead of leaving focus");quit(1);return
 	animal_view.free();containment_help.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

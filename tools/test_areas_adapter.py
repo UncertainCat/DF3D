@@ -158,7 +158,7 @@ def main():
      p.name='Linked fixture'
      return {ok=true,steps=31,work_unknown=budget==nil}
     end
-    function animal_candidates(b,sort,descending,query) animal_args={sort,descending,query};return animal_fixture or {}end
+    function animal_candidates(b,sort,descending,query,raw) animal_args={sort,descending,query,raw};return animal_fixture or {}end
     function animal_status(zone,entity,subject,assigned)return {kind=assigned and 1 or 0,containment=0,item_id=-1}end
     function animal_item_text(item)return item.label end
     animal_item_color_reads=0
@@ -768,7 +768,7 @@ def main():
         if raw:
             assert lua.eval("function(t) return t.query_bytes:byte(1) end")(raw_result) == raw[0]
     for fields in [dict(query_bytes=b"x" * 34), dict(query_bytes=3),
-                   dict(query_bytes=b"x", query="mixed"), dict(query_bytes=b"x", candidate_kind=2)]:
+                   dict(query_bytes=b"x", query="mixed"), dict(query_bytes=b"x", candidate_kind=3)]:
         assert not call(14, dict(selector, **fields))["ok"]
     lua.execute("""
     df.global.cur_year_tick=4000;zone.type=2;df.civzone_type[2]='Pond'
@@ -800,6 +800,13 @@ def main():
     assert animals["candidates"][3]["animal_display"] is None
     assert dict(animals["candidates"][1]["animal_status"].items()) == {"kind": 1, "containment": 0, "item_id": -1}
     assert dict(animals["candidates"][3]["animal_status"].items()) == {"kind": 0, "containment": 0, "item_id": -1}
+    for raw in [b"", b"\xc3", b"\xc3\xa9", b"x" * 33]:
+        raw_result = call(14, {"operation":14,"kind":1,"id":6,"candidate_kind":2,"query_bytes":raw})
+        assert raw_result["ok"] and lua.globals().animal_args[4]
+        assert lua.eval("function() return #animal_args[3] end")() == len(raw)
+        assert lua.eval("function(t) return #t.query_bytes end")(raw_result) == len(raw)
+    plain = call(14, {"operation":14,"kind":1,"id":6,"candidate_kind":2,"query":""})
+    assert plain["ok"] and not lua.globals().animal_args[4]
     lua.execute("saved_animal_status=animal_status")
     for mutation in ["return nil", "return {kind=6,containment=0,item_id=-1}", "return {kind=4,containment=0,item_id=2}",
                      "return {kind=1,containment=0,item_id=2}", "return {kind=4,containment=1,item_id=-1}"]:
@@ -831,7 +838,7 @@ def main():
     # Native results are authoritative even when local names/order would differ.
     native_ordered = call(14, dict(animal_request, sort=1, sort_descending=True, query="Native Search"))
     assert [(v["entity"], v["id"]) for v in native_ordered["candidates"].values()] == [(1, 10), (1, 12), (2, 10)]
-    assert list(lua.globals().animal_args.values()) == [1, True, "Native Search"]
+    assert list(lua.globals().animal_args.values()) == [1, True, "Native Search", False]
     lua.execute("saved_animal_display=animal_unit_display")
     for mutation in ["return nil", "local d=saved_animal_display(u);d.first_line=string.rep('x',385);return d",
                      "local d=saved_animal_display(u);d.combined_fits=true;return d",

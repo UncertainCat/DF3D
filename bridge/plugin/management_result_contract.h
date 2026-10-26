@@ -106,7 +106,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
     lua_getfield(L,-1,"query_bytes");const bool rawQuery=!lua_isnil(L,-1);lua_pop(L,1);
     if(rawQuery) {
       lua_getfield(L,-1,"query");const bool mixed=lua_rawlen(L,-1)>0;lua_pop(L,1);
-      if(operation!=df3d::mirror::AreaOperation::CandidateList || value("candidate_kind")!=1 ||
+      if(operation!=df3d::mirror::AreaOperation::CandidateList || (value("candidate_kind")!=1 && value("candidate_kind")!=2) ||
          value("area_id",-1)<0 || mixed)return "invalid owner query echo";
     }
     if(value("build_done")>value("build_total"))return "build_done exceeds build_total";

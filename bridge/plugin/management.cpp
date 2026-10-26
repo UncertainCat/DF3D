@@ -1338,7 +1338,7 @@ int areaAnimalCandidates(lua_State* L) {
   const auto sort=lua_tointeger(L,2);
   if(zone && lua_isinteger(L,2) && sort>=0 && sort<=3 && lua_isboolean(L,3) && query && querySize<=128) {
     try {rows=df3d_area::nativeZoneAnimalPickerCandidates(*zone,int32_t(sort),lua_toboolean(L,3)!=0,
-      UTF2DF(std::string(query,querySize)));} catch(...) {}
+      lua_toboolean(L,5)?std::string(query,querySize):UTF2DF(std::string(query,querySize)));} catch(...) {}
   }
   if(!rows){lua_pushnil(L);return 1;}
   lua_newtable(L);int index=0;

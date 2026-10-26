@@ -2684,14 +2684,14 @@ TEST_CASE("owner fact page limits are scoped and bounded") {
   }
 }
 
-TEST_CASE("owner raw query transport preserves absence empty and partial UTF-8") {
-  for(int mode=0;mode<10;++mode) {
+TEST_CASE("selector raw query transport preserves absence empty and partial UTF-8") {
+  for(int kind:{1,2})for(int mode=0;mode<10;++mode) {
     CAPTURE(mode);
     wm::ManagementRequest request;request.action=wm::ManagementAction::AreaCandidates;
     auto& a=request.area;a.operation=wm::AreaOperation::CandidateList;
-    a.kind=wm::AreaKind::Zone;a.id=7;a.candidateKind=1;
+    a.kind=wm::AreaKind::Zone;a.id=7;a.candidateKind=kind;
     if(mode>0)a.queryBytes=std::vector<uint8_t>(mode==1?0:mode==3?33:mode==4?34:1,195);
-    if(mode==5)a.candidateKind=2;
+    if(mode==5)a.candidateKind=3;
     if(mode==6)a.operation=wm::AreaOperation::None;
     if(mode==7)a.id=-1;
     if(mode==8)a.query="mixed";
@@ -2702,14 +2702,14 @@ TEST_CASE("owner raw query transport preserves absence empty and partial UTF-8")
     const auto* bytes=r->area()->query_bytes();CHECK(bool(bytes)==(mode!=0));
     if(bytes)CHECK(std::vector<uint8_t>(bytes->begin(),bytes->end())==*a.queryBytes);
   }
-  for(int mode=0;mode<9;++mode) {
+  for(int kind:{1,2})for(int mode=0;mode<9;++mode) {
     CAPTURE(mode);
     flatbuffers::FlatBufferBuilder b;
     auto bytes=mode?b.CreateVector(std::vector<uint8_t>(mode==1?0:mode==3?33:mode==4?34:1,195)):
       flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{};
     const auto query=b.CreateString(mode==8?"mixed":"");
     wire::AreaStateBuilder area(b);area.add_operation(mode==6?wire::AreaOperation::None:wire::AreaOperation::CandidateList);
-    area.add_area_id(mode==7?-1:7);area.add_candidate_kind(mode==5?2:1);area.add_query_bytes(bytes);area.add_query(query);
+    area.add_area_id(mode==7?-1:7);area.add_candidate_kind(mode==5?3:kind);area.add_query_bytes(bytes);area.add_query(query);
     const auto result=area.Finish();wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_area(result);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
     CHECK(bool(wire::validateManagementState(*value))==(mode>=4));

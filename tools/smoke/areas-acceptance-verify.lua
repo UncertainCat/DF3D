@@ -16,7 +16,15 @@ local function restore_owner_fact_name()
  local saved=_G.df3d_owner_fact_name
  if saved then saved.unit.name.first_name=saved.name;_G.df3d_owner_fact_name=nil end
 end
+local function restore_animal_query_name()
+ local saved=_G.df3d_animal_query_name
+ if saved then
+  saved.unit.name.first_name=saved.first_name;saved.unit.name.nickname=saved.nickname;saved.unit.name.has_name=saved.has_name
+  _G.df3d_animal_query_name=nil
+ end
+end
 if index=='final' then
+ restore_animal_query_name()
  restore_owner_fact_name()
  restore_link_block()
  assert(df.global.pause_state,'DF must be paused before teardown')
@@ -687,9 +695,16 @@ elseif request.op=='animal_restraint_end' then
  end
  saved.chain.contained_items:erase(0);saved.contained:delete();saved.chain:delete();assert(dfhack.items.remove(saved.item))
  _G.df3d_restraint_fixture=nil;result.restored=true
+elseif request.op=='animal_query_name' then
+ local unit=assert(df.unit.find(request.unit_id));assert(not _G.df3d_animal_query_name)
+ _G.df3d_animal_query_name={unit=unit,first_name=unit.name.first_name,nickname=unit.name.nickname,has_name=unit.name.has_name}
+ unit.name.first_name=string.char(195,169)..'ByteProbe';unit.name.nickname='';unit.name.has_name=true;result.unit_id=unit.id
+elseif request.op=='animal_query_restore' then
+ restore_animal_query_name();result.restored=true
 elseif request.op=='animal_candidates' then
  local b=building()
- local text,code=dfhack.run_command_silent('df3d','zone-animal-picker-read',tostring(b.id),tostring(request.sort or 0),request.descending and '1' or '0',dfhack.utf2df(request.query or ''))
+ local query=request.query_bytes and string.char(table.unpack(request.query_bytes)) or dfhack.utf2df(request.query or '')
+ local text,code=dfhack.run_command_silent('df3d','zone-animal-picker-read',tostring(b.id),tostring(request.sort or 0),request.descending and '1' or '0',query)
  assert(code==0,text)
  local expected=require('json').decode(text)
  assert(#expected==#request.rows,'native animal candidate count differs')

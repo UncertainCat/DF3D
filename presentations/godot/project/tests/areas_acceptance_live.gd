@@ -368,7 +368,27 @@ func item_assignments() -> void:
 		if stopped: return
 		await native("animal_candidates",{"id":pond,"rows":filtered.candidates,"query":query})
 		if stopped: return
+	for bytes in [PackedByteArray(),PackedByteArray([195]),PackedByteArray([195,169]),"GRAZER".to_utf8_buffer(),"lovebird".to_utf8_buffer()]:
+		var filtered := await pages({"action":14,"kind":1,"id":pond,"operation":14,"candidate_kind":2,"query_bytes":bytes},"candidates")
+		if stopped: return
+		if not check(filtered.get("query_bytes")==bytes,"Animal raw query echo differs"):return
+		await native("animal_candidates",{"id":pond,"rows":filtered.candidates,"query_bytes":Array(bytes)})
+		if stopped:return
 	await native("item_assignment_before",{"item_id":item})
+	await native("animal_query_name",{"unit_id":int(fixture.caged)})
+	var byte_name:=PackedByteArray([195,169]);byte_name.append_array("ByteProbe".to_utf8_buffer())
+	var raw_named:=await pages({"action":14,"kind":1,"id":pond,"operation":14,"candidate_kind":2,"query_bytes":byte_name},"candidates")
+	if stopped:return
+	await native("animal_candidates",{"id":pond,"rows":raw_named.candidates,"query_bytes":Array(byte_name)})
+	var raw_found:=false
+	for row in raw_named.candidates:
+		if int(row.entity)==1 and int(row.id)==int(fixture.caged):raw_found=true
+	if not check(raw_found,"Raw animal query did not match native byte name"):return
+	var text_named:=await pages({"action":14,"kind":1,"id":pond,"operation":14,"candidate_kind":2,"query":byte_name.get_string_from_utf8()},"candidates")
+	if stopped:return
+	for row in text_named.candidates:
+		if not check(int(row.entity)!=1 or int(row.id)!=int(fixture.caged),"Text animal query reused raw-byte cache"):return
+	await native("animal_query_restore",{})
 	var source := await inspect(pond,1)
 	if stopped: return
 	var p: Dictionary = fixture.origin

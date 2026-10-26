@@ -26,8 +26,18 @@ Escape closes both selector and Zones even from the focused textbox. The native
 animal filter help matches the owner-filter200x216 crop byte-for-byte. The
 recorder stores raw query bytes separately from UTF-8 display text. Source
 preservation and core checks (`build/qa/animal-search-native-reference`) pass.
-Product animal search still needs the byte-preserving editor/transport and
-matching keyboard routing. Blank panel clicks changing the selected parent zone
+Animal search now uses the same byte-preserving editor and transport as owner
+search, with matching keyboard routing and focus/closing behavior. Native
+matching receives raw textbox bytes; legacy UTF-8 callers retain conversion.
+The retained candidate cache distinguishes these input forms. Protected
+`build/areas-acceptance-20261026-141410` verifies byte echoes, partial UTF-8,
+native candidate ordering, and a temporary named-animal match that distinguishes
+raw from converted queries. Both save manifests remained unchanged. Core19/19,
+adapter, state, controller regression and GPU checks pass in
+`build/qa/animal-search-complete` (GPU retains the three known diagnostics). The full312x36 partial-byte textbox crop
+matches the native reference at the same cursor phase. The broader controller
+live harness now uses the native animal oracle and byte editor; its full live
+run remains outstanding. Blank panel clicks changing the selected parent zone
 while leaving the selector active are an unresolved separate interaction, not
 an approved departure or a confirmed defect in the native bug register.
 

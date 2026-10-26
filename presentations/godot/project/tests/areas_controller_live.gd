@@ -284,6 +284,7 @@ func assignment_selectors() -> void:
 	editor.zone_menu.controls.animals.pressed.emit()
 	if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"animal candidates"): return
 	for header in editor.candidates_view.headers:
+		if not header.visible: continue
 		for reverse in 2:
 			header.pressed.emit()
 			if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"animal sort"): return
@@ -291,8 +292,9 @@ func assignment_selectors() -> void:
 			if stopped: return
 	for key in ["grazer","caged"]:
 		var unit := int(fixture[key])
-		editor.candidates_view.search.text = str(unit)
-		editor.candidates_view.search.text_changed.emit(str(unit))
+		var query_bytes := "tame".to_utf8_buffer()
+		editor.candidates_view.owner_search.set_bytes(query_bytes)
+		editor.candidates_view.owner_search.edited.emit(query_bytes)
 		if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"animal search"): return
 		await verify_candidate_rows(pen,2)
 		if stopped: return
@@ -304,7 +306,7 @@ func assignment_selectors() -> void:
 			editor.candidates_view.choices[index].pressed.emit()
 			if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"animal assignment"): return
 			if not check(editor.stockpile_page == "animals","animal edit lost selector"): return
-			if not check(editor.candidates_state.query == str(unit) and editor.candidates_view.search.text == str(unit)
+			if not check(editor.candidates_state.query_bytes == query_bytes and editor.candidates_view.owner_search.value == query_bytes
 				and editor.candidates_state.sort == 3 and editor.candidates_state.descending,"animal edit lost search/sort"): return
 			await verify_candidate_rows(pen,2)
 			if stopped: return
@@ -398,6 +400,10 @@ func verify_candidate_rows(id: int, kind: int) -> void:
 		var request := {"id":id,"ids":ids,"sort":editor.candidates_state.sort,"descending":editor.candidates_state.descending,"query":editor.candidates_state.query}
 		if editor.candidates_state.query_bytes is PackedByteArray:request.query_bytes=Array(editor.candidates_state.query_bytes)
 		await native("zone_owner_candidates",request);return
+	if kind == 2:
+		var request := {"id":id,"rows":editor.candidates_state.rows,"sort":editor.candidates_state.sort,"descending":editor.candidates_state.descending,"query":editor.candidates_state.query}
+		if editor.candidates_state.query_bytes is PackedByteArray:request.query_bytes=Array(editor.candidates_state.query_bytes)
+		await native("animal_candidates",request);return
 	await native("candidates",{"id":id,"kind":kind,"sort":editor.candidates_state.sort,
 		"descending":editor.candidates_state.descending,"query":editor.candidates_state.query,
 		"rows":editor.candidates_state.rows})

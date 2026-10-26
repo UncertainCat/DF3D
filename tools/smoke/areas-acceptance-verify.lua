@@ -79,6 +79,7 @@ local function area(b)
   r.wheelbarrows=b.storage.max_wheelbarrows;r.links_only=b.stockpile_flag.use_links_only
   r.organic=b.settings.misc.allow_organic and 1 or 0;r.inorganic=b.settings.misc.allow_inorganic and 1 or 0
  else
+  r.overlapping=b.flags.room_collision and 1 or 0
   r.zone_type=b.type;r.active=b.spec_sub_flag.active;r.owner_id=b.assigned_unit_id
   local owner=df.unit.find(b.assigned_unit_id)
   r.owner_name=owner and dfhack.df2utf(dfhack.translation.translateName(dfhack.units.getVisibleName(owner))) or ''

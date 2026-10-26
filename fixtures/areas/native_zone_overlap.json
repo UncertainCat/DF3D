@@ -81,7 +81,7 @@
     "Native pair reference covers same-tile floor, wall, gathering exclusion, Tomb inclusion and a controlled Door-list fixture.",
     "Door fixture supplies its semantic center/list entry; it does not claim door construction/job completion.",
     "Removal and repaint overlap refresh remain separate routes pending audit.",
-    "The native Overlapping label is not yet exposed in the area wire contract or DF3D zone heading."
+    "Removal/repaint/Multi lifecycle and full Zones acceptance remain pending. Main-scene evidence also exposed a separate unnamed Meeting Area caption mismatch (memorial hall versus native meeting hall)."
   ],
   "df3d_verification": {
     "path": "build/areas-acceptance-20261025-202059",
@@ -104,5 +104,30 @@
     "capture-inputs.json": "c716d62d4fdf5dab809d8b55ec51013567c1fae01aa95fa17160c7f126786eb6",
     "overlap-floor.png": "aea2c987166688c823ec4e39956ecb22d3b2a948dde2c65acf29ce2ac9e35d71",
     "overlap-wall.png": "45407cdb2b74a826ea4aa98e2c5ad5d42e8a920767d91f380c747debaf55d739"
+  },
+  "heading_verification": {
+    "path": "build/areas-acceptance-20261025-203436",
+    "status": "passed_with_known_issues",
+    "known_issue": "godot-separate-thread-notice",
+    "owned_df_pid": 122256,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "native_observations": 8,
+    "bridge_sha256": "adf83672870c6f6172c2f2ff5052aa161046dda5bb96a405276d7689effa8323",
+    "checks": [
+      "native collision observation",
+      "red caption and type heading",
+      "previous-zone refresh",
+      "stale revision rejects active-state edit",
+      "isolated selection clears caption and color"
+    ],
+    "evidence_sha256": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "scene_zone_overlapping.png": "6e6db169008540ada97c656aa6706be21b9b67aee4062206a47d21f9d0754380",
+      "scene_zone_overlap_previous.png": "e6172502ae4cab5461199ade7ecffee99b762fd8eaad9d5076057388b06d2df7",
+      "scene_zone_overlap_clear.png": "8f096836b63c72a120974bff53a28dc0f077e9d7265da3b003d5496dab8f1027"
+    }
   }
 }

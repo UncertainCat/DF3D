@@ -98,7 +98,7 @@ def main():
      end
      return {ok=true,steps=cost,revision=revision,visible=not force_hidden and not b.hidden,
       x=b.x1,y=b.y1,z=b.z,width=b.x2-b.x1+1,height=b.y2-b.y1+1,extents=extents,
-      tile_count=tiles,storage_limit=b.kind==0 and tiles or -1,gives={},takes={},assigned_units=b.assigned_units or {}}
+      tile_count=tiles,overlapping=b.observed_overlap,storage_limit=b.kind==0 and tiles or -1,gives={},takes={},assigned_units=b.assigned_units or {}}
     end
     function repaint(b,spans,mode,budget)
      budget=budget or math.huge
@@ -292,6 +292,11 @@ def main():
     assert observed["ok"] and observed["areas"][1]["owner_name"] == "Later citizen"
     assert observed["areas"][1]["owner_profession"] == "Worker" and observed["areas"][1]["owner_sex"] == 1
     assert observed["areas"][1]["location_kind"] == 0
+    assert observed["areas"][1]["overlapping"] == -1
+    for value in (0, 1, -1):
+        lua.globals().zone.observed_overlap = value
+        assert call(9, {"kind": 1, "id": 6})["areas"][1]["overlapping"] == value
+    lua.globals().zone.observed_overlap = None
     lua.execute("zone.name=''")
     assert call(9, {"kind": 1, "id": 6})["areas"][1]["name"] == "Unnamed bedroom"
     lua.execute("zone.type=1")

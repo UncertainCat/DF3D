@@ -77,7 +77,8 @@ func pointer_areas() -> void:
 	var stockpiles_only := FileAccess.file_exists(directory+"/stockpiles-only.json")
 	var zone_rename_only := FileAccess.file_exists(directory+"/zone-rename-only.json")
 	var zone_gather_only := FileAccess.file_exists(directory+"/zone-gather-only.json")
-	var destinations := ["Zones"] if zone_rename_only or zone_gather_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
+	var zone_overlap_only := FileAccess.file_exists(directory+"/zone-overlap-only.json")
+	var destinations := ["Zones"] if zone_rename_only or zone_gather_only or zone_overlap_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
 	for destination in destinations:
 		step = "viewport "+destination
 		var launcher: Button = scene._fortress_hud.navigation[destination]
@@ -115,6 +116,8 @@ func pointer_areas() -> void:
 		await capture(destination.to_lower()+"_created")
 		if stopped: return
 		if destination == "Zones":
+			if zone_overlap_only:
+				await pointer_zone_overlap(origin,id); return
 			if zone_gather_only:
 				await pointer_zone_gathering(id)
 				if stopped: return
@@ -1352,3 +1355,47 @@ func pointer_zone_boundary_cells() -> void:
 		if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"boundary cleanup"): return
 		await native("removed",{"id":id})
 		editor.close_panel()
+
+func pointer_zone_overlap(origin: Vector3i, first_id: int) -> void:
+	step = "viewport native zone overlap"
+	var first_revision: int = editor.selected.revision
+	if not check(int(editor.selected.overlapping) == 0 and not editor.zone_menu.overlap_label.visible,"new isolated bedroom must be clear"): return
+	await native("snapshot",{"id":first_id,"expected":{"overlapping":0}})
+	await click_control(editor.zone_menu.buttons.MeetingHall)
+	var target := Vector3(origin.x+0.5,origin.z+float(world.floor_height()),origin.y+0.5)
+	var position: Vector2 = editor.camera.unproject_position(target)
+	for corner in 2:
+		await pointer_click(position)
+		if not await wait_ui(settled,"overlapping zone corner"): return
+	await click_control(editor.paint_view.accept_button)
+	if not await wait_ui(func(): return settled() and not editor.selected.is_empty(),"overlapping zone Accept"): return
+	var second_id := int(editor.selected.id)
+	if not check(second_id != first_id and int(editor.selected.overlapping) == 1,"second zone must observe native overlap"): return
+	if not check(editor.zone_menu.overlap_label.visible and editor.zone_menu.type_label.get_theme_color("font_color") == Color.RED,"native red heading missing"): return
+	await native("snapshot",{"id":first_id,"expected":{"overlapping":1}})
+	await native("snapshot",{"id":second_id,"expected":{"overlapping":1}})
+	await capture("zone_overlapping")
+	await request({"action":11,"kind":1,"id":first_id,"expected_revision":first_revision,"active":0},"Area changed; inspect again")
+	if stopped: return
+	await native("snapshot",{"id":first_id,"expected":{"active":true,"overlapping":1}})
+	# Map selection and the native previous-zone control must refresh the old zone.
+	await pointer_click(position)
+	if not await wait_ui(settled,"overlap map selection"): return
+	await click_control(editor.zone_menu.controls.previous)
+	if not await wait_ui(settled,"previous overlapping zone"): return
+	if not check(int(editor.selected.id) == first_id and int(editor.selected.revision) != first_revision and int(editor.selected.overlapping) == 1,"old zone overlap/revision did not refresh"): return
+	await capture("zone_overlap_previous")
+	# A new isolated zone clears presentation state without assuming removal's
+	# separate collision lifecycle, which remains under native audit.
+	await click_control(editor.zone_menu.buttons.Bedroom)
+	var isolated := origin+Vector3i(2,0,0)
+	position = editor.camera.unproject_position(Vector3(isolated.x+0.5,isolated.z+float(world.floor_height()),isolated.y+0.5))
+	for corner in 2:
+		await pointer_click(position)
+		if not await wait_ui(settled,"isolated zone corner"): return
+	await click_control(editor.paint_view.accept_button)
+	if not await wait_ui(func(): return settled() and not editor.selected.is_empty(),"isolated zone Accept"): return
+	if not check(int(editor.selected.overlapping) == 0 and not editor.zone_menu.overlap_label.visible and not editor.zone_menu.type_label.has_theme_color_override("font_color"),"clear selection retained overlap heading"): return
+	await native("snapshot",{"id":int(editor.selected.id),"expected":{"overlapping":0}})
+	await capture("zone_overlap_clear")
+	await native("final")

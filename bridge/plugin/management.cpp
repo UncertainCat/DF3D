@@ -1866,6 +1866,7 @@ int areaSnapshot(lua_State* L) {
         !links(pile->links.give_to_workshop,givesWorkshops) || !links(pile->links.take_from_workshop,takesWorkshops))
       return fail("Area no longer exists",steps);
   } else {
+    hash.add(zone->flags.bits.room_collision);
     hash.add(zone->type);hash.add(zone->spec_sub_flag.whole);hash.add(zone->assigned_unit_id);
     hash.add(zone->zone_settings.whole.i1);hash.add(zone->zone_settings.whole.i2);
     hash.add(zone->assigned_units.size());for(auto id:zone->assigned_units)hash.add(id);
@@ -1881,6 +1882,7 @@ int areaSnapshot(lua_State* L) {
   }
   lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",steps);
   field(L,"storage_limit",storageLimit);
+  field(L,"overlapping",zone?(zone->flags.bits.room_collision?1:0):-1);
   field(L,"reply_steps",pile?7+df3d_area::bulkSteps(32768)+df3d_area::bulkSteps(32768+4096+512+members+settingsReplyGrowth):154);
   field(L,"revision",hash.finish());field(L,"tile_count",tiles);field(L,"visible_count",visibleTiles);
   field(L,"has_visibility",visibility);field(L,"visible",visibleTiles!=0 || emptyAreaVisible);

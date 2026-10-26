@@ -11,6 +11,7 @@ var prompts: Array[Label] = []
 var selected_panel: Control
 var heading: Label
 var type_label: Label
+var overlap_label: Label
 var type_icon: TextureRect
 var owner_label: Label
 var owner_portrait: TextureRect
@@ -68,6 +69,12 @@ func configure(source) -> void:
 	type_label = Label.new(); type_label.position = Vector2(46,46); type_label.size = Vector2(168,36)
 	type_label.add_theme_font_size_override("font_size",12); type_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	selected_panel.add_child(type_label)
+	overlap_label = Label.new(); overlap_label.position = Vector2(46,46); overlap_label.size = Vector2(168,12)
+	overlap_label.text = "Overlapping"; overlap_label.clip_text = true
+	overlap_label.add_theme_font_size_override("font_size",12)
+	overlap_label.add_theme_color_override("font_color",Color.RED)
+	selected_panel.add_child(overlap_label)
+	overlap_label.size = Vector2(168,12)
 	religion_label = Label.new(); religion_label.position = Vector2(46,70); religion_label.size = Vector2(168,12)
 	religion_label.add_theme_font_size_override("font_size",12)
 	religion_label.add_theme_color_override("font_color",Color.YELLOW)
@@ -140,6 +147,9 @@ func caption(value: String, point: Vector2) -> void:
 
 func display(rows: Array, editable: bool, area: Dictionary = {}) -> void:
 	selected_panel.visible = not area.is_empty()
+	overlap_label.visible = int(area.get("overlapping",-1)) == 1
+	if overlap_label.visible: type_label.add_theme_color_override("font_color",Color.RED)
+	else: type_label.remove_theme_color_override("font_color")
 	for index in 2: prompts[index].visible = area.is_empty()
 	if not area.is_empty():
 		heading.text = str(area.get("name",""))

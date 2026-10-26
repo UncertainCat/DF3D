@@ -57,6 +57,17 @@ func run() -> void:
 	check(chosen == [0], "zone menu forwards observed zero ID")
 	zones.display(observed,false); zones.buttons.Office.pressed.emit()
 	check(chosen == [0], "busy zone menu cannot submit a selection")
+	for overlap in [1,0,-1,1]:
+		zones.display(observed,true,{"zone_type":0,"zone_label":"Bedroom","overlapping":overlap})
+		check(zones.overlap_label.visible == (overlap == 1),"caption uses observed collision, including legacy unknown")
+		check(zones.type_label.has_theme_color_override("font_color") == (overlap == 1),"type color clears on changed observation")
+		if overlap == 1:
+			check(zones.overlap_label.text == "Overlapping" and zones.type_label.get_theme_color("font_color") == Color.RED,"native overlap text and type color")
+			check(zones.overlap_label.position == Vector2(46,46) and zones.overlap_label.size == Vector2(168,12),"native overlap row geometry: "+str(zones.overlap_label.position)+" "+str(zones.overlap_label.size))
+	zones.display(observed,true,{"zone_type":97,"zone_label":"Office"})
+	check(not zones.overlap_label.visible and not zones.type_label.has_theme_color_override("font_color"),"selection without observation clears overlap heading")
+	zones.display(observed,true)
+	check(not zones.overlap_label.visible and not zones.selected_panel.visible,"empty selection clears heading")
 	zones.free()
 	var state := preload("res://scripts/area_settings_state.gd").new()
 	var settings := preload("res://scripts/area_settings_view.gd").new()

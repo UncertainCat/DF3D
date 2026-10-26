@@ -5,7 +5,23 @@ and1 overlapping. Only zone observations may supply0 or1; other area kinds
 retain-1. Validators reject other values. Missing fields in old recordings
 stay unknown. Bridge, model and Godot must be rebuilt together;
 `Local\df3d_management_v62` separates live peers. This contract migration
-alone does not expose the native caption or establish lifecycle behavior.
+carries DF's room-collision flag and includes it in the area revision.
+The zone heading renders the native red Overlapping caption only for1,
+clearing the caption and type-color override on0, unknown or selection reset.
+
+Offline `build/qa/zone-overlap-contract` passes root CTest19/19 and the
+Godot contract check. `build/qa/zone-overlap-heading` passes core, controller
+and Lua adapter checks; its caption geometry check exposed initial Label
+minimum sizing and was corrected. `build/qa/zone-overlap-heading-fit` passes
+the corrected menu check. The matching MSVC bridge builds.
+
+Protected `build/areas-acceptance-20261025-203436` passes8 native observations
+through main-scene pointer input: isolated creation, overlapping creation,
+stale edit refusal, previous-zone selection and a new clear selection.
+All three heading captures were inspected against the native overlap capture.
+Owned DF122256 closes unsaved and both save manifests match; only the known
+Godot separate-thread notice remains. This is focused heading/revision
+acceptance, not full Zones acceptance or removal/repaint lifecycle proof.
 
 ## Native overlap rules on zone creation
 
@@ -41,8 +57,8 @@ unsaved, both save manifests match and diagnostics are clean. Offline
 the matching MSVC bridge builds. `fixtures/areas/native_zone_overlap.json`
 retains observations, code hashes, evidence and verification limits.
 
-The red Overlapping caption is still absent from the area wire contract and
-DF3D zone heading; exposing it and its revision tracking is next UI work.
+The native red Overlapping caption and revision tracking are exposed through
+the observation contract described above.
 Repaint/removal/Multi overlap lifecycle remains a separate audit. Zones is
 still staged; this is creation-effect verification, not full Zones acceptance.
 

@@ -2,7 +2,7 @@
   "supported_df": "53.16 Steam Windows x64",
   "pe_timestamp": "0x6a70a6d9",
   "image_size": "0x2711000",
-  "status": "native picker reference verified; runtime replacement and bridge acceptance pending",
+  "status": "native owner mutation replacement verified for recorded effects; candidate and full UI acceptance pending",
   "ranges": [
     {
       "name": "set_owner",
@@ -125,11 +125,8 @@
     "DF3D follows owner updates with reconstructed notifyCivzoneModified despite no such native picker call."
   ],
   "acceptance_required": [
-    "Bridge replay of recorded native Tomb assignment/transfer and Bedroom spouse assignment/clear effects.",
     "Controlled native effects compared with the bridge, including same-owner assignment, prior tomb, spouse membership and flags.",
-    "Search-array preservation and protected save manifests.",
     "Complete candidate eligibility/order audit, including native deceased/non-citizen tomb choices, current-owner/spouse exclusion and existing-room grouping.",
-    "Creation initializer semantics: do not blindly clear a new tomb owner and thereby replace native defaults.",
     "Full Zones/Locations rendered and lifecycle acceptance remains outstanding."
   ],
   "native_reference": {
@@ -154,5 +151,156 @@
       "Query mayor finds the intended existing grave owner. Widget text input requires frame processing between characters."
     ],
     "scope": "Actual native input and rendered reference only. No bridge assignment or search-array preservation claim."
+  },
+  "bridge_reference": {
+    "evidence": "build/areas-acceptance-20261025-230854",
+    "bridge_sha256": "b808a15d1a7c4fa59adc19bf597a485af36517f682bd8b31dfde9dbbd7972ce3",
+    "owned_df_pid": 112308,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "native_observations": 151,
+    "search_guard_observations": 17,
+    "arrays_per_guard": 55584,
+    "changed_arrays": 0,
+    "owner_observations": [
+      {
+        "request": {
+          "op": "zone_owner_prepare"
+        },
+        "result": {
+          "owner_a": 988,
+          "owner_b": 1017,
+          "status": "passed"
+        },
+        "response_sha256": "5bbae1978bb786944376a18d6dbc136ddda50a12eda14644c087c2081908b671"
+      },
+      {
+        "request": {
+          "count_a": 0,
+          "count_b": 0,
+          "id": 1546,
+          "op": "zone_owner_result",
+          "owner": -1,
+          "settings": 1
+        },
+        "result": {
+          "owner": -1,
+          "settings": 1,
+          "status": "passed"
+        },
+        "response_sha256": "a516c593ab80c8263c519bd164c6bcb83aef9f011c878efa1e1ff2e9b71b97b8"
+      },
+      {
+        "request": {
+          "count_a": 1,
+          "count_b": 1,
+          "id": 1548,
+          "op": "zone_owner_result",
+          "owner": 988
+        },
+        "result": {
+          "owner": 988,
+          "settings": 729,
+          "status": "passed"
+        },
+        "response_sha256": "e12b83e5e1aa4d3bf33ce6cfb96aa2c2b26917298f23028d462bbd122bf1287f"
+      },
+      {
+        "request": {
+          "count_a": 1,
+          "count_b": 0,
+          "id": 1546,
+          "op": "zone_owner_result",
+          "owner": 988,
+          "settings": 3
+        },
+        "result": {
+          "owner": 988,
+          "settings": 3,
+          "status": "passed"
+        },
+        "response_sha256": "27828d6c3639875b7ab456aaa9afdfe5259f904a7843392531fa7b975bead7cd"
+      },
+      {
+        "request": {
+          "count_a": 0,
+          "count_b": 1,
+          "id": 1546,
+          "op": "zone_owner_result",
+          "owner": 1017,
+          "settings": 3
+        },
+        "result": {
+          "owner": 1017,
+          "settings": 3,
+          "status": "passed"
+        },
+        "response_sha256": "f4eadbea98358deab8264800efe6a669d096a7d03c6bbd9f45a2d30053a5b1fe"
+      },
+      {
+        "request": {
+          "count_a": 0,
+          "count_b": 1,
+          "id": 1547,
+          "op": "zone_owner_result",
+          "owner": 1017,
+          "settings": 3
+        },
+        "result": {
+          "owner": 1017,
+          "settings": 3,
+          "status": "passed"
+        },
+        "response_sha256": "f4eadbea98358deab8264800efe6a669d096a7d03c6bbd9f45a2d30053a5b1fe"
+      },
+      {
+        "request": {
+          "count_a": 0,
+          "count_b": 0,
+          "id": 1548,
+          "op": "zone_owner_result",
+          "owner": -1
+        },
+        "result": {
+          "owner": -1,
+          "settings": 729,
+          "status": "passed"
+        },
+        "response_sha256": "3b9b7167aead5d491701f22fe16e4873e8d70316f9128c12fea0c5424326e69e"
+      },
+      {
+        "request": {
+          "count_a": 0,
+          "count_b": 0,
+          "id": 1546,
+          "op": "zone_owner_result",
+          "owner": -1,
+          "settings": 3
+        },
+        "result": {
+          "owner": -1,
+          "settings": 3,
+          "status": "passed"
+        },
+        "response_sha256": "f19546bd6e7c52d93f4f1c6f696fc81480406e3363cb3e3c6408df56f4981e4f"
+      },
+      {
+        "request": {
+          "op": "zone_owner_clear"
+        },
+        "result": {
+          "status": "passed"
+        },
+        "response_sha256": "02f425d71576f54a8a29b3f40de3a26ac24765999d6f5ca4e391c86cf2085c61"
+      }
+    ],
+    "scope": "Semantic commands through Godot driver; existing native rendered references retained. Candidate listing and full assignment UI are not accepted. Bedroom unused settings union is observed but not required to be zero."
+  },
+  "replacement": {
+    "runtime_entry": "0x557a60 with independently supplied zone/unit",
+    "compatibility": "Full semantic body and audited helpers checked before entry; creation with explicit owner preflights before publication.",
+    "creation": "Unspecified/empty owner preserves native defaults; explicit owner assignment occurs after publication. Failure never removes the created zone to roll back possible prior-tomb transfer.",
+    "notification": "Owner-only edits omit reconstructed membership notification. Explicit active updates retain existing notification pending their separate audit.",
+    "unknown_outcome": "Marked before native entry. No automatic replay or rollback."
   }
 }

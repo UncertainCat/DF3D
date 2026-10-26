@@ -1046,7 +1046,6 @@ local function native_operation(r)
     -- Creation obtains settings from DF's initializer before publication.
     -- Preserve them here; only apply explicit request fields.
     b.spec_sub_flag.active=default(a,'active',-1)~=0
-    if not B.setOwner(b,new_owner) then error('Native owner assignment failed',0) end
     -- Native creation already established room membership.
    end
   end)
@@ -1057,6 +1056,12 @@ local function native_operation(r)
     return reject(prefix..tostring(why))
    end
    return reject('New area initialization failed; cleanup uncertain; inspect before retrying')
+  end
+  if new_owner then
+   -- Native assignment can transfer another tomb. Never remove this zone as
+   -- rollback after entering that routine; retain the unknown outcome.
+   local assigned,problem=invoke(r.set_owner,0,b,new_owner)
+   if not assigned then return reject(problem) end
   end
   local after,why=observe(b,false)
   if not after then return reject(why..'; native creation may have completed; inspect before retrying') end
@@ -1322,15 +1327,15 @@ local function native_operation(r)
  elseif legacy_zone_update then
   clear_lists();steps=steps+1
   if default(a,'owner_id',-2)~=-2 then
-   unknown_work=true
-   local worked,result=pcall(B.setOwner,b,new_owner)
-   if not worked then return reject('Native owner assignment failed; inspect before retrying') end
-   if not result then return reject('Native owner assignment failed') end
+   local assigned,problem=invoke(r.set_owner,reply_reserve,b,new_owner)
+   if not assigned then return reject(problem) end
   end
-  if default(a,'active',-1)>=0 then b.spec_sub_flag.active=a.active==1 end
-  unknown_work=true
-  local notified=pcall(B.notifyCivzoneModified,b)
-  if not notified then return reject('Native zone notification failed; inspect before retrying') end
+  if default(a,'active',-1)>=0 then
+   b.spec_sub_flag.active=a.active==1
+   unknown_work=true
+   local notified=pcall(B.notifyCivzoneModified,b)
+   if not notified then return reject('Native zone notification failed; inspect before retrying') end
+  end
  elseif op==15 or legacy_link then
   local first,second=workshop,b
   if legacy_link then

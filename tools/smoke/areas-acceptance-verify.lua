@@ -192,6 +192,36 @@ elseif request.op=='overlap_clear' then
  for _,guard in ipairs(saved.guards)do df.delete(guard.copy)end
  if saved.door then local doors=df.global.world.buildings.other.DOOR;assert(doors[#doors-1]==saved.door);doors:erase(#doors-1);saved.door:delete()end
  saved.block.tiletype[saved.x][saved.y]=saved.tile;_G.df3d_overlap_fixture=nil
+elseif request.op=='zone_owner_prepare' then
+ assert(not _G.df3d_zone_owner_fixture)
+ local units={}
+ for _,u in ipairs(df.global.world.units.active)do
+  if dfhack.units.isCitizen(u) and dfhack.units.isActive(u) and not dfhack.units.isDead(u) then
+   local tomb=false
+   for _,b in ipairs(u.owned_buildings)do
+    if df.building_civzonest:is_instance(b) and b.type==df.civzone_type.Tomb then tomb=true end
+   end
+   if not tomb then units[#units+1]=u end
+   if #units==2 then break end
+  end
+ end
+ assert(#units==2,'owner fixture requires two citizens without tombs')
+ _G.df3d_zone_owner_fixture={a=units[1],b=units[2],spouse_a=units[1].relationship_ids.Spouse,spouse_b=units[2].relationship_ids.Spouse}
+ units[1].relationship_ids.Spouse=units[2].id;units[2].relationship_ids.Spouse=units[1].id
+ result.owner_a=units[1].id;result.owner_b=units[2].id
+elseif request.op=='zone_owner_result' then
+ local saved=assert(_G.df3d_zone_owner_fixture)
+ local b=building();assert(b.assigned_unit_id==request.owner,'native owner differs')
+ if request.settings then assert(b.zone_settings.whole.i1==request.settings,'native owner settings differ')end
+ for _,entry in ipairs{{saved.a,request.count_a},{saved.b,request.count_b}}do
+  local count=0;for _,room in ipairs(entry[1].owned_buildings)do if room.id==b.id then count=count+1 end end
+  assert(count==entry[2],'native owner membership differs')
+ end
+ result.owner=b.assigned_unit_id;result.settings=b.zone_settings.whole.i1
+elseif request.op=='zone_owner_clear' then
+ local saved=assert(_G.df3d_zone_owner_fixture)
+ saved.a.relationship_ids.Spouse=saved.spouse_a;saved.b.relationship_ids.Spouse=saved.spouse_b
+ _G.df3d_zone_owner_fixture=nil
 elseif request.op=='zone_removal_prepare' then
  local b=building()
  assert(not _G.df3d_zone_removal_fixture,'removal fixture already active')

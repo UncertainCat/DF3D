@@ -2,7 +2,7 @@
 #include <optional>
 #include <cstdint>
 #include <string>
-namespace df { struct building_civzonest; }
+namespace df { struct building_civzonest; struct unit; }
 namespace df3d_area {
 // Caller supplies a newly allocated zone and its selected type, at one safe point.
 // Includes native initial range direction from supplied extents and target
@@ -12,6 +12,10 @@ namespace df3d_area {
 std::optional<std::string> nativeZoneName(const df::building_civzonest& zone);
 bool nativeZoneDefaultsReady();
 bool nativeZoneDefaults(df::building_civzonest& zone);
+bool nativeZoneOwnerReady();
+// Native may allocate and transfer ownership from another tomb. Callers mark
+// the outcome unknown before entry; no automatic rollback or retry is valid.
+bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner);
 bool nativeZoneCreateReady();
 bool nativeZoneMultiReady();
 // Read-only native room tile eligibility. Caller preflights CreateReady at

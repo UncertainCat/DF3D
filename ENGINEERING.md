@@ -2,8 +2,8 @@
 
 `fixtures/areas/native_zone_assignment.json` retains the supported executable's
 semantic owner entry point, virtual leaves, allocation helpers and picker call
-sites. This compatibility evidence is maintained to guide the replacement of
-DFHack's reconstructed owner helper; it is not live acceptance.
+sites. It retains native input references and the matching bridge effect checks
+for replacing DFHack's reconstructed owner helper.
 
 Native0x557a60 takes a zone and optional unit, reads semantic ownership records,
 and updates owner/spouse membership. Tomb assignment additionally clears the
@@ -27,12 +27,28 @@ not establish a native Tomb clear action. Exploratory captures exposed wrong
 row assumptions and missing frame processing for widget text; the final oracle
 searches for the intended existing grave owner before transfer.
 
-The current runtime still uses the DFHack helper. Candidate eligibility/order,
-bridge effect comparisons, search-array preservation and full assignment UI
-acceptance remain required. In particular, creation must
-not unconditionally clear an unspecified owner: native clear changes tomb
-defaults. Native allocation can fail after mutation, requiring unknown-outcome
-handling without automatic retry or rollback.
+Owner mutation now calls the independent native0x557a60 routine after checking
+its full body and audited helper fingerprints. Owner-only edits omit the old
+reconstructed membership notification. Explicit active updates retain their
+existing notification pending separate audit. Creation preserves unspecified
+owners and native Tomb defaults; an explicit owner is assigned after publication.
+Failure after native assignment entry remains unknown and never removes the new
+zone to roll back a possible transfer from another tomb.
+
+Protected semantic `build/areas-acceptance-20261025-230854` passes151 native
+observations with clean diagnostics, including Tomb defaults, owner replacement,
+transfer and Bedroom assignment/removal for a controlled spouse pair. All17
+search guards preserve55,584 map path_cost/path_tag arrays. Owned DF112308 closes
+unsaved and both save manifests match. The earlier230611 run failed a verifier
+assertion on Bedroom's unused settings union; that field has no zero-value
+contract. The final check compares relevant Tomb flags and owner membership.
+MSVC builds and `build/qa/zone-owner-native-final` core19/19 plus adapter pass.
+Adapter coverage also checks unknown assignment outcomes preserve the newly
+created zone and owner-only input never invokes the notification helper.
+
+Candidate eligibility/order and full assignment UI acceptance remain required,
+including native deceased/non-citizen Tomb choices and existing-room grouping.
+Zones/Locations remains staged; this verifies the mutation route only.
 
 ## Native zone repaint effects
 

@@ -1180,7 +1180,8 @@ int areaCreate(lua_State* L) {
     if(!df::global::world || !df::global::plotinfo || !df::global::building_next_id)return "World is not loaded";
     if(*df::global::building_next_id<0 || *df::global::building_next_id==INT32_MAX)return "Building IDs exhausted";
     const bool pile=a->kind()==m::AreaKind::Stockpile;
-    if(!pile && !df3d_area::nativeZoneCreateReady())return "";
+    if(!pile && (!df3d_area::nativeZoneCreateReady() ||
+        (a->owner_id()>=0 && !df3d_area::nativeZoneOwnerReady())))return "";
     const int32_t z=a->operation()==m::AreaOperation::Paint?a->paint_z():a->origin()->z();
     if(pile && a->categories()) {
       std::array<size_t,78> counts{};size_t index=0;
@@ -1306,6 +1307,25 @@ int areaCreate(lua_State* L) {
   // All unpublished owners have unwound before Lua can allocate its response.
   lua_newtable(L);field(L,"ok",reason==nullptr);field(L,"message",reason?reason:"");
   field(L,"steps",steps);field(L,"work_unknown",unknownWork);field(L,"building_id",createdId);field(L,"paint_noop",noOp);return 1;
+}
+int areaSetOwner(lua_State* L) {
+  bool attempted=false;
+  const auto result=[&](bool ok,const char* reason) {
+    lua_newtable(L);field(L,"ok",ok);field(L,"message",reason);
+    field(L,"steps",0);field(L,"work_unknown",attempted);return 1;
+  };
+  auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
+  auto* owner=lua_isnil(L,2)?nullptr:Lua::GetDFObject<df::unit>(L,2);
+  if(!zone || (!lua_isnil(L,2) && !owner) || !lua_isnil(L,3))
+    return result(false,"Native owner assignment failed");
+  if(!df3d_area::nativeZoneOwnerReady() || !zone->canBeRoomSubset())
+    return result(false,"Native owner assignment failed");
+  try {
+    attempted=true;mutated=true;
+    if(!df3d_area::nativeZoneSetOwner(*zone,owner))
+      return result(false,"Native owner assignment failed; inspect before retrying");
+  } catch(...) {return result(false,"Native owner assignment failed; inspect before retrying");}
+  return result(true,"");
 }
 int areaRemove(lua_State* L) {
   const auto result=[&](bool ok,const char* reason) {
@@ -2152,6 +2172,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaLinkTarget);lua_setfield(L,-2,"link_target");
     lua_pushcfunction(L,areaSquadUse);lua_setfield(L,-2,"squad_use");
     lua_pushcfunction(L,areaAssignUnit);lua_setfield(L,-2,"assign_unit");
+    lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
   }
   if(citizenAction(action)) {
     field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());

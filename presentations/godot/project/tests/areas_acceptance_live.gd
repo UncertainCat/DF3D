@@ -424,6 +424,47 @@ func created_zone_location_repaint() -> void:
 	await native("overlap_measure",{"require_unchanged":true})
 	await native("overlap_clear")
 
+func zone_owner_effects() -> void:
+	step = "native zone owner effects"
+	var catalog := await request({"action":7})
+	if stopped:return
+	var kinds := {}
+	for choice in catalog.choices:kinds[str(choice.name)]=int(choice.id)
+	var p: Dictionary=fixture.origin
+	var origin:=Vector3i(int(p.x)+27,int(p.y)+4,int(p.z))
+	var owners:=await native("zone_owner_prepare")
+	if stopped:return
+	await native("overlap_prepare",{"scenario":"floor","site":{"x":origin.x,"y":origin.y,"z":origin.z}})
+	var ids: Array[int]=[]
+	for type_name in ["Tomb","Tomb","Bedroom"]:
+		var args: Dictionary={"action":10,"kind":1,"zone_type":kinds[type_name],"origin":origin,"width":1,"height":1}
+		if type_name=="Bedroom":args.owner_id=int(owners.owner_a)
+		var made:=await request(args)
+		if stopped:return
+		ids.append(int(made.areas[0].id))
+	await native("zone_owner_result",{"id":ids[0],"owner":-1,"settings":1,"count_a":0,"count_b":0})
+	await native("zone_owner_result",{"id":ids[2],"owner":int(owners.owner_a),"count_a":1,"count_b":1})
+	# Native reference: assign, replace, transfer to second tomb, clear bedroom.
+	for sample in [[ids[0],int(owners.owner_a),3,1,0],[ids[0],int(owners.owner_b),3,0,1],
+		[ids[1],int(owners.owner_b),3,0,1],[ids[2],-1,-1,0,0]]:
+		var current:=await inspect(int(sample[0]),1)
+		if stopped:return
+		await request({"action":11,"kind":1,"id":int(sample[0]),"owner_id":int(sample[1]),"expected_revision":current.revision})
+		if stopped:return
+		var expected: Dictionary={"id":int(sample[0]),"owner":int(sample[1]),"count_a":int(sample[3]),"count_b":int(sample[4])}
+		if int(sample[2])>=0:expected.settings=int(sample[2])
+		await native("zone_owner_result",expected)
+		await native("overlap_measure",{"require_unchanged":true})
+	await native("zone_owner_result",{"id":ids[0],"owner":-1,"settings":3,"count_a":0,"count_b":0})
+	for id in ids:
+		var current:=await inspect(id,1)
+		if stopped:return
+		await request({"action":12,"kind":1,"id":id,"expected_revision":current.revision})
+		if stopped:return
+	await native("zone_owner_clear")
+	await native("overlap_measure",{"require_unchanged":true})
+	await native("overlap_clear")
+
 func created_zone_removal() -> void:
 	step = "native zone removal effects"
 	var catalog := await request({"action":7})
@@ -569,6 +610,7 @@ func exercise() -> void:
 		if not stopped: await created_zone_membership()
 		if not stopped: await created_zone_overlaps()
 		if not stopped: await created_zone_removal()
+		if not stopped: await zone_owner_effects()
 		if not stopped: await created_zone_location_repaint()
 		return
 	for key in fixture.missing:

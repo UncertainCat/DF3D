@@ -92,6 +92,31 @@ bool nativeZoneDefaultsReady() {
     }();
     return compatible;
 }
+bool nativeZoneOwnerReady() {
+    if(!nativeZoneDefaultsReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=[](const uint8_t* base) {
+        return hash(base+0x557a60,0x430)==0x3e0ce87555a6acb4ULL &&
+            hash(base+0x14dc10,0x6a)==0x4236d6a46ef2b909ULL &&
+            hash(base+0x28b6d0,0x25)==0x548f955775d99314ULL &&
+            hash(base+0x28b700,0xb)==0x0212e826f13a713bULL &&
+            hash(base+0x28b6c0,0xb)==0x05a3e126f1ce8880ULL &&
+            hash(base+0x28b680,0x8)==0x4072f6cfbb0db12eULL &&
+            hash(base+0xbad30,0x118)==0xea445ea01cfc50c1ULL &&
+            hash(base+0x717a0,0x88)==0x1f072fdf02087d16ULL &&
+            hash(base+0x707d0,0x59)==0xeaa671999c0fd514ULL;
+    }(base);
+    return compatible;
+}
+bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner) {
+    if(!df::global::world || !nativeZoneOwnerReady() || !zone.canBeRoomSubset())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    // Semantic zone/unit inputs only. DF owns spouse lists, prior-tomb transfer,
+    // restriction bits and native vector allocation; no picker state is read.
+    using Assign=void (*)(df::building_civzonest*,df::unit*);
+    reinterpret_cast<Assign>(const_cast<uint8_t*>(base+0x557a60))(&zone,owner);
+    return true;
+}
 bool nativeZoneDefaults(df::building_civzonest& zone) {
     if(!nativeZoneDefaultsReady())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

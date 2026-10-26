@@ -170,6 +170,12 @@ def main():
      r.settings_header=settings_header
      r.set_location=set_location
      r.create_location=create_location
+     r.set_owner=function(b,u,budget)
+      assert(budget==nil)
+      local ok,value=pcall(dfhack.buildings.setOwner,b,u)
+      return {ok=ok and value,steps=0,work_unknown=true,
+       message=not ok and 'Native owner assignment failed; inspect before retrying' or not value and 'Native owner assignment failed' or ''}
+     end
      r.create_area=create_area
      r.remove_area=remove_area
      r.synchronous_read=action==9 and (r.area.operation==1 or r.area.operation==26)
@@ -925,6 +931,13 @@ def main():
     large_owner = call(11, {"kind": 1, "id": 6, "owner_id": 20, "active": 0, "expected_revision": zone_revision()})
     assert large_owner["ok"] and large_owner["work_unknown"]
     assert lua.eval("owner_calls") == 2 and not lua.eval("zone.spec_sub_flag.active")
+    # Owner-only input follows the native picker and never rebuilds membership.
+    notifications_before = lua.eval("notification_calls")
+    lua.execute("force_notification_error=true")
+    cleared_owner = call(11, {"kind": 1, "id": 6, "owner_id": -1, "expected_revision": zone_revision()})
+    assert cleared_owner["ok"] and cleared_owner["areas"][1]["owner_id"] == -1
+    assert lua.eval("notification_calls") == notifications_before
+    lua.execute("force_notification_error=false")
     lua.execute("df.unit.find(23).owned_buildings={};refuse_owner=true")
     assert call(11, {"kind": 1, "id": 6, "owner_id": -1, "active": 1,
                      "expected_revision": zone_revision()})["message"] == "Native owner assignment failed"
@@ -2604,10 +2617,15 @@ def main():
     assert owner["ok"] and owner["areas"][1]["owner_id"] == 20 and not owner["areas"][1]["active"]
     lua.execute("fail_owner=true")
     expected_id = lua.globals().next_area_id
-    failed_settings = settings_adapter(create_request(kind=1, zone_type=0))
-    assert failed_settings["message"].startswith("Invalid new area settings; new area removed: ")
-    assert failed_settings["message"].endswith("owner fixture exception")
-    assert lua.globals().df.building.find(expected_id) is None
+    untouched_owner = settings_adapter(create_request(kind=1, zone_type=0))
+    assert untouched_owner["ok"]  # unspecified owner never invokes assignment
+    expected_id = lua.globals().next_area_id
+    before_removes = lua.globals().remove_calls
+    failed_settings = settings_adapter(create_request(kind=1, zone_type=0, owner_id=20))
+    assert failed_settings["message"] == "Native owner assignment failed; inspect before retrying"
+    assert failed_settings["work_unknown"]
+    assert lua.globals().df.building.find(expected_id) is not None
+    assert lua.globals().remove_calls == before_removes
     lua.execute("fail_owner=false")
     def create_paint(spans, **extra):
         data = {"operation": 5, "id": -1, "paint_mode": 1, "paint_z": 1,

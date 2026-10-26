@@ -131,7 +131,9 @@ func refresh() -> void:
 		headers[index].size = Vector2([80,72,80,32][index],12)
 	remove.disabled = state.busy()
 	if cached_rows != state.rows:
-		cached_rows = state.rows.duplicate(true)
+		# State replaces immutable row snapshots. Share their recipes rather than
+		# duplicating nested appearance arrays for change detection.
+		cached_rows = state.rows.duplicate()
 		for button in choices: rows_box.remove_child(button); button.queue_free()
 		choices.clear()
 		focus_buttons.clear()
@@ -149,9 +151,8 @@ func refresh() -> void:
 				if int(row.get("sex",-1)) in [0,1]: label += ", " + ("♀" if int(row.sex) == 0 else "♂")
 				if bool(row.get("grazer",false)): label += "\nGrazer: requires pasture"
 			var button := row_button(label); button.clip_text = true; button.tooltip_text = label
-			button.pressed.connect(func():
-				if state.kind == 2: state.toggle_animal(int(row.id))
-				else: state.assign_owner(int(row.id)))
+			var unit_id := int(row.id)
+			button.pressed.connect(state.toggle_animal.bind(unit_id) if state.kind == 2 else state.assign_owner.bind(unit_id))
 			rows_box.add_child(button); choices.append(button)
 			if state.kind == 1 and row.get("owner_display") is Dictionary:
 				add_owner_text(button,row.owner_display)
@@ -180,7 +181,7 @@ func refresh() -> void:
 			focus.add_child(focus_icon); button.add_child(focus); focus_buttons.append(focus)
 			focus.visible = state.kind == 1
 			focus.set_meta("unit_id",int(row.id))
-			focus.pressed.connect(func(): focus_unit(int(row.id)))
+			focus.pressed.connect(focus_unit.bind(unit_id))
 			var mood := int(row.get("mood",0))
 			if state.kind == 1:
 				var icon := TextureRect.new(); icon.name = "OwnerStress"
@@ -303,7 +304,7 @@ func refresh_owner_facts() -> void:
 		for slot in portrait_slots:
 			if int(slot.id) == int(row.id) and slot.recipe != row.get("sheet_icon",{}):
 				slot.recipe = row.get("sheet_icon",{}); slot.loaded = false
-		cached_rows[index] = row.duplicate(true)
+		cached_rows[index] = row
 	apply_owner_colors(Time.get_ticks_msec())
 
 func _process(_delta: float) -> void:

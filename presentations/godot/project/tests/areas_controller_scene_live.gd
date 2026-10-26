@@ -1298,6 +1298,22 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"reopened owner rows"):return
 	await verify_candidate_rows(id,1)
 	if stopped: return
+	var recipe_receipt := int(editor.candidates_state.receipt)
+	var recipe_count: int = editor.candidates_state.rows.size()
+	var first_recipe_button: Button = editor.candidates_view.choices[0]
+	for direction in [KEY_PAGEDOWN,KEY_PAGEUP]:
+		for page_index in 4:
+			var paging := InputEventKey.new();paging.pressed=true;paging.keycode=direction;root.push_input(paging,true)
+			await process_frame
+		var first_visible := maxi(0,int(editor.candidates_view.scroll.scroll_vertical/36)-1)
+		if direction==KEY_PAGEDOWN and not check(first_visible>36,"owner paging did not reach an evicted recipe"):return
+		if not await wait_ui(func():return editor.candidates_state.rows[first_visible].has("sheet_icon") and editor.candidates_view.portrait_slots[first_visible].view.texture!=null,"scrolled owner portrait reacquisition"):return
+		var retained := 0
+		for row in editor.candidates_state.rows:
+			if row.has("sheet_icon"):retained+=1
+		if not check(retained<=36 and editor.candidates_state.rows.size()==recipe_count and editor.candidates_state.receipt==recipe_receipt and editor.candidates_view.choices[0]==first_recipe_button,"owner recipe window changed membership, controls or retention bound"):return
+		if direction==KEY_PAGEDOWN and not check(not editor.candidates_state.rows[0].has("sheet_icon"),"distant scroll retained first portrait recipe"):return
+		await capture("zone_owner_recipe_away" if direction==KEY_PAGEDOWN else "zone_owner_recipe_return")
 	if not await wait_ui(func():
 		var visible_count := 0
 		var clip: Rect2 = editor.candidates_view.scroll.get_global_rect()

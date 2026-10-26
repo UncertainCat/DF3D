@@ -435,7 +435,7 @@ color and appearance through independently owned semantic inputs. A read with th
 existing expected_list_revision preserves the cached ordered IDs and query;
 missing/ineligible units or changed zone context reject the read. The existing
 payload caps remain. This bounds recipe residency to returned
-pages rather than eight full candidate caches; viewer retention still needs review.
+pages rather than eight full candidate caches. Viewer retention is bounded below.
 
 Protected semantic055208 retains a filtered candidate's list revision across a
 controlled rename and returns the new native first line even though it no longer
@@ -459,8 +459,29 @@ order/membership while the picker stays active. An abandoned list expires;
 wrong receipts and rejected pages do not renew it. Time rewind invalidates the
 lease, and the existing eight-list LRU and epoch/mutation invalidations remain.
 Other selector caches retain their fixed build-age lifetime. Full pages stop
-before obtaining an unnecessary extra native display/portrait. Viewer recipe
-retention still needs review before acceptance.
+before obtaining an unnecessary extra native display/portrait.
+
+The owner selector retains recipes only in a36-row window around the viewport.
+All candidate identities, labels and native ordering remain available. Eviction
+replaces row dictionaries without mutating service receipts; the view shares
+immutable snapshots instead of deep-copying appearance arrays. Assignment and
+recenter callbacks bind only unit IDs, so they do not retain evicted recipes.
+Scrolling requests the new18-row visible slice immediately and detaches an
+obsolete viewport read. Offscreen textures are released by the portrait poller.
+Selector recipe count is independent of the4,096-entry candidate-list bound;
+the action service retains its separate bounded receipt history.
+
+owner-recipe-window passes core19/19, areas/candidate engine tests and GPU
+snapshot-sharing/callback checks with known engine notices. The final state
+gate owner-recipe-window-final passes core19/19 and candidate tests including
+eviction, immediate scroll demand, source receipt preservation and restoration.
+Protected main-scene064044 pages away and back with actual keyboard input:
+the first recipe is evicted then reacquired, visible portraits render, and
+membership, receipt and row controls remain unchanged with at most36 recipes.
+Both rendered captures were inspected. Assignment/removal and native name refresh
+also pass. DF121552 closes unsaved, both save manifests match and only the known
+Godot thread notice remains. Native help and scrollbar acceptance remain separate
+outstanding work.
 
 Management67 adds AreaRequest.candidate_limit for scoped owner CandidateList
 reads: zero preserves128-row pagination,1..128 bounds the returned slice. Other

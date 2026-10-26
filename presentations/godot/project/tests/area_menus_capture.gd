@@ -278,6 +278,11 @@ func run() -> void:
 	root.push_input(filter_shortcut,true)
 	if not controller.candidates_view.owner_search.has_focus(): push_error("Ctrl+F did not focus owner filter"); quit(1); return
 	var preserved_button: Button = controller.candidates_view.choices[0]
+	if not is_same(controller.candidates_view.cached_rows[0],controller.candidates_state.rows[0]):
+		push_error("Owner view duplicated the immutable recipe snapshot"); quit(1); return
+	for connection in preserved_button.get_signal_connection_list("pressed"):
+		if connection.callable.get_bound_arguments() != [int(controller.candidates_state.rows[0].id)]:
+			push_error("Owner assignment callback retains data beyond unit identity"); quit(1); return
 	var preserved_scroll: int = controller.candidates_view.scroll.scroll_vertical
 	var preserved_selection: int = controller.candidates_view.owner_selected
 	var refreshed: Array = controller.candidates_state.rows.duplicate(true)

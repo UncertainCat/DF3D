@@ -21,6 +21,8 @@ var search_delay := -1.0
 var failed := false
 var mutating := false
 var squad_mask := 15
+var recipe_first := 0
+const OWNER_RECIPE_ROWS := 36
 
 func clear() -> void:
 	area = {}; rows = []; pending = {}; receipt = 0; cursor = 0
@@ -28,6 +30,7 @@ func clear() -> void:
 	sort_directions = [false,false,false,false,false]
 	delay = -1; search_delay = -1; failed = false; mutating = false
 	squad_mask = 15
+	recipe_first = 0
 	changed.emit()
 
 func open(value: Dictionary, candidate_kind := 1, navigation: Dictionary = {}) -> void:
@@ -81,6 +84,7 @@ func sort_direction(value: int) -> bool:
 
 func invalidate(debounce: float) -> void:
 	rows = []; receipt = 0; cursor = 0; search_delay = debounce
+	recipe_first = 0
 	# During a builder wait there is no outstanding ticket to retire.
 	if delay >= 0: pending = {}; delay = -1
 	changed.emit()
@@ -111,6 +115,7 @@ func accept(page: Dictionary, sent: Dictionary) -> void:
 		reject("List changed; refresh"); return
 	if int(sent.cursor) == 0: rows = []
 	rows.append_array(page.get("candidates",[]))
+	_trim_owner_recipes()
 	receipt = int(page.list_revision); cursor = int(page.get("next_cursor",0))
 	pending = {}; delay = -1; changed.emit()
 
@@ -136,7 +141,27 @@ func accept_owner_facts(page: Dictionary, sent: Dictionary) -> void:
 	for index in count:
 		if int(values[index].get("id",-1)) != int(rows[first+index].id): return
 	for index in count: rows[first+index] = values[index].duplicate(true)
+	_trim_owner_recipes()
 	facts_changed.emit()
+
+func retain_owner_recipes(first: int) -> void:
+	if kind != 1: return
+	var start := maxi(0,first-9)
+	if start == recipe_first: return
+	recipe_first = start
+	if _trim_owner_recipes(): facts_changed.emit()
+
+func _trim_owner_recipes() -> bool:
+	if kind != 1: return false
+	var trimmed := false
+	for index in rows.size():
+		if index >= recipe_first and index < recipe_first+OWNER_RECIPE_ROWS: continue
+		if not rows[index].has("sheet_icon"): continue
+		# Page receipts are owned elsewhere too. Replace the row; never mutate
+		# their snapshot or a view's prior facts while releasing heavy recipes.
+		var row: Dictionary = rows[index].duplicate()
+		row.erase("sheet_icon"); rows[index] = row; trimmed = true
+	return trimmed
 
 func reject(reason: String) -> void:
 	pending = {}; delay = -1; search_delay = -1; failed = true; mutating = false

@@ -7,6 +7,7 @@ var ticket := 0
 var generation := 0
 var age := 0.0
 var interval := 1.0
+var first_row := 0
 
 func configure(source, model) -> void:
 	service = source; state = model
@@ -16,11 +17,15 @@ func configure(source, model) -> void:
 func clear() -> void:
 	generation += 1
 	if ticket != 0 and service != null: service.detach(ticket)
-	ticket = 0; age = 0.0
+	ticket = 0; age = 0.0; first_row = 0
 
 func poll(delta: float, first: int) -> void:
 	if service == null or state == null or state.kind != 1 or state.busy() or state.receipt == 0 or state.rows.is_empty():
 		clear(); return
+	first = clampi(first,0,state.rows.size()-1)
+	state.retain_owner_recipes(first)
+	if first != first_row:
+		clear(); first_row = first; age = interval
 	age += maxf(delta,0)
 	if ticket != 0 or age < interval: return
 	age = 0

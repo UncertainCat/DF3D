@@ -2413,7 +2413,7 @@
     "remaining": "Complete name-color/effect reader evidence follows. Production contract/rendering, portraits, background/input/lifecycle and remaining management goal are unfinished."
   },
   "owner_name_color": {
-    "status": "Fortress name-color/effect reader verified against native glyphs; production contract/rendering pending",
+    "status": "Native color/effect reader integrated through Management64 and Godot; full picker acceptance remains unfinished",
     "diagnostic": "df3d zone-owner-name-color-read <unit id>",
     "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-021253",
     "result_sha256": "c2eb2f4e4a0bfa44e2a3d6acefd0764d7145bc615e27f5489d0c68723acfa83d",
@@ -2836,6 +2836,54 @@
         "reason": "Standalone oracle initially read wrong y range; native name begins rect.y1-1. Closed unsaved/source unchanged."
       }
     ],
-    "remaining": "Production contract/rendering with presentation-owned animation and injected-time checks; portraits, backgrounds, input and full picker lifecycle. Native phase duty cycles are pinned-code evidence; sampled phase alternation is live evidence. Invalid raw/material fallback paths have static audit only; Adventure mode is outside the fortress picker scope."
+    "remaining": "Portraits, row background/hover/selection, textbox behavior, open-panel semantic refresh and full picker lifecycle. Invalid raw/material fallbacks have static audit only; Adventure mode is outside this fortress UI.",
+    "pixels": {
+      "evidence": "build/stockpile-storage-native-zone-owner-20261026-021253/tomb-picker-display-color-water-submerged.png",
+      "box": [
+        416,
+        100,
+        608,
+        112
+      ],
+      "first_line": "Unib Rakustazin, king, \u2642",
+      "color": {
+        "alternate": [
+          1,
+          1,
+          1
+        ],
+        "color": [
+          1,
+          1,
+          1
+        ],
+        "effect": 0,
+        "source": 4
+      },
+      "rgb_sha256": "73d143d3d816500cf3af892b1385cbb8754281fa7addb2c2b0e7a5f3b2e1b9af",
+      "grid_vertical_offset": 4
+    }
+  },
+  "owner_color_integration": {
+    "protocol": 64,
+    "live_evidence": "build/areas-acceptance-20261026-023602",
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "plugin_sha256": "1b0f1454dcdb352803153a01fe85f65bbdff7c92637218163667d0136f763c2f",
+    "owned_df_pid": 76428,
+    "closed_unsaved": true,
+    "unchanged_save_manifests": 2,
+    "observations": 201,
+    "matched_owner_rows": [
+      172,
+      172,
+      139
+    ],
+    "coverage": "Production native callback, Lua ownership/validation, DTO serialization, model and Godot dictionary preserve both color alternatives and effect. All483 rows compare with the independently verified native reader. Existing assignment/transfer/spouse/removal/order/filter and search guards still pass.",
+    "gpu_evidence": "build/qa/owner-color-integration-final",
+    "gpu_status": "passed_with_known_issues",
+    "pixels": "owner_name_color.pixels: all2304 RGB pixels of the192x12 native water-colored name match, including536 foreground and1768 background pixels. Source grid is centered vertically with4px offset in1200x800 capture. This excludes surrounding row/portrait/background/selection.",
+    "animation": "Pure injected-time tests cover333/500ms transitions and1000ms rollover plus injected fire choices; actual view applies both legendary phases to both lines with stable nonzero background. Runtime uses local presentation clock/RNG and only changes label colors when the selected alternative changes.",
+    "checks": "MSVC bridge build; root CTest19/19; real Godot Management64 decoder; Lua result boundary; area adapter; candidate state/animation; GPU menu/header/pointer/name pixels. GPU has only documented separate-thread/device-finalize/shutdown notices.",
+    "remaining": "No claim of full Zones/Locations acceptance. Native semantics are sampled on candidate requests; open-panel semantic refresh remains required alongside portraits, row states, textbox/creation/legacy routes and lifecycle."
   }
 }

@@ -149,12 +149,16 @@ func run() -> void:
 	if root.get_texture().get_image().save_png(directory.path_join("controller_zone_new.png")) != OK: quit(1); return
 	controller.use_area(bedroom); controller._process(0)
 	controller.zone_menu.controls.owner.pressed.emit(); service.poll()
+	var name_pixels: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_assignment.json")).owner_name_color.pixels
+	# JSON numbers are floats; the real extension emits integer palette components.
+	for key in ["color","alternate"]:
+		for index in 3: name_pixels.color[key][index] = int(name_pixels.color[key][index])
 	world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":14,"status":2,
 		"area":{"list_revision":95,"build_phase":3,"candidates":[
 			{"id":21,"name":"Legacy name must not render","profession":"Legacy profession","sex":1,"mood":3,
-				"owner_display":{"columns":45,"first_line":"Urist, Miner, ♂","second_line":"","status":"Has Quarters","room_value":343}},
+				"owner_display":{"columns":45,"first_line":str(name_pixels.first_line),"second_line":"","status":"Has Quarters","room_value":343,"name_color":name_pixels.color}},
 			{"id":22,"name":"Legacy name","profession":"Legacy profession","sex":0,"mood":7,
-				"owner_display":{"columns":45,"first_line":"Domas","second_line":"Carpenter, ♀","status":"","room_value":0}},
+				"owner_display":{"columns":45,"first_line":"Domas","second_line":"Carpenter, ♀","status":"","room_value":0,"name_color":{"color":[3,3,1],"alternate":[0,3,0],"effect":1}}},
 			{"id":23,"name":"Atir","profession":"Manager","sex":-1,"mood":0}]}}
 	service.poll(); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
@@ -167,6 +171,19 @@ func run() -> void:
 			var line: Label = button.get_node(["OwnerStatus","OwnerFirst","OwnerSecond"][line_index])
 			if line.text != display[["status","first_line","second_line"][line_index]] or line.position != Vector2(40,line_index*12) or line.size != Vector2(360,12):
 				push_error("Owner native line text or geometry differs: %s %s %s" % [line.name,line.position,line.size]); quit(1); return
+	var native_name: Label = controller.candidates_view.choices[0].get_node("OwnerFirst")
+	var name_image := root.get_texture().get_image(); name_image.convert(Image.FORMAT_RGB8)
+	var name_crop := name_image.get_region(Rect2i(Vector2i(native_name.global_position),Vector2i(native_name.text.length()*8,12)))
+	var name_digest := HashingContext.new(); name_digest.start(HashingContext.HASH_SHA256); name_digest.update(name_crop.get_data())
+	if name_digest.finish().hex_encode() != str(name_pixels.rgb_sha256):
+		push_error("Native owner name foreground/background pixels differ"); quit(1); return
+	for time in [0,332,333,999,1000]:
+		controller.candidates_view.apply_owner_colors(time,0)
+		for line_name in ["OwnerFirst","OwnerSecond"]:
+			var flashing: Label = controller.candidates_view.choices[1].get_node(line_name)
+			var expected_color: Color = controller.candidates_view.native_colors[0 if time%1000 < 333 else 11]
+			if flashing.get_theme_color("font_color") != expected_color or flashing.get_node("GlyphBackground").color != controller.candidates_view.native_colors[3]:
+				push_error("Owner row flash phase or background differs"); quit(1); return
 	if controller.candidates_view.choices[2].has_node("OwnerFirst") or not controller.candidates_view.choices[2].text.is_empty():
 		push_error("Absent owner display was invented"); quit(1); return
 	var header_reference: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_assignment.json"))

@@ -257,6 +257,10 @@ elseif request.op=='zone_owner_candidates' then
      assert(display.first_line==utf(text[4]) and display.second_line==utf(text[5]),'owner display lines differ')
      assert(display.room_value==value[1] and display.status==utf(value[2]),'owner room status differs')
      assert(row.name==utf(text[2]) and row.profession==utf(text[3]),'owner native name/profession differs')
+     local color_text,color_code=dfhack.run_command_silent('df3d','zone-owner-name-color-read',tostring(row.id));assert(color_code==0,color_text)
+     local expected_color=json.decode(color_text);local color=assert(display.name_color,'owner name color absent')
+     assert(color.effect==expected_color.effect,'owner color effect differs')
+     for component=1,3 do assert(color.color[component]==expected_color.color[component] and color.alternate[component]==expected_color.alternate[component],'owner color components differ')end
     end
     result.display_rows_exact=#request.display_rows
    end

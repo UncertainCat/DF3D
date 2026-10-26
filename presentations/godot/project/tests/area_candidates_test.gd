@@ -4,6 +4,18 @@ func check(value: bool, message: String) -> void:
 	if not value: failures += 1; push_error(message)
 func _initialize() -> void: call_deferred("run")
 func run() -> void:
+	var colors = preload("res://scripts/native_name_color.gd")
+	var flash := {"color":[3,3,1],"alternate":[0,3,0],"effect":1}
+	for time in [0,332,333,999,1000,1332,1333]:
+		check(colors.choose(flash,time,0) == (flash.alternate if time%1000 < 333 else flash.color),"legendary native duty cycle")
+	flash.effect = 2
+	for time in [0,499,500,999,1000,1499,1500]:
+		check(colors.choose(flash,time,0) == (flash.alternate if time%1000 < 500 else flash.color),"nemesis native duty cycle")
+	flash.effect = 3
+	check(colors.choose(flash,0,0) == flash.color and colors.choose(flash,0,1) == flash.alternate,"fire uses injected presentation randomness")
+	flash.effect = 0
+	check(colors.choose(flash,0,0).is_empty(),"inconsistent steady color rejected")
+	check(colors.choose({},0,0).is_empty(),"unknown historical color stays unknown")
 	var state := preload("res://scripts/area_candidates_state.gd").new()
 	var sent: Array = []; state.request_ready.connect(func(request): sent.append(request))
 	var area := {"id":82,"kind":1,"revision":9007199254740993,"owner_allowed":true,"owner_id":17,"zone_type":92}

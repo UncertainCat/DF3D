@@ -548,6 +548,15 @@ local function candidate_row(job,v,r)
    type(display.name)~='string' or type(display.profession)~='string' then
    job.error='Native area helper unavailable';return nil
   end
+  local color=display.name_color
+  if type(color)~='table' then job.error='Native area helper unavailable';return nil end
+  for key,limit in pairs{foreground=7,background=7,bright=1,alternate_foreground=7,alternate_background=7,alternate_bright=1,effect=3}do
+   local value=color[key]
+   if type(value)~='number' or value%1~=0 or value<0 or value>limit then job.error='Native area helper unavailable';return nil end
+  end
+  if color.effect==0 and (color.foreground~=color.alternate_foreground or color.background~=color.alternate_background or color.bright~=color.alternate_bright)then
+   job.error='Native area helper unavailable';return nil
+  end
   if type(order_facts.name_key)~='string' or #order_facts.name_key>2048 or
    type(order_facts.profession_key)~='string' or #order_facts.profession_key>2048 then
    job.error='Native area helper unavailable';return nil

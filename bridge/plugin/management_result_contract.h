@@ -144,6 +144,15 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
         payload+=6;
         valid=number("columns",3,128,true) && number("room_value",0,INT32_MAX,true) && text("first_line",384) && text("second_line",384) && text("status",256);
         if(valid) {lua_getfield(L,-1,"status");const auto size=lua_rawlen(L,-1);lua_pop(L,1);valid=(value("room_value")==0)==(size==0);}
+        if(valid) {
+          lua_getfield(L,-1,"name_color");
+          if(!lua_isnil(L,-1)) {
+            payload+=7;valid=table() && number("foreground",0,7,true) && number("background",0,7,true) && number("bright",0,1,true) &&
+              number("alternate_foreground",0,7,true) && number("alternate_background",0,7,true) && number("alternate_bright",0,1,true) && number("effect",0,3,true);
+            if(valid && value("effect")==0)valid=value("foreground")==value("alternate_foreground") && value("background")==value("alternate_background") && value("bright")==value("alternate_bright");
+          }
+          lua_pop(L,1);
+        }
       }
       lua_settop(L,top);return valid || bad("invalid owner display");
     }))return error;

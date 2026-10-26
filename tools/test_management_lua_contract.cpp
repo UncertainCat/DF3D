@@ -234,6 +234,13 @@ int main(int argc,char** argv) {
       const auto input="return {"+envelope+"candidate_kind="+(mode==7?"2":"1")+",candidates={{"+ownerRow+display+"}}}";
       test(A::AreaCandidates,input.c_str(),mode==0,O::CandidateList);
     }
+    for(int mode=0;mode<5;++mode) {
+      const std::string color=mode==1?"false":std::string("{foreground=")+(mode==2?"8":"3")+
+        ",background=3,bright=1,alternate_foreground=0,alternate_background=3,alternate_bright=0,effect="+(mode==3?"4":mode==4?"0":"1")+"}";
+      const auto input="return {"+envelope+"candidate_kind=1,candidates={{"+ownerRow+
+        "{columns=45,room_value=0,first_line='first',second_line='',status='',name_color="+color+"}}}}";
+      test(A::AreaCandidates,input.c_str(),mode==0,O::CandidateList);
+    }
     test(A::AreaInspect,("return {"+envelope+"steps=513}").c_str(),true,O::None,512);
     test(A::AreaInspect,("return {"+envelope+"steps=512}").c_str(),true,O::None,512);
     test(A::AreaDelete,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,O::None,0);

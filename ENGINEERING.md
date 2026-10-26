@@ -377,10 +377,37 @@ unchanged. DF59472 closes unsaved with source unchanged. Water and inventory-fir
 captures were inspected. MSVC and `build/qa/owner-name-color-final` core19/19 pass.
 
 Compact evidence is in `native_zone_assignment.json.owner_name_color`.
-The descriptor is not yet in the production row contract or Godot rendering.
-Presentation animation, portraits, row backgrounds, input and full lifecycle
-acceptance remain required. Invalid raw/material fallbacks have static audit
-only; this API intentionally rejects Adventure mode outside the fortress picker.
+The descriptor is integrated through Management64 below. Invalid raw/material
+fallbacks have static audit only; this API intentionally rejects Adventure mode
+outside the fortress picker.
+
+Production owner rows now carry the native reader's color alternatives/effect
+through request-local callbacks, validated Lua data, DTOs, the model and Godot.
+The view uses the installed palette, colors both name lines together and limits
+nonzero background color to their glyph cells. Missing historical color facts
+leave the name lines hidden instead of inventing a native color; their text is
+still retained in the model. Status text retains its separately verified color.
+Animation uses presentation time and RNG only, with injected inputs in tests.
+
+Protected `build/areas-acceptance-20261026-023602` passes201 observations with
+clean diagnostics. Both Tomb lists and the Bedroom list contain172/172/139 rows;
+all483 text/status/color/effect records match the verified native readers.
+Assignment, transfer, spouse membership, removal, sorting/filtering and search
+guards still pass. Owned DF76428 closes unsaved; both save manifests match.
+The matching MSVC bridge builds. Root CTest19/19, Lua-boundary, area-adapter and
+candidate-state/animation checks pass. Management64's real engine decoder is
+verified by `build/qa/owner-color-contract`.
+
+`build/qa/owner-color-integration-final` passes the GPU menu check with the three
+documented Godot notices (passed_with_known_issues). All2304 RGB pixels of one
+native water-colored name match, including glyph backgrounds; source crop and
+hash are in `native_zone_assignment.json.owner_name_color.pixels`. The corrected
+crop includes native's4px vertical grid centering. The capture was inspected.
+Injected-time checks cover333/500ms boundaries, cycle rollover and fire choices;
+the view check applies both legendary phases to both lines. Surrounding row
+background/hover/selection, portraits, textbox behavior, open-panel semantic
+refresh and full assignment lifecycle remain unfinished. These results establish
+color integration at candidate-request time, not complete picker acceptance.
 
 ## Native zone repaint effects
 

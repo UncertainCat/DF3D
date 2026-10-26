@@ -625,7 +625,7 @@ def main():
     """)
     lua.execute("df.global.world.units.all=df.global.world.units.active;function owner_eligible(b,u) return u.native_eligible~=false end")
     lua.execute("function owner_order_facts(b,u) return {without_room=true,priority=0,category=u.id,category_status=0,stress=u.id%7,name_key=string.lower(u.label or '')..string.format('%04d',u.id),profession_key='worker'} end")
-    lua.execute("function owner_display(b,u) return {columns=45,first_line='Native first',second_line='Native second',status='Has Quarters',room_value=343,name='Native name',profession='Native profession'} end")
+    lua.execute("function owner_display(b,u) return {columns=45,first_line='Native first',second_line='Native second',status='Has Quarters',room_value=343,name='Native name',profession='Native profession',name_color={foreground=3,background=3,bright=1,alternate_foreground=0,alternate_background=3,alternate_bright=0,effect=1}} end")
     selector = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 1, "sort": 1}
     pending = raw_call(14, selector)
     assert pending["ok"] and pending["build_phase"] == 1 and pending["build_done"] == 0
@@ -635,6 +635,8 @@ def main():
     assert owners["steps"] <= 1536 and owners["list_revision"] > 0
     assert owners["candidates"][1]["owner_display"]["first_line"] == "Native first"
     assert owners["candidates"][1]["owner_display"]["room_value"] == 343
+    assert owners["candidates"][1]["owner_display"]["name_color"]["alternate_foreground"] == 0
+    assert owners["candidates"][1]["owner_display"]["name_color"]["effect"] == 1
     assert owners["candidates"][1]["name"] == "Native name"
     assert owners["candidates"][1]["profession"] == "Native profession"
     next_selector = dict(selector, cursor=128, expected_list_revision=owners["list_revision"])

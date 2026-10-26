@@ -18,8 +18,12 @@ var strips: Dictionary = {}
 var squad_prompt: Label
 var squad_buttons: Array[Button] = []
 var native_colors: Array[Color] = []
+var owner_color_rows: Array = []
+var owner_color_random := RandomNumberGenerator.new()
+const NameColor = preload("res://scripts/native_name_color.gd")
 
 func configure(source, model) -> void:
+	owner_color_random.randomize()
 	world = source; state = model; art.configure(source); theme = art.theme
 	if world.has_method("assets_root"): native_colors = art.installed_palette(world.assets_root())
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -108,6 +112,7 @@ func refresh() -> void:
 		choices.clear()
 		focus_buttons.clear()
 		portrait_slots.clear()
+		owner_color_rows.clear()
 		squad_buttons.clear()
 		for row in state.rows:
 			if state.kind == 3:
@@ -167,6 +172,7 @@ func refresh() -> void:
 func add_owner_text(button: Button, display: Dictionary) -> void:
 	# Native status occupies the first cell row; the two name lines follow it.
 	# Absent records stay unknown, and native shortening is never repeated here.
+	var colored: Array = []
 	for index in 3:
 		var line := Label.new(); line.name = ["OwnerStatus","OwnerFirst","OwnerSecond"][index]
 		line.text = str(display.get(["status","first_line","second_line"][index],""))
@@ -175,6 +181,30 @@ func add_owner_text(button: Button, display: Dictionary) -> void:
 		if index == 0 and native_colors.size() == 16: line.add_theme_color_override("font_color",native_colors[10])
 		line.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(line)
 		line.position = Vector2(40,index*12); line.size = Vector2(int(display.columns)*8,12)
+		if index > 0:
+			var background := ColorRect.new(); background.name = "GlyphBackground"
+			background.mouse_filter = Control.MOUSE_FILTER_IGNORE; background.show_behind_parent = true
+			background.size = Vector2(mini(line.text.length(),int(display.columns))*8,12)
+			line.add_child(background); colored.append(line)
+	owner_color_rows.append({"description":display.get("name_color",{}),"lines":colored,"last":[]})
+	apply_owner_colors(Time.get_ticks_msec())
+
+func _process(_delta: float) -> void:
+	if is_visible_in_tree(): apply_owner_colors(Time.get_ticks_msec())
+
+func apply_owner_colors(time_ms: int, fire_choice: int = -1) -> void:
+	for row in owner_color_rows:
+		var choice := fire_choice
+		if choice < 0: choice = owner_color_random.randi_range(0,1) if int(row.description.get("effect",0)) == 3 else 0
+		var color: Array = NameColor.choose(row.description,time_ms,choice) if native_colors.size() == 16 else []
+		for line in row.lines: line.visible = not color.is_empty()
+		if color.is_empty() or color == row.last: continue
+		row.last = color.duplicate()
+		for line in row.lines:
+			line.add_theme_color_override("font_color",native_colors[int(color[0])+int(color[2])*8])
+			var background: ColorRect = line.get_node("GlyphBackground")
+			background.visible = int(color[1]) != 0
+			background.color = native_colors[int(color[1])]
 
 func add_squad(row: Dictionary) -> void:
 	var button := row_button(str(row.get("name","")))

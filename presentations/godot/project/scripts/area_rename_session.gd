@@ -32,7 +32,7 @@ func _drain(previous := 0) -> void:
 			_stop(); finished.emit(); queue_free()
 		return
 	var request := {"action":Contract.ManagementAction.AreaUpdate,"operation":Contract.AreaOperation.Rename,
-		"kind":0,"id":int(area.id),"expected_revision":int(area.revision),"name":desired}
+		"kind":int(area.kind),"id":int(area.id),"expected_revision":int(area.revision),"name":desired}
 	ticket = service.submit_continuation(previous,"areas",request,_received) if previous > 0 else service.submit("areas",request,_received)
 	if ticket == 0: _fail({})
 
@@ -42,7 +42,7 @@ func _received(receipt: int, result: Dictionary, request: Dictionary) -> void:
 	if int(result.get("status",0)) != Contract.ManagementStatus.Ok or str(result.get("outcome","")) == "unknown":
 		_fail(result); return
 	var rows: Array = result.get("areas",result.get("area",{}).get("areas",[]))
-	if rows.size() != 1 or int(rows[0].get("id",-1)) != int(area.id) or int(rows[0].get("kind",-1)) != 0 or int(rows[0].get("revision",0)) <= 0 or rows[0].get("custom_name",null) != request.name:
+	if rows.size() != 1 or int(rows[0].get("id",-1)) != int(area.id) or int(rows[0].get("kind",-1)) != int(area.kind) or int(rows[0].get("revision",0)) <= 0 or rows[0].get("custom_name",null) != request.name:
 		_fail(result); return
 	area = rows[0].duplicate(true)
 	_drain(receipt)

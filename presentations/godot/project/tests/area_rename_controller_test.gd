@@ -26,10 +26,22 @@ func key(code: int, unicode := 0) -> void:
 	root.push_input(event,true)
 
 func open_name() -> void:
-	controller.use_area(pile); controller.stockpile_control("rename")
+	controller.use_area(pile)
+	if int(pile.kind) == 0: controller.stockpile_control("rename")
+	else: controller.zone_control("rename")
 
 func _initialize() -> void: call_deferred("run")
 func run() -> void:
+	var baseline := pile.duplicate(true)
+	for kind in [0,1]:
+		pile = baseline.duplicate(true); pile.kind = kind
+		if kind == 1:
+			pile.zone_type = 2; pile.zone_label = "Bedroom"
+		await run_kind()
+	print("AREA_RENAME_CONTROLLER PASS" if failures == 0 else "AREA_RENAME_CONTROLLER FAIL")
+	quit(failures)
+
+func run_kind() -> void:
 	world = Base.FakeWorld.new()
 	var interaction := Base.FakeInteraction.new(); root.add_child(interaction)
 	service = preload("res://scripts/semantic_action_service.gd").new()
@@ -39,13 +51,17 @@ func run() -> void:
 	controller.world = world; controller.action_service = service; controller.ui_host = host; controller.interaction = interaction
 	root.add_child(controller); host.register(controller); controller.set_process(false)
 	controller.open_panel(); service.poll(); reply(0); reply(7)
+	controller.zone_types = [{"id":2,"name":"Bedroom","label":"Bedroom","icon":"ZONE_BEDROOM"}]
 	open_name(); await process_frame
-	check(controller.rename_field.value == "" and controller.rename_field.get_parent() == controller.stockpile_view,"empty custom name edits inline, not default label")
+	check(controller.rename_field.value == "" and controller.rename_field.get_parent() == (controller.stockpile_view if int(pile.kind) == 0 else controller.zone_menu.selected_panel),"empty custom name edits inline, not default label")
+	if int(pile.kind) == 0: controller.stockpile_control("rename")
+	else: controller.zone_control("rename")
+	check(controller.stockpile_page == "rename" and controller.rename_field.visible and controller.rename_field.editing,"repeated quill keeps inline entry active")
 	key(0,65); service.poll(); key(0,66); key(0,67)
 	check(world.calls[-1].name == "A" and controller.rename_field.value == "ABC","typing remains responsive during an outstanding write")
 	accepted("A")
 	check(world.calls[-1].name == "ABC" and world.calls[-1].expected_revision == pile.revision,"newest explicit text uses confirmed revision")
-	check(controller.stockpile_view.controls.remove.disabled,"following write keeps other mutations disabled")
+	check((controller.stockpile_view if int(pile.kind) == 0 else controller.zone_menu).controls.remove.disabled,"following write keeps other mutations disabled")
 	check(not controller.message.visible,"pending rename does not add an unsourced status strip")
 	key(KEY_ESCAPE)
 	check(not controller.panel.visible and controller.rename_session == null,"Escape closes palette immediately")
@@ -62,8 +78,8 @@ func run() -> void:
 	var before: int = world.calls.size()
 	reply(11,{"status":3,"message":"Area changed; inspect again"})
 	service.poll(); check(world.calls.size() == before and controller.rename_session == null and not controller.rename_field.editing,"stale mutation drops buffered input")
-	check(controller.selected.revision == 0 and controller.stockpile_view.controls.rename.disabled,"failed write needs fresh inspection before another edit")
-	check(not controller.message.visible and not controller.message.text.is_empty(),"rejection retains diagnostics without showing unsourced gameplay copy")
+	check(controller.selected.revision == 0 and (controller.stockpile_view if int(pile.kind) == 0 else controller.zone_menu).controls.rename.disabled,"failed write needs fresh inspection before another edit")
+	check((int(pile.kind) == 1 or not controller.message.visible) and not controller.message.text.is_empty(),"rejection retains diagnostics without showing unsourced gameplay copy")
 	open_name(); key(0,89); service.poll(); key(0,90)
 	before = world.calls.size(); service.poll(16)
 	check(controller.rename_session == null and not controller.rename_field.editing,"unknown outcome stops editing")
@@ -77,6 +93,14 @@ func run() -> void:
 		check(world.calls.size() == before,reason+" does not replay edits")
 		world.state = {"world_epoch":42,"revision":101,"status":0}; service.poll()
 		controller.available = true
+	# Switching selection leaves explicit old edits with the service but detaches
+	# their UI callbacks, so replies cannot replace the newly selected area.
+	controller.panel.show(); open_name(); key(0,81); service.poll(); key(0,82)
+	var old_name: String = pile.custom_name
+	var other: Dictionary = pile.duplicate(true); other.id += 1000
+	controller.use_area(other)
+	accepted(old_name+"Q"); accepted(old_name+"QR"); await process_frame
+	check(int(controller.selected.id) == int(other.id) and controller.rename_session == null,"old rename receipt replaced a new selection")
 	controller.close_panel(); controller.queue_free(); host.queue_free(); service.queue_free(); interaction.queue_free()
 	await process_frame
 	var samples = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_stockpile_rename.json")).window_text.cases
@@ -90,5 +114,3 @@ func run() -> void:
 		check(entry.editing == bool(sample.native.editing),"text-only input changed native editing state")
 		entry.finish()
 	entry.queue_free(); await process_frame
-	print("AREA_RENAME_CONTROLLER PASS" if failures == 0 else "AREA_RENAME_CONTROLLER FAIL")
-	quit(failures)

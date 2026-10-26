@@ -1,5 +1,5 @@
 extends Label
-# Native stockpile name entry appends bytes and Backspace removes the last byte.
+# Native stockpile/zone name entry appends bytes and Backspace removes the last byte.
 # It has no selection/caret navigation. The controller owns Escape/right-click.
 signal edited(value: String)
 signal submitted

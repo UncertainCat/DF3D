@@ -181,7 +181,8 @@ func _ready() -> void:
 	box.add_child(zone_menu); zone_menu.configure(world)
 	zone_menu.type_selected.connect(choose_zone_type)
 	zone_menu.control_selected.connect(zone_control)
-	zone_menu.rename_requested.connect(rename_area)
+	zone_menu.name_entry.edited.connect(_rename_edited)
+	zone_menu.name_entry.submitted.connect(_finish_rename)
 	zone_menu.setting_requested.connect(set_zone_setting)
 	candidates_view = preload("res://scripts/area_candidates_view.gd").new()
 	canvas.add_child(candidates_view); candidates_view.configure(world,candidates_state); candidates_view.hide()
@@ -437,6 +438,9 @@ func zone_control(key: String) -> void:
 				return
 		return
 	if selected.is_empty() or int(selected.kind) != 1 or not available or request_ticket != 0: return
+	if rename_session != null and rename_session.ticket != 0: return
+	if key == "rename" and rename_field.editing: return
+	if key != "rename": _finish_rename()
 	if key=="location_details":
 		open_location_details({"site_id":selected.get("location_site_id",-1),"id":selected.get("location_id",-1)},true)
 		return
@@ -455,7 +459,7 @@ func zone_control(key: String) -> void:
 			stockpile_page = "squads"; update_controls(); candidates_state.open(selected,3,{"squad_mask":mask})
 		"location":
 			stockpile_page = "location"; update_controls(); locations_state.open(selected)
-		"rename": zone_menu.begin_rename()
+		"rename": _begin_rename(zone_menu.name_entry)
 		"repaint": begin_paint()
 		"remove": remove_area()
 		"suspend":
@@ -612,18 +616,7 @@ func stockpile_control(key: String) -> void:
 			var request := selected_request(Action.AreaUpdate)
 			request.links_only = int(not bool(selected.links_only))
 			send(request)
-		"rename":
-			if rename_field.editing: return
-			if not selected.has("custom_name"): return
-			rename_session = preload("res://scripts/area_rename_session.gd").new()
-			action_service.add_child(rename_session)
-			rename_session.configure(action_service,selected)
-			rename_session.changed.connect(_rename_changed)
-			rename_session.finished.connect(_rename_finished)
-			rename_session.failed.connect(_rename_failed)
-			stockpile_page = "rename"
-			rename_field.begin(str(selected.custom_name))
-			update_controls()
+		"rename": _begin_rename(stockpile_view.name_entry)
 		"repaint": begin_paint()
 		"containers", "links":
 			storage_view.cancel_edit()
@@ -913,6 +906,19 @@ func change_link(id: int, kind: int, give: bool, unlink: bool) -> void:
 	send(request)
 
 
+func _begin_rename(entry) -> void:
+	if rename_field.editing or not selected.has("custom_name") or int(selected.get("revision",0)) <= 0: return
+	rename_field = entry
+	rename_session = preload("res://scripts/area_rename_session.gd").new()
+	action_service.add_child(rename_session)
+	rename_session.configure(action_service,selected)
+	rename_session.changed.connect(_rename_changed)
+	rename_session.finished.connect(_rename_finished)
+	rename_session.failed.connect(_rename_failed)
+	stockpile_page = "rename"
+	rename_field.begin(str(selected.custom_name))
+	update_controls()
+
 func rename_area(value: String) -> void:
 	if selected.is_empty(): return
 	var request := selected_request(Action.AreaUpdate)
@@ -1095,6 +1101,7 @@ func identity_label(label: String, id: int) -> String:
 
 
 func use_area(a: Dictionary, inspect_revision := true) -> void:
+	_release_rename()
 	_release_paint_session("exit")
 	_finish_multi()
 	var member := false
@@ -1192,8 +1199,8 @@ func update_controls() -> void:
 		if child not in [paint_view,message] and native_paint: child.hide()
 		if child not in [zone_menu,message] and native_zones: child.hide()
 	zone_menu.visible = native_zones
-	if native_zones: zone_menu.display(zone_types,available and request_ticket == 0 and (selected.is_empty() or int(selected.get("revision",0)) > 0),selected)
-	zone_menu.set_overlap_navigation(zone_overlaps.size() > 1,available and request_ticket == 0)
+	if native_zones: zone_menu.display(zone_types,available and request_ticket == 0 and (rename_session == null or rename_session.ticket == 0) and (selected.is_empty() or int(selected.get("revision",0)) > 0),selected)
+	zone_menu.set_overlap_navigation(zone_overlaps.size() > 1,available and request_ticket == 0 and (rename_session == null or rename_session.ticket == 0))
 	paint_view.set_zone(zone_draft if not pile else {})
 	paint_view.visible = native_paint
 	paint_view.tools.visible = panel.visible and native_paint
@@ -1224,7 +1231,8 @@ func update_controls() -> void:
 		storage_view.add_theme_stylebox_override("panel",stockpile_view.panel_style())
 		storage_view.size = Vector2.ZERO
 		storage_view.display(selected,available and not storage_failed and request_ticket == 0 and int(selected.get("revision",0)) > 0,storage_sending and not storage_failed)
-	rename_field.visible = native_types and stockpile_page == "rename" and rename_field.editing
+	stockpile_view.name_entry.visible = native_types and stockpile_page == "rename" and stockpile_view.name_entry.editing
+	zone_menu.name_entry.visible = native_zones and stockpile_page == "rename" and zone_menu.name_entry.editing
 	if native_types: stockpile_view.display(selected, available and request_ticket == 0 and (rename_session == null or rename_session.ticket == 0) and int(selected.get("revision",0)) > 0)
 	if native_zones:
 		panel.add_theme_stylebox_override("panel",StyleBoxEmpty.new())

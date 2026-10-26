@@ -75,7 +75,8 @@ func pointer_areas() -> void:
 	world.set_top_z(origin.z)
 	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
 	var stockpiles_only := FileAccess.file_exists(directory+"/stockpiles-only.json")
-	var destinations := ["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"]
+	var zone_rename_only := FileAccess.file_exists(directory+"/zone-rename-only.json")
+	var destinations := ["Zones"] if zone_rename_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
 	for destination in destinations:
 		step = "viewport "+destination
 		var launcher: Button = scene._fortress_hud.navigation[destination]
@@ -111,7 +112,14 @@ func pointer_areas() -> void:
 			if not check(str(editor.selected.name) == "Unnamed bedroom" and editor.zone_menu.heading.text == "Unnamed bedroom","unnamed Bedroom must use native panel name"): return
 		await capture(destination.to_lower()+"_created")
 		if stopped: return
-		if destination == "Zones": await pointer_owner(id,origin)
+		if destination == "Zones":
+			await pointer_stockpile_name(origin)
+			if stopped: return
+			if zone_rename_only:
+				await click_control(editor.zone_menu.controls.remove)
+				if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"remove renamed zone"): return
+				await native("removed",{"id":id}); await native("final"); return
+			await pointer_owner(id,origin)
 		elif not FileAccess.file_exists(directory+"/stockpile-paint-only.json"):
 			await stockpile_name_contract()
 			if not stopped: await pointer_stockpile_name(origin)
@@ -194,17 +202,23 @@ func pointer_stockpile_help() -> void:
 func pointer_stockpile_name(origin: Vector3i) -> void:
 	step = "viewport inline stockpile name"
 	var id := int(editor.selected.id)
+	var zone := int(editor.selected.kind) == 1
+	var menu = editor.zone_menu if zone else editor.stockpile_view
+	var destination := "Zones" if zone else "Stockpiles"
+	var prefix := "zone" if zone else "stockpile"
 	var initial_size: Vector2 = editor.panel.size
-	await click_control(editor.stockpile_view.controls.rename)
+	await click_control(menu.controls.rename)
 	if not check(editor.rename_field.editing and editor.rename_field.value == "","native empty inline name absent"): return
+	await click_control(menu.controls.rename)
+	if not check(editor.rename_field.visible and editor.stockpile_page == "rename","repeated quill hid inline name"): return
 	name_text("Aa1 B")
 	if not await wait_ui(settled,"immediate rename without Enter"): return
 	await native("snapshot",{"id":id,"expected":{"custom_name":"Aa1 B"}})
-	if not check(editor.panel.size == initial_size and editor.rename_field.get_parent() == editor.stockpile_view,"rename changed palette layout"): return
-	await capture("stockpile_rename_inline")
+	if not check(editor.panel.size == initial_size and editor.rename_field.get_parent() == (menu.selected_panel if zone else menu),"rename changed palette layout"): return
+	await capture(prefix+"_rename_inline")
 	await pointer_key(KEY_ENTER)
 	if not check(editor.panel.visible and not editor.rename_field.editing,"Enter did not end entry"): return
-	await click_control(editor.stockpile_view.controls.rename)
+	await click_control(menu.controls.rename)
 	name_text("X")
 	if not await wait_ui(settled,"append existing name"): return
 	await pointer_key(KEY_BACKSPACE)
@@ -213,7 +227,7 @@ func pointer_stockpile_name(origin: Vector3i) -> void:
 	name_text("a".repeat(40))
 	if not await wait_ui(settled,"native name limit"): return
 	await native("snapshot",{"id":id,"expected":{"custom_name":"Aa1 B"+"a".repeat(15)}})
-	await capture("stockpile_rename_limit")
+	await capture(prefix+"_rename_limit")
 	# Deliver Backspace and Escape before the action service polls. Explicit
 	# text must drain even though the panel closes immediately.
 	for index in 20:
@@ -222,30 +236,31 @@ func pointer_stockpile_name(origin: Vector3i) -> void:
 	if not check(not editor.panel.visible,"Escape did not close palette"): return
 	if not await wait_ui(func(): return actions._active == 0 and actions._queue.is_empty(),"closed rename drain"): return
 	await native("snapshot",{"id":id,"expected":{"custom_name":""}})
-	await click_control(scene._fortress_hud.navigation.Stockpiles)
+	await click_control(scene._fortress_hud.navigation[destination],zone)
 	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"rename reopen launcher"): return
 	await pointer_click(tile_screen(origin))
 	if not await wait_ui(func(): return settled() and int(editor.selected.get("id",-1)) == id,"renamed pile reselection"): return
-	if not check(editor.selected.custom_name == "" and editor.stockpile_view.heading.text == editor.selected.name,"cleared name did not restore default heading"): return
-	await click_control(editor.stockpile_view.controls.rename)
+	if not check(editor.selected.custom_name == "" and menu.heading.text == editor.selected.name,"cleared name did not restore default heading"): return
+	await click_control(menu.controls.rename)
 	name_text("R")
 	await pointer_click(tile_screen(origin),MOUSE_BUTTON_RIGHT)
 	if not check(not editor.panel.visible,"right-click did not close rename palette"): return
 	if not await wait_ui(func(): return actions._active == 0 and actions._queue.is_empty(),"right-click rename drain"): return
 	await native("snapshot",{"id":id,"expected":{"custom_name":"R"}})
-	await click_control(scene._fortress_hud.navigation.Stockpiles)
+	await click_control(scene._fortress_hud.navigation[destination],zone)
 	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"right-click reopen launcher"): return
 	await pointer_click(tile_screen(origin))
 	if not await wait_ui(func(): return settled() and int(editor.selected.get("id",-1)) == id,"right-click pile reselection"): return
-	await click_control(editor.stockpile_view.controls.rename)
+	await click_control(menu.controls.rename)
 	await pointer_key(KEY_BACKSPACE); await pointer_key(KEY_ENTER)
 	if not await wait_ui(settled,"restore unnamed stockpile"): return
 	await native("snapshot",{"id":id,"expected":{"custom_name":""}})
 
+	if zone: return # Native Windows text cases below are separately established for stockpiles.
 	var samples = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_stockpile_rename.json")).window_text.cases
 	for index in samples.size():
 		var sample: Dictionary = samples[index]
-		await click_control(editor.stockpile_view.controls.rename)
+		await click_control(menu.controls.rename)
 		for count in 20:
 			var event := InputEventKey.new(); event.pressed = true; event.keycode = KEY_BACKSPACE; root.push_input(event,true)
 		name_text(str(sample.typed))
@@ -254,7 +269,7 @@ func pointer_stockpile_name(origin: Vector3i) -> void:
 		if not check(editor.rename_field.value == str(sample.native.stored),"rendered name differs from native Windows text"): return
 		if index in [1,5]: await capture("stockpile_name_windows_"+str(index))
 		await pointer_key(KEY_ENTER)
-	await click_control(editor.stockpile_view.controls.rename)
+	await click_control(menu.controls.rename)
 	for count in 20:
 		var event := InputEventKey.new(); event.pressed = true; event.keycode = KEY_BACKSPACE; root.push_input(event,true)
 	await pointer_key(KEY_ENTER)

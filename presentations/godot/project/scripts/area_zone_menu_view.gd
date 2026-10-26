@@ -2,7 +2,6 @@ extends Control
 # Native two-panel chooser; catalog identity stays separate from display position.
 signal type_selected(id: int)
 signal control_selected(key: String)
-signal rename_requested(value: String)
 signal setting_requested(key: String, value: int)
 const Data = preload("res://scripts/area_menu_data.gd")
 var art = preload("res://scripts/original_ui.gd").new()
@@ -18,7 +17,7 @@ var owner_portrait: TextureRect
 var religion_label: Label
 var world
 var controls: Dictionary = {}
-var name_entry: LineEdit
+var name_entry
 var settings: Dictionary = {}
 var setting_buttons: Array[Button] = []
 # Type, semantic field, fixed value (or -1 to toggle), installed icon, position.
@@ -57,10 +56,11 @@ func configure(source) -> void:
 	heading = Label.new(); heading.position = Vector2(14,10); heading.size = Vector2(272,36)
 	heading.add_theme_font_size_override("font_size",12); heading.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	selected_panel.add_child(heading)
-	name_entry = LineEdit.new(); name_entry.position = Vector2(6,10); name_entry.size = Vector2(280,36)
-	name_entry.max_length = 128; name_entry.add_theme_font_size_override("font_size",12)
+	name_entry = preload("res://scripts/area_name_entry.gd").new()
+	name_entry.position = heading.position; name_entry.size = heading.size
+	name_entry.add_theme_font_size_override("font_size",12); name_entry.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	name_entry.clip_text = true; name_entry.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	name_entry.hide(); selected_panel.add_child(name_entry)
-	name_entry.text_submitted.connect(func(value): rename_requested.emit(value))
 	var type_border := TextureRect.new(); type_border.position = Vector2(6,46); type_border.size = Vector2(32,36)
 	type_border.texture = art.texture("ZONE_TYPE_INACTIVE"); selected_panel.add_child(type_border)
 	type_icon = TextureRect.new(); type_icon.position = Vector2(6,46); type_icon.size = Vector2(32,36)
@@ -143,6 +143,7 @@ func display(rows: Array, editable: bool, area: Dictionary = {}) -> void:
 	for index in 2: prompts[index].visible = area.is_empty()
 	if not area.is_empty():
 		heading.text = str(area.get("name",""))
+		heading.visible = not name_entry.editing
 		type_label.text = str(area.get("zone_label",""))
 		type_label.clip_text = true
 		var has_location := int(area.get("location_id",-1)) >= 0
@@ -190,16 +191,12 @@ func display(rows: Array, editable: bool, area: Dictionary = {}) -> void:
 		controls.suspend.get_node("Icon").texture = art.texture("ZONE_SUSPEND_INACTIVE" if bool(area.get("active",false)) else "ZONE_SUSPEND")
 		for button in controls.values():
 			button.get_node("Icon").modulate = Color(0.5,0.5,0.5) if button.disabled else Color.WHITE
-		name_entry.editable = editable
 	catalog.clear()
 	for row in rows: catalog[str(row.name)] = int(row.id)
 	for key in buttons:
 		# Preserve native slots when a catalog omits a type; never invent its ID.
 		buttons[key].visible = catalog.has(key)
 		buttons[key].disabled = not editable or not catalog.has(key)
-
-func begin_rename() -> void:
-	name_entry.text = heading.text; name_entry.show(); name_entry.grab_focus(); name_entry.select_all()
 
 func set_overlap_navigation(multiple: bool, enabled: bool) -> void:
 	for key in ["previous","next"]:
@@ -210,9 +207,9 @@ func set_overlap_navigation(multiple: bool, enabled: bool) -> void:
 	heading.position.x = 46 if multiple else 14
 	heading.size.x = 208 if multiple else 272
 	controls.rename.position.x = 254 if multiple else 286
-	name_entry.position.x = 38 if multiple else 6
-	name_entry.size.x = 216 if multiple else 280
+	name_entry.position.x = heading.position.x
+	name_entry.size.x = heading.size.x
 
 func cancel_edit() -> bool:
-	if not name_entry.visible: return false
-	name_entry.hide(); name_entry.release_focus(); return true
+	if not name_entry.editing: return false
+	name_entry.finish(); return true

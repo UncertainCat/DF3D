@@ -1,0 +1,307 @@
+{
+  "source": "DF53.16 protected native zone UI; shared storage capture harness -ZoneRename",
+  "run": "build/stockpile-storage-native-zone-rename-20261025-192837",
+  "scope": "Bedroom selected from existing source zone. Native inline editing, immediate writes, Enter, repeated quill, append/Backspace,20-byte cap, punctuation/high bytes and right-click closure. Explicitly reopen/reselect after right-click, enter another character and Escape: name persists, zone UI closes. Input is simulated native byte keys, not Windows clipboard/IME. All observations paused at frame0; original name restored, owned DF89116 closed unsaved, source manifest unchanged.",
+  "files_sha256": {
+    "result.json": "90f654001b35bc42ccc9816bb168610a12875b938a1db501a7273c5f61061000",
+    "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+    "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+    "rename-typed.png": "cda63559631176c30c009c27b308b4495a9a2b752c80631773692d081fbd000f",
+    "rename-length-limit.png": "6ac76f090ca0e8d24860fc1b752178c5e2edebf1eb921cd5da6be96e4c3d2ce1",
+    "rename-right-click.png": "7127e8d3a59ea09b84542c120cc92b4a0a204374470662179fd0a6379b800dcd",
+    "rename-before-escape.png": "ebdaa32daabca9fcdee1d5c367b8bde7142b90ba8e2b90e70c490ff0eb40438f",
+    "rename-escape.png": "7127e8d3a59ea09b84542c120cc92b4a0a204374470662179fd0a6379b800dcd"
+  },
+  "observations": [
+    {
+      "entering_name_rva": 25858864,
+      "name": "rename-native-layout",
+      "name_offset": 208,
+      "pile_pointer_rva": 25827368
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "",
+      "entering": false,
+      "frame": 0,
+      "name": "rename-state-before",
+      "name_bytes": [],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-opened",
+      "name_bytes": [],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "Aa1 B",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-typed",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "Aa1 B",
+      "entering": false,
+      "frame": 0,
+      "name": "rename-state-enter",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "Aa1 B",
+      "entering": false,
+      "frame": 0,
+      "name": "rename-state-after-enter-input",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "Aa1 B",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-reopened",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "Aa1 BX",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-append-existing",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66,
+        88
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "Aa1 B",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-backspace",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "Aa1 B",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-quill-again",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "Aa1 BY",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-after-quill-input",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66,
+        89
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "Aa1 BYaaaaaaaaaaaaaa",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-length-limit",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66,
+        89,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-cleared",
+      "name_bytes": [],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "!-._~\u00c7\u00e9\u00a0",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-punctuation-and-high-bytes",
+      "name_bytes": [
+        33,
+        45,
+        46,
+        95,
+        126,
+        128,
+        130,
+        255
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": -1,
+      "custom_name": "!-._~\u00c7\u00e9\u00a0",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-right-click",
+      "name_bytes": [
+        33,
+        45,
+        46,
+        95,
+        126,
+        128,
+        130,
+        255
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "!-._~\u00c7\u00e9\u00a0",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-reopened-after-right",
+      "name_bytes": [
+        33,
+        45,
+        46,
+        95,
+        126,
+        128,
+        130,
+        255
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 3,
+      "custom_name": "!-._~\u00c7\u00e9\u00a0E",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-before-escape",
+      "name_bytes": [
+        33,
+        45,
+        46,
+        95,
+        126,
+        128,
+        130,
+        255,
+        69
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": -1,
+      "custom_name": "!-._~\u00c7\u00e9\u00a0E",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-escape",
+      "name_bytes": [
+        33,
+        45,
+        46,
+        95,
+        126,
+        128,
+        130,
+        255,
+        69
+      ],
+      "paused": true
+    }
+  ],
+  "viewer_acceptance": {
+    "run": "build/areas-acceptance-20261025-193033",
+    "scope": "Actual main-scene quill, repeated-quill and keyboard input; immediate name readback,20-byte cap, append/Backspace/Enter, pending writes across Escape/right-click, palette reselection through staged Zones launcher, cleared default heading and removal.10 native observations. No full Zones completion or Windows text encoding claim. DF120968 closes unsaved; both save manifests match; known separate-thread notice only.",
+    "files_sha256": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "scene_zone_rename_inline.png": "fbef3f2910a85c5d036a778e1bfcdf576c9c83bd880894a457ebea156c42049e",
+      "scene_zone_rename_limit.png": "205cfcfacd3bb1850cb1b25e0b27cf0eb301c932545df0543de67ef4d5729414"
+    },
+    "offline_gate": "build/qa/zone-inline-rename-ready"
+  }
+}

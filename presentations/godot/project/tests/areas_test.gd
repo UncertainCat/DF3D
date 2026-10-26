@@ -338,7 +338,7 @@ func run():
 	c.new_area()
 	var bedroom: Dictionary = pile.duplicate(true)
 	bedroom.kind = 1; bedroom.zone_type = 2; bedroom.zone_label = "Bedroom"
-	bedroom.name = "Unnamed bedroom"; bedroom.active = true; bedroom.owner_allowed = true
+	bedroom.custom_name = ""; bedroom.name = "Unnamed bedroom"; bedroom.active = true; bedroom.owner_allowed = true
 	bedroom.width = 2; bedroom.height = 1; bedroom.extents = PackedByteArray([1,1]); bedroom.tile_count = 2
 	c.use_area(bedroom)
 	check(c.zone_menu.visible and c.zone_menu.selected_panel.visible, "existing bedroom retains native grid and shared panel")
@@ -349,9 +349,10 @@ func run():
 	w.state = {"world_epoch":42,"revision":8,"request_seq":w.seq,"status":2,"action":11,"areas":[bedroom]}
 	service.poll()
 	check(not c.selected.active, "suspend reply updates selected state")
-	c.zone_menu.controls.rename.pressed.emit(); c.zone_menu.name_entry.text = "Local draft"
+	c.zone_menu.controls.rename.pressed.emit()
 	c.handle_back()
-	check(not c.zone_menu.name_entry.visible and c.selected.name == "Unnamed bedroom", "zone rename Back discards local text")
+	check(not c.zone_menu.name_entry.visible and not c.panel.visible, "zone rename Back closes the native palette")
+	c.ui_host.activate(c); c.panel.show(); c.use_area(bedroom)
 	c.zone_menu.controls.repaint.pressed.emit()
 	check(c.mode == "paint" and c.zone_draft.id == 2 and c.paint_state.area.id == bedroom.id, "existing zone repaint retains observed type and identity")
 	c.handle_back()

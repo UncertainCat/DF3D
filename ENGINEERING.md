@@ -1,3 +1,41 @@
+## Native zone name entry
+
+Zone naming uses the same inline heading editor and service-owned pending-write
+sequence as Stockpiles. Native protected capture
+`build/stockpile-storage-native-zone-rename-20261025-192837` establishes immediate
+updates, append/Backspace, repeated quill clicks, Enter and the20-byte cap on an
+existing Bedroom. Right-click and, after explicit reopening, Escape close the zone UI without
+reverting its name.
+The typed and length-limit captures show the entry in the existing heading.
+Owned DF89116 closes unsaved, frame0 remains paused and the source manifest is
+unchanged. `fixtures/areas/native_zone_rename.json` retains native observations,
+exact input bytes, evidence hashes and coverage limits. The capture harness is
+`tools/smoke/stockpile_storage_native.ps1 -ZoneRename`; it shares protected capture
+infrastructure only, not runtime menu state.
+
+The staged128-character LineEdit and Enter-only write path are removed. Name
+requests retain the selected area kind, stable ID and confirmed revision.
+Explicit later text coalesces behind pending writes; closing preserves already
+requested edits. Rejection, unknown outcome, disconnect and epoch replacement
+stop the sequence without replay. Switching selection detaches the old editor
+so its late reply cannot replace the new selection. Native viewscreen input
+scratch remains prohibited as a runtime dependency.
+
+`build/qa/zone-inline-rename-ready` passes root CTest19/19, area/menu controllers,
+Stockpile storage and rename checks. The rename cases run for both area kinds,
+including coalescing, close-before-reply, rejection, unknown/late results and
+session invalidation. This is a focused improvement; Zones remains staged and
+the broader native semantics, assignments and full workflow audit are ongoing.
+
+Protected `build/areas-acceptance-20261025-193033` passes10 native observations
+through the actual main scene: quill/repeated-quill input, immediate name readback,20-byte cap,
+append/Backspace/Enter, pending edits across Escape/right-click, reopening,
+restored default heading and removal. Inline and limit captures were inspected.
+Owned DF120968 closes unsaved and both save manifests match. Only the known
+Godot separate-thread notice remains. Use `areas_acceptance.ps1 -ControllerScene
+-ZoneRenameOnly -SaveId <new-df3d-areas-name>` for this focused lane. It does not
+promote Zones or establish Windows clipboard/IME behavior.
+
 ## Stockpile acceptance
 
 Stockpiles is available from the normal fortress HUD. Its public launcher is

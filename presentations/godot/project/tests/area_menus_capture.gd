@@ -693,6 +693,30 @@ func run() -> void:
 		text_crop.save_png(directory.path_join("animal-"+str(sample.picker)+"-"+str(sample.id)+".png"))
 		if text_hash.finish().hex_encode() != str(sample.glyph_rgb_sha256):
 			push_error("Native animal text pixels differ: "+str(sample.picker)+"/"+str(sample.id)); quit(1); return
+	var animal_navigation: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_navigation
+	animal_state.rows = []
+	for index in 2:
+		var sample: Dictionary = animal_text.samples[index]
+		animal_state.rows.append({"id":int(sample.id),"entity":1,"animal_display":sample.display,"assigned":false})
+	animal_state.receipt += 1; animal_state.changed.emit()
+	for sample in animal_navigation.row_samples:
+		if int(sample.selected) == 1:
+			var key := InputEventKey.new(); key.pressed=true; key.keycode=KEY_DOWN
+			if not animal_view.feed_owner_key(key) or animal_view.owner_selected != 1:
+				push_error("Animal down navigation failed"); quit(1); return
+		await process_frame; await RenderingServer.frame_post_draw
+		var selection_image := root.get_texture().get_image(); selection_image.convert(Image.FORMAT_RGB8)
+		for index in 2:
+			var crop := selection_image.get_region(Rect2i(Vector2i(animal_view.choices[index].global_position)+Vector2i(40,0),Vector2i(216,36)))
+			crop.save_png(directory.path_join(str(sample.name)+"-row-"+str(index)+".png"))
+			var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(crop.get_data())
+			if digest.finish().hex_encode() != str(sample.row_rgb_sha256[index]):
+				push_error("Animal selection row pixels differ: "+str(sample.name)+"/"+str(index)); quit(1); return
+	for keycode in [KEY_PAGEUP,KEY_PAGEDOWN,KEY_UP]:
+		var key := InputEventKey.new(); key.pressed=true; key.keycode=keycode
+		animal_view.feed_owner_key(key)
+		if animal_view.owner_selected != (1 if keycode==KEY_PAGEDOWN else 0):
+			push_error("Animal navigation clamp differs"); quit(1); return
 	animal_view.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

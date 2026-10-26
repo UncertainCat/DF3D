@@ -99,7 +99,7 @@ func bind_owner_help(control: Control, recenter: bool) -> void:
 	control.tree_exiting.connect(func():native_help.leave(owner))
 
 func row_style(selected: bool = false) -> StyleBoxTexture:
-	var style := art.make_style("BUTTON_RECTANGLE_SELECTED" if selected else ("BUTTON_RECTANGLE" if state.kind == 1 else "BUTTON_RECTANGLE_DARK"),8)
+	var style := art.make_style("BUTTON_RECTANGLE_SELECTED" if selected else ("BUTTON_RECTANGLE" if state.kind in [1,2] else "BUTTON_RECTANGLE_DARK"),8)
 	style.set_texture_margin(SIDE_TOP,12); style.set_texture_margin(SIDE_BOTTOM,12)
 	style.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE
 	for side in [SIDE_TOP,SIDE_BOTTOM]: style.set_content_margin(side,0)
@@ -229,6 +229,8 @@ func refresh() -> void:
 			style_row(choices[index],selected)
 			var frame_style: StyleBoxTexture = owner_frames[index].get_theme_stylebox("panel")
 			frame_style.texture = picture.texture(selected)
+	if state.kind == 2:
+		for index in choices.size(): style_row(choices[index],index == owner_selected)
 	for button in choices: button.disabled = state.busy()
 	for button in squad_buttons: button.disabled = state.busy() or bool(button.get_meta("unknown",false))
 	for button in focus_buttons:
@@ -260,7 +262,27 @@ func owner_pointer(event: InputEvent) -> void:
 		if header.visible and header.get_global_rect().has_point(event.position): return
 	owner_search.release_focus()
 
+func feed_animal_key(event: InputEvent) -> bool:
+	if not is_visible_in_tree() or state.kind != 2 or not event is InputEventKey or not event.pressed or search.has_focus(): return false
+	if event.alt_pressed or event.ctrl_pressed or event.meta_pressed or event.shift_pressed: return false
+	var delta := 0
+	match event.keycode:
+		KEY_UP,KEY_8,KEY_KP_8: delta = -1
+		KEY_DOWN,KEY_2,KEY_KP_2: delta = 1
+		KEY_PAGEUP,KEY_9,KEY_KP_9: delta = -16
+		KEY_PAGEDOWN,KEY_3,KEY_KP_3: delta = 16
+	if delta == 0: return false
+	if state.busy() or choices.is_empty(): return true
+	owner_selected = clampi(owner_selected+delta,0,choices.size()-1)
+	refresh()
+	var first := scroll.scroll_vertical/36
+	if owner_selected < first: first = owner_selected
+	elif owner_selected >= first+16: first = owner_selected-15
+	scroll.scroll_vertical = first*36
+	return true
+
 func feed_owner_key(event: InputEvent) -> bool:
+	if state.kind == 2: return feed_animal_key(event)
 	if not is_visible_in_tree() or state.kind != 1 or not event is InputEventKey or not event.pressed: return false
 	if event.keycode == KEY_F and event.ctrl_pressed and not (event.alt_pressed or event.meta_pressed or event.shift_pressed):
 		if owner_search.editable and not event.echo: owner_search.grab_focus()

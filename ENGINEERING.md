@@ -1,3 +1,27 @@
+## Animal row selection and background
+
+Native Pen/Pond selectors start at cursor0. STANDARDSCROLL up/down moves one
+row and page up/down moves16, clamped to the candidate list. Hovering row text,
+portrait or checkbox does not move that cursor. The viewer now keeps this local
+selection, routes its standard navigation keys through the existing controller
+entry point, and uses the native selected rectangle for the selected row.
+Unselected animal rows use BUTTON_RECTANGLE; the previous DARK variant was too
+dim. Selection remains separate from the assignment checkbox.
+
+Protected build/stockpile-storage-native-zone-animals-20261026-104756 passes
+with DF99064 and unchanged source after unsaved exit. It verifies both selectors'
+navigation and hover cursor retention and captures their row artwork. Core19/19
+and candidate state pass in build/qa/animal-selection. GPU
+build/qa/animal-selection-art passes with the three known engine signatures.
+Four216x36 strips (first two rows, before/after Down) match every native RGB
+pixel, including text, background and selected borders; these were inspected.
+The first render run exposed the DARK-vs-normal texture mismatch, now fixed.
+
+This verifies the unobstructed text/background strips and basic navigation.
+Portrait frames, cage icons/overlap, keyboard activation, textbox focus behavior,
+long-list scrolling and complete lifecycle remain unfinished. No bridge or wire
+changes; installed plugin remains6fdca0ec1f559c24d26f763525996473ceef496c5ff1e2fc465c241d66ec4a95.
+
 ## Animal display transport
 
 AreaCandidateRow appends optional animal_display (AreaAnimalDisplay), carrying

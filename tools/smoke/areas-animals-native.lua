@@ -67,8 +67,8 @@ local function callbacks(value,stride)
  local result={};for at=first,last-1,stride do result[#result+1]=callback_at(at)end
  return result
 end
-local function capture(label)
- g.mouse_x=0;g.mouse_y=0
+local function capture(label,keep_mouse)
+ if not keep_mouse then g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0 end
  for i=1,3 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
  local rows={};local list=walk(main.unit_selector,rows,0,true)
  local record={name=label,zone=ui.cur_bld and ui.cur_bld.id or -1,widgets=rows,callbacks={},entries={},assigned={}}
@@ -79,6 +79,12 @@ local function capture(label)
   local _,address=df.sizeof(list.is_selected);record.callbacks.is_selected=callback_at(address)
   for _,entry in ipairs(list.entry_list)do record.entries[#record.entries+1]={kind=entry.t,id=entry.t==0 and entry.u and entry.u.id or entry.t==1 and entry.i and entry.i.id or -1}end
   record.cursor=list.cursor_idx;record.query=list.filter_str
+  record.hover=main.current_hover;record.hover_enabled=main.hover_instructions_on
+  record.help_cells={}
+  if keep_mouse then for y=0,17 do for x=g.dimx-24,g.dimx-1 do
+   local tile=dfhack.screen.readTile(x,y)
+   if tile.ch>=33 and tile.ch<=255 then record.help_cells[#record.help_cells+1]={x=x,y=y,ch=tile.ch,fg=tile.fg,bg=tile.bg,bold=tile.bold}end
+  end end end
   local _,cache_address=df.sizeof(list.job_sort_str)
   record.job_search_cache_count=df.reinterpret_cast('uint64_t',cache_address+16).value
   assert(record.job_search_cache_count==0,'animal picker unexpectedly populated secondary job search text')
@@ -240,6 +246,28 @@ local function controls(prefix,searches)
  end
  reopen()
 end
+local function navigation(prefix,opened)
+ assert(opened.cursor==0,'animal picker did not initially select first row')
+ local last=#opened.displayed-1
+ for _,probe in ipairs{{'down','STANDARDSCROLL_DOWN',math.min(1,last)},
+  {'up','STANDARDSCROLL_UP',0},{'pagedown','STANDARDSCROLL_PAGEDOWN',math.min(16,last)},
+  {'pageup','STANDARDSCROLL_PAGEUP',0}}do
+  gui.simulateInput(view,probe[2]);view:render(dfhack.getTickCount())
+  local observed=capture(prefix..'-navigation-'..probe[1])
+  assert(observed.cursor==probe[3],'animal navigation differs: '..probe[1]..'/'..observed.cursor)
+ end
+ for _,probe in ipairs{{'row-third',500,172},{'portrait-third',394,172},{'checkbox-third',672,172},{'header',464,70}}do
+  local until_tick=dfhack.getTickCount()+900
+  repeat
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3];g.mouse_x=probe[2]//8;g.mouse_y=(probe[3]-4)//12
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+  until dfhack.getTickCount()>=until_tick
+  local observed=capture(prefix..'-hover-'..probe[1],true)
+  assert(observed.cursor==0,'animal hover changed keyboard selection: '..probe[1])
+ end
+ capture(prefix..'-navigation-restored')
+end
 -- Paused disposable-clone fixture: a second critter with the same description
 -- exercises equal text keys and native item Category address ordering.
 do
@@ -314,6 +342,7 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
  local zone=ui.cur_bld
  pixel(304,114);capture(probe[1]..'-zone')
  pixel(336,154);local opened=capture(probe[1]..'-picker')
+ if probe[1]=='Pen' or probe[1]=='Pond' then navigation(probe[1],opened) end
  if probe[1]=='Pond' then controls('Pond');opened=capture('Pond-controls-reset-picker') end
  if kind=='Pen' then
   pen_zone=zone.id

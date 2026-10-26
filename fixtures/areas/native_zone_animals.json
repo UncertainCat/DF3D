@@ -9592,5 +9592,139 @@
       }
     ],
     "comparison": "Exact foreground glyph raster in first25 columns (200px). Native cage artwork can overlap columns26-27; full text bytes are covered by live reader assertions. Backgrounds, borders, cage artwork and overlaps remain separate unfinished work."
+  },
+  "animal_navigation": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-104756",
+    "owned_df_pid": 99064,
+    "source_unchanged": true,
+    "records": [
+      {
+        "name": "Pen-navigation-down",
+        "cursor": 1,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pen-navigation-up",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pen-navigation-pagedown",
+        "cursor": 15,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pen-navigation-pageup",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pen-hover-row-third",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pen-hover-portrait-third",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pen-hover-checkbox-third",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pen-hover-header",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pen-navigation-restored",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pond-navigation-down",
+        "cursor": 1,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pond-navigation-up",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pond-navigation-pagedown",
+        "cursor": 7,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pond-navigation-pageup",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pond-hover-row-third",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pond-hover-portrait-third",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pond-hover-checkbox-third",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pond-hover-header",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      },
+      {
+        "name": "Pond-navigation-restored",
+        "cursor": 0,
+        "hover": -1,
+        "hover_enabled": false
+      }
+    ],
+    "row_samples": [
+      {
+        "name": "Pen-navigation-restored",
+        "selected": 0,
+        "row_rgb_sha256": [
+          "25bc24837dcf1cea05d47749b075535834647e507629c1ab2415b6f78b78c36c",
+          "f23185d90b4924ee54f33c7bd079447dc151093c59919d1b80dad2efa3016f84"
+        ]
+      },
+      {
+        "name": "Pen-navigation-down",
+        "selected": 1,
+        "row_rgb_sha256": [
+          "106d3459e6ad1333372b22eed6e3006b257148b6647a602ccd46c7dd27fc220f",
+          "049be67ca8b1412d718a4b74a66554f6a1ee2feeff9e08f1c2693e4c3143e5b2"
+        ]
+      }
+    ],
+    "coverage": "Standard navigation and hover retention; keyboard activation, scrolling, portrait/cage artwork and full panel remain unfinished."
   }
 }

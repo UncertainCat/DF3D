@@ -13,6 +13,10 @@ std::optional<std::string> nativeZoneName(const df::building_civzonest& zone);
 bool nativeZoneDefaultsReady();
 bool nativeZoneDefaults(df::building_civzonest& zone);
 bool nativeZoneOwnerReady();
+// Independent native picker predicate with owned context/entry storage.
+// Native may refresh semantic historical-figure/position lookup indices.
+bool nativeZoneOwnerCandidatesReady();
+std::optional<bool> nativeZoneOwnerEligible(df::building_civzonest& zone,df::unit& candidate);
 // Native may allocate and transfer ownership from another tomb. Callers mark
 // the outcome unknown before entry; no automatic rollback or retry is valid.
 bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner);

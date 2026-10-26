@@ -50,6 +50,31 @@ Candidate eligibility/order and full assignment UI acceptance remain required,
 including native deceased/non-citizen Tomb choices and existing-room grouping.
 Zones/Locations remains staged; this verifies the mutation route only.
 
+
+The independent owner-candidate predicate0x3a6610 is exposed through
+`df3d zone-owner-candidates-read <zone id>` for protected comparison. Its owned
+context contains only zone type, spouse-sharing flag and semantic unit/zone
+pointers. Audited dependencies read game mode, economy activation, civilization,
+group, unit traits and historical entity positions. Native may refresh semantic
+historical-figure/position lookup indices; no menu or search scratch is borrowed.
+
+Protected native `build/stockpile-storage-native-zone-owner-20261025-232238`
+compares exact eligible sets against actual native name-widget rows. Tomb has
+172 candidates, then171 with an owner; Bedroom has141, then139 with owner and
+spouse excluded. Temporarily activating the economy gives18 matching Bedroom
+candidates. The economy flag and spouse fixture are restored. Every query
+preserves the main-interface bytes; the initial Tomb query additionally preserves
+all55,584 map search arrays. Owned DF120344 closes unsaved with the source
+manifest unchanged. The economy picker capture was inspected. Native filtered
+query rows and full row order are recorded but query/order parity is not claimed.
+
+The raw native entry_list contains339 unfiltered source units, so it cannot
+establish candidate parity. The oracle traverses active name widgets, including
+rows outside the viewport; presentation visibility alone clips to16 rows.
+This native widget observation is test-only. Product lists still use the old
+filter until their native predicate/grouping/order integration is complete.
+MSVC and `build/qa/zone-owner-candidate-predicate` core19/19 plus adapter pass.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

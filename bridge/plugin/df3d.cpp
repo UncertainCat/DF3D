@@ -13,6 +13,8 @@
 #include "bed_appearance_native.h"
 #include "contact_capture.h"
 #include "room_discovery_native.h"
+#include "zone_native.h"
+#include "df/building_civzonest.h"
 #include "room_mutation_native.h"
 #include "paint_water_native.h"
 #include "location_catalog_native.h"
@@ -1983,6 +1985,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         out.print("{{\"water\":{},\"fishing\":{}}}\n",int(result.water),int(result.fishing));
         return CR_OK;
       }
+      if(parameters[0]=="zone-owner-candidates-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* zone=virtual_cast<df::building_civzonest>(df::building::find(id));
+        if(!zone || !df::global::world || !df3d_area::nativeZoneOwnerCandidatesReady())return CR_FAILURE;
+        std::vector<int32_t> ids;
+        for(auto* unit:df::global::world->units.all) {
+          if(!unit)continue;
+          auto eligible=df3d_area::nativeZoneOwnerEligible(*zone,*unit);
+          if(!eligible)return CR_FAILURE;
+          if(*eligible)ids.push_back(unit->id);
+        }
+        out.print("[ ");
+        for(size_t i=0;i<ids.size();++i)out.print("{}{}",i?",":"",ids[i]);
+        out.print(" ]\n");return CR_OK;
+      }
       if (parameters[0] == "room-read") {
         if(parameters.size()!=4)return CR_WRONG_USAGE;
         int32_t xyz[3]{};
@@ -2238,6 +2258,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d track-material-order-read <sx> <sy> <sz> <tx> <ty> <tz> <tile-limit> (read-only)\n"
         "df3d track-material-candidates-read <sx> <sy> <sz> <tx> <ty> <tz> <candidate-limit> (read-only)\n"
         "df3d room-read <x> <y> <z>\n"
+        "df3d zone-owner-candidates-read <zone id>\n"
         "    Read-only diagnostic: semantic room observation and traversal mask as JSON.\n"
           "df3d room-seed <building id>\n"
           "    Read-only diagnostic: furniture identity and native room-use relations as JSON.\n"

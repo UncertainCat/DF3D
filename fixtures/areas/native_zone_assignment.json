@@ -93,7 +93,77 @@
       "rva": "0x3a6610",
       "size": "0x162",
       "fnv1a64": "41362e655e075244",
-      "role": "reference only; candidate transitive audit pending"
+      "role": "semantic candidate predicate verified with owned context"
+    },
+    {
+      "name": "economy_bedroom_qualification",
+      "rva": "0x136e800",
+      "size": "0x6e",
+      "fnv1a64": "3faa0b26247825f2",
+      "role": "semantic predicate dependency"
+    },
+    {
+      "name": "fortress_membership",
+      "rva": "0x138ed20",
+      "size": "0xff",
+      "fnv1a64": "430951f9f3e403c2",
+      "role": "semantic predicate dependency"
+    },
+    {
+      "name": "position_privilege",
+      "rva": "0x134bcd0",
+      "size": "0x16b",
+      "fnv1a64": "9c0b7a9a63908761",
+      "role": "semantic predicate dependency"
+    },
+    {
+      "name": "historical_figure_lookup",
+      "rva": "0xb530b0",
+      "size": "0xac",
+      "fnv1a64": "7c6f66602bdab157",
+      "role": "semantic predicate dependency"
+    },
+    {
+      "name": "entity_lookup",
+      "rva": "0xba0a0",
+      "size": "0xa8",
+      "fnv1a64": "cf6b2a7b534d3331",
+      "role": "semantic predicate dependency"
+    },
+    {
+      "name": "assignment_lookup",
+      "rva": "0xb9dc0",
+      "size": "0xa7",
+      "fnv1a64": "4d8961b901732215",
+      "role": "semantic predicate dependency"
+    },
+    {
+      "name": "position_lookup",
+      "rva": "0xbbe40",
+      "size": "0xad",
+      "fnv1a64": "062a266340f9bf38",
+      "role": "semantic predicate dependency"
+    },
+    {
+      "name": "position_link_type",
+      "rva": "0x671f0",
+      "size": "0x6",
+      "fnv1a64": "8a7e08d8a2d0223a",
+      "role": "semantic predicate dependency"
+    },
+    {
+      "name": "position_link_assignment",
+      "rva": "0x72930",
+      "size": "0x4",
+      "fnv1a64": "1d394ef6ff61ced8",
+      "role": "semantic predicate dependency"
+    },
+    {
+      "name": "existing_room_partition",
+      "rva": "0x3d0440",
+      "size": "0x55",
+      "fnv1a64": "86ff43fac058fd1b",
+      "role": "reference only; grouping integration pending"
     }
   ],
   "signature": "void(building_civzonest*, unit*); null unit clears ownership",
@@ -302,5 +372,95 @@
     "creation": "Unspecified/empty owner preserves native defaults; explicit owner assignment occurs after publication. Failure never removes the created zone to roll back possible prior-tomb transfer.",
     "notification": "Owner-only edits omit reconstructed membership notification. Explicit active updates retain existing notification pending their separate audit.",
     "unknown_outcome": "Marked before native entry. No automatic replay or rollback."
+  },
+  "candidate_predicate": {
+    "status": "native predicate verified through diagnostic; product list integration and ordering pending",
+    "entry": "0x3a6610",
+    "inputs": "Owned 24-byte context: type, spouse-sharing flag, current owner pointer, zone pointer; owned 16-byte unit/non-item entry. No native widget or picker object is supplied.",
+    "globals": [
+      "gamemode at0x189c298",
+      "plotinfo.economy_active at0x23912dc (offset0xac)",
+      "plotinfo.civ_id at0x2393670 (offset0x2440)",
+      "plotinfo.group_id at0x2393678 (offset0x2448)",
+      "semantic historical figures and entities"
+    ],
+    "native_cache_effects": [
+      "unit historical-figure lookup index via0xb530b0",
+      "entity position assignment lookup index via0xbbe40"
+    ],
+    "evidence": "build/stockpile-storage-native-zone-owner-20261025-232238",
+    "owned_df_pid": 120344,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "bridge_sha256": "33f46be953b8952602502732663ee0bd9e5e539fce9b6f9cdc613c28bc166770",
+    "result_sha256": "67333ce76c4f5cfa92de61dcd59bf6b817acebb2c98b19d0b425256c5f4403e4",
+    "comparisons": [
+      {
+        "name": "tomb-picker-candidates",
+        "query": "",
+        "native_count": 172,
+        "eligible_count": 172,
+        "unchanged_guards": 55585,
+        "set_comparison": true
+      },
+      {
+        "name": "tomb-picker-assigned-candidates",
+        "query": "",
+        "native_count": 171,
+        "eligible_count": 171,
+        "unchanged_guards": 1,
+        "set_comparison": true
+      },
+      {
+        "name": "tomb-picker-bottom-candidates",
+        "query": "",
+        "native_count": 171,
+        "eligible_count": 171,
+        "unchanged_guards": 1,
+        "set_comparison": true
+      },
+      {
+        "name": "tomb-transfer-candidate-candidates",
+        "query": "mayor",
+        "native_count": 1,
+        "eligible_count": 171,
+        "unchanged_guards": 1,
+        "set_comparison": false
+      },
+      {
+        "name": "bedroom-picker-candidates",
+        "query": "",
+        "native_count": 141,
+        "eligible_count": 141,
+        "unchanged_guards": 1,
+        "set_comparison": true
+      },
+      {
+        "name": "bedroom-candidate-candidates",
+        "query": "king",
+        "native_count": 1,
+        "eligible_count": 141,
+        "unchanged_guards": 1,
+        "set_comparison": false
+      },
+      {
+        "name": "bedroom-picker-assigned-candidates",
+        "query": "",
+        "native_count": 139,
+        "eligible_count": 139,
+        "unchanged_guards": 1,
+        "set_comparison": true
+      },
+      {
+        "name": "bedroom-economy-picker-candidates",
+        "query": "",
+        "native_count": 18,
+        "eligible_count": 18,
+        "unchanged_guards": 1,
+        "set_comparison": true
+      }
+    ],
+    "oracle": "Actual native widget_unit_name rows, including active rows outside the scroll viewport. Raw entry_list is an unfiltered 339-unit source and is not a parity oracle. Widget traversal exists only in the protected native capture script.",
+    "scope": "Unqueried Tomb/Bedroom sets, owner/spouse exclusions and economy-active Bedroom branch. Query captures retain native filtered rows but do not claim query parity. Exact native row order is recorded for future integration; diagnostic returns source order."
   }
 }

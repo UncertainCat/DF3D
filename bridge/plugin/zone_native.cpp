@@ -108,6 +108,40 @@ bool nativeZoneOwnerReady() {
     }(base);
     return compatible;
 }
+bool nativeZoneOwnerCandidatesReady() {
+    static_assert(offsetof(df::plotinfost,economy_active)==0xac);
+    static_assert(offsetof(df::plotinfost,civ_id)==0x2440);
+    static_assert(offsetof(df::plotinfost,group_id)==0x2448);
+    if(!nativeZoneOwnerReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=[](const uint8_t* base) {
+        return hash(base+0x3a6610,0x162)==0x41362e655e075244ULL &&
+            hash(base+0x136e800,0x6e)==0x3faa0b26247825f2ULL &&
+            hash(base+0x138ed20,0xff)==0x430951f9f3e403c2ULL &&
+            hash(base+0x134bcd0,0x16b)==0x9c0b7a9a63908761ULL &&
+            hash(base+0xb530b0,0xac)==0x7c6f66602bdab157ULL &&
+            hash(base+0xba0a0,0xa8)==0xcf6b2a7b534d3331ULL &&
+            hash(base+0xb9dc0,0xa7)==0x4d8961b901732215ULL &&
+            hash(base+0xbbe40,0xad)==0x062a266340f9bf38ULL &&
+            hash(base+0x671f0,0x6)==0x8a7e08d8a2d0223aULL &&
+            hash(base+0x72930,0x4)==0x1d394ef6ff61ced8ULL;
+    }(base);
+    return compatible;
+}
+std::optional<bool> nativeZoneOwnerEligible(df::building_civzonest& zone,df::unit& candidate) {
+    if(!df::global::world || !df::global::plotinfo || !nativeZoneOwnerCandidatesReady())return std::nullopt;
+    struct Context {int32_t type;bool spouseShared;uint8_t padding[3];df::unit* owner;df::building_civzonest* zone;};
+    struct Entry {df::unit* unit;uint8_t isItem;uint8_t padding[7];};
+    static_assert(sizeof(Context)==24 && offsetof(Context,owner)==8 && offsetof(Context,zone)==16);
+    static_assert(sizeof(Entry)==16 && offsetof(Entry,isItem)==8);
+    Context context{int32_t(zone.type),zone.canUseSpouseRoom(),{},df::unit::find(zone.assigned_unit_id),&zone};
+    Entry entry{&candidate,0,{}};
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Exclude=bool (*)(const Context*,const Entry*);
+    // Global reads are game mode, economy activation, civilization/group IDs
+    // and semantic history/entity records. No widget/menu/search state is used.
+    return !reinterpret_cast<Exclude>(const_cast<uint8_t*>(base+0x3a6610))(&context,&entry);
+}
 bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner) {
     if(!df::global::world || !nativeZoneOwnerReady() || !zone.canBeRoomSubset())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

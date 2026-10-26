@@ -6,7 +6,7 @@ func _initialize() -> void: call_deferred("run")
 func run() -> void:
 	var state := preload("res://scripts/area_candidates_state.gd").new()
 	var sent: Array = []; state.request_ready.connect(func(request): sent.append(request))
-	var area := {"id":82,"kind":1,"revision":9007199254740993,"owner_allowed":true,"owner_id":17}
+	var area := {"id":82,"kind":1,"revision":9007199254740993,"owner_allowed":true,"owner_id":17,"zone_type":92}
 	state.open(area)
 	check(sent[-1] == {"action":14,"operation":14,"id":82,"kind":1,"candidate_kind":1,"query":"","sort":2,"sort_descending":false,"cursor":0},"owner selector uses enriched native candidate request")
 	state.accept({"build_phase":1,"build_done":1,"build_total":20},sent[-1])
@@ -32,6 +32,12 @@ func run() -> void:
 	state.open(area); state.accept({"list_revision":1,"candidates":[],"next_cursor":0},sent[-1])
 	state.assign_owner(-1)
 	check(sent[-1].owner_id == -1,"remove assignment is available even with empty candidate results")
+	for type_id in [80,92,93,97]:
+		var room: Dictionary = area.duplicate(true); room.zone_type = type_id; room.owner_id = -1
+		state.open(room); state.accept({"list_revision":1,"candidates":[]},sent[-1])
+		count = sent.size(); state.assign_owner(-1)
+		check((sent.size() == count+1) == (type_id != 97),"native room contexts permit empty clear, Tomb has no clear action")
+		if type_id != 97: check(sent[-1].owner_id == -1 and state.mutating,"empty clear still awaits native receipt")
 	state.open(area); state.accept({"build_phase":1,"build_total":20},sent[-1])
 	state.order(1); state.poll(0)
 	check(sent[-1].sort == 1 and not sent[-1].sort_descending,"sort supersedes waiting builder without polling obsolete order")

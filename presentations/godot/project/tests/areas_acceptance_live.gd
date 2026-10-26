@@ -467,9 +467,9 @@ func zone_owner_effects() -> void:
 			var candidate_ids: Array=[]
 			for candidate in candidates.candidates:candidate_ids.append(int(candidate.id))
 			await native("zone_owner_candidates",{"id":id,"ids":candidate_ids,"query":query})
-	# Native reference: assign, replace, transfer to second tomb, clear bedroom.
+	# Native reference: assign, replace, transfer, clear bedroom, clear empty bedroom.
 	for sample in [[ids[0],int(owners.owner_a),3,1,0],[ids[0],int(owners.owner_b),3,0,1],
-		[ids[1],int(owners.owner_b),3,0,1],[ids[2],-1,-1,0,0]]:
+		[ids[1],int(owners.owner_b),3,0,1],[ids[2],-1,-1,0,0],[ids[2],-1,-1,0,0]]:
 		var current:=await inspect(int(sample[0]),1)
 		if stopped:return
 		await request({"action":11,"kind":1,"id":int(sample[0]),"owner_id":int(sample[1]),"expected_revision":current.revision})

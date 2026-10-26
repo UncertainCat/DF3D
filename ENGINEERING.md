@@ -172,6 +172,28 @@ The adapter also verifies original query casing is echoed. This establishes
 matching, not complete textbox input: native byte-length limits, non-ASCII
 input, focus/clear/escape/cursor behavior and full rendered rows remain pending.
 
+Owner clear controls follow native context dispatch0x3a7c70: Bedroom, Office
+and Dining Hall show Remove assignment; Tomb has no such row. An already
+unassigned room still accepts clear. The viewer sends the semantic request,
+blocks duplicate input and waits for success before closing the picker.
+
+Protected native `build/stockpile-storage-native-zone-owner-20261026-001942`
+confirms empty Bedroom clear leaves owner-1 and closes the selector (flags7 to6).
+The closed-picker capture was inspected. DF128004 closes unsaved with its source
+preserved. The existing assignment oracle still passes. The control mapping and
+prior Tomb/Bedroom evidence are retained in `native_zone_assignment.json`.
+
+`build/qa/owner-clear-controls` passes root19/19 and candidate-state checks.
+Its viewport capture tests eight assigned/unassigned room contexts, repeated
+pointer clicks, exact requested owner, pending visibility and successful closure.
+Tomb starts with a candidate rather than a clear row; its rendered capture was
+inspected. GPU status is passed_with_known_issues for the three documented Godot
+notices. Synthetic rows do not establish text/color/portrait parity.
+Protected semantic `build/areas-acceptance-20261026-002218` passes201 observations,
+including repeated Bedroom clear and unchanged owner/spouse membership. DF128900
+closes unsaved and both save manifests match. Row presentation, textbox input,
+creation-time owner validation and full lifecycle coverage remain unfinished.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

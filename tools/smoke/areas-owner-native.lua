@@ -245,6 +245,12 @@ local ok,why=pcall(function()
  assert(bedroom.assigned_unit_id==-1,'native bedroom clear failed')
  assert(count_owned(first_unit,bedroom.id)==0 and count_owned(spouse,bedroom.id)==0,'native spouse clear failed')
  snapshot('bedroom-cleared');capture('bedroom-cleared')
+ pixel(336,154)
+ local before_clear=df.global.game.main_interface.unit_selector.flag.whole
+ pixel(520,106)
+ records[#records+1]={name='bedroom-clear-empty',before_flags=before_clear,after_flags=df.global.game.main_interface.unit_selector.flag.whole,owner=bedroom.assigned_unit_id}
+ assert(bedroom.assigned_unit_id==-1,'empty clear assigned an owner')
+ capture('bedroom-clear-empty')
  df.global.plotinfo.economy_active=true
  pixel(336,154);capture('bedroom-economy-picker')
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())

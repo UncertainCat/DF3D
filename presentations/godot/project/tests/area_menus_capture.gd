@@ -124,13 +124,13 @@ func run() -> void:
 	controller.zone_types = []
 	for definition in controller.menu_data.zones:
 		var row: Dictionary = definition.duplicate(true)
-		row.id = controller.zone_types.size()
+		row.id = {"MeetingHall":87,"Bedroom":92,"DiningHall":80,"Pen":88,"Pond":86,"WaterSource":82,"Dungeon":96,"FishingArea":85,"SandCollection":84,"Office":93,"Dormitory":81,"Barracks":95,"ArcheryRange":94,"Dump":83,"AnimalTraining":90,"PlantGathering":91,"Tomb":97,"ClayCollection":89}[str(row.name)]
 		controller.zone_types.append(row)
 	controller.new_area(); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if root.get_texture().get_image().save_png(directory.path_join("controller_zone_menu.png")) != OK: quit(1); return
 	var bedroom: Dictionary = retained_area.duplicate(true)
-	bedroom.kind = 1; bedroom.zone_type = 1; bedroom.zone_label = "Bedroom"
+	bedroom.kind = 1; bedroom.zone_type = 92; bedroom.zone_label = "Bedroom"
 	bedroom.name = "Unnamed bedroom"; bedroom.owner_allowed = true
 	controller.use_area(bedroom); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
@@ -178,6 +178,40 @@ func run() -> void:
 			if not owner_header_pixels(header_reference,"stress"): quit(1); return
 			if root.get_texture().get_image().save_png(directory.path_join("controller_zone_owner_stress.png")) != OK: quit(1); return
 	controller.handle_back()
+	# Native clear availability and receipt lifecycle through viewport clicks.
+	for type_name in ["Bedroom","DiningHall","Office","Tomb"]:
+		for owner in [-1,17]:
+			var room: Dictionary = bedroom.duplicate(true)
+			for definition in controller.zone_types:
+				if definition.name == type_name:
+					room.zone_type = definition.id; room.zone_label = definition.label
+			room.owner_id = owner
+			controller.use_area(room); controller._process(0)
+			controller.zone_menu.controls.owner.pressed.emit(); service.poll()
+			world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":14,"status":2,
+				"area":{"list_revision":95,"build_phase":3,"candidates":header_rows}}
+			service.poll(); controller._process(0)
+			await process_frame; await RenderingServer.frame_post_draw
+			var clear_expected: bool = type_name != "Tomb"
+			if controller.candidates_view.remove.visible != clear_expected or (clear_expected and controller.candidates_view.remove.disabled):
+				push_error("Native owner clear availability differs: "+type_name); quit(1); return
+			if type_name == "Tomb" and owner == -1:
+				if root.get_texture().get_image().save_png(directory.path_join("controller_zone_tomb_owner.png")) != OK: quit(1); return
+			var button: Button = controller.candidates_view.remove if clear_expected else controller.candidates_view.choices[0]
+			var point: Vector2 = button.get_global_rect().get_center()
+			var before: int = world.calls.size()
+			for repeat_click in 2:
+				var event := InputEventMouseButton.new(); event.position=point; event.global_position=point
+				event.button_index=MOUSE_BUTTON_LEFT; event.pressed=true; root.push_input(event,true)
+				event.pressed=false; root.push_input(event,true); service.poll()
+			var target: int = -1 if clear_expected else int(header_rows[0].id)
+			if world.calls.size() != before+1 or int(world.calls[-1].get("owner_id",-2)) != target or controller.stockpile_page != "owner":
+				push_error("Owner pointer action duplicated, wrong, or closed before native receipt"); quit(1); return
+			room.owner_id = target
+			world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":11,"status":2,"areas":[room]}
+			service.poll(); controller._process(0)
+			if controller.stockpile_page != "types" or controller.candidates_view.visible:
+				push_error("Owner picker did not close after successful native receipt"); quit(1); return
 	# Capture each observed zone type, including panels with no extra controls.
 	for definition in controller.zone_types:
 		var type_name: String = definition.name
@@ -189,7 +223,7 @@ func run() -> void:
 		controller.use_area(typed); controller._process(0)
 		await process_frame; await RenderingServer.frame_post_draw
 		if root.get_texture().get_image().save_png(directory.path_join("controller_zone_"+type_name.to_lower()+".png")) != OK: quit(1); return
-	var pen: Dictionary = bedroom.duplicate(true); pen.zone_type = 3; pen.zone_label = "Pen/Pasture"; pen.name = "Unnamed pen/pasture"; pen.owner_allowed = false
+	var pen: Dictionary = bedroom.duplicate(true); pen.zone_type = 88; pen.zone_label = "Pen/Pasture"; pen.name = "Unnamed pen/pasture"; pen.owner_allowed = false
 	controller.use_area(pen); controller.zone_menu.controls.animals.pressed.emit(); service.poll()
 	world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":14,"status":2,
 		"area":{"list_revision":96,"candidates":[{"id":24,"name":"Stray Goat","profession":"Goat","sex":0,"grazer":true,"assigned":false},
@@ -253,7 +287,7 @@ func run() -> void:
 		controller.use_area(typed); controller._process(0)
 		await process_frame; await RenderingServer.frame_post_draw
 		if root.get_texture().get_image().save_png(directory.path_join("controller_zone_"+type_name.to_lower()+".png")) != OK: quit(1); return
-	controller.choose_zone_type(1); controller._process(0)
+	controller.choose_zone_type(92); controller._process(0)
 	# Native overlapping-zone name row: arrows flank the shifted name/rename.
 	controller.zone_overlaps = [bedroom.duplicate(true),bedroom.duplicate(true)]
 	controller.zone_overlaps[1].id = int(bedroom.id)+1
@@ -262,7 +296,7 @@ func run() -> void:
 	if not controller.zone_menu.controls.previous.visible or controller.zone_menu.controls.rename.position.x != 254:
 		push_error("Native overlap header navigation missing"); quit(1); return
 	if root.get_texture().get_image().save_png(directory.path_join("controller_zone_overlap.png")) != OK: quit(1); return
-	controller.choose_zone_type(1); controller._process(0)
+	controller.choose_zone_type(92); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if controller.panel.size != Vector2(324,188):
 		push_error("Zone paint prompt has wrong dimensions: "+str(controller.panel.size)); quit(1); return

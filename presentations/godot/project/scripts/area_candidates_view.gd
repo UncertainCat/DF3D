@@ -78,7 +78,7 @@ func refresh() -> void:
 	squad_prompt.visible = state.kind == 3
 	squad_prompt.text = "Select the squads to train here." if state.squad_mask == 2 else "Select how squads will use this space."
 	search.visible = state.kind != 3
-	remove.visible = state.kind == 1
+	remove.visible = state.can_remove_owner()
 	if search.text != state.query: search.text = state.query
 	search.editable = not state.failed and not state.mutating and not state.area.is_empty()
 	for index in headers.size():
@@ -99,7 +99,7 @@ func refresh() -> void:
 			headers[index].add_theme_stylebox_override(key,StyleBoxEmpty.new())
 		headers[index].add_theme_constant_override("h_separation",0)
 		headers[index].size = Vector2([80,72,80,32][index],12)
-	remove.disabled = state.busy() or int(state.area.get("owner_id",-1)) < 0
+	remove.disabled = state.busy()
 	if cached_rows != state.rows:
 		cached_rows = state.rows.duplicate(true)
 		for button in choices: rows_box.remove_child(button); button.queue_free()

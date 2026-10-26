@@ -1502,5 +1502,43 @@
     "plugin_sha256": "c9220b0fbc4777ae6bd5d11283755331f3d4a8b445e4bde652e0c04878e91b3a",
     "offline": "build/qa/owner-filter-integration",
     "remaining": "Native byte-length limit, non-ASCII textbox input, focus/clear/escape/cursor behavior, rendered row status/name/color, clear availability, creation owner validation and complete assignment lifecycle."
+  },
+  "owner_clear_control": {
+    "status": "Native context availability, empty clear and viewport receipt lifecycle verified; full picker remains staged",
+    "context_dispatch_rva": "0x3a7c70",
+    "allowed_zone_types": {
+      "DiningHall": 80,
+      "Bedroom": 92,
+      "Office": 93
+    },
+    "excluded_zone_types": {
+      "Tomb": 97
+    },
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-001942",
+    "native_result_sha256": "552f3b02e85dc1544f20e8f956184c6f7922c6e0488886e13b4712f4d27cc323",
+    "native_owned_df_pid": 128004,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "empty_clear": {
+      "owner_before": -1,
+      "owner_after": -1,
+      "selector_flags_before": 7,
+      "selector_flags_after": 6,
+      "picker_closed": true
+    },
+    "viewport_evidence": "build/qa/owner-clear-controls",
+    "viewport_cases": 8,
+    "viewport_scope": "Four owner room types, assigned/unassigned; clear row only on Bedroom/Office/DiningHall; Tomb first candidate. Double-click sends one request; no premature closure; success closes picker. Synthetic rows are not row-display acceptance.",
+    "viewport_status": "passed_with_known_issues",
+    "known_diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "bridge_evidence": "build/areas-acceptance-20261026-002218",
+    "bridge_owned_df_pid": 128900,
+    "bridge_observations": 201,
+    "bridge_save_manifests_unchanged": 2,
+    "remaining": "Row text/status/color/portraits, native textbox, explicit creation owner validation, legacy routes and remaining full input/lifecycle acceptance."
   }
 }

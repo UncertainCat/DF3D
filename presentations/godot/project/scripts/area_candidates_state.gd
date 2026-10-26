@@ -110,12 +110,18 @@ func reject(reason: String) -> void:
 	pending = {}; delay = -1; search_delay = -1; failed = true; mutating = false
 	changed.emit(); failed_page.emit(reason)
 
+func can_remove_owner() -> bool:
+	# Native selector context dispatch0x3a7c70: Bedroom/Office/DiningHall,
+	# but no Tomb clear row. These are semantic civzone_type values.
+	return kind == 1 and bool(area.get("owner_allowed",false)) and int(area.get("zone_type",-1)) in [80,92,93]
+
 func assign_owner(id: int) -> void:
 	if busy() or kind != 1 or not bool(area.get("owner_allowed",false)): return
+	if id == -1 and not can_remove_owner(): return
 	var found := id == -1
 	for row in rows:
 		if int(row.id) == id: found = true
-	if not found or id == int(area.get("owner_id",-1)): return
+	if not found or (id >= 0 and id == int(area.get("owner_id",-1))): return
 	mutating = true; changed.emit()
 	request_ready.emit({"action":C.ManagementAction.AreaUpdate,"id":int(area.id),"kind":1,
 		"expected_revision":int(area.revision),"owner_id":id})

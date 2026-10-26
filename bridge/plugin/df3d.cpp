@@ -2039,6 +2039,26 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="zone-animal-unit-display-read") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t values[2];
+        for(int i=0;i<2;++i) {
+          const auto& value=parameters[i+1];const auto parsed=std::from_chars(value.data(),value.data()+value.size(),values[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        }
+        auto* unit=df::unit::find(values[0]);if(!unit)return CR_FAILURE;
+        const auto result=df3d_area::nativeZoneAnimalUnitDisplay(*unit,values[1]);if(!result)return CR_FAILURE;
+        Json::Value output;output["grazer"]=result->grazer;
+        output["text"]=Json::Value(Json::arrayValue);
+        for(const auto* text:{&result->text.combined,&result->text.name,&result->text.profession,&result->text.firstLine,&result->text.secondLine}) {
+          Json::Value bytes(Json::arrayValue);for(unsigned char byte:*text)bytes.append(int(byte));output["text"].append(bytes);
+        }
+        output["warning"]=Json::Value(Json::arrayValue);for(unsigned char byte:result->warning)output["warning"].append(int(byte));
+        auto& color=output["name_color"];color["effect"]=int(result->nameColor.effect);color["source"]=int(result->nameColor.source);
+        for(auto c:result->nameColor.color)color["color"].append(int(c));
+        for(auto c:result->nameColor.alternate)color["alternate"].append(int(c));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-owner-text-read") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
@@ -2407,6 +2427,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d zone-owner-status-read <zone id> <unit id>\n"
         "df3d zone-owner-text-read <unit id> <columns>\n"
         "df3d zone-owner-color-sources-read <unit id>\n"
+        "df3d zone-animal-unit-display-read <unit id> <columns>\n"
         "df3d zone-owner-name-color-read <unit id>\n"
         "df3d zone-owner-profession-color-read <unit id> <profession>\n"
         "df3d zone-owner-query-read <query>\n"

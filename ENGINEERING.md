@@ -20,7 +20,23 @@ main_interface; the source save is unchanged after unsaved exit. The recorded
 fixture includes byte-level samples and layout evidence. Core checks pass in
 build/qa/animal-unit-display-reference. This establishes reusable reader and
 layout evidence, not completion of the product animal rows or coverage of all
-identity/color effects. Management68 and the installed plugin are unchanged.
+identity/color effects. Management68 is unchanged.
+
+The bridge now exposes nativeZoneAnimalUnitDisplay, combining these owned text
+and color readers with the cached caste flag and warning read from immutable
+DF text at1786f68. It pins the complete14237a0 render range for compatibility
+without invoking it. No room ownership/status fields are involved. Diagnostic
+zone-animal-unit-display-read accepts unit ID and column width and emits owned
+byte arrays, grazer status and color facts.
+
+Protected build/stockpile-storage-native-zone-animals-20261026-102030 with
+DF129824 compares this combined reader directly against all22 native samples;
+exact text/layout/colors and UI-state preservation pass, and the source save
+is unchanged. MSVC builds in build/notes/pm/animal-unit-display-build.log;
+core verification is build/qa/animal-unit-display-reader. Installed plugin SHA256:
+7879b4d34c569ed43f4c9937e5e89ab57e266eba400673b74bf7bdaf45d96849.
+The semantic reader still needs a separate animal display wire field and viewer
+integration; it is not yet used to render product rows.
 
 ## Native animal sort headers
 

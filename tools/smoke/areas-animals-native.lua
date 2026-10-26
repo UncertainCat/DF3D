@@ -122,9 +122,10 @@ local function capture(label)
       local size,address=df.sizeof(value);local copy=df.new('uint8_t',size)
       dfhack.internal.memmove(copy,address,size);guards[#guards+1]={copy=copy,address=address,size=size}
      end
-     local text,code=dfhack.run_command_silent('df3d','zone-owner-text-read',tostring(row.unit_id),tostring(width))
+     local text,code=dfhack.run_command_silent('df3d','zone-animal-unit-display-read',tostring(row.unit_id),tostring(width))
      assert(code==0,text)
-     local sample={id=row.unit_id,columns=width,owner_reader=require('json').decode(text),lines={},
+     local native=require('json').decode(text)
+     local sample={id=row.unit_id,columns=width,owner_reader=native.text,lines={},
       show_gender=row.show_gender,show_profession=row.show_profession,one_line_only=row.one_line_only}
      for y=row.y-2,row.y do
       local bytes,colors={},{}
@@ -134,9 +135,9 @@ local function capture(label)
       sample.lines[#sample.lines+1]={y=y,bytes=bytes,colors=colors}
      end
      local unit=assert(df.unit.find(row.unit_id))
-     sample.grazer=unit.enemy.caste_flags[df.caste_raw_flags.GRAZER]
-     local color_text,color_code=dfhack.run_command_silent('df3d','zone-owner-name-color-read',tostring(row.unit_id))
-     assert(color_code==0,color_text);sample.name_color=require('json').decode(color_text)
+     sample.grazer=native.grazer;sample.name_color=native.name_color
+     assert(sample.grazer==unit.enemy.caste_flags[df.caste_raw_flags.GRAZER],'animal cached grazer flag differs')
+     assert(#native.warning==(sample.grazer and 24 or 0),'animal warning presence differs')
      for _,guard in ipairs(guards)do
       assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'animal unit text/color read changed native UI/drawing state')
       df.delete(guard.copy)
@@ -150,8 +151,8 @@ local function capture(label)
       expected[first]=sample.owner_reader[4];expected[first+1]=sample.owner_reader[5]
      end
      if sample.grazer then
-      expected[3]={0};local warning='Grazer: requires pasture'
-      for i=1,#warning do expected[3][i+1]=warning:byte(i)end
+      expected[3]={0}
+      for i,byte in ipairs(native.warning)do expected[3][i+1]=byte end
      end
      local function same_color(a,b)return a[1]==b[1] and a[2]==b[2] and a[3]==(b[3]~=0)end
      for line,observed in ipairs(sample.lines)do for x,byte in ipairs(observed.bytes)do

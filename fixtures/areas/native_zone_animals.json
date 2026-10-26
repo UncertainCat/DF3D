@@ -8658,6 +8658,18 @@
     "limitations": [
       "Observed fixture unit names only; broader identity/color effects still need animal-specific coverage.",
       "Product animal row presentation remains unfinished."
-    ]
+    ],
+    "semantic_reader": {
+      "function": "nativeZoneAnimalUnitDisplay",
+      "evidence": "build/stockpile-storage-native-zone-animals-20261026-102030",
+      "owned_df_pid": 129824,
+      "source_unchanged": true,
+      "exact_samples": 22,
+      "widget_render_size": "0x83f",
+      "widget_render_fnv1a64": "bc38168cc5c544cd",
+      "warning_rva": "0x1786f68",
+      "warning_bytes": 24,
+      "plugin_sha256": "7879b4d34c569ed43f4c9937e5e89ab57e266eba400673b74bf7bdaf45d96849"
+    }
   }
 }

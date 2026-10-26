@@ -690,6 +690,22 @@ std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candida
     else {result.firstLine=fit(result.name);result.secondLine=fit(result.profession);}
     return result;
 }
+std::optional<ZoneAnimalUnitDisplay> nativeZoneAnimalUnitDisplay(df::unit& candidate,int32_t columns) {
+    const auto text=nativeZoneOwnerDisplayText(candidate,columns);
+    const auto color=nativeZoneOwnerNameColor(candidate);
+    if(!text || !color)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    // Pin the observed inline variant, but never enter its render function.
+    // Its GRAZER test is the cached caste flag, not the broader DFHack helper.
+    static const bool compatible=hash(base+0x14237a0,0x83f)==UINT64_C(0xbc38168cc5c544cd);
+    if(!compatible)return std::nullopt;
+    static_assert(int(df::caste_raw_flags::GRAZER)==106);
+    static_assert(offsetof(df::unit,enemy)+offsetof(df::unit::T_enemy,caste_flags)==0x1278);
+    ZoneAnimalUnitDisplay result{*text,*color,candidate.enemy.caste_flags.is_set(df::caste_raw_flags::GRAZER),{}};
+    // Inline warning copies at1423dda/1423de4 refer to this immutable literal.
+    if(result.grazer)result.warning.assign(reinterpret_cast<const char*>(base+0x1786f68),24);
+    return result;
+}
 std::optional<std::string> nativeZoneOwnerQuery(std::string query) {
     const auto& order=staffOrderingFunctions();
     if(!order)return std::nullopt;

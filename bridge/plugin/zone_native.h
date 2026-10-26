@@ -61,6 +61,15 @@ struct ZoneOwnerNameColor {
 // Fortress owner-name color/effect facts. Never reads drawing globals or consumes
 // native clock/RNG; animation remains presentation-owned.
 std::optional<ZoneOwnerNameColor> nativeZoneOwnerNameColor(df::unit& candidate);
+struct ZoneAnimalUnitDisplay {
+    ZoneOwnerDisplayText text;
+    ZoneOwnerNameColor nameColor;
+    bool grazer=false;
+    std::string warning;
+};
+// Animal variant of the same semantic text/color readers. The cached native
+// caste flag and immutable warning are independent of widgets and drawing.
+std::optional<ZoneAnimalUnitDisplay> nativeZoneAnimalUnitDisplay(df::unit& candidate,int32_t columns);
 // Normalize caller-owned textbox bytes with the native search routine.
 std::optional<std::string> nativeZoneOwnerQuery(std::string query);
 // Native may allocate and transfer ownership from another tomb. Callers mark

@@ -29,8 +29,17 @@ native392x708 frame at368,52,8x12 content margins, and352px-wide rows. This fixe
 the former inset388x704 frame and stretched360px row backgrounds without moving
 the content origin376,64. Core19/19, controller regression and GPU checks pass
 in `build/qa/animal-panel-geometry`; GPU and the rendered live run retain only
-the known diagnostics. This does not cover the remaining rendered long-list,
-search/keyboard/closing combinations or uncommon creature/container cases.
+the known diagnostics. Rendered input coverage additionally passes in
+`build/areas-acceptance-20261026-150105`. A71-row Pond list exercises wheel,
+shifted wheel, arrows, track clicks, dragging and keyboard tail/top navigation
+at1.0 and0.75 selector scale, with visible portrait reacquisition and sixteen
+complete rows. Viewport Ctrl+F, UTF-8 byte input/Backspace, native query readback,
+focused Enter, first/second right-click and focused/unfocused Escape to Options
+all pass. Keyboard selection/Enter also assigns and clears a non-first unit,
+with native effects checked. Both save manifests remain unchanged; this run
+retains only known diagnostics. Core19/19 passes in
+`build/qa/animal-rendered-inputs`. Uncommon creature/container and native
+blank-panel parent-selection cases remain outstanding.
 
 
 `native_zone_animals.json.animal_scroll` records a forty-row Pond list in
@@ -82,7 +91,7 @@ The driver waits for layout before scrolling newly created controls. Both save
 manifests remain unchanged; core19/19 passes in
 `build/qa/animal-controller-live-reference`. This headless lane invokes controller
 controls and keyboard handlers; the rendered Pond pointer/pixel lane above complements this headless coverage.
-Remaining rendered long-list and input combinations still require acceptance.
+The rendered input lane above now covers long-list navigation and search/closing combinations.
 
 
 `native_zone_animals.json.animal_search_input` records real Windows/SDL input

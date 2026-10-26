@@ -1257,11 +1257,11 @@ func pointer_key(key: Key) -> void:
 		root.push_input(event,true)
 	await process_frame; await process_frame
 
-func owner_scroll_workflow() -> bool:
+func selector_scroll_workflow(selector := "owner") -> bool:
 	var view = editor.candidates_view
 	var bar = view.owner_scrollbar
 	var total: int = editor.candidates_state.rows.size()+(1 if view.remove.visible else 0)
-	if not check(editor.candidates_state.cursor==0 and bar.count==total and total>32,"owner controls enabled before complete membership"): return false
+	if not check(editor.candidates_state.cursor==0 and bar.count==total and total>32,"selector controls enabled before complete membership"): return false
 	for factor in [1.0,0.75]:
 		view.scale = Vector2.ONE*factor
 		await process_frame
@@ -1269,48 +1269,48 @@ func owner_scroll_workflow() -> bool:
 			var wheel := InputEventMouseButton.new(); wheel.pressed=true; wheel.button_index=probe[0];wheel.shift_pressed=probe[1]
 			wheel.position=view.scroll.get_global_transform_with_canvas()*Vector2(20,200);wheel.global_position=wheel.position
 			root.push_input(wheel,true);await process_frame
-			if not check(bar.first==probe[2] and view.scroll.scroll_vertical==int(probe[2])*36 and view.owner_selected==0,"owner wheel row/page or selection changed at scale "+str(factor)):return false
+			if not check(bar.first==probe[2] and view.scroll.scroll_vertical==int(probe[2])*36 and view.owner_selected==0,"selector wheel row/page or selection changed at scale "+str(factor)):return false
 		for probe in [[594,1],[6,0],[400,16],[18,0]]:
 			await pointer_click(bar.get_global_transform_with_canvas()*Vector2(8,probe[0]))
-			if not check(bar.first==probe[1] and view.owner_selected==0,"owner arrow/track differs at scale "+str(factor)):return false
+			if not check(bar.first==probe[1] and view.owner_selected==0,"selector arrow/track differs at scale "+str(factor)):return false
 		var press := InputEventMouseButton.new();press.position=bar.get_global_transform_with_canvas()*Vector2(8,30);press.global_position=press.position
 		press.button_index=MOUSE_BUTTON_LEFT;press.button_mask=MOUSE_BUTTON_MASK_LEFT;press.pressed=true;root.push_input(press,true)
 		var drag := InputEventMouseMotion.new();drag.position=bar.get_global_transform_with_canvas()*Vector2(8,590);drag.global_position=drag.position;drag.button_mask=MOUSE_BUTTON_MASK_LEFT
 		root.push_input(drag,true)
 		var release := InputEventMouseButton.new();release.position=drag.position;release.global_position=release.position;release.button_index=MOUSE_BUTTON_LEFT;release.pressed=false
 		root.push_input(release,true);await process_frame;await process_frame
-		if not check(bar.first==total-16 and view.scroll.scroll_vertical==(total-16)*36 and view.owner_selected==0 and not bar.dragging,"owner tail drag differs at scale "+str(factor)):return false
+		if not check(bar.first==total-16 and view.scroll.scroll_vertical==(total-16)*36 and view.owner_selected==0 and not bar.dragging,"selector tail drag differs at scale "+str(factor)):return false
 		if factor==1.0:
 			var first_unit: int = bar.first-(1 if view.remove.visible else 0)
-			if not await wait_ui(func():return view.portrait_slots[first_unit].view.texture!=null,"owner tail portrait"):return false
+			if not await wait_ui(func():return view.portrait_slots[first_unit].view.texture!=null,"selector tail portrait"):return false
 			var clip: Rect2 = view.scroll.get_global_rect()
 			var complete := 0
 			for button in view.choices:
 				if clip.encloses(button.get_global_rect()):complete+=1
 				elif clip.intersects(button.get_global_rect()):
-					check(false,"owner tail includes partial row");return false
-			if not check(complete==16,"owner tail does not show 16 complete rows"):return false
-			await capture("zone_owner_scroll_tail")
+					check(false,"selector tail includes partial row");return false
+			if not check(complete==16,"selector tail does not show 16 complete rows"):return false
+			await capture("zone_"+selector+"_scroll_tail")
 		# Drag back to the top independently of keyboard selection.
 		press.position=bar.get_global_transform_with_canvas()*Vector2(8,570);press.global_position=press.position;root.push_input(press,true)
 		drag.position=bar.get_global_transform_with_canvas()*Vector2(8,6);drag.global_position=drag.position;root.push_input(drag,true)
 		release.position=drag.position;release.global_position=release.position;root.push_input(release,true);await process_frame
-		if not check(bar.first==0 and view.owner_selected==0,"owner drag did not return to top"):return false
+		if not check(bar.first==0 and view.owner_selected==0,"selector drag did not return to top"):return false
 	view.scale=Vector2.ONE;await process_frame
 	for index in range(ceili(float(total)/16)+1): await pointer_key(KEY_PAGEDOWN)
 	await pointer_key(KEY_DOWN)
-	if not check(view.owner_selected==total-1 and bar.first==total-16,"owner keyboard tail clamp"):return false
+	if not check(view.owner_selected==total-1 and bar.first==total-16,"selector keyboard tail clamp"):return false
 	await pointer_key(KEY_PAGEUP)
-	if not check(view.owner_selected==total-17 and bar.first==total-17,"owner Page Up from tail"):return false
+	if not check(view.owner_selected==total-17 and bar.first==total-17,"selector Page Up from tail"):return false
 	for index in range(ceili(float(total)/16)+1): await pointer_key(KEY_PAGEUP)
-	if not check(view.owner_selected==0 and bar.first==0,"owner keyboard return to top"):return false
+	if not check(view.owner_selected==0 and bar.first==0,"selector keyboard return to top"):return false
 	return true
 
 func pointer_owner(id: int, origin: Vector3i) -> void:
 	step = "pointer owner selector"
 	await click_control(editor.zone_menu.controls.owner)
 	if not await wait_ui(func(): return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner rows"): return
-	if not await owner_scroll_workflow(): return
+	if not await selector_scroll_workflow(): return
 	var help = editor.candidates_view.native_help
 	var hover := InputEventMouseMotion.new()
 	hover.position=editor.candidates_view.owner_search.get_global_rect().get_center();hover.global_position=hover.position
@@ -1696,6 +1696,20 @@ func pointer_animals(id: int) -> void:
 		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"pointer animal checkbox"):return
 		await native("assignment",{"id":id,"unit_id":unit,"assign":assigned})
 		if stopped:return
+	step="animal nonfirst keyboard unit"
+	for assigned in [true,false]:
+		unit_index=-1
+		for index in editor.candidates_state.rows.size():
+			var row:Dictionary=editor.candidates_state.rows[index]
+			if int(row.get("entity",0))==1 and int(row.id)==unit:unit_index=index;break
+		if not check(unit_index>=0,"keyboard animal target absent"):return
+		await pointer_key(KEY_PAGEUP)
+		for index in unit_index:await pointer_key(KEY_DOWN)
+		if not check(view.owner_selected==unit_index,"viewport keyboard selected wrong unit"):return
+		await pointer_key(KEY_ENTER)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"viewport keyboard unit assignment"):return
+		await native("assignment",{"id":id,"unit_id":unit,"assign":assigned})
+		if stopped:return
 	var item:=int(fixture.critter)
 	await native("item_assignment_before",{"item_id":item})
 	for assigned in [true,false]:
@@ -1709,5 +1723,48 @@ func pointer_animals(id: int) -> void:
 		await native("item_assignment",{"id":id,"item_id":item,"assign":assigned})
 		if stopped:return
 	await capture("animal_cleared")
+	step="animal viewport byte search"
+	var shortcut:=InputEventKey.new();shortcut.keycode=KEY_F;shortcut.ctrl_pressed=true;shortcut.pressed=true
+	root.push_input(shortcut,true)
+	if not check(view.owner_search.has_focus(),"animal Ctrl+F did not focus search"):return
+	for code in [233,-1,-1,116,97,109,101]:
+		var key:=InputEventKey.new();key.pressed=true
+		if code<0:key.keycode=KEY_BACKSPACE
+		else:key.unicode=code
+		root.push_input(key,true)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"animal viewport byte query"):return
+		await verify_candidate_rows(id,2)
+		if stopped:return
+	await capture("animal_byte_search")
+	var updates:int=receipts.filter(func(value):return int(value.get("action",0)) in [11,13]).size()
+	await pointer_key(KEY_ENTER)
+	if not check(not view.owner_search.has_focus() and receipts.filter(func(value):return int(value.get("action",0)) in [11,13]).size()==updates,"focused animal Enter assigned"):return
+	root.push_input(shortcut,true)
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(not view.owner_search.has_focus() and view.visible and editor.stockpile_page=="animals","first focused animal right-click closed picker"):return
 	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
 	if not check(editor.stockpile_page=="types" and not view.visible,"animal right-click did not close selector"):return
+
+	step="animal viewport long list"
+	await native("animal_long_list",{"item_id":item})
+	await click_control(editor.zone_menu.controls.animals)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"long viewport animal rows"):return
+	await process_frame;await process_frame
+	if not await selector_scroll_workflow("animal"):return
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(editor.stockpile_page=="types" and not view.visible,"long animal picker closure failed"):return
+	var escape_area:Dictionary=editor.selected.duplicate(true)
+	for focused in [false,true]:
+		await click_control(editor.zone_menu.controls.animals)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"animal Escape rows"):return
+		if focused:root.push_input(shortcut,true)
+		updates=receipts.filter(func(value):return int(value.get("action",0)) in [11,13]).size()
+		await pointer_key(KEY_ESCAPE)
+		if not check(not editor.panel.visible and scene._ui.native_options.visible and host.overlay_blocked,"animal Escape did not route to Options"):return
+		if not check(receipts.filter(func(value):return int(value.get("action",0)) in [11,13]).size()==updates,"animal Escape submitted mutation"):return
+		await capture("animal_escape_"+str(focused))
+		await pointer_key(KEY_ESCAPE)
+		if not check(not scene._ui.native_options.visible and not host.overlay_blocked,"animal Options exit retained input lock"):return
+		editor.open_panel()
+		if not await wait_ui(func():return settled() and editor.available,"animal Zones reopen"):return
+		editor.use_area(escape_area);editor._process(0)

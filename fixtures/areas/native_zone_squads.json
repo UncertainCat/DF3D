@@ -5091,6 +5091,31 @@
           "right-click closes picker"
         ]
       }
-    ]
+    ],
+    "stale_revision": {
+      "scope": "Native rename between retained inspection and actual training click; rejection, no replay, explicit map refresh and successful removal",
+      "runs": [
+        {
+          "zone": "Barracks",
+          "run": "build/areas-acceptance-20261026-184407",
+          "status": "passed_with_known_issues",
+          "squad_id": 15,
+          "unchanged_use": 0,
+          "save_manifests_unchanged": true
+        },
+        {
+          "zone": "ArcheryRange",
+          "run": "build/areas-acceptance-20261026-184524",
+          "status": "passed_with_known_issues",
+          "squad_id": 15,
+          "unchanged_use": 0,
+          "save_manifests_unchanged": true
+        }
+      ],
+      "omissions": [
+        "transport disconnect",
+        "deleted squad identity"
+      ]
+    }
   }
 }

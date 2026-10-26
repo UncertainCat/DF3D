@@ -222,8 +222,36 @@ func pointer_squads(id: int) -> void:
 	await click_control(editor.zone_menu.controls.squads)
 	if not await wait_ui(func():return view.visible and not editor.candidates_state.busy() and editor.candidates_state.cursor==0 and settled(),"reopen squad picker"):return
 	if not check(view.owner_scrollbar.first==0,"reopened squad picker retained old scroll"):return
+	# Out-of-band native edit makes the retained zone revision stale. The first
+	# click must reject without assigning, and further input must not replay it.
+	for i in 30:
+		var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true
+		wheel.position=Vector2(500,150);wheel.global_position=wheel.position;root.push_input(wheel,true)
+	await capture("squad_before_stale")
+	await native("stale_edit",{"id":id})
+	var stale_control:Button
+	for child in view.choices[15].get_children():
+		if child is Button and int(child.get_meta("squad_use",0))==2:stale_control=child;break
+	if not check(stale_control!=null,"missing stale squad control"):return
+	var stale_position:Vector2=stale_control.get_global_rect().get_center()
+	var before_stale:=receipts.size()
+	await pointer_click(stale_position)
+	var deadline:=Time.get_ticks_msec()+30000
+	while not settled() and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();editor._process(0.02);await create_timer(0.02).timeout
+	if not check(settled() and editor.request_problem and editor.candidates_state.failed and receipts.size()==before_stale+1,"stale squad assignment did not reject once"):return
+	await native("squad",{"id":id,"squad_id":target_id,"use":0})
+	await pointer_click(stale_position)
+	for i in 10:
+		world.poll();actions.poll();editor._process(0.1);await process_frame
+	if not check(receipts.size()==before_stale+1 and settled(),"failed squad picker replayed a mutation"):return
+	await capture("squad_stale_rejected")
 	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
-	if not await wait_ui(func():return not view.visible and settled(),"close squad picker"):return
+	if not check(not view.visible and settled(),"close rejected squad picker"):return
+	var p:Dictionary=fixture.origin
+	var map_position:Vector2=editor.camera.unproject_position(Vector3(int(p.x)+8.5,int(p.z)+float(world.floor_height()),int(p.y)+8.5))
+	await pointer_click(map_position)
+	if not await wait_ui(func():return settled() and not editor.selected.is_empty() and int(editor.selected.id)==id,"refresh stale zone through map"):return
 
 func pointer_zone_gathering(id: int) -> void:
 	step = "viewport native gathering flags"

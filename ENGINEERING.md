@@ -308,6 +308,17 @@ reopening at row0 and right-click dismissal, alongside the scrolled assignments.
 Both pass with known Godot diagnostics and unchanged source/clone manifests.
 Core19/19 passes in `build/qa/squad-lifecycle-core`.
 
+Stale squad revisions are exercised through actual viewport input in
+`build/areas-acceptance-20261026-184407` (Barracks) and
+`build/areas-acceptance-20261026-184524` (Archery). A diagnostic native rename
+invalidates the retained zone revision before clicking training. The bridge
+rejects once; native readback confirms both assignment records remain cleared.
+Further clicks send no mutation. Right-click dismisses the failed picker and
+an explicit map selection refreshes the zone before successful removal. Both
+GPU lanes pass with known Godot diagnostics and unchanged source/clone saves;
+Core19/19 passes in `build/qa/squad-stale-core`. This verifies stale revision
+handling, not transport disconnection or a deleted squad identity.
+
 ## Animal keyboard activation and portrait reference
 
 `native_zone_animals.json.animal_container_reference_order` records seven

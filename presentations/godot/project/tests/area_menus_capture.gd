@@ -654,6 +654,19 @@ func run() -> void:
 		var expected: Array = [2 if index == 0 else 1,24]
 		if animal_view.choices[index].pressed.get_connections()[0].callable.get_bound_arguments() != expected:
 			push_error("Animal view lost typed button identity"); quit(1); return
+	var animal_headers: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_headers
+	if animal_state.sort != 2 or animal_state.descending:
+		push_error("Animal header default is not Category ascending"); quit(1); return
+	for sample in animal_headers.samples:
+		animal_state.sort = int(sample.sort); animal_state.descending = bool(sample.descending)
+		animal_state.sort_directions = sample.directions.duplicate(); animal_state.changed.emit()
+		await process_frame; await RenderingServer.frame_post_draw
+		var header_image := root.get_texture().get_image(); header_image.convert(Image.FORMAT_RGB8)
+		var header_crop := header_image.get_region(Rect2i(Vector2i(animal_view.headers[0].global_position),Vector2i(232,12)))
+		var header_hash := HashingContext.new(); header_hash.start(HashingContext.HASH_SHA256); header_hash.update(header_crop.get_data())
+		header_crop.save_png(directory.path_join(str(sample.name)+"-df3d-header.png"))
+		if header_hash.finish().hex_encode() != str(sample.rgb_sha256):
+			push_error("Native animal header pixels differ: "+str(sample.name)); quit(1); return
 	animal_view.choices[0].pressed.emit()
 	if animal_requests[-1].get("item_id",-1) != 24 or animal_requests[-1].has("unit_id") or animal_requests[-1].assign != 0:
 		push_error("Rendered item button dispatched a unit request"); quit(1); return

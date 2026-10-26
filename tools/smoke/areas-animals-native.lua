@@ -163,6 +163,7 @@ local function controls(prefix,searches)
    end
   end
  end
+ pixel(464,70);script.sleep(3,'frames');capture(prefix..'-return-sort-name-2')
  for i,query in ipairs(searches==false and {} or {'yak','GRAZER','tame','lovebird','5969','stray','female'})do
   reopen();pixel(500,730)
   for byte in query:gmatch('.')do

@@ -3791,5 +3791,199 @@
     "management_version": 68,
     "scope": "Owned native description search, Category/Name/Profession sorting, selected-first partition and stable equal keys; pointer-derived category keys remain local.",
     "limits": "Visual/input/hover parity and broader unit display variants remain pending. VERMIN subtype is supported by pinned vtable but was not the observed PET fixture."
+  },
+  "animal_headers": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-095939",
+    "crop": [
+      416,
+      64,
+      232,
+      12
+    ],
+    "samples": [
+      {
+        "name": "Pond-picker",
+        "sort": 2,
+        "descending": false,
+        "directions": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "rgb_sha256": "505f6f4cb9d3e429319cd766c34ba3ed525da8b8743e48263a95eba7161bf0ac"
+      },
+      {
+        "name": "Pond-sort-name-1",
+        "sort": 1,
+        "descending": false,
+        "directions": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "rgb_sha256": "769995eb99e02c808888d54d1d01c8fea1d35453027413147cb553b79f8d6e3d"
+      },
+      {
+        "name": "Pond-sort-name-2",
+        "sort": 1,
+        "descending": true,
+        "directions": [
+          false,
+          true,
+          false,
+          false,
+          false
+        ],
+        "rgb_sha256": "173537190f6668800be3e7feb8d2cb8150058b60591fe6af9e63d43a92b1a981"
+      },
+      {
+        "name": "Pond-sort-category-1",
+        "sort": 2,
+        "descending": false,
+        "directions": [
+          false,
+          true,
+          false,
+          false,
+          false
+        ],
+        "rgb_sha256": "63dffb3f7c1017f8a0287441c620d37bc915d8942376ce2fd55e6e5319d15273"
+      },
+      {
+        "name": "Pond-sort-category-2",
+        "sort": 2,
+        "descending": true,
+        "directions": [
+          false,
+          true,
+          true,
+          false,
+          false
+        ],
+        "rgb_sha256": "c38d6a7d8fb544d2abe767703ea86e203f44f480a9c685ee5b7856d4c17450a3"
+      },
+      {
+        "name": "Pond-sort-profession-1",
+        "sort": 3,
+        "descending": false,
+        "directions": [
+          false,
+          true,
+          true,
+          false,
+          false
+        ],
+        "rgb_sha256": "ea3313739d10e39345eb96e5d46cb74ede9182d4ca74262190817e5f0be3b4ee"
+      },
+      {
+        "name": "Pond-sort-profession-2",
+        "sort": 3,
+        "descending": true,
+        "directions": [
+          false,
+          true,
+          true,
+          true,
+          false
+        ],
+        "rgb_sha256": "5eb0e711c668157600190d26f42c81b348ddc6156aaab24165768086f6f1fb9f"
+      }
+    ],
+    "return_direction_evidence": "build/stockpile-storage-native-zone-animals-20261026-100644",
+    "return_direction_samples": [
+      {
+        "name": "Pond-return-sort-name-2",
+        "displayed": [
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 1,
+          "exact": true,
+          "sort": 1,
+          "ui_unchanged": true
+        }
+      },
+      {
+        "name": "Pond-selected-return-sort-name-2",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 48520,
+            "kind": 1
+          }
+        ],
+        "parity": {
+          "descending": 1,
+          "exact": true,
+          "sort": 1,
+          "ui_unchanged": true
+        }
+      }
+    ],
+    "rendered_evidence": "build/qa/animal-native-headers",
+    "rendered_status": "passed_with_known_issues",
+    "pixel_scope": "All 2784 RGB pixels in each of seven header states match native screenshots."
   }
 }

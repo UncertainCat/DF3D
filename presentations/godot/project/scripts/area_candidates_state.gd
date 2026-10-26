@@ -35,14 +35,14 @@ func clear() -> void:
 
 func open(value: Dictionary, candidate_kind := 1, navigation: Dictionary = {}) -> void:
 	clear(); area = value.duplicate(true); kind = candidate_kind
-	query = str(navigation.get("query","")); sort = int(navigation.get("sort",2 if kind == 1 else 0))
+	query = str(navigation.get("query","")); sort = int(navigation.get("sort",2 if kind in [1,2] else 0))
 	query_bytes = navigation.get("query_bytes") if kind == 1 else null
 	if query_bytes is PackedByteArray: query_bytes = query_bytes.duplicate(); query = ""
-	if kind == 1 and sort == 0: sort = 2
+	if kind in [1,2] and sort == 0: sort = 2
 	descending = bool(navigation.get("descending",false))
 	if navigation.get("sort_directions") is Array and navigation.sort_directions.size() == 5:
 		sort_directions = navigation.sort_directions.duplicate()
-	if kind == 1 and sort in [1,2,3,4]: sort_directions[sort] = descending
+	if kind in [1,2] and sort in [1,2,3,4]: sort_directions[sort] = descending
 	squad_mask = int(navigation.get("squad_mask",15))
 	if int(area.get("kind",-1)) != 1 or int(area.get("revision",0)) <= 0 or kind not in [1,2,3]:
 		reject("Inspect this zone before selecting assignments"); return
@@ -70,8 +70,8 @@ func queue_owner_search(value: PackedByteArray) -> void:
 
 func order(value: int) -> void:
 	if area.is_empty() or failed or mutating: return
-	if kind == 1:
-		if value not in [1,2,3,4]: return
+	if kind in [1,2]:
+		if value not in ([1,2,3,4] if kind == 1 else [1,2,3]): return
 		if sort == value: sort_directions[value] = not bool(sort_directions[value])
 		descending = bool(sort_directions[value])
 	else:
@@ -80,7 +80,7 @@ func order(value: int) -> void:
 	sort = value; invalidate(0)
 
 func sort_direction(value: int) -> bool:
-	return bool(sort_directions[value]) if kind == 1 and value in [1,2,3,4] else descending
+	return bool(sort_directions[value]) if kind in [1,2] and value in [1,2,3,4] else descending
 
 func invalidate(debounce: float) -> void:
 	rows = []; receipt = 0; cursor = 0; search_delay = debounce

@@ -1,3 +1,23 @@
+## Native animal sort headers
+
+The animal chooser opens with Category ascending visibly selected. Each header
+retains its own direction, so changing Name does not reverse inactive Cat/Prof
+arrows. Returning to an inactive header restores its previous direction. The
+native down-arrow artwork denotes ascending order. Animal and owner selectors
+share this presentation mapping; squads retain their separate state behavior.
+
+Protected native100644 DF129240 passes the existing comparisons plus returning
+to descending Name after using Cat/Prof, both with and without a selected item.
+The source is unchanged after unsaved exit. Rendered
+build/qa/animal-native-headers matches every RGB pixel in seven232x12 native
+header strips (default and both directions of each header). The default crop
+was inspected. Core CTest19/19, area candidate state and areas controller pass.
+GPU checks pass with the established separate-thread, device-finalize and
+shutdown-object signatures. Bridge/plugin and Management68 are unchanged.
+
+This completes header feedback only. Animal row layout, unit/item artwork,
+textbox behavior, scrolling and hover remain unfinished.
+
 ## Native animal search and sorting integration
 
 nativeZoneAnimalPickerCandidates builds on native admission, reads native
@@ -34,8 +54,8 @@ build/notes/pm/animal-native-picker-product-build.log. Management remains68;
 installed plugin SHA256:
 f0fdc7aa7cb561975660f1f6866f129b1c66094e546e3dd2cdf65e26d11e5cca.
 
-Animal layout, default active header/direction feedback, exact textbox editing,
-unit display/portraits/colors, item artwork, scrolling and hover remain
+Animal layout, exact textbox editing, unit display/portraits/colors, item
+artwork, scrolling and hover remain
 unfinished. These semantic checks do not establish complete picker parity.
 
 ## Native animal picker search and sort reference

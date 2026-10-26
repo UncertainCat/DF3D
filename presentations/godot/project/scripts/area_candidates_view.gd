@@ -145,7 +145,7 @@ func refresh() -> void:
 		headers[index].disabled = not search.editable
 		var active := "ACTIVE" if state.sort == index+1 else "INACTIVE"
 		var descending: bool = state.sort_direction(index+1)
-		var arrow_descending: bool = not descending if state.kind == 1 else descending
+		var arrow_descending: bool = not descending
 		headers[index].icon = strip(("SORT_DESCENDING_" if arrow_descending else "SORT_ASCENDING_")+active,4)
 		var style := StyleBoxTexture.new(); style.texture = strip("SORT_TEXT_"+active,3)
 		for side in [SIDE_LEFT,SIDE_RIGHT,SIDE_TOP,SIDE_BOTTOM]: style.set_content_margin(side,0)

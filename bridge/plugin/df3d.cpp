@@ -2166,6 +2166,13 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         Json::Value bytes(Json::arrayValue);for(unsigned char byte:*text)bytes.append(int(byte));
         out.print("{}",Json::FastWriter().write(bytes));return CR_OK;
       }
+      if(parameters[0]=="zone-squad-candidates-read") {
+        if(parameters.size()!=1)return CR_WRONG_USAGE;
+        const auto ids=df3d_area::nativeZoneSquadCandidates();
+        if(!ids)return CR_FAILURE;
+        Json::Value output(Json::arrayValue);for(auto id:*ids)output.append(id);
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-animal-candidates-read" || parameters[0]=="zone-animal-picker-read") {
         const bool picker=parameters[0]=="zone-animal-picker-read";
         if(parameters.size()!=(picker?5:2))return CR_WRONG_USAGE;
@@ -2466,6 +2473,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d track-material-order-read <sx> <sy> <sz> <tx> <ty> <tz> <tile-limit> (read-only)\n"
         "df3d track-material-candidates-read <sx> <sy> <sz> <tx> <ty> <tz> <candidate-limit> (read-only)\n"
         "df3d room-read <x> <y> <z>\n"
+        "df3d zone-squad-candidates-read\n"
         "df3d zone-owner-candidates-read <zone id>\n"
         "df3d zone-new-owner-candidates-read <zone type>\n"
         "df3d zone-owner-order-read <zone id>\n"

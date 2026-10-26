@@ -217,7 +217,7 @@ local function source(job)
   return site.buildings
  end
  if job.legacy and job.kind==0 then return df.global.world.buildings.other.STOCKPILE end
- if job.candidate_kind==3 then return df.global.world.squads.all end
+ if job.native_squads then return job.squad_candidates end
  if job.native_owner then return df.global.world.units.all end
  return df.global.world.units.active
 end
@@ -572,7 +572,8 @@ local function candidate_row(job,v,r,refresh_display)
  if job.locations then return location_row(v,job.site_id) end
  if job.legacy and job.kind==0 then return {id=v.id,name=name(v)..' #'..v.id,label=''} end
  if job.candidate_kind==3 then
-  if v.entity_id~=df.global.plotinfo.group_id then return nil end
+  v=df.squad.find(v)
+  if not v then job.error='List changed; refresh';return nil end
   local label=v.alias~='' and v.alias or dfhack.translation.translateName(v.name,true)
   return {id=v.id,entity=3,name=dfhack.df2utf(label),profession='',sex=-1,mood=0,grazer=false,
    assigned=job.assigned[v.id]~=nil,squad_use=job.assigned[v.id] or 0}
@@ -646,7 +647,7 @@ local function compare_native_bytes(a,b)
  return #a==#b and 0 or #a<#b and -1 or 1
 end
 local function row_less(job,a,b)
- if job.native_animals then return a.ordinal<b.ordinal end
+ if job.native_animals or job.native_squads then return a.ordinal<b.ordinal end
  if job.native_owner then
   local x,y=a.owner_order,b.owner_order
   if x.without_room~=y.without_room then return x.without_room end
@@ -756,7 +757,7 @@ local function step_list(job,r)
   end
   local row=job.rows[job.filter_index];job.filter_index=job.filter_index+1;job.done=job.done+1
   local label=job.native_owner and row.owner_order.name_key or row.name:lower()
-  if job.native_animals or label:find(job.query,1,true) or not job.native_owner and tostring(row.id)==job.query then
+  if job.native_animals or job.native_squads or label:find(job.query,1,true) or not job.native_owner and tostring(row.id)==job.query then
    job.filtered[#job.filtered+1]=row
    job.hash=hash_integer(job.hash,row.id)
    if job.native_animals then job.hash=hash_integer(hash_integer(job.hash,row.entity),row.assigned and 1 or 0) end
@@ -893,7 +894,7 @@ local function candidate_page(r,a,b,area_revision,available)
  -- Reopening a chooser must observe current metadata even while DF is paused.
  -- Keep the completed snapshot for continuation pages; only a new first-page
  -- interaction retires an already delivered owner/location snapshot.
- if (locations or (not legacy and (candidate_kind==1 or candidate_kind==2))) and job and job.complete and job.delivered and expected==0 and default(a,'cursor',0)==0 then area_lists[key]=nil;job=nil end
+ if (locations or (not legacy and (candidate_kind==1 or candidate_kind==2 or candidate_kind==3))) and job and job.complete and job.delivered and expected==0 and default(a,'cursor',0)==0 then area_lists[key]=nil;job=nil end
  if job and job.complete then
   -- An open owner picker keeps its frozen membership/order while reading fresh
   -- facts. Successful reads renew that lease; abandoned lists still expire.
@@ -927,7 +928,14 @@ local function candidate_page(r,a,b,area_revision,available)
      end
     end
     job.native_animals=true;job.animal_candidates=entries
-   elseif candidate_kind==3 then job.assign_total=#b.squad_room_info end
+   elseif candidate_kind==3 then
+    local ids=type(r.squad_candidates)=='function' and r.squad_candidates(b) or nil
+    if type(ids)~='table' or #ids>4096 then return fail('Native area helper unavailable'),0 end
+    for _,id in ipairs(ids)do
+     if not integer(id) or id<0 or id>2147483647 then return fail('Native area helper unavailable'),0 end
+    end
+    job.native_squads=true;job.squad_candidates=ids;job.assign_total=#b.squad_room_info
+   end
   end
   if job.assign_total>4096 then return fail('Zone exceeds 4,096 assigned units'),0 end
   if links then
@@ -1031,7 +1039,7 @@ local function candidate_page(r,a,b,area_revision,available)
   end
  end
  out[locations and 'locations' or links and 'links' or legacy and 'choices' or 'candidates']=rows;out.truncated=out.next_cursor~=0
- if locations or job.native_owner or job.native_animals then job.delivered=true end
+ if locations or job.native_owner or job.native_animals or job.native_squads then job.delivered=true end
  if job.native_owner then job.read_tick=tick() end
  return out,used
 end
@@ -1465,7 +1473,11 @@ local function native_operation(r)
    return reject('This operation does not apply to this zone type')
   end
   local squad=df.squad.find(a.squad_id)
-  if not squad or squad.entity_id~=df.global.plotinfo.group_id then return reject('Squad no longer exists') end
+  if not squad then return reject('Squad no longer exists') end
+  local ids=type(r.squad_candidates)=='function' and r.squad_candidates(b) or nil
+  if type(ids)~='table' then return reject('Native area helper unavailable') end
+  local eligible=false;for _,id in ipairs(ids)do if id==squad.id then eligible=true;break end end
+  if not eligible then return reject('Squad no longer exists') end
   local changed,problem,unknown=invoke(r.squad_use,reply_reserve,b,squad,a.squad_use)
   if changed or unknown then clear_lists() end
   if not changed then return reject(problem) end

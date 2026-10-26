@@ -101,6 +101,22 @@ bool refreshOverlaps(const uint8_t* base,const df::building_civzonest* excluded=
     return true;
 }
 }
+std::optional<std::vector<int32_t>> nativeZoneSquadCandidates() {
+    static_assert(offsetof(df::historical_entity,squads)==0x11c8);
+    if(!df::global::world || !df::global::plotinfo || !nativeZoneDefaultsReady())return std::nullopt;
+    const auto* entity=df::global::plotinfo->main.fortress_entity;
+    if(entity && entity->squads.size()>4096)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0x3a3610,0x12d)==0xf39ec42e62f281eeULL &&
+        hash(base+0x70e20,0x117)==0x09aba69f846f6c10ULL;
+    if(!compatible)return std::nullopt;
+    // The producer touches only the vector at +8 in its supplied context.
+    // Its source is the semantic fortress entity, not native picker state.
+    struct Output { uint64_t unused=0; std::vector<int32_t> ids; } owned;
+    static_assert(offsetof(Output,ids)==8 && sizeof(Output)==32);
+    reinterpret_cast<void (*)(Output*)>(base+0x3a3610)(&owned);
+    return std::move(owned.ids);
+}
 bool nativeZoneSquadAssignmentReady() {
     static_assert(offsetof(df::squad,rooms)==0xf0);
     static_assert(offsetof(df::squad,rack_combat)==0x108);
@@ -122,9 +138,11 @@ bool nativeZoneSquadAssignmentReady() {
 }
 bool nativeZoneSetSquadUse(df::building_civzonest& zone,df::squad& squad,uint32_t use) {
     if(!df::global::world || !df::global::plotinfo || !nativeZoneSquadAssignmentReady() || use>15 ||
-       squad.entity_id!=df::global::plotinfo->group_id || df::building::find(zone.id)!=&zone ||
+       df::building::find(zone.id)!=&zone ||
        df::squad::find(squad.id)!=&squad)return false;
     if(zone.type!=df::civzone_type::Barracks && (zone.type!=df::civzone_type::ArcheryRange || (use&~2u)))return false;
+    const auto candidates=nativeZoneSquadCandidates();
+    if(!candidates || std::find(candidates->begin(),candidates->end(),squad.id)==candidates->end())return false;
     uint32_t current=0,zoneUse=0;int32_t previous=-1;
     for(const auto* row:squad.rooms) {
         if(!row || row->building_id<=previous || (row->mode.whole&~15u))return false;

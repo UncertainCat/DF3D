@@ -2333,5 +2333,150 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
       "restart-210/restart.json": "3aa9ef486cfa930803827ca73dc5808d5f479bbc5c0ab85f27db41e8851b4efc"
     }
+  },
+  "candidate_reference": {
+    "run": "build/stockpile-storage-native-zone-squads-20261026-164330",
+    "rva": "0x3a3610",
+    "size": 301,
+    "sha256": "5e2f255d340b15bc653ae9aec95aaae221cd11c9708baa89f931f393e2ea7c16",
+    "scope": "Native producer reads semantic fortress_entity.squads and writes only an owned vector at context+8. Preserves source order, skips stale IDs, includes listed live IDs irrespective of squad.entity_id. Renderer and owned reader agree; UI/gps unchanged. No native name/artwork acceptance claimed.",
+    "observations": [
+      {
+        "name": "Barracks-membership-reversed",
+        "zone_type": "95",
+        "ids": [
+          132,
+          128,
+          125,
+          120
+        ],
+        "semantic_ids": [
+          132,
+          128,
+          125,
+          120
+        ],
+        "ui_gps_unchanged": true
+      },
+      {
+        "name": "Barracks-membership-subset-stale",
+        "zone_type": "95",
+        "ids": [
+          132
+        ],
+        "semantic_ids": [
+          132
+        ],
+        "ui_gps_unchanged": true
+      },
+      {
+        "name": "Barracks-membership-foreign-listed",
+        "zone_type": "95",
+        "ids": [
+          0
+        ],
+        "semantic_ids": [
+          0
+        ],
+        "ui_gps_unchanged": true
+      },
+      {
+        "name": "Barracks-membership-empty",
+        "zone_type": "95",
+        "ids": [],
+        "semantic_ids": [],
+        "ui_gps_unchanged": true
+      },
+      {
+        "name": "Barracks-membership-restored",
+        "zone_type": "95",
+        "ids": [
+          120,
+          125,
+          128,
+          132
+        ],
+        "semantic_ids": [
+          120,
+          125,
+          128,
+          132
+        ],
+        "ui_gps_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-membership-reversed",
+        "zone_type": "94",
+        "ids": [
+          132,
+          128,
+          125,
+          120
+        ],
+        "semantic_ids": [
+          132,
+          128,
+          125,
+          120
+        ],
+        "ui_gps_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-membership-subset-stale",
+        "zone_type": "94",
+        "ids": [
+          132
+        ],
+        "semantic_ids": [
+          132
+        ],
+        "ui_gps_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-membership-foreign-listed",
+        "zone_type": "94",
+        "ids": [
+          0
+        ],
+        "semantic_ids": [
+          0
+        ],
+        "ui_gps_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-membership-empty",
+        "zone_type": "94",
+        "ids": [],
+        "semantic_ids": [],
+        "ui_gps_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-membership-restored",
+        "zone_type": "94",
+        "ids": [
+          120,
+          125,
+          128,
+          132
+        ],
+        "semantic_ids": [
+          120,
+          125,
+          128,
+          132
+        ],
+        "ui_gps_unchanged": true
+      }
+    ],
+    "files_sha256": {
+      "result.json": "626a0cef2d57626c2d369f297eebd0a2bae7826dd3f8b564ae47a339ca814dbb",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "Barracks-membership-reversed.png": "0f047e9ba98bf37d25d32bda763710393eb104f80cc891284fb018e19e527c5c",
+      "ArcheryRange-membership-subset-stale.png": "aa538f5b6d9b2fd6b0fa3ca35ad45e629fd655d14fb97505afe75b31a8856031"
+    },
+    "bridge_run": "build/areas-acceptance-20261026-164439",
+    "bridge_sha256": "a0688a97a92a3fdd7fa7e21d187b60c47d77c11ffc13c06b9fc62ec5d267c3c4",
+    "bridge_result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe"
   }
 }

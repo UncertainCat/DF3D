@@ -1330,6 +1330,17 @@ int areaCreate(lua_State* L) {
   lua_newtable(L);field(L,"ok",reason==nullptr);field(L,"message",reason?reason:"");
   field(L,"steps",steps);field(L,"work_unknown",unknownWork);field(L,"building_id",createdId);field(L,"paint_noop",noOp);return 1;
 }
+int areaSquadCandidates(lua_State* L) {
+  auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
+  std::optional<std::vector<int32_t>> ids;
+  if(zone && (zone->type==df::civzone_type::Barracks || zone->type==df::civzone_type::ArcheryRange)) {
+    try {ids=df3d_area::nativeZoneSquadCandidates();}catch(...){}
+  }
+  if(!ids){lua_pushnil(L);return 1;}
+  lua_newtable(L);int index=0;
+  for(auto id:*ids){lua_pushinteger(L,id);lua_rawseti(L,-2,++index);}
+  return 1;
+}
 int areaAnimalCandidates(lua_State* L) {
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
   std::optional<std::vector<df3d_area::ZoneAnimalCandidate>> rows;
@@ -2378,6 +2389,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaAssignItem);lua_setfield(L,-2,"assign_item");
     lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
     lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
+    lua_pushcfunction(L,areaSquadCandidates);lua_setfield(L,-2,"squad_candidates");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
       lua_pushcfunction(L,areaAnimalItemColor);lua_setfield(L,-2,"animal_item_color");
       lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");
@@ -3037,6 +3049,7 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
     field(L,"step",share);field(L,"builder_kind",kind);field(L,"epoch",epoch);
     if(kind==7){
       lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
+    lua_pushcfunction(L,areaSquadCandidates);lua_setfield(L,-2,"squad_candidates");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
       lua_pushcfunction(L,areaAnimalItemColor);lua_setfield(L,-2,"animal_item_color");
       lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");

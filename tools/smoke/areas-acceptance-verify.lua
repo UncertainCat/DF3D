@@ -824,25 +824,12 @@ elseif request.op=='animal_candidates' then
 elseif request.op=='candidates' then
  assert(request.kind==3,'owner/animal candidates require their native-backed verifier')
  local b=building();local rows={}
- for _,s in ipairs(df.global.world.squads.all) do if s.entity_id==df.global.plotinfo.group_id then
+ local text,code=dfhack.run_command_silent('df3d','zone-squad-candidates-read');assert(code==0,text)
+ for _,id in ipairs(json.decode(text))do
+  local s=assert(df.squad.find(id))
   local use=0;for _,v in ipairs(b.squad_room_info) do if v.squad_id==s.id then use=v.mode.whole end end
   rows[#rows+1]={id=s.id,entity=3,name=dfhack.df2utf(s.alias~='' and s.alias or dfhack.translation.translateName(s.name,true)),
    profession='',sex=-1,mood=0,grazer=false,assigned=contains(b.squad_room_info,s.id,'squad_id'),squad_use=use}
- end end
- if request.sort~=0 then table.sort(rows,function(a,b)
-  local x,y
-  if request.sort==1 then x,y=a.name:lower(),b.name:lower()
-  elseif request.sort==2 then x,y=a.mood,b.mood else x,y=a.profession:lower(),b.profession:lower() end
-  if x==y then x,y=a.id,b.id end
-  if request.descending then return x>y end;return x<y
- end)
- elseif request.descending then local reverse={};for i=#rows,1,-1 do reverse[#reverse+1]=rows[i] end;rows=reverse end
- if request.query and request.query~='' then
-  local query=request.query:lower();local filtered={}
-  for _,row in ipairs(rows) do
-   if row.name:lower():find(query,1,true) or tostring(row.id)==query then filtered[#filtered+1]=row end
-  end
-  rows=filtered
  end
  assert(canonical(rows)==canonical(request.rows),'candidate values/order differ from native dump')
 elseif request.op=='remove_target' then

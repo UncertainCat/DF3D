@@ -51,8 +51,28 @@ DF132272 with DF139064; both save manifests remain unchanged. Core19/19,
 adapter and management Lua contract checks pass in
 `build/qa/zone-squad-native-accounting`; the MSVC bridge build passes.
 `native_zone_squads.json.bridge_assignment` retains the fourteen observations.
-Candidate/name/artwork sourcing and rendered selector fidelity remain
-outstanding; this semantic acceptance does not establish a completed squad UI.
+Name/artwork sourcing and rendered selector fidelity remain outstanding; this
+semantic acceptance does not establish a completed squad UI.
+
+Squad membership and ordering now come from native `0x3a3610`, using an owned
+output vector at context offset8. It reads the fortress entity's squad-ID list,
+resolves live squads, skips stale IDs and preserves source order. It does not
+scan all world squads by entity ID. Assignment admission uses this same native
+membership. No selector, widget or rendering cache is a product input. The
+existing squad presentation already hides search/sort controls; legacy query
+and sort request fields do not reorder or filter this native list. Reopening a
+completed list observes fresh membership even while paused.
+
+Protected `build/stockpile-storage-native-zone-squads-20261026-164330` compares
+the owned reader with both native pickers under reversed, subset/stale, empty,
+restored and explicitly listed foreign-entity squad cases. Every list matches,
+and UI/gps bytes remain unchanged across each reader call. Source preservation
+passes; DF141604 exits unsaved. Full semantic
+`build/areas-acceptance-20261026-164439` passes cleanly with both save manifests
+unchanged, including assignments and restart from DF143016 to DF142980.
+Core19/19 and adapter checks pass in `build/qa/zone-squad-native-membership`;
+the MSVC build passes. The compact `candidate_reference` in
+`native_zone_squads.json` retains the producer pin and controlled observations.
 
 ## Animal keyboard activation and portrait reference
 

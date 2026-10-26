@@ -172,7 +172,7 @@ def main():
     function request(action,extra)
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
-     r.animal_status=animal_status;r.animal_container=animal_container;r.animal_restraint=animal_restraint;r.animal_candidates=animal_candidates;r.animal_item_color=animal_item_color;r.animal_item_text=animal_item_text;r.animal_item_icon=animal_item_icon;r.animal_unit_display=animal_unit_display
+     r.animal_status=animal_status;r.animal_container=animal_container;r.animal_restraint=animal_restraint;r.animal_candidates=animal_candidates;r.squad_candidates=squad_candidates;r.animal_item_color=animal_item_color;r.animal_item_text=animal_item_text;r.animal_item_icon=animal_item_icon;r.animal_unit_display=animal_unit_display
      r.owner_eligible=owner_eligible
      r.new_owner_eligible=function(zone_type,u)return u.new_native_eligible~=false end
      r.owner_order_facts=owner_order_facts;r.owner_display=owner_display
@@ -876,10 +876,19 @@ def main():
     df.global.world.squads.all={{id=20,entity_id=7,alias='Guard',name='A'},
      {id=21,entity_id=8,alias='Foreign',name='B'},{id=22,entity_id=7,alias='',name='Translated'}}
     zone.squad_room_info={{squad_id=20,mode={whole=3}}}
+    df.squad={find=function(id)for _,s in ipairs(df.global.world.squads.all)do if s.id==id then return s end end end}
+    squad_ids={22,20};squad_candidates=function()return squad_ids end
     """)
     squads = call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 3})
-    assert [v["id"] for v in squads["candidates"].values()] == [20, 22]
-    assert squads["candidates"][1]["squad_use"] == 3 and squads["candidates"][2]["name"] == "Translated"
+    assert [v["id"] for v in squads["candidates"].values()] == [22, 20]
+    assert squads["candidates"][2]["squad_use"] == 3 and squads["candidates"][1]["name"] == "Translated"
+    native_squads = call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 3, "sort": 1, "sort_descending": True, "query": "missing"})
+    assert [v["id"] for v in native_squads["candidates"].values()] == [22, 20]
+    lua.execute("squad_ids={20}")
+    reopened = call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 3})
+    assert len(reopened["candidates"]) == 1 and reopened["list_revision"] != squads["list_revision"]
+    lua.execute("squad_ids={999}")
+    assert not call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 3})["ok"]
     # Jobs from an old epoch cannot continue after an epoch transition.
     adapter(lua.table_from({"step": 1, "builder_kind": 7, "epoch": 2}))
     assert raw_call(14, dict(selector, expected_list_revision=refreshed["list_revision"]))["ok"] is False
@@ -1217,6 +1226,7 @@ def main():
     dfhack.maps.getTileFlags=function()return {hidden=false} end
     zone.type=6;df.civzone_type[6]='Barracks';zone.squad_room_info={}
     squad_fixture={id=20,entity_id=7,rooms={}}
+    squad_ids={20};squad_candidates=function()return squad_ids end
     df.squad={find=function(id)if id==20 then return squad_fixture end end}
     squad_calls=0
     local previous_request=request
@@ -1264,9 +1274,9 @@ def main():
     assert lua.eval("#squad_fixture.rooms") == 0
     lua.execute("zone.type=2")
     assert not call(11, dict(squad_request, expected_revision=zone_revision()))["ok"]
-    lua.execute("zone.type=6;squad_fixture.entity_id=99")
+    lua.execute("zone.type=6;squad_ids={}")
     assert call(11, dict(squad_request, expected_revision=zone_revision()))["message"] == "Squad no longer exists"
-    lua.execute("squad_fixture.entity_id=7;refuse_squad=true")
+    lua.execute("squad_ids={20};squad_fixture.entity_id=99;refuse_squad=true")
     assert call(11, dict(squad_request, expected_revision=zone_revision()))["message"] == "native squad refusal"
     lua.execute("refuse_squad=false;fail_squad=true")
     uncertain = call(11, dict(squad_request, squad_use=2, expected_revision=zone_revision()))

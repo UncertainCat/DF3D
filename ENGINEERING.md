@@ -1,5 +1,16 @@
 ## Animal keyboard activation and portrait reference
 
+Animal status references in `native_zone_animals.json.animal_status_reference`
+cover caged units, pasture assignment, pit/filled-pond picker context and assigned
+items. Protected `build/stockpile-storage-native-zone-animals-20261026-113847`
+passed and preserved the source after unsaved exit. Unit zone references take
+precedence over containment, but the badge uses the current picker type and
+keep-filled flag. Native status art overlaps the final name columns. Cage
+indicators include the contained subject under tinted occupied-cage artwork;
+they cannot be replaced by a generic cage tile. Status transport/rendering and
+live chain/planned-container cases remain unfinished. Native widget selection
+sets and composed textures are diagnostic references only.
+
 Animal item portrait source: protected
 `build/stockpile-storage-native-zone-animals-20261026-112207` verifies both PET
 items against the native widget: its anchor texture equals the original tile

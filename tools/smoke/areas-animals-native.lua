@@ -198,6 +198,54 @@ local function capture(label,keep_mouse)
     end
    end
   end
+  if label=='Pen-picker' or label=='Pond-picker' or label=='Pen-assigned-picker' or label=='Pond-assigned-picker' or label=='Pond-filled-status' then
+   record.status_icons={}
+   record.status_globals={}
+   for key,rva in pairs{pasture=0x264aff8,pit=0x264affc,pond=0x264b000,fallback=0x2687a00}do
+    local texpos=df.reinterpret_cast('int32_t',image_base+rva).value
+    local source={texture=texpos}
+    for _,page in ipairs(df.global.texture.page)do
+     for index,value in ipairs(page.texpos)do
+      if value==texpos then source.page=page.token;source.x=index%page.page_dim_x;source.y=index//page.page_dim_x;break end
+     end
+     if source.page then break end
+    end
+    record.status_globals[key]=source
+   end
+   for _,row in ipairs(rows)do
+    if (row.unit_id or row.item_id) and row.active and (row.flags&2)~=0 then
+     local subject=row.unit_id and df.unit.find(row.unit_id) or df.item.find(row.item_id)
+     local status={id=subject.id,entity=row.unit_id and 1 or 2,rect={row.x,row.y,row.x2,row.y2},refs={},cells={}}
+     if row.unit_id then status.flags1=subject.flags1.whole end
+     for _,ref in ipairs(subject.general_refs)do
+      local building=ref:getBuilding();local item=ref:getItem()
+      local fact={kind=ref:getType(),building=building and building.id or -1,item=item and item.id or -1}
+      if item then
+       fact.item_type=item:getType();fact.material=item:getMaterial();fact.material_index=item:getMaterialIndex()
+       fact.item_refs={}
+       for _,nested in ipairs(item.general_refs)do
+        local unit=nested:getUnit();local inside=nested:getItem()
+        fact.item_refs[#fact.item_refs+1]={kind=nested:getType(),unit=unit and unit.id or -1,item=inside and inside.id or -1}
+       end
+      end
+      status.refs[#status.refs+1]=fact
+     end
+     for y=math.max(0,row.y-2),math.min(g.dimy-1,row.y2+1)do for x=row.x+23,math.min(g.dimx-1,row.x+31)do
+      local idx=x*g.dimy+y
+      local texpos=g.screentexpos_anchored[idx]
+      if texpos>0 then
+       local cell={x=x,y=y,texture=texpos,offset_x=g.screentexpos_anchored_x[idx],offset_y=g.screentexpos_anchored_y[idx]}
+       status.cells[#status.cells+1]=cell
+       if not dumped_portraits[texpos]then
+        local text,code=dfhack.run_command_silent('df3d','appearance','texture',tostring(texpos),out..'/animal-status-'..texpos)
+        assert(code==0 and text:find('DF3D_TEXTURE_DUMP_PASS',1,true),text);dumped_portraits[texpos]=true
+       end
+      end
+     end end
+     record.status_icons[#record.status_icons+1]=status
+    end
+   end
+  end
   record.item_portrait_anchors={}
   for _,row in ipairs(rows)do
    if row.portrait_item_id and row.active and (row.flags&2)~=0 and label=='Pond-picker' then
@@ -416,7 +464,20 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
  pixel(304,114);capture(probe[1]..'-zone')
  pixel(336,154);local opened=capture(probe[1]..'-picker')
  if probe[1]=='Pen' or probe[1]=='Pond' then navigation(probe[1],opened) end
- if probe[1]=='Pond' then controls('Pond');opened=capture('Pond-controls-reset-picker') end
+ if probe[1]=='Pond' then
+  local previous=zone.zone_settings.pond.flag.keep_filled
+  zone.zone_settings.pond.flag.keep_filled=true
+  local filled=capture('Pond-filled-status')
+  for _,status in ipairs(filled.status_icons)do
+   for _,ref in ipairs(status.refs)do
+    if status.entity==1 and ref.kind==31 and ref.building>=0 then
+     assert(#status.cells>0 and status.cells[1].texture==filled.status_globals.pond.texture,'filled Pond status differs')
+    end
+   end
+  end
+  zone.zone_settings.pond.flag.keep_filled=previous
+  controls('Pond');opened=capture('Pond-controls-reset-picker')
+ end
  if kind=='Pen' then
   pen_zone=zone.id
   for _,entry in ipairs(opened.entries)do if entry.kind==0 and df.unit.find(entry.id).flags1.caged then chosen_unit=entry.id;break end end

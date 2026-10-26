@@ -11622,5 +11622,496 @@
       "Actual captured items are PET; VERMIN dispatch shares this static branch but needs a live fixture.",
       "Native cached texture exports stay ignored and are never runtime inputs."
     ]
+  },
+  "animal_status_reference": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-113847",
+    "owned_df_pid": 123620,
+    "source_unchanged": true,
+    "unit_callback_rva": "0x3d0260",
+    "item_callback_rva": "0x3a8200",
+    "cage_chain_renderer_rva": "0x3acdc0",
+    "original_tiles": {
+      "fallback": {
+        "page": "DEFAULTS",
+        "texture": 119269,
+        "x": 0,
+        "y": 1
+      },
+      "pasture": {
+        "page": "ICONS_UNIT_SELECTOR",
+        "texture": 128777,
+        "x": 0,
+        "y": 0
+      },
+      "pit": {
+        "page": "ICONS_UNIT_SELECTOR",
+        "texture": 128778,
+        "x": 1,
+        "y": 0
+      },
+      "pond": {
+        "page": "ICONS_UNIT_SELECTOR",
+        "texture": 128779,
+        "x": 2,
+        "y": 0
+      }
+    },
+    "samples": [
+      {
+        "capture": "Pen-picker",
+        "entity": 1,
+        "id": 6960,
+        "name_rect": [
+          52,
+          21,
+          78,
+          20
+        ],
+        "anchor_cell": [
+          77,
+          19
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "item_composite",
+        "references": [
+          {
+            "building": -1,
+            "item": 28448,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6960
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 3
+          }
+        ],
+        "native_rgba_sha256": "9fdeaa18c6b6ed8c821759b18dbb9467042397ae78d099210a5eacf998a3d7fd"
+      },
+      {
+        "capture": "Pen-picker",
+        "entity": 1,
+        "id": 6961,
+        "name_rect": [
+          52,
+          24,
+          78,
+          23
+        ],
+        "anchor_cell": [
+          77,
+          22
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "item_composite",
+        "references": [
+          {
+            "building": -1,
+            "item": 28459,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6961
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 16
+          }
+        ],
+        "native_rgba_sha256": "fe3caf7913b0248f7cab23c49776bd0273e0a5b92e629c0cbc2d58cae67e3558"
+      },
+      {
+        "capture": "Pen-assigned-picker",
+        "entity": 1,
+        "id": 6960,
+        "name_rect": [
+          52,
+          9,
+          78,
+          8
+        ],
+        "anchor_cell": [
+          77,
+          7
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "pasture",
+        "references": [
+          {
+            "building": -1,
+            "item": 28448,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6960
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 3
+          },
+          {
+            "building": 1490,
+            "item": -1,
+            "kind": 31
+          }
+        ],
+        "native_rgba_sha256": "592bbdd34222ce10e45dda4ef3c99308d2524a743907845bac25a2ec2520cf96"
+      },
+      {
+        "capture": "Pen-assigned-picker",
+        "entity": 1,
+        "id": 6961,
+        "name_rect": [
+          52,
+          24,
+          78,
+          23
+        ],
+        "anchor_cell": [
+          77,
+          22
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "item_composite",
+        "references": [
+          {
+            "building": -1,
+            "item": 28459,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6961
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 16
+          }
+        ],
+        "native_rgba_sha256": "fe3caf7913b0248f7cab23c49776bd0273e0a5b92e629c0cbc2d58cae67e3558"
+      },
+      {
+        "capture": "Pond-picker",
+        "entity": 1,
+        "id": 6960,
+        "name_rect": [
+          52,
+          9,
+          78,
+          8
+        ],
+        "anchor_cell": [
+          77,
+          7
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "pit",
+        "references": [
+          {
+            "building": -1,
+            "item": 28448,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6960
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 3
+          },
+          {
+            "building": 1490,
+            "item": -1,
+            "kind": 31
+          }
+        ],
+        "native_rgba_sha256": "2f89a62359bf9735a8e5c00fbed1102836d117100ae28dcfbdb5282bda7d1456"
+      },
+      {
+        "capture": "Pond-picker",
+        "entity": 1,
+        "id": 6961,
+        "name_rect": [
+          52,
+          12,
+          78,
+          11
+        ],
+        "anchor_cell": [
+          77,
+          10
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "item_composite",
+        "references": [
+          {
+            "building": -1,
+            "item": 28459,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6961
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 16
+          }
+        ],
+        "native_rgba_sha256": "fe3caf7913b0248f7cab23c49776bd0273e0a5b92e629c0cbc2d58cae67e3558"
+      },
+      {
+        "capture": "Pond-filled-status",
+        "entity": 1,
+        "id": 6960,
+        "name_rect": [
+          52,
+          9,
+          78,
+          8
+        ],
+        "anchor_cell": [
+          77,
+          7
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "pond",
+        "references": [
+          {
+            "building": -1,
+            "item": 28448,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6960
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 3
+          },
+          {
+            "building": 1490,
+            "item": -1,
+            "kind": 31
+          }
+        ],
+        "native_rgba_sha256": "0c01c5fe8cace90a4f667fe142949fd5f7a9794e9b7062cada0599f1c826ca8a"
+      },
+      {
+        "capture": "Pond-filled-status",
+        "entity": 1,
+        "id": 6961,
+        "name_rect": [
+          52,
+          12,
+          78,
+          11
+        ],
+        "anchor_cell": [
+          77,
+          10
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "item_composite",
+        "references": [
+          {
+            "building": -1,
+            "item": 28459,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6961
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 16
+          }
+        ],
+        "native_rgba_sha256": "fe3caf7913b0248f7cab23c49776bd0273e0a5b92e629c0cbc2d58cae67e3558"
+      },
+      {
+        "capture": "Pond-assigned-picker",
+        "entity": 2,
+        "id": 5969,
+        "name_rect": [
+          52,
+          9,
+          72,
+          8
+        ],
+        "anchor_cell": [
+          77,
+          7
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "pit",
+        "references": [
+          {
+            "building": -1,
+            "item": 5968,
+            "item_refs": [
+              {
+                "item": 5969,
+                "kind": 10,
+                "unit": -1
+              },
+              {
+                "item": -1,
+                "kind": 36,
+                "unit": -1
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 16
+          },
+          {
+            "building": 1492,
+            "item": -1,
+            "kind": 31
+          }
+        ],
+        "native_rgba_sha256": "2f89a62359bf9735a8e5c00fbed1102836d117100ae28dcfbdb5282bda7d1456"
+      },
+      {
+        "capture": "Pond-assigned-picker",
+        "entity": 1,
+        "id": 6960,
+        "name_rect": [
+          52,
+          12,
+          78,
+          11
+        ],
+        "anchor_cell": [
+          77,
+          10
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "item_composite",
+        "references": [
+          {
+            "building": -1,
+            "item": 28448,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6960
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 3
+          }
+        ],
+        "native_rgba_sha256": "9fdeaa18c6b6ed8c821759b18dbb9467042397ae78d099210a5eacf998a3d7fd"
+      },
+      {
+        "capture": "Pond-assigned-picker",
+        "entity": 1,
+        "id": 6961,
+        "name_rect": [
+          52,
+          15,
+          78,
+          14
+        ],
+        "anchor_cell": [
+          77,
+          13
+        ],
+        "anchor_offset": [
+          2,
+          2
+        ],
+        "kind": "item_composite",
+        "references": [
+          {
+            "building": -1,
+            "item": 28459,
+            "item_refs": [
+              {
+                "item": -1,
+                "kind": 9,
+                "unit": 6961
+              }
+            ],
+            "item_type": 16,
+            "kind": 11,
+            "material": 0,
+            "material_index": 16
+          }
+        ],
+        "native_rgba_sha256": "fe3caf7913b0248f7cab23c49776bd0273e0a5b92e629c0cbc2d58cae67e3558"
+      }
+    ],
+    "rules": [
+      "Unit first resolvable BUILDING_CIVZONE_ASSIGNED reference takes badge precedence over containment. First matching null reference falls through to containment.",
+      "Zone badge selects current picker type and keep_filled, not assigned zone type.",
+      "Item callback uses picker selection set; runtime must use owned semantic selection, not that widget set.",
+      "Cage artwork composites contained subject below material-tinted occupied cage; chained artwork uses the actual restraint item.",
+      "Status anchor x77 is 30 cells after portrait x47, overlapping the final name columns; native 1200x800 screen has top margin4."
+    ],
+    "limitations": [
+      "No status data or viewer implementation yet.",
+      "Live chained, planned cage/chain and missing-reference fallback cases are not covered.",
+      "Captured texture IDs/pixels are diagnostic only; no runtime rendering cache inputs."
+    ]
   }
 }

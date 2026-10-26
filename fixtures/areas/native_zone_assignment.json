@@ -3857,5 +3857,139 @@
       "native_sha256": "6192f3bff919ace96c8cc63d1f771f0f1f5658ba7b723676dba472cdcc2c7ab9",
       "viewer_sha256": "6192f3bff919ace96c8cc63d1f771f0f1f5658ba7b723676dba472cdcc2c7ab9"
     }
+  },
+  "owner_hover_audit": {
+    "run": "build/stockpile-storage-native-zone-owner-20261026-051351",
+    "owned_df_pid": 124244,
+    "source_preservation": "Unchanged; owned DF closed unsaved",
+    "observations": [
+      {
+        "cursor": 0,
+        "enabled": true,
+        "hover": 234,
+        "mouse": [
+          796,
+          106
+        ],
+        "name": "owner-hover-recenter",
+        "help_lines": [
+          "Leave this menu and",
+          "recenter on this",
+          "creature.",
+          "",
+          "Hotkey: Ctrl+c",
+          ""
+        ]
+      },
+      {
+        "cursor": 0,
+        "enabled": true,
+        "hover": -1,
+        "mouse": [
+          500,
+          730
+        ],
+        "name": "owner-hover-filter",
+        "help_lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "cursor": 0,
+        "enabled": false,
+        "hover": -1,
+        "mouse": [
+          688,
+          730
+        ],
+        "name": "owner-hover-filter-icon",
+        "help_lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "cursor": 0,
+        "enabled": false,
+        "hover": -1,
+        "mouse": [
+          500,
+          172
+        ],
+        "name": "owner-hover-row-third",
+        "help_lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "cursor": 0,
+        "enabled": false,
+        "hover": -1,
+        "mouse": [
+          394,
+          172
+        ],
+        "name": "owner-hover-portrait-third",
+        "help_lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "cursor": 0,
+        "enabled": false,
+        "hover": -1,
+        "mouse": [
+          464,
+          70
+        ],
+        "name": "owner-hover-header-name",
+        "help_lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "cursor": 0,
+        "enabled": false,
+        "hover": -1,
+        "mouse": [
+          800,
+          700
+        ],
+        "name": "owner-hover-blank",
+        "help_lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "scope": "Maintained native GPS pointer/focus plus native input/render loop. Recenter hover234 and rendered help are the positive control; all tested row/portrait/header hovers retain cursor0. Text sampled immediately after native render; asynchronous screenshots are not accepted hover appearance evidence. Filter activation remains unresolved. Recenter close-menu effect and Ctrl+c still need native action checks."
   }
 }

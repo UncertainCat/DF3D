@@ -392,6 +392,15 @@ and PageDown/PageUp moves16/0. PageDown reveals ordinal1 as the first row.
 DF113784 closes unsaved and the source manifest matches. CURSOR_DOWN/UP are
 map bindings and do not establish picker navigation.
 
+Protected owner-hover051351 keeps the native pointer/focus through the input and
+render loop. Recenter hover234 renders the native instruction and Ctrl+c hint,
+providing a positive control; third-row, portrait and header hovers retain
+selection0. Plain posted motion is insufficient on the hidden desktop: SDL
+resets GPS coordinates to-1. Rendered glyph observations are retained in
+native_zone_assignment.json; asynchronous hover screenshots are not appearance
+acceptance. Filter hover activation, recenter tooltip styling, Ctrl+c and the
+recenter instruction's leave-menu effect remain unresolved.
+
 The owner view routes unfocused arrow/numpad and page keys through the main
 controller, updates selection artwork and scrolls in36-pixel rows with a16-row
 page. New receipts reset selection; continuation pages retain it. Pending

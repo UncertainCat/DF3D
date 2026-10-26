@@ -365,6 +365,35 @@ local function window_input(label,action,observe)
  end
  assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');if observe~=false then input_state(label)end
 end
+-- Hidden-desktop SDL polls reset GPS mouse coordinates. Retain pointer/focus
+-- during the native input/render loop. Recenter supplies a positive control.
+-- Sample rendered glyphs immediately; asynchronous screenshots lose this pointer.
+local previous_tracking=df.global.enabler.tracking_on
+local previous_focus=df.global.enabler.mouse_focus
+for _,probe in ipairs{{'recenter',796,106},{'filter',500,730},{'filter-icon',688,730},{'row-third',500,172},{'portrait-third',394,172},{'header-name',464,70},{'blank',800,700}}do
+ local function move()
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3];g.mouse_x=probe[2]//8;g.mouse_y=(probe[3]-4)//12
+  gui.simulateInput(view,{})
+ end
+ local deadline=dfhack.getTickCount()+900
+ repeat move();view:render(dfhack.getTickCount());script.sleep(1,'frames') until dfhack.getTickCount()>=deadline
+ move();view:render(dfhack.getTickCount())
+ local list=assert(unit_list(selector,0));local main=df.global.game.main_interface
+ local text={}
+ for y=0,g.dimy-1 do
+  local line='';for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y).ch;line=line..string.char(t>=32 and t<=255 and t or 32)end
+  text[#text+1]=dfhack.df2utf(line)
+ end
+ records[#records+1]={name='owner-hover-'..probe[1],cursor=list.cursor_idx,mouse={g.precise_mouse_x,g.precise_mouse_y},hover=main.current_hover,enabled=main.hover_instructions_on,text=text}
+ assert(list.cursor_idx==0,'native hover changed owner selection: '..probe[1])
+ if probe[1]=='recenter' then
+  assert(main.hover_instructions_on and main.current_hover==234,'native recenter hover positive control failed')
+  assert(text[1]:find('Leave this menu and',1,true) and text[5]:find('Hotkey: Ctrl+c',1,true),'native recenter help changed')
+ end
+end
+df.global.enabler.tracking_on=previous_tracking;df.global.enabler.mouse_focus=previous_focus
+gui.simulateInput(view,'STANDARDSCROLL_PAGEUP');view:render(dfhack.getTickCount())
 input_state('initial')
 window_input('ctrl-f','control-f')
 -- PostMessage modifier state is tracked by SDL, but Windows TranslateMessage

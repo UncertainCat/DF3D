@@ -1,5 +1,6 @@
-param([string]$CloneEvidence='build/native-save-effects-20260930-081415',[switch]$Repaint,[switch]$Links,[switch]$Rename,[switch]$ZoneRename,[switch]$Tooltips,[switch]$RenameText,[switch]$PaintGestures,[switch]$TilePredicates,[ValidateSet("partial-escape","partial-right","complete-escape","complete-right","brush","eligibility","eligibility-create","eligibility-grow","eligibility-erase","transfer-partial","transfer-full","transfer-create-partial","transfer-create-full","transfer-erase-partial","transfer-erase-full")][string]$GestureCase="partial-escape",[ValidateSet("all","floor","wall","water1","water2","water7","magma1","building1","building2","hidden","ramp","open","all-wall","wall-left","wall-right")][string]$EligibilityCase="all")
+param([string]$CloneEvidence='build/native-save-effects-20260930-081415',[switch]$Repaint,[switch]$Links,[switch]$Rename,[switch]$ZoneRename,[switch]$ZoneGather,[switch]$Tooltips,[switch]$RenameText,[switch]$PaintGestures,[switch]$TilePredicates,[ValidateSet("partial-escape","partial-right","complete-escape","complete-right","brush","eligibility","eligibility-create","eligibility-grow","eligibility-erase","transfer-partial","transfer-full","transfer-create-partial","transfer-create-full","transfer-erase-partial","transfer-erase-full")][string]$GestureCase="partial-escape",[ValidateSet("all","floor","wall","water1","water2","water7","magma1","building1","building2","hidden","ramp","open","all-wall","wall-left","wall-right")][string]$EligibilityCase="all")
 $ErrorActionPreference='Stop'
+if($ZoneGather -and ($Rename -or $ZoneRename -or $Repaint -or $Links -or $Tooltips -or $RenameText -or $PaintGestures -or $TilePredicates)){throw 'ZoneGather is a separate native settings scope'}
 if($ZoneRename) {
  if($Repaint -or $Links -or $Tooltips -or $RenameText -or $PaintGestures -or $TilePredicates){throw 'ZoneRename is a separate native rename scope'}
  $Rename=$true
@@ -18,7 +19,7 @@ function Manifest {
  } | Sort-Object) -join "`n")
 }
 if((Manifest) -cne $expected){throw 'Owned source differs from verified manifest'}
-$scope=if($ZoneRename){'zone-rename'}elseif($RenameText){'rename-text'}elseif($Tooltips){'tooltips'}elseif($Links){'links'}elseif($PaintGestures){"gestures-$GestureCase-$EligibilityCase"}elseif($Repaint){'repaint'}else{'input'}
+$scope=if($ZoneGather){'zone-gather'}elseif($ZoneRename){'zone-rename'}elseif($RenameText){'rename-text'}elseif($Tooltips){'tooltips'}elseif($Links){'links'}elseif($PaintGestures){"gestures-$GestureCase-$EligibilityCase"}elseif($Repaint){'repaint'}else{'input'}
 $out="$repo/build/stockpile-storage-native-$scope-$(Get-Date -Format yyyyMMdd-HHmmss)"
 New-Item -ItemType Directory -Path $out | Out-Null
 Add-Type -ReferencedAssemblies System.Drawing -TypeDefinition @"
@@ -78,7 +79,7 @@ try {
  $linksArg=if($Links){'true'}else{'false'}
  $predicateArg=if($TilePredicates){'true'}else{'false'}
  $gestureArg=if($PaintGestures){"'$GestureCase'"}else{'false'}
- $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_storage_native.lua]==]))([==[$out]==],$repaintArg,$gestureArg,'$EligibilityCase',$predicateArg,$linksArg,$($Rename.ToString().ToLower()),$($Tooltips.ToString().ToLower()),$($RenameText.ToString().ToLower()),$($ZoneRename.ToString().ToLower()))")
+ $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_storage_native.lua]==]))([==[$out]==],$repaintArg,$gestureArg,'$EligibilityCase',$predicateArg,$linksArg,$($Rename.ToString().ToLower()),$($Tooltips.ToString().ToLower()),$($RenameText.ToString().ToLower()),$($ZoneRename.ToString().ToLower()),$($ZoneGather.ToString().ToLower()))")
  $r | ConvertTo-Json | Set-Content "$out/native.log"
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)

@@ -1,0 +1,118 @@
+{
+  "source": "DF53.16 native Gather Fruit chooser, creation and three setting toggles on a protected paused fortress",
+  "run": "build/stockpile-storage-native-zone-gather-20261025-193236",
+  "scope": "Native viewport creation default flags7; trees7/6/7,shrubs7/5/7,fallen7/3/7. Other flags and active state unchanged. Owned DF119116 closed unsaved; source manifest unchanged; frame0 throughout.",
+  "files_sha256": {
+    "result.json": "530134a6bdc921a274d169694a22022d0b24d9500010184b80f1a78e9bc5c997",
+    "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+    "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+    "gather-created.png": "526c9277c6a7b99222ff912ab2bc0eebb5c321fd060447c88b3a7c9ecb8136c2",
+    "gather-fallen-off.png": "0bb6db3f74340f6e7bc2fc11053a0a72b90d146c03d27f6ba5c07ee07d8fd7af",
+    "gather-fallen-on.png": "526c9277c6a7b99222ff912ab2bc0eebb5c321fd060447c88b3a7c9ecb8136c2"
+  },
+  "native_inline_effect": {
+    "handler": "0x311c10",
+    "type_guard": "0x34b7ba..0x34b7c9 compares zone type0x5b",
+    "trees": "0x34b81e..0x34b83f XOR bit1 of building+0x164",
+    "shrubs": "0x34b893..0x34b8b4 XOR bit2 of building+0x164",
+    "fallen": "0x34b905..0x34b926 XOR bit4 of building+0x164",
+    "scope": "Each native handler writes only the corresponding zone flag and consumes the UI click, then returns. No native helper, membership refresh or other gameplay side effect in these branches. Runtime can apply the verified field mutation by semantic intent, without accessing native UI scratch.",
+    "start": "0x34b7ba",
+    "end": "0x34b92b",
+    "sha256": "ade648accc80390368cdadf6d19c1ea5cb2ab011a5969704e27d292e92098ca5"
+  },
+  "observations": [
+    {
+      "active": true,
+      "fallen": true,
+      "flags": 7,
+      "frame": 0,
+      "id": 1490,
+      "name": "gather-created",
+      "shrubs": true,
+      "trees": true,
+      "type": "PlantGathering"
+    },
+    {
+      "active": true,
+      "fallen": true,
+      "flags": 6,
+      "frame": 0,
+      "id": 1490,
+      "name": "gather-trees-off",
+      "shrubs": true,
+      "trees": false,
+      "type": "PlantGathering"
+    },
+    {
+      "active": true,
+      "fallen": true,
+      "flags": 7,
+      "frame": 0,
+      "id": 1490,
+      "name": "gather-trees-on",
+      "shrubs": true,
+      "trees": true,
+      "type": "PlantGathering"
+    },
+    {
+      "active": true,
+      "fallen": true,
+      "flags": 5,
+      "frame": 0,
+      "id": 1490,
+      "name": "gather-shrubs-off",
+      "shrubs": false,
+      "trees": true,
+      "type": "PlantGathering"
+    },
+    {
+      "active": true,
+      "fallen": true,
+      "flags": 7,
+      "frame": 0,
+      "id": 1490,
+      "name": "gather-shrubs-on",
+      "shrubs": true,
+      "trees": true,
+      "type": "PlantGathering"
+    },
+    {
+      "active": true,
+      "fallen": false,
+      "flags": 3,
+      "frame": 0,
+      "id": 1490,
+      "name": "gather-fallen-off",
+      "shrubs": true,
+      "trees": true,
+      "type": "PlantGathering"
+    },
+    {
+      "active": true,
+      "fallen": true,
+      "flags": 7,
+      "frame": 0,
+      "id": 1490,
+      "name": "gather-fallen-on",
+      "shrubs": true,
+      "trees": true,
+      "type": "PlantGathering"
+    }
+  ],
+  "viewer_acceptance": {
+    "run": "build/areas-acceptance-20261025-194608",
+    "offline_gate": "build/qa/zone-gather-ready",
+    "management_version": 61,
+    "installed_bridge_sha256": "b11f547ecf336abba3252538612a5e2af257f7ed08e7618b6ceb1edf976c8d7e",
+    "scope": "Actual main-scene Gather Fruit creation, independent off/on clicks for all three flags, exact native readback, observed fallen field and removal.11 native observations. Both fallen icon states inspected. Owned DF112112 closed unsaved; both save manifests unchanged. Known Godot separate-thread notice only. Zones remains staged; no broader Zone completion claim.",
+    "files_sha256": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "scene_zone_fallen_0.png": "1f14928c1bdfd44a1b3f40a03b676d094fe7c0436febce72b2849c1bf182aeb3",
+      "scene_zone_fallen_1.png": "9f288e7106ea94900628a913f33c89fb0f5b4b7f8a6204a9a861893711f2c0d9"
+    }
+  }
+}

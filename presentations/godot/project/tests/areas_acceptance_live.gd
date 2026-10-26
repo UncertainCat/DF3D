@@ -262,7 +262,7 @@ func candidates_and_zones() -> void:
 	step = "7 zone settings and assignments"
 	for entry in [["Pond", "pond_mode", [1,2]], ["ArcheryRange", "facing", [1,2,3,4]],
 		["Tomb", "tomb_citizens", [0,1]], ["Tomb", "tomb_pets", [0,1]],
-		["PlantGathering", "gather_trees", [0,1]], ["PlantGathering", "gather_shrubs", [0,1]]]:
+		["PlantGathering", "gather_trees", [0,1]], ["PlantGathering", "gather_shrubs", [0,1]], ["PlantGathering", "gather_fallen", [0,1]]]:
 		var id := zone(entry[0])
 		if id < 0: continue
 		for value in entry[2]:
@@ -335,7 +335,7 @@ func created_zone_defaults() -> void:
 		var area: Dictionary = made.areas[0]
 		await native("snapshot", {"id":int(area.id), "expected":{"zone_type":int(choice.id), "active":true, "tile_count":4}})
 		var defaults: Dictionary = {"Pond":{"pond_mode":1}, "ArcheryRange":{"facing":2},
-			"Tomb":{"tomb_citizens":1, "tomb_pets":0}, "PlantGathering":{"gather_trees":1, "gather_shrubs":1}}
+			"Tomb":{"tomb_citizens":1, "tomb_pets":0}, "PlantGathering":{"gather_trees":1, "gather_shrubs":1, "gather_fallen":1}}
 		if defaults.has(choice.name): await native("zone_settings", {"id":int(area.id), "expected":defaults[choice.name]})
 		await request({"action":12, "kind":1, "id":int(area.id), "expected_revision":area.revision})
 		await native("removed", {"id":int(area.id)})

@@ -443,12 +443,12 @@ def main():
     assert not adapter(lua.table_from({"step": 2049, "builder_kind": 5, "epoch": 1}))["ok"]
     assert not adapter(lua.table_from({"step": 1, "builder_kind": 4, "epoch": 1}))["ok"]
     for zone_type, key, expected in [(2, "pond_mode", 2), (3, "facing", 3),
-                                     (4, "tomb_pets", 0), (5, "gather_trees", 1)]:
+                                     (4, "tomb_pets", 0), (5, "gather_trees", 1), (5, "gather_fallen", 1)]:
         lua.execute("""
         local names={[2]='Pond',[3]='ArcheryRange',[4]='Tomb',[5]='PlantGathering'}
         for id,label in pairs(names)do df.civzone_type[id]=label end
         zone.zone_settings={pond={flag={keep_filled=true}},archery={dir_x=0,dir_y=-1},
-         tomb={flags={no_pets=true,no_citizens=false}},gather={flags={pick_trees=true,pick_shrubs=false}}}
+         tomb={flags={no_pets=true,no_citizens=false}},gather={flags={pick_trees=true,pick_shrubs=false,gather_fallen=true}}}
         """)
         lua.globals().zone["type"] = zone_type
         row = call(9, {"kind": 1, "id": 6})["areas"][1]
@@ -462,14 +462,18 @@ def main():
 
     for zone_type, key, values in [(2, "pond_mode", [1, 2]), (3, "facing", [1, 2, 3, 4]),
                                     (4, "tomb_citizens", [0, 1]), (4, "tomb_pets", [1, 0]),
-                                    (5, "gather_trees", [0, 1]), (5, "gather_shrubs", [1, 0])]:
+                                    (5, "gather_trees", [0, 1]), (5, "gather_shrubs", [1, 0]), (5, "gather_fallen", [0, 1])]:
         lua.globals().zone["type"] = zone_type
         for value in values:
             before = lua.eval("notification_calls")
+            prior_settings = dict(call(9, {"kind": 1, "id": 6})["areas"][1]["zone_settings"].items())
             edited = call(11, zone_edit({key: value}))
             assert edited["ok"] and edited["steps"] == 16
             assert edited["areas"][1]["zone_settings"][key] == value
-            assert lua.eval("notification_calls") == before + 1
+            for other_key, prior_value in prior_settings.items():
+                if other_key != key:
+                    assert edited["areas"][1]["zone_settings"][other_key] == prior_value
+            assert lua.eval("notification_calls") == before + (0 if zone_type == 5 else 1)
         for other in [0, 2, 3, 4, 5]:
             if other == zone_type:
                 continue
@@ -480,7 +484,7 @@ def main():
             assert lua.eval("notification_calls") == before
     lua.globals().zone["type"] = 2
     for settings in [{}, {"pond_mode": 3}, {"pond_mode": 1.5}, {"pond_mode": True},
-                     {"facing": -1}, {"tomb_pets": -2}, {"gather_trees": 2}]:
+                     {"facing": -1}, {"tomb_pets": -2}, {"gather_trees": 2}, {"gather_fallen": -2}, {"gather_fallen": 2}, {"gather_fallen": True}]:
         assert call(11, zone_edit(settings))["message"] == "invalid area zone settings"
     before = lua.eval("notification_calls")
     assert not call(11, zone_edit({"pond_mode": 1}, 1))["ok"]
@@ -2584,7 +2588,7 @@ def main():
         if zone_type == 4:
             assert settings["tomb_pets"] == 0
         if zone_type == 5:
-            assert settings["gather_trees"] == 1 and settings["gather_shrubs"] == 1
+            assert settings["gather_trees"] == 1 and settings["gather_shrubs"] == 1 and settings["gather_fallen"] == 1
     owner = settings_adapter(create_request(kind=1, zone_type=0, owner_id=20, active=0))
     assert owner["ok"] and owner["areas"][1]["owner_id"] == 20 and not owner["areas"][1]["active"]
     lua.execute("force_notification_error=true")

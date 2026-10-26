@@ -153,7 +153,7 @@ func run() -> void:
 		typed.zone_type = definition.id; typed.zone_label = definition.label
 		typed.name = "Unnamed " + str(typed.zone_label).to_lower()
 		typed.owner_allowed = type_name in ["Bedroom","DiningHall","Office","Tomb"]
-		typed.zone_settings = {"pond_mode":1,"facing":2,"tomb_citizens":1,"tomb_pets":0,"gather_trees":1,"gather_shrubs":1}
+		typed.zone_settings = {"pond_mode":1,"facing":2,"tomb_citizens":1,"tomb_pets":0,"gather_trees":1,"gather_shrubs":1,"gather_fallen":1}
 		controller.use_area(typed); controller._process(0)
 		await process_frame; await RenderingServer.frame_post_draw
 		if root.get_texture().get_image().save_png(directory.path_join("controller_zone_"+type_name.to_lower()+".png")) != OK: quit(1); return

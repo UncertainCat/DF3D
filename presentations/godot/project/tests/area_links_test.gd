@@ -166,7 +166,7 @@ func run() -> void:
 	controller.handle_back(); service.poll()
 	check(world.calls.size() == count and service.result(owner_ticket).get("outcome","") == "not_sent","Back cancels queued owner mutation before dispatch")
 	check(controller.selected.owner_id == 21 and not controller.candidates_view.visible,"cancelled owner mutation preserves observed assignment")
-	var settings_cases := [["Pond","pond_mode",1,2],["ArcheryRange","facing",2,3],["Tomb","tomb_citizens",1,0],["Tomb","tomb_pets",0,1],["PlantGathering","gather_trees",1,0],["PlantGathering","gather_shrubs",0,1]]
+	var settings_cases := [["Pond","pond_mode",1,2],["ArcheryRange","facing",2,3],["Tomb","tomb_citizens",1,0],["Tomb","tomb_pets",0,1],["PlantGathering","gather_trees",1,0],["PlantGathering","gather_shrubs",0,1],["PlantGathering","gather_fallen",1,0]]
 	for index in settings_cases.size():
 		var item: Array = settings_cases[index]
 		var typed: Dictionary = zone.duplicate(true)

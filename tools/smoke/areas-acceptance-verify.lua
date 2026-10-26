@@ -364,7 +364,7 @@ elseif request.op=='zone_settings' then
   local x,y=v.archery.dir_x,v.archery.dir_y
   actual.facing=x==-1 and y==0 and 1 or x==1 and y==0 and 2 or x==0 and y==-1 and 3 or x==0 and y==1 and 4 or 0
  elseif typ=='Tomb' then actual.tomb_citizens=v.tomb.flags.no_citizens and 0 or 1;actual.tomb_pets=v.tomb.flags.no_pets and 0 or 1
- elseif typ=='PlantGathering' then actual.gather_trees=v.gather.flags.pick_trees and 1 or 0;actual.gather_shrubs=v.gather.flags.pick_shrubs and 1 or 0 end
+ elseif typ=='PlantGathering' then actual.gather_trees=v.gather.flags.pick_trees and 1 or 0;actual.gather_shrubs=v.gather.flags.pick_shrubs and 1 or 0;actual.gather_fallen=v.gather.flags.gather_fallen and 1 or 0 end
  check_properties(actual,request.expected,'zone_settings')
 elseif request.op=='candidates' then
  local b=building();local rows={};local U=dfhack.units

@@ -1,3 +1,48 @@
+## Zone gathering settings contract
+
+Management61 adds `AreaZoneSettings.gather_fallen` to observation and command
+payloads. Like tree/shrub gathering, it uses -1 for unknown/unspecified,0 for off
+and1 for on. Missing fields in old recordings remain unknown. Validators reject
+other values and recognize a fallen-only settings request as nonempty. Bridge,
+model and Godot must be rebuilt together; `Local\df3d_management_v61` separates
+live peers so older producers cannot silently ignore the added intent. This
+contract migration alone does not expose Zones or prove native action effects.
+
+`build/qa/zone-gather-ready` passes root CTest19/19, the management contract
+host/Godot round trip, area controls and the Lua adapter. Coverage includes the
+new field in command/reply codecs, unknown defaults, invalid values, a lone
+fallen-fruit setting, wrong-zone refusal and independent flag preservation.
+The matching MSVC bridge builds successfully.
+
+Native capture `build/stockpile-storage-native-zone-gather-20261025-193236`
+creates Gather Fruit through DF's chooser and toggles all three settings.
+Default flags are7; trees, shrubs and fallen fruit independently clear bits1,2
+and4, then restore them. Frame0 stays paused, owned DF119116 closes unsaved and
+the source manifest is unchanged. The fallen-fruit-off capture was inspected.
+`fixtures/areas/native_zone_gathering.json` retains observations and hashes.
+The shared capture runner accepts `-ZoneGather` as an exclusive diagnostic scope.
+
+Native handler0x311c10 guards PlantGathering at0x34b7ba..0x34b7c9, then writes
+only the corresponding bit at building+0x164 in0x34b81e..0x34b926. These branches
+consume the native click and return without helper calls or room-membership
+updates. The runtime therefore changes the verified semantic flag directly;
+it never calls the UI handler or reads its scratch. The previous DFHack room
+membership rebuild is removed for gathering toggles. Other zone types retain
+their existing behavior pending their separate audit.
+
+The existing fallen-fruit icon now receives an authoritative value and submits
+revision-checked settings edits. It is no longer permanently disabled by an
+omitted field. Zones remains staged until its complete workflow is accepted.
+
+Protected `build/areas-acceptance-20261025-194608` verifies11 native observations
+through the actual main scene: gathering-zone creation, each flag off/on with
+all three values checked after every click, and removal. Both fallen-fruit icon
+states were inspected against native. Owned DF112112 closes unsaved and both
+save manifests match. Only the known Godot separate-thread notice remains.
+Use `areas_acceptance.ps1 -ControllerScene -ZoneGatherOnly -SaveId
+<new-df3d-areas-name>` for this focused lane. The fixture retains live hashes
+and installed bridge identity; this is not full Zones acceptance.
+
 ## Native zone name entry
 
 Zone naming uses the same inline heading editor and service-owned pending-write

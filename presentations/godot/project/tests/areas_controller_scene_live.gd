@@ -76,7 +76,8 @@ func pointer_areas() -> void:
 	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
 	var stockpiles_only := FileAccess.file_exists(directory+"/stockpiles-only.json")
 	var zone_rename_only := FileAccess.file_exists(directory+"/zone-rename-only.json")
-	var destinations := ["Zones"] if zone_rename_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
+	var zone_gather_only := FileAccess.file_exists(directory+"/zone-gather-only.json")
+	var destinations := ["Zones"] if zone_rename_only or zone_gather_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
 	for destination in destinations:
 		step = "viewport "+destination
 		var launcher: Button = scene._fortress_hud.navigation[destination]
@@ -87,7 +88,7 @@ func pointer_areas() -> void:
 		await click_control(launcher,destination == "Zones")
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"pointer launcher"): return
 		if destination == "Zones":
-			await click_control(editor.zone_menu.buttons.Bedroom)
+			await click_control(editor.zone_menu.buttons.PlantGathering if zone_gather_only else editor.zone_menu.buttons.Bedroom)
 			if not check(editor.mode == "paint","zone button did not start painting"): return
 		var target := Vector3(origin.x+0.5,origin.z+float(world.floor_height()),origin.y+0.5)
 		var position: Vector2 = editor.camera.unproject_position(target)
@@ -109,10 +110,17 @@ func pointer_areas() -> void:
 		await native("snapshot",{"id":id,"expected":{"kind":0 if destination == "Stockpiles" else 1,"tile_count":1}})
 		if destination == "Zones":
 			await native("snapshot",{"id":id,"expected":{"custom_name":""}})
-			if not check(str(editor.selected.name) == "Unnamed bedroom" and editor.zone_menu.heading.text == "Unnamed bedroom","unnamed Bedroom must use native panel name"): return
+			var default_name := "Unnamed plant gathering area" if zone_gather_only else "Unnamed bedroom"
+			if not check(str(editor.selected.name) == default_name and editor.zone_menu.heading.text == default_name,"unnamed zone must use native panel name"): return
 		await capture(destination.to_lower()+"_created")
 		if stopped: return
 		if destination == "Zones":
+			if zone_gather_only:
+				await pointer_zone_gathering(id)
+				if stopped: return
+				await click_control(editor.zone_menu.controls.remove)
+				if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"remove gathering zone"): return
+				await native("removed",{"id":id}); await native("final"); return
 			await pointer_stockpile_name(origin)
 			if stopped: return
 			if zone_rename_only:
@@ -150,6 +158,25 @@ func pointer_areas() -> void:
 	if stopped: return
 	await native("final")
 	if not stopped: print("AREAS_POINTER_PASS")
+
+func pointer_zone_gathering(id: int) -> void:
+	step = "viewport native gathering flags"
+	var expected := {"gather_trees":1,"gather_shrubs":1,"gather_fallen":1}
+	if not check(editor.selected.zone_settings.gather_fallen == 1,"new gathering zone did not expose native fallen default"): return
+	await native("zone_settings",{"id":id,"expected":expected})
+	for key in expected.keys():
+		var button: Button
+		for index in editor.zone_menu.SETTINGS.size():
+			if str(editor.zone_menu.SETTINGS[index][1]) == key: button = editor.zone_menu.setting_buttons[index]
+		if not check(button != null and button.visible and not button.disabled,"gathering control unavailable: "+key): return
+		for value in [0,1]:
+			await click_control(button)
+			if not await wait_ui(settled,"gathering toggle "+key): return
+			expected[key] = value
+			await native("zone_settings",{"id":id,"expected":expected})
+			for other in expected:
+				if not check(int(editor.selected.zone_settings[other]) == int(expected[other]),"gathering observation differs for "+other): return
+			if key == "gather_fallen": await capture("zone_fallen_"+str(value))
 
 func stockpile_name_contract() -> void:
 	# Semantic field acceptance only; actual inline rename input is separate.

@@ -84,7 +84,7 @@ local function validate_operation(r,a)
    present=false
    if v~=false then
     if type(v)~='table' then present=true else
-     for _,key in ipairs{'pond_mode','facing','tomb_citizens','tomb_pets','gather_trees','gather_shrubs'} do
+     for _,key in ipairs{'pond_mode','facing','tomb_citizens','tomb_pets','gather_trees','gather_shrubs','gather_fallen'} do
       local empty=(key=='pond_mode' or key=='facing') and 0 or -1
       if default(v,key,empty)~=empty then present=true end
      end
@@ -148,7 +148,7 @@ local function validate_operation(r,a)
  if op==9 then
   local z=a.zone_settings;local present=false
   if type(z)~='table' then return 'invalid area zone settings' end
-  for _,key in ipairs{'pond_mode','facing','tomb_citizens','tomb_pets','gather_trees','gather_shrubs'} do
+  for _,key in ipairs{'pond_mode','facing','tomb_citizens','tomb_pets','gather_trees','gather_shrubs','gather_fallen'} do
    local empty=(key=='pond_mode' or key=='facing') and 0 or -1
    local upper=key=='pond_mode' and 2 or key=='facing' and 4 or 1
    local v=default(z,key,empty)
@@ -957,6 +957,7 @@ local function native_operation(r)
    elseif label=='PlantGathering' then
     settings.gather_trees=b.zone_settings.gather.flags.pick_trees and 1 or 0
     settings.gather_shrubs=b.zone_settings.gather.flags.pick_shrubs and 1 or 0
+    settings.gather_fallen=b.zone_settings.gather.flags.gather_fallen and 1 or 0
    end
    out.zone_settings=settings
   end
@@ -1315,7 +1316,7 @@ local function native_operation(r)
   local zone_type=df.civzone_type[b.type]
   for _,entry in ipairs{{'pond_mode','Pond',0},{'facing','ArcheryRange',0},
    {'tomb_citizens','Tomb',-1},{'tomb_pets','Tomb',-1},
-   {'gather_trees','PlantGathering',-1},{'gather_shrubs','PlantGathering',-1}} do
+   {'gather_trees','PlantGathering',-1},{'gather_shrubs','PlantGathering',-1},{'gather_fallen','PlantGathering',-1}} do
    if default(a.zone_settings,entry[1],entry[3])~=entry[3] and zone_type~=entry[2] then
     return reject('Setting '..entry[1]..' does not apply to this zone type')
    end
@@ -1379,9 +1380,14 @@ local function native_operation(r)
   if default(z,'tomb_pets',-1)~=-1 then native.tomb.flags.no_pets=z.tomb_pets==0 end
   if default(z,'gather_trees',-1)~=-1 then native.gather.flags.pick_trees=z.gather_trees==1 end
   if default(z,'gather_shrubs',-1)~=-1 then native.gather.flags.pick_shrubs=z.gather_shrubs==1 end
-  unknown_work=true
-  local notified=pcall(B.notifyCivzoneModified,b)
-  if not notified then return reject('Native zone notification failed; inspect before retrying') end
+  if default(z,'gather_fallen',-1)~=-1 then native.gather.flags.gather_fallen=z.gather_fallen==1 end
+  -- Native gathering handlers only change these bits (34b81e..34b926);
+  -- rebuilding room membership is unrelated to a gathering toggle.
+  if df.civzone_type[b.type]~='PlantGathering' then
+   unknown_work=true
+   local notified=pcall(B.notifyCivzoneModified,b)
+   if not notified then return reject('Native zone notification failed; inspect before retrying') end
+  end
  elseif op==5 then
   if default(a,'paint_z',-1)~=-1 and a.paint_z~=b.z then return reject("Paint must stay on the area's z level") end
   if default(r,'area_retire_capacity',0)<1 then return reject('Area retire capacity reached; restart DF3D bridge') end

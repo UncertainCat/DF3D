@@ -472,7 +472,7 @@ func set_zone_setting(key: String, value: int) -> void:
 	if selected.is_empty() or int(selected.kind) != 1 or request_ticket != 0 or not available: return
 	var settings: Dictionary = selected.get("zone_settings",{})
 	if not settings.has(key) or int(settings[key]) < 0 or int(settings[key]) == value: return
-	var allowed := {"pond_mode":[1,2],"facing":[1,2,3,4],"tomb_citizens":[0,1],"tomb_pets":[0,1],"gather_trees":[0,1],"gather_shrubs":[0,1]}
+	var allowed := {"pond_mode":[1,2],"facing":[1,2,3,4],"tomb_citizens":[0,1],"tomb_pets":[0,1],"gather_trees":[0,1],"gather_shrubs":[0,1],"gather_fallen":[0,1]}
 	if not allowed.has(key) or value not in allowed[key]: return
 	var request := selected_request(Action.AreaUpdate)
 	request.operation = Contract.AreaOperation.ZoneSettings

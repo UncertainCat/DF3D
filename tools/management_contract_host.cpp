@@ -15,6 +15,11 @@ void require(bool ok,const char* what){if(!ok)throw std::runtime_error(what);}
 // prove transport fidelity, not native effects or area-builder acceptance.
 void verifyAreaOperation(const m::AreaRequest& q) {
   const auto op=int(q.operation());
+  if(op==14 && q.candidate_kind()==3) {
+    require(q.id()==7 && q.kind()==m::AreaKind::Zone && q.sort()==0 && !q.sort_descending() &&
+      q.query() && q.query()->size()==0 && !q.query_bytes(),"squad symbol request");
+    return;
+  }
   if(op==14 && q.candidate_kind()==2) {
     require(q.id()==7 && q.kind()==m::AreaKind::Zone && q.sort()==2 && !q.sort_descending() &&
       q.query() && q.query()->size()==0 && !q.query_bytes(),"animal display request");
@@ -141,8 +146,10 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
     animalStatus=m::CreateAreaAnimalStatus(b,4,2,17);
     animalContainer=m::CreateAreaAnimalContainer(b,1,b.CreateString("TEST_COLOR"),1,9,occupant);
   }
+  const bool squad=q.operation()==m::AreaOperation::CandidateList && q.candidate_kind()==3;
+  const auto symbol=squad?m::CreateAreaSquadSymbol(b,22,0,127,255,233,61,7):flatbuffers::Offset<m::AreaSquadSymbol>{};
   const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15,ownerDisplay,ownerIcon,
-    animal?m::AreaCandidateEntity::Unit:m::AreaCandidateEntity::Unknown,animalDisplay,animalStatus,animalContainer);std::vector<flatbuffers::Offset<m::AreaCandidateRow>> candidateRows{candidate};
+    squad?m::AreaCandidateEntity::Squad:animal?m::AreaCandidateEntity::Unit:m::AreaCandidateEntity::Unknown,animalDisplay,animalStatus,animalContainer,{}, {},symbol);std::vector<flatbuffers::Offset<m::AreaCandidateRow>> candidateRows{candidate};
   if(animal) {
     const auto restraint=m::CreateAreaAnimalRestraint(b,true,b.CreateString("TEST_ROPE_COLOR"));
     const auto status=m::CreateAreaAnimalStatus(b,4,1,18);
@@ -728,7 +735,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);

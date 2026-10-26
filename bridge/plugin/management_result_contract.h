@@ -149,6 +149,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
       if(!table() || !number("id",-1,INT32_MAX,true) || !text("name",512) || !text("profession",512) || !number("sex",-1,1) || !number("mood",0,7) || !boolean("grazer") || !boolean("assigned") || !number("squad_use",-1,15))return false;
       const int top=lua_gettop(L);
       const bool animalItem=value("entity")==2 && value("id")>=0;
+      const bool squad=value("entity")==3 && value("id")>=0;
       const bool animalUnit=value("entity")==1 && value("id")>=0;lua_getfield(L,-1,"grazer");const bool grazer=lua_toboolean(L,-1);lua_pop(L,1);
       lua_getfield(L,-1,"animal_status");
       if(!lua_isnil(L,-1)) {
@@ -166,6 +167,15 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
         if(!table() || operation!=df3d::mirror::AreaOperation::CandidateList || candidateKind!=2 || !animalItem ||
            !number("foreground",0,7,true) || !number("background",0,7,true) || !number("bright",0,1,true))return bad("invalid animal item color");
         payload+=3;
+      }
+      lua_settop(L,top);
+      lua_getfield(L,-1,"squad_symbol");
+      if(!lua_isnil(L,-1)) {
+        if(!table() || operation!=df3d::mirror::AreaOperation::CandidateList || candidateKind!=3 || !squad ||
+           !number("index",0,22,true))return bad("invalid squad symbol");
+        for(const char* field:{"foreground_r","foreground_g","foreground_b","background_r","background_g","background_b"})
+          if(!number(field,0,255,true))return bad("invalid squad symbol");
+        payload+=7;
       }
       lua_settop(L,top);
       lua_getfield(L,-1,"animal_restraint");

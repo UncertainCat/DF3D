@@ -264,6 +264,16 @@ int main(int argc,char** argv) {
       test(A::AreaCandidates,input.c_str(),entity==2 && color=="{foreground=2,background=3,bright=1}",O::CandidateList);
     }
     const std::string ownerRow="id=21,name='native',profession='native',owner_display=";
+    for(int entity:{1,2,3})for(const std::string symbol:{
+      "{index=22,foreground_r=0,foreground_g=127,foreground_b=255,background_r=233,background_g=61,background_b=7}",
+      "false","{index=23,foreground_r=0,foreground_g=0,foreground_b=0,background_r=0,background_g=0,background_b=0}",
+      "{index=0,foreground_r=-1,foreground_g=0,foreground_b=0,background_r=0,background_g=0,background_b=0}",
+      "{index=0,foreground_r=256,foreground_g=0,foreground_b=0,background_r=0,background_g=0,background_b=0}",
+      "{index=0,foreground_r=true,foreground_g=0,foreground_b=0,background_r=0,background_g=0,background_b=0}",
+      "{index=0,foreground_r=0,foreground_g=0,foreground_b=0,background_r=0,background_g=0}"}) {
+      const auto input="return {"+envelope+"candidate_kind=3,candidates={{id=21,entity="+std::to_string(entity)+",name='native',profession='',squad_symbol="+symbol+"}}}";
+      test(A::AreaCandidates,input.c_str(),entity==3 && symbol.starts_with("{index=22,"),O::CandidateList);
+    }
     for(int mode=0;mode<8;++mode) {
       const auto display=mode==1?"false":std::string("{columns=")+(mode==2?"2":"45")+
         ",room_value="+(mode==3?"-1":mode==4?"1":"0")+",first_line="+(mode==5?"string.rep('x',385)":"'first'")+

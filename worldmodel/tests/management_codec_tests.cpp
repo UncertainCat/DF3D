@@ -2834,3 +2834,18 @@ TEST_CASE("animal item colors retain optionality and reject invalid palettes or 
     if(mode==5)CHECK_FALSE(codec::decodeArea(value->area()).candidates[0].animalItemColor);
   }
 }
+
+TEST_CASE("squad symbols preserve RGB bytes and reject wrong ownership or indices") {
+  for(int mode=0;mode<7;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto symbol=mode==6?flatbuffers::Offset<wire::AreaSquadSymbol>{}:wire::CreateAreaSquadSymbol(b,mode==1?23:22,0,127,255,233,61,7);
+    wire::AreaCandidateRowBuilder row(b);row.add_id(mode==2?-1:21);row.add_entity(mode==3?wire::AreaCandidateEntity::Unit:wire::AreaCandidateEntity::Squad);row.add_squad_symbol(symbol);
+    const auto rows=b.CreateVector(std::vector{row.Finish()});
+    wire::AreaStateBuilder area(b);area.add_candidates(rows);area.add_operation(mode==4?wire::AreaOperation::None:wire::AreaOperation::CandidateList);area.add_candidate_kind(mode==5?2:3);const auto a=area.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_area(a);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK((!wire::validateManagementState(*value).has_value())==(mode==0 || mode==6));
+    if(mode==0){const auto decoded=codec::decodeArea(value->area());REQUIRE(decoded.candidates[0].squadSymbol);CHECK((*decoded.candidates[0].squadSymbol==std::array<uint8_t,7>{22,0,127,255,233,61,7}));}
+    if(mode==6)CHECK_FALSE(codec::decodeArea(value->area()).candidates[0].squadSymbol);
+  }
+}

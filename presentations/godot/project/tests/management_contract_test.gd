@@ -741,6 +741,14 @@ func test_area_operations() -> void:
 	var restraint_row: Dictionary = animal_reply.area.candidates[1]
 	assert(restraint_row.animal_restraint == {"rope":true,"solid_color":"TEST_ROPE_COLOR"} and not restraint_row.has("animal_container"))
 	assert(animal_reply.area.candidates[2].animal_item_color == {"foreground":2,"background":3,"bright":1})
+	var squad_sequence: int = world.area_request({"action":A.AreaCandidates,"operation":Contract.AreaOperation.CandidateList,
+		"id":7,"kind":1,"candidate_kind":3,"query":""})
+	assert(squad_sequence > 0)
+	var squad_reply: Dictionary = await receipt(squad_sequence)
+	assert(not squad_reply.is_empty())
+	assert(squad_reply.area.candidates[0].entity == Contract.AreaCandidateEntity.Squad)
+	assert(squad_reply.area.candidates[0].squad_symbol == {"index":22,"foreground":[0,127,255],"background":[233,61,7]})
+	assert(not animal_row.has("squad_symbol"))
 	for variant in 3:
 		var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.PaintCounts,
 			"zone_type":92,"paint_z":32767,"count_generation":9223372036854775807 - variant}

@@ -136,6 +136,8 @@ struct AreaCandidateRow {
   std::optional<AreaAnimalContainer> animalContainer;
   std::optional<AreaAnimalRestraint> animalRestraint;
   std::optional<std::array<uint8_t,3>> animalItemColor;
+  // Saved symbol index, foreground RGB, background RGB (seven unsigned bytes).
+  std::optional<std::array<uint8_t,7>> squadSymbol;
 };
 struct AreaLinkRow { int32_t id=-1; AreaKind kind=AreaKind::Stockpile; uint8_t direction=0; std::string name; };
 struct LocationSupplyQuantity { uint8_t kind=0; int32_t stored=0,desired=0; };

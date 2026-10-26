@@ -282,7 +282,7 @@ struct NativeAreaLocation { int32_t id=-1; std::string name,religion; uint8_t ki
 struct NativeOwnerDisplay { uint16_t columns=45; std::string firstLine,secondLine,status; int32_t roomValue=0; std::optional<df3d_area::ZoneOwnerNameColor> nameColor; };
 struct NativeAnimalDisplay { uint16_t columns=27; std::string firstLine,secondLine; bool combinedFits=false; std::string warning; df3d_area::ZoneOwnerNameColor nameColor; };
 struct NativeAnimalContainer { df3d_area::ZoneAnimalContainer facts; ResidentAppearanceRecipe occupant; };
-struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; m::AreaCandidateEntity entity=m::AreaCandidateEntity::Unknown; std::optional<NativeAnimalDisplay> animalDisplay; std::optional<df3d_area::ZoneAnimalStatus> animalStatus; std::optional<NativeAnimalContainer> animalContainer; std::optional<df3d_area::ZoneAnimalRestraint> animalRestraint; std::optional<std::array<uint8_t,3>> animalItemColor; };
+struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; m::AreaCandidateEntity entity=m::AreaCandidateEntity::Unknown; std::optional<NativeAnimalDisplay> animalDisplay; std::optional<df3d_area::ZoneAnimalStatus> animalStatus; std::optional<NativeAnimalContainer> animalContainer; std::optional<df3d_area::ZoneAnimalRestraint> animalRestraint; std::optional<std::array<uint8_t,3>> animalItemColor; std::optional<std::array<uint8_t,7>> squadSymbol; };
 struct NativeAreaLink { int32_t id=-1; uint8_t kind=0,direction=0; std::string name; };
 struct NativeAreaPage {
   m::LocationEntryOutcome locationEntryOutcome=m::LocationEntryOutcome::None;
@@ -417,7 +417,9 @@ void publish() {
     if(v.animalRestraint)restraint=m::CreateAreaAnimalRestraint(b,v.animalRestraint->rope,b.CreateString(v.animalRestraint->solidColor));
     flatbuffers::Offset<m::AreaAnimalItemColor> itemColor;
     if(v.animalItemColor){const auto& c=*v.animalItemColor;itemColor=m::CreateAreaAnimalItemColor(b,c[0],c[1],c[2]);}
-    candidates.push_back(m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse,display,v.sheetIcon.build(b),v.entity,animalDisplay,animalStatus,container,restraint,itemColor));
+    flatbuffers::Offset<m::AreaSquadSymbol> squadSymbol;
+    if(v.squadSymbol){const auto& s=*v.squadSymbol;squadSymbol=m::CreateAreaSquadSymbol(b,s[0],s[1],s[2],s[3],s[4],s[5],s[6]);}
+    candidates.push_back(m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse,display,v.sheetIcon.build(b),v.entity,animalDisplay,animalStatus,container,restraint,itemColor,squadSymbol));
   }
   for(const auto& v:areaPage.links)links.push_back(m::CreateAreaLinkRow(b,v.id,m::AreaKind(v.kind),v.direction,b.CreateString(v.name)));
   flatbuffers::Offset<m::LocationCatalog> locationCatalog;
@@ -2734,6 +2736,9 @@ void run(color_ostream& out) {
       lua_pop(L,1);
       lua_getfield(L,-1,"animal_item_color");
       if(lua_istable(L,-1))row.animalItemColor=std::array<uint8_t,3>{uint8_t(number(L,"foreground")),uint8_t(number(L,"background")),uint8_t(number(L,"bright"))};
+      lua_pop(L,1);
+      lua_getfield(L,-1,"squad_symbol");
+      if(lua_istable(L,-1))row.squadSymbol=std::array<uint8_t,7>{uint8_t(number(L,"index")),uint8_t(number(L,"foreground_r")),uint8_t(number(L,"foreground_g")),uint8_t(number(L,"foreground_b")),uint8_t(number(L,"background_r")),uint8_t(number(L,"background_g")),uint8_t(number(L,"background_b"))};
       lua_pop(L,1);
       lua_getfield(L,-1,"animal_restraint");
       if(lua_istable(L,-1))row.animalRestraint=df3d_area::ZoneAnimalRestraint{boolean(L,"rope"),str("solid_color")};

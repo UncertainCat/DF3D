@@ -18,8 +18,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 68;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v68";
+inline constexpr uint32_t kManagementVersion = 69;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v69";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1004,6 +1004,11 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=2 || row->entity()!=AreaCandidateEntity::Item || row->id()<0 ||
            c->foreground()>7 || c->background()>7 || c->bright()>1)return "invalid animal item color";
         payload+=3;
+      }
+      if(const auto* s=row->squad_symbol()) {
+        if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=3 ||
+           row->entity()!=AreaCandidateEntity::Squad || row->id()<0 || s->index()>22)return "invalid squad symbol";
+        payload+=7;
       }
       if(const auto* r=row->animal_restraint()) {
         if(!row->animal_status() || row->animal_status()->kind()!=4 || row->animal_container() || textSize(r->solid_color())>128)return "invalid animal restraint";

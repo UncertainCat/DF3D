@@ -17,6 +17,25 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 
 ## Native squad assignment reference
 
+Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:
+saved index0..22, foreground RGB and background RGB. These are semantic bytes,
+not native texture IDs. Wire and Lua validation require a valid squad identity
+in a squad CandidateList and reject invalid indices, missing color components,
+nonintegral values and bytes outside0..255. The model and Godot binding retain
+absence when no symbol is supplied. Old recordings cannot establish missing
+symbol data; no migration invents it. Rebuild/install bridge and viewer together
+for `Local\\df3d_management_v69`. Snapshot/grid/session versions are unchanged.
+The schema migration supplies transport/validation only; the native producer
+and picker renderer are separate follow-up work.
+Core19/19 and Lua contract checks pass in `build/qa/squad-symbol-protocol69`.
+The Godot contract passes cleanly in its `-contract-final` rerun, after updating
+the fake producer's expected request sequence and payload checks for squads.
+MSVC and viewer builds pass. Protected semantic
+`build/areas-acceptance-20261026-171647` passes cleanly, including restart from
+DF142264 to DF138540 and unchanged source/owned-clone manifests (1,368 files).
+This verifies the protocol migration with optional symbols absent in live
+rows; populated live symbol transport still requires producer integration.
+
 `fixtures/areas/native_zone_squads.json` records protected native run
 `build/stockpile-storage-native-zone-squads-20261026-162633`. Native Barracks
 and Archery Range pickers show four fortress squads in the same order, with

@@ -282,6 +282,11 @@ func run() -> void:
 	if controller.candidates_view.owner_search.has_focus() or controller.stockpile_page != "owner":
 		push_error("First owner right-click must only leave textbox focus");quit(1);return
 	root.push_input(filter_shortcut,true)
+	var focused_recenter := InputEventKey.new();focused_recenter.pressed=true;focused_recenter.ctrl_pressed=true;focused_recenter.keycode=KEY_C
+	var focused_recenter_calls: int=world.calls.size()
+	root.push_input(focused_recenter,true)
+	if not controller.panel.visible or controller.stockpile_page!="owner" or not controller.candidates_view.owner_search.has_focus() or world.calls.size()!=focused_recenter_calls:
+		push_error("Focused Ctrl+C must remain in the owner filter");quit(1);return
 	var before_focus_calls: int = world.calls.size()
 	for code in [KEY_DOWN,KEY_ENTER]:
 		var focused_key := InputEventKey.new(); focused_key.keycode = code; focused_key.pressed = true

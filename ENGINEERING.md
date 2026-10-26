@@ -413,7 +413,19 @@ removal. Owned DF126212 closes unsaved; both manifests match, with only the know
 rendering-thread notice. Native DF127916 also closes unsaved with source
 unchanged. Offline owner-recenter-final passes core19/19 and viewport keyboard
 checks, including Remove and missing-position cases; GPU has known notices only.
-Focused Ctrl+C behavior is outside this native activation check.
+Native053525 separately verifies focused Ctrl+C retains filter focus and leaves
+the map/picker unchanged. Its posted-key plain `c` is the same Windows translation
+artifact as the Ctrl+F probe, not a product editing rule. The viewport regression
+in owner-focused-recenter preserves that focus route; core19/19 passes and GPU
+has known notices only.
+
+The same native run changes the first visible creature's first name while the
+picker stays open. Rendered glyphs and its screenshot show the new name in the
+same selected row without reopening. The fixture restores the name; DF70688
+closes unsaved and the source manifest matches. DF3D still holds candidate display
+snapshots, so this is evidence of a remaining live-refresh gap. Preserve local
+selection and scroll when refreshing facts; this probe does not establish native
+resorting, filter membership or eligibility-change behavior.
 
 The owner view routes unfocused arrow/numpad and page keys through the main
 controller, updates selection artwork and scrolls in36-pixel rows with a16-row

@@ -4050,5 +4050,67 @@
     "save_preservation": "Native source and both live manifests unchanged; owned processes closed unsaved.",
     "scope": "Actual native click and unfocused Control+C close selector and Zones and recenter without changing owner. Main-scene click/keyboard, camera target, released host, no mutation, reopening and subsequent assignment/removal verified. Focused Control+C and tooltip appearance remain outside this acceptance.",
     "offline": "owner-recenter-final: core19/19 and viewport tests passed, with known GPU notices; Remove row and missing unit position remain open without recenter."
+  },
+  "owner_open_refresh_audit": {
+    "native_run": "build/stockpile-storage-native-zone-owner-20261026-053525",
+    "owned_df_pid": 70688,
+    "save_preservation": "Controlled first name restored; owned DF closed unsaved; source manifest unchanged.",
+    "observations": [
+      {
+        "after": [
+          111,
+          87,
+          165
+        ],
+        "before": [
+          111,
+          87,
+          165
+        ],
+        "bottom_mode": 3,
+        "focused": true,
+        "name": "owner-recenter-focused-control-c",
+        "owner": -1,
+        "position": [
+          137,
+          98,
+          165
+        ],
+        "query": "c",
+        "selector_active": true,
+        "unit_id": 5981
+      },
+      {
+        "after": [
+          "                                             ",
+          "                                             ",
+          "OwnerRefreshProbe Rakustazin, king,          ",
+          "                                             ",
+          "                                             ",
+          "K\u00fbbuk \u00efngizkor, mayor,                       ",
+          "                                             ",
+          "                                             ",
+          "S\u00e5kzul N\u00e5zomkivish, militia commander,       "
+        ],
+        "before": [
+          "                                             ",
+          "                                             ",
+          "Unib Rakustazin, king,                       ",
+          "                                             ",
+          "                                             ",
+          "K\u00fbbuk \u00efngizkor, mayor,                       ",
+          "                                             ",
+          "                                             ",
+          "S\u00e5kzul N\u00e5zomkivish, militia commander,       "
+        ],
+        "cursor": 0,
+        "id": 5981,
+        "name": "owner-open-name-refresh",
+        "selector_active": true
+      }
+    ],
+    "scope": "Focused Ctrl+C leaves picker/focus/map unchanged. The query c is a posted-key Windows translation artifact, not an accepted product behavior. Changing the first visible unit name updates the same open native row while cursor0 remains selected. Native screenshot inspected. Filter/order/eligibility changes and other live metadata are not established by this name-only probe.",
+    "offline": "owner-focused-recenter core19/19 and actual viewport focus routing passed; GPU has three known notices.",
+    "production_gap": "DF3D owner candidate display is a snapshot; no open-panel metadata refresh is implemented yet."
   }
 }

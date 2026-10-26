@@ -396,23 +396,54 @@ df.global.enabler.tracking_on=previous_tracking;df.global.enabler.mouse_focus=pr
 gui.simulateInput(view,'STANDARDSCROLL_PAGEUP');view:render(dfhack.getTickCount())
 -- Controlled native picker setup, then actual click/key activation. Restore the
 -- selected zone and map only between probes; no recenter output is synthesized.
-for _,method in ipairs{'click','control-c'}do
+for _,method in ipairs{'click','control-c','focused-control-c'}do
  local rows={};widget_rows(assert(unit_list(selector,0)),rows,0)
  local target;for _,row in ipairs(rows)do if row.unit_id and row.visible then target=df.unit.find(row.unit_id);break end end
  assert(target,'no recenter candidate')
  local before={df.global.window_x,df.global.window_y,df.global.window_z}
+ if method=='focused-control-c' then window_input('focus-recenter','control-f',false);window_input('clear-recenter','clear',false)end
  if method=='click' then pixel(796,106)else window_input('recenter','control-c',false)end
  script.sleep(3,'frames');view:render(dfhack.getTickCount())
  records[#records+1]={name='owner-recenter-'..method,unit_id=target.id,position={target.pos.x,target.pos.y,target.pos.z},
   before=before,after={df.global.window_x,df.global.window_y,df.global.window_z},selector_active=selector.flag.VISIBILITY_ACTIVE,
-  bottom_mode=df.global.game.main_interface.bottom_mode_selected,owner=zone.assigned_unit_id}
+  bottom_mode=df.global.game.main_interface.bottom_mode_selected,owner=zone.assigned_unit_id,focused=df.global.gview.cur_textbox~=nil,query=dfhack.df2utf(assert(unit_list(selector,0)).filter_str)}
  assert(zone.assigned_unit_id==-1,'recenter assigned owner')
- assert(not selector.flag.VISIBILITY_ACTIVE and df.global.game.main_interface.bottom_mode_selected==-1,'recenter did not leave Zones')
- assert(df.global.window_z==target.pos.z,'recenter elevation differs')
+ if method=='focused-control-c' then
+  assert(selector.flag.VISIBILITY_ACTIVE and df.global.game.main_interface.bottom_mode_selected==3 and df.global.gview.cur_textbox~=nil,'focused recenter escaped textbox')
+  assert(df.global.window_x==before[1] and df.global.window_y==before[2] and df.global.window_z==before[3],'focused recenter moved map')
+ else
+  assert(not selector.flag.VISIBILITY_ACTIVE and df.global.game.main_interface.bottom_mode_selected==-1,'recenter did not leave Zones')
+  assert(df.global.window_z==target.pos.z,'recenter elevation differs')
+ end
  capture('owner-recenter-'..method)
  selector.flag.VISIBILITY_ACTIVE=false;df.global.game.main_interface.bottom_mode_selected=3;ui.cur_bld=zone
  dfhack.gui.revealInDwarfmodeMap(p,true);view:render(dfhack.getTickCount());pixel(336,154)
 end
+-- Read the same open widget after a controlled semantic name change.
+local name_rows={};widget_rows(assert(unit_list(selector,0)),name_rows,0)
+local named;for _,row in ipairs(name_rows)do if row.unit_id and row.visible then named=assert(df.unit.find(row.unit_id));break end end
+assert(named,'no open-row name fixture')
+local old_name=named.name.first_name
+local function name_text()
+ view:render(dfhack.getTickCount())
+ local lines={}
+ for y=6,14 do
+  local line='';for x=52,96 do local ch=dfhack.screen.readTile(x,y).ch;line=line..string.char(ch>=32 and ch<=255 and ch or 32)end
+  lines[#lines+1]=dfhack.df2utf(line)
+ end
+ return lines
+end
+local before_name=name_text()
+named.name.first_name='OwnerRefreshProbe'
+local rename_ok,rename_error=pcall(function()
+ script.sleep(3,'frames')
+ local after_name=name_text()
+ records[#records+1]={name='owner-open-name-refresh',id=named.id,before=before_name,after=after_name,selector_active=selector.flag.VISIBILITY_ACTIVE,cursor=assert(unit_list(selector,0)).cursor_idx}
+ assert(table.concat(after_name,' '):find('OwnerRefreshProbe',1,true),'open owner row retained stale name')
+ assert(selector.flag.VISIBILITY_ACTIVE and assert(unit_list(selector,0)).cursor_idx==0,'open name refresh changed navigation')
+ capture('owner-open-name-refresh')
+end)
+named.name.first_name=old_name;assert(rename_ok,rename_error)
 filter=df.reinterpret_cast(df.widget_textbox,assert(dfhack.gui.getWidget(assert(dfhack.gui.getWidget(selector,'Unit selector')),'Filter box')))
 input_state('initial')
 window_input('ctrl-f','control-f')

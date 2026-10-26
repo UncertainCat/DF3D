@@ -16,31 +16,44 @@ Its containment reference remains. Picker and selected-item captures were
 inspected. Typed identities, effects, callbacks, fingerprints and image hashes
 are retained in fixtures/areas/native_zone_animals.json.
 
-Selection callback 0x3d52a0 calls 0x3ce1b0 with a context containing the zone
-pointer, an item_or_unit value and a selection boolean. The action has separate
-unit and item branches. Its own body uses semantic world/zone/reference state,
-but complete helper ownership and failure behavior still need auditing before
-runtime use. Some helpers span multiple unwind records; their first unwind
-extent is not the complete body.
+Selection callback 0x3d52a0 calls 0x3ce1b0 with a zone-pointer context,
+an item_or_unit value and selection boolean. The unit request now delegates
+zone membership and reference effects to that native action. Native reference
+destruction replaces bridge retirement storage; unknown outcomes never replay.
 
-The complete cage/chain helpers are now bounded in the fixture. Item cleanup
-removes cage membership and the BUILDING_CAGED reference; unit cleanup removes
-cage membership only. Chain cleanup clears the assigned pointer and cancels
-ChainAnimal jobs, leaving the chained pointer untouched. These distinctions
-must survive integration; the current bridge does not cancel chain jobs.
+The direct action is not independently semantic for pending chain jobs:
+chain cleanup 0x8bfdf0 calls deletion 0xa67820, whose job detach 0xd022c0 reads
+native selection/cursor in the BUILDING_HOLDER branch. DFHack Job::removeJob
+reaches the same path through cancel_job 0xd032a0. The bridge instead performs
+the real reciprocal building-holder detachment first, using native reference
+destruction. Native deletion then receives the job without holder references,
+making that UI branch unreachable. No native UI scratch is borrowed or changed.
+Cage membership is cleaned before chain work, preserving native effect order.
+Remaining job deletion and the subsequent zone transfer stay native.
 
-The dependency audit found a runtime ownership obstacle: chain cleanup calls
-job deletion 0xa67820, then job detachment 0xd022c0. The latter spans multiple
-unwind records and its building-holder branch at 0xd02575..0xd025b0 reads native
-mode/selected building and can update ui_workshop_job_cursor. Therefore the
-top-level action cannot yet be treated as independent of native UI. Resolve
-this through independent semantic entries or verified semantic leaves with
-owned orchestration; do not borrow UI state, patch code or omit chain cleanup.
-DFHack Job::removeJob is not an independent alternative: its cancel_job virtual
-at 0xd032a0 tail-calls the same 0xa67820. The helper-audit offline gate passes
-root CTest 19/19 in build/qa/zone-animal-helper-audit.
-Assignment also removes old membership before native allocation/append, so
-failure after entry must remain unknown and must not be automatically replayed.
+Protected native 20261026-083036 (DF107324) proves cage membership cleanup,
+ChainAnimal cancellation, retention of UnchainAnimal, and preservation of the
+physical chained pointer. An independent holder-detach/cancel case also passes
+with the native job cursor unchanged. These controlled jobs have no worker or
+item references; fuller cancellation fixtures remain required.
+
+Protected semantic build/areas-acceptance-20261026-084317 (DF117584) passes
+grazer and caged-unit Pen assignment, Pond transfer and clearing through the
+actual bridge request. It verifies reciprocal references, cage removal, chain
+assignment/job effects, unchanged containment/chained pointers and unchanged
+native job cursor. Owned exit preserves both save manifests. MSVC builds;
+installed plugin SHA256 is
+297d895c6c54f9506acaccc93638c76de46be817f3c805feb087100a1c8e7f7b.
+Management remains version 67; there is no schema change in this unit step.
+Root CTest 19/19 and the areas adapter pass in
+build/qa/zone-animal-native-final.
+
+The ordinary full semantic run 20261026-083644 stopped before animal tests on
+the existing wood-list/raw-settings assertion. It is not a successful broader
+regression run; investigate that oracle/data mismatch before release. The
+focused scope is areas_acceptance.ps1 -ZoneAnimalsOnly. Early native probes
+082651/082749 failed test job-lookup helpers; 082830 and 083036 passed after
+using the world linked-list iterator. All owned sessions exited unsaved.
 
 Candidate producers 0x3a5e30 and 0x3a6780 are UI builders and must not be invoked
 by the product. They retain assigned units/items and gather further candidates.
@@ -48,18 +61,19 @@ Filter callback 0x1435b40 invokes widget-dependent search 0x1424c30; it is not a
 eligibility predicate. Reusable semantic admission helpers and inline selection
 branches remain to be integrated.
 
-Current animal candidates and AssignUnits requests represent units only; the
-bridge reconstructs assignment vectors/references. Full native parity requires
+Current animal candidates and AssignUnits requests still represent units only.
+Full native parity requires
 typed unit/item identities and native effects, including the observed vermin
 case. This is unfinished work, not an accepted exclusion. Ordering, descriptions,
-portraits/status graphics, input/lifecycle, unit cage/chain cleanup, stale state
+portraits/status graphics, input/lifecycle, richer chain-job fixtures, stale state
 and unknown outcomes remain in scope. Zones/Locations stays staged.
 
 The initial 080229 probe used an incorrect chooser target and stopped before
 assignment; DF49572 closed unsaved with source preserved. Discovery 080356 passed
 with DF122952 and established the two selector populations before the stronger
 effects run. Root CTest (19/19) passes in build/qa/zone-animal-native-reference.
-No runtime behavior or plugin binary changes in this audit.
+The initial reference audit changed no runtime behavior; the unit integration
+and its separate evidence are described above.
 
 ## Native zone owner assignment audit
 

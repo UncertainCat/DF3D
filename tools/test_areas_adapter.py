@@ -1187,7 +1187,7 @@ def main():
       if refuse_assign then return {ok=false,message='cage limit',steps=17} end
       b.assigned_units=assign==1 and {u.id} or {}
       if fail_assign then error('assignment fixture exception') end
-      return {ok=true,steps=17,retired={{building_id=6}}}
+      return {ok=true,steps=17}
      end
      return r
     end
@@ -1196,19 +1196,17 @@ def main():
                       "expected_revision": zone_revision()}
     no_capacity = lua.globals().request(11, lua.table_from(animal_request))
     no_capacity["area_retire_capacity"] = 0
-    assert adapter(no_capacity)["message"] == "Area retire capacity reached; restart DF3D bridge"
-    assert lua.eval("assign_calls") == 0
     for bad in [{"expected_revision": 0}, {"expected_revision": 1}, {"unit_id": 999},
                 {"unit_id": -1}, {"assign": -1}, {"assign": 2}, {"assign": 0.5}]:
         assert not call(11, dict(animal_request, **bad))["ok"]
     assert lua.eval("assign_calls") == 0
-    no_capacity["area_retire_capacity"] = 1
+    # Native destruction no longer consumes bridge retirement storage.
     no_capacity["step_budget"] = 183
     assert not adapter(no_capacity)["ok"] and lua.eval("#zone.assigned_units") == 0
     no_capacity["step_budget"] = 184
     assigned = adapter(no_capacity)
     assert assigned["ok"] and assigned["steps"] == 32 and assigned["areas"][1]["assigned_count"] == 1
-    assert assigned["retired"][1]["building_id"] == 6
+    assert assigned["retired"] is None
     assert not call(11, animal_request)["ok"]
     unassigned = call(11, dict(animal_request, assign=0, expected_revision=zone_revision()))
     assert unassigned["ok"] and unassigned["areas"][1]["assigned_count"] == 0

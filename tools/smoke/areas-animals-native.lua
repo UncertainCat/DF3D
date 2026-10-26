@@ -87,7 +87,7 @@ local function contains(values,id)
 end
 local function effects(label,kind,id)
  local object=assert(kind==0 and df.unit.find(id) or df.item.find(id))
- local result={name=label,kind=kind,id=id,zones={},cages={},refs={}}
+ local result={name=label,kind=kind,id=id,zones={},cages={},chains={},refs={}}
  for _,zone in ipairs(df.global.world.buildings.other.ANY_ZONE)do
   if contains(kind==0 and zone.assigned_units or zone.assigned_items,id)then result.zones[#result.zones+1]=zone.id end
  end
@@ -100,6 +100,13 @@ local function effects(label,kind,id)
   result.refs[#result.refs+1]=row
  end
  if kind==0 then
+  for _,chain in ipairs(df.global.world.buildings.other.CHAIN)do
+   if chain.assigned==object or chain.chained==object then
+    local jobs={};for _,job in ipairs(chain.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type]}end
+    result.chains[#result.chains+1]={id=chain.id,assigned=chain.assigned and chain.assigned.id or -1,
+     chained=chain.chained and chain.chained.id or -1,jobs=jobs}
+   end
+  end
   result.flags1=object.flags1.whole;result.flags2=object.flags2.whole
   result.job=object.job.current_job and object.job.current_job.id or -1
  end
@@ -115,6 +122,9 @@ local function click_entry(record,kind,id)
  end
  error('native animal row missing: '..kind..'/'..id)
 end
+local function find_job(id)
+ for _,value in require('utils').listpairs(df.global.world.jobs.list)do if value.id==id then return value end end
+end
 local chosen_unit,chosen_item,pen_zone,pond_zone
 for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
  local kind=probe[1]=='Pen' and 'Pen' or 'Pond'
@@ -127,10 +137,66 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   pen_zone=zone.id
   for _,entry in ipairs(opened.entries)do if entry.kind==0 and df.unit.find(entry.id).flags1.caged then chosen_unit=entry.id;break end end
   assert(chosen_unit,'caged native animal required')
+  -- Controlled semantic fixture: native assignment must remove cage membership
+  -- and pending chain work, but retain actual containment/chained state.
+  local animal=assert(df.unit.find(chosen_unit))
+  local cage=assert(df.global.world.buildings.other.CAGE[0])
+  assert(not contains(cage.assigned_units,animal.id),'fixture animal already assigned to cage')
+  cage.assigned_units:insert('#',animal.id)
+  local chain=df.building_chainst:new()
+  chain.id=df.global.building_next_id;df.global.building_next_id=chain.id+1
+  chain.centerx=p.x;chain.centery=p.y;chain.z=p.z
+  chain.x1=p.x;chain.x2=p.x;chain.y1=p.y;chain.y2=p.y
+  chain.assigned=animal;chain.chained=animal
+  df.global.world.buildings.all:insert('#',chain)
+  df.global.world.buildings.other.CHAIN:insert('#',chain)
+  local function job(kind)
+   local value=df.job:new();value.job_type=kind;value.posting_index=-1
+   local ref=df.general_ref_building_holderst:new();ref.building_id=chain.id
+   value.general_refs:insert('#',ref)
+   assert(dfhack.job.linkIntoWorld(value,true));chain.jobs:insert('#',value)
+   return value.id
+  end
+  local cancelled=job(df.job_type.ChainAnimal)
+  local retained=job(df.job_type.UnchainAnimal)
+  records[#records+1]={name='controlled-chain-fixture',chain=chain.id,cage=cage.id,
+   unit=animal.id,cancelled_job=cancelled,retained_job=retained}
   effects('unit-before-pen',0,chosen_unit)
   click_entry(opened,0,chosen_unit);capture('Pen-assigned')
   local after=effects('unit-after-pen',0,chosen_unit)
   assert(#after.zones==1 and after.zones[1]==pen_zone,'native pen assignment did not select sole zone')
+  assert(not contains(cage.assigned_units,animal.id),'native assignment retained cage membership')
+  assert(not chain.assigned and chain.chained==animal,'native chain assignment cleanup changed wrong pointer')
+  assert(not find_job(cancelled),'native assignment retained ChainAnimal job')
+  assert(find_job(retained) and #chain.jobs==1 and chain.jobs[0].id==retained,'native assignment removed unrelated chain work')
+  records[#records+1]={name='controlled-chain-result',assigned=-1,chained=animal.id,
+   cancelled_job_absent=true,retained_job=retained,cage_assignment_absent=true}
+  -- Prove semantic holder detachment avoids the UI-dependent cancellation
+  -- branch. This diagnostic changes real job relationships, never UI scratch.
+  local independent=job(df.job_type.ChainAnimal)
+  local pending=assert(find_job(independent))
+  local cursor=df.reinterpret_cast('int32_t',image_base+0x2131b60)
+  local before_cursor=cursor.value
+  local refs_removed=0
+  for index=#pending.general_refs-1,0,-1 do
+   local ref=pending.general_refs[index]
+   if ref:getType()==df.general_ref_type.BUILDING_HOLDER then
+    local holder=ref:getBuilding()
+    if holder then
+     for at=#holder.jobs-1,0,-1 do if holder.jobs[at]==pending then holder.jobs:erase(at)end end
+    end
+    pending.general_refs:erase(index);ref:delete();refs_removed=refs_removed+1
+   end
+  end
+  assert(refs_removed==1 and #chain.jobs==1,'semantic job detach failed')
+  df.global.world.jobs:cancel_job(pending)
+  assert(not find_job(independent),'native independent cancellation retained job')
+  assert(cursor.value==before_cursor,'independent cancellation changed native job cursor')
+  assert(#chain.jobs==1 and chain.jobs[0].id==retained and chain.chained==animal,
+   'independent cancellation changed unrelated chain state')
+  records[#records+1]={name='independent-chain-cancel',cancelled_job=independent,
+   holder_refs_removed=refs_removed,job_absent=true,cursor_unchanged=true,retained_job=retained}
+
  elseif probe[1]=='Pond' then
   pond_zone=zone.id
   click_entry(opened,0,chosen_unit);capture('Pond-unit-assigned')

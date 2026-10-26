@@ -6,6 +6,7 @@
 #include "df/building_civzonest.h"
 #include "df/building_archerytargetst.h"
 #include "df/building_doorst.h"
+#include "df/building_chainst.h"
 #include "df/world.h"
 #include "df/unit.h"
 #include "df/unit_soul.h"
@@ -95,6 +96,79 @@ bool refreshOverlaps(const uint8_t* base,const df::building_civzonest* excluded=
     return true;
 }
 }
+bool nativeZoneAnimalAssignmentReady() {
+    static_assert(offsetof(df::building_chainst,assigned)==0x148);
+    static_assert(offsetof(df::building_civzonest,assigned_units)==0x120);
+    static_assert(offsetof(df::job,general_refs)==0xb0);
+    static_assert(offsetof(df::unit,general_refs)==0x1d8);
+    if(!nativeZoneRemoveReady() || !nativeZoneOwnerReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=
+        hash(base+0x3ce1b0,0x36e)==0xf4022a51bef4e82fULL &&
+        hash(base+0x8bfcf0,0xfc)==0x33e02893abe20204ULL &&
+        hash(base+0x8bfdf0,0xe1)==0xd59a5f62e8bbe548ULL &&
+        hash(base+0xa67820,0xcc)==0x506ce8a2c4eefca6ULL &&
+        hash(base+0xd022c0,0x3da)==0x8ba54d16439fb188ULL &&
+        hash(base+0xd02ea0,0x2c7)==0x10f4f4bafc0b5ae4ULL &&
+        hash(base+0xd026a0,0x14d)==0xf2201bbca6b34feaULL &&
+        hash(base+0x73a60,0x5a)==0x69958e8b9109b7abULL &&
+        hash(base+0x8dc3e0,0x71)==0x1cc295c6b2f19cf1ULL &&
+        hash(base+0x30d190,0x7d)==0x3fa8848647806f05ULL &&
+        hash(base+0xedf070,0x9e4)==0x3a7d957c1bb23db0ULL &&
+        hash(base+0x70e20,0x117)==0x09aba69f846f6c10ULL &&
+        hash(base+0x71830,0x88)==0x929730bf6bcaccccULL &&
+        hash(base+0xfd300,0x6)==0x16014dac0538de61ULL &&
+        hash(base+0x5be920,0x4)==0x131caae42d746532ULL &&
+        hash(base+0x5be930,0x4)==0x1d6faef6ff900168ULL &&
+        hash(base+0x723f0,0x2b)==0x025ba84042f1157dULL;
+    return compatible;
+}
+bool nativeZoneAssignUnit(df::building_civzonest& zone,df::unit& unit,bool assign) {
+    if(!df::global::world || !nativeZoneAnimalAssignmentReady())return false;
+    if(zone.type!=df::civzone_type::Pen && zone.type!=df::civzone_type::Pond)return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(assign) {
+        // Native order: cage membership, chain assignment/jobs, zone transfer.
+        // The ordinary chain helper calls job deletion with BUILDING_HOLDER
+        // references intact. Job detach then reads native selection/cursor.
+        // Perform only that reciprocal semantic detach here. Native deletion
+        // owns all remaining job effects and destruction with no holder branch.
+        reinterpret_cast<void (*)(df::unit*)>(base+0x8bfcf0)(&unit);
+        for(auto* chain:df::global::world->buildings.other.CHAIN) {
+            if(!chain || chain->assigned!=&unit)continue;
+            chain->assigned=nullptr;
+            for(size_t i=chain->jobs.size();i-->0;) {
+                auto* job=chain->jobs[i];
+                if(!job || job->job_type!=df::job_type::ChainAnimal)continue;
+                for(size_t r=job->general_refs.size();r-->0;) {
+                    auto* ref=job->general_refs[r];
+                    if(!ref || ref->getType()!=df::general_ref_type::BUILDING_HOLDER)continue;
+                    if(auto* holder=ref->getBuilding()) {
+                        auto& jobs=holder->jobs;
+                        jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
+                    }
+                    // Native reference destruction/erase; no UI bookkeeping.
+                    reinterpret_cast<bool (*)(df::job*,int32_t,int32_t)>(base+0xd09860)(job,36,-1);
+                }
+                reinterpret_cast<void (*)(df::job*)>(base+0xa67820)(job);
+                // Valid native holder relationships removed this entry. Avoid
+                // retaining a dangling job in malformed semantic input too.
+                auto& jobs=chain->jobs;
+                jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
+                i=std::min(i,jobs.size());
+            }
+        }
+    }
+    struct Entry { df::unit* unit; uint8_t kind; uint8_t padding[7]; };
+    static_assert(sizeof(Entry)==16);
+    Entry entry{&unit,0,{}};
+    auto* context=&zone;
+    // Cage/chain cleanup now has no remaining assignments to visit.
+    // This native routine supplies the zone-vector and reference effects.
+    reinterpret_cast<void (*)(df::building_civzonest**,Entry*,bool)>(base+0x3ce1b0)(&context,&entry,assign);
+    return true;
+}
+
 bool nativeZoneDefaultsReady() {
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return false;

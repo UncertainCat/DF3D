@@ -701,6 +701,24 @@ elseif request.op=='assignment_before' then
  local u=assert(df.unit.find(request.unit_id));local refs={}
  for _,r in ipairs(u.general_refs) do if df.general_ref_contained_in_itemst:is_instance(r) then refs[#refs+1]=r.item_id end end
  _G.df3d_areas_containment={id=u.id,refs=canonical(refs)}
+ local chain=df.building_chainst:new();chain.id=df.global.building_next_id
+ df.global.building_next_id=chain.id+1
+ chain.centerx=u.pos.x;chain.centery=u.pos.y;chain.z=u.pos.z
+ chain.x1=u.pos.x;chain.x2=u.pos.x;chain.y1=u.pos.y;chain.y2=u.pos.y
+ chain.assigned=u;chain.chained=u
+ df.global.world.buildings.all:insert('#',chain);df.global.world.buildings.other.CHAIN:insert('#',chain)
+ local function add_job(kind)
+  local job=df.job:new();job.job_type=kind;job.posting_index=-1
+  local ref=df.general_ref_building_holderst:new();ref.building_id=chain.id
+  job.general_refs:insert('#',ref);assert(dfhack.job.linkIntoWorld(job,true))
+  chain.jobs:insert('#',job);return job.id
+ end
+ local pending=add_job(df.job_type.ChainAnimal)
+ local retained=add_job(df.job_type.UnchainAnimal)
+ _G.df3d_areas_chain={chain=chain,pending=pending,retained=retained,
+  cursor=df.reinterpret_cast('int32_t',dfhack.internal.getImageBase()+0x2131b60).value}
+ result.chain=chain.id;result.pending_job=pending;result.retained_job=retained
+
 elseif request.op=='assignment' then
  local b,u=building(),assert(df.unit.find(request.unit_id));local found=0;local contained={}
  for _,r in ipairs(u.general_refs) do
@@ -715,6 +733,15 @@ elseif request.op=='assignment' then
  for _,c in ipairs(df.global.world.buildings.other.CAGE) do assert(not contains(c.assigned_units,u.id),'cage retained assignment') end
  local before=assert(_G.df3d_areas_containment)
  assert(before.id==u.id and before.refs==canonical(contained),'physical containment references changed')
+ local saved=assert(_G.df3d_areas_chain);local chain=saved.chain
+ assert(not chain.assigned and chain.chained==u,'chain assignment/physical state differs from native')
+ assert(#chain.jobs==1 and chain.jobs[0].id==saved.retained,'chain job cleanup differs from native')
+ for _,job in require('utils').listpairs(df.global.world.jobs.list)do
+  assert(job.id~=saved.pending,'cancelled chain job remains in world')
+ end
+ assert(df.reinterpret_cast('int32_t',dfhack.internal.getImageBase()+0x2131b60).value==saved.cursor,'native job cursor changed')
+ result.chain=chain.id;result.pending_job_absent=true;result.retained_job=saved.retained;result.cursor_unchanged=true
+
 elseif request.op=='squad' then
  local b,s=building(),assert(df.squad.find(request.squad_id));local n,m=0,0
  for _,r in ipairs(b.squad_room_info) do if r.squad_id==s.id then n=n+1;assert(r.mode.whole==request.use,'zone squad use') end end

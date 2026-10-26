@@ -1349,7 +1349,6 @@ local function native_operation(r)
   if zone_type~='Pen' and zone_type~='Pond' then return reject('This operation does not apply to this zone type') end
   local unit=df.unit.find(a.unit_id)
   if not unit then return reject('Unit no longer exists') end
-  if default(r,'area_retire_capacity',0)<1 then return reject('Area retire capacity reached; restart DF3D bridge') end
   local changed,problem,unknown=invoke(r.assign_unit,reply_reserve,b,unit,a.assign)
   if changed or unknown then clear_lists() end
   if not changed then return reject(problem) end

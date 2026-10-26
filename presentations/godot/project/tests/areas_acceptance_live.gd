@@ -284,17 +284,8 @@ func candidates_and_zones() -> void:
 				await native("snapshot", {"id":bedroom, "expected":{"owner_id":owner,
 					"owner_profession":str(owner_area.owner_profession),"owner_sex":int(owner_area.owner_sex)}})
 				if stopped: return
-	var pen := zone("Pen")
-	if pen >= 0:
-		for key in ["grazer", "caged"]:
-			var unit := int(fixture[key])
-			if unit < 0: incomplete("missing " + key + " for assignment effects"); continue
-			await native("assignment_before", {"unit_id":unit})
-			for value in [1,0]:
-				await edit(pen, 1, {"operation":11, "unit_id":unit, "assign":value})
-				await native("assignment", {"id":pen, "unit_id":unit, "assign":value == 1})
-				if stopped: return
-			retirements += 1
+	await animal_assignments()
+	if stopped: return
 	var barracks := zone("Barracks")
 	if barracks >= 0 and int(fixture.squad) >= 0:
 		for use in [15,2,0]:
@@ -303,6 +294,22 @@ func candidates_and_zones() -> void:
 			if stopped: return
 		retirements += 2
 	else: incomplete("barracks/squad prerequisite missing")
+
+func animal_assignments() -> void:
+	step = "animal assignment effects"
+	var pen := zone("Pen")
+	var pond := zone("Pond")
+	if not check(pen >= 0 and pond >= 0, "animal zones missing"): return
+	for key in ["grazer", "caged"]:
+		var unit := int(fixture[key])
+		if not check(unit >= 0, "animal fixture missing: " + key): return
+		await native("assignment_before", {"unit_id":unit})
+		for operation in [[pen,1],[pond,1],[pond,0]]:
+			var id: int = operation[0]
+			var value: int = operation[1]
+			await edit(id, 1, {"operation":11, "unit_id":unit, "assign":value})
+			await native("assignment", {"id":id, "unit_id":unit, "assign":value == 1})
+			if stopped: return
 
 func workshop_links() -> void:
 	step = "8 workshop links"
@@ -682,6 +689,10 @@ func exercise() -> void:
 	await seed_catalog()
 	if stopped: return
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
+	if FileAccess.file_exists(directory + "/zone-animals-only.json"):
+		await animal_assignments()
+		if not stopped: await native("final")
+		return
 	if FileAccess.file_exists(directory + "/zone-defaults-only.json"):
 		await created_zone_defaults()
 		if not stopped: await created_archery_directions()

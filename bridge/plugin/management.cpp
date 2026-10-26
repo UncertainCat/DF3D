@@ -123,7 +123,6 @@ std::array<void*,1024> areaHolding{};
 size_t areaHoldingCount=0,areaHoldingBytes=0;
 void* areaPaintRetired=nullptr;
 std::array<void*,2> areaSquadRetired{};
-void* areaUnitRetired=nullptr;
 bool areaPaintCommitted=false;
 bool citizenRecalcPending=false;
 uint64_t citizenHelperGeneration=0;
@@ -1473,8 +1472,8 @@ int areaSettingsFill(lua_State* L) {
   lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",result.steps);
   field(L,"resized",result.resized);return 1;
 }
-// Prepare unit, zone and every affected cage vector before committing. Each
-// filtered copy is one bulk pass; old native references enter holding at commit.
+// Validate semantic identity/staleness before native assignment. Native owns
+// membership references and chain-job destruction; failures may be partial.
 int areaAssignUnit(lua_State* L) {
   const auto fail=[&](const char* reason,uint32_t steps=1) {
     lua_newtable(L);field(L,"ok",false);field(L,"message",reason);field(L,"steps",steps);return 1;
@@ -1490,7 +1489,7 @@ int areaAssignUnit(lua_State* L) {
   if(!op || op->operation()!=m::AreaOperation::AssignUnits || op->id()!=zone->id || op->unit_id()!=unit->id || bool(op->assign())!=assign)
     return fail("Unit assignment request required");
   if(zone->type!=df::civzone_type::Pen && zone->type!=df::civzone_type::Pond)return fail("This operation does not apply to this zone type");
-  if(areaHoldingCount==areaHolding.size() || areaUnitRetired)return fail("Area retire capacity reached; restart DF3D bridge");
+  if(!df3d_area::nativeZoneAnimalAssignmentReady())return fail("Native animal assignment unavailable");
   using ScanError=df3d_area::AssignmentScanError;
   const auto referenceScan=df3d_area::scanZoneReferences(unit->general_refs,
       [](auto* ref){return virtual_cast<df::general_ref_building_civzone_assignedst>(ref)!=nullptr;},budget-1);
@@ -1505,37 +1504,25 @@ int areaAssignUnit(lua_State* L) {
   if(!assign && oldZone && oldZone!=zone)return fail("Unit assignment changed; inspect again",steps);
   if(zone->assigned_units.size()>4096 || (oldZone && oldZone->assigned_units.size()>4096))return fail("Zone exceeds 4,096 assigned units",steps);
   if(assign && !oldRef && unit->general_refs.size()==256)return fail("Zone assignment list exceeds 256 entries",steps);
+  if(assign && zone->assigned_units.size()==4096 &&
+      std::find(zone->assigned_units.begin(),zone->assigned_units.end(),unit->id)==zone->assigned_units.end())
+    return fail("Zone exceeds 4,096 assigned units",steps);
   const auto cageScan=df3d_area::scanAssignedCages(df::global::world->buildings.other.CAGE,unit->id,budget-steps);
   steps+=cageScan.steps;
   if(cageScan.error==ScanError::Limit)return fail("Cage scan exceeds 256 cages",steps);
   if(cageScan.error==ScanError::Budget)return fail("Unit assignment exceeds remaining step budget",steps);
   if(cageScan.error==ScanError::Invalid)return fail("Area no longer exists",steps);
-  const uint32_t prepared=df3d_area::assignmentPreparationSteps(unit->general_refs.size(),zone->assigned_units.size(),
-      oldZone && oldZone!=zone?oldZone->assigned_units.size():0,cageScan.affected.size(),cageScan.entries);
-  if(prepared>budget-steps)return fail("Unit assignment exceeds remaining step budget",steps);
-  steps+=prepared;
-  std::vector<df::general_ref*> refs;refs.reserve(unit->general_refs.size()+1);
-  for(auto* ref:unit->general_refs)if(ref!=oldRef)refs.push_back(ref);
-  const auto withoutUnit=[&](const auto& source,size_t extra=0) {
-    return df3d_area::withoutValue(source,unit->id,extra);
-  };
-  auto assigned=withoutUnit(zone->assigned_units,1);
-  std::vector<int32_t> previous;if(oldZone && oldZone!=zone)previous=withoutUnit(oldZone->assigned_units);
-  if(assign && assigned.size()==4096)return fail("Zone exceeds 4,096 assigned units",steps);
-  auto cagePlans=df3d_area::prepareCageAssignments(cageScan.affected,unit->id);
-  std::unique_ptr<df::general_ref_building_civzone_assignedst> added;
-  if(assign) {
-    added.reset(df::allocate<df::general_ref_building_civzone_assignedst>());
-    if(!added)return fail("Native zone reference unavailable",steps);
-    added->building_id=zone->id;refs.push_back(added.get());assigned.push_back(unit->id);
+  try {
+    mutated=true;
+    if(!df3d_area::nativeZoneAssignUnit(*zone,*unit,assign)) {
+      lua_newtable(L);field(L,"ok",false);field(L,"message","Native animal assignment failed; inspect before retrying");
+      field(L,"steps",steps);field(L,"work_unknown",true);return 1;
+    }
+  } catch(...) {
+    lua_newtable(L);field(L,"ok",false);field(L,"message","Native animal assignment failed; inspect before retrying");
+    field(L,"steps",steps);field(L,"work_unknown",true);return 1;
   }
-  unit->general_refs.swap(refs);zone->assigned_units.swap(assigned);
-  if(oldZone && oldZone!=zone)oldZone->assigned_units.swap(previous);
-  for(auto& plan:cagePlans)plan.first->assigned_units.swap(plan.second);
-  added.release();mutated=true;
-  if(oldRef){areaUnitRetired=oldRef;areaHolding[areaHoldingCount++]=oldRef;areaHoldingBytes+=sizeof(*oldRef);}
   lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",steps);
-  if(oldRef){lua_newtable(L);Lua::PushDFObject(L,oldRef);lua_rawseti(L,-2,1);lua_setfield(L,-2,"retired");}
   return 1;
 }
 // Allocate both squad records and replacement vectors before committing. Hold
@@ -2073,7 +2060,7 @@ void runPaintCounts(const m::AreaRequest& a) {
   publish();
 }
 void run(color_ostream& out) {
-  areaPaintRetired=nullptr;areaPaintCommitted=false;areaSquadRetired={};areaUnitRetired=nullptr;
+  areaPaintRetired=nullptr;areaPaintCommitted=false;areaSquadRetired={};
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
   if(r->action()==m::ManagementAction::WorldHover) {
     worldHoverTile=*r->origin();
@@ -2479,7 +2466,6 @@ void run(color_ostream& out) {
         if(!native){native=Lua::GetDFObject<df::squad_barracks_infost>(L,-1);bytes=sizeof(df::squad_barracks_infost);}
       }
       if(native && ((operation==m::AreaOperation::Paint && native==areaPaintRetired) ||
-          (operation==m::AreaOperation::AssignUnits && native==areaUnitRetired) ||
           (operation==m::AreaOperation::SquadUse && (native==areaSquadRetired[0] || native==areaSquadRetired[1])))) {
         // Already retained by the native commit, including exceptional Lua exits.
       } else if(native && areaHoldingCount<areaHolding.size()) {

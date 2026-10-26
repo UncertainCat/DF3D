@@ -65,6 +65,11 @@ std::optional<std::string> nativeZoneOwnerQuery(std::string query);
 // Native may allocate and transfer ownership from another tomb. Callers mark
 // the outcome unknown before entry; no automatic rollback or retry is valid.
 bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner);
+// Native animal assignment with semantic chain-job holder detachment.
+// Call only at a safe point after request/admission/staleness validation.
+// Entering this function can partially mutate; never retry an unknown result.
+bool nativeZoneAnimalAssignmentReady();
+bool nativeZoneAssignUnit(df::building_civzonest& zone,df::unit& unit,bool assign);
 bool nativeZoneCreateReady();
 bool nativeZoneMultiReady();
 // Read-only native room tile eligibility. Caller preflights CreateReady at

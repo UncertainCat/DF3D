@@ -6,7 +6,7 @@
   "evidence": "build/stockpile-storage-native-zone-animals-20261026-080835",
   "owned_df_pid": 128092,
   "source_unchanged": true,
-  "status": "native selector and assignment effects captured; bridge integration pending",
+  "status": "Native unit assignment integrated; typed item admission/assignment and full animal UI parity pending",
   "ranges": [
     {
       "name": "pen_picker_builder",
@@ -34,7 +34,7 @@
       "rva": "0x3ce1b0",
       "size": "0x36e",
       "fnv1a64": "f4022a51bef4e82f",
-      "role": "Semantic candidate; helper ownership audit incomplete"
+      "role": "Native assignment invoked for units only after independent semantic chain-job cleanup"
     },
     {
       "name": "search_filter",
@@ -807,10 +807,166 @@
       "instructions": "0xd02575..0xd025b0",
       "observed": "Building-holder job detachment reads native mode and selected building; may change ui_workshop_job_cursor at RVA 0x2131b60.",
       "consequence": "Do not expose the top-level callback action as an independently semantic routine until this reachable UI dependency is resolved without borrowing or changing native UI state.",
-      "remaining": "Find an independent semantic job cleanup entry point or isolate verified native semantic leaves with owned orchestration. Do not patch executable code or suppress jobs.",
-      "dfhack_alternative": "DFHack Job::removeJob reconstructs item disconnection then calls job_handler::cancel_job. Supported vtable 0x16d04a8 points to 0xd032a0, a null check and tail jump to 0xa67820. This does not avoid the native UI dependency."
+      "remaining": "Direct top-level calls with pending chain jobs remain prohibited. Typed item integration and fuller job-worker/item fixtures remain required.",
+      "dfhack_alternative": "DFHack Job::removeJob reconstructs item disconnection then calls job_handler::cancel_job. Supported vtable 0x16d04a8 points to 0xd032a0, a null check and tail jump to 0xa67820. This does not avoid the native UI dependency.",
+      "resolution": "Unit wrapper removes real BUILDING_HOLDER reciprocal job membership/reference before native job deletion. With those references absent, d022c0 cannot enter the native UI-dependent branch. Remaining deletion and zone-transfer effects stay native."
     },
     "failure_contract": "Native action removes prior assignments before appending/allocating the destination reference. Once entered, failure can leave partial effects; report unknown outcome and never auto-replay.",
-    "evidence_limits": "Cage/chain cleanup bodies inspected statically. Live chain fixture and unit cage-assignment fixture still required. Existing native run covers item cage cleanup and unit containment only."
+    "evidence_limits": "Cage/chain cleanup bodies inspected statically. Live chain fixture and unit cage-assignment fixture still required. Existing native run covers item cage cleanup and unit containment only.",
+    "unit_assignment_ready": true
+  },
+  "chain_reference": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-083036",
+    "owned_df_pid": 107324,
+    "source_unchanged": true,
+    "records": [
+      {
+        "cage": 261,
+        "cancelled_job": 382794,
+        "chain": 1491,
+        "name": "controlled-chain-fixture",
+        "retained_job": 382795,
+        "unit": 6960
+      },
+      {
+        "cages": [
+          261
+        ],
+        "chains": [
+          {
+            "assigned": 6960,
+            "chained": 6960,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382794,
+                "type": "ChainAnimal"
+              },
+              {
+                "id": 382795,
+                "type": "UnchainAnimal"
+              }
+            ]
+          }
+        ],
+        "flags1": 109051904,
+        "flags2": 301989936,
+        "id": 6960,
+        "job": -1,
+        "kind": 0,
+        "name": "unit-before-pen",
+        "refs": [
+          {
+            "kind": "CONTAINED_IN_ITEM"
+          }
+        ],
+        "zones": []
+      },
+      {
+        "cages": [],
+        "chains": [
+          {
+            "assigned": -1,
+            "chained": 6960,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382795,
+                "type": "UnchainAnimal"
+              }
+            ]
+          }
+        ],
+        "flags1": 109051904,
+        "flags2": 301989936,
+        "id": 6960,
+        "job": -1,
+        "kind": 0,
+        "name": "unit-after-pen",
+        "refs": [
+          {
+            "kind": "CONTAINED_IN_ITEM"
+          },
+          {
+            "building_id": 1490,
+            "kind": "BUILDING_CIVZONE_ASSIGNED"
+          }
+        ],
+        "zones": [
+          1490
+        ]
+      },
+      {
+        "assigned": -1,
+        "cage_assignment_absent": true,
+        "cancelled_job_absent": true,
+        "chained": 6960,
+        "name": "controlled-chain-result",
+        "retained_job": 382795
+      },
+      {
+        "cancelled_job": 382796,
+        "cursor_unchanged": true,
+        "holder_refs_removed": 1,
+        "job_absent": true,
+        "name": "independent-chain-cancel",
+        "retained_job": 382795
+      }
+    ],
+    "scope": "Native callback cleanup plus independent holder-detach/native cancellation; controlled jobs have no worker or item references."
+  },
+  "bridge_unit_assignment": {
+    "evidence": "build/areas-acceptance-20261026-084317",
+    "owned_df_pid": 117584,
+    "plugin_sha256": "297d895c6c54f9506acaccc93638c76de46be817f3c805feb087100a1c8e7f7b",
+    "management_version": 67,
+    "status": "passed",
+    "save_manifests_unchanged": 2,
+    "checks": [
+      {
+        "chain": 1509,
+        "cursor_unchanged": true,
+        "pending_job_absent": true,
+        "retained_job": 382795,
+        "status": "passed"
+      },
+      {
+        "chain": 1509,
+        "cursor_unchanged": true,
+        "pending_job_absent": true,
+        "retained_job": 382795,
+        "status": "passed"
+      },
+      {
+        "chain": 1509,
+        "cursor_unchanged": true,
+        "pending_job_absent": true,
+        "retained_job": 382795,
+        "status": "passed"
+      },
+      {
+        "chain": 1510,
+        "cursor_unchanged": true,
+        "pending_job_absent": true,
+        "retained_job": 382797,
+        "status": "passed"
+      },
+      {
+        "chain": 1510,
+        "cursor_unchanged": true,
+        "pending_job_absent": true,
+        "retained_job": 382797,
+        "status": "passed"
+      },
+      {
+        "chain": 1510,
+        "cursor_unchanged": true,
+        "pending_job_absent": true,
+        "retained_job": 382797,
+        "status": "passed"
+      }
+    ],
+    "scope": "Grazer and caged unit: Pen assignment, Pond transfer and clearing. Chain assignment cleared, actual chained/containment preserved, ChainAnimal removed, UnchainAnimal retained, native job cursor unchanged.",
+    "limits": "Semantic driver only; no new full animal UI acceptance. Worker/item cancellation fixtures, typed item bridge schema, native admission/search/display/input/lifecycle remain pending."
   }
 }

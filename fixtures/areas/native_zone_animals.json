@@ -17249,5 +17249,17 @@
       }
     ],
     "scope": "A current worker and Hauled item reservation are attached to ChainAnimal; assignment cancels it, clears current_job and item refs/in_job, preserves UnchainAnimal and physical containment, and leaves native job cursor unchanged."
+  },
+  "animal_stale_revision": {
+    "run": "build/areas-acceptance-20261026-185348",
+    "status": "passed_with_known_issues",
+    "scope": "Native zone rename invalidates retained revision; real Enter rejects assignment; repeated Enter does not retry; explicit map refresh recovers before UI removal",
+    "native_assignment_unchanged": true,
+    "save_manifests_unchanged": true,
+    "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+    "omissions": [
+      "transport disconnect",
+      "same-zone map click"
+    ]
   }
 }

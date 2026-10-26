@@ -72,8 +72,8 @@ DF132272 with DF139064; both save manifests remain unchanged. Core19/19,
 adapter and management Lua contract checks pass in
 `build/qa/zone-squad-native-accounting`; the MSVC bridge build passes.
 `native_zone_squads.json.bridge_assignment` retains the fourteen observations.
-Artwork sourcing and rendered selector fidelity remain outstanding; this
-semantic acceptance does not establish a completed squad UI.
+This semantic run does not establish rendered fidelity; the subsequent symbol,
+name, scrolling and main-scene references below provide that evidence.
 
 Squad membership and ordering now come from native `0x3a3610`, using an owned
 output vector at context offset8. It reads the fortress entity's squad-ID list,
@@ -278,7 +278,8 @@ the thumb and visible content retain row15 across a list rebuild. It passes
 with known Godot diagnostics. Squad navigation retains its first row across
 assignment receipts; scroll restoration also follows container range changes,
 since emptying/rebuilding children can otherwise clamp the content to row0.
-Stale/disconnect and full native tooltip screenshot parity remain unfinished.
+Stale revision and client-disconnect evidence follows below. Full native
+tooltip screenshot parity remains unfinished.
 
 Main-scene GPU lanes `build/areas-acceptance-20261026-183226` (Barracks) and
 `build/areas-acceptance-20261026-183317` (Archery Range) create zones through
@@ -394,13 +395,23 @@ focused Enter, first/second right-click and focused/unfocused Escape to Options
 all pass. Keyboard selection/Enter also assigns and clears a non-first unit,
 with native effects checked. Both save manifests remain unchanged; this run
 retains only known diagnostics. Core19/19 passes in
-`build/qa/animal-rendered-inputs`. Uncommon creature/container cases remain
-outstanding. Approved blank-panel input coverage additionally passes in
+`build/qa/animal-rendered-inputs`. Additional creature/container cases have
+separate evidence below. Approved blank-panel input coverage additionally passes in
 `build/areas-acceptance-20261026-150814`: real clicks at500,700 and740,700
 release search focus without changing the selected zone, picker target or list
 receipt. Both save manifests remain unchanged; only known diagnostics remain.
 The existing panel already consumes these clicks, so this correction requires
 no additional production change.
+
+Rendered `build/areas-acceptance-20261026-185348` adds stale animal assignment
+coverage after the full portrait/input workflow. A native rename invalidates
+the zone revision, then viewport keyboard selection/Enter attempts assignment
+of the caged unit. The bridge rejects, native assignment/reference checks stay
+unchanged, and repeated Enter produces no further mutation. Right-click closes
+the failed picker; explicit map selection refreshes the zone before UI removal.
+The run passes with known Godot diagnostics and unchanged source/clone manifests.
+Core19/19 passes in `build/qa/animal-stale-core`. Animal transport-disconnect
+and same-zone map-click behavior still need their own live coverage.
 
 
 `native_zone_animals.json.animal_scroll` records a forty-row Pond list in

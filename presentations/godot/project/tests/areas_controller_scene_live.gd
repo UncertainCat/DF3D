@@ -1977,3 +1977,30 @@ func pointer_animals(id: int) -> void:
 	if not await wait_ui(func():return settled() and editor.selected.is_empty(),"remove second Pond"):return
 	await native("removed",{"id":int(other_area.id)})
 	editor.use_area(original_area);editor._process(0)
+	step="animal stale revision rejection"
+	await click_control(editor.zone_menu.controls.animals)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"animal stale picker"):return
+	unit_index=-1
+	for index in editor.candidates_state.rows.size():
+		var row:Dictionary=editor.candidates_state.rows[index]
+		if int(row.get("entity",0))==1 and int(row.id)==unit:unit_index=index;break
+	if not check(unit_index>=0,"stale animal target absent"):return
+	await pointer_key(KEY_PAGEUP)
+	for index in unit_index:await pointer_key(KEY_DOWN)
+	await native("stale_edit",{"id":id})
+	var before_stale:int=receipts.filter(func(value):return int(value.get("action",0)) in [11,13]).size()
+	await pointer_key(KEY_ENTER)
+	var deadline:=Time.get_ticks_msec()+30000
+	while not settled() and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();editor._process(0.02);await create_timer(0.02).timeout
+	if not check(settled() and editor.request_problem and editor.candidates_state.failed,"stale animal assignment was not rejected"):return
+	await native("assignment",{"id":id,"unit_id":unit,"assign":false})
+	await pointer_key(KEY_ENTER)
+	for frame in 10:
+		world.poll();actions.poll();editor._process(0.02);await process_frame
+	if not check(receipts.filter(func(value):return int(value.get("action",0)) in [11,13]).size()==before_stale+1,"failed animal picker replayed a mutation"):return
+	await capture("animal_stale_rejected")
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(not view.visible,"failed animal picker did not close"):return
+	await pointer_click(tile_screen(original_tile))
+	if not await wait_ui(func():return settled() and int(editor.selected.get("id",-1))==id,"animal explicit stale refresh"):return

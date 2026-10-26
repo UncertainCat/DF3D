@@ -139,6 +139,9 @@ try {
   if(Test-Path "$out/shot") {
    $name=(Get-Content "$out/shot" -Raw).Trim()
    if(-not(Test-Path "$out/ack-$name")) {
+    # Symbol probes allocate native textures; allow their upload/present to
+    # settle before PrintWindow. Exact pixel verification below rejects tears.
+    if($ZoneSquads){Start-Sleep -Milliseconds 250}
     [Shot]::SetThreadDpiAwarenessContext([IntPtr](-4)) | Out-Null
     [Shot]::Capture([Shot]::Find($owned.Id),"$out/$name.png") | Out-Null
     Remove-Item -LiteralPath "$out/shot"
@@ -149,6 +152,10 @@ try {
  }
  $result=Get-Content "$out/result.json" -Raw | ConvertFrom-Json
  if(-not $result.success){throw $result.error}
+ if($ZoneSquads) {
+  & python "$repo/tools/verify_squad_symbol_reference.py" $out --df-path $dfPath *> "$out/symbol-pixels.log"
+  if($LASTEXITCODE -ne 0){throw 'Squad symbol pixel verification failed; see symbol-pixels.log'}
+ }
  if($RenameText) {
   $samples=@('abc XYZ',("a"+[char]0x00e9+[char]0x03b1+[char]0x4e2d+"b"),"ab`r`ncd`tef",('a'*80),(('a'*18)+[char]0x00e9+'Z'),(('a'*19)+[char]0x00e9+'Z'))
   $observations=@();$index=0

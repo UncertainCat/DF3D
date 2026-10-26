@@ -97,6 +97,31 @@ Full semantic `build/areas-acceptance-20261026-165557` passes cleanly, including
 native caption transport, assignments and restart from DF132716 to DF137780.
 Both source and owned-clone save manifests remain unchanged (1,368 files).
 
+Squad symbol source is the ordered set of 23 `CUSTOM_SYMBOL` entries in the
+installed `graphics_interface.txt`, using the `CUSTOM_SYMBOLS` tile page at
+32x32 pixels. Native `0x40ac50..0x40af28` selects foreground RGB wherever the
+mask alpha is nonzero and background RGB elsewhere, ignoring source RGB and
+alpha magnitude. It emits solid alpha255 and blended alpha160 textures. The
+zone picker draws the solid texture at (376,102+36*row) in the captured layout.
+The six squad color bytes and symbol index are semantic state; generated
+`solid_texpos`/`blended_texpos` are prohibited product inputs. The renderer
+allocates/writes global texture caches and is not a usable semantic reader.
+Its invalid-index fallback `0x40aa30..0x40ac4f` consumes RNG and changes the
+squad's saved symbol/colors before rendering; it must not become a read query.
+
+Protected `build/stockpile-storage-native-zone-squads-20261026-170252` passes
+all 23 controlled masks plus four ordinary squads in both pickers. The verifier
+`tools/verify_squad_symbol_reference.py`, invoked by `-ZoneSquads`, compares
+62 native texture dumps byte-for-byte with installed-mask compositions and
+31 native screenshot crops pixel-for-pixel. DF140092 exits unsaved and source
+preservation passes. `native_zone_squads.json.symbol_reference` retains hashes,
+semantic inputs and routine provenance without storing game artwork. An earlier
+capture at `170012` passed native actions but failed the offline pixel check
+because one screenshot caught a partially drawn frame. The capture lane now
+waits for texture presentation before capture and retains exact pixel checks.
+This establishes the native reference; symbol transport and Godot rendering
+remain unfinished. No rendering-cache access is authorized by this diagnostic.
+
 ## Animal keyboard activation and portrait reference
 
 `native_zone_animals.json.animal_container_reference_order` records seven

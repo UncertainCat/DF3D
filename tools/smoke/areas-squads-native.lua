@@ -66,6 +66,30 @@ local function capture(name,b)
  end end
  local _,address=df.sizeof(ui);row.selector_rva=address-dfhack.internal.getImageBase()
  row.equipment_update_flags=df.reinterpret_cast('uint32_t',dfhack.internal.getImageBase()+0x2399858).value
+ if ui.open and (name:match('%-picker$') or name:find('%-symbol%-'))then
+  row.symbols={}
+  local count=name:match('%-picker$') and math.min(4,#row.ids) or 1
+  for i=1,count do
+   local s=assert(df.squad.find(row.ids[i]))
+   local symbol={id=s.id,index=s.symbol,foreground={s.foreground_r,s.foreground_g,s.foreground_b},
+    background={s.background_r,s.background_g,s.background_b},solid=s.solid_texpos,blended=s.blended_texpos}
+   local source=g.texpos_custom_symbol[s.symbol]
+   for _,page in ipairs(df.global.texture.page)do
+    for index,value in ipairs(page.texpos)do if value==source then
+     symbol.page=page.token;symbol.x=index%page.page_dim_x;symbol.y=index//page.page_dim_x;break
+    end end
+    if symbol.page then break end
+   end
+   assert(symbol.page=='CUSTOM_SYMBOLS','unexpected squad symbol source')
+   for _,variant in ipairs{'solid','blended'}do
+    local prefix=name..'-'..i..'-'..variant
+    local text,code=dfhack.run_command_silent('df3d','appearance','texture',tostring(symbol[variant]),out..'/'..prefix)
+    assert(code==0 and text:find('DF3D_TEXTURE_DUMP_PASS',1,true),text)
+    symbol[variant..'_file']=prefix..'.rgba'
+   end
+   row.symbols[#row.symbols+1]=symbol
+  end
+ end
  for y=0,g.dimy-1 do
   local bytes={};for x=0,g.dimx-1 do bytes[#bytes+1]=dfhack.screen.readTile(x,y).ch end
   row.lines[#row.lines+1]=bytes
@@ -161,6 +185,18 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
  capture(kind..'-name-first-nickname',b)
  named.alias=alias;named.name.first_name=first;named.name.nickname=nick
  capture(kind..'-name-restored',b)
+ if kind=='Barracks' then
+  local saved={}
+  for _,field in ipairs{'symbol','solid_texpos','blended_texpos','foreground_r','foreground_g','foreground_b','background_r','background_g','background_b'}do saved[field]=named[field]end
+  assert(#g.texpos_custom_symbol==23,'native symbol count changed')
+  for index=0,#g.texpos_custom_symbol-1 do
+   named.symbol=index;named.solid_texpos=0;named.blended_texpos=0
+   named.foreground_r=13;named.foreground_g=127;named.foreground_b=241
+   named.background_r=233;named.background_g=61;named.background_b=7
+   capture(kind..'-symbol-'..index,b)
+  end
+  for field,value in pairs(saved)do named[field]=value end
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  capture(kind..'-closed',b)
  rack_fixture.finish()

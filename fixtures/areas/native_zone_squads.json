@@ -2622,5 +2622,621 @@
       "Barracks-name-long.png": "c6a7617545b59e7b8545b831e62009113f208fcc96aa8817ecc100d341b7a73c",
       "ArcheryRange-name-cp437.png": "bc57800b015aa3214cbeb4dd71fe76790051175e8e58e6a30ab27adbcae85da4"
     }
+  },
+  "symbol_reference": {
+    "run": "build/stockpile-storage-native-zone-squads-20261026-170252",
+    "scope": "All23 masks plus4 ordinary squads in each picker; exact solid/blended RGBA and rendered32x32 RGB",
+    "source_sha256": "4f9ce05663faf70e04384398c5140a3b649fbd161901ab902d9ca0f83fd545dd",
+    "native_renderer": {
+      "rva": "0x40ac50",
+      "end_exclusive": "0x40af28",
+      "sha256": "9ddeb0751b134d7edc69987bed199e7520161a9950098382964b79b0c67e1965",
+      "behavior": "Nonzero mask alpha selects foreground RGB; zero selects background RGB. Solid alpha255, blended alpha160. Writes native texture caches; diagnostic only, not a product reader."
+    },
+    "native_initializer": {
+      "rva": "0x40aa30",
+      "end_exclusive": "0x40ac4f",
+      "sha256": "05146eb8f82e8c6821ae1e243887a60143ac84cb23e33c65783fffec51aec7b4",
+      "behavior": "Invalid symbol fallback consumes RNG, writes symbol/colors and calls cached renderer. Must not be used as a read-only bridge query."
+    },
+    "observations": [
+      {
+        "capture": "Barracks-picker",
+        "id": 120,
+        "index": 22,
+        "x": 10,
+        "y": 1,
+        "foreground": [
+          21,
+          84,
+          63
+        ],
+        "background": [
+          84,
+          0,
+          13
+        ],
+        "solid_sha256": "10ea87f36a64f0f504509bc33e29481a8e3703d754fe109fa45dff2485d590d9",
+        "blended_sha256": "6cc5ae74452a38ae81c3658eab0590f97e1a6a65d1936d4a1f1aec55febc4731"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 125,
+        "index": 17,
+        "x": 5,
+        "y": 1,
+        "foreground": [
+          170,
+          85,
+          85
+        ],
+        "background": [
+          128,
+          128,
+          255
+        ],
+        "solid_sha256": "90b5c72bf27918d942bf813df89c2bd6015a4138760abb19e335381536cee3ed",
+        "blended_sha256": "f64e81649a13b2133d5db435c6a7083a34d2a89ba4f1be454e295dbe5f8dd602"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 128,
+        "index": 2,
+        "x": 2,
+        "y": 0,
+        "foreground": [
+          127,
+          170,
+          85
+        ],
+        "background": [
+          128,
+          255,
+          233
+        ],
+        "solid_sha256": "f9a302f848058df45ac7938cdc15f4ab5541c38029e48eae7fb67a1b7fcffee1",
+        "blended_sha256": "29030cc0c180080ad223bae11a66fccb889bd12812f82f335cab1d05030f6277"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 132,
+        "index": 1,
+        "x": 1,
+        "y": 0,
+        "foreground": [
+          255,
+          159,
+          64
+        ],
+        "background": [
+          223,
+          64,
+          255
+        ],
+        "solid_sha256": "797dcfd252e1a61e99e0442a2c1468798b4c70bb03d81b2fed0a8a1326a9a1a3",
+        "blended_sha256": "ee93682be9d211d239acbf1a3a0bca775c4934b1a160170ec7257b98674f76be"
+      },
+      {
+        "capture": "Barracks-symbol-0",
+        "id": 120,
+        "index": 0,
+        "x": 0,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "168ecca680737b9f6bba5d2ae12e1a65e2a02a3c050831bac529ea73e3e39c20",
+        "blended_sha256": "a6fa207f0985ec58a83470f14ab13bf9d6c697852003079d3cdcccf193de5e3c"
+      },
+      {
+        "capture": "Barracks-symbol-1",
+        "id": 120,
+        "index": 1,
+        "x": 1,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "964291928ad7baf683d07cb95b5c4ae62717c18ea66bdbaac358477cec21b37e",
+        "blended_sha256": "3e4029da89055ed6dc568d84a91bee9e9e33b7df61417df4c7b66bdbfa501f64"
+      },
+      {
+        "capture": "Barracks-symbol-2",
+        "id": 120,
+        "index": 2,
+        "x": 2,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "600fd628247350f9da4af842dc4a9c13cb57f82dbb594f1a10752cd9c6855df9",
+        "blended_sha256": "ae73a8bb472d4093989cd7e0c08fee3b21b117e0545d9768b6a2190ba7c81b66"
+      },
+      {
+        "capture": "Barracks-symbol-3",
+        "id": 120,
+        "index": 3,
+        "x": 3,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "253ceb95ac85aca4d3543b3b680bf6dfdc933bd79bb0321e79a0e9fcb35ac0bf",
+        "blended_sha256": "1a42bebc49601818c52e75a73206c4ee63241942c4974f16e568e1fe09542cbc"
+      },
+      {
+        "capture": "Barracks-symbol-4",
+        "id": 120,
+        "index": 4,
+        "x": 4,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "8aaa82b4db67ba6fff99fb1cbd75c42f47d7e4b82a42acc0a5b5a7a5d4100159",
+        "blended_sha256": "54368477e156eb763961614fcb223a1e5f974b7c57c8852492f66c9a8e69fa5c"
+      },
+      {
+        "capture": "Barracks-symbol-5",
+        "id": 120,
+        "index": 5,
+        "x": 5,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "becf816ee7d59fab0a5ad6a43f5ba6f8400605b0f8c94cb2b259aaf0983b8949",
+        "blended_sha256": "da4ba9e53f05db995687a869a1b9a18a67e2b373d5a46979fda8f34e23c3faf4"
+      },
+      {
+        "capture": "Barracks-symbol-6",
+        "id": 120,
+        "index": 6,
+        "x": 6,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "6ce807a8b3c3cdb8c36c4494f21d72ed9360598ada04626d61119b3aed9b85d4",
+        "blended_sha256": "f3be6bf12f336ff25069ff22e012c5f94001fdc84a3a073c78cad38b52f22c05"
+      },
+      {
+        "capture": "Barracks-symbol-7",
+        "id": 120,
+        "index": 7,
+        "x": 7,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "e63807397b6dda41114ed3a93549b6b5bf889f9eaaf1dab2173d04024be912be",
+        "blended_sha256": "2721b3864b26803dc6ff86b484e491f9d8c18e274382ec84af3a30ee7066990e"
+      },
+      {
+        "capture": "Barracks-symbol-8",
+        "id": 120,
+        "index": 8,
+        "x": 8,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "6d6751f3a04906e81ed1ff33cce1f7f50b7eb01c193eb8791a33102e000d57b2",
+        "blended_sha256": "2be92cc524c69b93e868d58f19a8f637825baf921792736f32b19b7e42db13e9"
+      },
+      {
+        "capture": "Barracks-symbol-9",
+        "id": 120,
+        "index": 9,
+        "x": 9,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "3d509253be74ecbd5be699091d19c0bcd1ef0f0fcc94208ed1482eb8434ddd5a",
+        "blended_sha256": "da1b359fc105b11becb0b07f3071bc38ea7bfcc67eeddbd6f11f38c01e36bd95"
+      },
+      {
+        "capture": "Barracks-symbol-10",
+        "id": 120,
+        "index": 10,
+        "x": 10,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "95856b34b1b15b924596166601c608d24653787e7abd24bf134d8398fbbbfb9c",
+        "blended_sha256": "79358e786322bf88ee6bd0904a62a53458694d0bddc835304c2965284919bc7d"
+      },
+      {
+        "capture": "Barracks-symbol-11",
+        "id": 120,
+        "index": 11,
+        "x": 11,
+        "y": 0,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "9e7461731dda4771aa894fe3241366b56ace68fa1f557ac5a48bf71d06f15573",
+        "blended_sha256": "402d7c3ef0e9b62c9cf4f7bff1deec3a57d4a9fa5ae56b23b6945e324f9c3081"
+      },
+      {
+        "capture": "Barracks-symbol-12",
+        "id": 120,
+        "index": 12,
+        "x": 0,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "cb180c14aa535cb7d45eebe34cfd5debbf9721eb32cc9bd69a43044c8a67e488",
+        "blended_sha256": "69e882f8ff409688c2f0b5513cf364d2297148a3347f12cb4437e61ffdaf8778"
+      },
+      {
+        "capture": "Barracks-symbol-13",
+        "id": 120,
+        "index": 13,
+        "x": 1,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "41317ed186941807a07d4b3d55ab05ed9350af99afb2774312fe61d9d8a3b194",
+        "blended_sha256": "3b64452a3fba2b9961e2cb34b0110bb3375063d7bdec13b3915eb5d268ffdc4d"
+      },
+      {
+        "capture": "Barracks-symbol-14",
+        "id": 120,
+        "index": 14,
+        "x": 2,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "138a6a1af9af355c6ad9a8f0799ab324281e4aa23b388e759e01e3b49734abca",
+        "blended_sha256": "7a7911aa6fc11b5c0080873b09318c519c3466dd1c07d3ce2431ffcccb065e82"
+      },
+      {
+        "capture": "Barracks-symbol-15",
+        "id": 120,
+        "index": 15,
+        "x": 3,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "0896b6da6183f2ddfa878cdfcb095041b1a94a219ee8763542b1c1d20cc40694",
+        "blended_sha256": "e1d6cc8fe5b790f2d973562e2a2ff690643bb4415851b86b1c80cc631e9539e2"
+      },
+      {
+        "capture": "Barracks-symbol-16",
+        "id": 120,
+        "index": 16,
+        "x": 4,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "11596843f17f03d6f97ae396f461a290e21f45235e6b010875a464be59311e8b",
+        "blended_sha256": "2e03cc553018340ff0877da10c8ca124a0b8455eb080a7fb77af7cee110d65c6"
+      },
+      {
+        "capture": "Barracks-symbol-17",
+        "id": 120,
+        "index": 17,
+        "x": 5,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "f0f3cfe00d2790ca748f698ad8c1f4ffa2ae259db513e2899005e6e61858a1c0",
+        "blended_sha256": "fb691639e32932fea040000175cd15877afc701c18616b4de88714ea2ed9cfcb"
+      },
+      {
+        "capture": "Barracks-symbol-18",
+        "id": 120,
+        "index": 18,
+        "x": 6,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "295a9d9e62fea0ab9188819eac1d42a8f3a4d39ed5b1c43155f79df6bfe9657c",
+        "blended_sha256": "9b09b1dd5b282f3af55c6bd0b140a7a22d0e0577b9c4a50f42d221bfc98654f8"
+      },
+      {
+        "capture": "Barracks-symbol-19",
+        "id": 120,
+        "index": 19,
+        "x": 7,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "c4cc377c2a3e102ac58c981f50663e3535f821ae714e5d25ef8e3714f7b64108",
+        "blended_sha256": "edcd3befca21724d043f5a22c69e7c9116bf787493ee3c819c4fbe79e0d33168"
+      },
+      {
+        "capture": "Barracks-symbol-20",
+        "id": 120,
+        "index": 20,
+        "x": 8,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "e6541aa359164fada3b5232065bb4ca5fca159f272de4d34096212e3c3e6e5de",
+        "blended_sha256": "d5a65a576425b4839bd02ba9c12dcfcc9b9f59796ec1465bdb31853185f5ada5"
+      },
+      {
+        "capture": "Barracks-symbol-21",
+        "id": 120,
+        "index": 21,
+        "x": 9,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "c282fa274b9a537342a0fa351c28058becb3237cb4980e3efd3c340e378fdd50",
+        "blended_sha256": "a62e008e709a00ff6c730c763bb87a9d8ff2ab05d6f5b500049489a0e49f2ac7"
+      },
+      {
+        "capture": "Barracks-symbol-22",
+        "id": 120,
+        "index": 22,
+        "x": 10,
+        "y": 1,
+        "foreground": [
+          13,
+          127,
+          241
+        ],
+        "background": [
+          233,
+          61,
+          7
+        ],
+        "solid_sha256": "c1ed606072bff9508a54385096e997f3a8ff1cf04d1eb096e6f365f361978ede",
+        "blended_sha256": "cfc7e00fffa111e1744479caabaab13422ecb6b6ad537b4247c9bc96772678e0"
+      },
+      {
+        "capture": "ArcheryRange-picker",
+        "id": 120,
+        "index": 22,
+        "x": 10,
+        "y": 1,
+        "foreground": [
+          21,
+          84,
+          63
+        ],
+        "background": [
+          84,
+          0,
+          13
+        ],
+        "solid_sha256": "10ea87f36a64f0f504509bc33e29481a8e3703d754fe109fa45dff2485d590d9",
+        "blended_sha256": "6cc5ae74452a38ae81c3658eab0590f97e1a6a65d1936d4a1f1aec55febc4731"
+      },
+      {
+        "capture": "ArcheryRange-picker",
+        "id": 125,
+        "index": 17,
+        "x": 5,
+        "y": 1,
+        "foreground": [
+          170,
+          85,
+          85
+        ],
+        "background": [
+          128,
+          128,
+          255
+        ],
+        "solid_sha256": "90b5c72bf27918d942bf813df89c2bd6015a4138760abb19e335381536cee3ed",
+        "blended_sha256": "f64e81649a13b2133d5db435c6a7083a34d2a89ba4f1be454e295dbe5f8dd602"
+      },
+      {
+        "capture": "ArcheryRange-picker",
+        "id": 128,
+        "index": 2,
+        "x": 2,
+        "y": 0,
+        "foreground": [
+          127,
+          170,
+          85
+        ],
+        "background": [
+          128,
+          255,
+          233
+        ],
+        "solid_sha256": "f9a302f848058df45ac7938cdc15f4ab5541c38029e48eae7fb67a1b7fcffee1",
+        "blended_sha256": "29030cc0c180080ad223bae11a66fccb889bd12812f82f335cab1d05030f6277"
+      },
+      {
+        "capture": "ArcheryRange-picker",
+        "id": 132,
+        "index": 1,
+        "x": 1,
+        "y": 0,
+        "foreground": [
+          255,
+          159,
+          64
+        ],
+        "background": [
+          223,
+          64,
+          255
+        ],
+        "solid_sha256": "797dcfd252e1a61e99e0442a2c1468798b4c70bb03d81b2fed0a8a1326a9a1a3",
+        "blended_sha256": "ee93682be9d211d239acbf1a3a0bca775c4934b1a160170ec7257b98674f76be"
+      }
+    ],
+    "files_sha256": {
+      "result.json": "c0380eedb8f553e6b58345b3d9bc3d90e2b0ea9608558880f458c28306947c03",
+      "symbol-pixels.json": "bb294684d8691b14e6fcfc816b3a9171cacdbd6de4a9d1adf5cda4b8fdf8930e",
+      "symbol-pixels.log": "6140fb4ff418c3401dda4ff1040c9e7ce3b97aa4f9403482eec7c6dbdba04645",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "Barracks-symbol-12.png": "3bddeb2c6fa27dbbe4712c12a6a1c32fcaacc3b5c458d19c34f3d3f7d16e27d7"
+    }
   }
 }

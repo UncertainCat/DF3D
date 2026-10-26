@@ -149,6 +149,9 @@ local function capture(name)
      local unit=assert(df.unit.find(row.unit_id))
      local source_text,source_code=dfhack.run_command_silent('df3d','zone-owner-color-sources-read',tostring(row.unit_id));assert(source_code==0,source_text)
      local sources=require('json').decode(source_text)
+     local effective_profession=sources.identity_profession>=0 and sources.identity_profession or unit.profession
+     local color_text,color_code=dfhack.run_command_silent('df3d','zone-owner-profession-color-read',tostring(row.unit_id),tostring(effective_profession));assert(color_code==0,color_text)
+     sources.profession_color=require('json').decode(color_text)
      if sources.identity_id>=0 then
       local identity=assert(df.identity.find(sources.identity_id),'native identity missing')
       assert(identity.profession==sources.identity_profession and identity.impersonated_hf==sources.identity_impersonated_histfig,'identity facts differ')
@@ -401,6 +404,10 @@ local ok,why=pcall(function()
     end
    end
    assert(observed,'color fixture has no glyphs')
+   if name:find('^profession%-') or name:find('^raw%-') or name=='identity-before-noble' then
+    local base=sample.color_facts.native_sources.profession_color
+    assert(base[1]==fg and base[2]==bg and (base[3]~=0)==bright,'owned base color differs: '..name)
+   end
   end
   first_unit.uwss_display_tile=88;first_unit.uwss_display_color_f=1
   first_unit.uwss_display_color_b=2;first_unit.uwss_display_color_br=1
@@ -429,6 +436,30 @@ local ok,why=pcall(function()
    identity.histfig_id=first_unit.hist_figure_id;identity.impersonated_hf=-1
    all:insert('#',identity);inserted=true;reputation.cur_identity=identity.id
    color_case('identity-before-noble',7,0,false)
+   -- Exercise each immutable profession dispatch destination, including raw
+   -- STANDARD fallback and the highest supported profession index.
+   for _,profession in ipairs{0,1,5,10,16,22,25,37,41,61,66,76,85,86,87,102,134}do
+    identity.profession=profession
+    local text,code=dfhack.run_command_silent('df3d','zone-owner-profession-color-read',tostring(owner),tostring(profession));assert(code==0,text)
+    local color=require('json').decode(text)
+    color_case('profession-'..profession,color[1],color[2],color[3]~=0)
+   end
+   local creature=df.global.world.raws.creatures.all[first_unit.race]
+   local caste=creature.caste[first_unit.caste]
+   local saved_raw={creature.color[0],creature.color[1],creature.color[2],
+    caste.caste_color[0],caste.caste_color[1],caste.caste_color[2],caste.flags.HAS_COLOR,caste.flags.NO_UNIT_TYPE_COLOR}
+   local raw_ok,raw_error=pcall(function()
+    identity.profession=0;caste.flags.NO_UNIT_TYPE_COLOR=true;caste.flags.HAS_COLOR=false
+    creature.color[0]=4;creature.color[1]=2;creature.color[2]=0
+    color_case('raw-creature',4,2,false)
+    caste.flags.HAS_COLOR=true;caste.caste_color[0]=1;caste.caste_color[1]=3;caste.caste_color[2]=0
+    color_case('raw-caste',1,3,false)
+    caste.caste_color[0]=3
+    color_case('raw-contrast',3,3,true)
+   end)
+   for i=0,2 do creature.color[i]=saved_raw[i+1];caste.caste_color[i]=saved_raw[i+4]end
+   caste.flags.HAS_COLOR=saved_raw[7];caste.flags.NO_UNIT_TYPE_COLOR=saved_raw[8]
+   assert(raw_ok,raw_error)
   end)
   reputation.cur_identity=old_identity
   if inserted then

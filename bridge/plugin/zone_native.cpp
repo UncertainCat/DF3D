@@ -18,6 +18,8 @@
 #include "df/historical_entity.h"
 #include "df/entity_position.h"
 #include "df/entity_position_assignment.h"
+#include "df/creature_raw.h"
+#include "df/caste_raw.h"
 #include "df/histfig_site_link.h"
 #include "df/squad.h"
 #include "df/squad_barracks_infost.h"
@@ -187,6 +189,39 @@ std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzon
     // its missing-soul sentinel is -200000, not a derived happiness category.
     if(candidate.status.current_soul)facts.stress=candidate.status.current_soul->personality.stress;
     return facts;
+}
+std::optional<std::array<uint8_t,3>> nativeZoneOwnerProfessionColor(const df::unit& candidate,int16_t profession) {
+    if(!df::global::world || !staffOrderingFunctions())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    // These native routines write graphics globals. Read their pinned immutable
+    // dispatch and semantic raws instead; never execute either drawing routine.
+    static const bool compatible=hash(base+0x13337a0,0x26b)==UINT64_C(0x4d6839cd6f042ed5) &&
+        hash(base+0x7022c0,0xe5)==UINT64_C(0xb01a72d65e66e9a3);
+    if(!compatible)return std::nullopt;
+    static_assert(offsetof(df::creature_raw,color)==0x138 && offsetof(df::caste_raw,caste_color)==0x46e);
+    static_assert(int(df::caste_raw_flags::HAS_COLOR)==128 && int(df::caste_raw_flags::NO_UNIT_TYPE_COLOR)==41);
+    std::array<uint8_t,3> result{4,4,1};
+    const auto& creatures=df::global::world->raws.creatures.all;
+    const df::caste_raw* caste=nullptr;
+    if(candidate.race>=0 && size_t(candidate.race)<creatures.size() && creatures[candidate.race]) {
+        const auto* creature=creatures[candidate.race];
+        if(candidate.caste>=0 && size_t(candidate.caste)<creature->caste.size())caste=creature->caste[candidate.caste];
+        const auto& color=caste && caste->flags.is_set(df::caste_raw_flags::HAS_COLOR)?caste->caste_color:creature->color;
+        result={uint8_t(color[0]),uint8_t(color[1]),uint8_t(color[2])};
+        if(color[0]==color[1])result[2]=1;
+    }
+    if(!caste || !caste->flags.is_set(df::caste_raw_flags::NO_UNIT_TYPE_COLOR)) {
+        if(profession>=0 && profession<=134) {
+            const auto key=base[0x1333984+profession];
+            // Values correspond to all16 pinned native branch destinations.
+            // Entry15 retains the creature/caste result (including STANDARD).
+            constexpr std::array<uint8_t,16> palette{7,14,15,2,8,10,9,1,6,12,5,13,3,11,4,255};
+            if(key>=palette.size())return std::nullopt;
+            if(palette[key]!=255)result={uint8_t(palette[key]%8),0,uint8_t(palette[key]/8)};
+        }
+    }
+    if(result[0]==result[1] && !result[2] && result[1])result[0]=0;
+    return result;
 }
 std::optional<ZoneOwnerColorSources> nativeZoneOwnerColorSources(df::unit& candidate) {
     if(!df::global::world || !nativeZoneOwnerCandidatesReady())return std::nullopt;

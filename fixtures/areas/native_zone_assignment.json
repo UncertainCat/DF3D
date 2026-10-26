@@ -2048,6 +2048,196 @@
     ],
     "dependencies": "Reuses owner-candidate guards for HF/entity/assignment lookup and native position-link type/accessor. Other virtual type leaves only return their enum. Identity helper may refresh semantic unit HF lookup index. No graphics/menu/search state.",
     "checks": "Identity/position/assignment IDs and values resolve against semantic records; UI/gps and initial map path_cost/path_tag guards unchanged. Native identity profession takes precedence over actual noble color.",
-    "remaining": "Final owned color precedence/effects, ordinary profession table/raw fallback, slave/prisoner/curse/undead/water/fire, legendary animation, production contract/rendering and full picker acceptance."
+    "remaining": "Final owned color precedence/effects, slave/prisoner/deity/undead/water/fire, legendary animation, production contract/rendering and full picker acceptance. Base profession/raw reader evidence follows."
+  },
+  "owner_profession_color": {
+    "status": "Owned base profession/raw color reader verified; final name color/effects unfinished",
+    "diagnostic": "df3d zone-owner-profession-color-read <unit id> <profession>",
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-014050",
+    "result_sha256": "3e52b60d336ba639ef092d4b203f6c356fd7072f9344acead6fec137e5402f8e",
+    "plugin_sha256": "de0ac53b6a8dda5c6b61949f0ec7c9458614720e248ada6ae4d7eb9a78e11858",
+    "owned_df_pid": 126892,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "display_samples": 139,
+    "cases": [
+      {
+        "case": "profession-0",
+        "color": [
+          7,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "profession-1",
+        "color": [
+          6,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "profession-5",
+        "color": [
+          7,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "profession-10",
+        "color": [
+          2,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "profession-16",
+        "color": [
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "profession-22",
+        "color": [
+          2,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "profession-25",
+        "color": [
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "profession-37",
+        "color": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "profession-41",
+        "color": [
+          6,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "profession-61",
+        "color": [
+          4,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "profession-66",
+        "color": [
+          5,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "profession-76",
+        "color": [
+          5,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "profession-85",
+        "color": [
+          3,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "profession-86",
+        "color": [
+          3,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "profession-87",
+        "color": [
+          4,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "profession-102",
+        "color": [
+          3,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "profession-134",
+        "color": [
+          5,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "raw-creature",
+        "color": [
+          4,
+          2,
+          0
+        ]
+      },
+      {
+        "case": "raw-caste",
+        "color": [
+          1,
+          3,
+          0
+        ]
+      },
+      {
+        "case": "raw-contrast",
+        "color": [
+          3,
+          3,
+          1
+        ]
+      }
+    ],
+    "ranges": [
+      {
+        "rva": "0x13337a0",
+        "length": "0x26b",
+        "fnv1a64": "4d6839cd6f042ed5",
+        "role": "profession color code and immutable dispatch tables; writes gps"
+      },
+      {
+        "rva": "0x7022c0",
+        "length": "0xe5",
+        "fnv1a64": "b01a72d65e66e9a3",
+        "role": "raw creature/caste fallback; writes gps"
+      }
+    ],
+    "ownership": "Reads pinned immutable profession dispatch and semantic creature/caste raws with owner background0. Neither gps-writing routine is executed. Returns owned color components.",
+    "coverage": "All16 dispatch destinations plus profession134; STANDARD raw fallback; NO_UNIT_TYPE_COLOR, HAS_COLOR and equal foreground/background brightness. Controlled identity and lowered legendary skills isolate base color. Raw fields and flags restored even on failure. UI/gps and initial map-search guards unchanged.",
+    "remaining": "Invalid race/profession fallbacks have static audit only. Final identity/noble/slave/prisoner/deity/undead/water/fire precedence, animation and production row rendering remain separate."
   }
 }

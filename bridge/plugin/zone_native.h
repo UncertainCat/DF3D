@@ -39,6 +39,9 @@ struct ZoneOwnerColorSources {
 // Semantic identity and highest-priority noble position used by native name
 // coloring. This is not a final color: precedence/effects remain separate.
 std::optional<ZoneOwnerColorSources> nativeZoneOwnerColorSources(df::unit& candidate);
+// Base profession/raw color from pinned native inline dispatch, with the
+// owner widget's background0. No identity/noble/status precedence or animation.
+std::optional<std::array<uint8_t,3>> nativeZoneOwnerProfessionColor(const df::unit& candidate,int16_t profession);
 // Normalize caller-owned textbox bytes with the native search routine.
 std::optional<std::string> nativeZoneOwnerQuery(std::string query);
 // Native may allocate and transfer ownership from another tomb. Callers mark

@@ -310,6 +310,23 @@ with source preserved. MSVC and `build/qa/owner-color-sources` core19/19 plus
 adapter pass. This establishes semantic source readers and identity precedence,
 not a complete final name-color reader or production row coloring.
 
+The base color diagnostic `df3d zone-owner-profession-color-read <unit id>
+<profession>` reads the pinned immutable profession dispatch and semantic raws.
+It never executes the gps-writing profession/raw drawing routines. It preserves
+caste HAS_COLOR and NO_UNIT_TYPE_COLOR, STANDARD raw fallback and native
+foreground/background contrast with the owner widget's background0.
+
+Protected `build/stockpile-storage-native-zone-owner-20261026-014050` passes139
+row samples, including20 controlled base-color cases: all16 dispatch destinations,
+profession134 and three creature/caste/contrast cases. The temporary identity
+and lowered legendary skills isolate this base stage. All modified raw fields,
+flags, identity and skills are restored. UI/gps and initial search guards pass;
+DF126892 closes unsaved with source preserved. MSVC and
+`build/qa/owner-profession-color` core19/19 pass. The raw-contrast capture was
+inspected. Invalid race/profession fallbacks have static audit only. This reader
+does not yet supply final name-color precedence, animation or production rows.
+Compact provenance is in `native_zone_assignment.json.owner_profession_color`.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

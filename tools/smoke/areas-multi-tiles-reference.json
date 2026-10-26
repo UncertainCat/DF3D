@@ -1,0 +1,351 @@
+{
+  "provenance": "DF53.16 native Multi captures 2026-09-29, paint-native-room-shapes-004402. Exact created-zone extents, not classifier predictions. Clone-only replay keeps existing building state and restores all edited map fields.",
+  "source_directory": "build/notes/pm/runs/04-U/paint-native-room-shapes-004402",
+  "x": 168,
+  "y": 53,
+  "z": 164,
+  "width": 9,
+  "height": 9,
+  "seed": [
+    172,
+    57,
+    164
+  ],
+  "tiles": [
+    430,
+    430,
+    430,
+    430,
+    430,
+    430,
+    430,
+    430,
+    430,
+    430,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    430,
+    430,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    430,
+    430,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    430,
+    430,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    430,
+    430,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    430,
+    430,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    430,
+    430,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    43,
+    430,
+    430,
+    430,
+    430,
+    430,
+    430,
+    430,
+    430,
+    430,
+    430
+  ],
+  "cases": [
+    {
+      "name": "liquid_magma_1",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "87c0c6af73a719849d95e0c855fbd2fc2a072870018b9ede2c8f224d93e0c30f"
+    },
+    {
+      "name": "liquid_magma_4",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "c88d050141e081ba329f352d73a383d2fdfc6d6a47b1b86d1c90aa1278e68749"
+    },
+    {
+      "name": "liquid_magma_7",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "66e5a15d85d9d0079adfe55e601ff02c094fd598e713c394060eb8372ec8efcc"
+    },
+    {
+      "name": "liquid_water_1",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "aa4d52f8ba7219b867897ccdd32184239c23cdb72043a46c8e3dcb947d5f5428"
+    },
+    {
+      "name": "liquid_water_4",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "4a7e88777b3393e7c5a74c97958ece0e16887ba7b948122c1c6e137b9f28297b"
+    },
+    {
+      "name": "liquid_water_5",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "20bd7dc8c3ca22cc3037d4ee05e99e559419ce1523988ecab4a8640189f15aa2"
+    },
+    {
+      "name": "liquid_water_6",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "e98edd0c572f3542ecd794496cd693d09e60f6d5112f38b04861b75e88a8f3e9"
+    },
+    {
+      "name": "liquid_water_7",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "4b4d9aed474bf8b789a2b6e7a04ae16cb912ae407246c001c6614c0db2ffd8d2"
+    },
+    {
+      "name": "occ_dynamic",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "fd6274133e99ed0bd00b5cce1b5e8659e0ae8d7b3223734de9dff6612b8c8f0e"
+    },
+    {
+      "name": "occ_floored",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "47d776244980b03e3da3bf38eeba78cbc0840ae7df5bc55e42449888ff7cdf7e"
+    },
+    {
+      "name": "occ_impassable",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "3ff3ef82a9b8fb21588b343a5725b60ed081d590bb0c48e155012db89dbed078"
+    },
+    {
+      "name": "occ_none",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "2865a7cb752732779c3fc97224d5a32a92ce071c62e90e53d4df14a91850485e"
+    },
+    {
+      "name": "occ_obstacle",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "63f515664c55e8bb4e2c2c3c3acef6c0a80d6e960318efb4c46559d0847a9f4f"
+    },
+    {
+      "name": "occ_passable",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "c4810712cacdb62f76fee3e674d482e06e45896dfcb38feb0792c7efc38847d8"
+    },
+    {
+      "name": "occ_planned",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "93b6f0259d68cd586a2a552a18eaa1255673637f17d9e27646c5770c6cf85efc"
+    },
+    {
+      "name": "occ_well",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "30ffa02f409464c439858e8090bd813d6e09893205e927a8e467a5e971d789ab"
+    },
+    {
+      "name": "shape_boulder",
+      "tiletype": 398,
+      "tile_name": "StoneBoulder",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "fe56235c316a25e3e909653eee8271db44654d885fac45d8441fb366c28416d7"
+    },
+    {
+      "name": "shape_branch",
+      "tiletype": 72,
+      "tile_name": "BurningTreeBranches",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "809c545419fc176f3ffbe699b56438af91e6b6e39306ba6d07b740248ea89f84"
+    },
+    {
+      "name": "shape_brook_bed",
+      "tiletype": 369,
+      "tile_name": "BrookN",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "174c19576dfeb95422c0ac130d425258c2ca2bf3dedce68d430af5fe16711593"
+    },
+    {
+      "name": "shape_brook_top",
+      "tiletype": 377,
+      "tile_name": "BrookTop1",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "61f071ecdf404d90599f53f4eaf7e10988c6c0d9ac6ec6ef0c75f9e2cecaa7f2"
+    },
+    {
+      "name": "shape_empty",
+      "tiletype": 32,
+      "tile_name": "OpenSpace",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "2fbecd71b33e6d957404bccb4d73e35250482ffe27daa3f92e9a3acc2ca6b464"
+    },
+    {
+      "name": "shape_endless_pit",
+      "tiletype": 35,
+      "tile_name": "Chasm",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "cf2e0d87f3611bd2a2ec74aeb08fea7e46164d39f8418b3d6cb9260707c516a2"
+    },
+    {
+      "name": "shape_floor",
+      "tiletype": 2,
+      "tile_name": "MurkyPool",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "785808601abbbfe7d383a9d02795328828ca281199c16ea78003f30eca0684bf"
+    },
+    {
+      "name": "shape_fortification",
+      "tiletype": 65,
+      "tile_name": "StoneFortification",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "2ef3df374f475469501b0ba644f9e0e569fd3c3b8cccce7284a3dbce0d7cbf21"
+    },
+    {
+      "name": "shape_none",
+      "tiletype": 0,
+      "tile_name": "Void",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "56f740e7c9304864edb547d11a5f9cd624aabbeec9d0d493fbcf0eb7fb37d18a"
+    },
+    {
+      "name": "shape_pebbles",
+      "tiletype": 401,
+      "tile_name": "StonePebbles1",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "605ed1c94b04c3cf3c5f29dfaa171f65806c028fcb96638061906e4dc7bff4f6"
+    },
+    {
+      "name": "shape_ramp",
+      "tiletype": 3,
+      "tile_name": "MurkyPoolRamp",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "0c1c1e757df468a887516dcb65fce153bfd154ed3b14a34476f81d661f5eacce"
+    },
+    {
+      "name": "shape_ramp_top",
+      "tiletype": 1,
+      "tile_name": "RampTop",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "8ed2f6ba2b2bd9b250e1be9a95c8f22f3190f5e9ff7700ca922e6569657aca0c"
+    },
+    {
+      "name": "shape_sapling",
+      "tiletype": 227,
+      "tile_name": "Sapling",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "eb73a6087b3b5de3b855947a278f17df885669b3e0897f950c6ff0f988760c16"
+    },
+    {
+      "name": "shape_shrub",
+      "tiletype": 34,
+      "tile_name": "Shrub",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "cee47e8d28d9d735b3edfa96c58942c0e10db58d1698ac649ec7c5d7faedbb47"
+    },
+    {
+      "name": "shape_stair_down",
+      "tiletype": 5,
+      "tile_name": "UnderworldGateStairD",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "888711e1d1e9536963d8472ba57108ed66d143f496f7abe627eddb761b662e85"
+    },
+    {
+      "name": "shape_stair_up",
+      "tiletype": 4,
+      "tile_name": "UnderworldGateStairU",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "706830f02bf90966b2fdfc4e696dc9d7acb8fad5d51b2324ba20449ff232041e"
+    },
+    {
+      "name": "shape_stair_updown",
+      "tiletype": 6,
+      "tile_name": "UnderworldGateStairUD",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "d3f164d20f1f7870ad861c2451995ceafe891ec157e82409c66d385532e89de3"
+    },
+    {
+      "name": "shape_trunk_branch",
+      "tiletype": 103,
+      "tile_name": "TreeTrunkBranchN",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "24bfd3633c2fa711d67d6751302768a6647f962bb07c77c84e7053f19f5d8559"
+    },
+    {
+      "name": "shape_twig",
+      "tiletype": 73,
+      "tile_name": "BurningTreeTwigs",
+      "expected_mask": "111111110111111111111111111111111111111111111111111111111111111111111111111111111",
+      "native_capture_sha256": "3ecbe7630b6ebd5dde8729f9aec872147a3f9798c2c05ed94fe69bf51c1b305e"
+    },
+    {
+      "name": "shape_wall",
+      "tiletype": 7,
+      "tile_name": "TreeCapInterior",
+      "expected_mask": "111111000111111000111111000111111000111111000111111000111111000111111000111111000",
+      "native_capture_sha256": "21f3e39235a1be664350d5876c043f84ae3cad41bb1d670506a372fafc128307"
+    }
+  ]
+}

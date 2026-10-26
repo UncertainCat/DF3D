@@ -41,6 +41,11 @@ func undo_room(interaction: int, token: int, expected := Outcome.Completed) -> D
 func exercise() -> void:
 	await seed_catalog()
 	if stopped: return
+	step = "Multi native tile references"
+	await native("multi_search_begin")
+	if not stopped: await native("multi_tiles_reference")
+	if not stopped: await native("multi_search_end")
+	if stopped: return
 	step = "Multi native baseline"; await native("multi_begin")
 	for scenario in ["undo","empty","in_use","stale","done","foreign_scope"]:
 		if stopped: return

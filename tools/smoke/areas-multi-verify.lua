@@ -60,6 +60,62 @@ local ok,err=pcall(function()
   end
   _G.df3d_multi_search_guards=nil;result.scratch_guards=#guards;result.changed_guards=changed
   assert(changed==0,'Multi operation changed map search scratch')
+ elseif request.op=='multi_tiles_reference' then
+  local reference=read(out..'/multi-tiles-reference.json')
+  local saved={}
+  for y=reference.y,reference.y+reference.height-1 do for x=reference.x,reference.x+reference.width-1 do
+   local b=assert(dfhack.maps.getTileBlock({x=x,y=y,z=reference.z}))
+   saved[#saved+1]={b=b,x=x%16,y=y%16,tile=b.tiletype[x%16][y%16],
+    designation=b.designation[x%16][y%16].whole,occupancy=b.occupancy[x%16][y%16].whole}
+  end end
+  local function restore()
+   for _,v in ipairs(saved)do
+    v.b.tiletype[v.x][v.y]=v.tile;v.b.designation[v.x][v.y].whole=v.designation
+    v.b.occupancy[v.x][v.y].whole=v.occupancy
+   end
+  end
+  local passed={}
+  local matched,why=pcall(function()
+   for _,case in ipairs(reference.cases)do
+    restore()
+    for i,v in ipairs(saved)do
+     v.b.tiletype[v.x][v.y]=reference.tiles[i];v.b.designation[v.x][v.y].hidden=false
+    end
+    local q=assert(dfhack.maps.getTileBlock({x=173,y=57,z=164}))
+    for y=54,60 do q.tiletype[13][y%16]=reference.tiles[1] end
+    assert(df.tiletype[case.tiletype]==case.tile_name,'native tile definition changed')
+    q.tiletype[13][9]=case.tiletype
+    local occupancy=case.name:match('^occ_(.+)$')
+    if occupancy then
+     local key=occupancy:sub(1,1):upper()..occupancy:sub(2)
+     q.occupancy[13][9].building=assert(df.tile_building_occ[key])
+    end
+    local liquid,depth=case.name:match('^liquid_(%a+)_(%d)$')
+    if liquid then
+     q.designation[13][9].liquid_type=liquid=='magma' and df.tile_liquid.Magma or df.tile_liquid.Water
+     q.designation[13][9].flow_size=tonumber(depth)
+    end
+    local output,status=dfhack.run_command_silent('df3d','room-read','172','57','164')
+    assert(status==0,output);local observed=json.decode(output)
+    assert(observed.status==0,'native tile reference did not complete: '..case.name)
+    local count=0
+    for i,v in ipairs(observed.extents)do if v~=0 then count=count+1 end end
+    local expected=0
+    for y=reference.y,reference.y+reference.height-1 do for x=reference.x,reference.x+reference.width-1 do
+     local i=(y-reference.y)*reference.width+x-reference.x+1
+     local value=tonumber(case.expected_mask:sub(i,i));expected=expected+value
+     assert(observed.extents[(y-observed.y)*observed.width+x-observed.x+1]==value,'native tile mask differs: '..case.name..' at '..x..','..y)
+    end end
+    assert(count==expected,'native tile reference escaped bounds: '..case.name)
+    passed[#passed+1]=case.name
+   end
+  end)
+  restore()
+  for _,v in ipairs(saved)do
+   assert(v.b.tiletype[v.x][v.y]==v.tile and v.b.designation[v.x][v.y].whole==v.designation and
+    v.b.occupancy[v.x][v.y].whole==v.occupancy,'tile reference restoration failed')
+  end
+  result.cases=passed;assert(matched,why)
  elseif request.op=='multi_begin' then
   local bed=assert(df.building.find(1310),'source bed missing')
   assert(df.building_bedst:is_instance(bed) and bed.centerx==172 and bed.centery==57 and bed.z==164,'source bed changed')

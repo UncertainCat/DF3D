@@ -117,7 +117,7 @@
       "bridge_sha256": "d844e07e4a37d3dcb1f61e45d94bee5dc9189ef6cd077bda5664b05585f91be7"
     },
     "native_reference": "tools/smoke/areas-multi-reference.json",
-    "remaining_scope": "Discovery eligibility audit and full Zones/Locations lifecycle acceptance remain outstanding.",
+    "remaining_scope": "Hidden-map/traversal audit and full Zones/Locations lifecycle acceptance remain outstanding.",
     "viewport_evidence": {
       "directory": "build/areas-acceptance-20261025-220051",
       "observations": 35,
@@ -142,6 +142,40 @@
         "Done retains rooms"
       ],
       "earlier_failed_run": "215808 timed out before creation because the test omitted the staged-launcher helper; corrected test only."
+    }
+  },
+  "multi_discovery": {
+    "native_predicate": {
+      "rva": "0x14adea0",
+      "size": 3252,
+      "fnv1a64": "0x1818a722f3967dcb",
+      "arguments": "world, x, y, z, false, 0",
+      "ownership": "Read-only semantic map/building facts; same audited helper used by owned overlap. Movement search and temperature-query branches skipped."
+    },
+    "inline_door_reference": {
+      "rva": "0x355c53",
+      "size": 464,
+      "fnv1a64": "0xcda8023a0a668bcf",
+      "meaning": "After tile eligibility, nonzero occupancy checks actual DOOR centers, independent of open/closed animation."
+    },
+    "tile_reference": "tools/smoke/areas-multi-tiles-reference.json",
+    "remaining_scope": [
+      "Hidden/unobserved tile handling and owned traversal boundaries still need final full-Multi audit.",
+      "Zone assignment and full Zones/Locations lifecycle acceptance remain outstanding."
+    ],
+    "semantic_evidence": {
+      "directory": "build/areas-acceptance-20261025-220802",
+      "native_observations": 193,
+      "recorded_tile_cases": 36,
+      "guarded_operations": 52,
+      "map_search_arrays_per_operation": 55584,
+      "changed_arrays": 0,
+      "owned_df_pid": 126720,
+      "closed_unsaved": true,
+      "unchanged_save_manifests": 2,
+      "diagnostics": "clean",
+      "bridge_sha256": "f35387c44c961804b13e1d914b548d2731877d8ddf57853398d8d15b4c76fc59",
+      "tile_restoration": "All edited tiletype/designation/occupancy values restored and verified even on assertion failure."
     }
   }
 }

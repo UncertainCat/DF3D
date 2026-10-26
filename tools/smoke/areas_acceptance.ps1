@@ -76,7 +76,7 @@ try {
  Get-FileHash -Algorithm SHA256 "$DfPath/hack/plugins/df3d.plug.dll","$repo/presentations/godot/project/bin/df3d_godot.dll" | Format-List | Out-File "$out/binaries.log"
  Write-Lf "$out/save-id.txt" $SaveId
  Write-Lf "$out/df-path.txt" $DfPath
- if($MultiOnly){Copy-Item -LiteralPath "$PSScriptRoot/areas-multi-reference.json" -Destination "$out/multi-reference.json"}
+ if($MultiOnly){Copy-Item -LiteralPath "$PSScriptRoot/areas-multi-reference.json" -Destination "$out/multi-reference.json"; Copy-Item -LiteralPath "$PSScriptRoot/areas-multi-tiles-reference.json" -Destination "$out/multi-tiles-reference.json"}
  Enter-Df3dLane -DfPath $DfPath -Port 5010
  $entered=$true
  # Compare exact directory names across both DF save roots BEFORE creating a copy.

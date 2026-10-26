@@ -48,8 +48,6 @@ bool refreshOverlaps(const uint8_t* base,const df::building_civzonest* excluded=
         if(door->centerx>=0 && door->centerx<=32767 && door->centery>=0 && door->centery<=32767 && door->z>=0 && door->z<=32767)
             owners[key(door->centerx,door->centery,door->z)]=doorOwner;
     }
-    using Eligible=bool (*)(df::world*,int16_t,int16_t,int16_t,bool,uint32_t);
-    const auto eligible=reinterpret_cast<Eligible>(base+0x14adea0);
     for(size_t i=zones.size();i-->0;) {
         const auto* zone=zones[i];
         if(!zone)return false;
@@ -67,7 +65,7 @@ bool refreshOverlaps(const uint8_t* base,const df::building_civzonest* excluded=
             const auto tx=room.x+x,ty=room.y+y;
             // This exact false/0 call path reads semantic map/building facts
             // only. It skips the movement-search and temperature-query paths.
-            if(!eligible(df::global::world,int16_t(tx),int16_t(ty),int16_t(zone->z),false,0))continue;
+            if(!nativeZoneTileEligible(int16_t(tx),int16_t(ty),int16_t(zone->z)))continue;
             auto [it,inserted]=owners.emplace(key(tx,ty,zone->z),i);
             if(inserted || it->second==doorOwner)continue;
             collisions[i]=true;collisions[it->second]=true;it->second=i;
@@ -158,10 +156,16 @@ bool nativeZoneCreateReady() {
         locationRefreshFunction()!=nullptr;
     return compatible;
 }
+bool nativeZoneTileEligible(int16_t x,int16_t y,int16_t z) {
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Eligible=bool (*)(df::world*,int16_t,int16_t,int16_t,bool,uint32_t);
+    return reinterpret_cast<Eligible>(base+0x14adea0)(df::global::world,x,y,z,false,0);
+}
 bool nativeZoneMultiReady() {
     if(!nativeZoneCreateReady())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
-    static const bool compatible=hash(base+0x356ee8,0x3f1)==0xe4ddd80a024ca99ULL;
+    static const bool compatible=hash(base+0x356ee8,0x3f1)==0xe4ddd80a024ca99ULL &&
+          hash(base+0x355c53,0x1d0)==0xcda8023a0a668bcfULL;
     return compatible;
 }
 bool nativeZoneCompleteMulti(df::building_civzonest& zone) {

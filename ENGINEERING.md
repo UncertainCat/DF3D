@@ -118,7 +118,7 @@ mixed sets and scoped/stale Undo checks pass. Owned DF128804 closes unsaved and
 both save manifests match. Evidence is retained in
 `fixtures/areas/native_zone_publication.json`. Discovery is still owned inline
 orchestration: native's shared search generations cannot be borrowed. Its tile
-eligibility audit and full Zones/Locations acceptance remain outstanding.
+hidden-map/traversal audit and full Zones/Locations acceptance remain outstanding.
 
 Main-scene `build/areas-acceptance-20261025-220051` passes35 observations
 through viewport input, covering creation, partial cancellation, cross-elevation
@@ -128,6 +128,26 @@ match. Only the known separate-thread notice remains. Earlier215808 timed out
 before creation because the old Multi driver omitted the staged-launcher helper;
 correcting that test call leaves product availability unchanged. MSVC builds and
 `build/qa/multi-native-creation-final` core19/19 plus Lua adapter checks pass.
+
+## Multi native tile eligibility
+
+Multi discovery calls DF's read-only predicate0x14adea0 with the native
+false/0 arguments, shared with owned overlap. It replaces reconstructed terrain,
+occupancy and liquid classification. The subsequent native door rule is inline:
+when occupancy is nonzero, a matching center in world.buildings.other.DOOR stops
+expansion regardless of animation. Its reference0x355c53..0x355e23 is pinned.
+The flood queue and visited cells remain independently owned. Existing missing/
+hidden-map observation guards remain; their full traversal audit is outstanding.
+
+Protected `build/areas-acceptance-20261025-220802` passes193 observations with
+clean diagnostics, including exact masks from36 recorded native terrain,
+occupancy and liquid partition cases. `tools/smoke/areas-multi-tiles-reference.json`
+retains native capture hashes and semantic masks. The fixture restores and checks
+all edited tiletype/designation/occupancy fields on both success and failure.
+All52 guards preserve55,584 map search arrays, including the tile replay. Owned
+DF126720 closes unsaved and both save manifests match. Runtime no longer uses
+the historical classifier; its fixture decoder remains only in traversal tests.
+This does not establish full hidden-map traversal or Zones/Locations acceptance.
 
 ## Zone repaint Location refresh
 

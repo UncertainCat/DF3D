@@ -1,5 +1,6 @@
 #pragma once
 #include <optional>
+#include <cstdint>
 #include <string>
 namespace df { struct building_civzonest; }
 namespace df3d_area {
@@ -13,6 +14,9 @@ bool nativeZoneDefaultsReady();
 bool nativeZoneDefaults(df::building_civzonest& zone);
 bool nativeZoneCreateReady();
 bool nativeZoneMultiReady();
+// Read-only native room tile eligibility. Caller preflights CreateReady at
+// the same safe point; no movement search or native menu scratch is used.
+bool nativeZoneTileEligible(int16_t x,int16_t y,int16_t z);
 // Multi categorizes before the native Bedroom-to-Dormitory conversion.
 // Refresh overlaps once after the complete batch, not once per room.
 bool nativeZoneCompleteMulti(df::building_civzonest& zone);

@@ -5,41 +5,6 @@ namespace df3d_area {
 // Semantic observations only: the caller classifies native tiles/buildings.
 // A boundary cell is included when reached but never expands the search.
 enum class RoomCell : uint8_t { Unobserved, Open, Boundary };
-// Semantic source facts; these are not wire values or renderer shapes.
-enum class RoomShape : uint8_t {
-  None, Empty, Floor, Boulder, Pebbles, Wall, Fortification, StairUp,
-  StairDown, StairUpDown, Ramp, RampTop, BrookBed, BrookTop, Branch,
-  TrunkBranch, Twig, Sapling, Shrub, EndlessPit, Unknown
-};
-enum class RoomOccupancy : uint8_t {
-  None, Planned, Passable, Obstacle, Well, Floored, Impassable, Dynamic
-};
-enum class RoomLiquid : uint8_t { None, Water, Magma };
-
-// Native shape/occupancy/liquid partition probes004402. In particular, native
-// Multi traverses Twig but not TrunkBranch: generic walkability is insufficient.
-// door is an observed building lookup, not the door's open/closed animation flag.
-inline RoomCell classifyRoomCell(RoomShape shape,RoomOccupancy occupancy,
-                                 RoomLiquid liquid,uint8_t depth,bool door,
-                                 bool observed=true) {
-  if(!observed || shape>=RoomShape::Unknown || occupancy>RoomOccupancy::Dynamic ||
-     liquid>RoomLiquid::Magma || depth>7 ||
-     ((liquid==RoomLiquid::None)!=(depth==0)))return RoomCell::Unobserved;
-  if(door || occupancy==RoomOccupancy::Obstacle || occupancy==RoomOccupancy::Well ||
-     occupancy==RoomOccupancy::Impassable || liquid==RoomLiquid::Magma || depth==7)
-    return RoomCell::Boundary;
-  // Native paired probes050121: a building-supplied floor connects rooms even
-  // over open space, walls or tree interiors; liquid/door guards still apply.
-  if(occupancy==RoomOccupancy::Floored)return RoomCell::Open;
-  switch(shape) {
-    case RoomShape::Floor:case RoomShape::Boulder:case RoomShape::Pebbles:
-    case RoomShape::StairUp:case RoomShape::StairDown:case RoomShape::StairUpDown:
-    case RoomShape::Ramp:case RoomShape::BrookTop:case RoomShape::Branch:
-    case RoomShape::Twig:case RoomShape::Sapling:case RoomShape::Shrub:
-      return RoomCell::Open;
-    default:return RoomCell::Boundary;
-  }
-}
 enum class RoomTraversalStatus { Complete, Unenclosed, Incomplete, Invalid };
 struct RoomTraversal {
   RoomTraversalStatus status=RoomTraversalStatus::Invalid;

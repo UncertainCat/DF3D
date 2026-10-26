@@ -1,7 +1,7 @@
 #include "room_discovery_native.h"
-#include "TileTypes.h"
+#include "zone_native.h"
 #include "modules/Maps.h"
-#include "modules/Buildings.h"
+#include "df/building_doorst.h"
 #include "df/building.h"
 #include "df/building_civzonest.h"
 #include "df/building_type.h"
@@ -19,61 +19,23 @@ bool roomUseType(df::civzone_type type) {
     default:return false;
   }
 }
-RoomShape roomShape(df::tiletype_shape shape) {
-  using namespace df::enums::tiletype_shape;
-  switch(shape) {
-    case NONE:return RoomShape::None;
-    case EMPTY:return RoomShape::Empty;
-    case FLOOR:return RoomShape::Floor;
-    case BOULDER:return RoomShape::Boulder;
-    case PEBBLES:return RoomShape::Pebbles;
-    case WALL:return RoomShape::Wall;
-    case FORTIFICATION:return RoomShape::Fortification;
-    case STAIR_UP:return RoomShape::StairUp;
-    case STAIR_DOWN:return RoomShape::StairDown;
-    case STAIR_UPDOWN:return RoomShape::StairUpDown;
-    case RAMP:return RoomShape::Ramp;
-    case RAMP_TOP:return RoomShape::RampTop;
-    case BROOK_BED:return RoomShape::BrookBed;
-    case BROOK_TOP:return RoomShape::BrookTop;
-    case BRANCH:return RoomShape::Branch;
-    case TRUNK_BRANCH:return RoomShape::TrunkBranch;
-    case TWIG:return RoomShape::Twig;
-    case SAPLING:return RoomShape::Sapling;
-    case SHRUB:return RoomShape::Shrub;
-    case ENDLESS_PIT:return RoomShape::EndlessPit;
-    default:return RoomShape::Unknown;
-  }
-}
-RoomOccupancy roomOccupancy(df::tile_building_occ occupancy) {
-  using namespace df::enums::tile_building_occ;
-  switch(occupancy) {
-    case None:return RoomOccupancy::None;
-    case Planned:return RoomOccupancy::Planned;
-    case Passable:return RoomOccupancy::Passable;
-    case Obstacle:return RoomOccupancy::Obstacle;
-    case Well:return RoomOccupancy::Well;
-    case Floored:return RoomOccupancy::Floored;
-    case Impassable:return RoomOccupancy::Impassable;
-    case Dynamic:return RoomOccupancy::Dynamic;
-    default:return static_cast<RoomOccupancy>(255);
-  }
-}
 RoomCell observeCell(int32_t x,int32_t y,int32_t z) {
   if(!DFHack::Maps::isValidTilePos(x,y,z))return RoomCell::Unobserved;
   const auto* block=DFHack::Maps::getTileBlock(x,y,z);
   if(!block)return RoomCell::Unobserved;
   const auto designation=block->designation[x&15][y&15];
   if(designation.bits.hidden)return RoomCell::Unobserved;
-  const auto occupancy=block->occupancy[x&15][y&15].bits.building;
-  auto* building=DFHack::Buildings::findAtTile(df::coord(x,y,z));
-  const bool door=building && building->getType()==df::building_type::Door;
-  if(occupancy==df::tile_building_occ::Dynamic && building && !door)return RoomCell::Unobserved;
-  const auto depth=uint8_t(designation.bits.flow_size);
-  const auto liquid=!depth?RoomLiquid::None:
-    (designation.bits.liquid_type==df::tile_liquid::Magma?RoomLiquid::Magma:RoomLiquid::Water);
-  return classifyRoomCell(roomShape(DFHack::tileShape(block->tiletype[x&15][y&15])),
-    roomOccupancy(occupancy),liquid,depth,door);
+  if(!nativeZoneTileEligible(int16_t(x),int16_t(y),int16_t(z)))return RoomCell::Boundary;
+  // Native355c53..355e23: after the semantic predicate, nonzero occupancy
+  // checks the actual door vector for a matching center. Door animation and
+  // generic findAtTile heuristics do not decide room expansion.
+  if(block->occupancy[x&15][y&15].bits.building!=df::tile_building_occ::None) {
+    for(const auto* door:df::global::world->buildings.other.DOOR) {
+      if(!door)return RoomCell::Unobserved;
+      if(door->centerx==x && door->centery==y && door->z==z)return RoomCell::Boundary;
+    }
+  }
+  return RoomCell::Open;
 }
 }
 NativeRoomSeed observeNativeRoomSeed(int32_t buildingId) {
@@ -101,7 +63,7 @@ NativeRoomSeed observeNativeRoomSeed(int32_t buildingId) {
 }
 NativeRoomObservation observeNativeRoom(int32_t seedX,int32_t seedY,int32_t seedZ) {
   NativeRoomObservation out;
-  if(!DFHack::Maps::isValidTilePos(seedX,seedY,seedZ))return out;
+  if(!nativeZoneMultiReady() || !DFHack::Maps::isValidTilePos(seedX,seedY,seedZ))return out;
   // Twenty open steps plus one reached boundary layer, in each direction.
   constexpr uint32_t side=43;
   out.x=seedX-21;out.y=seedY-21;out.z=seedZ;out.width=side;out.height=side;
@@ -114,7 +76,7 @@ NativeRoomObservation observeNativeRoom(int32_t seedX,int32_t seedY,int32_t seed
   return out;
 }
 RoomPlan observeNativeRoomPlan(RoomFurniture kind,const Bounds& selection,int32_t z) {
-  if(!df::global::world || !DFHack::Maps::isValidTilePos(selection.x,selection.y,z) ||
+  if(!df::global::world || !nativeZoneMultiReady() || !DFHack::Maps::isValidTilePos(selection.x,selection.y,z) ||
      selection.width<=0 || selection.height<=0 ||
      int64_t(selection.x)+selection.width>32768 || int64_t(selection.y)+selection.height>32768 ||
      !DFHack::Maps::isValidTilePos(selection.x+selection.width-1,selection.y+selection.height-1,z))return {};

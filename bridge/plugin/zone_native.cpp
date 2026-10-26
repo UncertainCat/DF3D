@@ -760,6 +760,55 @@ std::optional<ZoneAnimalStatus> nativeZoneAnimalStatus(df::building_civzonest& p
             if(auto* item=firstBuildingItem(cage))return status(item,4);
     return ZoneAnimalStatus{5,0,-1};
 }
+std::optional<ZoneAnimalContainer> nativeZoneAnimalContainer(df::item& container) {
+    if(!df::global::world || !nativeZoneDefaultsReady() || container.getType()!=df::item_type::CAGE)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0xc7d4a7,0x27a)==UINT64_C(0x11a514c064712a3e) &&
+        hash(base+0xc8340c,24)==UINT64_C(0x296c616a37b1ff7b) &&
+        hash(base+0x145bee0,0x5e)==UINT64_C(0x6abc4e374e372eef) &&
+        hash(base+0x14add70,0x12f)==UINT64_C(0x01f897b15772d540);
+    if(!compatible)return std::nullopt;
+    const int16_t type=container.getMaterial();const int32_t index=container.getMaterialIndex();
+    using Flag=bool (*)(df::world*,int32_t,int16_t,int32_t);
+    using Material=df::material* (*)(df::world*,int16_t,int32_t);
+    const auto flag=[&](int32_t value){return reinterpret_cast<Flag>(const_cast<uint8_t*>(base+0x145bee0))(df::global::world,value,type,index);};
+    ZoneAnimalContainer result;
+    // Only the native semantic flag/material leaves are called. The cached
+    // graphics producer c7cbc0/cf7a00 is never invoked or consulted.
+    if(!flag(25) && !flag(26) && !flag(0)) {
+        if(flag(27))result.materialFamily=2;
+        else if(type>=419 && type<=618)result.materialFamily=1;
+        else if(type>=1 && type<=5)result.materialFamily=2;
+        else if(type==0 && flag(48))result.materialFamily=2;
+    }
+    auto* material=reinterpret_cast<Material>(const_cast<uint8_t*>(base+0x14add70))(df::global::world,type,index);
+    if(material) {
+        const auto* pattern=df::descriptor_pattern::find(material->state_color[df::matter_state::Solid]);
+        if(pattern && !pattern->colors.empty()) {
+            const auto color=pattern->colors.front();
+            const auto& colors=df::global::world->raws.descriptors.colors;
+            if(color>=0 && color<255 && size_t(color)<colors.size() && colors[color]) {
+                result.colorId=color;result.solidColor=colors[color]->id;
+            }
+        }
+    }
+    for(auto* ref:container.general_refs) {
+        if(!ref)continue;
+        if(ref->getType()==df::general_ref_type::CONTAINS_ITEM) {
+            if(auto* item=ref->getItem();item && item->isLiveAnimal()) {
+                result.occupantEntity=2;result.occupantId=item->id;break;
+            }
+        } else if(ref->getType()==df::general_ref_type::CONTAINS_UNIT) {
+            // Native stops at the first unit reference even when it resolves
+            // to null or an inactive subject; it does not seek a later animal.
+            if(auto* unit=ref->getUnit();unit && !unit->flags1.bits.inactive) {
+                result.occupantEntity=1;result.occupantId=unit->id;
+            }
+            break;
+        }
+    }
+    return result;
+}
 std::optional<std::string> nativeZoneOwnerQuery(std::string query) {
     const auto& order=staffOrderingFunctions();
     if(!order)return std::nullopt;

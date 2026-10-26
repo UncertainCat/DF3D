@@ -263,6 +263,32 @@ local function capture(label,keep_mouse)
      end
      local text,code=dfhack.run_command_silent('df3d','zone-animal-status-read',tostring(record.zone),tostring(status.entity),tostring(status.id))
      assert(code==0,text);local semantic=require('json').decode(text)
+     if semantic.kind==4 and df.item.find(semantic.item_id):getType()==df.item_type.CAGE then
+      local result,rc=dfhack.run_command_silent('df3d','zone-animal-container-read',tostring(semantic.item_id))
+      assert(rc==0,result);local container=require('json').decode(result)
+      -- Diagnostic oracle only: match the rendered texture to DF's cage cache
+      -- key. Product code reads semantic material/refs and never this cache.
+      local vector=image_base+0x24ed158
+      local first=df.reinterpret_cast('uint64_t',vector).value
+      local last=df.reinterpret_cast('uint64_t',vector+8).value
+      assert(last>=first and (last-first)//8<100000,'invalid cage diagnostic cache')
+      local native_key
+      for address=first,last-8,8 do
+       local entry=df.reinterpret_cast('uint64_t',address).value
+       if df.reinterpret_cast('int32_t',entry+8).value==status.cells[1].texture then
+        native_key=df.reinterpret_cast('uint64_t',entry).value;break
+       end
+      end
+      assert(native_key,'rendered cage missing from diagnostic cache')
+      local key=container.color_id+1
+      if container.material_family==1 then key=key|0x100 elseif container.material_family==2 then key=key|0x200 end
+      if container.occupant_entity~=0 then
+       key=key|(container.occupant_entity==1 and 0x800 or 0x400)|(container.occupant_id<<12)
+      end
+      assert(key==native_key,'owned cage facts differ from native rendered key: '..label..'/'..status.id)
+      if container.color_id>=0 then assert(container.solid_color==df.global.world.raws.descriptors.colors[container.color_id].id) end
+      status.container={semantic=container,native_key=native_key,exact=true}
+     end
      for _,guard in ipairs(guards)do
       assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'animal status reader changed native UI/drawing state')
       df.delete(guard.copy)
@@ -557,6 +583,21 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   assert(contained and contained:getItem(),'status fixture needs current cage')
   local original_item_id=contained.item_id
   local original_flags=animal.flags1.whole
+  local container=contained:getItem()
+  local original_type,original_index=container.mat_type,container.mat_index
+  local wood
+  for _,item in ipairs(df.global.world.items.all)do
+   if item:getMaterial()>=419 and item:getMaterial()<=618 then wood=item;break end
+  end
+  assert(wood,'cage variant fixture needs a real wood material')
+  container.mat_type=wood:getMaterial();container.mat_index=wood:getMaterialIndex()
+  capture('Pen-status-wood-cage')
+  container.mat_type=3;container.mat_index=-1
+  capture('Pen-status-glass-cage')
+  container.mat_type=original_type;container.mat_index=original_index
+  animal.flags1.inactive=true
+  capture('Pen-status-inactive-cage')
+  animal.flags1.whole=original_flags
   local chain_item=df.buildingitemst:new();chain_item.item=contained:getItem();chain.contained_items:insert('#',chain_item)
   local chain_ref=df.general_ref_building_chainst:new();chain_ref.building_id=chain.id
   animal.general_refs:insert('#',chain_ref);animal.flags1.chained=true

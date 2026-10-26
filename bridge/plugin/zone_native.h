@@ -81,6 +81,16 @@ struct ZoneAnimalStatus {
 std::optional<ZoneAnimalStatus> nativeZoneAnimalStatus(df::building_civzonest& picker,df::unit& candidate);
 // Item rows use caller-owned selection membership, never the native widget set.
 std::optional<ZoneAnimalStatus> nativeZoneAnimalItemStatus(df::building_civzonest& picker,bool selected);
+struct ZoneAnimalContainer {
+    // Original cage variant: 0 metal/default, 1 wood, 2 glass.
+    uint8_t materialFamily=0;
+    std::string solidColor;
+    int32_t colorId=-1;
+    // First eligible occupant, preserving native reference order: 0 none, 1 unit, 2 item.
+    uint8_t occupantEntity=0;
+    int32_t occupantId=-1;
+};
+std::optional<ZoneAnimalContainer> nativeZoneAnimalContainer(df::item& container);
 // Normalize caller-owned textbox bytes with the native search routine.
 std::optional<std::string> nativeZoneOwnerQuery(std::string query);
 // Native may allocate and transfer ownership from another tomb. Callers mark

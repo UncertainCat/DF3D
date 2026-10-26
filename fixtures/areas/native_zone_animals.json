@@ -12637,5 +12637,98 @@
       "Metal occupied cages are covered; wood, glass, empty cages and rope/metal restraints need visual coverage.",
       "Native texture dumps and palette pixels remain ignored diagnostic inputs."
     ]
+  },
+  "animal_container_reader": {
+    "provenance": "build/stockpile-storage-native-zone-animals-20261026-122035",
+    "df_pid": 113196,
+    "source_unchanged_unsaved_exit": true,
+    "comparison_count": 21,
+    "comparison_sha256": "de785a2b4f9f06f099393a3cc3237f96431f1e14a1bce2604a2ab40b3af49710",
+    "checks": [
+      {
+        "label": "Pond-assigned-picker",
+        "subject": 6960,
+        "exact": true,
+        "native_key": 28510235,
+        "semantic": {
+          "color_id": 26,
+          "material_family": 0,
+          "occupant_entity": 1,
+          "occupant_id": 6960,
+          "solid_color": "COPPER"
+        }
+      },
+      {
+        "label": "Pond-assigned-picker",
+        "subject": 6961,
+        "exact": true,
+        "native_key": 28514407,
+        "semantic": {
+          "color_id": 102,
+          "material_family": 0,
+          "occupant_entity": 1,
+          "occupant_id": 6961,
+          "solid_color": "TAUPE_GRAY"
+        }
+      },
+      {
+        "label": "Pen-status-wood-cage",
+        "subject": 6960,
+        "exact": true,
+        "native_key": 28510514,
+        "semantic": {
+          "color_id": 49,
+          "material_family": 1,
+          "occupant_entity": 1,
+          "occupant_id": 6960,
+          "solid_color": "GRAY"
+        }
+      },
+      {
+        "label": "Pen-status-glass-cage",
+        "subject": 6960,
+        "exact": true,
+        "native_key": 28510753,
+        "semantic": {
+          "color_id": 32,
+          "material_family": 2,
+          "occupant_entity": 1,
+          "occupant_id": 6960,
+          "solid_color": "DARK_GREEN"
+        }
+      },
+      {
+        "label": "Pen-status-inactive-cage",
+        "subject": 6960,
+        "exact": true,
+        "native_key": 27,
+        "semantic": {
+          "color_id": 26,
+          "material_family": 0,
+          "occupant_entity": 0,
+          "occupant_id": -1,
+          "solid_color": "COPPER"
+        }
+      },
+      {
+        "label": "Pen-status-pending-cage",
+        "subject": 6960,
+        "exact": true,
+        "native_key": 24450151,
+        "semantic": {
+          "color_id": 102,
+          "material_family": 0,
+          "occupant_entity": 2,
+          "occupant_id": 5969,
+          "solid_color": "TAUPE_GRAY"
+        }
+      }
+    ],
+    "ui_gps_bytes_unchanged": true,
+    "limitations": [
+      "Cage semantic reader only; no viewer integration yet.",
+      "Native cache keys are diagnostic oracle input only.",
+      "Live animal item and multiple-reference ordering still need controlled coverage."
+    ]
   }
 }

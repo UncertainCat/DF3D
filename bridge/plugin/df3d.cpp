@@ -2039,6 +2039,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="zone-animal-container-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id;const auto& value=parameters[1];const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* item=df::item::find(id);if(!item)return CR_FAILURE;
+        const auto facts=df3d_area::nativeZoneAnimalContainer(*item);if(!facts)return CR_FAILURE;
+        Json::Value output;output["material_family"]=int(facts->materialFamily);output["solid_color"]=facts->solidColor;output["color_id"]=facts->colorId;
+        output["occupant_entity"]=int(facts->occupantEntity);output["occupant_id"]=facts->occupantId;
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-animal-status-read") {
         if(parameters.size()!=4)return CR_WRONG_USAGE;
         int32_t values[3];
@@ -2448,6 +2458,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d zone-owner-status-read <zone id> <unit id>\n"
         "df3d zone-owner-text-read <unit id> <columns>\n"
         "df3d zone-owner-color-sources-read <unit id>\n"
+        "df3d zone-animal-container-read <item id>\n"
         "df3d zone-animal-status-read <zone id> <entity 1|2> <id>\n"
         "df3d zone-animal-unit-display-read <unit id> <columns>\n"
         "df3d zone-owner-name-color-read <unit id>\n"

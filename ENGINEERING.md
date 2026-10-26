@@ -38,6 +38,16 @@ original cage/palette assets and supplied captured body images. This is composit
 evidence, not complete owned occupant-recipe or viewer integration. Those pieces,
 wood/glass/empty cage and restraint artwork, fallback art and status hover help
 remain unfinished.
+`nativeZoneAnimalContainer` reads cage material family, solid color token and
+first qualifying occupant from semantic material/reference data. It calls only
+pinned native material leaves; cached graphics and widgets are never runtime
+inputs. The first unit reference terminates selection even if null or inactive.
+Protected `build/stockpile-storage-native-zone-animals-20261026-122035` compares
+21 results with rendered native cage keys, including real metal cages, temporary
+wood/glass materials and inactive occupants. UI/gps byte guards pass and the
+source save is unchanged after unsaved exit. Core and adapter checks pass in
+`build/qa/animal-container-reader`. This reader is not yet connected to the viewer;
+live-animal item and multiple-reference coverage remain open.
 Native widget selection sets and composed textures are diagnostic references only.
 
 Animal item portrait source: protected

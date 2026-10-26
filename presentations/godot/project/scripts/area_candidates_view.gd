@@ -174,8 +174,6 @@ func refresh() -> void:
 			if state.kind == 3:
 				add_squad(row); continue
 			var label := ""
-			if state.kind == 2 and int(row.get("entity",0)) == Contract.AreaCandidateEntity.Item:
-				label = str(row.get("name",""))
 			var button := row_button(label); button.clip_text = true; button.tooltip_text = label
 			var unit_id := int(row.id)
 			button.pressed.connect(state.toggle_animal.bind(int(row.get("entity",0)),unit_id) if state.kind == 2 else state.assign_owner.bind(unit_id))
@@ -184,6 +182,8 @@ func refresh() -> void:
 				add_owner_text(button,row.owner_display)
 			if state.kind == 2 and row.get("animal_display") is Dictionary:
 				add_animal_text(button,row.animal_display)
+			if state.kind == 2 and row.get("animal_item_color") is Dictionary:
+				add_animal_item_text(button,str(row.get("name","")),row.animal_item_color)
 			var owner: bool = state.kind == 1
 			var selector_icon: bool = owner or state.kind == 2
 			var frame := Panel.new(); frame.position = Vector2.ZERO; frame.size = Vector2(40 if selector_icon else 32,36)
@@ -339,6 +339,18 @@ func feed_owner_key(event: InputEvent) -> bool:
 	elif owner_selected >= first + 16: first = owner_selected - 15
 	owner_scrollbar.move_to(first)
 	return true
+
+func add_animal_item_text(button: Button, text: String, color: Dictionary) -> void:
+	if native_colors.size() != 16: return
+	var line := Label.new(); line.name = "AnimalItemName"; line.text = text
+	line.add_theme_font_size_override("font_size",12)
+	line.position = Vector2(40,12); line.size = Vector2(text.length()*8,12)
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(line)
+	line.add_theme_color_override("font_color",native_colors[int(color.foreground)+int(color.bright)*8])
+	var background := ColorRect.new(); background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	background.show_behind_parent = true; background.size = line.size
+	background.visible = int(color.background) != 0; background.color = native_colors[int(color.background)]
+	line.add_child(background)
 
 func add_animal_text(button: Button, display: Dictionary) -> void:
 	var colored: Array = []

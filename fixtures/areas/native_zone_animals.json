@@ -14171,5 +14171,59 @@
         ]
       }
     ]
+  },
+  "animal_item_text_pixels": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-133119",
+    "samples": [
+      {
+        "capture": "Pond-picker",
+        "row": {
+          "id": 5969,
+          "entity": 2,
+          "name": "(tame masked lovebird)",
+          "assigned": false,
+          "animal_item_color": {
+            "foreground": 2,
+            "background": 0,
+            "bright": 1
+          }
+        },
+        "selected": false,
+        "pixel_origin": [
+          416,
+          304
+        ],
+        "size": [
+          200,
+          36
+        ],
+        "rgb_sha256": "053cedb27680239679d0740a479ede4ad2a479e1ac66f5afe283744f85585692"
+      },
+      {
+        "capture": "Pond-item-assigned",
+        "row": {
+          "id": 5969,
+          "entity": 2,
+          "name": "(tame masked lovebird)",
+          "assigned": true,
+          "animal_item_color": {
+            "foreground": 2,
+            "background": 0,
+            "bright": 1
+          }
+        },
+        "selected": true,
+        "pixel_origin": [
+          416,
+          304
+        ],
+        "size": [
+          200,
+          36
+        ],
+        "rgb_sha256": "299bffc18d1d23f989c9bf54ce5825270dfc4fa183b458fb2a1f84a0590dbb7b"
+      }
+    ],
+    "scope": "Native item text and row background region; excludes portrait, checkbox and status art."
   }
 }

@@ -259,6 +259,10 @@ int main(int argc,char** argv) {
         test(A::AreaCandidates,input.c_str(),valid && kind==4,O::CandidateList);
       }
     }
+    for(int entity:{1,2})for(const std::string color:{"{foreground=2,background=3,bright=1}","false","{foreground=8,background=0,bright=0}","{foreground=2,background=-1,bright=0}","{foreground=2,background=0,bright=2}","{foreground=2,background=0}","{foreground=true,background=0,bright=0}"}) {
+      const auto input="return {"+envelope+"candidate_kind=2,candidates={{id=21,entity="+std::to_string(entity)+",name='native',profession='',animal_item_color="+color+"}}}";
+      test(A::AreaCandidates,input.c_str(),entity==2 && color=="{foreground=2,background=3,bright=1}",O::CandidateList);
+    }
     const std::string ownerRow="id=21,name='native',profession='native',owner_display=";
     for(int mode=0;mode<8;++mode) {
       const auto display=mode==1?"false":std::string("{columns=")+(mode==2?"2":"45")+

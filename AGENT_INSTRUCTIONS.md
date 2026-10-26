@@ -122,6 +122,11 @@ copy, fabricated progress percentages or broader native-UI departures.
   the panel at narrow window widths instead of reproducing native negative-width
   text spilling onto the map. This is a display-only exception for item names;
   native captions, order, settings and placement validation remain unchanged.
+- Maintainer decision, 2026-10-26: put the four animal containment tooltips on
+  their visible cage/chain icons instead of reproducing DF's confirmed swapped
+  X/Y hitboxes. Preserve native text, timing and containment semantics. Track
+  confirmed native bugs and DF3D corrections in ENGINEERING.md's native bug
+  register, distinguishing implemented corrections from approved pending work.
 - Before extending an incomplete gameplay UI, locate the DF routine or existing
   semantic API that supplies its choices, eligibility, ordering and actions.
   Prefer exposing that behavior over reconstructing it in Godot or the bridge.

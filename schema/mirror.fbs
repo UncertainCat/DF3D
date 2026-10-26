@@ -1204,10 +1204,11 @@ enum AreaCandidateEntity:uint8 { Unknown=0, Unit=1, Item=2, Squad=3 }
 // Optional owned animal text facts; absent in older recordings.
 table AreaAnimalDisplay { columns:uint16; first_line:string; second_line:string; combined_fits:bool; warning:string; name_color:AreaNameColor; }
 // Status kind: none/pasture/pit/pond/item/missing-container. Containment: none/current-chain/current-cage/assigned-chain/assigned-cage.
+table AreaAnimalItemColor { foreground:uint8; background:uint8; bright:uint8; }
 table AreaAnimalRestraint { rope:bool; solid_color:string; }
 table AreaAnimalContainer { material_family:uint8; solid_color:string; occupant_entity:uint8; occupant_id:int32 = -1; occupant:SelectionAppearance; }
 table AreaAnimalStatus { kind:uint8; containment:uint8; item_id:int32 = -1; }
-table AreaCandidateRow { id:int32 = -1; name:string; profession:string; sex:int8 = -1; mood:uint8; grazer:bool; assigned:bool; squad_use:int8 = -1; owner_display:AreaOwnerDisplay; sheet_icon:SelectionAppearance; entity:AreaCandidateEntity; animal_display:AreaAnimalDisplay; animal_status:AreaAnimalStatus; animal_container:AreaAnimalContainer; animal_restraint:AreaAnimalRestraint; }
+table AreaCandidateRow { id:int32 = -1; name:string; profession:string; sex:int8 = -1; mood:uint8; grazer:bool; assigned:bool; squad_use:int8 = -1; owner_display:AreaOwnerDisplay; sheet_icon:SelectionAppearance; entity:AreaCandidateEntity; animal_display:AreaAnimalDisplay; animal_status:AreaAnimalStatus; animal_container:AreaAnimalContainer; animal_restraint:AreaAnimalRestraint; animal_item_color:AreaAnimalItemColor; }
 table AreaLinkRow { id:int32 = -1; kind:AreaKind; direction:uint8; name:string; }
 table AreaPaintPreview { x:int16; y:int16; width:uint16; height:uint16; }
 table AreaRequest {

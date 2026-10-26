@@ -740,6 +740,7 @@ func test_area_operations() -> void:
 		"occupant":{"tile_pages":["TEST_OCCUPANT"],"palettes":[],"layers":[[0,2,3,1,1,65535,0,0,-1,2]]}})
 	var restraint_row: Dictionary = animal_reply.area.candidates[1]
 	assert(restraint_row.animal_restraint == {"rope":true,"solid_color":"TEST_ROPE_COLOR"} and not restraint_row.has("animal_container"))
+	assert(animal_reply.area.candidates[2].animal_item_color == {"foreground":2,"background":3,"bright":1})
 	for variant in 3:
 		var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.PaintCounts,
 			"zone_type":92,"paint_z":32767,"count_generation":9223372036854775807 - variant}

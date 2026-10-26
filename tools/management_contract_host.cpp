@@ -147,6 +147,8 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
     const auto restraint=m::CreateAreaAnimalRestraint(b,true,b.CreateString("TEST_ROPE_COLOR"));
     const auto status=m::CreateAreaAnimalStatus(b,4,1,18);
     candidateRows.push_back(m::CreateAreaCandidateRow(b,9,name,name,1,0,false,false,-1,{}, {},m::AreaCandidateEntity::Unit,{},status,{},restraint));
+    const auto itemColor=m::CreateAreaAnimalItemColor(b,2,3,1);
+    candidateRows.push_back(m::CreateAreaCandidateRow(b,10,name,{},-1,0,false,false,-1,{}, {},m::AreaCandidateEntity::Item,{},{},{},{},itemColor));
   }
   const auto candidates=b.CreateVector(candidateRows);
   const auto link=m::CreateAreaLinkRow(b,9,m::AreaKind::Workshop,2,name);const auto links=b.CreateVector(std::vector{link});

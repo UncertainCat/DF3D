@@ -721,6 +721,10 @@ elseif request.op=='animal_candidates' then
    local bytes=require('json').decode(value)
    assert(row.name==dfhack.df2utf(string.char(table.unpack(bytes))),'native animal item text differs')
    assert(not row.animal_display,'item received unit display')
+   local color_text,color_status=dfhack.run_command_silent('df3d','zone-animal-item-color-read',tostring(entry.id))
+   assert(color_status==0,color_text);local color=require('json').decode(color_text)
+   assert(row.animal_item_color and row.animal_item_color.foreground==color[1] and
+    row.animal_item_color.background==color[2] and row.animal_item_color.bright==color[3],'native item color transport differs')
    assert(row.sheet_icon and #row.sheet_icon.layers==1,'animal item selector recipe absent')
   else
    local value,status=dfhack.run_command_silent('df3d','zone-animal-unit-display-read',tostring(entry.id),'27')

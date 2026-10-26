@@ -822,6 +822,15 @@ func run() -> void:
 		crop.save_png(directory.path_join("animal-restraint-"+str(sample.capture)+".png"))
 		digest=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
 		if digest.finish().hex_encode()!=str(sample.rgb_sha256):push_error("Native restraint row pixels differ: "+str(sample.capture));quit(1);return
+	var item_text: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_item_text_pixels
+	for sample in item_text.samples:
+		animal_state.rows=[sample.row,{"id":-1,"entity":0}];animal_view.owner_selected=0 if sample.selected else 1;animal_state.changed.emit()
+		await process_frame;await RenderingServer.frame_post_draw
+		var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var crop:=image.get_region(Rect2i(Vector2i(animal_view.choices[0].global_position)+Vector2i(40,0),Vector2i(200,36)))
+		crop.save_png(directory.path_join("animal-item-text-"+str(sample.capture)+".png"))
+		var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+		if digest.finish().hex_encode()!=str(sample.rgb_sha256):push_error("Native item text pixels differ: "+str(sample.capture));quit(1);return
 	animal_view.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

@@ -533,14 +533,20 @@ local function candidate_row(job,v,r,refresh_display)
    if not item then job.error='List changed; refresh';return nil end
    local text=type(r.animal_item_text)=='function' and r.animal_item_text(item) or nil
    if type(text)~='string' then job.error='Native area helper unavailable';return nil end
-   local icon
+   local icon,color
    if refresh_display then
     if type(r.animal_item_icon)~='function' then job.error='Native area helper unavailable';return nil end
+    color=type(r.animal_item_color)=='function' and r.animal_item_color(item) or nil
+    if type(color)~='table' then job.error='Native area helper unavailable';return nil end
+    for key,limit in pairs{foreground=7,background=7,bright=1}do
+     local v=color[key]
+     if type(v)~='number' or v%1~=0 or v<0 or v>limit then job.error='Native area helper unavailable';return nil end
+    end
     icon=r.animal_item_icon(item)
     if icon~=nil and (type(icon)~='string' or #icon>200*1024)then job.error='Native area helper unavailable';return nil end
    end
    return {id=entry.id,entity=2,name=text,profession='',sex=-1,mood=0,grazer=false,
-    assigned=animal_assigned,squad_use=-1,sheet_icon=icon}
+    assigned=animal_assigned,squad_use=-1,sheet_icon=icon,animal_item_color=color}
   end
   v=df.unit.find(entry.id)
   if not v then job.error='List changed; refresh';return nil end
@@ -996,6 +1002,7 @@ local function candidate_page(r,a,b,area_revision,available)
   if not legacy or row.id>=cursor then
    local row_bytes=9+#row.name+#(row.profession or '')
    if row.animal_status then row_bytes=row_bytes+6 end
+   if row.animal_item_color then row_bytes=row_bytes+3 end
    if row.animal_restraint~=nil then
     local r=row.animal_restraint
     if row.animal_container~=nil or type(r)~='table' or type(r.rope)~='boolean' or type(r.solid_color)~='string' or #r.solid_color>128 then return fail('Native area helper unavailable'),used end

@@ -1,3 +1,18 @@
+## Native bug register
+
+Maintainer-requested register of confirmed native defects and narrowly scoped
+DF3D corrections. Approval is recorded in AGENT_INSTRUCTIONS.md; it does not
+authorize unrelated departures. Keep status and evidence current as fixes land.
+
+| Native defect | DF3D correction | Status and evidence |
+| --- | --- | --- |
+| Track material ordering depends on stale distances left by unrelated menus. | Request fresh native distances for each intent. | Implemented; construction Track distance evidence below and `fixtures/construction/connected_track.json`. |
+| First Track preview overwrites active search costs during lazy walkability rebuilding. | Preserve the stable route on the first preview. | Implemented; Track initialization evidence below and `fixtures/construction/track_route_initialization_probes.json.gz`. |
+| Stair redraw hides intermediate-floor validation errors. | Keep errors for the full selected span visible. | Implemented; `fixtures/construction/stairs_placement.json`. Placement rules are unchanged. |
+| Five-to-ten raised spikes select incorrect lower artwork. | Select the correct installed artwork. | Implemented; construction upright-weapon rendering evidence below. Trap behavior is unchanged. |
+| Narrow stockpile item columns acquire negative widths and spill names onto the map. | Clip item names inside their panel. | Implemented; `fixtures/areas/native_stockpile_search.json`. |
+| Animal containment tooltip callbacks swap X/Y hitbox coordinates. | Activate all four native messages on the visible cage/chain icons. | Approved, pending implementation; `fixtures/areas/native_zone_animals.json.animal_containment_hover_reference`. |
+
 ## Animal keyboard activation and portrait reference
 
 Animal status references in `native_zone_animals.json.animal_status_reference`
@@ -86,7 +101,16 @@ including native text origins. Drawing-state guards pass and the source remains
 unchanged after unsaved exit. `animal_item_color_reader` retains the evidence;
 core and adapter checks pass in `build/qa/animal-item-color-reader`. Live samples
 use PET items; VERMIN shares the pinned routine but lacks separate live coverage.
-Transport and viewer item text color/layout remain unfinished.
+Optional `AreaCandidateRow.animal_item_color` now carries these three palette
+components through Management68, with typed-item and palette-range validation.
+Only returned rows read current color facts. The viewer draws the native item
+name at (40,12) relative to the row, without a fabricated generic tooltip.
+Core, Lua adapter and Godot transport checks pass in
+`build/qa/animal-item-color-transport`. GPU
+`build/qa/animal-item-color-pixels` matches the full200x36 selected/unselected
+text regions, with only the three documented Godot diagnostics. Protected
+`build/areas-acceptance-20261026-134342` verifies current colors reaching actual
+Godot item rows and preserves both save manifests after unsaved exit.
 The four containment instructions are recorded in
 `native_zone_animals.json.animal_containment_hover_reference`. Protected
 `build/stockpile-storage-native-zone-animals-20261026-132146` and the final
@@ -97,7 +121,7 @@ icon at (77,19) has no help, while mouse (19,77) activates the instruction.
 Recorded native screen cells establish exact text and wrapping; asynchronous
 PNG captures do not retain this off-window hover state. Callback inspection
 is diagnostic only. Product hover remains unfinished, and correcting the
-hitbox awaits explicit maintainer authorization under the native-parity rule.
+hitbox is authorized by the maintainer; implementation and verification remain open.
 `nativeZoneAnimalContainer` reads cage material family, solid color token and
 first qualifying occupant from semantic material/reference data. It calls only
 pinned native material leaves; cached graphics and widgets are never runtime

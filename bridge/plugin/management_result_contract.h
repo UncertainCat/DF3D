@@ -161,6 +161,13 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
       lua_settop(L,top);
       lua_getfield(L,-1,"animal_status");const bool containerStatus=lua_istable(L,-1) && value("kind")==4;lua_pop(L,1);
       lua_getfield(L,-1,"animal_container");const bool hasContainer=!lua_isnil(L,-1);lua_pop(L,1);
+      lua_getfield(L,-1,"animal_item_color");
+      if(!lua_isnil(L,-1)) {
+        if(!table() || operation!=df3d::mirror::AreaOperation::CandidateList || candidateKind!=2 || !animalItem ||
+           !number("foreground",0,7,true) || !number("background",0,7,true) || !number("bright",0,1,true))return bad("invalid animal item color");
+        payload+=3;
+      }
+      lua_settop(L,top);
       lua_getfield(L,-1,"animal_restraint");
       if(!lua_isnil(L,-1)) {
         if(!table())return bad("invalid animal restraint");

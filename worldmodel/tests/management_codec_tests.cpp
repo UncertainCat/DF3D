@@ -2819,3 +2819,18 @@ TEST_CASE("restraint facts require a container status and exclude cage recipes")
     if(mode==0){const auto decoded=codec::decodeArea(value->area());REQUIRE(decoded.candidates[0].animalRestraint);CHECK(decoded.candidates[0].animalRestraint->rope==rope);CHECK(decoded.candidates[0].animalRestraint->solidColor=="TEST_COLOR");CHECK_FALSE(decoded.candidates[0].animalContainer);}
   }
 }
+
+TEST_CASE("animal item colors retain optionality and reject invalid palettes or identities") {
+  for(int mode=0;mode<6;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto color=mode==5?flatbuffers::Offset<wire::AreaAnimalItemColor>{}:wire::CreateAreaAnimalItemColor(b,mode==1?8:2,mode==2?8:3,mode==3?2:1);
+    wire::AreaCandidateRowBuilder row(b);row.add_id(21);row.add_entity(mode==4?wire::AreaCandidateEntity::Unit:wire::AreaCandidateEntity::Item);row.add_animal_item_color(color);
+    const auto rows=b.CreateVector(std::vector{row.Finish()});
+    wire::AreaStateBuilder area(b);area.add_candidates(rows);area.add_operation(wire::AreaOperation::CandidateList);area.add_candidate_kind(2);const auto a=area.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_area(a);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK((!wire::validateManagementState(*value).has_value())==(mode==0 || mode==5));
+    if(mode==0){const auto decoded=codec::decodeArea(value->area());REQUIRE(decoded.candidates[0].animalItemColor);CHECK((*decoded.candidates[0].animalItemColor==std::array<uint8_t,3>{2,3,1}));}
+    if(mode==5)CHECK_FALSE(codec::decodeArea(value->area()).candidates[0].animalItemColor);
+  }
+}

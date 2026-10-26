@@ -201,7 +201,12 @@ func refresh() -> void:
 # reset it; continuation pages retain the same receipt and selection.
 func feed_owner_key(event: InputEvent) -> bool:
 	if not is_visible_in_tree() or state.kind != 1 or not event is InputEventKey or not event.pressed: return false
-	if search.has_focus() or event.alt_pressed or event.ctrl_pressed or event.meta_pressed or event.shift_pressed: return false
+	if event.alt_pressed or event.ctrl_pressed or event.meta_pressed or event.shift_pressed: return false
+	if search.has_focus():
+		if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:
+			if not event.echo: search.release_focus()
+			return true
+		return false
 	var delta := 0
 	match event.keycode:
 		KEY_UP,KEY_8,KEY_KP_8: delta = -1

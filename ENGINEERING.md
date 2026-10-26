@@ -399,6 +399,22 @@ requests suppress navigation. `build/qa/owner-keyboard-final` passes root19/19
 and actual viewport key routing, selected-frame pixels, paging and pending-write
 checks, with only the three documented Godot notices. Enter, textbox editing,
 full scrollbar/end-of-list geometry and focus behavior remain unfinished.
+Owner textbox window-input capture040328 verifies focused Down retains cursor0,
+Enter releases focus without assignment, a blank interior click unfocuses and a
+header click retains focus. Forty ASCII bytes stop at33; Backspace leaves32.
+Typing U+00E9 stores195,169; Backspace leaves195 alone. JSON observations retain
+raw byte arrays and DF2UTF display strings so invalid UTF-8 is not lost. Native
+assertions pass; owned DF111748 closes unsaved with its source manifest unchanged.
+Direct viewscreen SELECT bypasses the outer text handler and is unsuitable for
+this focus test. The protected runner now delivers real window key/text messages.
+
+DF3D consumes Enter from a focused owner filter and releases focus without a
+command; repeated key events do not submit. `build/qa/owner-text-focus` passes
+root19/19 and main-controller GPU focus/navigation checks with known notices only.
+The current128-character LineEdit and UTF-8 query contract remain incomplete:
+full parity requires33-byte editing and transport preserving partial UTF-8.
+Header/blank focus and unfocused Enter/real Escape lifecycle need integration.
+
 Hover probes034258/034611 retain injected coordinates but lack a positive
 hover control; unchanged sampled artwork is inconclusive. No hover claim.
 Owner portrait frames reuse the original nine BUTTON_PICTURE_BOX cells and the

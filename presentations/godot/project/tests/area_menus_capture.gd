@@ -265,6 +265,14 @@ func run() -> void:
 			var selected_button: Button = controller.candidates_view.choices[15]
 			if not controller.candidates_view.scroll.get_global_rect().encloses(selected_button.get_global_rect()):
 				push_error("Owner keyboard selection is outside viewport"); quit(1); return
+	controller.candidates_view.search.grab_focus()
+	var before_focus_calls: int = world.calls.size()
+	for code in [KEY_DOWN,KEY_ENTER]:
+		var focused_key := InputEventKey.new(); focused_key.keycode = code; focused_key.pressed = true
+		root.push_input(focused_key,true)
+		await process_frame
+	if controller.candidates_view.search.has_focus() or controller.candidates_view.owner_selected != 0 or world.calls.size() != before_focus_calls:
+		push_error("Owner textbox Enter assigned or retained focus"); quit(1); return
 	controller.candidates_state.mutating = true
 	var blocked := InputEventKey.new(); blocked.keycode = KEY_DOWN; blocked.pressed = true
 	root.push_input(blocked,true)

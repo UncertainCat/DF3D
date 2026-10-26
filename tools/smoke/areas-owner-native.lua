@@ -334,6 +334,51 @@ for _,probe in ipairs{{'down','STANDARDSCROLL_DOWN',1},{'up','STANDARDSCROLL_UP'
  records[#records+1]={name='owner-navigation-'..probe[1],cursor=list.cursor_idx,expected=probe[3]}
  assert(list.cursor_idx==probe[3],'native owner navigation changed: '..probe[1])
 end
+-- Observe the owner textbox itself, not a different selector's input policy.
+local selector=df.global.game.main_interface.unit_selector
+local filter=assert(dfhack.gui.getWidget(assert(dfhack.gui.getWidget(selector,'Unit selector')),'Filter box'))
+filter=df.reinterpret_cast(df.widget_textbox,filter)
+local function input_state(label)
+ view:render(dfhack.getTickCount())
+ local list=assert(unit_list(selector,0));local bytes={}
+ for i=1,#filter.str do bytes[#bytes+1]=filter.str:byte(i)end
+ records[#records+1]={name='owner-input-'..label,active=selector.flag.VISIBILITY_ACTIVE,
+  focused=df.global.gview.cur_textbox==filter,listening=df.global.enabler.listening_to_text,
+  bytes=bytes,query_display=dfhack.df2utf(list.filter_str),cursor=list.cursor_idx,maxlen=filter.maxlen,owner=zone.assigned_unit_id}
+ assert(selector.flag.VISIBILITY_ACTIVE and zone.assigned_unit_id==-1,'textbox input changed assignment or closed picker')
+ assert(filter.maxlen==33 and list.cursor_idx==0,'textbox input changed limit or cursor')
+ local lengths={limit=33,backspace=32,clear=0,nonascii=2,['partial-utf8']=1}
+ if lengths[label]then assert(#bytes==lengths[label],'textbox byte count changed: '..label)end
+ if label=='nonascii' or label=='partial-utf8' then
+  assert(bytes[1]==195 and (label~='nonascii' or bytes[2]==169),'textbox UTF-8 bytes changed')
+ end
+ local focused=label~='initial' and label~='focused-enter' and label~='blank-click'
+ assert((df.global.gview.cur_textbox==filter)==focused,'textbox focus changed: '..label)
+end
+local function window_input(label,action)
+ local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write(action);f:close()
+ assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local limit=dfhack.getTickCount()+30000
+ while true do
+  local ack=io.open(out..'/owner-input-ack','r');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<limit,'window input timeout');script.sleep(1,'frames')
+ end
+ assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');input_state(label)
+end
+input_state('initial')
+pixel(500,730);script.sleep(3,'frames');input_state('focus')
+window_input('focused-down','down')
+window_input('focused-enter','enter')
+pixel(500,730);pixel(800,700);input_state('blank-click')
+pixel(500,730);pixel(464,70);input_state('header-click')
+assert(zone.assigned_unit_id==-1,'textbox navigation unexpectedly assigned owner')
+pixel(500,730);script.sleep(3,'frames')
+window_input('limit','limit')
+window_input('backspace','backspace')
+window_input('clear','clear')
+window_input('nonascii','nonascii')
+window_input('partial-utf8','backspace')
+gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
 -- Isolate retained candidates without changing eligibility or appearance.
 local inactive=assert(df.unit.find(996),'inactive owner fixture missing')
 assert(inactive.flags1.inactive,'inactive fixture unexpectedly active')

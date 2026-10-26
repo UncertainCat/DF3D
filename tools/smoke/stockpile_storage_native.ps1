@@ -50,6 +50,13 @@ public static class Shot {
     System.Threading.Thread.Sleep(40);
    }
   }
+  public static void Key(IntPtr h,int key,int scan) {
+   long down=1L+((long)scan<<16),up=down+0xc0000000L;
+   if(!PostMessage(h,0x100,(IntPtr)key,(IntPtr)down)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(40);
+   if(!PostMessage(h,0x101,(IntPtr)key,(IntPtr)up)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(80);
+  }
   public static string Windows="";
   public static IntPtr Find(uint pid) {
     IntPtr result=IntPtr.Zero, desk=OpenDesktop("df3d_hidden",0,false,0x41);
@@ -87,6 +94,21 @@ try {
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
+  if($ZoneOwner -and (Test-Path "$out/owner-input-request")) {
+   $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
+   $window=[Shot]::Find($owned.Id)
+   switch($action) {
+    'down' {[Shot]::Key($window,40,80)}
+    'enter' {[Shot]::Key($window,13,28)}
+    'limit' {[Shot]::Text($window,('x'*40))}
+    'backspace' {[Shot]::Key($window,8,14)}
+    'clear' {for($i=0;$i -lt 33;$i++){[Shot]::Key($window,8,14)}}
+    'nonascii' {[Shot]::Text($window,([string][char]0x00e9))}
+    default {throw "Unknown owner input action: $action"}
+   }
+   Remove-Item -LiteralPath "$out/owner-input-request"
+   'ok' | Set-Content "$out/owner-input-ack"
+  }
   if(Test-Path "$out/shot") {
    $name=(Get-Content "$out/shot" -Raw).Trim()
    if(-not(Test-Path "$out/ack-$name")) {

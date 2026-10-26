@@ -12109,7 +12109,6 @@
       "Status anchor x77 is 30 cells after portrait x47, overlapping the final name columns; native 1200x800 screen has top margin4."
     ],
     "limitations": [
-      "No status data or viewer implementation yet.",
       "Live chained, planned cage/chain and missing-reference fallback cases are not covered.",
       "Captured texture IDs/pixels are diagnostic only; no runtime rendering cache inputs."
     ]
@@ -12138,7 +12137,7 @@
     ],
     "limitations": [
       "Controlled chain fixture uses an existing cage item as the building item to isolate subject selection; actual rope/metal restraint artwork remains unverified.",
-      "Transport, cage appearance composition, hover help and viewer status rendering remain unfinished."
+      "Cage appearance composition, fallback artwork and hover help remain unfinished; zone badges and status transport are integrated."
     ],
     "comparison_count": 136,
     "comparisons_sha256": "37bffffbf1b5b563b77a6f03cfb7c27b4affd3e9535f1ca6704f21c62670b04d",
@@ -12362,6 +12361,208 @@
           "item_id": 28459,
           "kind": 4
         }
+      }
+    ],
+    "transport_evidence": "build/areas-acceptance-20261026-115918"
+  },
+  "animal_zone_badge_pixels": {
+    "native_evidence": "build/stockpile-storage-native-zone-animals-20261026-114631",
+    "live_row_evidence": "build/areas-acceptance-20261026-115918/request-1.json",
+    "samples": [
+      {
+        "capture": "Pen-assigned-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 0,
+            "item_id": -1,
+            "kind": 1
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": true,
+        "pixel_origin": [
+          616,
+          88
+        ],
+        "rgb_sha256": "b8c46b0acdbed4f8762b9bf78af8736202a1777d8af2e30462a9501788fd05b3"
+      },
+      {
+        "capture": "Pond-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 0,
+            "item_id": -1,
+            "kind": 2
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": true,
+        "pixel_origin": [
+          616,
+          88
+        ],
+        "rgb_sha256": "32d3de0b5c31b94659052b6c864bc9543f3134deb23a067fcf42501b3df410ec"
+      },
+      {
+        "capture": "Pond-filled-status",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 0,
+            "item_id": -1,
+            "kind": 3
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": true,
+        "pixel_origin": [
+          616,
+          88
+        ],
+        "rgb_sha256": "28688a2c656f7f62c6c75eda8509cb5b7b0a8ae255faa3a5d5daf2430285e49f"
       }
     ]
   }

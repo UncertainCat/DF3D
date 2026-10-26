@@ -282,7 +282,7 @@ struct NativeAreaSetting { std::string key,label; int32_t index=-1; uint8_t kind
 struct NativeAreaLocation { int32_t id=-1; std::string name,religion; uint8_t kind=0; int16_t guildProfession=-1; int32_t locationTier=-1; int32_t siteId=-1; };
 struct NativeOwnerDisplay { uint16_t columns=45; std::string firstLine,secondLine,status; int32_t roomValue=0; std::optional<df3d_area::ZoneOwnerNameColor> nameColor; };
 struct NativeAnimalDisplay { uint16_t columns=27; std::string firstLine,secondLine; bool combinedFits=false; std::string warning; df3d_area::ZoneOwnerNameColor nameColor; };
-struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; m::AreaCandidateEntity entity=m::AreaCandidateEntity::Unknown; std::optional<NativeAnimalDisplay> animalDisplay; };
+struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; m::AreaCandidateEntity entity=m::AreaCandidateEntity::Unknown; std::optional<NativeAnimalDisplay> animalDisplay; std::optional<df3d_area::ZoneAnimalStatus> animalStatus; };
 struct NativeAreaLink { int32_t id=-1; uint8_t kind=0,direction=0; std::string name; };
 struct NativeAreaPage {
   m::LocationEntryOutcome locationEntryOutcome=m::LocationEntryOutcome::None;
@@ -409,7 +409,9 @@ void publish() {
     if(v.animalDisplay) {const auto& d=*v.animalDisplay;const auto& c=d.nameColor;
       const auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
       animalDisplay=m::CreateAreaAnimalDisplay(b,d.columns,b.CreateString(d.firstLine),b.CreateString(d.secondLine),d.combinedFits,b.CreateString(d.warning),color);}
-    candidates.push_back(m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse,display,v.sheetIcon.build(b),v.entity,animalDisplay));
+    flatbuffers::Offset<m::AreaAnimalStatus> animalStatus;
+    if(v.animalStatus) {const auto& s=*v.animalStatus;animalStatus=m::CreateAreaAnimalStatus(b,s.kind,s.containment,s.itemId);}
+    candidates.push_back(m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse,display,v.sheetIcon.build(b),v.entity,animalDisplay,animalStatus));
   }
   for(const auto& v:areaPage.links)links.push_back(m::CreateAreaLinkRow(b,v.id,m::AreaKind(v.kind),v.direction,b.CreateString(v.name)));
   flatbuffers::Offset<m::LocationCatalog> locationCatalog;
@@ -1345,6 +1347,17 @@ int areaAnimalItemText(lua_State* L) {
   if(item) {try {text=df3d_area::nativeZoneAnimalItemText(*item);} catch(...) {}}
   if(!text){lua_pushnil(L);return 1;}
   const auto utf=DF2UTF(*text);lua_pushlstring(L,utf.data(),utf.size());return 1;
+}
+int areaAnimalStatus(lua_State* L) {
+  auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
+  const auto entity=lua_tointeger(L,2);
+  std::optional<df3d_area::ZoneAnimalStatus> status;
+  if(zone)try {
+    if(entity==1) {if(auto* unit=Lua::GetDFObject<df::unit>(L,3))status=df3d_area::nativeZoneAnimalStatus(*zone,*unit);}
+    else if(entity==2)status=df3d_area::nativeZoneAnimalItemStatus(*zone,lua_toboolean(L,4));
+  }catch(...) {}
+  if(!status){lua_pushnil(L);return 1;}
+  lua_newtable(L);field(L,"kind",status->kind);field(L,"containment",status->containment);field(L,"item_id",status->itemId);return 1;
 }
 int areaAnimalItemIcon(lua_State* L) {
   auto* item=Lua::GetDFObject<df::item>(L,1);
@@ -2351,6 +2364,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
       lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");
+      lua_pushcfunction(L,areaAnimalStatus);lua_setfield(L,-2,"animal_status");
       lua_pushcfunction(L,areaAnimalUnitDisplay);lua_setfield(L,-2,"animal_unit_display");
       lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
     lua_pushcfunction(L,areaNewOwnerEligible);lua_setfield(L,-2,"new_owner_eligible");
@@ -2680,6 +2694,9 @@ void run(color_ostream& out) {
     each("candidates",[&](){
       NativeAreaCandidate row{int32_t(number(L,"id",-1)),str("name"),str("profession"),int8_t(number(L,"sex",-1)),int8_t(number(L,"squad_use",-1)),uint8_t(number(L,"mood")),boolean(L,"grazer"),boolean(L,"assigned")};
       row.entity=m::AreaCandidateEntity(number(L,"entity",0));
+      lua_getfield(L,-1,"animal_status");
+      if(lua_istable(L,-1))row.animalStatus=df3d_area::ZoneAnimalStatus{uint8_t(number(L,"kind")),uint8_t(number(L,"containment")),int32_t(number(L,"item_id",-1))};
+      lua_pop(L,1);
       lua_getfield(L,-1,"animal_display");
       if(lua_istable(L,-1)) {
         row.animalDisplay=NativeAnimalDisplay{uint16_t(number(L,"columns")),str("first_line"),str("second_line"),boolean(L,"combined_fits"),str("warning")};
@@ -2986,6 +3003,7 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
       lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
       lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");
+      lua_pushcfunction(L,areaAnimalStatus);lua_setfield(L,-2,"animal_status");
       lua_pushcfunction(L,areaAnimalUnitDisplay);lua_setfield(L,-2,"animal_unit_display");
       lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
       lua_pushcfunction(L,areaOwnerOrderFacts);lua_setfield(L,-2,"owner_order_facts");

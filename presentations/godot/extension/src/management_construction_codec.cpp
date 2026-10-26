@@ -233,6 +233,7 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
         for(auto c:d.nameColor->color)primary.push_back(int(c));for(auto c:d.nameColor->alternate)alternate.push_back(int(c));
         color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(d.nameColor->effect);display["name_color"]=color;}
       row["owner_display"]=display;}
+    if(v.animalStatus) {const auto& s=*v.animalStatus;Dictionary status;status["kind"]=s.kind;status["containment"]=s.containment;status["item_id"]=s.itemId;row["animal_status"]=status;}
     if(v.animalDisplay) {const auto& d=*v.animalDisplay;Dictionary display,color;Array primary,alternate;
       display["columns"]=d.columns;display["first_line"]=String::utf8(d.firstLine.c_str());display["second_line"]=String::utf8(d.secondLine.c_str());
       display["combined_fits"]=d.combinedFits;display["warning"]=String::utf8(d.warning.c_str());

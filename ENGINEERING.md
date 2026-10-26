@@ -15,7 +15,19 @@ compares all returned statuses with native indicators and guards UI/gps memory.
 Controlled current-chain, assigned-chain, assigned-cage, missing-container and
 uncontained-pending cases also pass; the chain fixture uses an existing cage
 item to isolate selection, so it does not establish restraint artwork parity.
-Status transport, artwork composition and viewer rendering remain unfinished.
+The additive `AreaCandidateRow.animal_status` field carries kind, containment
+relationship and item ID through Management68. Older recordings retain absence;
+modern animal pages refresh the facts only for returned rows. Wire/Lua validators
+reject invalid entity/status combinations and inconsistent container IDs.
+Protected `build/areas-acceptance-20261026-115918` verifies status values reaching
+Godot against fresh native reads and preserves both save manifests. Core,
+adapter and Godot contract checks pass in `build/qa/animal-status-transport-fixed`.
+
+The viewer draws pasture, pit and pond badges from their original installed
+`UNIT_SELECTOR_*` artwork at offset242,2 with size32x32. GPU
+`build/qa/animal-zone-badges` matches all three full40x36 status regions against
+the native captures, retaining only the three known Godot diagnostics.
+Container/fallback artwork composition and status hover help remain unfinished.
 Native widget selection sets and composed textures are diagnostic references only.
 
 Animal item portrait source: protected

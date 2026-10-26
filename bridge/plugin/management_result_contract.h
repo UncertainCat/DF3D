@@ -150,6 +150,15 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
       const int top=lua_gettop(L);
       const bool animalItem=value("entity")==2 && value("id")>=0;
       const bool animalUnit=value("entity")==1 && value("id")>=0;lua_getfield(L,-1,"grazer");const bool grazer=lua_toboolean(L,-1);lua_pop(L,1);
+      lua_getfield(L,-1,"animal_status");
+      if(!lua_isnil(L,-1)) {
+        const bool valid=table() && operation==df3d::mirror::AreaOperation::CandidateList && candidateKind==2 &&
+          (animalUnit || animalItem) && number("kind",0,animalItem?3:5,true) && number("containment",0,4,true) && number("item_id",-1,INT32_MAX,true) &&
+          (value("kind")==4 ? (value("containment")>0 && value("item_id")>=0) : (value("containment")==0 && value("item_id")==-1));
+        if(!valid)return bad("invalid animal status");
+        payload+=6;
+      }
+      lua_settop(L,top);
       lua_getfield(L,-1,"animal_display");
       if(!lua_isnil(L,-1)) {
         bool valid=table() && operation==df3d::mirror::AreaOperation::CandidateList && candidateKind==2 && animalUnit &&

@@ -665,6 +665,10 @@ elseif request.op=='animal_candidates' then
   local row=request.rows[i]
   assert(row.id==entry.id and row.entity==entry.kind+1 and row.assigned==entry.assigned,
    'native animal candidate identity/order/assignment differs')
+  local status_text,status_code=dfhack.run_command_silent('df3d','zone-animal-status-read',tostring(b.id),tostring(row.entity),tostring(row.id))
+  assert(status_code==0,status_text)
+  local native_status=require('json').decode(status_text)
+  assert(row.animal_status and row.animal_status.kind==native_status.kind and row.animal_status.containment==native_status.containment and row.animal_status.item_id==native_status.item_id,'native animal status transport differs')
   if entry.kind==1 then
    local value,status=dfhack.run_command_silent('df3d','zone-animal-item-text-read',tostring(entry.id))
    assert(status==0,value)

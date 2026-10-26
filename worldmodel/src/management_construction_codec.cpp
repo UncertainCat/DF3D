@@ -164,6 +164,7 @@ AreaState decodeArea(const m::AreaState* a) {
       if(const auto* c=d->name_color())row.animalDisplay->nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},
         {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
     }
+    if(const auto* s=v->animal_status())row.animalStatus=AreaAnimalStatus{s->kind(),s->containment(),s->item_id()};
     row.entity=AreaCandidateEntity(v->entity());
     out.candidates.push_back(std::move(row));
   }

@@ -991,6 +991,15 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           (row->entity()==AreaCandidateEntity::Unit && a->candidate_kind()!=1 && a->candidate_kind()!=2) || textSize(row->name())>512 || textSize(row->profession())>512 ||
           row->sex()<-1 || row->sex()>1 || row->mood()>7 || row->squad_use()<-1 || row->squad_use()>15)
         return "invalid area candidate row";
+      if(const auto* status=row->animal_status()) {
+        if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=2 || row->id()<0 ||
+           (row->entity()!=AreaCandidateEntity::Unit && row->entity()!=AreaCandidateEntity::Item) ||
+           status->kind()>5 || status->containment()>4 ||
+           (row->entity()==AreaCandidateEntity::Item && status->kind()>3) ||
+           (status->kind()==4 ? (status->containment()==0 || status->item_id()<0) :
+                                (status->containment()!=0 || status->item_id()!=-1)))return "invalid animal status";
+        payload+=6;
+      }
       if(const auto* display=row->animal_display()) {
         if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=2 || row->entity()!=AreaCandidateEntity::Unit || row->id()<0 ||
            display->columns()<3 || display->columns()>128 || textSize(display->first_line())>384 || textSize(display->second_line())>384 ||

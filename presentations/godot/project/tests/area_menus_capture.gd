@@ -750,6 +750,23 @@ func run() -> void:
 		var digest := HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
 		if digest.finish().hex_encode()!=str(sample.rgb_sha256):
 			push_error("Native animal portrait pixels differ: "+str(sample.picker)+"/"+str(row.id));quit(1);return
+	var animal_badges: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_zone_badge_pixels
+	for sample in animal_badges.samples:
+		var row: Dictionary = sample.row
+		for key in ["color","alternate"]:
+			for component in 3: row.animal_display.name_color[key][component]=int(row.animal_display.name_color[key][component])
+		animal_state.pending={}; animal_state.mutating=false; animal_state.rows=[row]
+		animal_view.owner_selected=0; animal_state.changed.emit()
+		if animal_view.choices[0].get_node_or_null("AnimalStatus")==null:
+			push_error("Native animal zone badge absent");quit(1);return
+		await process_frame; await RenderingServer.frame_post_draw
+		var image := root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var origin := Vector2i(animal_view.choices[0].global_position)+Vector2i(240,0)
+		var crop := image.get_region(Rect2i(origin,Vector2i(40,36)))
+		crop.save_png(directory.path_join("animal-status-"+str(sample.capture)+".png"))
+		var digest := HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+		if digest.finish().hex_encode()!=str(sample.rgb_sha256):
+			push_error("Native animal status pixels differ: "+str(sample.capture));quit(1);return
 	animal_view.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

@@ -223,6 +223,14 @@ func refresh() -> void:
 				check.texture = art.texture("LABOR_WORKER_ASSIGNED" if bool(row.get("assigned",false)) else "LABOR_WORKER_UNASSIGNED")
 				check.position = Vector2(280,0); check.size = Vector2(32,36)
 				check.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(check)
+				var status: Dictionary = row.get("animal_status",{})
+				var status_kind := int(status.get("kind",0))
+				if status_kind in [1,2,3]:
+					var indicator := TextureRect.new(); indicator.name = "AnimalStatus"
+					indicator.texture = art.texture(["UNIT_SELECTOR_PASTURE","UNIT_SELECTOR_PIT","UNIT_SELECTOR_POND"][status_kind-1])
+					indicator.position = Vector2(242,2); indicator.size = Vector2(32,32)
+					indicator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; indicator.stretch_mode = TextureRect.STRETCH_SCALE
+					indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(indicator)
 	if state.kind == 1:
 		style_row(remove,remove.visible and owner_selected == 0)
 		for index in choices.size():

@@ -975,10 +975,21 @@ local function candidate_page(r,a,b,area_revision,available)
    -- The temporary row is never stored back into the retained candidate cache.
    row=candidate_row(job,row,r,true)
    if not row then return fail(job.error or 'List changed; refresh'),used end
+   local zone=df.building.find(job.area_id)
+   local subject=row.entity==1 and df.unit.find(row.id) or df.item.find(row.id)
+   if not zone or zone.type~=job.zone_type or not subject then return fail('List changed; refresh'),used end
+   local status=type(r.animal_status)=='function' and r.animal_status(zone,row.entity,subject,row.assigned) or nil
+   if type(status)~='table' or not integer(status.kind) or status.kind<0 or status.kind>(row.entity==2 and 3 or 5) or
+    not integer(status.containment) or status.containment<0 or status.containment>4 or not integer(status.item_id) or
+    status.item_id < -1 or status.item_id>2147483647 or
+    (status.kind==4 and (status.containment==0 or status.item_id<0)) or
+    (status.kind~=4 and (status.containment~=0 or status.item_id~=-1))then return fail('Native area helper unavailable'),used end
+   row.animal_status=status
    if not candidate_text_valid(row)then return fail('Candidate label exceeds 512 bytes'),used end
   end
   if not legacy or row.id>=cursor then
    local row_bytes=9+#row.name+#(row.profession or '')
+   if row.animal_status then row_bytes=row_bytes+6 end
    if row.owner_display then local d=row.owner_display;row_bytes=row_bytes+13+#d.first_line+#d.second_line+#d.status end
    if row.animal_display then local d=row.animal_display;row_bytes=row_bytes+10+#d.first_line+#d.second_line+#d.warning end
    -- Encoded recipes include their alignment/table overhead and exceed the

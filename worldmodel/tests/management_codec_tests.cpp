@@ -2757,3 +2757,24 @@ TEST_CASE("area candidate typed identities preserve collisions and unknown legac
     }
   }
 }
+
+TEST_CASE("animal status transport preserves absence and rejects inconsistent subjects") {
+  for(int entity=0;entity<4;++entity)for(int kind=-1;kind<=6;++kind)for(int relation=0;relation<=5;++relation)for(int item:{-1,17}) {
+    flatbuffers::FlatBufferBuilder b;
+    flatbuffers::Offset<wire::AreaAnimalStatus> status;
+    if(kind>=0)status=wire::CreateAreaAnimalStatus(b,uint8_t(kind),uint8_t(relation),item);
+    wire::AreaCandidateRowBuilder row(b);row.add_id(21);row.add_entity(wire::AreaCandidateEntity(entity));row.add_animal_status(status);
+    const auto rows=b.CreateVector(std::vector{row.Finish()});
+    wire::AreaStateBuilder area(b);area.add_candidates(rows);area.add_operation(wire::AreaOperation::CandidateList);area.add_candidate_kind(2);const auto a=area.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_area(a);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool expected=kind<0 ? entity!=3 : (entity==1 || entity==2) && kind<=5 && (entity!=2 || kind<=3) && relation<=4 &&
+      (kind==4 ? relation>0 && item>=0 : relation==0 && item==-1);
+    CHECK((!wire::validateManagementState(*value).has_value())==expected);
+    if(expected) {
+      const auto decoded=codec::decodeArea(value->area());const auto& decodedStatus=decoded.candidates[0].animalStatus;
+      CHECK(decodedStatus.has_value()==(kind>=0));
+      if(decodedStatus){CHECK(decodedStatus->kind==kind);CHECK(decodedStatus->containment==relation);CHECK(decodedStatus->itemId==item);}
+    }
+  }
+}

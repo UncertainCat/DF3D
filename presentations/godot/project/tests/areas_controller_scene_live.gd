@@ -77,10 +77,13 @@ func pointer_areas() -> void:
 	var stockpiles_only := FileAccess.file_exists(directory+"/stockpiles-only.json")
 	var zone_animals_only := FileAccess.file_exists(directory+"/zone-animals-only.json")
 	var zone_owner_only := FileAccess.file_exists(directory+"/zone-owner-only.json")
+	var zone_squads_only := FileAccess.file_exists(directory+"/zone-squads-only.json")
+	var squad_zone := "Barracks"
+	if zone_squads_only: squad_zone=str(JSON.parse_string(FileAccess.get_file_as_string(directory+"/zone-squads-only.json")).zone)
 	var zone_rename_only := FileAccess.file_exists(directory+"/zone-rename-only.json")
 	var zone_gather_only := FileAccess.file_exists(directory+"/zone-gather-only.json")
 	var zone_overlap_only := FileAccess.file_exists(directory+"/zone-overlap-only.json")
-	var destinations := ["Zones"] if zone_animals_only or zone_owner_only or zone_rename_only or zone_gather_only or zone_overlap_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
+	var destinations := ["Zones"] if zone_squads_only or zone_animals_only or zone_owner_only or zone_rename_only or zone_gather_only or zone_overlap_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
 	for destination in destinations:
 		step = "viewport "+destination
 		var launcher: Button = scene._fortress_hud.navigation[destination]
@@ -91,7 +94,7 @@ func pointer_areas() -> void:
 		await click_control(launcher,destination == "Zones")
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"pointer launcher"): return
 		if destination == "Zones":
-			await click_control(editor.zone_menu.buttons.Pond if zone_animals_only else (editor.zone_menu.buttons.PlantGathering if zone_gather_only else editor.zone_menu.buttons.Bedroom))
+			await click_control(editor.zone_menu.buttons[squad_zone] if zone_squads_only else (editor.zone_menu.buttons.Pond if zone_animals_only else (editor.zone_menu.buttons.PlantGathering if zone_gather_only else editor.zone_menu.buttons.Bedroom)))
 			if not check(editor.mode == "paint","zone button did not start painting"): return
 		var target := Vector3(origin.x+0.5,origin.z+float(world.floor_height()),origin.y+0.5)
 		var position: Vector2 = editor.camera.unproject_position(target)
@@ -114,10 +117,17 @@ func pointer_areas() -> void:
 		if destination == "Zones":
 			await native("snapshot",{"id":id,"expected":{"custom_name":""}})
 			var default_name := "Unnamed pit/pond" if zone_animals_only else ("Unnamed plant gathering area" if zone_gather_only else "Unnamed bedroom")
+			if zone_squads_only: default_name="Unnamed barracks" if squad_zone=="Barracks" else "Unnamed archery range"
 			if not check(str(editor.selected.name) == default_name and editor.zone_menu.heading.text == default_name,"unnamed zone must use native panel name"): return
 		await capture(destination.to_lower()+"_created")
 		if stopped: return
 		if destination == "Zones":
+			if zone_squads_only:
+				await pointer_squads(id)
+				if stopped:return
+				await click_control(editor.zone_menu.controls.remove)
+				if not await wait_ui(func():return settled() and editor.selected.is_empty(),"remove squad test zone"):return
+				await native("removed",{"id":id});await native("final");return
 			if zone_overlap_only:
 				await pointer_zone_overlap(origin,id); return
 			if zone_gather_only:
@@ -175,6 +185,36 @@ func pointer_areas() -> void:
 	if stopped: return
 	await native("final")
 	if not stopped: print("AREAS_POINTER_PASS")
+
+func pointer_squads(id: int) -> void:
+	step="main scene scrolled squad assignment"
+	await click_control(editor.zone_menu.controls.squads)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and editor.candidates_state.rows.size()==25 and editor.candidates_state.cursor==0,"complete squad list"):return
+	var view=editor.candidates_view
+	var target_id:int=editor.candidates_state.rows[15].id
+	await capture("squad_first_page")
+	for i in 30:
+		var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_WHEEL_DOWN;event.pressed=true
+		event.position=Vector2(500,150);event.global_position=event.position;root.push_input(event,true)
+	await process_frame;await process_frame
+	if not check(view.owner_scrollbar.first==15,"squad wheel did not reach last page"):return
+	await capture("squad_last_page")
+	for use in [2,0]:
+		await native("squad_before",{"id":id,"squad_id":target_id})
+		if stopped:return
+		var control:Button
+		for child in view.choices[15].get_children():
+			if child is Button and child.has_meta("squad_use") and int(child.get_meta("squad_use"))==2:control=child;break
+		if not check(control!=null and control.get_global_rect().get_center().y<160,"scrolled squad training button is not visible"):return
+		await click_control(control)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and editor.candidates_state.rows.size()==25 and int(editor.candidates_state.rows[15].squad_use)==use,"scrolled squad receipt"):return
+		await native("squad",{"id":id,"squad_id":target_id,"use":use})
+		if stopped:return
+		if not check(view.owner_scrollbar.first==15,"squad assignment reset native scroll position"):return
+		await capture("squad_scrolled_use_"+str(use))
+	await native("squad_finish")
+	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return not view.visible and settled(),"close squad picker"):return
 
 func pointer_zone_gathering(id: int) -> void:
 	step = "viewport native gathering flags"

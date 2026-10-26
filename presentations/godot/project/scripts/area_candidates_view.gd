@@ -54,6 +54,8 @@ func configure(source, model) -> void:
 	scroll = ScrollContainer.new(); scroll.position = Vector2(0,24); scroll.size = Vector2(576,600)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED; body.add_child(scroll)
 	var bar := scroll.get_v_scroll_bar(); bar.custom_minimum_size.x = 16
+	bar.changed.connect(func():
+		if state.kind == 3: apply_owner_scroll())
 	var track := art.make_style("SCROLLBAR",0)
 	track.set_texture_margin(SIDE_TOP,12); track.set_texture_margin(SIDE_BOTTOM,12)
 	bar.add_theme_stylebox_override("scroll",track)
@@ -65,7 +67,9 @@ func configure(source, model) -> void:
 	owner_scrollbar.configure(source); owner_scrollbar.position = Vector2(560,24)
 	owner_scrollbar.size = Vector2(16,600); owner_scrollbar.page = 16
 	owner_scrollbar.input_allowed = func(): return state.kind in [1,2,3] and not state.busy()
-	owner_scrollbar.row_changed.connect(func(_first): apply_owner_scroll())
+	owner_scrollbar.row_changed.connect(func(first):
+		if state.kind == 3: state.squad_first = first
+		apply_owner_scroll())
 	body.add_child(owner_scrollbar); owner_scrollbar.hide()
 	visibility_changed.connect(func(): if not is_visible_in_tree(): owner_scrollbar.dragging = false)
 	rows_box = VBoxContainer.new(); rows_box.add_theme_constant_override("separation",0)
@@ -158,7 +162,7 @@ func refresh() -> void:
 	owner_search.visible = state.kind in [1,2]
 	owner_search.set_bytes(state.query_bytes if state.query_bytes is PackedByteArray else state.query.to_utf8_buffer())
 	remove.visible = state.can_remove_owner()
-	owner_scrollbar.set_rows(state.rows.size()+(1 if remove.visible else 0),owner_scrollbar.first)
+	owner_scrollbar.set_rows(state.rows.size()+(1 if remove.visible else 0),state.squad_first if state.kind == 3 else owner_scrollbar.first)
 	owner_scrollbar.visible = state.cursor == 0 and owner_scrollbar.count > owner_scrollbar.page
 	if state.busy(): owner_scrollbar.dragging = false
 	owner_search.editable = not state.failed and not state.mutating and not state.area.is_empty()
@@ -273,6 +277,9 @@ func refresh() -> void:
 		button.modulate = Color(0.5,0.5,0.5) if button.disabled else Color.WHITE
 	# A short bridge page must not strand the cursor below an absent scrollbar.
 	if state.kind == 3 and not state.busy() and state.cursor != 0: state.call_deferred("more")
+	# The retained first row survives assignment receipts; apply after deferred
+	# container sizing so a newly arrived list cannot clamp the scroll to zero.
+	if state.kind == 3: call_deferred("apply_owner_scroll")
 
 func apply_owner_scroll() -> void:
 	scroll.scroll_vertical = owner_scrollbar.first * 36

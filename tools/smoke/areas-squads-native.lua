@@ -332,6 +332,27 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
  end
  view:render(dfhack.getTickCount());local bottom=capture(kind..'-longlist-bottom',b)
  assert(bottom.scroll==15,'long squad list did not reach last page')
+ rack_fixture.finish();rack_fixture.start(b,{long_ids[16]})
+ for n=1,2 do toggle(kind..'-scrolled-assignment-'..n,b,long_ids[16],kind=='Barracks' and 832 or 896,118,2)end
+ local old_lift=df.global.enabler.mouse_lbut_lift
+ local function point_cell(x,y)
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+8
+ end
+ for _,destination in ipairs{7,8,9,10,20,35,36,37,38}do
+  -- Diagnostic-only reset isolates native drag geometry from scroll history.
+  main.squad_selector.scroll_position=0;main.squad_selector.scrolling=0
+  point_cell(62,12);view:render(dfhack.getTickCount());script.sleep(2,'frames')
+  point_cell(116,10);df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+  point_cell(116,destination);gui.simulateInput(view,{'_MOUSE_L_DOWN'})
+  local dragging=main.squad_selector.scrolling
+  df.global.enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+  local observed=capture(kind..'-drag-'..destination,b)
+  observed.drag={destination=destination,held=dragging,released=main.squad_selector.scrolling}
+  assert(observed.scroll>=0 and observed.scroll<=15 and observed.drag.released==0,'native drag state invalid')
+ end
+ df.global.enabler.mouse_lbut_lift=old_lift
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  entity.squads:resize(0);for _,id in ipairs(original)do entity.squads:insert('#',id)end
  capture(kind..'-closed',b)

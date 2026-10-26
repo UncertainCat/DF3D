@@ -621,11 +621,36 @@ func run() -> void:
 			var bar=controller.candidates_view.owner_scrollbar
 			if bar.first!=int(sample.first) or controller.candidates_view.scroll.scroll_vertical!=bar.first*36:
 				push_error("Squad scroll differs: "+action);quit(1);return
+			if controller.candidates_view.choices[bar.first].global_position.y!=controller.candidates_view.scroll.global_position.y:
+				push_error("Squad visible content did not follow scrollbar: "+action);quit(1);return
 			var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
 			var crop:=rendered.get_region(Rect2i(Vector2i(bar.global_position),Vector2i(16,360)))
 			crop.save_png(directory.path_join("squad-scroll-"+str(sample.capture)+".png"))
 			var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
 			if digest.finish().hex_encode()!=str(sample.bar_rgb_sha256):push_error("Squad scrollbar pixels differ: "+action);quit(1);return
+		controller.candidates_state.rows=[];controller.candidates_state.changed.emit()
+		await process_frame
+		controller.candidates_state.receipt+=1;controller.candidates_state.rows=long_rows;controller.candidates_state.changed.emit()
+		for frame in 4:await process_frame
+		if controller.candidates_view.owner_scrollbar.first!=15 or controller.candidates_view.choices[15].global_position.y!=controller.candidates_view.scroll.global_position.y:
+			push_error("Squad receipt rebuild lost visible scroll position");quit(1);return
+		var drag_reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_squads.json")).drag_reference
+		for sample in drag_reference.observations:
+			if not str(sample.capture).begins_with(type_name+"-"):continue
+			var bar=controller.candidates_view.owner_scrollbar;bar.move_to(0)
+			await process_frame
+			var motion:=InputEventMouseMotion.new();motion.position=Vector2(932,128);motion.global_position=motion.position;root.push_input(motion,true)
+			var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;press.button_mask=MOUSE_BUTTON_MASK_LEFT;press.position=motion.position;press.global_position=press.position;root.push_input(press,true)
+			motion=InputEventMouseMotion.new();motion.position=Vector2(932,int(sample.destination)*12+8);motion.global_position=motion.position;motion.button_mask=MOUSE_BUTTON_MASK_LEFT;root.push_input(motion,true)
+			if not bar.dragging or bar.first!=int(sample.first):push_error("Squad drag differs: "+str(sample.capture));quit(1);return
+			var release:=InputEventMouseButton.new();release.button_index=MOUSE_BUTTON_LEFT;release.position=motion.position;release.global_position=release.position;root.push_input(release,true)
+			motion=InputEventMouseMotion.new();motion.position=Vector2(4,400);motion.global_position=motion.position;root.push_input(motion,true)
+			await process_frame;await RenderingServer.frame_post_draw
+			if bar.dragging:push_error("Squad drag survived release");quit(1);return
+			var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
+			var crop:=rendered.get_region(Rect2i(Vector2i(bar.global_position),Vector2i(16,360)))
+			var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+			if digest.finish().hex_encode()!=str(sample.bar_rgb_sha256):push_error("Squad drag pixels differ: "+str(sample.capture));quit(1);return
 		controller.handle_back()
 		if squad_help.visible or not squad_help.state.key.is_empty():push_error("Closed squad picker retained hover");quit(1);return
 	controller.candidates_view.native_help=null;squad_help.free()

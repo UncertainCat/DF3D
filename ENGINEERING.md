@@ -265,9 +265,32 @@ and verifies pointer wheel/Shift-wheel, arrow/track clicks, tail clamping and
 control positioning in both pickers. It also reruns the symbol, name and hover
 checks. Only the three known Godot diagnostics remain. Core19/19 passes in
 `build/qa/squad-native-scroll`. The first pixel test exposed the wrong standalone
-scrollbar source; the corrected interface-art source matches. Scrollbar dragging,
-assignment after scrolling, stale/disconnect and full native tooltip screenshot
-parity remain separate unfinished checks.
+scrollbar source; the corrected interface-art source matches.
+
+Protected `build/stockpile-storage-native-zone-squads-20261026-181949` verifies
+nine thumb-drag destinations in each picker, including positions outside the
+track. Both clamp to rows0..15 and release capture. Training toggles on the
+first displayed squad at row15 preserve native scroll and verify reciprocal
+records and rack effects. DF139384 exits unsaved; source preservation passes.
+`drag_reference` retains the18 scrollbar RGB hashes and four assignments.
+GPU `build/qa/squad-scroll-rebuild` matches all18 strips and verifies that both
+the thumb and visible content retain row15 across a list rebuild. It passes
+with known Godot diagnostics. Squad navigation retains its first row across
+assignment receipts; scroll restoration also follows container range changes,
+since emptying/rebuilding children can otherwise clamp the content to row0.
+Stale/disconnect and full native tooltip screenshot parity remain unfinished.
+
+Main-scene GPU lanes `build/areas-acceptance-20261026-183226` (Barracks) and
+`build/areas-acceptance-20261026-183317` (Archery Range) create zones through
+viewport input, scroll25 candidates to row15, then assign and clear training
+through the visible control. Native readback verifies the intended squad15,
+reciprocal records and rack effects after each click. The last page remains
+visible after both receipts; right-click closes the picker and zone removal
+succeeds. Both runs pass with known Godot diagnostics, exit unsaved and preserve
+both save manifests. Repeat with `areas_acceptance.ps1 -ControllerScene
+-ZoneSquadsOnly`, adding `-SquadZone ArcheryRange` for the range. Core19/19 passes
+in `build/qa/squad-scroll-final-core`. These focused lanes use25 existing squads
+as diagnostic fortress membership only in an owned, never-saved clone.
 
 ## Animal keyboard activation and portrait reference
 

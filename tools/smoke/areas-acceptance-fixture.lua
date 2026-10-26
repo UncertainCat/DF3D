@@ -70,6 +70,15 @@ for _,s in ipairs(df.global.world.squads.all) do
 end
 -- Exercise lazy semantic initialization through real candidate requests.
 -- Owned unsaved clone only; no native picker/cache access is needed.
+local squad_scope=io.open(out..'/zone-squads-only.json','r')
+if squad_scope then
+ squad_scope:close()
+ local ids=df.global.plotinfo.main.fortress_entity.squads
+ ids:resize(0)
+ for _,s in ipairs(df.global.world.squads.all)do ids:insert('#',s.id);if #ids==25 then break end end
+ assert(#ids==25,'squad scene fixture needs25 existing squads')
+ print('FIXTURE_WRITE diagnostic fortress squad membership25')
+end
 state.uninitialized_squads={}
 for _,id in ipairs(df.global.plotinfo.main.fortress_entity.squads)do
  local squad=df.squad.find(id)

@@ -21,6 +21,7 @@ var search_delay := -1.0
 var failed := false
 var mutating := false
 var squad_mask := 15
+var squad_first := 0
 var recipe_first := 0
 const OWNER_RECIPE_ROWS := 36
 
@@ -30,6 +31,7 @@ func clear() -> void:
 	sort_directions = [false,false,false,false,false]
 	delay = -1; search_delay = -1; failed = false; mutating = false
 	squad_mask = 15
+	squad_first = 0
 	recipe_first = 0
 	changed.emit()
 
@@ -44,6 +46,7 @@ func open(value: Dictionary, candidate_kind := 1, navigation: Dictionary = {}) -
 		sort_directions = navigation.sort_directions.duplicate()
 	if kind in [1,2] and sort in [1,2,3,4]: sort_directions[sort] = descending
 	squad_mask = int(navigation.get("squad_mask",15))
+	squad_first = maxi(0,int(navigation.get("squad_first",0))) if kind == 3 else 0
 	if int(area.get("kind",-1)) != 1 or int(area.get("revision",0)) <= 0 or kind not in [1,2,3]:
 		reject("Inspect this zone before selecting assignments"); return
 	read()

@@ -4509,5 +4509,250 @@
       ],
       "summary_sha256": "82461ec157448471115b9fb4e3d3b04fb19524b59e48ff4fbd1cb3672e5c3cff"
     }
+  },
+  "drag_reference": {
+    "run": "build/stockpile-storage-native-zone-squads-20261026-181949",
+    "scope": "Native held drag from first-page thumb to nine interior/edge/outside y positions in both pickers, release retires drag; native scrolled training toggles target squad15 with reciprocal/rack effects and keep first15.",
+    "observations": [
+      {
+        "capture": "Barracks-drag-7",
+        "first": 0,
+        "destination": 7,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-drag-8",
+        "first": 0,
+        "destination": 8,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-drag-9",
+        "first": 0,
+        "destination": 9,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-drag-10",
+        "first": 0,
+        "destination": 10,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-drag-20",
+        "first": 5,
+        "destination": 20,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "5da313593199c49aca1220dd499962d34efdcc1bac97c0eafa0cc647a67f7cf2"
+      },
+      {
+        "capture": "Barracks-drag-35",
+        "first": 13,
+        "destination": 35,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "baf9a1bc8508453576625edeac0a1225e661772ed3293a1fb9705d19b34b6a4f"
+      },
+      {
+        "capture": "Barracks-drag-36",
+        "first": 15,
+        "destination": 36,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "0a1a3db44c3dcf4bcde566c9199fa96311e52b29bcc42f6461802ec77079f2ee"
+      },
+      {
+        "capture": "Barracks-drag-37",
+        "first": 15,
+        "destination": 37,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "0a1a3db44c3dcf4bcde566c9199fa96311e52b29bcc42f6461802ec77079f2ee"
+      },
+      {
+        "capture": "Barracks-drag-38",
+        "first": 15,
+        "destination": 38,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "0a1a3db44c3dcf4bcde566c9199fa96311e52b29bcc42f6461802ec77079f2ee"
+      },
+      {
+        "capture": "ArcheryRange-drag-7",
+        "first": 0,
+        "destination": 7,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-drag-8",
+        "first": 0,
+        "destination": 8,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-drag-9",
+        "first": 0,
+        "destination": 9,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-drag-10",
+        "first": 0,
+        "destination": 10,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-drag-20",
+        "first": 5,
+        "destination": 20,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "5da313593199c49aca1220dd499962d34efdcc1bac97c0eafa0cc647a67f7cf2"
+      },
+      {
+        "capture": "ArcheryRange-drag-35",
+        "first": 13,
+        "destination": 35,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "baf9a1bc8508453576625edeac0a1225e661772ed3293a1fb9705d19b34b6a4f"
+      },
+      {
+        "capture": "ArcheryRange-drag-36",
+        "first": 15,
+        "destination": 36,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "0a1a3db44c3dcf4bcde566c9199fa96311e52b29bcc42f6461802ec77079f2ee"
+      },
+      {
+        "capture": "ArcheryRange-drag-37",
+        "first": 15,
+        "destination": 37,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "0a1a3db44c3dcf4bcde566c9199fa96311e52b29bcc42f6461802ec77079f2ee"
+      },
+      {
+        "capture": "ArcheryRange-drag-38",
+        "first": 15,
+        "destination": 38,
+        "held": 1,
+        "released": 0,
+        "bar_rgb_sha256": "0a1a3db44c3dcf4bcde566c9199fa96311e52b29bcc42f6461802ec77079f2ee"
+      }
+    ],
+    "assignments": [
+      {
+        "capture": "Barracks-scrolled-assignment-1",
+        "first": 15,
+        "squad_id": 15,
+        "use": 2,
+        "rack_effects": {
+          "combat": [],
+          "equipment_update": true,
+          "related": 1492,
+          "training": [
+            1492
+          ],
+          "unrelated": 1493
+        }
+      },
+      {
+        "capture": "Barracks-scrolled-assignment-2",
+        "first": 15,
+        "squad_id": 15,
+        "use": 0,
+        "rack_effects": {
+          "combat": [],
+          "equipment_update": true,
+          "related": 1492,
+          "training": [],
+          "unrelated": 1493
+        }
+      },
+      {
+        "capture": "ArcheryRange-scrolled-assignment-1",
+        "first": 15,
+        "squad_id": 15,
+        "use": 2,
+        "rack_effects": {
+          "combat": [],
+          "equipment_update": true,
+          "related": 1497,
+          "training": [
+            1497
+          ],
+          "unrelated": 1498
+        }
+      },
+      {
+        "capture": "ArcheryRange-scrolled-assignment-2",
+        "first": 15,
+        "squad_id": 15,
+        "use": 0,
+        "rack_effects": {
+          "combat": [],
+          "equipment_update": true,
+          "related": 1497,
+          "training": [],
+          "unrelated": 1498
+        }
+      }
+    ],
+    "result_sha256": "b08c6a568ca048f1a0c8f983d9b0ce0e441db0e316626176e5769eddc058ca46",
+    "rendered_acceptance": {
+      "gpu": "build/qa/squad-scroll-rebuild",
+      "status": "passed_with_known_issues",
+      "checks": [
+        "18 native scrollbar RGB strips",
+        "visible row retained across list rebuild"
+      ],
+      "main_scene": [
+        {
+          "zone": "Barracks",
+          "run": "build/areas-acceptance-20261026-183226",
+          "status": "passed_with_known_issues",
+          "squad_id": 15,
+          "uses": [
+            2,
+            0
+          ],
+          "first": 15,
+          "save_manifests_unchanged": true,
+          "native_reciprocal_and_rack_effects": true
+        },
+        {
+          "zone": "ArcheryRange",
+          "run": "build/areas-acceptance-20261026-183317",
+          "status": "passed_with_known_issues",
+          "squad_id": 15,
+          "uses": [
+            2,
+            0
+          ],
+          "first": 15,
+          "save_manifests_unchanged": true,
+          "native_reciprocal_and_rack_effects": true
+        }
+      ]
+    }
   }
 }

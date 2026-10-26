@@ -902,6 +902,48 @@ func run() -> void:
 	var enter:=InputEventKey.new();enter.pressed=true;enter.keycode=KEY_ENTER
 	var calls_before:=animal_requests.size();animal_view.feed_animal_key(enter)
 	if animal_view.owner_search.has_focus() or animal_requests.size()!=calls_before:push_error("Focused animal Enter assigned instead of leaving focus");quit(1);return
+	# Native forty-row Pond reference: whole-row viewport, arrows/track and drag.
+	animal_state.query_bytes=null;animal_state.query="";animal_state.search_delay=-1
+	animal_state.pending={};animal_state.mutating=false;animal_state.cursor=0
+	animal_state.rows=[]
+	for i in 40:
+		var row:Dictionary=restraints.samples[0].row.duplicate(true);row.id=30000+i
+		animal_state.rows.append(row)
+	animal_state.receipt=501;animal_state.changed.emit()
+	await process_frame;await RenderingServer.frame_post_draw
+	var animal_bar=animal_view.owner_scrollbar
+	var scrolling:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_scroll
+	for sample in scrolling.rendered_bar.samples:
+		animal_bar.move_to(int(sample.first))
+		await process_frame;await RenderingServer.frame_post_draw
+		var clip:Rect2=animal_view.scroll.get_global_rect();var full:=0
+		for button in animal_view.choices:
+			if clip.encloses(button.get_global_rect()):full+=1
+			elif clip.intersects(button.get_global_rect()):push_error("Animal viewport exposes partial row");quit(1);return
+		if full!=16 or animal_view.scroll.scroll_vertical!=int(sample.first)*36:push_error("Animal viewport differs");quit(1);return
+		var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var crop:=image.get_region(Rect2i(Vector2i(animal_bar.global_position),Vector2i(16,600)))
+		crop.save_png(directory.path_join("animal_bar_%d.png"%int(sample.first)))
+		var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+		if digest.finish().hex_encode()!=str(sample.rgb_sha256):push_error("Animal scrollbar pixels differ");quit(1);return
+	for sample in scrolling.records:
+		if str(sample.label).begins_with("drag-"):
+			animal_bar.move_to(0);animal_bar.drag_to((int(str(sample.label).trim_prefix("drag-"))-7)*12+6)
+			if animal_bar.first!=int(sample.scroll):push_error("Animal scrollbar drag differs");quit(1);return
+	animal_bar.move_to(0)
+	var animal_wheel:=InputEventMouseButton.new();animal_wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;animal_wheel.pressed=true
+	animal_wheel.position=animal_view.scroll.global_position+Vector2(80,80)
+	root.push_input(animal_wheel,true)
+	if animal_bar.first!=1 or animal_view.owner_selected!=0:push_error("Animal wheel changed selection or step");quit(1);return
+	animal_wheel.shift_pressed=true;root.push_input(animal_wheel,true)
+	if animal_bar.first!=17:push_error("Animal shifted wheel page differs");quit(1);return
+	animal_wheel.position=Vector2(2,2);root.push_input(animal_wheel,true)
+	if animal_bar.first!=17:push_error("Outside animal wheel scrolled list");quit(1);return
+	animal_bar.move_to(0);animal_view.owner_selected=0
+	var page_down:=InputEventKey.new();page_down.keycode=KEY_PAGEDOWN;page_down.pressed=true
+	for expected in [[16,1],[32,17],[39,24]]:
+		animal_view.feed_animal_key(page_down)
+		if animal_view.owner_selected!=expected[0] or animal_bar.first!=expected[1]:push_error("Animal keyboard scrolling differs");quit(1);return
 	animal_view.free();containment_help.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

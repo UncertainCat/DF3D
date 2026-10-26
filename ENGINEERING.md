@@ -15,6 +15,25 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 
 ## Animal keyboard activation and portrait reference
 
+`native_zone_animals.json.animal_scroll` records a forty-row Pond list in
+protected `build/stockpile-storage-native-zone-animals-20261026-142405`.
+Temporary critter items remain allocated until the owned unsaved session exits;
+the source save is unchanged. The viewport shows sixteen complete36px rows.
+Wheel/arrow movement advances one row, context paging advances sixteen without
+moving selection, and keyboard paging moves selection then brings it into view.
+Track clicks and nine drag destinations agree with the shared native scrollbar.
+Animal selectors now use that scrollbar at x360 with a360x576 row viewport;
+transport continues automatically until retained membership is complete before
+navigation is enabled. Core19/19, state and controller checks pass in
+`build/qa/animal-long-scroll`. GPU checks there match the full16x600 top/tail
+scrollbar crops exactly and verify complete-row clipping, keyboard paging and
+drag destinations. `build/qa/animal-long-scroll-pointer` additionally verifies
+actual viewport wheel events, shifted paging and outside-pointer exclusion.
+Both GPU runs retain only the three known Godot diagnostics. Animal bounded
+portrait retention/background refresh and full live controller coverage remain
+outstanding; this is component scrolling acceptance, not full Zones acceptance.
+
+
 `native_zone_animals.json.animal_search_input` records real Windows/SDL input
 for both Pen and Pond in protected
 `build/stockpile-storage-native-zone-animals-20261026-135542`. Both textboxes

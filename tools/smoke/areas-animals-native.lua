@@ -921,6 +921,95 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
  gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
 end
 
+-- Long-list scrolling is observed separately so earlier assignment fixtures keep
+-- their original membership. All temporary items live only in this unsaved clone.
+do
+ local original=assert(df.global.world.items.other.ANY_CRITTER[0])
+ local pet=df.item_petst:is_instance(original)
+ assert(pet or df.item_verminst:is_instance(original))
+  for index=1,32 do
+  local extra=pet and df.item_petst:new() or df.item_verminst:new()
+  extra.id=df.global.item_next_id;df.global.item_next_id=extra.id+1
+  extra.race=original.race;extra.caste=original.caste
+  extra.flags.whole=original.flags.whole;extra.flags2.whole=original.flags2.whole
+  extra.pos:assign(original.pos)
+  df.global.world.items.all:insert('#',extra)
+  df.global.world.items.other.ANY_CRITTER:insert('#',extra)
+  df.global.world.items.other[pet and 'PET' or 'VERMIN']:insert('#',extra)
+ end
+ pixel(336,154)
+ local opened=capture('Pond-long-picker')
+ assert(#opened.displayed>32,'long animal fixture did not populate')
+ local list=assert(walk(main.unit_selector,{},0,true))
+ local function find_scroll(widget)
+  if df.widget_scroll_rows:is_instance(widget)then return df.reinterpret_cast(df.widget_scroll_rows,widget)end
+  for _,child in ipairs(children(widget))do local found=find_scroll(child);if found then return found end end
+ end
+ local scroll=assert(find_scroll(list))
+ local function point(x,y)
+  g.mouse_x=x;g.mouse_y=y
+  g.precise_mouse_x=x*(g.screen_pixel_x//g.dimx)+4;g.precise_mouse_y=y*(g.screen_pixel_y//g.dimy)+6
+  df.global.enabler.tracking_on=1
+ end
+ local function observe(label)
+  view:render(dfhack.getTickCount());script.sleep(1,'frames')
+  local rows={};walk(list,rows,0,true)
+  local visible={}
+  for _,row in ipairs(rows)do
+   if row.active and (row.unit_id or row.item_id) and (row.flags&2)~=0 then
+    visible[#visible+1]={id=row.unit_id or row.item_id,kind=row.item_id and 1 or 0,y=row.y,y2=row.y2}
+   end
+  end
+  local bar={}
+  for _,field in ipairs{'sel','sel_min','sel_max','page_size','print_sy','print_ey','scroller_sy','scroller_ey'}do bar[field]=scroll.scrollbar[field]end
+  local cells={}
+  for y=scroll.rect.y1,scroll.rect.y2 do for x=scroll.rect.x2+1,scroll.rect.x2+2 do
+   cells[#cells+1]={x=x,y=y,tile=dfhack.screen.readTile(x,y).tile}
+  end end
+  records[#records+1]={name='animal-scroll',label=label,count=#opened.displayed,
+   scroll=scroll.scroll,num_visible=scroll.num_visible,cursor=list.cursor_idx,bar=bar,
+   visible=visible,cells=cells,rect={scroll.rect.x1,scroll.rect.y1,scroll.rect.x2,scroll.rect.y2}}
+ end
+ local function input(label,key,x,y)
+  point(x or scroll.rect.x1+5,y or scroll.rect.y1+5)
+  gui.simulateInput(view,key);observe(label)
+ end
+ observe('initial')
+ input('context-down','CONTEXT_SCROLL_DOWN')
+ input('context-up','CONTEXT_SCROLL_UP')
+ input('context-page-down','CONTEXT_SCROLL_PAGEDOWN')
+ input('context-page-up','CONTEXT_SCROLL_PAGEUP')
+ input('outside-context-down','CONTEXT_SCROLL_DOWN',0,0)
+ input('arrow-down','_MOUSE_L',scroll.rect.x2+2,scroll.rect.y2)
+ input('arrow-up','_MOUSE_L',scroll.rect.x2+2,scroll.rect.y1)
+ input('track-down','_MOUSE_L',scroll.rect.x2+2,scroll.rect.y2-3)
+ input('track-up','_MOUSE_L',scroll.rect.x2+2,scroll.rect.y1+1)
+ for i=1,5 do input('page-down-'..i,'STANDARDSCROLL_PAGEDOWN')end
+ input('tail-down','STANDARDSCROLL_DOWN')
+ capture('Pond-long-tail')
+ input('tail-page-up','STANDARDSCROLL_PAGEUP')
+ for i=1,5 do gui.simulateInput(view,'STANDARDSCROLL_PAGEUP');view:render(dfhack.getTickCount())end
+ observe('restored-top')
+ assert(list.cursor_idx==0 and scroll.scroll==0,'animal scroll did not restore top')
+ local old_lift=df.global.enabler.mouse_lbut_lift
+ for _,destination in ipairs{7,8,9,20,40,54,55,56,57}do
+  scroll.scroll=0;scroll.scrolling=false;list.cursor_idx=0
+  point(scroll.rect.x1+5,20);view:render(dfhack.getTickCount());script.sleep(2,'frames')
+  point(scroll.rect.x2+2,10);df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+  point(scroll.rect.x2+2,destination);gui.simulateInput(view,{'_MOUSE_L_DOWN'})
+  observe('drag-'..destination)
+  df.global.enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+ end
+ df.global.enabler.mouse_lbut_lift=old_lift
+ scroll.scroll=0;scroll.scrolling=false;list.cursor_idx=0
+ point(scroll.rect.x1+5,20);view:render(dfhack.getTickCount());script.sleep(2,'frames')
+ observe('restored-after-drag')
+ gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
+ -- Keep diagnostic items allocated until the owned session exits without saving.
+ -- Closed native widgets may still retain pointers to their prior entries.
+end
+
 -- Real window closing keys are observed after the assignment fixtures finish.
 pixel(336,154)
 local function closing(label)

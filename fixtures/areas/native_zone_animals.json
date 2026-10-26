@@ -14946,5 +14946,705 @@
       "help_matches": "native_zone_assignment.json.owner_tooltips.filter.rgb_sha256",
       "scope": "Exact native screenshot hashes; textbox cursor blink phase must be matched or isolated during viewer comparisons."
     }
+  },
+  "animal_scroll": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-142405",
+    "owned_df_pid": 69356,
+    "source_unchanged": true,
+    "count": 40,
+    "records": [
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "initial",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 27,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "context-down",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 1
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "context-up",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 45,
+          "scroller_sy": 27,
+          "sel": 16,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "context-page-down",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 16
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "context-page-up",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "outside-context-down",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 27,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "arrow-down",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 1
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "arrow-up",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 45,
+          "scroller_sy": 27,
+          "sel": 16,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "track-down",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 16
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "track-up",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 27,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 16,
+        "label": "page-down-1",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 1
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 46,
+          "scroller_sy": 28,
+          "sel": 17,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 32,
+        "label": "page-down-2",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 17
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 37,
+          "sel": 24,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 39,
+        "label": "page-down-3",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 24
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 37,
+          "sel": 24,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 39,
+        "label": "page-down-4",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 24
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 37,
+          "sel": 24,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 39,
+        "label": "page-down-5",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 24
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 37,
+          "sel": 24,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 39,
+        "label": "tail-down",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 24
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 53,
+          "scroller_sy": 35,
+          "sel": 23,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 23,
+        "label": "tail-page-up",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 23
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "restored-top",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "drag-7",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "drag-8",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "drag-9",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 33,
+          "scroller_sy": 15,
+          "sel": 6,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "drag-20",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 6
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 45,
+          "scroller_sy": 27,
+          "sel": 16,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "drag-40",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 16
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 53,
+          "scroller_sy": 35,
+          "sel": 23,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "drag-54",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 23
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 37,
+          "sel": 24,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "drag-55",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 24
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 37,
+          "sel": 24,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "drag-56",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 24
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 37,
+          "sel": 24,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "drag-57",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 24
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 26,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 39,
+          "sel_min": 0
+        },
+        "count": 40,
+        "cursor": 0,
+        "label": "restored-after-drag",
+        "name": "animal-scroll",
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          91,
+          56
+        ],
+        "scroll": 0
+      }
+    ],
+    "rendered_bar": {
+      "rect": [
+        736,
+        88,
+        16,
+        600
+      ],
+      "samples": [
+        {
+          "name": "Pond-long-picker",
+          "first": 0,
+          "rgb_sha256": "bb0b7d662118c3e34a9535d6af3fa774fccdb2ee0c7e0ce42424162f4d6aad3f"
+        },
+        {
+          "name": "Pond-long-tail",
+          "first": 24,
+          "rgb_sha256": "6fc849decd1636d4a562a9b45556d92b1bddc17562be95726b19ae7d8d78fb4f"
+        }
+      ]
+    }
   }
 }

@@ -58,11 +58,11 @@ func configure(source, model) -> void:
 	var thumb := art.make_style("SCROLLBAR_SMALL_SCROLLER",0)
 	thumb.set_texture_margin(SIDE_TOP,12); thumb.set_texture_margin(SIDE_BOTTOM,12)
 	for key in ["grabber","grabber_highlight","grabber_pressed"]: bar.add_theme_stylebox_override(key,thumb)
-	bar.value_changed.connect(func(value): if state.kind != 1 and value > 0 and value+bar.page >= bar.max_value-36: state.more())
+	bar.value_changed.connect(func(value): if state.kind == 3 and value > 0 and value+bar.page >= bar.max_value-36: state.more())
 	owner_scrollbar.clamp_interior_thumb = true
 	owner_scrollbar.configure(source); owner_scrollbar.position = Vector2(560,24)
 	owner_scrollbar.size = Vector2(16,600); owner_scrollbar.page = 16
-	owner_scrollbar.input_allowed = func(): return state.kind == 1 and not state.busy()
+	owner_scrollbar.input_allowed = func(): return state.kind in [1,2] and not state.busy()
 	owner_scrollbar.row_changed.connect(func(_first): apply_owner_scroll())
 	body.add_child(owner_scrollbar); owner_scrollbar.hide()
 	visibility_changed.connect(func(): if not is_visible_in_tree(): owner_scrollbar.dragging = false)
@@ -134,15 +134,16 @@ func refresh() -> void:
 		owner_scrollbar.set_rows(0); owner_scrollbar.dragging = false; scroll.scroll_vertical = 0
 	body.custom_minimum_size = Vector2(564,400) if state.kind == 3 else Vector2(376 if state.kind == 2 else 576,684)
 	scroll.position.y = 36 if state.kind == 3 else 24
-	scroll.size = Vector2(560,576) if state.kind == 1 else Vector2(body.custom_minimum_size.x,360 if state.kind == 3 else 600)
-	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER if state.kind == 1 else ScrollContainer.SCROLL_MODE_AUTO
+	scroll.size = Vector2(360 if state.kind == 2 else 560,576) if state.kind in [1,2] else Vector2(body.custom_minimum_size.x,360)
+	owner_scrollbar.position.x = 360 if state.kind == 2 else 560
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER if state.kind in [1,2] else ScrollContainer.SCROLL_MODE_AUTO
 	squad_prompt.visible = state.kind == 3
 	squad_prompt.text = "Select the squads to train here." if state.squad_mask == 2 else "Select how squads will use this space."
 	owner_search.visible = state.kind in [1,2]
 	owner_search.set_bytes(state.query_bytes if state.query_bytes is PackedByteArray else state.query.to_utf8_buffer())
 	remove.visible = state.can_remove_owner()
 	owner_scrollbar.set_rows(state.rows.size()+(1 if remove.visible else 0),owner_scrollbar.first)
-	owner_scrollbar.visible = state.kind == 1 and state.cursor == 0 and owner_scrollbar.count > 16
+	owner_scrollbar.visible = state.kind in [1,2] and state.cursor == 0 and owner_scrollbar.count > 16
 	if state.busy(): owner_scrollbar.dragging = false
 	owner_search.editable = not state.failed and not state.mutating and not state.area.is_empty()
 	if not owner_search.editable and native_help != null: native_help.leave(owner_search.get_instance_id())
@@ -264,16 +265,16 @@ func refresh() -> void:
 		if button.disabled and native_help != null: native_help.leave(button.get_instance_id())
 		button.modulate = Color(0.5,0.5,0.5) if button.disabled else Color.WHITE
 	# A short bridge page must not strand the cursor below an absent scrollbar.
-	if state.kind != 1 and not state.busy() and state.cursor != 0 and state.rows.size() < 16: state.call_deferred("more")
+	if state.kind == 3 and not state.busy() and state.cursor != 0 and state.rows.size() < 16: state.call_deferred("more")
 
 func apply_owner_scroll() -> void:
 	scroll.scroll_vertical = owner_scrollbar.first * 36
 
 func _input(event: InputEvent) -> void:
-	if not is_visible_in_tree() or state.kind != 1 or not event is InputEventMouseButton or not event.pressed: return
+	if not is_visible_in_tree() or state.kind not in [1,2] or not event is InputEventMouseButton or not event.pressed: return
 	if event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]: return
 	var local: Vector2 = body.get_global_transform_with_canvas().affine_inverse() * event.position
-	if not Rect2(0,24,576,600).has_point(local): return
+	if not Rect2(0,24,376 if state.kind == 2 else 576,600).has_point(local): return
 	if not state.busy():
 		owner_scrollbar.move_to(owner_scrollbar.first+(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)*(16 if event.shift_pressed else 1))
 	get_viewport().set_input_as_handled()
@@ -311,10 +312,10 @@ func feed_animal_key(event: InputEvent) -> bool:
 	if state.busy() or choices.is_empty(): return true
 	owner_selected = clampi(owner_selected+delta,0,choices.size()-1)
 	refresh()
-	var first := scroll.scroll_vertical/36
+	var first: int = owner_scrollbar.first
 	if owner_selected < first: first = owner_selected
 	elif owner_selected >= first+16: first = owner_selected-15
-	scroll.scroll_vertical = first*36
+	owner_scrollbar.move_to(first)
 	return true
 
 func feed_owner_key(event: InputEvent) -> bool:

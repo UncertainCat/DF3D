@@ -49,7 +49,7 @@ func open(value: Dictionary, candidate_kind := 1, navigation: Dictionary = {}) -
 	read()
 
 func busy() -> bool:
-	return area.is_empty() or failed or mutating or not pending.is_empty() or search_delay >= 0 or (kind == 1 and cursor != 0)
+	return area.is_empty() or failed or mutating or not pending.is_empty() or search_delay >= 0 or (kind in [1,2] and cursor != 0)
 
 func read(next_cursor := 0) -> void:
 	if area.is_empty() or failed or mutating or not pending.is_empty(): return
@@ -100,9 +100,9 @@ func poll(delta: float) -> void:
 		if delay <= 0.000001:
 			delay = -1; request_ready.emit(pending.duplicate(true))
 
-	# Owner scrollbar extent and navigation require complete retained membership.
+	# Owner/animal scrollbar extent and navigation require complete retained membership.
 	# Keep transport pages bounded; fetch the next page on the next controller tick.
-	if kind == 1 and cursor != 0 and pending.is_empty(): more()
+	if kind in [1,2] and cursor != 0 and pending.is_empty(): more()
 
 func accept(page: Dictionary, sent: Dictionary) -> void:
 	if pending.is_empty() or sent != pending: return

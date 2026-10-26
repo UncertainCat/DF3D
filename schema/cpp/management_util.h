@@ -18,8 +18,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 65;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v65";
+inline constexpr uint32_t kManagementVersion = 66;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v66";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -42,6 +42,11 @@ inline bool validAreaZoneSettings(const AreaZoneSettings* z) {
 // Keep this order in the Lua dispatcher too: selector, matrix, kind, legacy
 // ownership, new-field ownership/requirements, identities, then bounded sizes.
 inline std::optional<std::string> validateAreaOperation(ManagementAction action, const AreaRequest& a) {
+  if(const auto* bytes=a.query_bytes()) {
+    if(action!=ManagementAction::AreaCandidates || a.operation()!=AreaOperation::CandidateList ||
+       a.kind()!=AreaKind::Zone || a.id()<0 || a.candidate_kind()!=1 || bytes->size()>33 ||
+       (a.query() && a.query()->size()))return "invalid owner query bytes";
+  }
   const auto op=static_cast<uint8_t>(a.operation());
   if(op>26) return "Unsupported area operation";
   const bool linkTarget=op==26;
@@ -825,6 +830,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         a->candidate_kind()>3 || a->sort()>(a->candidate_kind()==1?4:3) || a->list_revision()>INT64_MAX ||
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
       return "invalid area response header";
+    if(const auto* bytes=a->query_bytes()) {
+      if(a->operation()!=AreaOperation::CandidateList || a->area_id()<0 || a->candidate_kind()!=1 ||
+         bytes->size()>33 || textSize(a->query()))return "invalid owner query echo";
+    }
     if(a->settings_count() < -1 || (a->settings_count() >= 0 &&
         (a->operation()!=AreaOperation::SettingsPage || uint32_t(a->settings_count())<count(a->settings()) ||
          uint32_t(a->settings_count())<a->next_cursor() || uint32_t(a->settings_count())>a->build_total())))
@@ -922,7 +931,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         (families && count(a->areas())>1)) return "area response mixes list families";
     // Sum variable payloads across the entire reply, not just each page's
     // per-row bounds. Scalar/table overhead still fits the 512 KiB channel.
-    size_t payload=textSize(a->list_key())+textSize(a->query());
+    size_t payload=textSize(a->list_key())+textSize(a->query())+count(a->query_bytes());
     size_t extentTotal=0,linkTotal=0;
     std::set<int32_t> areaIds,choiceIds;
     if (a->areas()) for (const auto* v:*a->areas()) {

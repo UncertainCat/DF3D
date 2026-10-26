@@ -415,6 +415,19 @@ The current128-character LineEdit and UTF-8 query contract remain incomplete:
 full parity requires33-byte editing and transport preserving partial UTF-8.
 Header/blank focus and unfocused Enter/real Escape lifecycle need integration.
 
+Management66 appends optional `query_bytes` to AreaRequest and AreaState. It is
+limited to33 bytes and scoped to an identified Zone owner CandidateList; a
+nonempty legacy text query cannot accompany it. The response echoes the exact
+bytes. Absence retains the legacy text path, while a present empty vector is an
+explicit empty raw query. Model values own their vectors and Godot uses
+PackedByteArray, preserving partial UTF-8 without decoding or replacement.
+The protocol region is Local\df3d_management_v66; version65 peers must rebuild.
+Bridge production handling and the byte editor must be integrated before use.
+`build/qa/owner-query-bytes-contract-fixed` passes core19/19 and the real Godot
+adapter test: partial byte195 survives request and response unchanged. Boundary
+checks cover absent/empty/maximal input, oversized vectors, wrong scope and
+conflicting text queries. This is transport acceptance, not editor acceptance.
+
 Hover probes034258/034611 retain injected coordinates but lack a positive
 hover control; unchanged sampled artwork is inconclusive. No hover claim.
 Owner portrait frames reuse the original nine BUTTON_PICTURE_BOX cells and the

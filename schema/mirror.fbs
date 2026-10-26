@@ -1269,6 +1269,8 @@ table AreaRequest {
   // SettingsPage initial sublist only: retain native category-opening order.
   // Absent/false preserves explicit leaf-selection ordering in older records.
   category_opening:bool;
+  // Owner CandidateList raw textbox bytes; absent uses legacy UTF-8 query.
+  query_bytes:[uint8];
 }
 table AreaInfo {
   id:int32;
@@ -1398,6 +1400,7 @@ table AreaState {
   location_edit_outcome:LocationEditOutcome;
   location_staff_candidates:LocationStaffCandidates;
   settings_count:int32 = -1; // Complete filtered SettingsPage count; -1 unknown in legacy records.
+  query_bytes:[uint8]; // Optional exact owner query echo, including partial UTF-8.
 }
 // Production recipes are opaque semantic keys revalidated against the selected building.
 table ProductionRequest {
@@ -1711,7 +1714,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 65;
+  schema_version:uint32 = 66;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1757,7 +1760,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 65;
+  schema_version:uint32 = 66;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -205,6 +205,11 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
     }
     v["supplies"]=supplies;v["zone_ids"]=zones;area["location_details"]=v;
   }
+  if(s.queryBytes) {
+    PackedByteArray bytes;bytes.resize(s.queryBytes->size());
+    for(size_t i=0;i<s.queryBytes->size();++i)bytes.set(i,(*s.queryBytes)[i]);
+    area["query_bytes"]=bytes;
+  }
   area["query"]=String::utf8(s.query.c_str());area["list_revision"]=s.listRevision;area["build_phase"]=s.buildPhase;
   area["build_done"]=int64_t(s.buildDone);area["build_total"]=int64_t(s.buildTotal);area["omitted"]=int64_t(s.omitted);
   area["settings_count"]=s.settingsCount;
@@ -396,7 +401,7 @@ bool validateAreaShape(const Dictionary& data, String& error) {
     if(row[key].get_type()==type)return true;
     error=String("Wrong area field type: ")+key;return false;
   };
-  if(!typed(data,"list_key",Variant::STRING) || !typed(data,"row_key",Variant::STRING) ||
+  if(!typed(data,"query_bytes",Variant::PACKED_BYTE_ARRAY) || !typed(data,"list_key",Variant::STRING) || !typed(data,"row_key",Variant::STRING) ||
       !typed(data,"category_opening",Variant::BOOL) || !typed(data,"sort_descending",Variant::BOOL) || !typed(data,"spans",Variant::ARRAY) ||
       !typed(data,"zone_settings",Variant::DICTIONARY) || !typed(data,"paint_preview",Variant::DICTIONARY))return false;
   if(data.has("paint_preview")) {
@@ -482,6 +487,12 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
     if(size_t(utf.length())>limit)valid=false;
     return std::string(utf.get_data(),size_t(utf.length()));
   };
+  if(data.has("query_bytes")) {
+    const PackedByteArray bytes=data["query_bytes"];
+    if(bytes.size()>33){error="Owner query exceeds 33 bytes";return false;}
+    a.queryBytes.emplace();
+    for(int64_t i=0;i<bytes.size();++i)a.queryBytes->push_back(bytes[i]);
+  }
   a.categoryOpening=data.get("category_opening",false);
   a.query=text("query",128);a.listKey=text("list_key",64);a.rowKey=text("row_key",64);a.name=text("name",512);
   a.scope=uint8_t(n("scope",0,0,4));a.value=uint8_t(n("value",0,0,a.operation==wm::AreaOperation::LocationAccess?3:2));a.preset=uint8_t(n("preset",0,0,19));

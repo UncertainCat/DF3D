@@ -677,6 +677,8 @@ func test_area_operations() -> void:
 	assert(world.area_request({"action":A.AreaInspect,"id":7,"operation":1,"origin":Vector3i()}) == 0)
 	assert(world.last_error() == "Legacy area fields cannot be combined with an operation")
 	assert(world.area_request({"action":A.AreaInspect,"id":7,"operation":1,"expected_revision":-1}) == 0)
+	for bad_bytes in [[195],"x",PackedByteArray(range(34))]:
+		assert(world.area_request({"action":A.AreaCandidates,"operation":14,"id":7,"kind":1,"candidate_kind":1,"query_bytes":bad_bytes}) == 0)
 	var actions := [9,11,11,11,10,9,11,11,11,9,11,11,11,14,13]
 	for operation in range(1,16):
 		var kind := 2 if operation == 15 else 1 if operation in [6,7,8,9,11,12,14] else 0
@@ -697,7 +699,7 @@ func test_area_operations() -> void:
 		if operation == 11: request.merge({"unit_id":0,"assign":0})
 		if operation == 12: request.merge({"squad_id":0,"squad_use":0})
 		if operation == 13: request.merge({"organic":0,"inorganic":1})
-		if operation == 14: request.merge({"candidate_kind":1,"sort":3,"sort_descending":true})
+		if operation == 14: request.merge({"candidate_kind":1,"sort":3,"sort_descending":true,"query":"","query_bytes":PackedByteArray([195])},true)
 		if operation == 15: request.merge({"link_id":8,"give":false,"unlink":true})
 		var sequence: int = world.area_request(request)
 		assert(sequence > 0)
@@ -705,7 +707,9 @@ func test_area_operations() -> void:
 		assert(not state.is_empty())
 		var area: Dictionary = state.area
 		assert(area.operation == operation and area.area_id == 7 and area.list_key == "food/meat")
-		assert(area.query == "native" and area.list_revision == 9223372036854775807)
+		assert(area.query == ("" if operation == 14 else "native") and area.list_revision == 9223372036854775807)
+		if operation == 14: assert(area.query_bytes == PackedByteArray([195]))
+		else: assert(not area.has("query_bytes"))
 		assert(area.captured_tick == 9876543210 and area.omitted == 2 and area.next_cursor == 128)
 		assert(area.build_phase == 0 and area.build_done == 0 and area.build_total == 0)
 		assert(area.settings_count == -1) # Older/other response families have no filtered count.

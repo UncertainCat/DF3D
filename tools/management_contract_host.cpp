@@ -50,7 +50,8 @@ void verifyAreaOperation(const m::AreaRequest& q) {
     return;
   }
   require(!q.origin() && q.expected_revision()==INT64_MAX,"area origin/revision");
-  require(q.query() && q.query()->str()=="native" && q.cursor()==17,"area query/cursor");
+  require(q.query() && q.query()->str()==(op==14?"":"native") && q.cursor()==17,"area query/cursor");
+  if(op==14)require(q.query_bytes() && q.query_bytes()->size()==1 && q.query_bytes()->Get(0)==195,"partial UTF-8 owner query");
   require(q.id()==7 && q.owner_id()==-2 && q.barrels()==-1 && q.active()==-1,"area operation sentinels");
   require(q.expected_list_revision()==uint64_t(op==1 || op==6 || op==10 || op==14?INT64_MAX:0),"area list revision");
   switch(op) {
@@ -126,9 +127,10 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
   const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15,ownerDisplay,ownerIcon);const auto candidates=b.CreateVector(std::vector{candidate});
   const auto link=m::CreateAreaLinkRow(b,9,m::AreaKind::Workshop,2,name);const auto links=b.CreateVector(std::vector{link});
   const auto query=b.CreateString(q.query()->str());
+  const auto queryBytes=q.query_bytes()?b.CreateVector(q.query_bytes()->data(),q.query_bytes()->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{};
   m::AreaStateBuilder area(b);area.add_areas(areas);area.add_operation(q.operation());area.add_area_id(7);
   area.add_list_key(key);area.add_candidate_kind(q.candidate_kind());area.add_sort(q.sort());area.add_sort_descending(q.sort_descending());
-  area.add_query(query);area.add_list_revision(INT64_MAX);area.add_captured_tick(9876543210);area.add_omitted(2);area.add_next_cursor(128);
+  area.add_query_bytes(queryBytes);area.add_query(query);area.add_list_revision(INT64_MAX);area.add_captured_tick(9876543210);area.add_omitted(2);area.add_next_cursor(128);
   if(q.operation()==m::AreaOperation::SettingsPage)area.add_settings(settings);
   if(q.operation()==m::AreaOperation::LocationList)area.add_locations(locations);
   if(q.operation()==m::AreaOperation::CandidateList)area.add_candidates(candidates);

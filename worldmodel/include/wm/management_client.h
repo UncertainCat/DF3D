@@ -81,6 +81,7 @@ struct AreaRequest {
   std::optional<AreaPaintPreview> paintPreview;
   int32_t locationSiteId=-1,occupationId=-1;
   bool categoryOpening=false;
+  std::optional<std::vector<uint8_t>> queryBytes;
 };
 struct AreaInfo {
   int32_t id=-1,x=0,y=0,z=0;
@@ -171,6 +172,7 @@ struct AreaState {
   AreaOperation operation=AreaOperation::None;
   int32_t areaId=-1;
   std::string listKey,query;
+  std::optional<std::vector<uint8_t>> queryBytes;
   uint8_t candidateKind=0,sort=0,buildPhase=0;
   bool sortDescending=false;
   std::vector<AreaSettingRow> settings;

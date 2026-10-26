@@ -83,6 +83,7 @@ AreaState decodeArea(const m::AreaState* a) {
   out.nextCursor = a->next_cursor();
   out.truncated = a->truncated();
   out.operation=AreaOperation(a->operation());out.areaId=a->area_id();out.listKey=text(a->list_key());
+  if(const auto* bytes=a->query_bytes())out.queryBytes=std::vector<uint8_t>(bytes->begin(),bytes->end());
   out.candidateKind=a->candidate_kind();out.sort=a->sort();out.sortDescending=a->sort_descending();out.query=text(a->query());
   out.interactionId=a->interaction_id();out.undoToken=a->undo_token();out.roomOutcome=AreaRoomOutcome(a->room_outcome());
   out.roomsCreated=a->rooms_created();out.roomsInUse=a->rooms_in_use();
@@ -216,6 +217,7 @@ flatbuffers::Offset<m::AreaRequest> encodeArea(flatbuffers::FlatBufferBuilder& b
     const auto& p=*a.paintPreview;
     preview=m::CreateAreaPaintPreview(b,p.x,p.y,p.width,p.height);
   }
+  const auto queryBytes=a.queryBytes?b.CreateVector(*a.queryBytes):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{};
   m::AreaRequestBuilder r(b);
   r.add_kind(m::AreaKind(a.kind));r.add_id(a.id);
   if(a.operation==AreaOperation::None || a.operation==AreaOperation::MultiCreate || a.operation==AreaOperation::LinkTarget)r.add_origin(&ap);
@@ -236,6 +238,7 @@ flatbuffers::Offset<m::AreaRequest> encodeArea(flatbuffers::FlatBufferBuilder& b
   r.add_count_generation(uint64_t(a.countGeneration));r.add_paint_preview(preview);
   r.add_location_site_id(a.locationSiteId);r.add_occupation_id(a.occupationId);
   r.add_category_opening(a.categoryOpening);
+  r.add_query_bytes(queryBytes);
   return r.Finish();
 }
 }  // namespace wm::detail::management

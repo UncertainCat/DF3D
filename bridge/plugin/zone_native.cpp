@@ -172,6 +172,29 @@ std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalCandidates(const
         if(item && !items.count(item->id) && !append(item->id,true,false))return std::nullopt;
     return result;
 }
+std::optional<std::string> nativeZoneAnimalItemText(df::item& item) {
+    if(!nativeZoneOwnerCandidatesReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=
+        hash(base+0x1423fe0,0xe8)==0x4440bb550e8d935cULL &&
+        hash(base+0xc65450,0xaba)==0x47fa672b7bbcd332ULL &&
+        hash(base+0xca2a80,0x105)==0x929848fe2ea708afULL &&
+        hash(base+0xca5bb0,0x1b2)==0x1cce1123abcfa32aULL &&
+        hash(base+0xc653e0,0x65)==0x7440b2fdafd0606cULL &&
+        hash(base+0xa94030,0x6a1)==0xd81db68b3c9b33d2ULL &&
+        hash(base+0xa82c10,0x56ec)==0x66347214dfd39a0bULL &&
+        hash(base+0xb9b80,0x144)==0x91ddb6c319015f9bULL;
+    if(!compatible)return std::nullopt;
+    const auto* table=*reinterpret_cast<const uint8_t* const*>(&item);
+    if(table!=base+0x165cd68 && table!=base+0x16bbad0)return std::nullopt;
+    // Widget1423fe0 uses false/-1. Its setDisplayColor and draw calls are
+    // deliberately outside this semantic description call. The routine reads
+    // item/raw/name facts, game mode and improvement-quality display settings.
+    std::string text;
+    reinterpret_cast<void (*)(df::item*,std::string*,bool,int32_t)>(base+0xc65450)(&item,&text,false,-1);
+    if(text.size()>2048)return std::nullopt;
+    return text;
+}
 bool nativeZoneItemEligible(const df::building_civzonest& zone,const df::item& item) {
     if(!df::global::world || !nativeZoneAnimalAssignmentReady())return false;
     if(zone.type!=df::civzone_type::Pen && zone.type!=df::civzone_type::Pond)return false;

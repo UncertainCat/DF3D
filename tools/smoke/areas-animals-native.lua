@@ -78,6 +78,27 @@ local function capture(label)
   local _,address=df.sizeof(list.is_selected);record.callbacks.is_selected=callback_at(address)
   for _,entry in ipairs(list.entry_list)do record.entries[#record.entries+1]={kind=entry.t,id=entry.t==0 and entry.u and entry.u.id or entry.t==1 and entry.i and entry.i.id or -1}end
   record.cursor=list.cursor_idx;record.query=list.filter_str
+  record.item_text={}
+  for _,row in ipairs(rows)do
+   if row.item_id and row.active and (row.flags&2)~=0 and row.y>0 and row.y<g.dimy then
+    local guards={}
+    for _,value in ipairs{g,main}do
+     local size,address=df.sizeof(value);local copy=df.new('uint8_t',size)
+     dfhack.internal.memmove(copy,address,size);guards[#guards+1]={copy=copy,address=address,size=size}
+    end
+    local text,code=dfhack.run_command_silent('df3d','zone-animal-item-text-read',tostring(row.item_id))
+    assert(code==0,text);local bytes=require('json').decode(text)
+    for _,guard in ipairs(guards)do
+     assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'item text reader changed native drawing/UI state')
+     df.delete(guard.copy)
+    end
+    assert(#bytes>0 and row.x+#bytes<=g.dimx,'item text fixture must fit completely')
+    for i,byte in ipairs(bytes)do
+     assert(dfhack.screen.readTile(row.x+i-1,row.y-1).ch==byte,'native item text differs: '..label..' byte '..i)
+    end
+    record.item_text[#record.item_text+1]={id=row.item_id,bytes=bytes,exact=true,ui_unchanged=true}
+   end
+  end
   if label:find('%-picker$')then
    local text,code=dfhack.run_command_silent('df3d','zone-animal-candidates-read',tostring(record.zone))
    assert(code==0,text)

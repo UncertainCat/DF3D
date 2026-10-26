@@ -1348,5 +1348,296 @@
     ],
     "scope": "Exact typed raw producer order on Pen/Pond open and assigned-unit/item reopen. No native widget state is consumed by the bridge reader.",
     "limits": "Reader not connected to product chooser yet. Search, displayed ordering, item names, typed click handling and broader eligibility variants remain pending."
+  },
+  "native_item_text": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-093649",
+    "owned_df_pid": 119940,
+    "source_unchanged": true,
+    "status": "passed",
+    "plugin_sha256": "e84a44bc037f92461d524374e8db5c5ecb4e157f795d65c0c560f61a1ae0a22b",
+    "widget_render": "0x1423fe0",
+    "description": "0xc65450",
+    "description_size": "0xaba",
+    "description_fnv1a64": "47fa672b7bbcd332",
+    "arguments": {
+      "plain": false,
+      "article": -1
+    },
+    "checks": [
+      {
+        "name": "Pond-picker",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "exact": true,
+            "id": 5969,
+            "ui_unchanged": true
+          }
+        ]
+      },
+      {
+        "name": "Pond-unit-assigned",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "exact": true,
+            "id": 5969,
+            "ui_unchanged": true
+          }
+        ]
+      },
+      {
+        "name": "Pond-unit-cleared",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "exact": true,
+            "id": 5969,
+            "ui_unchanged": true
+          }
+        ]
+      },
+      {
+        "name": "Pond-item-assigned",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "exact": true,
+            "id": 5969,
+            "ui_unchanged": true
+          }
+        ]
+      },
+      {
+        "name": "Pond-assigned-picker",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "exact": true,
+            "id": 5969,
+            "ui_unchanged": true
+          }
+        ]
+      },
+      {
+        "name": "Pond-transfer-picker",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "exact": true,
+            "id": 5969,
+            "ui_unchanged": true
+          }
+        ]
+      },
+      {
+        "name": "Pond-item-transferred",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "exact": true,
+            "id": 5969,
+            "ui_unchanged": true
+          }
+        ]
+      },
+      {
+        "name": "Pond-item-cleared",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "exact": true,
+            "id": 5969,
+            "ui_unchanged": true
+          }
+        ]
+      }
+    ],
+    "scope": "Full displayed text bytes and unchanged gps/main_interface memory; diagnostic bridge reader only.",
+    "limits": "Observed vermin item5969 only. Named/quality/other decoration variants, PET subtype and product candidate integration remain pending."
   }
 }

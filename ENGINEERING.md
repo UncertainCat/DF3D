@@ -1,3 +1,29 @@
+## Native animal item text
+
+The item-name widget render1423fe0 calls native decorated description c65450
+with (item, owned string, false, -1). The bridge calls that description routine
+only, skipping the widget's setDisplayColor and drawing operations. The full
+description spans two unwind records through c65f0a; fingerprinting only its
+first record would miss most decoration logic.
+
+The critter description virtual ca2a80 includes a native personal-name prefix,
+then ca5bb0 passes semantic item fields to shared native item text a82c10
+(already used by stockpile labels). Article helper c653e0 and native decoration
+remain authoritative. The reader supports the pinned VERMIN/PET vtables,
+bounds returned DF-encoded text at2048 bytes, and returns unavailable for other
+classes. Widget colors and item portraits are separate unfinished work.
+
+Protected build/stockpile-storage-native-zone-animals-20261026-093649 passes
+with DF119940, unchanged source and unsaved exit. Eight visible picker states
+match all22 bytes of item5969's native displayed description. Each call leaves
+gps and main_interface memory unchanged. This fixture covers one vermin item;
+named/quality/decoration variants and PET subtype still require coverage.
+Core19/19 and areas adapter pass in build/qa/animal-item-text. MSVC builds in
+build/notes/pm/zone-animal-item-text-build.log. Installed plugin SHA256:
+e84a44bc037f92461d524374e8db5c5ecb4e157f795d65c0c560f61a1ae0a22b.
+Management remains68. zone-animal-item-text-read is diagnostic; candidate
+integration, display search/order and full picker acceptance remain pending.
+
 ## Typed animal chooser selection
 
 Animal button callbacks retain both entity and ID. State resolves the observed

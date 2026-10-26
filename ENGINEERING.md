@@ -27,7 +27,17 @@ The viewer draws pasture, pit and pond badges from their original installed
 `UNIT_SELECTOR_*` artwork at offset242,2 with size32x32. GPU
 `build/qa/animal-zone-badges` matches all three full40x36 status regions against
 the native captures, retaining only the three known Godot diagnostics.
-Container/fallback artwork composition and status hover help remain unfinished.
+The pure asset `compositeContainer` path follows native cage alpha behavior:
+partial cage alpha mixes RGB with /255 truncation while retaining the occupant's
+alpha; opaque cage pixels or an empty destination copy the source pixel.
+Palette replacement precedes that blend, and invisible occupant RGB is cleared.
+Core `build/qa/animal-container-compositor` passes. The compiled C++ probe in
+`build/notes/pm/container-parity` matches both 4096-byte native cage textures from
+protected `build/stockpile-storage-native-zone-animals-20261026-120632`, using
+original cage/palette assets and supplied captured body images. This is composition
+evidence, not complete owned occupant-recipe or viewer integration. Those pieces,
+wood/glass/empty cage and restraint artwork, fallback art and status hover help
+remain unfinished.
 Native widget selection sets and composed textures are diagnostic references only.
 
 Animal item portrait source: protected

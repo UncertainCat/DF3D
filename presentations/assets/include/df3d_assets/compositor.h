@@ -95,6 +95,14 @@ inline uint32_t packRgb(Rgba c) {
 // Alpha-over in 8-bit integer arithmetic (the bridge's formula).
 void blendOver(Rgba& dst, Rgba src);
 
+// Native cage overlay: partial cage alpha mixes RGB with /255 truncation,
+// retaining occupied-subject alpha. Empty destination or opaque cage copies source.
+void blendContainerOver(Rgba& dst, Rgba src);
+// Composes equal-sized original cage artwork over its owned occupant image.
+// Empty occupant is allowed; malformed images or mismatched sizes return empty.
+RgbaImage compositeContainer(const RgbaImage& occupant, const RgbaImage& container,
+                             const PaletteSwap* swap = nullptr);
+
 // Native grid-layout interior overlay blend, with independent /256 truncation.
 // The base is copied first; empty base alpha is seeded from the overlay.
 void blendLayoutOver(Rgba& dst, Rgba src);

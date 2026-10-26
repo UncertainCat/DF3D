@@ -627,3 +627,23 @@ TEST_CASE("native layout overlays seed empty base alpha inside and outside the f
  Rgba d=rgba(255,255,255,0);blendLayoutOver(d,rgba(80,100,120,128));
  CHECK(d.r==40);CHECK(d.g==50);CHECK(d.b==60);CHECK(d.a==190);
 }
+
+TEST_CASE("container composite preserves native subject alpha and palette ordering") {
+  Rgba dst=rgba(40,80,120,64);
+  blendContainerOver(dst,rgba(200,100,0,128));
+  CHECK(dst==rgba(120,90,59,64));
+  blendContainerOver(dst,rgba(7,8,9,0));CHECK(dst==rgba(120,90,59,64));
+  blendContainerOver(dst,rgba(7,8,9,255));CHECK(dst==rgba(7,8,9,255));
+  dst=rgba(255,255,255,0);blendContainerOver(dst,rgba(0,0,0,0));CHECK(dst==rgba(0,0,0,0));
+  blendContainerOver(dst,rgba(20,30,40,90));CHECK(dst==rgba(20,30,40,90));
+  auto subject=RgbaImage::blank(2,1),frame=RgbaImage::blank(2,1),palette=RgbaImage::blank(1,2);
+  subject.set(0,0,rgba(40,80,120,64));subject.set(1,0,rgba(255,255,255,0));
+  frame.set(0,0,rgba(1,2,3,128));frame.set(1,0,rgba(1,2,3,0));
+  palette.set(0,0,rgba(1,2,3,255));palette.set(0,1,rgba(200,100,0,255));
+  PaletteSwap swap;REQUIRE(buildPaletteSwap(palette,0,1,swap));
+  const auto result=compositeContainer(subject,frame,&swap);
+  CHECK(result.get(0,0)==rgba(120,90,59,64));CHECK(result.get(1,0)==rgba(0,0,0,0));
+  CHECK(compositeContainer({},frame,&swap).get(0,0)==rgba(200,100,0,128));
+  CHECK(compositeContainer(RgbaImage::blank(1,1),frame).empty());
+  frame.pixels.pop_back();CHECK(compositeContainer(subject,frame).empty());
+}

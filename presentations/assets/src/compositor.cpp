@@ -83,6 +83,37 @@ void blendOver(Rgba& dst, Rgba src) {
   dst.a = static_cast<uint8_t>(oa);
 }
 
+void blendContainerOver(Rgba& dst, Rgba src) {
+  // DF53.16 cf7f55..cf80e7: occupied cage rendering keeps the subject's alpha
+  // when both pixels are partial. Ordinary alpha-over changes that result.
+  if (dst.a == 0) dst = {};
+  if (src.a == 0) return;
+  if (src.a == 255 || dst.a == 0) { dst = src; return; }
+  const auto mix=[&](int source,int destination) {
+    return uint8_t((source*src.a+destination*(255-src.a))/255);
+  };
+  dst.r=mix(src.r,dst.r);dst.g=mix(src.g,dst.g);dst.b=mix(src.b,dst.b);
+}
+
+RgbaImage compositeContainer(const RgbaImage& occupant,const RgbaImage& container,const PaletteSwap* swap) {
+  const auto valid=[](const RgbaImage& image) {
+    return !image.empty() && image.pixels.size()==size_t(image.width)*size_t(image.height)*4;
+  };
+  if(!valid(container) || (!occupant.empty() &&
+     (!valid(occupant) || occupant.width!=container.width || occupant.height!=container.height)))return {};
+  auto result=RgbaImage::blank(container.width,container.height);
+  for(int y=0;y<container.height;++y)for(int x=0;x<container.width;++x) {
+    auto dst=occupant.empty()?Rgba{}:occupant.get(x,y);
+    auto src=container.get(x,y);
+    uint32_t color=0;
+    if(src.a && swap && swap->lookup(packRgb(src),color)) {
+      src.r=uint8_t(color>>16);src.g=uint8_t(color>>8);src.b=uint8_t(color);
+    }
+    blendContainerOver(dst,src);result.set(x,y,dst);
+  }
+  return result;
+}
+
 void blendLayoutOver(Rgba& dst, Rgba src) {
   if (src.a == 0) return;
   if (src.a == 255) { dst = src; return; }

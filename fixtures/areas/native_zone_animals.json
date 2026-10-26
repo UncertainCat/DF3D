@@ -12565,5 +12565,77 @@
         "rgb_sha256": "28688a2c656f7f62c6c75eda8509cb5b7b0a8ae255faa3a5d5daf2430285e49f"
       }
     ]
+  },
+  "animal_container_compositor": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-120632",
+    "owned_df_pid": 85832,
+    "source_unchanged": true,
+    "native_compositor_rva": "0xcf7a00",
+    "native_blend_range": [
+      "0xcf7f55",
+      "0xcf80e7"
+    ],
+    "cpp_probe": "build/notes/pm/container-parity/check.cpp",
+    "original_cage_tiles": {
+      "cage_100": {
+        "page": "CONTAINERS",
+        "x": 0,
+        "y": 12
+      },
+      "cage_200": {
+        "page": "CONTAINERS",
+        "x": 2,
+        "y": 12
+      },
+      "cage_base": {
+        "page": "CONTAINERS",
+        "x": 1,
+        "y": 12
+      },
+      "cage_occupied": {
+        "page": "CONTAINERS",
+        "x": 1,
+        "y": 13
+      },
+      "cage_occupied_100": {
+        "page": "CONTAINERS",
+        "x": 0,
+        "y": 13
+      },
+      "cage_occupied_200": {
+        "page": "CONTAINERS",
+        "x": 2,
+        "y": 13
+      }
+    },
+    "samples": [
+      {
+        "unit": 6960,
+        "item": 28448,
+        "material": 0,
+        "material_index": 3,
+        "solid_color": "COPPER",
+        "body_rgba_sha256": "fe02d8849727197c8349b5933aa3306308ef6d6b8ca63b7a6010269b1cb920f8",
+        "native_composite_rgba_sha256": "9fdeaa18c6b6ed8c821759b18dbb9467042397ae78d099210a5eacf998a3d7fd",
+        "compared_rgba_bytes": 4096,
+        "exact": true
+      },
+      {
+        "unit": 6961,
+        "item": 28459,
+        "material": 0,
+        "material_index": 16,
+        "solid_color": "TAUPE_GRAY",
+        "body_rgba_sha256": "ee3794579af485527f9a98dfce4016ff829ffef104c0208e20f36a919b8570b4",
+        "native_composite_rgba_sha256": "fe3caf7913b0248f7cab23c49776bd0273e0a5b92e629c0cbc2d58cae67e3558",
+        "compared_rgba_bytes": 4096,
+        "exact": true
+      }
+    ],
+    "limitations": [
+      "This verifies composition with supplied native body pixels and original cage/palette assets; owned occupant-recipe integration remains unfinished.",
+      "Metal occupied cages are covered; wood, glass, empty cages and rope/metal restraints need visual coverage.",
+      "Native texture dumps and palette pixels remain ignored diagnostic inputs."
+    ]
   }
 }

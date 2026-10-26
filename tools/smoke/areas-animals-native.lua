@@ -202,7 +202,7 @@ local function capture(label,keep_mouse)
   if label=='Pen-picker' or label=='Pond-picker' or label=='Pen-assigned-picker' or label=='Pond-assigned-picker' or label=='Pond-filled-status' or label:find('^Pen%-status%-') then
    record.status_icons={}
    record.status_globals={}
-   for key,rva in pairs{pasture=0x264aff8,pit=0x264affc,pond=0x264b000,fallback=0x2687a00}do
+   for key,rva in pairs{pasture=0x264aff8,pit=0x264affc,pond=0x264b000,fallback=0x2687a00,cage_base=0x2684bdc,cage_100=0x2684bd8,cage_200=0x2684be0,cage_occupied=0x2684be8,cage_occupied_100=0x2684be4,cage_occupied_200=0x2684bec}do
     local texpos=df.reinterpret_cast('int32_t',image_base+rva).value
     local source={texture=texpos}
     for _,page in ipairs(df.global.texture.page)do
@@ -223,6 +223,19 @@ local function capture(label,keep_mouse)
       local fact={kind=ref:getType(),building=building and building.id or -1,item=item and item.id or -1}
       if item then
        fact.item_type=item:getType();fact.material=item:getMaterial();fact.material_index=item:getMaterialIndex()
+       local material=dfhack.matinfo.decode(item)
+       if material and material.material then
+        local pattern_id=material.material.state_color.Solid
+        local pattern=pattern_id>=0 and df.global.world.raws.descriptors.patterns[pattern_id] or nil
+        if pattern and #pattern.colors>0 then
+         local color_id=pattern.colors[0]
+         local color=color_id>=0 and df.global.world.raws.descriptors.colors[color_id] or nil
+         if color then
+          fact.solid_color={pattern=pattern_id,id=color_id,token=color.id,palette={}}
+          for _,value in ipairs(color.palette.color)do fact.solid_color.palette[#fact.solid_color.palette+1]=value end
+         end
+        end
+       end
        fact.item_refs={}
        for _,nested in ipairs(item.general_refs)do
         local unit=nested:getUnit();local inside=nested:getItem()

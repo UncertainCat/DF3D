@@ -6895,5 +6895,1515 @@
       }
     ],
     "limits": "Filter uses native widget logic and is immediate; recenter uses the separately verified shared hover-instruction delay. Focus alone does not activate filter help (064749). Native UI objects are oracle-only."
+  },
+  "owner_scroll": {
+    "evidence": "build/stockpile-storage-native-zone-owner-20261026-072644",
+    "owned_df_pid": 125520,
+    "source_unchanged": true,
+    "viewport": {
+      "row_pixels": 36,
+      "complete_rows": 16,
+      "height_pixels": 600,
+      "blank_bottom_pixels": 24,
+      "bar_origin_cell": 7
+    },
+    "limits": [
+      "Native widget reads and isolated drag starting-state writes are diagnostic only.",
+      "Tomb with 172 candidates; other counts and Remove assignment require viewer integration coverage.",
+      "Immediate feeds do not establish held-button repeat cadence.",
+      "Shared scrollbar formula/input verified separately; owner viewer integration remains unfinished."
+    ],
+    "samples": [
+      {
+        "label": "initial",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814,
+        "bar_tile_rows": [
+          [
+            912,
+            913
+          ],
+          [
+            918,
+            919
+          ],
+          [
+            942,
+            943
+          ],
+          [
+            930,
+            931
+          ],
+          [
+            942,
+            943
+          ],
+          [
+            954,
+            955
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            936,
+            937
+          ]
+        ]
+      },
+      {
+        "label": "context-down",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 1,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 13,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5813,
+        "last_visible_id": 6678
+      },
+      {
+        "label": "context-up",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814
+      },
+      {
+        "label": "context-page-down",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 16,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 16,
+          "scroller_sy": 12,
+          "sel": 16,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 6678,
+        "last_visible_id": 5982
+      },
+      {
+        "label": "context-page-up",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814
+      },
+      {
+        "label": "outside-context-down",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814
+      },
+      {
+        "label": "arrow-down",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 1,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 13,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5813,
+        "last_visible_id": 6678
+      },
+      {
+        "label": "arrow-up",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814
+      },
+      {
+        "label": "track-down",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 16,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 16,
+          "scroller_sy": 12,
+          "sel": 16,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 6678,
+        "last_visible_id": 5982
+      },
+      {
+        "label": "track-up",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814
+      },
+      {
+        "label": "page-down-1",
+        "count": 172,
+        "cursor": 16,
+        "scroll": 1,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 13,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5813,
+        "last_visible_id": 6678
+      },
+      {
+        "label": "page-down-2",
+        "count": 172,
+        "cursor": 32,
+        "scroll": 17,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 16,
+          "scroller_sy": 12,
+          "sel": 17,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 7209,
+        "last_visible_id": 1012
+      },
+      {
+        "label": "page-down-3",
+        "count": 172,
+        "cursor": 48,
+        "scroll": 33,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 21,
+          "scroller_sy": 17,
+          "sel": 33,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 6835,
+        "last_visible_id": 6540
+      },
+      {
+        "label": "page-down-4",
+        "count": 172,
+        "cursor": 64,
+        "scroll": 49,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 25,
+          "scroller_sy": 21,
+          "sel": 49,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 6591,
+        "last_visible_id": 6597
+      },
+      {
+        "label": "page-down-5",
+        "count": 172,
+        "cursor": 80,
+        "scroll": 65,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 30,
+          "scroller_sy": 26,
+          "sel": 65,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 6824,
+        "last_visible_id": 6594
+      },
+      {
+        "label": "page-down-6",
+        "count": 172,
+        "cursor": 96,
+        "scroll": 81,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 34,
+          "scroller_sy": 30,
+          "sel": 81,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 6595,
+        "last_visible_id": 6977,
+        "bar_tile_rows": [
+          [
+            912,
+            913
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            918,
+            919
+          ],
+          [
+            942,
+            943
+          ],
+          [
+            930,
+            931
+          ],
+          [
+            942,
+            943
+          ],
+          [
+            954,
+            955
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            936,
+            937
+          ]
+        ]
+      },
+      {
+        "label": "page-down-7",
+        "count": 172,
+        "cursor": 112,
+        "scroll": 97,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 39,
+          "scroller_sy": 35,
+          "sel": 97,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 7125,
+        "last_visible_id": 6598
+      },
+      {
+        "label": "page-down-8",
+        "count": 172,
+        "cursor": 128,
+        "scroll": 113,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 43,
+          "scroller_sy": 39,
+          "sel": 113,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5578,
+        "last_visible_id": 7345
+      },
+      {
+        "label": "page-down-9",
+        "count": 172,
+        "cursor": 144,
+        "scroll": 129,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 48,
+          "scroller_sy": 44,
+          "sel": 129,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 996,
+        "last_visible_id": 7190
+      },
+      {
+        "label": "page-down-10",
+        "count": 172,
+        "cursor": 160,
+        "scroll": 145,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 52,
+          "scroller_sy": 48,
+          "sel": 145,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 7218,
+        "last_visible_id": 2346
+      },
+      {
+        "label": "page-down-11",
+        "count": 172,
+        "cursor": 171,
+        "scroll": 156,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 51,
+          "sel": 156,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 4276,
+        "last_visible_id": 5577
+      },
+      {
+        "label": "tail-down",
+        "count": 172,
+        "cursor": 171,
+        "scroll": 156,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 51,
+          "sel": 156,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 4276,
+        "last_visible_id": 5577,
+        "bar_tile_rows": [
+          [
+            912,
+            913
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            924,
+            925
+          ],
+          [
+            918,
+            919
+          ],
+          [
+            942,
+            943
+          ],
+          [
+            930,
+            931
+          ],
+          [
+            942,
+            943
+          ],
+          [
+            954,
+            955
+          ],
+          [
+            936,
+            937
+          ]
+        ]
+      },
+      {
+        "label": "tail-page-up",
+        "count": 172,
+        "cursor": 155,
+        "scroll": 155,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 54,
+          "scroller_sy": 50,
+          "sel": 155,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 4268,
+        "last_visible_id": 5815
+      },
+      {
+        "label": "restored-top",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814
+      },
+      {
+        "label": "drag-7",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814
+      },
+      {
+        "label": "drag-8",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814
+      },
+      {
+        "label": "drag-9",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 3,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 13,
+          "scroller_sy": 9,
+          "sel": 3,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5984,
+        "last_visible_id": 5574
+      },
+      {
+        "label": "drag-20",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 39,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 22,
+          "scroller_sy": 18,
+          "sel": 39,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 6534,
+        "last_visible_id": 6827
+      },
+      {
+        "label": "drag-40",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 104,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 41,
+          "scroller_sy": 37,
+          "sel": 104,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 6817,
+        "last_visible_id": 2905
+      },
+      {
+        "label": "drag-54",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 149,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 53,
+          "scroller_sy": 49,
+          "sel": 149,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 2570,
+        "last_visible_id": 2449
+      },
+      {
+        "label": "drag-55",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 156,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 51,
+          "sel": 156,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 4276,
+        "last_visible_id": 5577
+      },
+      {
+        "label": "drag-56",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 156,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 51,
+          "sel": 156,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 4276,
+        "last_visible_id": 5577
+      },
+      {
+        "label": "drag-57",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 156,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 55,
+          "scroller_sy": 51,
+          "sel": 156,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 4276,
+        "last_visible_id": 5577
+      },
+      {
+        "label": "restored-after-drag",
+        "count": 172,
+        "cursor": 0,
+        "scroll": 0,
+        "num_visible": 16,
+        "rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "bar": {
+          "page_size": 16,
+          "print_ey": 55,
+          "print_sy": 8,
+          "scroller_ey": 12,
+          "scroller_sy": 8,
+          "sel": 0,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "visible_count": 16,
+        "first_visible_id": 5981,
+        "last_visible_id": 5814
+      }
+    ]
   }
 }

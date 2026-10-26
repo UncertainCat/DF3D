@@ -46,6 +46,22 @@ func run() -> void:
 	bar._input(motion)
 	if bar.first != 5:
 		failures += 1; push_error("Scaled link thumb drag changed native row mapping")
+	# Modern owner widgets use the legacy sheet and interior endpoint clamp.
+	var owner = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_assignment.json"))
+	var owner_bar = preload("res://scripts/reports_scrollbar.gd").new()
+	root.add_child(owner_bar); owner_bar.use_standalone_sheet = false
+	owner_bar.size = Vector2(16,600); owner_bar.page = 16
+	for sample in owner.owner_scroll.samples:
+		owner_bar.set_rows(int(sample.count),int(sample.scroll))
+		var expected := Vector2i(int(sample.bar.scroller_sy)-7,int(sample.bar.scroller_ey)-int(sample.bar.scroller_sy)+1)
+		if owner_bar.thumb() != expected:
+			failures += 1; push_error("Native owner thumb differs: "+str(sample.label))
+		if str(sample.label).begins_with("drag-"):
+			owner_bar.set_rows(int(sample.count),0)
+			owner_bar.drag_to((int(str(sample.label).trim_prefix("drag-"))-7)*12+6)
+			if owner_bar.first != int(sample.scroll):
+				failures += 1; push_error("Native owner drag mapping differs: "+str(sample.label))
+	owner_bar.free()
 	bar.free()
 	print("STOCKPILE_SCROLLBAR_PASS" if failures == 0 else "STOCKPILE_SCROLLBAR_FAIL")
 	quit(failures)

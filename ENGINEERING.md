@@ -551,6 +551,27 @@ requests suppress navigation. `build/qa/owner-keyboard-final` passes root19/19
 and actual viewport key routing, selected-frame pixels, paging and pending-write
 checks, with only the three documented Godot notices. Full scrollbar/end-of-list
 geometry remains unfinished.
+
+Native owner scrollbar evidence is retained in
+`native_zone_assignment.json.owner_scroll`. Protected run 072644 records 172
+Tomb candidates: 16 complete 36px rows in a 600px viewport, with 24px blank below.
+Wheel/context input and scrollbar clicks move the viewport without changing the
+selection. Standard page keys move the selection by 16 and scroll to reveal it.
+The final selection, ordinal 171, clamps at first row 156; Page Up returns both
+selection and first row to 155. Context scroll outside the list is ignored.
+Nine isolated thumb drags establish endpoint and interior mappings. Native widget
+writes only reset diagnostic drag starts; runtime must never access those widgets.
+
+The shared reports scrollbar with legacy-sheet mode matches the recorded thumb
+positions, including its interior endpoint clamp, and all nine drag outcomes.
+Run 072519 failed its reset assertion because repeated Page Up at selection zero
+did not reliably reset a separately scrolled viewport; it is not drag evidence.
+Both runs close owned DF unsaved with source manifests unchanged; the final run
+uses DF125520. The final tail screenshot was inspected. Root CTest (19/19) and
+the shared scrollbar engine check pass in build/qa/owner-scroll-reference.
+Owner-view integration remains unfinished: its Godot viewport exposes a partial
+17th row and sizes the scrollbar against loaded pages only.
+
 Owner textbox window-input capture040328 verifies focused Down retains cursor0,
 Enter releases focus without assignment, a blank interior click unfocuses and a
 header click retains focus. Forty ASCII bytes stop at33; Backspace leaves32.

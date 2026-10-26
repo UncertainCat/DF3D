@@ -18,9 +18,9 @@ local function mapclick(p)
 end
 -- Oracle-only widget observation. Runtime candidate filtering receives owned
 -- semantic context and never traverses these native presentation objects.
-local function unit_list(container,depth)
+local function find_widget(container,kind,depth)
  assert(depth<8,'native widget tree too deep')
- if df.widget_unit_list:is_instance(container)then return df.reinterpret_cast(df.widget_unit_list,container)end
+ if kind:is_instance(container)then return df.reinterpret_cast(kind,container)end
  if not df.widget_container:is_instance(container)then return end
  container=df.reinterpret_cast(df.widget_container,container)
  local _,address=df.sizeof(container.children)
@@ -30,11 +30,12 @@ local function unit_list(container,depth)
  for at=begin,finish-1,16 do
   local ptr=df.reinterpret_cast('uint64_t',at).value
   if ptr~=0 then
-   local found=unit_list(df.reinterpret_cast(df.widget,ptr),depth+1)
+   local found=find_widget(df.reinterpret_cast(df.widget,ptr),kind,depth+1)
    if found then return found end
   end
  end
 end
+local function unit_list(container,depth)return find_widget(container,df.widget_unit_list,depth)end
 -- Include active rows outside the scroll viewport; visibility bit2 is clipping.
 local function widget_rows(container,rows,depth,parent_visible)
  if depth>5 or #rows>=2000 then return end
@@ -333,6 +334,66 @@ for _,probe in ipairs{{'down','STANDARDSCROLL_DOWN',1},{'up','STANDARDSCROLL_UP'
  local list=assert(unit_list(df.global.game.main_interface.unit_selector,0))
  records[#records+1]={name='owner-navigation-'..probe[1],cursor=list.cursor_idx,expected=probe[3]}
  assert(list.cursor_idx==probe[3],'native owner navigation changed: '..probe[1])
+end
+-- Oracle-only row scroll state: no product reads native widgets.
+do
+ local root=df.global.game.main_interface.unit_selector
+ local list=assert(unit_list(root,0))
+ local scroll=assert(find_widget(list,df.widget_scroll_rows,0))
+ local function point(x,y)
+  g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*(g.screen_pixel_x//g.dimx)+4;g.precise_mouse_y=y*(g.screen_pixel_y//g.dimy)+6
+  df.global.enabler.tracking_on=1
+ end
+ local function observe(label)
+  view:render(dfhack.getTickCount());script.sleep(1,'frames')
+  local rows={};widget_rows(list,rows,0)
+  local visible={};local count=0
+  for _,row in ipairs(rows)do if row.unit_id and row.visible then
+   count=count+1
+   if (row.flags&2)~=0 then visible[#visible+1]={id=row.unit_id,y=row.y,y2=row.y2}end
+  end end
+  local bar={};for _,field in ipairs{'sel','sel_min','sel_max','page_size','print_sy','print_ey','scroller_sy','scroller_ey'}do bar[field]=scroll.scrollbar[field]end
+  local cells={}
+  for y=7,56 do for x=117,118 do cells[#cells+1]={x=x,y=y,tile=dfhack.screen.readTile(x,y).tile}end end
+  records[#records+1]={name='owner-scroll',label=label,cells=cells,scroll=scroll.scroll,num_visible=scroll.num_visible,
+   cursor=list.cursor_idx,bar=bar,count=count,visible=visible,rect={scroll.rect.x1,scroll.rect.y1,scroll.rect.x2,scroll.rect.y2}}
+ end
+ local function input(label,key,x,y)
+  point(x or 60,y or 20);gui.simulateInput(view,key);observe(label)
+ end
+ observe('initial')
+ input('context-down','CONTEXT_SCROLL_DOWN')
+ input('context-up','CONTEXT_SCROLL_UP')
+ input('context-page-down','CONTEXT_SCROLL_PAGEDOWN')
+ input('context-page-up','CONTEXT_SCROLL_PAGEUP')
+ input('outside-context-down','CONTEXT_SCROLL_DOWN',0,0)
+ input('arrow-down','_MOUSE_L',118,56)
+ input('arrow-up','_MOUSE_L',118,7)
+ input('track-down','_MOUSE_L',118,40)
+ input('track-up','_MOUSE_L',118,8)
+ for i=1,20 do input('page-down-'..i,'STANDARDSCROLL_PAGEDOWN')end
+ input('tail-down','STANDARDSCROLL_DOWN')
+ capture('tomb-picker-scroll-tail')
+ input('tail-page-up','STANDARDSCROLL_PAGEUP')
+ for i=1,20 do gui.simulateInput(view,'STANDARDSCROLL_PAGEUP');view:render(dfhack.getTickCount())end
+ observe('restored-top')
+ local old_lift=df.global.enabler.mouse_lbut_lift
+ for _,destination in ipairs{7,8,9,20,40,54,55,56,57}do
+  -- Isolate each drag's starting state; this diagnostic widget write never
+  -- participates in runtime behavior or establishes keyboard reset semantics.
+  scroll.scroll=0;scroll.scrolling=false;list.cursor_idx=0
+  point(60,20);view:render(dfhack.getTickCount());script.sleep(2,'frames')
+  point(118,10);df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+  point(118,destination);gui.simulateInput(view,{'_MOUSE_L_DOWN'})
+  observe('drag-'..destination)
+  df.global.enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+ end
+ df.global.enabler.mouse_lbut_lift=old_lift
+ scroll.scroll=0;scroll.scrolling=false;list.cursor_idx=0
+ point(60,20);view:render(dfhack.getTickCount());script.sleep(2,'frames')
+ observe('restored-after-drag')
+ assert(list.cursor_idx==0 and scroll.scroll==0,'owner scroll probe did not restore top')
 end
 -- Observe the owner textbox itself, not a different selector's input policy.
 local selector=df.global.game.main_interface.unit_selector

@@ -5116,6 +5116,45 @@
         "transport disconnect",
         "deleted squad identity"
       ]
+    },
+    "disconnect": {
+      "scope": "Actual viewport mutation; client transport detach/reattach; target retirement and no replay",
+      "runs": [
+        {
+          "zone": "Barracks",
+          "mode": "queued",
+          "run": "build/areas-acceptance-20261026-184816",
+          "status": "passed_with_known_issues",
+          "outcome": "not_sent",
+          "native_use_before_and_after_reconnect": 0,
+          "save_manifests_unchanged": true,
+          "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d"
+        },
+        {
+          "zone": "Barracks",
+          "mode": "sent",
+          "run": "build/areas-acceptance-20261026-184941",
+          "status": "passed_with_known_issues",
+          "outcome": "unknown",
+          "native_use_before_and_after_reconnect": 2,
+          "save_manifests_unchanged": true,
+          "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d"
+        },
+        {
+          "zone": "ArcheryRange",
+          "mode": "sent",
+          "run": "build/areas-acceptance-20261026-185105",
+          "status": "passed_with_known_issues",
+          "outcome": "unknown",
+          "native_use_before_and_after_reconnect": 2,
+          "save_manifests_unchanged": true,
+          "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d"
+        }
+      ],
+      "omissions": [
+        "producer restart",
+        "explicit picker reopen after reconnect"
+      ]
     }
   }
 }

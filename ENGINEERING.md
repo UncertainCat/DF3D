@@ -319,6 +319,24 @@ GPU lanes pass with known Godot diagnostics and unchanged source/clone saves;
 Core19/19 passes in `build/qa/squad-stale-core`. This verifies stale revision
 handling, not transport disconnection or a deleted squad identity.
 
+The focused squad scene lane also accepts `-SquadDisconnect queued` or `sent`.
+Both use a real visible training click and the live client's detach/reattach
+boundary. Queued work must retire as `not_sent`; the sent case deliberately
+observes DF completion without delivering the receipt to the action service,
+then requires `unknown`. Neither may retain picker identity, editable controls
+or dispatchable work. Native reciprocal records are checked before disconnect
+and after reconnect; the sent mutation stays applied once and the queued one
+stays unapplied. Reconnection must issue no fresh picker ticket. These terminal
+cases remove their diagnostic zone through the native verifier after retirement;
+the ordinary focused lane retains the separate UI removal acceptance.
+Protected rendered runs `build/areas-acceptance-20261026-184816` (Barracks queued),
+`build/areas-acceptance-20261026-184941` (Barracks sent) and
+`build/areas-acceptance-20261026-185105` (Archery sent) pass with known Godot
+diagnostics. Their source and clone manifests are unchanged; each owned DF
+exits unsaved. Core19/19 passes in `build/qa/squad-disconnect-core`.
+This covers client transport loss and same-fortress reconnect, not producer
+restart or explicit picker reopening after reconnect.
+
 ## Animal keyboard activation and portrait reference
 
 `native_zone_animals.json.animal_container_reference_order` records seven

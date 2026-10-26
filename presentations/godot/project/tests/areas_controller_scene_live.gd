@@ -125,6 +125,11 @@ func pointer_areas() -> void:
 			if zone_squads_only:
 				await pointer_squads(id)
 				if stopped:return
+				var disconnect_mode:=str(JSON.parse_string(FileAccess.get_file_as_string(directory+"/zone-squads-only.json")).get("disconnect","none"))
+				if disconnect_mode!="none":
+					await pointer_squad_disconnect(id,disconnect_mode)
+					if stopped:return
+					await native("remove_target",{"id":id});await native("removed",{"id":id});await native("final");return
 				await click_control(editor.zone_menu.controls.remove)
 				if not await wait_ui(func():return settled() and editor.selected.is_empty(),"remove squad test zone"):return
 				await native("removed",{"id":id});await native("final");return
@@ -252,6 +257,58 @@ func pointer_squads(id: int) -> void:
 	var map_position:Vector2=editor.camera.unproject_position(Vector3(int(p.x)+8.5,int(p.z)+float(world.floor_height()),int(p.y)+8.5))
 	await pointer_click(map_position)
 	if not await wait_ui(func():return settled() and not editor.selected.is_empty() and int(editor.selected.id)==id,"refresh stale zone through map"):return
+
+func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
+	step="squad "+disconnect_mode+" disconnect"
+	await click_control(editor.zone_menu.controls.squads)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and editor.candidates_state.rows.size()==25 and editor.candidates_state.cursor==0,"disconnect candidate list"):return
+	await capture("squad_disconnect_open")
+	for i in 30:
+		var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true
+		wheel.position=Vector2(500,150);wheel.global_position=wheel.position;root.push_input(wheel,true)
+	await capture("squad_disconnect_last_page")
+	var view=editor.candidates_view
+	var target_id:int=editor.candidates_state.rows[15].id
+	var control:Button
+	for child in view.choices[15].get_children():
+		if child is Button and int(child.get_meta("squad_use",0))==2:control=child;break
+	if not check(control!=null,"disconnect training control missing"):return
+	await pointer_click(control.get_global_rect().get_center())
+	var ticket:int=editor.request_ticket
+	if not check(ticket>0,"disconnect mutation not queued"):return
+	var expected_use:=0
+	if disconnect_mode=="sent":
+		actions.poll()
+		if not check(actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0,"disconnect mutation not sent"):return
+		var sequence:int=actions._requests[ticket].sequence
+		var reply:Dictionary={}
+		var deadline:=Time.get_ticks_msec()+30000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();var candidate:Dictionary=world.poll_management()
+			if int(candidate.get("request_seq",0))==sequence and int(candidate.get("status",0))==S.Ok:reply=candidate;break
+			await create_timer(0.02).timeout
+		if not check(not reply.is_empty() and actions.result(ticket).is_empty(),"missing unobserved native receipt"):return
+		write_json("squad-unobserved-receipt.json",reply);expected_use=2
+	await native("squad",{"id":id,"squad_id":target_id,"use":expected_use})
+	world.detach_live();actions.poll()
+	var outcome:Dictionary=actions.result(ticket)
+	write_json("squad-disconnect-outcome.json",outcome)
+	if not check(str(outcome.get("outcome",""))==("unknown" if disconnect_mode=="sent" else "not_sent"),"incorrect disconnected mutation outcome"):return
+	if not check(editor.selected.is_empty() and editor.candidates_state.area.is_empty() and not view.visible and not editor.available and settled(),"disconnect retained picker authority"):return
+	if not check(not actions._requests.has(ticket) and actions._queue.is_empty() and actions._active==0,"retired squad mutation remains dispatchable"):return
+	if not check(world.attach(),"squad reconnect failed"):return
+	var deadline:=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();editor._process(0.02)
+		if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
+		await create_timer(0.02).timeout
+	if not check(bool(world.poll_management().get("transport_alive",false)),"squad reconnect timed out"):return
+	var next_ticket:int=actions._next_ticket
+	for frame in 30:
+		world.poll();actions.poll();editor._process(0.02);await process_frame
+	if not check(actions._next_ticket==next_ticket and editor.candidates_state.area.is_empty() and not view.visible,"reconnect replayed or reopened squad picker"):return
+	await native("squad",{"id":id,"squad_id":target_id,"use":expected_use})
+	await capture("squad_disconnected_retired")
 
 func pointer_zone_gathering(id: int) -> void:
 	step = "viewport native gathering flags"

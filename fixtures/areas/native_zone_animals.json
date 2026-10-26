@@ -10265,5 +10265,1246 @@
       "Native keyboard activation was checked for a unit; item dispatch has typed viewer coverage only.",
       "Complete frames and picture rendering remain unfinished."
     ]
+  },
+  "animal_portrait_pixels": {
+    "native_evidence": "build/stockpile-storage-native-zone-animals-20261026-105537",
+    "recipe_evidence": "build/areas-acceptance-20261026-110639",
+    "native_owned_df_pid": 130108,
+    "recipe_owned_df_pid": 125428,
+    "samples": [
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "Ral Zudenavuz",
+            "name_color": {
+              "alternate": [
+                4,
+                0,
+                1
+              ],
+              "color": [
+                4,
+                0,
+                1
+              ],
+              "effect": 0
+            },
+            "second_line": "Turkey Hen, \u00e2\u2122\u20ac (Tame)",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6545,
+          "mood": 0,
+          "name": "Ral Zudenavuz, Turkey Hen, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Turkey Hen, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                19,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": true,
+        "rgb_sha256": "b6095345b1b8cfd3949bea4f077313458fce45182aa3fb1dbea8d704a3977e8e"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "\u00c3\u00afngiz Lelumerush",
+            "name_color": {
+              "alternate": [
+                6,
+                0,
+                0
+              ],
+              "color": [
+                6,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "Dog, \u00e2\u2122\u201a (Tame)",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6548,
+          "mood": 0,
+          "name": "\u00c3\u00afngiz Lelumerush, Dog, \u00e2\u2122\u201a (Tame)",
+          "profession": "Dog, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                6,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "94b99fce71475cfad4b836d4583c55b6f20a637b52cb98153974ebcf0c19d595"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "Tekkud Olonabod",
+            "name_color": {
+              "alternate": [
+                4,
+                0,
+                1
+              ],
+              "color": [
+                4,
+                0,
+                1
+              ],
+              "effect": 0
+            },
+            "second_line": "Turkey Hen, \u00e2\u2122\u20ac (Tame)",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6686,
+          "mood": 0,
+          "name": "Tekkud Olonabod, Turkey Hen, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Turkey Hen, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                19,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "c695b55ec3b6e8804c8632b5a1b32c80a64eb3961d573a3d7c0b4773ac08b073"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "Nomal Stulth\u00c3\u00aekut",
+            "name_color": {
+              "alternate": [
+                6,
+                0,
+                0
+              ],
+              "color": [
+                6,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "Billy Goat, \u00e2\u2122\u201a (Tame)",
+            "warning": "Grazer: requires pasture"
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": true,
+          "id": 6821,
+          "mood": 0,
+          "name": "Nomal Stulth\u00c3\u00aekut, Billy Goat, \u00e2\u2122\u201a (Tame)",
+          "profession": "Billy Goat, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                9,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "99b7bfb59c847b28551670bc7f1f087278fee1031356bbc0a496f5583d91f782"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "f0a81ef936ae9d125368aa6855bd5c84d3b8e7a56e14c6bf6c7c9a6780d12324"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "",
+            "name_color": {
+              "alternate": [
+                1,
+                0,
+                1
+              ],
+              "color": [
+                1,
+                0,
+                1
+              ],
+              "effect": 0
+            },
+            "second_line": "Stray Blue Peacock, \u00e2\u2122\u201a (Tam)",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6961,
+          "mood": 0,
+          "name": "Stray Blue Peacock, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Blue Peacock, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                1,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "326d6e341c32a2fa0ce2e47052958f0712bed607f78daa87561a7bc413610b99"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "Ducim Erushstin",
+            "name_color": {
+              "alternate": [
+                5,
+                0,
+                1
+              ],
+              "color": [
+                5,
+                0,
+                1
+              ],
+              "effect": 0
+            },
+            "second_line": "Boar, \u00e2\u2122\u201a (Tame)",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 7119,
+          "mood": 0,
+          "name": "Ducim Erushstin, Boar, \u00e2\u2122\u201a (Tame)",
+          "profession": "Boar, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                15,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "588e07586f2c3556c30f5133ef3ca753f701611ccb6a5089a198b7c59d20036b"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "Mist\u00c3\u00aam Sherikal\u00c3\u00a5th",
+            "name_color": {
+              "alternate": [
+                0,
+                0,
+                1
+              ],
+              "color": [
+                0,
+                0,
+                1
+              ],
+              "effect": 0
+            },
+            "second_line": "Cat, \u00e2\u2122\u201a (Tame)",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 7121,
+          "mood": 0,
+          "name": "Mist\u00c3\u00aam Sherikal\u00c3\u00a5th, Cat, \u00e2\u2122\u201a (Tame)",
+          "profession": "Cat, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                2,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "355089a181d936560440dd02c077fb03faf6ac20a2d6f8da3c11e5a34ec55c7b"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Blue Peahen, \u00e2\u2122\u20ac (Tame)",
+            "name_color": {
+              "alternate": [
+                6,
+                0,
+                0
+              ],
+              "color": [
+                6,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 7122,
+          "mood": 0,
+          "name": "Stray Blue Peahen, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Stray Blue Peahen, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                6,
+                1,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "e8771a32c1f07b9e023f3ed511405b550c5cc4b449949cf9dbdd4e15c8ac29fa"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "Tulon Udibatham",
+            "name_color": {
+              "alternate": [
+                6,
+                0,
+                0
+              ],
+              "color": [
+                6,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "Nanny Goat, \u00e2\u2122\u20ac (Tame)",
+            "warning": "Grazer: requires pasture"
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": true,
+          "id": 7269,
+          "mood": 0,
+          "name": "Tulon Udibatham, Nanny Goat, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Nanny Goat, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                9,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "99b7bfb59c847b28551670bc7f1f087278fee1031356bbc0a496f5583d91f782"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "\u00c3\u00a8rith Loloklitast",
+            "name_color": {
+              "alternate": [
+                6,
+                0,
+                0
+              ],
+              "color": [
+                6,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "Nanny Goat, \u00e2\u2122\u20ac (Tame)",
+            "warning": "Grazer: requires pasture"
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": true,
+          "id": 7270,
+          "mood": 0,
+          "name": "\u00c3\u00a8rith Loloklitast, Nanny Goat, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Nanny Goat, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                9,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "99b7bfb59c847b28551670bc7f1f087278fee1031356bbc0a496f5583d91f782"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Yak Bull, \u00e2\u2122\u201a (Tame)",
+            "name_color": {
+              "alternate": [
+                6,
+                0,
+                0
+              ],
+              "color": [
+                6,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": "Grazer: requires pasture"
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": true,
+          "id": 7277,
+          "mood": 0,
+          "name": "Stray Yak Bull, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Yak Bull, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                21,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "da9e13bc3de2d3f63b871b085c3f186a20987f65c350575d5993793ca42271b8"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Kitten, \u00e2\u2122\u20ac (Tame)",
+            "name_color": {
+              "alternate": [
+                4,
+                0,
+                0
+              ],
+              "color": [
+                4,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 7264,
+          "mood": 0,
+          "name": "Stray Kitten, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Stray Kitten, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                1,
+                2,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "182d6151fbd7c0d120900115c2b7dc3bd1c5d4c7848a6ff70374c9b0603299a9"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "Deg\u00c3\u00abl Uvarstinth\u00c3\u00a4d",
+            "name_color": {
+              "alternate": [
+                4,
+                0,
+                0
+              ],
+              "color": [
+                4,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "Poult, \u00e2\u2122\u20ac (Tame)",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 7265,
+          "mood": 0,
+          "name": "Deg\u00c3\u00abl Uvarstinth\u00c3\u00a4d, Poult, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Poult, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                1,
+                19,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "5f532a02b68be323d4b9ee9f06b85a06e3981bf705df256cd07ee93b4cad8ece"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Donkey Foal, \u00e2\u2122\u201a (Tame)",
+            "name_color": {
+              "alternate": [
+                4,
+                0,
+                0
+              ],
+              "color": [
+                4,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": "Grazer: requires pasture"
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": true,
+          "id": 7346,
+          "mood": 0,
+          "name": "Stray Donkey Foal, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Donkey Foal, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                1,
+                8,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "8c8f9cba58e471cb4262e897f4ea52282c67e757c82d25f7fe5d5e912f8df51b"
+      },
+      {
+        "picker": "Pen-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "Vucar Ral\u00c3\u00aebmat",
+            "name_color": {
+              "alternate": [
+                4,
+                0,
+                0
+              ],
+              "color": [
+                4,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "Gosling, \u00e2\u2122\u20ac (Tame)",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 7347,
+          "mood": 0,
+          "name": "Vucar Ral\u00c3\u00aebmat, Gosling, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Gosling, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                1,
+                10,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "e7526a470a074fbd3de83f0ab35dc654527881eed0af33c9c43d53d202ac29b1"
+      },
+      {
+        "picker": "Pond-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Drake, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": true,
+        "rgb_sha256": "822c7b04e3ad0047da658a262d06959d13214e6c8a917807b61bde7272773aae"
+      },
+      {
+        "picker": "Pond-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "",
+            "name_color": {
+              "alternate": [
+                1,
+                0,
+                1
+              ],
+              "color": [
+                1,
+                0,
+                1
+              ],
+              "effect": 0
+            },
+            "second_line": "Stray Blue Peacock, \u00e2\u2122\u201a (Tam)",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6961,
+          "mood": 0,
+          "name": "Stray Blue Peacock, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Blue Peacock, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                1,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "326d6e341c32a2fa0ce2e47052958f0712bed607f78daa87561a7bc413610b99"
+      },
+      {
+        "picker": "Pond-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Blue Peahen, \u00e2\u2122\u20ac (Tame)",
+            "name_color": {
+              "alternate": [
+                6,
+                0,
+                0
+              ],
+              "color": [
+                6,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 7122,
+          "mood": 0,
+          "name": "Stray Blue Peahen, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Stray Blue Peahen, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                6,
+                1,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "e8771a32c1f07b9e023f3ed511405b550c5cc4b449949cf9dbdd4e15c8ac29fa"
+      },
+      {
+        "picker": "Pond-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Yak Bull, \u00e2\u2122\u201a (Tame)",
+            "name_color": {
+              "alternate": [
+                6,
+                0,
+                0
+              ],
+              "color": [
+                6,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": "Grazer: requires pasture"
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": true,
+          "id": 7277,
+          "mood": 0,
+          "name": "Stray Yak Bull, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Yak Bull, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                21,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "da9e13bc3de2d3f63b871b085c3f186a20987f65c350575d5993793ca42271b8"
+      },
+      {
+        "picker": "Pond-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Kitten, \u00e2\u2122\u20ac (Tame)",
+            "name_color": {
+              "alternate": [
+                4,
+                0,
+                0
+              ],
+              "color": [
+                4,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 7264,
+          "mood": 0,
+          "name": "Stray Kitten, \u00e2\u2122\u20ac (Tame)",
+          "profession": "Stray Kitten, \u00e2\u2122\u20ac (Tame)",
+          "sex": 0,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                1,
+                2,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "182d6151fbd7c0d120900115c2b7dc3bd1c5d4c7848a6ff70374c9b0603299a9"
+      },
+      {
+        "picker": "Pond-picker",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Donkey Foal, \u00e2\u2122\u201a (Tame)",
+            "name_color": {
+              "alternate": [
+                4,
+                0,
+                0
+              ],
+              "color": [
+                4,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": "Grazer: requires pasture"
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": true,
+          "id": 7346,
+          "mood": 0,
+          "name": "Stray Donkey Foal, \u00e2\u2122\u201a (Tame)",
+          "profession": "Stray Donkey Foal, \u00e2\u2122\u201a (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                1,
+                8,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "rgb_sha256": "8c8f9cba58e471cb4262e897f4ea52282c67e757c82d25f7fe5d5e912f8df51b"
+      }
+    ],
+    "coverage": "Complete40x36 unit picture/frame crop; item portraits and cage/status icons are separate."
   }
 }

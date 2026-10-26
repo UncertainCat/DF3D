@@ -14,10 +14,30 @@ reference textures into ignored output. The widget at1423240 uses native6d6560
 with flag400, the same full-body selector variant as owner rows. Its call to
 adad70 supplies offsets2,2 and a5x3-cell draw box, despite the animal widget's
 4x3-cell rectangle. Captured textures are32x32 RGBA. Fixture hashes/geometry are
-diagnostic evidence, never runtime inputs or distributed artwork. Product
-animal portraits still need owned selector recipes and matching frame/render
-placement; current generic portrait rendering is unfinished. Bridge/wire and
-installed plugin remain unchanged.
+diagnostic evidence, never runtime inputs or distributed artwork. Animal unit portraits now use owned selector recipes through sheet_icon,
+accepted only for typed Unit animal rows. The bridge builds recipes only for
+returned pages and does not store them in the retained candidate cache. Page
+bytes include the recipe. The viewer uses candidate_icon, a32x32 image at2,2
+and the native40x36 selected/unselected frame. Item portraits retain their
+separate unfinished path; they cannot carry a unit recipe.
+
+Protected build/areas-acceptance-20261026-110639 passes with DF125428, verifying
+nonempty unit recipes along with prior text/assignment/search checks. Both save
+manifests remain unchanged. MSVC builds in
+build/notes/pm/animal-portrait-producer-build.log. Core19/19, adapter and existing
+GPU checks pass in build/qa/animal-portrait-integration (GPU known signatures).
+The earlier producer gate was incomplete because a viewer edit overlapped it;
+the stable integration gate supersedes it.
+
+GPU build/qa/animal-portrait-pixels matches all22 complete40x36 native unit
+picture/frame crops using recipes returned through the live Godot bridge.
+Selected turkey and unselected dog crops were inspected. No native cached
+texture is used by the product or shipped. The comparison includes full frame
+background/borders and body imagery, but excludes item portraits and separate
+cage/status icons. Long-list recipe retention/refresh and lifecycle remain to
+be completed with the animal selector. Management68 is unchanged. Installed
+plugin SHA256:
+765d6f8bbc42132a07cf66b9dda3a23f754ae63df56ca42e232fc629da3d5b8b.
 
 ## Animal row selection and background
 

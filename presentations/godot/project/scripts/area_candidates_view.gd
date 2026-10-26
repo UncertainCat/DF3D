@@ -185,22 +185,23 @@ func refresh() -> void:
 			if state.kind == 2 and row.get("animal_display") is Dictionary:
 				add_animal_text(button,row.animal_display)
 			var owner: bool = state.kind == 1
-			var frame := Panel.new(); frame.position = Vector2.ZERO; frame.size = Vector2(40 if owner else 32,36)
+			var selector_icon: bool = owner or int(row.get("entity",0)) == Contract.AreaCandidateEntity.Unit
+			var frame := Panel.new(); frame.position = Vector2.ZERO; frame.size = Vector2(40 if selector_icon else 32,36)
 			var frame_style := art.make_style("BUTTON_PICTURE_BOX",8)
-			if owner: frame_style.texture = picture.texture(false)
+			if selector_icon: frame_style.texture = picture.texture(false)
 			frame_style.set_texture_margin(SIDE_TOP,12); frame_style.set_texture_margin(SIDE_BOTTOM,12)
 			frame.add_theme_stylebox_override("panel",frame_style)
 			frame.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(frame)
-			if owner: owner_frames.append(frame)
-			if (owner and world.has_method("candidate_icon")) or (not owner and int(row.get("entity",0)) == Contract.AreaCandidateEntity.Unit and world.has_method("creature_portrait")):
+			owner_frames.append(frame)
+			if world.has_method("candidate_icon") and (owner or int(row.get("entity",0)) == Contract.AreaCandidateEntity.Unit):
 				var portrait := TextureRect.new()
-				portrait.texture = null if owner else world.creature_portrait(int(row.id))
-				portrait.position = Vector2(2,2) if owner else Vector2.ZERO
-				portrait.size = Vector2(32,32) if owner else Vector2(32,36)
+				portrait.texture = null
+				portrait.position = Vector2(2,2)
+				portrait.size = Vector2(32,32)
 				portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-				portrait.stretch_mode = TextureRect.STRETCH_SCALE if owner else TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				portrait.stretch_mode = TextureRect.STRETCH_SCALE
 				portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(portrait)
-				portrait_slots.append({"id":int(row.id),"view":portrait,"snapshot":owner,"recipe":row.get("sheet_icon",{}),"loaded":false})
+				portrait_slots.append({"id":int(row.id),"view":portrait,"snapshot":true,"recipe":row.get("sheet_icon",{}),"loaded":false})
 			var focus := Button.new(); focus.position = Vector2(408,6); focus.size = Vector2(24,24)
 			for key in ["normal","hover","pressed","disabled","focus"]: focus.add_theme_stylebox_override(key,StyleBoxEmpty.new())
 			var focus_icon := TextureRect.new(); focus_icon.texture = art.texture("STOCKS_RECENTER")
@@ -230,7 +231,10 @@ func refresh() -> void:
 			var frame_style: StyleBoxTexture = owner_frames[index].get_theme_stylebox("panel")
 			frame_style.texture = picture.texture(selected)
 	if state.kind == 2:
-		for index in choices.size(): style_row(choices[index],index == owner_selected)
+		for index in choices.size():
+			style_row(choices[index],index == owner_selected)
+			var frame_style: StyleBoxTexture = owner_frames[index].get_theme_stylebox("panel")
+			if int(state.rows[index].get("entity",0)) == Contract.AreaCandidateEntity.Unit: frame_style.texture = picture.texture(index == owner_selected)
 	for button in choices: button.disabled = state.busy()
 	for button in squad_buttons: button.disabled = state.busy() or bool(button.get_meta("unknown",false))
 	for button in focus_buttons:

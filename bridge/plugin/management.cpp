@@ -1399,7 +1399,15 @@ int areaAnimalUnitDisplay(lua_State* L) {
   field(L,"name",DF2UTF(text.combined));field(L,"profession",DF2UTF(text.profession));
   lua_newtable(L);field(L,"foreground",color.color[0]);field(L,"background",color.color[1]);field(L,"bright",color.color[2]);
   field(L,"alternate_foreground",color.alternate[0]);field(L,"alternate_background",color.alternate[1]);field(L,"alternate_bright",color.alternate[2]);field(L,"effect",color.effect);
-  lua_setfield(L,-2,"name_color");return 1;
+  lua_setfield(L,-2,"name_color");
+  if(lua_toboolean(L,2)) {
+    ResidentAppearanceRecipe icon;icon.collect(unit,true);
+    if(!icon.layers.empty()) {
+      flatbuffers::FlatBufferBuilder buffer;buffer.Finish(icon.build(buffer));
+      lua_pushlstring(L,reinterpret_cast<const char*>(buffer.GetBufferPointer()),buffer.GetSize());lua_setfield(L,-2,"sheet_icon");
+    }
+  }
+  return 1;
 }
 int areaOwnerDisplay(lua_State* L) {
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);

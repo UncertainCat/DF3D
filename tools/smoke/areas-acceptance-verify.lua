@@ -675,6 +675,7 @@ elseif request.op=='animal_candidates' then
    local value,status=dfhack.run_command_silent('df3d','zone-animal-unit-display-read',tostring(entry.id),'27')
    assert(status==0,value);local native=require('json').decode(value)
    local function utf(bytes)return dfhack.df2utf(string.char(table.unpack(bytes)))end
+   assert(row.sheet_icon and #row.sheet_icon.layers>0,'animal unit selector recipe absent')
    local d=assert(row.animal_display,'animal display absent')
    assert(d.columns==27 and d.first_line==utf(native.text[4]) and d.second_line==utf(native.text[5]),'animal native lines differ')
    assert(d.combined_fits==(#native.text[1]<=27) and d.warning==utf(native.warning) and row.grazer==native.grazer,'animal layout facts differ')

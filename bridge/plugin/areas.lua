@@ -538,13 +538,14 @@ local function candidate_row(job,v,r,refresh_display)
   end
   v=df.unit.find(entry.id)
   if not v then job.error='List changed; refresh';return nil end
-  local d=type(r.animal_unit_display)=='function' and r.animal_unit_display(v) or nil
+  local d=type(r.animal_unit_display)=='function' and r.animal_unit_display(v,refresh_display==true) or nil
   if type(d)~='table' or d.columns~=27 or type(d.name)~='string' or type(d.profession)~='string' or
    type(d.first_line)~='string' or #d.first_line>384 or type(d.second_line)~='string' or #d.second_line>384 or
    type(d.combined_fits)~='boolean' or type(d.grazer)~='boolean' or type(d.warning)~='string' or #d.warning>256 or
    (d.grazer~=(d.warning~='')) or (d.combined_fits and d.second_line~='') or type(d.name_color)~='table' then
    job.error='Native area helper unavailable';return nil
   end
+  if d.sheet_icon~=nil and (type(d.sheet_icon)~='string' or #d.sheet_icon>200*1024)then job.error='Native area helper unavailable';return nil end
   local c=d.name_color
   for key,limit in pairs{foreground=7,background=7,bright=1,alternate_foreground=7,alternate_background=7,alternate_bright=1,effect=3}do
    local value=c[key]
@@ -554,7 +555,7 @@ local function candidate_row(job,v,r,refresh_display)
    job.error='Native area helper unavailable';return nil
   end
   return {id=v.id,entity=1,name=d.name,profession=d.profession,sex=v.sex,mood=0,grazer=d.grazer,
-   assigned=animal_assigned,squad_use=-1,animal_display=d}
+   assigned=animal_assigned,squad_use=-1,animal_display=d,sheet_icon=d.sheet_icon}
  end
  if job.locations then return location_row(v,job.site_id) end
  if job.legacy and job.kind==0 then return {id=v.id,name=name(v)..' #'..v.id,label=''} end
@@ -962,6 +963,13 @@ local function candidate_page(r,a,b,area_revision,available)
    row=candidate_row(job,unit,r,true)
    if not row then return fail(job.error or 'List changed; refresh'),used end
    if not candidate_text_valid(row) then return fail('Candidate label exceeds 512 bytes'),used end
+  end
+  if job.native_animals then
+   -- Keep membership/order in the job, but refresh only returned facts/recipes.
+   -- The temporary row is never stored back into the retained candidate cache.
+   row=candidate_row(job,row,r,true)
+   if not row then return fail(job.error or 'List changed; refresh'),used end
+   if not candidate_text_valid(row)then return fail('Candidate label exceeds 512 bytes'),used end
   end
   if not legacy or row.id>=cursor then
    local row_bytes=9+#row.name+#(row.profession or '')

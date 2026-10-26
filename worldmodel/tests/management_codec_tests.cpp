@@ -2651,6 +2651,21 @@ TEST_CASE("owner candidate appearance is optional scoped bounded and lossless") 
   }
 }
 
+TEST_CASE("animal selector appearance is restricted to typed units") {
+  for(auto entity:{wire::AreaCandidateEntity::Unknown,wire::AreaCandidateEntity::Unit,wire::AreaCandidateEntity::Item,wire::AreaCandidateEntity::Squad}) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto icon=wire::CreateSelectionAppearance(b,b.CreateVectorOfStrings(std::vector<std::string>{"PAGE"}),
+      b.CreateVectorOfStrings(std::vector<std::string>{}),b.CreateVectorOfStructs(std::vector<wire::AppearanceLayer>{wire::AppearanceLayer(0,0,0,1,1,65535,-1,-1,0,0)}));
+    const auto row=wire::CreateAreaCandidateRow(b,21,0,0,-1,0,false,false,-1,0,icon,entity);
+    const auto rows=b.CreateVector(std::vector{row});wire::AreaStateBuilder area(b);area.add_candidates(rows);
+    area.add_operation(wire::AreaOperation::CandidateList);area.add_candidate_kind(2);const auto a=area.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_area(a);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(entity!=wire::AreaCandidateEntity::Unit));
+    if(entity==wire::AreaCandidateEntity::Unit)CHECK(codec::decodeArea(value->area()).candidates[0].sheetIcon.has_value());
+  }
+}
+
 TEST_CASE("owner fact page limits are scoped and bounded") {
   for(int mode=0;mode<8;++mode) {
     CAPTURE(mode);

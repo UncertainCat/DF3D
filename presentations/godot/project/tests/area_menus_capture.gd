@@ -648,7 +648,7 @@ func run() -> void:
 		{"id":24,"entity":2,"name":"Fixture item","assigned":true},
 		{"id":24,"entity":1,"name":"Fixture unit","assigned":false}]},animal_requests[-1])
 	await process_frame; await RenderingServer.frame_post_draw
-	if animal_view.choices.size() != 2 or world.portrait_requests != [24] or animal_view.portrait_slots.size() != 1:
+	if animal_view.choices.size() != 2 or not world.portrait_requests.is_empty() or animal_view.portrait_slots.size() != 1:
 		push_error("Animal view confused typed portrait identities"); quit(1); return
 	for index in 2:
 		var expected: Array = [2 if index == 0 else 1,24]
@@ -728,6 +728,27 @@ func run() -> void:
 		var identity := "unit_id" if entity==1 else "item_id"
 		if animal_requests.size()!=before+1 or int(animal_requests[-1].get(identity,-1))!=24 or animal_requests[-1].assign!=1:
 			push_error("Animal keyboard assignment lost identity or repeated");quit(1);return
+	var animal_portraits: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_portrait_pixels
+	for sample in animal_portraits.samples:
+		var row: Dictionary = sample.row
+		for key in ["color","alternate"]:
+			for component in 3: row.animal_display.name_color[key][component]=int(row.animal_display.name_color[key][component])
+		for layer in row.sheet_icon.layers:
+			for component in layer.size(): layer[component]=int(layer[component])
+		animal_state.pending={}; animal_state.mutating=false
+		animal_state.rows=[row,{"id":-1,"entity":0}]
+		animal_view.owner_selected=0 if bool(sample.selected) else 1
+		animal_state.changed.emit()
+		var slot: Dictionary = animal_view.portrait_slots[0]
+		slot.view.texture=world.candidate_icon(slot.recipe);slot.loaded=true
+		if slot.view.texture==null: push_error("Animal selector recipe did not render");quit(1);return
+		await process_frame; await RenderingServer.frame_post_draw
+		var image := root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var crop := image.get_region(Rect2i(Vector2i(animal_view.choices[0].global_position),Vector2i(40,36)))
+		crop.save_png(directory.path_join("animal-portrait-"+str(sample.picker)+"-"+str(row.id)+".png"))
+		var digest := HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+		if digest.finish().hex_encode()!=str(sample.rgb_sha256):
+			push_error("Native animal portrait pixels differ: "+str(sample.picker)+"/"+str(row.id));quit(1);return
 	animal_view.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

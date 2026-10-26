@@ -160,7 +160,8 @@ def main():
     end
     function animal_candidates(b,sort,descending,query) animal_args={sort,descending,query};return animal_fixture or {}end
     function animal_item_text(item)return item.label end
-    function animal_unit_display(unit)return {columns=27,name='Native animal',profession='Native profession',first_line='',second_line='Native shortened',combined_fits=false,grazer=true,warning='Grazer: requires pasture',name_color={foreground=6,background=0,bright=0,alternate_foreground=6,alternate_background=0,alternate_bright=0,effect=0}}end
+    animal_icon_reads=0
+    function animal_unit_display(unit,include_icon)if include_icon then animal_icon_reads=animal_icon_reads+1 end;return {sheet_icon=include_icon and 'owned recipe' or nil,columns=27,name='Native animal',profession='Native profession',first_line='',second_line='Native shortened',combined_fits=false,grazer=true,warning='Grazer: requires pasture',name_color={foreground=6,background=0,bright=0,alternate_foreground=6,alternate_background=0,alternate_bright=0,effect=0}}end
     function owner_eligible(b,u) return u.citizen==true end
     local old_request=request
     function request(action,extra)
@@ -775,7 +776,10 @@ def main():
      {id=10,entity=2,assigned=false}}
     df.item={find=function(id)if id==10 then return {id=10,label='Native critter'}end end}
     """)
+    lua.execute("animal_icon_reads=0")
     animals = call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2})
+    assert lua.globals().animal_icon_reads == 2
+    assert animals["candidates"][1]["sheet_icon"] == "owned recipe"
     assert [(v["entity"], v["id"]) for v in animals["candidates"].values()] == [(1, 10), (1, 12), (2, 10)]
     assert animals["candidates"][1]["grazer"] and animals["candidates"][1]["assigned"]
     assert animals["candidates"][3]["name"] == "Native critter"

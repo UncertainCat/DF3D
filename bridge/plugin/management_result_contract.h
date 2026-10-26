@@ -187,7 +187,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
       lua_getfield(L,-1,"sheet_icon");
       if(!lua_isnil(L,-1)) {
         size_t size=0;const auto* bytes=reinterpret_cast<const uint8_t*>(lua_type(L,-1)==LUA_TSTRING?lua_tolstring(L,-1,&size):nullptr);
-        valid=bytes && size<=224*1024 && operation==df3d::mirror::AreaOperation::CandidateList && candidateKind==1;
+        valid=bytes && size<=224*1024 && operation==df3d::mirror::AreaOperation::CandidateList && (candidateKind==1 || (candidateKind==2 && animalUnit));
         if(valid) {flatbuffers::Verifier verifier(bytes,size);valid=verifier.VerifyBuffer<df3d::mirror::SelectionAppearance>(nullptr);}
         if(valid)valid=df3d::mirror::validateOwnerAppearance(*flatbuffers::GetRoot<df3d::mirror::SelectionAppearance>(bytes),payload)==nullptr;
       }

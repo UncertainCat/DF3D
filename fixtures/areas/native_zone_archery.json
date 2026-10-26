@@ -1,0 +1,135 @@
+{
+  "supported_df": "53.16 Steam Windows x64",
+  "native_capture": "build/stockpile-storage-native-zone-defaults-20261025-200026",
+  "owned_df_pid": 122316,
+  "closed_unsaved": true,
+  "source_manifest_unchanged": true,
+  "fixture": "One controlled ArcheryTarget inserted into the native target vector; native chooser/rectangle clicks select the direction. The target vector address was checked against the audited native caller. Target centers vary around a5x5 rectangle.",
+  "observations": [
+    {
+      "dir_x": 1,
+      "dir_y": 0,
+      "name": "archery-east",
+      "target_x": 124,
+      "target_y": 95,
+      "x1": 121,
+      "x2": 125,
+      "y1": 93,
+      "y2": 97,
+      "z": 165
+    },
+    {
+      "dir_x": -1,
+      "dir_y": 0,
+      "name": "archery-west",
+      "target_x": 122,
+      "target_y": 95,
+      "x1": 121,
+      "x2": 125,
+      "y1": 93,
+      "y2": 97,
+      "z": 165
+    },
+    {
+      "dir_x": 0,
+      "dir_y": -1,
+      "name": "archery-north",
+      "target_x": 123,
+      "target_y": 94,
+      "x1": 121,
+      "x2": 125,
+      "y1": 93,
+      "y2": 97,
+      "z": 165
+    },
+    {
+      "dir_x": 0,
+      "dir_y": 1,
+      "name": "archery-south",
+      "target_x": 123,
+      "target_y": 96,
+      "x1": 121,
+      "x2": 125,
+      "y1": 93,
+      "y2": 97,
+      "z": 165
+    },
+    {
+      "dir_x": -1,
+      "dir_y": 0,
+      "name": "archery-center",
+      "target_x": 123,
+      "target_y": 95,
+      "x1": 121,
+      "x2": 125,
+      "y1": 93,
+      "y2": 97,
+      "z": 165
+    },
+    {
+      "dir_x": 1,
+      "dir_y": 0,
+      "name": "archery-diagonal",
+      "target_x": 124,
+      "target_y": 96,
+      "x1": 121,
+      "x2": 125,
+      "y1": 93,
+      "y2": 97,
+      "z": 165
+    },
+    {
+      "dir_x": 1,
+      "dir_y": 0,
+      "name": "archery-outside",
+      "target_x": 126,
+      "target_y": 95,
+      "x1": 121,
+      "x2": 125,
+      "y1": 93,
+      "y2": 97,
+      "z": 165
+    }
+  ],
+  "native_entries": [
+    {
+      "rva": "0x357a2f",
+      "size": 1121,
+      "sha256": "95e11a2dfd16a08707c5d906feaebdcee93dedccf0cea2ec8c90cea4ddc1e290",
+      "ownership": "Inline creation direction calculation; caller is UI and must never be invoked. Semantic inputs are supplied extents, bounds, and world ARCHERY_TARGET centers."
+    },
+    {
+      "rva": "0x5587b0",
+      "size": 121,
+      "sha256": "7b1aaebbbafc04207765a7261437156e9299506db1821d90b7a5a17ba303b485",
+      "ownership": "Callable containment leaf: reads only supplied building bounds/extents; no global state or writes."
+    }
+  ],
+  "evidence_sha256": {
+    "result.json": "e13f56eb240e700901f20f11be5be381cceef8c20893f3caf4af67a181d460d6",
+    "capture-inputs.json": "040eb5967cb3ecd911e81db1e991318042f7b5c47224bcb4819c336fe561a856",
+    "archery-north.png": "89374c811372a5568b878164619d65797187495d93cf4544a04e14371eccf30e",
+    "archery-center.png": "9ae828727bbb119841f71cc4b89bcad90772451fdf90023050c8ab3c1748e7bc"
+  },
+  "limits": [
+    "Controlled target-center fixture, not construction/job completion of a new target.",
+    "Native click reference covers rectangular footprints and one controlled target; multiple targets, different levels and irregular masks remain unverified live.",
+    "Native unused settings-union words are not semantic defaults; repeated captures show allocator-dependent values for Pen/Tomb second words."
+  ],
+  "df3d_verification": {
+    "path": "build/areas-acceptance-20261025-200312",
+    "status": "passed",
+    "native_observations": 69,
+    "owned_df_pid": 93680,
+    "closed_unsaved": true,
+    "bridge_sha256": "a55bb7e99a1715b344e47a80b3a7375dfdef1d310494271cad1082afc1dd3e30",
+    "coverage": "All18 creation defaults and seven initial direction cases, reply/native settings agreement, removal and target fixture preservation.",
+    "evidence_sha256": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
+    }
+  }
+}

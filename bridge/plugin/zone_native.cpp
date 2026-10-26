@@ -1,7 +1,11 @@
 #include "zone_native.h"
 #include "df/building_civzonest.h"
+#include "df/building_archerytargetst.h"
+#include "df/world.h"
 #include <windows.h>
 #include <cstdint>
+#include <cstdlib>
+#include <climits>
 
 namespace df3d_area {
 namespace {
@@ -21,7 +25,9 @@ bool nativeZoneDefaultsReady() {
         return pe->Signature==IMAGE_NT_SIGNATURE && pe->FileHeader.Machine==0x8664 &&
             pe->FileHeader.TimeDateStamp==0x6a70a6d9 && pe->OptionalHeader.SizeOfImage==0x2711000 &&
             hash(base+0x30f550,0x5b)==0xed4d0c73606384a4ULL &&
-            hash(base+0x3579af,0x80)==0xd862207edcc7f2bbULL;
+            hash(base+0x3579af,0x80)==0xd862207edcc7f2bbULL &&
+            hash(base+0x357a2f,0x461)==0x6df7802f8dfd9811ULL &&
+            hash(base+0x5587b0,0x79)==0x14b4f3f138690067ULL;
     }();
     return compatible;
 }
@@ -36,6 +42,36 @@ bool nativeZoneDefaults(df::building_civzonest& zone) {
     // Pond's check_occupants bit is distinct from its user-facing fill mode.
     if(zone.type==df::civzone_type::Pen)zone.zone_settings.pen.flags.bits.check_occupants=true;
     if(zone.type==df::civzone_type::Pond)zone.zone_settings.pond.flag.bits.check_occupants=true;
+    if(zone.type==df::civzone_type::ArcheryRange) {
+        if(!df::global::world || !zone.room.extents || zone.x1<0 || zone.y1<0 || zone.z<0 ||
+           zone.x2<zone.x1 || zone.y2<zone.y1 || zone.x2>32767 || zone.y2>32767 || zone.z>32767 ||
+           int64_t(zone.x2-zone.x1+1)*(zone.y2-zone.y1+1)>32768)return false;
+        // Native357a2f..357e90 has no independent direction entry point.
+        // Its inclusion tests call5587b0 with the actual zone; that leaf reads
+        // only supplied bounds/extents. Do not substitute usable-tile counts.
+        using Contains=bool (*)(df::building*,int16_t,int16_t,int16_t);
+        const auto contains=reinterpret_cast<Contains>(base+0x5587b0);
+        int64_t cells=0,cellX=0,cellY=0,targets=0,targetX=0,targetY=0;
+        for(int32_t x=zone.x1;x<=zone.x2;++x)for(int32_t y=zone.y1;y<=zone.y2;++y) {
+            if(!contains(&zone,int16_t(x),int16_t(y),int16_t(zone.z)))continue;
+            ++cells;cellX+=x;cellY+=y;
+        }
+        for(const auto* target:df::global::world->buildings.other.ARCHERY_TARGET) {
+            if(!target)return false;
+            if(!contains(&zone,int16_t(target->centerx),int16_t(target->centery),int16_t(target->z)))continue;
+            ++targets;targetX+=target->centerx;targetY+=target->centery;
+            if(targets>INT32_MAX || targetX>INT32_MAX || targetY>INT32_MAX)return false;
+        }
+        // No targets retains DF's initializer default. Native truncates each
+        // mean before comparing, resolves axis ties toward X, and center ties
+        // toward negative X. These are observed native choices, not UX policy.
+        if(cells && targets) {
+            const auto dx=cellX/cells-targetX/targets,dy=cellY/cells-targetY/targets;
+            auto& range=zone.zone_settings.archery;
+            if(std::abs(dx)>=std::abs(dy)){range.dir_x=dx<0?1:-1;range.dir_y=0;}
+            else {range.dir_x=0;range.dir_y=dy<0?1:-1;}
+        }
+    }
     return true;
 }
 }

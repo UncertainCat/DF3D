@@ -136,7 +136,22 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='pile_designations' then
+if request.op=='archery_prepare' then
+ assert(not _G.df3d_archery_target,'previous target fixture still active')
+ local p=request.target
+ local target=df.building_archerytargetst:new()
+ target.x1=p.x;target.x2=p.x;target.centerx=p.x
+ target.y1=p.y;target.y2=p.y;target.centery=p.y;target.z=p.z
+ local targets=df.global.world.buildings.other.ARCHERY_TARGET
+ targets:insert('#',target)
+ _G.df3d_archery_target={target=target,index=#targets-1,x=p.x,y=p.y,z=p.z}
+elseif request.op=='archery_clear' then
+ local saved=assert(_G.df3d_archery_target)
+ local targets=df.global.world.buildings.other.ARCHERY_TARGET
+ assert(targets[saved.index]==saved.target and #targets==saved.index+1,'target list changed')
+ assert(saved.target.centerx==saved.x and saved.target.centery==saved.y and saved.target.z==saved.z,'creation changed target')
+ targets:erase(saved.index);saved.target:delete();_G.df3d_archery_target=nil
+elseif request.op=='pile_designations' then
  local b=building()
  for y=0,b.room.height-1 do for x=0,b.room.width-1 do
   if b.room.extents[y*b.room.width+x]~=0 then

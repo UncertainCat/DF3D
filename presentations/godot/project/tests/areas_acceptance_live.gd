@@ -341,6 +341,33 @@ func created_zone_defaults() -> void:
 		await native("removed", {"id":int(area.id)})
 		if stopped: return
 
+func created_archery_directions() -> void:
+	step = "native initial archery directions"
+	var p: Dictionary = fixture.origin
+	var origin := Vector3i(int(p.x)+21,int(p.y)+4,int(p.z))
+	var catalog := await request({"action":7})
+	if stopped: return
+	var kind := -1
+	for choice in catalog.choices:
+		if choice.name == "ArcheryRange": kind = int(choice.id)
+	if not check(kind >= 0, "missing archery type"): return
+	# Expected choices are the native-click observations retained in
+	# fixtures/areas/native_zone_archery.json, not a second direction algorithm.
+	for sample in [["east",1,0,2],["west",-1,0,1],["north",0,-1,3],["south",0,1,4],
+		["center",0,0,1],["diagonal",1,1,2],["outside",3,0,2]]:
+		step = "initial archery " + str(sample[0])
+		await native("archery_prepare", {"target":{"x":origin.x+2+int(sample[1]),"y":origin.y+2+int(sample[2]),"z":origin.z}})
+		var made := await request({"action":10,"kind":1,"zone_type":kind,"origin":origin,"width":5,"height":5})
+		if stopped: return
+		if not check(made.areas.size()==1,"archery creation absent"): return
+		var area: Dictionary = made.areas[0]
+		check(int(area.zone_settings.facing)==int(sample[3]),"reply direction differs from native")
+		await native("zone_settings", {"id":int(area.id),"expected":{"facing":int(sample[3])}})
+		await request({"action":12,"kind":1,"id":int(area.id),"expected_revision":area.revision})
+		await native("removed", {"id":int(area.id)})
+		await native("archery_clear")
+		if stopped: return
+
 func wait_ticks() -> void:
 	step = "simulation after edits"
 	await native("wait_start")
@@ -432,6 +459,7 @@ func exercise() -> void:
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
 	if FileAccess.file_exists(directory + "/zone-defaults-only.json"):
 		await created_zone_defaults()
+		if not stopped: await created_archery_directions()
 		return
 	for key in fixture.missing:
 		incomplete(str(key) + ": " + str(fixture.missing[key]))

@@ -73,7 +73,7 @@
     }
   ],
   "limits": [
-    "No target-based Archery Range direction coverage. Native inline selection at0x357a2f..0x357e90 remains pending.",
+    "This baseline has no target-based range direction coverage; see native_zone_archery.json for the subsequent direction verification.",
     "Allocation/publication still uses DFHack allocInstance/setSize/constructAbstract; Multi creation is separate and unchanged.",
     "Existing owner assignment and room-membership notification remain pending audit."
   ],

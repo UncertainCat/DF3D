@@ -1,3 +1,36 @@
+## Native initial Archery Range direction
+
+Single-zone creation derives initial range direction from DF's actual extent
+membership predicate at0x5587b0. That leaf reads only the supplied zone's bounds
+and extents. Both cell inclusion and target-center inclusion use it. The final
+mean/truncation/direction calculation is inline in native creation at
+0x357a2f..0x357e90, with no standalone callable entry point. Its complete bytes
+are pinned alongside the callable predicate. The bridge follows those inline
+effects using owned counters and read-only world target centers; native UI and
+search scratch are neither inputs nor runtime call targets. No targets keeps
+DF's+X default, equal axis differences select X, and coincident means select-X.
+
+Native `build/stockpile-storage-native-zone-defaults-20261025-200026` verifies
+seven target-center positions through actual native chooser/rectangle clicks:
+east, west, north, south, center, diagonal tie and outside the range. The target
+fixture supplies one ArcheryTarget in the native target vector; it does not
+claim target construction/job completion. The vector's address was checked
+against the audited caller. The north-facing capture was inspected. Owned
+DF122316 closes unsaved and the source manifest is unchanged. Repeated captures
+also show allocator-dependent unused second settings words for Pen/Tomb; those
+words are not asserted as semantic defaults.
+
+Protected `build/areas-acceptance-20261025-200312` passes69 native observations:
+all18 creation defaults plus the seven range directions, reply/native field
+agreement, removal and unchanged target inputs. Owned DF93680 closes unsaved
+with both save manifests unchanged and clean diagnostics. Offline
+`build/qa/zone-native-archery` passes root CTest19/19 and the Lua adapter;
+the matching MSVC bridge builds. `fixtures/areas/native_zone_archery.json`
+retains observations and code/evidence hashes. `-ZoneDefaultsOnly` now includes
+these range scenarios. Multiple targets, different levels and irregular masks
+are not covered by this live reference; allocation/publication migration and
+complete Zones acceptance remain open.
+
 ## Native zone creation defaults
 
 Single-zone creation calls DF53.16's initializer at0x30f550 with the new,
@@ -29,10 +62,8 @@ its legacy wood-list oracle before reaching Zones and is not a passing result.
 The broader harness oracle still needs reconciliation with the native provider.
 
 This migrates defaults only. Single-zone allocation/publication still uses
-DFHack helpers; Multi is separate. Native Archery Range creation additionally
-infers direction from contained targets inline at0x357a2f..0x357e90; that behavior
-is still unimplemented and the empty-range capture does not establish it.
-Owner assignment and membership notification remain under audit. Zones remains
+DFHack helpers; Multi is separate. Initial Archery Range direction is covered
+below. Owner assignment and membership notification remain under audit. Zones remains
 staged until the complete workflow is verified.
 
 ## Zone gathering settings contract

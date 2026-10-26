@@ -79,6 +79,35 @@ require('gui.script').start(function()
     assert(df.global.pause_state and df.global.world.frame_counter==frame)
     capture('defaults-'..entry[1])
    end
+   -- Controlled native oracle: only the target-center list is provisioned.
+   -- Rectangle creation and direction selection still run through actual clicks.
+   local targets=df.global.world.buildings.other.ARCHERY_TARGET
+   local _,target_address=df.sizeof(targets)
+   assert(target_address==dfhack.internal.getImageBase()+0x23eec60,'native target list identity changed')
+   local target=df.building_archerytargetst:new()
+   targets:insert('#',target)
+   local function map_click(tx,ty)
+    for sy=0,g.dimy-1 do for sx=0,g.dimx-1 do
+     g.mouse_x=sx;g.mouse_y=sy;g.precise_mouse_x=sx*(g.screen_pixel_x//g.dimx)+4;g.precise_mouse_y=sy*(g.screen_pixel_y//g.dimy)+6
+     local p=dfhack.gui.getMousePos(true)
+     if p and p.x==tx and p.y==ty and p.z==point.z then click(sx,sy);return end
+    end end
+    error('archery map corner not visible')
+   end
+   for _,entry in ipairs{{'east',1,0,1,0},{'west',-1,0,-1,0},{'north',0,-1,0,-1},{'south',0,1,0,1},
+     {'center',0,0,-1,0},{'diagonal',1,1,1,0},{'outside',3,0,1,0}} do
+    target.x1=point.x+entry[2];target.x2=target.x1;target.centerx=target.x1
+    target.y1=point.y+entry[3];target.y2=target.y1;target.centery=target.y1;target.z=point.z
+    click(26,33);map_click(point.x-2,point.y-2);map_click(point.x+2,point.y+2)
+    b=assert(ui.cur_bld);pile_id=b.id;assert(b.type==df.civzone_type.ArcheryRange)
+    click(38,9)
+    local range=b.zone_settings.archery
+    records[#records+1]={name='archery-'..entry[1],target_x=target.centerx,target_y=target.centery,
+     x1=b.x1,x2=b.x2,y1=b.y1,y2=b.y2,z=b.z,dir_x=range.dir_x,dir_y=range.dir_y}
+    assert(range.dir_x==entry[4] and range.dir_y==entry[5],'archery direction differs: '..entry[1])
+    capture('archery-'..entry[1])
+   end
+   targets:erase(#targets-1);target:delete()
    return
   end
   if test_zone_gather then

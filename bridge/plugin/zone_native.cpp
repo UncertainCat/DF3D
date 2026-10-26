@@ -1,11 +1,14 @@
 #include "zone_native.h"
 #include "df/building_civzonest.h"
 #include "df/building_archerytargetst.h"
+#include "df/building_doorst.h"
 #include "df/world.h"
 #include <windows.h>
 #include <cstdint>
 #include <cstdlib>
 #include <climits>
+#include <unordered_map>
+#include <vector>
 
 namespace df3d_area {
 namespace {
@@ -13,6 +16,50 @@ uint64_t hash(const uint8_t* bytes,size_t size) {
     uint64_t value=14695981039346656037ULL;
     while(size--){value^=*bytes++;value*=1099511628211ULL;}
     return value;
+}
+bool refreshOverlaps(const uint8_t* base) {
+    const auto& zones=df::global::world->buildings.other.ANY_ZONE;
+    std::vector<bool> collisions(zones.size(),false);
+    // Nativeac8490 uses map_block.path_cost as an ownership grid, with door
+    // centers reserved before visiting zones in reverse order. Own that grid
+    // instead: never borrow native search generations or map search scratch.
+    constexpr size_t doorOwner=SIZE_MAX;
+    std::unordered_map<uint64_t,size_t> owners;
+    const auto key=[](int32_t x,int32_t y,int32_t z) {
+        return uint64_t(uint16_t(x))|(uint64_t(uint16_t(y))<<16)|(uint64_t(uint16_t(z))<<32);
+    };
+    for(const auto* door:df::global::world->buildings.other.DOOR) {
+        if(!door)return false;
+        if(door->centerx>=0 && door->centerx<=32767 && door->centery>=0 && door->centery<=32767 && door->z>=0 && door->z<=32767)
+            owners[key(door->centerx,door->centery,door->z)]=doorOwner;
+    }
+    using Eligible=bool (*)(df::world*,int16_t,int16_t,int16_t,bool,uint32_t);
+    const auto eligible=reinterpret_cast<Eligible>(base+0x14adea0);
+    for(size_t i=zones.size();i-->0;) {
+        const auto* zone=zones[i];
+        if(!zone)return false;
+        const int type=int(zone->type);
+        // Immutable native dispatch: eight room types participate. Other
+        // zone flags are still cleared, as in native's initial all-zone pass.
+        if(!zone->room.extents || type<79 || type>97 || base[0xac91ac+type-79]!=0)continue;
+        const auto& room=zone->room;
+        if(room.width<=0 || room.height<=0)continue;
+        if(room.x<0 || room.y<0 || zone->z<0 || zone->z>32767 ||
+           int64_t(room.x)+room.width>32768 || int64_t(room.y)+room.height>32768)return false;
+        for(int32_t y=0;y<room.height;++y)for(int32_t x=0;x<room.width;++x) {
+            if(room.extents[size_t(y)*room.width+x]==df::building_extents_type::None)continue;
+            const auto tx=room.x+x,ty=room.y+y;
+            // This exact false/0 call path reads semantic map/building facts
+            // only. It skips the movement-search and temperature-query paths.
+            if(!eligible(df::global::world,int16_t(tx),int16_t(ty),int16_t(zone->z),false,0))continue;
+            auto [it,inserted]=owners.emplace(key(tx,ty,zone->z),i);
+            if(inserted || it->second==doorOwner)continue;
+            collisions[i]=true;collisions[it->second]=true;it->second=i;
+        }
+    }
+    // Allocation/observation failure above leaves preexisting flags intact.
+    for(size_t i=0;i<zones.size();++i)zones[i]->flags.bits.room_collision=collisions[i];
+    return true;
 }
 }
 bool nativeZoneDefaultsReady() {
@@ -85,7 +132,10 @@ bool nativeZoneCreateReady() {
         hash(base+0x57fc70,0xcb)==0x9c1f8dc48a9760b0ULL &&
         hash(base+0x558550,0x13b)==0x60e1b99a5ab1f65dULL &&
         hash(base+0x558690,0x111)==0x36b85ab14744745bULL &&
-        hash(base+0x558830,0xfa)==0xc5a7534fb1c71db4ULL;
+        hash(base+0x558830,0xfa)==0xc5a7534fb1c71db4ULL &&
+        hash(base+0xac8490,0xd2f)==0x25176e90bd30f8cfULL &&
+        hash(base+0x14adea0,0xcb4)==0x1818a722f3967dcbULL &&
+        hash(base+0x5a8390,0x230)==0xabed683b2febe641ULL;
     return compatible;
 }
 df::building_civzonest* nativeZoneAllocate() {
@@ -107,6 +157,6 @@ bool nativeZoneComplete(df::building_civzonest& zone) {
     reinterpret_cast<Relationships>(base+0x558550)(&zone);
     reinterpret_cast<Relationships>(base+0x558690)(&zone);
     reinterpret_cast<Relationships>(base+0x558830)(&zone);
-    return true;
+    return refreshOverlaps(base);
 }
 }

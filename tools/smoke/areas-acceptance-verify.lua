@@ -136,7 +136,33 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='zone_membership_site' then
+if request.op=='overlap_prepare' then
+ assert(not _G.df3d_overlap_fixture)
+ local p=request.site;local block=assert(dfhack.maps.getTileBlock(p.x,p.y,p.z))
+ local saved={block=block,x=p.x%16,y=p.y%16,tile=block.tiletype[p.x%16][p.y%16],guards={}}
+ if request.scenario=='wall' then block.tiletype[saved.x][saved.y]=df.tiletype.StoneWall end
+ if request.scenario=='door' then
+  saved.door=df.building_doorst:new();saved.door.centerx=p.x;saved.door.centery=p.y;saved.door.z=p.z
+  df.global.world.buildings.other.DOOR:insert('#',saved.door)
+ end
+ for _,b in ipairs(df.global.world.map.map_blocks)do
+  for _,field in ipairs{'path_cost','path_tag'}do
+   local size,address=df.sizeof(b[field]);local copy=df.new('uint8_t',size)
+   dfhack.internal.memmove(copy,address,size);saved.guards[#saved.guards+1]={copy=copy,address=address,size=size}
+  end
+ end
+ _G.df3d_overlap_fixture=saved
+elseif request.op=='overlap_result' then
+ for _,id in ipairs(request.ids)do assert(df.building.find(id).flags.room_collision==request.expected,'overlap differs from native reference')end
+ local saved=assert(_G.df3d_overlap_fixture)
+ for _,guard in ipairs(saved.guards)do assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'zone creation changed map search scratch')end
+ result.scratch_guards=#saved.guards
+elseif request.op=='overlap_clear' then
+ local saved=assert(_G.df3d_overlap_fixture)
+ for _,guard in ipairs(saved.guards)do df.delete(guard.copy)end
+ if saved.door then local doors=df.global.world.buildings.other.DOOR;assert(doors[#doors-1]==saved.door);doors:erase(#doors-1);saved.door:delete()end
+ saved.block.tiletype[saved.x][saved.y]=saved.tile;_G.df3d_overlap_fixture=nil
+elseif request.op=='zone_membership_site' then
  for _,candidate in ipairs(df.global.world.buildings.other.IN_PLAY)do
   if candidate:canMakeRoom() then
    local flags=dfhack.maps.getTileFlags(candidate.x1,candidate.y1,candidate.z)

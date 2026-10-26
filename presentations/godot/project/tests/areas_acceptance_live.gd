@@ -387,6 +387,32 @@ func created_zone_membership() -> void:
 	await request({"action":12,"kind":1,"id":int(area.id),"expected_revision":area.revision})
 	await native("removed", {"id":int(area.id)})
 
+func created_zone_overlaps() -> void:
+	var catalog := await request({"action":7})
+	if stopped: return
+	var kinds := {}
+	for choice in catalog.choices: kinds[choice.name]=int(choice.id)
+	var p: Dictionary = fixture.origin
+	var origin := Vector3i(int(p.x)+21,int(p.y)+4,int(p.z))
+	for sample in [["floor","MeetingHall",true],["gather","PlantGathering",false],["tomb","Tomb",true],
+		["wall","MeetingHall",false],["door","MeetingHall",false]]:
+		step = "native overlap " + str(sample[0])
+		await native("overlap_prepare", {"scenario":sample[0],"site":{"x":origin.x,"y":origin.y,"z":origin.z}})
+		var created: Array = []
+		for type in ["Bedroom",str(sample[1])]:
+			var made := await request({"action":10,"kind":1,"zone_type":int(kinds[type]),"origin":origin,"width":1,"height":1})
+			if stopped: return
+			created.append(made.areas[0])
+		await native("overlap_result", {"ids":[int(created[0].id),int(created[1].id)],"expected":sample[2]})
+		for area in created:
+			# The second creation can change the first zone's collision flag/revision.
+			var current := await inspect(int(area.id),1)
+			if stopped: return
+			await request({"action":12,"kind":1,"id":int(area.id),"expected_revision":current.revision})
+			await native("removed", {"id":int(area.id)})
+		await native("overlap_clear")
+		if stopped: return
+
 func wait_ticks() -> void:
 	step = "simulation after edits"
 	await native("wait_start")
@@ -480,6 +506,7 @@ func exercise() -> void:
 		await created_zone_defaults()
 		if not stopped: await created_archery_directions()
 		if not stopped: await created_zone_membership()
+		if not stopped: await created_zone_overlaps()
 		return
 	for key in fixture.missing:
 		incomplete(str(key) + ": " + str(fixture.missing[key]))

@@ -53,7 +53,7 @@
   ],
   "ownership": "Prepare extents, geometry, numbers and refresh hints before allocation. The factory publishes immediately; DF owns returned pointers. Errors after entry may have partial effects and must not be replayed. No runtime native UI handler or menu state is used.",
   "limits": [
-    "Native collision recomputation0xac8490 is still pending ownership audit; this migration does not establish overlap-flag parity.",
+    "This original publication baseline did not establish overlap parity. See native_zone_overlap.json for subsequent single-zone creation overlap verification.",
     "Multi creation, repainting, owners and removal use separate existing paths and remain under audit."
   ],
   "bridge_sha256": "8c9d56f6f45611e0b8c839dc24b0f22b1e08522ecc8bf6287d980e54ca52e649",

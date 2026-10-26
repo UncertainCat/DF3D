@@ -1,0 +1,108 @@
+{
+  "supported_df": "53.16 Steam Windows x64",
+  "native_capture": "build/stockpile-storage-native-zone-defaults-20261025-201756",
+  "owned_df_pid": 107644,
+  "closed_unsaved": true,
+  "source_manifest_unchanged": true,
+  "observations": [
+    {
+      "first_collision": true,
+      "first_type": "Bedroom",
+      "name": "overlap-floor",
+      "second_collision": true,
+      "second_type": "MeetingHall",
+      "x": 109,
+      "y": 80,
+      "z": 165
+    },
+    {
+      "first_collision": false,
+      "first_type": "Bedroom",
+      "name": "overlap-gather",
+      "second_collision": false,
+      "second_type": "PlantGathering",
+      "x": 109,
+      "y": 80,
+      "z": 165
+    },
+    {
+      "first_collision": true,
+      "first_type": "Bedroom",
+      "name": "overlap-tomb",
+      "second_collision": true,
+      "second_type": "Tomb",
+      "x": 109,
+      "y": 80,
+      "z": 165
+    },
+    {
+      "first_collision": false,
+      "first_type": "Bedroom",
+      "name": "overlap-wall",
+      "second_collision": false,
+      "second_type": "MeetingHall",
+      "x": 109,
+      "y": 80,
+      "z": 165
+    },
+    {
+      "first_collision": false,
+      "first_type": "Bedroom",
+      "name": "overlap-door",
+      "second_collision": false,
+      "second_type": "MeetingHall",
+      "x": 109,
+      "y": 80,
+      "z": 165
+    }
+  ],
+  "entries": [
+    {
+      "rva": "0xac8490",
+      "size": 3375,
+      "sha256": "1aa73128a104f87349c92a1e24cab4ed004405e0620794c5aab42cacd9daacdc",
+      "ownership": "Full native overlap pass is reference only. It writes shared path_cost and generation state and is never called at runtime."
+    },
+    {
+      "rva": "0x14adea0",
+      "size": 3252,
+      "sha256": "e514905250af48048b45c1a656ee36290e705a8037b5fa686c07893c51b8bac9",
+      "ownership": "Runtime uses exact false/0 branch: semantic map/building reads, no native UI/search scratch; true-parameter movement-search paths are not entered."
+    },
+    {
+      "rva": "0x5a8390",
+      "size": 560,
+      "sha256": "91b5b810fdb8bc7f283f9380eaee18c04bf45055de8675b6474e6e6e512f9922",
+      "ownership": "Five reachable building-state predicate leaves; read-only supplied building lists."
+    }
+  ],
+  "implementation": "Native immutable room-type dispatch and native tile eligibility; owned coordinate-to-zone map replaces shared path_cost bookkeeping. Mark door centers first, visit zones in reverse order, publish collision flags after all preparation succeeds.",
+  "limits": [
+    "Native pair reference covers same-tile floor, wall, gathering exclusion, Tomb inclusion and a controlled Door-list fixture.",
+    "Door fixture supplies its semantic center/list entry; it does not claim door construction/job completion.",
+    "Removal and repaint overlap refresh remain separate routes pending audit.",
+    "The native Overlapping label is not yet exposed in the area wire contract or DF3D zone heading."
+  ],
+  "df3d_verification": {
+    "path": "build/areas-acceptance-20261025-202059",
+    "status": "passed",
+    "owned_df_pid": 112668,
+    "closed_unsaved": true,
+    "native_observations": 115,
+    "scratch_guards_per_case": 55584,
+    "bridge_sha256": "8cab3cc5eec194ed31e2e53a10a8edee719cc4993d6efa8feef3ced1924563fb",
+    "evidence_sha256": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
+    }
+  },
+  "evidence_sha256": {
+    "result.json": "e1c94f127269147758483e1ac93f9339b29c27b22a253a6f8866239fef832e85",
+    "capture-inputs.json": "c716d62d4fdf5dab809d8b55ec51013567c1fae01aa95fa17160c7f126786eb6",
+    "overlap-floor.png": "aea2c987166688c823ec4e39956ecb22d3b2a948dde2c65acf29ce2ac9e35d71",
+    "overlap-wall.png": "45407cdb2b74a826ea4aa98e2c5ad5d42e8a920767d91f380c747debaf55d739"
+  }
+}

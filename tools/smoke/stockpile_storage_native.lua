@@ -108,6 +108,42 @@ require('gui.script').start(function()
     capture('archery-'..entry[1])
    end
    targets:erase(#targets-1);target:delete()
+   local site
+   for dy=-15,15 do for dx=-15,15 do
+    local x,y=point.x+dx,point.y+dy
+    local tt=dfhack.maps.getTileType(x,y,point.z)
+    local flags,occ=dfhack.maps.getTileFlags(x,y,point.z)
+    local free=flags and not flags.hidden and occ.building==0 and tt and df.tiletype.attrs[tt].shape==df.tiletype_shape.FLOOR
+    if free then for _,zone in ipairs(df.global.world.buildings.other.ANY_ZONE)do
+     if zone.z==point.z and dfhack.buildings.containsTile(zone,x,y)then free=false;break end
+    end end
+    if free then site={x=x,y=y,z=point.z};break end
+   end if site then break end end
+   assert(site,'no free overlap fixture tile')
+   dfhack.gui.revealInDwarfmodeMap(site,true);view:render(dfhack.getTickCount())
+   local block=dfhack.maps.getTileBlock(site.x,site.y,site.z)
+   local tx,ty=site.x%16,site.y%16;local original_tile=block.tiletype[tx][ty]
+   local function make_zone(x,y)
+    click(x,y);map_click(site.x,site.y);map_click(site.x,site.y)
+    local zone=assert(ui.cur_bld);click(38,9);return zone
+   end
+   for _,case in ipairs{{'floor',7,24,true},{'gather',26,45,false},{'tomb',26,42,true},{'wall',7,24,false},{'door',7,24,false}}do
+    local door
+    if case[1]=='wall' then block.tiletype[tx][ty]=df.tiletype.StoneWall end
+    if case[1]=='door' then
+     door=df.building_doorst:new();door.centerx=site.x;door.centery=site.y;door.z=site.z
+     df.global.world.buildings.other.DOOR:insert('#',door)
+    end
+    local first=make_zone(7,27)
+    local second=make_zone(case[2],case[3]);b=second;pile_id=b.id
+    records[#records+1]={name='overlap-'..case[1],first_type=df.civzone_type[first.type],second_type=df.civzone_type[second.type],
+     first_collision=first.flags.room_collision,second_collision=second.flags.room_collision,x=site.x,y=site.y,z=site.z}
+    assert(first.flags.room_collision==case[4] and second.flags.room_collision==case[4],'native overlap mismatch '..case[1])
+    capture('overlap-'..case[1])
+    assert(dfhack.buildings.deconstruct(second));assert(dfhack.buildings.deconstruct(first))
+    if door then local doors=df.global.world.buildings.other.DOOR;doors:erase(#doors-1);door:delete()end
+    block.tiletype[tx][ty]=original_tile
+   end
    return
   end
   if test_zone_gather then

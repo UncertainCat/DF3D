@@ -1,3 +1,42 @@
+## Native overlap rules on zone creation
+
+Single-zone creation recomputes room collision flags using DF53.16's native
+tile-eligibility predicate0x14adea0 with the exact false/0 arguments used by
+native overlap recomputation. This branch reads semantic map/building state
+and skips movement-search/temperature paths. The complete predicate, immutable
+type dispatch and five reachable building-state leaves are pinned. The eight
+participating room types come from DF's immutable dispatch table at0xac91ac.
+The complete outer routine0xac8490 is reference only: it uses shared path-cost
+storage and search-generation state and is never invoked by this path.
+
+An owned coordinate map replaces that temporary native bookkeeping. Door
+centers reserve cells first; zones are visited in native reverse order and
+only eligible extent cells participate. Both owners of a shared cell are
+marked. All collision flags, including cleared flags on nonparticipating zones,
+are committed after preparation completes. Native path_cost, path_tag and
+search generations are not runtime inputs or outputs of this computation.
+
+Native `build/stockpile-storage-native-zone-defaults-20261025-201756` checks
+actual chooser/rectangle creation: Bedroom with Meeting Area or Tomb overlaps
+on floor; gathering, wall and door-center cases do not. The door fixture
+supplies a semantic center/list entry, not a completed door-construction job.
+Owned DF107644 closes unsaved with the source manifest unchanged. The native
+floor capture shows the red Overlapping caption and was inspected.
+
+Protected `build/areas-acceptance-20261025-202059` passes115 native observations,
+including the previous creation/registration cases and five overlap pairs.
+Each pair checks55,584 byte guards covering every loaded block's path_cost and
+path_tag arrays; all remain unchanged through creation. Owned DF112668 closes
+unsaved, both save manifests match and diagnostics are clean. Offline
+`build/qa/zone-native-overlap` passes root CTest19/19 and the Lua adapter;
+the matching MSVC bridge builds. `fixtures/areas/native_zone_overlap.json`
+retains observations, code hashes, evidence and verification limits.
+
+The red Overlapping caption is still absent from the area wire contract and
+DF3D zone heading; exposing it and its revision tracking is next UI work.
+Repaint/removal/Multi overlap lifecycle remains a separate audit. Zones is
+still staged; this is creation-effect verification, not full Zones acceptance.
+
 ## Native single-zone allocation and registration
 
 Single-zone creation uses DF's factory0x28b650, completion0x577040,
@@ -35,9 +74,9 @@ zone capture was inspected. Owned DF117532 closes unsaved and both manifests
 match; only the known Godot separate-thread notice remains. This is focused
 creation acceptance, not complete Zones acceptance.
 
-This does not yet migrate native overlap-flag recomputation0xac8490, whose
-map-cost scratch needs a separate ownership audit. Multi creation, repainting,
-owner assignment and removal remain distinct routes under audit. Zones remains
+Creation overlap effects now use the owned bookkeeping and native predicate
+described above. Multi creation, repainting, owner assignment and removal
+remain distinct routes under audit. Zones remains
 staged. `fixtures/areas/native_zone_publication.json` retains the native entry
 identities, ownership boundary and verification limits.
 

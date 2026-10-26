@@ -195,7 +195,7 @@ def main():
      r.create_area=create_area
      r.remove_area=remove_area
      r.synchronous_read=action==9 and (r.area.operation==1 or r.area.operation==26)
-     r.synchronous_write=action==13 or action==10 or action==12 or action==11 and (r.area.operation==nil or r.area.operation==0 or r.area.operation==3 or r.area.operation==5 or r.area.operation==7 or r.area.operation==8 or r.area.operation==9 or r.area.operation==11 or r.area.operation==2 and (r.area.scope==3 or r.area.scope==4))
+     r.synchronous_write=action==13 or action==10 or action==12 or action==11 and (r.area.operation==nil or r.area.operation==0 or r.area.operation==3 or r.area.operation==5 or r.area.operation==7 or r.area.operation==8 or r.area.operation==9 or r.area.operation==11 or r.area.operation==12 or r.area.operation==2 and (r.area.scope==3 or r.area.scope==4))
      return r
     end
     """)
@@ -1224,11 +1224,10 @@ def main():
      local r=previous_request(action,extra)
      r.squad_use=function(b,s,use,budget)
       squad_calls=squad_calls+1;assert(b==zone and s==squad_fixture)
-      if budget<13 then return {ok=false,message='squad budget',steps=1} end
+      if budget and budget<13 then return {ok=false,message='squad budget',steps=1} end
       if refuse_squad then return {ok=false,message='native squad refusal',steps=13} end
       if use==0 then
-       local retired={};if #b.squad_room_info>0 then retired={b.squad_room_info[1],s.rooms[1]} end
-       b.squad_room_info={};s.rooms={};return {ok=true,steps=13,retired=retired}
+       b.squad_room_info={{squad_id=s.id,mode={whole=0}}};s.rooms={};return {ok=true,steps=13}
       end
       b.squad_room_info={{squad_id=s.id,mode={whole=use}}};s.rooms={{building_id=b.id,mode={whole=use}}}
       if fail_squad then error('squad fixture exception') end
@@ -1257,17 +1256,12 @@ def main():
     assert call(11, squad_request)["ok"]
     squad_request.update(squad_use=0, expected_revision=zone_revision())
     no_retire = lua.globals().request(11, lua.table_from(squad_request))
-    no_retire["area_retire_capacity"] = 1
-    assert adapter(no_retire)["message"] == "Area retire capacity reached; restart DF3D bridge"
-    assert lua.eval("#zone.squad_room_info") == 1
-    no_retire["area_retire_capacity"] = 2
-    no_retire["step_budget"] = 179
-    assert not adapter(no_retire)["ok"] and lua.eval("#zone.squad_room_info") == 1
-    no_retire["step_budget"] = 180
+    no_retire["area_retire_capacity"] = 0
+    no_retire["step_budget"] = 0
     removed = adapter(no_retire)
-    assert removed["ok"] and len(removed["retired"]) == 2
-    assert removed["retired"][1]["squad_id"] == 20 and removed["retired"][2]["building_id"] == 6
-    assert lua.eval("#zone.squad_room_info") == 0 and lua.eval("#squad_fixture.rooms") == 0
+    assert removed["ok"] and removed["retired"] is None
+    assert lua.eval("#zone.squad_room_info") == 1 and lua.eval("zone.squad_room_info[1].mode.whole") == 0
+    assert lua.eval("#squad_fixture.rooms") == 0
     lua.execute("zone.type=2")
     assert not call(11, dict(squad_request, expected_revision=zone_revision()))["ok"]
     lua.execute("zone.type=6;squad_fixture.entity_id=99")
@@ -1276,7 +1270,7 @@ def main():
     assert call(11, dict(squad_request, expected_revision=zone_revision()))["message"] == "native squad refusal"
     lua.execute("refuse_squad=false;fail_squad=true")
     uncertain = call(11, dict(squad_request, squad_use=2, expected_revision=zone_revision()))
-    assert not uncertain["ok"] and uncertain["steps"] == 1536 and "inspect before retrying" in uncertain["message"]
+    assert not uncertain["ok"] and uncertain["work_unknown"] and "inspect before retrying" in uncertain["message"]
     lua.execute("""
     zone.type=2;zone.assigned_units={};assign_calls=0;df.item={find=function() return nil end}
     local previous_request=request

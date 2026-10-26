@@ -3,6 +3,7 @@ local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local main=df.global.game.main_interface
 local base_zone
+local rack_fixture=assert(loadfile((debug.getinfo(1,'S').source:sub(2):gsub('areas%-squads%-native.lua$','areas-squad-fixture.lua'))))()
 local function pixel(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y
  g.mouse_x=x//(g.screen_pixel_x//g.dimx);g.mouse_y=y//(g.screen_pixel_y//g.dimy)
@@ -50,8 +51,10 @@ local function mode(b,id)
 end
 local function toggle(name,b,id,x,y,bit)
  local expected=mode(b,id)~bit
+ rack_fixture.prepare()
  pixel(x,y)
  local row=capture(name,b)
+ row.rack_effects=rack_fixture.verify(id,expected)
  assert(mode(b,id)==expected,'native zone toggle differs: '..name)
  local squad=assert(df.squad.find(id));local found=false
  for _,r in ipairs(squad.rooms)do if r.building_id==b.id then
@@ -87,6 +90,7 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
  local opened=capture(kind..'-picker',b)
  assert(opened.open and opened.target==b.id,'native squad picker did not open')
  assert(#opened.ids>=2,'squad fixture needs two squads')
+ rack_fixture.start(b,{opened.ids[1],opened.ids[2]})
  local columns=kind=='Barracks' and {{'sleep',816,1},{'train',848,2},{'equipment',880,4},{'individual',912,8}} or {{'train',912,2}}
  for _,column in ipairs(columns)do
   for n=1,2 do toggle(kind..'-first-'..column[1]..'-'..n,b,opened.ids[1],column[2],118,column[3])end
@@ -99,4 +103,5 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  capture(kind..'-closed',b)
+ rack_fixture.finish()
 end

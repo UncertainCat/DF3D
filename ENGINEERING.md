@@ -18,13 +18,16 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 ## Native squad assignment reference
 
 `fixtures/areas/native_zone_squads.json` records protected native run
-`build/stockpile-storage-native-zone-squads-20261026-161857`. Native Barracks
+`build/stockpile-storage-native-zone-squads-20261026-162633`. Native Barracks
 and Archery Range pickers show four fortress squads in the same order, with
 four use controls for Barracks and training alone for Archery. The range is
 created through native viewport input. Both first-row toggles and a second
 squad's full assign/clear sequence preserve reciprocal modes. Clearing the
 last bit retains a zero-valued zone-side record but removes the squad-side
-room record. The source save remains unchanged; DF129036 exits unsaved.
+room record. Controlled detached racks verify addition of eligible combat and
+training memberships, removal of stale memberships, and equipment invalidation.
+They create no map occupancy or construction jobs and are detached before any
+simulation. The source save remains unchanged; DF138464 exits unsaved.
 Repeat with `tools/smoke/stockpile_storage_native.ps1 -ZoneSquads`.
 
 The native input handler calls `0x10efa80(squad*, building_id, xor_mask)`.
@@ -32,12 +35,24 @@ Its audited body uses semantic inputs and world buildings without reading
 selector state. Besides updating records with native sorted insertion and
 allocation, it sets the equipment buildings-update bit and recalculates combat
 and training rack membership through `building::isValidSquadAssignment`.
-The fixture pins the full body through `0x10efe7b` and records the update flag
-and rack vectors. This fortress has empty rack vectors; nonempty rack effects
-and direct-call parity remain unverified. The current bridge still reconstructs
-assignment records and incorrectly removes both sides at zero. Native helper
-integration, candidate/name/artwork sourcing and rendered selector fidelity
-remain outstanding; this reference does not establish a completed squad UI.
+The bridge now calls this routine, converting revision-validated set intent to
+an XOR mask from current semantic room state. Identity, zone kind, sorted and
+consistent records, and rack virtual compatibility are checked before entry.
+The full body through `0x10efe7b`, native collection helpers and rack predicate
+are pinned. Native owns record allocation/free; the former copied-vector and
+retired-squad-record path is removed. Squad writes use synchronous native work
+accounting and preserve unknown outcomes after entry, without automatic replay.
+
+Full protected semantic acceptance passes cleanly in
+`build/areas-acceptance-20261026-163255`: ten Barracks and four Archery changes
+verify both record sides, retained zero records, equipment refresh and the same
+controlled rack effects. Simulation and fortress restart also pass, replacing
+DF132272 with DF139064; both save manifests remain unchanged. Core19/19,
+adapter and management Lua contract checks pass in
+`build/qa/zone-squad-native-accounting`; the MSVC bridge build passes.
+`native_zone_squads.json.bridge_assignment` retains the fourteen observations.
+Candidate/name/artwork sourcing and rendered selector fidelity remain
+outstanding; this semantic acceptance does not establish a completed squad UI.
 
 ## Animal keyboard activation and portrait reference
 

@@ -8,6 +8,7 @@
 #include "df/building_doorst.h"
 #include "df/building_chainst.h"
 #include "df/building_cagest.h"
+#include "df/building_weaponrackst.h"
 #include "df/buildingitemst.h"
 #include "df/world.h"
 #include "df/unit.h"
@@ -99,6 +100,53 @@ bool refreshOverlaps(const uint8_t* base,const df::building_civzonest* excluded=
     for(size_t i=0;i<zones.size();++i)zones[i]->flags.bits.room_collision=collisions[i];
     return true;
 }
+}
+bool nativeZoneSquadAssignmentReady() {
+    static_assert(offsetof(df::squad,rooms)==0xf0);
+    static_assert(offsetof(df::squad,rack_combat)==0x108);
+    static_assert(offsetof(df::squad,rack_training)==0x120);
+    static_assert(offsetof(df::building,relations)==0xa0);
+    static_assert(offsetof(df::building_civzonest,squad_room_info)==0x1a8);
+    if(!nativeZoneOwnerReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=
+        // Include all unwind fragments, not just the first pdata range.
+        hash(base+0x10efa80,0x3fb)==0xc92b46ab988d52adULL &&
+        hash(base+0x5b0610,0xb5)==0x1ab81b19dc0f2245ULL &&
+        hash(base+0xb9dc0,0xa7)==0x4d8961b901732215ULL &&
+        hash(base+0xe3490,0xb9)==0xed2cef3f947f09c3ULL &&
+        hash(base+0xb9e70,0xf8)==0x7dab880be6ec9cbaULL &&
+        hash(base+0x70e20,0x117)==0x09aba69f846f6c10ULL &&
+        hash(base+0xbabe0,0xab)==0x1bd318997a061458ULL;
+    return compatible;
+}
+bool nativeZoneSetSquadUse(df::building_civzonest& zone,df::squad& squad,uint32_t use) {
+    if(!df::global::world || !df::global::plotinfo || !nativeZoneSquadAssignmentReady() || use>15 ||
+       squad.entity_id!=df::global::plotinfo->group_id || df::building::find(zone.id)!=&zone ||
+       df::squad::find(squad.id)!=&squad)return false;
+    if(zone.type!=df::civzone_type::Barracks && (zone.type!=df::civzone_type::ArcheryRange || (use&~2u)))return false;
+    uint32_t current=0,zoneUse=0;int32_t previous=-1;
+    for(const auto* row:squad.rooms) {
+        if(!row || row->building_id<=previous || (row->mode.whole&~15u))return false;
+        previous=row->building_id;
+        if(row->building_id==zone.id)current=row->mode.whole;
+    }
+    previous=-1;
+    for(const auto* row:zone.squad_room_info) {
+        if(!row || row->squad_id<=previous || (row->mode.whole&~15u))return false;
+        previous=row->squad_id;
+        if(row->squad_id==squad.id)zoneUse=row->mode.whole;
+    }
+    if(zoneUse!=current)return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    for(const auto* rack:df::global::world->buildings.other.WEAPON_RACK) {
+        if(!rack || (*reinterpret_cast<const uintptr_t* const*>(rack))[0x290/8]!=reinterpret_cast<uintptr_t>(base+0x5b0610))return false;
+        for(const auto* related:rack->relations)if(!related)return false;
+    }
+    // DF's routine owns record lifetime and recalculates both rack vectors.
+    // No native selector, drawing or search scratch is supplied or borrowed.
+    reinterpret_cast<void (*)(df::squad*,int32_t,uint32_t)>(base+0x10efa80)(&squad,zone.id,current^use);
+    return true;
 }
 bool nativeZoneAnimalAssignmentReady() {
     static_assert(offsetof(df::building_chainst,assigned)==0x148);

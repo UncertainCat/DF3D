@@ -1042,7 +1042,7 @@ local function native_operation(r)
  sync_epoch(r.epoch)
  local a=r.area or {};local op=default(a,'operation',0);local steps=0
  local synchronous=r.synchronous_read==true and r.action==9 and (op==0 or op==1 or op==26) or
-  r.synchronous_write==true and (r.action==13 and (op==0 or op==15) or r.action==11 and (op==0 or op==2 or op==3 or op==5 or op==7 or op==8 or op==9 or op==11) or r.action==12 and op==0 or r.action==10 and (op==0 or op==5))
+  r.synchronous_write==true and (r.action==13 and (op==0 or op==15) or r.action==11 and (op==0 or op==2 or op==3 or op==5 or op==7 or op==8 or op==9 or op==11 or op==12) or r.action==12 and op==0 or r.action==10 and (op==0 or op==5))
  local budget=synchronous and math.huge or default(r,'step_budget',0)
  local unknown_work=false
  local function finish(result)
@@ -1466,13 +1466,12 @@ local function native_operation(r)
   end
   local squad=df.squad.find(a.squad_id)
   if not squad or squad.entity_id~=df.global.plotinfo.group_id then return reject('Squad no longer exists') end
-  if a.squad_use==0 and default(r,'area_retire_capacity',0)<2 then return reject('Area retire capacity reached; restart DF3D bridge') end
   local changed,problem,unknown=invoke(r.squad_use,reply_reserve,b,squad,a.squad_use)
   if changed or unknown then clear_lists() end
   if not changed then return reject(problem) end
   local after,why=observe(b,false)
   if not after then return reject(why..'; native edit may have completed; inspect before retrying') end
-  return finish{ok=true,message='Native squad use updated',areas={info(b,after)},building_id=b.id,retired=changed.retired}
+  return finish{ok=true,message='',areas={info(b,after)},building_id=b.id,retired=changed.retired}
  end
  if legacy_pile_update then
   for _,key in ipairs{'categories','changed_categories'} do

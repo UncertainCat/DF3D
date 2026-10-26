@@ -123,7 +123,6 @@ size_t workDetailHoldingCount=0;
 std::array<void*,1024> areaHolding{};
 size_t areaHoldingCount=0,areaHoldingBytes=0;
 void* areaPaintRetired=nullptr;
-std::array<void*,2> areaSquadRetired{};
 bool areaPaintCommitted=false;
 bool citizenRecalcPending=false;
 uint64_t citizenHelperGeneration=0;
@@ -1688,14 +1687,13 @@ int areaAssignItem(lua_State* L) {
   } catch(...) {return result(false,"Native animal assignment failed; inspect before retrying");}
   return result(true,"");
 }
-// Allocate both squad records and replacement vectors before committing. Hold
-// detached records immediately so a later Lua failure cannot lose ownership.
+// Native owns squad/zone records, equipment invalidation and rack membership.
 int areaSquadUse(lua_State* L) {
   const auto fail=[&](const char* reason,uint32_t steps=1) {
     lua_newtable(L);field(L,"ok",false);field(L,"message",reason);field(L,"steps",steps);return 1;
   };
-  if(!lua_isinteger(L,4) || lua_tointeger(L,4)<0 || lua_tointeger(L,4)>1536)return fail("Invalid squad budget",0);
-  const auto budget=uint32_t(lua_tointeger(L,4));if(!budget)return fail("Squad use exceeds remaining step budget",0);
+  if(!lua_isnil(L,4) && (!lua_isinteger(L,4) || lua_tointeger(L,4)<0 || lua_tointeger(L,4)>1536))return fail("Invalid squad budget",0);
+  const uint32_t budget=lua_isnil(L,4)?UINT32_MAX:uint32_t(lua_tointeger(L,4));if(!budget)return fail("Squad use exceeds remaining step budget",0);
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
   auto* squad=Lua::GetDFObject<df::squad>(L,2);
   if(!zone || !squad)return fail("Area or squad no longer exists");
@@ -1707,48 +1705,26 @@ int areaSquadUse(lua_State* L) {
     return fail("Squad use request required");
   if(zone->type!=df::civzone_type::Barracks && (zone->type!=df::civzone_type::ArcheryRange || (use&~2)))
     return fail("This operation does not apply to this zone type");
-  if(areaSquadRetired[0] || areaSquadRetired[1])return fail("Only one squad removal is allowed per request");
   if(zone->squad_room_info.size()>256)return fail("Zone assignment list exceeds 256 entries");
-  // Validate, copy and shift/grow each vector before committing either side.
+  if(!df3d_area::nativeZoneSquadAssignmentReady())return fail("Native squad assignment unavailable");
   const uint64_t cost=5+4*((uint64_t(zone->squad_room_info.size())+256)/256)+
       4*((uint64_t(squad->rooms.size())+256)/256);
   if(cost>budget)return fail("Squad use exceeds remaining step budget");
-  df::building_squad_infost* zoneRecord=nullptr;df::squad_barracks_infost* squadRecord=nullptr;
-  for(auto* v:zone->squad_room_info) {
-    if(!v || (v->squad_id==squad->id && zoneRecord))return fail("Invalid native squad assignments",uint32_t(cost));
-    if(v->squad_id==squad->id)zoneRecord=v;
+  if(use && zone->squad_room_info.size()==256 &&
+      std::none_of(zone->squad_room_info.begin(),zone->squad_room_info.end(),
+          [&](const auto* row){return row && row->squad_id==squad->id;}))
+    return fail("Zone assignment list exceeds 256 entries",uint32_t(cost));
+  try {
+    mutated=true;
+    if(!df3d_area::nativeZoneSetSquadUse(*zone,*squad,uint32_t(use))) {
+      lua_newtable(L);field(L,"ok",false);field(L,"message","Native squad assignment failed; inspect before retrying");
+      field(L,"steps",cost);field(L,"work_unknown",true);return 1;
+    }
+  } catch(...) {
+    lua_newtable(L);field(L,"ok",false);field(L,"message","Native squad assignment failed; inspect before retrying");
+    field(L,"steps",cost);field(L,"work_unknown",true);return 1;
   }
-  for(auto* v:squad->rooms) {
-    if(!v || (v->building_id==zone->id && squadRecord))return fail("Invalid native squad assignments",uint32_t(cost));
-    if(v->building_id==zone->id)squadRecord=v;
-  }
-  if(use && !zoneRecord && zone->squad_room_info.size()==256)return fail("Zone assignment list exceeds 256 entries",uint32_t(cost));
-  if(!use && areaHolding.size()-areaHoldingCount<2)return fail("Area retire capacity reached; restart DF3D bridge",uint32_t(cost));
-  auto zones=zone->squad_room_info;auto rooms=squad->rooms;
-  std::unique_ptr<df::building_squad_infost> addedZone;
-  std::unique_ptr<df::squad_barracks_infost> addedSquad;
-  if(use) {
-    if(!zoneRecord){addedZone=std::make_unique<df::building_squad_infost>();addedZone->squad_id=squad->id;zoneRecord=addedZone.get();zones.push_back(zoneRecord);}
-    if(!squadRecord){addedSquad=std::make_unique<df::squad_barracks_infost>();addedSquad->building_id=zone->id;squadRecord=addedSquad.get();rooms.push_back(squadRecord);}
-    zoneRecord->mode.whole=use;squadRecord->mode.whole=use;
-  } else {
-    if(zoneRecord)zones.erase(std::find(zones.begin(),zones.end(),zoneRecord));
-    if(squadRecord)rooms.erase(std::find(rooms.begin(),rooms.end(),squadRecord));
-  }
-  zone->squad_room_info.swap(zones);squad->rooms.swap(rooms);
-  addedZone.release();addedSquad.release();mutated=true;
-  if(!use) {
-    areaSquadRetired={zoneRecord,squadRecord};
-    if(zoneRecord){areaHolding[areaHoldingCount++]=zoneRecord;areaHoldingBytes+=sizeof(*zoneRecord);}
-    if(squadRecord){areaHolding[areaHoldingCount++]=squadRecord;areaHoldingBytes+=sizeof(*squadRecord);}
-  }
-  lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",cost);
-  if(!use) {
-    lua_newtable(L);int index=0;
-    if(zoneRecord){Lua::PushDFObject(L,zoneRecord);lua_rawseti(L,-2,++index);}
-    if(squadRecord){Lua::PushDFObject(L,squadRecord);lua_rawseti(L,-2,++index);}
-    lua_setfield(L,-2,"retired");
-  }
+  lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",cost);field(L,"work_unknown",true);
   return 1;
 }
 // Lua checks the pile revision and reserves reply-snapshot work first. Native
@@ -2224,7 +2200,7 @@ void runPaintCounts(const m::AreaRequest& a) {
   publish();
 }
 void run(color_ostream& out) {
-  areaPaintRetired=nullptr;areaPaintCommitted=false;areaSquadRetired={};
+  areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
   if(r->action()==m::ManagementAction::WorldHover) {
     worldHoverTile=*r->origin();
@@ -2634,12 +2610,8 @@ void run(color_ostream& out) {
       } else if(operation==m::AreaOperation::AssignUnits) {
         native=Lua::GetDFObject<df::general_ref_building_civzone_assignedst>(L,-1);
         bytes=sizeof(df::general_ref_building_civzone_assignedst);
-      } else if(operation==m::AreaOperation::SquadUse) {
-        native=Lua::GetDFObject<df::building_squad_infost>(L,-1);bytes=sizeof(df::building_squad_infost);
-        if(!native){native=Lua::GetDFObject<df::squad_barracks_infost>(L,-1);bytes=sizeof(df::squad_barracks_infost);}
       }
-      if(native && ((operation==m::AreaOperation::Paint && native==areaPaintRetired) ||
-          (operation==m::AreaOperation::SquadUse && (native==areaSquadRetired[0] || native==areaSquadRetired[1])))) {
+      if(native && operation==m::AreaOperation::Paint && native==areaPaintRetired) {
         // Already retained by the native commit, including exceptional Lua exits.
       } else if(native && areaHoldingCount<areaHolding.size()) {
         areaHolding[areaHoldingCount++]=native;areaHoldingBytes+=bytes;mutated=true;

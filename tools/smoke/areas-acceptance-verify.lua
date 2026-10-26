@@ -2,6 +2,7 @@
 local out,index=...
 local json=require('json')
 local B=dfhack.buildings
+local squad_racks=assert(loadfile((debug.getinfo(1,'S').source:sub(2):gsub('areas%-acceptance%-verify.lua$','areas-squad-fixture.lua'))))()
 local function read(path) local f=io.open(path,'r');if not f then return nil end;local s=f:read('*a');f:close();return s end
 local function write(path,value) local f=assert(io.open(path,'w'));f:write(json.encode(value));f:close() end
 local function restore_link_block()
@@ -24,6 +25,7 @@ local function restore_animal_query_name()
  end
 end
 if index=='final' then
+ squad_racks.finish()
  restore_animal_query_name()
  restore_owner_fact_name()
  restore_link_block()
@@ -943,11 +945,17 @@ elseif request.op=='assignment' then
  result.item_in_job=false;result.item_refs=0
  result.chain=chain.id;result.pending_job_absent=true;result.retained_job=saved.retained;result.cursor_unchanged=true
 
+elseif request.op=='squad_before' then
+ if not _G.df3d_squad_racks then result.racks=squad_racks.start(building(),{request.squad_id}) end
+ squad_racks.prepare()
+elseif request.op=='squad_finish' then
+ squad_racks.finish()
 elseif request.op=='squad' then
  local b,s=building(),assert(df.squad.find(request.squad_id));local n,m=0,0
  for _,r in ipairs(b.squad_room_info) do if r.squad_id==s.id then n=n+1;assert(r.mode.whole==request.use,'zone squad use') end end
  for _,r in ipairs(s.rooms) do if r.building_id==b.id then m=m+1;assert(r.mode.whole==request.use,'squad room use') end end
- local count=request.use==0 and 0 or 1;assert(n==count and m==count,'squad reciprocal membership')
+ local count=request.use==0 and 0 or 1;assert(n==1 and m==count,'native squad reciprocal membership')
+ if _G.df3d_squad_racks then result.rack_effects=squad_racks.verify(s.id,request.use)end
 elseif request.op=='pile_link' then
  local source,target=building(),assert(df.building.find(request.target_id))
  assert(df.building_stockpilest:is_instance(source) and df.building_stockpilest:is_instance(target),'expected two stockpiles')

@@ -301,14 +301,19 @@ func candidates_and_zones() -> void:
 				if stopped: return
 	await animal_assignments()
 	if stopped: return
-	var barracks := zone("Barracks")
-	if barracks >= 0 and int(fixture.squad) >= 0:
-		for use in [15,2,0]:
-			await edit(barracks, 1, {"operation":12, "squad_id":int(fixture.squad), "squad_use":use})
-			await native("squad", {"id":barracks, "squad_id":int(fixture.squad), "use":use})
-			if stopped: return
-		retirements += 2
-	else: incomplete("barracks/squad prerequisite missing")
+	step="native squad assignment effects"
+	for test_case in [["Barracks",[1,3,7,15,14,12,8,0,2,0]],["ArcheryRange",[2,0,2,0]]]:
+		var target_zone:=zone(str(test_case[0]))
+		if target_zone<0 or int(fixture.squad)<0:incomplete("zone/squad prerequisite missing");return
+		for use in test_case[1]:
+			await native("squad_before",{"id":target_zone,"squad_id":int(fixture.squad)})
+			if stopped:return
+			await edit(target_zone,1,{"operation":12,"squad_id":int(fixture.squad),"squad_use":use})
+			if stopped:return
+			await native("squad",{"id":target_zone,"squad_id":int(fixture.squad),"use":use})
+			if stopped:return
+		await native("squad_finish")
+		if stopped:return
 
 func animal_assignments() -> void:
 	step = "animal assignment effects"

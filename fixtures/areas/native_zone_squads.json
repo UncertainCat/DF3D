@@ -1,14 +1,14 @@
 {
   "source": "DF53.16 native Barracks and Archery Range squad selectors; protected paused unsaved session",
-  "run": "build/stockpile-storage-native-zone-squads-20261026-161857",
-  "scope": "Native UI opening/closing, four Barracks use bits and Archery training bit on two squads; creation, toggles and clearing reciprocal room records. Source save unchanged. Diagnostic parent selection only; range created through native viewport input. No product integration or nonempty rack-membership verification claimed.",
+  "run": "build/stockpile-storage-native-zone-squads-20261026-162633",
+  "scope": "Protected paused native Barracks and Archery toggles on two squads, including retained zero zone records and native reciprocal removal. Controlled detached racks verify eligible combat/training membership, stale membership removal and equipment invalidation. Source save unchanged; fixtures leave no map occupancy or jobs.",
   "native_toggle": {
     "rva": "0x10efa80",
     "end_exclusive": "0x10efe7b",
     "sha256": "5e866690ce7b50d7be146124f689af7d5087590df4c86962e3031190a7e1b14a",
     "signature": "void(squad*, int32_t building_id, uint32_t xor_mask)",
     "caller": "0x334d63..0x334d83",
-    "ownership": "Semantic squad and building inputs; no selector/menu scratch read in the audited body. Uses native world buildings and weapon racks, native allocators and virtual isValidSquadAssignment; transitive compatibility and live direct-call parity remain pending.",
+    "ownership": "Semantic squad and building inputs; no selector/menu scratch. Body and native collection helpers pinned; weapon-rack virtual isValidSquadAssignment at0x5b0610 uses related zone records. Product wrapper validates identity, zone kind, consistent sorted records and rack virtual compatibility before native entry.",
     "effects": [
       "XOR squad room mode; native sorted insertion when needed.",
       "Copy mode to zone squad record; retain existing zone record when zero.",
@@ -18,11 +18,11 @@
     ]
   },
   "files_sha256": {
-    "result.json": "efbce51799b53f6acadd0b7ab653021735168d5bf8873c539bf270e62a975999",
+    "result.json": "aa45ba87c7bbfe9b8019deb6b3219cb6e778e3c17c785aeab378142c018fa4a3",
     "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
     "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
-    "Barracks-picker.png": "aafb6b4681baba92ccd115e2c054d98c35ffcb66dac5eaa5285469e804b89aac",
-    "ArcheryRange-picker.png": "5bbfd06b55f5a1e4ae5c80db9a4fc2ff14b218b377bbe20db0a38cea517745a1"
+    "Barracks-picker.png": "9979532e982f87ce1b4cdfd30761ce9dda92f4bab2333d279b795d22af514bd0",
+    "ArcheryRange-picker.png": "cacec050d12a71e0a0d0e4aeb24fd94b91ef85b26bc30b1433b08921cd6748b9"
   },
   "observations": [
     {
@@ -156,6 +156,17 @@
       ],
       "name": "Barracks-first-sleep-1",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -163,8 +174,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -176,8 +191,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1491
+          ],
+          "rack_training": [
+            1491
+          ],
           "rooms": []
         },
         {
@@ -219,6 +238,17 @@
       ],
       "name": "Barracks-first-sleep-2",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -226,8 +256,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -239,8 +273,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1491
+          ],
+          "rack_training": [
+            1491
+          ],
           "rooms": []
         },
         {
@@ -282,6 +320,15 @@
       ],
       "name": "Barracks-first-train-1",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -289,7 +336,9 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
+          "rack_combat": [
+            1490
+          ],
           "rack_training": [],
           "rooms": [
             {
@@ -302,8 +351,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1491
+          ],
+          "rack_training": [
+            1491
+          ],
           "rooms": []
         },
         {
@@ -345,6 +398,17 @@
       ],
       "name": "Barracks-first-train-2",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -352,8 +416,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -365,8 +433,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1491
+          ],
+          "rack_training": [
+            1491
+          ],
           "rooms": []
         },
         {
@@ -408,6 +480,15 @@
       ],
       "name": "Barracks-first-equipment-1",
       "open": true,
+      "rack_effects": {
+        "combat": [],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -416,7 +497,9 @@
           "entity": 865,
           "id": 120,
           "rack_combat": [],
-          "rack_training": [],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -428,8 +511,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1491
+          ],
+          "rack_training": [
+            1491
+          ],
           "rooms": []
         },
         {
@@ -471,6 +558,17 @@
       ],
       "name": "Barracks-first-equipment-2",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -478,8 +576,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -491,8 +593,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1491
+          ],
+          "rack_training": [
+            1491
+          ],
           "rooms": []
         },
         {
@@ -534,6 +640,17 @@
       ],
       "name": "Barracks-first-individual-1",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -541,8 +658,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -554,8 +675,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1491
+          ],
+          "rack_training": [
+            1491
+          ],
           "rooms": []
         },
         {
@@ -597,6 +722,17 @@
       ],
       "name": "Barracks-first-individual-2",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -604,8 +740,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -617,8 +757,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1491
+          ],
+          "rack_training": [
+            1491
+          ],
           "rooms": []
         },
         {
@@ -660,6 +804,13 @@
       ],
       "name": "Barracks-second-sleep-on",
       "open": true,
+      "rack_effects": {
+        "combat": [],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -667,8 +818,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -732,6 +887,15 @@
       ],
       "name": "Barracks-second-train-on",
       "open": true,
+      "rack_effects": {
+        "combat": [],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -739,8 +903,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -753,7 +921,9 @@
           "entity": 865,
           "id": 125,
           "rack_combat": [],
-          "rack_training": [],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -804,6 +974,17 @@
       ],
       "name": "Barracks-second-equipment-on",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -811,8 +992,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -824,8 +1009,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -876,6 +1065,17 @@
       ],
       "name": "Barracks-second-individual-on",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -883,8 +1083,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -896,8 +1100,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -948,6 +1156,17 @@
       ],
       "name": "Barracks-second-sleep-off",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [
+          1490
+        ],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -955,8 +1174,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -968,8 +1191,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -1020,6 +1247,15 @@
       ],
       "name": "Barracks-second-train-off",
       "open": true,
+      "rack_effects": {
+        "combat": [
+          1490
+        ],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -1027,8 +1263,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -1040,7 +1280,9 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
+          "rack_combat": [
+            1490
+          ],
           "rack_training": [],
           "rooms": [
             {
@@ -1092,6 +1334,13 @@
       ],
       "name": "Barracks-second-equipment-off",
       "open": true,
+      "rack_effects": {
+        "combat": [],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -1099,8 +1348,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -1164,6 +1417,13 @@
       ],
       "name": "Barracks-second-individual-off",
       "open": true,
+      "rack_effects": {
+        "combat": [],
+        "equipment_update": true,
+        "related": 1490,
+        "training": [],
+        "unrelated": 1491
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -1171,8 +1431,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -1237,8 +1501,12 @@
           "alias": "",
           "entity": 865,
           "id": 120,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1490
+          ],
+          "rack_training": [
+            1490
+          ],
           "rooms": [
             {
               "id": 536,
@@ -1338,7 +1606,7 @@
         }
       ],
       "target": 536,
-      "zone": 1490,
+      "zone": 1492,
       "zone_assignments": [],
       "zone_type": "94"
     },
@@ -1394,8 +1662,8 @@
           "rooms": []
         }
       ],
-      "target": 1490,
-      "zone": 1490,
+      "target": 1492,
+      "zone": 1492,
       "zone_assignments": [],
       "zone_type": "94"
     },
@@ -1411,6 +1679,15 @@
       ],
       "name": "ArcheryRange-first-train-1",
       "open": true,
+      "rack_effects": {
+        "combat": [],
+        "equipment_update": true,
+        "related": 1493,
+        "training": [
+          1493
+        ],
+        "unrelated": 1494
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -1419,14 +1696,16 @@
           "entity": 865,
           "id": 120,
           "rack_combat": [],
-          "rack_training": [],
+          "rack_training": [
+            1493
+          ],
           "rooms": [
             {
               "id": 536,
               "mode": 14
             },
             {
-              "id": 1490,
+              "id": 1492,
               "mode": 2
             }
           ]
@@ -1435,8 +1714,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1494
+          ],
+          "rack_training": [
+            1494
+          ],
           "rooms": []
         },
         {
@@ -1456,8 +1739,8 @@
           "rooms": []
         }
       ],
-      "target": 1490,
-      "zone": 1490,
+      "target": 1492,
+      "zone": 1492,
       "zone_assignments": [
         {
           "id": 120,
@@ -1478,6 +1761,13 @@
       ],
       "name": "ArcheryRange-first-train-2",
       "open": true,
+      "rack_effects": {
+        "combat": [],
+        "equipment_update": true,
+        "related": 1493,
+        "training": [],
+        "unrelated": 1494
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -1498,8 +1788,12 @@
           "alias": "",
           "entity": 865,
           "id": 125,
-          "rack_combat": [],
-          "rack_training": [],
+          "rack_combat": [
+            1494
+          ],
+          "rack_training": [
+            1494
+          ],
           "rooms": []
         },
         {
@@ -1519,8 +1813,8 @@
           "rooms": []
         }
       ],
-      "target": 1490,
-      "zone": 1490,
+      "target": 1492,
+      "zone": 1492,
       "zone_assignments": [
         {
           "id": 120,
@@ -1541,6 +1835,15 @@
       ],
       "name": "ArcheryRange-second-train-on",
       "open": true,
+      "rack_effects": {
+        "combat": [],
+        "equipment_update": true,
+        "related": 1493,
+        "training": [
+          1493
+        ],
+        "unrelated": 1494
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -1562,10 +1865,12 @@
           "entity": 865,
           "id": 125,
           "rack_combat": [],
-          "rack_training": [],
+          "rack_training": [
+            1493
+          ],
           "rooms": [
             {
-              "id": 1490,
+              "id": 1492,
               "mode": 2
             }
           ]
@@ -1587,8 +1892,8 @@
           "rooms": []
         }
       ],
-      "target": 1490,
-      "zone": 1490,
+      "target": 1492,
+      "zone": 1492,
       "zone_assignments": [
         {
           "id": 120,
@@ -1613,6 +1918,13 @@
       ],
       "name": "ArcheryRange-second-train-off",
       "open": true,
+      "rack_effects": {
+        "combat": [],
+        "equipment_update": true,
+        "related": 1493,
+        "training": [],
+        "unrelated": 1494
+      },
       "scroll": 0,
       "selector_rva": 25837536,
       "squads": [
@@ -1654,8 +1966,8 @@
           "rooms": []
         }
       ],
-      "target": 1490,
-      "zone": 1490,
+      "target": 1492,
+      "zone": 1492,
       "zone_assignments": [
         {
           "id": 120,
@@ -1720,8 +2032,8 @@
           "rooms": []
         }
       ],
-      "target": 1490,
-      "zone": 1490,
+      "target": 1492,
+      "zone": 1492,
       "zone_assignments": [
         {
           "id": 120,
@@ -1734,5 +2046,292 @@
       ],
       "zone_type": "94"
     }
-  ]
+  ],
+  "bridge_assignment": {
+    "run": "build/areas-acceptance-20261026-163255",
+    "scope": "Full headless semantic acceptance, 10 Barracks and4 Archery set/clear changes, controlled rack effects, equipment refresh, simulation and fortress restart. Clean diagnostics and unchanged source/clone manifests. No rendered squad selector acceptance claimed.",
+    "bridge_sha256": "663d26190c2cd42debabd8fe9fc0ed940e95e943bb52ae9fd93305fe12b3a12a",
+    "observations": [
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 1
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 3
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [
+              1513
+            ],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 7
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [
+              1513
+            ],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [
+              1513
+            ],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 15
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [
+              1513
+            ],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [
+              1513
+            ],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 14
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [
+              1513
+            ],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [
+              1513
+            ],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 12
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [
+              1513
+            ],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 8
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 0
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 2
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [
+              1513
+            ],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1506,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 0
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1513,
+            "training": [],
+            "unrelated": 1514
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1507,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 2
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1515,
+            "training": [
+              1515
+            ],
+            "unrelated": 1516
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1507,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 0
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1515,
+            "training": [],
+            "unrelated": 1516
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1507,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 2
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1515,
+            "training": [
+              1515
+            ],
+            "unrelated": 1516
+          },
+          "status": "passed"
+        }
+      },
+      {
+        "request": {
+          "id": 1507,
+          "op": "squad",
+          "squad_id": 120,
+          "use": 0
+        },
+        "observed": {
+          "rack_effects": {
+            "combat": [],
+            "equipment_update": true,
+            "related": 1515,
+            "training": [],
+            "unrelated": 1516
+          },
+          "status": "passed"
+        }
+      }
+    ],
+    "files_sha256": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "restart-210/restart.json": "3aa9ef486cfa930803827ca73dc5808d5f479bbc5c0ab85f27db41e8851b4efc"
+    }
+  }
 }

@@ -4,7 +4,7 @@
 #include <string>
 #include <array>
 #include <vector>
-namespace df { struct building_civzonest; struct unit; struct item; }
+namespace df { struct building_civzonest; struct unit; struct item; struct squad; }
 namespace df3d_area {
 // Caller supplies a newly allocated zone and its selected type, at one safe point.
 // Includes native initial range direction from supplied extents and target
@@ -106,6 +106,11 @@ bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner);
 // Call only at a safe point after request/admission/staleness validation.
 // Entering this function can partially mutate; never retry an unknown result.
 bool nativeZoneAnimalAssignmentReady();
+bool nativeZoneSquadAssignmentReady();
+// Semantic set converted to DF's XOR toggle using current squad room state.
+// Native owns allocation/free, reciprocal modes and equipment/rack refresh.
+// Call at a safe point; an exception after entry is an unknown outcome.
+bool nativeZoneSetSquadUse(df::building_civzonest& zone,df::squad& squad,uint32_t use);
 struct ZoneAnimalCandidate { int32_t id; bool item; bool assigned; };
 // Raw native producer order, before widget search/sorting. Owns all output;
 // never reads the native selector. Unsupported/oversized lists fail closed.

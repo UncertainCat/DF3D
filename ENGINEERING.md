@@ -839,12 +839,16 @@ Management remains version 67; there is no schema change in this unit step.
 Root CTest 19/19 and the areas adapter pass in
 build/qa/zone-animal-native-final.
 
-The ordinary full semantic run 20261026-083644 stopped before animal tests on
-the existing wood-list/raw-settings assertion. It is not a successful broader
-regression run; investigate that oracle/data mismatch before release. The
-focused scope is areas_acceptance.ps1 -ZoneAnimalsOnly. Early native probes
-082651/082749 failed test job-lookup helpers; 082830 and 083036 passed after
-using the world linked-list iterator. All owned sessions exited unsaved.
+Full semantic acceptance passes in `build/areas-acceptance-20261026-160729`,
+including simulation and fortress restart, with clean diagnostics and unchanged
+source/clone save manifests. The Wood oracle now uses the owned native row
+producer, checking both absent settings and an initialized Wood preset; raw
+plant enumeration incorrectly fabricated rows for absent settings. Owner and
+animal checks use their native-backed verifiers, including all five owner sorts.
+No-op painting allocates no retired footprint, and post-restart native settings
+complete synchronously. These corrected harness expectations supersede the
+failed broad Wood checks; they do not establish complete Zones/Locations UI
+coverage. The focused animal scope remains `areas_acceptance.ps1 -ZoneAnimalsOnly`.
 
 Candidate producers 0x3a5e30 and 0x3a6780 are UI builders and must not be invoked
 by the product. They retain assigned units/items and gather further candidates.
@@ -2139,9 +2143,10 @@ range direction. The MSVC bridge builds successfully. Protected semantic
 for all18 supported zone types, including Pen/Pond occupant-check bits.
 Owned DF108320 closes unsaved and both save manifests match; diagnostics are
 clean. Repeat with `areas_acceptance.ps1 -ZoneDefaultsOnly -SaveId <new-name>`.
-This focused scope bypasses unrelated tests; the earlier broad195640 run failed
-its legacy wood-list oracle before reaching Zones and is not a passing result.
-The broader harness oracle still needs reconciliation with the native provider.
+This focused scope bypasses unrelated tests. Broader semantic acceptance now
+passes in `build/areas-acceptance-20261026-160729` with the native Wood row
+producer and current owner/animal verifiers, as described above. Neither run
+establishes complete rendered Zones acceptance.
 
 The defaults evidence is a focused baseline. Single-zone allocation and
 registration now use the native path described above; Multi is separate.
@@ -2587,9 +2592,12 @@ readback. This covers an undelivered read reply, not an in-flight mutation.
 three service invalidations, and distinct producer epochs. The retired and
 reopened captures were inspected. Both owned processes closed unsaved and the
 source/clone manifests stayed unchanged; only the known separate-thread notice
-remains. Stockpile-only restart hashes those same two protected saves (1368
-files), recorded in `restart-save-scope.json`; other restart lanes retain their
-existing scope. The earlier `150519` attempt timed out in the UI driver while
+remains. All `areas_acceptance.ps1` scopes now hash their verified source and
+owned clone across restart, matching startup/final protection. The paths are
+recorded in `restart-save-scope.json`; unrelated historical clones are excluded.
+Full semantic run `20261026-160729` verifies1368 files across replacement of
+DF125488 by DF127668 with a distinct producer epoch.
+The earlier `150519` attempt timed out in the UI driver while
 hashing all historical saves; its helper completed preservation and teardown,
 but it is not lifecycle acceptance. Offline
 `build/qa/stockpile-fit-restart-ready` passes root CTest19/19 and the link checks.

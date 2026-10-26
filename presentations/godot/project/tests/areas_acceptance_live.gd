@@ -142,12 +142,16 @@ func settings_and_presets() -> void:
 	step = "1 settings"
 	var pile := int(fixture.pile)
 	if pile < 0: incomplete("missing fixture stockpile"); return
-	# Wood has one native leaf list. Compare every page, row, label and state
-	# against a separate native raw/settings enumeration, including ordering.
+	# Compare the empty fixture and initialized Wood list against DF's row
+	# producer. The native builder intentionally skips absent settings entries.
 	await pages({"action":9, "id":pile, "operation":1}, "settings")
 	var wood := await pages({"action":9, "id":pile, "operation":1, "list_key":"wood"}, "settings")
 	if stopped: return
 	await native("wood", {"id":pile, "rows":wood.settings})
+	await edit(pile,0,{"operation":3,"preset":15})
+	await native("preset",{"id":pile,"preset":15,"category":"wood"})
+	wood=await pages({"action":9,"id":pile,"operation":1,"list_key":"wood"},"settings")
+	await native("wood",{"id":pile,"rows":wood.settings})
 	if wood.settings.is_empty(): incomplete("no captioned wood settings rows")
 	else:
 		var key: String = wood.settings[0].key
@@ -210,10 +214,13 @@ func paint() -> void:
 				if on: desired.append(cell)
 				else: removed.append(cell)
 		for gesture in [{"mode":1,"spans":desired},{"mode":2,"spans":removed}]:
+			var previous_tiles:int=int(a.tile_count)
 			var changed := await request({"action":11,"id":int(a.id),"operation":5,"expected_revision":a.revision,
 				"paint_mode":gesture.mode,"paint_z":int(p.z),"spans":gesture.spans})
 			if stopped: return
-			a = changed.areas[0]; retirements += 1
+			a = changed.areas[0]
+			# A no-op add on the initial full footprint allocates no replacement.
+			if int(a.tile_count)!=previous_tiles:retirements += 1
 		await native("snapshot",{"id":int(a.id),"expected":{"tile_count":200,"extents":expected}})
 	var erase := await request({"action":11, "id":int(a.id), "operation":5, "expected_revision":a.revision,
 		"paint_mode":2, "paint_z":int(p.z), "spans":[{"x":int(p.x), "y":int(p.y)+19, "length":20}]})
@@ -253,12 +260,20 @@ func candidates_and_zones() -> void:
 	for entry in [["Bedroom", 1], ["Pen", 2], ["Barracks", 3]]:
 		var id := zone(entry[0])
 		if id < 0: continue
-		for sort in range(4):
+		for sort in range(5 if int(entry[1])==1 else 4):
 			for descending in [false, true]:
 				var reply := await pages({"action":14, "kind":1, "id":id, "operation":14,
 					"candidate_kind":entry[1], "sort":sort, "sort_descending":descending}, "candidates")
 				if stopped: return
-				await native("candidates", {"id":id, "kind":entry[1], "sort":sort, "descending":descending, "rows":reply.candidates})
+				if int(entry[1])==1:
+					var ids:Array=[]
+					for row in reply.candidates:ids.append(int(row.id))
+					await native("zone_owner_candidates",{"id":id,"ids":ids,"display_rows":reply.candidates,"sort":sort,"descending":descending})
+				elif int(entry[1])==2:
+					await native("animal_candidates",{"id":id,"rows":reply.candidates,"sort":sort,"descending":descending})
+				else:
+					await native("candidates", {"id":id, "kind":entry[1], "sort":sort, "descending":descending, "rows":reply.candidates})
+				if stopped:return
 	step = "7 zone settings and assignments"
 	for entry in [["Pond", "pond_mode", [1,2]], ["ArcheryRange", "facing", [1,2,3,4]],
 		["Tomb", "tomb_citizens", [0,1]], ["Tomb", "tomb_pets", [0,1]],
@@ -782,7 +797,11 @@ func reload_fortress() -> void:
 	if int(fixture.pile) < 0: incomplete("restart fixture could not provision a stockpile"); return
 	var first := await request({"action":9, "id":int(fixture.pile), "operation":1, "list_key":"wood"})
 	if stopped: return
-	if not check(int(first.build_phase) == 1 and int(first.build_done) == 0, "settings did not restart from 0/total"): return
+	# Native settings rows complete synchronously; restart must return current
+	# fortress facts, not an obsolete incremental-builder progress placeholder.
+	if not check(int(first.build_phase)==0 and int(first.build_done)==int(first.build_total),"native settings page incomplete after restart"):return
+	await native("wood",{"id":int(fixture.pile),"rows":first.settings})
+	if stopped:return
 	var status := await native("status")
 	if stopped: return
 	check(int(status.holding) == 0, "holding array survived restart")

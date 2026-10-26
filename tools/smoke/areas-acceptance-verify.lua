@@ -620,14 +620,15 @@ elseif request.op=='external_hide_change' then
  result.area=area(b)
 elseif request.op=='wood' then
  local b=building();local rows={}
- for i,raw in ipairs(df.global.world.raws.plants.all) do
-  if raw.flags.TREE and raw.name_plural~='' then
-   local on=i<#b.settings.wood.mats and b.settings.wood.mats[i]~=0
-   rows[#rows+1]={key='wood/'..i,index=i,label=dfhack.df2utf(raw.name_plural),state=on and 2 or 1,kind=4,estimated=false}
-  end
+ -- Use DF's owned Wood row producer: native skips absent vector entries and
+ -- owns captions/order. Raw enumeration fabricates rows for empty settings.
+ local text,code=dfhack.run_command_silent('df3d','stockpile-wood-read',tostring(b.id))
+ assert(code==0,text)
+ for _,row in ipairs(json.decode(text))do
+  if row.visible then rows[#rows+1]={key='wood/'..row.index,index=row.index,label=row.name,
+   state=row.enabled and 2 or 1,kind=4,estimated=false}end
  end
- table.sort(rows,function(a,b) if a.label:lower()==b.label:lower() then return a.index<b.index end;return a.label:lower()<b.label:lower() end)
- if request.rows then assert(canonical(rows)==canonical(request.rows),'wood page differs from native raw/settings dump') end
+ if request.rows then assert(canonical(rows)==canonical(request.rows),'wood page differs from native row producer') end
  if request.value then for _,row in ipairs(rows) do
   if not request.row_key or request.row_key==row.key then assert(row.state==request.value,'wood filter did not change') end
  end end
@@ -819,23 +820,13 @@ elseif request.op=='animal_candidates' then
  end
  result.count=#expected;result.exact=true
 elseif request.op=='candidates' then
- local b=building();local rows={};local U=dfhack.units
- if request.kind==3 then
-  for _,s in ipairs(df.global.world.squads.all) do if s.entity_id==df.global.plotinfo.group_id then
-   local use=0;for _,v in ipairs(b.squad_room_info) do if v.squad_id==s.id then use=v.mode.whole end end
-   rows[#rows+1]={id=s.id,name=dfhack.df2utf(s.alias~='' and s.alias or dfhack.translation.translateName(s.name,true)),
-    profession='',sex=-1,mood=0,grazer=false,assigned=contains(b.squad_room_info,s.id,'squad_id'),squad_use=use}
-  end end
- else
-  for _,u in ipairs(df.global.world.units.active) do
-   if U.isActive(u) and not U.isDead(u) and (request.kind==1 and U.isCitizen(u) or
-      request.kind==2 and not U.isCitizen(u) and (U.isTame(u) or u.flags1.caged)) then
-    rows[#rows+1]={id=u.id,name=dfhack.df2utf(request.kind==1 and dfhack.translation.translateName(U.getVisibleName(u)) or U.getReadableName(u)),profession=dfhack.df2utf(U.getProfessionName(u)),
-     sex=u.sex,mood=U.getStressCategory(u)+1,grazer=request.kind==2 and U.isGrazer(u) or false,
-     assigned=request.kind==1 and b.assigned_unit_id==u.id or request.kind==2 and contains(b.assigned_units,u.id),squad_use=-1}
-   end
-  end
- end
+ assert(request.kind==3,'owner/animal candidates require their native-backed verifier')
+ local b=building();local rows={}
+ for _,s in ipairs(df.global.world.squads.all) do if s.entity_id==df.global.plotinfo.group_id then
+  local use=0;for _,v in ipairs(b.squad_room_info) do if v.squad_id==s.id then use=v.mode.whole end end
+  rows[#rows+1]={id=s.id,entity=3,name=dfhack.df2utf(s.alias~='' and s.alias or dfhack.translation.translateName(s.name,true)),
+   profession='',sex=-1,mood=0,grazer=false,assigned=contains(b.squad_room_info,s.id,'squad_id'),squad_use=use}
+ end end
  if request.sort~=0 then table.sort(rows,function(a,b)
   local x,y
   if request.sort==1 then x,y=a.name:lower(),b.name:lower()

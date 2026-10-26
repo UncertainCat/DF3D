@@ -152,9 +152,9 @@ try {
     $loaded=$false
     $oldFixtureProcess=$fixtureProcess
     try {
-     # Stockpile acceptance already owns verified source/clone manifests. Keep
-     # restart protection on those same two saves, not unrelated past clones.
-     $restartRoots=if($StockpilesOnly){@($source,$clone)}else{$saveRoots}
+     # This owned lane loads only its verified source/clone. Protect both across
+     # restart, matching the startup/final guards; historical clones are unrelated.
+     $restartRoots=@($source,$clone)
      Write-Lf "$out/restart-save-scope.json" (@{roots=@($restartRoots);stockpilesOnly=[bool]$StockpilesOnly} | ConvertTo-Json -Compress)
      $restart=Restart-Df3dFortress -SaveId $clone -SaveRoots $restartRoots -EvidenceDir "$out/restart-$index"
      if($restart.Status -eq 'ready') {

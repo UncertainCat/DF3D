@@ -26,7 +26,8 @@ func poll(delta: float, first: int) -> void:
 	age = 0
 	var request := {"action":C.ManagementAction.AreaCandidates,"operation":C.AreaOperation.CandidateList,
 		"id":int(state.area.id),"kind":1,"candidate_kind":1,"query":state.query,"sort":state.sort,
-		"sort_descending":state.descending,"cursor":clampi(first,0,state.rows.size()-1),"expected_list_revision":state.receipt}
+		"sort_descending":state.descending,"cursor":clampi(first,0,state.rows.size()-1),"expected_list_revision":state.receipt,
+		"candidate_limit":18} # 600px viewport: at most18 partially visible36px rows.
 	if state.query_bytes is PackedByteArray: request.query_bytes = state.query_bytes.duplicate()
 	var version := generation
 	ticket = service.submit("areas",request,func(received, result, sent):

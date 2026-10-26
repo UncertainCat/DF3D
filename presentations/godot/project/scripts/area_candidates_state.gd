@@ -127,6 +127,8 @@ func accept_owner_facts(page: Dictionary, sent: Dictionary) -> void:
 	if page.get("query_bytes") != sent.get("query_bytes"): return
 	var first := int(sent.get("cursor",-1))
 	var values: Array = page.get("candidates",[])
+	var limit := int(sent.get("candidate_limit",0))
+	if values.size() > (128 if limit == 0 else limit): return
 	if first < 0 or first >= rows.size() or values.is_empty(): return
 	var count := mini(values.size(),rows.size()-first)
 	# Validate the entire overlap before changing any row. Never append or sort

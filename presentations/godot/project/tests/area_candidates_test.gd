@@ -36,7 +36,12 @@ func run() -> void:
 	fresh.accept({"list_revision":123,"candidates":[{"id":21,"name":"Before"},{"id":22,"name":"Second"}],"next_cursor":2},fresh.pending.duplicate(true))
 	refresh.poll(0.9,0); check(service.calls.is_empty(),"owner refresh cadence is bounded")
 	refresh.poll(0.1,0); check(service.calls.size()==1 and not fresh.busy(),"background facts do not block assignment")
+	check(service.calls[0].request.candidate_limit==18,"background refresh covers the visible rows only")
 	var facts := {"operation":14,"candidate_kind":1,"query":"","sort":2,"sort_descending":false,"list_revision":123,"candidates":[{"id":21,"name":"After"},{"id":22,"name":"Second"}]}
+	var oversized: Dictionary = facts.duplicate(true); oversized.candidates.append({"id":23})
+	var limited: Dictionary = service.calls[0].request.duplicate(true); limited.candidate_limit=2
+	fresh.accept_owner_facts(oversized,limited)
+	check(fresh.rows[0].name=="Before","oversized refresh cannot partially update loaded rows")
 	service.reply(0,facts)
 	check(fresh.rows[0].name=="After" and fresh.receipt==123 and fresh.cursor==2,"facts update without changing pagination")
 	refresh.poll(1,0)

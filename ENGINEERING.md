@@ -444,8 +444,10 @@ match and diagnostics are empty. Plugin SHA256 is
 41a2e1baee2d0715427af1e0eceb433cdaf413c10e75db9a20ea7cbed710a284,
 Management66 unchanged. Adapter tests verify current text, stable IDs/revision,
 bounded display-provider calls, inactive candidates and page payload limits.
-The Godot owner picker refreshes loaded rows starting at the visible ordinal once
-per second through a separate action-service read owner. Refresh never disables
+The Godot owner picker refreshes up to18 rows starting at the visible ordinal once
+per second through a separate action-service read owner. This covers partially
+visible36-pixel rows in the600-pixel viewport; list pagination retains its default.
+Refresh never disables
 input or rebuilds row controls. Matching IDs/receipt/query are required before
 applying any overlapping rows; selection, scroll, filter focus and pagination
 remain local. Changed recipes invalidate only the affected portrait slots.
@@ -475,6 +477,13 @@ receipt4766829637057012013, matching the full native candidate list's IDs. The
 same run covers native owner effects and refresh. DF107164 closes unsaved, both
 save manifests match and diagnostics are empty. Plugin SHA256 is
 8bc72296018e6a44d8eaa67898f598e825920781f59821755f556da374f088a2.
+
+The18-row viewer integration passes owner-visible-refresh GPU control/focus/scroll
+checks with known notices, plus owner-visible-refresh-final core19/19 and state
+tests including oversized-reply rejection. Protected main-scene062958 passes the
+automatic native name change/restoration and full owner assignment workflow.
+The refreshed capture was inspected; DF118340 closes unsaved, both manifests
+match and only the known Godot thread notice remains.
 
 owner-read-lease passes core19/19 and adapter checks for renewal beyond build
 age, inclusive expiry boundary, invalid receipt, rewind and exactly128 native

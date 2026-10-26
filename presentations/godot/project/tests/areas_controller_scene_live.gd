@@ -1375,6 +1375,8 @@ func pointer_zone_overlap(origin: Vector3i, first_id: int) -> void:
 	await native("snapshot",{"id":first_id,"expected":{"overlapping":1}})
 	await native("snapshot",{"id":second_id,"expected":{"overlapping":1}})
 	await capture("zone_overlapping")
+	await pointer_zone_names(second_id,position)
+	if stopped: return
 	await request({"action":11,"kind":1,"id":first_id,"expected_revision":first_revision,"active":0},"Area changed; inspect again")
 	if stopped: return
 	await native("snapshot",{"id":first_id,"expected":{"active":true,"overlapping":1}})
@@ -1399,3 +1401,24 @@ func pointer_zone_overlap(origin: Vector3i, first_id: int) -> void:
 	await native("snapshot",{"id":int(editor.selected.id),"expected":{"overlapping":0}})
 	await capture("zone_overlap_clear")
 	await native("final")
+
+func pointer_zone_names(id: int, position: Vector2) -> void:
+	step = "viewport native meeting names"
+	if not check(editor.selected.name == "Unnamed meeting hall","empty meeting area name differs from native"): return
+	for entry in [["empty","meeting hall",[]],["coffin","memorial hall",["coffin"]],["slab","memorial hall",["slab"]],
+		["statue","sculpture garden",["statue"]],["cage","zoo",["cage"]],["chain","zoo",["chain"]],["display","museum",["display"]],
+		["statue-cage-tie","zoo",["statue","cage"]],["statue-display-tie","museum",["statue","display"]],
+		["cage-display-tie","museum",["cage","display"]],["memorial-priority","memorial hall",["coffin","statue","statue","cage","display"]]]:
+		var previous: Dictionary = editor.selected.duplicate(true)
+		await native("zone_name_contents",{"id":id,"members":entry[2]})
+		await pointer_click(position)
+		if not await wait_ui(settled,"meeting contents refresh"): return
+		var expected: String = "Unnamed "+str(entry[1])
+		if not check(editor.selected.name == expected and editor.zone_menu.heading.text == expected,"meeting heading differs: "+str(entry[0])): return
+		if str(previous.name) != expected:
+			if not check(int(previous.revision) != int(editor.selected.revision),"changed meeting heading retained revision"): return
+		if entry[0] in ["statue","display","memorial-priority"]: await capture("meeting_name_"+str(entry[0]))
+	await native("zone_name_restore")
+	await pointer_click(position)
+	if not await wait_ui(settled,"restored meeting contents"): return
+	if not check(editor.selected.name == "Unnamed meeting hall","restored empty meeting heading"): return

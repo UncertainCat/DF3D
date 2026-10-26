@@ -1,0 +1,150 @@
+{
+  "supported_df": "53.16 Steam Windows x64",
+  "native_capture": "build/stockpile-storage-native-zone-defaults-20261025-203847",
+  "owned_df_pid": 118936,
+  "closed_unsaved": true,
+  "source_manifest_unchanged": true,
+  "observations": [
+    {
+      "heading": "Unnamed meeting hall",
+      "members": [],
+      "name": "meeting-name-empty"
+    },
+    {
+      "heading": "Unnamed memorial hall",
+      "members": [
+        "coffin"
+      ],
+      "name": "meeting-name-coffin"
+    },
+    {
+      "heading": "Unnamed memorial hall",
+      "members": [
+        "slab"
+      ],
+      "name": "meeting-name-slab"
+    },
+    {
+      "heading": "Unnamed sculpture garden",
+      "members": [
+        "statue"
+      ],
+      "name": "meeting-name-statue"
+    },
+    {
+      "heading": "Unnamed zoo",
+      "members": [
+        "cage"
+      ],
+      "name": "meeting-name-cage"
+    },
+    {
+      "heading": "Unnamed zoo",
+      "members": [
+        "chain"
+      ],
+      "name": "meeting-name-chain"
+    },
+    {
+      "heading": "Unnamed museum",
+      "members": [
+        "display"
+      ],
+      "name": "meeting-name-display"
+    },
+    {
+      "heading": "Unnamed zoo",
+      "members": [
+        "statue",
+        "cage"
+      ],
+      "name": "meeting-name-statue-cage-tie"
+    },
+    {
+      "heading": "Unnamed museum",
+      "members": [
+        "statue",
+        "display"
+      ],
+      "name": "meeting-name-statue-display-tie"
+    },
+    {
+      "heading": "Unnamed museum",
+      "members": [
+        "cage",
+        "display"
+      ],
+      "name": "meeting-name-cage-display-tie"
+    },
+    {
+      "heading": "Unnamed memorial hall",
+      "members": [
+        "coffin",
+        "statue",
+        "statue",
+        "cage",
+        "display"
+      ],
+      "name": "meeting-name-memorial-priority"
+    }
+  ],
+  "implementation": "Native heading choice is inline in renderer, not an independently callable semantic entry. Runtime reads pinned immutable type/furniture dispatch and text operands, counts supplied zone contained_buildings with owned counters, and never calls the renderer or reads selected-zone/menu state. Custom names take precedence. Observation revision includes the resulting heading.",
+  "entries": [
+    {
+      "rva": "0x3e82ac",
+      "size": 1671,
+      "sha256": "321bc8a0db1aa0a126112a3a1593a5b303ab20efe6a5bd7ed1dc8792b6bcccce",
+      "purpose": "inline heading dispatch and selection; reference bytes only"
+    },
+    {
+      "rva": "0x3fd14c",
+      "size": 147,
+      "sha256": "780908d8b5a0cebadc453956fc3c97c834bd682ece8f23a75f791cf97777ba94",
+      "purpose": "immutable zone-type and contained-building-type dispatch"
+    },
+    {
+      "rva": "0x1601700",
+      "size": 1024,
+      "sha256": "63e0f293ad5b6cd6549ef3b3c93963cb5c9373f1b15b2201c475af940a0a072e",
+      "purpose": "native immutable text pool"
+    }
+  ],
+  "limits": [
+    "Controlled furniture entries supply semantic types/contained list, not construction jobs or actual contents of cages/display furniture.",
+    "Dynamic naming reference covers eleven cases; all other zone default names are sourced from pinned native dispatch, not claimed newly live captured here.",
+    "This does not complete Zones or its removal/repaint/Multi lifecycle."
+  ],
+  "df3d_verification": {
+    "path": "build/areas-acceptance-20261025-204200",
+    "status": "passed_with_known_issues",
+    "known_issue": "godot-separate-thread-notice",
+    "owned_df_pid": 125508,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "native_observations": 20,
+    "bridge_sha256": "29a8c1ac86b6e4c92efc56cb29e545797c92b0e0fec2711a2492fb01049e9998",
+    "evidence_sha256": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "scene_meeting_name_statue.png": "f6e1b69bac8150de225a799a4007d7e6d4de8dea705cc848408f499d79e7dfd8",
+      "scene_meeting_name_display.png": "48d6a400f3bb7ef064fc712b535f784de0551682929c48020b64aba0bf52a196",
+      "scene_meeting_name_memorial-priority.png": "f669e8ce77c11aeba08bafb62fc7ca31f8d0b3f8257f3006c3a8114ec80e70fe"
+    }
+  },
+  "custom_name_verification": {
+    "path": "build/areas-acceptance-20261025-204328",
+    "status": "passed_with_known_issues",
+    "known_issue": "godot-separate-thread-notice",
+    "owned_df_pid": 107768,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "native_observations": 10,
+    "evidence_sha256": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "scene_zone_rename_inline.png": "fbef3f2910a85c5d036a778e1bfcdf576c9c83bd880894a457ebea156c42049e"
+    }
+  }
+}

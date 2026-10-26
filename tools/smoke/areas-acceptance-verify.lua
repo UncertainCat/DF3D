@@ -137,7 +137,23 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='overlap_prepare' then
+if request.op=='zone_name_contents' then
+ local b=building();assert(df.building_civzonest:is_instance(b) and b.type==df.civzone_type.MeetingHall)
+ local saved=_G.df3d_name_fixture
+ if not saved then
+  saved={id=b.id,members=array(b.contained_buildings),samples={coffin=df.building_coffinst:new(),slab=df.building_slabst:new(),
+   statue=df.building_statuest:new(),cage=df.building_cagest:new(),chain=df.building_chainst:new(),display=df.building_display_furniturest:new()}}
+  _G.df3d_name_fixture=saved
+ end
+ assert(saved.id==b.id);b.contained_buildings:resize(0)
+ for _,key in ipairs(request.members)do b.contained_buildings:insert('#',assert(saved.samples[key]))end
+ result.members=request.members
+elseif request.op=='zone_name_restore' then
+ local saved=assert(_G.df3d_name_fixture);local b=assert(df.building.find(saved.id));b.contained_buildings:resize(0)
+ for _,member in ipairs(saved.members)do b.contained_buildings:insert('#',member)end
+ for _,sample in pairs(saved.samples)do sample:delete()end
+ _G.df3d_name_fixture=nil
+elseif request.op=='overlap_prepare' then
  assert(not _G.df3d_overlap_fixture)
  local p=request.site;local block=assert(dfhack.maps.getTileBlock(p.x,p.y,p.z))
  local saved={block=block,x=p.x%16,y=p.y%16,tile=block.tiletype[p.x%16][p.y%16],guards={}}

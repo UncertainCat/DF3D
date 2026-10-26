@@ -1,3 +1,36 @@
+## Native zone headings
+
+Zone names come from the bridge observation, replacing the fixed Lua default
+name table. DF53.16 renders this choice inline at0x3e82ac..0x3e8933; that
+renderer is not a callable semantic service. Runtime reads its pinned immutable
+zone/furniture dispatch tables and text operands with owned counters over the
+supplied zone's contained buildings. Native selected-zone pointers, render
+state and menu scratch are not runtime inputs. Custom names take precedence.
+Meeting Area headings distinguish meeting hall, memorial hall, sculpture
+garden, zoo and museum, including native precedence and ties. The resulting
+name participates in revision checking; snapshot work and reply reservations
+account for the contained-building scan.
+
+Native `build/stockpile-storage-native-zone-defaults-20261025-203847` verifies
+eleven contents cases through actual native rendering. Owned DF118936 closes
+unsaved and its source manifest is unchanged. These fixtures provide semantic
+contained-building types, not construction jobs or populated cage/display
+contents. Other zone defaults come from the native immutable dispatch;
+this run does not claim fresh captures of every default heading.
+
+Offline `build/qa/zone-native-names` passes root CTest19/19 and Lua adapter
+checks. The MSVC bridge builds after correcting the generated getType API's
+non-const signature. Main-scene `build/areas-acceptance-20261025-204200` passes20
+native observations, including all eleven names and revisions on name changes.
+The sculpture garden, museum and memorial captures were inspected. Owned
+DF125508 closes unsaved and both manifests match; only the known Godot
+separate-thread notice remains. `fixtures/areas/native_zone_names.json`
+retains pinned ranges, observations and evidence. Main-scene rename regression
+`build/areas-acceptance-20261025-204328` passes10 native observations through
+actual inline input with this name provider; the typed capture was inspected.
+Owned DF107768 closes unsaved, both manifests match and only the same known
+thread notice remains. Zones remains staged.
+
 ## Zone overlap observation contract
 
 Management62 adds `AreaInfo.overlapping`: -1 means unavailable/legacy,0 clear,

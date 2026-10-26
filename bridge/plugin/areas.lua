@@ -25,18 +25,7 @@ local function occupies(b,x,y)
  if rx<0 or ry<0 or rx>=b.room.width or ry>=b.room.height then return false end
  return b.room.extents[ry*b.room.width+rx]~=0
 end
--- Native zone headers (e2/e5 captures) differ from building:getName(), which
--- returns "Activity Zone #n". Custom names always take precedence.
-local zone_default_names={MeetingHall='memorial hall',Bedroom='bedroom',DiningHall='dining hall',
- Office='office',Dormitory='dormitory',Pen='pen/pasture',Pond='pit/pond',WaterSource='water source',
- FishingArea='fishing area',SandCollection='sand collection area',ClayCollection='clay collection area',
- Dump='dump',AnimalTraining='animal training area',PlantGathering='plant gathering area',
- Tomb='tomb',Barracks='barracks',ArcheryRange='archery range',Dungeon='dungeon'}
 local function name(b)
- if kind(b)==1 and b.name=='' then
-  local label=zone_default_names[df.civzone_type[b.type]]
-  if label then return 'Unnamed '..label end
- end
  return dfhack.df2utf(B.getName(b))
 end
 local function unit_name(u)
@@ -925,7 +914,7 @@ local function native_operation(r)
  end
  local function info(b,snapshot)
   local k=kind(b);local label=k==1 and df.civzone_type[b.type] or nil
-  local out={id=b.id,kind=k,name=name(b),custom_name=dfhack.df2utf(b.name),revision=snapshot.revision,
+  local out={id=b.id,kind=k,name=k==1 and snapshot.zone_name or name(b),custom_name=dfhack.df2utf(b.name),revision=snapshot.revision,
    x=snapshot.x,y=snapshot.y,z=snapshot.z,width=snapshot.width,height=snapshot.height,extents=snapshot.extents,
    tile_count=snapshot.tile_count,overlapping=snapshot.overlapping or -1,storage_limit=snapshot.storage_limit or -1,zone_type=-1,categories=0,barrels=0,bins=0,wheelbarrows=0,
    links_only=false,active=true,owner_id=-1,owner_name='',owner_allowed=owned(b),gives=snapshot.gives,takes=snapshot.takes,

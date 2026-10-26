@@ -144,6 +144,24 @@ require('gui.script').start(function()
     if door then local doors=df.global.world.buildings.other.DOOR;doors:erase(#doors-1);door:delete()end
     block.tiletype[tx][ty]=original_tile
    end
+   b=make_zone(7,24);pile_id=b.id
+   local original_members={};for _,member in ipairs(b.contained_buildings)do original_members[#original_members+1]=member end
+   local samples={coffin=df.building_coffinst:new(),slab=df.building_slabst:new(),statue=df.building_statuest:new(),
+    cage=df.building_cagest:new(),chain=df.building_chainst:new(),display=df.building_display_furniturest:new()}
+   for _,case in ipairs{{'empty','meeting hall',{}},{'coffin','memorial hall',{'coffin'}},{'slab','memorial hall',{'slab'}},
+    {'statue','sculpture garden',{'statue'}},{'cage','zoo',{'cage'}},{'chain','zoo',{'chain'}},{'display','museum',{'display'}},
+    {'statue-cage-tie','zoo',{'statue','cage'}},{'statue-display-tie','museum',{'statue','display'}},
+    {'cage-display-tie','museum',{'cage','display'}},{'memorial-priority','memorial hall',{'coffin','statue','statue','cage','display'}}}do
+    b.contained_buildings:resize(0);for _,key in ipairs(case[3])do b.contained_buildings:insert('#',samples[key])end
+    view:render(dfhack.getTickCount())
+    local chars={};for x=6,39 do local tile=dfhack.screen.readTile(x,6);chars[#chars+1]=tile.ch>=32 and tile.ch<127 and string.char(tile.ch) or ' ' end
+    local heading=table.concat(chars):gsub('%s+$','')
+    assert(heading=='Unnamed '..case[2],'native heading mismatch '..case[1]..': '..heading)
+    records[#records+1]={name='meeting-name-'..case[1],heading=heading,members=case[3]}
+    capture('meeting-name-'..case[1])
+   end
+   b.contained_buildings:resize(0);for _,member in ipairs(original_members)do b.contained_buildings:insert('#',member)end
+   for _,sample in pairs(samples)do sample:delete()end
    return
   end
   if test_zone_gather then

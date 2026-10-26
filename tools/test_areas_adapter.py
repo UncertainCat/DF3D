@@ -98,6 +98,7 @@ def main():
      end
      return {ok=true,steps=cost,revision=revision,visible=not force_hidden and not b.hidden,
       x=b.x1,y=b.y1,z=b.z,width=b.x2-b.x1+1,height=b.y2-b.y1+1,extents=extents,
+      zone_name=b.kind==1 and (b.name~="" and b.name or (b.type==0 and "Unnamed bedroom" or "Unnamed meeting hall")) or nil,
       tile_count=tiles,overlapping=b.observed_overlap,storage_limit=b.kind==0 and tiles or -1,gives={},takes={},assigned_units=b.assigned_units or {}}
     end
     function repaint(b,spans,mode,budget)
@@ -300,7 +301,7 @@ def main():
     lua.execute("zone.name=''")
     assert call(9, {"kind": 1, "id": 6})["areas"][1]["name"] == "Unnamed bedroom"
     lua.execute("zone.type=1")
-    assert call(9, {"kind": 1, "id": 6})["areas"][1]["name"] == "Unnamed memorial hall"
+    assert call(9, {"kind": 1, "id": 6})["areas"][1]["name"] == "Unnamed meeting hall"
     lua.execute("zone.type=0;zone.name='Bedroom'")
     assert call(9, {"kind": 1, "id": 6})["areas"][1]["name"] == "Bedroom"
     assert call(11, {"kind": 1, "id": 6, "owner_id": 3,

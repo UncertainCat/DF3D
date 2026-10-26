@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <climits>
+#include <cstring>
 #include <unordered_map>
 #include <vector>
 
@@ -158,5 +159,48 @@ bool nativeZoneComplete(df::building_civzonest& zone) {
     reinterpret_cast<Relationships>(base+0x558690)(&zone);
     reinterpret_cast<Relationships>(base+0x558830)(&zone);
     return refreshOverlaps(base);
+}
+}
+
+namespace df3d_area {
+std::optional<std::string> nativeZoneName(const df::building_civzonest& zone) {
+    if(!nativeZoneDefaultsReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=
+        hash(base+0x3e82ac,0x687)==0x9e602a58bae0d0c3ULL &&
+        hash(base+0x3fd14c,0x93)==0x21149f62e643e75fULL &&
+        hash(base+0x1601700,0x400)==0xf275b232f4ad58e1ULL;
+    if(!compatible)return std::nullopt;
+    if(!zone.name.empty())return zone.name;
+    // Native3e82ac..3e8933 renders the choice inline. No independent semantic
+    // callable exists here. Read its immutable dispatch and string operands;
+    // never call the render function or consult its current-zone pointer.
+    uint32_t branch=0x3e88fc;
+    const int type=int(zone.type);
+    if(type>=79 && type<=97)std::memcpy(&branch,base+0x3fd14c+(type-79)*4,4);
+    if(branch==0x3e83f6) {
+        size_t counts[4]={};
+        for(auto* member:zone.contained_buildings) {
+            if(!member)return std::nullopt;
+            const int furniture=int(member->getType());
+            if(furniture<3 || furniture>53)continue;
+            const auto group=base[0x3fd1ac+furniture-3];
+            if(group<4)++counts[group];
+        }
+        // Memorial wins outright. Sculpture must beat both zoo and display;
+        // otherwise zoo must beat display. Ties therefore resolve as native.
+        branch=counts[0]?0x3e84dd:
+            counts[1]>counts[2] && counts[1]>counts[3]?0x3e852b:
+            counts[2]>counts[3]?0x3e8574:counts[3]?0x3e85bc:0x3e8600;
+    }
+    if(branch<0x3e82d4 || branch>0x3e88fc || base[branch]!=0x48 ||
+        base[branch+1]!=0x8d || base[branch+2]!=0x15)return std::nullopt;
+    int32_t displacement=0;std::memcpy(&displacement,base+branch+3,4);
+    const int64_t text=int64_t(branch)+7+displacement;
+    if(text<0x1601700 || text>=0x1601b00)return std::nullopt;
+    const auto* value=reinterpret_cast<const char*>(base+text);
+    const auto* end=static_cast<const char*>(std::memchr(value,0,size_t(0x1601b00-text)));
+    if(!end)return std::nullopt;
+    return std::string(value,end);
 }
 }

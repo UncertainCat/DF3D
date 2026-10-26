@@ -81,7 +81,7 @@
     "Native pair reference covers same-tile floor, wall, gathering exclusion, Tomb inclusion and a controlled Door-list fixture.",
     "Door fixture supplies its semantic center/list entry; it does not claim door construction/job completion.",
     "Removal and repaint overlap refresh remain separate routes pending audit.",
-    "Removal/repaint/Multi lifecycle and full Zones acceptance remain pending. Main-scene evidence also exposed a separate unnamed Meeting Area caption mismatch (memorial hall versus native meeting hall)."
+    "Removal/repaint/Multi lifecycle and full Zones acceptance remain pending. The unnamed Meeting Area mismatch found here is resolved by the native_zone_names fixture and provider."
   ],
   "df3d_verification": {
     "path": "build/areas-acceptance-20261025-202059",

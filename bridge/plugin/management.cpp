@@ -1799,7 +1799,7 @@ int areaSnapshot(lua_State* L) {
   } else {
     if(zone->assigned_units.size()>4096)return fail("Zone exceeds 4,096 assigned units");
     if(zone->squad_room_info.size()>256)return fail("Zone assignment list exceeds 256 entries");
-    members=zone->assigned_units.size()+zone->squad_room_info.size();
+    members=zone->assigned_units.size()+zone->squad_room_info.size()+zone->contained_buildings.size();
   }
   if(b->name.size()>512)return fail("Area name exceeds bounded snapshot");
   const size_t cells=size_t(width*height);
@@ -1809,7 +1809,13 @@ int areaSnapshot(lua_State* L) {
       (pile?df3d_area::bulkSteps(cells):0)+
       (visibility?df3d_area::bulkSteps(cells):0);
   if(steps>budget)return fail("Area snapshot exceeds remaining step budget");
+  std::optional<std::string> zoneName;
+  if(zone) {
+    zoneName=df3d_area::nativeZoneName(*zone);
+    if(!zoneName)return fail("Native zone name unavailable",steps);
+  }
   df3d_area::Revision hash;
+  if(zoneName){hash.add(zoneName->size());for(unsigned char c:*zoneName)hash.add(c);}
   hash.add(b->id);hash.add(pile?0:1);hash.add(b->x1);hash.add(b->x2);
   hash.add(b->y1);hash.add(b->y2);hash.add(b->z);hash.add(b->site_id);hash.add(b->location_id);
   hash.add(b->room.x);hash.add(b->room.y);hash.add(b->room.width);hash.add(b->room.height);
@@ -1883,7 +1889,8 @@ int areaSnapshot(lua_State* L) {
   lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",steps);
   field(L,"storage_limit",storageLimit);
   field(L,"overlapping",zone?(zone->flags.bits.room_collision?1:0):-1);
-  field(L,"reply_steps",pile?7+df3d_area::bulkSteps(32768)+df3d_area::bulkSteps(32768+4096+512+members+settingsReplyGrowth):154);
+  if(zoneName)field(L,"zone_name",DF2UTF(*zoneName));
+  field(L,"reply_steps",pile?7+df3d_area::bulkSteps(32768)+df3d_area::bulkSteps(32768+4096+512+members+settingsReplyGrowth):154+df3d_area::bulkSteps(df::global::world->buildings.other.IN_PLAY.size()));
   field(L,"revision",hash.finish());field(L,"tile_count",tiles);field(L,"visible_count",visibleTiles);
   field(L,"has_visibility",visibility);field(L,"visible",visibleTiles!=0 || emptyAreaVisible);
   field(L,"x",b->x1);field(L,"y",b->y1);field(L,"z",b->z);field(L,"width",width);field(L,"height",height);

@@ -1985,6 +1985,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         out.print("{{\"water\":{},\"fishing\":{}}}\n",int(result.water),int(result.fishing));
         return CR_OK;
       }
+      if(parameters[0]=="zone-owner-text-read") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* unit=df::unit::find(id);if(!unit)return CR_FAILURE;
+        int32_t columns=0;const auto& width=parameters[2];
+        const auto parsedWidth=std::from_chars(width.data(),width.data()+width.size(),columns);
+        if(parsedWidth.ec!=std::errc{} || parsedWidth.ptr!=width.data()+width.size())return CR_WRONG_USAGE;
+        const auto result=df3d_area::nativeZoneOwnerDisplayText(*unit,columns);if(!result)return CR_FAILURE;
+        Json::Value output(Json::arrayValue);
+        for(const auto* text:{&result->combined,&result->name,&result->profession,&result->firstLine,&result->secondLine}) {
+          Json::Value bytes(Json::arrayValue);for(unsigned char byte:*text)bytes.append(int(byte));output.append(bytes);
+        }
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-owner-query-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         auto key=df3d_area::nativeZoneOwnerQuery(parameters[1]);if(!key)return CR_FAILURE;
@@ -2296,6 +2312,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d room-read <x> <y> <z>\n"
         "df3d zone-owner-candidates-read <zone id>\n"
         "df3d zone-owner-order-read <zone id>\n"
+        "df3d zone-owner-text-read <unit id> <columns>\n"
         "df3d zone-owner-query-read <query>\n"
         "    Read-only diagnostic: semantic room observation and traversal mask as JSON.\n"
           "df3d room-seed <building id>\n"

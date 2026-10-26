@@ -194,6 +194,30 @@ including repeated Bedroom clear and unchanged owner/spouse membership. DF128900
 closes unsaved and both save manifests match. Row presentation, textbox input,
 creation-time owner validation and full lifecycle coverage remain unfinished.
 
+Owner display text has an independent diagnostic reader:
+`df3d zone-owner-text-read <unit id> <columns>`. Native widget0x14237a0 uses
+0x1330c30 for combined name/profession/gender and, when it exceeds the width,
+0x1330500 plus0x1330880 for separate lines. Native0x52d910 abbreviates each long
+line before the widget's final clipping. The diagnostic calls these pinned
+semantic readers with owned strings; it never calls the widget renderer or
+borrows its global text buffers. Output retains DF encoding as byte arrays.
+
+Protected `build/stockpile-storage-native-zone-owner-20261026-003235` compares
+both displayed lines, including blank cells, for32 native rows at45 columns:
+16 Tomb,15 Bedroom and one controlled long nickname. The long-name capture was
+inspected. A previous simple-ellipsis expectation failed in003011; native
+shortening replaces that reconstruction. Both runs restored the nickname and
+preserved their source saves. Final DF128096 closes unsaved; native UI/gps and
+initial path-search guards remain unchanged. MSVC and
+`build/qa/owner-display-readers` core19/19 plus adapter pass.
+
+This is reader acceptance, not completed viewer rendering. Row status callback
+0x3a8730 aggregates owned room values through0x559610 and obtains the native
+quality label through0xab4f20. Those dependencies still need an ownership audit.
+Color routine0x1333bc0 writes global graphics state and must not be used as a
+semantic API. Production wire fields, row layout/color/status/portraits, scaling
+and broader name/profession cases remain unfinished.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

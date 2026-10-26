@@ -38,9 +38,40 @@ end
 local function widget_rows(container,rows,depth,parent_visible)
  if depth>5 or #rows>=2000 then return end
  local row={depth=depth,name=container.name,search=container.search_string,flags=container.flag.whole,
-  x=container.rect.x1,y=container.rect.y1,type=tostring(container._type),visible=parent_visible~=false and (container.flag.whole&1)==1}
- if df.widget_unit_name:is_instance(container)then row.unit_id=df.reinterpret_cast(df.widget_unit_name,container).u.id end
- if df.widget_text:is_instance(container)then row.text=dfhack.df2utf(df.reinterpret_cast(df.widget_text,container).str)end
+  x=container.rect.x1,y=container.rect.y1,x2=container.rect.x2,y2=container.rect.y2,type=tostring(container._type),visible=parent_visible~=false and (container.flag.whole&1)==1}
+ local base=dfhack.internal.getImageBase()
+ local _,object_address=df.sizeof(container)
+ local vtable=df.reinterpret_cast('uint64_t',object_address).value
+ row.render_rva=df.reinterpret_cast('uint64_t',vtable+24).value-base
+ if df.widget_unit_name:is_instance(container)then
+  local value=df.reinterpret_cast(df.widget_unit_name,container)
+  row.unit_id=value.u.id;row.show_gender=value.show_gender;row.show_profession=value.show_profession;row.one_line_only=value.one_line_only
+ end
+ if df.widget_text:is_instance(container)then
+  local value=df.reinterpret_cast(df.widget_text,container)
+  row.text=dfhack.df2utf(value.str);row.fg=value.fg;row.bg=value.bg;row.bright=value.bright
+ end
+ local _,callbacks_address=df.sizeof(container.custom_render)
+ local first=df.reinterpret_cast('uint64_t',callbacks_address).value
+ local last=df.reinterpret_cast('uint64_t',callbacks_address+8).value
+ assert(last>=first and (last-first)%64==0 and last-first<=65536,'invalid render callback vector')
+ row.custom_render={}
+ for at=first,last-1,64 do
+  local context=df.reinterpret_cast('uint64_t',at+56).value
+  if context~=0 then
+   local table_address=df.reinterpret_cast('uint64_t',context).value
+   local invoke=df.reinterpret_cast('uint64_t',table_address+16).value-base
+   local callback={invoke=invoke}
+   if invoke==0xf1c80 then
+    local inner=df.reinterpret_cast('uint64_t',context+0x40).value
+    if inner~=0 then
+     local inner_table=df.reinterpret_cast('uint64_t',inner).value
+     callback.inner_invoke=df.reinterpret_cast('uint64_t',inner_table+16).value-base
+    end
+   end
+   row.custom_render[#row.custom_render+1]=callback
+  end
+ end
  rows[#rows+1]=row
  if not df.widget_container:is_instance(container)then return end
  local _,address=df.sizeof(df.reinterpret_cast(df.widget_container,container).children)
@@ -60,6 +91,7 @@ local function capture(name)
   local ids={}
   for _,entry in ipairs(list.entry_list)do if entry.t==0 and entry.u then ids[#ids+1]=entry.u.id end end
   local rows={};widget_rows(list,rows,0);assert(#rows<2000,'widget observation truncated')
+  if name=='tomb-picker' or name=='bedroom-picker' or name:find('%-display%-') then records[#records+1]={name=name..'-row-widgets',rows=rows} end
   local displayed={};for _,row in ipairs(rows)do if row.unit_id and row.visible then displayed[#displayed+1]=row.unit_id end end
   local _,list_address=df.sizeof(list)
   local sorting={}
@@ -90,6 +122,31 @@ local function capture(name)
   guard(df.global.game.main_interface)
   if name=='tomb-picker' then
    for _,block in ipairs(df.global.world.map.map_blocks)do guard(block.path_cost);guard(block.path_tag)end
+  end
+  if name=='tomb-picker' or name=='bedroom-picker' or name:find('%-display%-') then
+   guard(df.global.gps)
+   local samples={}
+   for _,row in ipairs(rows)do
+    if row.unit_id and row.visible and (row.flags&2)~=0 and row.y>=2 and row.y<g.dimy-5 then
+     local text,code=dfhack.run_command_silent('df3d','zone-owner-text-read',tostring(row.unit_id),tostring(row.x2-row.x+1));assert(code==0,text)
+     local lines={}
+     for y=row.y-2,row.y do
+      local bytes,colors={},{}
+      for x=row.x,math.min(row.x2,g.dimx-1)do
+       local tile=dfhack.screen.readTile(x,y);bytes[#bytes+1]=tile.ch;colors[#colors+1]={tile.fg,tile.bg,tile.bold}
+      end
+      lines[#lines+1]={bytes=bytes,colors=colors}
+     end
+     local native_text=require('json').decode(text)
+     local width=row.x2-row.x+1
+     local expected={native_text[4],native_text[5]}
+     for line=1,2 do
+      for x=1,width do assert(lines[line+1].bytes[x]==(expected[line][x] or 0),'native display reader mismatch: '..name..'/'..row.unit_id..'/'..line..'/'..x)end
+     end
+     samples[#samples+1]={unit_id=row.unit_id,x=row.x,y=row.y,x2=row.x2,text=native_text,lines=lines,exact=true}
+    end
+   end
+   records[#records+1]={name=name..'-display-text',samples=samples}
   end
   local text,code=dfhack.run_command_silent('df3d','zone-owner-candidates-read',tostring(assert(ui.cur_bld).id));assert(code==0,text)
   local order_text,order_code=dfhack.run_command_silent('df3d','zone-owner-order-read',tostring(ui.cur_bld.id));assert(order_code==0,order_text)
@@ -265,6 +322,14 @@ local ok,why=pcall(function()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
   search(query);capture('bedroom-picker-filter-'..i)
  end
+ local previous_nickname=first_unit.name.nickname
+ local display_ok,display_error=pcall(function()
+  first_unit.name.nickname=string.rep('OwnerDisplayName',4)
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
+  search('OwnerDisplayName');capture('bedroom-picker-display-long')
+ end)
+ first_unit.name.nickname=previous_nickname
+ assert(display_ok,display_error)
 end)
 first_unit.relationship_ids.Spouse=old_first;spouse.relationship_ids.Spouse=old_spouse
 df.global.plotinfo.economy_active=old_economy

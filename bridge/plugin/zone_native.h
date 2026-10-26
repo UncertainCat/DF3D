@@ -23,6 +23,9 @@ struct ZoneOwnerOrderFacts {
 };
 // Semantic keys used by native partition, permanent priority and selectable header callbacks.
 std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzonest& zone,df::unit& candidate);
+struct ZoneOwnerDisplayText { std::string combined,name,profession,firstLine,secondLine; };
+// Native display readers write caller-owned DF-encoded strings; no renderer call.
+std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns);
 // Normalize caller-owned textbox bytes with the native search routine.
 std::optional<std::string> nativeZoneOwnerQuery(std::string query);
 // Native may allocate and transfer ownership from another tomb. Callers mark

@@ -1540,5 +1540,114 @@
     "bridge_observations": 201,
     "bridge_save_manifests_unchanged": 2,
     "remaining": "Row text/status/color/portraits, native textbox, explicit creation owner validation, legacy routes and remaining full input/lifecycle acceptance."
+  },
+  "owner_display_readers": {
+    "status": "Independent native text readers verified against rendered native rows; production row integration pending",
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-003235",
+    "native_result_sha256": "4ae1dacaf5718587e458ec5ac420b17ccaee316a18f5825cd166d3aa0e83a6ad",
+    "owned_df_pid": 128096,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "plugin_sha256": "87c45a4da7c522459b1d8bb03149a7733cc343bf9330f1b44d64d475dec53f84",
+    "diagnostic": "df3d zone-owner-text-read <unit id> <columns>",
+    "result": "Five DF-encoded byte arrays: combined, name, profession/gender, first visible line, second visible line",
+    "ownership": "Semantic unit input and caller-owned strings. No native widget/global text buffers, renderer calls or search scratch. Native UI, gps struct and initial map search arrays guarded unchanged.",
+    "ranges": [
+      {
+        "rva": "0x14237a0",
+        "length": "0x83f",
+        "fnv1a64": "bc38168cc5c544cd",
+        "role": "reference-only widget rendering"
+      },
+      {
+        "rva": "0x1330c30",
+        "length": "0x688",
+        "fnv1a64": "0e165ee31decf426",
+        "role": "combined text, show_gender true"
+      },
+      {
+        "rva": "0x1330500",
+        "length": "0x37d",
+        "fnv1a64": "963e5805735092ee",
+        "role": "name-only text"
+      },
+      {
+        "rva": "0x1330880",
+        "length": "0x3ac",
+        "fnv1a64": "bef834f2b924d785",
+        "role": "profession/gender text"
+      },
+      {
+        "rva": "0x52d910",
+        "length": "0x5c4",
+        "fnv1a64": "3cc66a9b45f7baa9",
+        "role": "abbreviate caller-owned string to requested columns"
+      }
+    ],
+    "samples": [
+      {
+        "name": "tomb-picker-display-text",
+        "count": 16,
+        "columns": 45,
+        "exact": true,
+        "unit_ids": [
+          5981,
+          5813,
+          6812,
+          5984,
+          6815,
+          1017,
+          5573,
+          5697,
+          6135,
+          6392,
+          5572,
+          6969,
+          6970,
+          7268,
+          7348,
+          5814
+        ]
+      },
+      {
+        "name": "bedroom-picker-display-text",
+        "count": 15,
+        "columns": 45,
+        "exact": true,
+        "unit_ids": [
+          7348,
+          7349,
+          7344,
+          2905,
+          2335,
+          2747,
+          7345,
+          6729,
+          6810,
+          6968,
+          7041,
+          7043,
+          7049,
+          7080,
+          7283
+        ]
+      },
+      {
+        "name": "bedroom-picker-display-long-display-text",
+        "count": 1,
+        "columns": 45,
+        "exact": true,
+        "unit_ids": [
+          5981
+        ]
+      }
+    ],
+    "long_name": "Controlled nickname forces native abbreviation and two-line layout; nickname restored even after failure. Earlier003011 run rejected simple ellipsis reconstruction, with source preserved.",
+    "unresolved": {
+      "room_status_callback": "0x3cfed0 -> 0x3a8730; unit owned_buildings max room value via0x559610, label via0xab4f20. Renderer itself writes gps and is not a runtime API.",
+      "color": "0x1333bc0 writes global drawing colors; do not invoke as a semantic reader. Audit independent color readers and branches before integration.",
+      "integration": "Wire fields and actual viewer row layout/colors/status/portraits, scaling, custom professions and broader edge cases remain pending."
+    },
+    "offline": "build/qa/owner-display-readers core19/19 and adapter passed"
   }
 }

@@ -1,3 +1,47 @@
+## Native zone animal assignment audit
+
+The protected oracle runs with stockpile_storage_native.ps1 -ZoneAnimals.
+It creates Pen/Pasture and Pit/Pond zones through native clicks, captures their
+selectors and callback identities, and exercises unit and item assignment,
+transfer and clearing. Widget/callback inspection is diagnostic only.
+
+build/stockpile-storage-native-zone-animals-20261026-080835 passes with owned
+DF128092 paused throughout and the source save unchanged after unsaved exit.
+Pen initially lists 16 units; Pond lists six units plus vermin item 5969.
+Native clicks move caged unit 6960 from Pen 1490 to Pond 1491 and then clear it.
+Its containment reference, flags and job remain unchanged in this case.
+Item 5969 starts assigned to cage 261; native pond assignment removes that cage
+assignment, adds the zone reference, transfers it to Pond 1492, then clears it.
+Its containment reference remains. Picker and selected-item captures were
+inspected. Typed identities, effects, callbacks, fingerprints and image hashes
+are retained in fixtures/areas/native_zone_animals.json.
+
+Selection callback 0x3d52a0 calls 0x3ce1b0 with a context containing the zone
+pointer, an item_or_unit value and a selection boolean. The action has separate
+unit and item branches. Its own body uses semantic world/zone/reference state,
+but complete helper ownership and failure behavior still need auditing before
+runtime use. Some helpers span multiple unwind records; their first unwind
+extent is not the complete body.
+
+Candidate producers 0x3a5e30 and 0x3a6780 are UI builders and must not be invoked
+by the product. They retain assigned units/items and gather further candidates.
+Filter callback 0x1435b40 invokes widget-dependent search 0x1424c30; it is not an
+eligibility predicate. Reusable semantic admission helpers and inline selection
+branches remain to be integrated.
+
+Current animal candidates and AssignUnits requests represent units only; the
+bridge reconstructs assignment vectors/references. Full native parity requires
+typed unit/item identities and native effects, including the observed vermin
+case. This is unfinished work, not an accepted exclusion. Ordering, descriptions,
+portraits/status graphics, input/lifecycle, unit cage/chain cleanup, stale state
+and unknown outcomes remain in scope. Zones/Locations stays staged.
+
+The initial 080229 probe used an incorrect chooser target and stopped before
+assignment; DF49572 closed unsaved with source preserved. Discovery 080356 passed
+with DF122952 and established the two selector populations before the stronger
+effects run. Root CTest (19/19) passes in build/qa/zone-animal-native-reference.
+No runtime behavior or plugin binary changes in this audit.
+
 ## Native zone owner assignment audit
 
 `fixtures/areas/native_zone_assignment.json` retains the supported executable's

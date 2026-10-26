@@ -1,0 +1,733 @@
+{
+  "supported_df": "53.16 Steam Windows x64",
+  "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+  "pe_timestamp": "0x6a70a6d9",
+  "image_size": "0x2711000",
+  "evidence": "build/stockpile-storage-native-zone-animals-20261026-080835",
+  "owned_df_pid": 128092,
+  "source_unchanged": true,
+  "status": "native selector and assignment effects captured; bridge integration pending",
+  "ranges": [
+    {
+      "name": "pen_picker_builder",
+      "rva": "0x3a5e30",
+      "size": "0x498",
+      "fnv1a64": "febd497fb8d62a98",
+      "role": "UI producer; never invoke at runtime"
+    },
+    {
+      "name": "pond_picker_builder",
+      "rva": "0x3a6780",
+      "size": "0x567",
+      "fnv1a64": "8e96382099041ad4",
+      "role": "UI producer; never invoke at runtime"
+    },
+    {
+      "name": "selection_callback",
+      "rva": "0x3d52a0",
+      "size": "0x23",
+      "fnv1a64": "2011765d4f5de2e6",
+      "role": "UI wrapper calls action with owned-compatible context"
+    },
+    {
+      "name": "assignment_action",
+      "rva": "0x3ce1b0",
+      "size": "0x36e",
+      "fnv1a64": "f4022a51bef4e82f",
+      "role": "Semantic candidate; helper ownership audit incomplete"
+    },
+    {
+      "name": "search_filter",
+      "rva": "0x1424c30",
+      "size": "0x218",
+      "fnv1a64": "14952fd1a693777f",
+      "role": "Widget query/cache dependent; prohibited runtime input"
+    }
+  ],
+  "pickers": [
+    {
+      "name": "Pen-picker",
+      "zone": 1490,
+      "entries": [
+        {
+          "id": 6545,
+          "kind": 0
+        },
+        {
+          "id": 6548,
+          "kind": 0
+        },
+        {
+          "id": 6686,
+          "kind": 0
+        },
+        {
+          "id": 6821,
+          "kind": 0
+        },
+        {
+          "id": 6960,
+          "kind": 0
+        },
+        {
+          "id": 6961,
+          "kind": 0
+        },
+        {
+          "id": 7119,
+          "kind": 0
+        },
+        {
+          "id": 7121,
+          "kind": 0
+        },
+        {
+          "id": 7122,
+          "kind": 0
+        },
+        {
+          "id": 7264,
+          "kind": 0
+        },
+        {
+          "id": 7265,
+          "kind": 0
+        },
+        {
+          "id": 7269,
+          "kind": 0
+        },
+        {
+          "id": 7270,
+          "kind": 0
+        },
+        {
+          "id": 7277,
+          "kind": 0
+        },
+        {
+          "id": 7346,
+          "kind": 0
+        },
+        {
+          "id": 7347,
+          "kind": 0
+        }
+      ],
+      "callbacks": {
+        "always_sorting_by": [],
+        "filter_func": [
+          {
+            "invoke_rva": 21191488
+          }
+        ],
+        "is_selected": {
+          "invoke_rva": 21184480
+        },
+        "on_select_change": [
+          {
+            "invoke_rva": 4018848
+          }
+        ],
+        "partitions": [
+          {
+            "invoke_rva": 21178000
+          }
+        ],
+        "sorting_by": [
+          {
+            "invoke_rva": 21173104
+          }
+        ]
+      },
+      "visible_rows": [
+        {
+          "kind": 0,
+          "id": 6545,
+          "rect": [
+            52,
+            9,
+            78,
+            8
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 6548,
+          "rect": [
+            52,
+            12,
+            78,
+            11
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 6686,
+          "rect": [
+            52,
+            15,
+            78,
+            14
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 6821,
+          "rect": [
+            52,
+            18,
+            78,
+            17
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 6960,
+          "rect": [
+            52,
+            21,
+            78,
+            20
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 6961,
+          "rect": [
+            52,
+            24,
+            78,
+            23
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7119,
+          "rect": [
+            52,
+            27,
+            78,
+            26
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7121,
+          "rect": [
+            52,
+            30,
+            78,
+            29
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7122,
+          "rect": [
+            52,
+            33,
+            78,
+            32
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7269,
+          "rect": [
+            52,
+            36,
+            78,
+            35
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7270,
+          "rect": [
+            52,
+            39,
+            78,
+            38
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7277,
+          "rect": [
+            52,
+            42,
+            78,
+            41
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7264,
+          "rect": [
+            52,
+            45,
+            78,
+            44
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7265,
+          "rect": [
+            52,
+            48,
+            78,
+            47
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7346,
+          "rect": [
+            52,
+            51,
+            78,
+            50
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7347,
+          "rect": [
+            52,
+            54,
+            78,
+            53
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pond-picker",
+      "zone": 1491,
+      "entries": [
+        {
+          "id": 6960,
+          "kind": 0
+        },
+        {
+          "id": 6961,
+          "kind": 0
+        },
+        {
+          "id": 7122,
+          "kind": 0
+        },
+        {
+          "id": 7264,
+          "kind": 0
+        },
+        {
+          "id": 7277,
+          "kind": 0
+        },
+        {
+          "id": 7346,
+          "kind": 0
+        },
+        {
+          "id": 5969,
+          "kind": 1
+        }
+      ],
+      "callbacks": {
+        "always_sorting_by": [],
+        "filter_func": [
+          {
+            "invoke_rva": 21191488
+          }
+        ],
+        "is_selected": {
+          "invoke_rva": 21184480
+        },
+        "on_select_change": [
+          {
+            "invoke_rva": 4018848
+          }
+        ],
+        "partitions": [
+          {
+            "invoke_rva": 21178000
+          }
+        ],
+        "sorting_by": [
+          {
+            "invoke_rva": 21173104
+          }
+        ]
+      },
+      "visible_rows": [
+        {
+          "kind": 0,
+          "id": 6960,
+          "rect": [
+            52,
+            9,
+            78,
+            8
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 6961,
+          "rect": [
+            52,
+            12,
+            78,
+            11
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7122,
+          "rect": [
+            52,
+            15,
+            78,
+            14
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7277,
+          "rect": [
+            52,
+            18,
+            78,
+            17
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7264,
+          "rect": [
+            52,
+            21,
+            78,
+            20
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7346,
+          "rect": [
+            52,
+            24,
+            78,
+            23
+          ]
+        },
+        {
+          "kind": 1,
+          "id": 5969,
+          "rect": [
+            52,
+            27,
+            72,
+            26
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pond-transfer-picker",
+      "zone": 1492,
+      "entries": [
+        {
+          "id": 6960,
+          "kind": 0
+        },
+        {
+          "id": 6961,
+          "kind": 0
+        },
+        {
+          "id": 7122,
+          "kind": 0
+        },
+        {
+          "id": 7264,
+          "kind": 0
+        },
+        {
+          "id": 7277,
+          "kind": 0
+        },
+        {
+          "id": 7346,
+          "kind": 0
+        },
+        {
+          "id": 5969,
+          "kind": 1
+        }
+      ],
+      "callbacks": {
+        "always_sorting_by": [],
+        "filter_func": [
+          {
+            "invoke_rva": 21191488
+          }
+        ],
+        "is_selected": {
+          "invoke_rva": 21184480
+        },
+        "on_select_change": [
+          {
+            "invoke_rva": 4018848
+          }
+        ],
+        "partitions": [
+          {
+            "invoke_rva": 21178000
+          }
+        ],
+        "sorting_by": [
+          {
+            "invoke_rva": 21173104
+          }
+        ]
+      },
+      "visible_rows": [
+        {
+          "kind": 0,
+          "id": 6960,
+          "rect": [
+            52,
+            9,
+            78,
+            8
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 6961,
+          "rect": [
+            52,
+            12,
+            78,
+            11
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7122,
+          "rect": [
+            52,
+            15,
+            78,
+            14
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7277,
+          "rect": [
+            52,
+            18,
+            78,
+            17
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7264,
+          "rect": [
+            52,
+            21,
+            78,
+            20
+          ]
+        },
+        {
+          "kind": 0,
+          "id": 7346,
+          "rect": [
+            52,
+            24,
+            78,
+            23
+          ]
+        },
+        {
+          "kind": 1,
+          "id": 5969,
+          "rect": [
+            52,
+            27,
+            72,
+            26
+          ]
+        }
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "cages": [],
+      "flags1": 109051904,
+      "flags2": 301989936,
+      "id": 6960,
+      "job": -1,
+      "kind": 0,
+      "name": "unit-before-pen",
+      "refs": [
+        {
+          "kind": "CONTAINED_IN_ITEM"
+        }
+      ],
+      "zones": []
+    },
+    {
+      "cages": [],
+      "flags1": 109051904,
+      "flags2": 301989936,
+      "id": 6960,
+      "job": -1,
+      "kind": 0,
+      "name": "unit-after-pen",
+      "refs": [
+        {
+          "kind": "CONTAINED_IN_ITEM"
+        },
+        {
+          "building_id": 1490,
+          "kind": "BUILDING_CIVZONE_ASSIGNED"
+        }
+      ],
+      "zones": [
+        1490
+      ]
+    },
+    {
+      "cages": [],
+      "flags1": 109051904,
+      "flags2": 301989936,
+      "id": 6960,
+      "job": -1,
+      "kind": 0,
+      "name": "unit-after-pond-transfer",
+      "refs": [
+        {
+          "kind": "CONTAINED_IN_ITEM"
+        },
+        {
+          "building_id": 1491,
+          "kind": "BUILDING_CIVZONE_ASSIGNED"
+        }
+      ],
+      "zones": [
+        1491
+      ]
+    },
+    {
+      "cages": [],
+      "flags1": 109051904,
+      "flags2": 301989936,
+      "id": 6960,
+      "job": -1,
+      "kind": 0,
+      "name": "unit-after-clear",
+      "refs": [
+        {
+          "kind": "CONTAINED_IN_ITEM"
+        }
+      ],
+      "zones": []
+    },
+    {
+      "cages": [
+        261
+      ],
+      "id": 5969,
+      "kind": 1,
+      "name": "item-before-pond",
+      "refs": [
+        {
+          "kind": "CONTAINED_IN_ITEM"
+        },
+        {
+          "building_id": 261,
+          "kind": "BUILDING_CAGED"
+        }
+      ],
+      "zones": []
+    },
+    {
+      "cages": [],
+      "id": 5969,
+      "kind": 1,
+      "name": "item-after-pond",
+      "refs": [
+        {
+          "kind": "CONTAINED_IN_ITEM"
+        },
+        {
+          "building_id": 1491,
+          "kind": "BUILDING_CIVZONE_ASSIGNED"
+        }
+      ],
+      "zones": [
+        1491
+      ]
+    },
+    {
+      "cages": [],
+      "id": 5969,
+      "kind": 1,
+      "name": "item-after-transfer",
+      "refs": [
+        {
+          "kind": "CONTAINED_IN_ITEM"
+        },
+        {
+          "building_id": 1492,
+          "kind": "BUILDING_CIVZONE_ASSIGNED"
+        }
+      ],
+      "zones": [
+        1492
+      ]
+    },
+    {
+      "cages": [],
+      "id": 5969,
+      "kind": 1,
+      "name": "item-after-clear",
+      "refs": [
+        {
+          "kind": "CONTAINED_IN_ITEM"
+        }
+      ],
+      "zones": []
+    }
+  ],
+  "captures": {
+    "Pen-picker.png": "d3cd98bb3b6d880beb7dbc5cdedab0fa9f71190f6ecd28dd342b76a7a62221b6",
+    "Pond-picker.png": "c6e5ebdf80346b54b9f20f2a475ad713a103363e17c5d24465e041792ffba2d2",
+    "Pond-item-assigned.png": "cc58f3dcbbf4eede307a0a4baa27001d8a9d2d32017ed4bbd0317a6e99b27b00",
+    "Pond-item-transferred.png": "cc58f3dcbbf4eede307a0a4baa27001d8a9d2d32017ed4bbd0317a6e99b27b00",
+    "Pond-item-cleared.png": "6e034bd5945597bae656e04af93ac0eba647bad93aabe49b90268cbb84d7a722"
+  },
+  "findings": [
+    "Pen baseline lists 16 units; Pond lists six units and one vermin item.",
+    "Native callback dispatches units and items independently and retains typed identities.",
+    "Unit 6960 transfers between zones, then clears its zone reference while retaining containment.",
+    "Item 5969 leaves cage assignment 261, transfers between ponds, then clears its zone reference while retaining containment.",
+    "Candidate builders include assigned unit/item identities before gathering additional choices.",
+    "The filter callback implements search against widget state, not candidate admission."
+  ],
+  "pending": [
+    "Audit complete action helper bodies and dependencies before invoking 0x3ce1b0.",
+    "Locate reusable semantic admission helpers and preserve exact inline eligibility where no callable routine exists.",
+    "Add unit/item identity to candidate and assignment contracts, validators, models and viewer.",
+    "Observe ordering, search, status artwork, descriptions, tooltips and input/lifecycle.",
+    "Exercise unit cage/chain cleanup, stale state, repeated requests, and unknown outcomes."
+  ]
+}

@@ -243,6 +243,32 @@ the squad rows now use the standard native row background and white glyphs.
 The unsourced full-name tooltip is removed. Final GPU acceptance retains only
 the three known Godot diagnostics; core19/19 passes in `build/qa/squad-native-names`.
 
+Squad long lists use ten visible rows and the native interface-graphics
+scrollbar, reserving16 horizontal pixels. Controls move left16 pixels and the
+name limit becomes52 cells. Candidate pages drain to a complete list so the
+scrollbar represents the full set. The shared scrollbar retains its standalone
+art for owner/animal pickers; changing source clears its texture cache. Squad
+rows and use buttons do not accept Godot keyboard focus: native's handler uses
+mouse/context scrolling and Escape, with no keyboard row activation.
+
+Protected `build/stockpile-storage-native-zone-squads-20261026-181442` temporarily
+lists25 existing squads in the owned fortress entity and restores membership.
+Both pickers ignore standard scroll keys, move1 row for context wheel/arrows,
+move10 for page/track input, and clamp the last page to15. Source preservation
+passes; DF140636 exits unsaved. The repeated-input diagnostic explicitly restores
+mouse tracking between frames; an earlier tail probe without that tracking
+failed and is not accepted last-page evidence. `scroll_reference` retains28
+native scrollbar RGB hashes, semantic observations and provenance.
+
+GPU `build/qa/squad-native-scroll-complete` matches all28 scrollbar strips exactly
+and verifies pointer wheel/Shift-wheel, arrow/track clicks, tail clamping and
+control positioning in both pickers. It also reruns the symbol, name and hover
+checks. Only the three known Godot diagnostics remain. Core19/19 passes in
+`build/qa/squad-native-scroll`. The first pixel test exposed the wrong standalone
+scrollbar source; the corrected interface-art source matches. Scrollbar dragging,
+assignment after scrolling, stale/disconnect and full native tooltip screenshot
+parity remain separate unfinished checks.
+
 ## Animal keyboard activation and portrait reference
 
 `native_zone_animals.json.animal_container_reference_order` records seven

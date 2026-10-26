@@ -566,7 +566,7 @@ func run() -> void:
 			var target:Button
 			for control in controller.candidates_view.squad_buttons:
 				if int(control.get_meta("squad_use"))==int(sample.use):target=control;break
-			if target==null or not target.tooltip_text.is_empty() or squad_help.SQUAD_HELP[int(sample.use)]!=sample.lines:
+			if target==null or target.focus_mode!=Control.FOCUS_NONE or not target.tooltip_text.is_empty() or squad_help.SQUAD_HELP[int(sample.use)]!=sample.lines:
 				push_error("Squad native help mapping/text differs");quit(1);return
 			squad_help.reset()
 			var motion:=InputEventMouseMotion.new();motion.position=Vector2(4,400);motion.global_position=motion.position;root.push_input(motion,true)
@@ -585,6 +585,47 @@ func run() -> void:
 			target.mouse_entered.emit();controller.candidates_view.hide()
 			if squad_help.visible:push_error("Hidden squad retained hover");quit(1);return
 			controller.candidates_view.show()
+		var scroll_reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_squads.json")).scroll_reference
+		var long_rows:Array=[]
+		for id in scroll_reference.ids:
+			var row:Dictionary={"id":int(id),"entity":3,"name":"","squad_use":0}
+			for observed in scroll_reference.rows:
+				if int(observed.id)==int(id):row.name=str(observed.name);break
+			long_rows.append(row)
+		controller.candidates_state.rows=long_rows;controller.candidates_state.changed.emit()
+		await process_frame
+		if controller.candidates_view.squad_buttons[0].position.x!=(504 if type_name=="ArcheryRange" else 408):
+			push_error("Squad controls failed to reserve native scrollbar space");quit(1);return
+		for sample in scroll_reference.observations:
+			if not str(sample.capture).begins_with(type_name+"-"):continue
+			var action:=str(sample.capture).split("-longlist-")[1]
+			var wheel:=0;var page:=false
+			if action.begins_with("CONTEXT_SCROLL_"):
+				wheel=MOUSE_BUTTON_WHEEL_DOWN if action.ends_with("DOWN") else MOUSE_BUTTON_WHEEL_UP
+				page="PAGE" in action
+			if action=="bottom":
+				for step in 30:
+					var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_WHEEL_DOWN;event.pressed=true;event.position=Vector2(500,150);event.global_position=event.position;root.push_input(event,true)
+			elif wheel!=0:
+				var event:=InputEventMouseButton.new();event.button_index=wheel;event.pressed=true;event.shift_pressed=page;event.position=Vector2(500,150);event.global_position=event.position;root.push_input(event,true)
+			elif action.begins_with("arrow-") or action.begins_with("track-"):
+				var y:int={"arrow-down":452,"arrow-up":106,"track-down":420,"track-up":120}[action]
+				var motion:=InputEventMouseMotion.new();motion.position=Vector2(928,y);motion.global_position=motion.position;root.push_input(motion,true)
+				for pressed in [true,false]:
+					var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;event.position=Vector2(928,y);event.global_position=event.position;root.push_input(event,true)
+			elif action.begins_with("STANDARDSCROLL_"):
+				var event:=InputEventKey.new();event.pressed=true;event.keycode=KEY_DOWN
+				if controller.candidates_view.feed_owner_key(event):push_error("Squad picker consumed unsupported keyboard scroll");quit(1);return
+			var motion:=InputEventMouseMotion.new();motion.position=Vector2(4,400);motion.global_position=motion.position;root.push_input(motion,true)
+			await process_frame;await RenderingServer.frame_post_draw
+			var bar=controller.candidates_view.owner_scrollbar
+			if bar.first!=int(sample.first) or controller.candidates_view.scroll.scroll_vertical!=bar.first*36:
+				push_error("Squad scroll differs: "+action);quit(1);return
+			var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
+			var crop:=rendered.get_region(Rect2i(Vector2i(bar.global_position),Vector2i(16,360)))
+			crop.save_png(directory.path_join("squad-scroll-"+str(sample.capture)+".png"))
+			var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+			if digest.finish().hex_encode()!=str(sample.bar_rgb_sha256):push_error("Squad scrollbar pixels differ: "+action);quit(1);return
 		controller.handle_back()
 		if squad_help.visible or not squad_help.state.key.is_empty():push_error("Closed squad picker retained hover");quit(1);return
 	controller.candidates_view.native_help=null;squad_help.free()

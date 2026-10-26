@@ -64,7 +64,7 @@ func configure(source, model) -> void:
 	owner_scrollbar.clamp_interior_thumb = true
 	owner_scrollbar.configure(source); owner_scrollbar.position = Vector2(560,24)
 	owner_scrollbar.size = Vector2(16,600); owner_scrollbar.page = 16
-	owner_scrollbar.input_allowed = func(): return state.kind in [1,2] and not state.busy()
+	owner_scrollbar.input_allowed = func(): return state.kind in [1,2,3] and not state.busy()
 	owner_scrollbar.row_changed.connect(func(_first): apply_owner_scroll())
 	body.add_child(owner_scrollbar); owner_scrollbar.hide()
 	visibility_changed.connect(func(): if not is_visible_in_tree(): owner_scrollbar.dragging = false)
@@ -132,6 +132,7 @@ func style_row(button: Button, selected: bool) -> void:
 
 func row_button(text: String) -> Button:
 	var button := Button.new(); button.custom_minimum_size = Vector2(352 if state.kind == 2 else 552,36)
+	if state.kind == 3 and state.rows.size() > 10: button.custom_minimum_size.x = 536
 	if state.kind in [1,2]: button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT; button.text = text
 	button.add_theme_font_size_override("font_size",12)
@@ -144,16 +145,21 @@ func refresh() -> void:
 		owner_scrollbar.set_rows(0); owner_scrollbar.dragging = false; scroll.scroll_vertical = 0
 	body.custom_minimum_size = Vector2(564,400) if state.kind == 3 else Vector2(376 if state.kind == 2 else 576,684)
 	scroll.position.y = 36 if state.kind == 3 else 24
-	scroll.size = Vector2(360 if state.kind == 2 else 560,576) if state.kind in [1,2] else Vector2(body.custom_minimum_size.x,360)
-	owner_scrollbar.position.x = 360 if state.kind == 2 else 560
-	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER if state.kind in [1,2] else ScrollContainer.SCROLL_MODE_AUTO
+	scroll.size = Vector2(360 if state.kind == 2 else 560,576) if state.kind in [1,2] else Vector2(536 if state.rows.size()>10 else 552,360)
+	owner_scrollbar.position = Vector2(544,36) if state.kind == 3 else Vector2(360 if state.kind == 2 else 560,24)
+	owner_scrollbar.size.y = 360 if state.kind == 3 else 600
+	owner_scrollbar.page = 10 if state.kind == 3 else 16
+	var standalone_scroll:bool = state.kind != 3
+	if owner_scrollbar.use_standalone_sheet != standalone_scroll:
+		owner_scrollbar.use_standalone_sheet = standalone_scroll; owner_scrollbar.textures.clear()
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	squad_prompt.visible = state.kind == 3
 	squad_prompt.text = "Select the squads to train here." if state.squad_mask == 2 else "Select how squads will use this space."
 	owner_search.visible = state.kind in [1,2]
 	owner_search.set_bytes(state.query_bytes if state.query_bytes is PackedByteArray else state.query.to_utf8_buffer())
 	remove.visible = state.can_remove_owner()
 	owner_scrollbar.set_rows(state.rows.size()+(1 if remove.visible else 0),owner_scrollbar.first)
-	owner_scrollbar.visible = state.kind in [1,2] and state.cursor == 0 and owner_scrollbar.count > 16
+	owner_scrollbar.visible = state.cursor == 0 and owner_scrollbar.count > owner_scrollbar.page
 	if state.busy(): owner_scrollbar.dragging = false
 	owner_search.editable = not state.failed and not state.mutating and not state.area.is_empty()
 	if not owner_search.editable and native_help != null: native_help.leave(owner_search.get_instance_id())
@@ -266,18 +272,20 @@ func refresh() -> void:
 		if button.disabled and native_help != null: native_help.leave(button.get_instance_id())
 		button.modulate = Color(0.5,0.5,0.5) if button.disabled else Color.WHITE
 	# A short bridge page must not strand the cursor below an absent scrollbar.
-	if state.kind == 3 and not state.busy() and state.cursor != 0 and state.rows.size() < 16: state.call_deferred("more")
+	if state.kind == 3 and not state.busy() and state.cursor != 0: state.call_deferred("more")
 
 func apply_owner_scroll() -> void:
 	scroll.scroll_vertical = owner_scrollbar.first * 36
 
 func _input(event: InputEvent) -> void:
-	if not is_visible_in_tree() or state.kind not in [1,2] or not event is InputEventMouseButton or not event.pressed: return
+	if not is_visible_in_tree() or state.kind not in [1,2,3] or not event is InputEventMouseButton or not event.pressed: return
 	if event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]: return
 	var local: Vector2 = body.get_global_transform_with_canvas().affine_inverse() * event.position
-	if not Rect2(0,24,376 if state.kind == 2 else 576,600).has_point(local): return
+	var bounds := Rect2(0,24,376 if state.kind == 2 else 576,600)
+	if state.kind == 3: bounds = Rect2(-8,-12,576,420)
+	if not bounds.has_point(local): return
 	if not state.busy():
-		owner_scrollbar.move_to(owner_scrollbar.first+(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)*(16 if event.shift_pressed else 1))
+		owner_scrollbar.move_to(owner_scrollbar.first+(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)*(owner_scrollbar.page if event.shift_pressed else 1))
 	get_viewport().set_input_as_handled()
 
 # Local selection follows the native STANDARDSCROLL bindings. Receipt changes
@@ -509,13 +517,15 @@ func apply_owner_colors(time_ms: int, fire_choice: int = -1) -> void:
 			background.color = native_colors[int(color[1])]
 
 func add_squad(row: Dictionary) -> void:
-	# Native3ac445..3ac4cf: this fixed-width picker keeps names shorter than55
-	# cells, otherwise54 with the final three replaced by dots. DF2UTF preserves
+	# Native3ac445..3ac4cf: this picker keeps54 cells (52 with a scrollbar),
+	# replacing the final three with dots on overflow. DF2UTF preserves
 	# one codepoint per source CP437 cell. Use controls overdraw the name afterward.
 	var caption := str(row.get("name",""))
-	if caption.length() >= 55: caption = caption.left(51)+"..."
+	var scrollbar_width := 16 if state.rows.size() > 10 else 0
+	var limit := 52 if scrollbar_width > 0 else 54
+	if caption.length() > limit: caption = caption.left(limit-3)+"..."
 	var button := row_button(caption)
-	button.clip_text = true
+	button.clip_text = true; button.focus_mode = Control.FOCUS_NONE
 	for key in ["font_color","font_hover_color","font_pressed_color","font_hover_pressed_color","font_focus_color","font_disabled_color"]:
 		button.add_theme_color_override(key,Color.WHITE)
 	var style: StyleBox = button.get_theme_stylebox("normal").duplicate()
@@ -533,7 +543,8 @@ func add_squad(row: Dictionary) -> void:
 		var entry: Array = entries[index]
 		if (int(entry[0]) & state.squad_mask) == 0: continue
 		var control := Button.new(); control.size = Vector2(32,36)
-		control.position = Vector2(520 if state.squad_mask == 2 else 424+index*32,0)
+		control.focus_mode = Control.FOCUS_NONE
+		control.position = Vector2((520 if state.squad_mask == 2 else 424+index*32)-scrollbar_width,0)
 		control.set_meta("squad_use",int(entry[0]))
 		for key in ["normal","hover","pressed","disabled","focus"]: control.add_theme_stylebox_override(key,StyleBoxEmpty.new())
 		var use := int(row.get("squad_use",-1)); control.set_meta("unknown",use < 0)

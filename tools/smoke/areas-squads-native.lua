@@ -59,7 +59,8 @@ local function capture(name,b,keep_mouse)
   assert(#row.semantic_ids==#row.ids,'native squad count differs')
   for i,id in ipairs(row.ids)do assert(row.semantic_ids[i]==id,'native squad order differs')end
   row.names={}
-  for i=1,math.min(4,#row.ids)do
+  local first=math.max(0,ui.scroll_position)
+  for i=first+1,math.min(first+4,#row.ids)do
    local squad=assert(df.squad.find(row.ids[i]))
    local size,address=df.sizeof(squad);local before=df.new('uint8_t',size)
    dfhack.internal.memmove(before,address,size)
@@ -73,7 +74,7 @@ local function capture(name,b,keep_mouse)
    assert(dfhack.internal.memcmp(before,address,size)==0,'name reader changed squad')
    df.delete(before)
    local rendered={}
-   for x=54,113 do rendered[#rendered+1]=dfhack.screen.readTile(x,9+(i-1)*3).ch end
+   for x=54,113 do rendered[#rendered+1]=dfhack.screen.readTile(x,9+(i-first-1)*3).ch end
    -- Short captions compare in full; long captions retain the native clipped
    -- glyph row for the independent presentation audit.
    for n=1,math.min(#bytes,40)do assert(bytes[n]==rendered[n],'native squad name glyph differs: '..name)end
@@ -307,6 +308,32 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
   for field,value in pairs(saved)do named[field]=value end
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ local long_ids={}
+ for _,s in ipairs(df.global.world.squads.all)do
+  long_ids[#long_ids+1]=s.id;if #long_ids==25 then break end
+ end
+ assert(#long_ids==25,'long squad list needs25 existing squads')
+ entity.squads:resize(0);for _,id in ipairs(long_ids)do entity.squads:insert('#',id)end
+ pixel(336,154);capture(kind..'-longlist-open',b)
+ for _,key in ipairs{'STANDARDSCROLL_DOWN','STANDARDSCROLL_PAGEDOWN','STANDARDSCROLL_UP','STANDARDSCROLL_PAGEUP',
+  'CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_PAGEDOWN','CONTEXT_SCROLL_UP','CONTEXT_SCROLL_PAGEUP'}do
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=500;g.precise_mouse_y=150;g.mouse_x=62;g.mouse_y=12
+  gui.simulateInput(view,key);view:render(dfhack.getTickCount())
+  capture(kind..'-longlist-'..key,b)
+ end
+ for _,probe in ipairs{{'arrow-down',928,452},{'arrow-up',928,106},{'track-down',928,420},{'track-up',928,120}}do
+  df.global.enabler.mouse_focus=true;pixel(probe[2],probe[3]);capture(kind..'-longlist-'..probe[1],b)
+ end
+ for i=1,30 do
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.mouse_x=62;g.mouse_y=12;g.precise_mouse_x=500;g.precise_mouse_y=150
+  gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount());script.sleep(1,'frames')
+ end
+ view:render(dfhack.getTickCount());local bottom=capture(kind..'-longlist-bottom',b)
+ assert(bottom.scroll==15,'long squad list did not reach last page')
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ entity.squads:resize(0);for _,id in ipairs(original)do entity.squads:insert('#',id)end
  capture(kind..'-closed',b)
  rack_fixture.finish()
 end

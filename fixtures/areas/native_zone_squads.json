@@ -4139,5 +4139,375 @@
       ],
       "summary_sha256": "819fabc6201bbcaa2a8c7f4d3678f9e5e3bbc1e648b09778a457d210ec8e5c07"
     }
+  },
+  "scroll_reference": {
+    "run": "build/stockpile-storage-native-zone-squads-20261026-181442",
+    "scope": "25 existing squads in diagnostic fortress membership; ten visible rows. Native standard keys ignored; pointer context scroll by1/10; arrows1 and track10; tail clamps to15. Scrollbar RGB strips, only observed semantic names retained; no claim for uncaptured row content.",
+    "rows": [
+      {
+        "id": 0,
+        "name": "The Hops of Tweeting",
+        "symbol": [
+          9,
+          128,
+          255,
+          233,
+          84,
+          84,
+          0
+        ]
+      },
+      {
+        "id": 1,
+        "name": "The Unspeakable Diamond Traps",
+        "symbol": [
+          6,
+          21,
+          41,
+          84,
+          28,
+          84,
+          0
+        ]
+      },
+      {
+        "id": 2,
+        "name": "The Occult Puzzles",
+        "symbol": [
+          15,
+          85,
+          142,
+          170,
+          153,
+          153,
+          153
+        ]
+      },
+      {
+        "id": 3,
+        "name": "The Waxy Onions",
+        "symbol": [
+          18,
+          0,
+          142,
+          170,
+          95,
+          255,
+          64
+        ]
+      },
+      {
+        "id": 4,
+        "name": "The Bad Ones",
+        "symbol": [
+          22,
+          84,
+          21,
+          41,
+          128,
+          255,
+          255
+        ]
+      },
+      {
+        "id": 11,
+        "name": "The Royal Wraiths",
+        "symbol": [
+          6,
+          191,
+          128,
+          255,
+          170,
+          113,
+          0
+        ]
+      },
+      {
+        "id": 12,
+        "name": "The Guilty Spiders",
+        "symbol": [
+          4,
+          0,
+          142,
+          170,
+          84,
+          31,
+          21
+        ]
+      },
+      {
+        "id": 13,
+        "name": "The Warmth of Hating",
+        "symbol": [
+          2,
+          0,
+          170,
+          113,
+          255,
+          64,
+          159
+        ]
+      },
+      {
+        "id": 14,
+        "name": "The Horses of Veiling",
+        "symbol": [
+          8,
+          174,
+          174,
+          174,
+          255,
+          85,
+          0
+        ]
+      },
+      {
+        "id": 10,
+        "name": "The Steamy Axes",
+        "symbol": [
+          18,
+          41,
+          84,
+          21,
+          85,
+          142,
+          170
+        ]
+      },
+      {
+        "id": 15,
+        "name": "The Born Keys",
+        "symbol": [
+          3,
+          0,
+          255,
+          42,
+          170,
+          0,
+          28
+        ]
+      },
+      {
+        "id": 16,
+        "name": "The Sly Connections",
+        "symbol": [
+          21,
+          42,
+          170,
+          149,
+          0,
+          255,
+          170
+        ]
+      },
+      {
+        "id": 17,
+        "name": "The Blunt Counsellors",
+        "symbol": [
+          16,
+          170,
+          149,
+          42,
+          191,
+          128,
+          255
+        ]
+      },
+      {
+        "id": 18,
+        "name": "The Seductions of Denting",
+        "symbol": [
+          4,
+          149,
+          42,
+          170,
+          212,
+          255,
+          128
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "capture": "Barracks-longlist-open",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-longlist-STANDARDSCROLL_DOWN",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-longlist-STANDARDSCROLL_PAGEDOWN",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-longlist-STANDARDSCROLL_UP",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-longlist-STANDARDSCROLL_PAGEUP",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-longlist-CONTEXT_SCROLL_DOWN",
+        "first": 1,
+        "bar_rgb_sha256": "cc3e6567a04f086c38dae72888789d4c901616d31f220637a1efb5ee394be92d"
+      },
+      {
+        "capture": "Barracks-longlist-CONTEXT_SCROLL_PAGEDOWN",
+        "first": 11,
+        "bar_rgb_sha256": "3db5e297e4f59efe5c3a5c28ec3576a87a07e530873a028a1b6bcf8884fcd6f2"
+      },
+      {
+        "capture": "Barracks-longlist-CONTEXT_SCROLL_UP",
+        "first": 10,
+        "bar_rgb_sha256": "3c6f0e8cdfbd055d2b2b89a558e529d226682c03e93e40c1519a5970f3e439a0"
+      },
+      {
+        "capture": "Barracks-longlist-CONTEXT_SCROLL_PAGEUP",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-longlist-arrow-down",
+        "first": 1,
+        "bar_rgb_sha256": "cc3e6567a04f086c38dae72888789d4c901616d31f220637a1efb5ee394be92d"
+      },
+      {
+        "capture": "Barracks-longlist-arrow-up",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-longlist-track-down",
+        "first": 10,
+        "bar_rgb_sha256": "3c6f0e8cdfbd055d2b2b89a558e529d226682c03e93e40c1519a5970f3e439a0"
+      },
+      {
+        "capture": "Barracks-longlist-track-up",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "Barracks-longlist-bottom",
+        "first": 15,
+        "bar_rgb_sha256": "0a1a3db44c3dcf4bcde566c9199fa96311e52b29bcc42f6461802ec77079f2ee"
+      },
+      {
+        "capture": "ArcheryRange-longlist-open",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-longlist-STANDARDSCROLL_DOWN",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-longlist-STANDARDSCROLL_PAGEDOWN",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-longlist-STANDARDSCROLL_UP",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-longlist-STANDARDSCROLL_PAGEUP",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-longlist-CONTEXT_SCROLL_DOWN",
+        "first": 1,
+        "bar_rgb_sha256": "cc3e6567a04f086c38dae72888789d4c901616d31f220637a1efb5ee394be92d"
+      },
+      {
+        "capture": "ArcheryRange-longlist-CONTEXT_SCROLL_PAGEDOWN",
+        "first": 11,
+        "bar_rgb_sha256": "3db5e297e4f59efe5c3a5c28ec3576a87a07e530873a028a1b6bcf8884fcd6f2"
+      },
+      {
+        "capture": "ArcheryRange-longlist-CONTEXT_SCROLL_UP",
+        "first": 10,
+        "bar_rgb_sha256": "3c6f0e8cdfbd055d2b2b89a558e529d226682c03e93e40c1519a5970f3e439a0"
+      },
+      {
+        "capture": "ArcheryRange-longlist-CONTEXT_SCROLL_PAGEUP",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-longlist-arrow-down",
+        "first": 1,
+        "bar_rgb_sha256": "cc3e6567a04f086c38dae72888789d4c901616d31f220637a1efb5ee394be92d"
+      },
+      {
+        "capture": "ArcheryRange-longlist-arrow-up",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-longlist-track-down",
+        "first": 10,
+        "bar_rgb_sha256": "3c6f0e8cdfbd055d2b2b89a558e529d226682c03e93e40c1519a5970f3e439a0"
+      },
+      {
+        "capture": "ArcheryRange-longlist-track-up",
+        "first": 0,
+        "bar_rgb_sha256": "084b3e58e7285a95e1e2bf82a5cb4043823c430673cc173e8145a98266f1c110"
+      },
+      {
+        "capture": "ArcheryRange-longlist-bottom",
+        "first": 15,
+        "bar_rgb_sha256": "0a1a3db44c3dcf4bcde566c9199fa96311e52b29bcc42f6461802ec77079f2ee"
+      }
+    ],
+    "ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "result_sha256": "d4318d7661ea848658849fe4d496e2187e767dcd1abb67ee8cae8c02238c2a74",
+    "gpu": {
+      "run": "build/qa/squad-native-scroll-complete",
+      "status": "passed_with_known_issues",
+      "comparisons": 28,
+      "scope": "Exact scrollbar RGB for28 native states; actual pointer wheel/page/arrow/track inputs, last-page clamp and controls shifted16pixels. Drag and actual scrolled assignment remain pending.",
+      "known": [
+        "godot-separate-thread-notice",
+        "godot-device-finalize",
+        "godot-shutdown-objects"
+      ],
+      "summary_sha256": "82461ec157448471115b9fb4e3d3b04fb19524b59e48ff4fbd1cb3672e5c3cff"
+    }
   }
 }

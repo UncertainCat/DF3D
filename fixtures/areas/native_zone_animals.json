@@ -17169,5 +17169,85 @@
         "Temporary second Pond is removed and original selection restored."
       ]
     }
+  },
+  "chain_worker_item_cancellation": {
+    "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-154149",
+    "native_owned_df_pid": 122460,
+    "native_source_unchanged": true,
+    "native_checks": [
+      {
+        "current_job": 382794,
+        "in_job": true,
+        "item": 0,
+        "item_refs": 1,
+        "job": 382794,
+        "name": "chain-worker-item-before",
+        "worker": 996
+      },
+      {
+        "current_job": -1,
+        "in_job": false,
+        "item": 0,
+        "item_refs": 0,
+        "job": 382794,
+        "name": "chain-worker-item-after",
+        "worker": 996
+      }
+    ],
+    "rendered_bridge_provenance": "build/areas-acceptance-20261026-154356",
+    "rendered_owned_df_pid": 120796,
+    "save_manifests_unchanged": 2,
+    "result": "passed_with_known_issues",
+    "bridge_checks": [
+      {
+        "chain": 1510,
+        "cursor_unchanged": true,
+        "item": 0,
+        "item_in_job": false,
+        "item_refs": 0,
+        "pending_job_absent": true,
+        "retained_job": 382795,
+        "status": "passed",
+        "worker": 996,
+        "worker_job": -1
+      },
+      {
+        "chain": 1510,
+        "cursor_unchanged": true,
+        "item": 0,
+        "item_in_job": false,
+        "item_refs": 0,
+        "pending_job_absent": true,
+        "retained_job": 382795,
+        "status": "passed",
+        "worker": 996,
+        "worker_job": -1
+      },
+      {
+        "chain": 1510,
+        "cursor_unchanged": true,
+        "item": 0,
+        "item_in_job": false,
+        "item_refs": 0,
+        "pending_job_absent": true,
+        "retained_job": 382795,
+        "status": "passed",
+        "worker": 996,
+        "worker_job": -1
+      },
+      {
+        "chain": 1510,
+        "cursor_unchanged": true,
+        "item": 0,
+        "item_in_job": false,
+        "item_refs": 0,
+        "pending_job_absent": true,
+        "retained_job": 382795,
+        "status": "passed",
+        "worker": 996,
+        "worker_job": -1
+      }
+    ],
+    "scope": "A current worker and Hauled item reservation are attached to ChainAnimal; assignment cancels it, clears current_job and item refs/in_job, preserves UnchainAnimal and physical containment, and leaves native job cursor unchanged."
   }
 }

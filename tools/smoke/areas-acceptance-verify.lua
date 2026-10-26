@@ -904,13 +904,26 @@ elseif request.op=='assignment_before' then
   local job=df.job:new();job.job_type=kind;job.posting_index=-1
   local ref=df.general_ref_building_holderst:new();ref.building_id=chain.id
   job.general_refs:insert('#',ref);assert(dfhack.job.linkIntoWorld(job,true))
-  chain.jobs:insert('#',job);return job.id
+  chain.jobs:insert('#',job);return job.id,job
  end
- local pending=add_job(df.job_type.ChainAnimal)
+ local pending,pending_job=add_job(df.job_type.ChainAnimal)
  local retained=add_job(df.job_type.UnchainAnimal)
- _G.df3d_areas_chain={chain=chain,pending=pending,retained=retained,
+ local worker
+ for _,unit in ipairs(df.global.world.units.active)do
+  if dfhack.units.isCitizen(unit) and not unit.job.current_job then worker=unit;break end
+ end
+ assert(worker,'chain fixture needs idle citizen')
+ local held_item
+ for _,item in ipairs(df.global.world.items.all)do
+  if not item.flags.in_job and #item.specific_refs==0 then held_item=item;break end
+ end
+ assert(held_item,'chain fixture needs unreserved item')
+ assert(dfhack.job.addWorker(pending_job,worker))
+ assert(dfhack.job.attachJobItem(pending_job,held_item,df.job_role_type.Hauled,-1,-1))
+ assert(worker.job.current_job==pending_job and held_item.flags.in_job and #held_item.specific_refs==1)
+ _G.df3d_areas_chain={chain=chain,pending=pending,retained=retained,worker=worker,item=held_item,
   cursor=df.reinterpret_cast('int32_t',dfhack.internal.getImageBase()+0x2131b60).value}
- result.chain=chain.id;result.pending_job=pending;result.retained_job=retained
+ result.chain=chain.id;result.pending_job=pending;result.retained_job=retained;result.worker=worker.id;result.item=held_item.id
 
 elseif request.op=='assignment' then
  local b,u=building(),assert(df.unit.find(request.unit_id));local found=0;local contained={}
@@ -933,6 +946,10 @@ elseif request.op=='assignment' then
   assert(job.id~=saved.pending,'cancelled chain job remains in world')
  end
  assert(df.reinterpret_cast('int32_t',dfhack.internal.getImageBase()+0x2131b60).value==saved.cursor,'native job cursor changed')
+ assert(not saved.worker.job.current_job,'chain cancellation retained worker job')
+ assert(not saved.item.flags.in_job and #saved.item.specific_refs==0,'chain cancellation retained item reservation')
+ result.worker=saved.worker.id;result.worker_job=-1;result.item=saved.item.id
+ result.item_in_job=false;result.item_refs=0
  result.chain=chain.id;result.pending_job_absent=true;result.retained_job=saved.retained;result.cursor_unchanged=true
 
 elseif request.op=='squad' then

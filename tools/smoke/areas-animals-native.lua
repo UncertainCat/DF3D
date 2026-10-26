@@ -798,6 +798,21 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   end
   local cancelled=job(df.job_type.ChainAnimal)
   local retained=job(df.job_type.UnchainAnimal)
+  local worker
+  for _,unit in ipairs(df.global.world.units.active)do
+   if dfhack.units.isCitizen(unit) and not unit.job.current_job then worker=unit;break end
+  end
+  assert(worker,'chain fixture needs an idle citizen')
+  local held_item
+  for _,item in ipairs(df.global.world.items.all)do
+   if not item.flags.in_job and #item.specific_refs==0 then held_item=item;break end
+  end
+  assert(held_item,'chain fixture needs an unreserved item')
+  assert(dfhack.job.addWorker(assert(find_job(cancelled)),worker))
+  assert(dfhack.job.attachJobItem(find_job(cancelled),held_item,df.job_role_type.Hauled,-1,-1))
+  assert(worker.job.current_job.id==cancelled and held_item.flags.in_job and #held_item.specific_refs==1)
+  records[#records+1]={name='chain-worker-item-before',job=cancelled,worker=worker.id,
+   item=held_item.id,current_job=worker.job.current_job.id,in_job=held_item.flags.in_job,item_refs=#held_item.specific_refs}
   records[#records+1]={name='controlled-chain-fixture',chain=chain.id,cage=cage.id,
    unit=animal.id,cancelled_job=cancelled,retained_job=retained}
   -- Exercise every containment fallback against the actual native renderer.
@@ -923,6 +938,10 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   assert(not contains(cage.assigned_units,animal.id),'native assignment retained cage membership')
   assert(not chain.assigned and chain.chained==animal,'native chain assignment cleanup changed wrong pointer')
   assert(not find_job(cancelled),'native assignment retained ChainAnimal job')
+  assert(not worker.job.current_job,'native cancellation retained worker job')
+  assert(not held_item.flags.in_job and #held_item.specific_refs==0,'native cancellation retained item reservation')
+  records[#records+1]={name='chain-worker-item-after',job=cancelled,worker=worker.id,
+   item=held_item.id,current_job=-1,in_job=held_item.flags.in_job,item_refs=#held_item.specific_refs}
   assert(find_job(retained) and #chain.jobs==1 and chain.jobs[0].id==retained,'native assignment removed unrelated chain work')
   records[#records+1]={name='controlled-chain-result',assigned=-1,chained=animal.id,
    cancelled_job_absent=true,retained_job=retained,cage_assignment_absent=true}

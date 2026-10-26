@@ -816,8 +816,17 @@ Remaining job deletion and the subsequent zone transfer stay native.
 Protected native 20261026-083036 (DF107324) proves cage membership cleanup,
 ChainAnimal cancellation, retention of UnchainAnimal, and preservation of the
 physical chained pointer. An independent holder-detach/cancel case also passes
-with the native job cursor unchanged. These controlled jobs have no worker or
-item references; fuller cancellation fixtures remain required.
+with the native job cursor unchanged. The original controlled jobs had no worker or item references. Native
+`build/stockpile-storage-native-zone-animals-20261026-154149` adds a citizen
+worker and a Hauled item reservation to ChainAnimal. Assignment clears the
+worker's current job, item in_job flag and reciprocal item reference, while
+preserving UnchainAnimal and physical containment. Rendered bridge acceptance
+`build/areas-acceptance-20261026-154356` verifies the same effects through real
+viewer assignment, including an unchanged native job cursor. The native source
+and both bridge-run save manifests remain unchanged. The rendered run retains
+only the known separate-thread notice; core passes in
+`build/qa/animal-chain-worker`. Compact observations are retained in
+`native_zone_animals.json.chain_worker_item_cancellation`.
 
 Protected semantic build/areas-acceptance-20261026-084317 (DF117584) passes
 grazer and caged-unit Pen assignment, Pond transfer and clearing through the
@@ -843,12 +852,11 @@ Filter callback 0x1435b40 invokes widget-dependent search 0x1424c30; it is not a
 eligibility predicate. Reusable semantic admission helpers and inline selection
 branches remain to be integrated.
 
-Animal candidates still emit units only; requests and native effects now
-support typed units/items. Full native parity still requires the observed
-vermin choices in the actual picker. This is unfinished work, not an accepted
-exclusion. Ordering, descriptions,
-portraits/status graphics, input/lifecycle, richer chain-job fixtures, stale state
-and unknown outcomes remain in scope. Zones/Locations stays staged.
+Animal candidates and requests carry typed units/items, including live VERMIN.
+Native ordering, descriptions, portrait/status artwork, rendered input and
+worker/item cancellation evidence are recorded above. Remaining lifecycle,
+stale-state and unknown-outcome integration checks stay in scope;
+Zones/Locations remains staged until its full workflow is accepted.
 
 The initial 080229 probe used an incorrect chooser target and stopped before
 assignment; DF49572 closed unsaved with source preserved. Discovery 080356 passed

@@ -26,6 +26,11 @@ class View extends Node:
 		if panel.visible: closes += 1
 		panel.hide()
 		ui_host.release(self)
+class EscapeView extends View:
+	var escapes := 0
+	var backs := 0
+	func handle_escape(): escapes += 1
+	func handle_back(): backs += 1
 func _initialize(): call_deferred("run")
 func run():
 	var interaction := Interaction.new();root.add_child(interaction)
@@ -57,6 +62,13 @@ func run():
 	assert(host.active==first and first.panel.visible and interaction.enabled)
 	first.free()
 	assert(host.active==null and not interaction.construction_active,"Freed active view releases ownership")
+	var escape_view := EscapeView.new(); root.add_child(escape_view); host.register(escape_view); escape_view.open_panel()
+	var escape := InputEventKey.new(); escape.pressed=true; escape.keycode=KEY_ESCAPE
+	host._input(escape)
+	assert(escape_view.escapes==1 and escape_view.backs==0,"Host must preserve the panel's distinct Escape route")
+	escape.echo=true; host._input(escape)
+	assert(escape_view.escapes==1,"Held Escape must not repeat the transition")
+	escape_view.free()
 	second.free();inspector.free();host.free();interaction.free()
 	print("UI_HOST_TEST_PASS")
 	quit()

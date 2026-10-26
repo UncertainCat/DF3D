@@ -419,8 +419,10 @@ repeat/pending-write suppression. Right-click first releases filter focus, then
 closes the picker on the next press. Native window-input capture044300 verifies
 these routes. Its posted Ctrl+F also generated a plain `f` through Windows text
 translation; that injection artifact is cleared in the probe and is not product
-behavior. Actual Escape closes Zones and opens native Options; that integration
-remains unfinished, so current picker Back behavior is not full Escape parity.
+behavior. Actual Escape closes Zones and opens native Options. The owner picker
+routes this separately from right-click; the host honors its Escape handler and
+suppresses held-key repeats. This route remains behind the staged Zones launcher;
+it does not promote the unfinished Options actions or other Zones workflows.
 
 The candidate state owns raw query bytes, debounces edits, rejects old-query
 replies and requires an exact raw echo on both builder and completed replies.
@@ -445,8 +447,14 @@ not detach that pending receipt. The main-scene keyboard test exposed this race;
 and GPU checks (known notices only). Protected main-scene045402 verifies Ctrl+F,
 two-stage right-click, keyboard assignment immediately after recenter, native
 receipt/effect and removal. DF47344 closes unsaved; both manifests match, with
-only the known rendering-thread notice. Escape/Options remains outside this
-acceptance.
+only the known rendering-thread notice. That run excludes Escape/Options.
+Protected main-scene050256 separately verifies Escape with focused/unfocused
+owner filters, Options dismissal, input-gate release and Zones reopening without
+mutations. DF130072 closes unsaved with both manifests unchanged; only the known
+rendering-thread notice is present. Its full504x384 Options rectangle matches
+native044300 exactly (193536 RGB pixels). Offline owner-escape-final covers host
+Escape dispatch/repeat suppression, areas, Options session and actual viewport
+routing; the broader Options action/lifecycle gaps remain recorded below.
 
 Management66 appends optional `query_bytes` to AreaRequest and AreaState. It is
 limited to33 bytes and scoped to an identified Zone owner CandidateList; a

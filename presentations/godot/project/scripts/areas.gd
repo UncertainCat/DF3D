@@ -1,5 +1,6 @@
 extends Node3D
 signal focus_requested(tile: Vector3i)
+signal options_requested
 const Contract = preload("res://scripts/management_contract.gd")
 const Action = Contract.ManagementAction
 const Status = Contract.ManagementStatus
@@ -1608,6 +1609,8 @@ func _input(event: InputEvent) -> void:
 	if panel.visible and ((event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT)):
 		if event is InputEventMouseButton and candidates_view.visible and candidates_state.kind == 1 and candidates_view.owner_search.has_focus():
 			candidates_view.owner_search.release_focus()
+		elif event is InputEventKey:
+			if not event.echo: handle_escape()
 		else: handle_back()
 		get_viewport().set_input_as_handled()
 		return
@@ -1692,6 +1695,15 @@ func _unhandled_input(event: InputEvent) -> void:
 				draw_outline()
 				update_controls()
 		get_viewport().set_input_as_handled()
+
+
+func handle_escape() -> void:
+	# Native owner-selector Escape leaves Zones and opens Options, unlike
+	# right-click, which first unfocuses the filter and then backs out one page.
+	if stockpile_page == "owner" and kind_picker.selected == 1:
+		close_panel()
+		options_requested.emit()
+	else: handle_back()
 
 
 func handle_back() -> void:

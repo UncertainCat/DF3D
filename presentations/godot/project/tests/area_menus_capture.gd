@@ -397,6 +397,17 @@ func run() -> void:
 			service.poll(); controller._process(0)
 			if controller.stockpile_page != "types" or controller.candidates_view.visible:
 				push_error("Owner picker did not close after successful native receipt"); quit(1); return
+	var options_events := [0]
+	controller.options_requested.connect(func(): options_events[0] += 1)
+	for focus_filter in [false,true]:
+		controller.use_area(bedroom); controller.zone_menu.controls.owner.pressed.emit()
+		if focus_filter: controller.candidates_view.owner_search.grab_focus()
+		var before_escape_calls: int = world.calls.size()
+		var escape_owner := InputEventKey.new(); escape_owner.pressed=true; escape_owner.keycode=KEY_ESCAPE
+		root.push_input(escape_owner,true)
+		if controller.panel.visible or host.active != null or options_events[0] != (2 if focus_filter else 1) or world.calls.size()!=before_escape_calls:
+			push_error("Owner Escape state: "+str([focus_filter,controller.panel.visible,host.active,options_events,world.calls.size(),before_escape_calls,controller.stockpile_page,controller.request_ticket]));quit(1);return
+		host.activate(controller); controller.panel.show(); controller.available=true
 	# Capture each observed zone type, including panels with no extra controls.
 	for definition in controller.zone_types:
 		var type_name: String = definition.name

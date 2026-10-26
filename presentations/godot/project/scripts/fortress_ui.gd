@@ -120,7 +120,10 @@ func controller(id: String):
 	add_child(panel)
 	host.register(panel)
 	controllers[id] = panel
-	if id == "areas": panel.focus_requested.connect(focus_tile)
+	if id == "areas":
+		panel.focus_requested.connect(focus_tile)
+		panel.options_requested.connect(func():
+			if native_options != null: native_options.open())
 	if id == "readouts":
 		panel.info_frame.destination_requested.connect(open_destination)
 		panel.focus_requested.connect(focus_tile)

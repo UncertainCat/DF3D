@@ -105,6 +105,7 @@ func _input(event: InputEvent) -> void:
 			reset_local_views()
 			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_ESCAPE and is_instance_valid(active) and not overlay_blocked:
-			if active.has_method("handle_back"): active.handle_back()
+			if active.has_method("handle_escape"): active.handle_escape()
+			elif active.has_method("handle_back"): active.handle_back()
 			else: close_active()
 			get_viewport().set_input_as_handled()

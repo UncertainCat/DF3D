@@ -3694,7 +3694,7 @@
       "live_run": "build/areas-acceptance-20261026-043030",
       "live_df_pid": 85284,
       "save_preservation": "Both manifests unchanged; owned DF closed unsaved",
-      "scope": "33-byte editing, partial UTF-8, focus and exact glyphs. Later key activation evidence is recorded separately; Escape/Options remains open."
+      "scope": "33-byte editing, partial UTF-8, focus and exact glyphs. Later key activation and Escape evidence are recorded separately."
     }
   },
   "owner_raw_query_integration": {
@@ -3824,7 +3824,7 @@
       }
     ],
     "control_f": "Real window key messages focus the filter. Posted Control does not suppress the Windows-translated plain f; probe clears this injection artifact before continuing.",
-    "escape": "Native Escape closes Zones and opens Options (screenshot inspected); DF3D integration remains unfinished.",
+    "escape": "Native Escape closes Zones and opens Options; staged owner route integrated and separately verified below.",
     "live_run": "build/areas-acceptance-20261026-045402",
     "owned_live_df_pid": 47344,
     "status": "passed_with_known_issues",
@@ -3834,5 +3834,28 @@
     "save_preservation": "Both live save manifests unchanged; owned processes closed unsaved; native source manifest unchanged.",
     "scope": "Ctrl+F focus, focused Enter releases focus, unfocused Enter assignment, two-stage right-click, recenter retains pending assignment receipt, native effect and removal.",
     "offline": "build/qa/owner-key-recenter: core19/19, areas, candidates and GPU passed; GPU has three known notices."
+  },
+  "owner_escape_options": {
+    "native_run": "build/stockpile-storage-native-zone-owner-20261026-044300",
+    "native_focused_run": "build/stockpile-storage-native-zone-owner-20261026-043852",
+    "live_run": "build/areas-acceptance-20261026-050256",
+    "owned_df_pid": 130072,
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "save_preservation": "Both manifests unchanged; owned DF closed unsaved",
+    "scope": "Focused/unfocused owner Escape closes Zones and opens Options; next Escape dismisses Options, releases overlay gate, Zones reopens; no mutation from those transitions. Launcher remains staged. Other Options actions and lifecycle are not accepted by this check.",
+    "pixels": {
+      "crop": [
+        344,
+        244,
+        848,
+        628
+      ],
+      "different_pixels": 0,
+      "native_sha256": "6192f3bff919ace96c8cc63d1f771f0f1f5658ba7b723676dba472cdcc2c7ab9",
+      "viewer_sha256": "6192f3bff919ace96c8cc63d1f771f0f1f5658ba7b723676dba472cdcc2c7ab9"
+    }
   }
 }

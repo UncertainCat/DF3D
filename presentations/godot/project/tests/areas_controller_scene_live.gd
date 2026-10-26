@@ -1329,6 +1329,22 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	if not await wait_ui(func(): return settled() and editor.stockpile_page=="types","pointer remove owner"): return
 	if not check(receipts.size()>before_remove,"owner removal click sent no request"): return
 	await native("snapshot",{"id":id,"expected":{"owner_id":-1}})
+	var escape_area: Dictionary = editor.selected.duplicate(true)
+	# Escape follows native Options routing both with and without filter focus.
+	for focused in [false,true]:
+		await click_control(editor.zone_menu.controls.owner)
+		if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"owner Escape rows"): return
+		if focused: root.push_input(shortcut,true)
+		var before_escape := receipts.size()
+		await pointer_key(KEY_ESCAPE)
+		if not check(not editor.panel.visible and scene._ui.native_options.visible and host.overlay_blocked,"owner Escape did not open Options"): return
+		if not check(receipts.size()==before_escape,"owner Escape submitted a mutation"): return
+		await capture("zone_owner_escape_"+str(focused))
+		await pointer_key(KEY_ESCAPE)
+		if not check(not scene._ui.native_options.visible and not host.overlay_blocked,"Options Escape did not release input"): return
+		editor.open_panel()
+		if not await wait_ui(func(): return settled() and editor.available,"Zones reopen after Options"): return
+		editor.use_area(escape_area); editor._process(0)
 	world.set_top_z(origin.z)
 	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
 

@@ -16,6 +16,20 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 
 ## Animal keyboard activation and portrait reference
 
+`native_zone_animals.json.animal_container_reference_order` records seven
+controlled cage-content cases from protected
+`build/stockpile-storage-native-zone-animals-20261026-151226`. Empty cages,
+stale unit/item references, non-animal items before critters, unit/critter
+ordering and inactive units all match the native rendered cage cache key.
+A unit reference terminates the search even when stale or inactive; stale or
+non-animal item references are skipped. The existing semantic reader already
+matches these rules. All original references are restored before subsequent
+assignment checks; UI/gps bytes and the source save remain unchanged. Cache
+access is diagnostic only. These checks establish occupant identity and
+material facts; they do not establish full Godot composite-pixel parity for
+these cases or separate live VERMIN artwork coverage.
+
+
 Rendered main-scene Pond acceptance passes in
 `build/areas-acceptance-20261026-145558` using
 `areas_acceptance.ps1 -ControllerScene -ZoneAnimalsOnly`. Pointer input creates

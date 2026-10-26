@@ -12726,9 +12726,9 @@
     ],
     "ui_gps_bytes_unchanged": true,
     "limitations": [
-      "Cage semantic reader only; no viewer integration yet.",
+      "Original run covers cage semantic reader; later viewer integration is recorded in animal_container_pixels and ENGINEERING.md.",
       "Native cache keys are diagnostic oracle input only.",
-      "Live animal item and multiple-reference ordering still need controlled coverage."
+      "Controlled empty, stale and multiple-reference ordering is covered by animal_container_reference_order."
     ]
   },
   "animal_container_pixels": {
@@ -15929,5 +15929,129 @@
       }
     ],
     "approved_correction": "Keep clicks inside the visible panel from changing the parent zone; retain focus release and assignment target. Maintainer approved 2026-10-26."
+  },
+  "animal_container_reference_order": {
+    "provenance": "build/stockpile-storage-native-zone-animals-20261026-151226",
+    "owned_df_pid": 125084,
+    "source_unchanged_unsaved_exit": true,
+    "checks": [
+      {
+        "label": "Pen-status-contents-empty",
+        "subject": 6960,
+        "container": {
+          "exact": true,
+          "native_key": 27,
+          "semantic": {
+            "color_id": 26,
+            "material_family": 0,
+            "occupant_entity": 0,
+            "occupant_id": -1,
+            "solid_color": "COPPER"
+          }
+        },
+        "ui_gps_bytes_unchanged": true
+      },
+      {
+        "label": "Pen-status-contents-stale-unit-before-item",
+        "subject": 6960,
+        "container": {
+          "exact": true,
+          "native_key": 27,
+          "semantic": {
+            "color_id": 26,
+            "material_family": 0,
+            "occupant_entity": 0,
+            "occupant_id": -1,
+            "solid_color": "COPPER"
+          }
+        },
+        "ui_gps_bytes_unchanged": true
+      },
+      {
+        "label": "Pen-status-contents-stale-item-before-unit",
+        "subject": 6960,
+        "container": {
+          "exact": true,
+          "native_key": 28510235,
+          "semantic": {
+            "color_id": 26,
+            "material_family": 0,
+            "occupant_entity": 1,
+            "occupant_id": 6960,
+            "solid_color": "COPPER"
+          }
+        },
+        "ui_gps_bytes_unchanged": true
+      },
+      {
+        "label": "Pen-status-contents-inert-item-before-critter",
+        "subject": 6960,
+        "container": {
+          "exact": true,
+          "native_key": 24450075,
+          "semantic": {
+            "color_id": 26,
+            "material_family": 0,
+            "occupant_entity": 2,
+            "occupant_id": 5969,
+            "solid_color": "COPPER"
+          }
+        },
+        "ui_gps_bytes_unchanged": true
+      },
+      {
+        "label": "Pen-status-contents-unit-before-critter",
+        "subject": 6960,
+        "container": {
+          "exact": true,
+          "native_key": 28510235,
+          "semantic": {
+            "color_id": 26,
+            "material_family": 0,
+            "occupant_entity": 1,
+            "occupant_id": 6960,
+            "solid_color": "COPPER"
+          }
+        },
+        "ui_gps_bytes_unchanged": true
+      },
+      {
+        "label": "Pen-status-contents-critter-before-unit",
+        "subject": 6960,
+        "container": {
+          "exact": true,
+          "native_key": 24450075,
+          "semantic": {
+            "color_id": 26,
+            "material_family": 0,
+            "occupant_entity": 2,
+            "occupant_id": 5969,
+            "solid_color": "COPPER"
+          }
+        },
+        "ui_gps_bytes_unchanged": true
+      },
+      {
+        "label": "Pen-status-contents-inactive-unit-before-critter",
+        "subject": 6960,
+        "container": {
+          "exact": true,
+          "native_key": 27,
+          "semantic": {
+            "color_id": 26,
+            "material_family": 0,
+            "occupant_entity": 0,
+            "occupant_id": -1,
+            "solid_color": "COPPER"
+          }
+        },
+        "ui_gps_bytes_unchanged": true
+      }
+    ],
+    "scope": "Native rendered cage cache keys compared against owned semantic reader results; original references restored before subsequent assignment checks. Cache access is diagnostic only.",
+    "limitations": [
+      "These cases verify occupant identity and material facts, not complete Godot composite pixels.",
+      "The live critter here is the existing item 5969; a separate VERMIN artwork case remains outstanding."
+    ]
   }
 }

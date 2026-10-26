@@ -804,6 +804,44 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   animal.flags1.inactive=true
   capture('Pen-status-inactive-cage')
   animal.flags1.whole=original_flags
+  -- Diagnostic-only occupant ordering: retain original references and restore
+  -- them before assignment. These fixture mutations never become product inputs.
+  do
+   local original_refs={}
+   for _,ref in ipairs(container.general_refs)do original_refs[#original_refs+1]=ref end
+   local critter=assert(df.global.world.items.other.ANY_CRITTER[0])
+   assert(critter:isLiveAnimal(),'container ordering needs a live critter')
+   local unit_ref=df.general_ref_contains_unitst:new();unit_ref.unit_id=animal.id
+   local stale_unit=df.general_ref_contains_unitst:new();stale_unit.unit_id=-1
+   local item_ref=df.general_ref_contains_itemst:new();item_ref.item_id=critter.id
+   local inert_ref=df.general_ref_contains_itemst:new();inert_ref.item_id=container.id
+   local stale_item=df.general_ref_contains_itemst:new();stale_item.item_id=-1
+   local function replace(refs)
+    for index=#container.general_refs-1,0,-1 do container.general_refs:erase(index)end
+    for _,ref in ipairs(refs)do container.general_refs:insert('#',ref)end
+   end
+   for _,probe in ipairs{
+    {'empty',{},0,-1},
+    {'stale-unit-before-item',{stale_unit,item_ref},0,-1},
+    {'stale-item-before-unit',{stale_item,unit_ref},1,animal.id},
+    {'inert-item-before-critter',{inert_ref,item_ref},2,critter.id},
+    {'unit-before-critter',{unit_ref,item_ref},1,animal.id},
+    {'critter-before-unit',{item_ref,unit_ref},2,critter.id},
+    {'inactive-unit-before-critter',{unit_ref,item_ref},0,-1,true},
+   }do
+    replace(probe[2]);animal.flags1.inactive=probe[5] or false
+    local observed=capture('Pen-status-contents-'..probe[1])
+    local found
+    for _,status in ipairs(observed.status_icons)do
+     if status.id==animal.id and status.entity==1 then found=status.container;break end
+    end
+    assert(found and found.exact,'missing native cage content evidence: '..probe[1])
+    assert(found.semantic.occupant_entity==probe[3] and found.semantic.occupant_id==probe[4],
+     'unexpected native cage occupant: '..probe[1])
+   end
+   animal.flags1.whole=original_flags;replace(original_refs)
+   for _,ref in ipairs{unit_ref,stale_unit,item_ref,inert_ref,stale_item}do ref:delete()end
+  end
   status_hover('Pen-status-current-cage-hover',animal.id,0x170)
   local chain_item=df.buildingitemst:new();chain_item.item=contained:getItem();chain.contained_items:insert('#',chain_item)
   local chain_ref=df.general_ref_building_chainst:new();chain_ref.building_id=chain.id

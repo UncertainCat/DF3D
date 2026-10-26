@@ -78,6 +78,15 @@ local function capture(label)
   local _,address=df.sizeof(list.is_selected);record.callbacks.is_selected=callback_at(address)
   for _,entry in ipairs(list.entry_list)do record.entries[#record.entries+1]={kind=entry.t,id=entry.t==0 and entry.u and entry.u.id or entry.t==1 and entry.i and entry.i.id or -1}end
   record.cursor=list.cursor_idx;record.query=list.filter_str
+  local _,cache_address=df.sizeof(list.job_sort_str)
+  record.job_search_cache_count=df.reinterpret_cast('uint64_t',cache_address+16).value
+  assert(record.job_search_cache_count==0,'animal picker unexpectedly populated secondary job search text')
+  record.displayed={}
+  for _,row in ipairs(rows)do
+   if row.active and (row.unit_id or row.item_id)then
+    record.displayed[#record.displayed+1]={kind=row.item_id and 1 or 0,id=row.item_id or row.unit_id}
+   end
+  end
   record.item_text={}
   for _,row in ipairs(rows)do
    if row.item_id and row.active and (row.flags&2)~=0 and row.y>0 and row.y<g.dimy then
@@ -116,6 +125,37 @@ local function capture(label)
  local limit=dfhack.getTickCount()+30000
  while not io.open(out..'/ack-'..label,'r')do assert(dfhack.getTickCount()<limit,'capture timed out');script.sleep(1,'frames')end
  return record
+end
+local function reopen()
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
+end
+local function controls(prefix,searches)
+ for _,header in ipairs{{'name',464},{'category',544},{'profession',608}}do
+  for click=1,2 do
+   pixel(header[2],70);script.sleep(3,'frames')
+   local observed=capture(prefix..'-sort-'..header[1]..'-'..click)
+   if prefix=='Pond-selected' then
+    local first=assert(observed.displayed[1])
+    assert(first.kind==1 and first.id==ui.cur_bld.assigned_items[0],'selection partition reversed with sort')
+   end
+  end
+ end
+ for i,query in ipairs(searches==false and {} or {'yak','GRAZER','tame','lovebird','5969','stray','female'})do
+  reopen();pixel(500,730)
+  for byte in query:gmatch('.')do
+   df.global.enabler.last_text_input[0]=byte:byte();df.global.enabler.last_text_input[1]=0
+   gui.simulateInput(view,string.format('STRING_A%03d',byte:byte()))
+   view:render(dfhack.getTickCount());script.sleep(2,'frames')
+  end
+  local observed=capture(prefix..'-filter-'..i)
+  assert(observed.query==query:lower(),'native filter input was not delivered')
+  if query=='GRAZER' or query=='5969' or query=='female' then
+   assert(#observed.displayed==0,'native search matched absent description text')
+  elseif query=='lovebird' then
+   assert(#observed.displayed==1 and observed.displayed[1].kind==1,'native item description search failed')
+  end
+ end
+ reopen()
 end
 local base=assert(df.global.world.buildings.other.ANY_ZONE[0])
 local p={x=base.centerx,y=base.centery,z=base.z}
@@ -174,6 +214,7 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
  local zone=ui.cur_bld
  pixel(304,114);capture(probe[1]..'-zone')
  pixel(336,154);local opened=capture(probe[1]..'-picker')
+ if probe[1]=='Pond' then controls('Pond');opened=capture('Pond-controls-reset-picker') end
  if kind=='Pen' then
   pen_zone=zone.id
   for _,entry in ipairs(opened.entries)do if entry.kind==0 and df.unit.find(entry.id).flags1.caged then chosen_unit=entry.id;break end end
@@ -257,6 +298,7 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   local assigned_picker=capture('Pond-assigned-picker')
   assert(assigned_picker.semantic_candidates[1].assigned and assigned_picker.entries[1].kind==1 and
    assigned_picker.entries[1].id==chosen_item,'native Pond did not retain assigned item first')
+  controls('Pond-selected',false)
   local after_item=effects('item-after-pond',1,chosen_item)
   assert(#after_item.zones==1 and after_item.zones[1]==pond_zone,'native item assignment did not select sole zone')
  else

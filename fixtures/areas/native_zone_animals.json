@@ -1691,5 +1691,1053 @@
     ],
     "scope": "Typed native Pen/Pond membership and raw order, assigned state, item description, unit/item assignment/transfer/clear and ineligible Pond unit refusal.",
     "limits": "No complete animal visual/search/sort parity claim."
+  },
+  "animal_controls": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-095155",
+    "owned_df_pid": 116388,
+    "source_unchanged": true,
+    "status": "passed",
+    "samples": [
+      {
+        "name": "Pond-sort-name-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21191184
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-sort-name-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21191184
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-sort-category-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-sort-category-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-sort-profession-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21190848
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-sort-profession-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21190848
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-filter-1",
+        "query": "yak",
+        "displayed": [
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-filter-2",
+        "query": "grazer",
+        "displayed": [],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-filter-3",
+        "query": "tame",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 5969,
+            "kind": 1
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-filter-4",
+        "query": "lovebird",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-filter-5",
+        "query": "5969",
+        "displayed": [],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-filter-6",
+        "query": "stray",
+        "displayed": [
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-filter-7",
+        "query": "female",
+        "displayed": [],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-selected-sort-name-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21191184
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-selected-sort-name-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21191184
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-selected-sort-category-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-selected-sort-category-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21173104
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-selected-sort-profession-1",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21190848
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      },
+      {
+        "name": "Pond-selected-sort-profession-2",
+        "query": "",
+        "displayed": [
+          {
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "id": 6961,
+            "kind": 0
+          }
+        ],
+        "callbacks": {
+          "always_sorting_by": [],
+          "filter_func": [
+            {
+              "invoke_rva": 21191488
+            }
+          ],
+          "is_selected": {
+            "invoke_rva": 21184480
+          },
+          "on_select_change": [
+            {
+              "invoke_rva": 4018848
+            }
+          ],
+          "partitions": [
+            {
+              "invoke_rva": 21178000
+            }
+          ],
+          "sorting_by": [
+            {
+              "invoke_rva": 21190848
+            }
+          ]
+        },
+        "job_search_cache_count": 0
+      }
+    ],
+    "native_readers": {
+      "name_sort_callback": "0x1435a10",
+      "name_key": "0x14240d0",
+      "profession_sort_callback": "0x14358c0",
+      "profession_key": "0x1425170",
+      "category_sort_callback": "0x1431370",
+      "category_key": "0x1425050",
+      "filter": "0x1424c30",
+      "normalize": "0x52cee0"
+    },
+    "observations": [
+      "Default category ascending; three headers Name/Cat/Prof",
+      "Selection partition stays first independently of sort direction",
+      "Item name and profession keys both use decorated item description",
+      "Unit name key uses1330c30(false); profession uses132f980(false)",
+      "Case normalization uses native52cee0",
+      "IDs, grazer warning and female text are not independent searchable fields",
+      "Secondary job-text search cache empty for every observed animal picker"
+    ],
+    "limits": "Reference only; product sorting/filtering still pending. Multi-item address ordering and equal-key stability need broader fixtures."
   }
 }

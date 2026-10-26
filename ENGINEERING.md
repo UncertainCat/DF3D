@@ -1,3 +1,36 @@
+## Native animal picker search and sort reference
+
+Protected build/stockpile-storage-native-zone-animals-20261026-095155 passes
+with DF116388 and unchanged source after unsaved exit. It captures all three
+header directions before and after selecting an item, plus seven searches.
+Selected entries remain first for every direction. The default is Category
+ascending. Name callback1435a10 calls14240d0; Profession callback14358c0 calls
+1425170; Category callback1431370 calls1425050. Earlier notes calling1431370
+a name comparator were incorrect.
+
+Name keys use1330c30(unit,false) or c65450(item,false,-1), then52cee0
+normalization. Profession keys use132f980(unit,false), or the same item
+description, then normalization. These semantic unit readers and Category
+reader are already pinned in location_staff_order_native.h. Text comparison
+uses unsigned DF-encoded bytes. Category returns a two-integer key; its item
+branch uses masked address bits. Keep such keys inside the bridge and expose
+only ordered semantic IDs, never addresses or address-derived keys.
+
+Filter1424c30 searches the normalized description, with a secondary lookup
+in the widget's job-text cache. The native animal picker leaves that cache
+empty in every captured state. Searching yak finds a unit; lovebird finds the
+critter item; tame matches both kinds. GRAZER,5969 and female match nothing.
+The warning beneath a grazer, numeric IDs and gender descriptions are not
+independent search fields. Widget filter/cache objects remain forbidden
+runtime inputs; use owned strings and the semantic text/normalization readers.
+
+The fixture stores19 control observations and callback identities. Earlier
+094843 and095023 runs established baseline controls and selected partition
+behavior; final095155 asserts empty secondary cache and selected-first
+invariance. Root CTest19/19 passes in build/qa/animal-native-controls-reference.
+Product sorting/filtering is not changed by this reference capture. Multiple
+items and equal-key stability need additional evidence during integration.
+
 ## Native animal candidates in the product chooser
 
 Animal candidate jobs retain the native reader's owned typed identities and

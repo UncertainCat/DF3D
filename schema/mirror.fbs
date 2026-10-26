@@ -1191,6 +1191,7 @@ table AreaZoneSettings {
   tomb_pets:int8 = -1;
   gather_trees:int8 = -1;
   gather_shrubs:int8 = -1;
+  gather_fallen:int8 = -1;
 }
 table AreaSettingRow { key:string; index:int32 = -1; label:string; kind:uint8; state:uint8; estimated:bool; }
 table AreaLocationRow { id:int32 = -1; name:string; location_kind:uint8; religion:string; guild_profession:int16 = -1; location_tier:int32 = -1; site_id:int32 = -1; }
@@ -1705,7 +1706,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 60;
+  schema_version:uint32 = 61;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1751,7 +1752,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 60;
+  schema_version:uint32 = 61;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

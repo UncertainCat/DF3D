@@ -15,7 +15,7 @@ using Action = wm::ManagementAction;
 Dictionary areaZoneDictionary(const wm::AreaZoneSettings& z) {
   Dictionary out;out["pond_mode"]=z.pondMode;out["facing"]=z.facing;
   out["tomb_citizens"]=z.tombCitizens;out["tomb_pets"]=z.tombPets;
-  out["gather_trees"]=z.gatherTrees;out["gather_shrubs"]=z.gatherShrubs;
+  out["gather_trees"]=z.gatherTrees;out["gather_shrubs"]=z.gatherShrubs;out["gather_fallen"]=z.gatherFallen;
   return out;
 }
 }  // namespace
@@ -398,7 +398,7 @@ bool validateAreaShape(const Dictionary& data, String& error) {
   }
   if(data.has("zone_settings")) {
     const Dictionary row=data["zone_settings"];
-    for(const char* key:{"pond_mode","facing","tomb_citizens","tomb_pets","gather_trees","gather_shrubs"})
+    for(const char* key:{"pond_mode","facing","tomb_citizens","tomb_pets","gather_trees","gather_shrubs","gather_fallen"})
       if(!typed(row,key,Variant::INT))return false;
   }
   const auto operation=int64_t(data.get("operation",0));
@@ -493,7 +493,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   };
   a.zoneSettings={uint8_t(zn("pond_mode",0,0,2)),uint8_t(zn("facing",0,0,4)),
       int8_t(zn("tomb_citizens",-1,-1,1)),int8_t(zn("tomb_pets",-1,-1,1)),
-      int8_t(zn("gather_trees",-1,-1,1)),int8_t(zn("gather_shrubs",-1,-1,1))};
+      int8_t(zn("gather_trees",-1,-1,1)),int8_t(zn("gather_shrubs",-1,-1,1)),int8_t(zn("gather_fallen",-1,-1,1))};
   if (!valid) {
     error = "Invalid bounded area request";
     return false;

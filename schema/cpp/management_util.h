@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 60;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v60";
+inline constexpr uint32_t kManagementVersion = 61;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v61";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -16,7 +16,7 @@ inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
 inline constexpr uint32_t kManagementCommandCapacity = 2 * 1024 * 1024;
 inline bool areaZoneSettingsPresent(const AreaZoneSettings* z) {
   return z && (z->pond_mode() || z->facing() || z->tomb_citizens()!=-1 ||
-      z->tomb_pets()!=-1 || z->gather_trees()!=-1 || z->gather_shrubs()!=-1);
+      z->tomb_pets()!=-1 || z->gather_trees()!=-1 || z->gather_shrubs()!=-1 || z->gather_fallen()!=-1);
 }
 inline bool validAreaZoneSettings(const AreaZoneSettings* z) {
   if(!z) return true;
@@ -24,7 +24,8 @@ inline bool validAreaZoneSettings(const AreaZoneSettings* z) {
       z->tomb_citizens()>=-1 && z->tomb_citizens()<=1 &&
       z->tomb_pets()>=-1 && z->tomb_pets()<=1 &&
       z->gather_trees()>=-1 && z->gather_trees()<=1 &&
-      z->gather_shrubs()>=-1 && z->gather_shrubs()<=1;
+      z->gather_shrubs()>=-1 && z->gather_shrubs()<=1 &&
+      z->gather_fallen()>=-1 && z->gather_fallen()<=1;
 }
 // Keep this order in the Lua dispatcher too: selector, matrix, kind, legacy
 // ownership, new-field ownership/requirements, identities, then bounded sizes.

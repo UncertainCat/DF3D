@@ -255,7 +255,7 @@ std::vector<Def> catalog;
 std::vector<Input> inputs;
 struct NativeAreaZone {
   uint8_t pondMode=0,facing=0;
-  int8_t tombCitizens=-1,tombPets=-1,gatherTrees=-1,gatherShrubs=-1;
+  int8_t tombCitizens=-1,tombPets=-1,gatherTrees=-1,gatherShrubs=-1,gatherFallen=-1;
 };
 struct NativeArea {
   int32_t id=-1,x=0,y=0,z=0,owner=-1;
@@ -381,7 +381,7 @@ void publish() {
   for(const auto& a:areas) {
     m::TilePos pos(a.x,a.y,a.z);
     const auto& z=a.zoneSettings;
-    const auto zone=m::CreateAreaZoneSettings(b,z.pondMode,z.facing,z.tombCitizens,z.tombPets,z.gatherTrees,z.gatherShrubs);
+    const auto zone=m::CreateAreaZoneSettings(b,z.pondMode,z.facing,z.tombCitizens,z.tombPets,z.gatherTrees,z.gatherShrubs,z.gatherFallen);
     as.push_back(m::CreateAreaInfo(b,a.id,m::AreaKind(a.kind),b.CreateString(a.name),&pos,a.w,a.h,
       b.CreateVector(a.extents),a.zone,a.categories,a.barrels,a.bins,a.wheelbarrows,a.linksOnly,
       a.active,a.owner,b.CreateString(a.ownerName),a.ownerAllowed,b.CreateVector(a.gives),b.CreateVector(a.takes),
@@ -2261,7 +2261,7 @@ void run(color_ostream& out) {
     }}lua_setfield(L,-2,"spans");
     lua_newtable(L);if(const auto* z=a->zone_settings()) {
       field(L,"pond_mode",z->pond_mode());field(L,"facing",z->facing());field(L,"tomb_citizens",z->tomb_citizens());
-      field(L,"tomb_pets",z->tomb_pets());field(L,"gather_trees",z->gather_trees());field(L,"gather_shrubs",z->gather_shrubs());
+      field(L,"tomb_pets",z->tomb_pets());field(L,"gather_trees",z->gather_trees());field(L,"gather_shrubs",z->gather_shrubs());field(L,"gather_fallen",z->gather_fallen());
     }lua_setfield(L,-2,"zone_settings");
     lua_setfield(L,-2,"area");
   }
@@ -2470,7 +2470,7 @@ void run(color_ostream& out) {
       a.storageLimit=int32_t(number(L,"storage_limit",-1));a.tileCount=int32_t(number(L,"tile_count",-1));a.assignedCount=int32_t(number(L,"assigned_count",-1));
       lua_getfield(L,-1,"zone_settings");if(lua_istable(L,-1)) {
         a.zoneSettings={uint8_t(number(L,"pond_mode")),uint8_t(number(L,"facing")),int8_t(number(L,"tomb_citizens",-1)),
-            int8_t(number(L,"tomb_pets",-1)),int8_t(number(L,"gather_trees",-1)),int8_t(number(L,"gather_shrubs",-1))};
+            int8_t(number(L,"tomb_pets",-1)),int8_t(number(L,"gather_trees",-1)),int8_t(number(L,"gather_shrubs",-1)),int8_t(number(L,"gather_fallen",-1))};
       }lua_pop(L,1);
       ints("extents",a.extents);ints("gives",a.gives);ints("takes",a.takes);areas.push_back(std::move(a));
     });

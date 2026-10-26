@@ -49,7 +49,7 @@ struct CreatureInfo {
 struct AreaSpan { int16_t y=0,x=0; uint16_t length=0; };
 struct AreaZoneSettings {
   uint8_t pondMode=0,facing=0;
-  int8_t tombCitizens=-1,tombPets=-1,gatherTrees=-1,gatherShrubs=-1;
+  int8_t tombCitizens=-1,tombPets=-1,gatherTrees=-1,gatherShrubs=-1,gatherFallen=-1;
   friend bool operator==(const AreaZoneSettings&,const AreaZoneSettings&)=default;
 };
 struct AreaPaintPreview { int16_t x=0,y=0; uint16_t width=0,height=0; };

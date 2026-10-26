@@ -64,7 +64,7 @@ void verifyAreaOperation(const m::AreaRequest& q) {
     case 6: break;
     case 7: require(q.location_id()==-1,"area location removal");break;
     case 8: require(q.location_kind()==2 && q.profession()==-1 && q.deity_kind()==3 && q.deity_id()==900,"area location creation");break;
-    case 9: {const auto* z=q.zone_settings();require(z && z->pond_mode()==2 && z->facing()==4 && z->tomb_citizens()==0 && z->tomb_pets()==1 && z->gather_trees()==1 && z->gather_shrubs()==0,"area zone settings");break;}
+    case 9: {const auto* z=q.zone_settings();require(z && z->pond_mode()==2 && z->facing()==4 && z->tomb_citizens()==0 && z->tomb_pets()==1 && z->gather_trees()==1 && z->gather_shrubs()==0 && z->gather_fallen()==1,"area zone settings");break;}
     case 10: break;
     case 11: require(q.unit_id()==0 && q.assign()==0,"area unassign");break;
     case 12: require(q.squad_id()==0 && q.squad_use()==0,"area squad removal");break;
@@ -105,7 +105,7 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
     return area.Finish();
   }
   const auto name=b.CreateString("observed"),key=b.CreateString("food/meat");
-  const auto zone=m::CreateAreaZoneSettings(b,2,4,0,1,1,0);
+  const auto zone=m::CreateAreaZoneSettings(b,2,4,0,1,1,0,1);
   const auto extent=b.CreateVector(std::vector<uint8_t>{1});m::TilePos pos(11,12,13);
   m::AreaInfoBuilder info(b);info.add_id(7);info.add_name(name);info.add_origin(&pos);info.add_width(1);info.add_height(1);
   info.add_extents(extent);info.add_revision(INT64_MAX);info.add_zone_label(name);info.add_location_id(99);

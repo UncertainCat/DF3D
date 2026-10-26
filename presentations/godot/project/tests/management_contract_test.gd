@@ -670,7 +670,7 @@ func test_area_operations() -> void:
 	for spans in [[1],[{"x":1,"y":2}],[{"x":1.0,"y":2,"length":1}],
 		[{"x":32767,"y":0,"length":2}],[{"x":0,"y":0,"length":32769}]]:
 		assert(world.area_request({"action":A.AreaCreate,"operation":5,"paint_mode":1,"paint_z":0,"spans":spans}) == 0)
-	for key in ["pond_mode","facing","tomb_citizens","tomb_pets","gather_trees","gather_shrubs"]:
+	for key in ["pond_mode","facing","tomb_citizens","tomb_pets","gather_trees","gather_shrubs","gather_fallen"]:
 		for bad in [1.5,"1",true]:
 			assert(world.area_request({"action":A.AreaUpdate,"id":7,"kind":1,"operation":9,"zone_settings":{key:bad}}) == 0)
 			assert(world.last_error() == "Wrong area field type: " + key)
@@ -693,7 +693,7 @@ func test_area_operations() -> void:
 				"spans":[{"y":14,"x":15,"length":128},{"y":15,"x":15,"length":256}]})
 		if operation == 7: request.location_id = -1
 		if operation == 8: request.merge({"location_kind":2,"deity_kind":3,"deity_id":900})
-		if operation == 9: request.zone_settings = {"pond_mode":2,"facing":4,"tomb_citizens":0,"tomb_pets":1,"gather_trees":1,"gather_shrubs":0}
+		if operation == 9: request.zone_settings = {"pond_mode":2,"facing":4,"tomb_citizens":0,"tomb_pets":1,"gather_trees":1,"gather_shrubs":0,"gather_fallen":1}
 		if operation == 11: request.merge({"unit_id":0,"assign":0})
 		if operation == 12: request.merge({"squad_id":0,"squad_use":0})
 		if operation == 13: request.merge({"organic":0,"inorganic":1})
@@ -714,7 +714,7 @@ func test_area_operations() -> void:
 		assert(row.revision == 9223372036854775807 and row.zone_label == "observed")
 		assert(row.location_id == 99 and row.location_name == "observed" and row.religion == "observed")
 		assert(row.organic == 0 and row.inorganic == 1 and row.tile_count == 1 and row.assigned_count == 4)
-		assert(row.zone_settings == {"pond_mode":2,"facing":4,"tomb_citizens":0,"tomb_pets":1,"gather_trees":1,"gather_shrubs":0})
+		assert(row.zone_settings == {"pond_mode":2,"facing":4,"tomb_citizens":0,"tomb_pets":1,"gather_trees":1,"gather_shrubs":0,"gather_fallen":1})
 		if operation == 1: assert(area.settings == [{"key":"food/meat","index":5,"label":"observed","kind":4,"state":3,"estimated":true}])
 		if operation == 6: assert(area.locations == [{"id":99,"name":"observed","location_kind":2,"religion":"observed","guild_profession":-1,"location_tier":-1,"site_id":-1}])
 		if operation == 10: assert(area.links == [{"id":9,"kind":2,"direction":2,"name":"observed"}])

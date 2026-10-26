@@ -790,7 +790,7 @@ TEST_CASE("area operation codecs preserve every selector and omit legacy origin"
     if(op==5){a.id=-1;a.paintZ=17;a.paintMode=1;a.spans={{14,15,128},{15,15,256}};a.zoneType=1;}
     if(op==7)a.locationId=-1;
     if(op==8){a.locationKind=2;a.deityKind=3;a.deityId=900;}
-    if(op==9)a.zoneSettings={2,4,0,1,1,0};
+    if(op==9)a.zoneSettings={2,4,0,1,1,0,1};
     if(op==11){a.unitId=0;a.assign=0;}
     if(op==12){a.squadId=0;a.squadUse=0;}
     if(op==13){a.organic=0;a.inorganic=1;}
@@ -818,7 +818,7 @@ TEST_CASE("area operation codecs preserve every selector and omit legacy origin"
     REQUIRE(q->zone_settings());const auto* z=q->zone_settings();
     CHECK(z->pond_mode()==a.zoneSettings.pondMode);CHECK(z->facing()==a.zoneSettings.facing);
     CHECK(z->tomb_citizens()==a.zoneSettings.tombCitizens);CHECK(z->tomb_pets()==a.zoneSettings.tombPets);
-    CHECK(z->gather_trees()==a.zoneSettings.gatherTrees);CHECK(z->gather_shrubs()==a.zoneSettings.gatherShrubs);
+    CHECK(z->gather_trees()==a.zoneSettings.gatherTrees);CHECK(z->gather_shrubs()==a.zoneSettings.gatherShrubs);CHECK(z->gather_fallen()==a.zoneSettings.gatherFallen);
     CHECK(q->unit_id()==a.unitId);CHECK(q->assign()==a.assign);CHECK(q->squad_id()==a.squadId);CHECK(q->squad_use()==a.squadUse);
     CHECK(q->organic()==a.organic);CHECK(q->inorganic()==a.inorganic);CHECK(q->candidate_kind()==a.candidateKind);
     CHECK(q->sort()==a.sort);CHECK(q->sort_descending()==a.sortDescending);
@@ -888,7 +888,7 @@ TEST_CASE("area response codec carries list families and unknown sentinels") {
   for(int family=0;family<6;++family) {
     CAPTURE(family);flatbuffers::FlatBufferBuilder b;
     const auto text=b.CreateString("observed"),key=b.CreateString("food/meat");
-    const auto zone=wire::CreateAreaZoneSettings(b,2,4,0,1,1,0);
+    const auto zone=wire::CreateAreaZoneSettings(b,2,4,0,1,1,0,1);
     const auto extents=b.CreateVector(std::vector<uint8_t>{1});wire::TilePos origin(1,2,3);
     wire::AreaInfoBuilder info(b);info.add_id(7);info.add_origin(&origin);info.add_width(1);info.add_height(1);info.add_extents(extents);
     info.add_name(text);info.add_custom_name(key);info.add_revision(INT64_MAX);info.add_zone_label(text);info.add_location_id(99);info.add_location_site_id(651);info.add_location_name(text);
@@ -919,7 +919,7 @@ TEST_CASE("area response codec carries list families and unknown sentinels") {
     CHECK(decoded.omitted==4);CHECK(decoded.capturedTick==9876543210);CHECK(decoded.nextCursor==128);CHECK(decoded.truncated);
     if(family<4){REQUIRE(decoded.areas.size()==1);const auto& v=decoded.areas[0];CHECK(v.revision==INT64_MAX);CHECK(v.zoneLabel=="observed");
       CHECK(v.locationId==99);CHECK(v.locationSiteId==651);CHECK(v.locationName=="observed");CHECK(v.religion=="observed");CHECK(v.organic==0);CHECK(v.inorganic==1);
-      CHECK(v.zoneSettings==wm::AreaZoneSettings{2,4,0,1,1,0});CHECK(v.tileCount==1);CHECK(v.storageLimit==1);CHECK(v.customName=="food/meat");CHECK(v.assignedCount==4);
+      CHECK(v.zoneSettings==wm::AreaZoneSettings{2,4,0,1,1,0,1});CHECK(v.tileCount==1);CHECK(v.storageLimit==1);CHECK(v.customName=="food/meat");CHECK(v.assignedCount==4);
       CHECK(v.locationKind==2);CHECK(v.ownerProfession=="observed");CHECK(v.ownerSex==1);}
     if(family==0){REQUIRE(decoded.settings.size()==1);const auto& v=decoded.settings[0];CHECK(v.key=="food/meat");CHECK(v.index==5);CHECK(v.label=="observed");CHECK(v.kind==4);CHECK(v.state==3);CHECK(v.estimated);}
     if(family==1){REQUIRE(decoded.locations.size()==1);const auto& v=decoded.locations[0];CHECK(v.id==99);CHECK(v.name=="observed");CHECK(v.locationKind==4);CHECK(v.religion=="observed");CHECK(v.guildProfession==41);CHECK(v.locationTier==2);CHECK(v.siteId==651);}
@@ -2529,4 +2529,18 @@ TEST_CASE("construction gem shape survives owned decoding and rejects wrong cont
   CHECK(wire::validateManagementState(*state).has_value()==!valid);
   if(valid){wm::ManagementState decoded;codec::decodeConstruction(state,decoded);b.Clear();CHECK(decoded.construction.materials[0].candidates->at(0).appearance->gemShapeRaw==shape);}
  }
+}
+
+TEST_CASE("fallen gathering flag preserves unknown and rejects invalid wire values") {
+  for(int value:{-2,-1,0,1,2}) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto settings=wire::CreateAreaZoneSettings(b,0,0,-1,-1,-1,-1,int8_t(value));
+    b.Finish(settings);
+    const auto* row=flatbuffers::GetRoot<wire::AreaZoneSettings>(b.GetBufferPointer());
+    CHECK(wire::validAreaZoneSettings(row)==(value>=-1 && value<=1));
+    CHECK(wire::areaZoneSettingsPresent(row)==(value!=-1));
+  }
+  flatbuffers::FlatBufferBuilder old;
+  old.Finish(wire::CreateAreaZoneSettings(old,0,0,-1,-1,1,0));
+  CHECK(flatbuffers::GetRoot<wire::AreaZoneSettings>(old.GetBufferPointer())->gather_fallen()==-1);
 }

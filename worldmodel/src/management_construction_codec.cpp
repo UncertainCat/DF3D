@@ -78,7 +78,7 @@ AreaState decodeArea(const m::AreaState* a) {
     return out;
   const auto text=[](const flatbuffers::String* v){return v ? v->str() : std::string{};};
   const auto settings=[](const m::AreaZoneSettings* z) {
-    return z ? AreaZoneSettings{z->pond_mode(),z->facing(),z->tomb_citizens(),z->tomb_pets(),z->gather_trees(),z->gather_shrubs()} : AreaZoneSettings{};
+    return z ? AreaZoneSettings{z->pond_mode(),z->facing(),z->tomb_citizens(),z->tomb_pets(),z->gather_trees(),z->gather_shrubs(),z->gather_fallen()} : AreaZoneSettings{};
   };
   out.nextCursor = a->next_cursor();
   out.truncated = a->truncated();
@@ -195,7 +195,7 @@ flatbuffers::Offset<m::AreaRequest> encodeArea(flatbuffers::FlatBufferBuilder& b
   for(const auto& s:a.spans)spans.emplace_back(s.y,s.x,s.length);
   const auto spanRows=b.CreateVectorOfStructs(spans);
   const auto& z=a.zoneSettings;
-  const auto zone=m::CreateAreaZoneSettings(b,z.pondMode,z.facing,z.tombCitizens,z.tombPets,z.gatherTrees,z.gatherShrubs);
+  const auto zone=m::CreateAreaZoneSettings(b,z.pondMode,z.facing,z.tombCitizens,z.tombPets,z.gatherTrees,z.gatherShrubs,z.gatherFallen);
   flatbuffers::Offset<m::AreaPaintPreview> preview;
   if(a.paintPreview) {
     const auto& p=*a.paintPreview;

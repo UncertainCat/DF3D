@@ -144,7 +144,11 @@ AreaState decodeArea(const m::AreaState* a) {
   out.buildTotal=a->build_total();out.omitted=a->omitted();out.capturedTick=a->captured_tick();
   if(a->settings())for(const auto* v:*a->settings())out.settings.push_back({text(v->key()),v->index(),text(v->label()),v->kind(),v->state(),v->estimated()});
   if(a->locations())for(const auto* v:*a->locations())out.locations.push_back({v->id(),text(v->name()),v->location_kind(),text(v->religion()),v->guild_profession(),v->location_tier(),v->site_id()});
-  if(a->candidates())for(const auto* v:*a->candidates())out.candidates.push_back({v->id(),text(v->name()),text(v->profession()),v->sex(),v->mood(),v->grazer(),v->assigned(),v->squad_use()});
+  if(a->candidates())for(const auto* v:*a->candidates()) {
+    AreaCandidateRow row{v->id(),text(v->name()),text(v->profession()),v->sex(),v->mood(),v->grazer(),v->assigned(),v->squad_use()};
+    if(const auto* d=v->owner_display())row.ownerDisplay=AreaOwnerDisplay{d->columns(),text(d->first_line()),text(d->second_line()),text(d->status()),d->room_value()};
+    out.candidates.push_back(std::move(row));
+  }
   if(a->links())for(const auto* v:*a->links())out.links.push_back({v->id(),AreaKind(v->kind()),v->direction(),text(v->name())});
   if (a->choices())
     for (const auto* c : *a->choices())

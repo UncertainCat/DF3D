@@ -516,6 +516,26 @@ actual inline input with this name provider; the typed capture was inspected.
 Owned DF107768 closes unsaved, both manifests match and only the same known
 thread notice remains. Zones remains staged.
 
+## Owner display observation contract
+
+Management63 adds optional `AreaCandidateRow.owner_display` for scoped owner
+candidate replies. It carries native first/second name lines, room-status text,
+room value and formatting width in columns. Width is bounded to3..128; text
+limits are384 UTF-8 bytes per name line and256 for status. A zero room value
+requires empty status; positive values require a status. Other candidate kinds
+must not carry this record. Missing records in older recordings remain unknown,
+not empty native rows. This migration establishes transport only; production
+reader and renderer integration requires separate verification.
+
+Bridge, model and Godot must be rebuilt together. The current live region is
+`Local\df3d_management_v63`; version62 peers cannot share it. Historical version62
+evidence below describes the earlier overlap migration.
+
+`build/qa/owner-display-contract-final` passes root CTest19/19 and the Godot
+contract check. Coverage includes native lines through the real engine decoder,
+absent legacy records, invalid widths/value/status/scope and an explicit old
+version. Live producer acceptance remains part of the integration work.
+
 ## Zone overlap observation contract
 
 Management62 adds `AreaInfo.overlapping`: -1 means unavailable/legacy,0 clear,

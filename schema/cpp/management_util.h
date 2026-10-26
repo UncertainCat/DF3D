@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 62;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v62";
+inline constexpr uint32_t kManagementVersion = 63;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v63";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -964,6 +964,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(!row || row->id()<-1 || textSize(row->name())>512 || textSize(row->profession())>512 ||
           row->sex()<-1 || row->sex()>1 || row->mood()>7 || row->squad_use()<-1 || row->squad_use()>15)
         return "invalid area candidate row";
+      if(const auto* display=row->owner_display()) {
+        if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=1 ||
+           display->columns()<3 || display->columns()>128 || display->room_value()<0 ||
+           textSize(display->first_line())>384 || textSize(display->second_line())>384 || textSize(display->status())>256 ||
+           ((display->room_value()==0)!=(textSize(display->status())==0)))return "invalid owner display";
+        payload+=6+textSize(display->first_line())+textSize(display->second_line())+textSize(display->status());
+      }
       payload+=9+textSize(row->name())+textSize(row->profession());
     }
     if(a->links()) for(const auto* row:*a->links()) {

@@ -69,7 +69,7 @@ void verifyAreaOperation(const m::AreaRequest& q) {
     case 11: require(q.unit_id()==0 && q.assign()==0,"area unassign");break;
     case 12: require(q.squad_id()==0 && q.squad_use()==0,"area squad removal");break;
     case 13: require(q.organic()==0 && q.inorganic()==1,"area toggles");break;
-    case 14: require(q.candidate_kind()==3 && q.sort()==3 && q.sort_descending(),"area candidate sort");break;
+    case 14: require(q.candidate_kind()==1 && q.sort()==3 && q.sort_descending(),"area candidate sort");break;
     case 15: require(q.kind()==m::AreaKind::Workshop && q.link_id()==8 && !q.give() && q.unlink(),"area workshop unlink");break;
     default: throw std::runtime_error("unexpected area operation");
   }
@@ -114,7 +114,10 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
   const auto record=info.Finish();const auto areas=b.CreateVector(std::vector{record});
   const auto setting=m::CreateAreaSettingRow(b,key,5,name,4,3,true);const auto settings=b.CreateVector(std::vector{setting});
   const auto location=m::CreateAreaLocationRow(b,99,name,2,name);const auto locations=b.CreateVector(std::vector{location});
-  const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15);const auto candidates=b.CreateVector(std::vector{candidate});
+  flatbuffers::Offset<m::AreaOwnerDisplay> ownerDisplay;
+  if(q.operation()==m::AreaOperation::CandidateList && q.candidate_kind()==1)
+    ownerDisplay=m::CreateAreaOwnerDisplay(b,45,b.CreateString("Native first line"),b.CreateString("Native second line"),b.CreateString("Has Quarters"),343);
+  const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15,ownerDisplay);const auto candidates=b.CreateVector(std::vector{candidate});
   const auto link=m::CreateAreaLinkRow(b,9,m::AreaKind::Workshop,2,name);const auto links=b.CreateVector(std::vector{link});
   const auto query=b.CreateString(q.query()->str());
   m::AreaStateBuilder area(b);area.add_areas(areas);area.add_operation(q.operation());area.add_area_id(7);

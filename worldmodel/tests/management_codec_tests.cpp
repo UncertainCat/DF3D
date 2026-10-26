@@ -24,6 +24,23 @@ TEST_CASE("filtered settings counts preserve unknown legacy data and reject inco
   CHECK(codec::decodeArea(flatbuffers::GetRoot<wire::AreaState>(b.GetBufferPointer())).settingsCount==-1);
 }
 
+TEST_CASE("owner display preserves native lines and unknown legacy rows") {
+  for(int mode=0;mode<7;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    flatbuffers::Offset<wire::AreaOwnerDisplay> display;
+    if(mode!=0)display=wire::CreateAreaOwnerDisplay(b,mode==2?2:45,b.CreateString("Native name"),b.CreateString("Native profession"),b.CreateString(mode==3?"":"Has Quarters"),mode==4?-1:343);
+    const auto row=wire::CreateAreaCandidateRow(b,21,b.CreateString("Legacy name"),0,-1,0,false,false,-1,display);
+    const auto rows=b.CreateVector(std::vector{row});wire::AreaStateBuilder area(b);
+    area.add_operation(wire::AreaOperation::CandidateList);area.add_candidate_kind(mode==5?2:1);area.add_candidates(rows);
+    const auto a=area.Finish();wire::ManagementStateBuilder state(b);state.add_schema_version(wire::kManagementVersion-(mode==6?1:0));state.add_revision(1);state.add_area(a);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(mode>=2));
+    auto decoded=codec::decodeArea(value->area());REQUIRE(decoded.candidates.size()==1);
+    CHECK(decoded.candidates[0].ownerDisplay.has_value()==(mode!=0));
+    if(mode==1) {const auto& d=*decoded.candidates[0].ownerDisplay;CHECK(d.firstLine=="Native name");CHECK(d.secondLine=="Native profession");CHECK(d.status=="Has Quarters");CHECK(d.columns==45);CHECK(d.roomValue==343);}
+  }
+}
+
 TEST_CASE("verified category default lists accept parent ordering") {
   for(const char* key:{"food/meat","furniture/type","refuse/type","stone/metal_ores","ammo/type","bars_blocks/bars_metal","gems/rough_gem","finished_goods/type","leather/type","cloth/thread_silk","weapons/weapons","armor/body","sheet/paper"}) {
     wm::ManagementRequest q;q.action=wm::ManagementAction::AreaInspect;

@@ -220,7 +220,11 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
   }
   for(const auto& v:s.candidates) {
     Dictionary row;row["id"]=v.id;row["name"]=String::utf8(v.name.c_str());row["profession"]=String::utf8(v.profession.c_str());
-    row["sex"]=v.sex;row["mood"]=v.mood;row["grazer"]=v.grazer;row["assigned"]=v.assigned;row["squad_use"]=v.squadUse;candidates.push_back(row);
+    row["sex"]=v.sex;row["mood"]=v.mood;row["grazer"]=v.grazer;row["assigned"]=v.assigned;row["squad_use"]=v.squadUse;
+    if(v.ownerDisplay) {const auto& d=*v.ownerDisplay;Dictionary display;
+      display["columns"]=d.columns;display["first_line"]=String::utf8(d.firstLine.c_str());display["second_line"]=String::utf8(d.secondLine.c_str());
+      display["status"]=String::utf8(d.status.c_str());display["room_value"]=d.roomValue;row["owner_display"]=display;}
+    candidates.push_back(row);
   }
   for(const auto& v:s.links) {
     Dictionary row;row["id"]=v.id;row["kind"]=int(v.kind);row["direction"]=v.direction;row["name"]=String::utf8(v.name.c_str());links.push_back(row);

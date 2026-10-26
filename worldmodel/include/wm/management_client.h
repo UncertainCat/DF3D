@@ -111,6 +111,7 @@ struct LocationCatalog {
   uint8_t kind=0; int64_t revision=0; uint32_t cursor=0,total=0,nextCursor=0;
   std::vector<LocationReligion> religions; std::vector<LocationGuild> guilds;
 };
+struct AreaOwnerDisplay { uint16_t columns=0; std::string firstLine,secondLine,status; int32_t roomValue=0; };
 struct AreaCandidateRow {
   int32_t id=-1;
   std::string name,profession;
@@ -118,6 +119,7 @@ struct AreaCandidateRow {
   uint8_t mood=0;
   bool grazer=false,assigned=false;
   int8_t squadUse=-1;
+  std::optional<AreaOwnerDisplay> ownerDisplay;
 };
 struct AreaLinkRow { int32_t id=-1; AreaKind kind=AreaKind::Stockpile; uint8_t direction=0; std::string name; };
 struct LocationSupplyQuantity { uint8_t kind=0; int32_t stored=0,desired=0; };

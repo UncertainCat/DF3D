@@ -697,7 +697,7 @@ func test_area_operations() -> void:
 		if operation == 11: request.merge({"unit_id":0,"assign":0})
 		if operation == 12: request.merge({"squad_id":0,"squad_use":0})
 		if operation == 13: request.merge({"organic":0,"inorganic":1})
-		if operation == 14: request.merge({"candidate_kind":3,"sort":3,"sort_descending":true})
+		if operation == 14: request.merge({"candidate_kind":1,"sort":3,"sort_descending":true})
 		if operation == 15: request.merge({"link_id":8,"give":false,"unlink":true})
 		var sequence: int = world.area_request(request)
 		assert(sequence > 0)
@@ -720,8 +720,8 @@ func test_area_operations() -> void:
 		if operation == 6: assert(area.locations == [{"id":99,"name":"observed","location_kind":2,"religion":"observed","guild_profession":-1,"location_tier":-1,"site_id":-1}])
 		if operation == 10: assert(area.links == [{"id":9,"kind":2,"direction":2,"name":"observed"}])
 		if operation == 14:
-			assert(area.candidate_kind == 3 and area.sort == 3 and area.sort_descending)
-			assert(area.candidates == [{"id":8,"name":"observed","profession":"observed","sex":1,"mood":7,"grazer":true,"assigned":true,"squad_use":15}])
+			assert(area.candidate_kind == 1 and area.sort == 3 and area.sort_descending)
+			assert(area.candidates == [{"id":8,"name":"observed","profession":"observed","sex":1,"mood":7,"grazer":true,"assigned":true,"squad_use":15,"owner_display":{"columns":45,"first_line":"Native first line","second_line":"Native second line","status":"Has Quarters","room_value":343}}])
 	for variant in 3:
 		var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.PaintCounts,
 			"zone_type":92,"paint_z":32767,"count_generation":9223372036854775807 - variant}

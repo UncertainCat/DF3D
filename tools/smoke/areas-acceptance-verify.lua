@@ -655,6 +655,38 @@ elseif request.op=='zone_settings' then
  elseif typ=='Tomb' then actual.tomb_citizens=v.tomb.flags.no_citizens and 0 or 1;actual.tomb_pets=v.tomb.flags.no_pets and 0 or 1
  elseif typ=='PlantGathering' then actual.gather_trees=v.gather.flags.pick_trees and 1 or 0;actual.gather_shrubs=v.gather.flags.pick_shrubs and 1 or 0;actual.gather_fallen=v.gather.flags.gather_fallen and 1 or 0 end
  check_properties(actual,request.expected,'zone_settings')
+elseif request.op=='animal_restraint_begin' then
+ assert(not _G.df3d_restraint_fixture,'restraint fixture already active')
+ local u=assert(df.unit.find(request.unit_id));local m=assert(dfhack.matinfo.find('INORGANIC:COPPER'))
+ local items=dfhack.items.createItem(u,df.item_type.CHAIN,-1,m.type,m.index);assert(#items==1)
+ local chain=df.building_chainst:new();chain.id=df.global.building_next_id;df.global.building_next_id=chain.id+1
+ chain.centerx=u.pos.x;chain.centery=u.pos.y;chain.z=u.pos.z;chain.x1=u.pos.x;chain.x2=u.pos.x;chain.y1=u.pos.y;chain.y2=u.pos.y
+ local contained=df.buildingitemst:new();contained.item=items[1];chain.contained_items:insert('#',contained)
+ df.global.world.buildings.all:insert('#',chain);df.global.world.buildings.other.CHAIN:insert('#',chain)
+ local ref=df.general_ref_building_chainst:new();ref.building_id=chain.id
+ _G.df3d_restraint_fixture={unit=u,flags=u.flags1.whole,ref=ref,chain=chain,item=items[1],contained=contained}
+ u.general_refs:insert('#',ref);u.flags1.chained=true
+ result.unit=u.id;result.item=items[1].id
+elseif request.op=='animal_restraint_material' then
+ local saved=assert(_G.df3d_restraint_fixture);local token=({'INORGANIC:COPPER','PLANT:GRASS_TAIL_PIG:THREAD'})[request.variant+1]
+ if not token then
+  local flag=assert(({[2]='LEATHER',[3]='SILK',[4]='YARN'})[request.variant])
+  for _,raw in ipairs(df.global.world.raws.creatures.all)do
+   for _,mat in ipairs(raw.material)do if mat.flags[flag]then token='CREATURE:'..raw.creature_id..':'..mat.id;break end end
+   if token then break end
+  end
+ end
+ local material=assert(dfhack.matinfo.find(assert(token)));saved.item.mat_type=material.type;saved.item.mat_index=material.index
+ result.item=saved.item.id;result.token=token
+elseif request.op=='animal_restraint_end' then
+ local saved=assert(_G.df3d_restraint_fixture)
+ for i=#saved.unit.general_refs-1,0,-1 do if saved.unit.general_refs[i]==saved.ref then saved.unit.general_refs:erase(i);break end end
+ saved.ref:delete();saved.unit.flags1.whole=saved.flags
+ for _,values in ipairs{df.global.world.buildings.all,df.global.world.buildings.other.CHAIN}do
+  for i=#values-1,0,-1 do if values[i]==saved.chain then values:erase(i);break end end
+ end
+ saved.chain.contained_items:erase(0);saved.contained:delete();saved.chain:delete();assert(dfhack.items.remove(saved.item))
+ _G.df3d_restraint_fixture=nil;result.restored=true
 elseif request.op=='animal_candidates' then
  local b=building()
  local text,code=dfhack.run_command_silent('df3d','zone-animal-picker-read',tostring(b.id),tostring(request.sort or 0),request.descending and '1' or '0',dfhack.utf2df(request.query or ''))
@@ -678,6 +710,11 @@ elseif request.op=='animal_candidates' then
    end
    if actual.occupant_entity~=0 then assert(actual.occupant and #actual.occupant.layers>0,'owned cage occupant recipe absent') end
   else assert(not row.animal_container,'non-cage received cage facts') end
+  if native_status.kind==4 and df.item.find(native_status.item_id):getType()==df.item_type.CHAIN then
+   local data,rc=dfhack.run_command_silent('df3d','zone-animal-restraint-read',tostring(native_status.item_id));assert(rc==0,data)
+   local facts=require('json').decode(data)
+   assert(row.animal_restraint and row.animal_restraint.rope==facts.rope and row.animal_restraint.solid_color==facts.solid_color,'native restraint transport differs')
+  else assert(not row.animal_restraint,'non-restraint received restraint facts')end
   if entry.kind==1 then
    local value,status=dfhack.run_command_silent('df3d','zone-animal-item-text-read',tostring(entry.id))
    assert(status==0,value)

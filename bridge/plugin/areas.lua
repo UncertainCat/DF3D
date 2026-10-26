@@ -988,11 +988,19 @@ local function candidate_page(r,a,b,area_revision,available)
    if status.kind==4 and type(r.animal_container)=='function' then
     row.animal_container=r.animal_container(status.item_id)
    end
+   if status.kind==4 and type(r.animal_restraint)=='function' then
+    row.animal_restraint=r.animal_restraint(status.item_id)
+   end
    if not candidate_text_valid(row)then return fail('Candidate label exceeds 512 bytes'),used end
   end
   if not legacy or row.id>=cursor then
    local row_bytes=9+#row.name+#(row.profession or '')
    if row.animal_status then row_bytes=row_bytes+6 end
+   if row.animal_restraint~=nil then
+    local r=row.animal_restraint
+    if row.animal_container~=nil or type(r)~='table' or type(r.rope)~='boolean' or type(r.solid_color)~='string' or #r.solid_color>128 then return fail('Native area helper unavailable'),used end
+    row_bytes=row_bytes+1+#r.solid_color+32
+   end
    if row.animal_container~=nil then
     local c=row.animal_container
     if type(c)~='table' or type(c.solid_color)~='string' or #c.solid_color>128 or

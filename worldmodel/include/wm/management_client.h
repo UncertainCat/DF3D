@@ -117,6 +117,7 @@ struct LocationCatalog {
 };
 struct AreaNameColor { std::array<uint8_t,3> color{},alternate{}; uint8_t effect=0; };
 struct AreaOwnerDisplay { uint16_t columns=0; std::string firstLine,secondLine,status; int32_t roomValue=0; std::optional<AreaNameColor> nameColor; };
+struct AreaAnimalRestraint { bool rope=false; std::string solidColor; };
 struct AreaAnimalContainer { uint8_t materialFamily=0,occupantEntity=0; std::string solidColor; int32_t occupantId=-1; std::optional<SelectionAppearance> occupant; };
 struct AreaAnimalStatus { uint8_t kind=0,containment=0; int32_t itemId=-1; };
 struct AreaAnimalDisplay { uint16_t columns=0; std::string firstLine,secondLine; bool combinedFits=false; std::string warning; AreaNameColor nameColor; };
@@ -133,6 +134,7 @@ struct AreaCandidateRow {
   std::optional<AreaAnimalDisplay> animalDisplay;
   std::optional<AreaAnimalStatus> animalStatus;
   std::optional<AreaAnimalContainer> animalContainer;
+  std::optional<AreaAnimalRestraint> animalRestraint;
 };
 struct AreaLinkRow { int32_t id=-1; AreaKind kind=AreaKind::Stockpile; uint8_t direction=0; std::string name; };
 struct LocationSupplyQuantity { uint8_t kind=0; int32_t stored=0,desired=0; };

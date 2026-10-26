@@ -738,6 +738,8 @@ func test_area_operations() -> void:
 	assert(animal_row.animal_status == {"kind":4,"containment":2,"item_id":17})
 	assert(animal_row.animal_container == {"material_family":1,"solid_color":"TEST_COLOR","occupant_entity":1,"occupant_id":9,
 		"occupant":{"tile_pages":["TEST_OCCUPANT"],"palettes":[],"layers":[[0,2,3,1,1,65535,0,0,-1,2]]}})
+	var restraint_row: Dictionary = animal_reply.area.candidates[1]
+	assert(restraint_row.animal_restraint == {"rope":true,"solid_color":"TEST_ROPE_COLOR"} and not restraint_row.has("animal_container"))
 	for variant in 3:
 		var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.PaintCounts,
 			"zone_type":92,"paint_z":32767,"count_generation":9223372036854775807 - variant}

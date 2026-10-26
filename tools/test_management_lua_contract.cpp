@@ -251,6 +251,14 @@ int main(int argc,char** argv) {
         std::to_string(family)+",solid_color='TEST',occupant_entity="+std::to_string(entity)+",occupant_id="+std::to_string(id)+"}}}}";
       test(A::AreaCandidates,input.c_str(),valid,O::CandidateList);
     }
+    for(const std::string restraint:{"{rope=false,solid_color='TEST'}","{rope=true,solid_color='TEST'}","false","{rope=1,solid_color='TEST'}","{solid_color='TEST'}","{rope=true,solid_color=string.rep('x',129)}"}) {
+      const bool valid=restraint=="{rope=false,solid_color='TEST'}" || restraint=="{rope=true,solid_color='TEST'}";
+      for(int kind:{0,4}) {
+        const auto input="return {"+envelope+"candidate_kind=2,candidates={{id=21,entity=1,name='native',profession='',animal_status={kind="+
+          std::to_string(kind)+",containment="+(kind==4?"1":"0")+",item_id="+(kind==4?"17":"-1")+"},animal_restraint="+restraint+"}}}";
+        test(A::AreaCandidates,input.c_str(),valid && kind==4,O::CandidateList);
+      }
+    }
     const std::string ownerRow="id=21,name='native',profession='native',owner_display=";
     for(int mode=0;mode<8;++mode) {
       const auto display=mode==1?"false":std::string("{columns=")+(mode==2?"2":"45")+

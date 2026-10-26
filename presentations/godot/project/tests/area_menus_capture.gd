@@ -11,6 +11,7 @@ class CaptureWorld extends Test.FakeWorld:
 	func assets_root(): return assets.assets_root()
 	func candidate_icon(recipe): return assets.candidate_icon(recipe)
 	func animal_container_icon(facts): return assets.animal_container_icon(facts)
+	func animal_restraint_icon(facts): return assets.animal_restraint_icon(facts)
 
 func settings_reply(controller, world, service, rows: Array) -> void:
 	service.poll()
@@ -802,6 +803,25 @@ func run() -> void:
 	fallback_crop.save_png(directory.path_join("animal-container-fallback.png"))
 	var fallback_digest := HashingContext.new();fallback_digest.start(HashingContext.HASH_SHA256);fallback_digest.update(fallback_crop.get_data())
 	if fallback_digest.finish().hex_encode()!=str(fallback.rgb_sha256):push_error("Native missing container pixels differ");quit(1);return
+	for invalid in [{},{"rope":1,"solid_color":"GRAY"},{"rope":true,"solid_color":"UNKNOWN_COLOR"},{"rope":false,"solid_color":"x".repeat(129)}]:
+		if world.animal_restraint_icon(invalid)!=null:push_error("Malformed restraint image accepted");quit(1);return
+	var restraints: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_restraint_pixels
+	for sample in restraints.samples:
+		var row: Dictionary = sample.row
+		for key in ["color","alternate"]:
+			for component in 3:row.animal_display.name_color[key][component]=int(row.animal_display.name_color[key][component])
+		animal_state.rows=[row,{"id":-1,"entity":0}];animal_view.owner_selected=1;animal_state.changed.emit()
+		var indicator=animal_view.choices[0].get_node_or_null("AnimalStatus")
+		if indicator==null or indicator.texture==null:push_error("Native restraint image absent");quit(1);return
+		var pixels: Image=indicator.texture.get_image();pixels.convert(Image.FORMAT_RGBA8)
+		var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(pixels.get_data())
+		if digest.finish().hex_encode()!=str(sample.rgba_sha256):push_error("Native restraint RGBA differs: "+str(sample.capture));quit(1);return
+		await process_frame;await RenderingServer.frame_post_draw
+		var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var crop:=image.get_region(Rect2i(Vector2i(animal_view.choices[0].global_position)+Vector2i(240,0),Vector2i(40,36)))
+		crop.save_png(directory.path_join("animal-restraint-"+str(sample.capture)+".png"))
+		digest=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+		if digest.finish().hex_encode()!=str(sample.rgb_sha256):push_error("Native restraint row pixels differ: "+str(sample.capture));quit(1);return
 	animal_view.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

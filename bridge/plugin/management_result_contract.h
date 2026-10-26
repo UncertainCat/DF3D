@@ -160,6 +160,15 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
       }
       lua_settop(L,top);
       lua_getfield(L,-1,"animal_status");const bool containerStatus=lua_istable(L,-1) && value("kind")==4;lua_pop(L,1);
+      lua_getfield(L,-1,"animal_container");const bool hasContainer=!lua_isnil(L,-1);lua_pop(L,1);
+      lua_getfield(L,-1,"animal_restraint");
+      if(!lua_isnil(L,-1)) {
+        if(!table())return bad("invalid animal restraint");
+        lua_getfield(L,-1,"rope");const bool ropeTyped=lua_isboolean(L,-1);lua_pop(L,1);
+        if(!containerStatus || hasContainer || !table() || !ropeTyped || !text("solid_color",128))return bad("invalid animal restraint");
+        payload+=1;
+      }
+      lua_settop(L,top);
       lua_getfield(L,-1,"animal_container");
       if(!lua_isnil(L,-1)) {
         bool valid=containerStatus && table() && number("material_family",0,2,true) && text("solid_color",128) &&

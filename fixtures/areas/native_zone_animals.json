@@ -13434,5 +13434,363 @@
     "limitations": [
       "Semantic reader only; optional restraint transport and viewer integration remain open."
     ]
+  },
+  "animal_restraint_pixels": {
+    "provenance": "build\\stockpile-storage-native-zone-animals-20261026-125857",
+    "row_text_provenance": "build\\areas-acceptance-20261026-131105",
+    "samples": [
+      {
+        "capture": "Pen-status-current-chain-metal",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_restraint": {
+            "rope": false,
+            "solid_color": "COPPER"
+          },
+          "animal_status": {
+            "containment": 1,
+            "item_id": 48520,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "b1d9e085236962d57461b9ad41dc43de1d34414aa834ba129e345b346d0067fd",
+        "rgb_sha256": "99e38d5d3d18d7b062eb1df2185c83f8092f35beb46f1069ebfb80dd2e7bf530",
+        "live_request": "request-4.json"
+      },
+      {
+        "capture": "Pen-status-current-chain-rope",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_restraint": {
+            "rope": true,
+            "solid_color": "GRAY"
+          },
+          "animal_status": {
+            "containment": 1,
+            "item_id": 48520,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "7c4948517ae07f96a7be0621ccfc439d6872abcca64b0f84708e5a7ff3331ad0",
+        "rgb_sha256": "075cc30a18ba60092dd101ec6899b32885fea6f50de61e41f150c39e91998405",
+        "live_request": "request-6.json"
+      },
+      {
+        "capture": "Pen-status-current-chain-leather",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_restraint": {
+            "rope": true,
+            "solid_color": "BROWN"
+          },
+          "animal_status": {
+            "containment": 1,
+            "item_id": 48520,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "79b5a2c414e1447cd2b7fc7558ff1d2390c663a25745b8a7268efc117fd23074",
+        "rgb_sha256": "9e41310e257989d84e86ccc14e26d4b72e3e814c60fdb2e399b5aa93e9367c71",
+        "live_request": "request-8.json"
+      },
+      {
+        "capture": "Pen-status-current-chain-silk",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_restraint": {
+            "rope": true,
+            "solid_color": "WHITE"
+          },
+          "animal_status": {
+            "containment": 1,
+            "item_id": 48520,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "46d2f543e0a4bc806362511b51f60785be97efc280f7ee67c3e28f0b43516b45",
+        "rgb_sha256": "20f0bec596c4480d876141b99a025b067b7c6206c263a1ac0e721696ccfe8a3b",
+        "live_request": "request-10.json"
+      },
+      {
+        "capture": "Pen-status-current-chain-yarn",
+        "row": {
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_restraint": {
+            "rope": true,
+            "solid_color": "GRAY"
+          },
+          "animal_status": {
+            "containment": 1,
+            "item_id": 48520,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "7c4948517ae07f96a7be0621ccfc439d6872abcca64b0f84708e5a7ff3331ad0",
+        "rgb_sha256": "075cc30a18ba60092dd101ec6899b32885fea6f50de61e41f150c39e91998405",
+        "live_request": "request-12.json"
+      }
+    ],
+    "live_facts_provenance": "build\\areas-acceptance-20261026-131105",
+    "fresh_material_roundtrips": 5
   }
 }

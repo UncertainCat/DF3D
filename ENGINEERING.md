@@ -58,8 +58,23 @@ owned item inputs using pinned native material leaves. Protected
 `build/stockpile-storage-native-zone-animals-20261026-125857` verifies the reader
 against native cache keys for metal, plant thread, leather, silk and yarn;
 UI/gps byte guards pass and the source remains unchanged after unsaved exit.
-The cache is a diagnostic oracle only. This establishes the reference and
-semantic reader, not product restraint transport/rendering.
+The cache is a diagnostic oracle only. Optional `AreaCandidateRow.animal_restraint`
+now carries the rope flag and solid color through Management68. Older recordings
+retain absence. Wire/Lua validators require a typed animal containment status,
+exclude simultaneous cage facts and bound color strings. Each returned page
+reads current facts; retained candidate jobs keep neither material facts nor art.
+The viewer resolves `ITEM_CHAIN_ROPE` / `ITEM_CHAIN_METAL` through the same
+original-sprite and palette compositor as cages, without an occupant image.
+`build/qa/animal-restraint-integrated` passes core, adapter and Godot transport
+checks; GPU checks match all five restraint RGBA images and full40x36 row regions,
+with only the three known Godot diagnostics. Existing cages, fallback, portraits,
+badges and text comparisons also pass. Protected
+`build/areas-acceptance-20261026-131105` changes one temporary restraint through
+all five materials and verifies fresh facts reaching Godot after each change,
+then restores its unit references/flags and removes the fixture before the
+existing assignment tests. Both save manifests remain unchanged after unsaved exit. The five
+actual Godot rows are retained in `animal_restraint_pixels`; final core and GPU
+`build/qa/animal-restraint-live-pixels` pass with the same known diagnostics.
 Actual empty-reference and critter-item cages and status hover help remain open.
 The four containment hover IDs and strings are located, but controlled probes
 at the rendered indicators did not activate them; no hover parity is claimed.

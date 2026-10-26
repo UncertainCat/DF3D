@@ -248,6 +248,7 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
         layers.push_back(layer);}
       icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;row["sheet_icon"]=icon;
     }
+    if(v.animalRestraint){Dictionary restraint;restraint["rope"]=v.animalRestraint->rope;restraint["solid_color"]=String::utf8(v.animalRestraint->solidColor.c_str());row["animal_restraint"]=restraint;}
     if(v.animalContainer) {const auto& c=*v.animalContainer;Dictionary container;
       container["material_family"]=c.materialFamily;container["solid_color"]=String::utf8(c.solidColor.c_str());
       container["occupant_entity"]=c.occupantEntity;container["occupant_id"]=c.occupantId;

@@ -165,6 +165,7 @@ AreaState decodeArea(const m::AreaState* a) {
         {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
     }
     if(const auto* s=v->animal_status())row.animalStatus=AreaAnimalStatus{s->kind(),s->containment(),s->item_id()};
+    if(const auto* r=v->animal_restraint())row.animalRestraint=AreaAnimalRestraint{r->rope(),text(r->solid_color())};
     if(const auto* c=v->animal_container()) {
       row.animalContainer.emplace();auto& container=*row.animalContainer;
       container.materialFamily=c->material_family();container.solidColor=text(c->solid_color());

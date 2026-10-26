@@ -305,6 +305,14 @@ func animal_assignments() -> void:
 	if not check(not candidates.candidates.is_empty(), "animal candidates missing"): return
 	await native("animal_candidates",{"id":pen,"rows":candidates.candidates})
 	if stopped: return
+	await native("animal_restraint_begin",{"unit_id":int(fixture.caged)})
+	for variant in 5:
+		await native("animal_restraint_material",{"variant":variant})
+		var restraint_page := await pages({"action":14,"kind":1,"id":pen,"operation":14,"candidate_kind":2},"candidates")
+		if stopped:return
+		await native("animal_candidates",{"id":pen,"rows":restraint_page.candidates})
+		if stopped:return
+	await native("animal_restraint_end",{})
 	for candidate in candidates.candidates:
 		if not check(candidate.entity == Contract.AreaCandidateEntity.Unit, "unit candidate identity missing"): return
 	for key in ["grazer", "caged"]:

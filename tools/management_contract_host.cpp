@@ -142,7 +142,13 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
     animalContainer=m::CreateAreaAnimalContainer(b,1,b.CreateString("TEST_COLOR"),1,9,occupant);
   }
   const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15,ownerDisplay,ownerIcon,
-    animal?m::AreaCandidateEntity::Unit:m::AreaCandidateEntity::Unknown,animalDisplay,animalStatus,animalContainer);const auto candidates=b.CreateVector(std::vector{candidate});
+    animal?m::AreaCandidateEntity::Unit:m::AreaCandidateEntity::Unknown,animalDisplay,animalStatus,animalContainer);std::vector<flatbuffers::Offset<m::AreaCandidateRow>> candidateRows{candidate};
+  if(animal) {
+    const auto restraint=m::CreateAreaAnimalRestraint(b,true,b.CreateString("TEST_ROPE_COLOR"));
+    const auto status=m::CreateAreaAnimalStatus(b,4,1,18);
+    candidateRows.push_back(m::CreateAreaCandidateRow(b,9,name,name,1,0,false,false,-1,{}, {},m::AreaCandidateEntity::Unit,{},status,{},restraint));
+  }
+  const auto candidates=b.CreateVector(candidateRows);
   const auto link=m::CreateAreaLinkRow(b,9,m::AreaKind::Workshop,2,name);const auto links=b.CreateVector(std::vector{link});
   const auto query=b.CreateString(q.query()->str());
   const auto queryBytes=q.query_bytes()?b.CreateVector(q.query_bytes()->data(),q.query_bytes()->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{};

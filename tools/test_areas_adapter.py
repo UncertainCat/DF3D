@@ -170,7 +170,7 @@ def main():
     function request(action,extra)
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
-     r.animal_status=animal_status;r.animal_container=animal_container;r.animal_candidates=animal_candidates;r.animal_item_text=animal_item_text;r.animal_item_icon=animal_item_icon;r.animal_unit_display=animal_unit_display
+     r.animal_status=animal_status;r.animal_container=animal_container;r.animal_restraint=animal_restraint;r.animal_candidates=animal_candidates;r.animal_item_text=animal_item_text;r.animal_item_icon=animal_item_icon;r.animal_unit_display=animal_unit_display
      r.owner_eligible=owner_eligible
      r.new_owner_eligible=function(zone_type,u)return u.new_native_eligible~=false end
      r.owner_order_facts=owner_order_facts;r.owner_display=owner_display
@@ -814,7 +814,13 @@ def main():
                      "{material_family=1,solid_color='TEST',occupant_entity=0,occupant_id=-1,occupant='recipe'}"]:
         lua.execute("animal_container=function(id) return " + mutation + " end")
         assert not call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2})["ok"]
-    lua.execute("animal_status=saved_animal_status;animal_container=nil")
+    lua.execute("animal_container=nil;animal_restraint=function(id) return {rope=true,solid_color='TEST'} end")
+    ropes=call(14, {"operation":14,"kind":1,"id":6,"candidate_kind":2})
+    assert ropes["ok"] and dict(ropes["candidates"][1]["animal_restraint"].items())=={"rope":True,"solid_color":"TEST"}
+    for mutation in ["false","{rope=1,solid_color='TEST'}","{solid_color='TEST'}","{rope=true,solid_color=string.rep('x',129)}"]:
+        lua.execute("animal_restraint=function(id) return " + mutation + " end")
+        assert not call(14, {"operation":14,"kind":1,"id":6,"candidate_kind":2})["ok"]
+    lua.execute("animal_status=saved_animal_status;animal_container=nil;animal_restraint=nil")
 
 
 

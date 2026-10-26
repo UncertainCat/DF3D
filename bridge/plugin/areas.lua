@@ -97,7 +97,7 @@ local function validate_operation(r,a)
  end
  if a.query_bytes~=nil and (type(a.query_bytes)~='string' or #a.query_bytes>33 or r.action~=14 or op~=14 or a.kind~=1 or (a.candidate_kind~=1 and a.candidate_kind~=2) or default(a,'query','')~='') then return 'invalid selector query bytes' end
  local limit=default(a,'candidate_limit',0)
- if not integer(limit) or limit<0 or limit>128 or (limit~=0 and (r.action~=14 or op~=14 or a.kind~=1 or a.candidate_kind~=1)) then return 'invalid owner candidate limit' end
+ if not integer(limit) or limit<0 or limit>128 or (limit~=0 and (r.action~=14 or op~=14 or a.kind~=1 or (a.candidate_kind~=1 and a.candidate_kind~=2))) then return 'invalid selector candidate limit' end
  for _,key in ipairs{'list_key','row_key','name','query'} do
   local v=default(a,key,'');local cap=(key=='name' and 512) or (key=='query' and 128) or 64
   if type(v)~='string' or #v>cap then return key=='name' and 'area name too long' or 'area key too long' end

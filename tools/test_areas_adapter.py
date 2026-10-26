@@ -657,7 +657,7 @@ def main():
         assert [r["id"] for r in bounded["candidates"].values()] == list(range(6, 6 + limit))
     for limit in (-1, 129, 1.5, "18"):
         assert not call(14, dict(selector, candidate_limit=limit))["ok"]
-    assert not call(14, dict(selector, candidate_limit=18, candidate_kind=2))["ok"]
+    assert not call(14, dict(selector, candidate_limit=18, candidate_kind=3))["ok"]
     lua.execute("saved_live_display=owner_display;function owner_display(b,u)local d=saved_live_display(b,u);d.first_line='Changed while open';d.name='Changed native name';return d end")
     refreshed = call(14, dict(selector, expected_list_revision=owners["list_revision"]))
     assert refreshed["ok"] and refreshed["list_revision"] == owners["list_revision"]
@@ -800,6 +800,16 @@ def main():
     assert animals["candidates"][3]["animal_display"] is None
     assert dict(animals["candidates"][1]["animal_status"].items()) == {"kind": 1, "containment": 0, "item_id": -1}
     assert dict(animals["candidates"][3]["animal_status"].items()) == {"kind": 0, "containment": 0, "item_id": -1}
+    for cursor, entity, identity in [(0, 1, 10), (1, 1, 12), (2, 2, 10)]:
+        lua.execute("animal_icon_reads=0;animal_item_icon_reads=0;animal_item_color_reads=0")
+        bounded = call(14, {"operation":14,"kind":1,"id":6,"candidate_kind":2,
+                           "candidate_limit":1,"cursor":cursor,"expected_list_revision":animals["list_revision"]})
+        assert bounded["ok"] and len(bounded["candidates"]) == 1
+        assert bounded["list_revision"] == animals["list_revision"]
+        assert (bounded["candidates"][1]["entity"], bounded["candidates"][1]["id"]) == (entity, identity)
+        assert lua.globals().animal_icon_reads == (1 if entity == 1 else 0)
+        assert lua.globals().animal_item_icon_reads == (1 if entity == 2 else 0)
+        assert lua.globals().animal_item_color_reads == (1 if entity == 2 else 0)
     for raw in [b"", b"\xc3", b"\xc3\xa9", b"x" * 33]:
         raw_result = call(14, {"operation":14,"kind":1,"id":6,"candidate_kind":2,"query_bytes":raw})
         assert raw_result["ok"] and lua.globals().animal_args[4]

@@ -43,8 +43,8 @@ inline bool validAreaZoneSettings(const AreaZoneSettings* z) {
 // ownership, new-field ownership/requirements, identities, then bounded sizes.
 inline std::optional<std::string> validateAreaOperation(ManagementAction action, const AreaRequest& a) {
   if(a.candidate_limit() && (a.candidate_limit()>128 || action!=ManagementAction::AreaCandidates ||
-      a.operation()!=AreaOperation::CandidateList || a.kind()!=AreaKind::Zone || a.id()<0 || a.candidate_kind()!=1))
-    return "invalid owner candidate limit";
+      a.operation()!=AreaOperation::CandidateList || a.kind()!=AreaKind::Zone || a.id()<0 || (a.candidate_kind()!=1 && a.candidate_kind()!=2)))
+    return "invalid selector candidate limit";
   if(const auto* bytes=a.query_bytes()) {
     if(action!=ManagementAction::AreaCandidates || a.operation()!=AreaOperation::CandidateList ||
        a.kind()!=AreaKind::Zone || a.id()<0 || (a.candidate_kind()!=1 && a.candidate_kind()!=2) || bytes->size()>33 ||

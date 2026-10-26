@@ -356,6 +356,16 @@ func item_assignments() -> void:
 	for row in candidates.candidates:
 		if row.entity == Contract.AreaCandidateEntity.Item and row.id == item: found = true
 	if not check(found,"Pond critter item candidate missing"): return
+	# Bounded refresh retains typed membership/order and the original receipt.
+	for first in candidates.candidates.size():
+		var bounded:=await request({"action":14,"kind":1,"id":pond,"operation":14,"candidate_kind":2,
+			"candidate_limit":1,"cursor":first,"expected_list_revision":candidates.list_revision})
+		if stopped:return
+		if not check(bounded.list_revision==candidates.list_revision and bounded.candidates.size()==1,"Animal fact page changed receipt or limit"):return
+		var expected:Dictionary=candidates.candidates[first];var actual:Dictionary=bounded.candidates[0]
+		if not check(actual.id==expected.id and actual.entity==expected.entity,"Animal fact page changed typed membership"):return
+		await native("animal_candidates",{"id":pond,"rows":bounded.candidates,"first":first,"limit":1})
+		if stopped:return
 	for order in [1,2,3]:
 		for descending in [false,true]:
 			var ordered := await pages({"action":14,"kind":1,"id":pond,"operation":14,"candidate_kind":2,

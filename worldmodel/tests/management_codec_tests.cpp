@@ -2666,14 +2666,14 @@ TEST_CASE("animal selector appearance is restricted to typed units and items") {
   }
 }
 
-TEST_CASE("owner fact page limits are scoped and bounded") {
-  for(int mode=0;mode<8;++mode) {
+TEST_CASE("selector fact page limits are scoped and bounded") {
+  for(int kind:{1,2})for(int mode=0;mode<8;++mode) {
     CAPTURE(mode);
     wm::ManagementRequest request;request.action=wm::ManagementAction::AreaCandidates;
     auto& a=request.area;a.operation=wm::AreaOperation::CandidateList;
-    a.kind=wm::AreaKind::Zone;a.id=7;a.candidateKind=1;
+    a.kind=wm::AreaKind::Zone;a.id=7;a.candidateKind=kind;
     a.candidateLimit=mode==0?0:mode==1?18:mode==2?128:mode==3?129:18;
-    if(mode==4)a.candidateKind=2;
+    if(mode==4)a.candidateKind=3;
     if(mode==5)a.operation=wm::AreaOperation::None;
     if(mode==6)a.id=-1;
     if(mode==7)a.kind=wm::AreaKind::Stockpile;

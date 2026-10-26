@@ -707,6 +707,11 @@ elseif request.op=='animal_candidates' then
  local text,code=dfhack.run_command_silent('df3d','zone-animal-picker-read',tostring(b.id),tostring(request.sort or 0),request.descending and '1' or '0',query)
  assert(code==0,text)
  local expected=require('json').decode(text)
+ if request.limit then
+  local selected={}
+  for index=request.first+1,math.min(#expected,request.first+request.limit)do selected[#selected+1]=expected[index]end
+  expected=selected
+ end
  assert(#expected==#request.rows,'native animal candidate count differs')
  for i,entry in ipairs(expected)do
   local row=request.rows[i]

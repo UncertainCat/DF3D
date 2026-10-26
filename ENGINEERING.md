@@ -33,6 +33,18 @@ Both GPU runs retain only the three known Godot diagnostics. Animal bounded
 portrait retention/background refresh and full live controller coverage remain
 outstanding; this is component scrolling acceptance, not full Zones acceptance.
 
+The existing candidate_limit request (1..128; zero retains the default) is now
+valid for animal as well as owner fact pages. Bounded reads reuse the retained
+list receipt and native typed membership/order, refreshing only returned rows.
+Core19/19 passes in `build/qa/animal-bounded-facts`; the corrected adapter check
+passes in `build/qa/animal-bounded-facts-adapter`, including colliding unit/item
+IDs and portrait helper counts for one-row windows. The extension and selector
+checks pass in `build/qa/animal-bounded-facts-extension`. Protected
+`build/areas-acceptance-20261026-143407` compares every one-row Pond page with
+fresh native identity, status, text, color and artwork facts and preserves both
+save manifests. This provides bridge support for the pending viewer refresh
+integration; it does not yet enable background animal refresh.
+
 
 `native_zone_animals.json.animal_search_input` records real Windows/SDL input
 for both Pen and Pond in protected

@@ -12730,5 +12730,455 @@
       "Native cache keys are diagnostic oracle input only.",
       "Live animal item and multiple-reference ordering still need controlled coverage."
     ]
+  },
+  "animal_container_pixels": {
+    "native_provenance": "build\\stockpile-storage-native-zone-animals-20261026-122035",
+    "owned_recipe_provenance": "build\\areas-acceptance-20261026-123350",
+    "samples": [
+      {
+        "capture": "Pen-picker-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant": {
+              "layers": [
+                [
+                  0,
+                  0,
+                  7,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "CREATURES_DOMESTIC"
+              ]
+            },
+            "occupant_entity": 1,
+            "occupant_id": 6960,
+            "solid_color": "COPPER"
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "9fdeaa18c6b6ed8c821759b18dbb9467042397ae78d099210a5eacf998a3d7fd",
+        "rgb_sha256": "ae9fd0fc1a2f0fc6c244b3e54353765429ed8a2193b906426927aa3e4d273180"
+      },
+      {
+        "capture": "Pen-picker-6961",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant": {
+              "layers": [
+                [
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "CREATURES_DOMESTIC"
+              ]
+            },
+            "occupant_entity": 1,
+            "occupant_id": 6961,
+            "solid_color": "TAUPE_GRAY"
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": false,
+            "first_line": "",
+            "name_color": {
+              "alternate": [
+                1,
+                0,
+                1
+              ],
+              "color": [
+                1,
+                0,
+                1
+              ],
+              "effect": 0
+            },
+            "second_line": "Stray Blue Peacock, \u2642 (Tam)",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28459,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6961,
+          "mood": 0,
+          "name": "Stray Blue Peacock, \u2642 (Tame)",
+          "profession": "Stray Blue Peacock, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                1,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          268
+        ],
+        "rgba_sha256": "fe3caf7913b0248f7cab23c49776bd0273e0a5b92e629c0cbc2d58cae67e3558",
+        "rgb_sha256": "9f9015c6b12fae81568d571fbd7e480bcd1c55b187d169c12c8f5d6e50d09d0a"
+      },
+      {
+        "capture": "Pen-status-wood-cage-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 1,
+            "occupant": {
+              "layers": [
+                [
+                  0,
+                  0,
+                  7,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "CREATURES_DOMESTIC"
+              ]
+            },
+            "occupant_entity": 1,
+            "occupant_id": 6960,
+            "solid_color": "GRAY"
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "71cd3db2dabcff6d033f58fd1505fd681e68528f468222866ec514c15340954a",
+        "rgb_sha256": "db70289aef683cb1a60e40f5e8a9c8a95a6523e12152d2601d2b1e466776f4ca"
+      },
+      {
+        "capture": "Pen-status-glass-cage-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 2,
+            "occupant": {
+              "layers": [
+                [
+                  0,
+                  0,
+                  7,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "CREATURES_DOMESTIC"
+              ]
+            },
+            "occupant_entity": 1,
+            "occupant_id": 6960,
+            "solid_color": "DARK_GREEN"
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "4882af65fb399ebe08d7cbb1243ba5e5c911f89c4c56eb50f888c23fb0daf244",
+        "rgb_sha256": "acb6be8837b71feb3baf37b78af8c0fcdfa2df41028a11cf4689cdb3f5fbf7af"
+      },
+      {
+        "capture": "Pen-status-inactive-cage-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant_entity": 0,
+            "occupant_id": -1,
+            "solid_color": "COPPER"
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "6ac099e7c4f8714ce5e6c11bdfe378887daa2bd877b7f5ee6e10bce7cf3342ba",
+        "rgb_sha256": "653d1d52bb39c3d7f2fc25271e2ad1c1a0dc1447e97c7beaf8b3a279a7f4de05"
+      }
+    ],
+    "limitations": [
+      "Wood/glass/inactive variants use controlled native semantic facts with the same live owned occupant recipe.",
+      "Restraints and fallback artwork are not covered."
+    ]
   }
 }

@@ -2778,3 +2778,27 @@ TEST_CASE("animal status transport preserves absence and rejects inconsistent su
     }
   }
 }
+
+TEST_CASE("animal container facts and occupant recipes retain identity and reject malformed combinations") {
+  for(int family=0;family<4;++family)for(int entity=0;entity<4;++entity)for(int id:{-1,9})for(int recipe=0;recipe<3;++recipe) {
+    flatbuffers::FlatBufferBuilder b;
+    flatbuffers::Offset<wire::SelectionAppearance> appearance;
+    if(recipe)appearance=wire::CreateSelectionAppearance(b,b.CreateVectorOfStrings(std::vector<std::string>{"TEST_PAGE"}),
+      b.CreateVectorOfStrings(std::vector<std::string>{}),b.CreateVectorOfStructs(std::vector<wire::AppearanceLayer>{wire::AppearanceLayer(recipe==2?1:0,2,3,1,1,65535,0,0,-1,2)}));
+    const auto container=wire::CreateAreaAnimalContainer(b,uint8_t(family),b.CreateString("TEST_COLOR"),uint8_t(entity),id,appearance);
+    const auto status=wire::CreateAreaAnimalStatus(b,4,2,17);
+    wire::AreaCandidateRowBuilder row(b);row.add_id(21);row.add_entity(wire::AreaCandidateEntity::Unit);row.add_animal_status(status);row.add_animal_container(container);
+    const auto rows=b.CreateVector(std::vector{row.Finish()});
+    wire::AreaStateBuilder area(b);area.add_candidates(rows);area.add_operation(wire::AreaOperation::CandidateList);area.add_candidate_kind(2);const auto a=area.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_area(a);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool expected=family<=2 && entity<=2 && recipe!=2 && (entity==0 ? id==-1 && recipe==0 : id>=0);
+    CHECK((!wire::validateManagementState(*value).has_value())==expected);
+    if(expected) {
+      const auto decoded=codec::decodeArea(value->area());const auto& c=decoded.candidates[0].animalContainer;
+      REQUIRE(c.has_value());CHECK(c->materialFamily==family);CHECK(c->solidColor=="TEST_COLOR");CHECK(c->occupantEntity==entity);CHECK(c->occupantId==id);
+      CHECK(c->occupant.has_value()==(recipe!=0));
+      if(c->occupant){CHECK(c->occupant->tilePages==std::vector<std::string>{"TEST_PAGE"});CHECK(c->occupant->layers[0].offsetX==-1);CHECK(c->occupant->layers[0].tileY==3);}
+    }
+  }
+}

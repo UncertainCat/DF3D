@@ -169,6 +169,49 @@ Ref<Texture2D> Df3dWorld::candidate_icon(const Dictionary& recipe) {
     return composite_appearance_texture(source,false,true);
 }
 
+Ref<Texture2D> Df3dWorld::animal_container_icon(const Dictionary& facts) {
+    if(!assets_)return {};
+    for(const char* key:{"material_family","occupant_entity","occupant_id"})
+        if(!facts.has(key) || facts[key].get_type()!=Variant::INT)return {};
+    if(!facts.has("solid_color") || facts["solid_color"].get_type()!=Variant::STRING)return {};
+    const int64_t family=facts["material_family"],entity=facts["occupant_entity"],id=facts["occupant_id"];
+    if(family<0 || family>2 || entity<0 || entity>2 || (entity==0 ? id!=-1 : id<0 || id>INT32_MAX))return {};
+    const auto color=String(facts["solid_color"]).utf8();if(color.length()>128)return {};
+    const char* families[]={"METAL","WOOD","GLASS"};
+    const std::string token=std::string("ITEM_CAGE_")+families[family]+(entity?"_OCCUPIED":"");
+    const auto* sprite=assets_->index.tile(token);if(!sprite)return {};
+    const auto* page=assets_->index.page(sprite->page);if(!page)return {};
+    const auto* source=rawImage(page->absPath);if(!source)return {};
+    const auto rect=assets_->index.pixels(*sprite);
+    if(rect.px<0 || rect.py<0 || rect.pw<=0 || rect.ph<=0 || rect.px+rect.pw>source->width || rect.py+rect.ph>source->height)return {};
+    auto frame=df3d::assets::RgbaImage::blank(rect.pw,rect.ph);
+    for(int y=0;y<rect.ph;++y)for(int x=0;x<rect.pw;++x)frame.set(x,y,source->get(rect.px+x,rect.py+y));
+    df3d::assets::RgbaImage occupant;
+    if(entity) {
+        if(!facts.has("occupant") || facts["occupant"].get_type()!=Variant::DICTIONARY)return {};
+        const auto texture=candidate_icon(facts["occupant"]);if(texture.is_null())return {};
+        const auto image=texture->get_image();if(image.is_null())return {};
+        image->convert(Image::FORMAT_RGBA8);const auto bytes=image->get_data();
+        occupant.width=image->get_width();occupant.height=image->get_height();
+        occupant.pixels.assign(bytes.ptr(),bytes.ptr()+bytes.size());
+    } else if(facts.has("occupant"))return {};
+    df3d::assets::PaletteSwap swap;
+    if(color.length()) {
+        const auto& palette=assets_->index.palette;if(!palette)return {};
+        const auto row=assets_->index.paletteRow(std::string_view(color.get_data(),color.length()));
+        const auto* image=rawImage(palette->absPath);
+        if(!image || image->width<18 || row<0 || row>=image->height || palette->defaultRow<0 || palette->defaultRow>=image->height)return {};
+        // The cage renderer compares exactly the first 18 descriptor colors.
+        auto ramp=df3d::assets::RgbaImage::blank(18,2);
+        for(int x=0;x<18;++x){ramp.set(x,0,image->get(x,palette->defaultRow));ramp.set(x,1,image->get(x,row));}
+        if(!df3d::assets::buildPaletteSwap(ramp,0,1,swap))return {};
+    }
+    const auto result=df3d::assets::compositeContainer(occupant,frame,color.length()?&swap:nullptr);
+    if(result.empty())return {};
+    PackedByteArray bytes;bytes.resize(int64_t(result.pixels.size()));std::copy(result.pixels.begin(),result.pixels.end(),bytes.ptrw());
+    return submission::texture(Image::create_from_data(result.width,result.height,false,Image::FORMAT_RGBA8,bytes),submission::TextureSite::Portrait);
+}
+
 Ref<Texture2D> Df3dWorld::creature_portrait(int64_t id) {
     if(id<0 || id>INT32_MAX || !assets_)return {};
     const auto snapshot=creatureInfo_.snapshot(int32_t(id));

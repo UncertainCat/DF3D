@@ -35,9 +35,17 @@ Core `build/qa/animal-container-compositor` passes. The compiled C++ probe in
 `build/notes/pm/container-parity` matches both 4096-byte native cage textures from
 protected `build/stockpile-storage-native-zone-animals-20261026-120632`, using
 original cage/palette assets and supplied captured body images. This is composition
-evidence, not complete owned occupant-recipe or viewer integration. Those pieces,
-wood/glass/empty cage and restraint artwork, fallback art and status hover help
-remain unfinished.
+evidence using captured occupant pixels. The viewer now uses the same blend
+with its owned occupant recipe, through `animal_container_icon`. It resolves
+original `ITEM_CAGE_{METAL,WOOD,GLASS}` artwork (the `_OCCUPIED` variants when
+an occupant exists), applies the first 18 default-palette color pairs, and draws
+at the native status offset. Missing recipes/assets remain unavailable.
+GPU `build/qa/animal-container-pixels-utf8` matches all 4096 RGBA bytes and each
+40x36 displayed row region for two metal cages, wood, glass and an inactive
+occupant. It passes with the three known Godot diagnostics. The initial pixel
+run found a test-fixture UTF-8 decoding mistake, corrected before acceptance.
+Actual empty-reference and critter-item cages, restraint artwork, fallback art
+and status hover help still need coverage/integration.
 `nativeZoneAnimalContainer` reads cage material family, solid color token and
 first qualifying occupant from semantic material/reference data. It calls only
 pinned native material leaves; cached graphics and widgets are never runtime
@@ -46,8 +54,21 @@ Protected `build/stockpile-storage-native-zone-animals-20261026-122035` compares
 21 results with rendered native cage keys, including real metal cages, temporary
 wood/glass materials and inactive occupants. UI/gps byte guards pass and the
 source save is unchanged after unsaved exit. Core and adapter checks pass in
-`build/qa/animal-container-reader`. This reader is not yet connected to the viewer;
-live-animal item and multiple-reference coverage remain open.
+`build/qa/animal-container-reader`. The additive optional
+`AreaCandidateRow.animal_container` carries material family, solid color token,
+occupant entity/ID and an optional owned `SelectionAppearance` through
+Management68. Older recordings preserve absence. Facts and recipes are collected
+only for returned rows and counted in the bounded page payload; native cage
+cache contents never enter the response. Validators reject invalid family,
+entity/ID, status association and appearance references. An empty container
+cannot carry an occupant recipe; a missing recipe is not fabricated.
+Core, Lua adapter and Godot transport checks pass in
+`build/qa/animal-container-transport-tested`, including malformed combinations
+and the occupant recipe round-trip. Protected
+`build/areas-acceptance-20261026-123350` compares the live Godot facts with fresh
+native reads and checks occupant recipe presence; both save manifests remain
+unchanged after unsaved exit. Live-animal item and multiple-reference selection
+coverage remain open.
 Native widget selection sets and composed textures are diagnostic references only.
 
 Animal item portrait source: protected

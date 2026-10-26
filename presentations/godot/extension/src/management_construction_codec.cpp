@@ -248,6 +248,19 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
         layers.push_back(layer);}
       icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;row["sheet_icon"]=icon;
     }
+    if(v.animalContainer) {const auto& c=*v.animalContainer;Dictionary container;
+      container["material_family"]=c.materialFamily;container["solid_color"]=String::utf8(c.solidColor.c_str());
+      container["occupant_entity"]=c.occupantEntity;container["occupant_id"]=c.occupantId;
+    if(c.occupant) {Dictionary icon;Array pages,palettes,layers;
+      for(const auto& name:c.occupant->tilePages)pages.push_back(String::utf8(name.c_str()));
+      for(const auto& name:c.occupant->palettes)palettes.push_back(String::utf8(name.c_str()));
+      for(const auto& l:c.occupant->layers) {Array layer;
+        for(int value:{int(l.page),int(l.tileX),int(l.tileY),int(l.cellsX),int(l.cellsY),int(l.palette),int(l.paletteRow),int(l.paletteKeyRow),int(l.offsetX),int(l.offsetY)})layer.push_back(value);
+        layers.push_back(layer);}
+      icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;container["occupant"]=icon;
+    }
+      row["animal_container"]=container;
+    }
     candidates.push_back(row);
   }
   for(const auto& v:s.links) {

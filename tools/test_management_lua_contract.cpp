@@ -244,6 +244,13 @@ int main(int argc,char** argv) {
         ",name='native',profession='',animal_status={kind="+std::to_string(kind)+",containment="+std::to_string(relation)+",item_id="+std::to_string(item)+"}}}}";
       test(A::AreaCandidates,input.c_str(),valid,O::CandidateList);
     }
+    for(int family=0;family<4;++family)for(int entity=0;entity<4;++entity)for(int id:{-1,9})for(int kind:{0,4}) {
+      const bool valid=kind==4 && family<=2 && entity<=2 && (entity==0 ? id==-1 : id>=0);
+      const auto input="return {"+envelope+"candidate_kind=2,candidates={{id=21,entity=1,name='native',profession='',animal_status={kind="+
+        std::to_string(kind)+",containment="+(kind==4?"2":"0")+",item_id="+(kind==4?"17":"-1")+"},animal_container={material_family="+
+        std::to_string(family)+",solid_color='TEST',occupant_entity="+std::to_string(entity)+",occupant_id="+std::to_string(id)+"}}}}";
+      test(A::AreaCandidates,input.c_str(),valid,O::CandidateList);
+    }
     const std::string ownerRow="id=21,name='native',profession='native',owner_display=";
     for(int mode=0;mode<8;++mode) {
       const auto display=mode==1?"false":std::string("{columns=")+(mode==2?"2":"45")+

@@ -133,8 +133,16 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
   const bool animal=q.operation()==m::AreaOperation::CandidateList && q.candidate_kind()==2;
   if(animal)animalDisplay=m::CreateAreaAnimalDisplay(b,27,b.CreateString(""),b.CreateString("Shortened profession"),false,
     b.CreateString("Grazer: requires pasture"),m::CreateAreaNameColor(b,6,0,0,6,0,0,0));
+  flatbuffers::Offset<m::AreaAnimalStatus> animalStatus;
+  flatbuffers::Offset<m::AreaAnimalContainer> animalContainer;
+  if(animal) {
+    const auto occupant=m::CreateSelectionAppearance(b,b.CreateVectorOfStrings(std::vector<std::string>{"TEST_OCCUPANT"}),
+      b.CreateVectorOfStrings(std::vector<std::string>{}),b.CreateVectorOfStructs(std::vector<m::AppearanceLayer>{m::AppearanceLayer(0,2,3,1,1,65535,0,0,-1,2)}));
+    animalStatus=m::CreateAreaAnimalStatus(b,4,2,17);
+    animalContainer=m::CreateAreaAnimalContainer(b,1,b.CreateString("TEST_COLOR"),1,9,occupant);
+  }
   const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15,ownerDisplay,ownerIcon,
-    animal?m::AreaCandidateEntity::Unit:m::AreaCandidateEntity::Unknown,animalDisplay);const auto candidates=b.CreateVector(std::vector{candidate});
+    animal?m::AreaCandidateEntity::Unit:m::AreaCandidateEntity::Unknown,animalDisplay,animalStatus,animalContainer);const auto candidates=b.CreateVector(std::vector{candidate});
   const auto link=m::CreateAreaLinkRow(b,9,m::AreaKind::Workshop,2,name);const auto links=b.CreateVector(std::vector{link});
   const auto query=b.CreateString(q.query()->str());
   const auto queryBytes=q.query_bytes()?b.CreateVector(q.query_bytes()->data(),q.query_bytes()->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{};

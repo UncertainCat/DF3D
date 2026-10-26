@@ -1000,6 +1000,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
                                 (status->containment()!=0 || status->item_id()!=-1)))return "invalid animal status";
         payload+=6;
       }
+      if(const auto* c=row->animal_container()) {
+        if(!row->animal_status() || row->animal_status()->kind()!=4 || c->material_family()>2 || textSize(c->solid_color())>128 ||
+           c->occupant_entity()>2 || (c->occupant_entity()==0 ? (c->occupant_id()!=-1 || c->occupant()!=nullptr) : c->occupant_id()<0))
+          return "invalid animal container";
+        payload+=6+textSize(c->solid_color());
+        if(const auto* p=c->occupant())if(const auto* error=validateOwnerAppearance(*p,payload))return error;
+      }
       if(const auto* display=row->animal_display()) {
         if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=2 || row->entity()!=AreaCandidateEntity::Unit || row->id()<0 ||
            display->columns()<3 || display->columns()>128 || textSize(display->first_line())>384 || textSize(display->second_line())>384 ||

@@ -985,11 +985,25 @@ local function candidate_page(r,a,b,area_revision,available)
     (status.kind==4 and (status.containment==0 or status.item_id<0)) or
     (status.kind~=4 and (status.containment~=0 or status.item_id~=-1))then return fail('Native area helper unavailable'),used end
    row.animal_status=status
+   if status.kind==4 and type(r.animal_container)=='function' then
+    row.animal_container=r.animal_container(status.item_id)
+   end
    if not candidate_text_valid(row)then return fail('Candidate label exceeds 512 bytes'),used end
   end
   if not legacy or row.id>=cursor then
    local row_bytes=9+#row.name+#(row.profession or '')
    if row.animal_status then row_bytes=row_bytes+6 end
+   if row.animal_container~=nil then
+    local c=row.animal_container
+    if type(c)~='table' or type(c.solid_color)~='string' or #c.solid_color>128 or
+      not integer(c.material_family) or c.material_family<0 or c.material_family>2 or
+      not integer(c.occupant_entity) or c.occupant_entity<0 or c.occupant_entity>2 or
+      not integer(c.occupant_id) or c.occupant_id < -1 or c.occupant_id>2147483647 or
+      (c.occupant~=nil and type(c.occupant)~='string') or
+      (c.occupant_entity==0 and (c.occupant_id~=-1 or c.occupant~=nil)) or
+      (c.occupant_entity~=0 and c.occupant_id<0)then return fail('Native area helper unavailable'),used end
+    row_bytes=row_bytes+6+#c.solid_color+#(c.occupant or '')+64
+   end
    if row.owner_display then local d=row.owner_display;row_bytes=row_bytes+13+#d.first_line+#d.second_line+#d.status end
    if row.animal_display then local d=row.animal_display;row_bytes=row_bytes+10+#d.first_line+#d.second_line+#d.warning end
    -- Encoded recipes include their alignment/table overhead and exceed the

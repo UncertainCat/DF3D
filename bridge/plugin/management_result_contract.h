@@ -159,6 +159,24 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
         payload+=6;
       }
       lua_settop(L,top);
+      lua_getfield(L,-1,"animal_status");const bool containerStatus=lua_istable(L,-1) && value("kind")==4;lua_pop(L,1);
+      lua_getfield(L,-1,"animal_container");
+      if(!lua_isnil(L,-1)) {
+        bool valid=containerStatus && table() && number("material_family",0,2,true) && text("solid_color",128) &&
+          number("occupant_entity",0,2,true) && number("occupant_id",-1,INT32_MAX,true);
+        const bool occupied=value("occupant_entity")!=0;
+        valid=valid && (occupied ? value("occupant_id")>=0 : value("occupant_id")==-1);
+        lua_getfield(L,-1,"occupant");
+        if(!lua_isnil(L,-1)) {
+          size_t size=0;const auto* bytes=reinterpret_cast<const uint8_t*>(lua_type(L,-1)==LUA_TSTRING?lua_tolstring(L,-1,&size):nullptr);
+          valid=valid && occupied && bytes && size<=224*1024;
+          if(valid) {flatbuffers::Verifier verifier(bytes,size);valid=verifier.VerifyBuffer<df3d::mirror::SelectionAppearance>(nullptr);}
+          if(valid)valid=df3d::mirror::validateOwnerAppearance(*flatbuffers::GetRoot<df3d::mirror::SelectionAppearance>(bytes),payload)==nullptr;
+        }
+        if(!valid)return bad("invalid animal container");
+        payload+=6;
+      }
+      lua_settop(L,top);
       lua_getfield(L,-1,"animal_display");
       if(!lua_isnil(L,-1)) {
         bool valid=table() && operation==df3d::mirror::AreaOperation::CandidateList && candidateKind==2 && animalUnit &&

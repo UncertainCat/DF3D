@@ -170,7 +170,7 @@ def main():
     function request(action,extra)
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
-     r.animal_status=animal_status;r.animal_candidates=animal_candidates;r.animal_item_text=animal_item_text;r.animal_item_icon=animal_item_icon;r.animal_unit_display=animal_unit_display
+     r.animal_status=animal_status;r.animal_container=animal_container;r.animal_candidates=animal_candidates;r.animal_item_text=animal_item_text;r.animal_item_icon=animal_item_icon;r.animal_unit_display=animal_unit_display
      r.owner_eligible=owner_eligible
      r.new_owner_eligible=function(zone_type,u)return u.new_native_eligible~=false end
      r.owner_order_facts=owner_order_facts;r.owner_display=owner_display
@@ -803,6 +803,19 @@ def main():
         lua.execute("animal_status=function(...) " + mutation + " end")
         assert not call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2})["ok"]
     lua.execute("animal_status=saved_animal_status")
+    lua.execute("animal_status=function(zone,entity,subject,assigned) if entity==1 then return {kind=4,containment=2,item_id=17} end return saved_animal_status(zone,entity,subject,assigned) end")
+    lua.execute("animal_container=function(id) return {material_family=1,solid_color='TEST',occupant_entity=1,occupant_id=9,occupant='recipe'} end")
+    cages = call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2})
+    assert cages["ok"] and cages["candidates"][1]["animal_container"]["occupant_id"] == 9
+    assert cages["candidates"][3]["animal_container"] is None
+    for mutation in ["false", "{material_family=3,solid_color='TEST',occupant_entity=0,occupant_id=-1}",
+                     "{material_family=1,solid_color='TEST',occupant_entity=0,occupant_id=9}",
+                     "{material_family=1,solid_color='TEST',occupant_entity=1,occupant_id=-1}",
+                     "{material_family=1,solid_color='TEST',occupant_entity=0,occupant_id=-1,occupant='recipe'}"]:
+        lua.execute("animal_container=function(id) return " + mutation + " end")
+        assert not call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2})["ok"]
+    lua.execute("animal_status=saved_animal_status;animal_container=nil")
+
 
 
     animal_request = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2}

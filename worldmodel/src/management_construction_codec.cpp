@@ -165,6 +165,18 @@ AreaState decodeArea(const m::AreaState* a) {
         {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
     }
     if(const auto* s=v->animal_status())row.animalStatus=AreaAnimalStatus{s->kind(),s->containment(),s->item_id()};
+    if(const auto* c=v->animal_container()) {
+      row.animalContainer.emplace();auto& container=*row.animalContainer;
+      container.materialFamily=c->material_family();container.solidColor=text(c->solid_color());
+      container.occupantEntity=c->occupant_entity();container.occupantId=c->occupant_id();
+      if(const auto* p=c->occupant()) {
+        container.occupant.emplace();
+        for(const auto* t:*p->tile_pages())container.occupant->tilePages.push_back(t->str());
+        for(const auto* t:*p->palettes())container.occupant->palettes.push_back(t->str());
+        for(const auto* l:*p->layers())container.occupant->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
+          l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
+      }
+    }
     row.entity=AreaCandidateEntity(v->entity());
     out.candidates.push_back(std::move(row));
   }

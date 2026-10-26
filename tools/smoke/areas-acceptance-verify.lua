@@ -669,6 +669,15 @@ elseif request.op=='animal_candidates' then
   assert(status_code==0,status_text)
   local native_status=require('json').decode(status_text)
   assert(row.animal_status and row.animal_status.kind==native_status.kind and row.animal_status.containment==native_status.containment and row.animal_status.item_id==native_status.item_id,'native animal status transport differs')
+  if native_status.kind==4 and df.item.find(native_status.item_id):getType()==df.item_type.CAGE then
+   local data,rc=dfhack.run_command_silent('df3d','zone-animal-container-read',tostring(native_status.item_id))
+   assert(rc==0,data);local expected_container=require('json').decode(data);local actual=row.animal_container
+   assert(actual,'cage facts absent from Godot row')
+   for _,key in ipairs{'material_family','solid_color','occupant_entity','occupant_id'}do
+    assert(actual[key]==expected_container[key],'cage fact changed in transport: '..key)
+   end
+   if actual.occupant_entity~=0 then assert(actual.occupant and #actual.occupant.layers>0,'owned cage occupant recipe absent') end
+  else assert(not row.animal_container,'non-cage received cage facts') end
   if entry.kind==1 then
    local value,status=dfhack.run_command_silent('df3d','zone-animal-item-text-read',tostring(entry.id))
    assert(status==0,value)

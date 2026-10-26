@@ -400,9 +400,16 @@ art without detail RPCs; deterministic tests cover replacement and disappearance
 Core19/19 and candidate/portrait checks pass; GPU has only the three known notices.
 Native025944 DF59136 closes unsaved with its source manifest unchanged.
 This verifies frame/placement and refresh wiring, not live owner image content.
-The resident thumbnail API requires a known map actor: deceased/off-map Tomb
-candidate imagery remains unresolved. Hover, full input, semantic refresh and
-complete assignment lifecycle acceptance are also still pending.
+The resident thumbnail API requires a known map actor. Protected030711 proves
+native renders32x32 full-body images for inactive living unit996 and killed
+unit998, each anchored2,2; this save has28 deceased eligible Tomb candidates.
+DF116880 closes unsaved with source preserved. Hashes and actual unit flags are
+in `native_zone_assignment.json.owner_candidate_imagery`. Both candidates are
+excluded from the map stream, so owner results need scoped original-asset recipes
+(the existing Residents recipe is reusable), followed by independent rendered
+image comparison. Native cached textures remain test-only observations. Hover,
+full input, semantic refresh and complete assignment lifecycle acceptance are
+also still pending.
 
 Production owner rows now carry the native reader's color alternatives/effect
 through request-local callbacks, validated Lua data, DTOs, the model and Godot.

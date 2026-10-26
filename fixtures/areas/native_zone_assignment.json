@@ -2958,5 +2958,63 @@
       }
     ],
     "scope": "Exact two-pixel outer border of first selected and second normal frame (288 pixels each); native anchored offsets2,2 observed for both rows. Unit image content and full picker acceptance remain separate."
+  },
+  "owner_candidate_imagery": {
+    "source": "build/stockpile-storage-native-zone-owner-20261026-030711/result.json",
+    "source_sha256": "9cf2bc149cbb571ba6a6e6400373e8dfc33a257244ec4b7ffe3c1185e1abcf7e",
+    "source_save_preserved": "Owned source unchanged",
+    "deceased_candidate_count": 28,
+    "samples": [
+      {
+        "kind": "inactive",
+        "unit": {
+          "dead": false,
+          "ghost": false,
+          "id": 996,
+          "inactive": true,
+          "killed": false,
+          "name": "inactive-portrait-unit",
+          "portrait": 0,
+          "pos": [
+            191,
+            180,
+            175
+          ],
+          "sheet_icon": 162630
+        },
+        "native_texture_size": [
+          32,
+          32
+        ],
+        "rgba_sha256": "d928d6b561aa065aa14be1d4accc4257e25a1c3591729f88dfec976dbe340816",
+        "capture": "build/stockpile-storage-native-zone-owner-20261026-030711/tomb-picker-display-inactive-portrait.png"
+      },
+      {
+        "kind": "deceased",
+        "unit": {
+          "dead": true,
+          "ghost": false,
+          "id": 998,
+          "inactive": true,
+          "killed": true,
+          "name": "deceased-portrait-unit",
+          "portrait": 0,
+          "pos": [
+            112,
+            98,
+            165
+          ],
+          "sheet_icon": 162632
+        },
+        "native_texture_size": [
+          32,
+          32
+        ],
+        "rgba_sha256": "a062fd6c38e77f8b2f565781b98cd898e334121a916861e12d4e05993a30468a",
+        "capture": "build/stockpile-storage-native-zone-owner-20261026-030711/tomb-picker-display-deceased-portrait.png"
+      }
+    ],
+    "finding": "Native renders inactive living and killed owner candidates using32x32 full-body images anchored2,2. Map stream omits both. Current selection_icon cannot supply these rows. Candidate-scoped original-asset recipes required; native cached textures are test-only observations, never runtime inputs.",
+    "remaining": "Independent recipe image parity and scoped bridge/model/view integration are not yet established."
   }
 }

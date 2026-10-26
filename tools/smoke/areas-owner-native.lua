@@ -3,6 +3,7 @@ local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local ui=df.global.game.main_interface.civzone
 local last_search_input=""
+local dumped_portraits={}
 local function pixel(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//(g.screen_pixel_x//g.dimx);g.mouse_y=y//(g.screen_pixel_y//g.dimy)
  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
@@ -89,11 +90,17 @@ local function capture(name)
  if name:find('picker') or name:find('candidate') then
   local list=assert(unit_list(df.global.game.main_interface.unit_selector,0),'native unit list missing')
   records[#records+1]={name=name..'-row-cursor',cursor=list.cursor_idx,mouse_x=g.mouse_x,mouse_y=g.mouse_y}
-  if name=='tomb-picker' then
+  if name=='tomb-picker' or name:find('%-portrait$') then
    local cells={}
    for y=7,12 do for x=47,51 do
     local idx=x*g.dimy+y;local cell={x=x,y=y,tile=dfhack.screen.readTile(x,y).tile}
     for _,field in ipairs{'screentexpos_anchored','screentexpos_anchored_x','screentexpos_anchored_y','screentexpos_top_anchored','screentexpos_top_anchored_x','screentexpos_top_anchored_y'}do cell[field]=g[field][idx]end
+    local texture=cell.screentexpos_anchored
+    if texture and texture>0 and not dumped_portraits[texture] then
+     local text,code=dfhack.run_command_silent('df3d','appearance','texture',tostring(texture),out..'/owner-body-'..texture)
+     assert(code==0 and text:find('DF3D_TEXTURE_DUMP_PASS',1,true),text)
+     dumped_portraits[texture]=true
+    end
     cells[#cells+1]=cell
    end end
    records[#records+1]={name=name..'-portrait-anchors',cells=cells}
@@ -322,6 +329,32 @@ records[#records+1]={name='new-tomb',id=zone.id,owner=zone.assigned_unit_id,sett
 pixel(336,154);capture('tomb-picker')
 gui.simulateInput(view,'CURSOR_DOWN');capture('tomb-picker-row-down')
 gui.simulateInput(view,'CURSOR_UP');capture('tomb-picker-row-up')
+-- Isolate retained candidates without changing eligibility or appearance.
+local inactive=assert(df.unit.find(996),'inactive owner fixture missing')
+assert(inactive.flags1.inactive,'inactive fixture unexpectedly active')
+local eligible_text,eligible_code=dfhack.run_command_silent('df3d','zone-owner-candidates-read',tostring(zone.id))
+assert(eligible_code==0,eligible_text)
+local deceased={}
+for _,id in ipairs(require('json').decode(eligible_text))do
+ local unit=assert(df.unit.find(id))
+ if dfhack.units.isDead(unit)then deceased[#deceased+1]=id end
+end
+records[#records+1]={name='portrait-deceased-candidates',ids=deceased}
+local probes={{name='inactive',unit=inactive}}
+if #deceased>0 then probes[#probes+1]={name='deceased',unit=assert(df.unit.find(deceased[1]))}end
+for _,probe in ipairs(probes)do
+ local unit=probe.unit;local old_first=unit.name.first_name
+ local ok,err=pcall(function()
+  unit.name.first_name='OwnerPortraitProbe'
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
+  search('OwnerPortraitProbe');capture('tomb-picker-display-'..probe.name..'-portrait')
+  records[#records+1]={name=probe.name..'-portrait-unit',id=unit.id,dead=dfhack.units.isDead(unit),killed=unit.flags2.killed,ghost=unit.flags3.ghostly,inactive=unit.flags1.inactive,pos={unit.pos.x,unit.pos.y,unit.pos.z},sheet_icon=unit.sheet_icon_texpos,portrait=unit.portrait_texpos}
+ end)
+ unit.name.first_name=old_first
+ assert(ok,err)
+end
+gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
+last_search_input=''
 snapshot('before-assignment')
 pixel(520,106)
 assert(zone.assigned_unit_id>=0 and zone.zone_settings.whole.i1==3,'native tomb assignment failed')

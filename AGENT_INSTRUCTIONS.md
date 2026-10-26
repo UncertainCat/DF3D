@@ -127,6 +127,11 @@ copy, fabricated progress percentages or broader native-UI departures.
   X/Y hitboxes. Preserve native text, timing and containment semantics. Track
   confirmed native bugs and DF3D corrections in ENGINEERING.md's native bug
   register, distinguishing implemented corrections from approved pending work.
+- Maintainer decision, 2026-10-26: keep clicks inside the visible animal panel
+  from selecting the map behind it. Native blank-right-edge clicks can change
+  the parent zone while the open picker continues assigning to its original
+  zone. Preserve focus release and assignment semantics; this exception covers
+  the panel's input boundary only. Record it in the native bug register.
 - Before extending an incomplete gameplay UI, locate the DF routine or existing
   semantic API that supplies its choices, eligibility, ordering and actions.
   Prefer exposing that behavior over reconstructing it in Godot or the bridge.

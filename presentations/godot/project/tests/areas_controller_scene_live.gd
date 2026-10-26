@@ -1673,6 +1673,13 @@ func pointer_animals(id: int) -> void:
 		if not check(digest.finish().hex_encode()==str(sample.rgb_sha256),"animal native panel pixels differ: "+str(sample.name)):return
 	var view=editor.candidates_view
 	if not check(view.body.global_position==Vector2(376,64) and view.size==Vector2(392,708),"animal native panel geometry differs: body="+str(view.body.global_position)+" panel="+str(view.size)):return
+	# Approved native hitbox correction: blank panel clicks cannot select the map.
+	var blank_receipt:int=editor.candidates_state.receipt
+	for position in [Vector2(500,700),Vector2(740,700)]:
+		await click_control(view.owner_search)
+		if not check(view.owner_search.has_focus(),"blank-click fixture did not focus search"):return
+		await pointer_click(position)
+		if not check(not view.owner_search.has_focus() and view.visible and int(editor.selected.id)==id and int(editor.candidates_state.area.id)==id and editor.candidates_state.receipt==blank_receipt,"blank animal panel click changed parent/target or retained focus"):return
 	var unit_index:=-1
 	for index in editor.candidates_state.rows.size():
 		var row:Dictionary=editor.candidates_state.rows[index]

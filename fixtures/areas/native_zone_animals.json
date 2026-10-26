@@ -15762,5 +15762,172 @@
         "rgb_sha256": "1a2372b8b13b1426ca10efd22142b921ff29bbe55cf1e39ea0aa41f6aa669c69"
       }
     ]
+  },
+  "animal_blank_input": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-150439",
+    "owned_df_pid": 133440,
+    "source_unchanged": true,
+    "records": [
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_zone": 1493,
+        "picker_zone": 1493,
+        "pointer": [
+          500,
+          700
+        ],
+        "probe": "blank-center",
+        "stage": "clicked",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [
+          1493
+        ],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_zone": 1493,
+        "picker_zone": 1493,
+        "pointer": [
+          500,
+          700
+        ],
+        "probe": "blank-center",
+        "stage": "selected",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_zone": 1493,
+        "picker_zone": 1493,
+        "pointer": [
+          500,
+          700
+        ],
+        "probe": "blank-center",
+        "stage": "cleared",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_zone": 77,
+        "picker_zone": 1493,
+        "pointer": [
+          740,
+          700
+        ],
+        "probe": "blank-right",
+        "stage": "clicked",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [
+          1493
+        ],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_zone": 77,
+        "picker_zone": 1493,
+        "pointer": [
+          740,
+          700
+        ],
+        "probe": "blank-right",
+        "stage": "selected",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_zone": 77,
+        "picker_zone": 1493,
+        "pointer": [
+          740,
+          700
+        ],
+        "probe": "blank-right",
+        "stage": "cleared",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_zone": 77,
+        "picker_zone": 1493,
+        "pointer": [
+          800,
+          700
+        ],
+        "probe": "outside-map",
+        "stage": "clicked",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [
+          1493
+        ],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_zone": 77,
+        "picker_zone": 1493,
+        "pointer": [
+          800,
+          700
+        ],
+        "probe": "outside-map",
+        "stage": "selected",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_zone": 77,
+        "picker_zone": 1493,
+        "pointer": [
+          800,
+          700
+        ],
+        "probe": "outside-map",
+        "stage": "cleared",
+        "target": 6960
+      }
+    ],
+    "approved_correction": "Keep clicks inside the visible panel from changing the parent zone; retain focus release and assignment target. Maintainer approved 2026-10-26."
   }
 }

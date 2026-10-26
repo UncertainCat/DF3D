@@ -12,6 +12,7 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 | Five-to-ten raised spikes select incorrect lower artwork. | Select the correct installed artwork. | Implemented; `fixtures/construction/weapon_rendering.json.gz`. Trap behavior is unchanged. |
 | Narrow stockpile item columns acquire negative widths and spill names onto the map. | Clip item names inside their panel. | Implemented; `fixtures/areas/native_stockpile_search.json`. |
 | Animal containment tooltip callbacks swap X/Y hitbox coordinates. | Activate all four native messages on the visible cage/chain icons. | Implemented; `fixtures/areas/native_zone_animals.json` field `animal_containment_hover_reference`, GPU `build/qa/animal-containment-hover` and `build/qa/animal-containment-click`. |
+| Animal picker blank right edge lets clicks select the map behind the visible panel, changing the parent zone while assignments still target the original zone. | Consume clicks inside the visible panel while releasing search focus and preserving the picker target. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_blank_input`, native `build/stockpile-storage-native-zone-animals-20261026-150439`, rendered `build/areas-acceptance-20261026-150814`. |
 
 ## Animal keyboard activation and portrait reference
 
@@ -38,8 +39,13 @@ focused Enter, first/second right-click and focused/unfocused Escape to Options
 all pass. Keyboard selection/Enter also assigns and clears a non-first unit,
 with native effects checked. Both save manifests remain unchanged; this run
 retains only known diagnostics. Core19/19 passes in
-`build/qa/animal-rendered-inputs`. Uncommon creature/container and native
-blank-panel parent-selection cases remain outstanding.
+`build/qa/animal-rendered-inputs`. Uncommon creature/container cases remain
+outstanding. Approved blank-panel input coverage additionally passes in
+`build/areas-acceptance-20261026-150814`: real clicks at500,700 and740,700
+release search focus without changing the selected zone, picker target or list
+receipt. Both save manifests remain unchanged; only known diagnostics remain.
+The existing panel already consumes these clicks, so this correction requires
+no additional production change.
 
 
 `native_zone_animals.json.animal_scroll` records a forty-row Pond list in
@@ -56,8 +62,9 @@ navigation is enabled. Core19/19, state and controller checks pass in
 scrollbar crops exactly and verify complete-row clipping, keyboard paging and
 drag destinations. `build/qa/animal-long-scroll-pointer` additionally verifies
 actual viewport wheel events, shifted paging and outside-pointer exclusion.
-Both GPU runs retain only the three known Godot diagnostics. Rendered main-scene animal acceptance remains outstanding; this is component
-scrolling acceptance, not full Zones acceptance.
+Both GPU runs retain only the three known Godot diagnostics. The rendered
+main-scene input lane above complements this component scrolling acceptance;
+full Zones acceptance remains outstanding.
 
 The existing candidate_limit request (1..128; zero retains the default) is now
 valid for animal as well as owner fact pages. Bounded reads reuse the retained
@@ -114,11 +121,14 @@ native candidate ordering, and a temporary named-animal match that distinguishes
 raw from converted queries. Both save manifests remained unchanged. Core19/19,
 adapter, state, controller regression and GPU checks pass in
 `build/qa/animal-search-complete` (GPU retains the three known diagnostics). The full312x36 partial-byte textbox crop
-matches the native reference at the same cursor phase. The broader controller
-live harness now uses the native animal oracle and byte editor; its full live
-run remains outstanding. Blank panel clicks changing the selected parent zone
-while leaving the selector active are an unresolved separate interaction, not
-an approved departure or a confirmed defect in the native bug register.
+matches the native reference at the same cursor phase. The controller live harness uses the native animal oracle and byte editor,
+with focused headless and rendered coverage recorded above. Native blank-center
+clicks release focus only; blank-right clicks inside the visible panel also
+select a map zone behind it, while subsequent assignment still targets the
+original picker zone. The approved inside-panel correction is recorded in the
+native bug register. Clicks outside the panel also change the native parent
+while retaining the picker target; that separate interaction remains unresolved
+and is outside this exception.
 
 Animal status references in `native_zone_animals.json.animal_status_reference`
 cover caged units, pasture assignment, pit/filled-pond picker context and assigned

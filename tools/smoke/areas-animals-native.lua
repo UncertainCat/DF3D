@@ -921,6 +921,37 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
  gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
 end
 
+-- Diagnostic-only: distinguish parent selection from the open picker's target.
+-- Restore the parent pointer between independent probes; no runtime code reads it.
+do
+ local zone=assert(ui.cur_bld)
+ for _,probe in ipairs{{'blank-center',500,700},{'blank-right',740,700},{'outside-map',800,700}}do
+  ui.cur_bld=zone;main.bottom_mode_selected=3;view:render(dfhack.getTickCount())
+  pixel(336,154)
+  local before=capture('Pond-'..probe[1]..'-before')
+  local target=assert(before.displayed[1]);assert(target.kind==0,'blank probe needs first unit')
+  pixel(500,730)
+  pixel(probe[2],probe[3])
+  local rows={};local list=assert(walk(main.unit_selector,rows,0,true))
+  local function observe(label)
+   local assigned={}
+   for _,b in ipairs(df.global.world.buildings.other.ANY_ZONE)do
+    if contains(b.assigned_units,target.id)then assigned[#assigned+1]=b.id end
+   end
+   records[#records+1]={name='animal-blank-input',probe=probe[1],stage=label,
+    pointer={probe[2],probe[3]},picker_zone=zone.id,parent_zone=ui.cur_bld and ui.cur_bld.id or -1,
+    active=main.unit_selector.flag.VISIBILITY_ACTIVE,focused=df.global.gview.cur_textbox~=nil,
+    mode=main.bottom_mode_selected,cursor=list.cursor_idx,target=target.id,assigned_zones=assigned}
+  end
+  observe('clicked')
+  gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());observe('selected')
+  gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());observe('cleared')
+  assert(not contains(zone.assigned_units,target.id),'blank probe left assignment')
+  if main.unit_selector.flag.VISIBILITY_ACTIVE then gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())end
+ end
+ ui.cur_bld=zone;main.bottom_mode_selected=3;view:render(dfhack.getTickCount())
+end
+
 -- Long-list scrolling is observed separately so earlier assignment fixtures keep
 -- their original membership. All temporary items live only in this unsaved clone.
 do

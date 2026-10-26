@@ -1180,7 +1180,7 @@ int areaCreate(lua_State* L) {
     if(!df::global::world || !df::global::plotinfo || !df::global::building_next_id)return "World is not loaded";
     if(*df::global::building_next_id<0 || *df::global::building_next_id==INT32_MAX)return "Building IDs exhausted";
     const bool pile=a->kind()==m::AreaKind::Stockpile;
-    if(!pile && !df3d_area::nativeZoneDefaultsReady())return "";
+    if(!pile && !df3d_area::nativeZoneCreateReady())return "";
     const int32_t z=a->operation()==m::AreaOperation::Paint?a->paint_z():a->origin()->z();
     if(pile && a->categories()) {
       std::array<size_t,78> counts{};size_t index=0;
@@ -1189,7 +1189,7 @@ int areaCreate(lua_State* L) {
       if(!df3d_area::settingsRawTotal(counts).valid)return "Stockpile settings exceed 65,536 entries";
     }
     // Native creation assigns the next per-kind number with max+1.
-    int32_t stockpileNumber=1;
+    int32_t stockpileNumber=1,zoneNumber=1;
     if(pile) {
       for(const auto* b:df::global::world->buildings.other.STOCKPILE) {
         ++steps;if(!b)return "Area no longer exists";
@@ -1200,6 +1200,7 @@ int areaCreate(lua_State* L) {
       for(const auto* b:df::global::world->buildings.other.ANY_ZONE) {
         ++steps;if(!b)return "Area no longer exists";
         if(b->zone_num==INT32_MAX)return "Zone numbers exhausted";
+        zoneNumber=(std::max)(zoneNumber,b->zone_num+1);
       }
     }
     std::vector<std::pair<int32_t,int32_t>> clipped;
@@ -1279,51 +1280,25 @@ int areaCreate(lua_State* L) {
       if(!transfers.cleanup())return "Native area construction failed; cleanup uncertain; inspect before retrying";
       return nullptr;
     }
-    const auto destroyUnpublished=[](df::building* b) {
-      if(!b)return;
-      delete[] b->room.extents;b->room.extents=nullptr;delete b;
-    };
-    unknownWork=true;
-    std::unique_ptr<df::building,decltype(destroyUnpublished)> owned(
-        Buildings::allocInstance(df::coord(bounds.x,bounds.y,z),
-          df::building_type::Civzone,a->zone_type()),destroyUnpublished);
-    if(!owned)return "Native area allocation failed; no area created";
-    auto* b=owned.get();
-    b->room.x=bounds.x;b->room.y=bounds.y;b->room.width=bounds.width;b->room.height=bounds.height;
-    b->room.extents=extents.release();
-    unknownWork=true;
-    if(!Buildings::setSize(b,df::coord2d(bounds.width,bounds.height)))return "Native area construction rejected: cannot place at this position";
-    // Zone registration must preserve the prepared mask and bounds.
-    if(b->x1!=bounds.x || b->y1!=bounds.y || b->x2!=bounds.x+bounds.width-1 || b->y2!=bounds.y+bounds.height-1 ||
-        !b->room.extents || b->room.x!=bounds.x || b->room.y!=bounds.y ||
-        b->room.width!=bounds.width || b->room.height!=bounds.height)
-      return "Native area construction changed the selected footprint";
-    uint32_t actualTiles=0;
-    for(size_t i=0;i<size_t(bounds.width)*bounds.height;++i)actualTiles+=b->room.extents[i]!=df::building_extents_type::None;
-    steps+=df3d_area::bulkSteps(size_t(bounds.width)*bounds.height);
-    if(actualTiles!=expectedTiles)return "Native area construction changed the selected footprint";
-    if(!df3d_area::nativeZoneDefaults(*static_cast<df::building_civzonest*>(b)))return "";
-    // Keep refresh hints even if construction or later Lua initialization fails.
+    // The native factory publishes its ID immediately. Prepare owned storage
+    // and invalidation hints first; partial native effects are never replayed.
     for(int by=bounds.y>>4;by<=(bounds.y+bounds.height-1)>>4;++by)
       for(int bx=bounds.x>>4;bx<=(bounds.x+bounds.width-1)>>4;++bx)areaHints.push_back({bx<<4,by<<4,z});
-    mutated=true;
-    owned.release(); // constructAbstract can expose zone pointers before assigning its ID.
-    bool constructed=false;
-    try {
-      constructed=Buildings::constructAbstract(b);
-    } catch(...) {
-      // Native construction does not destroy the input. Remove any partially
-      // published relationships with native deconstruction, exactly once.
-    }
-    if(constructed) {
-      createdId=b->id;
-      return nullptr;
-    }
-    try {
-      if(Buildings::deconstruct(b))return "Native area construction rejected: could not construct the building";
-    } catch(...) {}
-    // Deconstruction may itself have partly completed. Never dereference b now.
-    return "Native area construction failed; cleanup uncertain; inspect before retrying";
+    unknownWork=true;mutated=true;
+    auto* zone=df3d_area::nativeZoneAllocate();
+    if(!zone)return "Native area construction failed; cleanup uncertain; inspect before retrying";
+    createdId=zone->id;
+    zone->race=df::global::plotinfo->race_id;
+    zone->type=static_cast<df::civzone_type>(a->zone_type());
+    zone->spec_sub_flag.whole=8;
+    zone->x1=zone->room.x=bounds.x;zone->y1=zone->room.y=bounds.y;zone->z=z;
+    zone->x2=bounds.x+bounds.width-1;zone->y2=bounds.y+bounds.height-1;
+    zone->centerx=(zone->x1+zone->x2)/2;zone->centery=(zone->y1+zone->y2)/2;
+    zone->room.width=bounds.width;zone->room.height=bounds.height;
+    zone->zone_num=zoneNumber;zone->room.extents=extents.release();
+    if(!df3d_area::nativeZoneDefaults(*zone) || !df3d_area::nativeZoneComplete(*zone))
+      return "Native area construction failed; cleanup uncertain; inspect before retrying";
+    return nullptr;
   };
   const char* reason=nullptr;
   try {reason=execute();}

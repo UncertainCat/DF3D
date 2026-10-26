@@ -1,0 +1,92 @@
+{
+  "supported_df": "53.16 Steam Windows x64",
+  "native_callsite": "0x357737..0x3579a4",
+  "entries": [
+    {
+      "rva": "0x28b650",
+      "size": 35,
+      "sha256": "64782415e4be479d153242c204b497aba2fca793c031b7f9302b64088dbabc58",
+      "meaning": "Factory: allocates zone; base constructor immediately publishes ID/world.all."
+    },
+    {
+      "rva": "0x28b710",
+      "size": 178,
+      "sha256": "5bf6287ccd2ca891d301a872fbd20dfb122a375505422618ff9f30d3c68ac2b6",
+      "meaning": "Zone constructor: base plus zone vectors and sentinel fields."
+    },
+    {
+      "rva": "0x54bb60",
+      "size": 272,
+      "sha256": "3c084b9bb849e4d55d4e89ff9e0423caa5dcca0d86b2fdb85bda48fa5e32c63b",
+      "meaning": "Base constructor: ID increment and world.all insertion."
+    },
+    {
+      "rva": "0x577040",
+      "size": 13568,
+      "sha256": "beda62aa89745ff6a9b33f49c5ea15ed4e0d42c636052b19c1dece16c526bc75",
+      "meaning": "Building completion; actual-building/occupancy branches skipped by Civzone virtuals."
+    },
+    {
+      "rva": "0x57fc70",
+      "size": 203,
+      "sha256": "db5fe292bea160116b25a69b1ada1fa8e7670210f6e4537d7ab480655f47afcd",
+      "meaning": "Categorization including immutable jump tables; world zone lists."
+    },
+    {
+      "rva": "0x558550",
+      "size": 315,
+      "sha256": "2ca735e04b98d29cb8c34d45dea3059a8b993f34e461da0b2a2bcdbfe97da93b",
+      "meaning": "Remove supplied building from old reciprocal relations."
+    },
+    {
+      "rva": "0x558690",
+      "size": 273,
+      "sha256": "3e6241ea7000e67c56888d250d8242f230c614240fee4133179bf06bd038c40b",
+      "meaning": "Remove supplied zone from old contained-building relations."
+    },
+    {
+      "rva": "0x558830",
+      "size": 250,
+      "sha256": "cb29c4bd8749dd45a7d2289ffd930d768570321437020f77b439f8dc9ff4bbce",
+      "meaning": "Populate supplied zone from IN_PLAY/canMakeRoom/x1/y1 and native extent predicate."
+    }
+  ],
+  "ownership": "Prepare extents, geometry, numbers and refresh hints before allocation. The factory publishes immediately; DF owns returned pointers. Errors after entry may have partial effects and must not be replayed. No runtime native UI handler or menu state is used.",
+  "limits": [
+    "Native collision recomputation0xac8490 is still pending ownership audit; this migration does not establish overlap-flag parity.",
+    "Multi creation, repainting, owners and removal use separate existing paths and remain under audit."
+  ],
+  "bridge_sha256": "8c9d56f6f45611e0b8c839dc24b0f22b1e08522ecc8bf6287d980e54ca52e649",
+  "verification": [
+    {
+      "path": "build/areas-acceptance-20261025-201208",
+      "owned_df_pid": 118160,
+      "closed_unsaved": true,
+      "status": "passed",
+      "scope": "18 types: creation/defaults/unique registration/reciprocal membership/removal; seven range cases; explicit nonempty furniture membership.",
+      "observations": 90,
+      "evidence_sha256": {
+        "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+        "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+        "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+        "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
+      }
+    },
+    {
+      "path": "build/areas-acceptance-20261025-201315",
+      "owned_df_pid": 117532,
+      "closed_unsaved": true,
+      "status": "passed_with_known_issues",
+      "scope": "Main-scene gathering zone creation, three settings off/on, removal; rendered creation capture inspected.",
+      "observations": 11,
+      "evidence_sha256": {
+        "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+        "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+        "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+        "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
+      }
+    }
+  ]
+}

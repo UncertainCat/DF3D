@@ -32,7 +32,7 @@ bool nativeZoneDefaultsReady() {
     return compatible;
 }
 bool nativeZoneDefaults(df::building_civzonest& zone) {
-    if(!nativeZoneDefaultsReady() || zone.id!=-1)return false;
+    if(!nativeZoneDefaultsReady())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     // DF53.16 creation calls this leaf at356f16/357765. All branches write
     // only the supplied type and settings union; no globals, calls or scratch.
@@ -72,6 +72,41 @@ bool nativeZoneDefaults(df::building_civzonest& zone) {
             else {range.dir_x=0;range.dir_y=dy<0?1:-1;}
         }
     }
+    return true;
+}
+bool nativeZoneCreateReady() {
+    if(!nativeZoneDefaultsReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=
+        hash(base+0x28b650,0x23)==0x1bc97f28bb55040dULL &&
+        hash(base+0x28b710,0xb2)==0x0a9c60d382679201ULL &&
+        hash(base+0x54bb60,0x110)==0xad02785ff295fa9bULL &&
+        hash(base+0x577040,0x3500)==0x758911d1932d14dbULL &&
+        hash(base+0x57fc70,0xcb)==0x9c1f8dc48a9760b0ULL &&
+        hash(base+0x558550,0x13b)==0x60e1b99a5ab1f65dULL &&
+        hash(base+0x558690,0x111)==0x36b85ab14744745bULL &&
+        hash(base+0x558830,0xfa)==0xc5a7534fb1c71db4ULL;
+    return compatible;
+}
+df::building_civzonest* nativeZoneAllocate() {
+    if(!df::global::world || !nativeZoneCreateReady())return nullptr;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Allocate=df::building_civzonest* (*)();
+    return reinterpret_cast<Allocate>(base+0x28b650)();
+}
+bool nativeZoneComplete(df::building_civzonest& zone) {
+    if(!df::global::world || !nativeZoneCreateReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Complete=void (*)(df::building*,bool);
+    using Relationships=void (*)(df::building*);
+    // Native357948..3579a4: completion, categorization, relationship refresh.
+    // The relationship routines use semantic world lists and supplied extents.
+    // In particular558830 tests candidate x1/y1, not the DFHack center heuristic.
+    reinterpret_cast<Complete>(base+0x577040)(&zone,true);
+    zone.categorize(true);
+    reinterpret_cast<Relationships>(base+0x558550)(&zone);
+    reinterpret_cast<Relationships>(base+0x558690)(&zone);
+    reinterpret_cast<Relationships>(base+0x558830)(&zone);
     return true;
 }
 }

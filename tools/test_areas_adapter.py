@@ -2596,13 +2596,13 @@ def main():
     lua.execute("native_range_x=nil")
     owner = settings_adapter(create_request(kind=1, zone_type=0, owner_id=20, active=0))
     assert owner["ok"] and owner["areas"][1]["owner_id"] == 20 and not owner["areas"][1]["active"]
-    lua.execute("force_notification_error=true")
+    lua.execute("fail_owner=true")
     expected_id = lua.globals().next_area_id
     failed_settings = settings_adapter(create_request(kind=1, zone_type=0))
     assert failed_settings["message"].startswith("Invalid new area settings; new area removed: ")
-    assert failed_settings["message"].endswith("fixture notification failure")
+    assert failed_settings["message"].endswith("owner fixture exception")
     assert lua.globals().df.building.find(expected_id) is None
-    lua.execute("force_notification_error=false")
+    lua.execute("fail_owner=false")
     def create_paint(spans, **extra):
         data = {"operation": 5, "id": -1, "paint_mode": 1, "paint_z": 1,
                 "spans": lua.table_from([lua.table_from(span) for span in spans]), **extra}

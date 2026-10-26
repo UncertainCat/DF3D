@@ -1058,7 +1058,7 @@ local function native_operation(r)
     -- Preserve them here; only apply explicit request fields.
     b.spec_sub_flag.active=default(a,'active',-1)~=0
     if not B.setOwner(b,new_owner) then error('Native owner assignment failed',0) end
-    B.notifyCivzoneModified(b)
+    -- Native creation already established room membership.
    end
   end)
   if not initialized then

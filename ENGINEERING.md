@@ -1,3 +1,46 @@
+## Native single-zone allocation and registration
+
+Single-zone creation uses DF's factory0x28b650, completion0x577040,
+categorization0x57fc70 and reciprocal room-membership routines0x558550,
+0x558690 and0x558830. Complete function ranges and immutable dispatch tables
+are pinned to DF53.16. The factory's base constructor0x54bb60 assigns an ID
+and inserts the building into world.all immediately. Extents, bounds, numbering
+and presentation refresh storage are therefore prepared before entering it.
+After entry DF owns the pointer; exceptions or lost results are potentially
+partial mutations, never permission to replay or delete an apparently local
+object. This replaces DFHack allocInstance/setSize/constructAbstract for the
+single-zone route. Lua no longer rebuilds membership after native creation.
+
+Native membership tests each eligible building's x1/y1 and supplied zone
+extents; DFHack's prior helper used the building center. The bridge calls the
+native routines rather than preserving that separate interpretation. Geometry,
+race, active state and max-existing-zone-number+1 follow native creation's
+inline inputs. Native initial settings and range direction are applied to the
+new zone at the same safe point. No native input handler is called and native
+menu state is not consulted.
+
+Offline `build/qa/zone-native-publication-ready` passes root CTest19/19 and
+Lua adapter checks, including post-creation owner failure cleanup. The initial
+adapter run failed because its error injection still targeted the removed
+notification; the corrected run exercises the remaining owner call. The MSVC
+bridge builds successfully. Protected `build/areas-acceptance-20261025-201208`
+passes90 native observations, including all18 zone types, unique registrations,
+reciprocal membership, removal and a required nonempty furniture membership.
+Owned DF118160 closes unsaved; both save manifests match and diagnostics are
+clean. `-ZoneDefaultsOnly` includes these publication checks.
+
+Main-scene `build/areas-acceptance-20261025-201315` passes11 native observations
+for gathering-zone creation, all three settings off/on and removal. The created
+zone capture was inspected. Owned DF117532 closes unsaved and both manifests
+match; only the known Godot separate-thread notice remains. This is focused
+creation acceptance, not complete Zones acceptance.
+
+This does not yet migrate native overlap-flag recomputation0xac8490, whose
+map-cost scratch needs a separate ownership audit. Multi creation, repainting,
+owner assignment and removal remain distinct routes under audit. Zones remains
+staged. `fixtures/areas/native_zone_publication.json` retains the native entry
+identities, ownership boundary and verification limits.
+
 ## Native initial Archery Range direction
 
 Single-zone creation derives initial range direction from DF's actual extent
@@ -34,7 +77,7 @@ complete Zones acceptance remain open.
 ## Native zone creation defaults
 
 Single-zone creation calls DF53.16's initializer at0x30f550 with the new,
-unpublished zone and its selected type. The complete leaf writes only that
+new zone and its selected type. The complete leaf writes only that
 zone's type/settings; it has no global reads, calls or scratch dependencies.
 The executable identity and complete leaf bytes are checked before allocation.
 The inline native creation effects at0x3579af..0x357a2f are also pinned:
@@ -61,9 +104,9 @@ This focused scope bypasses unrelated tests; the earlier broad195640 run failed
 its legacy wood-list oracle before reaching Zones and is not a passing result.
 The broader harness oracle still needs reconciliation with the native provider.
 
-This migrates defaults only. Single-zone allocation/publication still uses
-DFHack helpers; Multi is separate. Initial Archery Range direction is covered
-below. Owner assignment and membership notification remain under audit. Zones remains
+The defaults evidence is a focused baseline. Single-zone allocation and
+registration now use the native path described above; Multi is separate.
+Owner assignment, repainting and full overlap effects remain under audit. Zones remains
 staged until the complete workflow is verified.
 
 ## Zone gathering settings contract

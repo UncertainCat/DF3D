@@ -334,6 +334,7 @@ func created_zone_defaults() -> void:
 		if not check(made.areas.size() == 1, "new zone absent"): return
 		var area: Dictionary = made.areas[0]
 		await native("snapshot", {"id":int(area.id), "expected":{"zone_type":int(choice.id), "active":true, "tile_count":4}})
+		await native("zone_publication", {"id":int(area.id)})
 		var defaults: Dictionary = {"Pen":{"check_occupants":true}, "Pond":{"pond_mode":1,"check_occupants":true}, "ArcheryRange":{"facing":2},
 			"Tomb":{"tomb_citizens":1, "tomb_pets":0}, "PlantGathering":{"gather_trees":1, "gather_shrubs":1, "gather_fallen":1}}
 		if defaults.has(choice.name): await native("zone_settings", {"id":int(area.id), "expected":defaults[choice.name]})
@@ -367,6 +368,24 @@ func created_archery_directions() -> void:
 		await native("removed", {"id":int(area.id)})
 		await native("archery_clear")
 		if stopped: return
+
+func created_zone_membership() -> void:
+	step = "native zone membership"
+	var site := await native("zone_membership_site")
+	if stopped: return
+	var catalog := await request({"action":7})
+	if stopped: return
+	var kind := -1
+	for choice in catalog.choices:
+		if choice.name == "MeetingHall": kind = int(choice.id)
+	if not check(kind >= 0,"missing meeting area type"): return
+	var made := await request({"action":10,"kind":1,"zone_type":kind,
+		"origin":Vector3i(int(site.x),int(site.y),int(site.z)),"width":1,"height":1})
+	if stopped: return
+	var area: Dictionary = made.areas[0]
+	await native("zone_publication", {"id":int(area.id),"member_id":int(site.member_id)})
+	await request({"action":12,"kind":1,"id":int(area.id),"expected_revision":area.revision})
+	await native("removed", {"id":int(area.id)})
 
 func wait_ticks() -> void:
 	step = "simulation after edits"
@@ -460,6 +479,7 @@ func exercise() -> void:
 	if FileAccess.file_exists(directory + "/zone-defaults-only.json"):
 		await created_zone_defaults()
 		if not stopped: await created_archery_directions()
+		if not stopped: await created_zone_membership()
 		return
 	for key in fixture.missing:
 		incomplete(str(key) + ": " + str(fixture.missing[key]))

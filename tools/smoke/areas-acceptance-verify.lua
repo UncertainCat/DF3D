@@ -136,7 +136,38 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='archery_prepare' then
+if request.op=='zone_membership_site' then
+ for _,candidate in ipairs(df.global.world.buildings.other.IN_PLAY)do
+  if candidate:canMakeRoom() then
+   local flags=dfhack.maps.getTileFlags(candidate.x1,candidate.y1,candidate.z)
+   if flags and not flags.hidden then
+    result.x=candidate.x1;result.y=candidate.y1;result.z=candidate.z;result.member_id=candidate.id;break
+   end
+  end
+ end
+ assert(result.member_id,'no visible room-defining building')
+elseif request.op=='zone_publication' then
+ local b=building()
+ local function occurrences(values,want)
+  local n=0;for _,v in ipairs(values)do if v==want then n=n+1 end end;return n
+ end
+ for _,values in ipairs{df.global.world.buildings.all,df.global.world.buildings.other.IN_PLAY,df.global.world.buildings.other.ANY_ZONE}do
+  assert(occurrences(values,b)==1,'zone registration missing or duplicated')
+ end
+ assert(b.flags.exists and b.spec_sub_flag.active and b.race==df.global.plotinfo.race_id)
+ assert(b.zone_num>0 and b.id<df.global.building_next_id)
+ assert(b.centerx==(b.x1+b.x2)//2 and b.centery==(b.y1+b.y2)//2,'zone center differs')
+ local expected=0
+ for _,candidate in ipairs(df.global.world.buildings.other.IN_PLAY)do
+  local included=candidate~=b and candidate:canMakeRoom() and candidate.z==b.z and B.containsTile(b,candidate.x1,candidate.y1)
+  assert(occurrences(b.contained_buildings,candidate)==(included and 1 or 0),'zone membership differs')
+  assert(occurrences(candidate.relations,b)==(included and 1 or 0),'reciprocal room membership differs')
+  if included then expected=expected+1 end
+ end
+ assert(#b.contained_buildings==expected,'unexpected zone member')
+ if request.member_id then assert(occurrences(b.contained_buildings,df.building.find(request.member_id))==1,'required room member absent') end
+ result.members=expected;result.id=b.id;result.zone_num=b.zone_num
+elseif request.op=='archery_prepare' then
  assert(not _G.df3d_archery_target,'previous target fixture still active')
  local p=request.target
  local target=df.building_archerytargetst:new()

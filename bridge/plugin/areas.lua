@@ -96,6 +96,8 @@ local function validate_operation(r,a)
    type(default(a,'give',true))~='boolean' then return 'invalid stockpile link target request' end
  end
  if a.query_bytes~=nil and (type(a.query_bytes)~='string' or #a.query_bytes>33 or r.action~=14 or op~=14 or a.kind~=1 or a.candidate_kind~=1 or default(a,'query','')~='') then return 'invalid owner query bytes' end
+ local limit=default(a,'candidate_limit',0)
+ if not integer(limit) or limit<0 or limit>128 or (limit~=0 and (r.action~=14 or op~=14 or a.kind~=1 or a.candidate_kind~=1)) then return 'invalid owner candidate limit' end
  for _,key in ipairs{'list_key','row_key','name','query'} do
   local v=default(a,key,'');local cap=(key=='name' and 512) or (key=='query' and 128) or 64
   if type(v)~='string' or #v>cap then return key=='name' and 'area name too long' or 'area key too long' end
@@ -892,6 +894,7 @@ local function candidate_page(r,a,b,area_revision,available)
  if expected~=0 and expected~=job.revision then return fail('List changed; refresh'),0 end
  out.message=locations and 'Observed area locations' or links and 'Observed area links' or 'Observed area candidates';out.list_revision=job.revision
  local rows={};local cursor=default(a,'cursor',0);local used=0;local page_bytes=1024
+ local limit=default(a,'candidate_limit',0);if limit==0 then limit=128 end
  -- New operations use an ordinal cursor so every native/name/category order
  -- paginates correctly. Legacy candidates retain their committed ID cursor.
  local first=cursor+1
@@ -907,7 +910,7 @@ local function candidate_page(r,a,b,area_revision,available)
  if first<=#job.rows and used==available then return fail('Area page exceeds remaining step budget'),used end
  for index=first,#job.rows do
   local row=job.rows[index]
-  if not legacy and (#rows==128 or used==available) then out.next_cursor=index-1;break end
+  if not legacy and (#rows==limit or used==available) then out.next_cursor=index-1;break end
   if job.native_owner then
    -- The open native picker retains ordering/filter membership but renders live
    -- unit facts. Cache IDs/order keys, not per-unit portrait recipe snapshots.

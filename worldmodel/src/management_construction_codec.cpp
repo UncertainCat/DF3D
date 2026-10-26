@@ -239,6 +239,7 @@ flatbuffers::Offset<m::AreaRequest> encodeArea(flatbuffers::FlatBufferBuilder& b
   r.add_location_site_id(a.locationSiteId);r.add_occupation_id(a.occupationId);
   r.add_category_opening(a.categoryOpening);
   r.add_query_bytes(queryBytes);
+  r.add_candidate_limit(a.candidateLimit);
   return r.Finish();
 }
 }  // namespace wm::detail::management

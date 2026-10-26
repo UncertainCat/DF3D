@@ -2328,6 +2328,7 @@ void run(color_ostream& out) {
     field(L,"links_only",a->links_only());field(L,"active",a->active());field(L,"owner_id",a->owner_id());
     field(L,"link_id",a->link_id());field(L,"give",a->give());field(L,"unlink",a->unlink());
     field(L,"query",a->query()?a->query()->str():"");field(L,"cursor",a->cursor());
+    field(L,"candidate_limit",a->candidate_limit());
     if(const auto* bytes=a->query_bytes()) {
       lua_pushlstring(L,reinterpret_cast<const char*>(bytes->data()),bytes->size());lua_setfield(L,-2,"query_bytes");
     }

@@ -495,6 +495,17 @@ func zone_owner_effects() -> void:
 	if not check(str(fact_current.candidates[0].owner_display.first_line).contains("OwnerFactsChanged"),"retained owner page returned stale native display"):return
 	write_json("owner-current-facts.json",{"id":int(owners.owner_a),"revision":int(fact_current.list_revision),"before":fact_initial.candidates[0].owner_display.first_line,"after":fact_current.candidates[0].owner_display.first_line,"membership_retained":true})
 	await native("owner_fact_restore")
+	var bounded_query := {"action":14,"operation":14,"kind":1,"id":ids[0],"candidate_kind":1}
+	var unbounded := await pages(bounded_query,"candidates")
+	if stopped:return
+	bounded_query.expected_list_revision=int(unbounded.list_revision)
+	bounded_query.candidate_limit=18;bounded_query.cursor=5
+	var bounded := await request(bounded_query)
+	if stopped:return
+	if not check(bounded.candidates.size()==18 and int(bounded.next_cursor)==23 and int(bounded.list_revision)==int(unbounded.list_revision),"owner fact page limit changed receipt or cursor"):return
+	for index in 18:
+		if not check(int(bounded.candidates[index].id)==int(unbounded.candidates[index+5].id),"owner fact page limit changed order"):return
+	write_json("owner-bounded-facts.json",{"count":bounded.candidates.size(),"cursor":5,"next_cursor":bounded.next_cursor,"revision":str(bounded.list_revision)})
 	# Native reference: assign, replace, transfer, clear bedroom, clear empty bedroom.
 	for sample in [[ids[0],int(owners.owner_a),3,1,0],[ids[0],int(owners.owner_b),3,0,1],
 		[ids[1],int(owners.owner_b),3,0,1],[ids[2],-1,-1,0,0],[ids[2],-1,-1,0,0]]:

@@ -18,8 +18,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 66;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v66";
+inline constexpr uint32_t kManagementVersion = 67;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v67";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -42,6 +42,9 @@ inline bool validAreaZoneSettings(const AreaZoneSettings* z) {
 // Keep this order in the Lua dispatcher too: selector, matrix, kind, legacy
 // ownership, new-field ownership/requirements, identities, then bounded sizes.
 inline std::optional<std::string> validateAreaOperation(ManagementAction action, const AreaRequest& a) {
+  if(a.candidate_limit() && (a.candidate_limit()>128 || action!=ManagementAction::AreaCandidates ||
+      a.operation()!=AreaOperation::CandidateList || a.kind()!=AreaKind::Zone || a.id()<0 || a.candidate_kind()!=1))
+    return "invalid owner candidate limit";
   if(const auto* bytes=a.query_bytes()) {
     if(action!=ManagementAction::AreaCandidates || a.operation()!=AreaOperation::CandidateList ||
        a.kind()!=AreaKind::Zone || a.id()<0 || a.candidate_kind()!=1 || bytes->size()>33 ||

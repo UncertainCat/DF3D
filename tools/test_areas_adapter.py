@@ -642,6 +642,18 @@ def main():
     assert owners["candidates"][1]["profession"] == "Native profession"
     # Building the full 260-ID snapshot must not retain 260 portrait recipes.
     assert lua.globals().owner_display_calls == 128
+    for limit in (1, 18, 128):
+        lua.execute("owner_display_calls=0")
+        bounded = call(14, dict(selector, candidate_limit=limit, cursor=5,
+                                expected_list_revision=owners["list_revision"]))
+        assert bounded["ok"] and len(bounded["candidates"]) == limit
+        assert bounded["list_revision"] == owners["list_revision"]
+        assert bounded["next_cursor"] == 5 + limit
+        assert lua.globals().owner_display_calls == limit
+        assert [r["id"] for r in bounded["candidates"].values()] == list(range(6, 6 + limit))
+    for limit in (-1, 129, 1.5, "18"):
+        assert not call(14, dict(selector, candidate_limit=limit))["ok"]
+    assert not call(14, dict(selector, candidate_limit=18, candidate_kind=2))["ok"]
     lua.execute("saved_live_display=owner_display;function owner_display(b,u)local d=saved_live_display(b,u);d.first_line='Changed while open';d.name='Changed native name';return d end")
     refreshed = call(14, dict(selector, expected_list_revision=owners["list_revision"]))
     assert refreshed["ok"] and refreshed["list_revision"] == owners["list_revision"]

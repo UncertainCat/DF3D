@@ -82,6 +82,7 @@ struct AreaRequest {
   int32_t locationSiteId=-1,occupationId=-1;
   bool categoryOpening=false;
   std::optional<std::vector<uint8_t>> queryBytes;
+  uint16_t candidateLimit=0;
 };
 struct AreaInfo {
   int32_t id=-1,x=0,y=0,z=0;

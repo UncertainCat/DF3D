@@ -2626,6 +2626,24 @@ TEST_CASE("owner candidate appearance is optional scoped bounded and lossless") 
   }
 }
 
+TEST_CASE("owner fact page limits are scoped and bounded") {
+  for(int mode=0;mode<8;++mode) {
+    CAPTURE(mode);
+    wm::ManagementRequest request;request.action=wm::ManagementAction::AreaCandidates;
+    auto& a=request.area;a.operation=wm::AreaOperation::CandidateList;
+    a.kind=wm::AreaKind::Zone;a.id=7;a.candidateKind=1;
+    a.candidateLimit=mode==0?0:mode==1?18:mode==2?128:mode==3?129:18;
+    if(mode==4)a.candidateKind=2;
+    if(mode==5)a.operation=wm::AreaOperation::None;
+    if(mode==6)a.id=-1;
+    if(mode==7)a.kind=wm::AreaKind::Stockpile;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* r=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(r->area()->candidate_limit()==a.candidateLimit);
+    CHECK(bool(wire::validateConstructionRequest(*r))==(mode>=3));
+  }
+}
+
 TEST_CASE("owner raw query transport preserves absence empty and partial UTF-8") {
   for(int mode=0;mode<10;++mode) {
     CAPTURE(mode);

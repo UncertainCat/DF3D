@@ -458,7 +458,23 @@ wrong receipts and rejected pages do not renew it. Time rewind invalidates the
 lease, and the existing eight-list LRU and epoch/mutation invalidations remain.
 Other selector caches retain their fixed build-age lifetime. Full pages stop
 before obtaining an unnecessary extra native display/portrait. Viewer recipe
-retention and refresh payload size still need review before acceptance.
+retention still needs review before acceptance.
+
+Management67 adds AreaRequest.candidate_limit for scoped owner CandidateList
+reads: zero preserves128-row pagination,1..128 bounds the returned slice. Other
+actions/selectors reject a nonzero limit. The limit does not enter the list cache
+key or alter membership/order; next_cursor remains an ordinal in the same list.
+Existing payload caps can shorten a page further. Request/response defaults and
+the shared region are version67; plugin and viewer must be updated together.
+No new facts are synthesized for old records with an absent limit.
+
+owner-page-limit-final passes core19/19, area engine tests and adapter coverage
+for1/18/128 rows, exact native display call counts, slices and invalid requests.
+Protected semantic062543 returns18 rows from ordinal5 with next_cursor23 and
+receipt4766829637057012013, matching the full native candidate list's IDs. The
+same run covers native owner effects and refresh. DF107164 closes unsaved, both
+save manifests match and diagnostics are empty. Plugin SHA256 is
+8bc72296018e6a44d8eaa67898f598e825920781f59821755f556da374f088a2.
 
 owner-read-lease passes core19/19 and adapter checks for renewal beyond build
 age, inclusive expiry boundary, invalid receipt, rewind and exactly128 native

@@ -389,7 +389,7 @@ bool validateAreaShape(const Dictionary& data, String& error) {
                                   "expected_list_revision", "scope", "value", "preset", "paint_mode", "paint_z",
                                   "location_id", "location_kind", "profession", "deity_kind", "deity_id",
                                   "unit_id", "assign", "squad_id", "squad_use", "organic", "inorganic", "candidate_kind", "sort",
-                                  "room_furniture", "interaction_id", "undo_token", "count_generation", "location_site_id", "occupation_id"},
+                                  "room_furniture", "interaction_id", "undo_token", "count_generation", "location_site_id", "occupation_id", "candidate_limit"},
                                  error) ||
       !managementRequiredFields(data, error))
     return false;
@@ -494,6 +494,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
     for(int64_t i=0;i<bytes.size();++i)a.queryBytes->push_back(bytes[i]);
   }
   a.categoryOpening=data.get("category_opening",false);
+  a.candidateLimit=uint16_t(n("candidate_limit",0,0,128));
   a.query=text("query",128);a.listKey=text("list_key",64);a.rowKey=text("row_key",64);a.name=text("name",512);
   a.scope=uint8_t(n("scope",0,0,4));a.value=uint8_t(n("value",0,0,a.operation==wm::AreaOperation::LocationAccess?3:2));a.preset=uint8_t(n("preset",0,0,19));
   a.paintMode=uint8_t(n("paint_mode",0,0,2));a.paintZ=int16_t(n("paint_z",-1,-1,INT16_MAX));

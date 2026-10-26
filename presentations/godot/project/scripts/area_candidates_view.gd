@@ -110,15 +110,19 @@ func refresh() -> void:
 		for row in state.rows:
 			if state.kind == 3:
 				add_squad(row); continue
-			var label := str(row.get("name",""))
-			if not str(row.get("profession","")).is_empty(): label += ("\n" if state.kind == 2 else ", ") + str(row.profession)
-			if int(row.get("sex",-1)) in [0,1]: label += ", " + ("♀" if int(row.sex) == 0 else "♂")
-			if state.kind == 2 and bool(row.get("grazer",false)): label += "\nGrazer: requires pasture"
+			var label := ""
+			if state.kind == 2:
+				label = str(row.get("name",""))
+				if not str(row.get("profession","")).is_empty(): label += "\n" + str(row.profession)
+				if int(row.get("sex",-1)) in [0,1]: label += ", " + ("♀" if int(row.sex) == 0 else "♂")
+				if bool(row.get("grazer",false)): label += "\nGrazer: requires pasture"
 			var button := row_button(label); button.clip_text = true; button.tooltip_text = label
 			button.pressed.connect(func():
 				if state.kind == 2: state.toggle_animal(int(row.id))
 				else: state.assign_owner(int(row.id)))
 			rows_box.add_child(button); choices.append(button)
+			if state.kind == 1 and row.get("owner_display") is Dictionary:
+				add_owner_text(button,row.owner_display)
 			var frame := Panel.new(); frame.position = Vector2.ZERO; frame.size = Vector2(32,36)
 			var picture := art.make_style("BUTTON_PICTURE_BOX",8)
 			picture.set_texture_margin(SIDE_TOP,12); picture.set_texture_margin(SIDE_BOTTOM,12)
@@ -157,6 +161,16 @@ func refresh() -> void:
 		button.modulate = Color(0.5,0.5,0.5) if button.disabled else Color.WHITE
 	# A short bridge page must not strand the cursor below an absent scrollbar.
 	if not state.busy() and state.cursor != 0 and state.rows.size() < 16: state.call_deferred("more")
+
+func add_owner_text(button: Button, display: Dictionary) -> void:
+	# Native status occupies the first cell row; the two name lines follow it.
+	# Absent records stay unknown, and native shortening is never repeated here.
+	for index in 3:
+		var line := Label.new(); line.name = ["OwnerStatus","OwnerFirst","OwnerSecond"][index]
+		line.text = str(display.get(["status","first_line","second_line"][index],""))
+		line.add_theme_font_size_override("font_size",12); line.clip_text = true
+		line.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(line)
+		line.position = Vector2(40,index*12); line.size = Vector2(int(display.columns)*8,12)
 
 func add_squad(row: Dictionary) -> void:
 	var button := row_button(str(row.get("name","")))

@@ -226,6 +226,14 @@ int main(int argc,char** argv) {
     test(A::AreaCandidates,("return {"+envelope+"candidate_kind=1,sort=4}").c_str(),true,O::CandidateList);
     test(A::AreaCandidates,("return {"+envelope+"candidate_kind=1,sort=5}").c_str(),false,O::CandidateList);
     test(A::AreaCandidates,("return {"+envelope+"candidate_kind=2,sort=4}").c_str(),false,O::CandidateList);
+    const std::string ownerRow="id=21,name='native',profession='native',owner_display=";
+    for(int mode=0;mode<8;++mode) {
+      const auto display=mode==1?"false":std::string("{columns=")+(mode==2?"2":"45")+
+        ",room_value="+(mode==3?"-1":mode==4?"1":"0")+",first_line="+(mode==5?"string.rep('x',385)":"'first'")+
+        ",second_line='second',status="+(mode==6?"'unexpected'":"''")+"}";
+      const auto input="return {"+envelope+"candidate_kind="+(mode==7?"2":"1")+",candidates={{"+ownerRow+display+"}}}";
+      test(A::AreaCandidates,input.c_str(),mode==0,O::CandidateList);
+    }
     test(A::AreaInspect,("return {"+envelope+"steps=513}").c_str(),true,O::None,512);
     test(A::AreaInspect,("return {"+envelope+"steps=512}").c_str(),true,O::None,512);
     test(A::AreaDelete,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,O::None,0);

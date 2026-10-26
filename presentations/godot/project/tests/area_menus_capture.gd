@@ -150,12 +150,24 @@ func run() -> void:
 	controller.zone_menu.controls.owner.pressed.emit(); service.poll()
 	world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":14,"status":2,
 		"area":{"list_revision":95,"build_phase":3,"candidates":[
-			{"id":21,"name":"Urist","profession":"Miner","sex":1,"mood":3},
-			{"id":22,"name":"Domas","profession":"Carpenter","sex":0,"mood":7},
+			{"id":21,"name":"Legacy name must not render","profession":"Legacy profession","sex":1,"mood":3,
+				"owner_display":{"columns":45,"first_line":"Urist, Miner, ♂","second_line":"","status":"Has Quarters","room_value":343}},
+			{"id":22,"name":"Legacy name","profession":"Legacy profession","sex":0,"mood":7,
+				"owner_display":{"columns":45,"first_line":"Domas","second_line":"Carpenter, ♀","status":"","room_value":0}},
 			{"id":23,"name":"Atir","profession":"Manager","sex":-1,"mood":0}]}}
 	service.poll(); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if root.get_texture().get_image().save_png(directory.path_join("controller_zone_owner.png")) != OK: quit(1); return
+	for index in 2:
+		var button: Button = controller.candidates_view.choices[index]
+		var display: Dictionary = controller.candidates_state.rows[index].owner_display
+		if not button.text.is_empty(): push_error("Owner row assembled legacy text"); quit(1); return
+		for line_index in 3:
+			var line: Label = button.get_node(["OwnerStatus","OwnerFirst","OwnerSecond"][line_index])
+			if line.text != display[["status","first_line","second_line"][line_index]] or line.position != Vector2(40,line_index*12) or line.size != Vector2(360,12):
+				push_error("Owner native line text or geometry differs: %s %s %s" % [line.name,line.position,line.size]); quit(1); return
+	if controller.candidates_view.choices[2].has_node("OwnerFirst") or not controller.candidates_view.choices[2].text.is_empty():
+		push_error("Absent owner display was invented"); quit(1); return
 	var header_reference: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_assignment.json"))
 	if not owner_header_pixels(header_reference,"default"): quit(1); return
 	var header_rows: Array = controller.candidates_state.rows.duplicate(true)

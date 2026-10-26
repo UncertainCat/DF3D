@@ -287,7 +287,7 @@ def main():
         for _ in range(10000):
             if not result["ok"] or not result["build_phase"]:
                 return result
-            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts}))
+            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts, "owner_display": lua.globals().owner_display}))
             assert 0 <= stepped["steps"] <= 64 and stepped["active_kinds"] in (0, 128)
             result = raw_call(action, values)
         raise AssertionError("candidate builder did not finish")
@@ -625,6 +625,7 @@ def main():
     """)
     lua.execute("df.global.world.units.all=df.global.world.units.active;function owner_eligible(b,u) return u.native_eligible~=false end")
     lua.execute("function owner_order_facts(b,u) return {without_room=true,priority=0,category=u.id,category_status=0,stress=u.id%7,name_key=string.lower(u.label or '')..string.format('%04d',u.id),profession_key='worker'} end")
+    lua.execute("function owner_display(b,u) return {columns=45,first_line='Native first',second_line='Native second',status='Has Quarters',room_value=343,name='Native name',profession='Native profession'} end")
     selector = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 1, "sort": 1}
     pending = raw_call(14, selector)
     assert pending["ok"] and pending["build_phase"] == 1 and pending["build_done"] == 0
@@ -632,6 +633,10 @@ def main():
     owners = call(14, selector)
     assert owners["ok"] and len(owners["candidates"]) == 128 and owners["next_cursor"] == 128
     assert owners["steps"] <= 1536 and owners["list_revision"] > 0
+    assert owners["candidates"][1]["owner_display"]["first_line"] == "Native first"
+    assert owners["candidates"][1]["owner_display"]["room_value"] == 343
+    assert owners["candidates"][1]["name"] == "Native name"
+    assert owners["candidates"][1]["profession"] == "Native profession"
     next_selector = dict(selector, cursor=128, expected_list_revision=owners["list_revision"])
     owner_page = call(14, next_selector)
     assert owner_page["candidates"][1]["id"] == 129 and owner_page["next_cursor"] == 256

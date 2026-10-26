@@ -1651,7 +1651,7 @@
     "offline": "build/qa/owner-display-readers core19/19 and adapter passed"
   },
   "owner_room_status": {
-    "status": "Native owned-room status reader verified; production row integration pending",
+    "status": "Native room status reader and production text payload verified; full picker incomplete",
     "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-004302",
     "native_result_sha256": "688342f09791b4652d949208160fa4c2f416ec19bd885d06700fbf15b7621e69",
     "owned_df_pid": 119216,
@@ -1804,6 +1804,30 @@
     ],
     "checks": "All three row lines compared byte-for-byte, including absent status; native main_interface/gps guards and initial map path_cost/path_tag arrays unchanged. Actual native dining assignment supplies a nonempty DiningHall case.",
     "offline": "build/qa/owner-room-status-final core19/19 and adapter passed",
-    "remaining": "Production payload and rendered row integration; name colors, portraits, responsiveness, broader value/owner lifecycle cases and full picker acceptance."
+    "remaining": "Name colors, portraits, textbox behavior, variable-width formatting, creation owner validation and full picker lifecycle acceptance."
+  },
+  "owner_display_integration": {
+    "protocol": 63,
+    "native_reader_reference": "owner_room_status and native display-text evidence above",
+    "semantic_evidence": "build/areas-acceptance-20261026-010600",
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "plugin_sha256": "8e425aa5e22c770674ca79a0f5c21855d6aa09e22776f0fd36c2594c13a68b1e",
+    "owned_df_pid": 118016,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "observations": 201,
+    "exact_display_row_counts": [
+      172,
+      172,
+      139
+    ],
+    "columns": 45,
+    "runtime_ownership": "Request-local native readers with semantic unit/zone inputs and owned strings; retained builders contain UTF-8 values only. No UI/search scratch.",
+    "viewer": "Three explicit lines at x40 and y0/12/24, 360x12; absent legacy facts stay unknown. Native header and actual pointer assignment/clear tests preserved.",
+    "offline": [
+      "build/qa/owner-display-integration: core19/19, Lua boundary, adapter and candidate state pass",
+      "build/qa/owner-display-layout: core19/19 and GPU layout pass with three known Godot notices"
+    ],
+    "remaining": "Native row colors/portraits, textbox behavior, variable-width formatting, creation owner validation and full picker lifecycle. Synthetic layout is not full native pixel parity."
   }
 }

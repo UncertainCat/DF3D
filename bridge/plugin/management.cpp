@@ -280,7 +280,8 @@ struct NativeAreaChoice { int32_t id=-1; std::string name,label; };
 std::vector<NativeAreaChoice> areaChoices;
 struct NativeAreaSetting { std::string key,label; int32_t index=-1; uint8_t kind=0,state=0; bool estimated=false; };
 struct NativeAreaLocation { int32_t id=-1; std::string name,religion; uint8_t kind=0; int16_t guildProfession=-1; int32_t locationTier=-1; int32_t siteId=-1; };
-struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; };
+struct NativeOwnerDisplay { uint16_t columns=45; std::string firstLine,secondLine,status; int32_t roomValue=0; };
+struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; };
 struct NativeAreaLink { int32_t id=-1; uint8_t kind=0,direction=0; std::string name; };
 struct NativeAreaPage {
   m::LocationEntryOutcome locationEntryOutcome=m::LocationEntryOutcome::None;
@@ -397,7 +398,11 @@ void publish() {
   std::vector<flatbuffers::Offset<m::AreaLinkRow>> links;
   for(const auto& v:areaPage.settings)settings.push_back(m::CreateAreaSettingRow(b,b.CreateString(v.key),v.index,b.CreateString(v.label),v.kind,v.state,v.estimated));
   for(const auto& v:areaPage.locations)locations.push_back(m::CreateAreaLocationRow(b,v.id,b.CreateString(v.name),v.kind,b.CreateString(v.religion),v.guildProfession,v.locationTier,v.siteId));
-  for(const auto& v:areaPage.candidates)candidates.push_back(m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse));
+  for(const auto& v:areaPage.candidates) {
+    flatbuffers::Offset<m::AreaOwnerDisplay> display;
+    if(v.ownerDisplay) {const auto& d=*v.ownerDisplay;display=m::CreateAreaOwnerDisplay(b,d.columns,b.CreateString(d.firstLine),b.CreateString(d.secondLine),b.CreateString(d.status),d.roomValue);}
+    candidates.push_back(m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse,display));
+  }
   for(const auto& v:areaPage.links)links.push_back(m::CreateAreaLinkRow(b,v.id,m::AreaKind(v.kind),v.direction,b.CreateString(v.name)));
   flatbuffers::Offset<m::LocationCatalog> locationCatalog;
   if(areaPage.religions || areaPage.guilds) {
@@ -1339,6 +1344,21 @@ int areaOwnerOrderFacts(lua_State* L) {
   field(L,"category",facts->category);field(L,"category_status",facts->categoryStatus);field(L,"stress",facts->stress);
   lua_pushlstring(L,facts->nameKey.data(),facts->nameKey.size());lua_setfield(L,-2,"name_key");
   lua_pushlstring(L,facts->professionKey.data(),facts->professionKey.size());lua_setfield(L,-2,"profession_key");return 1;
+}
+int areaOwnerDisplay(lua_State* L) {
+  auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
+  auto* unit=Lua::GetDFObject<df::unit>(L,2);
+  std::optional<df3d_area::ZoneOwnerDisplayText> text;
+  std::optional<df3d_area::ZoneOwnerRoomStatus> status;
+  if(zone && unit) {
+    try {text=df3d_area::nativeZoneOwnerDisplayText(*unit,45);status=df3d_area::nativeZoneOwnerRoomStatus(*zone,*unit);} catch(...) {}
+  }
+  if(!text || !status){lua_pushnil(L);return 1;}
+  // Current owner panel has45 logical columns; scaling preserves those cells.
+  // Retained jobs receive owned UTF-8 values, never callbacks or widget state.
+  lua_newtable(L);field(L,"columns",45);field(L,"room_value",status->value);
+  field(L,"first_line",DF2UTF(text->firstLine));field(L,"second_line",DF2UTF(text->secondLine));
+  field(L,"status",DF2UTF(status->label));field(L,"name",DF2UTF(text->name));field(L,"profession",DF2UTF(text->profession));return 1;
 }
 int areaSetOwner(lua_State* L) {
   bool attempted=false;
@@ -2522,7 +2542,12 @@ void run(color_ostream& out) {
     each("choices",[&](){areaChoices.push_back({int32_t(number(L,"id",-1)),str("name"),str("label")});});
     each("settings",[&](){areaPage.settings.push_back({str("key"),str("label"),int32_t(number(L,"index",-1)),uint8_t(number(L,"kind")),uint8_t(number(L,"state")),boolean(L,"estimated")});});
     each("locations",[&](){areaPage.locations.push_back({int32_t(number(L,"id",-1)),str("name"),str("religion"),uint8_t(number(L,"location_kind")),int16_t(number(L,"guild_profession",-1)),int32_t(number(L,"location_tier",-1)),int32_t(number(L,"site_id",-1))});});
-    each("candidates",[&](){areaPage.candidates.push_back({int32_t(number(L,"id",-1)),str("name"),str("profession"),int8_t(number(L,"sex",-1)),int8_t(number(L,"squad_use",-1)),uint8_t(number(L,"mood")),boolean(L,"grazer"),boolean(L,"assigned")});});
+    each("candidates",[&](){
+      NativeAreaCandidate row{int32_t(number(L,"id",-1)),str("name"),str("profession"),int8_t(number(L,"sex",-1)),int8_t(number(L,"squad_use",-1)),uint8_t(number(L,"mood")),boolean(L,"grazer"),boolean(L,"assigned")};
+      lua_getfield(L,-1,"owner_display");
+      if(lua_istable(L,-1))row.ownerDisplay=NativeOwnerDisplay{uint16_t(number(L,"columns")),str("first_line"),str("second_line"),str("status"),int32_t(number(L,"room_value"))};
+      lua_pop(L,1);areaPage.candidates.push_back(std::move(row));
+    });
     each("links",[&](){areaPage.links.push_back({int32_t(number(L,"id",-1)),uint8_t(number(L,"kind")),uint8_t(number(L,"direction")),str("name")});});
   }
   if(citizenAction(action)) {
@@ -2798,6 +2823,7 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
     if(kind==7){
       lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
       lua_pushcfunction(L,areaOwnerOrderFacts);lua_setfield(L,-2,"owner_order_facts");
+      lua_pushcfunction(L,areaOwnerDisplay);lua_setfield(L,-2,"owner_display");
     }
     if(kind==4){field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());citizenHelperGeneration=helpers.generation();}
     uint32_t used=0;

@@ -211,10 +211,10 @@ preserved their source saves. Final DF128096 closes unsaved; native UI/gps and
 initial path-search guards remain unchanged. MSVC and
 `build/qa/owner-display-readers` core19/19 plus adapter pass.
 
-This is reader acceptance, not completed viewer rendering. Room status is
-verified below. Color routine0x1333bc0 writes global graphics state and must not
-be used as a semantic API. Production wire fields, row layout/color/status/
-portraits, scaling and broader name/profession cases remain unfinished.
+Room status and production text integration are verified below. Color
+routine0x1333bc0 writes global graphics state and must not be used as a semantic
+API. Row color/portraits, scaling and broader name/profession cases remain
+unfinished.
 
 `df3d zone-owner-status-read <zone id> <unit id>` exposes the native owned-room
 value and quality caption. The reference callback0x3a8730 scans matching owned
@@ -234,8 +234,33 @@ before opening a second dining-room picker; its capture was inspected. Empty
 status lines are also checked. Native UI/gps and initial path-search guards
 remain unchanged. DF119216 closes unsaved with source preserved. MSVC and
 `build/qa/owner-room-status-final` core19/19 plus adapter pass. This establishes
-the native status reader, not production payload integration or full picker
-rendering/lifecycle acceptance.
+the native status reader; full picker rendering/lifecycle acceptance remains
+separate from the production text integration below.
+
+Scoped owner candidate builders now call both native readers with request-local
+callbacks and retain only owned UTF-8 values. Native name/profession fields replace
+the reconstructed DFHack labels on this route. The owner display record contains
+DF's shortened lines at45 logical columns and the owned-room status/value.
+Unavailable or malformed native facts fail the list instead of fabricating text.
+Godot renders status at row0 and the two name lines at rows1/2, each8x12 cells;
+it performs no additional name/profession/gender assembly or abbreviation.
+Missing legacy display records remain blank/unknown. Other selectors are unchanged.
+
+`build/qa/owner-display-integration` passes core19/19, Lua-boundary, adapter and
+candidate-state checks. Its initial GPU check exposed Label minimum sizing;
+`build/qa/owner-display-layout` passes core19/19 and corrected three-line geometry,
+native header pixels and pointer assignment/clear checks. The inspected capture
+uses synthetic rows and establishes layout, not native color/portrait parity.
+GPU status is passed_with_known_issues for the three documented Godot notices.
+
+Protected `build/areas-acceptance-20261026-010600` passes201 observations with
+clean diagnostics. All483 returned rows across two Tomb lists and one Bedroom
+list match the verified native text/status readers, including UTF-8 conversion.
+Existing order/filter/assignment/transfer/removal and search-array checks pass.
+Owned DF118016 closes unsaved; both save manifests remain unchanged. The matching
+MSVC bridge builds. Color/portraits, textbox behavior, variable-width formatting,
+creation-time owner validation and full assignment lifecycle remain unfinished;
+Zones/Locations stays staged.
 
 ## Native zone repaint effects
 
@@ -525,7 +550,7 @@ limits are384 UTF-8 bytes per name line and256 for status. A zero room value
 requires empty status; positive values require a status. Other candidate kinds
 must not carry this record. Missing records in older recordings remain unknown,
 not empty native rows. This migration establishes transport only; production
-reader and renderer integration requires separate verification.
+reader and renderer integration is verified in the native owner audit above.
 
 Bridge, model and Godot must be rebuilt together. The current live region is
 `Local\df3d_management_v63`; version62 peers cannot share it. Historical version62
@@ -534,7 +559,7 @@ evidence below describes the earlier overlap migration.
 `build/qa/owner-display-contract-final` passes root CTest19/19 and the Godot
 contract check. Coverage includes native lines through the real engine decoder,
 absent legacy records, invalid widths/value/status/scope and an explicit old
-version. Live producer acceptance remains part of the integration work.
+version. Live producer acceptance is recorded in the native owner audit above.
 
 ## Zone overlap observation contract
 

@@ -243,6 +243,23 @@ elseif request.op=='zone_owner_candidates' then
  for i,row in ipairs(facts)do assert(request.ids[i]==row[1],'native owner order differs at '..i)end
  result.order_exact=true;result.sort=request.sort or 0;result.descending=request.descending or false
  result.count=#expected
+   if request.display_rows then
+    assert(#request.display_rows==#request.ids,'owner display count differs')
+    local function utf(bytes)return dfhack.df2utf(string.char(table.unpack(bytes)))end
+    for i,row in ipairs(request.display_rows)do
+     assert(row.id==request.ids[i],'owner display identity differs')
+     local display=assert(row.owner_display,'native owner display absent')
+     assert(display.columns==45,'owner display columns differ')
+     local lines,lines_code=dfhack.run_command_silent('df3d','zone-owner-text-read',tostring(row.id),'45');assert(lines_code==0,lines)
+     local text=json.decode(lines)
+     local status,status_code=dfhack.run_command_silent('df3d','zone-owner-status-read',tostring(request.id),tostring(row.id));assert(status_code==0,status)
+     local value=json.decode(status)
+     assert(display.first_line==utf(text[4]) and display.second_line==utf(text[5]),'owner display lines differ')
+     assert(display.room_value==value[1] and display.status==utf(value[2]),'owner room status differs')
+     assert(row.name==utf(text[2]) and row.profession==utf(text[3]),'owner native name/profession differs')
+    end
+    result.display_rows_exact=#request.display_rows
+   end
  result.nonliving_or_noncitizen=-1
  for _,id in ipairs(expected)do
   local u=assert(df.unit.find(id))

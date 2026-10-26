@@ -450,7 +450,7 @@ func zone_owner_effects() -> void:
 		if stopped:return
 		var candidate_ids: Array=[]
 		for candidate in candidates.candidates:candidate_ids.append(int(candidate.id))
-		var compared:=await native("zone_owner_candidates",{"id":id,"ids":candidate_ids})
+		var compared:=await native("zone_owner_candidates",{"id":id,"ids":candidate_ids,"display_rows":candidates.candidates})
 		if id==ids[0]:tomb_extra_owner=int(compared.nonliving_or_noncitizen)
 	for id in [ids[0],ids[2]]:
 		for sort in [1,2,3,4]:

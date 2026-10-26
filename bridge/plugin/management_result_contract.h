@@ -134,7 +134,19 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
     if(!array("choices",128,[&](){payload+=4;return table() && number("id",0,INT32_MAX,true) && text("name",512) && text("label",512,false);}))return error;
     if(!array("settings",128,[&](){payload+=7;return table() && text("key",64) && text("label",512) && number("index",-1,INT32_MAX) && number("kind",0,4) && number("state",0,3) && boolean("estimated");}))return error;
     if(!array("locations",128,[&](){payload+=15;return table() && number("id",-1,INT32_MAX,true) && text("name",512) && number("location_kind",0,5) && text("religion",512) && number("guild_profession",-1,511) && number("location_tier",-1,INT32_MAX) && number("site_id",-1,INT32_MAX);}))return error;
-    if(!array("candidates",128,[&](){payload+=9;return table() && number("id",-1,INT32_MAX,true) && text("name",512) && text("profession",512) && number("sex",-1,1) && number("mood",0,7) && boolean("grazer") && boolean("assigned") && number("squad_use",-1,15);}))return error;
+    const auto candidateKind=value("candidate_kind");
+    if(!array("candidates",128,[&](){
+      payload+=9;
+      if(!table() || !number("id",-1,INT32_MAX,true) || !text("name",512) || !text("profession",512) || !number("sex",-1,1) || !number("mood",0,7) || !boolean("grazer") || !boolean("assigned") || !number("squad_use",-1,15))return false;
+      const int top=lua_gettop(L);lua_getfield(L,-1,"owner_display");
+      bool valid=lua_isnil(L,-1);
+      if(!valid && lua_istable(L,-1) && operation==df3d::mirror::AreaOperation::CandidateList && candidateKind==1) {
+        payload+=6;
+        valid=number("columns",3,128,true) && number("room_value",0,INT32_MAX,true) && text("first_line",384) && text("second_line",384) && text("status",256);
+        if(valid) {lua_getfield(L,-1,"status");const auto size=lua_rawlen(L,-1);lua_pop(L,1);valid=(value("room_value")==0)==(size==0);}
+      }
+      lua_settop(L,top);return valid || bad("invalid owner display");
+    }))return error;
     if(!array("links",128,[&](){payload+=6;return table() && number("id",0,INT32_MAX,true) && number("kind",0,2,true) && (value("kind")!=1 || bad("area link kind must be Stockpile or Workshop")) && number("direction",1,2,true) && text("name",512);}))return error;
     const auto count=[&](const char* key){lua_getfield(L,-1,key);const size_t n=lua_istable(L,-1)?lua_rawlen(L,-1):0;lua_pop(L,1);return n;};
     const auto settingsCount=value("settings_count",-1);

@@ -518,7 +518,7 @@ local function location_row(v,site_id)
   guild_profession=k==4 and v.contents.profession or -1,location_tier=k==4 and v.contents.location_tier or -1}
 end
 local function candidate_row(job,v,r)
- local order_facts
+ local order_facts,display
  if job.locations then return location_row(v,job.site_id) end
  if job.legacy and job.kind==0 then return {id=v.id,name=name(v)..' #'..v.id,label=''} end
  if job.candidate_kind==3 then
@@ -538,6 +538,16 @@ local function candidate_row(job,v,r)
   if not eligible then return nil end
   if type(r.owner_order_facts)=='function' then order_facts=r.owner_order_facts(b,v) end
   if not order_facts then job.error='Native area helper unavailable';return nil end
+  if type(r.owner_display)=='function' then display=r.owner_display(b,v) end
+  if type(display)~='table' or display.columns~=45 or type(display.room_value)~='number' or
+   display.room_value<0 or display.room_value%1~=0 or display.room_value>2147483647 or
+   type(display.first_line)~='string' or #display.first_line>384 or
+   type(display.second_line)~='string' or #display.second_line>384 or
+   type(display.status)~='string' or #display.status>256 or
+   ((display.room_value==0)~=(display.status=='')) or
+   type(display.name)~='string' or type(display.profession)~='string' then
+   job.error='Native area helper unavailable';return nil
+  end
   if type(order_facts.name_key)~='string' or #order_facts.name_key>2048 or
    type(order_facts.profession_key)~='string' or #order_facts.profession_key>2048 then
    job.error='Native area helper unavailable';return nil
@@ -548,9 +558,9 @@ local function candidate_row(job,v,r)
    if not U.isCitizen(v) then return nil end
   elseif U.isCitizen(v) or not (U.isTame(v) or v.flags1.caged) then return nil end
  end
- local label=job.candidate_kind==1 and not job.legacy and unit_name(v) or dfhack.df2utf(U.getReadableName(v))
+ local label=display and display.name or job.candidate_kind==1 and not job.legacy and unit_name(v) or dfhack.df2utf(U.getReadableName(v))
  if job.legacy then return {id=v.id,name=label..' #'..v.id,label=''} end
- return {id=v.id,name=label,profession=dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,
+ return {id=v.id,name=label,profession=display and display.profession or dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,owner_display=display,
   mood=U.getStressCategory(v)+1,grazer=job.candidate_kind==2 and U.isGrazer(v) or false,
   assigned=job.candidate_kind==1 and v.id==job.owner_id or job.assigned[v.id]~=nil,squad_use=-1,owner_order=order_facts}
 end

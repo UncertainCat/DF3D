@@ -1330,6 +1330,13 @@ int areaCreate(lua_State* L) {
   lua_newtable(L);field(L,"ok",reason==nullptr);field(L,"message",reason?reason:"");
   field(L,"steps",steps);field(L,"work_unknown",unknownWork);field(L,"building_id",createdId);field(L,"paint_noop",noOp);return 1;
 }
+int areaSquadName(lua_State* L) {
+  auto* squad=Lua::GetDFObject<df::squad>(L,1);
+  std::optional<std::string> text;
+  if(squad){try{text=df3d_area::nativeZoneSquadName(*squad);}catch(...){}}
+  if(!text){lua_pushnil(L);return 1;}
+  const auto utf=DF2UTF(*text);lua_pushlstring(L,utf.data(),utf.size());return 1;
+}
 int areaSquadCandidates(lua_State* L) {
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
   std::optional<std::vector<int32_t>> ids;
@@ -2390,6 +2397,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
     lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
     lua_pushcfunction(L,areaSquadCandidates);lua_setfield(L,-2,"squad_candidates");
+    lua_pushcfunction(L,areaSquadName);lua_setfield(L,-2,"squad_name");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
       lua_pushcfunction(L,areaAnimalItemColor);lua_setfield(L,-2,"animal_item_color");
       lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");
@@ -3050,6 +3058,7 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
     if(kind==7){
       lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
     lua_pushcfunction(L,areaSquadCandidates);lua_setfield(L,-2,"squad_candidates");
+    lua_pushcfunction(L,areaSquadName);lua_setfield(L,-2,"squad_name");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
       lua_pushcfunction(L,areaAnimalItemColor);lua_setfield(L,-2,"animal_item_color");
       lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");

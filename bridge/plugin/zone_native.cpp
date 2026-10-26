@@ -117,6 +117,24 @@ std::optional<std::vector<int32_t>> nativeZoneSquadCandidates() {
     reinterpret_cast<void (*)(Output*)>(base+0x3a3610)(&owned);
     return std::move(owned.ids);
 }
+std::optional<std::string> nativeZoneSquadName(const df::squad& squad) {
+    static_assert(offsetof(df::squad,name)==8);
+    static_assert(offsetof(df::squad,alias)==0x80);
+    if(!df::global::world || !nativeZoneDefaultsReady() || squad.alias.size()>512 ||
+        squad.name.first_name.size()>512 || squad.name.nickname.size()>512)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0xa946e0,0x7c2)==0xdbc3db5f052419eeULL &&
+        hash(base+0xd2cb50,0xf0)==0xf7ab8eceaadda09fULL &&
+        hash(base+0x52d3c0,0x288)==0x6e1fbc2416fba9fcULL;
+    if(!compatible)return std::nullopt;
+    if(!squad.alias.empty())return squad.alias;
+    std::string text;
+    // Native squad renderer3ac41a uses these exact formatter options. The
+    // formatter reads language/name facts and writes only the owned string.
+    reinterpret_cast<void (*)(const df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&squad.name,&text,true,false);
+    if(text.size()>512)return std::nullopt;
+    return text;
+}
 bool nativeZoneSquadAssignmentReady() {
     static_assert(offsetof(df::squad,rooms)==0xf0);
     static_assert(offsetof(df::squad,rack_combat)==0x108);

@@ -2478,5 +2478,149 @@
     "bridge_run": "build/areas-acceptance-20261026-164439",
     "bridge_sha256": "a0688a97a92a3fdd7fa7e21d187b60c47d77c11ffc13c06b9fc62ec5d267c3c4",
     "bridge_result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe"
+  },
+  "name_reference": {
+    "run": "build/stockpile-storage-native-zone-squads-20261026-165506",
+    "scope": "Native rendered short captions match full owned reader bytes; long captions compare first40 bytes, retaining native clipped/overdrawn glyphs. Both pickers, alias/case/CP437/name/nickname probes. Source save unchanged; UI/gps/squad object bytes unchanged around readers. Does not establish Godot clipping or symbols.",
+    "formatter": {
+      "rva": "0xa946e0",
+      "size": "0x7c2",
+      "fnv1a64": "dbc3db5f052419ee",
+      "options": [
+        true,
+        false
+      ]
+    },
+    "helpers": [
+      {
+        "rva": "0xd2cb50",
+        "size": "0xf0",
+        "fnv1a64": "f7ab8eceaadda09f",
+        "purpose": "English lexical raw reader"
+      },
+      {
+        "rva": "0x52d3c0",
+        "size": "0x288",
+        "fnv1a64": "6e1fbc2416fba9fc",
+        "purpose": "Owned string titlecase"
+      }
+    ],
+    "observations": [
+      {
+        "name": "Barracks-name-alias",
+        "zone_type": "95",
+        "id": 120,
+        "caption_df_hex": "537175616420416c696173",
+        "native_glyphs_df_hex": "537175616420416c69617300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "Barracks-name-lowercase",
+        "zone_type": "95",
+        "id": 120,
+        "caption_df_hex": "6c6f77657263617365206775617264",
+        "native_glyphs_df_hex": "6c6f77657263617365206775617264000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "Barracks-name-cp437",
+        "zone_type": "95",
+        "id": 120,
+        "caption_df_hex": "478161726420828494",
+        "native_glyphs_df_hex": "478161726420828494000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "Barracks-name-long",
+        "zone_type": "95",
+        "id": 120,
+        "caption_df_hex": "313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738393031323334353637383930",
+        "native_glyphs_df_hex": "313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435360000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "Barracks-name-first-nickname",
+        "zone_type": "95",
+        "id": 120,
+        "caption_df_hex": "606e69636b6e616d65272074686520476f6c64656e204265616b73",
+        "native_glyphs_df_hex": "606e69636b6e616d65272074686520476f6c64656e204265616b73000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "Barracks-name-restored",
+        "zone_type": "95",
+        "id": 120,
+        "caption_df_hex": "54686520476f6c64656e204265616b73",
+        "native_glyphs_df_hex": "54686520476f6c64656e204265616b730000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-name-alias",
+        "zone_type": "94",
+        "id": 120,
+        "caption_df_hex": "537175616420416c696173",
+        "native_glyphs_df_hex": "537175616420416c69617300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-name-lowercase",
+        "zone_type": "94",
+        "id": 120,
+        "caption_df_hex": "6c6f77657263617365206775617264",
+        "native_glyphs_df_hex": "6c6f77657263617365206775617264000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-name-cp437",
+        "zone_type": "94",
+        "id": 120,
+        "caption_df_hex": "478161726420828494",
+        "native_glyphs_df_hex": "478161726420828494000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-name-long",
+        "zone_type": "94",
+        "id": 120,
+        "caption_df_hex": "313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738393031323334353637383930",
+        "native_glyphs_df_hex": "3132333435363738393031323334353637383930313233343536373839303132333435363738393031323334353637383930312e2e2e000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-name-first-nickname",
+        "zone_type": "94",
+        "id": 120,
+        "caption_df_hex": "606e69636b6e616d65272074686520476f6c64656e204265616b73",
+        "native_glyphs_df_hex": "606e69636b6e616d65272074686520476f6c64656e204265616b73000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      },
+      {
+        "name": "ArcheryRange-name-restored",
+        "zone_type": "94",
+        "id": 120,
+        "caption_df_hex": "54686520476f6c64656e204265616b73",
+        "native_glyphs_df_hex": "54686520476f6c64656e204265616b730000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ui_gps_unchanged": true,
+        "source_unchanged": true
+      }
+    ],
+    "files_sha256": {
+      "result.json": "270b61b231813f3e52466db49f62a48eb8df13160c7bd53b39fc8b4a7630c3b6",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "Barracks-name-long.png": "c6a7617545b59e7b8545b831e62009113f208fcc96aa8817ecc100d341b7a73c",
+      "ArcheryRange-name-cp437.png": "bc57800b015aa3214cbeb4dd71fe76790051175e8e58e6a30ab27adbcae85da4"
+    }
   }
 }

@@ -51,7 +51,7 @@ DF132272 with DF139064; both save manifests remain unchanged. Core19/19,
 adapter and management Lua contract checks pass in
 `build/qa/zone-squad-native-accounting`; the MSVC bridge build passes.
 `native_zone_squads.json.bridge_assignment` retains the fourteen observations.
-Name/artwork sourcing and rendered selector fidelity remain outstanding; this
+Artwork sourcing and rendered selector fidelity remain outstanding; this
 semantic acceptance does not establish a completed squad UI.
 
 Squad membership and ordering now come from native `0x3a3610`, using an owned
@@ -73,6 +73,29 @@ unchanged, including assignments and restart from DF143016 to DF142980.
 Core19/19 and adapter checks pass in `build/qa/zone-squad-native-membership`;
 the MSVC build passes. The compact `candidate_reference` in
 `native_zone_squads.json` retains the producer pin and controlled observations.
+
+Squad captions use the native renderer's alias-or-name path: nonempty aliases
+are copied verbatim; otherwise `0xa946e0(&squad.name, &owned_text, true, false)`
+formats the name. Its full body, lexical reader `0xd2cb50` and titlecase helper
+`0x52d3c0` are pinned. These read semantic names, language raws and nickname
+configuration and write owned text; no selector or drawing cache is consulted.
+The bridge converts DF bytes to UTF-8 and returns the full caption. Missing
+native helpers fail the list instead of falling back to reconstructed names.
+
+Protected `build/stockpile-storage-native-zone-squads-20261026-165506` compares
+the reader with actual glyph rows in both pickers: ordinary names, mixed-case
+and lowercase aliases, CP437 accents, long aliases, and native first-name/
+nickname formatting. Short names match fully; long names match the first forty
+bytes, with the complete native clipped row retained for presentation work.
+Squad object, main-interface and gps bytes remain unchanged across reads.
+The source save is unchanged and DF136056 exits unsaved. Native long Barracks
+names are overdrawn by use controls; Archery retains the ellipsis. These captures
+do not establish Godot clipping parity. The compact `name_reference` fixture
+retains the observations and formatter pins. Core19/19 and adapter checks pass
+in `build/qa/zone-squad-native-names` and its `-adapter` rerun; MSVC passes.
+Full semantic `build/areas-acceptance-20261026-165557` passes cleanly, including
+native caption transport, assignments and restart from DF132716 to DF137780.
+Both source and owned-clone save manifests remain unchanged (1,368 files).
 
 ## Animal keyboard activation and portrait reference
 

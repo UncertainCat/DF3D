@@ -172,7 +172,7 @@ def main():
     function request(action,extra)
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
-     r.animal_status=animal_status;r.animal_container=animal_container;r.animal_restraint=animal_restraint;r.animal_candidates=animal_candidates;r.squad_candidates=squad_candidates;r.animal_item_color=animal_item_color;r.animal_item_text=animal_item_text;r.animal_item_icon=animal_item_icon;r.animal_unit_display=animal_unit_display
+     r.animal_status=animal_status;r.animal_container=animal_container;r.animal_restraint=animal_restraint;r.animal_candidates=animal_candidates;r.squad_candidates=squad_candidates;r.squad_name=squad_name;r.animal_item_color=animal_item_color;r.animal_item_text=animal_item_text;r.animal_item_icon=animal_item_icon;r.animal_unit_display=animal_unit_display
      r.owner_eligible=owner_eligible
      r.new_owner_eligible=function(zone_type,u)return u.new_native_eligible~=false end
      r.owner_order_facts=owner_order_facts;r.owner_display=owner_display
@@ -300,7 +300,7 @@ def main():
         for _ in range(10000):
             if not result["ok"] or not result["build_phase"]:
                 return result
-            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts, "owner_display": lua.globals().owner_display, "animal_unit_display": lua.globals().animal_unit_display, "animal_status": lua.globals().animal_status, "animal_item_icon": lua.globals().animal_item_icon, "animal_item_color": lua.globals().animal_item_color, "animal_item_text": lua.globals().animal_item_text}))
+            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts, "owner_display": lua.globals().owner_display, "squad_name": lua.globals().squad_name, "animal_unit_display": lua.globals().animal_unit_display, "animal_status": lua.globals().animal_status, "animal_item_icon": lua.globals().animal_item_icon, "animal_item_color": lua.globals().animal_item_color, "animal_item_text": lua.globals().animal_item_text}))
             assert 0 <= stepped["steps"] <= 64 and stepped["active_kinds"] in (0, 128)
             result = raw_call(action, values)
         raise AssertionError("candidate builder did not finish")
@@ -878,10 +878,11 @@ def main():
     zone.squad_room_info={{squad_id=20,mode={whole=3}}}
     df.squad={find=function(id)for _,s in ipairs(df.global.world.squads.all)do if s.id==id then return s end end end}
     squad_ids={22,20};squad_candidates=function()return squad_ids end
+    squad_name=function(s)return s.id==22 and "Native Caption" or "Native Guard" end
     """)
     squads = call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 3})
     assert [v["id"] for v in squads["candidates"].values()] == [22, 20]
-    assert squads["candidates"][2]["squad_use"] == 3 and squads["candidates"][1]["name"] == "Translated"
+    assert squads["candidates"][2]["squad_use"] == 3 and squads["candidates"][1]["name"] == "Native Caption"
     native_squads = call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 3, "sort": 1, "sort_descending": True, "query": "missing"})
     assert [v["id"] for v in native_squads["candidates"].values()] == [22, 20]
     lua.execute("squad_ids={20}")
@@ -889,6 +890,10 @@ def main():
     assert len(reopened["candidates"]) == 1 and reopened["list_revision"] != squads["list_revision"]
     lua.execute("squad_ids={999}")
     assert not call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 3})["ok"]
+    # Missing/malformed native names fail rather than falling back to aliases.
+    for name_reader in ["nil", "function()return nil end", "function()return 42 end"]:
+        lua.execute("squad_ids={20};squad_name=" + name_reader)
+        assert not call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 3})["ok"]
     # Jobs from an old epoch cannot continue after an epoch transition.
     adapter(lua.table_from({"step": 1, "builder_kind": 7, "epoch": 2}))
     assert raw_call(14, dict(selector, expected_list_revision=refreshed["list_revision"]))["ok"] is False

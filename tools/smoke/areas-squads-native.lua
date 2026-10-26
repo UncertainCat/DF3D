@@ -34,6 +34,22 @@ local function capture(name,b)
   row.semantic_ids=require('json').decode(text)
   assert(#row.semantic_ids==#row.ids,'native squad count differs')
   for i,id in ipairs(row.ids)do assert(row.semantic_ids[i]==id,'native squad order differs')end
+  row.names={}
+  for i=1,math.min(4,#row.ids)do
+   local squad=assert(df.squad.find(row.ids[i]))
+   local size,address=df.sizeof(squad);local before=df.new('uint8_t',size)
+   dfhack.internal.memmove(before,address,size)
+   local text,code=dfhack.run_command_silent('df3d','zone-squad-name-read',tostring(squad.id));assert(code==0,text)
+   local bytes=require('json').decode(text)
+   assert(dfhack.internal.memcmp(before,address,size)==0,'name reader changed squad')
+   df.delete(before)
+   local rendered={}
+   for x=54,113 do rendered[#rendered+1]=dfhack.screen.readTile(x,9+(i-1)*3).ch end
+   -- Short captions compare in full; long captions retain the native clipped
+   -- glyph row for the independent presentation audit.
+   for n=1,math.min(#bytes,40)do assert(bytes[n]==rendered[n],'native squad name glyph differs: '..name)end
+   row.names[#row.names+1]={id=squad.id,bytes=bytes,rendered=rendered,source_unchanged=true}
+  end
   for _,guard in ipairs(guards)do
    assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'squad reader changed UI/gps')
    df.delete(guard.bytes)
@@ -133,6 +149,18 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
   assert(#observed.ids==#expected,'native entity squad membership differs')
   for i,id in ipairs(expected)do assert(observed.ids[i]==id,'native entity squad ordering differs')end
  end
+ local named=assert(df.squad.find(original[1]))
+ local alias,first,nick=named.alias,named.name.first_name,named.name.nickname
+ for _,case in ipairs{{'alias','Squad Alias'},{'lowercase','lowercase guard'},
+  {'cp437','G'..string.char(129)..'ard '..string.char(130,132,148)},
+  {'long',string.rep('1234567890',6)}}do
+  named.alias=case[2]
+  capture(kind..'-name-'..case[1],b)
+ end
+ named.alias='';named.name.first_name='first';named.name.nickname='nickname'
+ capture(kind..'-name-first-nickname',b)
+ named.alias=alias;named.name.first_name=first;named.name.nickname=nick
+ capture(kind..'-name-restored',b)
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  capture(kind..'-closed',b)
  rack_fixture.finish()

@@ -48,6 +48,7 @@
 #include "df/activity_event_performancest.h"
 #include "df/activity_event_make_believest.h"
 #include "df/soldier_mood_type.h"
+#include "df/squad.h"
 #include "df/unit_soul.h"
 #include "df/misc_trait_type.h"
 #include "df/activity_entry.h"
@@ -2166,6 +2167,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         Json::Value bytes(Json::arrayValue);for(unsigned char byte:*text)bytes.append(int(byte));
         out.print("{}",Json::FastWriter().write(bytes));return CR_OK;
       }
+      if(parameters[0]=="zone-squad-name-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* squad=df::squad::find(id);if(!squad)return CR_FAILURE;
+        const auto text=df3d_area::nativeZoneSquadName(*squad);if(!text)return CR_FAILURE;
+        Json::Value output(Json::arrayValue);for(unsigned char byte:*text)output.append(int(byte));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-squad-candidates-read") {
         if(parameters.size()!=1)return CR_WRONG_USAGE;
         const auto ids=df3d_area::nativeZoneSquadCandidates();
@@ -2473,6 +2484,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d track-material-order-read <sx> <sy> <sz> <tx> <ty> <tz> <tile-limit> (read-only)\n"
         "df3d track-material-candidates-read <sx> <sy> <sz> <tx> <ty> <tz> <candidate-limit> (read-only)\n"
         "df3d room-read <x> <y> <z>\n"
+        "df3d zone-squad-name-read <squad id>\n"
         "df3d zone-squad-candidates-read\n"
         "df3d zone-owner-candidates-read <zone id>\n"
         "df3d zone-new-owner-candidates-read <zone type>\n"

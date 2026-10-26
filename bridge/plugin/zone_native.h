@@ -109,6 +109,8 @@ bool nativeZoneAnimalAssignmentReady();
 bool nativeZoneSquadAssignmentReady();
 // Owned copy of the native fortress squad producer order. No selector reads.
 std::optional<std::vector<int32_t>> nativeZoneSquadCandidates();
+// Full native squad caption in DF encoding, before viewport truncation.
+std::optional<std::string> nativeZoneSquadName(const df::squad& squad);
 // Semantic set converted to DF's XOR toggle using current squad room state.
 // Native owns allocation/free, reciprocal modes and equipment/rack refresh.
 // Call at a safe point; an exception after entry is an unknown outcome.

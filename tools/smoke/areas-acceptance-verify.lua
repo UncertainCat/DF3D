@@ -828,7 +828,8 @@ elseif request.op=='candidates' then
  for _,id in ipairs(json.decode(text))do
   local s=assert(df.squad.find(id))
   local use=0;for _,v in ipairs(b.squad_room_info) do if v.squad_id==s.id then use=v.mode.whole end end
-  rows[#rows+1]={id=s.id,entity=3,name=dfhack.df2utf(s.alias~='' and s.alias or dfhack.translation.translateName(s.name,true)),
+  local name_text,name_code=dfhack.run_command_silent('df3d','zone-squad-name-read',tostring(s.id));assert(name_code==0,name_text)
+  rows[#rows+1]={id=s.id,entity=3,name=dfhack.df2utf(string.char(table.unpack(json.decode(name_text)))),
    profession='',sex=-1,mood=0,grazer=false,assigned=contains(b.squad_room_info,s.id,'squad_id'),squad_use=use}
  end
  assert(canonical(rows)==canonical(request.rows),'candidate values/order differ from native dump')

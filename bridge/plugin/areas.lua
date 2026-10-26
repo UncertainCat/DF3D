@@ -574,8 +574,9 @@ local function candidate_row(job,v,r,refresh_display)
  if job.candidate_kind==3 then
   v=df.squad.find(v)
   if not v then job.error='List changed; refresh';return nil end
-  local label=v.alias~='' and v.alias or dfhack.translation.translateName(v.name,true)
-  return {id=v.id,entity=3,name=dfhack.df2utf(label),profession='',sex=-1,mood=0,grazer=false,
+  local label=type(r.squad_name)=='function' and r.squad_name(v) or nil
+  if type(label)~='string' then job.error='Native area helper unavailable';return nil end
+  return {id=v.id,entity=3,name=label,profession='',sex=-1,mood=0,grazer=false,
    assigned=job.assigned[v.id]~=nil,squad_use=job.assigned[v.id] or 0}
  end
  if job.native_owner then

@@ -159,6 +159,11 @@ AreaState decodeArea(const m::AreaState* a) {
       for(const auto* l:*p->layers())row.sheetIcon->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
         l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
     }
+    if(const auto* d=v->animal_display()) {
+      row.animalDisplay=AreaAnimalDisplay{d->columns(),text(d->first_line()),text(d->second_line()),d->combined_fits(),text(d->warning())};
+      if(const auto* c=d->name_color())row.animalDisplay->nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},
+        {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+    }
     row.entity=AreaCandidateEntity(v->entity());
     out.candidates.push_back(std::move(row));
   }

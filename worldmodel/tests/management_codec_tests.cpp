@@ -24,6 +24,31 @@ TEST_CASE("filtered settings counts preserve unknown legacy data and reject inco
   CHECK(codec::decodeArea(flatbuffers::GetRoot<wire::AreaState>(b.GetBufferPointer())).settingsCount==-1);
 }
 
+TEST_CASE("animal display carries native split facts without inventing legacy data") {
+  for(int mode=0;mode<13;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    flatbuffers::Offset<wire::AreaAnimalDisplay> display;
+    if(mode!=0) {
+      const auto color=mode==8?flatbuffers::Offset<wire::AreaNameColor>{}:wire::CreateAreaNameColor(b,mode==9?8:6,0,0,6,0,0,0);
+      display=wire::CreateAreaAnimalDisplay(b,mode==3?2:27,b.CreateString(mode==10?std::string(385,'x'):""),
+        b.CreateString("Shortened profession"),mode==7,b.CreateString(mode==6?"":"Grazer: requires pasture"),color);
+    }
+    const auto entity=mode==4?wire::AreaCandidateEntity::Item:wire::AreaCandidateEntity::Unit;
+    const auto row=wire::CreateAreaCandidateRow(b,21,0,0,-1,0,mode!=5,false,-1,0,0,entity,display);
+    const auto rows=b.CreateVector(std::vector{row});wire::AreaStateBuilder area(b);
+    area.add_operation(mode==11?wire::AreaOperation::None:wire::AreaOperation::CandidateList);
+    area.add_candidate_kind(mode==2?1:2);area.add_candidates(rows);const auto a=area.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(a);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*state))==(mode>=2 && mode<=11));
+    const auto decoded=codec::decodeArea(state->area());REQUIRE(decoded.candidates.size()==1);
+    const auto& facts=decoded.candidates[0].animalDisplay;CHECK(facts.has_value()==(mode!=0));
+    if(mode==1 || mode==12) {REQUIRE(facts);CHECK(facts->columns==27);CHECK(facts->firstLine.empty());
+      CHECK(facts->secondLine=="Shortened profession");CHECK_FALSE(facts->combinedFits);
+      CHECK(facts->warning=="Grazer: requires pasture");CHECK(facts->nameColor.color[0]==6);}
+  }
+}
+
 TEST_CASE("owner display preserves native lines and unknown legacy rows") {
   for(int mode=0;mode<7;++mode) {
     flatbuffers::FlatBufferBuilder b;

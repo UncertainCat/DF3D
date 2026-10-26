@@ -147,7 +147,27 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
     if(!array("candidates",128,[&](){
       payload+=9;
       if(!table() || !number("id",-1,INT32_MAX,true) || !text("name",512) || !text("profession",512) || !number("sex",-1,1) || !number("mood",0,7) || !boolean("grazer") || !boolean("assigned") || !number("squad_use",-1,15))return false;
-      const int top=lua_gettop(L);lua_getfield(L,-1,"owner_display");
+      const int top=lua_gettop(L);
+      const bool animalUnit=value("entity")==1 && value("id")>=0;lua_getfield(L,-1,"grazer");const bool grazer=lua_toboolean(L,-1);lua_pop(L,1);
+      lua_getfield(L,-1,"animal_display");
+      if(!lua_isnil(L,-1)) {
+        bool valid=table() && operation==df3d::mirror::AreaOperation::CandidateList && candidateKind==2 && animalUnit &&
+          number("columns",3,128,true) && text("first_line",384) && text("second_line",384) && boolean("combined_fits") && text("warning",256);
+        if(valid) {
+          lua_getfield(L,-1,"warning");valid=grazer==(lua_rawlen(L,-1)!=0);lua_pop(L,1);
+          lua_getfield(L,-1,"combined_fits");const bool combined=lua_toboolean(L,-1);lua_pop(L,1);
+          lua_getfield(L,-1,"second_line");valid=valid && (!combined || lua_rawlen(L,-1)==0);lua_pop(L,1);
+        }
+        if(valid) {
+          lua_getfield(L,-1,"name_color");payload+=10;
+          valid=table() && number("foreground",0,7,true) && number("background",0,7,true) && number("bright",0,1,true) &&
+            number("alternate_foreground",0,7,true) && number("alternate_background",0,7,true) && number("alternate_bright",0,1,true) && number("effect",0,3,true);
+          if(valid && value("effect")==0)valid=value("foreground")==value("alternate_foreground") && value("background")==value("alternate_background") && value("bright")==value("alternate_bright");
+          lua_pop(L,1);
+        }
+        if(!valid)return bad("invalid animal display");
+      }
+      lua_settop(L,top);lua_getfield(L,-1,"owner_display");
       bool valid=lua_isnil(L,-1);
       if(!valid && lua_istable(L,-1) && operation==df3d::mirror::AreaOperation::CandidateList && candidateKind==1) {
         payload+=6;

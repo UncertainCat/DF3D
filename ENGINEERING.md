@@ -1,3 +1,31 @@
+## Animal display transport
+
+AreaCandidateRow appends optional animal_display (AreaAnimalDisplay), carrying
+column width, first/second text lines, whether combined text fitted, warning
+text and name color. The world model and Godot codec preserve these facts,
+including a deliberately blank first line. This additive field keeps
+Management68; older recordings retain absence rather than synthesized display.
+Owner room value/status remain separate.
+
+Wire and Lua result validation restrict animal display to a nonnegative Unit
+candidate in an animal CandidateList. They bound text/width/color values,
+require warning presence to agree with the row's grazer flag, and reject a
+second line when combined text fitted. Native display production and rendered
+animal rows are still pending; accepting this field does not expose a screen.
+
+Verification: build/qa/animal-display-contract-verified passes core CTest19/19
+and the end-to-end Godot management contract, including blank first-line
+preservation and exact warning/color facts. The first full contract run failed
+because the fake producer's ordered request fixture omitted the added request;
+its sequence and payload expectation were corrected. MSVC passes in
+build/notes/pm/animal-display-contract-build.log. Protected animal acceptance
+build/areas-acceptance-20261026-103300 passes with DF129800, exercising existing
+assignments, sorting/search and refusal behavior. Both save manifests remain
+unchanged after unsaved exit. Installed plugin SHA256:
+496d44da4b26ee7ebeff4bcd6d5e836d27a6cc3c36fb8fe0a717389cedddd4c7.
+This live run verifies compatibility of existing workflows; the optional new
+field is exercised by contract fixtures until native production is connected.
+
 ## Native animal unit text reference
 
 The Pen/Pond unit-name widget enables gender and profession and permits two

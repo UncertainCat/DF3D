@@ -15,6 +15,11 @@ void require(bool ok,const char* what){if(!ok)throw std::runtime_error(what);}
 // prove transport fidelity, not native effects or area-builder acceptance.
 void verifyAreaOperation(const m::AreaRequest& q) {
   const auto op=int(q.operation());
+  if(op==14 && q.candidate_kind()==2) {
+    require(q.id()==7 && q.kind()==m::AreaKind::Zone && q.sort()==2 && !q.sort_descending() &&
+      q.query() && q.query()->size()==0 && !q.query_bytes(),"animal display request");
+    return;
+  }
   if(op==25) {
     require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 &&
         q.location_id()==0 && q.occupation_id()==87,"staff edit target");
@@ -124,7 +129,12 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
     ownerIcon=m::CreateSelectionAppearance(b,b.CreateVectorOfStrings(std::vector<std::string>{"OWNER_PAGE"}),
       b.CreateVectorOfStrings(std::vector<std::string>{"OWNER_PALETTE"}),
       b.CreateVectorOfStructs(std::vector<m::AppearanceLayer>{m::AppearanceLayer(0,2,3,1,1,0,4,5,-1,2)}));
-  const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15,ownerDisplay,ownerIcon);const auto candidates=b.CreateVector(std::vector{candidate});
+  flatbuffers::Offset<m::AreaAnimalDisplay> animalDisplay;
+  const bool animal=q.operation()==m::AreaOperation::CandidateList && q.candidate_kind()==2;
+  if(animal)animalDisplay=m::CreateAreaAnimalDisplay(b,27,b.CreateString(""),b.CreateString("Shortened profession"),false,
+    b.CreateString("Grazer: requires pasture"),m::CreateAreaNameColor(b,6,0,0,6,0,0,0));
+  const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15,ownerDisplay,ownerIcon,
+    animal?m::AreaCandidateEntity::Unit:m::AreaCandidateEntity::Unknown,animalDisplay);const auto candidates=b.CreateVector(std::vector{candidate});
   const auto link=m::CreateAreaLinkRow(b,9,m::AreaKind::Workshop,2,name);const auto links=b.CreateVector(std::vector{link});
   const auto query=b.CreateString(q.query()->str());
   const auto queryBytes=q.query_bytes()?b.CreateVector(q.query_bytes()->data(),q.query_bytes()->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{};
@@ -702,7 +712,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);

@@ -726,6 +726,15 @@ func test_area_operations() -> void:
 		if operation == 14:
 			assert(area.candidate_kind == 1 and area.sort == 3 and area.sort_descending)
 			assert(area.candidates == [{"id":8,"entity":Contract.AreaCandidateEntity.Unknown,"name":"observed","profession":"observed","sex":1,"mood":7,"grazer":true,"assigned":true,"squad_use":15,"owner_display":{"columns":45,"first_line":"Native first line","second_line":"Native second line","status":"Has Quarters","room_value":343,"name_color":{"color":[3,3,1],"alternate":[0,3,0],"effect":1}},"sheet_icon":{"tile_pages":["OWNER_PAGE"],"palettes":["OWNER_PALETTE"],"layers":[[0,2,3,1,1,0,4,5,-1,2]]}}])
+	var animal_sequence: int = world.area_request({"action":A.AreaCandidates,"operation":Contract.AreaOperation.CandidateList,
+		"id":7,"kind":1,"candidate_kind":2,"sort":2,"query":""})
+	assert(animal_sequence > 0)
+	var animal_reply: Dictionary = await receipt(animal_sequence)
+	assert(not animal_reply.is_empty())
+	var animal_row: Dictionary = animal_reply.area.candidates[0]
+	assert(animal_row.entity == Contract.AreaCandidateEntity.Unit and not animal_row.has("owner_display"))
+	assert(animal_row.animal_display == {"columns":27,"first_line":"","second_line":"Shortened profession",
+		"combined_fits":false,"warning":"Grazer: requires pasture","name_color":{"color":[6,0,0],"alternate":[6,0,0],"effect":0}})
 	for variant in 3:
 		var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.PaintCounts,
 			"zone_type":92,"paint_z":32767,"count_generation":9223372036854775807 - variant}

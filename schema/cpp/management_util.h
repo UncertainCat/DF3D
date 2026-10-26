@@ -991,6 +991,18 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           (row->entity()==AreaCandidateEntity::Unit && a->candidate_kind()!=1 && a->candidate_kind()!=2) || textSize(row->name())>512 || textSize(row->profession())>512 ||
           row->sex()<-1 || row->sex()>1 || row->mood()>7 || row->squad_use()<-1 || row->squad_use()>15)
         return "invalid area candidate row";
+      if(const auto* display=row->animal_display()) {
+        if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=2 || row->entity()!=AreaCandidateEntity::Unit || row->id()<0 ||
+           display->columns()<3 || display->columns()>128 || textSize(display->first_line())>384 || textSize(display->second_line())>384 ||
+           textSize(display->warning())>256 || (row->grazer()!=(textSize(display->warning())!=0)) ||
+           (display->combined_fits() && textSize(display->second_line())!=0))return "invalid animal display";
+        const auto* c=display->name_color();
+        if(!c || c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 ||
+           c->alternate_background()>7 || c->alternate_bright()>1 || c->effect()>3 ||
+           (c->effect()==0 && (c->foreground()!=c->alternate_foreground() || c->background()!=c->alternate_background() || c->bright()!=c->alternate_bright())))
+          return "invalid animal name color";
+        payload+=10+textSize(display->first_line())+textSize(display->second_line())+textSize(display->warning());
+      }
       if(const auto* display=row->owner_display()) {
         if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=1 ||
            display->columns()<3 || display->columns()>128 || display->room_value()<0 ||

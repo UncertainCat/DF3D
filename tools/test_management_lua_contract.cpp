@@ -228,6 +228,15 @@ int main(int argc,char** argv) {
     test(A::AreaCandidates,("return {"+envelope+"candidate_kind=1,sort=4}").c_str(),true,O::CandidateList);
     test(A::AreaCandidates,("return {"+envelope+"candidate_kind=1,sort=5}").c_str(),false,O::CandidateList);
     test(A::AreaCandidates,("return {"+envelope+"candidate_kind=2,sort=4}").c_str(),false,O::CandidateList);
+    for(int mode=0;mode<10;++mode) {
+      const std::string input="return {"+envelope+"candidate_kind="+(mode==1?"1":"2")+
+        ",candidates={{id=21,entity="+(mode==2?"2":"1")+",grazer="+(mode==3?"false":"true")+
+        ",name='native',profession='',animal_display={columns="+(mode==4?"2":"27")+
+        ",first_line='',second_line='shortened profession',combined_fits="+(mode==5?"true":"false")+
+        ",warning="+(mode==6?"''":"'Grazer: requires pasture'")+",name_color="+
+        (mode==7?"nil":std::string("{foreground=")+(mode==8?"8":"6")+",background=0,bright=0,alternate_foreground=6,alternate_background=0,alternate_bright=0,effect="+(mode==9?"4":"0")+"}")+"}}}}";
+      test(A::AreaCandidates,input.c_str(),mode==0,O::CandidateList);
+    }
     const std::string ownerRow="id=21,name='native',profession='native',owner_display=";
     for(int mode=0;mode<8;++mode) {
       const auto display=mode==1?"false":std::string("{columns=")+(mode==2?"2":"45")+

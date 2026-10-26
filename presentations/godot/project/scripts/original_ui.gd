@@ -215,6 +215,21 @@ func native_message_panel() -> StyleBox:
 	for side in [SIDE_TOP,SIDE_BOTTOM]: style.set_texture_margin(side,12)
 	return style
 
+static func installed_palette(root_path: String) -> Array[Color]:
+	var result: Array[Color] = []
+	var text := FileAccess.get_file_as_string(root_path.path_join("data/init/colors.txt"))
+	for color_name in ["BLACK","BLUE","GREEN","CYAN","RED","MAGENTA","BROWN","LGRAY","DGRAY","LBLUE","LGREEN","LCYAN","LRED","LMAGENTA","YELLOW","WHITE"]:
+		var channels: Array[float] = []
+		for channel in ["R","G","B"]:
+			var key: String = "["+color_name+"_"+channel+":"
+			var start := text.find(key)
+			if start < 0: return []
+			var value := text.substr(start+key.length()).get_slice("]",0)
+			if not value.is_valid_int() or int(value) < 0 or int(value) > 255: return []
+			channels.append(float(value)/255.0)
+		result.append(Color(channels[0],channels[1],channels[2]))
+	return result
+
 static func bitmap_font(path: String) -> FontFile:
 	if path.is_empty() or not FileAccess.file_exists(path): return null
 	var image := Image.load_from_file(path)

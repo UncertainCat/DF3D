@@ -146,7 +146,19 @@ local function capture(name)
      for line=1,2 do
       for x=1,width do assert(lines[line+1].bytes[x]==(expected[line][x] or 0),'native display reader mismatch: '..name..'/'..row.unit_id..'/'..line..'/'..x)end
      end
-     samples[#samples+1]={unit_id=row.unit_id,x=row.x,y=row.y,x2=row.x2,text=native_text,status=status,lines=lines,exact=true}
+     local unit=assert(df.unit.find(row.unit_id))
+     local skills={}
+     if unit.status.current_soul then
+      for _,skill in ipairs(unit.status.current_soul.skills)do
+       if skill.rating>=15 then skills[#skills+1]={id=skill.id,rating=skill.rating}end
+      end
+     end
+     samples[#samples+1]={unit_id=row.unit_id,x=row.x,y=row.y,x2=row.x2,text=native_text,status=status,lines=lines,exact=true,
+      color_facts={race=unit.race,caste=unit.caste,profession=unit.profession,hist_figure_id=unit.hist_figure_id,
+       flags1=unit.flags1.whole,flags2=unit.flags2.whole,flags3=unit.flags3.whole,
+       override_tile=unit.uwss_display_tile,override_fg=unit.uwss_display_color_f,override_bg=unit.uwss_display_color_b,
+       override_bright=unit.uwss_display_color_br,legendary_skills=skills,
+       dfhack_profession_color=dfhack.units.getProfessionColor(unit)}}
     end
    end
    records[#records+1]={name=name..'-display-text',samples=samples}
@@ -347,6 +359,47 @@ local ok,why=pcall(function()
    pixel(304,114);pixel(336,154);search('king');capture('dining-picker-display-owned')
   end
  end
+ -- Controlled native color precedence. These semantic fixture fields are
+ -- restored even if capture fails; no native drawing function is called here.
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ pixel(208,502);mapclick(p);mapclick(p)
+ assert(ui.cur_bld.type==df.civzone_type.Tomb)
+ pixel(304,114);pixel(336,154)
+ local old_color={first_unit.uwss_display_tile,first_unit.uwss_display_color_f,
+  first_unit.uwss_display_color_b,first_unit.uwss_display_color_br,first_unit.flags3.ghostly}
+ local color_ok,color_error=pcall(function()
+  local function color_case(name,fg,bg,bright)
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
+   search(first_unit.name.first_name);capture('tomb-picker-display-color-'..name)
+   local sample
+   for _,record in ipairs(records)do
+    if record.name=='tomb-picker-display-color-'..name..'-display-text' then
+     for _,candidate in ipairs(record.samples)do if candidate.unit_id==owner then sample=candidate end end
+    end
+   end
+   assert(sample and sample.unit_id==owner,'color fixture candidate missing')
+   local observed=false
+   for i,ch in ipairs(sample.lines[2].bytes)do
+    if ch~=0 then
+     local color=sample.lines[2].colors[i]
+     assert(color[1]==fg and color[2]==bg and color[3]==bright,'native color precedence differs: '..name)
+     observed=true
+    end
+   end
+   assert(observed,'color fixture has no glyphs')
+  end
+  first_unit.uwss_display_tile=88;first_unit.uwss_display_color_f=1
+  first_unit.uwss_display_color_b=2;first_unit.uwss_display_color_br=1
+  color_case('override',1,2,true)
+  first_unit.flags3.ghostly=true
+  color_case('override-before-ghost',1,2,true)
+  first_unit.uwss_display_tile=0
+  color_case('ghost',7,0,true)
+ end)
+ first_unit.uwss_display_tile=old_color[1];first_unit.uwss_display_color_f=old_color[2]
+ first_unit.uwss_display_color_b=old_color[3];first_unit.uwss_display_color_br=old_color[4]
+ first_unit.flags3.ghostly=old_color[5]
+ assert(color_ok,color_error)
 end)
 first_unit.relationship_ids.Spouse=old_first;spouse.relationship_ids.Spouse=old_spouse
 df.global.plotinfo.economy_active=old_economy

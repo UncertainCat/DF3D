@@ -1829,5 +1829,160 @@
       "build/qa/owner-display-layout: core19/19 and GPU layout pass with three known Godot notices"
     ],
     "remaining": "Native row colors/portraits, textbox behavior, variable-width formatting, creation owner validation and full picker lifecycle. Synthetic layout is not full native pixel parity."
+  },
+  "owner_colors": {
+    "status": "Native precedence and status color evidence; full semantic name-color reader unfinished",
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-011454",
+    "result_sha256": "7c664fb1b328063f0e6a89a8d0921c9af0befd4283e2bbc3be3aee7db1416088",
+    "owned_df_pid": 131804,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "cases": [
+      {
+        "capture": "tomb-picker-display-color-override-display-text",
+        "unit_id": 5981,
+        "native_colors": [
+          [
+            1,
+            2,
+            true
+          ]
+        ],
+        "facts": {
+          "caste": 1,
+          "dfhack_profession_color": 13,
+          "flags1": 2147500041,
+          "flags2": 301990000,
+          "flags3": 8388866,
+          "hist_figure_id": 9492,
+          "legendary_skills": [
+            {
+              "id": 26,
+              "rating": 18
+            }
+          ],
+          "override_bg": 2,
+          "override_bright": 1,
+          "override_fg": 1,
+          "override_tile": 88,
+          "profession": 18,
+          "race": 572
+        }
+      },
+      {
+        "capture": "tomb-picker-display-color-override-before-ghost-display-text",
+        "unit_id": 5981,
+        "native_colors": [
+          [
+            1,
+            2,
+            true
+          ]
+        ],
+        "facts": {
+          "caste": 1,
+          "dfhack_profession_color": 13,
+          "flags1": 2147500041,
+          "flags2": 301990000,
+          "flags3": 8392962,
+          "hist_figure_id": 9492,
+          "legendary_skills": [
+            {
+              "id": 26,
+              "rating": 18
+            }
+          ],
+          "override_bg": 2,
+          "override_bright": 1,
+          "override_fg": 1,
+          "override_tile": 88,
+          "profession": 18,
+          "race": 572
+        }
+      },
+      {
+        "capture": "tomb-picker-display-color-ghost-display-text",
+        "unit_id": 5981,
+        "native_colors": [
+          [
+            7,
+            0,
+            true
+          ]
+        ],
+        "facts": {
+          "caste": 1,
+          "dfhack_profession_color": 13,
+          "flags1": 2147500041,
+          "flags2": 301990000,
+          "flags3": 8392962,
+          "hist_figure_id": 9492,
+          "legendary_skills": [
+            {
+              "id": 26,
+              "rating": 18
+            }
+          ],
+          "override_bg": 2,
+          "override_bright": 1,
+          "override_fg": 1,
+          "override_tile": 0,
+          "profession": 18,
+          "race": 572
+        }
+      }
+    ],
+    "status_rows": 5,
+    "status_color": [
+      2,
+      0,
+      true
+    ],
+    "status_write_rvas": [
+      "0x3a87e3",
+      "0x3a8957",
+      "0x3a8acb",
+      "0x3a8c43"
+    ],
+    "status_pixels": {
+      "capture": "bedroom-candidate.png",
+      "text": "Has Quarters",
+      "box": [
+        416,
+        124,
+        512,
+        136
+      ],
+      "foreground_rgb": [
+        19,
+        253,
+        101
+      ],
+      "glyph_pixels": 284,
+      "glyph_mask_sha256": "f066450aa9622ec2a96ff94090913c640448579d7927d661604d3e5f8954c2b8",
+      "scope": "Foreground glyph positions and RGB only; row background differs and remains unfinished."
+    },
+    "reference_only_ranges": [
+      {
+        "rva": "0x1333bc0",
+        "length": "0xa0d",
+        "fnv1a64": "8d3fa1210a66c482",
+        "role": "name color renderer; writes gps and may call random helper"
+      },
+      {
+        "rva": "0x13337a0",
+        "length": "0x26b",
+        "fnv1a64": "4d6839cd6f042ed5",
+        "role": "profession color code and immutable dispatch tables; writes gps"
+      },
+      {
+        "rva": "0x7022c0",
+        "length": "0xe5",
+        "fnv1a64": "b01a72d65e66e9a3",
+        "role": "raw creature/caste fallback; writes gps"
+      }
+    ],
+    "ownership": "None of these drawing routines is a callable runtime semantic API. Native widget14237a0 calls1333bc0(unit,background0,blink1,ignore_identity0). DFHack getProfessionColor is a reconstruction and disagrees with all three controlled color cases.",
+    "remaining": "Independent native semantic leaf audit and owned color/effect description; identity/noble/prisoner/slave/undead/water/on-fire cases, legendary animation, portraits and row background/selection."
   }
 }

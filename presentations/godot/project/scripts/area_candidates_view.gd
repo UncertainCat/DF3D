@@ -17,9 +17,11 @@ var cached_rows: Array = []
 var strips: Dictionary = {}
 var squad_prompt: Label
 var squad_buttons: Array[Button] = []
+var native_colors: Array[Color] = []
 
 func configure(source, model) -> void:
 	world = source; state = model; art.configure(source); theme = art.theme
+	if world.has_method("assets_root"): native_colors = art.installed_palette(world.assets_root())
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	body = Control.new(); body.custom_minimum_size = Vector2(576,684); add_child(body)
 	squad_prompt = Label.new(); squad_prompt.position = Vector2(8,0); squad_prompt.size = Vector2(544,36)
@@ -169,6 +171,8 @@ func add_owner_text(button: Button, display: Dictionary) -> void:
 		var line := Label.new(); line.name = ["OwnerStatus","OwnerFirst","OwnerSecond"][index]
 		line.text = str(display.get(["status","first_line","second_line"][index],""))
 		line.add_theme_font_size_override("font_size",12); line.clip_text = true
+		# All four native status branches write fg2/bg0/bright1 (3a8730).
+		if index == 0 and native_colors.size() == 16: line.add_theme_color_override("font_color",native_colors[10])
 		line.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(line)
 		line.position = Vector2(40,index*12); line.size = Vector2(int(display.columns)*8,12)
 

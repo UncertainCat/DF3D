@@ -262,6 +262,33 @@ MSVC bridge builds. Color/portraits, textbox behavior, variable-width formatting
 creation-time owner validation and full assignment lifecycle remain unfinished;
 Zones/Locations stays staged.
 
+Owner name-color evidence is retained in `native_zone_assignment.json.owner_colors`.
+Native widget0x14237a0 calls0x1333bc0 with background0, blinking enabled and
+identity respected. That routine, profession0x13337a0 and raw-color0x7022c0 all
+write global gps state; they are reference-only, not semantic runtime APIs.
+The name routine also contains legendary-clock effects and an on-fire random
+branch. DFHack getProfessionColor reconstructs only part of these rules.
+
+Protected `build/stockpile-storage-native-zone-owner-20261026-011454` verifies
+controlled override precedence: fg1/bg2/bright1 remains when ghostly is set;
+removing the override produces ghost fg7/bg0/bright1. DFHack's helper returns13
+in all three cases. Semantic fields are restored even on failure. Native names,
+status, eligibility, ordering and guards still pass; owned DF131804 closes unsaved
+with source preserved. The override-before-ghost capture was inspected. Earlier
+011321 failed because the altered ghost no longer matched the title query;
+the final Tomb fixture searches the stable unit name and selects by unit ID.
+
+All four room-status branches write fg2/bg0/bright1. The owner view now resolves
+that foreground from the installed colors.txt palette. Its Has Quarters caption
+matches all284 native foreground pixels and their exact positions in a96x12
+region. The comparison intentionally excludes row background: native uses a
+lighter background in this captured state, which remains unfinished alongside
+name colors, selection/hover behavior and portraits. This caption evidence does
+not establish full row pixel parity.
+`build/qa/owner-status-color-final` passes root CTest19/19 and the GPU menu check,
+including the native foreground-mask hash. GPU status is
+passed_with_known_issues for the three documented Godot notices.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

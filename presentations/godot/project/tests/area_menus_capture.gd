@@ -5,6 +5,7 @@ class CaptureWorld extends Test.FakeWorld:
 	var assets
 	func ui_texture(token: String, index := -1): return assets.ui_texture(token,index)
 	func ui_font_path(): return assets.ui_font_path()
+	func assets_root(): return assets.assets_root()
 
 func settings_reply(controller, world, service, rows: Array) -> void:
 	service.poll()
@@ -169,6 +170,17 @@ func run() -> void:
 	if controller.candidates_view.choices[2].has_node("OwnerFirst") or not controller.candidates_view.choices[2].text.is_empty():
 		push_error("Absent owner display was invented"); quit(1); return
 	var header_reference: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_assignment.json"))
+	var status_reference: Dictionary = header_reference.owner_colors.status_pixels
+	var status_box: Array = status_reference.box
+	var status_rgb: Array = status_reference.foreground_rgb
+	var status_image := root.get_texture().get_image(); status_image.convert(Image.FORMAT_RGB8)
+	var status_region := status_image.get_region(Rect2i(int(status_box[0]),int(status_box[1]),int(status_box[2])-int(status_box[0]),int(status_box[3])-int(status_box[1])))
+	var status_bytes := status_region.get_data(); var glyph_mask := PackedByteArray()
+	for pixel in int(status_bytes.size()/3):
+		glyph_mask.append(1 if status_bytes[pixel*3] == int(status_rgb[0]) and status_bytes[pixel*3+1] == int(status_rgb[1]) and status_bytes[pixel*3+2] == int(status_rgb[2]) else 0)
+	var status_digest := HashingContext.new(); status_digest.start(HashingContext.HASH_SHA256); status_digest.update(glyph_mask)
+	if status_digest.finish().hex_encode() != str(status_reference.glyph_mask_sha256):
+		push_error("Native owner status glyph positions or colors differ"); quit(1); return
 	if not owner_header_pixels(header_reference,"default"): quit(1); return
 	var header_rows: Array = controller.candidates_state.rows.duplicate(true)
 	for sample in header_reference.owner_header_order.sequences:

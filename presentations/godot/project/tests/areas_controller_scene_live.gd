@@ -75,11 +75,12 @@ func pointer_areas() -> void:
 	world.set_top_z(origin.z)
 	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
 	var stockpiles_only := FileAccess.file_exists(directory+"/stockpiles-only.json")
+	var zone_animals_only := FileAccess.file_exists(directory+"/zone-animals-only.json")
 	var zone_owner_only := FileAccess.file_exists(directory+"/zone-owner-only.json")
 	var zone_rename_only := FileAccess.file_exists(directory+"/zone-rename-only.json")
 	var zone_gather_only := FileAccess.file_exists(directory+"/zone-gather-only.json")
 	var zone_overlap_only := FileAccess.file_exists(directory+"/zone-overlap-only.json")
-	var destinations := ["Zones"] if zone_owner_only or zone_rename_only or zone_gather_only or zone_overlap_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
+	var destinations := ["Zones"] if zone_animals_only or zone_owner_only or zone_rename_only or zone_gather_only or zone_overlap_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
 	for destination in destinations:
 		step = "viewport "+destination
 		var launcher: Button = scene._fortress_hud.navigation[destination]
@@ -90,7 +91,7 @@ func pointer_areas() -> void:
 		await click_control(launcher,destination == "Zones")
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"pointer launcher"): return
 		if destination == "Zones":
-			await click_control(editor.zone_menu.buttons.PlantGathering if zone_gather_only else editor.zone_menu.buttons.Bedroom)
+			await click_control(editor.zone_menu.buttons.Pond if zone_animals_only else (editor.zone_menu.buttons.PlantGathering if zone_gather_only else editor.zone_menu.buttons.Bedroom))
 			if not check(editor.mode == "paint","zone button did not start painting"): return
 		var target := Vector3(origin.x+0.5,origin.z+float(world.floor_height()),origin.y+0.5)
 		var position: Vector2 = editor.camera.unproject_position(target)
@@ -112,7 +113,7 @@ func pointer_areas() -> void:
 		await native("snapshot",{"id":id,"expected":{"kind":0 if destination == "Stockpiles" else 1,"tile_count":1}})
 		if destination == "Zones":
 			await native("snapshot",{"id":id,"expected":{"custom_name":""}})
-			var default_name := "Unnamed plant gathering area" if zone_gather_only else "Unnamed bedroom"
+			var default_name := "Unnamed pit/pond" if zone_animals_only else ("Unnamed plant gathering area" if zone_gather_only else "Unnamed bedroom")
 			if not check(str(editor.selected.name) == default_name and editor.zone_menu.heading.text == default_name,"unnamed zone must use native panel name"): return
 		await capture(destination.to_lower()+"_created")
 		if stopped: return
@@ -125,6 +126,12 @@ func pointer_areas() -> void:
 				await click_control(editor.zone_menu.controls.remove)
 				if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"remove gathering zone"): return
 				await native("removed",{"id":id}); await native("final"); return
+			if zone_animals_only:
+				await pointer_animals(id)
+				if stopped:return
+				await click_control(editor.zone_menu.controls.remove)
+				if not await wait_ui(func():return settled() and editor.selected.is_empty(),"remove animal test zone"):return
+				await native("removed",{"id":id});await native("final");return
 			if zone_owner_only:
 				await pointer_owner(id,origin)
 				if stopped: return
@@ -1648,3 +1655,59 @@ func pointer_zone_overlap_repaint(origin: Vector3i, first_id: int, second_id: in
 	if not await wait_ui(func(): return settled() and editor.mode == "inspect","zone regrow Accept"): return
 	if not check(editor.zone_menu.overlap_label.visible,"regrown zone warning missing"): return
 	await capture("zone_repaint_overlap_regrown")
+
+func pointer_animals(id: int) -> void:
+	step="main scene animal picker"
+	await click_control(editor.zone_menu.controls.animals)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"pointer animal open"):return
+	if not await wait_ui(func():
+		for slot in editor.candidates_view.portrait_slots:
+			if slot.view.texture==null:return false
+		return not editor.candidates_view.portrait_slots.is_empty(),"animal visible portraits"):return
+	await capture("animal_picker")
+	var panel_reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_panel_pixels
+	var panel_image:=root.get_texture().get_image();panel_image.convert(Image.FORMAT_RGB8)
+	for sample in panel_reference.samples:
+		var r:Array=sample.rect;var crop:=panel_image.get_region(Rect2i(int(r[0]),int(r[1]),int(r[2]),int(r[3])))
+		var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+		if not check(digest.finish().hex_encode()==str(sample.rgb_sha256),"animal native panel pixels differ: "+str(sample.name)):return
+	var view=editor.candidates_view
+	if not check(view.body.global_position==Vector2(376,64) and view.size==Vector2(392,708),"animal native panel geometry differs: body="+str(view.body.global_position)+" panel="+str(view.size)):return
+	var unit_index:=-1
+	for index in editor.candidates_state.rows.size():
+		var row:Dictionary=editor.candidates_state.rows[index]
+		if int(row.get("entity",0))==1 and int(row.id)==int(fixture.caged):unit_index=index;break
+	if not check(unit_index>=0,"caged unit absent from Pond picker"):return
+	var target=view.choices[unit_index].get_node_or_null("AnimalContainmentHover")
+	if not check(target!=null,"caged unit has no containment hover"):return
+	var motion:=InputEventMouseMotion.new();motion.position=target.get_global_rect().get_center();motion.global_position=motion.position
+	root.push_input(motion,true)
+	if not await wait_ui(func():return view.native_help.visible,"animal containment hover"):return
+	await capture("animal_containment_hover")
+	var unit:=int(fixture.caged)
+	await native("assignment_before",{"unit_id":unit})
+	for assigned in [true,false]:
+		unit_index=-1
+		for index in editor.candidates_state.rows.size():
+			var row:Dictionary=editor.candidates_state.rows[index]
+			if int(row.get("entity",0))==1 and int(row.id)==unit:unit_index=index;break
+		if not check(unit_index>=0,"assigned unit disappeared"):return
+		await pointer_click(view.choices[unit_index].global_position+Vector2(296,18))
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"pointer animal checkbox"):return
+		await native("assignment",{"id":id,"unit_id":unit,"assign":assigned})
+		if stopped:return
+	var item:=int(fixture.critter)
+	await native("item_assignment_before",{"item_id":item})
+	for assigned in [true,false]:
+		var item_index:=-1
+		for index in editor.candidates_state.rows.size():
+			var row:Dictionary=editor.candidates_state.rows[index]
+			if int(row.get("entity",0))==2 and int(row.id)==item:item_index=index;break
+		if not check(item_index>=0,"critter item absent"):return
+		await pointer_click(view.choices[item_index].global_position+Vector2(296,18))
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"pointer item checkbox"):return
+		await native("item_assignment",{"id":id,"item_id":item,"assign":assigned})
+		if stopped:return
+	await capture("animal_cleared")
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(editor.stockpile_page=="types" and not view.visible,"animal right-click did not close selector"):return

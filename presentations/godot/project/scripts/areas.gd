@@ -1205,7 +1205,7 @@ func update_controls() -> void:
 	if locations_view.visible and not locations_view.has_theme_stylebox_override("panel"):
 		locations_view.add_theme_stylebox_override("panel",locations_view.panel_style())
 	candidates_view.visible = panel.visible and not pile and not selected.is_empty() and stockpile_page in ["owner","animals","squads"]
-	if candidates_view.visible: candidates_view.add_theme_stylebox_override("panel",stockpile_view.panel_style())
+	if candidates_view.visible: candidates_view.add_theme_stylebox_override("panel",candidates_view.panel_style() if stockpile_page == "animals" else stockpile_view.panel_style())
 	stockpile_view.visible = native_types
 	settings_view.visible = native_settings
 	storage_view.visible = panel.visible and native_types and stockpile_page == "containers"
@@ -1349,8 +1349,8 @@ func _process(delta: float) -> void:
 		locations_view.position = Vector2(368,52); locations_view.size = Vector2(328,420)
 		if details_view!=null:details_view.layout(view)
 		details_parent_shield.position=panel.position;details_parent_shield.size=panel.size
-		candidates_view.position = Vector2(370,54)
-		candidates_view.size = Vector2(576,420) if stockpile_page == "squads" else Vector2(388 if stockpile_page == "animals" else 588,704)
+		candidates_view.position = Vector2(368,52) if stockpile_page == "animals" else Vector2(370,54)
+		candidates_view.size = Vector2(576,420) if stockpile_page == "squads" else (Vector2(392,708) if stockpile_page == "animals" else Vector2(588,704))
 	if paint_view.tools.visible and kind_picker.selected == 0 and hud != null:
 		var anchor: Rect2 = hud.launcher_rect(launcher_destination)
 		if anchor.has_area():

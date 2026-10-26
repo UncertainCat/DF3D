@@ -33,7 +33,7 @@ function Invoke-LuaFile([string]$Name,[string]$Arguments) {
 }
 try {
  if($ZoneAnimalsOnly) {
-  if($ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $ZoneRenameOnly -or $ZoneGatherOnly -or $ZoneOverlapOnly -or $ZoneDefaultsOnly -or $ZoneOwnerOnly -or $StockpilesOnly -or $StockpilePaintOnly -or $StockpileFitOnly -or $StockpileResizeOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene){throw 'ZoneAnimalsOnly supports semantic or headless controller drivers without other scopes'}
+  if(($Controller -and $ControllerScene) -or $ControllerRestart -or $BoundaryOnly -or $ZoneRenameOnly -or $ZoneGatherOnly -or $ZoneOverlapOnly -or $ZoneDefaultsOnly -or $ZoneOwnerOnly -or $StockpilesOnly -or $StockpilePaintOnly -or $StockpileFitOnly -or $StockpileResizeOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene){throw 'ZoneAnimalsOnly supports one semantic or controller driver without other scopes'}
   Write-Lf "$out/zone-animals-only.json" '{"scope":"native animal assignment, transfer, clear and chain job cleanup"}'
  }
  if($ZoneOwnerOnly) {

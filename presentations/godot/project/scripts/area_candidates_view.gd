@@ -81,6 +81,13 @@ func configure(source, model) -> void:
 	bind_owner_help(owner_search,false)
 	state.changed.connect(refresh); state.facts_changed.connect(refresh_owner_facts); refresh()
 
+func panel_style() -> StyleBox:
+	var style := art.make_style("HOVER_RECTANGLE",8)
+	for side in [SIDE_LEFT,SIDE_RIGHT]: style.set_content_margin(side,8)
+	for side in [SIDE_TOP,SIDE_BOTTOM]:
+		style.set_texture_margin(side,12); style.set_content_margin(side,12)
+	return style
+
 func bind_owner_help(control: Control, recenter: bool) -> void:
 	if native_help == null: return
 	var owner := control.get_instance_id()
@@ -123,7 +130,7 @@ func style_row(button: Button, selected: bool) -> void:
 
 func row_button(text: String) -> Button:
 	var button := Button.new(); button.custom_minimum_size = Vector2(352 if state.kind == 2 else 552,36)
-	if state.kind == 1: button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	if state.kind in [1,2]: button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT; button.text = text
 	button.add_theme_font_size_override("font_size",12)
 	style_row(button,false)

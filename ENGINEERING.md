@@ -15,6 +15,24 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 
 ## Animal keyboard activation and portrait reference
 
+Rendered main-scene Pond acceptance passes in
+`build/areas-acceptance-20261026-145558` using
+`areas_acceptance.ps1 -ControllerScene -ZoneAnimalsOnly`. Pointer input creates
+the zone, opens the picker, activates containment help at the visible icon,
+assigns/clears a caged unit and critter item via their checkboxes, closes the
+picker and removes the test zone. Native readback verifies assignment effects;
+both save manifests are unchanged. `animal_panel_pixels` in
+`fixtures/areas/native_zone_animals.json` pins all four frame borders and seven
+complete visible rows against native142405. Every RGB byte matches, including
+portraits, text, status art, checkbox and row backgrounds. The panel uses its
+native392x708 frame at368,52,8x12 content margins, and352px-wide rows. This fixes
+the former inset388x704 frame and stretched360px row backgrounds without moving
+the content origin376,64. Core19/19, controller regression and GPU checks pass
+in `build/qa/animal-panel-geometry`; GPU and the rendered live run retain only
+the known diagnostics. This does not cover the remaining rendered long-list,
+search/keyboard/closing combinations or uncommon creature/container cases.
+
+
 `native_zone_animals.json.animal_scroll` records a forty-row Pond list in
 protected `build/stockpile-storage-native-zone-animals-20261026-142405`.
 Temporary critter items remain allocated until the owned unsaved session exits;
@@ -63,8 +81,8 @@ comparing visible rows with native facts, and closing without a refresh ticket.
 The driver waits for layout before scrolling newly created controls. Both save
 manifests remain unchanged; core19/19 passes in
 `build/qa/animal-controller-live-reference`. This headless lane invokes controller
-controls and keyboard handlers; main-scene pointer routing and full panel parity
-remain separate acceptance requirements.
+controls and keyboard handlers; the rendered Pond pointer/pixel lane above complements this headless coverage.
+Remaining rendered long-list and input combinations still require acceptance.
 
 
 `native_zone_animals.json.animal_search_input` records real Windows/SDL input

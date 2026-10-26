@@ -15646,5 +15646,121 @@
         }
       ]
     }
+  },
+  "animal_panel_pixels": {
+    "native_evidence": "build/stockpile-storage-native-zone-animals-20261026-142405/Pond-long-picker.png",
+    "scope": "Four panel borders and first seven complete unassigned Pond rows, selected first row, region5 native fixture",
+    "samples": [
+      {
+        "name": "top",
+        "rect": [
+          368,
+          52,
+          392,
+          12
+        ],
+        "rgb_sha256": "167fc3ddd9ebdbd895c944af378079f3b79fa59eb67113b4619974c963c6a2d4"
+      },
+      {
+        "name": "bottom",
+        "rect": [
+          368,
+          748,
+          392,
+          12
+        ],
+        "rgb_sha256": "984a4bf03797d0892c9a05de762f21af4ef61363092d9d7c9f6b89e077b17a83"
+      },
+      {
+        "name": "left",
+        "rect": [
+          368,
+          64,
+          8,
+          684
+        ],
+        "rgb_sha256": "540d213cf112275936d6e31f4995c7fbd20f53f0399559b28a72962b87f55ae6"
+      },
+      {
+        "name": "right",
+        "rect": [
+          752,
+          64,
+          8,
+          684
+        ],
+        "rgb_sha256": "ae1f34b02fd311f4a5701383385750b1510e16efe746039e3d6554096782b239"
+      },
+      {
+        "name": "row-0",
+        "rect": [
+          376,
+          88,
+          352,
+          36
+        ],
+        "rgb_sha256": "3bf215bd0ec7b7861b28a6aa2ce9a2107923a7e33bf7ec836cb6cc193c122df3"
+      },
+      {
+        "name": "row-1",
+        "rect": [
+          376,
+          124,
+          352,
+          36
+        ],
+        "rgb_sha256": "a879f77ab6e8f6e911ec5fe183d89b7550defec86d2b7202968fa438680f1b04"
+      },
+      {
+        "name": "row-2",
+        "rect": [
+          376,
+          160,
+          352,
+          36
+        ],
+        "rgb_sha256": "0efa901cebd4afdf6268f5a9da7494f0d5f08ae0e4eed0888e238a365fd03735"
+      },
+      {
+        "name": "row-3",
+        "rect": [
+          376,
+          196,
+          352,
+          36
+        ],
+        "rgb_sha256": "ca533076a09a719a0441ac6ec56378e5727eb1cc05da18aa64b7f59c01bb908b"
+      },
+      {
+        "name": "row-4",
+        "rect": [
+          376,
+          232,
+          352,
+          36
+        ],
+        "rgb_sha256": "e10e6d33f687b35a155ff5a588e0a562d11aa4b16d51bf7142f6b3073b8e4004"
+      },
+      {
+        "name": "row-5",
+        "rect": [
+          376,
+          268,
+          352,
+          36
+        ],
+        "rgb_sha256": "d56c91b27e5be47bca0ff3824cc38f5185237b70f1235881e6bd6bd931513296"
+      },
+      {
+        "name": "row-6",
+        "rect": [
+          376,
+          304,
+          352,
+          36
+        ],
+        "rgb_sha256": "1a2372b8b13b1426ca10efd22142b921ff29bbe55cf1e39ea0aa41f6aa669c69"
+      }
+    ]
   }
 }

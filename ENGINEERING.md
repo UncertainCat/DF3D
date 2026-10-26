@@ -25,9 +25,20 @@ A unit reference terminates the search even when stale or inactive; stale or
 non-animal item references are skipped. The existing semantic reader already
 matches these rules. All original references are restored before subsequent
 assignment checks; UI/gps bytes and the source save remain unchanged. Cache
-access is diagnostic only. These checks establish occupant identity and
-material facts; they do not establish full Godot composite-pixel parity for
-these cases or separate live VERMIN artwork coverage.
+access is diagnostic only. GPU `build/qa/animal-container-reference-pixels` additionally matches all seven
+32x32 RGBA cage textures and rendered40x36 RGB row regions byte-for-byte.
+`animal_container_pixels` retains those hashes with source provenance.
+
+Protected `build/stockpile-storage-native-zone-animals-20261026-151901` adds a
+real VERMIN item using the existing PET creature/caste. Native picker portrait,
+text/color, filtering and cage-occupant selection pass; the source save remains
+unchanged. `animal_live_vermin_reference` retains identity and native tile/text
+facts. Core and GPU `build/qa/animal-vermin-reference-pixels` pass, matching the
+VERMIN portrait, text crop, full cage RGBA texture and rendered cage region.
+Both GPU runs retain only the three known Godot diagnostics. These component
+comparisons use the existing owned recipe for that same creature/caste, with
+native tile equality checked; they do not replace live VERMIN recipe transport
+and assignment acceptance.
 
 
 Rendered main-scene Pond acceptance passes in

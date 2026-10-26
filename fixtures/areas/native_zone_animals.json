@@ -11545,6 +11545,48 @@
           376,
           304
         ]
+      },
+      {
+        "picker": "Pond-live-vermin",
+        "selected": false,
+        "row": {
+          "assigned": false,
+          "entity": 2,
+          "grazer": false,
+          "id": 48521,
+          "mood": 0,
+          "name": "(live masked lovebird)",
+          "profession": "",
+          "sex": -1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                69,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_SMALL"
+            ]
+          },
+          "squad_use": -1
+        },
+        "rgb_sha256": "7918a2ec4b5e7f3633f3516540353ae054dacbf2c916df246c9a2f838087d2a6",
+        "native_evidence": "build/stockpile-storage-native-zone-animals-20261026-151901",
+        "recipe_evidence": "build/areas-acceptance-20261026-113050/request-11.json",
+        "pixel_origin": [
+          376,
+          340
+        ]
       }
     ],
     "coverage": "Complete40x36 unit picture/frame crop; item portraits and cage/status icons are separate."
@@ -11619,7 +11661,7 @@
       }
     ],
     "limitations": [
-      "Actual captured items are PET; VERMIN dispatch shares this static branch but needs a live fixture.",
+      "Original run covers PET; animal_live_vermin_reference adds a real VERMIN instance.",
       "Native cached texture exports stay ignored and are never runtime inputs."
     ]
   },
@@ -13174,6 +13216,698 @@
         ],
         "rgba_sha256": "6ac099e7c4f8714ce5e6c11bdfe378887daa2bd877b7f5ee6e10bce7cf3342ba",
         "rgb_sha256": "653d1d52bb39c3d7f2fc25271e2ad1c1a0dc1447e97c7beaf8b3a279a7f4de05"
+      },
+      {
+        "capture": "Pen-status-contents-empty-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant_entity": 0,
+            "occupant_id": -1,
+            "solid_color": "COPPER"
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "6ac099e7c4f8714ce5e6c11bdfe378887daa2bd877b7f5ee6e10bce7cf3342ba",
+        "rgb_sha256": "653d1d52bb39c3d7f2fc25271e2ad1c1a0dc1447e97c7beaf8b3a279a7f4de05",
+        "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-151226",
+        "owned_recipe_provenance": "build/areas-acceptance-20261026-123350/request-19.json"
+      },
+      {
+        "capture": "Pen-status-contents-stale-unit-before-item-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant_entity": 0,
+            "occupant_id": -1,
+            "solid_color": "COPPER"
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "6ac099e7c4f8714ce5e6c11bdfe378887daa2bd877b7f5ee6e10bce7cf3342ba",
+        "rgb_sha256": "653d1d52bb39c3d7f2fc25271e2ad1c1a0dc1447e97c7beaf8b3a279a7f4de05",
+        "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-151226",
+        "owned_recipe_provenance": "build/areas-acceptance-20261026-123350/request-19.json"
+      },
+      {
+        "capture": "Pen-status-contents-stale-item-before-unit-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant_entity": 1,
+            "occupant_id": 6960,
+            "solid_color": "COPPER",
+            "occupant": {
+              "layers": [
+                [
+                  0,
+                  0,
+                  7,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "CREATURES_DOMESTIC"
+              ]
+            }
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "9fdeaa18c6b6ed8c821759b18dbb9467042397ae78d099210a5eacf998a3d7fd",
+        "rgb_sha256": "ae9fd0fc1a2f0fc6c244b3e54353765429ed8a2193b906426927aa3e4d273180",
+        "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-151226",
+        "owned_recipe_provenance": "build/areas-acceptance-20261026-123350/request-19.json"
+      },
+      {
+        "capture": "Pen-status-contents-inert-item-before-critter-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant_entity": 2,
+            "occupant_id": 5969,
+            "solid_color": "COPPER",
+            "occupant": {
+              "layers": [
+                [
+                  0,
+                  0,
+                  69,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "CREATURES_SMALL"
+              ]
+            }
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "16fb413a6d98666b44e83912d9b7fe5b2c3f1d3cfa948add5408c843c160441e",
+        "rgb_sha256": "b16d7e202a4249cf0c4ee561efa506e3d604d5c7bb80dd21ccf1891f123924a1",
+        "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-151226",
+        "owned_recipe_provenance": "build/areas-acceptance-20261026-123350/request-19.json"
+      },
+      {
+        "capture": "Pen-status-contents-unit-before-critter-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant_entity": 1,
+            "occupant_id": 6960,
+            "solid_color": "COPPER",
+            "occupant": {
+              "layers": [
+                [
+                  0,
+                  0,
+                  7,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "CREATURES_DOMESTIC"
+              ]
+            }
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "9fdeaa18c6b6ed8c821759b18dbb9467042397ae78d099210a5eacf998a3d7fd",
+        "rgb_sha256": "ae9fd0fc1a2f0fc6c244b3e54353765429ed8a2193b906426927aa3e4d273180",
+        "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-151226",
+        "owned_recipe_provenance": "build/areas-acceptance-20261026-123350/request-19.json"
+      },
+      {
+        "capture": "Pen-status-contents-critter-before-unit-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant_entity": 2,
+            "occupant_id": 5969,
+            "solid_color": "COPPER",
+            "occupant": {
+              "layers": [
+                [
+                  0,
+                  0,
+                  69,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "CREATURES_SMALL"
+              ]
+            }
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "16fb413a6d98666b44e83912d9b7fe5b2c3f1d3cfa948add5408c843c160441e",
+        "rgb_sha256": "b16d7e202a4249cf0c4ee561efa506e3d604d5c7bb80dd21ccf1891f123924a1",
+        "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-151226",
+        "owned_recipe_provenance": "build/areas-acceptance-20261026-123350/request-19.json"
+      },
+      {
+        "capture": "Pen-status-contents-inactive-unit-before-critter-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant_entity": 0,
+            "occupant_id": -1,
+            "solid_color": "COPPER"
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "6ac099e7c4f8714ce5e6c11bdfe378887daa2bd877b7f5ee6e10bce7cf3342ba",
+        "rgb_sha256": "653d1d52bb39c3d7f2fc25271e2ad1c1a0dc1447e97c7beaf8b3a279a7f4de05",
+        "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-151226",
+        "owned_recipe_provenance": "build/areas-acceptance-20261026-123350/request-19.json"
+      },
+      {
+        "capture": "Pen-status-contents-vermin-before-unit-6960",
+        "row": {
+          "animal_container": {
+            "material_family": 0,
+            "occupant_entity": 2,
+            "occupant_id": 48521,
+            "solid_color": "COPPER",
+            "occupant": {
+              "layers": [
+                [
+                  0,
+                  0,
+                  69,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "CREATURES_SMALL"
+              ]
+            }
+          },
+          "animal_display": {
+            "columns": 27,
+            "combined_fits": true,
+            "first_line": "Stray Drake, \u2642 (Tame)",
+            "name_color": {
+              "alternate": [
+                2,
+                0,
+                0
+              ],
+              "color": [
+                2,
+                0,
+                0
+              ],
+              "effect": 0
+            },
+            "second_line": "",
+            "warning": ""
+          },
+          "animal_status": {
+            "containment": 2,
+            "item_id": 28448,
+            "kind": 4
+          },
+          "assigned": false,
+          "entity": 1,
+          "grazer": false,
+          "id": 6960,
+          "mood": 0,
+          "name": "Stray Drake, \u2642 (Tame)",
+          "profession": "Stray Drake, \u2642 (Tame)",
+          "sex": 1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                7,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_DOMESTIC"
+            ]
+          },
+          "squad_use": -1
+        },
+        "selected": false,
+        "native_pixel_origin": [
+          616,
+          232
+        ],
+        "rgba_sha256": "16fb413a6d98666b44e83912d9b7fe5b2c3f1d3cfa948add5408c843c160441e",
+        "rgb_sha256": "b16d7e202a4249cf0c4ee561efa506e3d604d5c7bb80dd21ccf1891f123924a1",
+        "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-151901",
+        "recipe_provenance": "Same creature/caste as the existing owned PET recipe; native VERMIN tile equality is recorded in animal_live_vermin_reference."
       }
     ],
     "limitations": [
@@ -14222,6 +14956,31 @@
           36
         ],
         "rgb_sha256": "299bffc18d1d23f989c9bf54ce5825270dfc4fa183b458fb2a1f84a0590dbb7b"
+      },
+      {
+        "capture": "Pond-live-vermin",
+        "row": {
+          "id": 48521,
+          "entity": 2,
+          "name": "(live masked lovebird)",
+          "assigned": false,
+          "animal_item_color": {
+            "foreground": 2,
+            "background": 0,
+            "bright": 1
+          }
+        },
+        "selected": false,
+        "pixel_origin": [
+          416,
+          340
+        ],
+        "size": [
+          200,
+          36
+        ],
+        "rgb_sha256": "0200785bb21dc81e5447feaf0351e9b08fee1bddd6fbe18a600c78a77800973e",
+        "native_provenance": "build/stockpile-storage-native-zone-animals-20261026-151901"
       }
     ],
     "scope": "Native item text and row background region; excludes portrait, checkbox and status art."
@@ -16050,8 +16809,88 @@
     ],
     "scope": "Native rendered cage cache keys compared against owned semantic reader results; original references restored before subsequent assignment checks. Cache access is diagnostic only.",
     "limitations": [
-      "These cases verify occupant identity and material facts, not complete Godot composite pixels.",
-      "The live critter here is the existing item 5969; a separate VERMIN artwork case remains outstanding."
+      "Full Godot composite-pixel coverage for these cases is recorded in animal_container_pixels.",
+      "Native cache keys are diagnostic oracle input only."
     ]
+  },
+  "animal_live_vermin_reference": {
+    "provenance": "build/stockpile-storage-native-zone-animals-20261026-151901",
+    "owned_df_pid": 112188,
+    "source_unchanged_unsaved_exit": true,
+    "fixture": {
+      "caste": 0,
+      "id": 48521,
+      "item_type": "51",
+      "live_animal": true,
+      "name": "live-vermin-fixture",
+      "race": 112,
+      "source": 5969
+    },
+    "portrait": {
+      "id": 48521,
+      "item_type": "51",
+      "live_animal": true,
+      "art": {
+        "caste": 0,
+        "creature": "BIRD_LOVEBIRD_MASKED",
+        "page": "CREATURES_SMALL",
+        "race": 112,
+        "scope": "creature",
+        "texpos": 91091,
+        "x": 0,
+        "y": 69
+      },
+      "rect": [
+        47,
+        28,
+        50,
+        30
+      ]
+    },
+    "text": {
+      "bytes": [
+        40,
+        108,
+        105,
+        118,
+        101,
+        32,
+        109,
+        97,
+        115,
+        107,
+        101,
+        100,
+        32,
+        108,
+        111,
+        118,
+        101,
+        98,
+        105,
+        114,
+        100,
+        41
+      ],
+      "color": [
+        2,
+        0,
+        1
+      ],
+      "exact": true,
+      "id": 48521,
+      "text_origin": [
+        52,
+        29
+      ],
+      "ui_unchanged": true,
+      "widget_rect": [
+        52,
+        30,
+        72,
+        29
+      ]
+    },
+    "scope": "Real VERMIN instance with the existing PET creature/caste; native portrait tile and text/color compared with semantic facts. Original fixture species is unchanged."
   }
 }

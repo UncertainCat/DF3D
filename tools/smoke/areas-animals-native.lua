@@ -427,7 +427,7 @@ local function capture(label,keep_mouse)
     end
     assert(art.page,'critter artwork is not an original tile-page reference')
     assert(cells[1].screentexpos_anchored==texpos,'native item portrait differs from semantic critter tile')
-    record.item_portrait_anchors[#record.item_portrait_anchors+1]={id=row.portrait_item_id,rect={row.x,row.y,row.x2,row.y2},vtable_rva=row.vtable_rva,cells=cells,art=art}
+    record.item_portrait_anchors[#record.item_portrait_anchors+1]={id=row.portrait_item_id,rect={row.x,row.y,row.x2,row.y2},vtable_rva=row.vtable_rva,item_type=tostring(item:getType()),live_animal=item:isLiveAnimal(),cells=cells,art=art}
    end
   end
   record.item_text={}
@@ -552,7 +552,8 @@ local function controls(prefix,searches)
   if query=='GRAZER' or query=='5969' or query=='female' then
    assert(#observed.displayed==0,'native search matched absent description text')
   elseif query=='lovebird' then
-   assert(#observed.displayed==2 and observed.displayed[1].kind==1 and observed.displayed[2].kind==1,'native item description search failed')
+   assert(#observed.displayed==3,'native item description search missed a PET/VERMIN fixture')
+   for _,entry in ipairs(observed.displayed)do assert(entry.kind==1,'native item search returned a unit')end
   end
  end
  reopen()
@@ -679,6 +680,24 @@ do
  if pet then df.global.world.items.other.PET:insert('#',extra)
  else df.global.world.items.other.VERMIN:insert('#',extra)end
  records[#records+1]={name='equal-name-item-fixture',original=original.id,extra=extra.id,item_type=tostring(original:getType())}
+end
+-- A live VERMIN instance exercises its actual virtual dispatch separately from PET.
+-- Retain it until this owned unsaved session exits, as native widgets keep pointers.
+local vermin_fixture
+do
+ local original=assert(df.global.world.items.other.ANY_CRITTER[0])
+ local extra=df.item_verminst:new()
+ extra.id=df.global.item_next_id;df.global.item_next_id=extra.id+1
+ extra.race=original.race;extra.caste=original.caste
+ extra.flags.whole=original.flags.whole;extra.flags2.whole=original.flags2.whole
+ extra.pos:assign(original.pos)
+ df.global.world.items.all:insert('#',extra)
+ df.global.world.items.other.ANY_CRITTER:insert('#',extra)
+ df.global.world.items.other.VERMIN:insert('#',extra)
+ assert(extra:isLiveAnimal(),'VERMIN fixture is not a live animal')
+ vermin_fixture=extra
+ records[#records+1]={name='live-vermin-fixture',id=extra.id,source=original.id,
+  item_type=tostring(extra:getType()),race=extra.race,caste=extra.caste,live_animal=true}
 end
 local base=assert(df.global.world.buildings.other.ANY_ZONE[0])
 local p={x=base.centerx,y=base.centery,z=base.z}
@@ -816,6 +835,7 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
    local item_ref=df.general_ref_contains_itemst:new();item_ref.item_id=critter.id
    local inert_ref=df.general_ref_contains_itemst:new();inert_ref.item_id=container.id
    local stale_item=df.general_ref_contains_itemst:new();stale_item.item_id=-1
+   local vermin_ref=df.general_ref_contains_itemst:new();vermin_ref.item_id=vermin_fixture.id
    local function replace(refs)
     for index=#container.general_refs-1,0,-1 do container.general_refs:erase(index)end
     for _,ref in ipairs(refs)do container.general_refs:insert('#',ref)end
@@ -827,6 +847,7 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
     {'inert-item-before-critter',{inert_ref,item_ref},2,critter.id},
     {'unit-before-critter',{unit_ref,item_ref},1,animal.id},
     {'critter-before-unit',{item_ref,unit_ref},2,critter.id},
+    {'vermin-before-unit',{vermin_ref,unit_ref},2,vermin_fixture.id},
     {'inactive-unit-before-critter',{unit_ref,item_ref},0,-1,true},
    }do
     replace(probe[2]);animal.flags1.inactive=probe[5] or false
@@ -840,7 +861,7 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
      'unexpected native cage occupant: '..probe[1])
    end
    animal.flags1.whole=original_flags;replace(original_refs)
-   for _,ref in ipairs{unit_ref,stale_unit,item_ref,inert_ref,stale_item}do ref:delete()end
+   for _,ref in ipairs{unit_ref,stale_unit,item_ref,inert_ref,stale_item,vermin_ref}do ref:delete()end
   end
   status_hover('Pen-status-current-cage-hover',animal.id,0x170)
   local chain_item=df.buildingitemst:new();chain_item.item=contained:getItem();chain.contained_items:insert('#',chain_item)

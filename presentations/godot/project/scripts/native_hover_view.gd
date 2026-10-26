@@ -12,6 +12,12 @@ const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
 const CONTAINMENT_HELP = [
 	["The creature is chained."], ["The creature is caged."],
 	["The creature is set to","be chained."], ["The creature is set to","be caged."]]
+# Native squad renderer3ac631..3ac655, hover349..352; captured wrapping.
+const SQUAD_HELP = {
+	1:["Toggle whether the","squad will sleep here."],
+	2:["Toggle whether the","squad will train here."],
+	4:["Toggle whether the","soldiers will store","their individually","assigned weapons and","armor here."],
+	8:["Toggle whether the","squad will store","squad-level equipment","here, such as","ammunition."]}
 var state=State.new()
 var art=preload("res://scripts/original_ui.gd").new()
 var displayed := ""
@@ -43,6 +49,10 @@ func enter_containment(owner: int, relation: int) -> void:
 	if relation in [1,2,3,4]: state.enter(owner,"containment_"+str(relation),Time.get_ticks_msec())
 	_process(0)
 
+func enter_squad_use(owner: int, use: int) -> void:
+	if SQUAD_HELP.has(use): state.enter(owner,"squad_"+str(use),Time.get_ticks_msec())
+	_process(0)
+
 func enter_owner_filter(owner: int) -> void:
 	# Native textbox widget logic activates immediately; it does not warm the
 	# independent main-interface hover-instruction timer used by recenter.
@@ -71,7 +81,8 @@ func _draw() -> void:
 			var frame_y := 0 if displayed=="owner_filter" and y==0 else (24 if y==17 else 12)
 			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2(0 if x==0 else 8,frame_y,8,12))
 	var lines: Array
-	if displayed.begins_with("containment_"): lines=CONTAINMENT_HELP[int(displayed.trim_prefix("containment_"))-1]
+	if displayed.begins_with("squad_"): lines=SQUAD_HELP[int(displayed.trim_prefix("squad_"))]
+	elif displayed.begins_with("containment_"): lines=CONTAINMENT_HELP[int(displayed.trim_prefix("containment_"))-1]
 	else: lines=OWNER_RECENTER_HELP if displayed=="owner_recenter" else (OWNER_FILTER_HELP if displayed=="owner_filter" else ACCESS_HELP[int(displayed)])
 	var offset := 1 if displayed=="owner_filter" else 0
 	for row in lines.size():

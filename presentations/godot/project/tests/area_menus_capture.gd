@@ -507,6 +507,10 @@ func run() -> void:
 	await process_frame; await RenderingServer.frame_post_draw
 	if root.get_texture().get_image().save_png(directory.path_join("controller_zone_animals.png")) != OK: quit(1); return
 	controller.handle_back()
+	var squad_help=preload("res://scripts/native_hover_view.gd").new()
+	root.add_child(squad_help);squad_help.configure(world);squad_help.layout(Vector2(root.size));squad_help.set_process(false)
+	controller.candidates_view.native_help=squad_help
+	var squad_hover_reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_squads.json")).hover_reference
 	for type_name in ["Barracks","ArcheryRange"]:
 		var squad_zone: Dictionary = bedroom.duplicate(true); squad_zone.owner_allowed = false
 		for definition in controller.zone_types:
@@ -541,7 +545,33 @@ func run() -> void:
 			crop.save_png(directory.path_join("squad-symbol-"+str(sample.capture)+"-"+str(sample.id)+".png"))
 			if str(sample.capture)==type_name+"-picker" and int(sample.id)==120:
 				root.get_texture().get_image().save_png(directory.path_join("controller_squad_symbol_"+type_name.to_lower()+".png"))
+		for sample in squad_hover_reference.observations:
+			if not str(sample.capture).begins_with(type_name+"-"):continue
+			var target:Button
+			for control in controller.candidates_view.squad_buttons:
+				if int(control.get_meta("squad_use"))==int(sample.use):target=control;break
+			if target==null or not target.tooltip_text.is_empty() or squad_help.SQUAD_HELP[int(sample.use)]!=sample.lines:
+				push_error("Squad native help mapping/text differs");quit(1);return
+			squad_help.reset()
+			var motion:=InputEventMouseMotion.new();motion.position=Vector2(4,400);motion.global_position=motion.position;root.push_input(motion,true)
+			motion=InputEventMouseMotion.new();motion.position=target.get_global_rect().get_center();motion.global_position=motion.position;root.push_input(motion,true)
+			if squad_help.state.key!="squad_"+str(int(sample.use)) or squad_help.visible:
+				push_error("Squad hover hitbox/delay differs");quit(1);return
+			squad_help.state.started=Time.get_ticks_msec()-500;squad_help._process(0)
+			if not squad_help.visible:push_error("Squad help absent after dwell");quit(1);return
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory.path_join("squad-"+str(sample.capture)+".png"))
+			motion=InputEventMouseMotion.new();motion.position=Vector2(4,400);motion.global_position=motion.position;root.push_input(motion,true)
+			if squad_help.visible:push_error("Squad hover survived pointer leave");quit(1);return
+			target.mouse_entered.emit();controller.candidates_state.mutating=true;controller.candidates_view.refresh()
+			if squad_help.visible:push_error("Busy squad retained hover");quit(1);return
+			controller.candidates_state.mutating=false;controller.candidates_view.refresh()
+			target.mouse_entered.emit();controller.candidates_view.hide()
+			if squad_help.visible:push_error("Hidden squad retained hover");quit(1);return
+			controller.candidates_view.show()
 		controller.handle_back()
+		if squad_help.visible or not squad_help.state.key.is_empty():push_error("Closed squad picker retained hover");quit(1);return
+	controller.candidates_view.native_help=null;squad_help.free()
 	controller.use_area(bedroom); controller.zone_menu.controls.location.pressed.emit(); service.poll()
 	world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":9,"status":2,
 		"area":{"list_revision":98,"locations":[{"id":0,"name":"The Golden Shrine","location_kind":2,"religion":"The Bejeweled Creed"},

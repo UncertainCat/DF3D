@@ -3546,5 +3546,216 @@
         "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
       }
     }
+  },
+  "hover_reference": {
+    "run": "build/stockpile-storage-native-zone-squads-20261026-175215",
+    "scope": "Native hover identities and rendered glyph rows from actual view; screenshot hover presentation not yet established. Renderer3ac631..3ac655 selects hover349..352.",
+    "observations": [
+      {
+        "capture": "Barracks-hover-sleep",
+        "hover": 349,
+        "use": 1,
+        "lines": [
+          "Toggle whether the",
+          "squad will sleep here."
+        ]
+      },
+      {
+        "capture": "Barracks-hover-train",
+        "hover": 350,
+        "use": 2,
+        "lines": [
+          "Toggle whether the",
+          "squad will train here."
+        ]
+      },
+      {
+        "capture": "Barracks-hover-equipment",
+        "hover": 351,
+        "use": 4,
+        "lines": [
+          "Toggle whether the",
+          "soldiers will store",
+          "their individually",
+          "assigned weapons and",
+          "armor here."
+        ]
+      },
+      {
+        "capture": "Barracks-hover-individual",
+        "hover": 352,
+        "use": 8,
+        "lines": [
+          "Toggle whether the",
+          "squad will store",
+          "squad-level equipment",
+          "here, such as",
+          "ammunition."
+        ]
+      },
+      {
+        "capture": "ArcheryRange-hover-train",
+        "hover": 350,
+        "use": 2,
+        "lines": [
+          "Toggle whether the",
+          "squad will train here."
+        ]
+      }
+    ],
+    "result_sha256": "139e7eeecc1c4dc9d6c9092f942969357a47ecf1ba73b24fa3080c9c760b455c",
+    "controls": [
+      {
+        "capture": "Barracks-picker",
+        "id": 120,
+        "use": 1,
+        "tile": "ZONE_SQUAD_SLEEP_INACTIVE",
+        "rgb_sha256": "49afaf2d8e912d4bb8910e652990d846e45aa30867848c2e8278564401e37b56"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 120,
+        "use": 2,
+        "tile": "ZONE_SQUAD_TRAIN_ACTIVE",
+        "rgb_sha256": "c1d4969a563d5eb43766aaa57123215beae6c5caec61b43d083afee4bc7a0fd1"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 120,
+        "use": 4,
+        "tile": "ZONE_SQUAD_INDIV_EQ_ACTIVE",
+        "rgb_sha256": "e52b9ee7b3d5dee17431f1197549033315eae7f7b4bbd6503db9f77fe8e8ccc5"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 120,
+        "use": 8,
+        "tile": "ZONE_SQUAD_SQUAD_EQ_ACTIVE",
+        "rgb_sha256": "021babf5ef6f69dab943935bb1cce060b2c150986d04b1b2b126157af9f01d1a"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 125,
+        "use": 1,
+        "tile": "ZONE_SQUAD_SLEEP_INACTIVE",
+        "rgb_sha256": "49afaf2d8e912d4bb8910e652990d846e45aa30867848c2e8278564401e37b56"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 125,
+        "use": 2,
+        "tile": "ZONE_SQUAD_TRAIN_INACTIVE",
+        "rgb_sha256": "337d4114e1804bd792e2ea4defba8382755a4a56bb51e7bcaa0f75f344d91a85"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 125,
+        "use": 4,
+        "tile": "ZONE_SQUAD_INDIV_EQ_INACTIVE",
+        "rgb_sha256": "3d57effc30fd999d2f7e7a83698adf8bf6782ff72e79343d3325dd8dcbd47a6c"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 125,
+        "use": 8,
+        "tile": "ZONE_SQUAD_SQUAD_EQ_INACTIVE",
+        "rgb_sha256": "5bb828f6dae38f7012557d05ccbc4629c84f214ff5a0420cbd216e1f5499f028"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 128,
+        "use": 1,
+        "tile": "ZONE_SQUAD_SLEEP_INACTIVE",
+        "rgb_sha256": "49afaf2d8e912d4bb8910e652990d846e45aa30867848c2e8278564401e37b56"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 128,
+        "use": 2,
+        "tile": "ZONE_SQUAD_TRAIN_INACTIVE",
+        "rgb_sha256": "337d4114e1804bd792e2ea4defba8382755a4a56bb51e7bcaa0f75f344d91a85"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 128,
+        "use": 4,
+        "tile": "ZONE_SQUAD_INDIV_EQ_INACTIVE",
+        "rgb_sha256": "3d57effc30fd999d2f7e7a83698adf8bf6782ff72e79343d3325dd8dcbd47a6c"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 128,
+        "use": 8,
+        "tile": "ZONE_SQUAD_SQUAD_EQ_INACTIVE",
+        "rgb_sha256": "5bb828f6dae38f7012557d05ccbc4629c84f214ff5a0420cbd216e1f5499f028"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 132,
+        "use": 1,
+        "tile": "ZONE_SQUAD_SLEEP_INACTIVE",
+        "rgb_sha256": "49afaf2d8e912d4bb8910e652990d846e45aa30867848c2e8278564401e37b56"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 132,
+        "use": 2,
+        "tile": "ZONE_SQUAD_TRAIN_INACTIVE",
+        "rgb_sha256": "337d4114e1804bd792e2ea4defba8382755a4a56bb51e7bcaa0f75f344d91a85"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 132,
+        "use": 4,
+        "tile": "ZONE_SQUAD_INDIV_EQ_INACTIVE",
+        "rgb_sha256": "3d57effc30fd999d2f7e7a83698adf8bf6782ff72e79343d3325dd8dcbd47a6c"
+      },
+      {
+        "capture": "Barracks-picker",
+        "id": 132,
+        "use": 8,
+        "tile": "ZONE_SQUAD_SQUAD_EQ_INACTIVE",
+        "rgb_sha256": "5bb828f6dae38f7012557d05ccbc4629c84f214ff5a0420cbd216e1f5499f028"
+      },
+      {
+        "capture": "ArcheryRange-picker",
+        "id": 120,
+        "use": 2,
+        "tile": "ZONE_SQUAD_TRAIN_INACTIVE",
+        "rgb_sha256": "337d4114e1804bd792e2ea4defba8382755a4a56bb51e7bcaa0f75f344d91a85"
+      },
+      {
+        "capture": "ArcheryRange-picker",
+        "id": 125,
+        "use": 2,
+        "tile": "ZONE_SQUAD_TRAIN_INACTIVE",
+        "rgb_sha256": "337d4114e1804bd792e2ea4defba8382755a4a56bb51e7bcaa0f75f344d91a85"
+      },
+      {
+        "capture": "ArcheryRange-picker",
+        "id": 128,
+        "use": 2,
+        "tile": "ZONE_SQUAD_TRAIN_INACTIVE",
+        "rgb_sha256": "337d4114e1804bd792e2ea4defba8382755a4a56bb51e7bcaa0f75f344d91a85"
+      },
+      {
+        "capture": "ArcheryRange-picker",
+        "id": 132,
+        "use": 2,
+        "tile": "ZONE_SQUAD_TRAIN_INACTIVE",
+        "rgb_sha256": "337d4114e1804bd792e2ea4defba8382755a4a56bb51e7bcaa0f75f344d91a85"
+      }
+    ],
+    "control_scope": "All20 visible first-four-squad control crops in Barracks and Archery match installed rectangles exactly. Bit4 INDIV_EQ; bit8 SQUAD_EQ. Native diagnostic capture names equipment/individual are historical labels, not product copy.",
+    "gpu": {
+      "run": "build/qa/squad-native-help",
+      "status": "passed_with_known_issues",
+      "scope": "Real pointer entry/leave, cold delay, help text/wrapping, busy/hide/close cleanup for all5 native hover observations; output images visually inspected. Native screenshot parity remains unverified.",
+      "known": [
+        "godot-separate-thread-notice",
+        "godot-device-finalize",
+        "godot-shutdown-objects"
+      ]
+    }
   }
 }

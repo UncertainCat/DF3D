@@ -69,10 +69,28 @@ def verify(run: Path, df_path: Path) -> dict:
     result = json.loads((run / 'result.json').read_text(encoding='utf-8'))
     assert result['success'], 'native diagnostic failed'
     observations = []
+    controls = []
+    rectangles = {key: tuple(map(int, (x, y, w, h))) for x, y, w, h, key in re.findall(
+        r'\[TILE_GRAPHICS_RECTANGLE:INTERFACE_BITS_ZONES:(\d+):(\d+):(\d+):(\d+):(ZONE_SQUAD_\w+)\]', definitions)}
+    zone_sheet = Image.open(graphics / 'images/interface_bits_zones.png').convert('RGB')
     for record in result['records']:
         if not record.get('symbols'):
             continue
         screenshot = Image.open(run / (record['name'] + '.png')).convert('RGB')
+        if record['name'].endswith('-picker'):
+            uses = {s['id']: s['mode'] for s in record['zone_assignments']}
+            entries = [(1, 'SLEEP'), (2, 'TRAIN'), (4, 'INDIV_EQ'), (8, 'SQUAD_EQ')]
+            if record['name'].startswith('ArcheryRange'): entries = [(2, 'TRAIN')]
+            for row, symbol in enumerate(record['symbols']):
+                for column, (bit, name) in enumerate(entries):
+                    key = 'ZONE_SQUAD_' + name + ('_ACTIVE' if uses.get(symbol['id'], 0) & bit else '_INACTIVE')
+                    x, y, w, h = rectangles[key]
+                    expected = zone_sheet.crop((x*8, y*12, (x+w)*8, (y+h)*12))
+                    left = 896 if len(entries) == 1 else 800 + column*32
+                    observed = screenshot.crop((left, 100+row*36, left+32, 136+row*36))
+                    assert observed.tobytes() == expected.tobytes(), f'{record["name"]} row{row} {key} differs'
+                    controls.append(dict(capture=record['name'], id=symbol['id'], use=bit, tile=key,
+                                         rgb_sha256=hashlib.sha256(observed.tobytes()).hexdigest()))
         for row, symbol in enumerate(record['symbols']):
             x, y = map(int, tiles[symbol['index']])
             assert (symbol['page'], symbol['x'], symbol['y']) == ('CUSTOM_SYMBOLS', x, y)
@@ -97,7 +115,7 @@ def verify(run: Path, df_path: Path) -> dict:
     assert len(observations) == 31, 'missing ordinary picker rows'
     return dict(scope='All23 masks plus4 ordinary squads in each picker; exact solid/blended RGBA and rendered32x32 RGB',
                 source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(), observations=observations,
-                initialization=verify_initialization(result['records']))
+                initialization=verify_initialization(result['records']), controls=controls)
 
 
 if __name__ == '__main__':

@@ -32,12 +32,21 @@ local function mapclick(p)
  end end
  error('squad fixture tile not visible')
 end
-local function capture(name,b)
- g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0
- for i=1,3 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+local function capture(name,b,keep_mouse)
+ if not keep_mouse then g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0 end
+ local mouse={g.precise_mouse_x,g.precise_mouse_y,g.mouse_x,g.mouse_y}
+ local function restore_mouse()
+  if not keep_mouse then return end
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=mouse[1];g.precise_mouse_y=mouse[2];g.mouse_x=mouse[3];g.mouse_y=mouse[4]
+  gui.simulateInput(view,{})
+ end
+ for i=1,3 do restore_mouse();view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+ if keep_mouse then restore_mouse();view:render(dfhack.getTickCount())end
  local ui=main.squad_selector
  local row={name=name,zone=b.id,zone_type=tostring(b.type),open=ui.open,context=ui.context,
-  target=ui.bld_id,scroll=ui.scroll_position,ids={},zone_assignments={},squads={},lines={}}
+  target=ui.bld_id,scroll=ui.scroll_position,ids={},zone_assignments={},squads={},lines={},
+  hover=main.current_hover,hover_enabled=main.hover_instructions_on}
  for _,id in ipairs(ui.squad_id)do row.ids[#row.ids+1]=id end
  if ui.open then
   local guards={}
@@ -119,7 +128,8 @@ local function capture(name,b)
  local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local limit=dfhack.getTickCount()+30000
  while true do local ack=io.open(out..'/ack-'..name,'r');if ack then ack:close();break end
-  assert(dfhack.getTickCount()<limit,'capture timed out');script.sleep(1,'frames')end
+  assert(dfhack.getTickCount()<limit,'capture timed out')
+  script.sleep(1,'frames')end
  return row
 end
 local function mode(b,id)
@@ -169,6 +179,23 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
  assert(#opened.ids>=2,'squad fixture needs two squads')
  rack_fixture.start(b,{opened.ids[1],opened.ids[2]})
  local columns=kind=='Barracks' and {{'sleep',816,1},{'train',848,2},{'equipment',880,4},{'individual',912,8}} or {{'train',912,2}}
+ for _,column in ipairs(columns)do
+  local deadline=dfhack.getTickCount()+900
+  repeat
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=column[2];g.precise_mouse_y=118;g.mouse_x=column[2]//8;g.mouse_y=9
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+  until dfhack.getTickCount()>=deadline
+  g.precise_mouse_x=column[2];g.precise_mouse_y=118;g.mouse_x=column[2]//8;g.mouse_y=9
+  local observed=capture(kind..'-hover-'..column[1],b,true)
+  local expected=({[1]=0x15d,[2]=0x15e,[4]=0x15f,[8]=0x160})[column[3]]
+  assert(observed.hover_enabled and observed.hover==expected,'native squad hover differs')
+  observed.hover_text={}
+  for y=1,18 do
+   local line={};for x=g.dimx-24,g.dimx-1 do local ch=observed.lines[y][x+1];line[#line+1]=ch>=33 and ch<=255 and string.char(ch) or ' ' end
+   observed.hover_text[#observed.hover_text+1]=table.concat(line):gsub('%s+$','')
+  end
+ end
  for _,column in ipairs(columns)do
   for n=1,2 do toggle(kind..'-first-'..column[1]..'-'..n,b,opened.ids[1],column[2],118,column[3])end
  end

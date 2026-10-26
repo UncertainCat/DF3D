@@ -258,7 +258,9 @@ func refresh() -> void:
 		button.disabled = state.busy()
 		var hover = button.get_node_or_null("AnimalContainmentHover")
 		if button.disabled and hover != null and native_help != null: native_help.leave(hover.get_instance_id())
-	for button in squad_buttons: button.disabled = state.busy() or bool(button.get_meta("unknown",false))
+	for button in squad_buttons:
+		button.disabled = state.busy() or bool(button.get_meta("unknown",false))
+		if button.disabled and native_help != null: native_help.leave(button.get_instance_id())
 	for button in focus_buttons:
 		button.disabled = state.busy() or unit_tile(int(button.get_meta("unit_id"))).x < 0
 		if button.disabled and native_help != null: native_help.leave(button.get_instance_id())
@@ -513,7 +515,7 @@ func add_squad(row: Dictionary) -> void:
 	style.set_content_margin(SIDE_LEFT,56)
 	for key in ["normal","hover","pressed","disabled","focus"]: button.add_theme_stylebox_override(key,style)
 	rows_box.add_child(button); choices.append(button)
-	var entries := [[1,"SLEEP","Sleep"],[2,"TRAIN","Train"],[4,"INDIV_EQ","Store individual equipment"],[8,"SQUAD_EQ","Store squad equipment"]]
+	var entries := [[1,"SLEEP"],[2,"TRAIN"],[4,"INDIV_EQ"],[8,"SQUAD_EQ"]]
 	if row.get("squad_symbol") is Dictionary:
 		var symbol := TextureRect.new(); symbol.name = "SquadSymbol"
 		symbol.position = Vector2(0,2); symbol.size = Vector2(32,32)
@@ -524,7 +526,7 @@ func add_squad(row: Dictionary) -> void:
 		if (int(entry[0]) & state.squad_mask) == 0: continue
 		var control := Button.new(); control.size = Vector2(32,36)
 		control.position = Vector2(520 if state.squad_mask == 2 else 424+index*32,0)
-		control.tooltip_text = str(entry[2])
+		control.set_meta("squad_use",int(entry[0]))
 		for key in ["normal","hover","pressed","disabled","focus"]: control.add_theme_stylebox_override(key,StyleBoxEmpty.new())
 		var use := int(row.get("squad_use",-1)); control.set_meta("unknown",use < 0)
 		var icon := TextureRect.new(); icon.size = Vector2(32,36)
@@ -532,6 +534,17 @@ func add_squad(row: Dictionary) -> void:
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE; control.add_child(icon)
 		control.pressed.connect(func(): state.toggle_squad(int(row.id),int(entry[0])))
 		button.add_child(control); squad_buttons.append(control)
+		bind_squad_help(control,int(entry[0]))
+
+func bind_squad_help(control: Button, use: int) -> void:
+	if native_help == null: return
+	var owner := control.get_instance_id()
+	control.mouse_entered.connect(func():
+		if not control.disabled: native_help.enter_squad_use(owner,use))
+	control.mouse_exited.connect(func(): native_help.leave(owner))
+	control.visibility_changed.connect(func():
+		if not control.is_visible_in_tree(): native_help.leave(owner))
+	control.tree_exiting.connect(func(): native_help.leave(owner))
 
 func unit_tile(id: int) -> Vector3i:
 	return world.unit_tile(id) if world.has_method("unit_tile") else Vector3i(-1,-1,-1)

@@ -208,6 +208,25 @@ initializes and transports their actual saved fields; assignments, simulation
 and restart from DF138208 to DF142040 pass. Both save manifests remain unchanged
 (1,368 files). This does not establish the remaining squad tooltip/input parity.
 
+Squad-use controls now use the shared native hover-instruction area instead of
+generic Godot tooltips. `native_zone_squads.json.hover_reference` records native
+hover349..352 and exact rendered glyph rows from protected
+`build/stockpile-storage-native-zone-squads-20261026-175215`. Barracks exposes all
+four messages; Archery exposes training. Native renderer3ac631..3ac655 selects
+these identities. Equipment bit4 is individual weapons/armor; bit8 is squad-level
+equipment such as ammunition. All20 first-four-squad control crops match the
+installed active/inactive rectangles exactly through the symbol verifier.
+
+GPU `build/qa/squad-native-help` passes with the three known separate-thread,
+device-finalize and shutdown-object diagnostics. It exercises actual pointer
+entry/leave, the shared cold dwell, native text/wrapping, and busy/hide/close
+cleanup for each observed control. Rendered help images were inspected. Native
+tooltip screenshot parity remains unverified: hidden-window captures lose the
+hover even though the diagnostic glyph rows show the expected help. Attempts to
+retain input or render repeatedly did not establish a valid native screenshot;
+those images are not accepted tooltip evidence. Long-name clipping, full-name
+hover behavior and broader picker input/lifecycle remain unfinished.
+
 ## Animal keyboard activation and portrait reference
 
 `native_zone_animals.json.animal_container_reference_order` records seven

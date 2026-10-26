@@ -1,3 +1,19 @@
+## Typed animal chooser selection
+
+Animal button callbacks retain both entity and ID. State resolves the observed
+row by that pair, then emits the corresponding unit_id or item_id and its
+observed assignment toggle. Unknown/invalid identities and pending mutations
+cannot submit. Observed rows remain unchanged until a reply refreshes them.
+
+build/qa/animal-typed-selection-final passes root CTest19/19, area candidate
+state, areas controller and management contract tests. Colliding unit/item IDs
+are tested in both row orders, including different assigned states. GPU
+area_menus_capture passes with the three documented Godot shutdown/thread
+signatures: actual rendered callbacks retain typed identities, the item button
+emits only item_id, and only the unit row requests a creature portrait.
+This is identity/input coverage; full native animal layout, item artwork and
+connected candidate workflow remain unfinished. No bridge/schema change.
+
 ## Native zone animal candidate reader
 
 The independent reader uses native fortress-control predicate 0x138ed20 and
@@ -25,8 +41,8 @@ MSVC builds in build/notes/pm/zone-animal-candidates-final-build.log.
 Installed plugin SHA256:
 6372bec1504b9285a0a72c44dc665e6047837d6d0704bb3e00cb3a7e0e80f758.
 Management remains68. The diagnostic zone-animal-candidates-read exposes
-the reader for native comparisons; product chooser integration, item display
-and typed selection are still pending.
+the reader for native comparisons; product candidate integration and item display
+are still pending.
 
 ## Typed area candidate identities (Management 68)
 
@@ -45,8 +61,10 @@ AreaRequest appends item_id with default -1. AssignUnits requires exactly one
 nonnegative unit_id or item_id, with all other operations rejecting item_id.
 The model and Godot dictionaries preserve it without conversion to a unit ID.
 Item requests dispatch through a separate native item handler; there is no
-unit lookup or handler fallback. Typed chooser state/selection and native item
-candidate display remain unfinished.
+unit lookup or handler fallback. Chooser selection keys use (entity,id), dispatching exactly one unit_id or
+item_id. Missing/Unknown identities cannot submit edits. Item rows never
+request a creature portrait by their numeric ID. Native item candidate
+generation and display remain unfinished.
 
 Core CTest 19/19, areas adapter and the headless Godot management contract pass
 in build/qa/area-typed-candidates-final. Tests cover ambiguous/missing IDs,

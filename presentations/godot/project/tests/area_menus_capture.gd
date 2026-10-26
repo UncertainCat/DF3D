@@ -3,6 +3,9 @@ extends SceneTree
 const Test = preload("res://tests/areas_test.gd")
 class CaptureWorld extends Test.FakeWorld:
 	var assets
+	var portrait_requests: Array = []
+	func creature_portrait(id: int):
+		portrait_requests.append(id); return null
 	func ui_texture(token: String, index := -1): return assets.ui_texture(token,index)
 	func ui_font_path(): return assets.ui_font_path()
 	func assets_root(): return assets.assets_root()
@@ -632,6 +635,29 @@ func run() -> void:
 	if controller.stockpile_page != "settings" or controller.settings_state.pending.expected_revision != 124 or controller.settings_state.category != "food":
 		push_error("Settings mutation did not refresh against new area revision while preserving navigation"); quit(1); return
 	controller.close_panel(); controller.free(); host.free(); service.free(); interaction.free()
+	# Exercise actual view callbacks with colliding typed identities. This is
+	# input/identity coverage, not acceptance of the unfinished animal layout.
+	var animal_state = preload("res://scripts/area_candidates_state.gd").new()
+	var animal_view = preload("res://scripts/area_candidates_view.gd").new()
+	var animal_requests: Array = []
+	animal_state.request_ready.connect(func(request): animal_requests.append(request))
+	root.add_child(animal_view); animal_view.configure(world,animal_state)
+	world.portrait_requests.clear()
+	animal_state.open({"id":82,"kind":1,"revision":14},2)
+	animal_state.accept({"list_revision":1,"candidates":[
+		{"id":24,"entity":2,"name":"Fixture item","assigned":true},
+		{"id":24,"entity":1,"name":"Fixture unit","assigned":false}]},animal_requests[-1])
+	await process_frame; await RenderingServer.frame_post_draw
+	if animal_view.choices.size() != 2 or world.portrait_requests != [24] or animal_view.portrait_slots.size() != 1:
+		push_error("Animal view confused typed portrait identities"); quit(1); return
+	for index in 2:
+		var expected: Array = [2 if index == 0 else 1,24]
+		if animal_view.choices[index].pressed.get_connections()[0].callable.get_bound_arguments() != expected:
+			push_error("Animal view lost typed button identity"); quit(1); return
+	animal_view.choices[0].pressed.emit()
+	if animal_requests[-1].get("item_id",-1) != 24 or animal_requests[-1].has("unit_id") or animal_requests[-1].assign != 0:
+		push_error("Rendered item button dispatched a unit request"); quit(1); return
+	animal_view.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")
 	quit()

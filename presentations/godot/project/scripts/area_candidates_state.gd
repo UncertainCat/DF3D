@@ -187,14 +187,17 @@ func assign_owner(id: int) -> void:
 	request_ready.emit({"action":C.ManagementAction.AreaUpdate,"id":int(area.id),"kind":1,
 		"expected_revision":int(area.revision),"owner_id":id})
 
-func toggle_animal(id: int) -> void:
-	if busy() or kind != 2: return
+func toggle_animal(entity: int, id: int) -> void:
+	if busy() or kind != 2 or id < 0: return
+	if entity not in [C.AreaCandidateEntity.Unit,C.AreaCandidateEntity.Item]: return
 	for row in rows:
-		if int(row.id) != id: continue
-		mutating = true; changed.emit()
-		request_ready.emit({"action":C.ManagementAction.AreaUpdate,"operation":C.AreaOperation.AssignUnits,
+		if int(row.id) != id or int(row.get("entity",C.AreaCandidateEntity.Unknown)) != entity: continue
+		var request := {"action":C.ManagementAction.AreaUpdate,"operation":C.AreaOperation.AssignUnits,
 			"id":int(area.id),"kind":1,"expected_revision":int(area.revision),
-			"unit_id":id,"assign":0 if bool(row.get("assigned",false)) else 1})
+			"assign":0 if bool(row.get("assigned",false)) else 1}
+		request["item_id" if entity == C.AreaCandidateEntity.Item else "unit_id"] = id
+		mutating = true; changed.emit()
+		request_ready.emit(request)
 		return
 
 func toggle_squad(id: int, bit: int) -> void:

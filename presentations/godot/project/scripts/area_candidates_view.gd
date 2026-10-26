@@ -27,6 +27,7 @@ var squad_buttons: Array[Button] = []
 var native_colors: Array[Color] = []
 var owner_color_rows: Array = []
 var owner_color_random := RandomNumberGenerator.new()
+const Contract = preload("res://scripts/management_contract.gd")
 const NameColor = preload("res://scripts/native_name_color.gd")
 
 func configure(source, model) -> void:
@@ -180,7 +181,7 @@ func refresh() -> void:
 				if bool(row.get("grazer",false)): label += "\nGrazer: requires pasture"
 			var button := row_button(label); button.clip_text = true; button.tooltip_text = label
 			var unit_id := int(row.id)
-			button.pressed.connect(state.toggle_animal.bind(unit_id) if state.kind == 2 else state.assign_owner.bind(unit_id))
+			button.pressed.connect(state.toggle_animal.bind(int(row.get("entity",0)),unit_id) if state.kind == 2 else state.assign_owner.bind(unit_id))
 			rows_box.add_child(button); choices.append(button)
 			if state.kind == 1 and row.get("owner_display") is Dictionary:
 				add_owner_text(button,row.owner_display)
@@ -192,7 +193,7 @@ func refresh() -> void:
 			frame.add_theme_stylebox_override("panel",frame_style)
 			frame.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(frame)
 			if owner: owner_frames.append(frame)
-			if (owner and world.has_method("candidate_icon")) or (not owner and world.has_method("creature_portrait")):
+			if (owner and world.has_method("candidate_icon")) or (not owner and int(row.get("entity",0)) == Contract.AreaCandidateEntity.Unit and world.has_method("creature_portrait")):
 				var portrait := TextureRect.new()
 				portrait.texture = null if owner else world.creature_portrait(int(row.id))
 				portrait.position = Vector2(2,2) if owner else Vector2.ZERO

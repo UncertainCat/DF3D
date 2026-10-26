@@ -184,6 +184,11 @@ std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzon
     if(candidate.status.current_soul)facts.stress=candidate.status.current_soul->personality.stress;
     return facts;
 }
+std::optional<std::string> nativeZoneOwnerQuery(std::string query) {
+    const auto& order=staffOrderingFunctions();
+    if(!order)return std::nullopt;
+    order.normalize(&query);return query;
+}
 bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner) {
     if(!df::global::world || !nativeZoneOwnerReady() || !zone.canBeRoomSubset())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

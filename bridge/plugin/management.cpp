@@ -1318,6 +1318,15 @@ int areaOwnerEligible(lua_State* L) {
   if(eligible.has_value())lua_pushboolean(L,*eligible);else lua_pushnil(L);
   return 1;
 }
+int areaOwnerQuery(lua_State* L) {
+  size_t size=0;const char* value=lua_tolstring(L,1,&size);
+  std::optional<std::string> normalized;
+  if(value && size<=128) {
+    try {normalized=df3d_area::nativeZoneOwnerQuery(std::string(value,size));} catch(...) {}
+  }
+  if(normalized)lua_pushlstring(L,normalized->data(),normalized->size());else lua_pushnil(L);
+  return 1;
+}
 int areaOwnerOrderFacts(lua_State* L) {
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
   auto* unit=Lua::GetDFObject<df::unit>(L,2);
@@ -2197,6 +2206,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaAssignUnit);lua_setfield(L,-2,"assign_unit");
     lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
     lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
+    lua_pushcfunction(L,areaOwnerQuery);lua_setfield(L,-2,"owner_query");
   }
   if(citizenAction(action)) {
     field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());

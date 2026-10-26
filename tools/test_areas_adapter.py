@@ -163,6 +163,7 @@ def main():
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
      r.owner_eligible=owner_eligible
+     r.owner_query=function(query)return query:lower()end
      r.link_areas=workshop_link
      r.settings_layout=settings_layout
      r.settings_preset=settings_preset
@@ -623,7 +624,7 @@ def main():
     for _,u in ipairs(df.global.world.units.active)do u.sex=1;u.flags1={caged=false};u.profession='Worker';u.stress=u.id%7 end
     """)
     lua.execute("df.global.world.units.all=df.global.world.units.active;function owner_eligible(b,u) return u.native_eligible~=false end")
-    lua.execute("function owner_order_facts(b,u) return {without_room=true,priority=0,category=u.id,category_status=0,stress=u.id%7,name_key=string.format('%04d',u.id),profession_key='worker'} end")
+    lua.execute("function owner_order_facts(b,u) return {without_room=true,priority=0,category=u.id,category_status=0,stress=u.id%7,name_key=string.lower(u.label or '')..string.format('%04d',u.id),profession_key='worker'} end")
     selector = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 1, "sort": 1}
     pending = raw_call(14, selector)
     assert pending["ok"] and pending["build_phase"] == 1 and pending["build_done"] == 0
@@ -663,6 +664,20 @@ def main():
     lua.execute("owner_order_facts=saved_owner_order_facts")
     searched = call(14, dict(selector, query="260"))
     assert len(searched["candidates"]) == 1 and searched["candidates"][1]["id"] == 260
+    lua.execute("""
+    local old=owner_order_facts
+    saved_filter_facts=old
+    function owner_order_facts(b,u)
+     local f=old(b,u)
+     if u.id==260 then f.name_key='native title, diagnostician' end
+     return f
+    end
+    """)
+    native_title = call(14, dict(selector, query="DIAGNOSTICIAN"))
+    assert len(native_title["candidates"]) == 1 and native_title["candidates"][1]["id"] == 260
+    assert native_title["query"] == "DIAGNOSTICIAN"  # echo preserves the user's text
+    assert len(call(14, dict(selector, query="260"))["candidates"]) == 0  # no ID shortcut
+    lua.execute("owner_order_facts=saved_filter_facts")
     category = call(14, dict(selector, sort=2))
     assert category["candidates"][1]["id"] == 1  # Cat is native category, not stress
     stress = call(14, dict(selector, sort=4))

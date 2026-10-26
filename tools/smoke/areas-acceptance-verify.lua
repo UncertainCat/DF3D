@@ -213,10 +213,19 @@ elseif request.op=='zone_owner_candidates' then
  local text,code=dfhack.run_command_silent('df3d','zone-owner-candidates-read',tostring(request.id));assert(code==0,text)
  local expected=json.decode(text);local actual={}
  for _,id in ipairs(request.ids)do assert(not actual[id],'duplicate owner candidate');actual[id]=true end
- assert(#expected==#request.ids,'owner candidate count differs')
- for _,id in ipairs(expected)do assert(actual[id],'native owner candidate missing')end
  local order_text,order_code=dfhack.run_command_silent('df3d','zone-owner-order-read',tostring(request.id));assert(order_code==0,order_text)
  local facts=json.decode(order_text)
+ if request.query and request.query~='' then
+  local normalized,normalized_code=dfhack.run_command_silent('df3d','zone-owner-query-read',request.query);assert(normalized_code==0,normalized)
+  local key=string.char(table.unpack(json.decode(normalized)));local selected={};expected={}
+  for _,row in ipairs(facts)do
+   if string.char(table.unpack(row[7])):find(key,1,true)then selected[#selected+1]=row;expected[#expected+1]=row[1]end
+  end
+  facts=selected
+ end
+ assert(#expected==#request.ids,'owner candidate count differs')
+ for _,id in ipairs(expected)do assert(actual[id],'native owner candidate missing')end
+ result.query=request.query or ''
  for i,row in ipairs(facts)do row[9]=i end
  table.sort(facts,function(a,b)
   if a[2]~=b[2]then return a[2]>b[2]end

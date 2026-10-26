@@ -682,8 +682,8 @@ local function step_list(job,r)
    job.complete=true;job.built_tick=tick();job.phase=0;return
   end
   local row=job.rows[job.filter_index];job.filter_index=job.filter_index+1;job.done=job.done+1
-  local label=row.name
-  if label:lower():find(job.query,1,true) or tostring(row.id)==job.query then
+  local label=job.native_owner and row.owner_order.name_key or row.name:lower()
+  if label:find(job.query,1,true) or not job.native_owner and tostring(row.id)==job.query then
    job.filtered[#job.filtered+1]=row
    job.hash=hash_integer(job.hash,row.id)
    if job.links then job.hash=hash_integer(hash_integer(job.hash,row.kind),row.direction) end
@@ -806,6 +806,12 @@ local function candidate_page(r,a,b,area_revision,available)
  local site=locations and dfhack.world.getCurrentSite() or nil
  if locations and not site then return fail('Location site no longer exists'),0 end
  local query=default(a,'query',''):lower()
+ if not legacy and not links and not locations and candidate_kind==1 then
+  if type(r.owner_query)~='function' then return fail('Native area helper unavailable'),0 end
+  local worked,value=pcall(r.owner_query,default(a,'query',''))
+  if not worked or type(value)~='string' then return fail('Native area helper unavailable'),0 end
+  query=value
+ end
  local key=table.concat({locations and 6 or links and 10 or legacy and 0 or 14,a.kind,default(a,'id',-1),candidate_kind,
   default(a,'sort',0),default(a,'sort_descending',false) and 1 or 0,area_revision or 0,site and site.id or -1,#query,query},':')
  local job=area_lists[key];local expected=default(a,'expected_list_revision',0)

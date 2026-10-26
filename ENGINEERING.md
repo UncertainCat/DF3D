@@ -147,8 +147,30 @@ with clean diagnostics. Nineteen paginated list comparisons cover default lists
 and both directions of every header on a Tomb and Bedroom, followed by native
 owner transfer and removal checks. DF82416 closes unsaved; both save manifests
 remain unchanged. Root CTest19/19, adapter, candidate-state and area-menu checks
-pass. Full row labels, filtering, clear availability, creation owner validation
-and assignment lifecycle acceptance remain required before exposing the picker.
+pass. Filtering is integrated below. Full row labels, clear availability, creation
+owner validation and assignment lifecycle acceptance remain required before
+exposing the picker.
+
+Scoped owner filtering uses native0x52cee0 on caller-owned raw query bytes and
+matches the native normalized name key, including titles and professions. It
+removes the old numeric-ID shortcut for these lists. The request-local callback
+returns only normalized bytes; retained builders contain no native UI state.
+
+Protected native `build/stockpile-storage-native-zone-owner-20261026-001442`
+compares exact filtered IDs and order for thirteen queries, including uppercase,
+professions, noble titles, punctuation, empty results and ASCII accent folding.
+The diagnostic receives raw input rather than the widget's already normalized
+filter. Native UI/search guards remain unchanged; DF130688 closes unsaved and
+its source manifest matches. The king-filter capture was inspected.
+
+Protected semantic `build/areas-acceptance-20261026-001525` passes199 observations
+with clean diagnostics, including28 filter comparisons across Tomb and Bedroom
+lists (the thirteen queries plus empty query). Assignment/transfer/removal and
+prior sorting checks still pass. DF130468 closes unsaved; both save manifests
+match. MSVC and `build/qa/owner-filter-integration` core19/19 plus adapter pass.
+The adapter also verifies original query casing is echoed. This establishes
+matching, not complete textbox input: native byte-length limits, non-ASCII
+input, focus/clear/escape/cursor behavior and full rendered rows remain pending.
 
 ## Native zone repaint effects
 

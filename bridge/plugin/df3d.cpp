@@ -1985,6 +1985,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         out.print("{{\"water\":{},\"fishing\":{}}}\n",int(result.water),int(result.fishing));
         return CR_OK;
       }
+      if(parameters[0]=="zone-owner-query-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        auto key=df3d_area::nativeZoneOwnerQuery(parameters[1]);if(!key)return CR_FAILURE;
+        Json::Value bytes(Json::arrayValue);for(unsigned char byte:*key)bytes.append(int(byte));
+        out.print("{}",Json::FastWriter().write(bytes));return CR_OK;
+      }
       if(parameters[0]=="zone-owner-order-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
@@ -2290,6 +2296,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d room-read <x> <y> <z>\n"
         "df3d zone-owner-candidates-read <zone id>\n"
         "df3d zone-owner-order-read <zone id>\n"
+        "df3d zone-owner-query-read <query>\n"
         "    Read-only diagnostic: semantic room observation and traversal mask as JSON.\n"
           "df3d room-seed <building id>\n"
           "    Read-only diagnostic: furniture identity and native room-use relations as JSON.\n"

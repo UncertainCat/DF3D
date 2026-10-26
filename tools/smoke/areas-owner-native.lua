@@ -2,6 +2,7 @@
 local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local ui=df.global.game.main_interface.civzone
+local last_search_input=""
 local function pixel(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//(g.screen_pixel_x//g.dimx);g.mouse_y=y//(g.screen_pixel_y//g.dimy)
  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
@@ -94,6 +95,26 @@ local function capture(name)
   local order_text,order_code=dfhack.run_command_silent('df3d','zone-owner-order-read',tostring(ui.cur_bld.id));assert(order_code==0,order_text)
   local order_facts=require('json').decode(order_text)
   records[#records+1]={name=name..'-order-facts',facts=order_facts}
+  if name:find('%-filter%-') then
+   local query_text,query_code=dfhack.run_command_silent('df3d','zone-owner-query-read',last_search_input);assert(query_code==0,query_text)
+   local query_bytes=require('json').decode(query_text);local query=string.char(table.unpack(query_bytes))
+   local expected={}
+   for ordinal,facts in ipairs(order_facts)do
+    local key=string.char(table.unpack(facts[7]))
+    if key:find(query,1,true)then expected[#expected+1]={facts=facts,ordinal=ordinal}end
+   end
+   table.sort(expected,function(a,b)
+    local x,y=a.facts,b.facts
+    if x[2]~=y[2]then return x[2]>y[2]end
+    if x[3]~=y[3]then return x[3]>y[3]end
+    if x[4]~=y[4]then return x[4]<y[4]end
+    if x[5]~=y[5]then return x[5]<y[5]end
+    return a.ordinal<b.ordinal
+   end)
+   assert(#expected==#displayed,'native filtered count differs: '..name)
+   for i,row in ipairs(expected)do assert(row.facts[1]==displayed[i],'native filtered order differs: '..name)end
+   records[#records+1]={name=name..'-filter-parity',input=last_search_input,query=list.filter_str,key=query_bytes,ids=displayed,exact=true}
+  end
   for _,v in ipairs(guards)do assert(dfhack.internal.memcmp(v.copy,v.address,v.size)==0,'candidate query changed native UI/search scratch');df.delete(v.copy)end
   local eligible=require('json').decode(text)
   records[#records+1]={name=name..'-candidates',source_ids=ids,displayed_ids=displayed,eligible_ids=eligible,query=list.filter_str,unchanged_guards=#guards}
@@ -149,6 +170,7 @@ local function capture(name)
  while not io.open(out..'/ack-'..name,'r')do assert(dfhack.getTickCount()<limit,'capture timed out');script.sleep(1,'frames')end
 end
 local function search(text)
+ last_search_input=text
  pixel(500,730)
  for byte in text:gmatch('.')do
   df.global.enabler.last_text_input[0]=byte:byte();df.global.enabler.last_text_input[1]=0
@@ -232,6 +254,10 @@ local ok,why=pcall(function()
    {'prof-first',620},{'prof-second',620},{'stress-first',832},{'stress-second',832},
    {'name-return',472},{'cat-return',540}}do
   pixel(header[2],70);capture('bedroom-picker-sort-'..header[1])
+ end
+ for i,query in ipairs{'miner','MINER','mi','king','mayor',',',' ','5981','notfound','er','kubuk','unib','bedroom'}do
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
+  search(query);capture('bedroom-picker-filter-'..i)
  end
 end)
 first_unit.relationship_ids.Spouse=old_first;spouse.relationship_ids.Spouse=old_spouse

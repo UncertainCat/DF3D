@@ -460,6 +460,13 @@ func zone_owner_effects() -> void:
 				var candidate_ids: Array=[]
 				for candidate in candidates.candidates:candidate_ids.append(int(candidate.id))
 				await native("zone_owner_candidates",{"id":id,"ids":candidate_ids,"sort":sort,"descending":descending})
+	for id in [ids[0],ids[2]]:
+		for query in ["miner","MINER","mi","king","mayor",","," ","5981","notfound","er","kubuk","unib","bedroom",""]:
+			var candidates:=await pages({"action":14,"operation":14,"kind":1,"id":id,"candidate_kind":1,"query":query},"candidates")
+			if stopped:return
+			var candidate_ids: Array=[]
+			for candidate in candidates.candidates:candidate_ids.append(int(candidate.id))
+			await native("zone_owner_candidates",{"id":id,"ids":candidate_ids,"query":query})
 	# Native reference: assign, replace, transfer to second tomb, clear bedroom.
 	for sample in [[ids[0],int(owners.owner_a),3,1,0],[ids[0],int(owners.owner_b),3,0,1],
 		[ids[1],int(owners.owner_b),3,0,1],[ids[2],-1,-1,0,0]]:

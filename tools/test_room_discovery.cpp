@@ -94,37 +94,6 @@ TEST_CASE("room planning distinguishes holes elevation rejection and unknown obs
   CHECK(area::planRooms(seeds,F::None,{10,10,5,3},5,[](const auto&){return area::RoomDiscovery{};}).status==area::RoomPlanStatus::Invalid);
 }
 
-TEST_CASE("room collision requires shared enabled native open cells") {
-  auto room=capturedRectangle(169,56,164,5,5);
-  const area::Bounds floor{170,58,1,1},wall{169,56,1,1};
-  auto enabled=[](int32_t,int32_t){return true;};
-  auto open=[](int32_t,int32_t,int32_t){return area::RoomCell::Open;};
-  auto boundary=[](int32_t,int32_t,int32_t){return area::RoomCell::Boundary;};
-  auto unknown=[](int32_t,int32_t,int32_t){return area::RoomCell::Unobserved;};
-  CHECK(area::roomCollision(room,floor,164,enabled,open)==area::RoomCollision::Overlap);
-  CHECK(area::roomCollision(room,wall,164,enabled,boundary)==area::RoomCollision::None);
-  CHECK(area::roomCollision(room,floor,163,enabled,open)==area::RoomCollision::None);
-  CHECK(area::roomCollision(room,floor,164,[](int32_t,int32_t){return false;},open)==area::RoomCollision::None);
-  room.extents[11]=0;
-  CHECK(area::roomCollision(room,floor,164,enabled,open)==area::RoomCollision::None);
-  room.extents[11]=1;
-  CHECK(area::roomCollision(room,floor,164,enabled,unknown)==area::RoomCollision::Unknown);
-  // Native collision-shape-results.json: the 20 shapes' overlap outcomes.
-  for(int i=0;i<int(area::RoomShape::Unknown);++i) {
-    const auto shape=static_cast<area::RoomShape>(i);
-    const bool collides=shape==area::RoomShape::Floor || shape==area::RoomShape::Boulder ||
-      shape==area::RoomShape::Pebbles || shape==area::RoomShape::StairUp ||
-      shape==area::RoomShape::StairDown || shape==area::RoomShape::StairUpDown ||
-      shape==area::RoomShape::Ramp || shape==area::RoomShape::BrookTop ||
-      shape==area::RoomShape::Branch || shape==area::RoomShape::Twig ||
-      shape==area::RoomShape::Sapling || shape==area::RoomShape::Shrub;
-    const auto result=area::roomCollision(room,floor,164,enabled,[&](int32_t,int32_t,int32_t) {
-      return area::classifyRoomCell(shape,area::RoomOccupancy::None,area::RoomLiquid::None,0,false);
-    });
-    CHECK(result==(collides?area::RoomCollision::Overlap:area::RoomCollision::None));
-  }
-}
-
 // DF53.16 Multi captures 2026-09-29: room-limits-002445 and room-cap-003442.
 // Semantic excerpts of35 native probes, including exact successful extents and
 // native enclosure rejections. Boundary lists include retained doors and fixture

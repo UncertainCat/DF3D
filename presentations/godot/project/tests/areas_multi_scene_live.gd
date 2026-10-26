@@ -10,7 +10,7 @@ func pointer_areas() -> void:
 	var launcher: Button = scene._fortress_hud.navigation.Zones
 	for frame in 12:
 		launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-	launcher.show(); await click_control(launcher)
+	launcher.show(); await click_control(launcher,true)
 	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"Multi launcher"): return
 	await click_control(editor.zone_menu.buttons.Bedroom)
 	await click_control(editor.paint_view.multi_button)

@@ -12,6 +12,11 @@ std::optional<std::string> nativeZoneName(const df::building_civzonest& zone);
 bool nativeZoneDefaultsReady();
 bool nativeZoneDefaults(df::building_civzonest& zone);
 bool nativeZoneCreateReady();
+bool nativeZoneMultiReady();
+// Multi categorizes before the native Bedroom-to-Dormitory conversion.
+// Refresh overlaps once after the complete batch, not once per room.
+bool nativeZoneCompleteMulti(df::building_civzonest& zone);
+bool nativeZoneRefreshOverlaps();
 bool nativeZoneRemoveReady();
 // May retire the object. Never inspect zone after this call.
 // Multi Undo observes overlap before each retirement; ordinary Remove

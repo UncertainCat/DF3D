@@ -1,28 +1,19 @@
 #include "room_mutation_native.h"
 #include "zone_native.h"
-#include "modules/Buildings.h"
+#include "df/plotinfost.h"
 #include "df/building.h"
 #include "df/building_civzonest.h"
 #include "df/building_squad_infost.h"
 #include "df/building_type.h"
 #include "df/world.h"
 #include <climits>
-#include <memory>
+#include <algorithm>
 
 namespace df3d_area {
 namespace {
-struct UnpublishedZoneDeleter {
-  void operator()(df::building* building) const {
-    if(!building)return;
-    delete[] building->room.extents;
-    building->room.extents=nullptr;
-    delete building;
-  }
-};
-using UnpublishedZone=std::unique_ptr<df::building,UnpublishedZoneDeleter>;
-df::civzone_type zoneType(RoomFurniture furniture,bool dormitory) {
+df::civzone_type zoneType(RoomFurniture furniture) {
   switch(furniture) {
-    case RoomFurniture::Bed:return dormitory?df::civzone_type::Dormitory:df::civzone_type::Bedroom;
+    case RoomFurniture::Bed:return df::civzone_type::Bedroom;
     case RoomFurniture::Chair:return df::civzone_type::Office;
     case RoomFurniture::Table:return df::civzone_type::DiningHall;
     case RoomFurniture::Coffin:return df::civzone_type::Tomb;
@@ -92,78 +83,61 @@ RoomUndoResult undoNativeRooms(RoomUndoReceipt& receipt,RoomUndoScope scope,uint
 }
 NativeRoomCreation createNativeRooms(RoomFurniture kind,const Bounds& selection,int32_t z,RoomEffectObserver effects) {
   NativeRoomCreation out;
-  std::vector<UnpublishedZone> prepared;
-  std::vector<df::building*> existingCollisions;
+  using Extents=NativeExtents<df::building_extents_type>;
+  std::vector<Extents> prepared;
+  int32_t firstZone=1;
+  const auto type=zoneType(kind);
   try {
     out.plan=observeNativeRoomPlan(kind,selection,z);
-    if(out.plan.status!=RoomPlanStatus::Complete || !nativeZoneRemoveReady() || !df::global::world ||
+    if(out.plan.status!=RoomPlanStatus::Complete || type==df::civzone_type::NONE ||
+       !nativeZoneMultiReady() || !nativeZoneRemoveReady() || !df::global::world ||
        !df::global::plotinfo || !df::global::building_next_id) {
       out.error=RoomCreationError::InvalidPlan;return out;
     }
     const auto count=out.plan.rooms.size();
     if(!count){out.status=RoomCreationStatus::Committed;return out;}
-    int32_t maxZone=0;
     for(const auto* zone:df::global::world->buildings.other.ANY_ZONE) {
       if(!zone){out.error=RoomCreationError::Preparation;return out;}
-      maxZone=std::max(maxZone,zone->zone_num);
+      if(zone->zone_num==INT32_MAX){out.error=RoomCreationError::IdsExhausted;return out;}
+      firstZone=std::max(firstZone,zone->zone_num+1);
     }
     if(*df::global::building_next_id<0 || count>size_t(INT32_MAX-*df::global::building_next_id) ||
-       count>size_t(INT32_MAX-maxZone)) {
+       count-1>size_t(INT32_MAX-firstZone)) {
       out.error=RoomCreationError::IdsExhausted;return out;
     }
-    const auto collisions=observeNativeRoomCollisions(out.plan);
-    if(!collisions.valid){out.error=RoomCreationError::Preparation;return out;}
-    existingCollisions.reserve(collisions.existingZones.size());
-    for(auto id:collisions.existingZones) {
-      auto* zone=df::building::find(id);
-      if(!zone || zone->getType()!=df::building_type::Civzone){out.error=RoomCreationError::Preparation;return out;}
-      existingCollisions.push_back(zone);
-    }
     prepared.reserve(count);out.createdIds.reserve(count);out.undoTargets.reserve(count);
-    for(size_t index=0;index<count;++index) {
-      const auto& room=out.plan.rooms[index];
-      const auto& f=room.footprint;const auto& bounds=f.bounds;
-      const auto type=zoneType(kind,room.dormitory);
-      UnpublishedZone owned(DFHack::Buildings::allocInstance(df::coord(bounds.x,bounds.y,f.z),
-        df::building_type::Civzone,type));
-      if(!owned || owned->getType()!=df::building_type::Civzone) {
+    for(const auto& room:out.plan.rooms) {
+      const auto& f=room.footprint;
+      if(!f.valid || !validBounds(f.bounds) || f.extents.size()!=size_t(f.bounds.width)*f.bounds.height) {
         out.error=RoomCreationError::Preparation;return out;
       }
-      auto* zone=static_cast<df::building_civzonest*>(owned.get());
-      NativeExtents<df::building_extents_type> extents;
-      extents.resize(f.extents.size(),0);
+      Extents extents;extents.resize(f.extents.size(),0);
       for(size_t i=0;i<f.extents.size();++i)extents[i]=static_cast<df::building_extents_type>(f.extents[i]);
-      zone->room.x=bounds.x;zone->room.y=bounds.y;
-      zone->room.width=bounds.width;zone->room.height=bounds.height;
-      zone->room.extents=extents.release();
-      zone->type=type;zone->spec_sub_flag.bits.active=true;
-      zone->flags.bits.room_collision=collisions.rooms[index]!=0;
-      if(type==df::civzone_type::Tomb)zone->zone_settings.tomb.flags.bits.no_pets=true;
-      if(!DFHack::Buildings::setSize(zone,df::coord2d(bounds.width,bounds.height)) || !exactFootprint(zone,f)) {
-        out.error=RoomCreationError::Preparation;return out;
-      }
-      prepared.push_back(std::move(owned));
+      prepared.push_back(std::move(extents));
     }
     if(effects)for(const auto& room:out.plan.rooms)effects(room.footprint.bounds,room.footprint.z);
   } catch(...) {
     out.error=RoomCreationError::Preparation;return out;
   }
-  out.status=publishRooms(prepared,out.createdIds,
-    [&](df::building* zone,size_t index) {
-      return DFHack::Buildings::constructAbstract(zone) &&
-        exactFootprint(zone,out.plan.rooms[index].footprint);
-    },
-    [](const df::building* zone) noexcept {return zone->id;},
-    [](int32_t id){return df::building::find(id);},
-    [](df::building* zone){return DFHack::Buildings::deconstruct(zone);});
+  out.status=publishRooms(prepared.size(),out.createdIds,nativeZoneAllocate,
+    [&](df::building_civzonest* zone,size_t index) {
+      const auto& f=out.plan.rooms[index].footprint;const auto& bounds=f.bounds;
+      zone->type=type;
+      if(!nativeZoneDefaults(*zone))return false;
+      zone->race=df::global::plotinfo->race_id;zone->spec_sub_flag.whole=8;
+      zone->x1=zone->room.x=bounds.x;zone->y1=zone->room.y=bounds.y;zone->z=f.z;
+      zone->x2=bounds.x+bounds.width-1;zone->y2=bounds.y+bounds.height-1;
+      zone->centerx=(zone->x1+zone->x2)/2;zone->centery=(zone->y1+zone->y2)/2;
+      zone->room.width=bounds.width;zone->room.height=bounds.height;
+      zone->zone_num=firstZone+int32_t(index);zone->room.extents=prepared[index].release();
+      if(!nativeZoneCompleteMulti(*zone) || !exactFootprint(zone,f))return false;
+      out.plan.rooms[index].dormitory=zone->type==df::civzone_type::Dormitory;
+      return true;
+    },[](const df::building_civzonest* zone) noexcept {return zone->id;},nativeZoneRefreshOverlaps);
   if(out.status!=RoomCreationStatus::Committed) {
     out.error=out.status==RoomCreationStatus::NotStarted?RoomCreationError::Preparation:RoomCreationError::Publication;
     return out;
   }
-  // Native creation marks both sides; native Undo does not clear old flags.
-  // Apply existing-zone flags only after the whole new set publishes, so failed
-  // preparation/rolled-back publication cannot alter preexisting flags.
-  for(auto* zone:existingCollisions)zone->flags.bits.room_collision=true;
   for(auto id:out.createdIds) {
     const auto revision=observeNativeRoomRevision(id);
     if(!revision) {

@@ -4,6 +4,10 @@ const Outcome = Contract.AreaRoomOutcome
 
 func multi(data: Dictionary, expected := Outcome.Completed) -> Dictionary:
 	if stopped: return {}
+	var guard_creation := int(data.operation) == Op.MultiCreate
+	if guard_creation:
+		await native("multi_search_begin")
+		if stopped: return {}
 	world.poll()
 	var seq: int = world.area_request(data)
 	if not check(seq > 0,"Multi request not sent: " + world.last_error()): return {}
@@ -17,6 +21,7 @@ func multi(data: Dictionary, expected := Outcome.Completed) -> Dictionary:
 			check(int(page.get("operation",-1)) == int(data.operation) and int(page.get("interaction_id",0)) == int(data.interaction_id),"wrong scoped reply")
 			check(int(page.get("room_outcome",-1)) == expected,"unexpected room outcome")
 			check(int(value.status) == (S.Ok if expected == Outcome.Completed else S.Rejected),"envelope outcome disagrees")
+			if guard_creation and not stopped: await native("multi_search_end")
 			return page
 		await create_timer(0.01).timeout
 	incomplete("Multi outcome unknown; no replay",true)

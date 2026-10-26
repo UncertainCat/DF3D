@@ -15,7 +15,8 @@ struct NativeRoomCreation {
   std::vector<RoomUndoTarget> undoTargets;
 };
 // Caller holds one safe point and validates the request epoch before entering.
-// Plans from current state, prepares all unpublished owners, then publishes.
+// Plans from current state, prepares owned extents, then calls native factories.
+// Factories publish immediately; later failure remains unknown without replay.
 // This primitive has no persistent receipt or Undo authority of its own.
 // Optional presentation invalidation preparation. Called before any publication
 // or deletion; a throwing callback prevents that mutation from starting.

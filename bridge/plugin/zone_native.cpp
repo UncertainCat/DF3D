@@ -158,6 +158,39 @@ bool nativeZoneCreateReady() {
         locationRefreshFunction()!=nullptr;
     return compatible;
 }
+bool nativeZoneMultiReady() {
+    if(!nativeZoneCreateReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0x356ee8,0x3f1)==0xe4ddd80a024ca99ULL;
+    return compatible;
+}
+bool nativeZoneCompleteMulti(df::building_civzonest& zone) {
+    if(!df::global::world || !nativeZoneMultiReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Complete=void (*)(df::building*,bool);
+    using Relationships=void (*)(df::building*);
+    // Native35710b..35716c: no per-room overlap calculation here.
+    reinterpret_cast<Complete>(base+0x577040)(&zone,true);
+    zone.categorize(true);
+    reinterpret_cast<Relationships>(base+0x558550)(&zone);
+    reinterpret_cast<Relationships>(base+0x558690)(&zone);
+    reinterpret_cast<Relationships>(base+0x558830)(&zone);
+    // Native35716d..3572b9 counts the actual contained furniture after
+    // categorization. Do not select Dormitory from a presentation prediction.
+    if(zone.type==df::civzone_type::Bedroom) {
+        size_t beds=0;
+        for(auto* member:zone.contained_buildings) {
+            if(!member)return false;
+            if(member->getType()==df::building_type::Bed)++beds;
+        }
+        if(beds>=2)zone.type=df::civzone_type::Dormitory;
+    }
+    return true;
+}
+bool nativeZoneRefreshOverlaps() {
+    if(!df::global::world || !nativeZoneMultiReady())return false;
+    return refreshOverlaps(reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr)));
+}
 df::building_civzonest* nativeZoneAllocate() {
     if(!df::global::world || !nativeZoneCreateReady())return nullptr;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

@@ -130,30 +130,4 @@ RoomPlan observeNativeRoomPlan(RoomFurniture kind,const Bounds& selection,int32_
       compactRoom(observed.x,observed.y,observed.z,observed.width,observed.height,observed.traversal)};
   });
 }
-NativeRoomCollisions observeNativeRoomCollisions(const RoomPlan& plan) {
-  NativeRoomCollisions out;
-  if(plan.status!=RoomPlanStatus::Complete || !df::global::world)return out;
-  out.rooms.assign(plan.rooms.size(),0);
-  for(auto* zone:df::global::world->buildings.other.ANY_ZONE) {
-    if(!zone)return out;
-    if(!roomUseType(zone->type))continue;
-    bool affected=false;
-    const Bounds bounds{zone->x1,zone->y1,zone->x2-zone->x1+1,zone->y2-zone->y1+1};
-    for(size_t i=0;i<plan.rooms.size();++i) {
-      const auto collision=roomCollision(plan.rooms[i].footprint,bounds,zone->z,
-        [&](int32_t x,int32_t y){return DFHack::Buildings::containsTile(zone,df::coord2d(x,y));},observeCell);
-      if(collision==RoomCollision::Unknown)return out;
-      if(collision==RoomCollision::Overlap){out.rooms[i]=1;affected=true;}
-    }
-    if(affected)out.existingZones.push_back(zone->id);
-  }
-  for(size_t i=0;i<plan.rooms.size();++i)for(size_t j=0;j<i;++j) {
-    const auto& other=plan.rooms[j].footprint;
-    const auto collision=roomCollision(plan.rooms[i].footprint,other.bounds,other.z,
-      [&](int32_t x,int32_t y){return other.contains(x,y,other.z);},observeCell);
-    if(collision==RoomCollision::Unknown)return out;
-    if(collision==RoomCollision::Overlap)out.rooms[i]=out.rooms[j]=1;
-  }
-  out.valid=true;return out;
-}
 }

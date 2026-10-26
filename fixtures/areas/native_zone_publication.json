@@ -88,5 +88,60 @@
         "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
       }
     }
-  ]
+  ],
+  "multi_creation": {
+    "inline_reference": {
+      "rva": "0x356ee8",
+      "size": 1009,
+      "fnv1a64": "0x0e4ddd80a024ca99"
+    },
+    "sequence": [
+      "native factory publishes ID/world.all immediately",
+      "native defaults, supplied race/bounds/extents and sequential zone number",
+      "native completion and categorization",
+      "native relationship refresh 0x558550/0x558690/0x558830",
+      "Bedroom with at least two actual contained beds becomes Dormitory after categorization",
+      "one final overlap refresh using owned scratch"
+    ],
+    "failure_contract": "Extents and result capacities are prepared before factory entry. Any failure after entry is unknown; known IDs are observation hints, never automatic rollback or Undo authority.",
+    "semantic_evidence": {
+      "directory": "build/areas-acceptance-20261025-215527",
+      "observations": 190,
+      "guarded_creation_and_undo_operations": 51,
+      "map_search_arrays_per_operation": 55584,
+      "changed_arrays": 0,
+      "owned_df_pid": 128804,
+      "closed_unsaved": true,
+      "unchanged_save_manifests": 2,
+      "diagnostics": "clean",
+      "bridge_sha256": "d844e07e4a37d3dcb1f61e45d94bee5dc9189ef6cd077bda5664b05585f91be7"
+    },
+    "native_reference": "tools/smoke/areas-multi-reference.json",
+    "remaining_scope": "Discovery eligibility audit and full Zones/Locations lifecycle acceptance remain outstanding.",
+    "viewport_evidence": {
+      "directory": "build/areas-acceptance-20261025-220051",
+      "observations": 35,
+      "owned_df_pid": 122164,
+      "closed_unsaved": true,
+      "unchanged_save_manifests": 2,
+      "status": "passed_with_known_issues",
+      "diagnostics": [
+        "godot-separate-thread-notice"
+      ],
+      "bridge_sha256": "d240d7ba8345978b176df37a0e3d01d4c1db1ffa03911cd22bf0a5327602a914",
+      "captures_inspected": [
+        "scene_multi_beds-merged-both-unused_result.png",
+        "scene_multi_beds-unenclosed-and-used_result.png"
+      ],
+      "coverage": [
+        "two-corner creation",
+        "partial cancellation",
+        "cross-elevation selection",
+        "native room result counts",
+        "Undo",
+        "Done retains rooms"
+      ],
+      "earlier_failed_run": "215808 timed out before creation because the test omitted the staged-launcher helper; corrected test only."
+    }
+  }
 }

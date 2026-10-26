@@ -99,15 +99,35 @@ Owned DF118636 closes unsaved and both save manifests match. MSVC builds and
 `build/qa/multi-native-undo-final` core19/19 pass. Evidence and the exact native
 handler fingerprint are retained in `fixtures/areas/native_zone_removal_audit.json`.
 
-Multi creation/publication/rollback still use the prior DFHack implementation
-and remain under audit. In particular, rollback can receive an unpublished or
-partially linked object; it cannot be replaced by a registered-zone retirement
-call without changing its ownership contract. Native Multi creation at0x356ee8
-uses the factory that publishes immediately, then defaults/completion and room
-relationships; Bedroom-to-Dormitory conversion occurs after categorization at
-0x35729d..0x3572b9, followed by a final overlap pass at0x3572d3. Its discovery
-is inline and uses shared search generations. These findings guide the next
-creation/discovery change; normal Undo acceptance does not establish full Multi.
+Multi creation now calls the native factory at0x356ee8, native defaults,
+completion, categorization and relationship helpers. Owned extents and result
+capacity are prepared before factory entry. DF registers the object immediately;
+subsequent failure is unknown, preserves known IDs for observation and grants
+neither automatic replay nor Undo authority. The old unpublished-object rollback
+and duplicate collision implementation have been removed.
+
+Native changes Bedroom to Dormitory after categorization when its actual
+contained furniture includes at least two beds. The bridge follows that order
+and performs one final overlap refresh with owned scratch. The full inline
+creation reference0x356ee8..0x3572d9 is fingerprinted alongside the called helpers.
+
+Protected semantic `build/areas-acceptance-20261025-215527` passes190 observations
+with clean diagnostics. All51 creation/Undo guards preserve55,584 map search
+arrays. Native reference room footprints, defaults, furniture relationships,
+mixed sets and scoped/stale Undo checks pass. Owned DF128804 closes unsaved and
+both save manifests match. Evidence is retained in
+`fixtures/areas/native_zone_publication.json`. Discovery is still owned inline
+orchestration: native's shared search generations cannot be borrowed. Its tile
+eligibility audit and full Zones/Locations acceptance remain outstanding.
+
+Main-scene `build/areas-acceptance-20261025-220051` passes35 observations
+through viewport input, covering creation, partial cancellation, cross-elevation
+selection, native counts, Undo and Done retaining rooms. Dormitory and rejection
+captures were inspected. Owned DF122164 closes unsaved; both save manifests
+match. Only the known separate-thread notice remains. Earlier215808 timed out
+before creation because the old Multi driver omitted the staged-launcher helper;
+correcting that test call leaves product availability unchanged. MSVC builds and
+`build/qa/multi-native-creation-final` core19/19 plus Lua adapter checks pass.
 
 ## Zone repaint Location refresh
 

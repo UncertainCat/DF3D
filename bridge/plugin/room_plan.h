@@ -23,27 +23,6 @@ struct RoomPlan {
   uint32_t rejectedInUse=0,rejectedUnenclosed=0;
   std::vector<PlannedRoom> rooms;
 };
-enum class RoomCollision : uint8_t { None, Overlap, Unknown };
-// Collision needs a shared enabled Open cell, not merely intersecting bounds.
-// Boundary cells remain in room extents but do not penalize shared walls/doors.
-template<class ContainsOther,class Observe>
-RoomCollision roomCollision(const RoomFootprint& room,const Bounds& other,int32_t otherZ,
-                            ContainsOther containsOther,Observe observe) {
-  if(room.z!=otherZ)return RoomCollision::None;
-  if(!room.valid || room.bounds.width<=0 || room.bounds.height<=0 || other.width<=0 || other.height<=0 ||
-     room.extents.size()!=size_t(room.bounds.width)*room.bounds.height)return RoomCollision::Unknown;
-  const int64_t left=std::max<int64_t>(room.bounds.x,other.x),top=std::max<int64_t>(room.bounds.y,other.y);
-  const int64_t right=std::min(int64_t(room.bounds.x)+room.bounds.width,int64_t(other.x)+other.width);
-  const int64_t bottom=std::min(int64_t(room.bounds.y)+room.bounds.height,int64_t(other.y)+other.height);
-  bool unknown=false;
-  for(int64_t y=top;y<bottom;++y)for(int64_t x=left;x<right;++x) {
-    if(!room.contains(int32_t(x),int32_t(y),room.z) || !containsOther(int32_t(x),int32_t(y)))continue;
-    const auto cell=observe(int32_t(x),int32_t(y),room.z);
-    if(cell==RoomCell::Open)return RoomCollision::Overlap;
-    unknown=unknown || cell==RoomCell::Unobserved;
-  }
-  return unknown?RoomCollision::Unknown:RoomCollision::None;
-}
 // Seeds preserve native building-vector order, including furniture outside the
 // selection: native Bedroom discovery counts all beds in the discovered room.
 // This prepares semantic geometry only; it neither mutates nor reserves IDs.

@@ -59,7 +59,7 @@ local ok,err=pcall(function()
    df.delete(g.copy)
   end
   _G.df3d_multi_search_guards=nil;result.scratch_guards=#guards;result.changed_guards=changed
-  assert(changed==0,'Multi Undo changed map search scratch')
+  assert(changed==0,'Multi operation changed map search scratch')
  elseif request.op=='multi_begin' then
   local bed=assert(df.building.find(1310),'source bed missing')
   assert(df.building_bedst:is_instance(bed) and bed.centerx==172 and bed.centery==57 and bed.z==164,'source bed changed')

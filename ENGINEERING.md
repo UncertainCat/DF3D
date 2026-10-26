@@ -76,8 +76,17 @@ existing assignment tests. Both save manifests remain unchanged after unsaved ex
 actual Godot rows are retained in `animal_restraint_pixels`; final core and GPU
 `build/qa/animal-restraint-live-pixels` pass with the same known diagnostics.
 Actual empty-reference and critter-item cages and status hover help remain open.
-The four containment hover IDs and strings are located, but controlled probes
-at the rendered indicators did not activate them; no hover parity is claimed.
+The four containment instructions are recorded in
+`native_zone_animals.json.animal_containment_hover_reference`. Protected
+`build/stockpile-storage-native-zone-animals-20261026-132146` and the final
+diagnostic rerun `build/stockpile-storage-native-zone-animals-20261026-132654`
+activate all four after dwell, preserve the source and exit unsaved. Native
+`3d0260` swaps its indicator coordinates when calling `3acdc0`: the visible
+icon at (77,19) has no help, while mouse (19,77) activates the instruction.
+Recorded native screen cells establish exact text and wrapping; asynchronous
+PNG captures do not retain this off-window hover state. Callback inspection
+is diagnostic only. Product hover remains unfinished, and correcting the
+hitbox awaits explicit maintainer authorization under the native-parity rule.
 `nativeZoneAnimalContainer` reads cage material family, solid color token and
 first qualifying occupant from semantic material/reference data. It calls only
 pinned native material leaves; cached graphics and widgets are never runtime

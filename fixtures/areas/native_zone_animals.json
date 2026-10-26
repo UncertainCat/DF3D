@@ -13792,5 +13792,106 @@
     ],
     "live_facts_provenance": "build\\areas-acceptance-20261026-131105",
     "fresh_material_roundtrips": 5
+  },
+  "animal_containment_hover_reference": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-132146",
+    "owned_df_pid": 129556,
+    "status": "passed",
+    "source_unchanged": true,
+    "result_sha256": "1a365be016383aa871b37904a64b224fafecec5a4108ae344d6e366d9b22fecc",
+    "samples": [
+      {
+        "name": "Pen-status-current-cage-hover-transposed",
+        "instruction": 368,
+        "visible_icon_mouse": {
+          "gate": 1,
+          "x": 77,
+          "y": 19
+        },
+        "visible_icon_hover": -1,
+        "visible_icon_help_enabled": false,
+        "native_hit_mouse": {
+          "gate": 1,
+          "x": 19,
+          "y": 77
+        },
+        "native_help_enabled": true,
+        "text_lines": [
+          "The creature is caged."
+        ],
+        "text": "The creature is caged.",
+        "help_cells_sha256": "738cb517ef15e97aeaa73ad70db567b90c362ce8fd478a4cc20298fd12b50d3f"
+      },
+      {
+        "name": "Pen-status-current-chain-hover-transposed",
+        "instruction": 367,
+        "visible_icon_mouse": {
+          "gate": 1,
+          "x": 77,
+          "y": 19
+        },
+        "visible_icon_hover": -1,
+        "visible_icon_help_enabled": false,
+        "native_hit_mouse": {
+          "gate": 1,
+          "x": 19,
+          "y": 77
+        },
+        "native_help_enabled": true,
+        "text_lines": [
+          "The creature is chained."
+        ],
+        "text": "The creature is chained.",
+        "help_cells_sha256": "c9b8fc3327ab84addd6bb7090cf2512b99e9df61de0ad5178d6090ca262cb19f"
+      },
+      {
+        "name": "Pen-status-pending-chain-hover-transposed",
+        "instruction": 369,
+        "visible_icon_mouse": {
+          "gate": 1,
+          "x": 77,
+          "y": 19
+        },
+        "visible_icon_hover": -1,
+        "visible_icon_help_enabled": false,
+        "native_hit_mouse": {
+          "gate": 1,
+          "x": 19,
+          "y": 77
+        },
+        "native_help_enabled": true,
+        "text_lines": [
+          "The creature is set to",
+          "be chained."
+        ],
+        "text": "The creature is set to be chained.",
+        "help_cells_sha256": "b1aa484c1c8d1dc95a0d1644fae038519da837925d11b9a9aa69beba535be67c"
+      },
+      {
+        "name": "Pen-status-pending-cage-hover-transposed",
+        "instruction": 370,
+        "visible_icon_mouse": {
+          "gate": 1,
+          "x": 77,
+          "y": 19
+        },
+        "visible_icon_hover": -1,
+        "visible_icon_help_enabled": false,
+        "native_hit_mouse": {
+          "gate": 1,
+          "x": 19,
+          "y": 77
+        },
+        "native_help_enabled": true,
+        "text_lines": [
+          "The creature is set to",
+          "be caged."
+        ],
+        "text": "The creature is set to be caged.",
+        "help_cells_sha256": "57f80e914e6acd1b3721dfc01985c6a7eb51fa7ef81285d47b1adedc2941ef58"
+      }
+    ],
+    "finding": "Native 3d0260 draws at (77,19) but passes y in r8 and x in r9 to 3acdc0; its 4x3-cell hover test therefore activates at (19,77). All four native instructions appear after dwell at that transposed location.",
+    "scope": "Diagnostic evidence only; product correction requires maintainer decision. No runtime widget or render-cache access."
   }
 }

@@ -104,6 +104,35 @@ local function capture(label,keep_mouse)
   record.native_mouse={df.reinterpret_cast('int32_t',image_base+0x264a5b0).value,df.reinterpret_cast('int32_t',image_base+0x264a5b4).value}
   local _,gps_address=df.sizeof(g);local _,mouse_address=df.sizeof(g:_field('mouse_x'))
   record.gps_rva=gps_address-image_base;record.mouse_x_rva=mouse_address-image_base
+  local _,hover_address=df.sizeof(main:_field('current_hover'))
+  record.hover_state={field_rva=hover_address-image_base,native=df.reinterpret_cast('int32_t',image_base+0x18a9398).value,
+   replace_minimap=df.reinterpret_cast('uint8_t',image_base+0x18a93b8).value}
+  record.render_callbacks={}
+  local function render_contexts(widget)
+   local _,address=df.sizeof(widget.custom_render)
+   local first=df.reinterpret_cast('uint64_t',address).value;local last=df.reinterpret_cast('uint64_t',address+8).value
+   for at=first,last-64,64 do
+    local context=df.reinterpret_cast('uint64_t',at+56).value
+    if context~=0 then
+     local vt=df.reinterpret_cast('uint64_t',context).value
+     local invoke=df.reinterpret_cast('uint64_t',vt+16).value-image_base
+     if invoke==0xf1c80 then
+      local inner=df.reinterpret_cast('uint64_t',context+0x40).value
+      if inner~=0 then
+       local inner_vt=df.reinterpret_cast('uint64_t',inner).value
+       local inner_invoke=df.reinterpret_cast('uint64_t',inner_vt+16).value-image_base
+       if inner_invoke==0x3d0260 then
+        local unit=df.reinterpret_cast(df.unit,df.reinterpret_cast('uint64_t',inner+0x18).value)
+        record.render_callbacks[#record.render_callbacks+1]={name=widget.name,unit=unit.id,
+         rect={widget.rect.x1,widget.rect.y1,widget.rect.x2,widget.rect.y2},offset=df.reinterpret_cast('int32_t',inner+0x24).value}
+       end
+      end
+     end
+    end
+   end
+   for _,child in ipairs(children(widget))do render_contexts(child)end
+  end
+  if keep_mouse then render_contexts(main.unit_selector)end
   record.help_cells={}
   if keep_mouse then for y=0,17 do for x=g.dimx-24,g.dimx-1 do
    local tile=dfhack.screen.readTile(x,y)
@@ -486,13 +515,27 @@ local function status_hover(label,id,expected)
  g.precise_mouse_x=px;g.precise_mouse_y=py;g.mouse_x=px//8;g.mouse_y=(py-4)//12
  local record=capture(label,true)
  record.expected_hover=expected;record.hover_match=record.hover==expected and record.hover_enabled
- -- Help activation remains an observation, not an acceptance assertion: DF's
- -- containment instruction is not activated by these known screen coordinates.
- record.help_text={}
- for y=0,17 do
-  local chars={};for x=1,24 do chars[x]=' 'end
-  for _,cell in ipairs(record.help_cells)do if cell.y==y then chars[cell.x-(g.dimx-24)+1]=string.char(cell.ch)end end
-  record.help_text[#record.help_text+1]=dfhack.df2utf(table.concat(chars))
+ -- 3d0260 passes row y as r8 and indicator x as r9 to 3acdc0,
+ -- whose hit test compares those arguments against mouse x/y respectively.
+ local swapped_x,swapped_y=target.y-2,target.x+25
+ local swapped_deadline=dfhack.getTickCount()+900
+ repeat
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.mouse_x=swapped_x;g.mouse_y=swapped_y;g.precise_mouse_x=swapped_x*8+4;g.precise_mouse_y=swapped_y*12+8
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+ until dfhack.getTickCount()>=swapped_deadline
+ g.mouse_x=swapped_x;g.mouse_y=swapped_y;g.precise_mouse_x=swapped_x*8+4;g.precise_mouse_y=swapped_y*12+8
+ local transposed=capture(label..'-transposed',true)
+ transposed.expected_hover=expected;transposed.hover_match=transposed.hover==expected and transposed.hover_enabled
+ assert(transposed.hover_match,'native transposed containment hover did not activate')
+ -- Retain both the visible icon's failed activation and the transposed help.
+ for _,sample in ipairs{record,transposed}do
+  sample.help_text={}
+  for y=0,17 do
+   local chars={};for x=1,24 do chars[x]=' 'end
+   for _,cell in ipairs(sample.help_cells)do if cell.y==y then chars[cell.x-(g.dimx-24)+1]=string.char(cell.ch)end end
+   sample.help_text[#sample.help_text+1]=dfhack.df2utf(table.concat(chars))
+  end
  end
 end
 local function navigation(prefix,opened)

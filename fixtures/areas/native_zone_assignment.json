@@ -1644,10 +1644,166 @@
     ],
     "long_name": "Controlled nickname forces native abbreviation and two-line layout; nickname restored even after failure. Earlier003011 run rejected simple ellipsis reconstruction, with source preserved.",
     "unresolved": {
-      "room_status_callback": "0x3cfed0 -> 0x3a8730; unit owned_buildings max room value via0x559610, label via0xab4f20. Renderer itself writes gps and is not a runtime API.",
+      "room_status_callback": "Resolved by owner_room_status below; viewer integration remains pending.",
       "color": "0x1333bc0 writes global drawing colors; do not invoke as a semantic reader. Audit independent color readers and branches before integration.",
       "integration": "Wire fields and actual viewer row layout/colors/status/portraits, scaling, custom professions and broader edge cases remain pending."
     },
     "offline": "build/qa/owner-display-readers core19/19 and adapter passed"
+  },
+  "owner_room_status": {
+    "status": "Native owned-room status reader verified; production row integration pending",
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-004302",
+    "native_result_sha256": "688342f09791b4652d949208160fa4c2f416ec19bd885d06700fbf15b7621e69",
+    "owned_df_pid": 119216,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "plugin_sha256": "1b48af29ecb627fb5d90d66ec8de65e581ad9b3704721b1c281e3870fc3026c7",
+    "diagnostic": "df3d zone-owner-status-read <zone id> <unit id>",
+    "result": "Maximum matching owned-room value, and DF-encoded status label as byte array; zero/empty when no matching room",
+    "ownership": "Semantic unit.owned_buildings and zone type, native room-value calculation with local temporary vectors and owned output label. Reads map/furnishings/materials/unit preferences; does not call the status renderer or use UI/search scratch.",
+    "room_kinds": {
+      "Office": 0,
+      "Bedroom": 1,
+      "DiningHall": 2,
+      "Tomb": 3
+    },
+    "aggregation": "Max native value over matching owned rooms, at least1 for each matching room; native quality formatter plus observed inline Has prefix.",
+    "ranges": [
+      {
+        "rva": "0x3a8730",
+        "length": "0x656",
+        "fnv1a64": "bfe45639816b3835",
+        "role": "reference-only status renderer"
+      },
+      {
+        "rva": "0x559610",
+        "length": "0xf53",
+        "fnv1a64": "b4aa2d070c8d24f1",
+        "role": "native room value"
+      },
+      {
+        "rva": "0xab4f20",
+        "length": "0x3b0",
+        "fnv1a64": "7740ba5bc0108c80",
+        "role": "native quality label"
+      },
+      {
+        "rva": "0x14d0c70",
+        "length": "0x5cc",
+        "fnv1a64": "93e5fad4bd72b45f",
+        "role": "material lookup with owned outputs"
+      },
+      {
+        "rva": "0x14add70",
+        "length": "0x12f",
+        "fnv1a64": "01f897b15772d540",
+        "role": "shared audited material reader"
+      }
+    ],
+    "samples": 67,
+    "positive_cases": [
+      {
+        "capture": "tomb-transfer-candidate-display-text",
+        "unit_id": 5813,
+        "value": 1,
+        "label_bytes": [
+          72,
+          97,
+          115,
+          32,
+          71,
+          114,
+          97,
+          118,
+          101
+        ]
+      },
+      {
+        "capture": "bedroom-candidate-display-text",
+        "unit_id": 5981,
+        "value": 343,
+        "label_bytes": [
+          72,
+          97,
+          115,
+          32,
+          81,
+          117,
+          97,
+          114,
+          116,
+          101,
+          114,
+          115
+        ]
+      },
+      {
+        "capture": "bedroom-picker-display-long-display-text",
+        "unit_id": 5981,
+        "value": 343,
+        "label_bytes": [
+          72,
+          97,
+          115,
+          32,
+          81,
+          117,
+          97,
+          114,
+          116,
+          101,
+          114,
+          115
+        ]
+      },
+      {
+        "capture": "office-picker-display-king-display-text",
+        "unit_id": 5981,
+        "value": 295,
+        "label_bytes": [
+          72,
+          97,
+          115,
+          32,
+          83,
+          116,
+          117,
+          100,
+          121
+        ]
+      },
+      {
+        "capture": "dining-picker-display-owned-display-text",
+        "unit_id": 5981,
+        "value": 1,
+        "label_bytes": [
+          72,
+          97,
+          115,
+          32,
+          77,
+          101,
+          97,
+          103,
+          101,
+          114,
+          32,
+          68,
+          105,
+          110,
+          105,
+          110,
+          103,
+          32,
+          82,
+          111,
+          111,
+          109
+        ]
+      }
+    ],
+    "checks": "All three row lines compared byte-for-byte, including absent status; native main_interface/gps guards and initial map path_cost/path_tag arrays unchanged. Actual native dining assignment supplies a nonempty DiningHall case.",
+    "offline": "build/qa/owner-room-status-final core19/19 and adapter passed",
+    "remaining": "Production payload and rendered row integration; name colors, portraits, responsiveness, broader value/owner lifecycle cases and full picker acceptance."
   }
 }

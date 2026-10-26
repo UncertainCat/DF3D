@@ -184,6 +184,40 @@ std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzon
     if(candidate.status.current_soul)facts.stress=candidate.status.current_soul->personality.stress;
     return facts;
 }
+std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzonest& zone,df::unit& candidate) {
+    if(!df::global::world || !staffOrderingFunctions())return std::nullopt;
+    int16_t roomKind;
+    switch(zone.type) {
+        case df::civzone_type::Office:roomKind=0;break;
+        case df::civzone_type::Bedroom:roomKind=1;break;
+        case df::civzone_type::DiningHall:roomKind=2;break;
+        case df::civzone_type::Tomb:roomKind=3;break;
+        default:return std::nullopt;
+    }
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    // Reference3a8730 aggregates semantic owned rooms; its drawing operations
+    // are excluded. Value calculation owns temporary vectors and reads map,
+    // furnishings, materials and unit preferences. It uses no menu scratch.
+    if(hash(base+0x3a8730,0x656)!=UINT64_C(0xbfe45639816b3835) ||
+       hash(base+0x559610,0xf53)!=UINT64_C(0xb4aa2d070c8d24f1) ||
+       hash(base+0xab4f20,0x3b0)!=UINT64_C(0x7740ba5bc0108c80) ||
+       hash(base+0x14d0c70,0x5cc)!=UINT64_C(0x93e5fad4bd72b45f) ||
+       hash(base+0x14add70,0x12f)!=UINT64_C(0x01f897b15772d540))return std::nullopt;
+    static_assert(offsetof(df::unit,owned_buildings)==0x450);
+    using Value=int32_t (*)(df::building_civzonest*,df::unit*);
+    using Label=void (*)(std::string*,int32_t,int16_t);
+    ZoneOwnerRoomStatus result;
+    for(auto* building:candidate.owned_buildings) {
+        auto* room=virtual_cast<df::building_civzonest>(building);
+        if(!room || room->type!=zone.type)continue;
+        result.value=std::max({result.value,1,reinterpret_cast<Value>(const_cast<uint8_t*>(base+0x559610))(room,&candidate)});
+    }
+    if(result.value>0) {
+        reinterpret_cast<Label>(const_cast<uint8_t*>(base+0xab4f20))(&result.label,result.value,roomKind);
+        result.label.insert(0,"Has "); // Native inline prefix at3a8814 (and other room branches).
+    }
+    return result;
+}
 std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns) {
     const auto& order=staffOrderingFunctions();
     if(!order || !df::global::world || columns<3 || columns>2048)return std::nullopt;

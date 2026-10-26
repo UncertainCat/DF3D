@@ -211,12 +211,31 @@ preserved their source saves. Final DF128096 closes unsaved; native UI/gps and
 initial path-search guards remain unchanged. MSVC and
 `build/qa/owner-display-readers` core19/19 plus adapter pass.
 
-This is reader acceptance, not completed viewer rendering. Row status callback
-0x3a8730 aggregates owned room values through0x559610 and obtains the native
-quality label through0xab4f20. Those dependencies still need an ownership audit.
-Color routine0x1333bc0 writes global graphics state and must not be used as a
-semantic API. Production wire fields, row layout/color/status/portraits, scaling
-and broader name/profession cases remain unfinished.
+This is reader acceptance, not completed viewer rendering. Room status is
+verified below. Color routine0x1333bc0 writes global graphics state and must not
+be used as a semantic API. Production wire fields, row layout/color/status/
+portraits, scaling and broader name/profession cases remain unfinished.
+
+`df3d zone-owner-status-read <zone id> <unit id>` exposes the native owned-room
+value and quality caption. The reference callback0x3a8730 scans matching owned
+rooms and keeps the maximum0x559610 value, at least1 for any owned room. Native
+0xab4f20 formats the quality caption; the observed inline prefix is Has.
+Office/Bedroom/DiningHall/Tomb use formatter kinds0/1/2/3. The independent reader
+uses semantic room/unit inputs, temporary owned vectors within native value
+calculation and its own output string. The widget renderer is never called.
+The material lookup dependencies read semantic map, furnishings and materials.
+DFHack's getRoomDescription implementation is disabled and is not used.
+
+Protected `build/stockpile-storage-native-zone-owner-20261026-004302` compares
+status and both name lines for67 rendered rows across all four room kinds.
+Positive observations include Grave(value1), Quarters(343), Study(295) and
+Meager Dining Room(1). The dining case performs an actual native assignment
+before opening a second dining-room picker; its capture was inspected. Empty
+status lines are also checked. Native UI/gps and initial path-search guards
+remain unchanged. DF119216 closes unsaved with source preserved. MSVC and
+`build/qa/owner-room-status-final` core19/19 plus adapter pass. This establishes
+the native status reader, not production payload integration or full picker
+rendering/lifecycle acceptance.
 
 ## Native zone repaint effects
 

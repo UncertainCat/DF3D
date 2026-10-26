@@ -91,7 +91,7 @@ local function capture(name)
   local ids={}
   for _,entry in ipairs(list.entry_list)do if entry.t==0 and entry.u then ids[#ids+1]=entry.u.id end end
   local rows={};widget_rows(list,rows,0);assert(#rows<2000,'widget observation truncated')
-  if name=='tomb-picker' or name=='bedroom-picker' or name:find('%-display%-') then records[#records+1]={name=name..'-row-widgets',rows=rows} end
+  if name=='tomb-picker' or name=='bedroom-picker' or name=='tomb-transfer-candidate' or name=='bedroom-candidate' or name:find('%-display%-') then records[#records+1]={name=name..'-row-widgets',rows=rows} end
   local displayed={};for _,row in ipairs(rows)do if row.unit_id and row.visible then displayed[#displayed+1]=row.unit_id end end
   local _,list_address=df.sizeof(list)
   local sorting={}
@@ -123,12 +123,14 @@ local function capture(name)
   if name=='tomb-picker' then
    for _,block in ipairs(df.global.world.map.map_blocks)do guard(block.path_cost);guard(block.path_tag)end
   end
-  if name=='tomb-picker' or name=='bedroom-picker' or name:find('%-display%-') then
+  if name=='tomb-picker' or name=='bedroom-picker' or name=='tomb-transfer-candidate' or name=='bedroom-candidate' or name:find('%-display%-') then
    guard(df.global.gps)
    local samples={}
    for _,row in ipairs(rows)do
     if row.unit_id and row.visible and (row.flags&2)~=0 and row.y>=2 and row.y<g.dimy-5 then
      local text,code=dfhack.run_command_silent('df3d','zone-owner-text-read',tostring(row.unit_id),tostring(row.x2-row.x+1));assert(code==0,text)
+     local status_text,status_code=dfhack.run_command_silent('df3d','zone-owner-status-read',tostring(ui.cur_bld.id),tostring(row.unit_id));assert(status_code==0,status_text)
+     local status=require('json').decode(status_text)
      local lines={}
      for y=row.y-2,row.y do
       local bytes,colors={},{}
@@ -140,10 +142,11 @@ local function capture(name)
      local native_text=require('json').decode(text)
      local width=row.x2-row.x+1
      local expected={native_text[4],native_text[5]}
+     for x=1,width do assert(lines[1].bytes[x]==(status[2][x] or 0),'native room status mismatch: '..name..'/'..row.unit_id..'/'..x)end
      for line=1,2 do
       for x=1,width do assert(lines[line+1].bytes[x]==(expected[line][x] or 0),'native display reader mismatch: '..name..'/'..row.unit_id..'/'..line..'/'..x)end
      end
-     samples[#samples+1]={unit_id=row.unit_id,x=row.x,y=row.y,x2=row.x2,text=native_text,lines=lines,exact=true}
+     samples[#samples+1]={unit_id=row.unit_id,x=row.x,y=row.y,x2=row.x2,text=native_text,status=status,lines=lines,exact=true}
     end
    end
    records[#records+1]={name=name..'-display-text',samples=samples}
@@ -330,6 +333,20 @@ local ok,why=pcall(function()
  end)
  first_unit.name.nickname=previous_nickname
  assert(display_ok,display_error)
+ for _,sample in ipairs{{'office',208,285,df.civzone_type.Office},{'dining',55,356,df.civzone_type.DiningHall}}do
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  pixel(sample[2],sample[3]);mapclick(p);mapclick(p)
+  assert(ui.cur_bld.type==sample[4],'wrong owner room fixture')
+  pixel(304,114);pixel(336,154);capture(sample[1]..'-picker-display-default')
+  search('king');capture(sample[1]..'-picker-display-king')
+  if sample[1]=='dining' then
+   local owned_dining=ui.cur_bld
+   pixel(520,142);assert(owned_dining.assigned_unit_id==owner,'native dining assignment failed')
+   pixel(55,356);mapclick(p);mapclick(p)
+   assert(ui.cur_bld~=owned_dining and ui.cur_bld.type==df.civzone_type.DiningHall)
+   pixel(304,114);pixel(336,154);search('king');capture('dining-picker-display-owned')
+  end
+ end
 end)
 first_unit.relationship_ids.Spouse=old_first;spouse.relationship_ids.Spouse=old_spouse
 df.global.plotinfo.economy_active=old_economy

@@ -23,6 +23,9 @@ struct ZoneOwnerOrderFacts {
 };
 // Semantic keys used by native partition, permanent priority and selectable header callbacks.
 std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzonest& zone,df::unit& candidate);
+struct ZoneOwnerRoomStatus { int32_t value=0; std::string label; };
+// Owned-room value and native quality label; no widget/drawing state.
+std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzonest& zone,df::unit& candidate);
 struct ZoneOwnerDisplayText { std::string combined,name,profession,firstLine,secondLine; };
 // Native display readers write caller-owned DF-encoded strings; no renderer call.
 std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns);

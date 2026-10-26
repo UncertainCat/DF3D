@@ -215,6 +215,18 @@ elseif request.op=='zone_owner_candidates' then
  for _,id in ipairs(request.ids)do assert(not actual[id],'duplicate owner candidate');actual[id]=true end
  assert(#expected==#request.ids,'owner candidate count differs')
  for _,id in ipairs(expected)do assert(actual[id],'native owner candidate missing')end
+ local order_text,order_code=dfhack.run_command_silent('df3d','zone-owner-order-read',tostring(request.id));assert(order_code==0,order_text)
+ local facts=json.decode(order_text)
+ for i,row in ipairs(facts)do row[6]=i end
+ table.sort(facts,function(a,b)
+  if a[2]~=b[2]then return a[2]>b[2]end
+  if a[3]~=b[3]then return a[3]>b[3]end
+  if a[4]~=b[4]then return a[4]<b[4]end
+  if a[5]~=b[5]then return a[5]<b[5]end
+  return a[6]<b[6]
+ end)
+ for i,row in ipairs(facts)do assert(request.ids[i]==row[1],'native default owner order differs at '..i)end
+ result.default_order_exact=true
  result.count=#expected
  result.nonliving_or_noncitizen=-1
  for _,id in ipairs(expected)do

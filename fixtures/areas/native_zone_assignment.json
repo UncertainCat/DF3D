@@ -374,7 +374,7 @@
     "unknown_outcome": "Marked before native entry. No automatic replay or rollback."
   },
   "candidate_predicate": {
-    "status": "native predicate integrated into scoped owner lists and existing-zone assignment validation; ordering and full UI pending",
+    "status": "native eligibility and default ordering integrated into scoped owner lists; selectable header sorts and full UI pending",
     "entry": "0x3a6610",
     "inputs": "Owned 24-byte context: type, spouse-sharing flag, current owner pointer, zone pointer; owned 16-byte unit/non-item entry. No native widget or picker object is supplied.",
     "globals": [
@@ -478,5 +478,95 @@
       "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
       "scope": "Eligibility sets and existing-zone assignment only; ordering, query, rendered UI, legacy unscoped chooser and creation-time validation remain open."
     }
+  },
+  "default_owner_order": {
+    "status": "native default order verified and integrated; selectable header sorts remain pending",
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261025-234339",
+    "native_result_sha256": "8a86dfe866f1bb58e5706944e678ef456fb6188179e8a453de3377d1adad0d19",
+    "native_bridge_sha256": "2d1aa2cf2e9ff087885cfe3b50892cc7c3c59399df06a56a4c1ab4b3e142b7f2",
+    "native_owned_df_pid": 126736,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "comparisons": [
+      {
+        "count": 172,
+        "exact": true,
+        "name": "tomb-picker-default-order-parity"
+      },
+      {
+        "count": 171,
+        "exact": true,
+        "name": "tomb-picker-assigned-default-order-parity"
+      },
+      {
+        "count": 171,
+        "exact": true,
+        "name": "tomb-picker-bottom-default-order-parity"
+      },
+      {
+        "count": 141,
+        "exact": true,
+        "name": "bedroom-picker-default-order-parity"
+      },
+      {
+        "count": 139,
+        "exact": true,
+        "name": "bedroom-picker-assigned-default-order-parity"
+      },
+      {
+        "count": 18,
+        "exact": true,
+        "name": "bedroom-economy-picker-default-order-parity"
+      }
+    ],
+    "precedence": [
+      "without selected room type first (partition)",
+      "descending native entity-position priority (always sorting)",
+      "ascending native category pair (default Cat)",
+      "stable source ordinal for equal keys"
+    ],
+    "entry_points": [
+      {
+        "rva": "0x3d0440",
+        "size": "0x55",
+        "fnv1a64": "86ff43fac058fd1b",
+        "role": "room ownership partition, owned context type at offset8"
+      },
+      {
+        "rva": "0x3d04d0",
+        "size": "0xe0",
+        "fnv1a64": "4769466e05837caa",
+        "role": "permanent priority comparator"
+      },
+      {
+        "rva": "0x134bc90",
+        "size": "0x33",
+        "fnv1a64": "2e15d1b196b9c323",
+        "role": "priority key with explicit civ/group"
+      },
+      {
+        "rva": "0x134bb20",
+        "size": "0x166",
+        "fnv1a64": "35dbd90ce33cd29e",
+        "role": "entity position precedence and semantic cached lookups"
+      },
+      {
+        "rva": "0x1431370",
+        "size": "0x64",
+        "fnv1a64": "5854757b83da8810",
+        "role": "Cat comparator"
+      }
+    ],
+    "shared_category_reader": "location_staff_order_native.h pins native1425050, profession tableaa0220 and status predicates; no UI input",
+    "native_field_offsets": {
+      "sorting_by": "0x178",
+      "always_sorting_by": "0x190",
+      "partitions": "0x1a8"
+    },
+    "bridge_evidence": "build/areas-acceptance-20261025-234450",
+    "bridge_result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "bridge_sha256": "745c464ac7eda5200d57e0f784c1254fed0ee997dafbc321de60ad0bf2adf149",
+    "bridge_owned_df_pid": 128076,
+    "scope": "Default scoped owner picker order. Query, selectable header directions/history, row labels, legacy chooser, creation validation and full UI acceptance remain pending."
   }
 }

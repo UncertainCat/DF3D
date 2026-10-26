@@ -92,6 +92,31 @@ coverage includes native admission of an inactive deceased non-citizen, native
 exclusion of an apparent citizen, and paused picker refresh. This establishes
 eligibility and assignment integration, not native order, query or rendered UI.
 
+Default scoped owner ordering now calls native0x3d0440 for the room-ownership
+partition and native0x134bc90 for entity-position priority with explicit civ/group
+IDs. Category values reuse the pinned reader in `location_staff_order_native.h`.
+The incremental builder retains only these values and sorts by partition,
+descending priority, ascending category pair, then stable source ordinal.
+`df3d zone-owner-order-read` exposes those semantic values for protected checks.
+The native priority helper may refresh the same audited semantic lookup indices.
+
+Protected native `build/stockpile-storage-native-zone-owner-20261025-234339`
+asserts exact default row order in six unfiltered picker captures:172/171/171
+Tomb candidates and141/139/18 Bedroom candidates, including economy activation.
+Native callback metadata confirms sorting_by at0x178 (Cat), always_sorting_by
+at0x190 (position priority), and partitions at0x1a8 (room ownership). UI/search
+guards remain unchanged; owned DF126736 closes unsaved and the source manifest
+matches. The earlier233946 diagnostic run stopped on a JSON formatter error;
+it is not order evidence and also closed unsaved with source preserved.
+
+Protected bridge `build/areas-acceptance-20261025-234450` verifies the paginated
+172/172/139 candidate lists in that default order, plus owner assignment,
+transfer/removal and existing zone effects. All155 observations pass with clean
+diagnostics; owned DF128076 closes unsaved and both save manifests match. MSVC
+and core19/19 plus adapter checks pass. Selectable header sorts, their direction
+and history, query, status labels and rendered assignment UI still need parity;
+this default ordering milestone does not expose Zones/Locations.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

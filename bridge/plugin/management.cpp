@@ -1318,6 +1318,17 @@ int areaOwnerEligible(lua_State* L) {
   if(eligible.has_value())lua_pushboolean(L,*eligible);else lua_pushnil(L);
   return 1;
 }
+int areaOwnerOrderFacts(lua_State* L) {
+  auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
+  auto* unit=Lua::GetDFObject<df::unit>(L,2);
+  std::optional<df3d_area::ZoneOwnerOrderFacts> facts;
+  if(zone && unit) {
+    try {facts=df3d_area::nativeZoneOwnerOrderFacts(*zone,*unit);} catch(...) {}
+  }
+  if(!facts){lua_pushnil(L);return 1;}
+  lua_newtable(L);field(L,"without_room",facts->withoutRoom);field(L,"priority",facts->priority);
+  field(L,"category",facts->category);field(L,"category_status",facts->categoryStatus);return 1;
+}
 int areaSetOwner(lua_State* L) {
   bool attempted=false;
   const auto result=[&](bool ok,const char* reason) {
@@ -2772,7 +2783,10 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
     if(helper==LUA_NOREF){builderActive &= ~entry.domainMask;return 0;}
     lua_rawgeti(L,LUA_REGISTRYINDEX,helper);lua_newtable(L);
     field(L,"step",share);field(L,"builder_kind",kind);field(L,"epoch",epoch);
-    if(kind==7){lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");}
+    if(kind==7){
+      lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
+      lua_pushcfunction(L,areaOwnerOrderFacts);lua_setfield(L,-2,"owner_order_facts");
+    }
     if(kind==4){field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());citizenHelperGeneration=helpers.generation();}
     uint32_t used=0;
     if(Lua::SafeCall(out,L,1,1) && lua_istable(L,-1)) {

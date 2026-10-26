@@ -286,7 +286,7 @@ def main():
         for _ in range(10000):
             if not result["ok"] or not result["build_phase"]:
                 return result
-            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible}))
+            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts}))
             assert 0 <= stepped["steps"] <= 64 and stepped["active_kinds"] in (0, 128)
             result = raw_call(action, values)
         raise AssertionError("candidate builder did not finish")
@@ -623,6 +623,7 @@ def main():
     for _,u in ipairs(df.global.world.units.active)do u.sex=1;u.flags1={caged=false};u.profession='Worker';u.stress=u.id%7 end
     """)
     lua.execute("df.global.world.units.all=df.global.world.units.active;function owner_eligible(b,u) return u.native_eligible~=false end")
+    lua.execute("function owner_order_facts(b,u) return {without_room=true,priority=0,category=u.id,category_status=0} end")
     selector = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 1, "sort": 1}
     pending = raw_call(14, selector)
     assert pending["ok"] and pending["build_phase"] == 1 and pending["build_done"] == 0
@@ -635,7 +636,31 @@ def main():
     assert owner_page["candidates"][1]["id"] == 129 and owner_page["next_cursor"] == 256
     assert not call(14, dict(selector, expected_list_revision=owners["list_revision"] + 1))["ok"]
     descending = call(14, dict(selector, sort=0, sort_descending=True))
-    assert descending["candidates"][1]["id"] == 1  # source vector is descending IDs
+    assert descending["candidates"][1]["id"] == 260  # native category key, not reversed source order
+    lua.execute("""
+    local old=owner_order_facts
+    saved_owner_order_facts=old
+    function owner_order_facts(b,u)
+     local f=old(b,u)
+     if u.id==260 then f.without_room=false;f.priority=999 end
+     if u.id==259 then f.priority=10 end
+     if u.id==257 or u.id==258 then f.category=0;f.category_status=u.id-257 end
+     return f
+    end
+    """)
+    native_order = call(14, dict(selector, sort=0))
+    assert [native_order["candidates"][i]["id"] for i in range(1, 4)] == [259, 257, 258]
+    native_tail = call(14, dict(selector, sort=0, cursor=256, expected_list_revision=native_order["list_revision"]))
+    assert native_tail["candidates"][4]["id"] == 260  # room partition precedes priority
+    lua.execute("""
+    local old=owner_order_facts
+    function owner_order_facts(b,u)
+     local f=old(b,u);if u.id==258 then f.category_status=0 end;return f
+    end
+    """)
+    tied = call(14, dict(selector, sort=0))
+    assert [tied["candidates"][i]["id"] for i in range(1, 4)] == [259, 258, 257]  # native source order breaks ties
+    lua.execute("owner_order_facts=saved_owner_order_facts")
     searched = call(14, dict(selector, query="260"))
     assert len(searched["candidates"]) == 1 and searched["candidates"][1]["id"] == 260
     category = call(14, dict(selector, sort=2))

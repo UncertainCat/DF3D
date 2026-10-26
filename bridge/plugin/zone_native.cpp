@@ -1,5 +1,6 @@
 #include "zone_native.h"
 #include "location_value_native.h"
+#include "location_staff_order_native.h"
 #include "df/world_site.h"
 #include "df/abstract_building.h"
 #include "df/building_civzonest.h"
@@ -141,6 +142,32 @@ std::optional<bool> nativeZoneOwnerEligible(df::building_civzonest& zone,df::uni
     // Global reads are game mode, economy activation, civilization/group IDs
     // and semantic history/entity records. No widget/menu/search state is used.
     return !reinterpret_cast<Exclude>(const_cast<uint8_t*>(base+0x3a6610))(&context,&entry);
+}
+std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzonest& zone,df::unit& candidate) {
+    if(!df::global::world || !df::global::plotinfo || !nativeZoneOwnerCandidatesReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=
+        hash(base+0x3d0440,0x55)==0x86ff43fac058fd1bULL &&
+        hash(base+0x3d04d0,0xe0)==0x4769466e05837caaULL &&
+        hash(base+0x134bc90,0x33)==0x2e15d1b196b9c323ULL &&
+        hash(base+0x134bb20,0x166)==0x35dbd90ce33cd29eULL &&
+        hash(base+0x1431370,0x64)==0x5854757b83da8810ULL;
+    const auto& ordering=staffOrderingFunctions();
+    if(!compatible || !ordering)return std::nullopt;
+    struct Context {uint64_t unused;int32_t type;};
+    struct Entry {df::unit* unit;uint8_t isItem;uint8_t padding[7];};
+    static_assert(offsetof(Context,type)==8 && sizeof(Entry)==16);
+    Context context{0,int32_t(zone.type)};Entry entry{&candidate,0,{}};
+    std::array<int32_t,2> category{};StaffUnitReference reference{&candidate};
+    using Partition=bool (*)(const Context*,const Entry*);
+    using Priority=int32_t (*)(df::unit*,int32_t,int32_t);
+    // Owned inputs only. Priority refreshes the audited semantic lookup indices;
+    // category reads unit traits and creature raws. No native picker is supplied.
+    const bool withoutRoom=reinterpret_cast<Partition>(base+0x3d0440)(&context,&entry);
+    const int32_t priority=reinterpret_cast<Priority>(base+0x134bc90)(&candidate,
+        df::global::plotinfo->civ_id,df::global::plotinfo->group_id);
+    ordering.category(&category,&reference);
+    return ZoneOwnerOrderFacts{withoutRoom,priority,category[0],category[1]};
 }
 bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner) {
     if(!df::global::world || !nativeZoneOwnerReady() || !zone.canBeRoomSubset())return false;

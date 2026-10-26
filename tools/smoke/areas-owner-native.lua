@@ -60,6 +60,27 @@ local function capture(name)
   for _,entry in ipairs(list.entry_list)do if entry.t==0 and entry.u then ids[#ids+1]=entry.u.id end end
   local rows={};widget_rows(list,rows,0);assert(#rows<2000,'widget observation truncated')
   local displayed={};for _,row in ipairs(rows)do if row.unit_id and row.visible then displayed[#displayed+1]=row.unit_id end end
+  local _,list_address=df.sizeof(list)
+  local sorting={}
+  for _,entry in ipairs(list.sorting_by)do sorting[#sorting+1]=entry.ident end
+  local callbacks={}
+  for _,field in ipairs{'sorting_by','always_sorting_by','partitions'}do
+   local _,address=df.sizeof(list[field])
+   local begin=df.reinterpret_cast('uint64_t',address).value
+   local finish=df.reinterpret_cast('uint64_t',address+8).value
+   local stride=field=='sorting_by' and 96 or 64
+   assert(finish>=begin and (finish-begin)%stride==0 and finish-begin<=65536)
+   local entries={}
+   for at=begin,finish-1,stride do
+    local context=df.reinterpret_cast('uint64_t',at+56).value
+    if context~=0 then
+     local vtable=df.reinterpret_cast('uint64_t',context).value
+     entries[#entries+1]={invoke=df.reinterpret_cast('uint64_t',vtable+16).value,zone_type=field=='partitions' and df.reinterpret_cast('int32_t',context+8).value or nil}
+    end
+   end
+   callbacks[field]={offset=address-list_address,entries=entries}
+  end
+  records[#records+1]={name=name..'-sort-metadata',sorting=sorting,callbacks=callbacks}
   local guards={}
   local function guard(value)
    local size,address=df.sizeof(value);local copy=df.new('uint8_t',size)
@@ -70,10 +91,24 @@ local function capture(name)
    for _,block in ipairs(df.global.world.map.map_blocks)do guard(block.path_cost);guard(block.path_tag)end
   end
   local text,code=dfhack.run_command_silent('df3d','zone-owner-candidates-read',tostring(assert(ui.cur_bld).id));assert(code==0,text)
+  local order_text,order_code=dfhack.run_command_silent('df3d','zone-owner-order-read',tostring(ui.cur_bld.id));assert(order_code==0,order_text)
+  local order_facts=require('json').decode(order_text)
+  records[#records+1]={name=name..'-order-facts',facts=order_facts}
   for _,v in ipairs(guards)do assert(dfhack.internal.memcmp(v.copy,v.address,v.size)==0,'candidate query changed native UI/search scratch');df.delete(v.copy)end
   local eligible=require('json').decode(text)
   records[#records+1]={name=name..'-candidates',source_ids=ids,displayed_ids=displayed,eligible_ids=eligible,query=list.filter_str,unchanged_guards=#guards}
   if list.filter_str=='' then
+   local sorted={};for i,facts in ipairs(order_facts)do sorted[#sorted+1]={id=facts[1],room=facts[2],priority=facts[3],category=facts[4],status=facts[5],ordinal=i}end
+   table.sort(sorted,function(a,b)
+    if a.room~=b.room then return a.room>b.room end
+    if a.priority~=b.priority then return a.priority>b.priority end
+    if a.category~=b.category then return a.category<b.category end
+    if a.status~=b.status then return a.status<b.status end
+    return a.ordinal<b.ordinal
+   end)
+   assert(#sorted==#displayed,'native default order count differs')
+   for i,row in ipairs(sorted)do assert(row.id==displayed[i],'native default order differs at '..i)end
+   records[#records+1]={name=name..'-default-order-parity',count=#sorted,exact=true}
    local expected={};for _,id in ipairs(eligible)do expected[id]=true end
    assert(#displayed==#eligible,'native displayed candidate count differs: '..#displayed..' / '..#eligible)
    for _,id in ipairs(displayed)do assert(expected[id],'native displayed candidate missing');expected[id]=nil end

@@ -1985,6 +1985,32 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         out.print("{{\"water\":{},\"fishing\":{}}}\n",int(result.water),int(result.fishing));
         return CR_OK;
       }
+      if(parameters[0]=="zone-owner-order-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* zone=virtual_cast<df::building_civzonest>(df::building::find(id));
+        if(!zone || !df::global::world)return CR_FAILURE;
+        struct Row {int32_t id;df3d_area::ZoneOwnerOrderFacts facts;};
+        std::vector<Row> rows;
+        for(auto* unit:df::global::world->units.all) {
+          if(!unit)continue;
+          auto eligible=df3d_area::nativeZoneOwnerEligible(*zone,*unit);
+          if(!eligible)return CR_FAILURE;
+          if(!*eligible)continue;
+          auto facts=df3d_area::nativeZoneOwnerOrderFacts(*zone,*unit);
+          if(!facts)return CR_FAILURE;
+          rows.push_back({unit->id,*facts});
+        }
+        out.print("[ ");
+        for(size_t i=0;i<rows.size();++i) {
+          const auto& r=rows[i];
+          out.print("{}[{},{},{},{},{}]",i?",":"",r.id,r.facts.withoutRoom?1:0,
+              r.facts.priority,r.facts.category,r.facts.categoryStatus);
+        }
+        out.print(" ]\n");return CR_OK;
+      }
       if(parameters[0]=="zone-owner-candidates-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
@@ -2259,6 +2285,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d track-material-candidates-read <sx> <sy> <sz> <tx> <ty> <tz> <candidate-limit> (read-only)\n"
         "df3d room-read <x> <y> <z>\n"
         "df3d zone-owner-candidates-read <zone id>\n"
+        "df3d zone-owner-order-read <zone id>\n"
         "    Read-only diagnostic: semantic room observation and traversal mask as JSON.\n"
           "df3d room-seed <building id>\n"
           "    Read-only diagnostic: furniture identity and native room-use relations as JSON.\n"

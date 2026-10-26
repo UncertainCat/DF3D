@@ -17,6 +17,9 @@ bool nativeZoneOwnerReady();
 // Native may refresh semantic historical-figure/position lookup indices.
 bool nativeZoneOwnerCandidatesReady();
 std::optional<bool> nativeZoneOwnerEligible(df::building_civzonest& zone,df::unit& candidate);
+struct ZoneOwnerOrderFacts {bool withoutRoom;int32_t priority;int32_t category;int32_t categoryStatus;};
+// Semantic keys used by native partition, permanent priority and Cat callbacks.
+std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzonest& zone,df::unit& candidate);
 // Native may allocate and transfer ownership from another tomb. Callers mark
 // the outcome unknown before entry; no automatic rollback or retry is valid.
 bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner);

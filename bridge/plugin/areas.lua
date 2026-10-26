@@ -518,6 +518,7 @@ local function location_row(v,site_id)
   guild_profession=k==4 and v.contents.profession or -1,location_tier=k==4 and v.contents.location_tier or -1}
 end
 local function candidate_row(job,v,r)
+ local order_facts
  if job.locations then return location_row(v,job.site_id) end
  if job.legacy and job.kind==0 then return {id=v.id,name=name(v)..' #'..v.id,label=''} end
  if job.candidate_kind==3 then
@@ -535,6 +536,10 @@ local function candidate_row(job,v,r)
   if type(r.owner_eligible)=='function' then eligible=r.owner_eligible(b,v) end
   if eligible==nil then job.error='Native area helper unavailable';return nil end
   if not eligible then return nil end
+  if job.sort==0 then
+   if type(r.owner_order_facts)=='function' then order_facts=r.owner_order_facts(b,v) end
+   if not order_facts then job.error='Native area helper unavailable';return nil end
+  end
  else
   if not U.isActive(v) or U.isDead(v) then return nil end
   if job.candidate_kind==1 then
@@ -545,7 +550,7 @@ local function candidate_row(job,v,r)
  if job.legacy then return {id=v.id,name=label..' #'..v.id,label=''} end
  return {id=v.id,name=label,profession=dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,
   mood=U.getStressCategory(v)+1,grazer=job.candidate_kind==2 and U.isGrazer(v) or false,
-  assigned=job.candidate_kind==1 and v.id==job.owner_id or job.assigned[v.id]~=nil,squad_use=-1}
+  assigned=job.candidate_kind==1 and v.id==job.owner_id or job.assigned[v.id]~=nil,squad_use=-1,owner_order=order_facts}
 end
 local function append_candidate(job,row)
  if not row then return end
@@ -561,6 +566,18 @@ local function append_candidate(job,row)
  job.ids[identity]=true;row.ordinal=#job.rows+1;job.rows[#job.rows+1]=row
 end
 local function row_less(job,a,b)
+ if job.native_owner and job.sort==0 then
+  local x,y=a.owner_order,b.owner_order
+  if x.without_room~=y.without_room then return x.without_room end
+  if x.priority~=y.priority then return x.priority>y.priority end
+  for _,field in ipairs{'category','category_status'}do
+   if x[field]~=y[field] then
+    if job.descending then return x[field]>y[field] end
+    return x[field]<y[field]
+   end
+  end
+  return a.ordinal<b.ordinal
+ end
  local x,y
  if job.legacy then x,y=a.id,b.id
  elseif job.sort==0 then x,y=a.ordinal,b.ordinal

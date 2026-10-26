@@ -1387,7 +1387,7 @@ func _process(delta: float) -> void:
 			# elevation. Recenter must not discard an in-flight assignment receipt.
 			cancel_drag(stockpile_page != "owner"); update_controls()
 	if stockpile_page in ["owner","animals","squads"] and request_ticket == 0: candidates_state.poll(delta)
-	if stockpile_page == "owner" and candidates_view.is_visible_in_tree():
+	if stockpile_page in ["owner","animals"] and candidates_view.is_visible_in_tree():
 		owner_refresh.poll(delta,maxi(0,int(candidates_view.scroll.scroll_vertical/36)-(1 if candidates_view.remove.visible else 0)))
 	else: owner_refresh.clear()
 	_sync_paint_counts()

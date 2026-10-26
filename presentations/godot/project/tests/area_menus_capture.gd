@@ -944,6 +944,33 @@ func run() -> void:
 	for expected in [[16,1],[32,17],[39,24]]:
 		animal_view.feed_animal_key(page_down)
 		if animal_view.owner_selected!=expected[0] or animal_bar.first!=expected[1]:push_error("Animal keyboard scrolling differs");quit(1);return
+	# Background facts replace presentation data without replacing interaction nodes.
+	animal_state.rows=[restraints.samples[0].row.duplicate(true),{"id":-1,"entity":0}]
+	animal_state.receipt=502;animal_state.changed.emit();animal_view.owner_selected=1;animal_view.refresh()
+	await process_frame;await RenderingServer.frame_post_draw
+	var stable_button:Button=animal_view.choices[0]
+	var stable_hover=stable_button.get_node("AnimalContainmentHover")
+	stable_button.grab_focus();stable_hover.mouse_entered.emit()
+	containment_help.state.started=Time.get_ticks_msec()-500;containment_help._process(0)
+	var old_hover_owner=containment_help.state.owner
+	var refreshed_row:Dictionary=restraints.samples[1].row.duplicate(true)
+	refreshed_row.id=animal_state.rows[0].id
+	animal_state.rows[0]=refreshed_row;animal_state.facts_changed.emit()
+	await process_frame;await RenderingServer.frame_post_draw
+	if animal_view.choices[0]!=stable_button or not stable_button.has_focus() or animal_view.owner_selected!=1 or animal_view.owner_scrollbar.first!=0:
+		push_error("Animal background refresh disrupted interaction");quit(1);return
+	if stable_button.get_node("AnimalContainmentHover")!=stable_hover or containment_help.state.owner!=old_hover_owner or not containment_help.visible:
+		push_error("Animal artwork refresh reset unchanged containment hover");quit(1);return
+	var refreshed_image:=root.get_texture().get_image();refreshed_image.convert(Image.FORMAT_RGB8)
+	var refreshed_crop:=refreshed_image.get_region(Rect2i(Vector2i(stable_button.global_position)+Vector2i(240,0),Vector2i(40,36)))
+	var refreshed_digest:=HashingContext.new();refreshed_digest.start(HashingContext.HASH_SHA256);refreshed_digest.update(refreshed_crop.get_data())
+	if refreshed_digest.finish().hex_encode()!=str(restraints.samples[1].rgb_sha256):push_error("Refreshed animal restraint differs from native pixels");quit(1);return
+	var evicted:Dictionary=refreshed_row.duplicate();evicted.erase("sheet_icon")
+	animal_state.rows[0]=evicted;animal_state.facts_changed.emit()
+	if not animal_view.portrait_slots[0].recipe.is_empty() or animal_view.portrait_slots[0].view.texture!=null:push_error("Animal view retained evicted portrait");quit(1);return
+	var no_status:Dictionary=evicted.duplicate(true);no_status.animal_status={"kind":0,"containment":0,"item_id":-1};no_status.erase("animal_restraint")
+	animal_state.rows[0]=no_status;animal_state.facts_changed.emit()
+	if stable_button.has_node("AnimalContainmentHover") or containment_help.visible:push_error("Changed containment retained old hover");quit(1);return
 	animal_view.free();containment_help.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

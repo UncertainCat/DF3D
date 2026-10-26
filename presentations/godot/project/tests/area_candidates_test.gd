@@ -77,6 +77,36 @@ func run() -> void:
 	check(fresh.rows[0].has("sheet_icon") and not fresh.rows[40].has("sheet_icon"),"return scroll restores only current window")
 	refresh.poll(1,40);refresh.poll(0,0)
 	check(service.detached.has(3),"scroll change detaches obsolete viewport read")
+	fresh.clear();service.calls.clear();service.detached.clear()
+	var animals: Array=[]
+	for index in 96:
+		animals.append({"id":index/2,"entity":1+index%2,"sheet_icon":{"layers":[[index]]},"animal_container":{"occupant":{"layers":[[index]]}}})
+	fresh.open(area,2);fresh.accept({"list_revision":789,"candidates":animals},fresh.pending.duplicate(true))
+	check(fresh.rows.filter(func(row):return row.has("sheet_icon") or row.has("animal_container")).size()==36,"animal portraits and container recipes share retention bound")
+	check(animals[95].has("animal_container"),"animal eviction preserves source snapshot")
+	refresh.poll(1,0)
+	check(service.calls[0].request.candidate_kind==2 and not fresh.busy(),"animal background refresh keeps input available")
+	var animal_facts:Dictionary={"operation":14,"candidate_kind":2,"query":"","sort":2,"sort_descending":false,"list_revision":789,"candidates":animals.slice(0,18)}
+	var collision:Dictionary=animal_facts.duplicate(true);collision.candidates[0].entity=2
+	collision.candidates[1].name="Must not update"
+	service.reply(0,collision)
+	check(not fresh.rows[1].has("name"),"typed ID collision rejects entire animal fact page")
+	refresh.poll(0,40);check(service.calls[1].request.cursor==40,"animal scroll requests current window")
+	animal_facts.candidates=animals.slice(40,58);service.reply(1,animal_facts)
+	check(fresh.rows[40].has("animal_container") and not fresh.rows[0].has("animal_container"),"animal container recipes evicted and reacquired by viewport")
+	refresh.poll(1,40);fresh.queue_owner_search(PackedByteArray([195]));service.reply(2,animal_facts)
+	check(fresh.rows.is_empty() and service.detached.has(3),"animal query retires background facts")
+	for retirement in ["order","mutation","session","close"]:
+		fresh.open(area,2);fresh.accept({"list_revision":789,"candidates":animals.slice(0,2)},fresh.pending.duplicate(true))
+		refresh.poll(1,0);var last:=service.calls.size()-1
+		match retirement:
+			"order":fresh.order(1)
+			"mutation":fresh.toggle_animal(1,0)
+			"session":service.session_changed.emit()
+			"close":fresh.clear()
+		animal_facts.candidates=animals.slice(0,2).duplicate(true);animal_facts.candidates[0].name="Late"
+		service.reply(last,animal_facts)
+		check(fresh.rows.is_empty() or not fresh.rows[0].has("name"),"animal "+retirement+" retires late facts")
 	fresh.clear();service.calls.clear()
 	state.open(area)
 	check(sent[-1] == {"action":14,"operation":14,"id":82,"kind":1,"candidate_kind":1,"query":"","sort":2,"sort_descending":false,"cursor":0},"owner selector uses enriched native candidate request")

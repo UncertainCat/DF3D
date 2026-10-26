@@ -29,9 +29,8 @@ navigation is enabled. Core19/19, state and controller checks pass in
 scrollbar crops exactly and verify complete-row clipping, keyboard paging and
 drag destinations. `build/qa/animal-long-scroll-pointer` additionally verifies
 actual viewport wheel events, shifted paging and outside-pointer exclusion.
-Both GPU runs retain only the three known Godot diagnostics. Animal bounded
-portrait retention/background refresh and full live controller coverage remain
-outstanding; this is component scrolling acceptance, not full Zones acceptance.
+Both GPU runs retain only the three known Godot diagnostics. Animal full live controller coverage remains outstanding; this is component
+scrolling acceptance, not full Zones acceptance.
 
 The existing candidate_limit request (1..128; zero retains the default) is now
 valid for animal as well as owner fact pages. Bounded reads reuse the retained
@@ -42,8 +41,19 @@ IDs and portrait helper counts for one-row windows. The extension and selector
 checks pass in `build/qa/animal-bounded-facts-extension`. Protected
 `build/areas-acceptance-20261026-143407` compares every one-row Pond page with
 fresh native identity, status, text, color and artwork facts and preserves both
-save manifests. This provides bridge support for the pending viewer refresh
-integration; it does not yet enable background animal refresh.
+save manifests. The viewer now uses these pages for animal background refresh. Reads are
+separate from assignment and preserve list receipt, membership and order.
+The model and view retain main portraits and cage-container recipes only within
+a36-row window around the viewport; scrolling requests an18-row fact page.
+Replies validate entity plus ID, including unit/item collisions, and retire on
+search, sort, mutation, session replacement or closure. Rows update in place:
+buttons, focus, selection, scroll and unchanged containment hover survive new
+facts. Changed containment clears its old tooltip. Core19/19, state, controller
+and GPU checks pass in `build/qa/animal-refresh`; additional GPU
+`build/qa/animal-refresh-interaction` verifies stable interaction nodes, native
+restraint pixels after refresh, portrait eviction and tooltip retirement.
+Both GPU runs have only the three known diagnostics. Full live controller
+refresh/scroll effects remain part of the outstanding Zones acceptance.
 
 
 `native_zone_animals.json.animal_search_input` records real Windows/SDL input

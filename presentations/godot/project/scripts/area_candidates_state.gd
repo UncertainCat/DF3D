@@ -127,7 +127,8 @@ func more() -> void:
 	if cursor != 0 and search_delay < 0: read(cursor)
 
 func accept_owner_facts(page: Dictionary, sent: Dictionary) -> void:
-	if busy() or kind != 1 or receipt == 0 or int(sent.get("expected_list_revision",0)) != receipt: return
+	if int(sent.get("candidate_kind",0)) != kind: return
+	if busy() or kind not in [1,2] or receipt == 0 or int(sent.get("expected_list_revision",0)) != receipt: return
 	if int(sent.get("id",-1)) != int(area.id) or sent.get("query_bytes") != query_bytes: return
 	if str(sent.get("query","")) != query or int(sent.get("sort",-1)) != sort or bool(sent.get("sort_descending")) != descending: return
 	if int(page.get("operation",-1)) != C.AreaOperation.CandidateList or int(page.get("list_revision",0)) != receipt: return
@@ -138,33 +139,34 @@ func accept_owner_facts(page: Dictionary, sent: Dictionary) -> void:
 	var values: Array = page.get("candidates",[])
 	var limit := int(sent.get("candidate_limit",0))
 	if values.size() > (128 if limit == 0 else limit): return
-	if first < 0 or first >= rows.size() or values.is_empty(): return
+	if first < 0 or first >= rows.size() or values.is_empty() or first+values.size()>rows.size(): return
 	var count := mini(values.size(),rows.size()-first)
 	# Validate the entire overlap before changing any row. Never append or sort
 	# on a fact refresh: DF retains the open selector's membership and order.
 	for index in count:
 		if int(values[index].get("id",-1)) != int(rows[first+index].id): return
+		if kind == 2 and int(values[index].get("entity",0)) != int(rows[first+index].get("entity",0)): return
 	for index in count: rows[first+index] = values[index].duplicate(true)
 	_trim_owner_recipes()
 	facts_changed.emit()
 
 func retain_owner_recipes(first: int) -> void:
-	if kind != 1: return
+	if kind not in [1,2]: return
 	var start := maxi(0,first-9)
 	if start == recipe_first: return
 	recipe_first = start
 	if _trim_owner_recipes(): facts_changed.emit()
 
 func _trim_owner_recipes() -> bool:
-	if kind != 1: return false
+	if kind not in [1,2]: return false
 	var trimmed := false
 	for index in rows.size():
 		if index >= recipe_first and index < recipe_first+OWNER_RECIPE_ROWS: continue
-		if not rows[index].has("sheet_icon"): continue
+		if not rows[index].has("sheet_icon") and not rows[index].has("animal_container"): continue
 		# Page receipts are owned elsewhere too. Replace the row; never mutate
 		# their snapshot or a view's prior facts while releasing heavy recipes.
 		var row: Dictionary = rows[index].duplicate()
-		row.erase("sheet_icon"); rows[index] = row; trimmed = true
+		row.erase("sheet_icon"); row.erase("animal_container"); rows[index] = row; trimmed = true
 	return trimmed
 
 func reject(reason: String) -> void:

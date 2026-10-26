@@ -108,6 +108,7 @@ func bind_containment_help(button: Button, relation: int) -> void:
 	# drawn indicator, instead of swapping their X/Y coordinates.
 	target.position = Vector2(240,0); target.size = Vector2(32,36)
 	target.mouse_filter = Control.MOUSE_FILTER_PASS; button.add_child(target)
+	target.set_meta("relation",relation)
 	var owner := target.get_instance_id()
 	target.mouse_entered.connect(func():
 		if not button.disabled: native_help.enter_containment(owner,relation))
@@ -227,22 +228,11 @@ func refresh() -> void:
 				icon.position = Vector2(440,0); icon.size = Vector2(16,16)
 				icon.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(icon)
 			if state.kind == 2:
-				var check := TextureRect.new()
+				var check := TextureRect.new(); check.name = "AnimalAssigned"
 				check.texture = art.texture("LABOR_WORKER_ASSIGNED" if bool(row.get("assigned",false)) else "LABOR_WORKER_UNASSIGNED")
 				check.position = Vector2(280,0); check.size = Vector2(32,36)
 				check.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(check)
-				var status: Dictionary = row.get("animal_status",{})
-				var status_kind := int(status.get("kind",0))
-				if status_kind in [1,2,3,5] or (status_kind == 4 and ((row.has("animal_container") and world.has_method("animal_container_icon")) or (row.has("animal_restraint") and world.has_method("animal_restraint_icon")))):
-					var indicator := TextureRect.new(); indicator.name = "AnimalStatus"
-					if status_kind == 5: indicator.texture = art.texture("MISSING_BUILDING")
-					elif status_kind == 4 and row.has("animal_restraint"): indicator.texture = world.animal_restraint_icon(row.animal_restraint)
-					elif status_kind == 4: indicator.texture = world.animal_container_icon(row.animal_container)
-					else: indicator.texture = art.texture(["UNIT_SELECTOR_PASTURE","UNIT_SELECTOR_PIT","UNIT_SELECTOR_POND"][status_kind-1])
-					indicator.position = Vector2(242,2); indicator.size = Vector2(32,32)
-					indicator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; indicator.stretch_mode = TextureRect.STRETCH_SCALE
-					indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(indicator)
-					if status_kind == 4: bind_containment_help(button,int(status.get("containment",0)))
+				update_animal_status(button,row)
 	if state.kind == 1:
 		style_row(remove,remove.visible and owner_selected == 0)
 		for index in choices.size():
@@ -410,7 +400,57 @@ func add_owner_text(button: Button, display: Dictionary) -> void:
 	owner_color_rows.append({"button":button,"description":display.get("name_color",{}),"lines":colored,"last":[]})
 	apply_owner_colors(Time.get_ticks_msec())
 
+func update_animal_status(button: Button, row: Dictionary) -> void:
+	var old_indicator := button.get_node_or_null("AnimalStatus") as TextureRect
+	if old_indicator != null: old_indicator.hide(); old_indicator.texture = null
+	var status: Dictionary = row.get("animal_status",{})
+	var status_kind := int(status.get("kind",0))
+	if status_kind in [1,2,3,5] or (status_kind == 4 and ((row.has("animal_container") and world.has_method("animal_container_icon")) or (row.has("animal_restraint") and world.has_method("animal_restraint_icon")))):
+		var indicator := button.get_node_or_null("AnimalStatus") as TextureRect
+		if indicator == null:
+			indicator = TextureRect.new(); indicator.name = "AnimalStatus"; button.add_child(indicator)
+		if status_kind == 5: indicator.texture = art.texture("MISSING_BUILDING")
+		elif status_kind == 4 and row.has("animal_restraint"): indicator.texture = world.animal_restraint_icon(row.animal_restraint)
+		elif status_kind == 4: indicator.texture = world.animal_container_icon(row.animal_container)
+		else: indicator.texture = art.texture(["UNIT_SELECTOR_PASTURE","UNIT_SELECTOR_PIT","UNIT_SELECTOR_POND"][status_kind-1])
+		indicator.position = Vector2(242,2); indicator.size = Vector2(32,32)
+		indicator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; indicator.stretch_mode = TextureRect.STRETCH_SCALE
+		indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE; indicator.show()
+
+	var relation := int(status.get("containment",0)) if status_kind == 4 else 0
+	var hover := button.get_node_or_null("AnimalContainmentHover")
+	var visible_status := button.get_node_or_null("AnimalStatus") as TextureRect
+	if visible_status == null or not visible_status.visible: relation = 0
+	if hover != null and int(hover.get_meta("relation",0)) != relation:
+		button.remove_child(hover); hover.queue_free(); hover = null
+	if hover == null and relation in [1,2,3,4]: bind_containment_help(button,relation)
+
+func refresh_animal_facts() -> void:
+	if choices.size() != state.rows.size(): return
+	for index in state.rows.size():
+		if state.rows[index].id != cached_rows[index].id or state.rows[index].get("entity") != cached_rows[index].get("entity"): return
+	for index in state.rows.size():
+		var row: Dictionary = state.rows[index]; var previous: Dictionary = cached_rows[index]
+		if row == previous: continue
+		var button: Button = choices[index]
+		if row.get("animal_display") != previous.get("animal_display") or row.get("animal_item_color") != previous.get("animal_item_color") or row.get("name") != previous.get("name"):
+			owner_color_rows = owner_color_rows.filter(func(value): return value.button != button)
+			for name in ["AnimalFirst","AnimalSecond","AnimalWarning","AnimalItemName"]:
+				var child = button.get_node_or_null(name)
+				if child != null: button.remove_child(child); child.queue_free()
+			if row.get("animal_display") is Dictionary: add_animal_text(button,row.animal_display)
+			if row.get("animal_item_color") is Dictionary: add_animal_item_text(button,str(row.get("name","")),row.animal_item_color)
+		button.get_node("AnimalAssigned").texture = art.texture("LABOR_WORKER_ASSIGNED" if bool(row.get("assigned",false)) else "LABOR_WORKER_UNASSIGNED")
+		if row.get("animal_status") != previous.get("animal_status") or row.get("animal_container") != previous.get("animal_container") or row.get("animal_restraint") != previous.get("animal_restraint"):
+			update_animal_status(button,row)
+		if index < portrait_slots.size():
+			var slot: Dictionary = portrait_slots[index]
+			if slot.recipe != row.get("sheet_icon",{}):
+				slot.recipe = row.get("sheet_icon",{}); slot.loaded = false; slot.view.texture = null
+		cached_rows[index] = row
+
 func refresh_owner_facts() -> void:
+	if state.kind == 2: refresh_animal_facts(); return
 	if state.kind != 1 or choices.size() != state.rows.size(): return
 	for index in state.rows.size():
 		var row: Dictionary = state.rows[index]

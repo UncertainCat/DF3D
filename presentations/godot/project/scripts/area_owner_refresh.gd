@@ -20,7 +20,7 @@ func clear() -> void:
 	ticket = 0; age = 0.0; first_row = 0
 
 func poll(delta: float, first: int) -> void:
-	if service == null or state == null or state.kind != 1 or state.busy() or state.receipt == 0 or state.rows.is_empty():
+	if service == null or state == null or state.kind not in [1,2] or state.busy() or state.receipt == 0 or state.rows.is_empty():
 		clear(); return
 	first = clampi(first,0,state.rows.size()-1)
 	state.retain_owner_recipes(first)
@@ -30,7 +30,7 @@ func poll(delta: float, first: int) -> void:
 	if ticket != 0 or age < interval: return
 	age = 0
 	var request := {"action":C.ManagementAction.AreaCandidates,"operation":C.AreaOperation.CandidateList,
-		"id":int(state.area.id),"kind":1,"candidate_kind":1,"query":state.query,"sort":state.sort,
+		"id":int(state.area.id),"kind":1,"candidate_kind":state.kind,"query":state.query,"sort":state.sort,
 		"sort_descending":state.descending,"cursor":clampi(first,0,state.rows.size()-1),"expected_list_revision":state.receipt,
 		"candidate_limit":18} # 600px viewport: at most18 partially visible36px rows.
 	if state.query_bytes is PackedByteArray: request.query_bytes = state.query_bytes.duplicate()

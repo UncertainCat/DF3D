@@ -641,7 +641,7 @@ def main():
     assert owners["candidates"][1]["name"] == "Native name"
     assert owners["candidates"][1]["profession"] == "Native profession"
     # Building the full 260-ID snapshot must not retain 260 portrait recipes.
-    assert lua.globals().owner_display_calls <= 129
+    assert lua.globals().owner_display_calls == 128
     lua.execute("saved_live_display=owner_display;function owner_display(b,u)local d=saved_live_display(b,u);d.first_line='Changed while open';d.name='Changed native name';return d end")
     refreshed = call(14, dict(selector, expected_list_revision=owners["list_revision"]))
     assert refreshed["ok"] and refreshed["list_revision"] == owners["list_revision"]
@@ -726,7 +726,18 @@ def main():
     lua.execute("df.global.cur_year_tick=4400")
     assert raw_call(14, dict(selector, expected_list_revision=owners["list_revision"]))["ok"]
     lua.execute("df.global.cur_year_tick=4401")
+    assert raw_call(14, dict(selector, expected_list_revision=owners["list_revision"]))["ok"]
+    # Successful retained reads extend the open owner's lease beyond build age.
+    # A wrong receipt cannot keep a list alive, and expiry cannot rebuild it.
+    lua.execute("df.global.cur_year_tick=6801")
+    assert not raw_call(14, dict(selector, expected_list_revision=owners["list_revision"] + 1))["ok"]
+    lua.execute("df.global.cur_year_tick=6802")
     assert not raw_call(14, dict(selector, expected_list_revision=owners["list_revision"]))["ok"]
+    refreshed = call(14, selector)
+    assert refreshed["ok"]
+    lua.execute("df.global.cur_year_tick=6801")
+    assert not raw_call(14, dict(selector, expected_list_revision=refreshed["list_revision"]))["ok"]
+    lua.execute("df.global.cur_year_tick=6802")
     refreshed = call(14, selector)
     assert refreshed["ok"]
     assert not call(11, {"operation": 4, "name": "x" * 129, "expected_revision": revision()})["ok"]

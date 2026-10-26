@@ -434,7 +434,7 @@ or owner-display snapshots. Each returned page obtains fresh native owner displa
 color and appearance through independently owned semantic inputs. A read with the
 existing expected_list_revision preserves the cached ordered IDs and query;
 missing/ineligible units or changed zone context reject the read. The existing
-cache lifetime and payload caps remain. This bounds recipe residency to returned
+payload caps remain. This bounds recipe residency to returned
 pages rather than eight full candidate caches; viewer retention still needs review.
 
 Protected semantic055208 retains a filtered candidate's list revision across a
@@ -452,8 +452,23 @@ remain local. Changed recipes invalidate only the affected portrait slots.
 Query/order changes, assignment, closure and session changes detach the read;
 late replies cannot update a replacement picker. Bridge rejection fails the
 selector closed rather than silently rebuilding its native retained order.
-The bridge's fixed cache lifetime still needs an active-read lease, and viewer
-recipe retention and refresh payload size still need review before acceptance.
+Successful owner pages renew a2,400-simulation-tick read lease, retaining native
+order/membership while the picker stays active. An abandoned list expires;
+wrong receipts and rejected pages do not renew it. Time rewind invalidates the
+lease, and the existing eight-list LRU and epoch/mutation invalidations remain.
+Other selector caches retain their fixed build-age lifetime. Full pages stop
+before obtaining an unnecessary extra native display/portrait. Viewer recipe
+retention and refresh payload size still need review before acceptance.
+
+owner-read-lease passes core19/19 and adapter checks for renewal beyond build
+age, inclusive expiry boundary, invalid receipt, rewind and exactly128 native
+display calls for a128-row first page. Protected main-scene061036 verifies the
+rebuilt plugin's automatic name refresh/restoration and assignment workflow;
+the timing boundary itself is covered by the deterministic adapter, not this
+paused live run. DF106876 closes unsaved, both save manifests match and only
+the known Godot thread notice remains. Plugin SHA256 is
+24a62af27c1b21c7351838471f05d23991eef722206153a095c8d80d877eb26b;
+Management66 is unchanged.
 
 Protected main-scene060552 changes unit7348's name while the picker remains open.
 Automatic refresh displays OwnerFactsLive and then the restored name, preserving

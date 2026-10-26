@@ -845,7 +845,13 @@ local function candidate_page(r,a,b,area_revision,available)
  -- Keep the completed snapshot for continuation pages; only a new first-page
  -- interaction retires an already delivered owner/location snapshot.
  if (locations or (not legacy and candidate_kind==1)) and job and job.complete and job.delivered and expected==0 and default(a,'cursor',0)==0 then area_lists[key]=nil;job=nil end
- if job and job.complete and (tick()<job.built_tick or tick()-job.built_tick>candidate_max_age) then area_lists[key]=nil;job=nil end
+ if job and job.complete then
+  -- An open owner picker keeps its frozen membership/order while reading fresh
+  -- facts. Successful reads renew that lease; abandoned lists still expire.
+  local observed=job.native_owner and job.read_tick or job.built_tick
+  observed=observed or job.built_tick
+  if tick()<observed or tick()-observed>candidate_max_age then area_lists[key]=nil;job=nil end
+ end
  if not job then
   if expected~=0 then return fail('List changed; refresh'),0 end
   local count=0;local oldest_key,oldest
@@ -901,6 +907,7 @@ local function candidate_page(r,a,b,area_revision,available)
  if first<=#job.rows and used==available then return fail('Area page exceeds remaining step budget'),used end
  for index=first,#job.rows do
   local row=job.rows[index]
+  if not legacy and (#rows==128 or used==available) then out.next_cursor=index-1;break end
   if job.native_owner then
    -- The open native picker retains ordering/filter membership but renders live
    -- unit facts. Cache IDs/order keys, not per-unit portrait recipe snapshots.
@@ -924,6 +931,7 @@ local function candidate_page(r,a,b,area_revision,available)
  end
  out[locations and 'locations' or links and 'links' or legacy and 'choices' or 'candidates']=rows;out.truncated=out.next_cursor~=0
  if locations or job.native_owner then job.delivered=true end
+ if job.native_owner then job.read_tick=tick() end
  return out,used
 end
 

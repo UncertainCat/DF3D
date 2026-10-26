@@ -110,7 +110,7 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
   m::AreaInfoBuilder info(b);info.add_id(7);info.add_name(name);info.add_origin(&pos);info.add_width(1);info.add_height(1);
   info.add_extents(extent);info.add_revision(INT64_MAX);info.add_zone_label(name);info.add_location_id(99);
   info.add_location_name(name);info.add_religion(name);info.add_organic(0);info.add_inorganic(1);
-  info.add_zone_settings(zone);info.add_tile_count(1);info.add_assigned_count(4);
+  info.add_kind(m::AreaKind::Zone);info.add_overlapping(1);info.add_zone_settings(zone);info.add_tile_count(1);info.add_assigned_count(4);
   const auto record=info.Finish();const auto areas=b.CreateVector(std::vector{record});
   const auto setting=m::CreateAreaSettingRow(b,key,5,name,4,3,true);const auto settings=b.CreateVector(std::vector{setting});
   const auto location=m::CreateAreaLocationRow(b,99,name,2,name);const auto locations=b.CreateVector(std::vector{location});

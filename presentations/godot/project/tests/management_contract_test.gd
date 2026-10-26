@@ -713,6 +713,7 @@ func test_area_operations() -> void:
 		var row: Dictionary = area.areas[0]
 		assert(row.revision == 9223372036854775807 and row.zone_label == "observed")
 		assert(row.location_id == 99 and row.location_name == "observed" and row.religion == "observed")
+		assert(row.overlapping == 1)
 		assert(row.organic == 0 and row.inorganic == 1 and row.tile_count == 1 and row.assigned_count == 4)
 		assert(row.zone_settings == {"pond_mode":2,"facing":4,"tomb_citizens":0,"tomb_pets":1,"gather_trees":1,"gather_shrubs":0,"gather_fallen":1})
 		if operation == 1: assert(area.settings == [{"key":"food/meat","index":5,"label":"observed","kind":4,"state":3,"estimated":true}])

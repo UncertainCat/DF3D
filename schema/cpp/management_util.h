@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 61;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v61";
+inline constexpr uint32_t kManagementVersion = 62;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v62";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -926,7 +926,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           textSize(v->location_name())>512 || textSize(v->religion())>512 ||
           v->location_id()<-1 || v->location_site_id()<-1 || v->organic()<-1 || v->organic()>1 ||
           v->inorganic()<-1 || v->inorganic()>1 || !validAreaZoneSettings(v->zone_settings()) ||
-          v->storage_limit()<-1 || v->storage_limit()>32767 ||
+          v->overlapping()<-1 || v->overlapping()>1 ||
+          (v->kind()!=AreaKind::Zone && v->overlapping()!=-1) || v->storage_limit()<-1 || v->storage_limit()>32767 ||
           (v->kind()!=AreaKind::Stockpile && v->storage_limit()!=-1) || v->tile_count()<-1 || v->assigned_count()<-1 || v->location_kind()>5 ||
           v->owner_sex()<-1 || v->owner_sex()>1 || textSize(v->owner_profession())>512) return "invalid area state";
       payload+=4+textSize(v->custom_name())+textSize(v->name())+textSize(v->owner_name())+textSize(v->zone_label())+

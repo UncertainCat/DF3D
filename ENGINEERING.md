@@ -1,3 +1,12 @@
+## Zone overlap observation contract
+
+Management62 adds `AreaInfo.overlapping`: -1 means unavailable/legacy,0 clear,
+and1 overlapping. Only zone observations may supply0 or1; other area kinds
+retain-1. Validators reject other values. Missing fields in old recordings
+stay unknown. Bridge, model and Godot must be rebuilt together;
+`Local\df3d_management_v62` separates live peers. This contract migration
+alone does not expose the native caption or establish lifecycle behavior.
+
 ## Native overlap rules on zone creation
 
 Single-zone creation recomputes room collision flags using DF53.16's native

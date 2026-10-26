@@ -951,7 +951,23 @@ TEST_CASE("area metadata validates boundaries and preserves unknown values") {
     const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
     CHECK(wire::validateManagementState(*state).has_value()==(variant!=0 && variant!=9));
     if(variant==0){const auto decoded=codec::decodeArea(state->area());REQUIRE(decoded.areas.size()==1);
-      CHECK(decoded.areas[0].storageLimit==-1);CHECK(decoded.areas[0].locationKind==0);CHECK(decoded.areas[0].ownerSex==-1);CHECK(decoded.areas[0].ownerProfession.empty());}
+      CHECK(decoded.areas[0].overlapping==-1);CHECK(decoded.areas[0].storageLimit==-1);CHECK(decoded.areas[0].locationKind==0);CHECK(decoded.areas[0].ownerSex==-1);CHECK(decoded.areas[0].ownerProfession.empty());}
+  }
+}
+
+TEST_CASE("area overlap observation bounds and unknown defaults") {
+  for(const auto kind:{wire::AreaKind::Stockpile,wire::AreaKind::Zone})for(int value=-2;value<=2;++value) {
+    flatbuffers::FlatBufferBuilder b;wire::TilePos origin(1,2,3);
+    const auto extents=b.CreateVector(std::vector<uint8_t>{1});
+    wire::AreaInfoBuilder info(b);info.add_id(7);info.add_kind(kind);info.add_origin(&origin);
+    info.add_width(1);info.add_height(1);info.add_extents(extents);info.add_overlapping(int8_t(value));
+    const auto rows=b.CreateVector(std::vector{info.Finish()});
+    const auto area=wire::CreateAreaState(b,rows);wire::ManagementStateBuilder root(b);
+    root.add_revision(1);root.add_area(area);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool valid=value>=-1 && value<=1 && (kind==wire::AreaKind::Zone || value==-1);
+    CHECK(wire::validateManagementState(*state).has_value()==!valid);
+    if(valid)CHECK(codec::decodeArea(state->area()).areas[0].overlapping==value);
   }
 }
 

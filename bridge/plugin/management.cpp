@@ -260,7 +260,7 @@ struct NativeAreaZone {
 };
 struct NativeArea {
   int32_t id=-1,x=0,y=0,z=0,owner=-1;
-  int kind=0,zone=-1,w=0,h=0,barrels=0,bins=0,wheelbarrows=0,storageLimit=-1;
+  int kind=0,zone=-1,w=0,h=0,barrels=0,bins=0,wheelbarrows=0,storageLimit=-1,overlapping=-1;
   uint32_t categories=0;
   bool active=false,linksOnly=false,ownerAllowed=false;
   std::string name,customName,ownerName;
@@ -387,7 +387,7 @@ void publish() {
       b.CreateVector(a.extents),a.zone,a.categories,a.barrels,a.bins,a.wheelbarrows,a.linksOnly,
       a.active,a.owner,b.CreateString(a.ownerName),a.ownerAllowed,b.CreateVector(a.gives),b.CreateVector(a.takes),
       uint64_t(a.revision),b.CreateString(a.zoneLabel),a.locationId,b.CreateString(a.locationName),b.CreateString(a.religion),
-      a.organic,a.inorganic,zone,a.tileCount,a.assignedCount,a.locationKind,b.CreateString(a.ownerProfession),a.ownerSex,a.locationSiteId,a.storageLimit,b.CreateString(a.customName)));
+      a.organic,a.inorganic,zone,a.tileCount,a.assignedCount,a.locationKind,b.CreateString(a.ownerProfession),a.ownerSex,a.locationSiteId,a.storageLimit,b.CreateString(a.customName),int8_t(a.overlapping)));
   }
   std::vector<flatbuffers::Offset<m::AreaChoice>> ac;
   for(const auto& c:areaChoices) ac.push_back(m::CreateAreaChoice(b,c.id,b.CreateString(c.name),b.CreateString(c.label)));
@@ -2445,7 +2445,7 @@ void run(color_ostream& out) {
       a.locationKind=uint8_t(number(L,"location_kind",0));
       a.revision=number(L,"revision");a.zoneLabel=str("zone_label");a.locationId=int32_t(number(L,"location_id",-1));a.locationSiteId=int32_t(number(L,"location_site_id",-1));
       a.locationName=str("location_name");a.religion=str("religion");a.organic=int8_t(number(L,"organic",-1));a.inorganic=int8_t(number(L,"inorganic",-1));
-      a.storageLimit=int32_t(number(L,"storage_limit",-1));a.tileCount=int32_t(number(L,"tile_count",-1));a.assignedCount=int32_t(number(L,"assigned_count",-1));
+      a.overlapping=int(number(L,"overlapping",-1));a.storageLimit=int32_t(number(L,"storage_limit",-1));a.tileCount=int32_t(number(L,"tile_count",-1));a.assignedCount=int32_t(number(L,"assigned_count",-1));
       lua_getfield(L,-1,"zone_settings");if(lua_istable(L,-1)) {
         a.zoneSettings={uint8_t(number(L,"pond_mode")),uint8_t(number(L,"facing")),int8_t(number(L,"tomb_citizens",-1)),
             int8_t(number(L,"tomb_pets",-1)),int8_t(number(L,"gather_trees",-1)),int8_t(number(L,"gather_shrubs",-1)),int8_t(number(L,"gather_fallen",-1))};

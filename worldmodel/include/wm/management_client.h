@@ -98,7 +98,7 @@ struct AreaInfo {
   int64_t revision=0;
   std::string zoneLabel,locationName,religion;
   int32_t locationId=-1,tileCount=-1,assignedCount=-1,locationSiteId=-1,storageLimit=-1;
-  int8_t organic=-1,inorganic=-1;
+  int8_t organic=-1,inorganic=-1,overlapping=-1;
   AreaZoneSettings zoneSettings;
 };
 struct AreaChoice { int32_t id=-1; std::string name; std::string label{}; };

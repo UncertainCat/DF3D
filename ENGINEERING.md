@@ -1,5 +1,15 @@
 ## Animal keyboard activation and portrait reference
 
+Animal item portrait source: protected
+`build/stockpile-storage-native-zone-animals-20261026-112207` verifies both PET
+items against the native widget: its anchor texture equals the original tile
+page's `creature_small_texpos[VERMIN]` entry. Native PET/VERMIN dispatch at
+`c874b7` selects a nonzero caste entry before the creature entry. The field at
+`creature_raw_graphics+0xffd8` is the small VERMIN tile, not a composed list icon.
+The fixture records original page coordinates and geometry; texture exports
+remain ignored diagnostics. Item recipe/rendering integration, missing-art
+fallback and a live VERMIN case remain unfinished.
+
 Enter/keypad Enter activates the locally selected animal through the existing
 typed unit/item toggle. It suppresses key repeats and sends nothing while busy.
 Protected native build/stockpile-storage-native-zone-animals-20261026-105537

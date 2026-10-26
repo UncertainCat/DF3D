@@ -48,6 +48,10 @@ local function walk(container,rows,depth,active)
   row.show_gender=name.show_gender;row.show_profession=name.show_profession
  end
  if df.widget_unit_portrait:is_instance(container)then row.portrait_unit_id=df.reinterpret_cast(df.widget_unit_portrait,container).u.id end
+ if df.widget_item_portrait:is_instance(container)then row.portrait_item_id=df.reinterpret_cast(df.widget_item_portrait,container).i.id end
+ if row.portrait_unit_id or row.portrait_item_id then
+  local _,address=df.sizeof(container);row.vtable_rva=df.reinterpret_cast('uint64_t',address).value-image_base
+ end
  if df.widget_item_name:is_instance(container)then row.item_id=df.reinterpret_cast(df.widget_item_name,container).it.id end
  if df.widget_text:is_instance(container)then row.text=dfhack.df2utf(df.reinterpret_cast(df.widget_text,container).str)end
  rows[#rows+1]=row
@@ -76,7 +80,7 @@ local function capture(label,keep_mouse)
  local record={name=label,zone=ui.cur_bld and ui.cur_bld.id or -1,widgets=rows,callbacks={},entries={},assigned={}}
  if ui.cur_bld then for _,id in ipairs(ui.cur_bld.assigned_units)do record.assigned[#record.assigned+1]=id end end
  if list then
-  for _,field in ipairs{'filter_func','always_sorting_by','partitions','on_select_change'}do record.callbacks[field]=callbacks(list[field],64)end
+  for _,field in ipairs{'filter_func','always_sorting_by','partitions','on_select_change','preprocess_unit_func','postprocess_unit_func','preprocess_item_func','postprocess_item_func'}do record.callbacks[field]=callbacks(list[field],64)end
   record.callbacks.sorting_by=callbacks(list.sorting_by,96)
   local _,address=df.sizeof(list.is_selected);record.callbacks.is_selected=callback_at(address)
   for _,entry in ipairs(list.entry_list)do record.entries[#record.entries+1]={kind=entry.t,id=entry.t==0 and entry.u and entry.u.id or entry.t==1 and entry.i and entry.i.id or -1}end
@@ -192,6 +196,45 @@ local function capture(label,keep_mouse)
      sample.exact=true;sample.ui_unchanged=true
      record.unit_display[#record.unit_display+1]=sample
     end
+   end
+  end
+  record.item_portrait_anchors={}
+  for _,row in ipairs(rows)do
+   if row.portrait_item_id and row.active and (row.flags&2)~=0 and label=='Pond-picker' then
+    local cells={}
+    for y=row.y,math.min(row.y2,g.dimy-1)do for x=row.x,row.x+4 do
+     local idx=x*g.dimy+y;local cell={x=x,y=y,tile=dfhack.screen.readTile(x,y).tile}
+     for _,field in ipairs{'screentexpos_anchored','screentexpos_anchored_x','screentexpos_anchored_y','screentexpos_top_anchored','screentexpos_top_anchored_x','screentexpos_top_anchored_y'}do cell[field]=g[field][idx]end
+     local texture=cell.screentexpos_anchored
+     if texture and texture>0 and not dumped_portraits[texture]then
+      local text,code=dfhack.run_command_silent('df3d','appearance','texture',tostring(texture),out..'/animal-item-body-'..texture)
+      assert(code==0 and text:find('DF3D_TEXTURE_DUMP_PASS',1,true),text);dumped_portraits[texture]=true
+     end
+     cells[#cells+1]=cell
+    end end
+    local item=df.item.find(row.portrait_item_id)
+    local race,caste=item:getMaterial(),item:getMaterialIndex()
+    local creature=df.global.world.raws.creatures.all[race]
+    assert(creature,'missing item creature raw')
+    local caste_raw=caste>=0 and creature.caste[caste] or nil
+    local graphics=caste_raw and caste_raw.caste_graphics or nil
+    local selected='caste'
+    if not graphics or graphics.creature_small_texpos[0]==0 then graphics=creature.graphics;selected='creature' end
+    assert(graphics and graphics.creature_small_texpos[0]>0,'item requires unaudited fallback artwork')
+    local _,graphics_address=df.sizeof(graphics)
+    local _,small_address=df.sizeof(graphics:_field('creature_small_texpos'))
+    assert(small_address-graphics_address==0xffd8,'native critter graphics field drift')
+    local texpos=graphics.creature_small_texpos[0]
+    local art={race=race,caste=caste,creature=creature.creature_id,scope=selected,texpos=texpos}
+    for _,page in ipairs(df.global.texture.page)do
+     for index,value in ipairs(page.texpos)do
+      if value==texpos then art.page=page.token;art.x=index%page.page_dim_x;art.y=index//page.page_dim_x;break end
+     end
+     if art.page then break end
+    end
+    assert(art.page,'critter artwork is not an original tile-page reference')
+    assert(cells[1].screentexpos_anchored==texpos,'native item portrait differs from semantic critter tile')
+    record.item_portrait_anchors[#record.item_portrait_anchors+1]={id=row.portrait_item_id,rect={row.x,row.y,row.x2,row.y2},vtable_rva=row.vtable_rva,cells=cells,art=art}
    end
   end
   record.item_text={}

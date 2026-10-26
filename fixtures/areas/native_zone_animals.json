@@ -11506,5 +11506,80 @@
       }
     ],
     "coverage": "Complete40x36 unit picture/frame crop; item portraits and cage/status icons are separate."
+  },
+  "animal_item_portrait_source": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-112207",
+    "owned_df_pid": 111156,
+    "source_unchanged": true,
+    "widget_rva": "0x14236b0",
+    "item_graphics_rva": "0xc7cbc0",
+    "type_graphics_rva": "0xc83890",
+    "pet_vermin_branch_rva": "0xc874b7",
+    "graphics_field_offset": "0xffd8",
+    "graphics_field": "creature_small_texpos[VERMIN]",
+    "selection": "Nonzero caste VERMIN tile, otherwise creature VERMIN tile; global missing-art fallback remains unaudited.",
+    "samples": [
+      {
+        "id": 5969,
+        "rect": [
+          47,
+          25,
+          50,
+          27
+        ],
+        "vtable_rva": 24667008,
+        "art": {
+          "caste": 0,
+          "creature": "BIRD_LOVEBIRD_MASKED",
+          "page": "CREATURES_SMALL",
+          "race": 112,
+          "scope": "creature",
+          "texpos": 91091,
+          "x": 0,
+          "y": 69
+        },
+        "offset": [
+          2,
+          2
+        ],
+        "draw_box_cells": [
+          5,
+          3
+        ]
+      },
+      {
+        "id": 48520,
+        "rect": [
+          47,
+          28,
+          50,
+          30
+        ],
+        "vtable_rva": 24667008,
+        "art": {
+          "caste": 0,
+          "creature": "BIRD_LOVEBIRD_MASKED",
+          "page": "CREATURES_SMALL",
+          "race": 112,
+          "scope": "creature",
+          "texpos": 91091,
+          "x": 0,
+          "y": 69
+        },
+        "offset": [
+          2,
+          2
+        ],
+        "draw_box_cells": [
+          5,
+          3
+        ]
+      }
+    ],
+    "limitations": [
+      "Actual captured items are PET; VERMIN dispatch shares this static branch but needs a live fixture.",
+      "No product item recipe or rendering integration yet.",
+      "Native cached texture exports stay ignored and are never runtime inputs."
+    ]
   }
 }

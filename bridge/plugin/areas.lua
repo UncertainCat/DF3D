@@ -576,8 +576,10 @@ local function candidate_row(job,v,r,refresh_display)
   if not v then job.error='List changed; refresh';return nil end
   local label=type(r.squad_name)=='function' and r.squad_name(v) or nil
   if type(label)~='string' then job.error='Native area helper unavailable';return nil end
+  local symbol=type(r.squad_symbol)=='function' and r.squad_symbol(v) or nil
+  if type(symbol)~='table' then job.error='Native area helper unavailable';return nil end
   return {id=v.id,entity=3,name=label,profession='',sex=-1,mood=0,grazer=false,
-   assigned=job.assigned[v.id]~=nil,squad_use=job.assigned[v.id] or 0}
+   assigned=job.assigned[v.id]~=nil,squad_use=job.assigned[v.id] or 0,squad_symbol=symbol}
  end
  if job.native_owner then
   local b=df.building.find(job.area_id)
@@ -1012,6 +1014,7 @@ local function candidate_page(r,a,b,area_revision,available)
    local row_bytes=9+#row.name+#(row.profession or '')
    if row.animal_status then row_bytes=row_bytes+6 end
    if row.animal_item_color then row_bytes=row_bytes+3 end
+   if row.squad_symbol then row_bytes=row_bytes+7 end
    if row.animal_restraint~=nil then
     local r=row.animal_restraint
     if row.animal_container~=nil or type(r)~='table' or type(r.rope)~='boolean' or type(r.solid_color)~='string' or #r.solid_color>128 then return fail('Native area helper unavailable'),used end

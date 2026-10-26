@@ -830,7 +830,8 @@ elseif request.op=='candidates' then
   local use=0;for _,v in ipairs(b.squad_room_info) do if v.squad_id==s.id then use=v.mode.whole end end
   local name_text,name_code=dfhack.run_command_silent('df3d','zone-squad-name-read',tostring(s.id));assert(name_code==0,name_text)
   rows[#rows+1]={id=s.id,entity=3,name=dfhack.df2utf(string.char(table.unpack(json.decode(name_text)))),
-   profession='',sex=-1,mood=0,grazer=false,assigned=contains(b.squad_room_info,s.id,'squad_id'),squad_use=use}
+   profession='',sex=-1,mood=0,grazer=false,assigned=contains(b.squad_room_info,s.id,'squad_id'),squad_use=use,
+   squad_symbol={index=s.symbol,foreground={s.foreground_r,s.foreground_g,s.foreground_b},background={s.background_r,s.background_g,s.background_b}}}
  end
  assert(canonical(rows)==canonical(request.rows),'candidate values/order differ from native dump')
 elseif request.op=='remove_target' then

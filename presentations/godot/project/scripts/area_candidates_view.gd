@@ -23,6 +23,7 @@ var owner_receipt := 0
 var strips: Dictionary = {}
 var squad_prompt: Label
 var squad_buttons: Array[Button] = []
+var squad_symbols = preload("res://scripts/native_squad_symbol.gd").new()
 var native_colors: Array[Color] = []
 var owner_color_rows: Array = []
 var owner_color_random := RandomNumberGenerator.new()
@@ -32,6 +33,7 @@ const NameColor = preload("res://scripts/native_name_color.gd")
 func configure(source, model) -> void:
 	owner_color_random.randomize()
 	world = source; state = model; art.configure(source); theme = art.theme
+	squad_symbols.configure(source)
 	if world.has_method("assets_root"): native_colors = art.installed_palette(world.assets_root())
 	if world.has_method("ui_texture"): picture.configure(world)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -512,6 +514,11 @@ func add_squad(row: Dictionary) -> void:
 	for key in ["normal","hover","pressed","disabled","focus"]: button.add_theme_stylebox_override(key,style)
 	rows_box.add_child(button); choices.append(button)
 	var entries := [[1,"SLEEP","Sleep"],[2,"TRAIN","Train"],[4,"INDIV_EQ","Store individual equipment"],[8,"SQUAD_EQ","Store squad equipment"]]
+	if row.get("squad_symbol") is Dictionary:
+		var symbol := TextureRect.new(); symbol.name = "SquadSymbol"
+		symbol.position = Vector2(0,2); symbol.size = Vector2(32,32)
+		symbol.texture = squad_symbols.texture(row.squad_symbol)
+		symbol.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(symbol)
 	for index in entries.size():
 		var entry: Array = entries[index]
 		if (int(entry[0]) & state.squad_mask) == 0: continue

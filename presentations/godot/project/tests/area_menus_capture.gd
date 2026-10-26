@@ -520,6 +520,27 @@ func run() -> void:
 		service.poll(); controller._process(0)
 		await process_frame; await RenderingServer.frame_post_draw
 		if root.get_texture().get_image().save_png(directory.path_join("controller_squads_"+type_name.to_lower()+".png")) != OK: quit(1); return
+		var symbol_reference: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_squads.json")).symbol_reference
+		for sample in symbol_reference.observations:
+			if not str(sample.capture).begins_with(type_name+"-"): continue
+			var facts := {"index":int(sample.index),"foreground":[],"background":[]}
+			for key in ["foreground","background"]:
+				for value in sample[key]: facts[key].append(int(value))
+			controller.candidates_state.rows=[{"id":int(sample.id),"entity":3,"name":"The Golden Beaks","squad_use":2,"squad_symbol":facts}]
+			controller.candidates_state.changed.emit()
+			var icon = controller.candidates_view.choices[0].get_node_or_null("SquadSymbol")
+			if icon==null or icon.texture==null:push_error("Squad symbol absent");quit(1);return
+			var pixels: Image=icon.texture.get_image();pixels.convert(Image.FORMAT_RGBA8)
+			var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(pixels.get_data())
+			if digest.finish().hex_encode()!=str(sample.solid_sha256):push_error("Squad texture differs from native");quit(1);return
+			await process_frame;await RenderingServer.frame_post_draw
+			var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
+			var crop:=rendered.get_region(Rect2i(Vector2i(icon.global_position),Vector2i(32,32)))
+			digest=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+			if digest.finish().hex_encode()!=str(sample.rgb_sha256):push_error("Rendered squad symbol differs from native");quit(1);return
+			crop.save_png(directory.path_join("squad-symbol-"+str(sample.capture)+"-"+str(sample.id)+".png"))
+			if str(sample.capture)==type_name+"-picker" and int(sample.id)==120:
+				root.get_texture().get_image().save_png(directory.path_join("controller_squad_symbol_"+type_name.to_lower()+".png"))
 		controller.handle_back()
 	controller.use_area(bedroom); controller.zone_menu.controls.location.pressed.emit(); service.poll()
 	world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":9,"status":2,

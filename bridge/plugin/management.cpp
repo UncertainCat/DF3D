@@ -1339,6 +1339,13 @@ int areaSquadName(lua_State* L) {
   if(!text){lua_pushnil(L);return 1;}
   const auto utf=DF2UTF(*text);lua_pushlstring(L,utf.data(),utf.size());return 1;
 }
+int areaSquadSymbol(lua_State* L) {
+  auto* squad=Lua::GetDFObject<df::squad>(L,1);
+  const auto symbol=squad?df3d_area::nativeZoneSquadSymbol(*squad):std::nullopt;
+  if(!symbol){lua_pushnil(L);return 1;}
+  lua_newtable(L);const char* fields[]={"index","foreground_r","foreground_g","foreground_b","background_r","background_g","background_b"};
+  for(size_t i=0;i<7;++i)field(L,fields[i],int((*symbol)[i]));return 1;
+}
 int areaSquadCandidates(lua_State* L) {
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
   std::optional<std::vector<int32_t>> ids;
@@ -2400,6 +2407,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
     lua_pushcfunction(L,areaSquadCandidates);lua_setfield(L,-2,"squad_candidates");
     lua_pushcfunction(L,areaSquadName);lua_setfield(L,-2,"squad_name");
+    lua_pushcfunction(L,areaSquadSymbol);lua_setfield(L,-2,"squad_symbol");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
       lua_pushcfunction(L,areaAnimalItemColor);lua_setfield(L,-2,"animal_item_color");
       lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");
@@ -3064,6 +3072,7 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
       lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
     lua_pushcfunction(L,areaSquadCandidates);lua_setfield(L,-2,"squad_candidates");
     lua_pushcfunction(L,areaSquadName);lua_setfield(L,-2,"squad_name");
+    lua_pushcfunction(L,areaSquadSymbol);lua_setfield(L,-2,"squad_symbol");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
       lua_pushcfunction(L,areaAnimalItemColor);lua_setfield(L,-2,"animal_item_color");
       lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");

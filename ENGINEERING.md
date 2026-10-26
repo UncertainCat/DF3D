@@ -25,16 +25,18 @@ nonintegral values and bytes outside0..255. The model and Godot binding retain
 absence when no symbol is supplied. Old recordings cannot establish missing
 symbol data; no migration invents it. Rebuild/install bridge and viewer together
 for `Local\\df3d_management_v69`. Snapshot/grid/session versions are unchanged.
-The schema migration supplies transport/validation only; the native producer
-and picker renderer are separate follow-up work.
+The bridge reads the seven saved fields directly after supported-build and
+offset checks; it never calls the allocating native renderer or reads cached
+texture handles. Uninitialized/out-of-range indices currently make candidate
+reads unavailable; their native lazy-initialization lifecycle remains unfinished.
 Core19/19 and Lua contract checks pass in `build/qa/squad-symbol-protocol69`.
 The Godot contract passes cleanly in its `-contract-final` rerun, after updating
 the fake producer's expected request sequence and payload checks for squads.
 MSVC and viewer builds pass. Protected semantic
 `build/areas-acceptance-20261026-171647` passes cleanly, including restart from
 DF142264 to DF138540 and unchanged source/owned-clone manifests (1,368 files).
-This verifies the protocol migration with optional symbols absent in live
-rows; populated live symbol transport still requires producer integration.
+That migration run used absent optional symbols; populated-symbol evidence is
+recorded below.
 
 `fixtures/areas/native_zone_squads.json` records protected native run
 `build/stockpile-storage-native-zone-squads-20261026-162633`. Native Barracks
@@ -138,8 +140,30 @@ semantic inputs and routine provenance without storing game artwork. An earlier
 capture at `170012` passed native actions but failed the offline pixel check
 because one screenshot caught a partially drawn frame. The capture lane now
 waits for texture presentation before capture and retains exact pixel checks.
-This establishes the native reference; symbol transport and Godot rendering
-remain unfinished. No rendering-cache access is authorized by this diagnostic.
+No rendering-cache access is authorized by this diagnostic.
+
+Protected `build/stockpile-storage-native-zone-squads-20261026-172003` records
+all four fortress squads' saved symbol/color values before opening the picker
+and confirms they remain unchanged afterward. With the reader integrated,
+`build/stockpile-storage-native-zone-squads-20261026-172417` compares its seven
+bytes against native semantic fields for ordinary and controlled-mask cases.
+Squad/UI/gps guards and all native pixel checks pass; DF125064 exits unsaved,
+with the source manifest unchanged.
+
+The picker now composes installed `CUSTOM_SYMBOL` masks through the existing
+asset loader, using saved RGB and the native nonzero-alpha predicate. Its
+32x32 symbols occupy the native row position. The local cache is bounded to
+128 entries, keyed by asset texture identity and semantic fields, and cleared
+on configuration. `build/qa/squad-symbol-rendered-final` verifies exact RGBA textures
+and rendered RGB crops for all31 native samples. It passes with the three
+documented separate-thread/device-finalize/shutdown-object diagnostics.
+Core19/19 and adapter checks pass in `build/qa/squad-symbol-native-reader`;
+MSVC passes. Names/clipping, hover, input and lifecycle coverage still determine
+completion of the whole selector; matching symbols alone is not acceptance.
+Full semantic `build/areas-acceptance-20261026-172539` passes cleanly with
+populated squad symbol rows compared to the actual saved fields, assignments,
+simulation and restart from DF138412 to DF140216. Both save manifests remain
+unchanged (1,368 files).
 
 ## Animal keyboard activation and portrait reference
 

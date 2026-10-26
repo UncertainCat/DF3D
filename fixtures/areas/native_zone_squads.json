@@ -2657,7 +2657,8 @@
           13
         ],
         "solid_sha256": "10ea87f36a64f0f504509bc33e29481a8e3703d754fe109fa45dff2485d590d9",
-        "blended_sha256": "6cc5ae74452a38ae81c3658eab0590f97e1a6a65d1936d4a1f1aec55febc4731"
+        "blended_sha256": "6cc5ae74452a38ae81c3658eab0590f97e1a6a65d1936d4a1f1aec55febc4731",
+        "rgb_sha256": "b9ba14360b5bd09fd821a049fa91eb8313f2dd06982c7285366c198146b043cc"
       },
       {
         "capture": "Barracks-picker",
@@ -2676,7 +2677,8 @@
           255
         ],
         "solid_sha256": "90b5c72bf27918d942bf813df89c2bd6015a4138760abb19e335381536cee3ed",
-        "blended_sha256": "f64e81649a13b2133d5db435c6a7083a34d2a89ba4f1be454e295dbe5f8dd602"
+        "blended_sha256": "f64e81649a13b2133d5db435c6a7083a34d2a89ba4f1be454e295dbe5f8dd602",
+        "rgb_sha256": "5ad50753157318823b6b87a169b6df6e9256a7507e95f60af62386680b70f0df"
       },
       {
         "capture": "Barracks-picker",
@@ -2695,7 +2697,8 @@
           233
         ],
         "solid_sha256": "f9a302f848058df45ac7938cdc15f4ab5541c38029e48eae7fb67a1b7fcffee1",
-        "blended_sha256": "29030cc0c180080ad223bae11a66fccb889bd12812f82f335cab1d05030f6277"
+        "blended_sha256": "29030cc0c180080ad223bae11a66fccb889bd12812f82f335cab1d05030f6277",
+        "rgb_sha256": "5331842dd0272fa2e37d0b2993d30edeae15d3764a84ab747e6e7a2dd5ce137d"
       },
       {
         "capture": "Barracks-picker",
@@ -2714,7 +2717,8 @@
           255
         ],
         "solid_sha256": "797dcfd252e1a61e99e0442a2c1468798b4c70bb03d81b2fed0a8a1326a9a1a3",
-        "blended_sha256": "ee93682be9d211d239acbf1a3a0bca775c4934b1a160170ec7257b98674f76be"
+        "blended_sha256": "ee93682be9d211d239acbf1a3a0bca775c4934b1a160170ec7257b98674f76be",
+        "rgb_sha256": "f2b1e493206f15581e53a9219331a771fefd9a28936978d2c3b757321dec3d19"
       },
       {
         "capture": "Barracks-symbol-0",
@@ -2733,7 +2737,8 @@
           7
         ],
         "solid_sha256": "168ecca680737b9f6bba5d2ae12e1a65e2a02a3c050831bac529ea73e3e39c20",
-        "blended_sha256": "a6fa207f0985ec58a83470f14ab13bf9d6c697852003079d3cdcccf193de5e3c"
+        "blended_sha256": "a6fa207f0985ec58a83470f14ab13bf9d6c697852003079d3cdcccf193de5e3c",
+        "rgb_sha256": "acb9f084a069c91fed29460fceaaaff7d9680baed247a7c7e12a9c1d78667197"
       },
       {
         "capture": "Barracks-symbol-1",
@@ -2752,7 +2757,8 @@
           7
         ],
         "solid_sha256": "964291928ad7baf683d07cb95b5c4ae62717c18ea66bdbaac358477cec21b37e",
-        "blended_sha256": "3e4029da89055ed6dc568d84a91bee9e9e33b7df61417df4c7b66bdbfa501f64"
+        "blended_sha256": "3e4029da89055ed6dc568d84a91bee9e9e33b7df61417df4c7b66bdbfa501f64",
+        "rgb_sha256": "efafc58f1f162e8f54a1592f3d0c485234da816f24bec11758a3c74c72dae349"
       },
       {
         "capture": "Barracks-symbol-2",
@@ -2771,7 +2777,8 @@
           7
         ],
         "solid_sha256": "600fd628247350f9da4af842dc4a9c13cb57f82dbb594f1a10752cd9c6855df9",
-        "blended_sha256": "ae73a8bb472d4093989cd7e0c08fee3b21b117e0545d9768b6a2190ba7c81b66"
+        "blended_sha256": "ae73a8bb472d4093989cd7e0c08fee3b21b117e0545d9768b6a2190ba7c81b66",
+        "rgb_sha256": "3b19ef3672a3be717355d2b81cf740826bfe67c6f3f918937e9fbb0aab84fc34"
       },
       {
         "capture": "Barracks-symbol-3",
@@ -2790,7 +2797,8 @@
           7
         ],
         "solid_sha256": "253ceb95ac85aca4d3543b3b680bf6dfdc933bd79bb0321e79a0e9fcb35ac0bf",
-        "blended_sha256": "1a42bebc49601818c52e75a73206c4ee63241942c4974f16e568e1fe09542cbc"
+        "blended_sha256": "1a42bebc49601818c52e75a73206c4ee63241942c4974f16e568e1fe09542cbc",
+        "rgb_sha256": "77b940d3f4790604164e36025d1e803a016630be973c8a0b6193ad6b52b5f96c"
       },
       {
         "capture": "Barracks-symbol-4",
@@ -2809,7 +2817,8 @@
           7
         ],
         "solid_sha256": "8aaa82b4db67ba6fff99fb1cbd75c42f47d7e4b82a42acc0a5b5a7a5d4100159",
-        "blended_sha256": "54368477e156eb763961614fcb223a1e5f974b7c57c8852492f66c9a8e69fa5c"
+        "blended_sha256": "54368477e156eb763961614fcb223a1e5f974b7c57c8852492f66c9a8e69fa5c",
+        "rgb_sha256": "c48e928c18bb25713ed5e83ba9ec08557a9cc2e758d50ab7863803f3e08960ea"
       },
       {
         "capture": "Barracks-symbol-5",
@@ -2828,7 +2837,8 @@
           7
         ],
         "solid_sha256": "becf816ee7d59fab0a5ad6a43f5ba6f8400605b0f8c94cb2b259aaf0983b8949",
-        "blended_sha256": "da4ba9e53f05db995687a869a1b9a18a67e2b373d5a46979fda8f34e23c3faf4"
+        "blended_sha256": "da4ba9e53f05db995687a869a1b9a18a67e2b373d5a46979fda8f34e23c3faf4",
+        "rgb_sha256": "8876f8c60648f44bfabee4e78f7c7f8672c2d553d557530d93404930a8ac0eaa"
       },
       {
         "capture": "Barracks-symbol-6",
@@ -2847,7 +2857,8 @@
           7
         ],
         "solid_sha256": "6ce807a8b3c3cdb8c36c4494f21d72ed9360598ada04626d61119b3aed9b85d4",
-        "blended_sha256": "f3be6bf12f336ff25069ff22e012c5f94001fdc84a3a073c78cad38b52f22c05"
+        "blended_sha256": "f3be6bf12f336ff25069ff22e012c5f94001fdc84a3a073c78cad38b52f22c05",
+        "rgb_sha256": "50ddf09cd2d436918cfd6fe7c9d596f5c385a35bd4052c8a8bd22637fb6e90b0"
       },
       {
         "capture": "Barracks-symbol-7",
@@ -2866,7 +2877,8 @@
           7
         ],
         "solid_sha256": "e63807397b6dda41114ed3a93549b6b5bf889f9eaaf1dab2173d04024be912be",
-        "blended_sha256": "2721b3864b26803dc6ff86b484e491f9d8c18e274382ec84af3a30ee7066990e"
+        "blended_sha256": "2721b3864b26803dc6ff86b484e491f9d8c18e274382ec84af3a30ee7066990e",
+        "rgb_sha256": "5ec98663ade47006f10583281cd60c1ea5e97c163ba690ee1cf49da1911d1eb0"
       },
       {
         "capture": "Barracks-symbol-8",
@@ -2885,7 +2897,8 @@
           7
         ],
         "solid_sha256": "6d6751f3a04906e81ed1ff33cce1f7f50b7eb01c193eb8791a33102e000d57b2",
-        "blended_sha256": "2be92cc524c69b93e868d58f19a8f637825baf921792736f32b19b7e42db13e9"
+        "blended_sha256": "2be92cc524c69b93e868d58f19a8f637825baf921792736f32b19b7e42db13e9",
+        "rgb_sha256": "b24b7d314b4e2f6eeda82e1d164374afd03f39716160da313ae5aef550da21b7"
       },
       {
         "capture": "Barracks-symbol-9",
@@ -2904,7 +2917,8 @@
           7
         ],
         "solid_sha256": "3d509253be74ecbd5be699091d19c0bcd1ef0f0fcc94208ed1482eb8434ddd5a",
-        "blended_sha256": "da1b359fc105b11becb0b07f3071bc38ea7bfcc67eeddbd6f11f38c01e36bd95"
+        "blended_sha256": "da1b359fc105b11becb0b07f3071bc38ea7bfcc67eeddbd6f11f38c01e36bd95",
+        "rgb_sha256": "c67e1c581921f9b4c755101329e387e831bf0681b96058acafb07bb626c41b5f"
       },
       {
         "capture": "Barracks-symbol-10",
@@ -2923,7 +2937,8 @@
           7
         ],
         "solid_sha256": "95856b34b1b15b924596166601c608d24653787e7abd24bf134d8398fbbbfb9c",
-        "blended_sha256": "79358e786322bf88ee6bd0904a62a53458694d0bddc835304c2965284919bc7d"
+        "blended_sha256": "79358e786322bf88ee6bd0904a62a53458694d0bddc835304c2965284919bc7d",
+        "rgb_sha256": "596e37fd8addb955e72d872a861d954aead011386adaf527e869e2f9f5e000ac"
       },
       {
         "capture": "Barracks-symbol-11",
@@ -2942,7 +2957,8 @@
           7
         ],
         "solid_sha256": "9e7461731dda4771aa894fe3241366b56ace68fa1f557ac5a48bf71d06f15573",
-        "blended_sha256": "402d7c3ef0e9b62c9cf4f7bff1deec3a57d4a9fa5ae56b23b6945e324f9c3081"
+        "blended_sha256": "402d7c3ef0e9b62c9cf4f7bff1deec3a57d4a9fa5ae56b23b6945e324f9c3081",
+        "rgb_sha256": "0171747af6387b5885859ec7cdbc5cb7e567f4496dc3f7500d64d3273577ee9e"
       },
       {
         "capture": "Barracks-symbol-12",
@@ -2961,7 +2977,8 @@
           7
         ],
         "solid_sha256": "cb180c14aa535cb7d45eebe34cfd5debbf9721eb32cc9bd69a43044c8a67e488",
-        "blended_sha256": "69e882f8ff409688c2f0b5513cf364d2297148a3347f12cb4437e61ffdaf8778"
+        "blended_sha256": "69e882f8ff409688c2f0b5513cf364d2297148a3347f12cb4437e61ffdaf8778",
+        "rgb_sha256": "e194d85cf7a085a5e850774f07c74cf128a01f1ddcacff519550166733714d18"
       },
       {
         "capture": "Barracks-symbol-13",
@@ -2980,7 +2997,8 @@
           7
         ],
         "solid_sha256": "41317ed186941807a07d4b3d55ab05ed9350af99afb2774312fe61d9d8a3b194",
-        "blended_sha256": "3b64452a3fba2b9961e2cb34b0110bb3375063d7bdec13b3915eb5d268ffdc4d"
+        "blended_sha256": "3b64452a3fba2b9961e2cb34b0110bb3375063d7bdec13b3915eb5d268ffdc4d",
+        "rgb_sha256": "fec27abdb48d033a87b8ba0050eab47d755a980e43c02d32f924373fca9fadb9"
       },
       {
         "capture": "Barracks-symbol-14",
@@ -2999,7 +3017,8 @@
           7
         ],
         "solid_sha256": "138a6a1af9af355c6ad9a8f0799ab324281e4aa23b388e759e01e3b49734abca",
-        "blended_sha256": "7a7911aa6fc11b5c0080873b09318c519c3466dd1c07d3ce2431ffcccb065e82"
+        "blended_sha256": "7a7911aa6fc11b5c0080873b09318c519c3466dd1c07d3ce2431ffcccb065e82",
+        "rgb_sha256": "f69c6caba880298c8063e0f4d7139d700dc762200f181cb82c96bacf072bfde0"
       },
       {
         "capture": "Barracks-symbol-15",
@@ -3018,7 +3037,8 @@
           7
         ],
         "solid_sha256": "0896b6da6183f2ddfa878cdfcb095041b1a94a219ee8763542b1c1d20cc40694",
-        "blended_sha256": "e1d6cc8fe5b790f2d973562e2a2ff690643bb4415851b86b1c80cc631e9539e2"
+        "blended_sha256": "e1d6cc8fe5b790f2d973562e2a2ff690643bb4415851b86b1c80cc631e9539e2",
+        "rgb_sha256": "32419280a35b2fe9dc2a170c968e667885ae370f73f254a748fce9479b07301b"
       },
       {
         "capture": "Barracks-symbol-16",
@@ -3037,7 +3057,8 @@
           7
         ],
         "solid_sha256": "11596843f17f03d6f97ae396f461a290e21f45235e6b010875a464be59311e8b",
-        "blended_sha256": "2e03cc553018340ff0877da10c8ca124a0b8455eb080a7fb77af7cee110d65c6"
+        "blended_sha256": "2e03cc553018340ff0877da10c8ca124a0b8455eb080a7fb77af7cee110d65c6",
+        "rgb_sha256": "21325d0299f05579f9a6e17c1f744295e310b1607d153e05018f3abe36fdecbb"
       },
       {
         "capture": "Barracks-symbol-17",
@@ -3056,7 +3077,8 @@
           7
         ],
         "solid_sha256": "f0f3cfe00d2790ca748f698ad8c1f4ffa2ae259db513e2899005e6e61858a1c0",
-        "blended_sha256": "fb691639e32932fea040000175cd15877afc701c18616b4de88714ea2ed9cfcb"
+        "blended_sha256": "fb691639e32932fea040000175cd15877afc701c18616b4de88714ea2ed9cfcb",
+        "rgb_sha256": "0ad41408eb144fed56074264fc37a1dfb83a8a8e203f0a742f4d940a6dda7be2"
       },
       {
         "capture": "Barracks-symbol-18",
@@ -3075,7 +3097,8 @@
           7
         ],
         "solid_sha256": "295a9d9e62fea0ab9188819eac1d42a8f3a4d39ed5b1c43155f79df6bfe9657c",
-        "blended_sha256": "9b09b1dd5b282f3af55c6bd0b140a7a22d0e0577b9c4a50f42d221bfc98654f8"
+        "blended_sha256": "9b09b1dd5b282f3af55c6bd0b140a7a22d0e0577b9c4a50f42d221bfc98654f8",
+        "rgb_sha256": "baed050a163e8b38b6a66ccc3f94ceb311d76267cc45ceb258f2828a94ba689b"
       },
       {
         "capture": "Barracks-symbol-19",
@@ -3094,7 +3117,8 @@
           7
         ],
         "solid_sha256": "c4cc377c2a3e102ac58c981f50663e3535f821ae714e5d25ef8e3714f7b64108",
-        "blended_sha256": "edcd3befca21724d043f5a22c69e7c9116bf787493ee3c819c4fbe79e0d33168"
+        "blended_sha256": "edcd3befca21724d043f5a22c69e7c9116bf787493ee3c819c4fbe79e0d33168",
+        "rgb_sha256": "06a262a268f20a67b3d175ee5b1aa38d4bc94771b388e8c4e495feaa1952e91d"
       },
       {
         "capture": "Barracks-symbol-20",
@@ -3113,7 +3137,8 @@
           7
         ],
         "solid_sha256": "e6541aa359164fada3b5232065bb4ca5fca159f272de4d34096212e3c3e6e5de",
-        "blended_sha256": "d5a65a576425b4839bd02ba9c12dcfcc9b9f59796ec1465bdb31853185f5ada5"
+        "blended_sha256": "d5a65a576425b4839bd02ba9c12dcfcc9b9f59796ec1465bdb31853185f5ada5",
+        "rgb_sha256": "f5d021876b5665e264fb19c74592b28df727ff225090ce3cba5d1c2bdd672b9e"
       },
       {
         "capture": "Barracks-symbol-21",
@@ -3132,7 +3157,8 @@
           7
         ],
         "solid_sha256": "c282fa274b9a537342a0fa351c28058becb3237cb4980e3efd3c340e378fdd50",
-        "blended_sha256": "a62e008e709a00ff6c730c763bb87a9d8ff2ab05d6f5b500049489a0e49f2ac7"
+        "blended_sha256": "a62e008e709a00ff6c730c763bb87a9d8ff2ab05d6f5b500049489a0e49f2ac7",
+        "rgb_sha256": "a3bd1631bd0abd39eeeb1625cfea7cc16d4f65da3b3a3fba77d2d40d42d4d273"
       },
       {
         "capture": "Barracks-symbol-22",
@@ -3151,7 +3177,8 @@
           7
         ],
         "solid_sha256": "c1ed606072bff9508a54385096e997f3a8ff1cf04d1eb096e6f365f361978ede",
-        "blended_sha256": "cfc7e00fffa111e1744479caabaab13422ecb6b6ad537b4247c9bc96772678e0"
+        "blended_sha256": "cfc7e00fffa111e1744479caabaab13422ecb6b6ad537b4247c9bc96772678e0",
+        "rgb_sha256": "c276a449ca8c73b204a333786eeb926802426ff8976233876c90ec3c04f370dc"
       },
       {
         "capture": "ArcheryRange-picker",
@@ -3170,7 +3197,8 @@
           13
         ],
         "solid_sha256": "10ea87f36a64f0f504509bc33e29481a8e3703d754fe109fa45dff2485d590d9",
-        "blended_sha256": "6cc5ae74452a38ae81c3658eab0590f97e1a6a65d1936d4a1f1aec55febc4731"
+        "blended_sha256": "6cc5ae74452a38ae81c3658eab0590f97e1a6a65d1936d4a1f1aec55febc4731",
+        "rgb_sha256": "b9ba14360b5bd09fd821a049fa91eb8313f2dd06982c7285366c198146b043cc"
       },
       {
         "capture": "ArcheryRange-picker",
@@ -3189,7 +3217,8 @@
           255
         ],
         "solid_sha256": "90b5c72bf27918d942bf813df89c2bd6015a4138760abb19e335381536cee3ed",
-        "blended_sha256": "f64e81649a13b2133d5db435c6a7083a34d2a89ba4f1be454e295dbe5f8dd602"
+        "blended_sha256": "f64e81649a13b2133d5db435c6a7083a34d2a89ba4f1be454e295dbe5f8dd602",
+        "rgb_sha256": "5ad50753157318823b6b87a169b6df6e9256a7507e95f60af62386680b70f0df"
       },
       {
         "capture": "ArcheryRange-picker",
@@ -3208,7 +3237,8 @@
           233
         ],
         "solid_sha256": "f9a302f848058df45ac7938cdc15f4ab5541c38029e48eae7fb67a1b7fcffee1",
-        "blended_sha256": "29030cc0c180080ad223bae11a66fccb889bd12812f82f335cab1d05030f6277"
+        "blended_sha256": "29030cc0c180080ad223bae11a66fccb889bd12812f82f335cab1d05030f6277",
+        "rgb_sha256": "5331842dd0272fa2e37d0b2993d30edeae15d3764a84ab747e6e7a2dd5ce137d"
       },
       {
         "capture": "ArcheryRange-picker",
@@ -3227,7 +3257,8 @@
           255
         ],
         "solid_sha256": "797dcfd252e1a61e99e0442a2c1468798b4c70bb03d81b2fed0a8a1326a9a1a3",
-        "blended_sha256": "ee93682be9d211d239acbf1a3a0bca775c4934b1a160170ec7257b98674f76be"
+        "blended_sha256": "ee93682be9d211d239acbf1a3a0bca775c4934b1a160170ec7257b98674f76be",
+        "rgb_sha256": "f2b1e493206f15581e53a9219331a771fefd9a28936978d2c3b757321dec3d19"
       }
     ],
     "files_sha256": {
@@ -3237,6 +3268,75 @@
       "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
       "Barracks-symbol-12.png": "3bddeb2c6fa27dbbe4712c12a6a1c32fcaacc3b5c458d19c34f3d3f7d16e27d7"
+    },
+    "semantic_reader": {
+      "run": "build/stockpile-storage-native-zone-squads-20261026-172417",
+      "scope": "Saved fields before/after opening match; all open captures compare owned reader with semantic fields and guard squad/UI/gps bytes. Existing initialized squads only; invalid-index initialization remains unresolved.",
+      "before_and_after_open": [
+        {
+          "id": 120,
+          "symbol": 22,
+          "foreground": [
+            21,
+            84,
+            63
+          ],
+          "background": [
+            84,
+            0,
+            13
+          ]
+        },
+        {
+          "id": 125,
+          "symbol": 17,
+          "foreground": [
+            170,
+            85,
+            85
+          ],
+          "background": [
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "id": 128,
+          "symbol": 2,
+          "foreground": [
+            127,
+            170,
+            85
+          ],
+          "background": [
+            128,
+            255,
+            233
+          ]
+        },
+        {
+          "id": 132,
+          "symbol": 1,
+          "foreground": [
+            255,
+            159,
+            64
+          ],
+          "background": [
+            223,
+            64,
+            255
+          ]
+        }
+      ],
+      "observations": 67,
+      "files_sha256": {
+        "result.json": "d4e8db54fa3d56819496c544e3bb59893b795419d743e30a5d651bce7e55f677",
+        "symbol-pixels.json": "bb294684d8691b14e6fcfc816b3a9171cacdbd6de4a9d1adf5cda4b8fdf8930e",
+        "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      }
     }
   }
 }

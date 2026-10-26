@@ -41,6 +41,11 @@ local function capture(name,b)
    dfhack.internal.memmove(before,address,size)
    local text,code=dfhack.run_command_silent('df3d','zone-squad-name-read',tostring(squad.id));assert(code==0,text)
    local bytes=require('json').decode(text)
+   local symbol_text,symbol_code=dfhack.run_command_silent('df3d','zone-squad-symbol-read',tostring(squad.id));assert(symbol_code==0,symbol_text)
+   local symbol=require('json').decode(symbol_text)
+   local expected={squad.symbol,squad.foreground_r,squad.foreground_g,squad.foreground_b,squad.background_r,squad.background_g,squad.background_b}
+   assert(#symbol==7,'invalid semantic symbol size')
+   for n,value in ipairs(expected)do assert(symbol[n]==value,'semantic squad symbol differs')end
    assert(dfhack.internal.memcmp(before,address,size)==0,'name reader changed squad')
    df.delete(before)
    local rendered={}
@@ -48,7 +53,7 @@ local function capture(name,b)
    -- Short captions compare in full; long captions retain the native clipped
    -- glyph row for the independent presentation audit.
    for n=1,math.min(#bytes,40)do assert(bytes[n]==rendered[n],'native squad name glyph differs: '..name)end
-   row.names[#row.names+1]={id=squad.id,bytes=bytes,rendered=rendered,source_unchanged=true}
+   row.names[#row.names+1]={id=squad.id,bytes=bytes,rendered=rendered,symbol=symbol,source_unchanged=true}
   end
   for _,guard in ipairs(guards)do
    assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'squad reader changed UI/gps')
@@ -58,7 +63,8 @@ local function capture(name,b)
  end
  for _,r in ipairs(b.squad_room_info)do row.zone_assignments[#row.zone_assignments+1]={id=r.squad_id,mode=r.mode.whole}end
  for _,s in ipairs(df.global.world.squads.all)do if s.entity_id==df.global.plotinfo.group_id then
-  local squad={id=s.id,entity=s.entity_id,alias=dfhack.df2utf(s.alias),rooms={},rack_combat={},rack_training={}}
+  local squad={id=s.id,entity=s.entity_id,alias=dfhack.df2utf(s.alias),rooms={},rack_combat={},rack_training={},
+   symbol=s.symbol,foreground={s.foreground_r,s.foreground_g,s.foreground_b},background={s.background_r,s.background_g,s.background_b}}
   for _,r in ipairs(s.rooms)do squad.rooms[#squad.rooms+1]={id=r.building_id,mode=r.mode.whole}end
   for _,id in ipairs(s.rack_combat)do squad.rack_combat[#squad.rack_combat+1]=id end
   for _,id in ipairs(s.rack_training)do squad.rack_training[#squad.rack_training+1]=id end

@@ -135,6 +135,15 @@ std::optional<std::string> nativeZoneSquadName(const df::squad& squad) {
     if(text.size()>512)return std::nullopt;
     return text;
 }
+std::optional<std::array<uint8_t,7>> nativeZoneSquadSymbol(const df::squad& squad) {
+    static_assert(offsetof(df::squad,symbol)==0x1dc);
+    static_assert(offsetof(df::squad,foreground_r)==0x1e0 && offsetof(df::squad,background_b)==0x1e5);
+    if(!df::global::world || !nativeZoneDefaultsReady() || squad.symbol<0 || squad.symbol>22)return std::nullopt;
+    // Native40ac50 reads these saved fields to recolor the installed mask.
+    // Its texture allocation path must never be invoked by a semantic read.
+    return std::array<uint8_t,7>{uint8_t(squad.symbol),squad.foreground_r,squad.foreground_g,squad.foreground_b,
+        squad.background_r,squad.background_g,squad.background_b};
+}
 bool nativeZoneSquadAssignmentReady() {
     static_assert(offsetof(df::squad,rooms)==0xf0);
     static_assert(offsetof(df::squad,rack_combat)==0x108);

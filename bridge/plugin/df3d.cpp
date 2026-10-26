@@ -2167,6 +2167,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         Json::Value bytes(Json::arrayValue);for(unsigned char byte:*text)bytes.append(int(byte));
         out.print("{}",Json::FastWriter().write(bytes));return CR_OK;
       }
+      if(parameters[0]=="zone-squad-symbol-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* squad=df::squad::find(id);if(!squad)return CR_FAILURE;
+        const auto symbol=df3d_area::nativeZoneSquadSymbol(*squad);if(!symbol)return CR_FAILURE;
+        Json::Value output(Json::arrayValue);for(auto byte:*symbol)output.append(int(byte));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-squad-name-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
@@ -2485,6 +2495,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d track-material-candidates-read <sx> <sy> <sz> <tx> <ty> <tz> <candidate-limit> (read-only)\n"
         "df3d room-read <x> <y> <z>\n"
         "df3d zone-squad-name-read <squad id>\n"
+        "df3d zone-squad-symbol-read <squad id>\n"
         "df3d zone-squad-candidates-read\n"
         "df3d zone-owner-candidates-read <zone id>\n"
         "df3d zone-new-owner-candidates-read <zone type>\n"

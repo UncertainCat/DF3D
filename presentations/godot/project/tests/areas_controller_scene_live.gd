@@ -1254,6 +1254,28 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	step = "pointer owner selector"
 	await click_control(editor.zone_menu.controls.owner)
 	if not await wait_ui(func(): return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner rows"): return
+	var help = editor.candidates_view.native_help
+	var hover := InputEventMouseMotion.new()
+	hover.position=editor.candidates_view.owner_search.get_global_rect().get_center();hover.global_position=hover.position
+	root.push_input(hover,true);await process_frame
+	if not check(help.displayed=="owner_filter" and not editor.hud.minimap_layer.visible,"filter hover did not immediately replace minimap"):return
+	await capture("zone_owner_filter_help")
+	hover=InputEventMouseMotion.new();hover.position=Vector2(800,700);hover.global_position=hover.position
+	root.push_input(hover,true);await process_frame
+	if not check(not help.visible and editor.hud.minimap_layer.visible,"filter pointer leave did not restore minimap"):return
+	var help_target: Button
+	for button in editor.candidates_view.focus_buttons:
+		if not button.disabled and editor.candidates_view.scroll.get_global_rect().encloses(button.get_global_rect()):help_target=button;break
+	if not check(help_target!=null,"no owner recenter hover target"):return
+	hover=InputEventMouseMotion.new();hover.position=help_target.get_global_rect().get_center();hover.global_position=hover.position
+	root.push_input(hover,true);await process_frame
+	if not check(not help.visible,"filter tooltip incorrectly warmed recenter delay"):return
+	if not await wait_ui(func():return help.displayed=="owner_recenter","owner recenter hover delay"):return
+	await capture("zone_owner_recenter_help")
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(editor.stockpile_page=="types" and not help.visible and editor.hud.minimap_layer.visible,"closed owner picker retained tooltip"):return
+	await click_control(editor.zone_menu.controls.owner)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner rows after tooltip close"):return
 	var refreshed_unit := int(editor.candidates_state.rows[0].id)
 	var refreshed_button: Button = editor.candidates_view.choices[0]
 	var refresh_receipt := int(editor.candidates_state.receipt)

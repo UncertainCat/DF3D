@@ -188,6 +188,7 @@ func _ready() -> void:
 	zone_menu.name_entry.submitted.connect(_finish_rename)
 	zone_menu.setting_requested.connect(set_zone_setting)
 	candidates_view = preload("res://scripts/area_candidates_view.gd").new()
+	candidates_view.native_help = hud.native_help if hud != null else null
 	canvas.add_child(candidates_view); candidates_view.configure(world,candidates_state); candidates_view.hide()
 	candidates_view.focus_requested.connect(func(tile):
 		close_panel()

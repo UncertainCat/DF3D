@@ -370,11 +370,21 @@ end
 -- Sample rendered glyphs immediately; asynchronous screenshots lose this pointer.
 local previous_tracking=df.global.enabler.tracking_on
 local previous_focus=df.global.enabler.mouse_focus
+local function help_cells()
+ local cells={}
+ for y=0,17 do for x=g.dimx-24,g.dimx-1 do
+  local pen=dfhack.screen.readTile(x,y)
+  if pen.ch>=33 and pen.ch<=255 then cells[#cells+1]={x=x,y=y,ch=pen.ch,fg=pen.fg,bg=pen.bg,bold=pen.bold}end
+ end end
+ return cells
+end
 for _,probe in ipairs{{'recenter',796,106},{'filter',500,730},{'filter-icon',688,730},{'row-third',500,172},{'portrait-third',394,172},{'header-name',464,70},{'blank',800,700}}do
+ local started=dfhack.getTickCount();local first_tooltip_ms
  local function move()
   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
   g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3];g.mouse_x=probe[2]//8;g.mouse_y=(probe[3]-4)//12
-  gui.simulateInput(view,{})
+  gui.simulateInput(view,{});filter:logic()
+  if filter.displaying_tooltip and not first_tooltip_ms then first_tooltip_ms=dfhack.getTickCount()-started end
  end
  local deadline=dfhack.getTickCount()+900
  repeat move();view:render(dfhack.getTickCount());script.sleep(1,'frames') until dfhack.getTickCount()>=deadline
@@ -385,7 +395,11 @@ for _,probe in ipairs{{'recenter',796,106},{'filter',500,730},{'filter-icon',688
   local line='';for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y).ch;line=line..string.char(t>=32 and t<=255 and t or 32)end
   text[#text+1]=dfhack.df2utf(line)
  end
- records[#records+1]={name='owner-hover-'..probe[1],cursor=list.cursor_idx,mouse={g.precise_mouse_x,g.precise_mouse_y},hover=main.current_hover,enabled=main.hover_instructions_on,text=text}
+ local frame_cells={}
+ if probe[1]=='recenter' then
+  for y=0,17 do for x=g.dimx-25,g.dimx-1 do frame_cells[#frame_cells+1]={x=x,y=y,tile=dfhack.screen.readTile(x,y).tile}end end
+ end
+ records[#records+1]={name='owner-hover-'..probe[1],cursor=list.cursor_idx,mouse={g.precise_mouse_x,g.precise_mouse_y},hover=main.current_hover,enabled=main.hover_instructions_on,text=text,cells=help_cells(),frame_cells=frame_cells,filter_tooltip=filter.displaying_tooltip,first_tooltip_ms=first_tooltip_ms}
  assert(list.cursor_idx==0,'native hover changed owner selection: '..probe[1])
  if probe[1]=='recenter' then
   assert(main.hover_instructions_on and main.current_hover==234,'native recenter hover positive control failed')
@@ -485,7 +499,24 @@ window_input('ctrl-f','control-f')
 -- can still emit a plain f because no physical Control key is held. Clear the
 -- diagnostic text before continuing; only focus is asserted for this probe.
 window_input('clear','clear')
+local function focus_help(label)
+ local deadline=dfhack.getTickCount()+900
+ repeat
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=800;g.precise_mouse_y=700;g.mouse_x=100;g.mouse_y=58
+  gui.simulateInput(view,{});filter:logic();view:render(dfhack.getTickCount());script.sleep(1,'frames')
+ until dfhack.getTickCount()>=deadline
+ view:render(dfhack.getTickCount())
+ local main=df.global.game.main_interface
+ records[#records+1]={name='owner-help-'..label,focused=df.global.gview.cur_textbox==filter,
+  hover=main.current_hover,enabled=main.hover_instructions_on,cells=help_cells(),
+  filter_rect={filter.rect.x1,filter.rect.y1,filter.rect.x2,filter.rect.y2}}
+ capture('owner-help-'..label)
+ df.global.enabler.tracking_on=previous_tracking;df.global.enabler.mouse_focus=previous_focus
+end
+focus_help('focused-blank-pointer')
 window_input('focused-enter','enter')
+focus_help('unfocused-blank-pointer')
 pixel(500,730);script.sleep(3,'frames');input_state('focus')
 window_input('focused-down','down')
 window_input('focused-enter','enter')

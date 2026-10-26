@@ -3,6 +3,7 @@ signal focus_requested(tile: Vector3i)
 var art = preload("res://scripts/original_ui.gd").new()
 var state
 var world
+var native_help
 var body: Control
 var search: LineEdit
 var owner_search
@@ -73,7 +74,20 @@ func configure(source, model) -> void:
 	owner_search.position = search.position; owner_search.size = search.size; owner_search.theme = art.theme
 	body.add_child(owner_search); owner_search.configure(inset,native_colors)
 	owner_search.edited.connect(state.queue_owner_search)
+	bind_owner_help(owner_search,false)
 	state.changed.connect(refresh); state.facts_changed.connect(refresh_owner_facts); refresh()
+
+func bind_owner_help(control: Control, recenter: bool) -> void:
+	if native_help == null: return
+	var owner := control.get_instance_id()
+	control.mouse_entered.connect(func():
+		if recenter:
+			if not control.disabled: native_help.enter_owner_recenter(owner)
+		elif owner_search.editable: native_help.enter_owner_filter(owner))
+	control.mouse_exited.connect(func():native_help.leave(owner))
+	control.visibility_changed.connect(func():
+		if not control.is_visible_in_tree(): native_help.leave(owner))
+	control.tree_exiting.connect(func():native_help.leave(owner))
 
 func row_style(selected: bool = false) -> StyleBoxTexture:
 	var style := art.make_style("BUTTON_RECTANGLE_SELECTED" if selected else ("BUTTON_RECTANGLE" if state.kind == 1 else "BUTTON_RECTANGLE_DARK"),8)
@@ -110,6 +124,7 @@ func refresh() -> void:
 	if search.text != state.query: search.text = state.query
 	search.editable = not state.failed and not state.mutating and not state.area.is_empty()
 	owner_search.editable = search.editable
+	if not owner_search.editable and native_help != null: native_help.leave(owner_search.get_instance_id())
 	for index in headers.size():
 		headers[index].focus_mode = Control.FOCUS_NONE if state.kind == 1 else Control.FOCUS_ALL
 		headers[index].visible = state.kind != 3 and (index < 3 or state.kind == 1)
@@ -174,7 +189,6 @@ func refresh() -> void:
 				portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(portrait)
 				portrait_slots.append({"id":int(row.id),"view":portrait,"snapshot":owner,"recipe":row.get("sheet_icon",{}),"loaded":false})
 			var focus := Button.new(); focus.position = Vector2(408,6); focus.size = Vector2(24,24)
-			focus.tooltip_text = "Show on map"
 			for key in ["normal","hover","pressed","disabled","focus"]: focus.add_theme_stylebox_override(key,StyleBoxEmpty.new())
 			var focus_icon := TextureRect.new(); focus_icon.texture = art.texture("STOCKS_RECENTER")
 			focus_icon.size = Vector2(24,24); focus_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -182,6 +196,7 @@ func refresh() -> void:
 			focus.visible = state.kind == 1
 			focus.set_meta("unit_id",int(row.id))
 			focus.pressed.connect(focus_unit.bind(unit_id))
+			bind_owner_help(focus,true)
 			var mood := int(row.get("mood",0))
 			if state.kind == 1:
 				var icon := TextureRect.new(); icon.name = "OwnerStress"
@@ -205,6 +220,7 @@ func refresh() -> void:
 	for button in squad_buttons: button.disabled = state.busy() or bool(button.get_meta("unknown",false))
 	for button in focus_buttons:
 		button.disabled = state.busy() or unit_tile(int(button.get_meta("unit_id"))).x < 0
+		if button.disabled and native_help != null: native_help.leave(button.get_instance_id())
 		button.modulate = Color(0.5,0.5,0.5) if button.disabled else Color.WHITE
 	# A short bridge page must not strand the cursor below an absent scrollbar.
 	if not state.busy() and state.cursor != 0 and state.rows.size() < 16: state.call_deferred("more")

@@ -392,13 +392,32 @@ and PageDown/PageUp moves16/0. PageDown reveals ordinal1 as the first row.
 DF113784 closes unsaved and the source manifest matches. CURSOR_DOWN/UP are
 map bindings and do not establish picker navigation.
 
-Protected owner-hover051351 keeps the native pointer/focus through the input and
-render loop. Recenter hover234 renders the native instruction and Ctrl+c hint,
-providing a positive control; third-row, portrait and header hovers retain
-selection0. Plain posted motion is insufficient on the hidden desktop: SDL
-resets GPS coordinates to-1. Rendered glyph observations are retained in
-native_zone_assignment.json; asynchronous hover screenshots are not appearance
-acceptance. Filter hover activation and recenter tooltip styling remain unresolved.
+Owner tooltips use two distinct native presentation paths. Recenter hover234
+uses HOVER_RECTANGLE with clipped top/right borders, white description, gray
+Hotkey label on logical row4 and green Ctrl+c. Its500ms delay and shared warm
+interval use the existing hover-instruction state. The filter textbox uses
+data/art/border.png, a top border and one-row inset, and a bottom-row white
+Hotkey label with green Ctrl+f. Filter and magnifier hover activate immediately
+without warming the independent recenter timer; focus alone does not activate it.
+Pointer leave, hiding/freeing the control and closing the picker dismiss help
+and restore the minimap. The unsourced Show on map tooltip is removed.
+
+Native065910 observes input, widget logic and rendering with maintained pointer
+coordinates. Filter displaying_tooltip is true on the first logic step for both
+field and icon, false after leaving; row/portrait/header hovers keep selection0.
+Calling only input/render omitted widget logic and cannot establish filter hover
+activation. Native064749 checks focused/unfocused blank-pointer cases. Native UI
+object access is oracle-only. DF128520 closes unsaved and the source manifest
+matches. Evidence is in native_zone_assignment.json.owner_tooltips.
+
+owner-help-final passes core19/19 and GPU pixel checks with known notices:
+recenter matches450 native frame cells and per-glyph colors, while the complete
+200x216 filter panel matches the native042540 screenshot RGB hash exactly.
+Existing location-access hover panels still pass. Protected main-scene071023
+verifies immediate filter hover, delayed recenter hover, minimap replacement,
+pointer-leave/close cleanup, and the existing owner workflows. Both captures
+were inspected; DF127484 closes unsaved, both save manifests match and only
+the known Godot thread notice remains.
 Native052404 verifies both recenter click and unfocused Ctrl+c close the selector
 and Zones (bottom mode-1), move the map to the selected creature, and leave
 ownership unchanged. Reopening rebuilds the textbox widget; native tests must
@@ -480,8 +499,7 @@ the first recipe is evicted then reacquired, visible portraits render, and
 membership, receipt and row controls remain unchanged with at most36 recipes.
 Both rendered captures were inspected. Assignment/removal and native name refresh
 also pass. DF121552 closes unsaved, both save manifests match and only the known
-Godot thread notice remains. Native help and scrollbar acceptance remain separate
-outstanding work.
+Godot thread notice remains. Full scrollbar acceptance remains outstanding.
 
 Management67 adds AreaRequest.candidate_limit for scoped owner CandidateList
 reads: zero preserves128-row pagination,1..128 bounds the returned slice. Other

@@ -1,0 +1,154 @@
+{
+  "supported_df": "53.16 Steam Windows x64",
+  "status": "confirmed_runtime_ownership_defect",
+  "evidence": "build/areas-acceptance-20261025-210041",
+  "owned_df_pid": 110920,
+  "closed_unsaved": true,
+  "save_manifests_unchanged": 2,
+  "native_observations": 122,
+  "bridge_sha256": "6bffd52737fb05796f4f09d1a6eec29527a57b80e9b28fd16064ea3dd69e5094",
+  "observations": [
+    {
+      "changed_guards": 43,
+      "scratch_guards": 55584,
+      "status": "passed",
+      "vectors": {
+        "historical_figures": "0x24f9d18",
+        "items_all": "0x23e5450",
+        "punishments": "0x2393578",
+        "tax_rooms": "0x2391240",
+        "units_active": "0x23e50c8",
+        "units_all": "0x23e50b0"
+      },
+      "response": "response-97.json"
+    },
+    {
+      "changed_guards": 43,
+      "scratch_guards": 55584,
+      "status": "passed",
+      "vectors": {
+        "historical_figures": "0x24f9d18",
+        "items_all": "0x23e5450",
+        "punishments": "0x2393578",
+        "tax_rooms": "0x2391240",
+        "units_active": "0x23e50c8",
+        "units_all": "0x23e50b0"
+      },
+      "response": "response-103.json"
+    },
+    {
+      "changed_guards": 43,
+      "scratch_guards": 55584,
+      "status": "passed",
+      "vectors": {
+        "historical_figures": "0x24f9d18",
+        "items_all": "0x23e5450",
+        "punishments": "0x2393578",
+        "tax_rooms": "0x2391240",
+        "units_active": "0x23e50c8",
+        "units_all": "0x23e50b0"
+      },
+      "response": "response-109.json"
+    },
+    {
+      "changed_guards": 42,
+      "scratch_guards": 55584,
+      "status": "passed",
+      "vectors": {
+        "historical_figures": "0x24f9d18",
+        "items_all": "0x23e5450",
+        "punishments": "0x2393578",
+        "tax_rooms": "0x2391240",
+        "units_active": "0x23e50c8",
+        "units_all": "0x23e50b0"
+      },
+      "response": "response-115.json"
+    },
+    {
+      "changed_guards": 43,
+      "scratch_guards": 55584,
+      "status": "passed",
+      "vectors": {
+        "historical_figures": "0x24f9d18",
+        "items_all": "0x23e5450",
+        "punishments": "0x2393578",
+        "tax_rooms": "0x2391240",
+        "units_active": "0x23e50c8",
+        "units_all": "0x23e50b0"
+      },
+      "response": "response-121.json"
+    }
+  ],
+  "entries": [
+    {
+      "rva": "0x5874f0",
+      "size": 821,
+      "sha256": "8e149b322ad7ecc2cd06f132245116a7ce47a231a1628365d2b8def484f022ff",
+      "purpose": "Native zone removeUses; calls shared-search overlap at0x58752a; not an eligible runtime call."
+    },
+    {
+      "rva": "0x587d80",
+      "size": 3224,
+      "sha256": "2429b65a054143c604d3e815990a3fdda3c9216f284408caf451daa9e6d0bb21",
+      "purpose": "Generic native removal calls virtual removeUses; not an eligible replacement for the current helper."
+    },
+    {
+      "rva": "0x582e00",
+      "size": 187,
+      "sha256": "3c3100807f41bf76d79466e3a1d441c004d74db7659436a3584af523a72229e3",
+      "purpose": "Native zone uncategorization including immutable subtype dispatch."
+    },
+    {
+      "rva": "0x583430",
+      "size": 534,
+      "sha256": "9aaaec8734ea41cecf7308dbae06f4ed753330165f6175a120f129ccff52f83c",
+      "purpose": "Base building destructor; releases jobs, owned storage and world.all entry."
+    },
+    {
+      "rva": "0x5a78e0",
+      "size": 206,
+      "sha256": "9944dd1870503dc9fcd6105d576d4c6c86146f62a3a09fc018b8b5a26adedf3a",
+      "purpose": "Native final retirement: uncategorization and virtual destructor; includes normal redraw and selected-building cleanup effects."
+    },
+    {
+      "rva": "0xcb1420",
+      "size": 226,
+      "sha256": "27796253329b218c72d7aaaadf451ac0ae45d82f2e32c959714344b0d2d28a2e",
+      "purpose": "Removes one matching item general reference; native zone removal supplies type31 and zone id."
+    },
+    {
+      "rva": "0x13969f0",
+      "size": 222,
+      "sha256": "86c1ffb2e5a8eeea552bdb1b54ba0861f5ce7f853c3c2cc16a5dcad5327c5252",
+      "purpose": "Removes one matching unit civzone reference; zone id in third argument, second unused."
+    },
+    {
+      "rva": "0xd09860",
+      "size": 228,
+      "sha256": "0aa46ed0ca916ac5f9990823f804e5e782e9c376edac85d6a4a1729b6c49baa6",
+      "purpose": "Removes one matching job general reference; native removal supplies type36 and zone id."
+    },
+    {
+      "rva": "0xb98640",
+      "size": 933,
+      "sha256": "d8f9d8e577378b5056094522d86f5ba31972ed5df78c93bd9b9d1c370c7e6c37",
+      "purpose": "Historical-figure site-link removal; native zone removal supplies false for history-event creation."
+    }
+  ],
+  "interpretation": "Creation guard checks passed immediately before each pair of deletes. Measurement after deletion found changed path_cost/path_tag guards. The passing lane status means the diagnostic completed, not that removal satisfies scratch ownership. Native removeUses directly calls the shared-search overlap routine.",
+  "limits": [
+    "This fixture records the defect; it does not establish acceptance of a replacement removal path.",
+    "Helper bytes identify audit targets; this manifest alone is not proof that every transitive helper branch is eligible.",
+    "Normal-world five-pair deletion does not cover every assignment, job, historical-figure or in-update deletion case."
+  ],
+  "evidence_sha256": {
+    "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+    "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+    "response-97.json": "542db0529a5fe890b8dfee6c0477ad661f9c3709d33d51266d86bd359c279985",
+    "response-103.json": "542db0529a5fe890b8dfee6c0477ad661f9c3709d33d51266d86bd359c279985",
+    "response-109.json": "542db0529a5fe890b8dfee6c0477ad661f9c3709d33d51266d86bd359c279985",
+    "response-115.json": "ea2a9368cbad36e8d02f7b5084d60bb312453cfb2afa287a6305aa99ca502d9f",
+    "response-121.json": "542db0529a5fe890b8dfee6c0477ad661f9c3709d33d51266d86bd359c279985"
+  }
+}

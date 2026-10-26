@@ -418,6 +418,7 @@ func created_zone_overlaps() -> void:
 			if stopped: return
 			await request({"action":12,"kind":1,"id":int(area.id),"expected_revision":current.revision})
 			await native("removed", {"id":int(area.id)})
+		await native("overlap_measure")
 		await native("overlap_clear")
 		if stopped: return
 

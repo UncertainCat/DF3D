@@ -174,6 +174,18 @@ elseif request.op=='overlap_result' then
  local saved=assert(_G.df3d_overlap_fixture)
  for _,guard in ipairs(saved.guards)do assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'zone creation changed map search scratch')end
  result.scratch_guards=#saved.guards
+elseif request.op=='overlap_measure' then
+ local saved=assert(_G.df3d_overlap_fixture);local changed=0
+ for _,guard in ipairs(saved.guards)do if dfhack.internal.memcmp(guard.copy,guard.address,guard.size)~=0 then changed=changed+1 end end
+ result.scratch_guards=#saved.guards;result.changed_guards=changed
+ -- Read-only identity evidence for the removal audit; these addresses never
+ -- cross the gameplay protocol and are not runtime command inputs.
+ local base=dfhack.internal.getImageBase();result.vectors={}
+ for key,value in pairs{units_all=df.global.world.units.all,units_active=df.global.world.units.active,
+  items_all=df.global.world.items.all,tax_rooms=df.global.plotinfo.tax_collection.rooms,
+  punishments=df.global.plotinfo.punishments,historical_figures=df.global.world.history.figures}do
+  local _,address=df.sizeof(value);result.vectors[key]=address-base
+ end
 elseif request.op=='overlap_clear' then
  local saved=assert(_G.df3d_overlap_fixture)
  for _,guard in ipairs(saved.guards)do df.delete(guard.copy)end

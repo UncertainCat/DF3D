@@ -34,7 +34,17 @@ unsaved and both manifests match. Evidence is retained in
 Removal remains unfinished: Buildings::deconstruct invokes native zone
 removeUses0x5874f0, whose0x58752a call enters shared-search overlap recomputation.
 Calling the generic native destructor0x587d80 has the same virtual call and
-cannot solve that ownership issue. Audit/replace this route before exposing
+cannot solve that ownership issue.
+Protected diagnostic `build/areas-acceptance-20261025-210041` confirms this:
+creation guards pass, then each of five deletion pairs changes42–43 of55,584
+guarded path_cost/path_tag arrays. Its passing status means the diagnostic
+completed, not that deletion meets the ownership contract. Owned DF110920
+closes unsaved, both manifests match and diagnostics are clean. The recorded
+world-list addresses also identify the native cleanup's item, unit, punishment,
+tax-room and historical-figure sources. `fixtures/areas/native_zone_removal_audit.json`
+retains observations and exact helper ranges. Independent item/unit/job
+reference removal and final registration/destruction helpers are identified;
+the complete replacement still needs implementation and effect verification. Audit/replace this route before exposing
 Zones. Location-specific repaint effects after the relationship sequence,
 Multi, assignment and full Zones acceptance remain separate work.
 

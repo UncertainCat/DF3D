@@ -1,7 +1,7 @@
 {
   "provenance": {
-    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-105129",
-    "result_sha256": "214df88f2ec519b5718f982c518a4172edef46d9bb718fbd3f17c7cd86a92cdd",
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-105453",
+    "result_sha256": "0ce893daf2c37ed4c4fde8b21b19a26718e963f504951605508fea56f85fb59a",
     "df_build": "53.16 Steam build 24557528",
     "viewport": [
       1200,
@@ -20,10 +20,12 @@
     "Native date month boundary",
     "Concluded, missing applicant and non-Location first subject exclusion",
     "Two visible rows, one visible row, zero visible rows",
-    "Controlled allocations removed before exit"
+    "Controlled allocations removed before exit",
+    "Guildhall and grand guildhall headings for Farmer, Carpenter and Miner",
+    "Unsupported guild tier leaves heading blank but retains profession and date",
+    "All twelve native month names"
   ],
   "gaps": [
-    "Guildhall cases",
     "Hover, click, dismissal and navigation",
     "Scrolling, sizing and panel visibility arbitration",
     "Native semantic provider, typed transport and viewer"
@@ -39,8 +41,8 @@
     "selectors": "Exclude concluded flag bit 2; require entity type 5 (religion) or 10 (guild). Tier 1/2 selects heading. Enumeration follows continuing list order.",
     "helpers": {
       "a946e0": "Existing pinned native English name formatter; caller uses true,false.",
-      "132e0c0": "Native profession formatter candidate; ownership audit pending.",
-      "773390": "Native month-name formatter candidate; ownership audit pending."
+      "132e0c0": "Native profession formatter uses owned output plus profession/race/caste/plural/capitalized/default-race inputs. Leaf audit in progress; explicit default race avoids UI-mode fallback.",
+      "773390": "Native month formatter maps index 0..11 to immutable names and tail-calls string assign6fa10. Audit must include split tail and jump table through7734df."
     },
     "ownership": "Whole renderer writes native UI/GPS and must not be called or borrowed at runtime. Independent facts and formatting helpers require a separate provider."
   },
@@ -50,54 +52,72 @@
       "inputs": [
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 1,
           "id": 2147483600,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483601,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483602,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 0,
           "id": 2147483603,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483604,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483605,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
@@ -159,54 +179,72 @@
       "inputs": [
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 1,
           "id": 2147483600,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483601,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483602,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 0,
           "id": 2147483603,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483604,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 32400,
           "tier": 1,
           "year": 106
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483605,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
@@ -268,54 +306,72 @@
       "inputs": [
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 1,
           "id": 2147483600,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483601,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483602,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 0,
           "id": 2147483603,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483604,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 33600,
           "tier": 2,
           "year": 106
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483605,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
@@ -377,54 +433,72 @@
       "inputs": [
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 1,
           "id": 2147483600,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483601,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483602,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 0,
           "id": 2147483603,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 2,
           "id": 2147483604,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 33600,
           "tier": 2,
           "year": 106
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483605,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
@@ -462,54 +536,72 @@
       "inputs": [
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 1,
           "id": 2147483600,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483601,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483602,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 0,
           "id": 2147483603,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": -1,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483604,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 33600,
           "tier": 2,
           "year": 106
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483605,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
@@ -547,54 +639,72 @@
       "inputs": [
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 1,
           "id": 2147483600,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483601,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483602,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 0,
           "id": 2147483603,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483604,
           "kind": 2,
+          "location_type": 2,
+          "profession": -1,
           "tick": 33600,
           "tier": 2,
           "year": 106
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 0,
           "id": 2147483605,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
@@ -628,58 +738,2227 @@
       ]
     },
     {
-      "name": "tracker-no-visible-rows",
+      "name": "tracker-guildhall-farmer",
       "inputs": [
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 1,
           "id": 2147483600,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483601,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
           "flags": 1,
           "id": 2147483602,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
+          "applicant_entity": 865,
           "flags": 0,
           "id": 2147483603,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0
         },
         {
           "applicant": 0,
-          "flags": 2,
+          "applicant_entity": 375,
+          "flags": 0,
           "id": 2147483604,
           "kind": 12,
+          "location_type": 11,
+          "profession": 41,
+          "tick": 33600,
+          "tier": 1,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build guildhall",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "Farmers guild",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Slate, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-grand-guildhall-farmer",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 375,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 11,
+          "profession": 41,
           "tick": 33600,
           "tier": 2,
           "year": 106
         },
         {
           "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build grand guildhall",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "Farmers guild",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Slate, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-grand-guildhall-carpenter",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 375,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 11,
+          "profession": 2,
+          "tick": 33600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build grand guildhall",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "Carpenters guild",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Slate, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-grand-guildhall-miner",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 375,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 11,
+          "profession": 0,
+          "tick": 33600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build grand guildhall",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "Miners guild",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Slate, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-guild-invalid-tier",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 375,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 11,
+          "profession": 0,
+          "tick": 33600,
+          "tier": 0,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 24,
+          "text": "Miners guild",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Slate, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-0",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 0,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Granite, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-1",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 33600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Slate, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-2",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 67200,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Felsite, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-3",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 100800,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Hematite, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-4",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 134400,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Malachite, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-5",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 168000,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Galena, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-6",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 201600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Limestone, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-7",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 235200,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Sandstone, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-8",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 268800,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Timber, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-9",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 302400,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Moonstone, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-10",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 336000,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Opal, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-month-11",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 369600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Obsidian, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-no-visible-rows",
+      "inputs": [
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 865,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "location_type": 2,
+          "profession": -1,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
+          "flags": 2,
+          "id": 2147483604,
+          "kind": 12,
+          "location_type": 2,
+          "profession": 0,
+          "tick": 369600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "applicant_entity": 383,
           "flags": 2,
           "id": 2147483605,
           "kind": 12,
+          "location_type": 2,
+          "profession": -1,
           "tick": 0,
           "tier": 2,
           "year": 0

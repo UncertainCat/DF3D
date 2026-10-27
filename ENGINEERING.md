@@ -1024,11 +1024,15 @@ backlog; adding its text to the recognition row would not reproduce this layout.
 
 ## Native continuing-agreement tracker discovery
 
-`fixtures/areas/native_petition_tracker.json` records protected native105129,
+`fixtures/areas/native_petition_tracker.json` records protected native105453,
 selected with `-LocationNames -RecognitionOnly -RecognitionCase petitiontracker`.
-Seven tracker states plus fixture cleanup cover two temple requests, tier1/2,
-28th Granite to1st Slate, concluded first agreement, missing applicant,
-non-Location first subject and no visible rows. Owned DF135140 exits unsaved
+Twenty-four tracker states plus fixture cleanup cover two temple requests,
+tier1/2, a month boundary, all twelve month names, concluded first agreement,
+missing applicant, non-Location first subject and no visible rows. Guildhall and
+grand guildhall cases use an existing guild applicant with Farmer, Carpenter and
+Miner subjects; their displayed labels are native plural professions plus
+" guild", independent of the entity's own name. An unsupported guild tier has
+no heading but retains its profession and date. Owned DF158760 exits unsaved
 with the source manifest unchanged. The diagnostic removes all six allocated
 agreements from their owning vectors before deleting their allocations. Native
 text cells retain coordinates and colors; screenshots remain ignored.
@@ -1041,11 +1045,15 @@ this fixture leaves a blank row block before the two visible requests; zero
 visible text is not evidence that the frame is hidden. Temple heading selects tier1/2;
 English entity name uses the already pinned native formatter a946e0 with
 true,false. Guild profession formatter132e0c0 and month formatter773390 are
-candidate semantic helpers whose ownership remains unaudited. Date arithmetic
+candidate semantic helpers under ownership audit. The month switch uses only
+immutable literals and an owned string assignment; its split tail and jump
+table extend beyond the first unwind entry. The profession formatter accepts
+an explicit default race, which can avoid its UI-mode fallback. Its raw-based
+profession/caste lookup leaves still require complete dependency verification. Date arithmetic
 and row selection are inline in the renderer. The whole renderer writes native
 UI/GPS and is not an admissible runtime API. The existing agreement browser's
 English summaries are not native tracker copy. A semantic provider, transport,
-viewer, guild reference and interaction/visibility/scrolling evidence remain
+viewer and interaction/visibility/scrolling evidence remain
 unfinished; this discovery does not expose the tracker.
 
 ## Native Location name editor discovery

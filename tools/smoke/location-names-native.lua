@@ -568,7 +568,8 @@ if recognition_case=='petitiontracker' then
   for _,id in ipairs(fixture_agreements)do
    local agreement=assert(df.agreement.find(id));local detail=agreement.details[0]
    row.inputs[#row.inputs+1]={id=id,flags=agreement.flags.whole,kind=detail.type,year=detail.year,tick=detail.year_tick,
-    applicant=detail.data.Location.applicant,tier=detail.data.Location.tier}
+    applicant=detail.data.Location.applicant,tier=detail.data.Location.tier,profession=detail.data.Location.profession,
+    applicant_entity=agreement.parties[0].entity_ids[0],location_type=detail.data.Location.type}
   end
   view:render(dfhack.getTickCount())
   for y=18,45 do for x=123,149 do
@@ -583,6 +584,17 @@ if recognition_case=='petitiontracker' then
  a.flags.whole=2;shot('concluded-first');a.flags.whole=0
  location.applicant=-1;shot('missing-applicant');location.applicant=0
  subject.type=df.agreement_details_type.Residency;shot('non-location-first');subject.type=df.agreement_details_type.Location
+ local guild
+ for _,candidate in ipairs(df.global.world.entities.all)do if candidate.type==10 then guild=candidate;break end end
+ assert(guild,'tracker reference requires existing guild')
+ a.parties[0].entity_ids[0]=guild.id;location.type=df.abstract_building_type.GUILDHALL
+ location.profession=df.profession.FARMER;location.tier=1;shot('guildhall-farmer')
+ location.tier=2;shot('grand-guildhall-farmer')
+ location.profession=df.profession.CARPENTER;shot('grand-guildhall-carpenter')
+ location.profession=df.profession.MINER;shot('grand-guildhall-miner')
+ location.tier=0;shot('guild-invalid-tier')
+ a.parties[0].entity_ids[0]=religion.id;location.type=df.abstract_building_type.TEMPLE;location.tier=2
+ for month=0,11 do subject.year_tick=month*28*1200;shot('month-'..month)end
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.
  -- Remove each owned pointer before destroying its allocation.

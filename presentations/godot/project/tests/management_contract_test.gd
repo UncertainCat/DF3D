@@ -337,6 +337,7 @@ func run() -> void:
 	await test_location_recognition()
 	await test_location_religious_staff()
 	await test_location_religious_assignment()
+	await test_location_specialization()
 	assert(Contract.is_mutation(A.DismissAlert) and not Contract.is_mutation(A.PrepareAlertDismissal))
 	for request in [{"action":A.DismissAlert},{"action":A.DismissAlert,"expected_list_revision":0},
 		{"action":A.PrepareAlertDismissal,"expected_list_revision":1},
@@ -941,3 +942,21 @@ func test_location_religious_assignment() -> void:
 	state=await receipt(sequence)
 	assert(state.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)
 	assert(state.area.location_religious_staff.holder_id==10379 and state.area.location_religious_staff.unit_id==7123)
+
+func test_location_specialization() -> void:
+	for occupation in [false,true]:
+		var request: Dictionary={"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.LocationSpecializationRead,
+			"location_site_id":651,"location_id":0,"unit_id":5813}
+		if occupation:request.occupation_id=87
+		else:request.religious_entity_id=383;request.religious_assignment_id=2
+		var sequence: int=world.area_request(request);assert(sequence>0)
+		var state: Dictionary=await receipt(sequence)
+		var observed: Dictionary=state.area.location_specialization
+		assert(observed.unit_id==5813 and observed.histfig_id==9375 and observed.revision==9007199254740993 and observed.eligible and observed.specialized)
+		assert(observed.occupation_id==(87 if occupation else -1))
+		request.action=A.AreaUpdate;request.operation=Contract.AreaOperation.LocationSpecializationSet
+		request.expected_revision=observed.revision;request.value=0
+		for key in ["value","expected_revision","unit_id"]:
+			var invalid:=request.duplicate(true);invalid.erase(key);assert(world.area_request(invalid)==0)
+		sequence=world.area_request(request);assert(sequence>0);state=await receipt(sequence)
+		assert(not state.area.location_specialization.specialized and state.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)

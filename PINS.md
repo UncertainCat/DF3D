@@ -22,14 +22,14 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management75 adds religious candidate pages, selected-candidate receipt reads and
-assignment intents. List revision and selected-candidate revision are independent;
-neither authorizes mutation without the other and current epoch/target identity.
-Rebuild/install bridge and viewer together; `Local\\df3d_management_v75` isolates
-older peers. Older recordings have no candidate-list or assignment authority.
-Management74 religious removal and73 recognition facts remain distinct.
-Snapshot/grid/session versions are unchanged. The75 contract does not itself
-establish live assignment-handler or viewer acceptance.
+Management76 adds location staff specialization reads and conditional edits.
+Receipts bind an explicit occupation or religious assignment row and current unit;
+the desired state is explicit. Rebuild/install bridge and viewer together;
+`Local\\df3d_management_v76` isolates older peers. Older recordings have no
+specialization facts or mutation authority. Management75 religious assignment
+list/selected receipts remain independent. Snapshot/grid/session versions are
+unchanged. Wire-contract acceptance alone does not establish native handler,
+viewer input or lifecycle acceptance.
 
 
 Snapshot schema **11** and resident terrain grid **6** preserve root tissue

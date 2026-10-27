@@ -645,9 +645,22 @@ eligibility predicates and binds effective eligibility, specialization and labor
 state in a receipt. Mutation requires that receipt and a different desired state,
 sets the native flag and invokes the pinned labor routine. Missing/changed row
 ownership is refused, stale receipts are refused, and post-effect observation
-failure returns Unknown. Management transport and viewer integration remain
+failure returns Unknown. Management handler and viewer integration remain
 unfinished; transport must add epoch, request retirement and no-replay ownership.
 The paused diagnostic commands are location-specialization-read/set.
+
+Management76 defines LocationSpecializationRead/Set (38/39). Requests identify
+exactly one occupation or religious assignment plus unit, site and location;
+Set requires an observed revision and explicit value0/1. Responses retain the
+full row identity, unit/HF, exact 64-bit revision, eligibility and specialization.
+No data is inferred for older recordings. Native snapshots and session versions
+are unchanged. Core and Godot adapter contract checks pass in
+location-specialization-contract-final, including both row identities and wide
+revisions. Protected areas-acceptance-20261027-082542 verifies the existing
+religious read/assignment/removal workflow across rebuilt version76 peers, with
+both save manifests unchanged, no diagnostics and owned unsaved exit. That run
+is compatibility evidence, not live acceptance of the new specialization ops;
+their native management handler is still pending.
 
 Protected actionspecialization081207 matches native080737 for both priest5813
 and performer6536, including every captured flag/labor entry and exact restoration

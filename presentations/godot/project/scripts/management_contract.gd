@@ -136,6 +136,8 @@ enum AreaOperation {
 	LocationReligiousCandidates = 35,
 	LocationReligiousAssignmentRead = 36,
 	LocationReligiousAssign = 37,
+	LocationSpecializationRead = 38,
+	LocationSpecializationSet = 39,
 }
 enum AreaRoomOutcome {
 	None = 0,

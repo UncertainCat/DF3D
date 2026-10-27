@@ -3105,3 +3105,46 @@ TEST_CASE("Religious selection replies preserve wide receipts and reject mixed a
     }
   }
 }
+TEST_CASE("Specialization requests bind exactly one row identity and desired state") {
+  for(bool occupation:{false,true})for(bool apply:{false,true})for(int variant=0;variant<13;++variant) {
+    wm::ManagementRequest r;r.action=apply?wm::ManagementAction::AreaUpdate:wm::ManagementAction::AreaInspect;
+    auto& a=r.area;a.kind=wm::AreaKind::Zone;a.operation=apply?wm::AreaOperation::LocationSpecializationSet:wm::AreaOperation::LocationSpecializationRead;
+    a.locationSiteId=651;a.locationId=0;a.unitId=5813;
+    if(occupation)a.occupationId=87;else {a.religiousEntityId=383;a.religiousAssignmentId=2;}
+    a.expectedRevision=apply?9007199254740993LL:0;
+    if(variant==1)a.locationSiteId=-1;
+    if(variant==2)a.locationId=-1;
+    if(variant==3)a.unitId=-1;
+    if(variant==4){if(occupation)a.occupationId=-1;else a.religiousEntityId=-1;}
+    if(variant==5){if(occupation)a.religiousEntityId=383;else a.occupationId=87;}
+    if(variant==6)a.expectedRevision=apply?0:1;
+    if(variant==7)a.value=2;
+    if(variant==8)a.cursor=1;
+    if(variant==9)a.expectedListRevision=1;
+    if(variant==10)a.kind=wm::AreaKind::Stockpile;
+    if(variant==11)a.religiousHolderId=9375;
+    if(variant==12)r.action=wm::ManagementAction::AreaDelete;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* q=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(occupation);CAPTURE(apply);CAPTURE(variant);CHECK(bool(wire::validateConstructionRequest(*q))==(variant!=0));
+  }
+}
+TEST_CASE("Specialization responses preserve wide revisions and reject malformed authority") {
+  for(bool apply:{false,true})for(int variant=0;variant<12;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    auto r=wire::CreateLocationSpecialization(b,variant==1?-1:651,0,variant==2?87:-1,383,2,variant==3?-1:5813,9375,
+        variant==4?0:9007199254740993ULL,true,false);
+    wire::AreaStateBuilder a(b);a.add_operation(apply?wire::AreaOperation::LocationSpecializationSet:wire::AreaOperation::LocationSpecializationRead);
+    if(variant!=5)a.add_location_specialization(r);
+    if(apply || variant==6)a.add_location_edit_outcome(variant==7?wire::LocationEditOutcome::Unknown:wire::LocationEditOutcome::Completed);
+    if(variant==8)a.add_area_id(1);
+    if(variant==9)a.add_list_revision(1);
+    auto area=a.Finish();wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(area);
+    root.add_action(variant==10?wire::ManagementAction::AreaDelete:(apply?wire::ManagementAction::AreaUpdate:wire::ManagementAction::AreaInspect));
+    root.add_status(variant==11?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    b.Finish(root.Finish());const auto* s=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=variant!=0 && !(apply && variant==6) && !(!apply && variant==7);
+    CAPTURE(apply);CAPTURE(variant);CHECK(bool(wire::validateManagementState(*s))==invalid);
+    if(!invalid){const auto decoded=codec::decodeArea(s->area());REQUIRE(decoded.locationSpecialization);CHECK(decoded.locationSpecialization->revision==9007199254740993LL);CHECK_FALSE(decoded.locationSpecialization->specialized);}
+  }
+}

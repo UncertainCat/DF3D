@@ -220,7 +220,12 @@ struct LocationReligiousAssignment {
   int32_t unitId=-1,histfigId=-1,nemesisId=-1;
   int64_t revision=0,listRevision=0;bool eligible=false;
 };
+struct LocationSpecialization {
+  int32_t siteId=-1,locationId=-1,occupationId=-1,entityId=-1,assignmentId=-1,unitId=-1,histfigId=-1;
+  int64_t revision=0;bool eligible=false,specialized=false;
+};
 struct AreaState {
+  std::optional<LocationSpecialization> locationSpecialization;
   std::optional<LocationReligiousCandidates> locationReligiousCandidates;
   std::optional<LocationReligiousAssignment> locationReligiousAssignment;
   std::optional<LocationReligiousStaff> locationReligiousStaff;

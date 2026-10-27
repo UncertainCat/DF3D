@@ -71,6 +71,8 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
         return require("origin");
     case A::Inspect: case A::Remove: return require("building_id");
     case A::AreaUpdate:
+        if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationSpecializationSet))
+            return require("location_site_id") && require("location_id") && require("unit_id") && require("expected_revision") && require("value");
         if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationReligiousAssign))
             return require("location_site_id") && require("location_id") && require("religious_entity_id") && require("religious_assignment_id") && require("religious_holder_id") && require("unit_id") && require("expected_list_revision") && require("expected_revision");
         if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationReligiousStaffRemove))
@@ -91,6 +93,8 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
              int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationAccess)))return true;
         return require("id");
     case A::AreaInspect:
+        if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationSpecializationRead))
+            return require("location_site_id") && require("location_id") && require("unit_id");
         if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationReligiousAssignmentRead))
             return require("location_site_id") && require("location_id") && require("religious_entity_id") && require("religious_assignment_id") && require("religious_holder_id") && require("unit_id") && require("expected_list_revision");
         if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationReligiousCandidates))

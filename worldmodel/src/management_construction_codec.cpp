@@ -89,6 +89,11 @@ AreaState decodeArea(const m::AreaState* a) {
     n.siteId=r.site_id();n.locationId=r.location_id();n.entityId=r.entity_id();n.assignmentId=r.assignment_id();
     n.positionId=r.position_id();n.holderId=r.holder_id();n.unitId=r.unit_id();n.revision=int64_t(r.revision());n.removable=r.removable();return n;
   };
+  if(a && a->location_specialization()) {
+    const auto& r=*a->location_specialization();LocationSpecialization n;
+    n.siteId=r.site_id();n.locationId=r.location_id();n.occupationId=r.occupation_id();n.entityId=r.entity_id();n.assignmentId=r.assignment_id();
+    n.unitId=r.unit_id();n.histfigId=r.histfig_id();n.revision=int64_t(r.revision());n.eligible=r.eligible();n.specialized=r.specialized();out.locationSpecialization=n;
+  }
   if(a && a->location_religious_staff())out.locationReligiousStaff=religiousTarget(*a->location_religious_staff());
   if(a && a->location_religious_assignment()) {
     const auto& r=*a->location_religious_assignment();LocationReligiousAssignment n;

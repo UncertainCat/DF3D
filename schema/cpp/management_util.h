@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 75;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v75";
+inline constexpr uint32_t kManagementVersion = 76;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v76";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -53,12 +53,14 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
        (a.query() && a.query()->size()))return "invalid owner query bytes";
   }
   const auto op=static_cast<uint8_t>(a.operation());
-  if(op>37) return "Unsupported area operation";
+  if(op>39) return "Unsupported area operation";
   const bool nameRead=op==28,nameChoices=op==29,nameEdit=op==30;
   const bool recognitionRead=op==31,recognize=op==32;
   const bool recognition=recognitionRead || recognize;
   const bool religiousRead=op==33,religiousRemove=op==34;
   const bool religiousCandidates=op==35,religiousAssignmentRead=op==36,religiousAssign=op==37;
+  const bool specializationRead=op==38,specializationSet=op==39;
+  const bool specialization=specializationRead || specializationSet;
   const bool religiousSelection=religiousAssignmentRead || religiousAssign;
   const bool religious=religiousRead || religiousRemove || religiousCandidates || religiousSelection;
   const bool naming=nameRead || nameChoices || nameEdit;
@@ -77,8 +79,8 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   const bool update=action==ManagementAction::AreaUpdate;
   bool allowed=op==0;
   switch(a.operation()) {
-    case AreaOperation::LocationReligiousCandidates: case AreaOperation::LocationReligiousAssignmentRead: case AreaOperation::LocationReligiousStaffRead: case AreaOperation::LocationRecognitionRead: case AreaOperation::LocationNameRead: case AreaOperation::LocationNameChoices: allowed=inspect;break;
-    case AreaOperation::LocationReligiousAssign: case AreaOperation::LocationReligiousStaffRemove: case AreaOperation::LocationRecognize: case AreaOperation::LocationNameEdit: allowed=update;break;
+    case AreaOperation::LocationSpecializationRead: case AreaOperation::LocationReligiousCandidates: case AreaOperation::LocationReligiousAssignmentRead: case AreaOperation::LocationReligiousStaffRead: case AreaOperation::LocationRecognitionRead: case AreaOperation::LocationNameRead: case AreaOperation::LocationNameChoices: allowed=inspect;break;
+    case AreaOperation::LocationSpecializationSet: case AreaOperation::LocationReligiousAssign: case AreaOperation::LocationReligiousStaffRemove: case AreaOperation::LocationRecognize: case AreaOperation::LocationNameEdit: allowed=update;break;
     case AreaOperation::LinkTarget: case AreaOperation::SettingsPage: case AreaOperation::LocationList: case AreaOperation::Links: case AreaOperation::PaintCounts: case AreaOperation::LocationChoices: case AreaOperation::LocationDetails: case AreaOperation::LocationStaffCandidates:
       allowed=inspect; break;
     case AreaOperation::SettingsSet: case AreaOperation::Preset: case AreaOperation::Rename:
@@ -96,7 +98,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   if(a.kind()>AreaKind::Workshop || (a.kind()==AreaKind::Workshop)!=(op==15))
     return "Workshop kind is only valid for workshop links";
   const bool stock=op==1 || op==2 || op==3 || op==10 || op==13 || linkTarget;
-  const bool zone=(op>=6 && op<=9) || op==11 || op==12 || op==14 || multi || counts || locationChoices || locationDetails || staffCandidates || naming || recognition || religious;
+  const bool zone=(op>=6 && op<=9) || op==11 || op==12 || op==14 || multi || counts || locationChoices || locationDetails || staffCandidates || naming || recognition || religious || specialization;
   if((stock && a.kind()!=AreaKind::Stockpile) || (zone && a.kind()!=AreaKind::Zone))
     return "Area kind is not valid for this operation";
   if(op && ((op!=16 && ((!linkTarget && a.origin()) || a.width()!=1 || a.height()!=1)) ||
@@ -127,14 +129,14 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     {a.expected_list_revision()!=0 && !(op==1 || op==6 || op==10 || op==14 || locationChoices || staffCandidates || staffEdit || religiousCandidates || religiousSelection), "expected_list_revision"},
     {present(a.list_key()) && op!=1 && op!=2, "list_key"},
     {present(a.row_key()) && op!=2, "row_key"},
-    {a.scope()!=0 && op!=2, "scope"}, {a.value()!=0 && op!=2 && !locationAccess, "value"},
+    {a.scope()!=0 && op!=2, "scope"}, {a.value()!=0 && op!=2 && !locationAccess && !specializationSet, "value"},
     {a.preset()!=0 && op!=3, "preset"}, {present(a.name()) && op!=4, "name"},
     {present(a.spans()) && op!=5 && !counts, "spans"}, {a.paint_mode()!=0 && op!=5, "paint_mode"},
-    {a.paint_z()!=-1 && op!=5 && !counts, "paint_z"}, {a.location_id()!=-2 && op!=7 && !locationDetails && !staffCandidates && !naming && !recognition && !religious, "location_id"},
+    {a.paint_z()!=-1 && op!=5 && !counts, "paint_z"}, {a.location_id()!=-2 && op!=7 && !locationDetails && !staffCandidates && !naming && !recognition && !religious && !specialization, "location_id"},
     {a.location_kind()!=0 && op!=8 && !locationChoices, "location_kind"}, {a.profession()!=-1 && op!=8, "profession"},
     {a.deity_kind()!=-1 && op!=8, "deity_kind"}, {a.deity_id()!=-1 && op!=8, "deity_id"},
     {areaZoneSettingsPresent(a.zone_settings()) && op!=9, "zone_settings"},
-    {a.item_id()!=-1 && op!=11, "item_id"}, {a.unit_id()!=-1 && op!=11 && !staffEdit && !religiousSelection, "unit_id"}, {a.assign()!=-1 && op!=11, "assign"},
+    {a.item_id()!=-1 && op!=11, "item_id"}, {a.unit_id()!=-1 && op!=11 && !staffEdit && !religiousSelection && !specialization, "unit_id"}, {a.assign()!=-1 && op!=11, "assign"},
     {a.squad_id()!=-1 && op!=12, "squad_id"}, {a.squad_use()!=-1 && op!=12, "squad_use"},
     {a.organic()!=-1 && op!=13, "organic"}, {a.inorganic()!=-1 && op!=13, "inorganic"},
     {a.candidate_kind()!=0 && op!=14, "candidate_kind"}, {a.sort()!=0 && op!=14, "sort"},
@@ -144,10 +146,10 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     {a.undo_token()!=0 && op!=17, "undo_token"},
     {a.count_generation()!=0 && !counts, "count_generation"},
     {a.paint_preview()!=nullptr && !counts, "paint_preview"},
-    {a.occupation_id()!=-1 && !staffCandidates && !staffEdit, "occupation_id"},
-    {a.location_site_id()!=-1 && !locationDetails && !staffCandidates && !naming && !recognition && !religious, "location_site_id"},
-    {a.religious_entity_id()!=-1 && !religious, "religious_entity_id"},
-    {a.religious_assignment_id()!=-1 && !religious, "religious_assignment_id"},
+    {a.occupation_id()!=-1 && !staffCandidates && !staffEdit && !specialization, "occupation_id"},
+    {a.location_site_id()!=-1 && !locationDetails && !staffCandidates && !naming && !recognition && !religious && !specialization, "location_site_id"},
+    {a.religious_entity_id()!=-1 && !religious && !specialization, "religious_entity_id"},
+    {a.religious_assignment_id()!=-1 && !religious && !specialization, "religious_assignment_id"},
     {a.religious_holder_id()!=-1 && !religiousRemove && !religiousSelection, "religious_holder_id"},
     {a.name_query()!=nullptr && !nameChoices, "name_query"},
     {a.name_edit()!=nullptr && !nameEdit, "name_edit"},
@@ -235,6 +237,14 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     if(religiousSelection && (a.unit_id()<0 || a.religious_holder_id()<-1 || !a.expected_list_revision()))
       return "invalid religious assignment request";
   }
+  if(specialization) {
+    const bool occupation=a.occupation_id()>=0;
+    if(a.location_site_id()<0 || a.location_id()<0 || a.unit_id()<0 || a.id()!=-1 || present(a.query()) || a.cursor() ||
+        a.occupation_id()<-1 || (occupation?(a.religious_entity_id()!=-1 || a.religious_assignment_id()!=-1):
+          (a.religious_entity_id()<0 || a.religious_assignment_id()<0)) ||
+        (specializationRead?a.expected_revision()!=0:!a.expected_revision()) || a.value()>1)
+      return "invalid location specialization request";
+  }
   if(naming) {
     if(a.location_site_id()<0 || a.location_id()<0 || a.id()!=-1 || present(a.query()) || a.cursor() ||
         (nameRead?a.expected_revision()!=0:!a.expected_revision()))return "invalid location naming identity";
@@ -247,7 +257,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
       if(auto error=validateLocationNameEdit(*a.name_edit()))return error;
     }
   }
-  if(op && !multi && !counts && !locationChoices && !locationDetails && !staffCandidates && !naming && !recognition && !religious && !(op==5 && create) && a.id()<0) return "area id required";
+  if(op && !multi && !counts && !locationChoices && !locationDetails && !staffCandidates && !naming && !recognition && !religious && !specialization && !(op==5 && create) && a.id()<0) return "area id required";
   if(op==5 && create && a.paint_z()<0) return "area paint z required";
   if(op==15 && (a.link_id()<0 || a.link_id()==a.id())) return "invalid area link";
   if(op==5 && create && (a.zone_type()<-1 || a.zone_type()>255)) return "invalid area edit";
@@ -880,7 +890,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if ((a->areas() && a->areas()->size()>64) || (a->choices() && a->choices()->size()>128)) return "area response too large";
     const auto count=[](const auto* v)->size_t{return v ? v->size() : 0;};
     const auto textSize=[](const flatbuffers::String* v)->size_t{return v ? v->size() : 0;};
-    if(a->operation()>AreaOperation::LocationReligiousAssign || a->area_id()<-1 ||
+    if(a->operation()>AreaOperation::LocationSpecializationSet || a->area_id()<-1 ||
         textSize(a->list_key())>64 || textSize(a->query())>128 ||
         a->candidate_kind()>3 || a->sort()>(a->candidate_kind()==1?4:3) || a->list_revision()>INT64_MAX ||
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
@@ -903,6 +913,27 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     const bool nameRead=a->operation()==AreaOperation::LocationNameRead;
     const bool nameChoices=a->operation()==AreaOperation::LocationNameChoices;
     const bool nameEdit=a->operation()==AreaOperation::LocationNameEdit;
+    const bool specializationSet=a->operation()==AreaOperation::LocationSpecializationSet;
+    const bool specialization=specializationSet || a->operation()==AreaOperation::LocationSpecializationRead;
+    if(a->location_specialization() && !specialization)return "specialization without operation";
+    if(specialization) {
+      if(s.action()!=(specializationSet?ManagementAction::AreaUpdate:ManagementAction::AreaInspect))return "specialization action mismatch";
+      if((s.status()==ManagementStatus::Ok)!=(a->location_specialization()!=nullptr))return "invalid specialization presence";
+      if(a->area_id()!=-1 || a->next_cursor() || a->truncated() || count(a->areas()) || count(a->choices()) ||
+          count(a->settings()) || count(a->locations()) || count(a->candidates()) || count(a->links()) ||
+          textSize(a->list_key()) || textSize(a->query()) || a->candidate_kind() || a->sort() || a->sort_descending() ||
+          a->list_revision() || a->build_phase() || a->build_done() || a->build_total() || a->omitted() ||
+          a->location_catalog() || a->location_details() || a->location_name() || a->location_name_page() ||
+          a->location_staff_candidates() || a->location_recognition() || a->location_religious_staff() ||
+          a->location_religious_candidates() || a->location_religious_assignment())return "mixed specialization reply";
+      if(specializationSet && (a->location_edit_outcome()==LocationEditOutcome::None || a->location_edit_outcome()>LocationEditOutcome::Unknown ||
+          ((a->location_edit_outcome()==LocationEditOutcome::Completed)!=(s.status()==ManagementStatus::Ok))))return "invalid specialization outcome";
+      if(const auto* r=a->location_specialization()) {
+        if(r->site_id()<0 || r->location_id()<0 || r->unit_id()<0 || r->histfig_id()<0 || r->occupation_id()<-1 ||
+            (r->occupation_id()>=0?(r->entity_id()!=-1 || r->assignment_id()!=-1):(r->entity_id()<0 || r->assignment_id()<0)) ||
+            !r->revision() || r->revision()>INT64_MAX)return "invalid specialization receipt";
+      }
+    }
     const bool religiousCandidates=a->operation()==AreaOperation::LocationReligiousCandidates;
     const bool religiousAssignmentRead=a->operation()==AreaOperation::LocationReligiousAssignmentRead;
     const bool religiousAssign=a->operation()==AreaOperation::LocationReligiousAssign;
@@ -994,7 +1025,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(a->location_staff_candidates())if(auto error=validateLocationStaffCandidates(*a->location_staff_candidates()))return error;
     }
     if(!locationOpen && a->location_entry_outcome()!=LocationEntryOutcome::None)return "entry outcome without entry operation";
-    if(!locationEdit && !nameEdit && !recognize && !religiousRemove && !religiousAssign && a->location_edit_outcome()!=LocationEditOutcome::None)return "edit outcome without edit operation";
+    if(!locationEdit && !nameEdit && !recognize && !religiousRemove && !religiousAssign && !specializationSet && a->location_edit_outcome()!=LocationEditOutcome::None)return "edit outcome without edit operation";
     if(a->location_details() && !locationDetails)return "location details without operation";
     if(locationDetails) {
       if(s.action()!=((locationOpen || locationEdit)?ManagementAction::AreaUpdate:ManagementAction::AreaInspect))return "location details action mismatch";

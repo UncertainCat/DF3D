@@ -85,9 +85,10 @@ func _input(event: InputEvent) -> void:
 	if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:entering_filter=false;queue_redraw()
 	elif event.keycode==KEY_BACKSPACE:
 		if not value.is_empty():value.resize(value.size()-1)
-	elif event.unicode>=32:
-		for byte in String.chr(event.unicode).to_utf8_buffer():
-			if value.size()>=10:break
+	elif value.size()<10:
+		# Native8b959b passes flags0x0b to c39700: letters/space, ASCII uppercase.
+		var byte: int=event.unicode
+		if byte==32 or (byte>=65 and byte<=90) or (byte>=97 and byte<=122):
 			value.append(byte-32 if byte>=97 and byte<=122 else byte)
 	state.set_choices(state.component,value)
 	get_viewport().set_input_as_handled()

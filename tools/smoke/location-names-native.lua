@@ -28,6 +28,16 @@ local function word_part(index)
  return df.reinterpret_cast('int32_t',first+index*4).value
 end
 local function key(value)gui.simulateInput(view,value);view:render(dfhack.getTickCount())end
+local function window_input(action)
+ local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write(action);f:close()
+ assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local limit=dfhack.getTickCount()+30000
+ while true do
+  local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<limit,'native window input timeout');script.sleep(1,'frames')
+ end
+ assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames')
+end
 local function pixel(x,y)
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12;key('_MOUSE_L')
@@ -390,6 +400,29 @@ for i,location in ipairs(choices)do
   for n=1,32 do key('STRING_A122')end
   local length=capture(prefix..'-filter-length',location)
   length.filter_limit={attempted_bytes=36,accepted_bytes=#creator.cull_str,accepted=creator.cull_str}
+  for n=1,40 do key('STRING_A000')end
+  window_input('ascii')
+  local ascii=capture(prefix..'-filter-window-ascii',location)
+  ascii.filter_bytes={creator.cull_str:byte(1,#creator.cull_str)}
+  window_input('backspace')
+  local erased=capture(prefix..'-filter-window-ascii-backspace',location)
+  erased.filter_bytes={creator.cull_str:byte(1,#creator.cull_str)}
+  for n=1,40 do key('STRING_A000')end
+  window_input('nonascii')
+  local accented=capture(prefix..'-filter-window-accent',location)
+  accented.filter_bytes={creator.cull_str:byte(1,#creator.cull_str)}
+  window_input('backspace')
+  local backspace=capture(prefix..'-filter-window-backspace',location)
+  backspace.filter_bytes={creator.cull_str:byte(1,#creator.cull_str)}
+  for n=1,40 do key('STRING_A000')end
+  for n=1,9 do key('STRING_A097')end
+  window_input('nonascii')
+  local boundary=capture(prefix..'-filter-window-boundary',location)
+  boundary.filter_bytes={creator.cull_str:byte(1,#creator.cull_str)}
+  for n=1,40 do key('STRING_A000')end
+  window_input('name-filter-mixed')
+  local mixed=capture(prefix..'-filter-window-mixed',location)
+  mixed.filter_bytes={creator.cull_str:byte(1,#creator.cull_str)}
   key('LEAVESCREEN')
   local escaped=capture(prefix..'-filter-leavescreen',location)
   escaped.filter_exit={open=creator.open,entering_filter=creator.entering_cull_str,filter=creator.cull_str}
@@ -422,4 +455,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==121,'incomplete name mutation/filter reference')
+assert(#records==127,'incomplete name mutation/filter reference')

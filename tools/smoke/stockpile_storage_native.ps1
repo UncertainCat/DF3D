@@ -119,7 +119,7 @@ try {
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
-  if(($ZoneOwner -or $ZoneAnimals -or $LocationSupplies) -and (Test-Path "$out/owner-input-request")) {
+  if(($ZoneOwner -or $ZoneAnimals -or $LocationSupplies -or $LocationNames) -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {
@@ -133,6 +133,8 @@ try {
     'backspace' {[Shot]::Key($window,8,14)}
     'clear' {for($i=0;$i -lt 33;$i++){[Shot]::Key($window,8,14)}}
     'nonascii' {[Shot]::Text($window,([string][char]0x00e9))}
+    'ascii' {[Shot]::Text($window,'a')}
+    'name-filter-mixed' {[Shot]::Text($window,'a Z09-_.')}
     default {throw "Unknown owner input action: $action"}
    }
    Remove-Item -LiteralPath "$out/owner-input-request"
@@ -146,7 +148,12 @@ try {
     if($ZoneSquads){Start-Sleep -Milliseconds 250}
     [Shot]::SetThreadDpiAwarenessContext([IntPtr](-4)) | Out-Null
     [Shot]::Capture([Shot]::Find($owned.Id),"$out/$name.png") | Out-Null
-    Remove-Item -LiteralPath "$out/shot"
+    # A transient Windows file lock must not abort an otherwise valid capture.
+    # Acknowledge only after removal, so the producer cannot publish its next shot.
+    for($attempt=0;;$attempt++) {
+     try {Remove-Item -LiteralPath "$out/shot" -ErrorAction Stop;break}
+     catch {if($attempt -ge 19){throw};Start-Sleep -Milliseconds 50}
+    }
     'ok' | Set-Content "$out/ack-$name"
    }
   }

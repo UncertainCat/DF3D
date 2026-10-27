@@ -8350,5 +8350,103 @@
     "source_and_clone_unchanged": true,
     "owned_exit_without_save": true,
     "diagnostics": "known separate-thread notice only"
+  },
+  "filter_input_reference": {
+    "run": "build/stockpile-storage-native-location-names-20261026-235958",
+    "result_sha256": "08ce3d46beb719fe41f059413d30e6a99070e12e76e6704e87474aeceeb698e4",
+    "command": "stockpile_storage_native.ps1 -LocationNames",
+    "delivery": "Windows WM_CHAR text and WM_KEYDOWN/UP Backspace to the owned native window",
+    "native_rule": "RVA8b959b passes flags0x0b and limit10 to c39700: ASCII letters and spaces, uppercase ASCII; byte Backspace.",
+    "cases": [
+      {
+        "name": "ascii",
+        "initial": [],
+        "unicode_events": [
+          97
+        ],
+        "expected": [
+          65
+        ]
+      },
+      {
+        "name": "ascii-backspace",
+        "initial": [
+          65
+        ],
+        "unicode_events": [
+          8
+        ],
+        "expected": []
+      },
+      {
+        "name": "accent",
+        "initial": [],
+        "unicode_events": [
+          233
+        ],
+        "expected": []
+      },
+      {
+        "name": "backspace",
+        "initial": [],
+        "unicode_events": [
+          8
+        ],
+        "expected": []
+      },
+      {
+        "name": "boundary",
+        "initial": [
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65
+        ],
+        "unicode_events": [
+          233
+        ],
+        "expected": [
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65
+        ]
+      },
+      {
+        "name": "mixed",
+        "initial": [],
+        "unicode_events": [
+          97,
+          32,
+          90,
+          48,
+          57,
+          45,
+          95,
+          46
+        ],
+        "expected": [
+          65,
+          32,
+          90
+        ]
+      }
+    ],
+    "source_save_unchanged": true,
+    "owned_exit_without_save": true,
+    "omissions": [
+      "IME composition and clipboard input",
+      "long-header and resize cases"
+    ]
   }
 }

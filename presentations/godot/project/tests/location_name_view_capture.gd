@@ -78,6 +78,13 @@ func run() -> void:
 	await click(Vector2(832,82));assert(state.calls[-1]==["whole"])
 	await click(Vector2(744,178));assert(state.calls[-1]==["choose",0])
 	await click(Vector2(832,142));assert(view.entering_filter)
+	var text_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).filter_input_reference
+	for sample in text_reference.cases:
+		state.query=PackedByteArray(sample.initial);state.changed.emit()
+		for code in sample.unicode_events:
+			await key(KEY_BACKSPACE if int(code)==8 else KEY_NONE,0 if int(code)==8 else int(code))
+		assert(state.query==PackedByteArray(sample.expected),"native filter text input "+sample.name)
+	state.query=PackedByteArray();state.changed.emit()
 	for index in 12:await key(KEY_A,97)
 	assert(state.query=="AAAAAAAAAA".to_ascii_buffer())
 	await key(KEY_BACKSPACE);assert(state.query.size()==9)

@@ -387,8 +387,8 @@ with only documented diagnostics. The entire240x588 filtered-list region and
 240x36 empty focused filter match native RGB exactly, including accented words;
 the initial full-panel reference still matches. The cursor-visible phase is
 checked for a rendered change, not claimed as a separate native pixel capture.
-Fixture imports explicitly decode UTF-8. Remaining scrolling interaction,
-non-ASCII input and long-header/resize acceptance remain outstanding.
+Fixture imports explicitly decode UTF-8. Scrolling and text-input evidence is
+recorded below; long-header/resize acceptance remains outstanding.
 
 Protected native capture `build/stockpile-storage-native-location-names-20261026-233639`
 adds14 observations to the92 naming cases. Eight immediate hover captures retain
@@ -444,6 +444,20 @@ saved name. The protected restart hashes1368 files across source/clone save
 roots and verifies unchanged contents; final teardown also exits unsaved. The
 run passes with only the known separate-thread notice. Naming input/layout
 coverage gaps remain independent of this lifecycle acceptance.
+
+Naming filter input follows the native text editor's flags0x0b at
+RVA8b959b/c39700: ASCII letters and spaces, uppercase ASCII, ten bytes maximum,
+and single-byte Backspace. Digits, punctuation and accented UTF-8 bytes are
+rejected. Protected `build/stockpile-storage-native-location-names-20261026-235958`
+passes127 observations, including Windows-message letter, Backspace, accented
+character, nine-byte boundary and mixed-character controls. The owned process
+exits unsaved and the source manifest remains unchanged. The bounded
+`filter_input_reference` records exact bytes and provenance; the rendered
+component regression replays those inputs. IME and clipboard behavior remain
+unverified. The capture handoff retries transient Windows removal locks before
+acknowledging the next screenshot; exhaustion still fails the lane.
+`build/qa/location-name-filter-input-fixed` passes core19/19 and the rendered
+input/pixel regression with only the three documented Godot diagnostics.
 
 ## Native squad assignment reference
 

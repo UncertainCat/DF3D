@@ -399,10 +399,25 @@ match exactly, including RNG afterward. Five invalid identity components, zero
 revision, a stale revision and completed-request replay are refused; UI/gps byte
 guards pass. MSVC and core19/19 pass in
 `build/qa/location-religious-assignment-semantic-final`, with source preservation
-and unsaved owned exit. Replacement, military/job/high-priest/plotter/historical
-variants and post-effect Unknown injection remain unverified. The existing holder
+and unsaved owned exit. Military/job/high-priest/plotter/historical variants and
+post-effect Unknown injection remain unverified. The existing holder
 receipt does not bind all selected-candidate dependencies; add that receipt before
 management/viewer exposure. Protocol74 remains unchanged.
+Protected replacepriest055643/actionreplacepriest055738 verify the native
+callback's replacement branch. Occupied native rows do not open assignment
+pickers directly: the controlled oracle temporarily vacates holder fields to open
+the picker, then restores the old holder before selection. It does not authorize
+a direct replacement control or bypass a stale viewer target. Captured old/new
+holder, assignment, actor, personality, RNG and event facts match exactly. Native
+removes HF9375's position link and adds HF10379's, emitting REMOVE then ADD
+history events; the old holder's unrelated squad125 command remains unchanged.
+Cold occupied candidate observation refreshes only the captured old position
+link's entity/assignment cache indexes (-1 to383/2). The oracle retains both states
+and excludes only the three named lookup-index fields from its semantic equality
+check; UI/gps and other captured facts remain unchanged. Both runs pass with
+source preservation and unsaved owned exit; core19/19 passes in
+`build/qa/location-religious-replacement-reference`. Assignment-linked military,
+active-job, high-priest, plotter and historical-holder variants remain unverified.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

@@ -12247,6 +12247,177 @@
         "Selected-candidate dependency receipt, management transport and rendered viewer assignment are not implemented.",
         "Post-effect Unknown injection remains untested."
       ]
+    },
+    "replacement_semantic_reference": {
+      "native_source": "build/stockpile-storage-native-location-recognition-replacepriest-20261027-055643",
+      "semantic_source": "build/stockpile-storage-native-location-recognition-actionreplacepriest-20261027-055738",
+      "native_result_sha256": "5e9d121a766f6799187a33fc3b0ae95df131f4bf25cddb79265b5f107ea7c0f2",
+      "semantic_result_sha256": "2f8fda5983bdb2a4a0ebf5c245ac6815be3235516bbabce3ec3f5008ae967d52",
+      "status": "passed",
+      "method": "Controlled callback oracle: temporarily vacate assignment holder fields to open the native picker, then restore the old holder before selecting a replacement. Occupied native rows do not offer direct assignment.",
+      "old_holder_id": 9375,
+      "new_holder_id": 10379,
+      "old_holder_before_sha256": "652497882ddca1ce4a6fd38c9f5c938261308578117423c7c877aa39a0c8b8a2",
+      "old_holder_after_sha256": "a768f031307e47ac48abb682f412e017914579bc4f510b3242b7832ca0bcb70f",
+      "old_holder_entity_links_before": [
+        {
+          "entity_id": 245,
+          "entity_vector_idx": -1,
+          "link_strength": 100,
+          "type": 0
+        },
+        {
+          "entity_id": 383,
+          "entity_vector_idx": -1,
+          "link_strength": 100,
+          "type": 0
+        },
+        {
+          "entity_id": 865,
+          "entity_vector_idx": -1,
+          "link_strength": 100,
+          "type": 0
+        },
+        {
+          "assignment_id": 2,
+          "assignment_vector_idx": 2,
+          "entity_id": 383,
+          "entity_vector_idx": 383,
+          "link_strength": 100,
+          "start_year": 103,
+          "type": 10
+        },
+        {
+          "assignment_id": 7,
+          "assignment_vector_idx": 7,
+          "entity_id": 865,
+          "entity_vector_idx": 865,
+          "link_strength": 100,
+          "start_year": 104,
+          "type": 10
+        },
+        {
+          "assignment_id": 9,
+          "assignment_vector_idx": 9,
+          "entity_id": 865,
+          "entity_vector_idx": 865,
+          "link_strength": 100,
+          "start_year": 104,
+          "type": 10
+        }
+      ],
+      "old_holder_entity_links_after": [
+        {
+          "entity_id": 245,
+          "entity_vector_idx": -1,
+          "link_strength": 100,
+          "type": 0
+        },
+        {
+          "entity_id": 383,
+          "entity_vector_idx": -1,
+          "link_strength": 100,
+          "type": 0
+        },
+        {
+          "entity_id": 865,
+          "entity_vector_idx": -1,
+          "link_strength": 100,
+          "type": 0
+        },
+        {
+          "assignment_id": 7,
+          "assignment_vector_idx": 7,
+          "entity_id": 865,
+          "entity_vector_idx": 865,
+          "link_strength": 100,
+          "start_year": 104,
+          "type": 10
+        },
+        {
+          "assignment_id": 9,
+          "assignment_vector_idx": 9,
+          "entity_id": 865,
+          "entity_vector_idx": 865,
+          "link_strength": 100,
+          "start_year": 104,
+          "type": 10
+        },
+        {
+          "assignment_id": 2,
+          "end_year": 106,
+          "entity_id": 383,
+          "entity_vector_idx": -1,
+          "link_strength": 100,
+          "start_year": 103,
+          "type": 11
+        }
+      ],
+      "old_holder_unit_before": {
+        "current_job": false,
+        "flags1": 2147500033,
+        "flags2": 301989952,
+        "flags3": 8388866,
+        "id": 5813,
+        "occupations": [],
+        "profession": 17,
+        "profession2": 17,
+        "squad_id": 125,
+        "squad_position": 0
+      },
+      "old_holder_unit_after": {
+        "current_job": false,
+        "flags1": 2147500033,
+        "flags2": 301989952,
+        "flags3": 8388866,
+        "id": 5813,
+        "occupations": [],
+        "profession": 17,
+        "profession2": 17,
+        "squad_id": 125,
+        "squad_position": 0
+      },
+      "new_events": [
+        {
+          "civ": 383,
+          "histfig": 9375,
+          "id": 64037,
+          "link_type": 10,
+          "position_id": 0,
+          "seconds": 157249,
+          "type": "REMOVE_HF_ENTITY_LINK",
+          "year": 106
+        },
+        {
+          "civ": 383,
+          "histfig": 10379,
+          "id": 64038,
+          "link_type": 10,
+          "position_id": 0,
+          "seconds": 157249,
+          "type": "ADD_HF_ENTITY_LINK",
+          "year": 106
+        }
+      ],
+      "all_captured_effects_match": true,
+      "native_ui_and_gps_bytes_unchanged": true,
+      "source_preserved": true,
+      "owned_unsaved_exit": true,
+      "candidate_lookup_cache_refresh": {
+        "entity_vector_idx": [
+          -1,
+          383
+        ],
+        "assignment_vector_idx": [
+          -1,
+          2
+        ],
+        "other_captured_facts_unchanged": true
+      },
+      "omissions": [
+        "Assignment-linked military cleanup, active-job, high-priest, plotter and historical-holder variants remain.",
+        "This establishes callback semantics, not a direct replacement product action or stale-target UI behavior."
+      ]
     }
   }
 }

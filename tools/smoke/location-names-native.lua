@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='replacepriest' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -658,12 +658,14 @@ end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local original_priest_threshold=difficulty.priesthood_unit_count
-if recognition_case=='assignpriest' then
+if recognition_case=='assignpriest' or recognition_case=='replacepriest' then
  local assignment
  for _,a in ipairs(religion.positions.assignments)do if a.st_id==df.global.plotinfo.site_id then assert(not assignment);assignment=a end end
  assert(assignment and assignment.histfig>=0)
- pixel(944,358);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')
- local vacant=capture('TEMPLE-priest-vacant',temple);vacant.recognition=recognition_state()
+ if recognition_case=='assignpriest' then pixel(944,358);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')end
+ local expected_holder=assignment.histfig
+ local previous_holder=expected_holder>=0 and assert(df.historical_figure.find(expected_holder)) or nil
+ local vacant=capture(expected_holder>=0 and 'TEMPLE-priest-occupied' or 'TEMPLE-priest-vacant',temple);vacant.recognition=recognition_state()
  local function candidates(ids,rows)
   local guards={}
   for _,object in ipairs{m,g}do
@@ -678,14 +680,30 @@ if recognition_case=='assignpriest' then
   assert(code==0,text);return require('json').decode(text)
  end
  vacant.semantic_candidates=candidates();assert(vacant.semantic_candidates.valid,'religious candidates unavailable')
- assert(require('json').encode(vacant.recognition)==require('json').encode(recognition_state()),'candidate observation changed captured simulation')
+ vacant.before_candidate_observation=vacant.recognition;vacant.recognition=recognition_state()
+ local function without_lookup_indexes(value)
+  if type(value)~='table' then return value end
+  local result={};for k,v in pairs(value)do
+   if k~='entity_vector_idx' and k~='assignment_vector_idx' and k~='position_vector_idx' then result[k]=without_lookup_indexes(v)end
+  end;return result
+ end
+ assert(require('json').encode(without_lookup_indexes(vacant.before_candidate_observation))==require('json').encode(without_lookup_indexes(vacant.recognition)),'candidate observation changed captured simulation beyond lookup caches')
  vacant.invalid_candidates={}
  for i=1,4 do
   local ids={df.global.plotinfo.site_id,temple.id,religion.id,assignment.id};ids[i]=-1
   local rejected=candidates(ids);assert(not rejected.valid and #rejected.unit_ids==0)
   vacant.invalid_candidates[#vacant.invalid_candidates+1]=i
  end
- pixel(592,358)
+ local function open_picker()
+  -- Occupied native rows do not offer assignment directly. For the replacement
+  -- callback oracle, open a vacant picker then restore its old holder before
+  -- selection, modelling a target that became occupied while the picker was open.
+  local first,second=assignment.histfig,assignment.histfig2
+  if expected_holder>=0 then assignment.histfig=-1;assignment.histfig2=-1;view:render(dfhack.getTickCount())end
+  pixel(592,358)
+  assignment.histfig=first;assignment.histfig2=second
+ end
+ open_picker()
  local selector=m.unit_selector
  assert(selector.flag.VISIBILITY_ACTIVE,'religious assignment selector did not open')
  local function find_list(widget,depth)
@@ -767,7 +785,7 @@ if recognition_case=='assignpriest' then
  local function probe(object,field,value,label)
   local old=object[field];object[field]=value
   local semantic=candidates();assert(semantic.valid)
-  pixel(592,358);assert(selector.flag.VISIBILITY_ACTIVE)
+  open_picker();assert(selector.flag.VISIBILITY_ACTIVE)
   local native={};for _,entry in ipairs(assert(find_list(selector,0)).entry_list)do native[#native+1]=entry.u.id end
   assert(require('json').encode(native)==require('json').encode(semantic.unit_ids),'religious eligibility mismatch: '..label)
   local included=false;for _,id in ipairs(native)do if id==probe_unit.id then included=true end end
@@ -785,11 +803,11 @@ if recognition_case=='assignpriest' then
    probe(link,'link_strength',0,'membership-'..link.entity_id)
   end
  end
- pixel(592,358);assert(selector.flag.VISIBILITY_ACTIVE)
+ open_picker();assert(selector.flag.VISIBILITY_ACTIVE)
  local chosen=opened.selector.displayed[1]
  assert(chosen.y<15,'unexpected first row geometry')
- local function selected_state()
-  local unit=assert(df.unit.find(chosen.id));local figure=assert(df.historical_figure.find(chosen.histfig_id))
+ local function selected_state(unit_id,figure_id)
+  local unit=assert(df.unit.find(unit_id or chosen.id));local figure=assert(df.historical_figure.find(figure_id or chosen.histfig_id))
   local function values(vector)local out={};for _,v in ipairs(vector)do out[#out+1]=v end;return out end
   local function scalar_fields(object)
    local out={};for k,v in pairs(object)do if type(v)=='number' or type(v)=='boolean' then out[k]=v end end;return out
@@ -838,6 +856,7 @@ if recognition_case=='assignpriest' then
   for _,field in ipairs{'independent_actor','civilized_actor','plotter_actor','new_plotter_actor','religious_actor'}do
    state.actors[field]={};for _,n in ipairs(df.global.world.nemesis[field])do state.actors[field][#state.actors[field]+1]=n.id end
   end
+  if not unit_id and previous_holder then state.previous_holder=selected_state(previous_holder.unit_id,previous_holder.id)end
   return state
  end
  cancelled.selected=selected_state()
@@ -851,7 +870,7 @@ if recognition_case=='assignpriest' then
   local text,code=dfhack.run_command_silent('df3d','location-religious-receipt',tostring(df.global.plotinfo.site_id),tostring(temple.id),tostring(religion.id),tostring(assignment.id))
   assert(code==0,text);local receipt=require('json').decode(text);assert(receipt.valid);assign_revision=receipt.revision
   assign_semantic=function(ids,revision)
-   local args=ids or {df.global.plotinfo.site_id,temple.id,religion.id,assignment.id,chosen.id,-1}
+   local args=ids or {df.global.plotinfo.site_id,temple.id,religion.id,assignment.id,chosen.id,expected_holder}
    local strings={};for _,value in ipairs(args)do strings[#strings+1]=tostring(value)end
    strings[#strings+1]=revision or assign_revision
    local result,status=dfhack.run_command_silent('df3d','location-religious-assign',table.unpack(strings))
@@ -864,7 +883,7 @@ if recognition_case=='assignpriest' then
   end
   local before=require('json').encode(selected_state());local simulation=require('json').encode(recognition_state())
   for i=1,5 do
-   local ids={df.global.plotinfo.site_id,temple.id,religion.id,assignment.id,chosen.id,-1};ids[i]=-1
+   local ids={df.global.plotinfo.site_id,temple.id,religion.id,assignment.id,chosen.id,expected_holder};ids[i]=-1
    assert(assign_semantic(ids)==1,'invalid assignment accepted')
   end
   assert(assign_semantic(nil,'0')==1,'zero assignment revision accepted')
@@ -881,7 +900,7 @@ if recognition_case=='assignpriest' then
  assigned.selected=selected_state()
  for i=cancelled.recognition.event_count,#df.global.world.history.events-1 do
   local event=df.global.world.history.events[i];local value={id=event.id,type=df.history_event_type[event:getType()],year=event.year,seconds=event.seconds}
-  if df.history_event_add_hf_entity_linkst:is_instance(event)then for _,field in ipairs{'civ','histfig','link_type','position_id'}do value[field]=event[field]end end
+  if df.history_event_add_hf_entity_linkst:is_instance(event) or df.history_event_remove_hf_entity_linkst:is_instance(event)then for _,field in ipairs{'civ','histfig','link_type','position_id'}do value[field]=event[field]end end
   assigned.new_events[#assigned.new_events+1]=value
  end
  if assignment_expected then

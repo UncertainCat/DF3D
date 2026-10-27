@@ -3479,7 +3479,12 @@
       "reason": "Protected v24 PaintCounts protocol/controller workflow; areas_acceptance.ps1 -PaintCountsOnly on a never-saved region5 clone. Recorded native count references and paused external terrain refresh; headless, not GPU or physical-pointer acceptance."
     },
     {
-      "path": "presentations/godot/project/tests/location_quantity_live.gd",
+        "path": "presentations/godot/project/tests/location_name_live.gd",
+        "status": "manual",
+        "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -NamingOnly checks naming pages, Clear/Select, stale edits and independent native field/RNG readback; no rendered editor claim."
+      },
+      {
+        "path": "presentations/godot/project/tests/location_quantity_live.gd",
       "status": "manual",
       "reason": "Protected owned unsaved clone: tools/smoke/areas_acceptance.ps1 -QuantityOnly verifies quantity command transport, stale outcomes and independent native scalar readback; no rendered UI claim."
     },

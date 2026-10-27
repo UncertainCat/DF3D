@@ -18,6 +18,18 @@ Dictionary areaZoneDictionary(const wm::AreaZoneSettings& z) {
   out["gather_trees"]=z.gatherTrees;out["gather_shrubs"]=z.gatherShrubs;out["gather_fallen"]=z.gatherFallen;
   return out;
 }
+PackedByteArray nameBytes(const std::vector<uint8_t>& bytes) {
+  PackedByteArray out;for(auto byte:bytes)out.push_back(byte);return out;
+}
+Dictionary locationNameDictionary(const wm::LocationNameSnapshot& s) {
+  Dictionary out,value;Array words,parts;
+  out["site_id"]=s.siteId;out["id"]=s.id;out["kind"]=s.kind;out["revision"]=s.revision;
+  out["namer_id"]=s.namerId;out["namer_race"]=s.namerRace;
+  value["first_name_bytes"]=nameBytes(s.value.firstNameBytes);value["nickname_bytes"]=nameBytes(s.value.nicknameBytes);
+  for(auto word:s.value.words)words.push_back(word);for(auto part:s.value.parts)parts.push_back(part);
+  value["words"]=words;value["parts"]=parts;value["language"]=s.value.language;
+  value["type"]=s.value.type;value["has_name"]=s.value.hasName;out["value"]=value;return out;
+}
 }  // namespace
 
 void writeConstruction(Dictionary& result, const wm::ManagementState& s) {
@@ -154,6 +166,15 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
   // Preserve legacy top-level rows while the area domain carries the complete
   // operation selector and incremental-list envelope, like other new domains.
   Dictionary area;area["areas"]=areas;area["choices"]=choices;area["next_cursor"]=int64_t(s.nextCursor);area["truncated"]=s.truncated;
+  if(s.locationName)area["location_name"]=locationNameDictionary(*s.locationName);
+  if(s.locationNamePage) {
+    const auto& p=*s.locationNamePage;Dictionary page;Array rows;
+    page["snapshot"]=locationNameDictionary(p.snapshot);page["component"]=p.component;page["query_bytes"]=nameBytes(p.queryBytes);
+    page["cursor"]=int64_t(p.cursor);page["total"]=int64_t(p.total);page["next_cursor"]=int64_t(p.nextCursor);page["truncated"]=p.truncated;
+    for(const auto& c:p.choices) {Dictionary row;row["word"]=c.word;row["part"]=c.part;
+      row["english"]=String::utf8(c.english.c_str());row["translated"]=String::utf8(c.translated.c_str());rows.push_back(row);}
+    page["choices"]=rows;area["location_name_page"]=page;
+  }
   area["operation"]=int(s.operation);area["area_id"]=s.areaId;area["list_key"]=String::utf8(s.listKey.c_str());
   area["candidate_kind"]=s.candidateKind;area["sort"]=s.sort;area["sort_descending"]=s.sortDescending;
   area["interaction_id"]=s.interactionId;area["undo_token"]=s.undoToken;area["room_outcome"]=int(s.roomOutcome);
@@ -426,7 +447,18 @@ bool validateAreaShape(const Dictionary& data, String& error) {
   };
   if(!typed(data,"query_bytes",Variant::PACKED_BYTE_ARRAY) || !typed(data,"list_key",Variant::STRING) || !typed(data,"row_key",Variant::STRING) ||
       !typed(data,"category_opening",Variant::BOOL) || !typed(data,"sort_descending",Variant::BOOL) || !typed(data,"spans",Variant::ARRAY) ||
-      !typed(data,"zone_settings",Variant::DICTIONARY) || !typed(data,"paint_preview",Variant::DICTIONARY))return false;
+      !typed(data,"zone_settings",Variant::DICTIONARY) || !typed(data,"paint_preview",Variant::DICTIONARY) ||
+      !typed(data,"name_query",Variant::DICTIONARY) || !typed(data,"name_edit",Variant::DICTIONARY))return false;
+  if(data.has("name_query")) {
+    const Dictionary row=data["name_query"];
+    for(const char* key:{"component","cursor"})if(!typed(row,key,Variant::INT,true))return false;
+    if(!typed(row,"query_bytes",Variant::PACKED_BYTE_ARRAY,true))return false;
+  }
+  if(data.has("name_edit")) {
+    const Dictionary row=data["name_edit"];
+    for(const char* key:{"mode","target","displayed","word","part"})if(!typed(row,key,Variant::INT,true))return false;
+    if(!typed(row,"query_bytes",Variant::PACKED_BYTE_ARRAY,true))return false;
+  }
   if(data.has("paint_preview")) {
     const Dictionary preview=data["paint_preview"];
     for(const char* key:{"x","y","width","height"})if(!typed(preview,key,Variant::INT,true))return false;
@@ -489,7 +521,27 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   a.give = data.get("give", true);
   a.unlink = data.get("unlink", false);
   a.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
-  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationQuantity)));
+  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationNameEdit)));
+  const auto nameQueryBytes=[&](const Dictionary& row,std::vector<uint8_t>& out) {
+    const PackedByteArray bytes=row["query_bytes"];
+    if(bytes.size()>4096){valid=false;return;}
+    for(int64_t i=0;i<bytes.size();++i)out.push_back(bytes[i]);
+  };
+  if(data.has("name_query")) {
+    const Dictionary row=data["name_query"];const int64_t component=row["component"],cursor=row["cursor"];
+    if(component<0 || component>6 || cursor<0 || cursor>UINT32_MAX){error="Invalid location name query";return false;}
+    a.nameQuery.emplace();a.nameQuery->component=uint8_t(component);a.nameQuery->cursor=uint32_t(cursor);
+    nameQueryBytes(row,a.nameQuery->queryBytes);
+  }
+  if(data.has("name_edit")) {
+    const Dictionary row=data["name_edit"];
+    const int64_t mode=row["mode"],target=row["target"],displayed=row["displayed"],word=row["word"],part=row["part"];
+    if(mode<0 || mode>3 || target< -1 || target>6 || displayed< -1 || displayed>6 || word< -1 || word>INT32_MAX || part< -1 || part>8) {
+      error="Invalid location name edit";return false;
+    }
+    a.nameEdit.emplace();auto& edit=*a.nameEdit;edit.mode=wm::LocationNameMode(mode);edit.target=int8_t(target);
+    edit.displayed=int8_t(displayed);edit.word=int32_t(word);edit.part=int16_t(part);nameQueryBytes(row,edit.queryBytes);
+  }
   a.countGeneration=n("count_generation",0,0,INT64_MAX);
   a.locationSiteId=int32_t(n("location_site_id",-1,-1,INT32_MAX));
   a.occupationId=int32_t(n("occupation_id",-1,-1,INT32_MAX));

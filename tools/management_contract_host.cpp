@@ -15,6 +15,19 @@ void require(bool ok,const char* what){if(!ok)throw std::runtime_error(what);}
 // prove transport fidelity, not native effects or area-builder acceptance.
 void verifyAreaOperation(const m::AreaRequest& q) {
   const auto op=int(q.operation());
+  if(op>=28 && op<=30) {
+    require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 && q.location_id()==0,"name target");
+    require(q.expected_revision()==(op==28?0:9007199254740993ULL),"name revision");
+    if(op==29)require(q.name_query() && q.name_query()->component()==6 && q.name_query()->cursor()==37 &&
+        q.name_query()->query_bytes()->size()==2 && q.name_query()->query_bytes()->Get(1)==255,"name query bytes");
+    if(op==30) {
+      const auto* e=q.name_edit();require(e && int(e->mode())<=3,"name edit mode");
+      const bool whole=e->mode()==m::LocationNameMode::RandomWhole,select=e->mode()==m::LocationNameMode::SelectWord;
+      require(e->target()==(whole?-1:6) && e->displayed()==(whole?-1:6) && e->word()==(select?0:-1) &&
+          e->part()==(select?1:-1) && e->query_bytes()->size()==(whole?0:2),"name edit payload");
+    }
+    return;
+  }
   if(op==14 && q.candidate_kind()==3) {
     require(q.id()==7 && q.kind()==m::AreaKind::Zone && q.sort()==0 && !q.sort_descending() &&
       q.query() && q.query()->size()==0 && !q.query_bytes(),"squad symbol request");
@@ -90,6 +103,21 @@ void verifyAreaOperation(const m::AreaRequest& q) {
   }
 }
 flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBuilder& b,const m::AreaRequest& q) {
+  if(q.operation()>=m::AreaOperation::LocationNameRead && q.operation()<=m::AreaOperation::LocationNameEdit) {
+    const auto value=m::CreateLocationNameValue(b,b.CreateVector(std::vector<uint8_t>{130,255}),b.CreateVector(std::vector<uint8_t>{}),
+        b.CreateVector(std::vector<int32_t>{0,-1,-1,-1,-1,-1,-1}),b.CreateVector(std::vector<int16_t>{0,8,0,0,0,0,0}),0,28,true);
+    const auto snapshot=m::CreateLocationNameSnapshot(b,651,0,1,245,0,9007199254740993ULL,value);
+    flatbuffers::Offset<m::LocationNamePage> page;
+    if(q.operation()==m::AreaOperation::LocationNameChoices) {
+      const auto first=m::CreateLocationNameChoice(b,0,0,b.CreateString("Synthetic noun"),b.CreateString("Synthetic native"));
+      const auto second=m::CreateLocationNameChoice(b,0,1,b.CreateString("Synthetic plural"),b.CreateString("Synthetic native"));
+      page=m::CreateLocationNamePage(b,snapshot,6,b.CreateVector(std::vector<uint8_t>{130,255}),37,39,0,false,b.CreateVector(std::vector{first,second}));
+    }
+    m::AreaStateBuilder area(b);area.add_operation(q.operation());
+    if(page.o)area.add_location_name_page(page);else area.add_location_name(snapshot);
+    if(q.operation()==m::AreaOperation::LocationNameEdit)area.add_location_edit_outcome(m::LocationEditOutcome::Completed);
+    return area.Finish();
+  }
   if(q.operation()==m::AreaOperation::LocationStaffEdit || q.operation()==m::AreaOperation::LocationQuantity) {
     std::vector<flatbuffers::Offset<m::LocationSupplyQuantity>> supplies;
     for(uint8_t i=0;i<10;++i)supplies.push_back(m::CreateLocationSupplyQuantity(b,i,0,0));
@@ -739,7 +767,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);

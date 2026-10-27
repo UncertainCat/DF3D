@@ -126,6 +126,9 @@ enum AreaOperation {
 	LocationStaffEdit = 25,
 	LinkTarget = 26,
 	LocationQuantity = 27,
+	LocationNameRead = 28,
+	LocationNameChoices = 29,
+	LocationNameEdit = 30,
 }
 enum AreaRoomOutcome {
 	None = 0,
@@ -152,6 +155,12 @@ enum LocationQuantityMode {
 	Set = 0,
 	Increase = 1,
 	Decrease = 2,
+}
+enum LocationNameMode {
+	Clear = 0,
+	SelectWord = 1,
+	RandomComponent = 2,
+	RandomWhole = 3,
 }
 enum AlertOperation {
 	OpenCategory = 0,

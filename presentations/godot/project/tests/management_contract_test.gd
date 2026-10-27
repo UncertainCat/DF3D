@@ -333,6 +333,7 @@ func run() -> void:
 	await test_agreements()
 	await test_work_detail_edits()
 	await test_area_operations()
+	await test_location_names()
 	assert(Contract.is_mutation(A.DismissAlert) and not Contract.is_mutation(A.PrepareAlertDismissal))
 	for request in [{"action":A.DismissAlert},{"action":A.DismissAlert,"expected_list_revision":0},
 		{"action":A.PrepareAlertDismissal,"expected_list_revision":1},
@@ -630,6 +631,45 @@ func agreement_row(id: int, inspect: bool) -> Dictionary:
 		"parties":[{"id":0,"name":"Urist Lorbamoth" if partial else "The Bejeweled Creed" if temple else "The Whiskered Guild",
 			"entity_ids":[] if partial else [2210] if temple else [780],"histfig_ids":[5120] if partial else []},
 			{"id":1,"name":"The Iron Realm","entity_ids":[483],"histfig_ids":[]}]}
+
+func test_location_names() -> void:
+	var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.LocationNameRead,
+		"location_site_id":651,"location_id":0}
+	for key in ["location_site_id","location_id"]:
+		var invalid := request.duplicate(true);invalid.erase(key)
+		assert(world.area_request(invalid)==0)
+	var sequence: int=world.area_request(request);assert(sequence>0)
+	var state: Dictionary=await receipt(sequence)
+	var snapshot: Dictionary=state.area.location_name
+	assert(snapshot.revision==9007199254740993 and snapshot.site_id==651 and snapshot.id==0)
+	assert(snapshot.value.first_name_bytes==PackedByteArray([130,255]))
+	assert(snapshot.value.words==[0,-1,-1,-1,-1,-1,-1] and snapshot.value.parts==[0,8,0,0,0,0,0])
+	request.operation=Contract.AreaOperation.LocationNameChoices;request.expected_revision=snapshot.revision
+	request.name_query={"component":6,"cursor":37,"query_bytes":PackedByteArray([130,255])}
+	for pair in [["component",7],["component",1.5],["cursor",-1],["cursor",4294967296],["query_bytes",[]]]:
+		var invalid := request.duplicate(true);invalid.name_query[pair[0]]=pair[1]
+		assert(world.area_request(invalid)==0)
+	sequence=world.area_request(request);assert(sequence>0)
+	state=await receipt(sequence)
+	var page: Dictionary=state.area.location_name_page
+	assert(page.snapshot==snapshot and page.cursor==37 and page.total==39 and page.next_cursor==0 and not page.truncated)
+	assert(page.component==6 and page.query_bytes==PackedByteArray([130,255]))
+	assert(page.choices==[{"word":0,"part":0,"english":"Synthetic noun","translated":"Synthetic native"},
+		{"word":0,"part":1,"english":"Synthetic plural","translated":"Synthetic native"}])
+	request.erase("name_query");request.action=A.AreaUpdate;request.operation=Contract.AreaOperation.LocationNameEdit
+	for mode in 4:
+		request.name_edit={"mode":mode,"target":-1 if mode==3 else 6,"displayed":-1 if mode==3 else 6,
+			"word":0 if mode==1 else -1,"part":1 if mode==1 else -1,
+			"query_bytes":PackedByteArray() if mode==3 else PackedByteArray([130,255])}
+		for key in ["mode","target","displayed","word","part","query_bytes"]:
+			var invalid := request.duplicate(true);invalid.name_edit.erase(key)
+			assert(world.area_request(invalid)==0)
+		for pair in [["mode",4],["mode",false],["target",128],["word",2147483648],["part",9],["query_bytes",[]]]:
+			var invalid := request.duplicate(true);invalid.name_edit[pair[0]]=pair[1]
+			assert(world.area_request(invalid)==0)
+		sequence=world.area_request(request);assert(sequence>0)
+		state=await receipt(sequence)
+		assert(state.area.location_name==snapshot and state.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)
 
 func test_area_operations() -> void:
 	# Codec boundary fixtures; these do not establish native mutation effects.

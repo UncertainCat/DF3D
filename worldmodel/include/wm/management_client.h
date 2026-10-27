@@ -54,6 +54,12 @@ struct AreaZoneSettings {
   friend bool operator==(const AreaZoneSettings&,const AreaZoneSettings&)=default;
 };
 struct AreaPaintPreview { int16_t x=0,y=0; uint16_t width=0,height=0; };
+struct LocationNameQuery { uint8_t component=0; std::vector<uint8_t> queryBytes; uint32_t cursor=0; };
+struct LocationNameEdit {
+  LocationNameMode mode=LocationNameMode::Clear;
+  int8_t target=-1,displayed=-1; int32_t word=-1;int16_t part=-1;
+  std::vector<uint8_t> queryBytes;
+};
 struct AreaRequest {
   AreaKind kind = AreaKind::Stockpile;
   int32_t id=-1,x=0,y=0,z=0;
@@ -83,6 +89,8 @@ struct AreaRequest {
   int8_t quantityId=-1;
   LocationQuantityMode quantityMode=LocationQuantityMode::Set;
   int32_t quantityValue=0;
+  std::optional<LocationNameQuery> nameQuery;
+  std::optional<LocationNameEdit> nameEdit;
   bool categoryOpening=false;
   std::optional<std::vector<uint8_t>> queryBytes;
   uint16_t candidateLimit=0;
@@ -176,7 +184,24 @@ struct LocationDetails {
   std::optional<LocationStaffSnapshot> staff;
   std::optional<LocationAffiliation> affiliation;
 };
+struct LocationNameValue {
+  std::vector<uint8_t> firstNameBytes,nicknameBytes;
+  std::vector<int32_t> words;std::vector<int16_t> parts;
+  int32_t language=-1;int16_t type=-1;bool hasName=false;
+};
+struct LocationNameSnapshot {
+  int32_t siteId=-1,id=-1,namerId=-1;int16_t namerRace=-1;uint8_t kind=0;
+  int64_t revision=0;LocationNameValue value;
+};
+struct LocationNameChoice { int32_t word=-1;int16_t part=-1;std::string english,translated; };
+struct LocationNamePage {
+  LocationNameSnapshot snapshot;uint8_t component=0;std::vector<uint8_t> queryBytes;
+  uint32_t cursor=0,total=0,nextCursor=0;bool truncated=false;
+  std::vector<LocationNameChoice> choices;
+};
 struct AreaState {
+  std::optional<LocationNameSnapshot> locationName;
+  std::optional<LocationNamePage> locationNamePage;
   LocationEntryOutcome locationEntryOutcome=LocationEntryOutcome::None;
   LocationEditOutcome locationEditOutcome=LocationEditOutcome::None;
   std::optional<LocationDetails> locationDetails;

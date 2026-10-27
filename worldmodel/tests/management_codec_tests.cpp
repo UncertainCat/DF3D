@@ -9,6 +9,62 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Location naming requests retain bytes and canonical revisions with strict field ownership") {
+  for(int mode=0;mode<4;++mode)for(int variant=0;variant<7;++variant) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::AreaUpdate;
+    auto& a=r.area;a.kind=wm::AreaKind::Zone;a.operation=wm::AreaOperation::LocationNameEdit;
+    a.locationSiteId=651;a.locationId=1;a.expectedRevision=9007199254740993LL;
+    a.nameEdit.emplace();auto& e=*a.nameEdit;e.mode=wm::LocationNameMode(mode);
+    if(mode!=3){e.target=0;e.displayed=0;e.queryBytes={0x82,0xff};}
+    if(mode==1){e.word=0;e.part=2;}
+    if(variant==1)a.expectedRevision=0;
+    if(variant==2)a.locationId=-1;
+    if(variant==3)a.id=23;
+    if(variant==4)r.action=wm::ManagementAction::AreaInspect;
+    if(variant==5)a.nameQuery.emplace();
+    if(variant==6)e.mode=wm::LocationNameMode(4);
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* q=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(mode);CAPTURE(variant);CHECK(bool(wire::validateConstructionRequest(*q))==(variant!=0));
+    if(!variant) {
+      CHECK(q->area()->expected_revision()==9007199254740993ULL);
+      CHECK(int(q->area()->name_edit()->mode())==mode);
+      if(mode!=3)CHECK(q->area()->name_edit()->query_bytes()->Get(1)==0xff);
+    }
+  }
+  for(bool choices:{false,true}) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::AreaInspect;
+    auto& a=r.area;a.kind=wm::AreaKind::Zone;a.locationSiteId=651;a.locationId=1;
+    a.operation=choices?wm::AreaOperation::LocationNameChoices:wm::AreaOperation::LocationNameRead;
+    if(choices){a.expectedRevision=17;a.nameQuery.emplace();a.nameQuery->component=6;a.nameQuery->cursor=37;}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* q=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK_FALSE(wire::validateConstructionRequest(*q));
+    if(choices)CHECK(q->area()->name_query()->cursor()==37);
+  }
+}
+
+TEST_CASE("Location naming replies decode exact structured names and ordered forms") {
+  flatbuffers::FlatBufferBuilder b;
+  auto v=wire::CreateLocationNameValue(b,b.CreateVector(std::vector<uint8_t>{0x82,0xff}),
+      b.CreateVector(std::vector<uint8_t>{}),b.CreateVector(std::vector<int32_t>(7,-1)),
+      b.CreateVector(std::vector<int16_t>(7,8)),-1,-1,true);
+  auto s=wire::CreateLocationNameSnapshot(b,651,1,1,245,0,9007199254740993ULL,v);
+  std::vector<flatbuffers::Offset<wire::LocationNameChoice>> choices;
+  choices.push_back(wire::CreateLocationNameChoice(b,0,0,b.CreateString("abbey"),b.CreateString("kulet")));
+  choices.push_back(wire::CreateLocationNameChoice(b,0,1,b.CreateString("abbeys"),b.CreateString("kulet")));
+  auto p=wire::CreateLocationNamePage(b,s,6,b.CreateVector(std::vector<uint8_t>{0x82}),0,2,0,false,b.CreateVector(choices));
+  wire::AreaStateBuilder a(b);a.add_operation(wire::AreaOperation::LocationNameChoices);a.add_location_name_page(p);b.Finish(a.Finish());
+  const auto* encoded=flatbuffers::GetRoot<wire::AreaState>(b.GetBufferPointer());
+  CHECK_FALSE(wire::validateLocationNamePage(*encoded->location_name_page()));
+  auto decoded=codec::decodeArea(encoded);REQUIRE(decoded.locationNamePage);
+  CHECK(decoded.locationNamePage->snapshot.revision==9007199254740993LL);
+  CHECK(decoded.locationNamePage->snapshot.value.firstNameBytes==std::vector<uint8_t>{0x82,0xff});
+  REQUIRE(decoded.locationNamePage->choices.size()==2);
+  CHECK(decoded.locationNamePage->choices[0].part==0);CHECK(decoded.locationNamePage->choices[1].part==1);
+  CHECK(decoded.locationNamePage->choices[1].translated=="kulet");
+}
+
 TEST_CASE("filtered settings counts preserve unknown legacy data and reject inconsistent pages") {
   for(int count:{-2,-1,0,1,128,300,301}) {
     flatbuffers::FlatBufferBuilder b;

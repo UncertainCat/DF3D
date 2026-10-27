@@ -284,7 +284,26 @@ struct NativeAnimalDisplay { uint16_t columns=27; std::string firstLine,secondLi
 struct NativeAnimalContainer { df3d_area::ZoneAnimalContainer facts; ResidentAppearanceRecipe occupant; };
 struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; m::AreaCandidateEntity entity=m::AreaCandidateEntity::Unknown; std::optional<NativeAnimalDisplay> animalDisplay; std::optional<df3d_area::ZoneAnimalStatus> animalStatus; std::optional<NativeAnimalContainer> animalContainer; std::optional<df3d_area::ZoneAnimalRestraint> animalRestraint; std::optional<std::array<uint8_t,3>> animalItemColor; std::optional<std::array<uint8_t,7>> squadSymbol; };
 struct NativeAreaLink { int32_t id=-1; uint8_t kind=0,direction=0; std::string name; };
+struct NativeLocationNamePage {
+  df3d_area::LocationNameSnapshot snapshot;uint8_t component=0;std::string query;
+  uint32_t cursor=0,total=0,next=0;bool truncated=false;
+  std::vector<df3d_area::LocationNameWord> choices;
+};
+flatbuffers::Offset<m::LocationNameSnapshot> buildLocationName(flatbuffers::FlatBufferBuilder& b,const df3d_area::LocationNameSnapshot& s) {
+  const auto& n=s.name;
+  const auto value=m::CreateLocationNameValue(b,
+      b.CreateVector(reinterpret_cast<const uint8_t*>(n.firstNameCp437.data()),n.firstNameCp437.size()),
+      b.CreateVector(reinterpret_cast<const uint8_t*>(n.nicknameCp437.data()),n.nicknameCp437.size()),
+      b.CreateVector(n.words.data(),n.words.size()),b.CreateVector(n.parts.data(),n.parts.size()),n.language,n.type,n.hasName);
+  return m::CreateLocationNameSnapshot(b,s.siteId,s.id,s.kind,s.namerId,s.namerRace,df3d_area::locationNameRevision(s),value);
+}
+bool publishableLocationName(const df3d_area::LocationNameSnapshot& s) {
+  flatbuffers::FlatBufferBuilder b;b.Finish(buildLocationName(b,s));
+  return !m::validateLocationNameSnapshot(*flatbuffers::GetRoot<m::LocationNameSnapshot>(b.GetBufferPointer()));
+}
 struct NativeAreaPage {
+  std::optional<df3d_area::LocationNameSnapshot> locationName;
+  std::optional<NativeLocationNamePage> locationNamePage;
   m::LocationEntryOutcome locationEntryOutcome=m::LocationEntryOutcome::None;
   m::LocationEditOutcome locationEditOutcome=m::LocationEditOutcome::None;
   std::optional<df3d_area::LocationDetailsCore> locationDetails;
@@ -479,6 +498,16 @@ void publish() {
       staffCandidates=0;status=m::ManagementStatus::Rejected;
     }
   }
+  flatbuffers::Offset<m::LocationNameSnapshot> locationName;
+  flatbuffers::Offset<m::LocationNamePage> locationNamePage;
+  if(areaPage.locationName)locationName=buildLocationName(b,*areaPage.locationName);
+  if(areaPage.locationNamePage) {
+    const auto& p=*areaPage.locationNamePage;auto snapshot=buildLocationName(b,p.snapshot);
+    std::vector<flatbuffers::Offset<m::LocationNameChoice>> rows;
+    for(const auto& c:p.choices)rows.push_back(m::CreateLocationNameChoice(b,c.word,int16_t(c.partOfSpeech),b.CreateString(c.english),b.CreateString(c.translated)));
+    locationNamePage=m::CreateLocationNamePage(b,snapshot,p.component,b.CreateVector(reinterpret_cast<const uint8_t*>(p.query.data()),p.query.size()),
+        p.cursor,p.total,p.next,p.truncated,b.CreateVector(rows));
+  }
   auto areaResult=m::CreateAreaState(b,b.CreateVector(as),b.CreateVector(ac),areaCursor,areaTruncated,
       areaPage.operation,areaPage.id,b.CreateString(areaPage.listKey),areaPage.candidateKind,areaPage.sort,areaPage.sortDescending,
       b.CreateString(areaPage.query),b.CreateVector(settings),b.CreateVector(locations),b.CreateVector(candidates),b.CreateVector(links),
@@ -486,7 +515,7 @@ void publish() {
       areaPage.interactionId,areaPage.undoToken,areaPage.roomOutcome,areaPage.roomsCreated,
       areaPage.roomsInUse,areaPage.roomsUnenclosed,areaPage.roomsRemoved,areaPage.roomsDormitories,
       areaPage.countGeneration,areaPage.paintedCount,areaPage.previewCount,locationCatalog,locationDetails,areaPage.locationEntryOutcome,areaPage.locationEditOutcome,staffCandidates,areaPage.settingsCount,
-      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{});
+      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{},locationName,locationNamePage);
   auto reqs=[&](const std::vector<ProductionRequirement>& values){
     std::vector<flatbuffers::Offset<m::ProductionRequirement>> out;
     for(const auto& v:values) out.push_back(m::CreateProductionRequirement(b,b.CreateString(v.description),v.quantity,v.itemType));
@@ -2229,6 +2258,49 @@ void runPaintCounts(const m::AreaRequest& a) {
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->area() && r->area()->operation()>=m::AreaOperation::LocationNameRead && r->area()->operation()<=m::AreaOperation::LocationNameEdit) {
+    const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;
+    auto snapshot=df3d_area::observeNativeLocationName(a.location_site_id(),a.location_id());
+    if(snapshot && !publishableLocationName(*snapshot))snapshot.reset();
+    const bool edit=a.operation()==m::AreaOperation::LocationNameEdit;
+    if(edit)areaPage.locationEditOutcome=m::LocationEditOutcome::Rejected;
+    if(snapshot && a.operation()!=m::AreaOperation::LocationNameRead && df3d_area::locationNameRevision(*snapshot)!=a.expected_revision()) {
+      if(edit)areaPage.locationEditOutcome=m::LocationEditOutcome::Stale;
+      snapshot.reset();
+    }
+    if(snapshot && edit) {
+      const auto& e=*a.name_edit();const std::string query(e.query_bytes()->begin(),e.query_bytes()->end());
+      mutated=true;areaPage.locationEditOutcome=m::LocationEditOutcome::Unknown;
+      try {
+        const auto result=df3d_area::editNativeLocationName(a.location_site_id(),a.location_id(),a.expected_revision(),
+            static_cast<df3d_area::LocationNameEdit>(e.mode()),e.target(),e.displayed(),e.word(),e.part(),query);
+        if(result==df3d_area::LocationAccessOutcome::Completed) {
+          snapshot=df3d_area::observeNativeLocationName(a.location_site_id(),a.location_id());
+          if(snapshot && publishableLocationName(*snapshot))areaPage.locationEditOutcome=m::LocationEditOutcome::Completed;
+          else snapshot.reset();
+        } else {
+          mutated=false;snapshot.reset();areaPage.locationEditOutcome=result==df3d_area::LocationAccessOutcome::Stale?m::LocationEditOutcome::Stale:m::LocationEditOutcome::Rejected;
+        }
+      } catch(...) {snapshot.reset();}
+    }
+    if(snapshot && a.operation()==m::AreaOperation::LocationNameChoices) {
+      const auto& q=*a.name_query();const std::string query(q.query_bytes()->begin(),q.query_bytes()->end());
+      auto choices=df3d_area::observeNativeLocationNameWords(q.component(),query,snapshot->name.language);
+      if(choices && choices->size()<=UINT32_MAX && q.cursor()<=choices->size()) {
+        NativeLocationNamePage page;page.snapshot=*snapshot;page.component=q.component();page.query=query;
+        page.cursor=q.cursor();page.total=uint32_t(choices->size());
+        uint64_t bytes=512+query.size()+snapshot->name.firstNameCp437.size()+snapshot->name.nicknameCp437.size();
+        for(size_t i=q.cursor();i<choices->size() && page.choices.size()<m::kLocationNamePageRows;++i) {
+          const auto size=64+(*choices)[i].english.size()+(*choices)[i].translated.size();
+          if(bytes+size>m::kLocationNamePageBytes)break;
+          bytes+=size;page.choices.push_back(std::move((*choices)[i]));
+        }
+        const auto end=uint32_t(page.cursor+page.choices.size());page.truncated=end<page.total;page.next=page.truncated?end:0;
+        if(!page.truncated || !page.choices.empty()){areaPage.locationNamePage=std::move(page);status=m::ManagementStatus::Ok;}
+      }
+    } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::WorldHover) {
     worldHoverTile=*r->origin();
     worldHover=df3d_hover::collect(r->origin()->x(),r->origin()->y(),r->origin()->z());

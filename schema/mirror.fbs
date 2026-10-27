@@ -1179,7 +1179,8 @@ table SessionCommand {
 // Bounded fortress management channel; independently versioned from map snapshots.
 enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
-enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity }
+enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity, LocationNameRead, LocationNameChoices, LocationNameEdit }
+enum LocationNameMode : uint8 { Clear, SelectWord, RandomComponent, RandomWhole }
 enum LocationQuantityMode : uint8 { Set, Increase, Decrease }
 enum LocationEntryOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
 enum LocationEditOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
@@ -1292,6 +1293,8 @@ table AreaRequest {
   quantity_id:int8 = -1;
   quantity_mode:LocationQuantityMode;
   quantity_value:int32;
+  name_query:LocationNameQuery;
+  name_edit:LocationNameEdit;
 }
 table AreaInfo {
   id:int32;
@@ -1385,8 +1388,14 @@ table LocationDetails {
   staff:LocationStaffSnapshot;
   affiliation:LocationAffiliation; // Absent in legacy records; not an empty affiliation.
 }
-// Naming payload definitions are staged independently of the active v70
-// request/reply envelope. Wiring them requires a coordinated protocol migration.
+// v71 naming intents use the canonical name revision, not Details revision.
+table LocationNameQuery { component:uint8; query_bytes:[uint8]; cursor:uint32; }
+table LocationNameEdit {
+  mode:LocationNameMode;
+  target:int8 = -1; displayed:int8 = -1;
+  word:int32 = -1; part:int16 = -1;
+  query_bytes:[uint8];
+}
 table LocationNameValue {
   first_name_bytes:[uint8]; nickname_bytes:[uint8]; // Exact native CP437, not UTF-8.
   words:[int32]; parts:[int16]; // Exactly seven, including unused components.
@@ -1445,6 +1454,8 @@ table AreaState {
   location_staff_candidates:LocationStaffCandidates;
   settings_count:int32 = -1; // Complete filtered SettingsPage count; -1 unknown in legacy records.
   query_bytes:[uint8]; // Optional exact owner query echo, including partial UTF-8.
+  location_name:LocationNameSnapshot;
+  location_name_page:LocationNamePage;
 }
 // Production recipes are opaque semantic keys revalidated against the selected building.
 table ProductionRequest {
@@ -1758,7 +1769,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 70;
+  schema_version:uint32 = 71;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1804,7 +1815,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 70;
+  schema_version:uint32 = 71;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

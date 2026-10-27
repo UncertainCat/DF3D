@@ -10,6 +10,25 @@ namespace df3d::mirror {
 inline constexpr uint32_t kLocationNameBytes=4096;
 inline constexpr uint32_t kLocationNamePageRows=128;
 inline constexpr uint32_t kLocationNamePageBytes=64*1024;
+inline std::optional<std::string> validateLocationNameQuery(const LocationNameQuery& q) {
+  if(q.component()>6 || !q.query_bytes() || q.query_bytes()->size()>kLocationNameBytes)
+    return "invalid location name query";
+  return std::nullopt;
+}
+inline std::optional<std::string> validateLocationNameEdit(const LocationNameEdit& e) {
+  if(e.mode()>LocationNameMode::RandomWhole || !e.query_bytes() || e.query_bytes()->size()>kLocationNameBytes)
+    return "invalid location name edit";
+  if(e.mode()==LocationNameMode::RandomWhole) {
+    if(e.target()!=-1 || e.displayed()!=-1 || e.word()!=-1 || e.part()!=-1 || e.query_bytes()->size())
+      return "unrelated whole-name fields";
+  } else {
+    if(e.target()<0 || e.target()>6 || e.displayed()<0 || e.displayed()>6)return "invalid name component";
+    if(e.mode()==LocationNameMode::SelectWord ?
+        (e.target()!=e.displayed() || e.word()<0 || e.part()<0 || e.part()>8) : (e.word()!=-1 || e.part()!=-1))
+      return "invalid name choice fields";
+  }
+  return std::nullopt;
+}
 inline std::optional<std::string> validateLocationNameSnapshot(const LocationNameSnapshot& s) {
   if(s.site_id()<0 || s.id()<0 || s.kind()<1 || s.kind()>5 || s.namer_id()<0 || s.namer_race()<-1 ||
       !s.revision() || s.revision()>INT64_MAX || !s.value())return "invalid location name identity";

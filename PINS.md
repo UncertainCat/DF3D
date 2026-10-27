@@ -33,6 +33,13 @@ the original fortress name, rank and capital status from session11. Rebuild/rein
 region rejects older peers. Missing old identity facts must remain unavailable,
 not be inferred from the translated name. Snapshot/grid versions are unchanged.
 
+Management protocol **71** adds structured Location naming reads, native choice
+pages and revision-bound edits. Bridge and viewer must move together to
+`Local\\df3d_management_v71`; v70 peers remain isolated. CP437 names/filter bytes
+and native word/grammar identity are explicit; old recordings cannot infer these
+from translated display names. Snapshot/grid/session versions remain unchanged.
+The v71 integration is in progress and is not a release acceptance claim.
+
 Management protocol **70** adds revision-bound Location quantity intents:
 Set, Increase and Decrease for supplies and library copies. Rebuild/install
 bridge and viewer together for `Local\\df3d_management_v70`; older peers cannot

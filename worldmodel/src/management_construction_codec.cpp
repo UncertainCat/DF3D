@@ -74,6 +74,23 @@ void decodeConstruction(const m::ManagementState* s, ManagementState& next) {
 
 AreaState decodeArea(const m::AreaState* a) {
   AreaState out;
+  const auto nameSnapshot=[](const m::LocationNameSnapshot& s) {
+    LocationNameSnapshot n;n.siteId=s.site_id();n.id=s.id();n.kind=s.kind();n.namerId=s.namer_id();
+    n.namerRace=s.namer_race();n.revision=int64_t(s.revision());
+    const auto& v=*s.value();auto& value=n.value;
+    value.firstNameBytes.assign(v.first_name_bytes()->begin(),v.first_name_bytes()->end());
+    value.nicknameBytes.assign(v.nickname_bytes()->begin(),v.nickname_bytes()->end());
+    value.words.assign(v.words()->begin(),v.words()->end());value.parts.assign(v.parts()->begin(),v.parts()->end());
+    value.language=v.language();value.type=v.type();value.hasName=v.has_name();return n;
+  };
+  if(a && a->location_name())out.locationName=nameSnapshot(*a->location_name());
+  if(a && a->location_name_page()) {
+    const auto& p=*a->location_name_page();LocationNamePage n;n.snapshot=nameSnapshot(*p.snapshot());
+    n.component=p.component();n.queryBytes.assign(p.query_bytes()->begin(),p.query_bytes()->end());
+    n.cursor=p.cursor();n.total=p.total();n.nextCursor=p.next_cursor();n.truncated=p.truncated();
+    for(const auto* c:*p.choices())n.choices.push_back({c->word(),c->part(),c->english()->str(),c->translated()->str()});
+    out.locationNamePage=std::move(n);
+  }
   if (!a)
     return out;
   const auto text=[](const flatbuffers::String* v){return v ? v->str() : std::string{};};
@@ -240,7 +257,16 @@ flatbuffers::Offset<m::AreaRequest> encodeArea(flatbuffers::FlatBufferBuilder& b
     preview=m::CreateAreaPaintPreview(b,p.x,p.y,p.width,p.height);
   }
   const auto queryBytes=a.queryBytes?b.CreateVector(*a.queryBytes):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{};
+  flatbuffers::Offset<m::LocationNameQuery> nameQuery;
+  flatbuffers::Offset<m::LocationNameEdit> nameEdit;
+  if(a.nameQuery) {
+    const auto& q=*a.nameQuery;nameQuery=m::CreateLocationNameQuery(b,q.component,b.CreateVector(q.queryBytes),q.cursor);
+  }
+  if(a.nameEdit) {
+    const auto& e=*a.nameEdit;nameEdit=m::CreateLocationNameEdit(b,m::LocationNameMode(e.mode),e.target,e.displayed,e.word,e.part,b.CreateVector(e.queryBytes));
+  }
   m::AreaRequestBuilder r(b);
+  r.add_name_query(nameQuery);r.add_name_edit(nameEdit);
   r.add_kind(m::AreaKind(a.kind));r.add_id(a.id);
   if(a.operation==AreaOperation::None || a.operation==AreaOperation::MultiCreate || a.operation==AreaOperation::LinkTarget)r.add_origin(&ap);
   r.add_width(a.width);r.add_height(a.height);r.add_zone_type(a.zoneType);

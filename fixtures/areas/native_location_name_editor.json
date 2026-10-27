@@ -7472,5 +7472,36 @@
       }
     ],
     "scope": "31 mutations and31 stale-revision rejections verified against native name fields and RNG.20 invalid parameter/identity/eligibility cases reject without name/RNG effects. UI/GPS unchanged. Diagnostic restores controlled name/RNG only to compare native button effect. Typed transport/lifecycle coverage remains."
+  },
+  "typed_transport_reference": {
+    "protocol": 71,
+    "run": "build/areas-acceptance-20261026-222623",
+    "status": "passed",
+    "locations": 6,
+    "choice_lists": 19,
+    "ordered_forms": 18024,
+    "clear_select_writes": 38,
+    "random_writes": 12,
+    "unchanged_name_rng_checks": 99,
+    "source_and_clone_unchanged": true,
+    "owned_process_exited_without_save": true,
+    "diagnostics": {
+      "known_engine": [],
+      "unclassified": []
+    },
+    "binary_sha256": "52B36F471F0922849798EB931F79D1116ACFEC43C14E52BBB0D186C5B27E31F9",
+    "scope": "Typed reads, bounded complete pages, four edit modes, stale revisions and invalid targets; direct native field/RNG readback. Full choice ordering relies on the independently verified native provider above. Exact Random native-button/RNG parity is established by the separate native reference, not this lane.",
+    "omissions": [
+      "rendered naming editor",
+      "naming owner disconnect/reconnect/epoch lifecycle",
+      "native empty-list Random behavior",
+      "physical Escape and scrolling"
+    ],
+    "evidence_sha256": {
+      "naming-evidence.json": "979a839c8750b6823d4ff536270748c4fc173aefc8185bfa9175550ff3c8ec79",
+      "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe"
+    }
   }
 }

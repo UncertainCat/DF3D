@@ -255,15 +255,15 @@ fixture name/RNG only for independent native comparison. Twenty invalid identity
 parameter and eligibility cases reject without name/RNG effects, including
 filtered-out selection and empty random pools. Rejecting an empty pool is a
 bridge guard; native empty-list button behavior remains unverified. Typed
-transport and session/epoch ownership remain unfinished.
+transport is covered below; naming-owner session/epoch lifecycle remains unfinished.
 Random with an empty list, scrolling, physical Escape,
-typed mutation transport and the rendered three-column editor remain
+the rendered three-column editor remain
 unfinished. DFHack Translation::generateName reconstructs the algorithm and is
 not used as a substitute for calling DF.
 
-The schema now defines staged `LocationNameValue`, `LocationNameSnapshot`,
-`LocationNameChoice` and `LocationNamePage` payloads. They are not yet fields of
-the active request/reply envelope and do not change management70 interoperability.
+The management71 migration connects `LocationNameValue`, `LocationNameSnapshot`,
+`LocationNameChoice` and `LocationNamePage` to read, choice-page and edit operations.
+Bridge and viewer must move together; the v71 shared-memory region isolates v70.
 `location_name_util.h` validates exact seven-element word/grammar arrays,
 independent has-name/type fields, current identity receipts and page progress.
 Name strings and filter queries are explicit CP437 bytes; display forms are full
@@ -272,10 +272,20 @@ bytes per name string/query,128 rows and64KiB per choice-page payload; these are
 storage bounds, never truncation or native eligibility rules. Duplicate word IDs
 with different parts remain separate ordered choices. Schema tests cover opaque
 high bytes, unused-component grammar, invalid identity/shape and malformed pages.
-Request operations, model/extension codecs, session ownership and the coordinated
-protocol-version migration remain to be connected before product use. The full
-core gate passes19/19 in `build/qa/location-name-contract`; no runtime bridge or
-viewer binary changed for these unreferenced schema definitions.
+The transport is implemented but is not rendered-editor release acceptance. Model/extension
+codecs preserve byte queries and integer receipts; edits carry explicit modes
+and native word/grammar identities. `build/qa/location-name-v71-adapter` passes
+all19 CTest suites and the Godot dictionary/wire contract, including opaque bytes,
+exact integer receipts, ordered grammatical forms and all four edit modes.
+Protected `build/areas-acceptance-20261026-222623` passes six locations,19 complete
+choice lists/18,024 forms,38 Clear/Select writes,12 Random writes and99 unchanged
+name/RNG checks. It checks stale revisions and invalid targets, direct native
+field readback and component Random eligibility. Exact Random-button parity is
+the separate controlled native evidence above. The owned process exited without
+saving; source/clone manifests stayed unchanged and diagnostics were empty.
+`areas_acceptance.ps1 -NamingOnly` reproduces this transport scope. Naming-owner
+disconnect/reconnect/epoch lifecycle and rendered editor acceptance remain required
+before product exposure; the hidden editor is still unfinished.
 
 ## Native squad assignment reference
 

@@ -81,6 +81,8 @@ struct LocationNameSnapshot {
   LocationNameValue name;
 };
 std::optional<LocationNameSnapshot> observeNativeLocationName(int32_t siteId,int32_t id);
+struct LocationNameText { std::string native,english; };
+std::optional<LocationNameText> formatNativeLocationName(const LocationNameValue& name);
 // A separate receipt: translated display text cannot identify all native edits.
 // Transport session/epoch validation remains the command owner's responsibility.
 inline uint64_t locationNameRevision(const LocationNameSnapshot& v) {

@@ -66,6 +66,17 @@ local function capture(label,location)
    assert(code==0,text);local value=require('json').decode(text);assert(value.valid and value.revision,'name read failed');return value
   end
   local observed_name=read_name();local repeated_name=read_name()
+  assert(observed_name.header_valid,'native header formatter unavailable')
+  local headers={native=observed_name.native_header,english=observed_name.english_header,matched=0}
+  for _,entry in ipairs{{observed_name.native_header,7},{'"'..observed_name.english_header..'"',8}}do
+   local expected=dfhack.utf2df(entry[1]);local chars={}
+   for x=0,g.dimx-1 do chars[#chars+1]=string.char(dfhack.screen.readTile(x,entry[2]).ch&255)end
+   if #expected<=75 then
+    assert(table.concat(chars):find(expected,1,true),'native header text differs from drawn row')
+    headers.matched=headers.matched+1
+   end
+  end
+  row.bridge_headers=headers
   assert(require('json').encode(observed_name.name)==require('json').encode(row.name_value),'structured name differs')
   assert(observed_name.revision==repeated_name.revision,'unchanged name revision unstable')
   assert(observed_name.namer_id==df.global.plotinfo.civ_id,'name receipt uses wrong entity')

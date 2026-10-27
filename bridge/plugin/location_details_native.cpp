@@ -140,6 +140,44 @@ std::optional<LocationNameSnapshot> observeNativeLocationName(int32_t siteId,int
   value.namerId=entity->id;value.namerRace=entity->race;value.name=copyLocationName(*(*found)->getName());
   return value;
 }
+std::optional<LocationNameText> formatNativeLocationName(const LocationNameValue& value) {
+  if(!df::global::world || !DFHack::Maps::IsValid() || !locationRefreshFunction())return std::nullopt;
+  static const bool compatible=[] {
+    auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t count) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0xa94030,0x6a1)==UINT64_C(0xd81db68b3c9b33d2) &&
+        hash(0xa946e0,0x7c2)==UINT64_C(0xdbc3db5f052419ee) &&
+        hash(0x52d3c0,0x288)==UINT64_C(0x6e1fbc2416fba9fc) &&
+        hash(0xd2cb50,0xf0)==UINT64_C(0xf7ab8eceaadda09f);
+  }();
+  if(!compatible)return std::nullopt;
+  const auto& words=df::global::world->raws.language.words;
+  const auto& translations=df::global::world->raws.language.translations;
+  if(value.language< -1 || (value.language>=0 && (size_t(value.language)>=translations.size() || !translations[value.language])))return std::nullopt;
+  for(size_t i=0;i<7;++i) {
+    if(value.words[i]< -1 || value.parts[i]<0 || value.parts[i]>8)return std::nullopt;
+    if(value.words[i]>=0 && (size_t(value.words[i])>=words.size() || !words[value.words[i]]))return std::nullopt;
+  }
+  df::language_name name;
+  name.first_name=value.firstNameCp437;name.nickname=value.nicknameCp437;name.words=value.words;
+  for(size_t i=0;i<7;++i)name.parts_of_speech[i]=static_cast<df::part_of_speech>(value.parts[i]);
+  name.language=value.language;name.type=static_cast<df::language_name_type>(value.type);name.has_name=value.hasName;
+  static_assert(sizeof(df::language_name)==0x78);
+  // Native editor draw1fcce7/1fcd85 uses these semantic formatters. Both write
+  // owned output strings; they read raw language data and nickname settings.
+  // Capitalization52d3c0 edits only supplied temporary strings. No UI scratch,
+  // RNG, authoritative-name writes, or DFHack formatting reconstruction.
+  const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+  using Native=void(__fastcall*)(const df::language_name*,std::string*);
+  using English=void(__fastcall*)(const df::language_name*,std::string*,bool,bool);
+  std::string native,english;
+  reinterpret_cast<Native>(base+0xa94030)(&name,&native);
+  reinterpret_cast<English>(base+0xa946e0)(&name,&english,true,false);
+  return LocationNameText{DF2UTF(native),DF2UTF(english)};
+}
 std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32_t id) {
   const auto observed=observeNativeLocationDetailsCore(siteId,id);
   if(!observed || !locationRefreshFunction())return std::nullopt;

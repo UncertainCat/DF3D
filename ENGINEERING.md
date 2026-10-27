@@ -297,9 +297,15 @@ run. Its screenshot was inspected; source preservation and unsaved exit pass.
 The future viewer should treat empty-list Random as a local no-op and preserve
 the native ten-byte input limit; the4096-byte transport bound is not a UI limit.
 Native header draw calls `a94030` for the native-language line and `a946e0`
-with flags true/false for English. These are provider candidates pending owned
-input/pin audit and live comparison; DFHack's formatting reconstruction is not
-the native routine. See the naming fixture's filter/header evidence.
+with flags true/false for English. `formatNativeLocationName` calls those pinned
+routines with an owned name copy and output strings. They read language raws and
+nickname settings; capitalization edits only owned strings. The native draw adds
+quotes around English. No name-creator state or DFHack formatting reconstruction
+is used. Protected `build/stockpile-storage-native-location-names-20261026-223634`
+matches60 drawn lines across30 observations, with unchanged UI/GPS, name and RNG.
+Source preservation and unsaved exit pass. The diagnostic name-read command
+exposes these strings; viewer transport, long-header clipping and nickname-policy
+variants remain unfinished. See the naming fixture's filter/header evidence.
 
 ## Native squad assignment reference
 

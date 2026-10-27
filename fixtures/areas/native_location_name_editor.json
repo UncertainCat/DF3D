@@ -6872,7 +6872,7 @@
     "filter": "Resolved via native owned-string helpers and pinned inline substring operation; native cull field displays uppercase input, but filtering normalizes an owned copy to lowercase.",
     "inline_edits": "Clear and word selection directly write language_name at1ff830..1ff850 and1ff8c6..1ff908. Per-component Random at1ff79c..1ff82b indexes the currently displayed filtered list and writes the clicked component. Live AL/OfX -> Front Random preserves selected component6/filter and changes only component0 to a member of the OfX list. Native selector d35ee0 matches choice and RNG effect with an owned nonempty list; guarded semantic writes are verified below.",
     "entry": "Native32c051 resolves plotinfo.civ_id (RVA2393670, plotinfost offset2440) through entity lookup7daf0; null entity/name prevents opening. Type dispatch32c097..32c1c8 maps Temple21, Library43, Tavern28, Guildhall52, Hospital54. Uses civilization, not abstract_building.site_owner_id.",
-    "name_header": "Native draw1fcce7 calls a94030(name, owned string) for native-language header;1fcd85 calls a946e0(name, owned string, true, false) for quoted English header. Candidate ownership/pins/runtime comparisons still require audit; DFHack Translation::translateName reconstructs formatting and is not the intended provider."
+    "name_header": "Resolved by header_provider_reference: native a94030 and English a946e0(true,false), owned name copy/output strings,60 native drawn lines matched. Viewer transport remains unfinished."
   },
   "random_word_provider": {
     "function_rva": "0xd35ee0",
@@ -7555,5 +7555,228 @@
       "scroll behavior",
       "visible DF3D editor"
     ]
+  },
+  "header_provider_reference": {
+    "run": "build/stockpile-storage-native-location-names-20261026-223634",
+    "status": "passed",
+    "native": {
+      "rva": "0xa94030",
+      "length": "0x6a1",
+      "fnv1a64": "d81db68b3c9b33d2"
+    },
+    "english": {
+      "rva": "0xa946e0",
+      "length": "0x7c2",
+      "fnv1a64": "dbc3db5f052419ee",
+      "flags": [
+        true,
+        false
+      ]
+    },
+    "capitalization": {
+      "rva": "0x52d3c0",
+      "length": "0x288",
+      "fnv1a64": "6e1fbc2416fba9fc"
+    },
+    "ownership": "Owned language_name copy and output strings; authoritative language raws and nickname display settings are read-only. Native draw adds quotes around the English result. No name_creator state or DFHack formatting substitute.",
+    "comparisons": [
+      {
+        "name": "TEMPLE-0-name-open",
+        "english": "The Golden Shrine",
+        "matched": 2,
+        "native": "Limulokun"
+      },
+      {
+        "name": "INN_TAVERN-1-name-open",
+        "english": "The Oily Meal",
+        "matched": 2,
+        "native": "Uzolfathkal"
+      },
+      {
+        "name": "HOSPITAL-2-name-open",
+        "english": "The Blockaded Sanctuary",
+        "matched": 2,
+        "native": "Medtobrovol"
+      },
+      {
+        "name": "TEMPLE-3-name-open",
+        "english": "The White Temple",
+        "matched": 2,
+        "native": "Volalrath"
+      },
+      {
+        "name": "LIBRARY-4-name-open",
+        "english": "The Constructive Bastion",
+        "matched": 2,
+        "native": "Abanb\u251c\u00bdr\u251c\u2557l"
+      },
+      {
+        "name": "GUILDHALL-5-name-open",
+        "english": "The Pears of Hide",
+        "matched": 2,
+        "native": "Madush Seb\u251c\u00bbr"
+      },
+      {
+        "name": "INN_TAVERN-1-part-0-selected",
+        "english": "The Oily Meal",
+        "matched": 2,
+        "native": "Uzolfathkal"
+      },
+      {
+        "name": "INN_TAVERN-1-part-1-selected",
+        "english": "Plane the Oily Meal",
+        "matched": 2,
+        "native": "Sil Uzolfathkal"
+      },
+      {
+        "name": "INN_TAVERN-1-part-2-selected",
+        "english": "Planedisgust the Oily Meal",
+        "matched": 2,
+        "native": "Silshungmag Uzolfathkal"
+      },
+      {
+        "name": "INN_TAVERN-1-part-3-selected",
+        "english": "Planedisgust the Mortified Meal",
+        "matched": 2,
+        "native": "Silshungmag Osreshfathkal"
+      },
+      {
+        "name": "INN_TAVERN-1-part-4-selected",
+        "english": "Planedisgust the Mortified Rumored Meal",
+        "matched": 2,
+        "native": "Silshungmag Osreshtithlethfathkal"
+      },
+      {
+        "name": "INN_TAVERN-1-part-5-selected",
+        "english": "Planedisgust the Mortified Rumored Gift-Meal",
+        "matched": 2,
+        "native": "Silshungmag Osreshtithlethegenfathkal"
+      },
+      {
+        "name": "INN_TAVERN-1-part-6-selected",
+        "english": "Planedisgust the Mortified Rumored Gift-Sorrow",
+        "matched": 2,
+        "native": "Silshungmag Osreshtithlethegenegur"
+      },
+      {
+        "name": "INN_TAVERN-1-singleton-selected",
+        "english": "Planedisgust the Mortified Rumored Gift-Sorrow of Queens",
+        "matched": 2,
+        "native": "Silshungmag Osreshtithlethegenegur Esrel"
+      },
+      {
+        "name": "INN_TAVERN-1-filter-ale",
+        "english": "Planedisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Silshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-filter-al",
+        "english": "Planedisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Silshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-al-0",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-al-1",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-al-2",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-al-3",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-al-4",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-al-5",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-al-6",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-no-match-0",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-no-match-1",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-no-match-2",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-no-match-3",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-no-match-4",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-no-match-5",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      },
+      {
+        "name": "INN_TAVERN-1-matrix-no-match-6",
+        "english": "Scandalsdisgust the Mortified Rumored Gift-Sorrow of Abbeys",
+        "matched": 2,
+        "native": "Etvuthshungmag Osreshtithlethegenegur Kulet"
+      }
+    ],
+    "matched_drawn_lines": 60,
+    "guards": [
+      "main_interface unchanged",
+      "gps unchanged",
+      "structured name unchanged",
+      "RNG unchanged"
+    ],
+    "source_unchanged": true,
+    "owned_exit_without_save": true,
+    "installed_bridge_sha256": "9DCAC91BD1B0C72F3635D34CD0B28D6697CAF4F762E2E5FE9E3E6AB748025474",
+    "omissions": [
+      "header transport to viewer",
+      "rendered DF3D panel",
+      "nickname-policy variant matrix",
+      "long header clipping"
+    ],
+    "result_sha256": "e32f2e49cfdc206385d8587bcedcc014f36c0c08a788158619e577a28dcac1c8"
   }
 }

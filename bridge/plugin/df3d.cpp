@@ -1899,6 +1899,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           value["namer_id"]=snapshot->namerId;value["namer_race"]=snapshot->namerRace;value["kind"]=snapshot->kind;
         }
         if(name) {
+          if(snapshot) {
+            const auto text=df3d_area::formatNativeLocationName(*name);
+            value["header_valid"]=bool(text);
+            if(text){value["native_header"]=text->native;value["english_header"]=text->english;}
+          }
           auto& v=value["name"];v["first_name"]=DF2UTF(name->firstNameCp437);v["nickname"]=DF2UTF(name->nicknameCp437);
           v["language"]=name->language;v["type"]=name->type;v["has_name"]=name->hasName;
           v["words"]=Json::Value(Json::arrayValue);v["parts_of_speech"]=Json::Value(Json::arrayValue);

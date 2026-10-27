@@ -64,7 +64,7 @@ local function capture(label,location,keep_pointer)
   name_place=creator.cur_name_place,word_place=creator.cur_word_place,filter=creator.cull_str,
   entering_filter=creator.entering_cull_str,entering_first_name=creator.entering_first_name,
   word_count=#creator.word_index,word_index={},word_parts={},lines={},scroll_position=creator.scroll_position_word,
-  pointer={g.precise_mouse_x,g.precise_mouse_y,g.mouse_x,g.mouse_y}}
+  pointer={g.precise_mouse_x,g.precise_mouse_y,g.mouse_x,g.mouse_y},grid={g.dimx,g.dimy}}
  for i=0,#creator.word_index-1 do row.word_index[#row.word_index+1]=creator.word_index[i];row.word_parts[#row.word_parts+1]=word_part(i)end
  if #records==0 then
   row.native_fields={}
@@ -311,6 +311,10 @@ for i,location in ipairs(choices)do
  local prefix=df.abstract_building_type[location:getType()]..'-'..location.id
  if location:getType()==df.abstract_building_type.INN_TAVERN then
   local before=name_value(location:getName());local before_rng=rng_snapshot()
+  for _,size in ipairs{'small','wide','default'}do
+   window_input('name-resize-'..size)
+   capture(prefix..'-resize-'..size,location)
+  end
   for _,point in ipairs{{'selected',476,142},{'component',476,178},{'random',608,142},{'clear',668,214},
     {'whole',832,82},{'done',912,82},{'filter',832,142},{'word',744,178}}do
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
@@ -455,4 +459,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==127,'incomplete name mutation/filter reference')
+assert(#records==130,'incomplete name mutation/filter reference')

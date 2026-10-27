@@ -459,6 +459,25 @@ acknowledging the next screenshot; exhaustion still fails the lane.
 `build/qa/location-name-filter-input-fixed` passes core19/19 and the rendered
 input/pixel regression with only the three documented Godot diagnostics.
 
+Naming resizes with native cell geometry: below150 text columns it starts at
+x32; otherwise x368. Its right edge leaves224 pixels and its height is the
+whole-cell viewport height minus132 pixels. The word list splits its available
+width into three native columns; visible rows and scrollbar page size follow
+the available height. Random, Done and filter hitboxes use the same geometry.
+Protected `build/stockpile-storage-native-location-names-20261027-000442`
+passes130 observations, including the same open editor resized to960x600,
+1600x900 and back to1200x800, with9/18/15 visible word rows. Name/RNG state and
+source save are unchanged, and the owned game exits unsaved. The fixture's
+`resize_reference` retains whole-panel RGB hashes and18 native word rows.
+Core19/19 passes in `build/qa/location-name-resize-input`; the final GPU/input
+check in `build/qa/location-name-resize-input-release` passes with only the
+three documented Godot diagnostics. All three complete panels match native
+RGB exactly. Actual viewport events verify relocated Random/Done/filter
+controls, the last visible word and Shift-wheel page sizes; the established
+default-size scrollbar and text-input regressions remain passing.
+Long headers, automatic interface scaling and responsive Details composition
+remain separate acceptance work.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

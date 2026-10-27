@@ -54,6 +54,12 @@ public static class Shot {
     System.Threading.Thread.Sleep(40);
    }
   }
+  [DllImport("user32.dll")] static extern bool GetWindowRect(IntPtr h,out RECT r);
+  [DllImport("user32.dll")] static extern bool SetWindowPos(IntPtr h,IntPtr after,int x,int y,int w,int height,uint flags);
+  public static void Resize(IntPtr h,int width,int height) {
+   RECT outer,client;GetWindowRect(h,out outer);GetClientRect(h,out client);
+   if(!SetWindowPos(h,IntPtr.Zero,0,0,width+(outer.R-outer.L)-(client.R-client.L),height+(outer.B-outer.T)-(client.B-client.T),0x16))throw new Exception("Resize failed");
+  }
   public static void Key(IntPtr h,int key,int scan) {
    long down=1L+((long)scan<<16),up=down+0xc0000000L;
    if(!PostMessage(h,0x100,(IntPtr)key,(IntPtr)down)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
@@ -135,6 +141,9 @@ try {
     'nonascii' {[Shot]::Text($window,([string][char]0x00e9))}
     'ascii' {[Shot]::Text($window,'a')}
     'name-filter-mixed' {[Shot]::Text($window,'a Z09-_.')}
+    'name-resize-small' {[Shot]::Resize($window,960,600)}
+    'name-resize-wide' {[Shot]::Resize($window,1600,900)}
+    'name-resize-default' {[Shot]::Resize($window,1200,800)}
     default {throw "Unknown owner input action: $action"}
    }
    Remove-Item -LiteralPath "$out/owner-input-request"

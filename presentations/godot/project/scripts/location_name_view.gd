@@ -10,6 +10,7 @@ var art=Art.new()
 var state
 var scrollbar
 var first:=0
+var page:=15
 var entering_filter:=false
 var input_allowed: Callable
 var _query:=PackedByteArray()
@@ -37,7 +38,12 @@ func reset_input() -> void:
 	scrollbar.set_rows(state.rows.size(),first);queue_redraw()
 
 func layout(view: Vector2) -> void:
-	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(608,660)
+	# Native214020 uses the compact placement below150 text columns.
+	position=Vector2(368 if floori(view.x/8)>=150 else 32,48+fposmod(view.y,12)*0.5)
+	size=Vector2(floori(view.x/8)*8-224-position.x,floori(view.y/12)*12-132)
+	page=maxi(1,floori((size.y-120)/36))
+	scrollbar.position=Vector2(size.x-32,108);scrollbar.size=Vector2(16,page*36);scrollbar.page=page
+	scrollbar.set_rows(state.rows.size(),first);first=scrollbar.first;queue_redraw()
 
 func refresh() -> void:
 	if _component!=state.component or _query!=state.query:
@@ -51,7 +57,7 @@ func available() -> bool:
 func component_rect(index: int) -> Rect2:return Rect2(16,72+index*36,184,36)
 func random_rect(index: int) -> Rect2:return Rect2(208,72+index*36,64,36)
 func clear_rect(index: int) -> Rect2:return Rect2(272,72+index*36,56,36)
-func row_rect(index: int) -> Rect2:return Rect2(352,108+index*36,224 if state.rows.size()>15 else 240,36)
+func row_rect(index: int) -> Rect2:return Rect2(352,108+index*36,size.x-368-(16 if state.rows.size()>page else 0),36)
 
 func _gui_input(event: InputEvent) -> void:
 	if input_allowed.is_valid() and not input_allowed.call():return
@@ -59,20 +65,20 @@ func _gui_input(event: InputEvent) -> void:
 	if event.button_index==MOUSE_BUTTON_RIGHT:
 		entering_filter=false;cancelled.emit();accept_event();return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-		if event.position.x>=352:scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(15 if event.shift_pressed else 1))
+		if event.position.x>=352:scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(page if event.shift_pressed else 1))
 		accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	accept_event()
-	if Rect2(512,12,64,36).has_point(event.position):entering_filter=false;cancelled.emit();return
-	if Rect2(352,72,240,36).has_point(event.position):entering_filter=not entering_filter;queue_redraw();return
+	if Rect2(size.x-96,12,64,36).has_point(event.position):entering_filter=false;cancelled.emit();return
+	if Rect2(352,72,size.x-368,36).has_point(event.position):entering_filter=not entering_filter;queue_redraw();return
 	for index in 7:
 		if component_rect(index).has_point(event.position):state.set_choices(index,state.query);return
 	if not available():return
-	if Rect2(424,12,80,36).has_point(event.position):state.random_whole();return
+	if Rect2(size.x-184,12,80,36).has_point(event.position):state.random_whole();return
 	for index in 7:
 		if random_rect(index).has_point(event.position):state.random_component(index);return
 		if clear_rect(index).has_point(event.position):state.clear_component(index);return
-	for index in mini(15,state.rows.size()-first):
+	for index in mini(page,state.rows.size()-first):
 		if row_rect(index).has_point(event.position):state.choose(first+index);return
 
 func _input(event: InputEvent) -> void:
@@ -114,14 +120,15 @@ static func short_word(value: String, columns:=9) -> String:
 
 func _draw() -> void:
 	if state==null:return
-	patch("HOVER_RECTANGLE",Rect2(0,0,608,660))
-	text("Name the location",Vector2(224,24))
-	button("HORIZONTAL_OPTION_CONFIRM",Rect2(424,12,80,36),"Random")
-	button("HORIZONTAL_OPTION_CONFIRM",Rect2(512,12,64,36),"Done")
+	patch("HOVER_RECTANGLE",Rect2(Vector2.ZERO,size))
+	var center:=floori(size.x/16)*8-8
+	text("Name the location",Vector2(center-72,24))
+	button("HORIZONTAL_OPTION_CONFIRM",Rect2(size.x-184,12,80,36),"Random")
+	button("HORIZONTAL_OPTION_CONFIRM",Rect2(size.x-96,12,64,36),"Done")
 	var native: String=state.snapshot.get("native_header","")
 	var english: String=state.snapshot.get("english_header","")
-	text(native,Vector2(296-floori(native.length()/2.0)*8,48),YELLOW)
-	if not state.snapshot.is_empty():text('"'+english+'"',Vector2(296-floori((english.length()+2)/2.0)*8,60),CYAN)
+	text(native,Vector2(center-floori(native.length()/2.0)*8,48),YELLOW)
+	if not state.snapshot.is_empty():text('"'+english+'"',Vector2(center-floori((english.length()+2)/2.0)*8,60),CYAN)
 	for index in 7:
 		patch("BUTTON_CATEGORY_RECTANGLE_ON_SELECTED" if index==state.component else "BUTTON_CATEGORY_RECTANGLE_ON",component_rect(index))
 		# Native unselected category cells retain a black one-pixel left edge.
@@ -133,9 +140,10 @@ func _draw() -> void:
 		button("HORIZONTAL_OPTION_REMOVE" if present else "HORIZONTAL_OPTION_INACTIVE",clear_rect(index),"Clear")
 	var filter: Texture2D=art.texture("BUTTON_FILTER")
 	if filter!=null:
+		var columns:=int((size.x-368)/8)
 		for y in 3:
-			for x in 30:
-				var source_x:=0 if x==0 else x-24 if x>=26 else 1
+			for x in columns:
+				var source_x:=0 if x==0 else x-columns+6 if x>=columns-4 else 1
 				draw_texture_rect_region(filter,Rect2(352+x*8,72+y*12,8,12),Rect2(source_x*8,y*12,8,12))
 	var display:=""
 	for byte in state.query:display+=String.chr(byte if byte<128 else Art.CP437_HIGH[byte-128])
@@ -145,12 +153,15 @@ func _draw() -> void:
 		if (ticks_override if ticks_override>=0 else Time.get_ticks_msec())%1000<500:display+="_"
 	elif display.is_empty():display="..."
 	text(display,Vector2(368,96),Color.WHITE if entering_filter else Color8(160,160,160))
-	for index in mini(15,state.rows.size()-first):
+	var span:=int(row_rect(0).size.x/8)-1
+	var second:=floori(span/3.0)
+	var third:=floori(span*2/3.0)
+	for index in mini(page,state.rows.size()-first):
 		var row: Dictionary=state.rows[first+index]
 		patch("BUTTON_RECTANGLE",row_rect(index))
-		text(short_word(row.english),Vector2(352,132+index*36),CYAN)
-		text(short_word(row.translated,9 if state.rows.size()>15 else 10),Vector2(424,132+index*36),YELLOW)
-		text(PARTS[row.part],Vector2(496 if state.rows.size()>15 else 504,132+index*36))
+		text(short_word(row.english,second),Vector2(352,132+index*36),CYAN)
+		text(short_word(row.translated,third-second),Vector2(352+second*8,132+index*36),YELLOW)
+		text(PARTS[row.part],Vector2(352+third*8,132+index*36))
 
 func _exit_tree() -> void:
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

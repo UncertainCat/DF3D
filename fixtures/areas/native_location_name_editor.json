@@ -8448,5 +8448,173 @@
       "IME composition and clipboard input",
       "long-header and resize cases"
     ]
+  },
+  "resize_reference": {
+    "run": "build/stockpile-storage-native-location-names-20261027-000442",
+    "result_sha256": "2648ee3e53ebc0b0b0bf881e021d28494d6715a2247299a355c876bb69add350",
+    "source_save_unchanged": true,
+    "owned_exit_without_save": true,
+    "cases": [
+      {
+        "name": "small",
+        "viewport": [
+          960,
+          600
+        ],
+        "rect": [
+          32,
+          48,
+          704,
+          468
+        ],
+        "page": 9,
+        "rgb_sha256": "540f67954b346b2f396c5026e0b1fa5994f09c35a3a4d66f5250e10d90814230"
+      },
+      {
+        "name": "wide",
+        "viewport": [
+          1600,
+          900
+        ],
+        "rect": [
+          368,
+          48,
+          1008,
+          768
+        ],
+        "page": 18,
+        "rgb_sha256": "12bda68915c991f8ad58170f5222cfeba00fa349e1ad9c5e4c99b1dd76cc0c04"
+      },
+      {
+        "name": "default",
+        "viewport": [
+          1200,
+          800
+        ],
+        "rect": [
+          368,
+          52,
+          608,
+          660
+        ],
+        "page": 15,
+        "rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      }
+    ],
+    "rows": [
+      {
+        "word": 0,
+        "part": 0,
+        "english": "abbey",
+        "translated": "kulet"
+      },
+      {
+        "word": 1,
+        "part": 0,
+        "english": "ace",
+        "translated": "alak"
+      },
+      {
+        "word": 1,
+        "part": 2,
+        "english": "ace",
+        "translated": "alak"
+      },
+      {
+        "word": 2,
+        "part": 0,
+        "english": "act",
+        "translated": "bidok"
+      },
+      {
+        "word": 2,
+        "part": 4,
+        "english": "act",
+        "translated": "bidok"
+      },
+      {
+        "word": 2,
+        "part": 7,
+        "english": "acted",
+        "translated": "bidok"
+      },
+      {
+        "word": 3,
+        "part": 3,
+        "english": "after",
+        "translated": "nicol"
+      },
+      {
+        "word": 4,
+        "part": 0,
+        "english": "age",
+        "translated": "anam"
+      },
+      {
+        "word": 4,
+        "part": 1,
+        "english": "ages",
+        "translated": "anam"
+      },
+      {
+        "word": 4,
+        "part": 4,
+        "english": "age",
+        "translated": "anam"
+      },
+      {
+        "word": 4,
+        "part": 7,
+        "english": "aged",
+        "translated": "anam"
+      },
+      {
+        "word": 6,
+        "part": 0,
+        "english": "ale",
+        "translated": "mabdug"
+      },
+      {
+        "word": 6,
+        "part": 1,
+        "english": "ales",
+        "translated": "mabdug"
+      },
+      {
+        "word": 7,
+        "part": 0,
+        "english": "ancient",
+        "translated": "zustash"
+      },
+      {
+        "word": 7,
+        "part": 2,
+        "english": "ancient",
+        "translated": "zustash"
+      },
+      {
+        "word": 8,
+        "part": 0,
+        "english": "angel",
+        "translated": "sedil"
+      },
+      {
+        "word": 9,
+        "part": 0,
+        "english": "anger",
+        "translated": "ustos"
+      },
+      {
+        "word": 9,
+        "part": 2,
+        "english": "angry",
+        "translated": "ustos"
+      }
+    ],
+    "scope": "Same open native tavern editor resized through Windows, retaining name and RNG; entire panel RGB.",
+    "omissions": [
+      "long headers",
+      "automatic UI scaling"
+    ]
   }
 }

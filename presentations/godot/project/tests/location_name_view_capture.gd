@@ -47,6 +47,29 @@ func run() -> void:
 	var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
 	assert(hash.finish().hex_encode()==reference.panel_rgb_sha256,"native full-panel pixel reference")
 	assert(view.position==Vector2(368,52) and view.size==Vector2(608,660))
+	var resized: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).resize_reference
+	for index in resized.rows.size():
+		state.rows[index]=resized.rows[index].duplicate(true);state.rows[index].part=int(state.rows[index].part)
+	for sample in resized.cases:
+		root.size=Vector2i(sample.viewport[0],sample.viewport[1]);view.layout(Vector2(root.size));state.changed.emit()
+		assert(view.page==int(sample.page))
+		await process_frame;await RenderingServer.frame_post_draw
+		await process_frame;await RenderingServer.frame_post_draw
+		image=root.get_texture().get_image();image.save_png(directory.path_join("resize-"+sample.name+".png"))
+		crop=image.get_region(Rect2i(sample.rect[0],sample.rect[1],sample.rect[2],sample.rect[3]));crop.convert(Image.FORMAT_RGB8)
+		hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
+		assert(hash.finish().hex_encode()==sample.rgb_sha256,"native resized panel "+sample.name)
+		await click(view.position+Vector2(view.size.x-144,30));assert(state.calls[-1]==["whole"])
+		await click(view.position+Vector2(380,120+(view.page-1)*36));assert(state.calls[-1]==["choose",view.page-1])
+		await click(view.position+Vector2(view.size.x-48,90));assert(view.entering_filter)
+		await click(view.position+Vector2(view.size.x-48,90));assert(not view.entering_filter)
+		var page_wheel:=InputEventMouseButton.new();page_wheel.position=view.position+Vector2(380,120)
+		page_wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;page_wheel.pressed=true;page_wheel.shift_pressed=true
+		root.push_input(page_wheel,true);await process_frame;assert(view.first==view.page)
+		page_wheel.pressed=false;root.push_input(page_wheel,true)
+		view.scrollbar.move_to(0)
+		await click(view.position+Vector2(view.size.x-64,30));assert(closes>0)
+	closes=0
 	var scroll_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).scroll_drag_reference
 	for sample in scroll_reference.cases:
 		view.scrollbar.move_to(0)
@@ -57,7 +80,9 @@ func run() -> void:
 			var start:=InputEventMouseButton.new();start.position=Vector2(952,178);start.button_index=MOUSE_BUTTON_LEFT;start.pressed=true;root.push_input(start,true)
 			var motion:=InputEventMouseMotion.new();motion.position=Vector2(952,int(sample.name.get_slice("drag-",1)));root.push_input(motion,true)
 			var stop:=InputEventMouseButton.new();stop.position=motion.position;stop.button_index=MOUSE_BUTTON_LEFT;stop.pressed=false;root.push_input(stop,true)
-		assert(view.first==int(sample.scroll_position),"native scrollbar movement "+sample.name)
+		if view.first!=int(sample.scroll_position):
+			push_error("native scrollbar movement %s: first=%d expected=%d page=%d bar=%d drag=%s"%[sample.name,view.first,int(sample.scroll_position),view.page,view.scrollbar.first,view.scrollbar.dragging])
+			quit(1);return
 		var away:=InputEventMouseMotion.new();away.position=Vector2.ZERO;root.push_input(away,true)
 		await process_frame;await RenderingServer.frame_post_draw
 		crop=root.get_texture().get_image().get_region(Rect2i(944,160,16,540));crop.convert(Image.FORMAT_RGB8)

@@ -22,7 +22,9 @@ local function mapclick(p)
  for y=0,g.dimy-1 do for x=0,g.dimx-1 do
   g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*(g.screen_pixel_x//g.dimx)+4;g.precise_mouse_y=y*(g.screen_pixel_y//g.dimy)+6
   local at=dfhack.gui.getMousePos(true)
-  if at and at.x==p.x and at.y==p.y and at.z==p.z then pixel(g.precise_mouse_x,g.precise_mouse_y);return end
+  if at and at.x==p.x and at.y==p.y and at.z==p.z then
+   local pointer={g.precise_mouse_x,g.precise_mouse_y};pixel(pointer[1],pointer[2]);return pointer
+  end
  end end
  error('animal fixture tile not visible')
 end
@@ -1003,6 +1005,29 @@ end
 -- Restore the parent pointer between independent probes; no runtime code reads it.
 do
  local zone=assert(ui.cur_bld)
+ local camera={df.global.window_x,df.global.window_y,df.global.window_z}
+ dfhack.gui.revealInDwarfmodeMap({x=zone.centerx-8,y=zone.centery,z=zone.z},true)
+ view:render(dfhack.getTickCount())
+ local same={x=zone.centerx,y=zone.centery,z=zone.z}
+ local pointer=mapclick(same)
+ assert(pointer[1]>760 and pointer[1]<1180 and pointer[2]>220 and pointer[2]<760,'same-zone probe behind native UI')
+ assert(ui.cur_bld==zone,'same-zone baseline chose another zone')
+ pixel(336,154)
+ local before=capture('animal-same-zone-before')
+ local target=assert(before.displayed[1]);assert(target.kind==0,'same-zone needs unit first')
+ pixel(500,730);mapclick(same)
+ local after=capture('animal-same-zone-after')
+ local observed={name='animal-same-zone-input',zone=zone.id,parent_zone=ui.cur_bld and ui.cur_bld.id or -1,
+  active=main.unit_selector.flag.VISIBILITY_ACTIVE,focused=df.global.gview.cur_textbox~=nil,pointer=pointer,target=target.id}
+ records[#records+1]=observed
+ gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+ observed.assigned_after_enter=contains(zone.assigned_units,target.id)
+ gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+ observed.assigned_after_second_enter=contains(zone.assigned_units,target.id)
+ assert(not observed.assigned_after_second_enter,'same-zone probe retained assignment')
+ if main.unit_selector.flag.VISIBILITY_ACTIVE then gui.simulateInput(view,'_MOUSE_R')end
+ df.global.window_x=camera[1];df.global.window_y=camera[2];df.global.window_z=camera[3]
+ ui.cur_bld=zone;main.bottom_mode_selected=3;view:render(dfhack.getTickCount())
  for _,probe in ipairs{{'blank-center',500,700},{'blank-right',740,700},{'outside-map',800,700},
   {'outside-upper',800,250},{'outside-center',1000,400},{'outside-lower',1100,700}}do
   ui.cur_bld=zone;main.bottom_mode_selected=3;view:render(dfhack.getTickCount())

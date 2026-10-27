@@ -411,7 +411,25 @@ unchanged, and repeated Enter produces no further mutation. Right-click closes
 the failed picker; explicit map selection refreshes the zone before UI removal.
 The run passes with known Godot diagnostics and unchanged source/clone manifests.
 Core19/19 passes in `build/qa/animal-stale-core`. Animal transport-disconnect
-and same-zone map-click behavior still need their own live coverage.
+still needs its own live coverage.
+
+Native `build/stockpile-storage-native-zone-animals-20261026-185722` distinguishes
+same-zone map clicks from selection changes. At exposed map pixel(964,390),
+clicking the selected zone1493 keeps the animal picker active and releases
+search focus. Enter assigns unit6960 to that zone; another Enter clears it.
+DF135872 exits unsaved with the source unchanged. The controller now preserves
+the open picker, retained receipt and revision when the completed map lookup
+selects its existing zone identity. Different zones and empty terrain retain
+the approved picker-retirement behavior. This corrects a DF3D input mismatch;
+it introduces no additional native-behavior exception.
+Rendered `build/areas-acceptance-20261026-190205` verifies retained receipt,
+selection and target, released search focus, and successful assign/clear after
+the same-zone click. All sixteen visible portraits are reacquired before the
+accepted screenshot. The existing different-zone/empty-terrain retirement and
+stale-revision tests also pass. The run retains known Godot diagnostics only,
+with both save manifests unchanged. Core19/19 and controller checks pass in
+`build/qa/animal-same-zone`. The earlier185940 run passed input checks but its
+new screenshot caught portrait loading;190205 supplies the settled rendering.
 
 
 `native_zone_animals.json.animal_scroll` records a forty-row Pond list in

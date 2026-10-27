@@ -1509,6 +1509,10 @@ func _receive_result(s: Dictionary, _request: Dictionary, completed_ticket := 0)
 		for row in zone_overlaps:
 			if int(row.id) == int(selected.get("id",-1)): target = row; break
 		areas = zone_overlaps.duplicate(true)
+		# Native retains the animal selector when the map selects its current
+		# zone. Preserve its receipt/revision; changed identities still retire it.
+		if stockpile_page == "animals" and int(target.id) == int(selected.get("id",-1)) and not candidates_state.area.is_empty():
+			update_controls(); return
 		use_area(target)
 		return
 	if action == Action.AreaCandidates and int(_request.get("operation",0)) == Contract.AreaOperation.CandidateList:

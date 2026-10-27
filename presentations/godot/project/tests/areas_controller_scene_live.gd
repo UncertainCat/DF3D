@@ -1959,6 +1959,33 @@ func pointer_animals(id: int) -> void:
 	if not check(int(other_area.id)!=id,"second Pond reused original identity"):return
 	await pointer_click(tile_screen(original_tile))
 	if not await wait_ui(func():return settled() and int(editor.selected.get("id",-1))==id,"original Pond selection"):return
+	await click_control(editor.zone_menu.controls.animals)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"same-zone picker"):return
+	var same_receipt:int=editor.candidates_state.receipt
+	var same_selected:int=view.owner_selected
+	await click_control(view.owner_search)
+	await pointer_click(tile_screen(original_tile))
+	if not await wait_ui(settled,"same-zone map lookup"):return
+	if not check(view.visible and not view.owner_search.has_focus() and editor.candidates_state.receipt==same_receipt and view.owner_selected==same_selected and int(editor.candidates_state.area.id)==id,"same-zone click retired or reset animal picker"):return
+	unit_index=-1
+	for index in editor.candidates_state.rows.size():
+		var row:Dictionary=editor.candidates_state.rows[index]
+		if int(row.get("entity",0))==1 and int(row.id)==unit:unit_index=index;break
+	if not check(unit_index>=0,"same-zone assignment unit absent"):return
+	await pointer_key(KEY_PAGEUP)
+	for index in unit_index:await pointer_key(KEY_DOWN)
+	for assigned in [true,false]:
+		await pointer_key(KEY_ENTER)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"same-zone retained assignment"):return
+		await native("assignment",{"id":id,"unit_id":unit,"assign":assigned})
+		if stopped:return
+	if not await wait_ui(func():
+		var first:int=view.owner_scrollbar.first
+		for index in range(first,mini(first+16,view.portrait_slots.size())):
+			if not view.portrait_slots[index].loaded or view.portrait_slots[index].view.texture==null:return false
+		return view.portrait_slots.size()>0,"same-zone portraits reacquired"):return
+	await capture("animal_same_zone_retained")
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
 	for map_target in [other_tile,empty_tile]:
 		await click_control(editor.zone_menu.controls.animals)
 		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"selection-change picker"):return

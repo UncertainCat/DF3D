@@ -17258,8 +17258,36 @@
     "save_manifests_unchanged": true,
     "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
     "omissions": [
-      "transport disconnect",
-      "same-zone map click"
+      "transport disconnect"
+    ]
+  },
+  "animal_same_zone_selection": {
+    "run": "build/stockpile-storage-native-zone-animals-20261026-185722",
+    "result_sha256": "246680e5e8beecbcc72b267c780abdcbecd610fe7cbdd4d3d99c217ac2d81f2e",
+    "observation": {
+      "active": true,
+      "assigned_after_enter": true,
+      "assigned_after_second_enter": false,
+      "focused": false,
+      "name": "animal-same-zone-input",
+      "parent_zone": 1493,
+      "pointer": [
+        964,
+        390
+      ],
+      "target": 6960,
+      "zone": 1493
+    },
+    "source_save_unchanged": true,
+    "rendered_run": "build/areas-acceptance-20261026-190205",
+    "rendered_status": "passed_with_known_issues",
+    "save_manifests_unchanged": true,
+    "checks": [
+      "retained picker receipt and selection",
+      "search focus released",
+      "native assignment and clear",
+      "all visible portraits reacquired",
+      "different-zone and empty-terrain closure preserved"
     ]
   }
 }

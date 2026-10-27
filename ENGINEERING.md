@@ -37,18 +37,36 @@ capacity. Owner-small and animal-small/wide captures were inspected. All runs
 pass cleanly and preserve the source manifest; DF161860 and179804 exit unsaved.
 Core passes in `build/qa/native-picker-resize`.
 
-This identifies a runtime gap: `area_candidates_view` fixes owner/animal page
-capacity at16, body height684 and filter position648, while `areas.gd` fixes
-the outer panel size. Implement native height/width propagation together with
-scroll/input geometry and visible recipe demand. `area_owner_refresh` also fixes
-candidate_limit at18; a19-row page needs its complete visible range refreshed.
+Owner/animal picker height now follows the logical viewport: page capacity,
+complete-row clipping, scrollbar span, filter position and outer height resize
+together, with the native vertical grid inset. Page keys and wheel page steps
+use the current capacity. `area_owner_refresh` requests the current page plus
+two rows and retires obsolete reads when that range changes; recipe retention
+expands with visible demand instead of dropping tall-page portraits. Larger
+read ranges are split at the existing128-row transport limit. Default18-row
+refresh cadence and36-recipe retention remain unchanged at800 pixels.
 Native owner153023 and animal153102 verify Page Down moves11/19/16 entries at
 the three sizes, Page Up restores selection0, and clicking the moved filter
 focuses it. A real window Down leaves selection unchanged while focused; Enter
 releases focus without assigning. Both protected runs pass cleanly, preserve
 the source manifest and close owned DF179528/174920 unsaved. The fixtures retain
 these input observations; core passes in `build/qa/native-picker-resize-input`.
-Resize scroll clamping and held dragging still need comparison. Zones remains gated.
+GPU `build/qa/picker-height-gpu` verifies native owner filter coordinates and
+11/19/16-row paging, alongside prior default-size pixel comparisons. It passes
+with the known thread/device-finalize/shutdown-object diagnostics. Core,
+controller and candidate-state checks pass in `build/qa/picker-height-state`,
+including immediate old-range retirement and late-reply rejection. Initial
+picker-height-runtime failed changed short-list cadence; the corrected reader
+preserves that cadence. An intermediate GPU test had a local variable collision;
+neither failed run is acceptance.
+
+Protected main-scene153735 (owner, DF177176) and153907 (animal, DF124128) exercise
+all three sizes, native filter focus/Enter behavior, Page Down/Up, visible
+portrait recovery, and the existing assignment/removal workflows. Owner-wide
+and animal-small captures were inspected. Both runs pass with only the known
+rendering-thread notice, exit unsaved and preserve both save manifests.
+Owner-panel horizontal resizing remains unimplemented. Resize scroll clamping
+and held dragging still need native comparison. Zones remains gated.
 
 Protected `areas-acceptance-20261027-133446 -LocationScene` passes the full
 existing main-scene Locations suite with the live petition tracker enabled.

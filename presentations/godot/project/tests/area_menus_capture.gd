@@ -280,6 +280,24 @@ func run() -> void:
 			if not controller.candidates_view.scroll.get_global_rect().encloses(selected_button.get_global_rect()):
 				push_error("Owner keyboard selection is outside viewport"); quit(1); return
 	# Compare the full owner scrollbar against native top/tail captures, including
+	for sample in header_reference.picker_resize_reference.observations:
+		root.size=Vector2i(int(sample.pixel_width),int(sample.pixel_height))
+		controller.candidates_view.layout(Vector2(root.size))
+		await process_frame;await RenderingServer.frame_post_draw
+		var resized_view=controller.candidates_view
+		var expected_y:float=int(sample.filter_rect[1])*12+fposmod(float(sample.pixel_height),12)*0.5
+		if resized_view.owner_scrollbar.page!=int(sample.num_visible) or not is_equal_approx(resized_view.owner_search.global_position.y,expected_y):
+			push_error("Resized owner geometry differs from native: "+str(sample.size)+" filter="+str(resized_view.owner_search.global_position)+" expected_y="+str(expected_y));quit(1);return
+		resized_view.owner_selected=0;resized_view.owner_scrollbar.move_to(0)
+		var down:=InputEventKey.new();down.pressed=true;down.keycode=KEY_PAGEDOWN
+		resized_view.feed_owner_key(down)
+		if resized_view.owner_selected!=int(sample.num_visible):push_error("Resized owner Page Down differs");quit(1);return
+		var up:=InputEventKey.new();up.pressed=true;up.keycode=KEY_PAGEUP
+		resized_view.feed_owner_key(up)
+		if resized_view.owner_selected!=0:push_error("Resized owner Page Up differs");quit(1);return
+	root.size=Vector2i(1200,800);controller.candidates_view.layout(Vector2(root.size))
+	await process_frame;await RenderingServer.frame_post_draw
+	# Compare the full owner scrollbar against native top/tail captures, including
 	# its installed artwork, thumb proportions and the 24px blank below the rows.
 	var saved_owner_area: Dictionary = controller.candidates_state.area
 	controller.candidates_state.area = saved_owner_area.duplicate(true)

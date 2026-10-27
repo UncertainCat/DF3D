@@ -1757,6 +1757,8 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	step = "pointer owner selector"
 	await click_control(editor.zone_menu.controls.owner)
 	if not await wait_ui(func(): return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner rows"): return
+	await pointer_picker_resize(id)
+	if stopped:return
 	if not await selector_scroll_workflow(): return
 	var help = editor.candidates_view.native_help
 	var hover := InputEventMouseMotion.new()
@@ -2103,10 +2105,43 @@ func pointer_zone_overlap_repaint(origin: Vector3i, first_id: int, second_id: in
 	if not check(editor.zone_menu.overlap_label.visible,"regrown zone warning missing"): return
 	await capture("zone_repaint_overlap_regrown")
 
+func pointer_picker_resize(id: int) -> void:
+	var view=editor.candidates_view
+	var reference:String="native_zone_animals" if editor.candidates_state.kind==2 else "native_zone_assignment"
+	var samples:Array=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/"+reference+".json")).picker_resize_reference.observations
+	for sample in samples:
+		root.size=Vector2i(int(sample.pixel_width),int(sample.pixel_height));scene._fortress_hud.apply_ui_scale()
+		editor._process(0.02);await process_frame;await process_frame
+		var expected_y:float=int(sample.filter_rect[1])*12+fposmod(float(sample.pixel_height),12)*0.5
+		if not check(view.owner_scrollbar.page==int(sample.num_visible) and is_equal_approx(view.owner_search.global_position.y,expected_y),"native picker resize geometry"):return
+		await click_control(view.owner_search)
+		var selected:int=view.owner_selected
+		await pointer_key(KEY_DOWN)
+		if not check(view.owner_search.has_focus() and view.owner_selected==selected,"resized filter lost navigation focus"):return
+		await pointer_key(KEY_ENTER)
+		if not check(not view.owner_search.has_focus() and view.owner_selected==selected,"resized filter Enter assigned"):return
+		view.owner_selected=0;view.owner_scrollbar.move_to(0)
+		await pointer_key(KEY_PAGEDOWN)
+		var count:int=view.choices.size()+(1 if view.remove.visible else 0)
+		if not check(view.owner_selected==mini(int(sample.num_visible),count-1),"resized picker Page Down"):return
+		await pointer_key(KEY_PAGEUP)
+		if not check(view.owner_selected==0,"resized picker Page Up"):return
+		if not await wait_ui(func():
+			var n:=0
+			for slot in view.portrait_slots:
+				if not view.scroll.get_global_rect().intersects(slot.view.get_global_rect()):continue
+				n+=1
+				if slot.view.texture==null:return false
+			return n>0,"resized visible candidate images"):return
+		await capture("picker_"+reference+"_"+str(sample.size))
+	await native("snapshot",{"id":id,"expected":{"kind":1}})
+
 func pointer_animals(id: int) -> void:
 	step="main scene animal picker"
 	await click_control(editor.zone_menu.controls.animals)
 	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"pointer animal open"):return
+	await pointer_picker_resize(id)
+	if stopped:return
 	if not await wait_ui(func():
 		for slot in editor.candidates_view.portrait_slots:
 			if slot.view.texture==null:return false

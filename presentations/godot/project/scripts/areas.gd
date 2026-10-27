@@ -1387,8 +1387,7 @@ func _process(delta: float) -> void:
 		locations_view.position = Vector2(368,52); locations_view.size = Vector2(328,420)
 		if details_view!=null:details_view.layout(view)
 		details_parent_shield.position=panel.position;details_parent_shield.size=panel.size
-		candidates_view.position = Vector2(368,52) if stockpile_page == "animals" else Vector2(370,54)
-		candidates_view.size = Vector2(576,420) if stockpile_page == "squads" else (Vector2(392,708) if stockpile_page == "animals" else Vector2(588,704))
+		candidates_view.layout(view)
 	if paint_view.tools.visible and kind_picker.selected == 0 and hud != null:
 		var anchor: Rect2 = hud.launcher_rect(launcher_destination)
 		if anchor.has_area():
@@ -1426,7 +1425,7 @@ func _process(delta: float) -> void:
 			cancel_drag(stockpile_page != "owner"); update_controls()
 	if stockpile_page in ["owner","animals","squads"] and request_ticket == 0: candidates_state.poll(delta)
 	if stockpile_page in ["owner","animals"] and candidates_view.is_visible_in_tree():
-		owner_refresh.poll(delta,maxi(0,int(candidates_view.scroll.scroll_vertical/36)-(1 if candidates_view.remove.visible else 0)))
+		owner_refresh.poll(delta,maxi(0,int(candidates_view.scroll.scroll_vertical/36)-(1 if candidates_view.remove.visible else 0)),candidates_view.owner_scrollbar.page+2)
 	else: owner_refresh.clear()
 	_sync_paint_counts()
 	paint_counts.poll(delta)

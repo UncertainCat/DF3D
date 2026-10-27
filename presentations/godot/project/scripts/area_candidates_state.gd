@@ -24,6 +24,7 @@ var squad_mask := 15
 var squad_first := 0
 var recipe_first := 0
 const OWNER_RECIPE_ROWS := 36
+var recipe_rows := OWNER_RECIPE_ROWS
 
 func clear() -> void:
 	area = {}; rows = []; pending = {}; receipt = 0; cursor = 0
@@ -32,7 +33,7 @@ func clear() -> void:
 	delay = -1; search_delay = -1; failed = false; mutating = false
 	squad_mask = 15
 	squad_first = 0
-	recipe_first = 0
+	recipe_first = 0; recipe_rows = OWNER_RECIPE_ROWS
 	changed.emit()
 
 func open(value: Dictionary, candidate_kind := 1, navigation: Dictionary = {}) -> void:
@@ -153,10 +154,12 @@ func accept_owner_facts(page: Dictionary, sent: Dictionary) -> void:
 	_trim_owner_recipes()
 	facts_changed.emit()
 
-func retain_owner_recipes(first: int) -> void:
+func retain_owner_recipes(first: int, visible_count:=18) -> void:
 	if kind not in [1,2]: return
 	var start := maxi(0,first-9)
-	if start == recipe_first: return
+	var keep:=maxi(OWNER_RECIPE_ROWS,visible_count+18)
+	if start == recipe_first and keep==recipe_rows: return
+	recipe_rows=keep
 	recipe_first = start
 	if _trim_owner_recipes(): facts_changed.emit()
 
@@ -164,7 +167,7 @@ func _trim_owner_recipes() -> bool:
 	if kind not in [1,2]: return false
 	var trimmed := false
 	for index in rows.size():
-		if index >= recipe_first and index < recipe_first+OWNER_RECIPE_ROWS: continue
+		if index >= recipe_first and index < recipe_first+recipe_rows: continue
 		if not rows[index].has("sheet_icon") and not rows[index].has("animal_container"): continue
 		# Page receipts are owned elsewhere too. Replace the row; never mutate
 		# their snapshot or a view's prior facts while releasing heavy recipes.

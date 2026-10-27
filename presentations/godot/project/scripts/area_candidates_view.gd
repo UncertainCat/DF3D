@@ -20,6 +20,7 @@ var remove: Button
 var cached_rows: Array = []
 var owner_selected := 0
 var owner_receipt := 0
+var viewport_rows := 66
 var strips: Dictionary = {}
 var squad_prompt: Label
 var squad_buttons: Array[Button] = []
@@ -143,16 +144,30 @@ func row_button(text: String) -> Button:
 	style_row(button,false)
 	return button
 
+func layout(view: Vector2) -> void:
+	var rows:=floori(view.y/12)
+	if rows!=viewport_rows:
+		viewport_rows=rows
+		owner_scrollbar.dragging=false
+		refresh()
+	var inset:=fposmod(view.y,12)*0.5-4
+	position=Vector2(368,52+inset) if state.kind==2 else Vector2(370,54+inset)
+	size=Vector2(576,420) if state.kind==3 else Vector2(392 if state.kind==2 else 588,(viewport_rows-66)*12+(708 if state.kind==2 else 704))
+
+func page_rows() -> int:
+	return maxi(1,floori(float(viewport_rows-16)/3))
+
 func refresh() -> void:
 	if owner_receipt != state.receipt or state.rows.is_empty():
 		owner_selected = 0; owner_receipt = state.receipt
 		owner_scrollbar.set_rows(0); owner_scrollbar.dragging = false; scroll.scroll_vertical = 0
-	body.custom_minimum_size = Vector2(564,400) if state.kind == 3 else Vector2(376 if state.kind == 2 else 576,684)
+	body.custom_minimum_size = Vector2(564,400) if state.kind == 3 else Vector2(376 if state.kind == 2 else 576,(viewport_rows-9)*12)
+	owner_search.position.y=(viewport_rows-12)*12
 	scroll.position.y = 36 if state.kind == 3 else 24
-	scroll.size = Vector2(360 if state.kind == 2 else 560,576) if state.kind in [1,2] else Vector2(536 if state.rows.size()>10 else 552,360)
+	scroll.size = Vector2(360 if state.kind == 2 else 560,page_rows()*36) if state.kind in [1,2] else Vector2(536 if state.rows.size()>10 else 552,360)
 	owner_scrollbar.position = Vector2(544,36) if state.kind == 3 else Vector2(360 if state.kind == 2 else 560,24)
-	owner_scrollbar.size.y = 360 if state.kind == 3 else 600
-	owner_scrollbar.page = 10 if state.kind == 3 else 16
+	owner_scrollbar.size.y = 360 if state.kind == 3 else (viewport_rows-16)*12
+	owner_scrollbar.page = 10 if state.kind == 3 else page_rows()
 	var standalone_scroll:bool = state.kind != 3
 	if owner_scrollbar.use_standalone_sheet != standalone_scroll:
 		owner_scrollbar.use_standalone_sheet = standalone_scroll; owner_scrollbar.textures.clear()
@@ -279,7 +294,7 @@ func refresh() -> void:
 	if state.kind == 3 and not state.busy() and state.cursor != 0: state.call_deferred("more")
 	# The retained first row survives assignment receipts; apply after deferred
 	# container sizing so a newly arrived list cannot clamp the scroll to zero.
-	if state.kind == 3: call_deferred("apply_owner_scroll")
+	call_deferred("apply_owner_scroll")
 
 func apply_owner_scroll() -> void:
 	scroll.scroll_vertical = owner_scrollbar.first * 36
@@ -288,7 +303,7 @@ func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree() or state.kind not in [1,2,3] or not event is InputEventMouseButton or not event.pressed: return
 	if event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]: return
 	var local: Vector2 = body.get_global_transform_with_canvas().affine_inverse() * event.position
-	var bounds := Rect2(0,24,376 if state.kind == 2 else 576,600)
+	var bounds := Rect2(0,24,376 if state.kind == 2 else 576,owner_scrollbar.size.y)
 	if state.kind == 3: bounds = Rect2(-8,-12,576,420)
 	if not bounds.has_point(local): return
 	if not state.busy():
@@ -322,15 +337,15 @@ func feed_animal_key(event: InputEvent) -> bool:
 	match event.keycode:
 		KEY_UP,KEY_8,KEY_KP_8: delta = -1
 		KEY_DOWN,KEY_2,KEY_KP_2: delta = 1
-		KEY_PAGEUP,KEY_9,KEY_KP_9: delta = -16
-		KEY_PAGEDOWN,KEY_3,KEY_KP_3: delta = 16
+		KEY_PAGEUP,KEY_9,KEY_KP_9: delta = -owner_scrollbar.page
+		KEY_PAGEDOWN,KEY_3,KEY_KP_3: delta = owner_scrollbar.page
 	if delta == 0: return false
 	if state.busy() or choices.is_empty(): return true
 	owner_selected = clampi(owner_selected+delta,0,choices.size()-1)
 	refresh()
 	var first: int = owner_scrollbar.first
 	if owner_selected < first: first = owner_selected
-	elif owner_selected >= first+16: first = owner_selected-15
+	elif owner_selected >= first+owner_scrollbar.page: first = owner_selected-owner_scrollbar.page+1
 	owner_scrollbar.move_to(first)
 	return true
 
@@ -359,8 +374,8 @@ func feed_owner_key(event: InputEvent) -> bool:
 	match event.keycode:
 		KEY_UP,KEY_8,KEY_KP_8: delta = -1
 		KEY_DOWN,KEY_2,KEY_KP_2: delta = 1
-		KEY_PAGEUP,KEY_9,KEY_KP_9: delta = -16
-		KEY_PAGEDOWN,KEY_3,KEY_KP_3: delta = 16
+		KEY_PAGEUP,KEY_9,KEY_KP_9: delta = -owner_scrollbar.page
+		KEY_PAGEDOWN,KEY_3,KEY_KP_3: delta = owner_scrollbar.page
 	if delta == 0: return false
 	if state.busy(): return true
 	var count: int = choices.size() + (1 if remove.visible else 0)
@@ -369,7 +384,7 @@ func feed_owner_key(event: InputEvent) -> bool:
 	refresh()
 	var first: int = owner_scrollbar.first
 	if owner_selected < first: first = owner_selected
-	elif owner_selected >= first + 16: first = owner_selected - 15
+	elif owner_selected >= first + owner_scrollbar.page: first = owner_selected - owner_scrollbar.page + 1
 	owner_scrollbar.move_to(first)
 	return true
 

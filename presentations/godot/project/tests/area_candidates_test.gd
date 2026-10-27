@@ -60,6 +60,18 @@ func run() -> void:
 	refresh.poll(1,0); fresh.clear(); service.reply(5,facts)
 	check(fresh.rows.is_empty() and refresh.ticket==0,"closed picker rejects background facts")
 	service.calls.clear();service.detached.clear()
+	fresh.open(area)
+	var resize_rows:Array=[]
+	for index in 30:resize_rows.append({"id":index})
+	fresh.accept({"list_revision":123,"candidates":resize_rows},fresh.pending.duplicate(true))
+	refresh.poll(0,0,21)
+	check(service.calls.size()==1 and service.calls[0].request.candidate_limit==21,"tall picker requests every visible row")
+	refresh.poll(0,0,13)
+	check(service.detached.has(1) and service.calls.size()==2 and service.calls[1].request.candidate_limit==13,"resize retires the obsolete visible range immediately")
+	var old_resize:Dictionary=facts.duplicate(true);old_resize.candidates=[{"id":0,"name":"stale"}]
+	service.reply(0,old_resize)
+	check(not fresh.rows[0].has("name"),"late old-height facts cannot replace the resized range")
+	fresh.clear();service.calls.clear();service.detached.clear()
 	var recipes: Array = []
 	for index in 96: recipes.append({"id":index,"sheet_icon":{"layers":[[index]],"tile_pages":["fixture"]}})
 	fresh.open(area); fresh.accept({"list_revision":456,"candidates":recipes},fresh.pending.duplicate(true))

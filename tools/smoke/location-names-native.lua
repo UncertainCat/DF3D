@@ -596,6 +596,10 @@ if recognition_case=='petitiontracker' then
    guards[#guards+1]={bytes=bytes,address=address,size=size}
   end
   guard(m);guard(g)
+  local current_site=assert(df.world_site.find(df.global.plotinfo.site_id))
+  guard(current_site)
+  for _,link in ipairs(current_site.entity_links)do guard(link)end
+  for _,building in ipairs(current_site.buildings)do guard(building);local contents=building:getContents();if contents then guard(contents)end end
   for _,id in ipairs(fixture_agreements)do
    local agreement=df.agreement.find(id);guard(agreement);guard(agreement.details[0]);guard(agreement.details[0].data.Location);guard(agreement.parties[0])
   end
@@ -604,6 +608,31 @@ if recognition_case=='petitiontracker' then
    assert(code==0,text);local result=require('json').decode(text);assert(result.valid,'tracker provider unavailable');return result.rows
   end
   row.provider=read();assert(require('json').encode(row.provider)==require('json').encode(read()),'tracker repeated read unstable')
+  if row.popup_cells then
+   local id=label=='map-hover-blank' and fixture_agreements[4] or a.id
+   local function popup_read()
+    local text,code=dfhack.run_command_silent('df3d','continuing-agreement-details-read',tostring(id))
+    assert(code==0,text);local value=require('json').decode(text);assert(value.valid,'popup provider unavailable');return value
+   end
+   row.popup_provider=popup_read();local p=row.popup_provider
+   assert(require('json').encode(p)==require('json').encode(popup_read()),'popup repeated read unstable')
+   if p.entity_type==5 or p.entity_type==10 then
+    local temple_case=p.entity_type==5;local noun=temple_case and 'temple' or 'guildhall';local y=temple_case and 14 or 13
+    local expected=p.location_id>=0 and ('Current '..(p.matching_locations>1 and 'top ' or '')..noun..' location:') or ('No '..noun..' location currently assigned to a zone.')
+    assert(row.lines[y+1]:find(expected,1,true),'popup location status mismatch '..label)
+    if p.location_id>=0 then
+     local text=dfhack.utf2df(p.location_name)..', '..p.location_value
+     assert(row.lines[y+2]:find(text,1,true),'popup selected location mismatch '..label..' '..text)
+    end
+    local color=p.location_id<0 and 4 or (p.tier_met and 2 or 6)
+    for _,cell in ipairs(row.popup_cells)do
+     if cell.y==y and cell.ch>=65 and cell.ch<=122 then assert(cell.fg==color and cell.bg==0 and cell.bold,'popup location color mismatch '..label)end
+    end
+    if p.required_value>=0 then assert(row.lines[12]:find('('..p.required_value,1,true),'popup requirement mismatch '..label)end
+   else
+    assert(p.location_id==-1 and p.matching_locations==0 and p.required_value==-1,'blank popup fabricated facts')
+   end
+  end
   for _,v in ipairs(guards)do assert(dfhack.internal.memcmp(v.bytes,v.address,v.size)==0,'tracker read changed guarded state');df.delete(v.bytes)end
   row.provider_guards=true
   for index,facts in ipairs(row.provider)do

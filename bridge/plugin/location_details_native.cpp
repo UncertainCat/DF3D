@@ -41,6 +41,8 @@
 #include "df/agreement_details_type.h"
 #include "df/religious_practice_type.h"
 #include "df/historical_entity_type.h"
+#include "df/entity_focusst.h"
+#include "df/abstract_building_guildhallst.h"
 #include <algorithm>
 #include <numeric>
 
@@ -697,6 +699,83 @@ std::optional<std::vector<ContinuingAgreementRow>> observeNativeContinuingAgreem
     rows.push_back(std::move(row));
   }
   return rows;
+}
+std::optional<ContinuingAgreementDetails> observeNativeContinuingAgreementDetails(int32_t agreementId) {
+  if(agreementId<0)return std::nullopt;
+  const auto rows=observeNativeContinuingAgreements();if(!rows)return std::nullopt;
+  const auto found=std::find_if(rows->begin(),rows->end(),[&](const auto& r){return r.agreementId==agreementId;});
+  if(found==rows->end())return std::nullopt;
+  static const bool compatible=[] {
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t count) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0x3f7dda,0x1524)==UINT64_C(0x66ecea10d11efa5f) &&
+      hash(0x2b61e0,0xbe)==UINT64_C(0xb3a11231a75a6713) &&
+      hash(0xbbef0,0x9a)==UINT64_C(0xb674b3f5153bea03);
+  }();
+  if(!compatible)return std::nullopt;
+  ContinuingAgreementDetails result;result.agreement=*found;
+  const bool temple=found->entityType==5;
+  if(!temple && found->entityType!=10)return result;
+  const auto& difficulty=df::global::plotinfo->main.custom_difficulty;
+  if(found->tier==1)result.requiredValue=temple?difficulty.temple_value:difficulty.guildhall_value;
+  if(found->tier==2)result.requiredValue=temple?difficulty.temple_complex_value:difficulty.grand_guildhall_value;
+  const auto* agreement=df::agreement::find(agreementId);
+  const auto* data=agreement->details.front()->data.Location;
+  auto* site=df::world_site::find(df::global::plotinfo->site_id);
+  if(!site)return result;
+  result.siteAvailable=true;
+  if(site->buildings.size()>65536)return std::nullopt;
+  // The native selector is inline in the renderer. Translate its ordered scan;
+  // never call the renderer. Guild helper2b61e0 borrows live cache indices, so
+  // preserve its scan but pass a separately owned index to native bbef0.
+  const auto* guildSite=df::global::plotinfo->main.fortress_site;
+  using EntityLookup=df::historical_entity*(*)(const std::vector<df::historical_entity*>*,int32_t,int32_t*);
+  const auto lookup=reinterpret_cast<EntityLookup>(reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr))+0xbbef0);
+  const auto guildForProfession=[&](int32_t profession) -> const df::historical_entity* {
+    if(!guildSite)return nullptr;
+    for(const auto* link:guildSite->entity_links) {
+      if(!link || !link->flags.bits.capital)continue;
+      int32_t ownedIndex=-1;
+      const auto* entity=lookup(&df::global::world->entities.all,link->entity_id,&ownedIndex);
+      if(!entity || entity->flags.bits.dead || int(entity->type)!=10)continue;
+      for(const auto* focus:entity->guild_professions)
+        if(focus && int(focus->type)==0 && int(focus->profession)==profession)return entity;
+    }
+    return nullptr;
+  };
+  df::abstract_building* selected=nullptr;
+  for(auto* building:site->buildings) {
+    if(!building)return std::nullopt;
+    if(building->flags.is_set(df::abstract_building_flags::DOES_NOT_EXIST) ||
+       building->flags.is_set(df::abstract_building_flags::WG_RUINED) ||
+       building->flags.is_set(df::abstract_building_flags::PWG_RUINED))continue;
+    if(temple) {
+      if(building->getType()!=df::abstract_building_type::TEMPLE)continue;
+      const auto* candidate=static_cast<df::abstract_building_templest*>(building);
+      if(candidate->deity_type!=data->deity_type || candidate->deity_data.practice_id!=data->deity_data.practice_id)continue;
+    } else {
+      if(building->getType()!=df::abstract_building_type::GUILDHALL)continue;
+      const auto* candidate=static_cast<df::abstract_building_guildhallst*>(building);
+      const auto* guild=guildForProfession(int(candidate->contents.profession));
+      if(!guild || guild->id!=found->entityId)continue;
+    }
+    ++result.matchingLocations;
+    const auto* contents=building->getContents();if(!contents)return std::nullopt;
+    if(contents->location_value>result.locationValue){selected=building;result.locationValue=contents->location_value;}
+  }
+  if(selected) {
+    result.locationId=selected->id;result.locationTier=selected->getContents()->location_tier;
+    result.tierMet=result.locationTier>=found->tier;
+    if(const auto* name=selected->getName()) {
+      const auto text=formatNativeLocationName(copyLocationName(*name));if(!text)return std::nullopt;
+      result.locationName=text->english;
+      if(result.locationName.size()>4096)return std::nullopt;
+    }
+  }
+  return result;
 }
 std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32_t id) {
   const auto observed=observeNativeLocationDetailsCore(siteId,id);

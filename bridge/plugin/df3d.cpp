@@ -2234,6 +2234,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
+      if (parameters[0] == "continuing-agreement-details-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& text=parameters[1];
+        const auto parsed=std::from_chars(text.data(),text.data()+text.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        const auto result=df3d_area::observeNativeContinuingAgreementDetails(id);
+        Json::Value value(Json::objectValue);value["valid"]=result.has_value();
+        if(result) {
+          value["agreement_id"]=result->agreement.agreementId;value["entity_type"]=result->agreement.entityType;
+          value["required_value"]=result->requiredValue;value["matching_locations"]=result->matchingLocations;
+          value["location_id"]=result->locationId;value["location_value"]=result->locationValue;
+          value["location_tier"]=result->locationTier;value["tier_met"]=result->tierMet;
+          value["site_available"]=result->siteAvailable;value["location_name"]=result->locationName;
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
       if (parameters[0] == "location-recognition-read") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t ids[2]{};

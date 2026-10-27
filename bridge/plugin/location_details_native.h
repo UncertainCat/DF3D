@@ -17,6 +17,15 @@ struct ContinuingAgreementRow {
   std::string heading,applicant,date;
 };
 std::optional<std::vector<ContinuingAgreementRow>> observeNativeContinuingAgreements();
+struct ContinuingAgreementDetails {
+  ContinuingAgreementRow agreement;
+  int32_t requiredValue=-1,matchingLocations=0,locationId=-1,locationValue=0,locationTier=-1;
+  bool siteAvailable=false,tierMet=false;
+  std::string locationName;
+};
+// Independent read of the native popup's semantic inputs. No renderer/UI calls
+// or writes to entity-site lookup caches. Unknown applicant types remain blank.
+std::optional<ContinuingAgreementDetails> observeNativeContinuingAgreementDetails(int32_t agreementId);
 // World facts for the staged recognition workflow. No menu state or mutation
 // permission is implied; the command transaction/typed transport is separate.
 struct LocationRecognitionFacts {

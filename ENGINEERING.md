@@ -1175,10 +1175,29 @@ bbef0 with a live link cache index. That lookup writes the index, so this is
 not an owned-input runtime helper. Live field addresses verify that RVA239a1f0
 is plotinfo.main.fortress_site and offset428 is world_site.entity_links. The
 helper requires the capital link flag, a live guild and a matching profession
-focus; it writes entity_site_link.entity_cache_index. A safe independent path remains unresolved;
-do not call the whole renderer or borrow these caches. The visible HUD, popup
-provider and rendering, and native visibility, sizing and interaction
-integration remain unfinished.
+focus; it writes entity_site_link.entity_cache_index. Do not call the whole
+renderer or borrow these caches.
+
+`observeNativeContinuingAgreementDetails` now exposes pointer-free popup facts
+for a currently listed agreement. It reuses the native tracker formatters and
+owned name copies, reads required values from current difficulty settings, and
+translates the pinned inline location scan. For guild matching, native bbef0
+receives a local index, preserving its lookup without writing the live link.
+The provider pins renderer3f7dda..3f92fe, guild helper2b61e0 and lookupbbef0;
+unknown applicant types retain blank facts, invalid IDs fail, and oversized
+location lists or names fail without partial results. It does not refresh
+location value/tier caches. The diagnostic command is
+`df3d continuing-agreement-details-read <agreement-id>`.
+
+MSVC builds the provider; protected native115155 compares all30 captured popup
+cases against selected-location/status text, required values and status colors.
+Repeated reads match. Byte guards cover UI/GPS, current site, its entity links,
+buildings and contents, plus the diagnostic agreement allocations; all remain
+unchanged. Owned DF157652 exits unsaved with source unchanged. Fixture
+`popup_provider_reference` retains the facts, guard scope and installed plugin
+hash. Core passes in `build/qa/petition-popup-provider`. Typed popup transport,
+the visible HUD and popup rendering, and native visibility, sizing and
+interaction integration remain unfinished.
 
 ## Native Location name editor discovery
 

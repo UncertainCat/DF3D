@@ -7880,7 +7880,7 @@
     ],
     "gaps": [
       "Non-ASCII/long popup names, guild-link eligibility and duplicate profession links",
-      "Native semantic helper audit and owned provider",
+      "Typed popup transport and viewer lifecycle",
       "Popup frame artwork and rendered viewer comparison",
       "Timing, dismissal and interaction boundaries"
     ],
@@ -7894,9 +7894,531 @@
       "selection": "Highest contents.value strictly above initial zero; first wins equal values. Count includes matching zero-value locations even though none is selected.",
       "temple_match": "Location deity/religion fields must match agreement Location payload.",
       "guild_match": "Native 2b61e0 reads plotinfo.main.fortress_site (RVA239a1f0), iterates world_site.entity_links (offset428), requires capital flag, live guild entity, and matching profession focus. bbef0 writes entity_site_link.entity_cache_index; direct call would borrow live cache storage.",
-      "runtime_status": "Not implemented; renderer is not a callable runtime API.",
+      "runtime_status": "Read-only provider implemented with pinned inline scan and native bbef0 using a local cache index; renderer is never called.",
       "verified_cases": "Temple zero/one value, value10000 with tier1 and tier2, excluded bits0/1/3, religion mismatch. Multiple temples higher/lower/tied/zero; guild-selected/value/tier/zero/wrong-profession/exclusions with native site-linked entity1316.",
       "completion_color": "Stored location_tier >= requested tier is green2; otherwise yellow6. No selected location is red4. Bold, background0."
     }
+  },
+  "popup_provider_reference": {
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-115155",
+    "result_sha256": "5fadc7afd507b3b89e8bf5c1c601b1483e47e0c5554c033da57c4a9d857ed1ce",
+    "plugin_sha256": "3F4ECD77A3508B5B67539CF3741B5C1093ACFC64021DBE6875991419A4254368",
+    "status": "passed",
+    "owned_exit": "unsaved",
+    "source_manifest": "unchanged",
+    "guards": "main interface, GPS, current site, entity-site links, site buildings and contents, diagnostic agreements/subjects/payloads/parties; not every world allocation",
+    "comparisons": "Native status/location text, required value and native status colors; repeat-stable observations",
+    "cases": [
+      {
+        "name": "tracker-map-hover-heading",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 5675,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-applicant",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 5675,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-date",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 5675,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-blank",
+        "facts": {
+          "agreement_id": 2147483603,
+          "entity_type": 1,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": -1,
+          "site_available": false,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 5675,
+          "matching_locations": 1,
+          "required_value": 2000,
+          "site_available": true,
+          "tier_met": true,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-invalid-tier",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 5675,
+          "matching_locations": 1,
+          "required_value": -1,
+          "site_available": true,
+          "tier_met": true,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guildhall",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": 2000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-grand-guildhall",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guild-invalid-tier",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": -1,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-zero-value",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-one-value",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 1,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-value-met-tier-unmet",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 10000,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-tier-met",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 2,
+          "location_value": 10000,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": true,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-excluded-0",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-excluded-1",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-excluded-3",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-no-match",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-higher-second",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 2147483000,
+          "location_name": "Diagnostic Second Temple",
+          "location_tier": 2,
+          "location_value": 5676,
+          "matching_locations": 2,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": true,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-tie",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 5675,
+          "matching_locations": 2,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-lower-second",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 5675,
+          "matching_locations": 2,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-zero-second",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 5675,
+          "matching_locations": 2,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-both-zero",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 5,
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 2,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guild-selected",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": 2147483000,
+          "location_name": "Diagnostic Guildhall",
+          "location_tier": 1,
+          "location_value": 2000,
+          "matching_locations": 2,
+          "required_value": 2000,
+          "site_available": true,
+          "tier_met": true,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guild-value-met-tier-unmet",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": 2147483000,
+          "location_name": "Diagnostic Guildhall",
+          "location_tier": 1,
+          "location_value": 10000,
+          "matching_locations": 2,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guild-tier-met",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": 2147483000,
+          "location_name": "Diagnostic Guildhall",
+          "location_tier": 2,
+          "location_value": 10000,
+          "matching_locations": 2,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": true,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guild-zero-value",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": 5,
+          "location_name": "The Pears of Hide",
+          "location_tier": 0,
+          "location_value": 825,
+          "matching_locations": 2,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guild-wrong-profession",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": 5,
+          "location_name": "The Pears of Hide",
+          "location_tier": 0,
+          "location_value": 825,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guild-excluded-0",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": 5,
+          "location_name": "The Pears of Hide",
+          "location_tier": 0,
+          "location_value": 825,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guild-excluded-1",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": 5,
+          "location_name": "The Pears of Hide",
+          "location_tier": 0,
+          "location_value": 825,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      },
+      {
+        "name": "tracker-map-hover-guild-excluded-3",
+        "facts": {
+          "agreement_id": 2147483604,
+          "entity_type": 10,
+          "location_id": 5,
+          "location_name": "The Pears of Hide",
+          "location_tier": 0,
+          "location_value": 825,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false,
+          "valid": true
+        },
+        "guarded_unchanged": true
+      }
+    ]
   }
 }

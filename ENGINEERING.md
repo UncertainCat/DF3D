@@ -420,6 +420,18 @@ viewport track/drag movement matches all nine native cases, their16x540
 scrollbar pixels match exactly, and wheel/Shift-wheel input matches the observed
 positions. Short-list drag geometry and timed tooltip behavior remain unverified.
 
+`areas_acceptance.ps1 -NamingScene -NamingDisconnect` verifies integrated
+connection loss with a Select edit and a dependent whole-name Random queued
+behind it. Protected `build/areas-acceptance-20261026-234714` checks both an unsent
+Select (`not_sent`) and an applied but UI-unobserved Select (`unknown`). Both
+retire naming, its identity/receipt and dependent queue. Reconnect emits no
+retry and does not reopen Details; explicit reopening reads the current native
+name. Independent native checks confirm the unsent edit changes nothing, the
+sent Select remains applied and the discarded Random consumes no RNG. Source
+and clone manifests stay unchanged and the owned game exits unsaved. The run
+passes with only the known separate-thread notice. Producer replacement and
+world-epoch restart acceptance remain separate unfinished cases.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

@@ -6,6 +6,13 @@ var details_parent_checked: Dictionary={}
 var details_staff_count:=0
 var quantity_cases:=0
 func pointer_areas() -> void:
+	if FileAccess.file_exists(directory+"/naming-disconnect.txt"):
+		await seed_catalog()
+		for sent in [false,true]:
+			await naming_disconnect(sent)
+			if stopped:return
+		write_json("naming-disconnect-evidence.json",{"queued":"not_sent","sent":"unknown","reconnected_without_replay":true})
+		return
 	if FileAccess.file_exists(directory+"/quantity-lifecycle.json"):
 		await quantity_lifecycle(str(JSON.parse_string(FileAccess.get_file_as_string(directory+"/quantity-lifecycle.json")).mode))
 		return
@@ -469,6 +476,56 @@ func naming_routes(locations: Array) -> void:
 	write_json("naming-scene-evidence.json",{"locations":cases,"mutations":cases*5+1,"pending_close_cases":2,"assigned_routes":cases,"scope":"chooser and assigned quill entry, full choices, four edit modes and native readback, Done refresh, reopen/Escape/Back, queued cancellation and sent late receipt after dismissal"})
 	print("LOCATION_NAMING_SCENE_PASS locations=",cases)
 	editor.close_panel()
+
+func naming_disconnect(sent: bool) -> void:
+	step="naming disconnect sent="+str(sent)
+	await quantity_lifecycle_open()
+	if stopped:return
+	var details=editor.details_view
+	await click_control(details.rename_button)
+	var names=details.name_workflow.names
+	if not await wait_ui(func():return names.phase==names.Phase.Ready,"disconnect naming choices"):return
+	var id: int=names.snapshot.id
+	await native("name_guard",{"location_id":id})
+	var expected: Dictionary=names.snapshot.value.duplicate(true)
+	await pointer_click(Vector2(744,178))
+	var ticket: int=names.ticket
+	if not check(ticket>0 and names.phase==names.Phase.Editing,"disconnect naming edit missing"):return
+	await pointer_click(Vector2(832,82))
+	if not check(names.queue.size()==1,"disconnect naming dependent Random missing"):return
+	if sent:
+		var reply:=await quantity_unobserved(ticket)
+		if stopped:return
+		expected=reply.area.location_name.value.duplicate(true)
+	world.detach_live();actions.poll()
+	var outcome: Dictionary=actions.result(ticket)
+	write_json("naming-disconnect-%s.json"%str(sent),outcome)
+	if not check(outcome.get("outcome")==("unknown" if sent else "not_sent"),"naming disconnect outcome differs"):return
+	if not check(not details.name_workflow.active and names.identity.is_empty() and names.snapshot.is_empty() and names.queue.is_empty() and names.ticket==0 and not editor.details_layer.visible,"disconnect retained naming authority"):return
+	if not check(not actions._requests.has(ticket) and actions._queue.is_empty() and actions._active==0,"disconnected naming remains dispatchable"):return
+	if not sent:await native("name_unchanged",{"location_id":id})
+	if not check(world.attach(),"naming reconnect failed"):return
+	var deadline:=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();editor._process(0.02)
+		if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
+		await create_timer(0.02).timeout
+	if not check(bool(world.poll_management().get("transport_alive",false)),"naming reconnect timeout"):return
+	var next_ticket: int=actions._next_ticket
+	for frame in 30:
+		world.poll();actions.poll();editor._process(0.02);await process_frame
+	if not check(actions._next_ticket==next_ticket and names.identity.is_empty() and not details.name_workflow.active and not editor.details_layer.visible,"reconnect replayed or reopened naming"):return
+	var native_value: Dictionary=expected.duplicate(true)
+	native_value.first_name_bytes=Array(native_value.first_name_bytes);native_value.nickname_bytes=Array(native_value.nickname_bytes)
+	await native("name_read",{"location_id":id,"value":native_value})
+	await native("name_rng_unchanged",{"location_id":id})
+	await quantity_lifecycle_open()
+	if stopped:return
+	await click_control(details.rename_button)
+	if not await wait_ui(func():return names.phase==names.Phase.Ready,"fresh naming after reconnect"):return
+	if not check(names.snapshot.value==expected and names.queue.is_empty(),"reopened naming reused stale state"):return
+	editor.close_panel()
+	print("LOCATION_NAMING_DISCONNECT_PASS sent=",sent)
 
 func naming_close_pending(sent: bool) -> void:
 	step="naming pending close sent="+str(sent)

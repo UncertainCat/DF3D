@@ -3514,7 +3514,7 @@
     {
       "path": "presentations/godot/project/tests/areas_location_scene_live.gd",
       "status": "manual",
-      "reason": "Protected full fortress scene location creation/Back/removal via viewport input and native readback; areas_acceptance.ps1 -LocationScene on an owned never-saved clone. Focused -NamingScene verifies naming entry, edits, native name/RNG readback and Details/chooser refresh."
+      "reason": "Protected full fortress scene location creation/Back/removal via viewport input and native readback; areas_acceptance.ps1 -LocationScene on an owned never-saved clone. Focused -NamingScene verifies naming entry, edits, native name/RNG readback and Details/chooser refresh; add -NamingDisconnect for queued/sent disconnect and reconnect without replay."
     },
     {
       "path": "presentations/godot/project/tests/areas_multi_live.gd",

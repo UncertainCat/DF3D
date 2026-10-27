@@ -38,6 +38,8 @@ else
   assert(same(request.value,value(name)),'structured name readback differs')
  elseif request.op=='name_guard' then
   _G.df3d_name_transport_guard={name=value(name),rng=rng()}
+ elseif request.op=='name_rng_unchanged' then
+  assert(same(assert(_G.df3d_name_transport_guard).rng,rng()),'discarded dependent naming action consumed RNG')
  elseif request.op=='name_unchanged' then
   local guard=assert(_G.df3d_name_transport_guard)
   assert(same(guard.name,value(name)),'rejected/read request changed name')

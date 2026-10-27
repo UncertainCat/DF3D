@@ -8305,5 +8305,21 @@
       }
     ],
     "binding_evidence": "Installed data/init/interface.txt binds unmodified wheel to CONTEXT_SCROLL_UP/DOWN and shift-wheel to CONTEXT_SCROLL_PAGEUP/PAGEDOWN; native helper140f2b0 uses interface keys21..24."
+  },
+  "disconnect_reference": {
+    "run": "build/areas-acceptance-20261026-234714",
+    "command": "areas_acceptance.ps1 -NamingScene -NamingDisconnect",
+    "result_sha256": "0182a817825b8518dc881ffb9e948cab7ca4b591a0031518f9f26a0ae72e3847",
+    "cases": [
+      "queued Select plus dependent whole Random: not_sent; native name/RNG unchanged",
+      "sent Select with unobserved success plus dependent whole Random: unknown; native Select retained, RNG unchanged",
+      "both reconnect without retry or reopening; explicit fresh editor reads current native value"
+    ],
+    "source_and_clone_unchanged": true,
+    "owned_exit_without_save": true,
+    "diagnostics": "known separate-thread notice only",
+    "omissions": [
+      "producer restart/world-epoch replacement"
+    ]
   }
 }

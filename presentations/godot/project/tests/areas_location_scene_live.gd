@@ -1545,6 +1545,8 @@ func religious_staff_route(locations: Array) -> void:
 	var view=details.staff_view
 	if lifecycle=="tracker":
 		await tracker_transport();return
+	if lifecycle.begins_with("tracker-"):
+		await tracker_lifecycle(lifecycle.trim_prefix("tracker-"));return
 	if lifecycle.begins_with("indicators-"):
 		await indicators_lifecycle(lifecycle.trim_prefix("indicators-"));return
 	if lifecycle.begins_with("specialization-"):
@@ -1715,6 +1717,52 @@ func tracker_transport() -> void:
 		evidence.append({"phase":phase,"rows":rows,"ticket":ticket})
 	reader.dispose()
 	write_json("tracker-transport-evidence.json",{"cases":evidence,"reader_retired":not reader.active and reader.snapshot().is_empty()})
+	editor.close_panel()
+
+func tracker_lifecycle(mode: String) -> void:
+	step="tracker lifecycle "+mode
+	var reader=preload("res://scripts/continuing_agreements_reader.gd").new();reader.configure(actions)
+	var expected:=await native("religious_tracker",{"seed":true})
+	if stopped:return
+	if not await wait_ui(func():return actions._active==0 and actions._queue.is_empty(),"tracker initial queue drain"):return
+	reader.set_active(true)
+	if not await wait_ui(func():return reader.ready,"tracker initial rows"):return
+	var original: Array=reader.snapshot()
+	if not check(original.size()==expected.rows.size() and original.size()==3,"tracker fixture absent"):return
+	reader.refresh();var ticket: int=reader.ticket
+	if not check(ticket>0,"tracker lifecycle read absent"):return
+	if mode!="queued":
+		var reply:=await quantity_unobserved(ticket)
+		if stopped:return
+		if not check(reply.agreement.tracker and reply.agreement.tracker_rows==original,"tracker held receipt differs"):return
+	if mode=="late":
+		reader.set_active(false)
+		await native("religious_tracker",{"restore":true})
+		if stopped:return
+		reader.set_active(true);var replacement: int=reader.ticket
+		if not check(replacement>ticket,"tracker replacement not queued"):return
+		actions.poll()
+		if not check(reader.snapshot().is_empty(),"late tracker receipt revived old rows"):return
+		if not await wait_ui(func():return reader.ready,"tracker replacement rows"):return
+		if not check(reader.snapshot().is_empty(),"tracker replacement retained old rows"):return
+	else:
+		world.detach_live();actions.poll()
+		if not check(actions.result(ticket).get("outcome")==("not_sent" if mode=="queued" else "unknown"),"tracker disconnect outcome"):return
+		if not check(not reader.active and not reader.ready and reader.ticket==0 and reader.snapshot().is_empty(),"tracker session retained rows"):return
+		if not check(not actions._requests.has(ticket) and actions._active==0 and actions._queue.is_empty(),"tracker request survived disconnect"):return
+		if not check(world.attach(),"tracker reconnect failed"):return
+		if not await wait_ui(func():return world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)),"tracker reconnect"):return
+		var next_ticket: int=actions._next_ticket
+		for frame in 30:
+			world.poll();actions.poll();reader.poll(0.1);editor._process(0.02);await process_frame
+		if not check(actions._next_ticket==next_ticket and not reader.active and reader.snapshot().is_empty(),"tracker reconnect replayed"):return
+		reader.set_active(true)
+		if not await wait_ui(func():return reader.ready,"tracker fresh rows"):return
+		if not check(reader.snapshot()==original,"tracker fresh facts differ"):return
+		await native("religious_tracker",{"restore":true})
+		if stopped:return
+	reader.dispose()
+	write_json("tracker-lifecycle-evidence.json",{"mode":mode,"ticket":ticket,"retired":not reader.active and reader.snapshot().is_empty(),"fresh_facts_verified":true})
 	editor.close_panel()
 
 func indicators_scroll() -> void:

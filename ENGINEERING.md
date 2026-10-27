@@ -1111,9 +1111,19 @@ owners, session retirement, refused submissions and synchronous closure.
 Protected tracker run112254 repeats the three transport phases through this
 reader, comparing every row field with native readback and verifying disposal.
 Owned DF153752 exits unsaved with both save manifests unchanged; this run is
-`passed_with_known_issues` for the render-thread notice only. Actual disconnect,
-held-reply and producer-restart reader checks remain pending, as do the visible
-HUD and native visibility, sizing and interaction integration.
+`passed_with_known_issues` for the render-thread notice only.
+
+Protected tracker-queued112755, tracker-sent112851 and tracker-late112948
+exercise the actual action service and reader. Queued and dispatched reads
+retire as not_sent and unknown on disconnect; rows clear, reconnect does not
+replay, and explicit activation recovers identical native facts. The late case
+holds a successful native reply, dismisses the reader, removes the diagnostic
+agreements and starts a replacement read: old rows never reappear, and the new
+observation is ready and empty. All three owned runs exit unsaved with both
+save manifests unchanged and only the known render-thread notice. Core and
+reader checks pass cleanly in `build/qa/continuing-agreements-lifecycle`.
+Producer-restart checks remain pending, as do the visible HUD and native
+visibility, sizing and interaction integration.
 
 ## Native Location name editor discovery
 

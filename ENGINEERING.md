@@ -1241,9 +1241,28 @@ Only the ordinary construction Catalog is submitted automatically; the new
 fortress has no unsaved diagnostic agreements, and the old row cannot open
 a popup. All three successful runs preserve both save manifests, exit owned
 DF unsaved, and report only the known render-thread notice. Core and reader
-checks pass in `build/qa/petition-popup-lifecycle-final`. The visible HUD and
-popup rendering, and native visibility, sizing and interaction integration
-remain unfinished.
+checks pass in `build/qa/petition-popup-lifecycle-final`.
+
+`continuing_agreement_popup_view.gd` renders the semantic popup snapshot using
+installed frame pieces, bitmap glyphs and palette. Copy and row/color selection
+follow native3f7dda..3f92fe. Applicant truncation follows3f8223/3f8b00:
+56 or more CP437 characters become the first52 plus three periods. The native
+coordinate base is the last grid column, so a150-column viewport places the
+frame at52..112, with text starting at54. Its joined top uses the same installed
+pieces as terrain hover. No data query or input handling occurs in the view.
+
+`popup_render_reference` retains provider rows and bounded frame-tile runs from
+native115155; expected text/styles remain independently captured in
+`popup_reference`. The real-renderer check `continuing_agreement_popup_view_capture`
+compares every pixel of captured columns53..112, rows3..20 across all30 popup
+cases, including blank applicants, invalid tiers, missing/zero-value locations,
+multiple locations and guild/temple completion colors. It passes in
+`build/qa/petition-popup-view-fixed` with known render-thread/device-finalize/
+shutdown-object diagnostics. This is a cell-and-installed-art oracle, not an OS
+screenshot comparison; the original capture omitted the leftmost frame column.
+Long/non-ASCII names still need native reference coverage. The tracker list
+renderer, HUD visibility, hover timing, resize/overflow and input integration
+remain unfinished; the isolated popup is not exposed in gameplay.
 
 ## Native Location name editor discovery
 

@@ -8477,5 +8477,710 @@
         "ticket": 17
       }
     ]
+  },
+  "popup_render_reference": {
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-115155",
+    "result_sha256": "5fadc7afd507b3b89e8bf5c1c601b1483e47e0c5554c033da57c4a9d857ed1ce",
+    "scope": "Inputs from native semantic provider; frame tile runs from captured cells. Leftmost column52 was outside capture; no OS screenshot parity claim.",
+    "cases": [
+      {
+        "name": "tracker-map-hover-heading",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 0,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-applicant",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 0,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-date",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 0,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-blank",
+        "row": {
+          "agreement_id": 2147483603,
+          "applicant": "",
+          "date": "",
+          "entity_id": 865,
+          "entity_type": 1,
+          "heading": "",
+          "profession": -1,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 0,
+          "year_tick": 0
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple",
+          "profession": 0,
+          "subject_id": 0,
+          "tier": 1,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-invalid-tier",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "",
+          "profession": 0,
+          "subject_id": 0,
+          "tier": 0,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guildhall",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 375,
+          "entity_type": 10,
+          "heading": "Build guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 1,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-grand-guildhall",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 375,
+          "entity_type": 10,
+          "heading": "Build grand guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guild-invalid-tier",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 375,
+          "entity_type": 10,
+          "heading": "",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 0,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-zero-value",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-one-value",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-value-met-tier-unmet",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-tier-met",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-excluded-0",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-excluded-1",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-excluded-3",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-no-match",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-higher-second",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-tie",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-lower-second",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-zero-second",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-both-zero",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "The Bejeweled Creed",
+          "date": "1st Obsidian, 106",
+          "entity_id": 383,
+          "entity_type": 5,
+          "heading": "Build temple complex",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guild-selected",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 1316,
+          "entity_type": 10,
+          "heading": "Build guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 1,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guild-value-met-tier-unmet",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 1316,
+          "entity_type": 10,
+          "heading": "Build grand guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guild-tier-met",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 1316,
+          "entity_type": 10,
+          "heading": "Build grand guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guild-zero-value",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 1316,
+          "entity_type": 10,
+          "heading": "Build grand guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guild-wrong-profession",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 1316,
+          "entity_type": 10,
+          "heading": "Build grand guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guild-excluded-0",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 1316,
+          "entity_type": 10,
+          "heading": "Build grand guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guild-excluded-1",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 1316,
+          "entity_type": 10,
+          "heading": "Build grand guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      },
+      {
+        "name": "tracker-map-hover-guild-excluded-3",
+        "row": {
+          "agreement_id": 2147483604,
+          "applicant": "Farmers guild",
+          "date": "1st Obsidian, 106",
+          "entity_id": 1316,
+          "entity_type": 10,
+          "heading": "Build grand guildhall",
+          "profession": 41,
+          "subject_id": 0,
+          "tier": 2,
+          "year": 106,
+          "year_tick": 369600
+        }
+      }
+    ],
+    "frame_runs": [
+      {
+        "x": 53,
+        "end": 111,
+        "y": 3,
+        "tile": 119417
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 3,
+        "tile": 119419
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 4,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 4,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 5,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 5,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 6,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 6,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 7,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 7,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 8,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 8,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 9,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 9,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 10,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 10,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 11,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 11,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 12,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 12,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 13,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 13,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 14,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 14,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 15,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 15,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 16,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 16,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 17,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 17,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 18,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 18,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 19,
+        "tile": 119353
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 19,
+        "tile": 119354
+      },
+      {
+        "x": 53,
+        "end": 111,
+        "y": 20,
+        "tile": 119417
+      },
+      {
+        "x": 112,
+        "end": 112,
+        "y": 20,
+        "tile": 119418
+      }
+    ]
   }
 }

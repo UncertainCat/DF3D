@@ -14,6 +14,7 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 | Animal containment tooltip callbacks swap X/Y hitbox coordinates. | Activate all four native messages on the visible cage/chain icons. | Implemented; `fixtures/areas/native_zone_animals.json` field `animal_containment_hover_reference`, GPU `build/qa/animal-containment-hover` and `build/qa/animal-containment-click`. |
 | Animal picker blank right edge lets clicks select the map behind the visible panel, changing the parent zone while assignments still target the original zone. | Consume clicks inside the visible panel while releasing search focus and preserving the picker target. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_blank_input`, native `build/stockpile-storage-native-zone-animals-20261026-150439`, rendered `build/areas-acceptance-20261026-150814`. |
 | Animal picker remains active after selecting another zone or empty terrain, so Enter assigns to an old, no-longer-shown zone. | Close the picker and retire its assignment target when map selection changes. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_outside_panel_selection`, native `build/stockpile-storage-native-zone-animals-20261026-153041`, rendered `build/areas-acceptance-20261026-153847`. |
+| Minimum-height hospital Details has no staff rows, but draws a malformed staff scrollbar over soap controls and scrolls an invisible list. | Proposed: hide the malformed scrollbar when no staff row fits. | Awaiting maintainer approval; not implemented. `native_location_details.json.staff_height_reference`, protected `build/stockpile-storage-native-location-names-20261027-010412`. |
 
 ## Native Location supply editing reference
 
@@ -527,7 +528,7 @@ observations, including18 Details captures across six locations at960x600,
 panel even at minimum width; its right edge leaves224 pixels and its frame
 height follows whole-cell viewport height minus132. Quantity buttons retain
 fixed positions and can extend beyond the narrow frame. The short hospital
-view has no visible staff rows and needs further input/scrollbar investigation.
+view has no visible staff rows; its input/scrollbar defect is documented below.
 The source manifest remains unchanged and the owned game exits unsaved.
 The viewer frame and quill follow these dimensions; quantity backgrounds span
 the interior width while their buttons retain native fixed positions. Quantity
@@ -559,6 +560,21 @@ additionally passes moved remove-button clicks at all three sizes, inactive old
 positions, and the existing staff scroll input/art checks. GPU runs retain only
 documented diagnostics. Vertical staff capacity, remaining Details actions and
 full responsive main-scene verification remain unfinished.
+
+Protected `build/stockpile-storage-native-location-names-20261027-010412`
+passes155 observations and preserves its source manifest with an unsaved owned
+exit. `native_location_details.json.staff_height_reference` records hospital
+capacity0/8/5 at960x600/1600x900/1200x800, matching native3b1506's signed
+division `(viewport_rows-first_text_row-8)/3`. The formatter accepts viewport
+rows and passes these observations plus existing fixtures in
+`build/qa/location-staff-native-height` (core19/19 and format tests). The view
+still uses default-height capacity pending the collapsed-scrollbar decision.
+At minimum height, native draws a stray staff arrow over the soap controls:
+bound scroll Down/Up changes the invisible list position0->1->0, while page
+Down/Up leaves it0 because page capacity is zero. Hiding that malformed bar is
+proposed but is not yet approved or implemented. The diagnostic's raw
+`staff_count` sums parallel vectors; it must not be interpreted as a row count.
+The wide screenshot and composition fixture independently establish eight rows.
 
 ## Native squad assignment reference
 

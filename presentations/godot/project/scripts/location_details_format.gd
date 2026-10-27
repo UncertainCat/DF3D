@@ -56,10 +56,11 @@ static func staff_holder_name(value: Variant, cells: int) -> Variant:
 
 # Capture221753 varies row count within each kind. The scrollbar consumes two
 # holder-name cells; hospital is not inherently a narrower field.
-static func staff_layout(kind: int, count: int) -> Dictionary:
+static func staff_layout(kind: int, count: int, viewport_rows:=66) -> Dictionary:
 	var first_y: int={1:26,2:29,3:29,5:41}.get(kind,-1)
 	if first_y<0 or count<0: return {}
 	@warning_ignore("integer_division")
-	var capacity: int=(53-first_y)/3+1
+	# Native3b1506 divides the remaining whole-cell span by three.
+	var capacity: int=maxi(0,(viewport_rows-first_y-8)/3)
 	return {"first_y":first_y,"capacity":capacity,"width":12 if count>capacity else 14,
 		"visible_count":mini(count,capacity),"max_scroll":maxi(0,count-capacity)}

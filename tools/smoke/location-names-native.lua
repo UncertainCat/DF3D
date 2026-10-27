@@ -64,7 +64,8 @@ local function capture(label,location,keep_pointer)
   name_place=creator.cur_name_place,word_place=creator.cur_word_place,filter=creator.cull_str,
   entering_filter=creator.entering_cull_str,entering_first_name=creator.entering_first_name,
   word_count=#creator.word_index,word_index={},word_parts={},lines={},scroll_position=creator.scroll_position_word,
-  pointer={g.precise_mouse_x,g.precise_mouse_y,g.mouse_x,g.mouse_y},grid={g.dimx,g.dimy}}
+  pointer={g.precise_mouse_x,g.precise_mouse_y,g.mouse_x,g.mouse_y},grid={g.dimx,g.dimy},
+  staff_scroll=details.scroll_position_occupation,staff_count=#details.loc_occupation+#details.loc_position}
  for i=0,#creator.word_index-1 do row.word_index[#row.word_index+1]=creator.word_index[i];row.word_parts[#row.word_parts+1]=word_part(i)end
  if #records==0 then
   row.native_fields={}
@@ -296,6 +297,14 @@ for i,location in ipairs(choices)do
  for _,size in ipairs{'small','wide','default'}do
   window_input('name-resize-'..size)
   capture(prefix..'-details-resize-'..size,location)
+  if location:getType()==df.abstract_building_type.HOSPITAL and size=='small' then
+   for _,event in ipairs{'CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_UP','CONTEXT_SCROLL_PAGEDOWN','CONTEXT_SCROLL_PAGEUP'}do
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    g.precise_mouse_x=712;g.precise_mouse_y=490;g.mouse_x=89;g.mouse_y=40
+    key(event);capture(prefix..'-details-small-'..event,location)
+   end
+   details.scroll_position_occupation=0
+  end
  end
  pixel(944,82)
  local opened=capture(prefix..'-name-open',location)
@@ -307,7 +316,7 @@ for i,location in ipairs(choices)do
  assert(require('json').encode(before.name_value)==require('json').encode(closed.name_value),'open/Back changed name')
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==36,'incomplete location name entry coverage')
+assert(#records==40,'incomplete location name entry coverage')
 
 for i,location in ipairs(choices)do
  pixel(664,238+36*(i-1));assert(details.open and details.selected_ab==location)
@@ -477,4 +486,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==151,'incomplete name mutation/filter reference')
+assert(#records==155,'incomplete name mutation/filter reference')

@@ -3633,5 +3633,82 @@
       "short-window hospital staff input behavior",
       "automatic UI scaling"
     ]
+  },
+  "staff_height_reference": {
+    "source": "build/stockpile-storage-native-location-names-20261027-010412/result.json",
+    "result_sha256": "db21dabc210075e249eb2a1683875ef266e541d47e1a357c0f63ea3e3d13175d",
+    "rows": [
+      {
+        "name": "HOSPITAL-2-details-resize-small",
+        "grid": [
+          120,
+          50
+        ],
+        "kind": 5,
+        "count": 8,
+        "capacity": 0,
+        "visible_y": []
+      },
+      {
+        "name": "HOSPITAL-2-details-resize-wide",
+        "grid": [
+          200,
+          75
+        ],
+        "kind": 5,
+        "count": 8,
+        "capacity": 8,
+        "visible_y": [
+          41,
+          44,
+          47,
+          50,
+          53,
+          56,
+          59,
+          62
+        ]
+      },
+      {
+        "name": "HOSPITAL-2-details-resize-default",
+        "grid": [
+          150,
+          66
+        ],
+        "kind": 5,
+        "count": 8,
+        "capacity": 5,
+        "visible_y": [
+          41,
+          44,
+          47,
+          50,
+          53
+        ]
+      }
+    ],
+    "small_scroll": [
+      {
+        "name": "HOSPITAL-2-details-small-CONTEXT_SCROLL_DOWN",
+        "first": 1
+      },
+      {
+        "name": "HOSPITAL-2-details-small-CONTEXT_SCROLL_UP",
+        "first": 0
+      },
+      {
+        "name": "HOSPITAL-2-details-small-CONTEXT_SCROLL_PAGEDOWN",
+        "first": 0
+      },
+      {
+        "name": "HOSPITAL-2-details-small-CONTEXT_SCROLL_PAGEUP",
+        "first": 0
+      }
+    ],
+    "scope": "Hospital visible rows at three viewport heights; bound CONTEXT_SCROLL input changes invisible-list position at minimum height. Raw staff_count sums parallel vectors and is not a row count; eight rows independently observed in the wide capture and composition fixture.",
+    "omissions": [
+      "zero-capacity scrollbar correction pending maintainer approval",
+      "resized main-scene effects"
+    ]
   }
 }

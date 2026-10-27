@@ -53,5 +53,9 @@ func _initialize() -> void:
 		for i in row.visible_y.size():
 			check(layout.first_y+i*3==int(row.visible_y[i]),"Native staff row spacing mismatch")
 			check(Format.staff_holder_name(row.holders[i].name,layout.width)==row.holders[i].displayed,"Native scrollbar-dependent clipping mismatch")
+	for row in fixture("native_location_details.json").staff_height_reference.rows:
+		var layout:=Format.staff_layout(int(row.kind),int(row.count),int(row.grid[1]))
+		check(layout.capacity==int(row.capacity) and layout.visible_count==row.visible_y.size(),"Native resized hospital capacity")
+		for i in row.visible_y.size():check(layout.first_y+i*3==int(row.visible_y[i]),"Native resized hospital row position")
 	print("LOCATION_DETAILS_FORMAT_PASS" if failures==0 else "LOCATION_DETAILS_FORMAT_FAIL")
 	quit(failures)

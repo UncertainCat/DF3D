@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "continuing_agreements_reader_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/continuing_agreements_reader_test.gd",
+      "completion": "^CONTINUING_AGREEMENTS_READER_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "location_staff_assignments_reader_test",
       "lane": "core",
       "kind": "godot",

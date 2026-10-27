@@ -1098,8 +1098,22 @@ labels and dates. Native UI and religious records remain unchanged across reads.
 Owned DF129176 exits unsaved with both save manifests unchanged; the sole known
 diagnostic is the render-thread notice. `transport_reference` records the
 protocol79 plugin hash. Rebuild/install both peers together; older recordings
-cannot infer tracker facts. Presentation, reader lifecycle and global
-visibility/scrolling integration remain unfinished.
+cannot infer tracker facts.
+
+`continuing_agreements_reader.gd` owns one outstanding observation and refreshes
+at one-second intervals while active. Hiding or losing the session clears rows,
+detaches the ticket and retires its callback generation; a new playable session
+requires explicit activation. Snapshots are defensive copies. Rejected or
+malformed observations clear readiness instead of presenting an empty success.
+Core and the reader engine check pass cleanly in
+`build/qa/continuing-agreements-reader`, covering late callbacks, replacement
+owners, session retirement, refused submissions and synchronous closure.
+Protected tracker run112254 repeats the three transport phases through this
+reader, comparing every row field with native readback and verifying disposal.
+Owned DF153752 exits unsaved with both save manifests unchanged; this run is
+`passed_with_known_issues` for the render-thread notice only. Actual disconnect,
+held-reply and producer-restart reader checks remain pending, as do the visible
+HUD and native visibility, sizing and interaction integration.
 
 ## Native Location name editor discovery
 

@@ -1692,17 +1692,20 @@ func specialization_scene() -> void:
 
 func tracker_transport() -> void:
 	step="native tracker typed transport"
+	var reader=preload("res://scripts/continuing_agreements_reader.gd").new();reader.configure(actions)
 	var evidence: Array=[]
 	for phase in ["empty","populated","restored"]:
 		var expected:=await native("religious_tracker",{"seed":phase=="populated","restore":phase=="restored"})
 		if stopped:return
 		await native("religious_guard")
-		var ticket: int=actions.submit("agreements",{"action":36,"tracker":true},Callable())
+		reader.set_active(true);reader.refresh()
+		var ticket: int=reader.ticket
 		if not check(ticket>0,"tracker request not queued"):return
 		if not await wait_ui(func():return not actions.result(ticket).is_empty(),"tracker native result"):return
 		var result: Dictionary=actions.result(ticket)
 		if not check(result.status==S.Ok and result.action==36 and result.agreement.tracker and result.agreement.agreements.is_empty(),"tracker typed result missing"):return
-		var rows: Array=result.agreement.tracker_rows
+		if not check(reader.ready,"tracker reader did not become ready"):return
+		var rows: Array=reader.snapshot()
 		if not check(rows.size()==expected.rows.size() and rows.size()==(3 if phase=="populated" else 0),"tracker row count"):return
 		for index in rows.size():
 			for field in ["agreement_id","subject_id","entity_id","entity_type","tier","profession","year","year_tick","heading","applicant","date"]:
@@ -1710,7 +1713,8 @@ func tracker_transport() -> void:
 		await native("religious_unchanged")
 		if stopped:return
 		evidence.append({"phase":phase,"rows":rows,"ticket":ticket})
-	write_json("tracker-transport-evidence.json",{"cases":evidence})
+	reader.dispose()
+	write_json("tracker-transport-evidence.json",{"cases":evidence,"reader_retired":not reader.active and reader.snapshot().is_empty()})
 	editor.close_panel()
 
 func indicators_scroll() -> void:

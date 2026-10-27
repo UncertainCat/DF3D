@@ -21,7 +21,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Locations integration verification
 
-### Remaining assignment-picker resize gap
+### Assignment-picker resizing
 
 Protected native `stockpile_storage_native.ps1 -ZoneOwner -PickerResize`
 (`stockpile-storage-native-zone-owner-20261027-152427`) and
@@ -65,8 +65,23 @@ all three sizes, native filter focus/Enter behavior, Page Down/Up, visible
 portrait recovery, and the existing assignment/removal workflows. Owner-wide
 and animal-small captures were inspected. Both runs pass with only the known
 rendering-thread notice, exit unsaved and preserve both save manifests.
-Owner-panel horizontal resizing remains unimplemented. Resize scroll clamping
-and held dragging still need native comparison. Zones remains gated.
+Owner-panel width, row backgrounds, scrollbar placement and wheel input bounds
+now follow the viewport width. Name, recenter and stress columns stay fixed;
+the native list's independent minimum width is retained at960 pixels. Rendered
+small/wide captures were compared with native152427. GPU
+`build/qa/picker-width-gpu-final` checks frame/list/row widths at all three sizes
+and preserves the existing default-size pixel comparisons; it passes with the
+known thread/device-finalize/shutdown-object diagnostics. Earlier picker-width
+checks exposed deferred container minimum-size propagation on shrinking; layout
+now reapplies the scroll width after that propagation. Those failed checks are
+not acceptance.
+Protected owner154641 verifies all three sizes, filter focus, paging, portrait
+recovery and the existing assignment/removal workflows. The wide capture was
+inspected. It passes with only the known rendering-thread notice; DF167052 exits
+unsaved and both save manifests remain unchanged. Core and candidate/controller
+checks pass in `build/qa/picker-width-final`.
+Resize scroll clamping and held dragging still need native comparison.
+Zones remains gated.
 
 Protected `areas-acceptance-20261027-133446 -LocationScene` passes the full
 existing main-scene Locations suite with the live petition tracker enabled.

@@ -279,13 +279,23 @@ func run() -> void:
 			var selected_button: Button = controller.candidates_view.choices[15]
 			if not controller.candidates_view.scroll.get_global_rect().encloses(selected_button.get_global_rect()):
 				push_error("Owner keyboard selection is outside viewport"); quit(1); return
-	# Compare the full owner scrollbar against native top/tail captures, including
+	# Native resize references retain independent frame and list minimum widths.
 	for sample in header_reference.picker_resize_reference.observations:
 		root.size=Vector2i(int(sample.pixel_width),int(sample.pixel_height))
 		controller.candidates_view.layout(Vector2(root.size))
 		await process_frame;await RenderingServer.frame_post_draw
+		controller.candidates_view.layout(Vector2(root.size))
+		await process_frame;await RenderingServer.frame_post_draw
 		var resized_view=controller.candidates_view
 		var expected_y:float=int(sample.filter_rect[1])*12+fposmod(float(sample.pixel_height),12)*0.5
+		var expected_scroll_width:float=(int(sample.scroll_rect[2])-int(sample.scroll_rect[0])+1)*8
+		var expected_panel_width:float=(int(sample.widgets[0].x2)-int(sample.widgets[0].x)+1)*8+12
+		if not is_equal_approx(resized_view.size.x,expected_panel_width) or not is_equal_approx(resized_view.scroll.size.x,expected_scroll_width) or not is_equal_approx(resized_view.owner_scrollbar.position.x,expected_scroll_width):
+			push_error("Resized owner widths differ from native: "+str(sample.size)+" panel="+str(resized_view.size.x)+" scroll="+str(resized_view.scroll.size.x)+" bar="+str(resized_view.owner_scrollbar.position.x));quit(1);return
+		for button in resized_view.choices:
+			if not is_equal_approx(button.size.x,maxf(456,expected_scroll_width-8)):
+				push_error("Resized owner row background width differs");quit(1);return
+		root.get_texture().get_image().save_png(directory.path_join("owner_resize_"+str(sample.size)+".png"))
 		if resized_view.owner_scrollbar.page!=int(sample.num_visible) or not is_equal_approx(resized_view.owner_search.global_position.y,expected_y):
 			push_error("Resized owner geometry differs from native: "+str(sample.size)+" filter="+str(resized_view.owner_search.global_position)+" expected_y="+str(expected_y));quit(1);return
 		resized_view.owner_selected=0;resized_view.owner_scrollbar.move_to(0)

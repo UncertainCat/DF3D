@@ -21,6 +21,7 @@ var cached_rows: Array = []
 var owner_selected := 0
 var owner_receipt := 0
 var viewport_rows := 66
+var viewport_columns := 150
 var strips: Dictionary = {}
 var squad_prompt: Label
 var squad_buttons: Array[Button] = []
@@ -146,13 +147,17 @@ func row_button(text: String) -> Button:
 
 func layout(view: Vector2) -> void:
 	var rows:=floori(view.y/12)
-	if rows!=viewport_rows:
+	var columns:=floori(view.x/8)
+	if rows!=viewport_rows or columns!=viewport_columns:
 		viewport_rows=rows
+		viewport_columns=columns
 		owner_scrollbar.dragging=false
 		refresh()
 	var inset:=fposmod(view.y,12)*0.5-4
+	# Containers propagate reduced row minima after their deferred layout pass.
+	if state.kind == 1: scroll.size.x = maxi(456,(viewport_columns-80)*8)
 	position=Vector2(368,52+inset) if state.kind==2 else Vector2(370,54+inset)
-	size=Vector2(576,420) if state.kind==3 else Vector2(392 if state.kind==2 else 588,(viewport_rows-66)*12+(708 if state.kind==2 else 704))
+	size=Vector2(576,420) if state.kind==3 else Vector2(392 if state.kind==2 else maxi(468,(viewport_columns-77)*8+4),(viewport_rows-66)*12+(708 if state.kind==2 else 704))
 
 func page_rows() -> int:
 	return maxi(1,floori(float(viewport_rows-16)/3))
@@ -161,11 +166,11 @@ func refresh() -> void:
 	if owner_receipt != state.receipt or state.rows.is_empty():
 		owner_selected = 0; owner_receipt = state.receipt
 		owner_scrollbar.set_rows(0); owner_scrollbar.dragging = false; scroll.scroll_vertical = 0
-	body.custom_minimum_size = Vector2(564,400) if state.kind == 3 else Vector2(376 if state.kind == 2 else 576,(viewport_rows-9)*12)
+	body.custom_minimum_size = Vector2(564,400) if state.kind == 3 else Vector2(376 if state.kind == 2 else maxi(456,(viewport_columns-78)*8),(viewport_rows-9)*12)
 	owner_search.position.y=(viewport_rows-12)*12
 	scroll.position.y = 36 if state.kind == 3 else 24
-	scroll.size = Vector2(360 if state.kind == 2 else 560,page_rows()*36) if state.kind in [1,2] else Vector2(536 if state.rows.size()>10 else 552,360)
-	owner_scrollbar.position = Vector2(544,36) if state.kind == 3 else Vector2(360 if state.kind == 2 else 560,24)
+	scroll.size = Vector2(360 if state.kind == 2 else maxi(456,(viewport_columns-80)*8),page_rows()*36) if state.kind in [1,2] else Vector2(536 if state.rows.size()>10 else 552,360)
+	owner_scrollbar.position = Vector2(544,36) if state.kind == 3 else Vector2(360 if state.kind == 2 else maxi(456,(viewport_columns-80)*8),24)
 	owner_scrollbar.size.y = 360 if state.kind == 3 else (viewport_rows-16)*12
 	owner_scrollbar.page = 10 if state.kind == 3 else page_rows()
 	var standalone_scroll:bool = state.kind != 3
@@ -268,8 +273,14 @@ func refresh() -> void:
 				check.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(check)
 				update_animal_status(button,row)
 	if state.kind == 1:
+		# Native rows stretch independently of their fixed name/status columns.
+		# At minimum width the list retains its own minimum beyond the frame.
+		remove.custom_minimum_size.x = maxi(456,(viewport_columns-81)*8)
+		remove.size.x = remove.custom_minimum_size.x
 		style_row(remove,remove.visible and owner_selected == 0)
 		for index in choices.size():
+			choices[index].custom_minimum_size.x = remove.custom_minimum_size.x
+			choices[index].size.x = remove.custom_minimum_size.x
 			var selected := index + (1 if remove.visible else 0) == owner_selected
 			style_row(choices[index],selected)
 			var frame_style: StyleBoxTexture = owner_frames[index].get_theme_stylebox("panel")
@@ -303,7 +314,7 @@ func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree() or state.kind not in [1,2,3] or not event is InputEventMouseButton or not event.pressed: return
 	if event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]: return
 	var local: Vector2 = body.get_global_transform_with_canvas().affine_inverse() * event.position
-	var bounds := Rect2(0,24,376 if state.kind == 2 else 576,owner_scrollbar.size.y)
+	var bounds := Rect2(0,24,owner_scrollbar.position.x+16,owner_scrollbar.size.y)
 	if state.kind == 3: bounds = Rect2(-8,-12,576,420)
 	if not bounds.has_point(local): return
 	if not state.busy():

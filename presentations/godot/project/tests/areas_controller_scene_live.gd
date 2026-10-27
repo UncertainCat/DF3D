@@ -2114,6 +2114,9 @@ func pointer_picker_resize(id: int) -> void:
 		editor._process(0.02);await process_frame;await process_frame
 		var expected_y:float=int(sample.filter_rect[1])*12+fposmod(float(sample.pixel_height),12)*0.5
 		if not check(view.owner_scrollbar.page==int(sample.num_visible) and is_equal_approx(view.owner_search.global_position.y,expected_y),"native picker resize geometry"):return
+		if editor.candidates_state.kind==1:
+			var expected_width:float=(int(sample.scroll_rect[2])-int(sample.scroll_rect[0])+1)*8
+			if not check(is_equal_approx(view.scroll.size.x,expected_width) and is_equal_approx(view.owner_scrollbar.position.x,expected_width),"native owner resized width"):return
 		await click_control(view.owner_search)
 		var selected:int=view.owner_selected
 		await pointer_key(KEY_DOWN)

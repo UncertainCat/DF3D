@@ -204,8 +204,32 @@ the unit's squad identity while retaining backpack28463 and flask28442. Both
 runs preserve RNG, pass repeated-empty-click checks, preserve source manifests
 and exit unsaved. `unit_and_squad_reference` retains the exact holder/link/event
 fields and measured offsets. No matching manager/accounting job was active;
-those cancellation branches, patrol-state effects, high-priest/absent-unit
-variants and typed lifecycle remain unverified. Semantic removal is not yet wired.
+those captures alone do not establish job cancellation or typed lifecycle.
+
+`removeNativeLocationReligiousStaff` now implements the semantic removal primitive
+with current site/temple/religion/assignment/holder and position-link checks.
+Nativeb96300/b95d60 performs assignment/link/history changes; native13cbf10 retires
+associated squad command; native1325080 releases matching manager/accounting jobs.
+All four complete code bodies are byte-guarded after the supported-build gate.
+Typed patrol fields and equipment-update flags follow the native coordinator.
+No native widget, menu state or row builder is used. Exceptions after effects
+begin return Unknown. This primitive checks the expected holder, but does not yet
+provide a complete dependency revision; it must not be exposed as a UI action
+until that receipt and epoch-bound management admission are implemented.
+
+Paused diagnostic `df3d location-religious-remove <site> <location> <religion>
+<assignment> <expected-holder>` supports protected paired acceptance. Native
+manager042413/accountant042445 fixtures give the position its matching responsibility
+and a real world job/worker link. Removal releases the worker but preserves the job
+record. Bridge pairs normal043014, squad042933, manager042827 and accountant042900
+match every captured recognition, holder/unit and history-event field exactly.
+Each rejects five invalid identities and completed repetition without effects;
+native main-interface/gps bytes remain unchanged. All runs pass, preserve sources
+and exit unsaved. `religious_staff_removal_reference.semantic_reference` retains
+bounded provenance and effects. MSVC builds; installed protocol73 plugin SHA256 is
+`5d45c716ce7d28ce207b7cc462fd6541c4de9ef6fdfe76afa3baebf42f4e2a90`.
+High-priest/absent-unit variants, patrol/equipment-bit readback, unknown-outcome
+injection, full revision binding and viewer lifecycle remain open.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

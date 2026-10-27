@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='removepriest' or recognition_case=='removesquadpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -658,7 +658,7 @@ end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local original_priest_threshold=difficulty.priesthood_unit_count
-if recognition_case=='removepriest' or recognition_case=='removesquadpriest' then
+if recognition_case:sub(1,6)=='remove' then
  local assignment
  for _,a in ipairs(religion.positions.assignments)do if a.st_id==df.global.plotinfo.site_id then assert(not assignment);assignment=a end end
  assert(assignment and assignment.histfig>=0)
@@ -669,8 +669,21 @@ if recognition_case=='removepriest' or recognition_case=='removesquadpriest' the
   assert(unit.military.squad_position==0 and squad.positions[0].occupant==holder.id)
   assignment.squad_id=squad.id
  end
+ local seeded_job_id
+ if recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest' then
+  local unit=assert(df.unit.find(holder.unit_id));assert(not unit.job.current_job)
+  local position
+  for _,p in ipairs(religion.positions.own)do if p.id==assignment.position_id then position=p end end
+  assert(position)
+  local manager=recognition_case=='removemanagerpriest'
+  position.responsibilities[manager and df.entity_position_responsibility.MANAGE_PRODUCTION or df.entity_position_responsibility.ACCOUNTING]=true
+  local job=df.job:new();job.job_type=manager and df.job_type.ManageWorkOrders or df.job_type.UpdateStockpileRecords
+  job.pos:assign(unit.pos);job.posting_index=-1
+  assert(dfhack.job.linkIntoWorld(job,true));assert(dfhack.job.addWorker(job,unit));seeded_job_id=job.id
+ end
  local function holder_state()
   local result={id=holder.id,links={}}
+  if seeded_job_id then result.seeded_job_exists=false;for _,job in require('utils').listpairs(df.global.world.jobs.list)do if job.id==seeded_job_id then result.seeded_job_exists=true end end end
   local unit=df.unit.find(holder.unit_id)
   if unit then
    result.unit={id=unit.id,profession=unit.profession,profession2=unit.profession2,
@@ -707,12 +720,37 @@ if recognition_case=='removepriest' or recognition_case=='removesquadpriest' the
   end
   return result
  end
+ local expected
+ local function remove_semantic(ids)
+  local text,code=dfhack.run_command_silent('df3d','location-religious-remove',table.unpack(ids or {tostring(df.global.plotinfo.site_id),tostring(temple.id),tostring(religion.id),tostring(assignment.id),tostring(holder.id)}))
+  assert(code==0,text);return require('json').decode(text).outcome
+ end
+ if semantic_recognition then
+  local marker=assert(io.open(out..'/recognition-reference'));local path=marker:read('*a'):match('^%s*(.-)%s*$');marker:close()
+  local file=assert(io.open(path));local reference=require('json').decode(file:read('*a'));file:close()
+  assert(reference.success and #reference.records==3);expected=reference.records[2]
+  restore_rng(reference.records[1].recognition.rng)
+ end
  local ok,err=xpcall(function()
   local before=capture('TEMPLE-0-priest-remove-before',temple);before.recognition=recognition_state();before.holder=holder_state()
-  pixel(944,358)
+  local guards={}
+  if semantic_recognition then
+   for _,object in ipairs{m,g}do
+    local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n);guards[#guards+1]={bytes=bytes,address=at,size=n}
+   end
+   for field=1,5 do
+    local ids={tostring(df.global.plotinfo.site_id),tostring(temple.id),tostring(religion.id),tostring(assignment.id),tostring(holder.id)}
+    ids[field]='2147483647';assert(remove_semantic(ids)==1,'invalid removal identity accepted')
+   end
+   assert(require('json').encode(recognition_state())==require('json').encode(before.recognition),'rejected removal changed records')
+   assert(require('json').encode(holder_state())==require('json').encode(before.holder),'rejected removal changed holder')
+   assert(remove_semantic()==2,'semantic religious removal failed')
+   for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'semantic removal changed native UI/gps');df.delete(guard.bytes)end
+  else pixel(944,358)end
   local after=capture('TEMPLE-0-priest-remove-after',temple);after.recognition=recognition_state();after.holder=holder_state()
   assert(assignment.histfig==-1,'native religious removal did not vacate assignment')
   if squad then assert(after.holder.squad.occupant==-1 and after.holder.unit.squad_id==-1 and after.holder.unit.squad_position==-1,'native squad cleanup missing')end
+  if seeded_job_id then assert(not after.holder.unit.current_job,'native matching job not cancelled')end
   assert(after.recognition.bridge.rank==before.recognition.bridge.rank,'removal changed recognition rank')
   for _,field in ipairs{'positions','next_position','next_assignment','temple_emotions','rng'}do
    assert(require('json').encode(before.recognition[field])==require('json').encode(after.recognition[field]),'removal unexpectedly changed '..field)
@@ -726,7 +764,12 @@ if recognition_case=='removepriest' or recognition_case=='removesquadpriest' the
    end
    after.new_events[#after.new_events+1]=item
   end
-  pixel(944,358)
+  if expected then
+   for _,field in ipairs{'recognition','holder','new_events'}do
+    assert(require('json').encode(after[field])==require('json').encode(expected[field]),'semantic removal differs from native '..field)
+   end
+   assert(remove_semantic()==1,'completed removal not rejected')
+  else pixel(944,358)end
   local repeated=capture('TEMPLE-0-priest-remove-repeat',temple);repeated.recognition=recognition_state();repeated.holder=holder_state()
   assert(require('json').encode(after.recognition)==require('json').encode(repeated.recognition),'empty remove changed recognition records')
   assert(require('json').encode(after.holder)==require('json').encode(repeated.holder),'empty remove changed holder links')

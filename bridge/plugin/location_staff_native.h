@@ -71,4 +71,9 @@ enum class LocationStaffEditOutcome : uint8_t { Unavailable, Rejected, Applied, 
 LocationStaffEditOutcome editNativeLocationStaff(int32_t siteId,int32_t locationId,
                                                 int32_t occupationId,int32_t unitId);
 
+// Staged safe-point primitive: current semantic target/holder checks only.
+// A complete revision/epoch receipt is required before exposing this via UI.
+LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
+    int32_t entityId,int32_t assignmentId,int32_t expectedHolderId);
+
 }

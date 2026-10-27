@@ -20,6 +20,11 @@
 #include "df/entity_position.h"
 #include "df/entity_position_assignment.h"
 #include "df/occupation.h"
+#include "df/squad.h"
+#include "df/squad_position.h"
+#include "df/job.h"
+#include "df/histfig_entity_link_positionst.h"
+#include <cstddef>
 #include "df/occupation_type.h"
 #include "df/plotinfost.h"
 #include "df/world.h"
@@ -324,6 +329,60 @@ LocationStaffEditOutcome editNativeLocationStaff(int32_t siteId,int32_t location
     // Native allocation failure may follow published effects. Never replay.
     return LocationStaffEditOutcome::Unknown;
   }
+}
+
+LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
+    int32_t entityId,int32_t assignmentId,int32_t expectedHolderId) {
+  const auto& native=religiousStaffMutationFunctions();
+  if(!native)return LocationStaffEditOutcome::Unavailable;
+  auto* place=location(siteId,locationId);
+  if(!place || place->getType()!=df::abstract_building_type::TEMPLE || expectedHolderId<0 ||
+      entityId<0 || assignmentId<0)return LocationStaffEditOutcome::Rejected;
+  const auto* temple=static_cast<df::abstract_building_templest*>(place);
+  if(temple->deity_type!=df::religious_practice_type::RELIGION_ENID ||
+      temple->deity_data.Religion!=entityId)return LocationStaffEditOutcome::Rejected;
+  auto* entity=df::historical_entity::find(entityId);if(!entity)return LocationStaffEditOutcome::Rejected;
+  auto* assignment=binsearch_in_vector(entity->positions.assignments,assignmentId);
+  if(!assignment || assignment->st_id!=siteId || assignment->histfig!=expectedHolderId)return LocationStaffEditOutcome::Rejected;
+  auto* position=binsearch_in_vector(entity->positions.own,assignment->position_id);
+  auto* holder=df::historical_figure::find(expectedHolderId);
+  if(!position || !holder)return LocationStaffEditOutcome::Rejected;
+  bool linked=false;
+  for(auto* link:holder->entity_links) {
+    if(!link)return LocationStaffEditOutcome::Rejected;
+    if(link->getType()==df::histfig_entity_link_type::POSITION && link->entity_id==entityId &&
+       static_cast<const df::histfig_entity_link_positionst*>(link)->assignment_id==assignmentId)linked=true;
+  }
+  if(!linked)return LocationStaffEditOutcome::Rejected;
+  auto* unit=df::unit::find(holder->unit_id);
+  if(unit && unit->hist_figure_id!=holder->id)return LocationStaffEditOutcome::Rejected;
+  auto* squad=df::squad::find(assignment->squad_id);
+  df::squad_position* command=nullptr;
+  if(squad && !squad->positions.empty()) {
+    if(!squad->positions.front())return LocationStaffEditOutcome::Rejected;
+    if(unit && squad->positions.front()->occupant==holder->id)command=squad->positions.front();
+  }
+  static_assert(offsetof(df::entity_position_assignment,squad_id)==0x28);
+  static_assert(offsetof(df::entity_position,responsibilities)==0x328);
+  static_assert(offsetof(df::squad_position,current_patrol_id)==0x190);
+  static_assert(offsetof(df::squad_position,current_patrol_point_id)==0x194);
+  try {
+    // Native33066c..330764 retires only command attached to this assignment.
+    if(command) {
+      native.military(unit);command->occupant=-1;
+      command->current_patrol_id=-1;command->current_patrol_point_id=-1;
+      df::global::plotinfo->equipment.update.whole|=0x7ff;
+    }
+    native.remove(holder,assignmentId,entityId,true,true);
+    if(unit && unit->job.current_job) {
+      const auto type=unit->job.current_job->job_type;
+      if((position->responsibilities[df::entity_position_responsibility::MANAGE_PRODUCTION] && type==df::job_type::ManageWorkOrders) ||
+         (position->responsibilities[df::entity_position_responsibility::ACCOUNTING] && type==df::job_type::UpdateStockpileRecords))
+        native.cancelJob(unit,false,0,false,nullptr);
+    }
+    // Never use native3ad8e0's UI row builder. The caller reobserves staff.
+    return LocationStaffEditOutcome::Applied;
+  } catch(const std::exception&) {return LocationStaffEditOutcome::Unknown;}
 }
 
 }

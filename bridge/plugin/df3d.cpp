@@ -1762,6 +1762,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               seed.valid,seed.id,seed.x,seed.y,seed.z,int(seed.furniture),seed.inUse);
           return CR_OK;
       }
+      if(parameters[0]=="location-religious-remove") {
+        if(parameters.size()!=6)return CR_WRONG_USAGE;
+        int32_t ids[5]{};
+        for(size_t i=0;i<5;++i) {
+          const auto& text=parameters[i+1];
+          const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        Json::Value value(Json::objectValue);
+        value["outcome"]=int(df3d_area::removeNativeLocationReligiousStaff(ids[0],ids[1],ids[2],ids[3],ids[4]));
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
       if(parameters[0]=="location-staff-candidates" || parameters[0]=="location-staff-set") {
         static df3d_area::LocationStaffCandidateSnapshot snapshot;
         const bool edit=parameters[0]=="location-staff-set";

@@ -8548,11 +8548,11 @@
       "arguments": "historical figure, assignment ID, religion ID, true, true"
     },
     "omissions": [
-      "Manager/accounting current-job cancellation branches",
-      "Patrol-state and equipment-update effects",
       "High-priest and absent-unit holder variants",
-      "Semantic bridge action and revision binding",
-      "Viewer input and lifecycle"
+      "Full dependency revision and epoch-bound transport",
+      "Patrol-state/equipment-update bit readback",
+      "Viewer input and lifecycle",
+      "Unknown outcome injection"
     ],
     "unit_and_squad_reference": [
       {
@@ -8843,6 +8843,206 @@
         ],
         "repeat_unchanged": true
       }
-    ]
+    ],
+    "semantic_reference": {
+      "plugin_sha256": "5d45c716ce7d28ce207b7cc462fd6541c4de9ef6fdfe76afa3baebf42f4e2a90",
+      "protocol": 73,
+      "method": "Owned paused clones; test-only RNG alignment; exact native/semantic captured record comparison. Source manifests preserved and owned unsaved exit.",
+      "branches": [
+        {
+          "case": "removepriest",
+          "native_source": "build/stockpile-storage-native-location-recognition-removepriest-20261027-041831",
+          "native_sha256": "54560b6f49661892ac05b76408c28990347a8b4535f92ade13876ee8d96445b5",
+          "bridge_source": "build/stockpile-storage-native-location-recognition-actionremovepriest-20261027-043014",
+          "bridge_sha256": "54560b6f49661892ac05b76408c28990347a8b4535f92ade13876ee8d96445b5",
+          "compared_fields": [
+            "recognition",
+            "holder",
+            "new_events"
+          ],
+          "after_sha256": "d78f2dcc87f3c57da14aadbc90039db00f00075fe82c7042fd47650720f85203",
+          "before_unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "after_unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "job_retained": null,
+          "new_events": [
+            {
+              "civ": 383,
+              "histfig": 9375,
+              "id": 64037,
+              "link_type": 10,
+              "position_id": 0,
+              "seconds": 157249,
+              "type": "REMOVE_HF_ENTITY_LINK",
+              "year": 106
+            }
+          ],
+          "invalid_targets_rejected": 5,
+          "completed_repeat_rejected": true,
+          "native_ui_gps_unchanged": true
+        },
+        {
+          "case": "removesquadpriest",
+          "native_source": "build/stockpile-storage-native-location-recognition-removesquadpriest-20261027-041939",
+          "native_sha256": "687cb58e95581c888d5ef761468ca8b385510e764419675e4b32586bdc869641",
+          "bridge_source": "build/stockpile-storage-native-location-recognition-actionremovesquadpriest-20261027-042933",
+          "bridge_sha256": "adcc89bb59aed5ed80671f6dfcdeedc7b2e78a97e28f8e3fbd10398831ce980e",
+          "compared_fields": [
+            "recognition",
+            "holder",
+            "new_events"
+          ],
+          "after_sha256": "bc735d78ec741e2ca8505a7e28a5fad28e5dd56a7e8c236ee9ebbe19db6e3e98",
+          "before_unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "after_unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": -1,
+            "squad_position": -1
+          },
+          "job_retained": null,
+          "new_events": [
+            {
+              "civ": 383,
+              "histfig": 9375,
+              "id": 64037,
+              "link_type": 10,
+              "position_id": 0,
+              "seconds": 157249,
+              "type": "REMOVE_HF_ENTITY_LINK",
+              "year": 106
+            }
+          ],
+          "invalid_targets_rejected": 5,
+          "completed_repeat_rejected": true,
+          "native_ui_gps_unchanged": true
+        },
+        {
+          "case": "removemanagerpriest",
+          "native_source": "build/stockpile-storage-native-location-recognition-removemanagerpriest-20261027-042413",
+          "native_sha256": "cf5d77d9d60f99bca96beac8444cd4c945fc240a06b9fececc432b47d82cc9fb",
+          "bridge_source": "build/stockpile-storage-native-location-recognition-actionremovemanagerpriest-20261027-042827",
+          "bridge_sha256": "1b0dc738e862a634863622ac37d3c8ff1b283d325485bd007143fb9485353c7e",
+          "compared_fields": [
+            "recognition",
+            "holder",
+            "new_events"
+          ],
+          "after_sha256": "32455e1a24e3853c63a471d8701082ce1af1f376a3e89ea38af0e542678790fc",
+          "before_unit": {
+            "current_job": {
+              "id": 382794,
+              "type": "ManageWorkOrders"
+            },
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "after_unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "job_retained": true,
+          "new_events": [
+            {
+              "civ": 383,
+              "histfig": 9375,
+              "id": 64037,
+              "link_type": 10,
+              "position_id": 0,
+              "seconds": 157249,
+              "type": "REMOVE_HF_ENTITY_LINK",
+              "year": 106
+            }
+          ],
+          "invalid_targets_rejected": 5,
+          "completed_repeat_rejected": true,
+          "native_ui_gps_unchanged": true
+        },
+        {
+          "case": "removeaccountantpriest",
+          "native_source": "build/stockpile-storage-native-location-recognition-removeaccountantpriest-20261027-042445",
+          "native_sha256": "f12ec07cee290a58b0c271182b48e750491eaa5a1a064373901b07c46d3c73cc",
+          "bridge_source": "build/stockpile-storage-native-location-recognition-actionremoveaccountantpriest-20261027-042900",
+          "bridge_sha256": "b0a7968591ef10b4eb1523a16b31779b8af56ec3ead6863fd8939e07ec409c0c",
+          "compared_fields": [
+            "recognition",
+            "holder",
+            "new_events"
+          ],
+          "after_sha256": "ff00bb2d19949c15bba97d084595e81ec0f7a06ccaeca507978a4fc84d328067",
+          "before_unit": {
+            "current_job": {
+              "id": 382794,
+              "type": "UpdateStockpileRecords"
+            },
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "after_unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "job_retained": true,
+          "new_events": [
+            {
+              "civ": 383,
+              "histfig": 9375,
+              "id": 64037,
+              "link_type": 10,
+              "position_id": 0,
+              "seconds": 157249,
+              "type": "REMOVE_HF_ENTITY_LINK",
+              "year": 106
+            }
+          ],
+          "invalid_targets_rejected": 5,
+          "completed_repeat_rejected": true,
+          "native_ui_gps_unchanged": true
+        }
+      ],
+      "omissions": [
+        "Full dependency revision and epoch-bound transport",
+        "High-priest and absent-unit holder variants",
+        "Patrol-state/equipment-update bit readback",
+        "Viewer input and lifecycle",
+        "Unknown outcome injection"
+      ]
+    }
   }
 }

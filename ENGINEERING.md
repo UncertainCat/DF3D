@@ -1306,8 +1306,29 @@ and the diagnostic field mapping. Squads closes with its own D_SQUADS toggle;
 earlier123408 right-click and123534 LEAVESCREEN attempts did not close it and
 failed the harness assertion. Info and Stocks close with LEAVESCREEN. The final
 76-record run passes, owned DF152464 exits unsaved, and source hashes remain
-unchanged. Actual Create Work Order/other-panel transitions, bottom/sidebar
-modes, map clicks and resize/overflow still need coverage before HUD exposure.
+unchanged.
+
+The focused `-RecognitionCase petitiontrackerpanels` lane reuses the same
+agreement fixture and cleanup while skipping the already-covered formatting
+matrix. Native124558 records20 panel states in23 captures. Dig designation
+leaves both list and popup active; it changes `main_designation_selected`, not
+`bottom_mode_selected`. Stockpiles, Zones and Construction set bottom modes6,
+3 and0 respectively: the list stays visible while the popup disappears, and
+right-click restores both. Work Orders behaves like the other Info pages.
+Create Work Order hides the list as well; cancelling restores it beneath the
+still-open parent Info page, so the popup remains suppressed. These results
+are retained in `tracker_mode_reference`.
+
+The owned fixture temporarily gives an occupied fortress position the
+MANAGE_PRODUCTION responsibility and indexes its assignment in the entity's
+`assignments_by_type` vector. Changing the flag alone in124244 did not enable
+creation; consistent indexing in124513 exposed the native new-order icon.
+The final reference opens that icon and cancels without selecting an order,
+checks that the order count is unchanged, and restores/checks both responsibility
+and index. This is diagnostic fixture setup, not a proposed runtime assignment
+API. Owned DF163268 exits unsaved, source hashes unchanged. Competing hover
+overlays, map clicks, resize/overflow and other panel/sidebar gates remain
+unverified before HUD exposure.
 
 ## Native Location name editor discovery
 

@@ -518,9 +518,9 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='staffindicatorhelp' or recognition_case=='staffindicatorart' or recognition_case=='petitiontracker' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='staffindicatorhelp' or recognition_case=='staffindicatorart' or (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpanels') or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
-if recognition_case=='petitiontracker' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
+if (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpanels') or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
  -- Each list starts with a nonmatching applicant, then two matching entries.
  for list_index,list in ipairs{df.global.plotinfo.petitions,df.global.plotinfo.continuing_agreement_id}do
@@ -567,7 +567,7 @@ if recognition_case=='new' or recognition_case=='positionnew' then
  assert(changed==1,'unexpected priest template fixture count')
 end
 pixel(664,238);assert(details.open and details.selected_ab==temple)
-if recognition_case=='petitiontracker' then
+if (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpanels') then
  local a=assert(df.agreement.find(fixture_agreements[5]));local b=assert(df.agreement.find(fixture_agreements[6]))
  local subject=a.details[0];local location=subject.data.Location
  local second;local guild_lookup_probe
@@ -664,6 +664,10 @@ if recognition_case=='petitiontracker' then
   return row
  end
  shot('two-complexes')
+ if recognition_case=='petitiontrackerpanels' then
+  key('LEAVESCREEN');assert(not details.open and selector.open)
+  key('_MOUSE_R');assert(not selector.open);key('_MOUSE_R')
+ else
  location.tier=1;subject.year=106;subject.year_tick=1200*27;shot('temple-date')
  location.tier=2;subject.year_tick=1200*28;shot('complex-next-month')
  a.flags.whole=2;shot('concluded-first');a.flags.whole=0
@@ -810,6 +814,7 @@ if recognition_case=='petitiontracker' then
  religion.name.language=original_name.language;religion.name.type=original_name.type;religion.name.has_name=original_name.has_name
  for i=0,6 do religion.name.words[i]=original_name.words[i+1];religion.name.parts_of_speech[i]=original_name.parts_of_speech[i+1]end
  assert(require('json').encode(name_value(religion.name))==require('json').encode(original_name),'tracker name reference restoration differs')
+ end
  local function panel_probe(label)
   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
   g.precise_mouse_x=1070;g.precise_mouse_y=298;g.mouse_x=133;g.mouse_y=24
@@ -827,6 +832,42 @@ if recognition_case=='petitiontracker' then
  for _,entry in ipairs{{'squads','D_SQUADS','squads'},{'residents','D_UNITLIST','info'},{'stocks','D_STOCKS','stocks'}}do
   key(entry[2]);assert(m[entry[3]].open,'native tracker panel did not open '..entry[1]);panel_probe(entry[1])
   key(entry[1]=='squads' and 'D_SQUADS' or 'LEAVESCREEN');assert(not m[entry[3]].open,'native tracker panel did not close '..entry[1]);panel_probe(entry[1]..'-closed')
+ end
+ if recognition_case=='petitiontrackerpanels' then
+  for _,entry in ipairs{{'dig','D_DESIGNATE_DIG'},{'stockpiles','D_STOCKPILES'},{'zones','D_CIVZONE'},{'construction','D_BUILDING'}}do
+   key(entry[2]);panel_probe(entry[1]);key('_MOUSE_R');panel_probe(entry[1]..'-closed')
+  end
+  key('D_ORDERS');assert(m.info.open,'work orders did not open');panel_probe('work-orders')
+  key('LEAVESCREEN');assert(not m.info.open,'work orders did not close');panel_probe('work-orders-closed')
+  local fortress=assert(df.historical_entity.find(df.global.plotinfo.group_id));local manager_position;local manager_assignment
+  for _,assignment in ipairs(fortress.positions.assignments)do
+   if assignment.histfig>=0 then
+    local present=false
+    for _,unit in ipairs(df.global.world.units.active)do if unit.hist_figure_id==assignment.histfig then present=true;break end end
+    if present then for _,position in ipairs(fortress.positions.own)do
+     if position.id==assignment.position_id then manager_position=position;manager_assignment=assignment;break end
+    end end
+   end
+   if manager_position then break end
+  end
+  assert(manager_position,'manager fixture requires an occupied fortress position')
+  local responsibility=df.entity_position_responsibility.MANAGE_PRODUCTION
+  local original_manager=manager_position.responsibilities[responsibility]
+  local indexed=fortress.assignments_by_type[responsibility];local old_index={}
+  for _,assignment in ipairs(indexed)do old_index[#old_index+1]=assignment end
+  manager_position.responsibilities[responsibility]=true
+  indexed:insert('#',manager_assignment)
+  key('D_ORDERS');assert(m.info.open);panel_probe('work-orders-manager')
+  local orders_before=#df.global.world.manager_orders.all
+  -- Native124513 shows the installed new-order icon at928..959,124..159.
+  pixel(944,142);assert(m.create_work_order.open,'create work order did not open');panel_probe('create-work-order')
+  key('LEAVESCREEN');assert(not m.create_work_order.open,'create work order did not close');panel_probe('create-work-order-closed')
+  assert(#df.global.world.manager_orders.all==orders_before,'opening/cancelling order picker changed orders')
+  key('LEAVESCREEN');assert(not m.info.open)
+  manager_position.responsibilities[responsibility]=original_manager
+  indexed:resize(0);for _,assignment in ipairs(old_index)do indexed:insert('#',assignment)end
+  assert(manager_position.responsibilities[responsibility]==original_manager and #indexed==#old_index)
+  for i,assignment in ipairs(old_index)do assert(indexed[i-1]==assignment)end
  end
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.

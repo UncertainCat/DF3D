@@ -10863,5 +10863,301 @@
       "Other popup-gate panels and overlays",
       "Map clicks, resize and overflow"
     ]
+  },
+  "tracker_mode_reference": {
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontrackerpanels-20261027-124558",
+    "result_sha256": "b753debe38c172e0a2a8f132cdfa08ad08e3c6631bd63c566eb983d3a23a2fc3",
+    "status": "passed",
+    "owned_exit": "unsaved",
+    "source_manifest": "unchanged",
+    "cases": [
+      {
+        "name": "tracker-panel-idle",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-squads",
+        "list_visible": false,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": true,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-squads-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-residents",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": true,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-residents-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-stocks",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": true
+        }
+      },
+      {
+        "name": "tracker-panel-stocks-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-dig",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": 0,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-dig-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-stockpiles",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": 6,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-stockpiles-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-zones",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": 3,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-zones-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-construction",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": 0,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-construction-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-work-orders",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": true,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-work-orders-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-work-orders-manager",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": true,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-create-work-order",
+        "list_visible": false,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": true,
+          "designation": -1,
+          "info": true,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-create-work-order-closed",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": true,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      }
+    ],
+    "manager_fixture": "Temporarily adds MANAGE_PRODUCTION to an occupied fortress position and its assignment to assignments_by_type[MANAGE_PRODUCTION]. Both are restored and checked. Responsibility flag alone in124244 did not enable creation; consistent fixture124513 exposed the native icon. This is diagnostic world-fixture setup, not a runtime mutation API.",
+    "order_picker": "Click native new-order icon from124513 at944,142; assert create_work_order.open; cancel with LEAVESCREEN; verify manager order count unchanged. No order is selected or submitted.",
+    "pending": [
+      "Map clicks and competing hover overlays",
+      "Resize/overflow and leftmost frame cells",
+      "Other panel and sidebar-mode gates"
+    ]
   }
 }

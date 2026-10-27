@@ -13267,7 +13267,6 @@
         }
       },
       "limitations": [
-        "Bridge post-effect refresh failure/exception injection remains unverified.",
         "Religious filtered pixel parity, non-ASCII editing and all scrollbar hover/drag states remain unverified."
       ],
       "scrollbar_art_reference": {
@@ -13897,6 +13896,17 @@
           }
         }
       }
-    ]
+    ],
+    "post_effect_reference": {
+      "controlled": "build/qa/location-religious-post-effect",
+      "helper": "finishReligiousAssignment",
+      "cases": 11,
+      "scope": "Shared production helper: success, native exception/Unknown, refresh exception/absence/unpublishable/wrong holder/wrong unit, and three non-mutating refusals. Not live fault injection.",
+      "live_regression": "build/areas-acceptance-20261027-073745",
+      "live_status": "passed",
+      "source_save_directories_preserved": 2,
+      "owned_exit_without_save": true,
+      "plugin_sha256": "7A3036447F813A09622853DC21370FDDB0F25F24158C7F965A803E1940E2DF57"
+    }
   }
 }

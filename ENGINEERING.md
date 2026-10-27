@@ -587,9 +587,21 @@ before the service dispatches it. The mutation returns not_sent, native vacancy
 and history remain unchanged, reconnect submits no replay, and a fresh explicit
 picker open succeeds. Both manifests remain unchanged and owned DF exits unsaved;
 the run passes_with_known_issues only for the separate-thread notice. Its result
-is stored alongside the other disconnect references. The bridge's post-effect
-refresh failure/exception branch still needs fault-injection coverage; successful
-native effects followed by transport loss do not establish that separate branch.
+is stored alongside the other disconnect references.
+
+The bridge uses finishReligiousAssignment for list retirement, native invocation
+and post-effect refresh. Root fault tests execute this same helper with injected
+native/refresh exceptions, Unknown, absent/unpublishable refresh, and wrong holder
+or unit. Every uncertain case retains mutated=true, returns Unknown without a
+receipt, invokes the mutation at most once, and leaves the old list unusable even
+after equivalent facts return. Rejected, Stale and Unavailable skip refresh and
+report no mutation. These are controlled callback faults, not faults injected
+into a running DF process. Core passes in location-religious-post-effect; MSVC
+build and protected semantic073745 pass with the rebuilt plugin, including native
+assignment/history readback, stale selected/list receipts and replay refusal.
+The live run preserves both save manifests and exits owned DF unsaved, with no
+Godot diagnostics. Management remains75; installed plugin SHA256 is
+7A3036447F813A09622853DC21370FDDB0F25F24158C7F965A803E1940E2DF57.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

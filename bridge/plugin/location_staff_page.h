@@ -95,4 +95,32 @@ private:
   std::optional<LocationReligiousStaffReceipt> receipt_;
   LocationCatalogSnapshot<LocationStaffCandidate> rows_;
 };
+
+struct LocationReligiousAssignmentResult {
+  LocationStaffEditOutcome outcome=LocationStaffEditOutcome::Unknown;
+  std::optional<LocationReligiousStaffReceipt> receipt;
+  bool mutated=true;
+};
+// Caller has validated epoch, list membership and selected receipt at the safe
+// point. Retire the list before any native effects; refresh failure cannot grant
+// success or revive the old list. Callbacks also permit deterministic fault tests.
+template<class Apply,class Observe,class Valid>
+LocationReligiousAssignmentResult finishReligiousAssignment(
+    LocationReligiousCandidateSnapshot& snapshot,const LocationReligiousAssignmentReceipt& selected,
+    Apply apply,Observe observe,Valid valid) {
+  snapshot.invalidate();
+  LocationReligiousAssignmentResult result;
+  try {
+    const auto outcome=apply();
+    if(outcome==LocationStaffEditOutcome::Applied) {
+      auto receipt=observe();
+      if(receipt && valid(*receipt) && receipt->holderId==selected.histfigId && receipt->unitId==selected.unitId) {
+        result.receipt=std::move(receipt);result.outcome=LocationStaffEditOutcome::Applied;
+      }
+    } else if(outcome!=LocationStaffEditOutcome::Unknown) {
+      result.mutated=false;result.outcome=outcome;
+    }
+  } catch(...) {result.receipt.reset();}
+  return result;
+}
 }

@@ -11,6 +11,44 @@ staff::LocationStaffCandidates candidates(int count=260) {
   }
   return result;
 }
+
+TEST_CASE("Religious assignment effects retire list authority even when refresh fails") {
+  const staff::LocationReligiousStaffTarget target{651,0,383,2};
+  const staff::LocationReligiousStaffReceipt vacant{651,0,383,2,0,-1,-1,19,false};
+  staff::LocationReligiousAssignmentReceipt selected;selected.target=vacant;selected.unitId=7123;selected.histfigId=10379;
+  for(int fault=0;fault<8;++fault) {
+    staff::LocationReligiousCandidateSnapshot snapshot;auto rows=candidates();rows.role=-1;
+    snapshot.observe(4,target,vacant,rows);const auto before=snapshot.page(4,target,0);
+    int effects=0,reads=0;
+    const auto result=staff::finishReligiousAssignment(snapshot,selected,[&] {
+      CHECK(snapshot.page(4,target,0,before.revision).status!=staff::LocationPageStatus::Ready);
+      ++effects;
+      if(fault==1)throw 1; // Native callback can fail after changing records.
+      return fault==2?staff::LocationStaffEditOutcome::Unknown:staff::LocationStaffEditOutcome::Applied;
+    },[&]() -> std::optional<staff::LocationReligiousStaffReceipt> {
+      ++reads;
+      if(fault==3)throw 2;
+      if(fault==4)return std::nullopt;
+      auto receipt=vacant;receipt.holderId=selected.histfigId;receipt.unitId=selected.unitId;receipt.revision=20;
+      if(fault==6)++receipt.holderId;
+      if(fault==7)++receipt.unitId;
+      return receipt;
+    },[&](const auto&) {return fault!=5;});
+    CAPTURE(fault);CHECK(effects==1);CHECK(reads==((fault==1 || fault==2)?0:1));CHECK(result.mutated);
+    CHECK(result.outcome==(fault==0?staff::LocationStaffEditOutcome::Applied:staff::LocationStaffEditOutcome::Unknown));
+    CHECK(result.receipt.has_value()==(fault==0));
+    snapshot.observe(4,target,vacant,rows);
+    CHECK(snapshot.page(4,target,0,before.revision).status==staff::LocationPageStatus::Stale);
+  }
+  for(auto refusal:{staff::LocationStaffEditOutcome::Rejected,staff::LocationStaffEditOutcome::Stale,staff::LocationStaffEditOutcome::Unavailable}) {
+    staff::LocationReligiousCandidateSnapshot snapshot;auto rows=candidates();rows.role=-1;
+    snapshot.observe(4,target,vacant,rows);const auto before=snapshot.page(4,target,0);
+    const auto result=staff::finishReligiousAssignment(snapshot,selected,[&] {return refusal;},
+      [&]() -> std::optional<staff::LocationReligiousStaffReceipt> {FAIL("refusal must not refresh");return vacant;},[](const auto&) {return true;});
+    CHECK(result.outcome==refusal);CHECK_FALSE(result.mutated);CHECK_FALSE(result.receipt);
+    CHECK(snapshot.page(4,target,0,before.revision).status!=staff::LocationPageStatus::Ready);
+  }
+}
 }
 TEST_CASE("Staff page receipts bind every target component even with identical rows") {
   const staff::LocationStaffTarget original{651,2,87};

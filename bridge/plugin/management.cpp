@@ -2354,19 +2354,16 @@ void run(color_ostream& out) {
     }
     // Retire list ownership before entering a mutating native routine. Neither
     // an uncertain result nor a failed post-effect refresh permits replay.
-    religiousSnapshot.invalidate();mutated=true;areaPage.locationEditOutcome=m::LocationEditOutcome::Unknown;
-    try {
-      const auto result=df3d_area::assignNativeLocationReligiousStaff(target.siteId,target.locationId,target.entityId,
+    const auto result=df3d_area::finishReligiousAssignment(religiousSnapshot,*selected,[&] {
+      return df3d_area::assignNativeLocationReligiousStaff(target.siteId,target.locationId,target.entityId,
           target.assignmentId,a.unit_id(),a.religious_holder_id(),a.expected_revision());
-      if(result==df3d_area::LocationStaffEditOutcome::Applied) {
-        auto refreshed=observeTarget();
-        if(refreshed && publishableLocationReligiousStaff(*refreshed) && refreshed->holderId==selected->histfigId && refreshed->unitId==selected->unitId) {
-          areaPage.locationReligiousStaff=std::move(refreshed);areaPage.locationEditOutcome=m::LocationEditOutcome::Completed;status=m::ManagementStatus::Ok;
-        }
-      } else if(result!=df3d_area::LocationStaffEditOutcome::Unknown) {
-        mutated=false;areaPage.locationEditOutcome=result==df3d_area::LocationStaffEditOutcome::Stale?m::LocationEditOutcome::Stale:m::LocationEditOutcome::Rejected;
-      }
-    } catch(...) {areaPage.locationReligiousStaff.reset();}
+    },observeTarget,publishableLocationReligiousStaff);
+    mutated=result.mutated;areaPage.locationEditOutcome=m::LocationEditOutcome::Unknown;
+    if(result.outcome==df3d_area::LocationStaffEditOutcome::Applied) {
+      areaPage.locationReligiousStaff=result.receipt;areaPage.locationEditOutcome=m::LocationEditOutcome::Completed;status=m::ManagementStatus::Ok;
+    } else if(!result.mutated) {
+      areaPage.locationEditOutcome=result.outcome==df3d_area::LocationStaffEditOutcome::Stale?m::LocationEditOutcome::Stale:m::LocationEditOutcome::Rejected;
+    }
     publish();return;
   }
   if(r->area() && (r->area()->operation()==m::AreaOperation::LocationReligiousStaffRead || r->area()->operation()==m::AreaOperation::LocationReligiousStaffRemove)) {

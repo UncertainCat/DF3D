@@ -107,6 +107,28 @@ std::optional<LocationNameWord> chooseNativeLocationNameWord(uint8_t displayedCo
   if(found==choices->end())return std::nullopt;
   return *found;
 }
+namespace {
+LocationNameValue copyLocationName(const df::language_name& name) {
+  LocationNameValue value;value.firstNameCp437=name.first_name;value.nicknameCp437=name.nickname;
+  value.words=name.words;
+  for(size_t i=0;i<7;++i)value.parts[i]=int16_t(name.parts_of_speech[i]);
+  value.language=name.language;value.type=int16_t(name.type);value.hasName=name.has_name;
+  return value;
+}
+}
+std::optional<LocationNameSnapshot> observeNativeLocationName(int32_t siteId,int32_t id) {
+  const auto details=observeNativeLocationDetailsCore(siteId,id);
+  if(!details || !locationRefreshFunction())return std::nullopt;
+  auto* entity=df::historical_entity::find(df::global::plotinfo->civ_id);
+  auto* site=df::world_site::find(siteId);
+  if(!entity || !entity->entity_raw || !site)return std::nullopt;
+  const auto found=std::lower_bound(site->buildings.begin(),site->buildings.end(),id,
+      [](const df::abstract_building* location,int32_t key){return location->id<key;});
+  if(found==site->buildings.end() || (*found)->id!=id || !(*found)->getName())return std::nullopt;
+  LocationNameSnapshot value;value.siteId=siteId;value.id=id;value.kind=details->kind;
+  value.namerId=entity->id;value.namerRace=entity->race;value.name=copyLocationName(*(*found)->getName());
+  return value;
+}
 std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32_t id) {
   const auto observed=observeNativeLocationDetailsCore(siteId,id);
   if(!observed || !locationRefreshFunction())return std::nullopt;
@@ -145,11 +167,7 @@ std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32
   // special-race branches write only the supplied name and consume native RNG.
   // No name_creator input, native UI scratch or DFHack-generated substitute.
   generate(entity,&generated,types[observed->kind]);
-  LocationNameValue value;value.firstNameCp437=generated.first_name;value.nicknameCp437=generated.nickname;
-  value.words=generated.words;
-  for(size_t i=0;i<7;++i)value.parts[i]=int16_t(generated.parts_of_speech[i]);
-  value.language=generated.language;value.type=int16_t(generated.type);value.hasName=generated.has_name;
-  return value;
+  return copyLocationName(generated);
 }
 std::optional<LocationDetailsCore> observeNativeLocationDetailsCore(int32_t siteId,int32_t id) {
   if(siteId<0 || id<0 || !df::global::plotinfo || !DFHack::Maps::IsValid() ||

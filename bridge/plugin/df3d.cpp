@@ -1878,7 +1878,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
-      if (parameters[0] == "location-name-generate") {
+      if (parameters[0] == "location-name-generate" || parameters[0] == "location-name-read") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t ids[2]{};
         for(size_t i=0;i<2;++i) {
@@ -1886,8 +1886,13 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
         }
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
-        const auto name=df3d_area::generateNativeLocationName(ids[0],ids[1]);
+        const auto snapshot=parameters[0]=="location-name-read" ? df3d_area::observeNativeLocationName(ids[0],ids[1]) : std::optional<df3d_area::LocationNameSnapshot>{};
+        const auto name=parameters[0]=="location-name-read" ? (snapshot ? std::optional{snapshot->name} : std::optional<df3d_area::LocationNameValue>{}) : df3d_area::generateNativeLocationName(ids[0],ids[1]);
         Json::Value value(Json::objectValue);value["valid"]=bool(name);
+        if(snapshot) {
+          value["revision"]=std::to_string(df3d_area::locationNameRevision(*snapshot));
+          value["namer_id"]=snapshot->namerId;value["namer_race"]=snapshot->namerRace;value["kind"]=snapshot->kind;
+        }
         if(name) {
           auto& v=value["name"];v["first_name"]=DF2UTF(name->firstNameCp437);v["nickname"]=DF2UTF(name->nicknameCp437);
           v["language"]=name->language;v["type"]=name->type;v["has_name"]=name->hasName;
@@ -2536,6 +2541,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d location-name-words <component 0..6> [query] (protected native word-selector observation)\n"
         "df3d location-name-pick <component 0..6> [query] (protected native selection; consumes RNG)\n"
         "df3d location-name-generate <site id> <location id> (protected owned name generation; consumes RNG)\n"
+        "df3d location-name-read <site id> <location id> (protected structured name and revision observation)\n"
         "df3d location-quantity-edit <site id> <location id> <quantity 0..10> <mode 0..2> <value> <revision> (protected quantity mutation)\n"
         "df3d location-details-refresh <site id> <location id> (refresh semantic caches; protected acceptance)\n"
         "df3d location-details-read <site id> <location id> (partial semantic Details facts; read-only)\n"

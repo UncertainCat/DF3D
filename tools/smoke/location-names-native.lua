@@ -60,6 +60,26 @@ local function capture(label,location)
    local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
    guards[#guards+1]={bytes=bytes,address=at,size=n}
   end
+  local rng_before=rng_snapshot()
+  local function read_name()
+   local text,code=dfhack.run_command_silent('df3d','location-name-read',tostring(df.global.plotinfo.site_id),tostring(location.id))
+   assert(code==0,text);local value=require('json').decode(text);assert(value.valid and value.revision,'name read failed');return value
+  end
+  local observed_name=read_name();local repeated_name=read_name()
+  assert(require('json').encode(observed_name.name)==require('json').encode(row.name_value),'structured name differs')
+  assert(observed_name.revision==repeated_name.revision,'unchanged name revision unstable')
+  assert(observed_name.namer_id==df.global.plotinfo.civ_id,'name receipt uses wrong entity')
+  row.bridge_name_revision=observed_name.revision
+  if label=='TEMPLE-0-name-open' then
+   local name=location:getName();assert(name.words[0]==-1,'expected unused front component')
+   local original=name.parts_of_speech[0];name.parts_of_speech[0]=df.part_of_speech.NounPlural
+   local ok,changed=xpcall(read_name,debug.traceback)
+   name.parts_of_speech[0]=original
+   assert(ok,changed);assert(changed.revision~=observed_name.revision,'hidden structured change did not invalidate receipt')
+   assert(read_name().revision==observed_name.revision,'restored name did not recover receipt')
+   row.bridge_hidden_name_change_detected=true
+  end
+  assert(require('json').encode(rng_before)==require('json').encode(rng_snapshot()),'name observation consumed RNG')
   local text,code=dfhack.run_command_silent('df3d','location-name-words',tostring(creator.cur_name_place),dfhack.df2utf(creator.cull_str))
   assert(code==0,text);local observed=require('json').decode(text)
   assert(observed.valid and #observed.words==#creator.word_index,'native word-selector count mismatch')

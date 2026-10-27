@@ -1,6 +1,28 @@
 #include "doctest.h"
 #include "../bridge/plugin/location_details_native.h"
 
+TEST_CASE("Name receipts include structured fields and naming identity independently of display text") {
+  using namespace df3d_area;
+  LocationNameSnapshot base;base.siteId=651;base.id=1;base.namerId=245;base.namerRace=0;base.kind=1;
+  base.name.words.fill(-1);
+  const auto revision=locationNameRevision(base);
+  CHECK(revision>0);CHECK(revision<=uint64_t(INT64_MAX));CHECK(locationNameRevision(base)==revision);
+  for(int field=0;field<24;++field) {
+    auto next=base;
+    if(field==0)++next.siteId;if(field==1)++next.id;if(field==2)++next.namerId;
+    if(field==3)++next.namerRace;if(field==4)++next.kind;
+    if(field==5)next.name.firstNameCp437="a";if(field==6)next.name.nicknameCp437="a";
+    if(field>=7 && field<14)++next.name.words[field-7];
+    // Even an unused component's grammar changes the receipt.
+    if(field>=14 && field<21)++next.name.parts[field-14];
+    if(field==21)++next.name.language;if(field==22)++next.name.type;if(field==23)next.name.hasName=true;
+    CAPTURE(field);CHECK(locationNameRevision(next)!=revision);
+  }
+  auto a=base,b=base;a.name.firstNameCp437="a";a.name.nicknameCp437="bc";
+  b.name.firstNameCp437="ab";b.name.nicknameCp437="c";
+  CHECK(locationNameRevision(a)!=locationNameRevision(b));
+}
+
 TEST_CASE("Location access follows native display precedence for every flag combination") {
   using namespace df3d_area;
   // Native160005 observed all eight masks on all six baseline locations.

@@ -169,12 +169,12 @@ Modified-key/clipboard input remains outside this evidence.
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout
 reference needed to implement the unfinished Details rename action. Protected
 `stockpile_storage_native.ps1 -LocationNames` run
-`build/stockpile-storage-native-location-names-20261026-213908` captures89 states:
+`build/stockpile-storage-native-location-names-20261026-214317` captures89 states:
 entry/Back across six locations, all seven tavern components' Clear/word/Random
 actions, filter focus/ALE/AL/Enter, edited Back/reopen and whole-name Random/Done
 for all six locations, plus filtered/empty lists across all seven components and
 cross-component Random. Entry alone preserves names; changes apply immediately
-and both Back and Done retain them. DF125096 exits unsaved, source unchanged.
+and both Back and Done retain them. DF134604 exits unsaved, source unchanged.
 
 The rename icon opens `name_creator` in LOCATION_NAME context3 with a pointer to
 the selected location's language_name and namer entity245 in this fixture.
@@ -199,7 +199,7 @@ against pinned0x1fc330; the provider never calls that UI helper. The protected
 word/part-of-speech pairs and English forms across30 native cases and leaves the
 main-interface and GPS structures unchanged. AL counts across components are
 139,211,81,81,40,112,121; ZZZZ produces seven empty lists.
-MSVC and core19/19 pass (`build/qa/location-name-generate-edges`). Management70 remains unchanged; no product
+MSVC and core19/19 pass (`build/qa/location-name-revision`). Management70 remains unchanged; no product
 transport or rename control is exposed yet.
 
 Capture found a DFHack binding error: name_creator.word_index_asp is declared
@@ -234,6 +234,14 @@ ordinary naming. Both paths produce the same first name and cleared word fields.
 Four invalid/non-current target cases per comparison (28 total) reject without
 consuming RNG. This fixture manipulation never occurs in runtime code. The
 protected diagnostic returns a generated value without writing a location.
+`observeNativeLocationName` returns a copied structured name with civilization
+identity. Its separate revision includes every native name field, site/location,
+kind and civilization ID/race; display text alone is insufficient. Thirty live
+observations match native fields with stable repeated receipts and no RNG use.
+Changing the grammar of an unused Front Compound invalidates the receipt, and
+restoring it restores the receipt. Offline checks vary all24 fields and string
+boundaries. This prepares stale-edit validation; typed writes and session/epoch
+ownership are still unfinished.
 Random with an empty list, scrolling, physical Escape, native
 language display columns, typed mutations and the rendered editor remain
 unfinished. DFHack Translation::generateName reconstructs the algorithm and is

@@ -74,6 +74,30 @@ struct LocationNameValue {
   int16_t type=-1;
   bool hasName=false;
 };
+struct LocationNameSnapshot {
+  int32_t siteId=-1,id=-1,namerId=-1;
+  int16_t namerRace=-1;
+  uint8_t kind=0;
+  LocationNameValue name;
+};
+std::optional<LocationNameSnapshot> observeNativeLocationName(int32_t siteId,int32_t id);
+// A separate receipt: translated display text cannot identify all native edits.
+// Transport session/epoch validation remains the command owner's responsibility.
+inline uint64_t locationNameRevision(const LocationNameSnapshot& v) {
+  uint64_t hash=14695981039346656037ULL;
+  const auto number=[&](uint64_t value) {
+    for(unsigned i=0;i<8;++i){hash^=value&255;hash*=1099511628211ULL;value>>=8;}
+  };
+  number(uint32_t(v.siteId));number(uint32_t(v.id));number(uint32_t(v.namerId));
+  number(uint16_t(v.namerRace));number(v.kind);
+  for(const auto* text:{&v.name.firstNameCp437,&v.name.nicknameCp437}) {
+    number(text->size());for(unsigned char ch:*text){hash^=ch;hash*=1099511628211ULL;}
+  }
+  for(auto word:v.name.words)number(uint32_t(word));
+  for(auto part:v.name.parts)number(uint16_t(part));
+  number(uint32_t(v.name.language));number(uint16_t(v.name.type));number(v.name.hasName);
+  hash&=0x7fffffffffffffffULL;return hash?hash:1;
+}
 // Native whole-name Random on an owned name copy. Consumes ordinary DF RNG;
 // does not write the selected location or open/borrow its native editor.
 std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32_t id);

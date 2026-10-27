@@ -388,7 +388,7 @@ Religious alternate sorting/search and rendered viewer integration remain unfini
 
 `assignNativeLocationReligiousStaff` calls pinned native position assignment,
 actor insertion and follow-up routines with semantic records. It revalidates the
-current holder receipt and candidate eligibility, uses the existing removal
+current holder and selected-candidate receipt and candidate eligibility, uses the existing removal
 primitive for replacement, and checks the resulting assignment before reporting
 Applied. Unexpected post-effect results are Unknown and must not be replayed.
 The paused diagnostic is `location-religious-assign site location entity assignment
@@ -401,9 +401,7 @@ revision, a stale revision and completed-request replay are refused; UI/gps byte
 guards pass. MSVC and core19/19 pass in
 `build/qa/location-religious-assignment-semantic-final`, with source preservation
 and unsaved owned exit. Military/job/high-priest/plotter/historical variants and
-post-effect Unknown injection remain unverified. The existing holder
-receipt does not bind all selected-candidate dependencies; add that receipt before
-management/viewer exposure. Protocol74 remains unchanged.
+post-effect Unknown injection remain unverified. Protocol74 remains unchanged.
 Protected replacepriest055643/actionreplacepriest055738 verify the native
 callback's replacement branch. Occupied native rows do not open assignment
 pickers directly: the controlled oracle temporarily vacates holder fields to open
@@ -434,7 +432,27 @@ initialization is unchanged; this discovery is in the native bug register.
 All paired runs preserve the source and exit unsaved. Core19/19 passes in
 `build/qa/location-religious-assignment-cleanup-verified`. Other military transitions,
 high-priest/plotter/historical variants, post-effect Unknown injection and assignment
-receipt/transport/viewer work remain unfinished.
+transport/viewer work remain unfinished.
+
+`observeNativeReligiousAssignment` binds the target receipt to the selected
+unit, historical figure, unique nemesis, eligibility and displayed candidate
+facts. Its revision also covers position/link, personality, actor, squad,
+uniform and current-job dependencies. Native time/RNG, pointer addresses,
+lookup-cache indexes and uninitialized historical focus counters are excluded.
+The paused `location-religious-assignment-receipt` diagnostic takes site,
+location, entity, assignment and unit IDs; assignment requires its revision.
+Protected062053 (vacant) and062153 (linked-squad replacement) reject stale
+membership strength, lost membership, custom profession, inactive unit,
+nemesis group leader and uniform-pickup state. Restoring each field restores
+the receipt. Successful initialized effects match the respective native
+054344/060053 references; replay is refused. Replay observation refreshes
+only the new position link's entity/assignment lookup indexes (-1 to383/2).
+Raw before/after states remain captured and only named lookup indexes are
+excluded from semantic replay equality. Both runs preserve source saves and
+exit owned DF unsaved; UI/gps guards and core checks pass in
+`build/qa/location-religious-assignment-receipt`. The fixture retains bounded
+receipt evidence. This is provider coverage, not assignment transport, viewer
+lifecycle or exhaustive high-priest/plotter dependency acceptance.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

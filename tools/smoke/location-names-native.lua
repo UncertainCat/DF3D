@@ -904,8 +904,12 @@ if recognition_case=='assignpriest' or recognition_case:sub(1,7)=='replace' then
   assert(reference.success and #reference.records==4);assignment_expected=reference.records[4]
   assert(require('json').encode(cancelled.selected)==require('json').encode(reference.records[3].selected),'assignment initial selected state differs')
   restore_rng(reference.records[3].recognition.rng)
-  local text,code=dfhack.run_command_silent('df3d','location-religious-receipt',tostring(df.global.plotinfo.site_id),tostring(temple.id),tostring(religion.id),tostring(assignment.id))
-  assert(code==0,text);local receipt=require('json').decode(text);assert(receipt.valid);assign_revision=receipt.revision
+  local function assignment_receipt()
+   local text,code=dfhack.run_command_silent('df3d','location-religious-assignment-receipt',tostring(df.global.plotinfo.site_id),tostring(temple.id),tostring(religion.id),tostring(assignment.id),tostring(chosen.id))
+   assert(code==0,text);local receipt=require('json').decode(text);assert(receipt.valid);return receipt
+  end
+  local receipt=assignment_receipt();assert(receipt.eligible and receipt.holder_id==expected_holder and receipt.histfig_id==chosen.histfig_id)
+  assign_revision=receipt.revision
   assign_semantic=function(ids,revision)
    local args=ids or {df.global.plotinfo.site_id,temple.id,religion.id,assignment.id,chosen.id,expected_holder}
    local strings={};for _,value in ipairs(args)do strings[#strings+1]=tostring(value)end
@@ -926,6 +930,35 @@ if recognition_case=='assignpriest' or recognition_case:sub(1,7)=='replace' then
   assert(assign_semantic(nil,'0')==1,'zero assignment revision accepted')
   assert(assign_semantic(nil,tostring(tonumber(assign_revision)+1))==4,'stale assignment accepted')
   assert(before==require('json').encode(selected_state()) and simulation==require('json').encode(recognition_state()),'rejected assignment changed simulation')
+  cancelled.assignment_receipt_probes={}
+  local function stale_probe(name,object,field,value)
+   local original=object[field];object[field]=value
+   local changed=assignment_receipt();assert(changed.revision~=assign_revision,'receipt missed '..name)
+   local function simulation_snapshot()
+    local text,code=dfhack.run_command_silent('df3d','location-recognition-read',tostring(df.global.plotinfo.site_id),tostring(temple.id))
+    assert(code==0,text);return text
+   end
+   local seeded=require('json').encode(selected_state());local seeded_sim=simulation_snapshot()
+   assert(assign_semantic()==4,'stale candidate accepted: '..name)
+   assert(seeded==require('json').encode(selected_state()) and seeded_sim==simulation_snapshot(),'stale candidate changed simulation: '..name)
+   object[field]=original
+   assert(assignment_receipt().revision==assign_revision,'receipt not restored: '..name)
+   cancelled.assignment_receipt_probes[#cancelled.assignment_receipt_probes+1]={dependency=name,eligible=changed.eligible,outcome=4}
+  end
+  local selected_unit=assert(df.unit.find(chosen.id))
+  local selected_figure=assert(df.historical_figure.find(chosen.histfig_id))
+  local member
+  for _,link in ipairs(selected_figure.entity_links)do
+   if link.entity_id==religion.id and link:getType()==df.histfig_entity_link_type.MEMBER then member=link;break end
+  end
+  assert(member and member.link_strength==100)
+  stale_probe('membership strength',member,'link_strength',99)
+  stale_probe('membership eligibility',member,'link_strength',0)
+  stale_probe('custom profession',selected_unit,'custom_profession','receipt probe')
+  stale_probe('unit inactive',selected_unit.flags1,'inactive',true)
+  local nemesis=assert(df.nemesis_record.find(receipt.nemesis_id))
+  stale_probe('nemesis group leader',nemesis,'group_leader_id',nemesis.group_leader_id+1)
+  stale_probe('uniform pickup',selected_unit.uniform.pickup_flags,'whole',selected_unit.uniform.pickup_flags.whole~1)
   assert(assign_semantic()==2,'semantic religious assignment failed')
   for _,guard in ipairs(guards)do
    assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'religious assignment changed UI/gps');df.delete(guard.bytes)
@@ -970,7 +1003,8 @@ if recognition_case=='assignpriest' or recognition_case:sub(1,7)=='replace' then
    assert(require('json').encode(actual)==require('json').encode(expected),'semantic assignment differs from native: '..field)
   end
   assert(assign_semantic()==4,'completed assignment replay accepted')
-  assert(require('json').encode(assigned.selected)==require('json').encode(selected_state()),'stale replay changed selected unit')
+  assigned.selected_after_stale_replay=selected_state()
+  assert(require('json').encode(without_lookup_indexes(assigned.selected))==require('json').encode(without_lookup_indexes(assigned.selected_after_stale_replay)),'stale replay changed selected unit')
   assigned.semantic_matches_native=true
  end
  contents.location_tier=original;assert(#records==4);return

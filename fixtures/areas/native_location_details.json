@@ -12959,6 +12959,97 @@
         "Post-effect Unknown injection, selected-candidate receipt, management transport and viewer workflow."
       ],
       "new_profile_comparison_policy": "Retain raw focus counters, but exclude current_focus/undistracted_focus only when a historical personality profile was absent before assignment; native constructor leaves them uninitialized. Existing profiles and unit personality counters compare exactly."
+    },
+    "assignment_receipt_reference": {
+      "cases": [
+        {
+          "provenance": "build/stockpile-storage-native-location-recognition-actionassignpriest-20261027-062053",
+          "stale_probes": [
+            {
+              "dependency": "membership strength",
+              "eligible": true,
+              "outcome": 4
+            },
+            {
+              "dependency": "membership eligibility",
+              "eligible": false,
+              "outcome": 4
+            },
+            {
+              "dependency": "custom profession",
+              "eligible": true,
+              "outcome": 4
+            },
+            {
+              "dependency": "unit inactive",
+              "eligible": false,
+              "outcome": 4
+            },
+            {
+              "dependency": "nemesis group leader",
+              "eligible": true,
+              "outcome": 4
+            },
+            {
+              "dependency": "uniform pickup",
+              "eligible": true,
+              "outcome": 4
+            }
+          ],
+          "semantic_matches_native": true,
+          "replay_ignored_fields": [
+            "entity_vector_idx",
+            "assignment_vector_idx",
+            "position_vector_idx"
+          ]
+        },
+        {
+          "provenance": "build/stockpile-storage-native-location-recognition-actionreplacesquadpriest-20261027-062153",
+          "stale_probes": [
+            {
+              "dependency": "membership strength",
+              "eligible": true,
+              "outcome": 4
+            },
+            {
+              "dependency": "membership eligibility",
+              "eligible": false,
+              "outcome": 4
+            },
+            {
+              "dependency": "custom profession",
+              "eligible": true,
+              "outcome": 4
+            },
+            {
+              "dependency": "unit inactive",
+              "eligible": false,
+              "outcome": 4
+            },
+            {
+              "dependency": "nemesis group leader",
+              "eligible": true,
+              "outcome": 4
+            },
+            {
+              "dependency": "uniform pickup",
+              "eligible": true,
+              "outcome": 4
+            }
+          ],
+          "semantic_matches_native": true,
+          "replay_ignored_fields": [
+            "entity_vector_idx",
+            "assignment_vector_idx",
+            "position_vector_idx"
+          ]
+        }
+      ],
+      "core": "build/qa/location-religious-assignment-receipt",
+      "limitations": [
+        "Management transport and viewer assignment remain unfinished.",
+        "High-priest and plotter dependency coverage remains incomplete."
+      ]
     }
   }
 }

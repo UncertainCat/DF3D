@@ -28,6 +28,16 @@
 #include "df/job_item_ref.h"
 #include "df/item.h"
 #include "df/histfig_entity_link_positionst.h"
+#include "df/histfig_hf_link.h"
+#include "df/histfig_site_link.h"
+#include "df/historical_figure_info.h"
+#include "df/skill_profilest.h"
+#include "df/personality_profilest.h"
+#include "df/personality_goalst.h"
+#include "df/personality_valuest.h"
+#include "df/historical_figure_relationships.h"
+#include "df/intrigue_perspectivest.h"
+#include "df/intrigue_actorst.h"
 #include <cstddef>
 #include "df/occupation_type.h"
 #include "df/plotinfost.h"
@@ -471,14 +481,150 @@ std::optional<LocationStaffCandidates> observeNativeReligiousCandidates(
   return result;
 }
 
+std::optional<LocationReligiousAssignmentReceipt> observeNativeReligiousAssignment(
+    int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId,int32_t unitId) {
+  if(!religiousStaffAssignmentFunctions())return std::nullopt;
+  const auto target=observeNativeLocationReligiousStaff(siteId,locationId,entityId,assignmentId);
+  auto* unit=df::unit::find(unitId);
+  if(!target || !unit || !df::global::world)return std::nullopt;
+  auto* figure=df::historical_figure::find(unit->hist_figure_id);
+  if(!figure || figure->unit_id!=unitId)return std::nullopt;
+  df::nemesis_record* nemesis=nullptr;
+  for(auto* record:df::global::world->nemesis.all)if(record && record->figure==figure) {
+    if(nemesis)return std::nullopt;nemesis=record;
+  }
+  if(!nemesis || nemesis->unit!=unit)return std::nullopt;
+  const auto candidates=observeNativeReligiousCandidates(siteId,locationId,entityId,assignmentId);
+  if(!candidates)return std::nullopt;
+  LocationReligiousAssignmentReceipt result{*target,unitId,figure->id,nemesis->id};
+  uint64_t hash=UINT64_C(14695981039346656037);
+  const auto number=[&](uint64_t value) {
+    for(unsigned i=0;i<8;++i){hash^=value&255;hash*=UINT64_C(1099511628211);value>>=8;}
+  };
+  const auto numbers=[&](const auto& values){number(values.size());for(auto value:values)number(uint64_t(value));};
+  const auto text=[&](const std::string& value){number(value.size());for(unsigned char byte:value)number(byte);};
+  number(target->revision);number(unitId);number(figure->id);number(nemesis->id);
+  for(const auto& row:candidates->rows)if(row.unitId==unitId) {
+    result.eligible=true;number(row.histfigId);number(row.score);
+    text(row.name);text(row.baseName);text(row.professionName);
+    number(row.professionColor);number(row.legendary);number(row.professionOrder);number(row.statusOrder);
+    numbers(row.nameSortKey);numbers(row.professionSortKey);number(row.skills.size());
+    for(const auto& skill:row.skills){number(skill.id);number(skill.rating);number(skill.experience);number(skill.weight);}
+  }
+  number(result.eligible);
+  const auto positionBinding=[&](const df::entity_position* position)->bool {
+    number(position!=nullptr);if(!position)return true;
+    number(position->id);number(position->squad_size);number(position->precedence);number(position->land_holder);
+    number(position->replaced_by);number(position->number);number(position->execution_skill);
+    for(int i=0;i<=int(df::enum_traits<df::entity_position_flags>::last_item_value);++i)
+      number(position->flags.is_set(static_cast<df::entity_position_flags>(i)));
+    numbers(position->responsibilities);numbers(position->allowed_creature);numbers(position->rejected_creature);
+    numbers(position->commander_id);numbers(position->commander_civ);numbers(position->commander_types);
+    numbers(position->appointed_by);numbers(position->appointed_by_civ);numbers(position->succession_by_position);
+    number(position->allowed_class.size());for(const auto* value:position->allowed_class){if(!value)return false;text(*value);}
+    number(position->rejected_class.size());for(const auto* value:position->rejected_class){if(!value)return false;text(*value);}
+    return true;
+  };
+  auto* entity=df::historical_entity::find(entityId);
+  if(!entity || !positionBinding(binsearch_in_vector(entity->positions.own,target->positionId)))return std::nullopt;
+  number(figure->unit_id);number(figure->profession);number(figure->race);number(figure->caste);number(figure->sex);
+  number(figure->civ_id);number(figure->population_id);number(figure->cultural_identity);number(figure->died_year);
+  for(int i=0;i<=int(df::enum_traits<df::histfig_flags>::last_item_value);++i)
+    number(figure->flags.is_set(static_cast<df::histfig_flags>(i)));
+  number(figure->entity_links.size());
+  for(auto* link:figure->entity_links) {
+    if(!link)return std::nullopt;
+    number(link->getType());number(link->entity_id);number(link->link_strength);
+    number(link->getPosition());number(link->getPositionStartYear());number(link->getPositionEndYear());
+    number(link->getSquadId());number(link->getSquadPosition());number(link->getOccupation());
+    if(link->getType()==df::histfig_entity_link_type::POSITION) {
+      const auto* linked=df::historical_entity::find(link->entity_id);number(linked!=nullptr);
+      if(linked) {
+        const auto* held=binsearch_in_vector(linked->positions.assignments,static_cast<df::histfig_entity_link_positionst*>(link)->assignment_id);
+        number(held!=nullptr);
+        if(held) {
+          number(held->id);number(held->histfig);number(held->histfig2);number(held->squad_id);number(held->st_id);number(held->ab_id);
+          if(!positionBinding(binsearch_in_vector(linked->positions.own,held->position_id)))return std::nullopt;
+        }
+      }
+    }
+  }
+  number(figure->site_links.size());for(auto* link:figure->site_links) {
+    if(!link)return std::nullopt;number(link->getType());number(link->site);number(link->sub_id);number(link->entity);
+  }
+  number(figure->histfig_links.size());for(auto* link:figure->histfig_links) {
+    if(!link)return std::nullopt;number(link->getType());number(link->target_hf);number(link->link_strength);
+  }
+  const auto personalityBinding=[&](const df::unit_personality* personality)->bool {
+    number(personality!=nullptr);if(!personality)return true;
+    numbers(personality->traits);number(personality->civ_id);number(personality->cultural_identity);
+    number(personality->values.size());for(const auto* value:personality->values) {
+      if(!value)return false;number(value->type);number(value->strength);
+    }
+    number(personality->dreams.size());for(const auto* dream:personality->dreams) {
+      if(!dream)return false;number(dream->local_id);number(dream->type);number(dream->id);number(dream->flags.whole);numbers(dream->parent_id);
+    }
+    return true;
+  };
+  number(figure->info!=nullptr);
+  if(figure->info) {
+    const auto* info=figure->info;number(info->skills!=nullptr);
+    if(info->skills){number(info->skills->profession);numbers(info->skills->professions_held);numbers(info->skills->profession_years);}
+    if(!personalityBinding(info->personality?&info->personality->personality:nullptr))return std::nullopt;
+    number(info->reputation!=nullptr);number(info->relationships!=nullptr);
+    const auto* intrigue=info->relationships?info->relationships->intrigues:nullptr;number(intrigue!=nullptr);
+    if(intrigue) {
+      number(intrigue->next_intrigue_id);number(intrigue->intrigue.size());
+      for(const auto* actor:intrigue->intrigue) {
+        if(!actor)return std::nullopt;
+        number(actor->id);number(actor->flags.whole);number(actor->hf_1);number(actor->hf_2);number(actor->identity_id);number(actor->entity);
+        number(actor->handle_actor_id);number(actor->role);number(actor->strategy);number(actor->strategy_enid);number(actor->strategy_eppid);numbers(actor->active_plot_id);
+      }
+    }
+  }
+  if(!personalityBinding(unit->status.current_soul?&unit->status.current_soul->personality:nullptr))return std::nullopt;
+  number(nemesis->unit_id);number(nemesis->group_leader_id);numbers(nemesis->companions);
+  for(int i=0;i<=int(df::enum_traits<df::nemesis_flags>::last_item_value);++i)
+    number(nemesis->flags.is_set(static_cast<df::nemesis_flags>(i)));
+  const auto member=[&](const auto& records){number(std::find(records.begin(),records.end(),nemesis)!=records.end());};
+  member(df::global::world->nemesis.civilized_actor);member(df::global::world->nemesis.plotter_actor);member(df::global::world->nemesis.new_plotter_actor);
+  number(unit->military.squad_id);number(unit->military.squad_position);
+  const auto* squad=df::squad::find(unit->military.squad_id);number(squad!=nullptr);
+  if(squad) {
+    number(squad->id);number(squad->leader_position);number(squad->leader_assignment);number(squad->positions.size());
+    for(const auto* slot:squad->positions) {
+      if(!slot)return std::nullopt;number(slot->occupant);number(slot->current_patrol_id);number(slot->current_patrol_point_id);
+      numbers(slot->activities);numbers(slot->events);numbers(slot->equipment.assigned_items);
+      number(slot->equipment.quiver);number(slot->equipment.backpack);number(slot->equipment.flask);
+    }
+  }
+  number(unit->uniform.cur_uniform);number(unit->uniform.pickup_flags.whole);
+  numbers(unit->uniform.clothing_item_id);numbers(unit->uniform.uniform_pickup);numbers(unit->uniform.uniform_drop);
+  for(const auto& items:unit->uniform.uniforms)numbers(items);
+  const auto* job=unit->job.current_job;number(job!=nullptr);
+  if(job) {
+    number(job->id);number(job->job_type);number(job->flags.whole);number(job->posting_index);number(job->order_id);
+    number(job->pos.x);number(job->pos.y);number(job->pos.z);number(job->general_refs.size());
+    for(auto* ref:job->general_refs){if(!ref)return std::nullopt;number(ref->getType());number(ref->getID());}
+    number(job->items.size());for(const auto* ref:job->items) {
+      if(!ref || !ref->item)return std::nullopt;number(ref->item->id);number(ref->role);number(ref->flags.whole);number(ref->job_item_idx);
+    }
+  }
+  // Native effects use fresh time/RNG. Pointer addresses, lookup caches, task
+  // timers and uninitialized historical focus counters are never authority.
+  hash&=uint64_t(INT64_MAX);result.revision=hash?hash:1;return result;
+}
+
 LocationStaffEditOutcome assignNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
     int32_t entityId,int32_t assignmentId,int32_t unitId,int32_t expectedHolderId,uint64_t expectedRevision) {
   const auto& native=religiousStaffAssignmentFunctions();
   if(!native)return LocationStaffEditOutcome::Unavailable;
   if(!expectedRevision || expectedRevision>uint64_t(INT64_MAX) || unitId<0)return LocationStaffEditOutcome::Rejected;
-  const auto receipt=observeNativeLocationReligiousStaff(siteId,locationId,entityId,assignmentId);
-  if(!receipt)return LocationStaffEditOutcome::Rejected;
-  if(receipt->revision!=expectedRevision || receipt->holderId!=expectedHolderId)return LocationStaffEditOutcome::Stale;
+  const auto assignmentReceipt=observeNativeReligiousAssignment(siteId,locationId,entityId,assignmentId,unitId);
+  if(!assignmentReceipt)return LocationStaffEditOutcome::Rejected;
+  const auto* receipt=&assignmentReceipt->target;
+  if(assignmentReceipt->revision!=expectedRevision || receipt->holderId!=expectedHolderId)return LocationStaffEditOutcome::Stale;
+  if(!assignmentReceipt->eligible)return LocationStaffEditOutcome::Rejected;
   const auto candidates=observeNativeReligiousCandidateIds(siteId,locationId,entityId,assignmentId);
   if(!candidates || std::find(candidates->begin(),candidates->end(),unitId)==candidates->end())return LocationStaffEditOutcome::Rejected;
   auto* unit=df::unit::find(unitId);if(!unit)return LocationStaffEditOutcome::Rejected;
@@ -498,7 +644,7 @@ LocationStaffEditOutcome assignNativeLocationReligiousStaff(int32_t siteId,int32
   // Finish all admission checks before removing a previous holder. Any failure
   // after a native effect is Unknown; callers must not automatically replay it.
   if(expectedHolderId>=0) {
-    const auto removed=removeNativeLocationReligiousStaff(siteId,locationId,entityId,assignmentId,expectedHolderId,expectedRevision);
+    const auto removed=removeNativeLocationReligiousStaff(siteId,locationId,entityId,assignmentId,expectedHolderId,receipt->revision);
     if(removed!=LocationStaffEditOutcome::Applied)return removed;
   }
   try {

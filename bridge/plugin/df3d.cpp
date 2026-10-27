@@ -1762,6 +1762,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               seed.valid,seed.id,seed.x,seed.y,seed.z,int(seed.furniture),seed.inUse);
           return CR_OK;
       }
+      if(parameters[0]=="location-religious-assignment-receipt") {
+        if(parameters.size()!=6)return CR_WRONG_USAGE;
+        int32_t ids[5]{};
+        for(size_t i=0;i<5;++i) {
+          const auto& text=parameters[i+1];const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        const auto receipt=df3d_area::observeNativeReligiousAssignment(ids[0],ids[1],ids[2],ids[3],ids[4]);
+        Json::Value value(Json::objectValue);value["valid"]=receipt.has_value();
+        if(receipt) {
+          value["revision"]=std::to_string(receipt->revision);value["eligible"]=receipt->eligible;
+          value["holder_revision"]=std::to_string(receipt->target.revision);
+          value["holder_id"]=receipt->target.holderId;value["histfig_id"]=receipt->histfigId;value["nemesis_id"]=receipt->nemesisId;
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
       if(parameters[0]=="location-religious-assign") {
         if(parameters.size()!=8)return CR_WRONG_USAGE;
         int32_t ids[6]{};uint64_t revision=0;

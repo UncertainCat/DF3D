@@ -89,8 +89,16 @@ std::optional<LocationStaffCandidates> observeNativeReligiousCandidates(
 // Requires the exact observed revision at the same safe point as mutation.
 LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
     int32_t entityId,int32_t assignmentId,int32_t expectedHolderId,uint64_t expectedRevision);
-// Diagnostic primitive. Revalidates current candidate eligibility; transport
-// must additionally bind the selected candidate's dependencies before exposure.
+struct LocationReligiousAssignmentReceipt {
+  LocationReligiousStaffReceipt target;
+  int32_t unitId=-1,histfigId=-1,nemesisId=-1;
+  uint64_t revision=0;
+  bool eligible=false;
+};
+std::optional<LocationReligiousAssignmentReceipt> observeNativeReligiousAssignment(
+    int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId,int32_t unitId);
+// Diagnostic primitive. Requires the selected-candidate receipt; transport must
+// additionally bind the world epoch and the viewer's candidate-list ownership.
 LocationStaffEditOutcome assignNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
     int32_t entityId,int32_t assignmentId,int32_t unitId,int32_t expectedHolderId,uint64_t expectedRevision);
 

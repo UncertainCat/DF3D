@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='replacepriest' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -658,13 +658,28 @@ end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local original_priest_threshold=difficulty.priesthood_unit_count
-if recognition_case=='assignpriest' or recognition_case=='replacepriest' then
+if recognition_case=='assignpriest' or recognition_case:sub(1,7)=='replace' then
  local assignment
  for _,a in ipairs(religion.positions.assignments)do if a.st_id==df.global.plotinfo.site_id then assert(not assignment);assignment=a end end
  assert(assignment and assignment.histfig>=0)
  if recognition_case=='assignpriest' then pixel(944,358);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')end
  local expected_holder=assignment.histfig
  local previous_holder=expected_holder>=0 and assert(df.historical_figure.find(expected_holder)) or nil
+ local linked_squad,seeded_assignment_job
+ if recognition_case=='replacesquadpriest' then
+  local unit=assert(df.unit.find(previous_holder.unit_id));linked_squad=assert(df.squad.find(unit.military.squad_id))
+  assert(unit.military.squad_position==0 and linked_squad.positions[0].occupant==previous_holder.id)
+  assignment.squad_id=linked_squad.id
+ elseif recognition_case=='replacemanagerpriest' or recognition_case=='replaceaccountantpriest' then
+  local unit=assert(df.unit.find(previous_holder.unit_id));assert(not unit.job.current_job)
+  local position
+  for _,p in ipairs(religion.positions.own)do if p.id==assignment.position_id then position=p end end
+  assert(position);local manager=recognition_case=='replacemanagerpriest'
+  position.responsibilities[manager and df.entity_position_responsibility.MANAGE_PRODUCTION or df.entity_position_responsibility.ACCOUNTING]=true
+  seeded_assignment_job=df.job:new();seeded_assignment_job.job_type=manager and df.job_type.ManageWorkOrders or df.job_type.UpdateStockpileRecords
+  seeded_assignment_job.pos:assign(unit.pos);seeded_assignment_job.posting_index=-1
+  assert(dfhack.job.linkIntoWorld(seeded_assignment_job,true));assert(dfhack.job.addWorker(seeded_assignment_job,unit))
+ end
  local vacant=capture(expected_holder>=0 and 'TEMPLE-priest-occupied' or 'TEMPLE-priest-vacant',temple);vacant.recognition=recognition_state()
  local function candidates(ids,rows)
   local guards={}
@@ -856,6 +871,28 @@ if recognition_case=='assignpriest' or recognition_case=='replacepriest' then
   for _,field in ipairs{'independent_actor','civilized_actor','plotter_actor','new_plotter_actor','religious_actor'}do
    state.actors[field]={};for _,n in ipairs(df.global.world.nemesis[field])do state.actors[field][#state.actors[field]+1]=n.id end
   end
+  if linked_squad then
+   state.squad={id=linked_squad.id,positions={},equipment_update=df.global.plotinfo.equipment.update.whole}
+   for _,position in ipairs(linked_squad.positions)do
+    local row=scalar_fields(position);row.activities=values(position.activities);row.events=values(position.events)
+    row.equipment=scalar_fields(position.equipment);row.equipment.flags=position.equipment.flags.whole
+    row.equipment.assigned_items=values(position.equipment.assigned_items)
+    state.squad.positions[#state.squad.positions+1]=row
+   end
+   state.unit.uniform=scalar_fields(unit.uniform);state.unit.uniform.pickup_flags=unit.uniform.pickup_flags.whole
+   state.unit.uniform.uniforms={}
+   for i=0,df.unit_uniform_mode_type._last_item do state.unit.uniform.uniforms[#state.unit.uniform.uniforms+1]=values(unit.uniform.uniforms[i])end
+   for _,field in ipairs{'clothing_item_id','uniform_pickup','uniform_drop'}do state.unit.uniform[field]=values(unit.uniform[field])end
+  end
+  if seeded_assignment_job then
+   state.seeded_job={exists=false}
+   for _,job in require('utils').listpairs(df.global.world.jobs.list)do if job.id==seeded_assignment_job.id then
+    state.seeded_job=scalar_fields(job);state.seeded_job.exists=true;state.seeded_job.flags=job.flags.whole;state.seeded_job.refs={}
+    for _,ref in ipairs(job.general_refs)do
+     local row=scalar_fields(ref);row.type=ref:getType();state.seeded_job.refs[#state.seeded_job.refs+1]=row
+    end
+   end end
+  end
   if not unit_id and previous_holder then state.previous_holder=selected_state(previous_holder.unit_id,previous_holder.id)end
   return state
  end
@@ -904,8 +941,33 @@ if recognition_case=='assignpriest' or recognition_case=='replacepriest' then
   assigned.new_events[#assigned.new_events+1]=value
  end
  if assignment_expected then
+  -- Native5c02a0 initializes through0x183, then starts the debug block at0x18c.
+  -- Newly allocated historical profiles leave these two counters indeterminate.
+  -- Retain their raw observations; compare them only for pre-existing profiles.
+  assigned.comparison_excluded_fields={}
+  local function comparable_selected(value,before,path)
+   local copy=require('json').decode(require('json').encode(value))
+   if before.figure_personality==false and copy.figure_personality then
+    copy.figure_personality.current_focus=nil;copy.figure_personality.undistracted_focus=nil
+    assigned.comparison_excluded_fields[path..'.figure_personality']='newly allocated current_focus/undistracted_focus'
+   end
+   if copy.previous_holder then copy.previous_holder=comparable_selected(copy.previous_holder,before.previous_holder,path..'.previous_holder')end
+   return copy
+  end
+  if cancelled.selected.figure_personality==false then
+   local personality=assert(df.historical_figure.find(chosen.histfig_id).info.personality).personality
+   local _,base=df.sizeof(personality);assigned.personality_focus_offsets={}
+   for _,field in ipairs{'current_focus','undistracted_focus'}do
+    local _,address=df.sizeof(personality:_field(field));assigned.personality_focus_offsets[field]=address-base
+   end
+   assert(assigned.personality_focus_offsets.current_focus==0x184 and assigned.personality_focus_offsets.undistracted_focus==0x188)
+  end
   for _,field in ipairs{'recognition','selected','new_events'}do
-   assert(require('json').encode(assigned[field])==require('json').encode(assignment_expected[field]),'semantic assignment differs from native: '..field)
+   local actual,expected=assigned[field],assignment_expected[field]
+   if field=='selected' then
+    actual=comparable_selected(actual,cancelled.selected,'selected');expected=comparable_selected(expected,cancelled.selected,'selected')
+   end
+   assert(require('json').encode(actual)==require('json').encode(expected),'semantic assignment differs from native: '..field)
   end
   assert(assign_semantic()==4,'completed assignment replay accepted')
   assert(require('json').encode(assigned.selected)==require('json').encode(selected_state()),'stale replay changed selected unit')

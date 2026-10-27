@@ -1,8 +1,8 @@
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped
-DF3D corrections. Approval is recorded in AGENT_INSTRUCTIONS.md; it does not
-authorize unrelated departures. Keep status and evidence current as fixes land.
+DF3D corrections. Approval for corrections is recorded in AGENT_INSTRUCTIONS.md;
+unfixed discoveries are marked separately. Approval does not authorize unrelated departures. Keep status and evidence current as fixes land.
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
@@ -14,6 +14,7 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 | Animal containment tooltip callbacks swap X/Y hitbox coordinates. | Activate all four native messages on the visible cage/chain icons. | Implemented; `fixtures/areas/native_zone_animals.json` field `animal_containment_hover_reference`, GPU `build/qa/animal-containment-hover` and `build/qa/animal-containment-click`. |
 | Animal picker blank right edge lets clicks select the map behind the visible panel, changing the parent zone while assignments still target the original zone. | Consume clicks inside the visible panel while releasing search focus and preserving the picker target. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_blank_input`, native `build/stockpile-storage-native-zone-animals-20261026-150439`, rendered `build/areas-acceptance-20261026-150814`. |
 | Animal picker remains active after selecting another zone or empty terrain, so Enter assigns to an old, no-longer-shown zone. | Close the picker and retire its assignment target when map selection changes. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_outside_panel_selection`, native `build/stockpile-storage-native-zone-animals-20261026-153041`, rendered `build/areas-acceptance-20261026-153847`. |
+| Fresh historical personality profiles leave current_focus and undistracted_focus uninitialized at offsets0x184/0x188. | No runtime correction; DF3D calls the same native initializer. | Discovered, not corrected. Native constructor5c02a0 and assignment accountant captures060438/060526/060814; fixture `assignment_cleanup_reference`. The oracle retains raw values and excludes only these newly allocated counters from comparison. |
 | Minimum-height hospital Details has no staff rows, but draws a malformed staff scrollbar over soap controls and scrolls an invisible list. | Proposed: hide the malformed scrollbar when no staff row fits. | Awaiting maintainer approval; not implemented. `native_location_details.json.staff_height_reference`, protected `build/stockpile-storage-native-location-names-20261027-010412`. |
 
 ## Native Location supply editing reference
@@ -417,7 +418,23 @@ and excludes only the three named lookup-index fields from its semantic equality
 check; UI/gps and other captured facts remain unchanged. Both runs pass with
 source preservation and unsaved owned exit; core19/19 passes in
 `build/qa/location-religious-replacement-reference`. Assignment-linked military,
-active-job, high-priest, plotter and historical-holder variants remain unverified.
+active-job, high-priest, plotter and historical-holder variants were outside that pair.
+Additional controlled replacement pairs060053/060142 (linked squad),060320/060404
+(manager) and060438/060814 (accountant) verify old-holder cleanup. The linked
+squad command transfers from HF9375 to HF10379; captured squad positions,
+equipment, activities, events and both units' uniforms match. ManageWorkOrders195
+and UpdateStockpileRecords196 detach their worker references and old-holder
+current jobs while retaining the job records. Other captured initialized effects,
+history and RNG match. The accountant pair exposed native historical-personality
+constructor5c02a0 leaving current_focus/undistracted_focus at0x184/0x188
+uninitialized before its debug block at0x18c. Raw values remain in evidence;
+the comparison excludes only these counters when the profile was newly allocated.
+Existing profile and unit-personality counters still compare exactly. DF3D runtime
+initialization is unchanged; this discovery is in the native bug register.
+All paired runs preserve the source and exit unsaved. Core19/19 passes in
+`build/qa/location-religious-assignment-cleanup-verified`. Other military transitions,
+high-priest/plotter/historical variants, post-effect Unknown injection and assignment
+receipt/transport/viewer work remain unfinished.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

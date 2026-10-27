@@ -12418,6 +12418,547 @@
         "Assignment-linked military cleanup, active-job, high-priest, plotter and historical-holder variants remain.",
         "This establishes callback semantics, not a direct replacement product action or stale-target UI behavior."
       ]
+    },
+    "assignment_cleanup_reference": {
+      "cases": [
+        {
+          "case": "squad",
+          "native_source": "build/stockpile-storage-native-location-recognition-replacesquadpriest-20261027-060053",
+          "semantic_source": "build/stockpile-storage-native-location-recognition-actionreplacesquadpriest-20261027-060142",
+          "native_result_sha256": "985ff6035ee1972fc1e83cd03088516daaa65e8a9f8e4783a97d5854ca7947f4",
+          "semantic_result_sha256": "1b57bd961c0614e85484c5c7ffc424bc668074d342a97818a81047f9d6204fb6",
+          "status": "passed",
+          "old_holder_unit_before": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 5813,
+            "occupations": [],
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0,
+            "uniform": {
+              "clothing_item_id": [
+                18735,
+                23178,
+                23180,
+                23181,
+                23182,
+                23183,
+                23510,
+                30728
+              ],
+              "cur_uniform": 0,
+              "pickup_flags": 0,
+              "uniform_drop": [],
+              "uniform_pickup": [],
+              "uniforms": [
+                [
+                  7431,
+                  18735,
+                  23178,
+                  23180,
+                  23181,
+                  23182,
+                  23183,
+                  23510,
+                  30728
+                ],
+                [
+                  7431,
+                  18735,
+                  23178,
+                  23180,
+                  23181,
+                  23182,
+                  23183,
+                  23510,
+                  28442,
+                  28463,
+                  30728
+                ],
+                [],
+                []
+              ]
+            }
+          },
+          "old_holder_unit_after": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 5813,
+            "occupations": [],
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": -1,
+            "squad_position": -1,
+            "uniform": {
+              "clothing_item_id": [
+                18735,
+                23178,
+                23180,
+                23181,
+                23182,
+                23183,
+                23510,
+                30728
+              ],
+              "cur_uniform": 0,
+              "pickup_flags": 0,
+              "uniform_drop": [],
+              "uniform_pickup": [],
+              "uniforms": [
+                [
+                  7431,
+                  18735,
+                  23178,
+                  23180,
+                  23181,
+                  23182,
+                  23183,
+                  23510,
+                  30728
+                ],
+                [
+                  7431,
+                  18735,
+                  23178,
+                  23180,
+                  23181,
+                  23182,
+                  23183,
+                  23510,
+                  28442,
+                  28463,
+                  30728
+                ],
+                [],
+                []
+              ]
+            }
+          },
+          "selected_unit_before": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 7123,
+            "occupations": [],
+            "profession": 32,
+            "profession2": 32,
+            "squad_id": -1,
+            "squad_position": -1,
+            "uniform": {
+              "clothing_item_id": [
+                36043,
+                36044,
+                36045,
+                36046,
+                36047,
+                36048,
+                38636,
+                38693
+              ],
+              "cur_uniform": 0,
+              "pickup_flags": 0,
+              "uniform_drop": [],
+              "uniform_pickup": [],
+              "uniforms": [
+                [
+                  36043,
+                  36044,
+                  36045,
+                  36046,
+                  36047,
+                  36048,
+                  38636,
+                  38693
+                ],
+                [],
+                [],
+                []
+              ]
+            }
+          },
+          "selected_unit_after": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 7123,
+            "occupations": [],
+            "profession": 32,
+            "profession2": 32,
+            "squad_id": 125,
+            "squad_position": 0,
+            "uniform": {
+              "clothing_item_id": [
+                36043,
+                36044,
+                36045,
+                36046,
+                36047,
+                36048,
+                38636,
+                38693
+              ],
+              "cur_uniform": 0,
+              "pickup_flags": 0,
+              "uniform_drop": [],
+              "uniform_pickup": [],
+              "uniforms": [
+                [
+                  36043,
+                  36044,
+                  36045,
+                  36046,
+                  36047,
+                  36048,
+                  38636,
+                  38693
+                ],
+                [],
+                [],
+                []
+              ]
+            }
+          },
+          "comparison_excluded_fields": {},
+          "source_preserved": true,
+          "owned_unsaved_exit": true,
+          "native_ui_and_gps_bytes_unchanged": true,
+          "command_before": {
+            "activities": [
+              -1,
+              -1,
+              -1
+            ],
+            "current_patrol_id": -1,
+            "current_patrol_point_id": -1,
+            "equipment": {
+              "assigned_items": [
+                28442,
+                28463
+              ],
+              "backpack": 28463,
+              "flags": 0,
+              "flask": 28442,
+              "quiver": -1
+            },
+            "events": [
+              -1,
+              -1,
+              -1
+            ],
+            "occupant": 9375
+          },
+          "command_after": {
+            "activities": [
+              -1,
+              -1,
+              -1
+            ],
+            "current_patrol_id": -1,
+            "current_patrol_point_id": -1,
+            "equipment": {
+              "assigned_items": [
+                28442,
+                28463
+              ],
+              "backpack": 28463,
+              "flags": 0,
+              "flask": 28442,
+              "quiver": -1
+            },
+            "events": [
+              -1,
+              -1,
+              -1
+            ],
+            "occupant": 10379
+          }
+        },
+        {
+          "case": "manager",
+          "native_source": "build/stockpile-storage-native-location-recognition-replacemanagerpriest-20261027-060320",
+          "semantic_source": "build/stockpile-storage-native-location-recognition-actionreplacemanagerpriest-20261027-060404",
+          "native_result_sha256": "891ad4536e440d3555f31ccaf3a131a5726a05fa13cc3f8b6b799395af2abe53",
+          "semantic_result_sha256": "40305935af641787d280edfaac55327c7d0454b80b50f52fa43dedcaf560fd28",
+          "status": "passed",
+          "old_holder_unit_before": {
+            "current_job": {
+              "aux_id": 0,
+              "completion_timer": -1,
+              "cur_path_index": 0,
+              "expire_timer": 0,
+              "id": 382794,
+              "item_subtype": -1,
+              "item_type": -1,
+              "job_subtype": -1,
+              "job_type": 195,
+              "mat_index": -1,
+              "mat_type": -1,
+              "maxdur": 0,
+              "order_id": -1,
+              "posting_index": -1,
+              "recheck_cntdn": 0,
+              "spell": -1
+            },
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 5813,
+            "occupations": [],
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "old_holder_unit_after": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 5813,
+            "occupations": [],
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "selected_unit_before": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 7123,
+            "occupations": [],
+            "profession": 32,
+            "profession2": 32,
+            "squad_id": -1,
+            "squad_position": -1
+          },
+          "selected_unit_after": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 7123,
+            "occupations": [],
+            "profession": 32,
+            "profession2": 32,
+            "squad_id": -1,
+            "squad_position": -1
+          },
+          "comparison_excluded_fields": {},
+          "source_preserved": true,
+          "owned_unsaved_exit": true,
+          "native_ui_and_gps_bytes_unchanged": true,
+          "job_before": {
+            "aux_id": 0,
+            "completion_timer": -1,
+            "cur_path_index": 0,
+            "exists": true,
+            "expire_timer": 0,
+            "flags": 0,
+            "id": 382794,
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_subtype": -1,
+            "job_type": 195,
+            "mat_index": -1,
+            "mat_type": -1,
+            "maxdur": 0,
+            "order_id": -1,
+            "posting_index": -1,
+            "recheck_cntdn": 0,
+            "refs": [
+              {
+                "cached_index": -1,
+                "type": 19,
+                "unit_id": 5813
+              }
+            ],
+            "spell": -1
+          },
+          "job_after": {
+            "aux_id": 0,
+            "completion_timer": -1,
+            "cur_path_index": 0,
+            "exists": true,
+            "expire_timer": 0,
+            "flags": 0,
+            "id": 382794,
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_subtype": -1,
+            "job_type": 195,
+            "mat_index": -1,
+            "mat_type": -1,
+            "maxdur": 0,
+            "order_id": -1,
+            "posting_index": -1,
+            "recheck_cntdn": 0,
+            "refs": [],
+            "spell": -1
+          }
+        },
+        {
+          "case": "accountant",
+          "native_source": "build/stockpile-storage-native-location-recognition-replaceaccountantpriest-20261027-060438",
+          "semantic_source": "build/stockpile-storage-native-location-recognition-actionreplaceaccountantpriest-20261027-060814",
+          "native_result_sha256": "d690134e521744d6e7848767994bf09edf42933e04bc6892453cb6c24684bfec",
+          "semantic_result_sha256": "f1aeddce573984ebe3f9284e3dcb1135b351f648166af13c958daad288aaac8d",
+          "status": "passed",
+          "old_holder_unit_before": {
+            "current_job": {
+              "aux_id": 0,
+              "completion_timer": -1,
+              "cur_path_index": 0,
+              "expire_timer": 0,
+              "id": 382794,
+              "item_subtype": -1,
+              "item_type": -1,
+              "job_subtype": -1,
+              "job_type": 196,
+              "mat_index": -1,
+              "mat_type": -1,
+              "maxdur": 0,
+              "order_id": -1,
+              "posting_index": -1,
+              "recheck_cntdn": 0,
+              "spell": -1
+            },
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 5813,
+            "occupations": [],
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "old_holder_unit_after": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 5813,
+            "occupations": [],
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          },
+          "selected_unit_before": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 7123,
+            "occupations": [],
+            "profession": 32,
+            "profession2": 32,
+            "squad_id": -1,
+            "squad_position": -1
+          },
+          "selected_unit_after": {
+            "current_job": false,
+            "flags1": 2147500033,
+            "flags2": 301989952,
+            "flags3": 8388866,
+            "id": 7123,
+            "occupations": [],
+            "profession": 32,
+            "profession2": 32,
+            "squad_id": -1,
+            "squad_position": -1
+          },
+          "comparison_excluded_fields": {
+            "selected.figure_personality": "newly allocated current_focus/undistracted_focus"
+          },
+          "source_preserved": true,
+          "owned_unsaved_exit": true,
+          "native_ui_and_gps_bytes_unchanged": true,
+          "job_before": {
+            "aux_id": 0,
+            "completion_timer": -1,
+            "cur_path_index": 0,
+            "exists": true,
+            "expire_timer": 0,
+            "flags": 0,
+            "id": 382794,
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_subtype": -1,
+            "job_type": 196,
+            "mat_index": -1,
+            "mat_type": -1,
+            "maxdur": 0,
+            "order_id": -1,
+            "posting_index": -1,
+            "recheck_cntdn": 0,
+            "refs": [
+              {
+                "cached_index": -1,
+                "type": 19,
+                "unit_id": 5813
+              }
+            ],
+            "spell": -1
+          },
+          "job_after": {
+            "aux_id": 0,
+            "completion_timer": -1,
+            "cur_path_index": 0,
+            "exists": true,
+            "expire_timer": 0,
+            "flags": 0,
+            "id": 382794,
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_subtype": -1,
+            "job_type": 196,
+            "mat_index": -1,
+            "mat_type": -1,
+            "maxdur": 0,
+            "order_id": -1,
+            "posting_index": -1,
+            "recheck_cntdn": 0,
+            "refs": [],
+            "spell": -1
+          },
+          "new_profile_focus": {
+            "offsets": {
+              "current_focus": 388,
+              "undistracted_focus": 392
+            },
+            "native": {
+              "current_focus": 975333230,
+              "undistracted_focus": 1998728243
+            },
+            "semantic": {
+              "current_focus": 0,
+              "undistracted_focus": 0
+            },
+            "constructor_rva": "0x5c02a0",
+            "constructor_omits_offsets": [
+              "0x184",
+              "0x188"
+            ],
+            "runtime_correction": false
+          }
+        }
+      ],
+      "omissions": [
+        "Other military transitions, high-priest, plotter and historical-holder variants.",
+        "Post-effect Unknown injection, selected-candidate receipt, management transport and viewer workflow."
+      ],
+      "new_profile_comparison_policy": "Retain raw focus counters, but exclude current_focus/undistracted_focus only when a historical personality profile was absent before assignment; native constructor leaves them uninitialized. Existing profiles and unit personality counters compare exactly."
     }
   }
 }

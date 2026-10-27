@@ -1229,9 +1229,21 @@ Protected tracker120807 uses the reader for all three popup observations, then
 holds a real successful reply while switching targets. The old reply cannot
 populate the replacement, which receives its own row; removing the agreements
 clears the reader. Both save manifests remain unchanged, owned DF151208 exits
-unsaved, and the only diagnostic is the known render-thread notice. Actual
-popup-reader disconnect/restart checks, the visible HUD and popup rendering,
-and native visibility, sizing and interaction integration remain unfinished.
+unsaved, and the only diagnostic is the known render-thread notice.
+Protected popup-queued121217 and popup-sent121313 retire ticket15 as not_sent
+and unknown respectively. Both readers clear, reconnect issues no tracker
+work, and explicit reopening recovers identical facts. The initial121105
+queued probe used an overbroad empty-queue assertion after reconnect; the
+corrected probe checks full retirement before reconnect and excludes tracker
+replay while allowing ordinary initialization work afterward.
+Popup-restart121415 replaces DF162168 with DF163540 while holding ticket15.
+Only the ordinary construction Catalog is submitted automatically; the new
+fortress has no unsaved diagnostic agreements, and the old row cannot open
+a popup. All three successful runs preserve both save manifests, exit owned
+DF unsaved, and report only the known render-thread notice. Core and reader
+checks pass in `build/qa/petition-popup-lifecycle-final`. The visible HUD and
+popup rendering, and native visibility, sizing and interaction integration
+remain unfinished.
 
 ## Native Location name editor discovery
 

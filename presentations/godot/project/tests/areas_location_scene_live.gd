@@ -1546,6 +1546,8 @@ func religious_staff_route(locations: Array) -> void:
 	var view=details.staff_view
 	if lifecycle=="tracker":
 		await tracker_transport();return
+	if lifecycle.begins_with("popup-"):
+		await popup_lifecycle(lifecycle.trim_prefix("popup-"));return
 	if lifecycle.begins_with("tracker-"):
 		await tracker_lifecycle(lifecycle.trim_prefix("tracker-"));return
 	if lifecycle.begins_with("indicators-"):
@@ -1754,6 +1756,58 @@ func tracker_transport() -> void:
 		evidence.append({"phase":phase,"rows":rows,"ticket":ticket,"popups":popups})
 	popup_reader.dispose();reader.dispose()
 	write_json("tracker-transport-evidence.json",{"cases":evidence,"reader_retired":not reader.active and reader.snapshot().is_empty()})
+	editor.close_panel()
+
+func popup_lifecycle(mode: String) -> void:
+	step="popup lifecycle "+mode
+	var source=preload("res://scripts/continuing_agreements_reader.gd").new();source.configure(actions)
+	var popup=preload("res://scripts/continuing_agreement_popup_reader.gd").new();popup.configure(source)
+	await native("religious_tracker",{"seed":true})
+	if stopped:return
+	if not await wait_ui(func():return actions._active==0 and actions._queue.is_empty(),"popup initial queue drain"):return
+	source.set_active(true)
+	if not await wait_ui(func():return source.ready,"popup initial list"):return
+	var row: Dictionary=source.snapshot()[1];popup.display(row)
+	if not await wait_ui(func():return popup.ready,"popup initial observation"):return
+	var original: Dictionary=popup.snapshot()
+	popup.refresh();var ticket: int=popup.ticket
+	if not check(ticket>0,"popup lifecycle read absent"):return
+	if mode!="queued":
+		var reply:=await quantity_unobserved(ticket)
+		if stopped:return
+		if not check(reply.agreement.tracker_details==original.details,"held popup receipt differs"):return
+	if mode=="restart":
+		await quantity_restart(ticket,"popup")
+		if stopped:return
+	else:
+		world.detach_live();actions.poll()
+		if not check(actions.result(ticket).get("outcome")==("not_sent" if mode=="queued" else "unknown"),"popup disconnect outcome"):return
+		if not check(not actions._requests.has(ticket) and actions._active==0 and actions._queue.is_empty(),"popup request survived disconnect"):return
+		if not check(world.attach(),"popup reconnect failed"):return
+		if not await wait_ui(func():return world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)),"popup reconnect"):return
+	if not check(not source.active and not source.ready and popup.target.is_empty() and popup.ticket==0 and not popup.ready and popup.snapshot().is_empty(),"popup session retained facts"):return
+	if not check(not actions._requests.has(ticket),"popup request survived session loss"):return
+	for item in actions._requests.values():
+		if not check(item.domain!="agreements" or not bool(item.request.get("tracker",false)),"popup replayed during reconnect"):return
+	if not await wait_ui(func():return actions._active==0 and actions._queue.is_empty(),"popup reconnect initialization drain"):return
+	var next_ticket: int=actions._next_ticket
+	for frame in 30:
+		world.poll();actions.poll();source.poll(0.1);popup.poll(0.1);editor._process(0.02);await process_frame
+	if not check(actions._next_ticket==next_ticket and popup.target.is_empty(),"popup automatically replayed"):return
+	source.set_active(true)
+	if not await wait_ui(func():return source.ready,"popup fresh list"):return
+	if mode=="restart":
+		if not check(source.snapshot().is_empty(),"new fortress retained unsaved agreements"):return
+		next_ticket=actions._next_ticket;popup.display(row)
+		if not check(popup.target.is_empty() and actions._next_ticket==next_ticket,"old row opened popup in replacement fortress"):return
+	else:
+		popup.display(row)
+		if not await wait_ui(func():return popup.ready,"popup explicit reopen"):return
+		if not check(popup.snapshot()==original,"fresh popup facts differ"):return
+		await native("religious_tracker",{"restore":true})
+		if stopped:return
+	popup.dispose();source.dispose()
+	write_json("popup-lifecycle-evidence.json",{"mode":mode,"ticket":ticket,"retired":true,"no_replay":true,"fresh_state_verified":true})
 	editor.close_panel()
 
 func tracker_lifecycle(mode: String) -> void:

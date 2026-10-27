@@ -17,31 +17,45 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 
 ## Native Location supply editing reference
 
-`fixtures/areas/native_location_supply_edit.json` records43 observations from
-protected `build/stockpile-storage-native-location-supplies-20261026-191813`.
+`fixtures/areas/native_location_supply_edit.json` records121 observations from
+protected `build/stockpile-storage-native-location-supplies-20261026-193052`.
 The new `stockpile_storage_native.ps1 -LocationSupplies` scope opens native
 Details through chooser icons and exercises tavern goblets, hospital thread
 and library copy counts. Clicking the number icon starts with an empty input
 string while retaining the old value until input changes. Digits update the
 semantic field immediately; Enter leaves numeric entry. Three digits are
 accepted, letters/minus are ignored, Backspace updates immediately, and empty
-input writes zero. Plus/minus change one displayed unit and stop at0/999.
-Thread uses15000 raw units per displayed unit. Right-click and simulated
+input writes zero. Plus/minus check bounds before stepping one displayed unit.
+Aligned values stop at0/999. Diagnostic partial raw values preserve their
+remainder and can cross a bound by less than one unit; the bridge preserves
+that behavior. Thread uses15000 raw units per displayed unit, cloth10000,
+powder/soap150, and all other fields1. Right-click and simulated
 LEAVESCREEN close Details without undoing typed values; this is not evidence
-for physical Escape/Options routing. DF137712 exits unsaved, source unchanged.
-Core19/19 passes in `build/qa/location-supply-reference`.
+for physical Escape/Options routing. DF134084 exits unsaved, source unchanged.
+Core19/19 passes in `build/qa/location-quantity-provider`.
 
 Supported-build numeric dispatch at RVA0x8baa33..0x8bab54 reads global Details
 entry scratch, calls text editor0xc396d0 with length3/flags4 and parser0x52c0f0,
 then writes the selected scalar and applies inline field-specific scaling.
 Plus/minus writes are inline in the main input handler0x311c10..0x35f274.
-Neither whole UI handler is a permissible runtime semantic service. The fixture
-pins inspected byte ranges and records the remaining helper ownership audit.
-Other supply fields, partial raw-unit quantities, complete input/side-effect
-coverage, semantic transport and editable Godot controls remain unfinished.
-The existing Details supply/copy display is still read-only. Early diagnostic
+Neither whole UI handler is a permissible runtime semantic service. Editor
+0xc396d0 forwards and clears global input scratch; parser0x52c0f0 unwraps a
+string and tail-calls imported atoi. Neither supplies an independent location
+mutation. `editNativeLocationQuantity` translates the audited inline writes,
+pinning the supported PE and both instruction ranges. It validates location
+kind, field, edit mode, value and expected revision before writing. Set,
+Increase and Decrease remain distinct intents to preserve raw remainders.
+The protected `df3d location-quantity-edit` diagnostic exposes this provider.
+All eleven quantity identities across thirteen field/location cases match
+native full contents bytes for65 mutations.104 rejection checks cover invalid
+values, step payloads, zero revision, wrong kind, missing identities and stale
+revisions; contents and native UI/gps bytes remain unchanged. The same UI/gps
+guards pass for successful edits. These guards cover the named structures,
+not every allocation in the process.
+Semantic transport and editable Godot controls remain unfinished; the existing
+Details supply/copy display is still read-only. Early diagnostic
 runs with zero matched cases or incorrect chooser coordinates are not accepted
-workflow evidence; the current scope requires all three workflows and43 records.
+workflow evidence; the current scope requires121 records and thirteen field cases.
 
 ## Native squad assignment reference
 

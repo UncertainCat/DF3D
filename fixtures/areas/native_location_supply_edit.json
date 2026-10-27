@@ -1,10 +1,11 @@
 {
   "provenance": {
-    "run": "build/stockpile-storage-native-location-supplies-20261026-191813",
-    "result_sha256": "5e01fdacebd042b1450bf9d96186bae4967048021bad4e7d64ee03676cd636b6",
+    "run": "build/stockpile-storage-native-location-supplies-20261026-193052",
+    "result_sha256": "ef2878f34f38d8aef6d21d74ea62c38561800e22c8bfcfd470499ba3780d3200",
     "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
     "source_save_unchanged": true,
-    "scope": "Native chooser/Details clicks and simulated numeric/Enter/LEAVESCREEN input: tavern goblets, hospital thread, library copies. Not physical Escape routing or all supply fields."
+    "scope": "Native numeric workflow plus all eleven quantity identities across thirteen field/location cases. Includes diagnostic partial raw-unit seeds, 65 byte-exact native/bridge comparisons and 104 unchanged-byte rejection checks. Not physical Escape routing or rendered Godot editing.",
+    "bridge_sha256": "71638881b10b2f6e26e7a89516793db368a0ccddc046338bccd20bbdbe1d2b0c"
   },
   "observations": [
     {
@@ -29,7 +30,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "6b86841d315fdce369fded52ec75861e8e2ed4085b48cd1e74390b39ee92852e"
+      "png_sha256": "f8be556beab3c3f1cddfd54c1fd33904628ffbb8fe8481f0fd18563ae1f60956"
     },
     {
       "editing": false,
@@ -53,7 +54,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "3202b6048d83a069440f283f79858c4657defecc16acec834765f4bed7263476"
+      "png_sha256": "0df948994c8287faf6ace997a50075879120306fdd66a58cb55583d5ec297a4b"
     },
     {
       "editing": true,
@@ -82,7 +83,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "bfea5e1fa4b54d25a54a4f6b2564d8263c1dc76d8999575dbacff9d7cca0680f"
+      "png_sha256": "0325a4e2dcf1a324d70ec5399216dafa51cf1b9da1f2095f9933e02e4e1b4e14"
     },
     {
       "editing": true,
@@ -107,7 +108,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "cc46a3fb967c6b2288c66fba6b0b7df679b061909ff4e08011210ffbf1d32c34"
+      "png_sha256": "101452154fbe239399ea7433104ac10117a44b93c62592f99b0ed0593a67392b"
     },
     {
       "editing": false,
@@ -131,7 +132,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "d236294fa3ef4ba5890c8bad7c1bf70f44cdcdf3fe7f409339b3f958c53e06b8"
+      "png_sha256": "6caabcb203da05bf3aff0bb5fd7244264cfbd88dd0aed8f4d6e8096381c939c3"
     },
     {
       "editing": false,
@@ -155,7 +156,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "384af04418490e93419778767f820b0d0eab5dde4351ca69771c7588a4bab218"
+      "png_sha256": "8b0ae1d55a6a798111d949f0382626a14a8c866752b7ddc8342219a9a8b60d4a"
     },
     {
       "editing": false,
@@ -179,7 +180,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "3e7b8b1f2b476361090e060e5ad322b7ff85f91cf65bfcfef46da93a6372e254"
+      "png_sha256": "6caabcb203da05bf3aff0bb5fd7244264cfbd88dd0aed8f4d6e8096381c939c3"
     },
     {
       "editing": true,
@@ -204,7 +205,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "0325a4e2dcf1a324d70ec5399216dafa51cf1b9da1f2095f9933e02e4e1b4e14"
+      "png_sha256": "e4bc91345c85ba7bc7eed03d020856b9e611ea19d65da33e09d6c2c7792598ab"
     },
     {
       "editing": true,
@@ -229,7 +230,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "11c7c4ed7bc6c28223a74bc1cf333000ccfa35f4f6e693dd7d781e9773039edf"
+      "png_sha256": "e4472902be38200281a5372574005bc4dfd37242c4cc515f2a18a02160489c09"
     },
     {
       "editing": true,
@@ -254,7 +255,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "64e15b074abd123653ba54f22958f38fa787014f420293596659a2640cd7b029"
+      "png_sha256": "738452c5f0936273e23416df30e6ab047e4b40dc3796172afeda3b6d669e6cb6"
     },
     {
       "editing": true,
@@ -279,7 +280,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "f8be556beab3c3f1cddfd54c1fd33904628ffbb8fe8481f0fd18563ae1f60956"
+      "png_sha256": "2ca98c202816b291eae8192ea9238c9a45b487bef0d26a73ec7a747708945d71"
     },
     {
       "editing": true,
@@ -304,7 +305,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "f8be556beab3c3f1cddfd54c1fd33904628ffbb8fe8481f0fd18563ae1f60956"
+      "png_sha256": "6b86841d315fdce369fded52ec75861e8e2ed4085b48cd1e74390b39ee92852e"
     },
     {
       "editing": false,
@@ -328,7 +329,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "0ae40173c41069897f27b87c9d8b66dc43b76eeea107a487f7c1e2543ed99498"
+      "png_sha256": "3f24deac048966a3a839c14fe65234a76125fda97a703c464508d05103b011c5"
     },
     {
       "editing": true,
@@ -353,7 +354,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "e4bc91345c85ba7bc7eed03d020856b9e611ea19d65da33e09d6c2c7792598ab"
+      "png_sha256": "aee5d7a0c35687271d592fa7b5217a95c14ddb515a69d9d431648e5f09aa9c93"
     },
     {
       "editing": false,
@@ -377,7 +378,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "91e908d884e71f42eefe38465020fb10a81bba680b4d50a2728e2e96e8e28759"
+      "png_sha256": "9994bde87550d6188d4e02fbd2608436ebc0e6c0b0bb30fd1301ea3c834584af"
     },
     {
       "editing": false,
@@ -401,7 +402,7 @@
         "splints": 5,
         "thread": 75000
       },
-      "png_sha256": "322ae4b8243e85305c287b64daa96a81d477efa21d20812e996defa9551a9237"
+      "png_sha256": "0fc4327bd6896ac396bf2fde4fb64cc506288a26c47fc4ca383eba07a0991f6d"
     },
     {
       "editing": true,
@@ -430,7 +431,7 @@
         "splints": 5,
         "thread": 75000
       },
-      "png_sha256": "10f23e3df422586182ac623aa73991d47dacac232d8c2bc64d31b63ceaff3df2"
+      "png_sha256": "e36fbdf54b448b9572ae706ec7b061ef18f7e026e760939aea7112c3369ae2db"
     },
     {
       "editing": true,
@@ -455,7 +456,7 @@
         "splints": 5,
         "thread": 105000
       },
-      "png_sha256": "210b6bcae09d4e7eaea18b93c083a952f264b80ba3a02049fb59d54b4e59f90d"
+      "png_sha256": "6177fdc689684f640f7dcd773e5b26b70d5c1121233e5950f46ee156848e6c81"
     },
     {
       "editing": false,
@@ -479,7 +480,7 @@
         "splints": 5,
         "thread": 105000
       },
-      "png_sha256": "3b4e090f06df92c7846f3798e014d9cfda409e5adcdd65ee274c3a281ac3a533"
+      "png_sha256": "fa9190f7e3ec077a3a0783ace348e59933dc9d315076e8875192e02cb50a100d"
     },
     {
       "editing": false,
@@ -503,7 +504,7 @@
         "splints": 5,
         "thread": 120000
       },
-      "png_sha256": "a408c2bdb161546e6ed01104767891bab5ab2a74f6f1ffd145dead9aef956748"
+      "png_sha256": "b041ee8f6d71dcce6571253704edc7f91435860e9615e048fd841a8c6131c9c4"
     },
     {
       "editing": false,
@@ -527,7 +528,7 @@
         "splints": 5,
         "thread": 105000
       },
-      "png_sha256": "d9456fa1e25652a76f4c3e8249c828aca20dc3c814db68079971595f8fe6b3a1"
+      "png_sha256": "fa9190f7e3ec077a3a0783ace348e59933dc9d315076e8875192e02cb50a100d"
     },
     {
       "editing": true,
@@ -552,7 +553,7 @@
         "splints": 5,
         "thread": 105000
       },
-      "png_sha256": "b1488545149e444f89aa32b74c4169a76fd44e38c2699838bca1e0558b99b4fe"
+      "png_sha256": "e36fbdf54b448b9572ae706ec7b061ef18f7e026e760939aea7112c3369ae2db"
     },
     {
       "editing": true,
@@ -577,7 +578,7 @@
         "splints": 5,
         "thread": 1845000
       },
-      "png_sha256": "07178ccf4b684a29592118c2650e91be0bde548693339bf0f29fe31149f4b509"
+      "png_sha256": "3563bd2c2693504b2753ce3c2a1945080d065f2e8d7661799dcea82f45553624"
     },
     {
       "editing": true,
@@ -602,7 +603,7 @@
         "splints": 5,
         "thread": 180000
       },
-      "png_sha256": "f9962a1870bca3d6fc7fc24b1cfdcc57b13cfe4deb0627467c967b4167bacc1f"
+      "png_sha256": "52b7e22b6dd6e2067aeb077a3618397616ff07f5f4f023489d7341400a97046d"
     },
     {
       "editing": true,
@@ -627,7 +628,7 @@
         "splints": 5,
         "thread": 180000
       },
-      "png_sha256": "9dfae8412764290171ad2ab618720beb38796184a38a0dfac7644796c93f23ca"
+      "png_sha256": "f8be556beab3c3f1cddfd54c1fd33904628ffbb8fe8481f0fd18563ae1f60956"
     },
     {
       "editing": true,
@@ -652,7 +653,7 @@
         "splints": 5,
         "thread": 45000
       },
-      "png_sha256": "9dfae8412764290171ad2ab618720beb38796184a38a0dfac7644796c93f23ca"
+      "png_sha256": "f8be556beab3c3f1cddfd54c1fd33904628ffbb8fe8481f0fd18563ae1f60956"
     },
     {
       "editing": false,
@@ -676,7 +677,7 @@
         "splints": 5,
         "thread": 14985000
       },
-      "png_sha256": "c7cd004fede3b96b913228e658a9412f2dc910aed8944cb805a9cc689a98df63"
+      "png_sha256": "d76c81fb7dbe5c1945230807381d3698ddaf7cdf679e6eaaab96d3ec14a778e7"
     },
     {
       "editing": true,
@@ -701,7 +702,7 @@
         "splints": 5,
         "thread": 0
       },
-      "png_sha256": "bf043d0fcc3eb45c76e0549a703eed107f2a707bc62929ad4d0cb2622589f8a6"
+      "png_sha256": "f14cadbe3f53accfe9a93922cceb095138dd059cb09e3c40ee2281aa173a43ad"
     },
     {
       "editing": false,
@@ -725,7 +726,7 @@
         "splints": 5,
         "thread": 0
       },
-      "png_sha256": "b611c6fc1153f15add00aa7a22b5254241c9949078480b51d89c8d5ddd4fb394"
+      "png_sha256": "83013292cfe91fb31476201f17f9910c74211a7c702dfa79dfb61c66ec26dbe6"
     },
     {
       "editing": false,
@@ -749,7 +750,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "18168dac43b1dfcb6586c69c2370e54e39ef857374ebf8342be8d5a45d71ce3c"
+      "png_sha256": "99ee7fa0956d713566840f4184deb3d39f9423ea9beae5c221579e6abe96deaa"
     },
     {
       "editing": true,
@@ -778,7 +779,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "f6e84fb8321e9af8e7db41c9e2d05d41bf1d858e5b3325349b8569fb5b4a27d3"
+      "png_sha256": "b8606b77eef2218c08cd2b8313548b40572f698e4678b3f5dbf6fd4efbf30f01"
     },
     {
       "editing": true,
@@ -803,7 +804,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "07d054a63da4a1ce2b763ae16a300cb0d1fefd34060c32dd7090afd3d78e6d84"
+      "png_sha256": "e2579261d429b5526e196d9bc5ea832a85a2b726d0bb5dd13a8c25ce8ad43d20"
     },
     {
       "editing": false,
@@ -827,7 +828,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "82eec8444196c751ce8d2a5d5cb8dce2e5af1cabd1d3be0adf656dce1f3432a8"
+      "png_sha256": "acba7992c4d9918de75196c1dd96929a36a5b68f437a3e09b277e2c0274fa6d0"
     },
     {
       "editing": false,
@@ -851,7 +852,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "00b37949f16ebbee848f239f95a39518e7c4649f8d57c9ed18cb39e9fa9c472f"
+      "png_sha256": "459ebcfbb4f2d8fdebdf74863c4a0215c57a25bceb103ee93aafde4af154b59b"
     },
     {
       "editing": false,
@@ -875,7 +876,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "82eec8444196c751ce8d2a5d5cb8dce2e5af1cabd1d3be0adf656dce1f3432a8"
+      "png_sha256": "acba7992c4d9918de75196c1dd96929a36a5b68f437a3e09b277e2c0274fa6d0"
     },
     {
       "editing": true,
@@ -900,7 +901,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "86e49887f97981fc4cf68a702943a36f02ee794cae7cf46b3958f734e69e4446"
+      "png_sha256": "3082ead059c97190c6d0d80295329a63e6a4ecd1939867107d6eb6fc50a0418b"
     },
     {
       "editing": true,
@@ -925,7 +926,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "a3c26ee22a43f610c9692bb7d3abb3ddad09e285152c7eac3da5a104e9f226ba"
+      "png_sha256": "1907e3f6e3836d44da4fea2a00d5e6f4fc44f4ae8d74671e5c5d40f83c21a7ac"
     },
     {
       "editing": true,
@@ -950,7 +951,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "d4c957c06b81c1066a7a7638f88d75f74c2410b68fd8b74334cf8e85a5da5262"
+      "png_sha256": "b419b70c5e71c02d35f6b771ab81e3827e62e50ef69e2bbff81263fc91983b7c"
     },
     {
       "editing": true,
@@ -975,7 +976,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "f8be556beab3c3f1cddfd54c1fd33904628ffbb8fe8481f0fd18563ae1f60956"
+      "png_sha256": "9dfae8412764290171ad2ab618720beb38796184a38a0dfac7644796c93f23ca"
     },
     {
       "editing": true,
@@ -1000,7 +1001,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "f8be556beab3c3f1cddfd54c1fd33904628ffbb8fe8481f0fd18563ae1f60956"
+      "png_sha256": "9dfae8412764290171ad2ab618720beb38796184a38a0dfac7644796c93f23ca"
     },
     {
       "editing": false,
@@ -1024,7 +1025,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "64433b758ecd48010c1b76c4ebc77e09275262ef8083ec45f23f4e4865b83139"
+      "png_sha256": "e1ad616c020f7a4328dbb1f27033f0b1f8c953bd29a2c29ec3c5364c22783a4f"
     },
     {
       "editing": true,
@@ -1049,7 +1050,7 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "ebcf1e8198cf6fbcabcad9fed22a6ab5d55a85a8c4a673698e597db993ab93de"
+      "png_sha256": "c013bca9446c26386534c5f9ea41e85b04405021e1d437032f991179ed7f5fad"
     },
     {
       "editing": false,
@@ -1073,7 +1074,3114 @@
         "splints": 0,
         "thread": 0
       },
-      "png_sha256": "3f36793aedbc85176c589d6bac41bb10da4a4fb7f5babb8e1dcbfe917cd61573"
+      "png_sha256": "60aad808ca0c68f7f9242c9646e5ff3cf18ffcc428cf152e8d76b68c6624e018"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-instruments-open",
+      "open": true,
+      "pointer": [
+        740,
+        282
+      ],
+      "scale": 1,
+      "target_offset": 12,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 5,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "3d7860ac0c677281de8e1e50aa2aa59b6b83ad923a6a9412e4d1937c29027f0a"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-instruments-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 12,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 6,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "508e40316ea8cb3c6a3762cf6023789a7fd4868c8b0394ae8d4b07defc4c8476"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-instruments-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 3,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "0f49c6fb5b9126bcdf7234c85d9b9e03817e3999cc8c5e1ac0789bc0d757e702"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-instruments-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 1,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "a79c57dbc442f2869668c57af234427fcd4772a23ddcd03c2bfe2e225062007c"
+    },
+    {
+      "before_raw": 998,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-instruments-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 999,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "c8708209dd8b65caba01390a63fa69cc6090ca73cb2d16d6757cb600cd9e1dcf"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-instruments-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "24d52f11dd1c1df21ae02482263115fd45f7b4c0a9ef335addb5f910ad618a97"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "goblets",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-goblets-open",
+      "open": true,
+      "pointer": [
+        740,
+        210
+      ],
+      "scale": 1,
+      "target_offset": 8,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 5,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "0325a4e2dcf1a324d70ec5399216dafa51cf1b9da1f2095f9933e02e4e1b4e14"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-goblets-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 8,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 6,
+        "instruments": 5,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "915256962d19b754c8a7e46abd0f884ff0e1727d07995a943bcfb46fc8bed424"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "goblets",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-goblets-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 3,
+        "instruments": 5,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "b7ba7725cb2c5117e1ca89e69c6414f9c63b5fc5cbc374eb72f7bce66d3eec5b"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "goblets",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-goblets-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 1,
+        "instruments": 5,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "2b7da4bb748e559c3e1b19fc4337431150a26950ab0cd4291dc2adfda8383960"
+    },
+    {
+      "before_raw": 998,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "goblets",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-goblets-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 999,
+        "instruments": 5,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "0ae40173c41069897f27b87c9d8b66dc43b76eeea107a487f7c1e2543ed99498"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "goblets",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-goblets-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 5,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "91e908d884e71f42eefe38465020fb10a81bba680b4d50a2728e2e96e8e28759"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-instruments-open",
+      "open": true,
+      "pointer": [
+        740,
+        246
+      ],
+      "scale": 1,
+      "target_offset": 12,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 5,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "98411c25f2684c5f0119ea7337517e1f4dd72a6c3ee2edb62ad03e2ec575348a"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-instruments-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 12,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 6,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "062601807837dc6912f08c5e5d465a4a05d43547986700d0e912b79d1871b5c0"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-instruments-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 3,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "42c7fde32b7cbcaa40aadfcca7da2ebddec3900a89276d9f37315f2ad96c7fcc"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-instruments-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 1,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "b1dcc989a967be8df93127a8d653d53503772ebce4e778ead7d59ff42c39b8a1"
+    },
+    {
+      "before_raw": 998,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-instruments-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 999,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "730d98aa19d254ca0d6858bbab1810ce9674c03417ebe7ac4fcd099df7b4b2e9"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-instruments-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "236df0542713af08e6ac617a63699d9ef3df803451e5971ea040911a79f76991"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "thread",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-thread-open",
+      "open": true,
+      "pointer": [
+        708,
+        246
+      ],
+      "scale": 15000,
+      "target_offset": 24,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "cb4be33dfe4187bdc2892a0d85eea6257b9f5017a86adc1f47fe050ea6a712f7"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-thread-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 24,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 90000
+      },
+      "png_sha256": "0769c7afd81034458b338d599bb29e43e66d6857c9f124bb7ff80aeaca165be3"
+    },
+    {
+      "before_raw": 30001,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "thread",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-thread-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 15000,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 45001
+      },
+      "png_sha256": "0b09eb4721dd6f10d0b306fb47771c0687a41bf1f780fc1cf580144592f4bbf2"
+    },
+    {
+      "before_raw": 30001,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "thread",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-thread-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 15000,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 15001
+      },
+      "png_sha256": "bda2c0e09f5bf7e9a93c9206628e542ae829b37e585332b80ba524430cf3cc97"
+    },
+    {
+      "before_raw": 14984999,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "thread",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-thread-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 15000,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 14999999
+      },
+      "png_sha256": "80b1669f93d1dc498808d3881a02c7a274fdcfb7a322ddaed583011811658296"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "thread",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-thread-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 15000,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": -14999
+      },
+      "png_sha256": "2d2d9e422363a153d37d75fef865bbeeeb77292fc02702df9ff19aa78e59c522"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "cloth",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-cloth-open",
+      "open": true,
+      "pointer": [
+        708,
+        282
+      ],
+      "scale": 10000,
+      "target_offset": 28,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "cf027c48e041dc3071017d85ee7eae96ce8ee49227f6bff99dbfe32caa0326df"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-cloth-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 28,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 60000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "c872a81f1153de9e7e8d2ef92ae4f982fff40dea570237aec4a8b26e0b5cc13d"
+    },
+    {
+      "before_raw": 20001,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "cloth",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-cloth-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 10000,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 30001,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "b23c70dbeef95f69fa8a1fa9191a866808b68105e6148cfb4383db0a9d01a4eb"
+    },
+    {
+      "before_raw": 20001,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "cloth",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-cloth-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 10000,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 10001,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "953fda91ee990ae90ebf38beb31adee9667ef68c3259d35d101d77fe5096d4b2"
+    },
+    {
+      "before_raw": 9989999,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "cloth",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-cloth-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 10000,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 9999999,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "9a7d45f095990581ad372f31eae5c7f1aa6dcc4bcac5bf1f6c271c8b5d5c7857"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "cloth",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-cloth-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 10000,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": -9999,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "9783c6150e595739b4acf247364ad0acd4603b45213da46748b2dc856206762b"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "splints",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-splints-open",
+      "open": true,
+      "pointer": [
+        708,
+        318
+      ],
+      "scale": 1,
+      "target_offset": 20,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "45f2afc30bd07d58f1a79085a7f4c5b2a3f0181b1d9981c83fbeed67e5491beb"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-splints-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 20,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 6,
+        "thread": 0
+      },
+      "png_sha256": "1d0db963a328e4f37ca6190a37b16a1497c7b2de78c3267f1c8d977131f11fc1"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "splints",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-splints-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 3,
+        "thread": 0
+      },
+      "png_sha256": "9e7b6754d7ccc309b6cbc8b288af4722d586a479bccf5b573b1f7cb33622130f"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "splints",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-splints-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 1,
+        "thread": 0
+      },
+      "png_sha256": "7183159c1bc5d49f5b7ffa4dc7e7205a2c9474f058171d39500d0951240a92dd"
+    },
+    {
+      "before_raw": 998,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "splints",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-splints-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 999,
+        "thread": 0
+      },
+      "png_sha256": "a0cc2d51e257b03a3ce12a2305c2793d7290cf5d8fe9d5058cc762ed3a602127"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "splints",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-splints-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "2b6b2294c1f83155957e0d13ad839a1d05d0e133f67018cf681b6a902aae47bc"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "crutches",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-crutches-open",
+      "open": true,
+      "pointer": [
+        708,
+        354
+      ],
+      "scale": 1,
+      "target_offset": 32,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "1cc329eafd3134933567a088d316d7ddb78c26966ff176213cf6d76b9651a901"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-crutches-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 32,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 6,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "3f3d00d8a58e8119a3353363a0a456b797f8a8779123e3c8e089661a54d165ca"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "crutches",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-crutches-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 3,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "2d4a37f3e464e16a9d9ccac69decb92a28cd6bca9bb77442a1e0563ee43860c6"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "crutches",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-crutches-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 1,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "adb5a1dd2fb3f9f34cac98d041cea626b3bc7979e71afe0aac02b545cee32c24"
+    },
+    {
+      "before_raw": 998,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "crutches",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-crutches-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 999,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "655494a1d4d11301a8c418ba4817932182fa1fe81fbe6bb3a94bfd4e5f8f7507"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "crutches",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-crutches-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "714cab64aaa495bd4e26d34d7a046791358b5e0d189e6d011273e062be54e814"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "powder",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-powder-open",
+      "open": true,
+      "pointer": [
+        708,
+        390
+      ],
+      "scale": 150,
+      "target_offset": 36,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "909d842a065ee4bc76e2112bedb5cd379aa0e10638cea68f605ede76651c7927"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-powder-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 36,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 900,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "b3ab28e54bbdbf2e2f9a919864073737856cda7bb2bf64b15ed43f421721d660"
+    },
+    {
+      "before_raw": 301,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "powder",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-powder-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 150,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 451,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "1070a18e1ea08fee6e026a36e0cde89aa489d90ac61339f6b2c6e68ef198c6f2"
+    },
+    {
+      "before_raw": 301,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "powder",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-powder-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 150,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 151,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "386d8986ff1baed4adcc71b72faf99c8a67fa25573076b3a3a11a35a1123e6cb"
+    },
+    {
+      "before_raw": 149849,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "powder",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-powder-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 150,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 149999,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "3a0e46958f1cc3f29f6511f34470489d4481e7e59d4eaafb7696dbc5cbfa0a76"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "powder",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-powder-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 150,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": -149,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "46c6fa502f20ab449ad6b868bee754b80f9afe918d53a430a06648a3e3f3e1bd"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "buckets",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-buckets-open",
+      "open": true,
+      "pointer": [
+        708,
+        426
+      ],
+      "scale": 1,
+      "target_offset": 40,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "df0d62a668596ad6a0b675fe730f73b3ca2e984859349fe270ed19afe0ef4669"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-buckets-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 40,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 6,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "9394794c77b6a69d7184664128cfb5fa0c37acf2f4da1cb189a6711ed9849098"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "buckets",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-buckets-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 3,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "5c346a648adcc62595086d01d3e1e4fe094fd338d4edfa4fffe62399302edced"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "buckets",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-buckets-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 1,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "1b19acc77cdc8e4fcbee047477989aa80ff092e0ceb8d076264d0d5287f11c89"
+    },
+    {
+      "before_raw": 998,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "buckets",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-buckets-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 999,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "9461f031ac6be1f9350bd8132df905ac419f11cfa1e60a57d264c44b098cdff8"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "buckets",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-buckets-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "baafb37f3dd77725f5e719f1d371ddc381b5132853b14fdb4c1c459d5c066f1b"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "soap",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-soap-open",
+      "open": true,
+      "pointer": [
+        708,
+        462
+      ],
+      "scale": 150,
+      "target_offset": 44,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 750,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "8b4c4c9c70d140f09eb7196064c1bf2cf500862316d200555888a24f32c1e4ee"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-soap-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 44,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 900,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "ffefc25cf79d6fd534ba52e055055879df43a05a4f636ef9b898c52f53b344fa"
+    },
+    {
+      "before_raw": 301,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "soap",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-soap-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 150,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 451,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "bc6de2af5fee3b4eec20472aa84f8b7d7e09a86d6c1812f52d90807999723df7"
+    },
+    {
+      "before_raw": 301,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "soap",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-soap-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 150,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 151,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "d43d62b4eb7e622188dcf506c356c0e79d1b35a27dc48cf785461da85a4a8bc6"
+    },
+    {
+      "before_raw": 149849,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "soap",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-soap-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 150,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": 149999,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "eb71cb43342bbf1f7e9df155521c1fed17e7912fdb251fb7d6c6ee17130a39eb"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "soap",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-soap-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 150,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 2,
+        "cloth": 50000,
+        "copies": 2,
+        "crutches": 5,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 750,
+        "soap": -149,
+        "splints": 5,
+        "thread": 0
+      },
+      "png_sha256": "4c77686a08cc2d3a503168cad15b11c197ff986ee65f5de76848f07d69130d79"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-instruments-open",
+      "open": true,
+      "pointer": [
+        740,
+        282
+      ],
+      "scale": 1,
+      "target_offset": 12,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 5,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "3b878f6cc2d8532113facfb623b3a55f7677a3584359bd492c469b3aa905933c"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-instruments-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 12,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 6,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "c91ca98827e1bbd1536c9c5fe33031fe725429262f9cb96300861067fc5b655d"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-instruments-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 3,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "f07fb4bf62135fd0f20291389f643c11dec08d069cc17a6db45f5e4a835b3864"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-instruments-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 1,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "19528108bfd7012b35907340c28eabe90387e84a75c79fa2c9f1a37ba9c4a294"
+    },
+    {
+      "before_raw": 998,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-instruments-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 999,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "44ea88f289ae2297ade5dd36a5deb1c34c71334d1c516d30339fdfc4912282b0"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "instruments",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-instruments-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 2,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "459ec958e7dff7b550d7c309c5957233e353ed911a4116c4f00026c198b9814d"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "copies",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-copies-open",
+      "open": true,
+      "pointer": [
+        708,
+        246
+      ],
+      "scale": 1,
+      "target_offset": 48,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 0,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 10,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "d79e466e871314eb08265661e7260c7392c760ff71ffbeb6cafb0544e8bd03a2"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-copies-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 48,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 6,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 10,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "dc1ef761f31a8c09463601a83635c6aaf60961ea32a0723fa2266686393a6616"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "copies",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-copies-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 3,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 10,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "e081ae5c0ac0d237d7b8c1a13bf98455aa775646d9fbfcbc9e2fbf8a2b6aa331"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "copies",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-copies-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 1,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 10,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "3e1a0349f41dd7cef003e476d42b63fadef0167aef53ec29a12a8957e9202bd2"
+    },
+    {
+      "before_raw": 998,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "copies",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-copies-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 999,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 10,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "0140a3b113cab98adcb7ee4453649b830b62b60b011dc87fc04236e460806222"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "copies",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-copies-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 0,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 10,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "60aad808ca0c68f7f9242c9646e5ff3cf18ffcc428cf152e8d76b68c6624e018"
+    },
+    {
+      "editing": true,
+      "entry_rva": 25837960,
+      "field": "paper",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-paper-open",
+      "open": true,
+      "pointer": [
+        708,
+        318
+      ],
+      "scale": 1,
+      "target_offset": 16,
+      "text": "",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 0,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 10,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "ea8664acf53923194e9f689868bf832462d378e5c8abe49bc43e1e5a3b628a3e"
+    },
+    {
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "editing": true,
+      "entry_rva": 25837960,
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-paper-set-six",
+      "open": true,
+      "rejections": [
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "negative",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "too-large",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "step-payload",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "zero-revision",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "wrong-kind",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-site",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "missing-location",
+          "outcome": 0
+        },
+        {
+          "contents_ui_gps_unchanged": true,
+          "name": "stale",
+          "outcome": 2
+        }
+      ],
+      "target_offset": 16,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 0,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 6,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "425b52df79da65b3c239e88754e78bb2a4baed2339003c8522c41363c5fdfccf"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "paper",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-paper-partial-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 0,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 3,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "a54d319e56a1adbddf9792e368bcc470598c6757283760244eeaf82d8edc56b2"
+    },
+    {
+      "before_raw": 2,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "paper",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-paper-partial-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 0,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 1,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "1b8bed3075bfd2f496df685474b1488afe794e94b84dc417fe03e77021d8466c"
+    },
+    {
+      "before_raw": 998,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": 1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "paper",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-paper-near-upper-plus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 0,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 999,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "d283739d7d1212bb81f6591d8a1d1aef6636dc0103769404c9a2bcd0908e1517"
+    },
+    {
+      "before_raw": 1,
+      "bridge": {
+        "contents_match": true,
+        "outcome": 1,
+        "ui_gps_unchanged": true
+      },
+      "delta": -1,
+      "editing": false,
+      "entry_rva": 25837960,
+      "field": "paper",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-paper-near-zero-minus",
+      "open": true,
+      "other_byte_changes": [],
+      "scale": 1,
+      "text": "6",
+      "text_rva": 25837928,
+      "values": {
+        "buckets": 0,
+        "cloth": 0,
+        "copies": 0,
+        "crutches": 0,
+        "goblets": 0,
+        "instruments": 0,
+        "paper": 0,
+        "powder": 0,
+        "soap": 0,
+        "splints": 0,
+        "thread": 0
+      },
+      "png_sha256": "7c5064d757f43b413cc2f6c33e28f60d49145f9767e646bf74bb290e830d0ed0"
     }
   ],
   "static_audit": {
@@ -1095,17 +4203,26 @@
       }
     ],
     "numeric_dispatch": "0x8baa33..0x8bab54 reads native Details numeric scratch; unsuitable as a runtime service",
-    "numeric_editor": "0xc396d0 called with length3 and flags4; ownership not yet audited",
-    "integer_parser": "0x52c0f0; ownership not yet audited",
+    "numeric_editor": "0xc396d0..0xc396ff forwards global text buffer to0xc39700 and clears it after edits; forbidden runtime global input ownership",
+    "integer_parser": "0x52c0f0..0x52c101 unwraps MSVC string and tail-calls imported atoi (IAT0x15e5928); no location mutation helper",
     "writes": "Direct scalar write followed by inline pointer-selected scaling; button increments/decrements are inline in 0x311c10..0x35f274",
-    "runtime_policy": "Do not invoke either whole UI handler or borrow native numeric scratch"
+    "runtime_policy": "Translate only audited inline scalar writes with supported-build/byte pins, location-kind admission and expected revision. No native UI or numeric scratch access.",
+    "runtime_pins": [
+      {
+        "start_rva": "0x311c10",
+        "size": "0x4d664",
+        "fnv1a64": "0x0bb5d255b4bd6863"
+      },
+      {
+        "start_rva": "0x8baa33",
+        "size": "0x121",
+        "fnv1a64": "0x0aff370e58e7681f"
+      }
+    ]
   },
   "remaining": [
-    "all supply field buttons and units",
-    "non-multiple raw quantities and bounds",
     "physical keyboard Escape dispatch",
-    "native helper ownership and complete byte pins",
-    "semantic command and transport",
+    "semantic transport",
     "rendered editable controls and live integration"
   ]
 }

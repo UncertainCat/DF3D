@@ -186,6 +186,51 @@ LocationAccessOutcome setNativeLocationAccess(int32_t siteId,int32_t id,
   flags.set(df::abstract_building_flags::MEMBERS_ONLY,selected->members);
   return LocationAccessOutcome::Completed;
 }
+LocationAccessOutcome editNativeLocationQuantity(int32_t siteId,int32_t id,
+    uint64_t expectedRevision,uint8_t quantity,LocationQuantityEdit edit,int32_t value) {
+  // Native writes are inline in the input handlers, not a callable semantic
+  // routine. Pin those instructions; never call/borrow the global number editor.
+  static const bool compatible=[] {
+    if(!locationRefreshFunction())return false; // Supported PE/layout identity.
+    auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t count) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0x311c10,0x4d664)==UINT64_C(0x0bb5d255b4bd6863) &&
+        hash(0x8baa33,0x121)==UINT64_C(0x0aff370e58e7681f);
+  }();
+  if(!compatible || !expectedRevision || expectedRevision>uint64_t(INT64_MAX) || quantity>10 ||
+      static_cast<uint8_t>(edit)>2 || (edit==LocationQuantityEdit::Set ? value<0 || value>999 : value!=0))
+    return LocationAccessOutcome::Rejected;
+  const auto observed=observeNativeLocationDetailsCore(siteId,id);
+  if(!observed)return LocationAccessOutcome::Rejected;
+  const auto kind=observed->kind;
+  const bool offered=(kind==1 && (quantity==0 || quantity==1)) || (kind==2 && quantity==1) ||
+      (kind==3 && (quantity==2 || quantity==10)) || (kind==5 && quantity>=3 && quantity<=9);
+  if(!offered)return LocationAccessOutcome::Rejected;
+  if(locationDetailsRevision(*observed)!=expectedRevision)return LocationAccessOutcome::Stale;
+  auto* site=df::world_site::find(siteId);
+  if(!site)return LocationAccessOutcome::Rejected;
+  const auto found=std::lower_bound(site->buildings.begin(),site->buildings.end(),id,
+      [](const df::abstract_building* location,int32_t key){return location->id<key;});
+  if(found==site->buildings.end() || (*found)->id!=id)return LocationAccessOutcome::Rejected;
+  auto* c=(*found)->getContents();if(!c)return LocationAccessOutcome::Rejected;
+  int32_t* fields[]={&c->desired_goblets,&c->desired_instruments,&c->desired_paper,&c->desired_splints,
+      &c->desired_thread,&c->desired_cloth,&c->desired_crutches,&c->desired_powder,
+      &c->desired_buckets,&c->desired_soap,&c->desired_copies};
+  static_assert(offsetof(df::abstract_building_contents,desired_goblets)==8);
+  static_assert(offsetof(df::abstract_building_contents,desired_copies)==48);
+  const int32_t scale=quantity==4?15000:quantity==5?10000:(quantity==7 || quantity==9)?150:1;
+  auto& target=*fields[quantity];
+  // Native checks the bound BEFORE adding/subtracting one raw unit. Preserve
+  // partial raw quantities, including a step across the bound; do not clamp.
+  if(edit==LocationQuantityEdit::Set)target=value*scale;
+  else if(edit==LocationQuantityEdit::Increase && target<999*scale)target+=scale;
+  else if(edit==LocationQuantityEdit::Decrease && target>0)target-=scale;
+  return LocationAccessOutcome::Completed;
+}
+
 bool refreshNativeLocationDetailsCaches(int32_t siteId,int32_t id) {
   // Preflight all existing identity/availability/geometry guards before cache writes.
   // No pointers outlive this safe point; no native viewscreen state is involved.

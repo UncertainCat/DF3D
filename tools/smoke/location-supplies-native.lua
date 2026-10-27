@@ -73,3 +73,105 @@ for i,location in ipairs(choices)do
 end
 
 assert(#records==43,"expected chooser and three complete numeric edit workflows")
+
+local fields={
+ INN_TAVERN={{'goblets',17,1},{'instruments',20,1}},
+ TEMPLE={{'instruments',23,1}},
+ LIBRARY={{'copies',20,1},{'paper',26,1}},
+ HOSPITAL={{'thread',20,15000},{'cloth',23,10000},{'splints',26,1},{'crutches',29,1},
+  {'powder',32,150},{'buckets',35,1},{'soap',38,150}},
+}
+local field_cases=0
+for i,location in ipairs(choices)do
+ local kind=df.abstract_building_type[location:getType()]
+ if fields[kind]then
+  pixel(664,238+36*(i-1));assert(details.open and details.selected_ab==location,'field Details identity')
+  local contents=location:getContents()
+  for _,field in ipairs(fields[kind])do
+   field_cases=field_cases+1
+   local name,row_y,scale=table.unpack(field);local key_name='desired_'..name
+   local saved=contents[key_name];local prefix=kind..'-'..location.id..'-'..name
+   local click_x
+   for x=376,952,8 do pixel(x+4,row_y*12+6);if details.entering_desired_number then click_x=x+4;break end end
+   assert(click_x,'field editor absent: '..prefix)
+   local size,address=df.sizeof(contents);local _,target=df.sizeof(contents:_field(key_name))
+   local _,actual=df.sizeof(details.entering_desired_number);assert(actual==target,'numeric icon selected wrong field')
+   local opened=capture(prefix..'-open',location);opened.field=name;opened.scale=scale;opened.pointer={click_x,row_y*12+6}
+   local quantities={goblets=0,instruments=1,paper=2,splints=3,thread=4,cloth=5,crutches=6,powder=7,buckets=8,soap=9,copies=10}
+   local function bridge_compare(observed,before_value,mode,value)
+    local expected=df.new('uint8_t',size);dfhack.internal.memmove(expected,address,size)
+    contents[key_name]=before_value
+    local guards={}
+    for _,object in ipairs{m,g}do
+     local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+     guards[#guards+1]={bytes=bytes,address=at,size=n}
+    end
+    local site=dfhack.world.getCurrentSite().id
+    local text,code=dfhack.run_command_silent('df3d','location-details-read',tostring(site),tostring(location.id));assert(code==0,text)
+    local read=require('json').decode(text);assert(read.valid and type(read.revision)=='string','missing quantity revision')
+    text,code=dfhack.run_command_silent('df3d','location-quantity-edit',tostring(site),tostring(location.id),tostring(quantities[name]),tostring(mode),tostring(value),read.revision)
+    assert(code==0,text);local result=require('json').decode(text);assert(result.outcome==1,'bridge quantity edit refused')
+    assert(dfhack.internal.memcmp(expected,address,size)==0,'bridge/native contents differ: '..observed.name)
+    for _,guard in ipairs(guards)do
+     assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'quantity edit changed native UI/gps')
+     df.delete(guard.bytes)
+    end
+    df.delete(expected);observed.bridge={outcome=result.outcome,contents_match=true,ui_gps_unchanged=true}
+   end
+   key('STRING_A054');local set=capture(prefix..'-set-six',location);key('SELECT')
+   assert(contents[key_name]==6*scale,'native field scale differs')
+   bridge_compare(set,saved,0,6)
+   -- Rejected/stale semantic intents must leave both simulation and UI bytes alone.
+   local site=dfhack.world.getCurrentSite().id
+   local text,code=dfhack.run_command_silent('df3d','location-details-read',tostring(site),tostring(location.id))
+   assert(code==0,text);local revision=require('json').decode(text).revision
+   local rejected={}
+   local function reject(label,q,mode,value,rev,expected,site_id,location_id)
+    local guards={}
+    for _,object in ipairs{contents,m,g}do
+     local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+     guards[#guards+1]={bytes=bytes,address=at,size=n}
+    end
+    local output,status=dfhack.run_command_silent('df3d','location-quantity-edit',tostring(site_id or site),tostring(location_id or location.id),tostring(q),tostring(mode),tostring(value),rev)
+    assert(status==0,output);assert(require('json').decode(output).outcome==expected,label)
+    for _,guard in ipairs(guards)do
+     assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'rejection mutated bytes: '..label);df.delete(guard.bytes)
+    end
+    rejected[#rejected+1]={name=label,outcome=expected,contents_ui_gps_unchanged=true}
+   end
+   local q=quantities[name]
+   reject('negative',q,0,-1,revision,0)
+   reject('too-large',q,0,1000,revision,0)
+   reject('step-payload',q,1,1,revision,0)
+   reject('zero-revision',q,0,6,'0',0)
+   reject('wrong-kind',kind=='HOSPITAL' and 0 or 3,0,6,revision,0)
+   reject('missing-site',q,0,6,revision,0,-1)
+   reject('missing-location',q,0,6,revision,0,nil,2147483647)
+   contents[key_name]=7*scale
+   reject('stale',q,0,6,revision,2)
+   contents[key_name]=6*scale;set.rejections=rejected
+   local before=df.new('uint8_t',size);dfhack.internal.memmove(before,address,size)
+   local function action(label,value,delta)
+    -- Owned diagnostic scalar seeding isolates partial raw-unit behavior.
+    contents[key_name]=value
+    pixel(click_x+(delta>0 and 32 or 64),row_y*12+6)
+    local observed=capture(prefix..'-'..label,location)
+    observed.field=name;observed.scale=scale;observed.before_raw=value;observed.delta=delta
+    observed.other_byte_changes={}
+    for offset=0,size-1 do
+     if (offset<target-address or offset>=target-address+4) and before[offset]~=df.reinterpret_cast('uint8_t',address+offset).value then
+      observed.other_byte_changes[#observed.other_byte_changes+1]=offset
+     end
+    end
+    bridge_compare(observed,value,delta>0 and 1 or 2,0)
+   end
+   action('partial-plus',2*scale+(scale>1 and 1 or 0),1)
+   action('partial-minus',2*scale+(scale>1 and 1 or 0),-1)
+   action('near-upper-plus',999*scale-1,1)
+   action('near-zero-minus',1,-1)
+   df.delete(before);contents[key_name]=saved
+  end
+  key('LEAVESCREEN');assert(selector.open and not details.open)
+ end
+end
+assert(field_cases==13 and #records==121,'incomplete all-field numeric coverage')

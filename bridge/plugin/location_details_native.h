@@ -32,6 +32,10 @@ inline std::optional<LocationAccessFlags> locationAccessSelection(uint8_t kind, 
 enum class LocationAccessOutcome : uint8_t { Rejected, Completed, Stale };
 enum class LocationSupply : uint8_t { Goblets, Instruments, Paper, Splints, Thread,
     Cloth, Crutches, Powder, Buckets, Soap };
+enum class LocationQuantityEdit : uint8_t { Set, Increase, Decrease };
+// Quantity identities0..9 follow LocationSupply;10 is library copies.
+LocationAccessOutcome editNativeLocationQuantity(int32_t siteId,int32_t id,
+    uint64_t expectedRevision,uint8_t quantity,LocationQuantityEdit edit,int32_t value);
 struct LocationSupplyQuantity { int32_t stored=0,desired=0; };
 // A partial semantic observation used to establish the Details contract. Does
 // not claim complete native presentation or editing behavior.

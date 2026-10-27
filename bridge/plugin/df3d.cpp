@@ -1858,6 +1858,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
+      if (parameters[0] == "location-quantity-edit") {
+        if(parameters.size()!=7)return CR_WRONG_USAGE;
+        int32_t values[5]{};
+        for(size_t i=0;i<5;++i) {
+          const auto& text=parameters[i+1];const auto parsed=std::from_chars(text.data(),text.data()+text.size(),values[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        uint64_t receipt=0;const auto& text=parameters[6];
+        const auto parsed=std::from_chars(text.data(),text.data()+text.size(),receipt);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size() || values[2]<0 || values[2]>10 || values[3]<0 || values[3]>2)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        const auto outcome=df3d_area::editNativeLocationQuantity(values[0],values[1],receipt,
+            uint8_t(values[2]),static_cast<df3d_area::LocationQuantityEdit>(values[3]),values[4]);
+        out.print("{{\"outcome\":{}}}\n",int(outcome));return CR_OK;
+      }
       if (parameters[0] == "location-access-set") {
         if(parameters.size()!=5)return CR_WRONG_USAGE;
         int32_t values[3]{};
@@ -2480,6 +2495,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d location-staff-read <site id> <location id> (semantic staffing rows; read-only)\n"
         "df3d location-staff-prepare <site id> <location id> (create missing empty roles; protected acceptance)\n"
         "df3d location-access-set <site id> <location id> <mode 0..3> <revision> (protected access mutation)\n"
+        "df3d location-quantity-edit <site id> <location id> <quantity 0..10> <mode 0..2> <value> <revision> (protected quantity mutation)\n"
         "df3d location-details-refresh <site id> <location id> (refresh semantic caches; protected acceptance)\n"
         "df3d location-details-read <site id> <location id> (partial semantic Details facts; read-only)\n"
         "df3d location-guilds-read (ordered native guild professions and workers; read-only)\n"

@@ -104,14 +104,37 @@ identifies these farm candidates; addresses below are RVAs, not live pointers:
   entry point. Its list also distinguishes selected crops and available seeds
   when inserting rows. The renderer at `0x199f61` reads that global list.
 
-These findings expose specific comparison cases for the current adapter's
-uniform-environment rejection and reconstructed growth-duration filter; they
-do not establish which native path the current graphical panel uses. Capture
-the supported native farm panel, then compare ordinary, mixed-footprint,
-season-boundary, selected-crop and seed-availability cases against independently
-owned semantic calls. Verify ordering and lifecycle separately. No runtime
-replacement, building-management acceptance or launcher promotion follows from
-this static audit. Workshop Add task discovery remains unresolved.
+The current sheet list path at `0x1a1cb0` calls the same season and footprint
+routines at `0x1a5665` and `0x1a5682`, using its sheet's active sub-tab rather
+than the legacy global season selector. Both paths write the global crop list;
+neither list builder is a permitted runtime API.
+
+`stockpile_storage_native.ps1 -FarmDiscovery` provides a separate protected
+scope for native sheet observations and read-only comparison with the existing
+adapter. Protected142250 passes eight observations on underground farm227:
+initial summer, all four seasonal tabs, summer revisit, red sweet-pod click and
+Leave fallow. Summer and winter captures were visually inspected in the matching
+prototype142048; final142250 retains the same native observations and its fallow
+capture was visually inspected. Core passes cleanly in
+`build/qa/farm-native-reference`. DF143932
+exits unsaved and the source manifest is unchanged. The compact text/semantic
+reference and capture hashes are in `fixtures/building_management/native_farm.json`;
+no extracted artwork is shipped. Earlier141911 failed the diagnostic screen-text
+field lookup and is not acceptance.
+
+Native uses plural names, a fallow row and selected/seed-aware ordering. Summer
+includes sweet pods with red text, while the adapter's mask omits summer;
+native says No seeds while the adapter counts40. Clicking that red row leaves
+the chosen crop unchanged; clicking fallow sets only summer to-1. The cause of
+the red-row refusal still needs isolation. The adapter's numeric seed counts
+are not established as native availability semantics.
+
+Next compare independently owned semantic calls against this reference and
+extend it to mixed footprints, season boundaries and seed flags. Do not replace
+the adapter with another reconstruction of the list builder. Verify ordering,
+mutation eligibility and lifecycle separately. No runtime replacement,
+building-management acceptance or launcher promotion follows from these
+observations. Workshop Add task discovery remains unresolved.
 
 ## Native Location supply editing reference
 

@@ -1,0 +1,1742 @@
+{
+  "format": 1,
+  "reference": "Native DF53.16 graphical farm panel, protected paused owned session",
+  "source": "build/stockpile-storage-native-farm-discovery-20261027-142250",
+  "owned_df_pid": 143932,
+  "owned_exit_unsaved": true,
+  "source_manifest_unchanged": true,
+  "inputs": [
+    {
+      "Algorithm": "SHA256",
+      "Hash": "0B66CE38B948918257E07F2DCB77AE62194D629792813E6791D0C64B529237A2",
+      "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "DA789CF08187EBE723E8C5A32478F30C80F6A429EC3929B8AD3AECBB47E49C78",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "8E6A188C08633357053826BA66416582D2F589B4095F8594BF72BBD757C4E529",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-multi-discovery-native.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "1FD7292ED0453631776D65A50C3B84B3CFF70E2BC2ECD345CB3486E2C02EFE6B",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-native.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "68C3304E6220527F42DA85B8CA21A44FB3D203E0DC182FAAE9D60CCE7D7562FF",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\production.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "2395AE36A3E281947C1BB940EEF03EAD5694A1538272768FD9AD9639B442C04F",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-owner-native.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "9DE5FA5C1002FF21AD9728C9E3DB5C3C463EB76BDE9A3556947A1E9B64C7307E",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.ps1"
+    }
+  ],
+  "observations": [
+    {
+      "adapter": {
+        "buildings": [
+          {
+            "build_stage": 3,
+            "id": 227,
+            "kind": "FarmPlot",
+            "max_stage": 3,
+            "name": "Farm Plot",
+            "queue_size": 0,
+            "x": 137,
+            "y": 111,
+            "z": 165
+          }
+        ],
+        "crops": [
+          {
+            "id": 173,
+            "name": "plump helmet",
+            "seasons": 15.0,
+            "seeds": 68
+          },
+          {
+            "id": 174,
+            "name": "pig tail",
+            "seasons": 6.0,
+            "seeds": 4
+          },
+          {
+            "id": 175,
+            "name": "cave wheat",
+            "seasons": 6.0,
+            "seeds": 0
+          },
+          {
+            "id": 176,
+            "name": "sweet pod",
+            "seasons": 1.0,
+            "seeds": 40
+          },
+          {
+            "id": 177,
+            "name": "quarry bush",
+            "seasons": 7.0,
+            "seeds": 85
+          },
+          {
+            "id": 188,
+            "name": "dimple cup",
+            "seasons": 15.0,
+            "seeds": 58
+          }
+        ],
+        "current_season": 1,
+        "detail": "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.",
+        "message": "Production inspected",
+        "ok": true,
+        "production_jobs": [],
+        "recipes": [],
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "selected_building": 227
+      },
+      "crops": [
+        -1,
+        175,
+        188,
+        174,
+        173,
+        177,
+        176
+      ],
+      "current_season": 1,
+      "grid": [
+        150,
+        66
+      ],
+      "id": 227,
+      "name": "farm-selected",
+      "raws": [
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 175,
+          "name": "cave wheat"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 500,
+          "id": 188,
+          "name": "dimple cups"
+        },
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 300,
+          "id": 174,
+          "name": "pig tails"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 300,
+          "id": 173,
+          "name": "plump helmets"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 177,
+          "name": "quarry bushes"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            false,
+            false
+          ],
+          "growdur": 500,
+          "id": 176,
+          "name": "sweet pods"
+        }
+      ],
+      "season_tick": 5644,
+      "seasons": [
+        173,
+        175,
+        175,
+        173
+      ],
+      "seeds": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "selected_season": 1,
+      "panel_text": [
+        {
+          "y": 6,
+          "text": "       Farm Plot"
+        },
+        {
+          "y": 9,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 10,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 17,
+          "text": "        Leave fallow"
+        },
+        {
+          "y": 20,
+          "text": "        Cave wheat"
+        },
+        {
+          "y": 21,
+          "text": "        No seeds"
+        },
+        {
+          "y": 23,
+          "text": "        Dimple cups"
+        },
+        {
+          "y": 26,
+          "text": "        Pig tails"
+        },
+        {
+          "y": 29,
+          "text": "        Plump helmets"
+        },
+        {
+          "y": 32,
+          "text": "        Quarry bushes"
+        },
+        {
+          "y": 35,
+          "text": "        Sweet pods"
+        },
+        {
+          "y": 36,
+          "text": "        No seeds"
+        },
+        {
+          "y": 39,
+          "text": "      Not set to fertilize      Fertilize"
+        },
+        {
+          "y": 40,
+          "text": "      Current amount: 0/29      every season"
+        }
+      ],
+      "capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+    },
+    {
+      "adapter": {
+        "buildings": [
+          {
+            "build_stage": 3,
+            "id": 227,
+            "kind": "FarmPlot",
+            "max_stage": 3,
+            "name": "Farm Plot",
+            "queue_size": 0,
+            "x": 137,
+            "y": 111,
+            "z": 165
+          }
+        ],
+        "crops": [
+          {
+            "id": 173,
+            "name": "plump helmet",
+            "seasons": 15.0,
+            "seeds": 68
+          },
+          {
+            "id": 174,
+            "name": "pig tail",
+            "seasons": 6.0,
+            "seeds": 4
+          },
+          {
+            "id": 175,
+            "name": "cave wheat",
+            "seasons": 6.0,
+            "seeds": 0
+          },
+          {
+            "id": 176,
+            "name": "sweet pod",
+            "seasons": 1.0,
+            "seeds": 40
+          },
+          {
+            "id": 177,
+            "name": "quarry bush",
+            "seasons": 7.0,
+            "seeds": 85
+          },
+          {
+            "id": 188,
+            "name": "dimple cup",
+            "seasons": 15.0,
+            "seeds": 58
+          }
+        ],
+        "current_season": 1,
+        "detail": "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.",
+        "message": "Production inspected",
+        "ok": true,
+        "production_jobs": [],
+        "recipes": [],
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "selected_building": 227
+      },
+      "crops": [
+        -1,
+        173,
+        188,
+        177,
+        176
+      ],
+      "current_season": 1,
+      "grid": [
+        150,
+        66
+      ],
+      "id": 227,
+      "name": "farm-season-0",
+      "raws": [
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 300,
+          "id": 173,
+          "name": "plump helmets"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 500,
+          "id": 188,
+          "name": "dimple cups"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 177,
+          "name": "quarry bushes"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            false,
+            false
+          ],
+          "growdur": 500,
+          "id": 176,
+          "name": "sweet pods"
+        }
+      ],
+      "season_tick": 5644,
+      "seasons": [
+        173,
+        175,
+        175,
+        173
+      ],
+      "seeds": [
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "selected_season": 0,
+      "panel_text": [
+        {
+          "y": 6,
+          "text": "       Farm Plot"
+        },
+        {
+          "y": 9,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 10,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 17,
+          "text": "        Leave fallow"
+        },
+        {
+          "y": 20,
+          "text": "        Plump helmets"
+        },
+        {
+          "y": 23,
+          "text": "        Dimple cups"
+        },
+        {
+          "y": 26,
+          "text": "        Quarry bushes"
+        },
+        {
+          "y": 29,
+          "text": "        Sweet pods"
+        },
+        {
+          "y": 30,
+          "text": "        No seeds"
+        },
+        {
+          "y": 39,
+          "text": "      Not set to fertilize      Fertilize"
+        },
+        {
+          "y": 40,
+          "text": "      Current amount: 0/29      every season"
+        }
+      ],
+      "capture_sha256": "e087952fd67b901eef2aa7e05ff1ad30db1bd1ae97ba4491cf51cf905e99bdd1"
+    },
+    {
+      "adapter": {
+        "buildings": [
+          {
+            "build_stage": 3,
+            "id": 227,
+            "kind": "FarmPlot",
+            "max_stage": 3,
+            "name": "Farm Plot",
+            "queue_size": 0,
+            "x": 137,
+            "y": 111,
+            "z": 165
+          }
+        ],
+        "crops": [
+          {
+            "id": 173,
+            "name": "plump helmet",
+            "seasons": 15.0,
+            "seeds": 68
+          },
+          {
+            "id": 174,
+            "name": "pig tail",
+            "seasons": 6.0,
+            "seeds": 4
+          },
+          {
+            "id": 175,
+            "name": "cave wheat",
+            "seasons": 6.0,
+            "seeds": 0
+          },
+          {
+            "id": 176,
+            "name": "sweet pod",
+            "seasons": 1.0,
+            "seeds": 40
+          },
+          {
+            "id": 177,
+            "name": "quarry bush",
+            "seasons": 7.0,
+            "seeds": 85
+          },
+          {
+            "id": 188,
+            "name": "dimple cup",
+            "seasons": 15.0,
+            "seeds": 58
+          }
+        ],
+        "current_season": 1,
+        "detail": "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.",
+        "message": "Production inspected",
+        "ok": true,
+        "production_jobs": [],
+        "recipes": [],
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "selected_building": 227
+      },
+      "crops": [
+        -1,
+        175,
+        188,
+        174,
+        173,
+        177,
+        176
+      ],
+      "current_season": 1,
+      "grid": [
+        150,
+        66
+      ],
+      "id": 227,
+      "name": "farm-season-1",
+      "raws": [
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 175,
+          "name": "cave wheat"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 500,
+          "id": 188,
+          "name": "dimple cups"
+        },
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 300,
+          "id": 174,
+          "name": "pig tails"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 300,
+          "id": 173,
+          "name": "plump helmets"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 177,
+          "name": "quarry bushes"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            false,
+            false
+          ],
+          "growdur": 500,
+          "id": 176,
+          "name": "sweet pods"
+        }
+      ],
+      "season_tick": 5644,
+      "seasons": [
+        173,
+        175,
+        175,
+        173
+      ],
+      "seeds": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "selected_season": 1,
+      "panel_text": [
+        {
+          "y": 6,
+          "text": "       Farm Plot"
+        },
+        {
+          "y": 9,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 10,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 17,
+          "text": "        Leave fallow"
+        },
+        {
+          "y": 20,
+          "text": "        Cave wheat"
+        },
+        {
+          "y": 21,
+          "text": "        No seeds"
+        },
+        {
+          "y": 23,
+          "text": "        Dimple cups"
+        },
+        {
+          "y": 26,
+          "text": "        Pig tails"
+        },
+        {
+          "y": 29,
+          "text": "        Plump helmets"
+        },
+        {
+          "y": 32,
+          "text": "        Quarry bushes"
+        },
+        {
+          "y": 35,
+          "text": "        Sweet pods"
+        },
+        {
+          "y": 36,
+          "text": "        No seeds"
+        },
+        {
+          "y": 39,
+          "text": "      Not set to fertilize      Fertilize"
+        },
+        {
+          "y": 40,
+          "text": "      Current amount: 0/29      every season"
+        }
+      ],
+      "capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+    },
+    {
+      "adapter": {
+        "buildings": [
+          {
+            "build_stage": 3,
+            "id": 227,
+            "kind": "FarmPlot",
+            "max_stage": 3,
+            "name": "Farm Plot",
+            "queue_size": 0,
+            "x": 137,
+            "y": 111,
+            "z": 165
+          }
+        ],
+        "crops": [
+          {
+            "id": 173,
+            "name": "plump helmet",
+            "seasons": 15.0,
+            "seeds": 68
+          },
+          {
+            "id": 174,
+            "name": "pig tail",
+            "seasons": 6.0,
+            "seeds": 4
+          },
+          {
+            "id": 175,
+            "name": "cave wheat",
+            "seasons": 6.0,
+            "seeds": 0
+          },
+          {
+            "id": 176,
+            "name": "sweet pod",
+            "seasons": 1.0,
+            "seeds": 40
+          },
+          {
+            "id": 177,
+            "name": "quarry bush",
+            "seasons": 7.0,
+            "seeds": 85
+          },
+          {
+            "id": 188,
+            "name": "dimple cup",
+            "seasons": 15.0,
+            "seeds": 58
+          }
+        ],
+        "current_season": 1,
+        "detail": "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.",
+        "message": "Production inspected",
+        "ok": true,
+        "production_jobs": [],
+        "recipes": [],
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "selected_building": 227
+      },
+      "crops": [
+        -1,
+        175,
+        188,
+        174,
+        173,
+        177
+      ],
+      "current_season": 1,
+      "grid": [
+        150,
+        66
+      ],
+      "id": 227,
+      "name": "farm-season-2",
+      "raws": [
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 175,
+          "name": "cave wheat"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 500,
+          "id": 188,
+          "name": "dimple cups"
+        },
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 300,
+          "id": 174,
+          "name": "pig tails"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 300,
+          "id": 173,
+          "name": "plump helmets"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 177,
+          "name": "quarry bushes"
+        }
+      ],
+      "season_tick": 5644,
+      "seasons": [
+        173,
+        175,
+        175,
+        173
+      ],
+      "seeds": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "selected_season": 2,
+      "panel_text": [
+        {
+          "y": 6,
+          "text": "       Farm Plot"
+        },
+        {
+          "y": 9,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 10,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 17,
+          "text": "        Leave fallow"
+        },
+        {
+          "y": 20,
+          "text": "        Cave wheat"
+        },
+        {
+          "y": 21,
+          "text": "        No seeds"
+        },
+        {
+          "y": 23,
+          "text": "        Dimple cups"
+        },
+        {
+          "y": 26,
+          "text": "        Pig tails"
+        },
+        {
+          "y": 29,
+          "text": "        Plump helmets"
+        },
+        {
+          "y": 32,
+          "text": "        Quarry bushes"
+        },
+        {
+          "y": 39,
+          "text": "      Not set to fertilize      Fertilize"
+        },
+        {
+          "y": 40,
+          "text": "      Current amount: 0/29      every season"
+        }
+      ],
+      "capture_sha256": "7ecffb1f1b7829d435a739ec0a095bd8c39608b8f1b73a4209e90dc88578741f"
+    },
+    {
+      "adapter": {
+        "buildings": [
+          {
+            "build_stage": 3,
+            "id": 227,
+            "kind": "FarmPlot",
+            "max_stage": 3,
+            "name": "Farm Plot",
+            "queue_size": 0,
+            "x": 137,
+            "y": 111,
+            "z": 165
+          }
+        ],
+        "crops": [
+          {
+            "id": 173,
+            "name": "plump helmet",
+            "seasons": 15.0,
+            "seeds": 68
+          },
+          {
+            "id": 174,
+            "name": "pig tail",
+            "seasons": 6.0,
+            "seeds": 4
+          },
+          {
+            "id": 175,
+            "name": "cave wheat",
+            "seasons": 6.0,
+            "seeds": 0
+          },
+          {
+            "id": 176,
+            "name": "sweet pod",
+            "seasons": 1.0,
+            "seeds": 40
+          },
+          {
+            "id": 177,
+            "name": "quarry bush",
+            "seasons": 7.0,
+            "seeds": 85
+          },
+          {
+            "id": 188,
+            "name": "dimple cup",
+            "seasons": 15.0,
+            "seeds": 58
+          }
+        ],
+        "current_season": 1,
+        "detail": "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.",
+        "message": "Production inspected",
+        "ok": true,
+        "production_jobs": [],
+        "recipes": [],
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "selected_building": 227
+      },
+      "crops": [
+        -1,
+        173,
+        188
+      ],
+      "current_season": 1,
+      "grid": [
+        150,
+        66
+      ],
+      "id": 227,
+      "name": "farm-season-3",
+      "raws": [
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 300,
+          "id": 173,
+          "name": "plump helmets"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 500,
+          "id": 188,
+          "name": "dimple cups"
+        }
+      ],
+      "season_tick": 5644,
+      "seasons": [
+        173,
+        175,
+        175,
+        173
+      ],
+      "seeds": [
+        false,
+        true,
+        true
+      ],
+      "selected_season": 3,
+      "panel_text": [
+        {
+          "y": 6,
+          "text": "       Farm Plot"
+        },
+        {
+          "y": 9,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 10,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 17,
+          "text": "        Leave fallow"
+        },
+        {
+          "y": 20,
+          "text": "        Plump helmets"
+        },
+        {
+          "y": 23,
+          "text": "        Dimple cups"
+        },
+        {
+          "y": 39,
+          "text": "      Not set to fertilize      Fertilize"
+        },
+        {
+          "y": 40,
+          "text": "      Current amount: 0/29      every season"
+        }
+      ],
+      "capture_sha256": "cb7138ed40fbd1cad1d33903169428c19f2f5f1d30e27ad2a2a71a043fa45ee3"
+    },
+    {
+      "adapter": {
+        "buildings": [
+          {
+            "build_stage": 3,
+            "id": 227,
+            "kind": "FarmPlot",
+            "max_stage": 3,
+            "name": "Farm Plot",
+            "queue_size": 0,
+            "x": 137,
+            "y": 111,
+            "z": 165
+          }
+        ],
+        "crops": [
+          {
+            "id": 173,
+            "name": "plump helmet",
+            "seasons": 15.0,
+            "seeds": 68
+          },
+          {
+            "id": 174,
+            "name": "pig tail",
+            "seasons": 6.0,
+            "seeds": 4
+          },
+          {
+            "id": 175,
+            "name": "cave wheat",
+            "seasons": 6.0,
+            "seeds": 0
+          },
+          {
+            "id": 176,
+            "name": "sweet pod",
+            "seasons": 1.0,
+            "seeds": 40
+          },
+          {
+            "id": 177,
+            "name": "quarry bush",
+            "seasons": 7.0,
+            "seeds": 85
+          },
+          {
+            "id": 188,
+            "name": "dimple cup",
+            "seasons": 15.0,
+            "seeds": 58
+          }
+        ],
+        "current_season": 1,
+        "detail": "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.",
+        "message": "Production inspected",
+        "ok": true,
+        "production_jobs": [],
+        "recipes": [],
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "selected_building": 227
+      },
+      "crops": [
+        -1,
+        175,
+        188,
+        174,
+        173,
+        177,
+        176
+      ],
+      "current_season": 1,
+      "grid": [
+        150,
+        66
+      ],
+      "id": 227,
+      "name": "farm-summer-before-choice",
+      "raws": [
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 175,
+          "name": "cave wheat"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 500,
+          "id": 188,
+          "name": "dimple cups"
+        },
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 300,
+          "id": 174,
+          "name": "pig tails"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 300,
+          "id": 173,
+          "name": "plump helmets"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 177,
+          "name": "quarry bushes"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            false,
+            false
+          ],
+          "growdur": 500,
+          "id": 176,
+          "name": "sweet pods"
+        }
+      ],
+      "season_tick": 5644,
+      "seasons": [
+        173,
+        175,
+        175,
+        173
+      ],
+      "seeds": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "selected_season": 1,
+      "panel_text": [
+        {
+          "y": 6,
+          "text": "       Farm Plot"
+        },
+        {
+          "y": 9,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 10,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 17,
+          "text": "        Leave fallow"
+        },
+        {
+          "y": 20,
+          "text": "        Cave wheat"
+        },
+        {
+          "y": 21,
+          "text": "        No seeds"
+        },
+        {
+          "y": 23,
+          "text": "        Dimple cups"
+        },
+        {
+          "y": 26,
+          "text": "        Pig tails"
+        },
+        {
+          "y": 29,
+          "text": "        Plump helmets"
+        },
+        {
+          "y": 32,
+          "text": "        Quarry bushes"
+        },
+        {
+          "y": 35,
+          "text": "        Sweet pods"
+        },
+        {
+          "y": 36,
+          "text": "        No seeds"
+        },
+        {
+          "y": 39,
+          "text": "      Not set to fertilize      Fertilize"
+        },
+        {
+          "y": 40,
+          "text": "      Current amount: 0/29      every season"
+        }
+      ],
+      "capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+    },
+    {
+      "adapter": {
+        "buildings": [
+          {
+            "build_stage": 3,
+            "id": 227,
+            "kind": "FarmPlot",
+            "max_stage": 3,
+            "name": "Farm Plot",
+            "queue_size": 0,
+            "x": 137,
+            "y": 111,
+            "z": 165
+          }
+        ],
+        "crops": [
+          {
+            "id": 173,
+            "name": "plump helmet",
+            "seasons": 15.0,
+            "seeds": 68
+          },
+          {
+            "id": 174,
+            "name": "pig tail",
+            "seasons": 6.0,
+            "seeds": 4
+          },
+          {
+            "id": 175,
+            "name": "cave wheat",
+            "seasons": 6.0,
+            "seeds": 0
+          },
+          {
+            "id": 176,
+            "name": "sweet pod",
+            "seasons": 1.0,
+            "seeds": 40
+          },
+          {
+            "id": 177,
+            "name": "quarry bush",
+            "seasons": 7.0,
+            "seeds": 85
+          },
+          {
+            "id": 188,
+            "name": "dimple cup",
+            "seasons": 15.0,
+            "seeds": 58
+          }
+        ],
+        "current_season": 1,
+        "detail": "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.",
+        "message": "Production inspected",
+        "ok": true,
+        "production_jobs": [],
+        "recipes": [],
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "selected_building": 227
+      },
+      "crops": [
+        -1,
+        175,
+        188,
+        174,
+        173,
+        177,
+        176
+      ],
+      "current_season": 1,
+      "grid": [
+        150,
+        66
+      ],
+      "id": 227,
+      "name": "farm-summer-red-choice",
+      "raws": [
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 175,
+          "name": "cave wheat"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 500,
+          "id": 188,
+          "name": "dimple cups"
+        },
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 300,
+          "id": 174,
+          "name": "pig tails"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 300,
+          "id": 173,
+          "name": "plump helmets"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 177,
+          "name": "quarry bushes"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            false,
+            false
+          ],
+          "growdur": 500,
+          "id": 176,
+          "name": "sweet pods"
+        }
+      ],
+      "season_tick": 5644,
+      "seasons": [
+        173,
+        175,
+        175,
+        173
+      ],
+      "seeds": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "selected_season": 1,
+      "panel_text": [
+        {
+          "y": 6,
+          "text": "       Farm Plot"
+        },
+        {
+          "y": 9,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 10,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 17,
+          "text": "        Leave fallow"
+        },
+        {
+          "y": 20,
+          "text": "        Cave wheat"
+        },
+        {
+          "y": 21,
+          "text": "        No seeds"
+        },
+        {
+          "y": 23,
+          "text": "        Dimple cups"
+        },
+        {
+          "y": 26,
+          "text": "        Pig tails"
+        },
+        {
+          "y": 29,
+          "text": "        Plump helmets"
+        },
+        {
+          "y": 32,
+          "text": "        Quarry bushes"
+        },
+        {
+          "y": 35,
+          "text": "        Sweet pods"
+        },
+        {
+          "y": 36,
+          "text": "        No seeds"
+        },
+        {
+          "y": 39,
+          "text": "      Not set to fertilize      Fertilize"
+        },
+        {
+          "y": 40,
+          "text": "      Current amount: 0/29      every season"
+        }
+      ],
+      "capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+    },
+    {
+      "adapter": {
+        "buildings": [
+          {
+            "build_stage": 3,
+            "id": 227,
+            "kind": "FarmPlot",
+            "max_stage": 3,
+            "name": "Farm Plot",
+            "queue_size": 0,
+            "x": 137,
+            "y": 111,
+            "z": 165
+          }
+        ],
+        "crops": [
+          {
+            "id": 173,
+            "name": "plump helmet",
+            "seasons": 15.0,
+            "seeds": 68
+          },
+          {
+            "id": 174,
+            "name": "pig tail",
+            "seasons": 6.0,
+            "seeds": 4
+          },
+          {
+            "id": 175,
+            "name": "cave wheat",
+            "seasons": 6.0,
+            "seeds": 0
+          },
+          {
+            "id": 176,
+            "name": "sweet pod",
+            "seasons": 1.0,
+            "seeds": 40
+          },
+          {
+            "id": 177,
+            "name": "quarry bush",
+            "seasons": 7.0,
+            "seeds": 85
+          },
+          {
+            "id": 188,
+            "name": "dimple cup",
+            "seasons": 15.0,
+            "seeds": 58
+          }
+        ],
+        "current_season": 1,
+        "detail": "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.",
+        "message": "Production inspected",
+        "ok": true,
+        "production_jobs": [],
+        "recipes": [],
+        "seasonal_crops": [
+          173,
+          -1,
+          175,
+          173
+        ],
+        "selected_building": 227
+      },
+      "crops": [
+        -1,
+        175,
+        188,
+        174,
+        173,
+        177,
+        176
+      ],
+      "current_season": 1,
+      "grid": [
+        150,
+        66
+      ],
+      "id": 227,
+      "name": "farm-summer-fallow",
+      "raws": [
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 175,
+          "name": "cave wheat"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 500,
+          "id": 188,
+          "name": "dimple cups"
+        },
+        {
+          "flags": [
+            false,
+            true,
+            true,
+            false
+          ],
+          "growdur": 300,
+          "id": 174,
+          "name": "pig tails"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "growdur": 300,
+          "id": 173,
+          "name": "plump helmets"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "growdur": 500,
+          "id": 177,
+          "name": "quarry bushes"
+        },
+        {
+          "flags": [
+            true,
+            true,
+            false,
+            false
+          ],
+          "growdur": 500,
+          "id": 176,
+          "name": "sweet pods"
+        }
+      ],
+      "season_tick": 5644,
+      "seasons": [
+        173,
+        -1,
+        175,
+        173
+      ],
+      "seeds": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "selected_season": 1,
+      "panel_text": [
+        {
+          "y": 6,
+          "text": "       Farm Plot"
+        },
+        {
+          "y": 9,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 10,
+          "text": "  Spring         Summer(now)    Autumn         Winter"
+        },
+        {
+          "y": 17,
+          "text": "        Leave fallow"
+        },
+        {
+          "y": 20,
+          "text": "        Cave wheat"
+        },
+        {
+          "y": 21,
+          "text": "        No seeds"
+        },
+        {
+          "y": 23,
+          "text": "        Dimple cups"
+        },
+        {
+          "y": 26,
+          "text": "        Pig tails"
+        },
+        {
+          "y": 29,
+          "text": "        Plump helmets"
+        },
+        {
+          "y": 32,
+          "text": "        Quarry bushes"
+        },
+        {
+          "y": 35,
+          "text": "        Sweet pods"
+        },
+        {
+          "y": 36,
+          "text": "        No seeds"
+        },
+        {
+          "y": 39,
+          "text": "      Not set to fertilize      Fertilize"
+        },
+        {
+          "y": 40,
+          "text": "      Current amount: 0/29      every season"
+        }
+      ],
+      "capture_sha256": "ab75bbb1797da22ba86f6f0e273a99cf9f1e4fa2e65e45e39464bde930941295"
+    }
+  ],
+  "limitations": [
+    "One existing underground farm, eight observations at1200x800; not mixed-footprint or modded-raw coverage.",
+    "The red sweet-pod click was inert; this alone does not identify whether seed availability or the red warning caused refusal.",
+    "No independently owned native semantic calls tested yet; adapter output is retained to expose differences, not establish expected runtime behavior.",
+    "Screen text is ASCII-only and panel-bounded. Artwork remains in ignored captures, not this fixture."
+  ]
+}

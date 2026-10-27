@@ -9,6 +9,14 @@ require('gui.script').start(function()
   local view=dfhack.gui.getDFViewscreen(true)
   assert(df.global.pause_state);local frame=df.global.world.frame_counter
   assert(dfhack.run_command('disable','overlay')==0)
+  local farm_marker=io.open(out..'/farm-discovery')
+  if farm_marker then
+   farm_marker:close()
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','farm-native.lua')
+   assert(loadfile(source))(out,view,records)
+   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+   return
+  end
   if test_location_names then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','location-names-native.lua')
    assert(loadfile(source))(out,view,records)

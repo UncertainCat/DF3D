@@ -17257,9 +17257,7 @@
     "native_assignment_unchanged": true,
     "save_manifests_unchanged": true,
     "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
-    "omissions": [
-      "transport disconnect"
-    ]
+    "omissions": []
   },
   "animal_same_zone_selection": {
     "run": "build/stockpile-storage-native-zone-animals-20261026-185722",
@@ -17288,6 +17286,34 @@
       "native assignment and clear",
       "all visible portraits reacquired",
       "different-zone and empty-terrain closure preserved"
+    ]
+  },
+  "animal_disconnect": {
+    "scope": "Real keyboard caged-unit assignment; client transport detach/reattach; retirement and no replay",
+    "runs": [
+      {
+        "run": "build/areas-acceptance-20261026-190537",
+        "mode": "queued",
+        "status": "passed_with_known_issues",
+        "outcome": "not_sent",
+        "native_assigned_before_and_after_reconnect": false,
+        "save_manifests_unchanged": true,
+        "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d"
+      },
+      {
+        "run": "build/areas-acceptance-20261026-190708",
+        "mode": "sent",
+        "status": "passed_with_known_issues",
+        "outcome": "unknown",
+        "native_assigned_before_and_after_reconnect": true,
+        "save_manifests_unchanged": true,
+        "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d"
+      }
+    ],
+    "omissions": [
+      "producer restart",
+      "critter-item disconnect",
+      "explicit picker reopening after reconnect"
     ]
   }
 }

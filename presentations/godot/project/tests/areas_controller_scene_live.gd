@@ -144,6 +144,11 @@ func pointer_areas() -> void:
 			if zone_animals_only:
 				await pointer_animals(id)
 				if stopped:return
+				var animal_disconnect:=str(JSON.parse_string(FileAccess.get_file_as_string(directory+"/zone-animals-only.json")).get("disconnect","none"))
+				if animal_disconnect!="none":
+					await pointer_animal_disconnect(id,animal_disconnect)
+					if stopped:return
+					await native("remove_target",{"id":id});await native("removed",{"id":id});await native("final");return
 				await click_control(editor.zone_menu.controls.remove)
 				if not await wait_ui(func():return settled() and editor.selected.is_empty(),"remove animal test zone"):return
 				await native("removed",{"id":id});await native("final");return
@@ -309,6 +314,57 @@ func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
 	if not check(actions._next_ticket==next_ticket and editor.candidates_state.area.is_empty() and not view.visible,"reconnect replayed or reopened squad picker"):return
 	await native("squad",{"id":id,"squad_id":target_id,"use":expected_use})
 	await capture("squad_disconnected_retired")
+
+func pointer_animal_disconnect(id: int, disconnect_mode: String) -> void:
+	step="animal "+disconnect_mode+" disconnect"
+	await click_control(editor.zone_menu.controls.animals)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"disconnect animal list"):return
+	var view=editor.candidates_view
+	var target_id:int=fixture.caged
+	var index:=-1
+	for i in editor.candidates_state.rows.size():
+		var row:Dictionary=editor.candidates_state.rows[i]
+		if int(row.get("entity",0))==1 and int(row.id)==target_id:index=i;break
+	if not check(index>=0,"disconnect animal absent"):return
+	await pointer_key(KEY_PAGEUP)
+	for i in index:await pointer_key(KEY_DOWN)
+	await capture("animal_disconnect_ready")
+	await pointer_key(KEY_ENTER)
+	var ticket:int=editor.request_ticket
+	if not check(ticket>0,"disconnect animal mutation not queued"):return
+	var expected_use:=false
+	if disconnect_mode=="sent":
+		actions.poll()
+		if not check(actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0,"disconnect mutation not sent"):return
+		var sequence:int=actions._requests[ticket].sequence
+		var reply:Dictionary={}
+		var deadline:=Time.get_ticks_msec()+30000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();var candidate:Dictionary=world.poll_management()
+			if int(candidate.get("request_seq",0))==sequence and int(candidate.get("status",0))==S.Ok:reply=candidate;break
+			await create_timer(0.02).timeout
+		if not check(not reply.is_empty() and actions.result(ticket).is_empty(),"missing unobserved native receipt"):return
+		write_json("animal-unobserved-receipt.json",reply);expected_use=true
+	await native("assignment",{"id":id,"unit_id":target_id,"assign":expected_use})
+	world.detach_live();actions.poll()
+	var outcome:Dictionary=actions.result(ticket)
+	write_json("animal-disconnect-outcome.json",outcome)
+	if not check(str(outcome.get("outcome",""))==("unknown" if disconnect_mode=="sent" else "not_sent"),"incorrect disconnected mutation outcome"):return
+	if not check(editor.selected.is_empty() and editor.candidates_state.area.is_empty() and not view.visible and not editor.available and settled(),"disconnect retained picker authority"):return
+	if not check(not actions._requests.has(ticket) and actions._queue.is_empty() and actions._active==0,"retired animal mutation remains dispatchable"):return
+	if not check(world.attach(),"animal reconnect failed"):return
+	var deadline:=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();editor._process(0.02)
+		if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
+		await create_timer(0.02).timeout
+	if not check(bool(world.poll_management().get("transport_alive",false)),"animal reconnect timed out"):return
+	var next_ticket:int=actions._next_ticket
+	for frame in 30:
+		world.poll();actions.poll();editor._process(0.02);await process_frame
+	if not check(actions._next_ticket==next_ticket and editor.candidates_state.area.is_empty() and not view.visible,"reconnect replayed or reopened animal picker"):return
+	await native("assignment",{"id":id,"unit_id":target_id,"assign":expected_use})
+	await capture("animal_disconnected_retired")
 
 func pointer_zone_gathering(id: int) -> void:
 	step = "viewport native gathering flags"

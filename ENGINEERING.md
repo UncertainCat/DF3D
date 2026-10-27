@@ -410,8 +410,21 @@ of the caged unit. The bridge rejects, native assignment/reference checks stay
 unchanged, and repeated Enter produces no further mutation. Right-click closes
 the failed picker; explicit map selection refreshes the zone before UI removal.
 The run passes with known Godot diagnostics and unchanged source/clone manifests.
-Core19/19 passes in `build/qa/animal-stale-core`. Animal transport-disconnect
-still needs its own live coverage.
+Core19/19 passes in `build/qa/animal-stale-core`.
+
+Animal transport loss is covered by `-ControllerScene -ZoneAnimalsOnly
+-AnimalDisconnect queued|sent`. The rendered queued run
+`build/areas-acceptance-20261026-190537` retires an actual Enter assignment as
+`not_sent`, with native assignment references unchanged. The sent run
+`build/areas-acceptance-20261026-190708` observes native completion before the
+service consumes its reply, then detaches: the outcome is `unknown` and the
+assignment remains applied exactly once. Both clear picker authority and queued
+work, reconnect to the same fortress, and verify no new picker tickets or replay.
+These terminal cases clean up through the native verifier; ordinary lanes retain
+UI removal coverage. Both pass with known Godot diagnostics, unchanged source/
+clone manifests and unsaved exits. Core19/19 passes in
+`build/qa/animal-disconnect-core`. Producer restart, critter-item disconnect and
+explicit picker reopening after reconnect are not established by these runs.
 
 Native `build/stockpile-storage-native-zone-animals-20261026-185722` distinguishes
 same-zone map clicks from selection changes. At exposed map pixel(964,390),

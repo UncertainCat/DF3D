@@ -1037,6 +1037,15 @@ with the source manifest unchanged. The diagnostic removes all six allocated
 agreements from their owning vectors before deleting their allocations. Native
 text cells retain coordinates and colors; screenshots remain ignored.
 
+Protected native105800 adds four900ms pointer hovers and simulated left clicks
+on the heading, applicant, date and blank interior of the first visible temple
+request. All report hover-1/displayed-hover-1; Petitions remains closed and
+Details stays on location0. The current dwarfmode viewscreen is unchanged.
+`interaction_reference` retains each pointer and state. Owned DF157544 exits
+unsaved with the source manifest unchanged. This establishes no action at those
+four targets in this state; it does not establish scrollbar, map selection,
+other input devices or global panel visibility behavior.
+
 Supported renderer3d6950 emits tracker rows at3f9956..3fa396. It enumerates
 plotinfo.continuing_agreement_id in order, skips concluded agreements, reads the
 first Location subject, resolves its applicant party and first entity, and

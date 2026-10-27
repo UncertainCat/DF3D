@@ -563,8 +563,9 @@ pixel(664,238);assert(details.open and details.selected_ab==temple)
 if recognition_case=='petitiontracker' then
  local a=assert(df.agreement.find(fixture_agreements[5]));local b=assert(df.agreement.find(fixture_agreements[6]))
  local subject=a.details[0];local location=subject.data.Location
- local function shot(label)
-  local row=capture('tracker-'..label,temple);row.tracker_cells={};row.inputs={}
+ local function shot(label,keep_pointer)
+  local row=capture('tracker-'..label,temple,keep_pointer);row.tracker_cells={};row.inputs={}
+  row.interaction={petitions_open=m.petitions.open,selected_agreement_id=m.petitions.selected_agreement_id,details_open=details.open,selected_location=details.selected_ab and details.selected_ab.id or -1}
   for _,id in ipairs(fixture_agreements)do
    local agreement=assert(df.agreement.find(id));local detail=agreement.details[0]
    row.inputs[#row.inputs+1]={id=id,flags=agreement.flags.whole,kind=detail.type,year=detail.year,tick=detail.year_tick,
@@ -595,6 +596,21 @@ if recognition_case=='petitiontracker' then
  location.tier=0;shot('guild-invalid-tier')
  a.parties[0].entity_ids[0]=religion.id;location.type=df.abstract_building_type.TEMPLE;location.tier=2
  for month=0,11 do subject.year_tick=month*28*1200;shot('month-'..month)end
+ for _,target in ipairs{{'heading',1070,286},{'applicant',1070,298},{'date',1070,310},{'blank',1070,250}}do
+  local deadline=dfhack.getTickCount()+900
+  repeat
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=target[3]//12
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+  until dfhack.getTickCount()>=deadline
+  local row=shot('hover-'..target[1],true);row.help_lines={}
+  for y=0,17 do
+   local text={};for x=126,149 do text[#text+1]=string.char(dfhack.screen.readTile(x,y).ch&255)end
+   row.help_lines[#row.help_lines+1]=table.concat(text)
+  end
+  pixel(target[2],target[3]);assert(dfhack.gui.getCurViewscreen()==view,'tracker click changed native viewscreen')
+  shot('click-'..target[1],true)
+ end
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.
  -- Remove each owned pointer before destroying its allocation.

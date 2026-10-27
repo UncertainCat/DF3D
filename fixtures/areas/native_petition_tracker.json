@@ -26,8 +26,8 @@
     "All twelve native month names"
   ],
   "gaps": [
-    "Hover, click, dismissal and navigation",
-    "Scrolling, sizing and panel visibility arbitration",
+    "Tracker scrolling, sizing and global visibility arbitration",
+    "Map selection outside the panel and other input devices",
     "Native semantic provider, typed transport and viewer"
   ],
   "native_audit": {
@@ -2971,5 +2971,157 @@
       "inputs": [],
       "text_rows": []
     }
-  ]
+  ],
+  "interaction_reference": {
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-105800",
+    "result_sha256": "5bd50a53767530a3fad13f37c500401719f60f62678630f86c9c6a9153c3bb9b",
+    "owned_pid": 157544,
+    "status": "passed",
+    "source_manifest": "unchanged",
+    "scope": "900ms native hover and simulated left click at the first visible temple request heading, applicant, date, and blank panel interior. Native dwarfmode viewscreen remains current.",
+    "gaps": [
+      "Map selection outside the panel",
+      "Tracker scrolling and resizing",
+      "Global visibility arbitration",
+      "Other game modes and input devices"
+    ],
+    "cases": [
+      {
+        "name": "tracker-hover-heading",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "state": {
+          "details_open": true,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        }
+      },
+      {
+        "name": "tracker-click-heading",
+        "pointer": [
+          1070,
+          286,
+          133,
+          23
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "state": {
+          "details_open": true,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        }
+      },
+      {
+        "name": "tracker-hover-applicant",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "state": {
+          "details_open": true,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        }
+      },
+      {
+        "name": "tracker-click-applicant",
+        "pointer": [
+          1070,
+          298,
+          133,
+          24
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "state": {
+          "details_open": true,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        }
+      },
+      {
+        "name": "tracker-hover-date",
+        "pointer": [
+          1070,
+          310,
+          133,
+          25
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "state": {
+          "details_open": true,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        }
+      },
+      {
+        "name": "tracker-click-date",
+        "pointer": [
+          1070,
+          310,
+          133,
+          25
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "state": {
+          "details_open": true,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        }
+      },
+      {
+        "name": "tracker-hover-blank",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "state": {
+          "details_open": true,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        }
+      },
+      {
+        "name": "tracker-click-blank",
+        "pointer": [
+          1070,
+          250,
+          133,
+          20
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "state": {
+          "details_open": true,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        }
+      }
+    ]
+  }
 }

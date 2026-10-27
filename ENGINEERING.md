@@ -1154,15 +1154,28 @@ nonexistent and post-worldgen-ruined flags (bits0,1,3), and a mismatched religio
 produce the red no-location message. Diagnostic fields are restored before
 cleanup; owned DF141652 exits unsaved with the source unchanged. These cases
 verify stored-tier color selection independently of numeric value. Multiple
-matching locations, ties and guild-location selection still need live coverage.
+matching locations and guild selection are covered by the expanded64-record
+reference114628. A temporary matching temple with higher value wins; equal
+values retain the first temple. A zero-value second match still changes the
+label to Current top temple location, while two zero values show no location.
+The temporary temple and guildhall are removed and deleted before exit.
+The locally linked Farmers guild is entity1316, distinct from the earlier
+world-list guild375. The diagnostic guildhall wins at2000 and10000; zero value,
+wrong profession or excluded flags leave the existing The Pears of Hide825
+selected. Wrong profession and exclusions also remove the top qualifier.
+Owned DF124624 exits unsaved, source unchanged; core passes in
+`build/qa/petition-popup-multiple-guild`.
 
 The popup renderer selects locations inline: site lookup7db20 is read-only;
 flag bits1,0,3 exclude locations; matching candidates are counted, and the
 highest stored location value strictly above zero wins (first on ties).
 Temple matching compares the agreement's deity/religion fields. Guild matching
-calls2b61e0, which resolves professions through fortress guild links and calls
+calls2b61e0, which resolves professions through fortress-site entity links and calls
 bbef0 with a live link cache index. That lookup writes the index, so this is
-not an owned-input runtime helper. A safe independent path remains unresolved;
+not an owned-input runtime helper. Live field addresses verify that RVA239a1f0
+is plotinfo.main.fortress_site and offset428 is world_site.entity_links. The
+helper requires the capital link flag, a live guild and a matching profession
+focus; it writes entity_site_link.entity_cache_index. A safe independent path remains unresolved;
 do not call the whole renderer or borrow these caches. The visible HUD, popup
 provider and rendering, and native visibility, sizing and interaction
 integration remain unfinished.

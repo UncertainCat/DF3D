@@ -570,12 +570,15 @@ pixel(664,238);assert(details.open and details.selected_ab==temple)
 if recognition_case=='petitiontracker' then
  local a=assert(df.agreement.find(fixture_agreements[5]));local b=assert(df.agreement.find(fixture_agreements[6]))
  local subject=a.details[0];local location=subject.data.Location
+ local second;local guild_lookup_probe
  local function shot(label,keep_pointer)
   local row=capture('tracker-'..label,temple,keep_pointer);row.tracker_cells={};row.inputs={}
   row.interaction={petitions_open=m.petitions.open,selected_agreement_id=m.petitions.selected_agreement_id,details_open=details.open,selected_location=details.selected_ab and details.selected_ab.id or -1}
   row.location_probe={id=temple.id,value=temple.contents.location_value,tier=temple.contents.location_tier,
    ruined=temple.flags[0],missing=temple.flags[1],pwg_ruined=temple.flags[3],deity_type=temple.deity_type,religion=temple.deity_data.Religion,
    requested_deity_type=location.deity_type,requested_religion=location.deity_data.Religion}
+  if second then row.secondary_location={id=second.id,value=second.contents.location_value,tier=second.contents.location_tier,name=second.name.first_name}end
+  if guild_lookup_probe then row.guild_lookup_probe=guild_lookup_probe end
   for _,id in ipairs(fixture_agreements)do
    local agreement=assert(df.agreement.find(id));local detail=agreement.details[0]
    row.inputs[#row.inputs+1]={id=id,flags=agreement.flags.whole,kind=detail.type,year=detail.year,tick=detail.year_tick,
@@ -684,6 +687,56 @@ if recognition_case=='petitiontracker' then
  local original_religion=location.deity_data.Religion;location.deity_data.Religion=-1
  map_hover({'temple-no-match',1070,298});location.deity_data.Religion=original_religion
  assert(temple.contents.location_value==original_value and temple.contents.location_tier==original_tier)
+ -- A temporary second matching temple isolates ordering from name and tier.
+ local site=assert(df.world_site.find(df.global.plotinfo.site_id))
+ second=df.abstract_building_templest:new();second.id=2147483000;second.site_id=site.id
+ second.deity_type=temple.deity_type;second.deity_data.Religion=temple.deity_data.Religion
+ second.name.first_name='Diagnostic second temple';second.name.has_name=true
+ for i=0,6 do second.name.words[i]=-1 end
+ second.contents.location_tier=2;second.contents.location_value=original_value+1
+ assert(#site.buildings==0 or site.buildings[#site.buildings-1].id<second.id)
+ site.buildings:insert('#',second)
+ map_hover({'temple-multiple-higher-second',1070,298})
+ second.contents.location_value=original_value;map_hover({'temple-multiple-tie',1070,298})
+ second.contents.location_value=original_value-1;map_hover({'temple-multiple-lower-second',1070,298})
+ second.contents.location_value=0;map_hover({'temple-multiple-zero-second',1070,298})
+ temple.contents.location_value=0;map_hover({'temple-multiple-both-zero',1070,298})
+ temple.contents.location_value=original_value
+ assert(site.buildings[#site.buildings-1]==second);site.buildings:erase(#site.buildings-1)
+ df.delete(second);second=nil
+ local base=dfhack.internal.getImageBase()
+ local _,site_field=df.sizeof(df.global.plotinfo.main:_field('fortress_site'))
+ local _,site_address=df.sizeof(site);local _,links_address=df.sizeof(site:_field('entity_links'))
+ assert(site_field-base==0x239a1f0 and links_address-site_address==0x428,'guild lookup ownership audit mismatch')
+ local linked_guild;local linked_profession
+ for _,link in ipairs(site.entity_links)do
+  local entity=df.historical_entity.find(link.entity_id)
+  if link.flags.capital and entity and entity.type==10 and not entity.flags.dead then
+   for _,focus in ipairs(entity.guild_professions)do
+    if focus.type==0 then linked_guild=entity;linked_profession=focus.profession;break end
+   end
+  end
+  if linked_guild then break end
+ end
+ assert(linked_guild,'guild reference requires a native eligible site link')
+ guild_lookup_probe={site_pointer_rva=site_field-base,links_offset=links_address-site_address,entity_id=linked_guild.id,profession=linked_profession}
+ second=df.abstract_building_guildhallst:new();second.id=2147483000;second.site_id=site.id
+ second.name.first_name='Diagnostic guildhall';second.name.has_name=true
+ for i=0,6 do second.name.words[i]=-1 end
+ second.contents.profession=linked_profession;second.contents.location_tier=1;second.contents.location_value=2000
+ site.buildings:insert('#',second)
+ a.parties[0].entity_ids[0]=linked_guild.id;location.type=df.abstract_building_type.GUILDHALL;location.profession=linked_profession;location.tier=1
+ map_hover({'guild-selected',1070,298})
+ location.tier=2;second.contents.location_value=10000;map_hover({'guild-value-met-tier-unmet',1070,298})
+ second.contents.location_tier=2;map_hover({'guild-tier-met',1070,298})
+ second.contents.location_value=0;map_hover({'guild-zero-value',1070,298});second.contents.location_value=10000
+ second.contents.profession=-1;map_hover({'guild-wrong-profession',1070,298});second.contents.profession=linked_profession
+ for _,flag in ipairs{0,1,3}do
+  second.flags[flag]=true;map_hover({'guild-excluded-'..flag,1070,298});second.flags[flag]=false
+ end
+ assert(site.buildings[#site.buildings-1]==second);site.buildings:erase(#site.buildings-1)
+ df.delete(second);second=nil;guild_lookup_probe=nil
+ a.parties[0].entity_ids[0]=religion.id;location.type=df.abstract_building_type.TEMPLE;location.profession=df.profession.FARMER;location.tier=2
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.
  -- Remove each owned pointer before destroying its allocation.

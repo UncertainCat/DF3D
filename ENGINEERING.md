@@ -468,6 +468,19 @@ assigned native captures were inspected. Both runs preserve source saves and
 exit owned DF unsaved. This covers the ordinary high-priest reassignment branch,
 not plotter effects, absent-unit historical holders or viewer integration.
 
+`LocationReligiousCandidateSnapshot` provides owned, paged candidate facts for
+the upcoming assignment transport. List revisions bind epoch, site, location,
+entity, assignment, position and holder receipt plus every candidate row.
+Target or holder changes invalidate identical lists; off-page changes invalidate
+all pages. Retirement, failed observation and epoch replacement preserve the
+revision sequence so restoring earlier facts cannot revive an old receipt.
+Pages own their rows and target values. A selected candidate's native mutation
+receipt remains separate and cannot substitute for list ownership. Controlled
+core tests cover paging, stale targets, holder changes, off-page edits, empty
+lists, invalid observations and restore-after-invalidation. The snapshot is not
+yet connected to management transport or the viewer; these tests establish no
+new rendered or live acceptance.
+
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no
 implemented presentation route yet. Its scope must be retained in the management

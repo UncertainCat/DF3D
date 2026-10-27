@@ -45,4 +45,54 @@ private:
   std::vector<LocationStaffAssignmentBinding> assignmentBindings_;
   LocationCatalogSnapshot<LocationStaffCandidate> rows_;
 };
+
+struct LocationReligiousStaffTarget {
+  int32_t siteId=-1,locationId=-1,entityId=-1,assignmentId=-1;
+  bool valid() const {return siteId>=0 && locationId>=0 && entityId>=0 && assignmentId>=0;}
+  bool operator==(const LocationReligiousStaffTarget& other) const {
+    return std::tie(siteId,locationId,entityId,assignmentId)==
+      std::tie(other.siteId,other.locationId,other.entityId,other.assignmentId);
+  }
+};
+struct LocationReligiousCandidatePage : LocationCatalogPage<LocationStaffCandidate> {
+  LocationReligiousStaffReceipt target;
+};
+// List ownership is separate from a selected candidate's mutation receipt.
+// Refresh both at a safe point; a fresh candidate receipt must never authorize
+// an action against a retired list or a changed holder. No native UI is retained.
+class LocationReligiousCandidateSnapshot {
+public:
+  void observe(uint64_t epoch,LocationReligiousStaffTarget target,
+               std::optional<LocationReligiousStaffReceipt> receipt,
+               std::optional<LocationStaffCandidates> facts) {
+    if(!target.valid() || !receipt || !facts || facts->role!=-1 ||
+       !receipt->revision || receipt->revision>uint64_t(std::numeric_limits<int64_t>::max()) ||
+       receipt->positionId<0 || !(identity(*receipt)==target)) {
+      invalidate();return;
+    }
+    if(!receipt_ || !sameBinding(*receipt_,*receipt))rows_.invalidate();
+    receipt_=*receipt;rows_.observe(epoch,std::move(facts->rows));
+  }
+  void invalidate() {receipt_.reset();rows_.invalidate();}
+  LocationReligiousCandidatePage page(uint64_t epoch,LocationReligiousStaffTarget target,
+                                      uint32_t cursor,uint64_t revision=0) const {
+    LocationReligiousCandidatePage result;
+    if(!receipt_ || !target.valid())return result;
+    if(!(identity(*receipt_)==target)) {result.status=LocationPageStatus::Stale;return result;}
+    static_cast<LocationCatalogPage<LocationStaffCandidate>&>(result)=rows_.page(epoch,cursor,revision);
+    if(result.status==LocationPageStatus::Ready)result.target=*receipt_;
+    return result;
+  }
+private:
+  static LocationReligiousStaffTarget identity(const LocationReligiousStaffReceipt& r) {
+    return {r.siteId,r.locationId,r.entityId,r.assignmentId};
+  }
+  static bool sameBinding(const LocationReligiousStaffReceipt& a,const LocationReligiousStaffReceipt& b) {
+    return identity(a)==identity(b) &&
+      std::tie(a.positionId,a.holderId,a.unitId,a.revision,a.removable)==
+      std::tie(b.positionId,b.holderId,b.unitId,b.revision,b.removable);
+  }
+  std::optional<LocationReligiousStaffReceipt> receipt_;
+  LocationCatalogSnapshot<LocationStaffCandidate> rows_;
+};
 }

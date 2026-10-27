@@ -105,3 +105,85 @@ TEST_CASE("Staff receipts invalidate on cross-location assignment dependencies w
     CHECK(snapshot.page(9,target,0,first.revision).status==staff::LocationPageStatus::Stale);
   }
 }
+
+TEST_CASE("Religious candidate pages bind target and holder independently of displayed rows") {
+  const staff::LocationReligiousStaffReceipt original{651,0,383,2,0,-1,-1,9007199254740993ULL,false};
+  const staff::LocationReligiousStaffTarget target{651,0,383,2};
+  for(int change=0;change<9;++change) {
+    staff::LocationReligiousCandidateSnapshot snapshot;auto rows=candidates();rows.role=-1;
+    snapshot.observe(7,target,original,rows);const auto first=snapshot.page(7,target,0);
+    REQUIRE(first.status==staff::LocationPageStatus::Ready);CHECK(first.rows.size()==128);
+    CHECK(first.target.revision==original.revision);
+    auto altered=original;
+    if(change==0)++altered.siteId;
+    if(change==1)++altered.locationId;
+    if(change==2)++altered.entityId;
+    if(change==3)++altered.assignmentId;
+    if(change==4)++altered.positionId;
+    if(change==5)altered.holderId=9375;
+    if(change==6)altered.unitId=5813;
+    if(change==7)++altered.revision;
+    if(change==8)altered.removable=true;
+    const staff::LocationReligiousStaffTarget changed{altered.siteId,altered.locationId,altered.entityId,altered.assignmentId};
+    snapshot.observe(7,changed,altered,rows);CAPTURE(change);
+    CHECK(snapshot.page(7,target,128,first.revision).status==staff::LocationPageStatus::Stale);
+    CHECK(snapshot.page(7,changed,128,first.revision).status==staff::LocationPageStatus::Stale);
+    snapshot.observe(7,target,original,rows);
+    CHECK(snapshot.page(7,target,0,first.revision).status==staff::LocationPageStatus::Stale);
+    CHECK(first.target.holderId==-1);CHECK(first.target.revision==original.revision);
+  }
+}
+
+TEST_CASE("Religious lists retain ownership across paging and retire on loss or world replacement") {
+  const staff::LocationReligiousStaffTarget target{651,0,383,2};
+  const staff::LocationReligiousStaffReceipt receipt{651,0,383,2,0,-1,-1,19,false};
+  staff::LocationReligiousCandidateSnapshot snapshot;auto rows=candidates();rows.role=-1;
+  snapshot.observe(4,target,receipt,rows);const auto first=snapshot.page(4,target,0);
+  snapshot.observe(4,target,receipt,rows);
+  CHECK(snapshot.page(4,target,128,first.revision).nextCursor==256);
+  CHECK(snapshot.page(4,target,256,first.revision).rows.size()==4);
+  CHECK(snapshot.page(4,target,128).status==staff::LocationPageStatus::Stale);
+  CHECK(snapshot.page(4,target,1,first.revision).status==staff::LocationPageStatus::InvalidCursor);
+  rows.rows.back().skills[0].rating++;
+  snapshot.observe(4,target,receipt,rows);
+  CHECK(snapshot.page(4,target,128,first.revision).status==staff::LocationPageStatus::Stale);
+  const auto changed=snapshot.page(4,target,0);
+  snapshot.observe(5,target,receipt,rows);
+  CHECK(snapshot.page(4,target,0).status==staff::LocationPageStatus::Unavailable);
+  CHECK(snapshot.page(5,target,0,changed.revision).status==staff::LocationPageStatus::Stale);
+  const auto next=snapshot.page(5,target,0);
+  snapshot.observe(5,target,std::nullopt,rows);
+  CHECK(snapshot.page(5,target,0).status==staff::LocationPageStatus::Unavailable);
+  snapshot.observe(5,target,receipt,rows);
+  CHECK(snapshot.page(5,target,0,next.revision).status==staff::LocationPageStatus::Stale);
+  snapshot.invalidate();snapshot.observe(5,target,receipt,rows);
+  CHECK(snapshot.page(5,target,0,next.revision).status==staff::LocationPageStatus::Stale);
+  rows.rows.clear();snapshot.observe(5,target,receipt,rows);
+  const auto empty=snapshot.page(5,target,0);
+  CHECK(empty.status==staff::LocationPageStatus::Ready);CHECK(empty.total==0);
+  rows.role=7;snapshot.observe(5,target,receipt,rows);
+  CHECK(snapshot.page(5,target,0).status==staff::LocationPageStatus::Unavailable);
+  rows.role=-1;snapshot.observe(5,{651,0,384,2},receipt,rows);
+  CHECK(snapshot.page(5,target,0).status==staff::LocationPageStatus::Unavailable);
+}
+
+TEST_CASE("Unavailable religious observations cannot revive an earlier candidate list") {
+  const staff::LocationReligiousStaffTarget target{651,0,383,2};
+  const staff::LocationReligiousStaffReceipt original{651,0,383,2,0,-1,-1,19,false};
+  for(int failure=0;failure<6;++failure) {
+    staff::LocationReligiousCandidateSnapshot snapshot;auto rows=candidates();rows.role=-1;
+    snapshot.observe(4,target,original,rows);const auto first=snapshot.page(4,target,0);
+    REQUIRE(first.status==staff::LocationPageStatus::Ready);
+    auto receipt=original;
+    if(failure==0)receipt.revision=0;
+    if(failure==1)receipt.revision=uint64_t(std::numeric_limits<int64_t>::max())+1;
+    if(failure==2)receipt.positionId=-1;
+    if(failure==3)receipt.entityId++;
+    if(failure==4)snapshot.observe(4,target,receipt,std::nullopt);
+    else snapshot.observe(failure==5?0:4,target,receipt,rows);
+    CAPTURE(failure);
+    CHECK(snapshot.page(4,target,0).status==staff::LocationPageStatus::Unavailable);
+    snapshot.observe(4,target,original,rows);
+    CHECK(snapshot.page(4,target,0,first.revision).status==staff::LocationPageStatus::Stale);
+  }
+}

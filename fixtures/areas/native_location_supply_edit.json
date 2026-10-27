@@ -4222,7 +4222,420 @@
   },
   "remaining": [
     "physical keyboard Escape dispatch",
-    "semantic transport",
-    "rendered editable controls and live integration"
-  ]
+    "rendered editable controls and live integration",
+    "quantity-specific disconnect and late reply UI lifecycle"
+  ],
+  "transport_reference": {
+    "run": "build/areas-acceptance-20261026-194640",
+    "protocol": 70,
+    "bridge_sha256": "520afc661103aeccf3ad2dcf6d1b94a3947d2239a9657e0c4d8f760bf6b9bb26",
+    "godot_log_sha256": "e4bb31a7a811ad1b9ce49fe888907049596f616fbe6279a186d0df8ce20675f5",
+    "field_cases": 13,
+    "completed": 52,
+    "stale": 39,
+    "native_readbacks": [
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 0,
+        "value": 0
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 6
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 7
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 6
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 0
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 3,
+        "value": 6
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 3,
+        "value": 7
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 3,
+        "value": 6
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 6
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 3,
+        "value": 0
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 4,
+        "value": 90000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 4,
+        "value": 105000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 4,
+        "value": 90000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 4,
+        "value": -14999
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 5,
+        "value": 60000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 5,
+        "value": 70000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 5,
+        "value": 60000
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 7
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 5,
+        "value": -9999
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 6,
+        "value": 6
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 6,
+        "value": 7
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 6,
+        "value": 6
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 6,
+        "value": 0
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 7,
+        "value": 900
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 7,
+        "value": 1050
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 7,
+        "value": 900
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 6
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 7,
+        "value": -149
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 8,
+        "value": 6
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 8,
+        "value": 7
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 8,
+        "value": 6
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 8,
+        "value": 0
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 9,
+        "value": 900
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 9,
+        "value": 1050
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 9,
+        "value": 900
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 9,
+        "value": -149
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 6
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 7
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 6
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 0
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 2,
+        "value": 6
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 2,
+        "value": 7
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 2,
+        "value": 6
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 0
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 2,
+        "value": 0
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 10,
+        "value": 6
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 10,
+        "value": 7
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 10,
+        "value": 6
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 10,
+        "value": 0
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 0,
+        "value": 6
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 0,
+        "value": 7
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 0,
+        "value": 6
+      }
+    ],
+    "partial_seeds": [
+      {
+        "location_id": 1,
+        "op": "quantity_seed",
+        "quantity_id": 0,
+        "value": 1
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_seed",
+        "quantity_id": 1,
+        "value": 1
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 3,
+        "value": 1
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 4,
+        "value": 1
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 5,
+        "value": 1
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 6,
+        "value": 1
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 7,
+        "value": 1
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 8,
+        "value": 1
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_seed",
+        "quantity_id": 1,
+        "value": 1
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 9,
+        "value": 1
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_seed",
+        "quantity_id": 1,
+        "value": 1
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_seed",
+        "quantity_id": 2,
+        "value": 1
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_seed",
+        "quantity_id": 10,
+        "value": 1
+      }
+    ],
+    "source_and_clone_unchanged": true,
+    "unsaved_exit": true,
+    "diagnostics": {
+      "known_engine": [],
+      "unclassified": []
+    },
+    "omissions": [
+      "rendered controls",
+      "quantity-specific disconnect and late reply UI lifecycle"
+    ]
+  }
 }

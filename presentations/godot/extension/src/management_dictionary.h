@@ -72,6 +72,9 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
     case A::Inspect: case A::Remove: return require("building_id");
     case A::AreaUpdate:
         if(data.has("operation") && data["operation"].get_type()==godot::Variant::INT &&
+            int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationQuantity))
+            return require("quantity_id") && require("quantity_mode") && require("quantity_value");
+        if(data.has("operation") && data["operation"].get_type()==godot::Variant::INT &&
             int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationStaffEdit))return require("unit_id");
         if(data.has("operation") && data["operation"].get_type()==godot::Variant::INT &&
             (int64_t(data["operation"])==int64_t(wm::AreaOperation::MultiUndo) ||

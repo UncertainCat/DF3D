@@ -25,6 +25,10 @@ void verifyAreaOperation(const m::AreaRequest& q) {
       q.query() && q.query()->size()==0 && !q.query_bytes(),"animal display request");
     return;
   }
+  if(op==27) {
+    require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 && q.location_id()==0 && q.expected_revision()==9007199254740993ULL,"quantity target and revision");
+    require(q.quantity_id()==10 && q.quantity_mode()<=m::LocationQuantityMode::Decrease && q.quantity_value()==(q.quantity_mode()==m::LocationQuantityMode::Set?999:0),"quantity payload");return;
+  }
   if(op==25) {
     require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 &&
         q.location_id()==0 && q.occupation_id()==87,"staff edit target");
@@ -86,7 +90,7 @@ void verifyAreaOperation(const m::AreaRequest& q) {
   }
 }
 flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBuilder& b,const m::AreaRequest& q) {
-  if(q.operation()==m::AreaOperation::LocationStaffEdit) {
+  if(q.operation()==m::AreaOperation::LocationStaffEdit || q.operation()==m::AreaOperation::LocationQuantity) {
     std::vector<flatbuffers::Offset<m::LocationSupplyQuantity>> supplies;
     for(uint8_t i=0;i<10;++i)supplies.push_back(m::CreateLocationSupplyQuantity(b,i,0,0));
     const auto details=m::CreateLocationDetails(b,651,0,2,b.CreateString("Synthetic temple"),INT64_MAX,2,false,false,false,-1,0,0,0,false,b.CreateVector(supplies));
@@ -735,7 +739,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);

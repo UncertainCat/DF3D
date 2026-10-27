@@ -118,7 +118,8 @@ static_assert(static_cast<int>(wm::AreaOperation::LocationAccess) == static_cast
 static_assert(static_cast<int>(wm::AreaOperation::LocationStaffCandidates) == static_cast<int>(df3d::mirror::AreaOperation::LocationStaffCandidates));
 static_assert(static_cast<int>(wm::AreaOperation::LocationStaffEdit) == static_cast<int>(df3d::mirror::AreaOperation::LocationStaffEdit));
 static_assert(static_cast<int>(wm::AreaOperation::LinkTarget) == static_cast<int>(df3d::mirror::AreaOperation::LinkTarget));
-static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 27);
+static_assert(static_cast<int>(wm::AreaOperation::LocationQuantity) == static_cast<int>(df3d::mirror::AreaOperation::LocationQuantity));
+static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 28);
 static_assert(static_cast<int>(wm::AreaRoomOutcome::None) == static_cast<int>(df3d::mirror::AreaRoomOutcome::None));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Completed) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Completed));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Rejected) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Rejected));
@@ -137,6 +138,10 @@ static_assert(static_cast<int>(wm::LocationEditOutcome::Rejected) == static_cast
 static_assert(static_cast<int>(wm::LocationEditOutcome::Stale) == static_cast<int>(df3d::mirror::LocationEditOutcome::Stale));
 static_assert(static_cast<int>(wm::LocationEditOutcome::Unknown) == static_cast<int>(df3d::mirror::LocationEditOutcome::Unknown));
 static_assert(sizeof(df3d::mirror::EnumValuesLocationEditOutcome()) / sizeof(df3d::mirror::LocationEditOutcome) == 5);
+static_assert(static_cast<int>(wm::LocationQuantityMode::Set) == static_cast<int>(df3d::mirror::LocationQuantityMode::Set));
+static_assert(static_cast<int>(wm::LocationQuantityMode::Increase) == static_cast<int>(df3d::mirror::LocationQuantityMode::Increase));
+static_assert(static_cast<int>(wm::LocationQuantityMode::Decrease) == static_cast<int>(df3d::mirror::LocationQuantityMode::Decrease));
+static_assert(sizeof(df3d::mirror::EnumValuesLocationQuantityMode()) / sizeof(df3d::mirror::LocationQuantityMode) == 3);
 static_assert(static_cast<int>(wm::AlertOperation::OpenCategory) == static_cast<int>(df3d::mirror::AlertOperation::OpenCategory));
 static_assert(static_cast<int>(wm::AlertOperation::Inspect) == static_cast<int>(df3d::mirror::AlertOperation::Inspect));
 static_assert(static_cast<int>(wm::AlertOperation::OpenUnit) == static_cast<int>(df3d::mirror::AlertOperation::OpenUnit));

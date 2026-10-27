@@ -412,7 +412,7 @@ bool validateAreaShape(const Dictionary& data, String& error) {
                                   "expected_list_revision", "scope", "value", "preset", "paint_mode", "paint_z",
                                   "location_id", "location_kind", "profession", "deity_kind", "deity_id",
                                   "unit_id", "item_id", "assign", "squad_id", "squad_use", "organic", "inorganic", "candidate_kind", "sort",
-                                  "room_furniture", "interaction_id", "undo_token", "count_generation", "location_site_id", "occupation_id", "candidate_limit"},
+                                  "room_furniture", "interaction_id", "undo_token", "count_generation", "location_site_id", "occupation_id", "candidate_limit", "quantity_id", "quantity_mode", "quantity_value"},
                                  error) ||
       !managementRequiredFields(data, error))
     return false;
@@ -489,10 +489,13 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   a.give = data.get("give", true);
   a.unlink = data.get("unlink", false);
   a.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
-  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LinkTarget)));
+  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationQuantity)));
   a.countGeneration=n("count_generation",0,0,INT64_MAX);
   a.locationSiteId=int32_t(n("location_site_id",-1,-1,INT32_MAX));
   a.occupationId=int32_t(n("occupation_id",-1,-1,INT32_MAX));
+  a.quantityId=int8_t(n("quantity_id",-1,-1,10));
+  a.quantityMode=wm::LocationQuantityMode(n("quantity_mode",0,0,2));
+  a.quantityValue=int32_t(n("quantity_value",0,0,999));
   if(data.has("paint_preview")) {
     const Dictionary preview=data["paint_preview"];
     const int64_t x=preview["x"],y=preview["y"],width=preview["width"],height=preview["height"];

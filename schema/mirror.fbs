@@ -1179,7 +1179,8 @@ table SessionCommand {
 // Bounded fortress management channel; independently versioned from map snapshots.
 enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
-enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget }
+enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity }
+enum LocationQuantityMode : uint8 { Set, Increase, Decrease }
 enum LocationEntryOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
 enum LocationEditOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
 enum AreaRoomOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
@@ -1287,6 +1288,10 @@ table AreaRequest {
   candidate_limit:uint16;
   // AssignUnits: exactly one of unit_id/item_id must be nonnegative.
   item_id:int32 = -1;
+  // LocationQuantity only: supplies0..9, library copies10. Set uses0..999; steps use0.
+  quantity_id:int8 = -1;
+  quantity_mode:LocationQuantityMode;
+  quantity_value:int32;
 }
 table AreaInfo {
   id:int32;
@@ -1730,7 +1735,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 69;
+  schema_version:uint32 = 70;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1776,7 +1781,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 69;
+  schema_version:uint32 = 70;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

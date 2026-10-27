@@ -127,6 +127,7 @@ enum class AreaOperation : uint8_t {
   LocationStaffCandidates = 24,
   LocationStaffEdit = 25,
   LinkTarget = 26,
+  LocationQuantity = 27,
 };
 enum class AreaRoomOutcome : uint8_t {
   None = 0,
@@ -148,6 +149,11 @@ enum class LocationEditOutcome : uint8_t {
   Rejected = 2,
   Stale = 3,
   Unknown = 4,
+};
+enum class LocationQuantityMode : uint8_t {
+  Set = 0,
+  Increase = 1,
+  Decrease = 2,
 };
 enum class AlertOperation : uint8_t {
   OpenCategory = 0,

@@ -80,6 +80,9 @@ struct AreaRequest {
   int64_t countGeneration=0;
   std::optional<AreaPaintPreview> paintPreview;
   int32_t locationSiteId=-1,occupationId=-1;
+  int8_t quantityId=-1;
+  LocationQuantityMode quantityMode=LocationQuantityMode::Set;
+  int32_t quantityValue=0;
   bool categoryOpening=false;
   std::optional<std::vector<uint8_t>> queryBytes;
   uint16_t candidateLimit=0;

@@ -2252,7 +2252,7 @@ TEST_CASE("Location access requests own an exact receipt and native mode") {
   }
 }
 TEST_CASE("Location edit outcomes require matching action operation status and snapshot") {
-  for(auto operation:{wire::AreaOperation::LocationAccess,wire::AreaOperation::LocationStaffEdit})
+  for(auto operation:{wire::AreaOperation::LocationAccess,wire::AreaOperation::LocationStaffEdit,wire::AreaOperation::LocationQuantity})
   for(int mode=0;mode<11;++mode) {
     flatbuffers::FlatBufferBuilder b;
     std::vector<flatbuffers::Offset<wire::LocationSupplyQuantity>> supplies;
@@ -2847,5 +2847,38 @@ TEST_CASE("squad symbols preserve RGB bytes and reject wrong ownership or indice
     CHECK((!wire::validateManagementState(*value).has_value())==(mode==0 || mode==6));
     if(mode==0){const auto decoded=codec::decodeArea(value->area());REQUIRE(decoded.candidates[0].squadSymbol);CHECK((*decoded.candidates[0].squadSymbol==std::array<uint8_t,7>{22,0,127,255,233,61,7}));}
     if(mode==6)CHECK_FALSE(codec::decodeArea(value->area()).candidates[0].squadSymbol);
+  }
+}
+
+TEST_CASE("Location quantity edits preserve exact intent and reject malformed payloads") {
+  wm::ManagementRequest base;base.action=wm::ManagementAction::AreaUpdate;
+  auto& a=base.area;a.kind=wm::AreaKind::Zone;a.operation=wm::AreaOperation::LocationQuantity;
+  a.locationSiteId=651;a.locationId=0;a.expectedRevision=9007199254740993LL;a.quantityId=4;
+  for(int variant=0;variant<21;++variant) {
+    auto r=base;auto& q=r.area;
+    if(variant<3){q.quantityMode=wm::LocationQuantityMode(variant);q.quantityValue=variant==0?999:0;}
+    if(variant==3)q.quantityId=-1;
+    if(variant==4)q.quantityId=11;
+    if(variant==5)q.quantityMode=wm::LocationQuantityMode(3);
+    if(variant==6)q.quantityValue=-1;
+    if(variant==7)q.quantityValue=1000;
+    if(variant==8){q.quantityMode=wm::LocationQuantityMode::Increase;q.quantityValue=1;}
+    if(variant==9)q.expectedRevision=0;
+    if(variant==10)q.expectedRevision=-1;
+    if(variant==11)q.locationSiteId=-1;
+    if(variant==12)q.locationId=-1;
+    if(variant==13)q.id=23;
+    if(variant==14)q.expectedListRevision=1;
+    if(variant==15)q.kind=wm::AreaKind::Stockpile;
+    if(variant==16)r.action=wm::ManagementAction::AreaInspect;
+    if(variant==17)q.operation=wm::AreaOperation::LocationAccess;
+    if(variant==18){q.operation=wm::AreaOperation::LocationAccess;q.quantityId=-1;q.quantityMode=wm::LocationQuantityMode::Decrease;}
+    if(variant==19){q.operation=wm::AreaOperation::LocationAccess;q.quantityId=-1;q.quantityValue=1;}
+    if(variant==20)q.value=1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* encoded=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(variant);CHECK(bool(wire::validateConstructionRequest(*encoded))==(variant>=3));
+    if(variant<3){CHECK(encoded->area()->quantity_id()==4);CHECK(int(encoded->area()->quantity_mode())==variant);
+      CHECK(encoded->area()->quantity_value()==(variant==0?999:0));CHECK(encoded->area()->expected_revision()==9007199254740993ULL);}
   }
 }

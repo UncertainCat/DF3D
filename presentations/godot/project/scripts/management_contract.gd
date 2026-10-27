@@ -125,6 +125,7 @@ enum AreaOperation {
 	LocationStaffCandidates = 24,
 	LocationStaffEdit = 25,
 	LinkTarget = 26,
+	LocationQuantity = 27,
 }
 enum AreaRoomOutcome {
 	None = 0,
@@ -146,6 +147,11 @@ enum LocationEditOutcome {
 	Rejected = 2,
 	Stale = 3,
 	Unknown = 4,
+}
+enum LocationQuantityMode {
+	Set = 0,
+	Increase = 1,
+	Decrease = 2,
 }
 enum AlertOperation {
 	OpenCategory = 0,

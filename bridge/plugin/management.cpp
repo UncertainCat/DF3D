@@ -2253,11 +2253,12 @@ void run(color_ostream& out) {
     }
     publish();return;
   }
-  if(r->area() && (r->area()->operation()==m::AreaOperation::LocationDetails || r->area()->operation()==m::AreaOperation::LocationOpen || r->area()->operation()==m::AreaOperation::LocationAccess || r->area()->operation()==m::AreaOperation::LocationStaffEdit)) {
+  if(r->area() && (r->area()->operation()==m::AreaOperation::LocationDetails || r->area()->operation()==m::AreaOperation::LocationOpen || r->area()->operation()==m::AreaOperation::LocationAccess || r->area()->operation()==m::AreaOperation::LocationStaffEdit || r->area()->operation()==m::AreaOperation::LocationQuantity)) {
     const auto& a=*r->area();message.clear();areaPage.operation=a.operation();
     areaPage.capturedTick=df::global::world?df::global::world->frame_counter:-1;
     const bool entry=a.operation()==m::AreaOperation::LocationOpen;
     const bool access=a.operation()==m::AreaOperation::LocationAccess;
+    const bool quantityEdit=a.operation()==m::AreaOperation::LocationQuantity;
     const bool staffEdit=a.operation()==m::AreaOperation::LocationStaffEdit;
     const auto publishable=[](const df3d_area::LocationDetailsCore& d,uint64_t additionalRows=0) {
       uint64_t namesBytes=0;
@@ -2299,14 +2300,16 @@ void run(color_ostream& out) {
           }
         } catch(...) {staffSnapshot.invalidate();details.reset();}
       } else details.reset();
-    } else if(access) {
+    } else if(access || quantityEdit) {
       areaPage.locationEditOutcome=m::LocationEditOutcome::Rejected;
       if(details && df3d_area::locationDetailsRevision(*details)!=a.expected_revision()) {
         areaPage.locationEditOutcome=m::LocationEditOutcome::Stale;details.reset();
       } else if(details) {
         details.reset();mutated=true;areaPage.locationEditOutcome=m::LocationEditOutcome::Unknown;
         try {
-          const auto outcome=df3d_area::setNativeLocationAccess(a.location_site_id(),a.location_id(),
+          const auto outcome=quantityEdit?df3d_area::editNativeLocationQuantity(a.location_site_id(),a.location_id(),
+              a.expected_revision(),uint8_t(a.quantity_id()),static_cast<df3d_area::LocationQuantityEdit>(a.quantity_mode()),a.quantity_value()):
+              df3d_area::setNativeLocationAccess(a.location_site_id(),a.location_id(),
               a.expected_revision(),static_cast<df3d_area::LocationAccess>(a.value()));
           if(outcome!=df3d_area::LocationAccessOutcome::Completed) {
             mutated=false;areaPage.locationEditOutcome=outcome==df3d_area::LocationAccessOutcome::Stale?

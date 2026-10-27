@@ -1,11 +1,12 @@
 # Protected, owned, never-saved acceptance. SaveId names a NEW disposable copy
 # of region5; existing saves are refused. The copy is retained for inspection.
-param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$ZoneAnimalsOnly,[switch]$ZoneSquadsOnly,[ValidateSet("Barracks","ArcheryRange")][string]$SquadZone="Barracks",[ValidateSet("none","queued","sent")][string]$SquadDisconnect="none",[ValidateSet("none","queued","sent")][string]$AnimalDisconnect="none",[switch]$ZoneOwnerOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[switch]$StaffOnly,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
+param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$ZoneAnimalsOnly,[switch]$ZoneSquadsOnly,[ValidateSet("Barracks","ArcheryRange")][string]$SquadZone="Barracks",[ValidateSet("none","queued","sent")][string]$SquadDisconnect="none",[ValidateSet("none","queued","sent")][string]$AnimalDisconnect="none",[switch]$ZoneOwnerOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[switch]$StaffOnly,[switch]$QuantityOnly,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
 $out="$repo/build/areas-acceptance-$(Get-Date -Format yyyyMMdd-HHmmss)"
 New-Item -ItemType Directory -Path $out | Out-Null
+if($QuantityOnly -and ($Controller -or $ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $ZoneRenameOnly -or $ZoneGatherOnly -or $ZoneOverlapOnly -or $ZoneDefaultsOnly -or $ZoneAnimalsOnly -or $ZoneSquadsOnly -or $ZoneOwnerOnly -or $StockpilesOnly -or $StockpilePaintOnly -or $StockpileFitOnly -or $StockpileResizeOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene)){throw 'QuantityOnly is a separate protected semantic lane'}
 $summary='failed startup'; $entered=$false; $loaded=$false; $finalPaused=$false; $g=$null
 $saveManifests=@{}
 $oldInput=$env:DF3D_AREAS_ACCEPTANCE
@@ -129,7 +130,7 @@ try {
  $loaded=$true
  $session=& "$repo/build/tools/session_client.exe" status
  if($LASTEXITCODE -ne 0 -or -not ($session -match 'SESSION phase=3 ') -or -not ($session -match [regex]::Escape("id=$clone message="))){throw 'Loaded fortress identity does not match disposable copy'}
- $fixtureArgs=if($LocationScene){"[==[$out]==],'location'"}elseif($MultiOnly -or $PaintCountsOnly -or $StaffOnly -or $StockpileResizeOnly){"[==[$out]==],'multi'"}else{"[==[$out]==]"}
+ $fixtureArgs=if($LocationScene){"[==[$out]==],'location'"}elseif($MultiOnly -or $PaintCountsOnly -or $StaffOnly -or $QuantityOnly -or $StockpileResizeOnly){"[==[$out]==],'multi'"}else{"[==[$out]==]"}
  $r=Invoke-LuaFile 'areas-acceptance-fixture.lua' $fixtureArgs
  $r.Output | Set-Content "$out/fixture.log"
  $text=$r.Output -join "`n"
@@ -143,6 +144,7 @@ try {
  if($PaintCountsOnly){$driver='areas_paint_counts_live.gd'}
  if($LocationScene){$driver='areas_location_scene_live.gd'}
  if($StaffOnly){$driver='location_staff_edit_live.gd'}
+ if($QuantityOnly){$driver='location_quantity_live.gd'}
  $g=Start-ContainedProcess -Exe $(if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}) -Arguments "$renderer --path `"$project`" --script res://tests/$driver --log-file `"$out/godot.log`"" -WorkingDir $project
  while(-not $g.HasExited -and (Get-Date) -lt $deadline) {
   if(Test-Path "$out/verify.txt") {
@@ -205,7 +207,7 @@ try {
     }
     Write-Lf "$out/status-$index.json" (@{holding=$holding;bytes=$bytes;builders=$builders} | ConvertTo-Json -Depth 6 -Compress)
    }
-   $verifier=if($StockpileResizeOnly -and $request.op -like 'resize_*'){'stockpile-resize-verify.lua'}elseif(($StaffOnly -or $LocationScene) -and $request.op -like 'staff_edit_*'){'location-staff-edit-verify.lua'}elseif(($PaintCountsOnly -or $LocationScene) -and $request.op -like 'paint_counts_*'){'areas-paint-counts-verify.lua'}elseif($MultiOnly -and $request.op -like 'multi_*'){'areas-multi-verify.lua'}else{'areas-acceptance-verify.lua'}
+   $verifier=if($QuantityOnly -and $request.op -like 'quantity_*'){'location-quantity-verify.lua'}elseif($StockpileResizeOnly -and $request.op -like 'resize_*'){'stockpile-resize-verify.lua'}elseif(($StaffOnly -or $LocationScene) -and $request.op -like 'staff_edit_*'){'location-staff-edit-verify.lua'}elseif(($PaintCountsOnly -or $LocationScene) -and $request.op -like 'paint_counts_*'){'areas-paint-counts-verify.lua'}elseif($MultiOnly -and $request.op -like 'multi_*'){'areas-multi-verify.lua'}else{'areas-acceptance-verify.lua'}
    $r=Invoke-LuaFile $verifier "[==[$out]==],$index"
    if(($r.Output -join "`n") -notmatch 'SEMANTIC_(PASS|INCOMPLETE)'){throw "Native verification $index failed: $($r.Output)"}
    Write-Ack "$out/ack-$index" 'ok'

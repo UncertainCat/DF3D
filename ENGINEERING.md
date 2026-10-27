@@ -52,8 +52,25 @@ values, step payloads, zero revision, wrong kind, missing identities and stale
 revisions; contents and native UI/gps bytes remain unchanged. The same UI/gps
 guards pass for successful edits. These guards cover the named structures,
 not every allocation in the process.
-Semantic transport and editable Godot controls remain unfinished; the existing
-Details supply/copy display is still read-only. Early diagnostic
+Management70 adds `LocationQuantity` with an explicit quantity identity,
+Set/Increase/Decrease mode and value. Set accepts0..999; steps require value0.
+Requests require the exact Details revision and site/location identity, and
+reject unrelated fields. Responses use `LocationEditOutcome` and refreshed
+Details on completion. A write whose refresh fails remains Unknown and must
+not be replayed. Rebuild/install bridge and viewer together for
+`Local\\df3d_management_v70`. Snapshot/grid/session versions are unchanged;
+old recordings do not gain fabricated quantity facts.
+MSVC and viewer builds, core19/19, Godot command-contract and Lua-contract
+checks pass in `build/qa/location-quantity-contract70-final`. The protected
+`areas_acceptance.ps1 -QuantityOnly` run
+`build/areas-acceptance-20261026-194640` passes thirteen field/location cases:
+52 completed mutations with independent native scalar readbacks,39 stale
+refusals and13 partial raw-unit seeds. DF144260 exits unsaved, both source and
+clone manifests remain unchanged, and diagnostics are empty. The fixture's
+`transport_reference` records these facts. This establishes semantic transport,
+not rendered controls or their disconnect/late-reply lifecycle.
+Editable Godot controls remain unfinished; the existing Details supply/copy
+display is still read-only. Early diagnostic
 runs with zero matched cases or incorrect chooser coordinates are not accepted
 workflow evidence; the current scope requires121 records and thirteen field cases.
 

@@ -801,3 +801,20 @@ func test_area_operations() -> void:
 		assert(edited.area.location_edit_outcome == Contract.LocationEditOutcome.Completed)
 		assert(edited.area.location_details.revision == 9223372036854775807)
 		assert(edited.area.location_details.site_id == 651 and edited.area.location_details.id == 0)
+
+	var quantity_request := {"action":A.AreaUpdate,"kind":1,"operation":Contract.AreaOperation.LocationQuantity,
+		"location_site_id":651,"location_id":0,"expected_revision":9007199254740993,
+		"quantity_id":10,"quantity_mode":Contract.LocationQuantityMode.Set,"quantity_value":999}
+	for key in ["location_site_id","location_id","expected_revision","quantity_id","quantity_mode","quantity_value"]:
+		var invalid := quantity_request.duplicate();invalid.erase(key)
+		assert(world.area_request(invalid)==0)
+	for pair in [["quantity_id",11],["quantity_mode",3],["quantity_value",1000],["quantity_value",-1],["quantity_value",1.5],["quantity_mode",true]]:
+		var invalid := quantity_request.duplicate();invalid[pair[0]]=pair[1]
+		assert(world.area_request(invalid)==0)
+	for mode in 3:
+		quantity_request.quantity_mode=mode;quantity_request.quantity_value=999 if mode==0 else 0
+		var sequence: int=world.area_request(quantity_request);assert(sequence>0)
+		var edited: Dictionary=await receipt(sequence)
+		assert(edited.area.operation==Contract.AreaOperation.LocationQuantity)
+		assert(edited.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)
+		assert(edited.area.location_details.revision==9223372036854775807)

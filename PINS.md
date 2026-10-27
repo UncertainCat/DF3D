@@ -28,10 +28,17 @@ subterranean status, brook-surface identity and native building occupancy.
 The fixed snapshot TileState remains eight bytes; environment facts use a
 sparse per-block vector. Resident tiles are fourteen bytes. Rebuild/reinstall
 bridge and viewer together; older schema/grid readers reject the new layouts.
-Management is **69**. Session **12** adds authoritative moon phase (0..27,-1 unavailable) to
+Management is **70**. Session **12** adds authoritative moon phase (0..27,-1 unavailable) to
 the original fortress name, rank and capital status from session11. Rebuild/reinstall bridge and viewer together; the v12 session
 region rejects older peers. Missing old identity facts must remain unavailable,
 not be inferred from the translated name. Snapshot/grid versions are unchanged.
+
+Management protocol **70** adds revision-bound Location quantity intents:
+Set, Increase and Decrease for supplies and library copies. Rebuild/install
+bridge and viewer together for `Local\\df3d_management_v70`; older peers cannot
+submit these edits. Existing quantities remain signed raw native values; no
+migration rounds partial units or invents absent facts. Snapshot/grid/session
+versions are unchanged.
 
 Management protocol **69** adds optional saved squad symbol identity and RGB
 colors to squad candidate rows. Rebuild/install bridge and viewer together;

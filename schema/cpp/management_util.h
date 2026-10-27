@@ -18,8 +18,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 69;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v69";
+inline constexpr uint32_t kManagementVersion = 70;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v70";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -51,7 +51,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
        (a.query() && a.query()->size()))return "invalid owner query bytes";
   }
   const auto op=static_cast<uint8_t>(a.operation());
-  if(op>26) return "Unsupported area operation";
+  if(op>27) return "Unsupported area operation";
   const bool linkTarget=op==26;
   const bool multi=op>=16 && op<=18;
   const bool counts=op==19;
@@ -60,7 +60,8 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   const bool staffEdit=op==25;
   const bool locationOpen=op==22;
   const bool locationAccess=op==23;
-  const bool locationDetails=op==21 || locationOpen || locationAccess || staffEdit;
+  const bool quantityEdit=op==27;
+  const bool locationDetails=op==21 || locationOpen || locationAccess || staffEdit || quantityEdit;
   const bool inspect=action==ManagementAction::AreaInspect;
   const bool create=action==ManagementAction::AreaCreate;
   const bool update=action==ManagementAction::AreaUpdate;
@@ -70,7 +71,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
       allowed=inspect; break;
     case AreaOperation::SettingsSet: case AreaOperation::Preset: case AreaOperation::Rename:
     case AreaOperation::LocationSet: case AreaOperation::LocationCreate: case AreaOperation::ZoneSettings:
-    case AreaOperation::AssignUnits: case AreaOperation::SquadUse: case AreaOperation::Toggles: case AreaOperation::LocationOpen: case AreaOperation::LocationAccess: case AreaOperation::LocationStaffEdit:
+    case AreaOperation::AssignUnits: case AreaOperation::SquadUse: case AreaOperation::Toggles: case AreaOperation::LocationOpen: case AreaOperation::LocationAccess: case AreaOperation::LocationStaffEdit: case AreaOperation::LocationQuantity:
       allowed=update; break;
     case AreaOperation::Paint: allowed=create || update; break;
     case AreaOperation::CandidateList: allowed=action==ManagementAction::AreaCandidates; break;
@@ -134,6 +135,9 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     {a.occupation_id()!=-1 && !staffCandidates && !staffEdit, "occupation_id"},
     {a.location_site_id()!=-1 && !locationDetails && !staffCandidates, "location_site_id"},
     {a.category_opening() && op!=1, "category_opening"},
+    {a.quantity_id()!=-1 && !quantityEdit, "quantity_id"},
+    {a.quantity_mode()!=LocationQuantityMode::Set && !quantityEdit, "quantity_mode"},
+    {a.quantity_value()!=0 && !quantityEdit, "quantity_value"},
   };
   for(const auto& field:foreign) if(field.first)
     return std::string("Field ")+field.second+" does not belong to this operation";
@@ -147,6 +151,9 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   if(op==2 && (a.scope()<1 || a.scope()>4 || a.value()<1 || a.value()>2 ||
       present(a.row_key())!=(a.scope()==1))) return "invalid area settings edit";
   if(op==3 && (a.preset()<1 || a.preset()>19)) return "invalid area preset";
+  if(quantityEdit && (a.quantity_id()<0 || a.quantity_id()>10 || a.quantity_mode()>LocationQuantityMode::Decrease ||
+      (a.quantity_mode()==LocationQuantityMode::Set ? a.quantity_value()<0 || a.quantity_value()>999 : a.quantity_value()!=0)))
+    return "invalid location quantity edit";
   if(locationAccess && a.value()>3)return "invalid location access mode";
   if(op==5 && (a.paint_mode()<1 || a.paint_mode()>2 || (create && a.paint_mode()!=1) ||
       !present(a.spans()))) return "invalid area paint";
@@ -193,7 +200,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
       a.id()!=-1 || a.expected_revision() || present(a.query()) || a.cursor()%128 ||
       (a.cursor() && !a.expected_list_revision())))return "invalid staff candidates request";
   if(staffEdit && (a.occupation_id()<0 || !a.expected_list_revision()))return "invalid staff edit request";
-  if(locationDetails && (a.location_site_id()<0 || a.location_id()<0 || a.id()!=-1 || ((locationOpen || locationAccess || staffEdit)?!a.expected_revision():a.expected_revision()!=0) ||
+  if(locationDetails && (a.location_site_id()<0 || a.location_id()<0 || a.id()!=-1 || ((locationOpen || locationAccess || staffEdit || quantityEdit)?!a.expected_revision():a.expected_revision()!=0) ||
       present(a.query()) || a.cursor()))return "invalid location details request";
   if(op && !multi && !counts && !locationChoices && !locationDetails && !staffCandidates && !(op==5 && create) && a.id()<0) return "area id required";
   if(op==5 && create && a.paint_z()<0) return "area paint z required";
@@ -828,7 +835,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if ((a->areas() && a->areas()->size()>64) || (a->choices() && a->choices()->size()>128)) return "area response too large";
     const auto count=[](const auto* v)->size_t{return v ? v->size() : 0;};
     const auto textSize=[](const flatbuffers::String* v)->size_t{return v ? v->size() : 0;};
-    if(a->operation()>AreaOperation::LinkTarget || a->area_id()<-1 ||
+    if(a->operation()>AreaOperation::LocationQuantity || a->area_id()<-1 ||
         textSize(a->list_key())>64 || textSize(a->query())>128 ||
         a->candidate_kind()>3 || a->sort()>(a->candidate_kind()==1?4:3) || a->list_revision()>INT64_MAX ||
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
@@ -848,7 +855,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     const bool locationOpen=a->operation()==AreaOperation::LocationOpen;
     const bool locationAccess=a->operation()==AreaOperation::LocationAccess;
     const bool staffEdit=a->operation()==AreaOperation::LocationStaffEdit;
-    const bool locationEdit=locationAccess || staffEdit;
+    const bool locationEdit=locationAccess || staffEdit || a->operation()==AreaOperation::LocationQuantity;
     const bool locationDetails=a->operation()==AreaOperation::LocationDetails || locationOpen || locationEdit;
     if(a->location_staff_candidates() && !staffCandidates)return "staff candidates without operation";
     if(staffCandidates) {

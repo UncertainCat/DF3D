@@ -7895,5 +7895,114 @@
         "same_count_recipient_probe": true
       }
     ]
+  },
+  "recognition_transport_reference": {
+    "capture": "build/areas-acceptance-20261027-032429",
+    "sha256": "c34c8a414beeedbb7c3a68ba9ecae3a1fd59f361fba776ed4df50107133f44d2",
+    "plugin_sha256": "4c57f6eb028607301211183198686e066074373d87ac886255fd90b9bb2194af",
+    "management_version": 73,
+    "scope": "Actual Godot management read/apply on protected paused owned clone. Exact receipt string and semantic facts compared with diagnostic reader; independent native assignment/counter/history/emotion/RNG readbacks verify promotion. Stale/invalid/ineligible/completed repeats preserve captured effects and RNG. Main interface and location selector/details/name creator bytes unchanged across requests; GPS redraw changes also occur in no-request control.",
+    "before": {
+      "assignments": [
+        {
+          "histfig": 1018.0,
+          "id": 0.0,
+          "position": 0.0,
+          "site": 61.0
+        },
+        {
+          "histfig": -1.0,
+          "id": 1.0,
+          "position": 0.0,
+          "site": 90.0
+        },
+        {
+          "histfig": 9375.0,
+          "id": 2.0,
+          "position": 0.0,
+          "site": 651.0
+        }
+      ],
+      "emotions": 5.0,
+      "events": 54231.0,
+      "next_assignment": 3.0,
+      "next_position": 1.0,
+      "positions": [
+        {
+          "code": "PRIEST",
+          "id": 0.0
+        }
+      ]
+    },
+    "after": {
+      "assignments": [
+        {
+          "histfig": 1018.0,
+          "id": 0.0,
+          "position": 0.0,
+          "site": 61.0
+        },
+        {
+          "histfig": -1.0,
+          "id": 1.0,
+          "position": 0.0,
+          "site": 90.0
+        },
+        {
+          "histfig": -1.0,
+          "id": 2.0,
+          "position": 0.0,
+          "site": 651.0
+        },
+        {
+          "histfig": 9375.0,
+          "id": 3.0,
+          "position": 1.0,
+          "site": 651.0
+        }
+      ],
+      "emotions": 59.0,
+      "events": 54232.0,
+      "next_assignment": 4.0,
+      "next_position": 2.0,
+      "positions": [
+        {
+          "code": "PRIEST",
+          "id": 0.0
+        },
+        {
+          "code": "HIGH_PRIEST",
+          "id": 1.0
+        }
+      ]
+    },
+    "stale_checks": 2,
+    "invalid_targets": 2,
+    "ineligible_checks": 2,
+    "no_request_ui_changed": [
+      false,
+      true,
+      false,
+      false,
+      false
+    ],
+    "apply_ui_changed": [
+      false,
+      true,
+      false,
+      false,
+      false
+    ],
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "diagnostics": {
+      "known_engine": [],
+      "unclassified": []
+    },
+    "omissions": [
+      "First-priest and vacant-priest typed transport variants",
+      "Oversized agreement list and post-effect refresh failure injection",
+      "Disconnect/restart/late-reply workflows",
+      "Rendered control"
+    ]
   }
 }

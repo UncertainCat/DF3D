@@ -301,7 +301,18 @@ bool publishableLocationName(const df3d_area::LocationNameSnapshot& s) {
   flatbuffers::FlatBufferBuilder b;b.Finish(buildLocationName(b,s));
   return !m::validateLocationNameSnapshot(*flatbuffers::GetRoot<m::LocationNameSnapshot>(b.GetBufferPointer()));
 }
+flatbuffers::Offset<m::LocationRecognition> buildLocationRecognition(flatbuffers::FlatBufferBuilder& b,const df3d_area::LocationRecognitionReceipt& r) {
+  const auto& f=r.facts;
+  return m::CreateLocationRecognition(b,f.siteId,f.locationId,f.religionId,r.revision,f.tier,f.rank,f.worshippers,
+      f.priestThreshold,f.highPriestThreshold,static_cast<m::LocationRecognitionState>(df3d_area::locationRecognitionState(f)),b.CreateVector(f.continuingAgreements));
+}
+bool publishableLocationRecognition(const df3d_area::LocationRecognitionReceipt& r) {
+  if(r.facts.continuingAgreements.size()>4096)return false;
+  flatbuffers::FlatBufferBuilder b;auto value=buildLocationRecognition(b,r);b.Finish(value);
+  return !m::validateLocationRecognition(*flatbuffers::GetRoot<m::LocationRecognition>(b.GetBufferPointer()));
+}
 struct NativeAreaPage {
+  std::optional<df3d_area::LocationRecognitionReceipt> locationRecognition;
   std::optional<df3d_area::LocationNameSnapshot> locationName;
   std::optional<NativeLocationNamePage> locationNamePage;
   m::LocationEntryOutcome locationEntryOutcome=m::LocationEntryOutcome::None;
@@ -508,6 +519,8 @@ void publish() {
     locationNamePage=m::CreateLocationNamePage(b,snapshot,p.component,b.CreateVector(reinterpret_cast<const uint8_t*>(p.query.data()),p.query.size()),
         p.cursor,p.total,p.next,p.truncated,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::LocationRecognition> recognition;
+  if(areaPage.locationRecognition)recognition=buildLocationRecognition(b,*areaPage.locationRecognition);
   auto areaResult=m::CreateAreaState(b,b.CreateVector(as),b.CreateVector(ac),areaCursor,areaTruncated,
       areaPage.operation,areaPage.id,b.CreateString(areaPage.listKey),areaPage.candidateKind,areaPage.sort,areaPage.sortDescending,
       b.CreateString(areaPage.query),b.CreateVector(settings),b.CreateVector(locations),b.CreateVector(candidates),b.CreateVector(links),
@@ -515,7 +528,7 @@ void publish() {
       areaPage.interactionId,areaPage.undoToken,areaPage.roomOutcome,areaPage.roomsCreated,
       areaPage.roomsInUse,areaPage.roomsUnenclosed,areaPage.roomsRemoved,areaPage.roomsDormitories,
       areaPage.countGeneration,areaPage.paintedCount,areaPage.previewCount,locationCatalog,locationDetails,areaPage.locationEntryOutcome,areaPage.locationEditOutcome,staffCandidates,areaPage.settingsCount,
-      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{},locationName,locationNamePage);
+      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{},locationName,locationNamePage,recognition);
   auto reqs=[&](const std::vector<ProductionRequirement>& values){
     std::vector<flatbuffers::Offset<m::ProductionRequirement>> out;
     for(const auto& v:values) out.push_back(m::CreateProductionRequirement(b,b.CreateString(v.description),v.quantity,v.itemType));
@@ -2258,6 +2271,33 @@ void runPaintCounts(const m::AreaRequest& a) {
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->area() && (r->area()->operation()==m::AreaOperation::LocationRecognitionRead || r->area()->operation()==m::AreaOperation::LocationRecognize)) {
+    const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;
+    const bool apply=a.operation()==m::AreaOperation::LocationRecognize;
+    if(apply)areaPage.locationEditOutcome=m::LocationEditOutcome::Rejected;
+    auto receipt=df3d_area::observeNativeLocationRecognitionReceipt(a.location_site_id(),a.location_id());
+    if(receipt && !publishableLocationRecognition(*receipt))receipt.reset();
+    if(receipt && apply && receipt->revision!=a.expected_revision()) {
+      receipt.reset();areaPage.locationEditOutcome=m::LocationEditOutcome::Stale;
+    }
+    if(receipt && apply) {
+      mutated=true;areaPage.locationEditOutcome=m::LocationEditOutcome::Unknown;
+      try {
+        const auto result=df3d_area::recognizeNativeLocation(a.location_site_id(),a.location_id(),a.expected_revision());
+        receipt.reset();
+        if(result==df3d_area::LocationRecognitionOutcome::Applied) {
+          receipt=df3d_area::observeNativeLocationRecognitionReceipt(a.location_site_id(),a.location_id());
+          if(receipt && publishableLocationRecognition(*receipt))areaPage.locationEditOutcome=m::LocationEditOutcome::Completed;
+          else receipt.reset();
+        } else if(result!=df3d_area::LocationRecognitionOutcome::Unknown) {
+          mutated=false;areaPage.locationEditOutcome=result==df3d_area::LocationRecognitionOutcome::Stale?
+              m::LocationEditOutcome::Stale:m::LocationEditOutcome::Rejected;
+        }
+      } catch(...) {receipt.reset();}
+    }
+    if(receipt){areaPage.locationRecognition=std::move(receipt);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
   if(r->area() && r->area()->operation()>=m::AreaOperation::LocationNameRead && r->area()->operation()<=m::AreaOperation::LocationNameEdit) {
     const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;
     auto snapshot=df3d_area::observeNativeLocationName(a.location_site_id(),a.location_id());

@@ -784,8 +784,8 @@ preparation. The native3ad8e0 Details row builder is not called. Native UI objec
 are never supplied to the semantic action. Rejected means no semantic effects
 began; any unavailable step or caught exception after effects may begin reports
 Unknown, which must never be automatically replayed. This is diagnostic staging:
-the local revision check below is required, but there is no epoch-bound management
-request or viewer control yet.
+the local revision check below is required. The management handler below adds
+typed request admission; the viewer control is still pending.
 
 `recognition_complete_action_reference` retains bounded provenance and effect
 digests for six protected native/bridge pairs on2026-10-27: promotion024305,
@@ -821,7 +821,7 @@ displayed worshipper count stays constant. The hash excludes pointers, padding
 and lookup-cache indices. Native time, RNG and personality/emotion state remain
 execution-time inputs, not an observed outcome promise. Raw definitions are
 installation/session inputs; producer generation/fortress epoch binding still
-belongs to the future management transport.
+is enforced by the shared management request admission path.
 
 `recognition_receipt_reference` records protected actionpetitions030032,
 actionnew030130 and actionwaiver030157 on2026-10-27 using installed DLL
@@ -852,11 +852,43 @@ contracts preserve signed-63-bit revisions exactly, including values above2^53.
 The snapshot bounds continuing agreement IDs to4096; an oversized observation
 must fail before apply, not truncate an eligibility receipt. Management73 uses
 `Local\\df3d_management_v73`; rebuild/install bridge and viewer together. No
-snapshot/grid/session version changed. This commit establishes the contract only:
-the DF handler, epoch-bound live acceptance and visible control remain pending.
+snapshot/grid/session version changed. The DF handler below consumes this contract; dedicated disconnect/epoch-change
+acceptance and the visible control remain pending.
 Core evidence is `build/qa/location-recognition-contract73`; adapter evidence is
 `build/qa/location-recognition-adapter73-final`. Synthetic contract data does not establish
 native effects or rendered fidelity.
+
+The management handler now routes both recognition operations directly to the
+native semantic provider at its safe point. Shared request admission checks the
+current fortress epoch and client mailbox sequence. Read/apply preflight the
+snapshot's schema bounds before effects; apply checks the displayed recognition
+revision. Applied is Completed only after a fresh publishable observation. A
+possible mutation followed by a failed refresh or exception remains Unknown,
+with no result snapshot and no automatic replay. Results reset with the existing
+per-request area owner. This handler never invokes the native UI or Lua area editor.
+
+Protected `areas_acceptance.ps1 -RecognitionOnly -SaveId df3d-areas-<new-name>`
+run `build/areas-acceptance-20261027-032429` exercises the actual Godot management
+channel against DF57044. `recognition_transport_reference` retains bounded native
+readbacks and provenance. A populated-priest promotion creates one HIGH_PRIEST
+position and assignment, vacates the old assignment, transfers its holder,
+adds one history event and54 EstablishedTemple emotions, and advances native RNG.
+The refreshed typed snapshot and exact revision match the diagnostic observation.
+Two stale requests, two invalid identities, an ineligible action and a completed
+repeat preserve captured effects/RNG. Main-interface, Location Details, selector
+and name-creator bytes remain unchanged. The GPS rendering structure changes even
+across a no-request control, so it is recorded rather than incorrectly required
+to remain byte-identical across asynchronous frames. The earlier synchronous
+semantic tests retain their exact whole-UI/gps guards.
+
+The owned game exits unsaved; both save manifests are unchanged and diagnostics
+are empty. Bridge DLL SHA256 is
+`4c57f6eb028607301211183198686e066074373d87ac886255fd90b9bb2194af`, installed with
+the already rebuilt management73 viewer. MSVC and root/core
+`build/qa/location-recognition-transport73` pass. This evidence covers promotion
+transport, not first/empty-priest transport variants, oversized-agreement or
+post-effect-refresh failure injection, disconnect/restart/late replies or a
+rendered recognition control. Those remain unfinished; Zones stays hidden.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and

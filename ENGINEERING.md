@@ -169,11 +169,12 @@ Modified-key/clipboard input remains outside this evidence.
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout
 reference needed to implement the unfinished Details rename action. Protected
 `stockpile_storage_native.ps1 -LocationNames` run
-`build/stockpile-storage-native-location-names-20261026-211043` captures70 states:
+`build/stockpile-storage-native-location-names-20261026-211934` captures85 states:
 entry/Back across six locations, all seven tavern components' Clear/word/Random
 actions, filter focus/ALE/AL/Enter, edited Back/reopen and whole-name Random/Done
-for all six locations. Entry alone preserves names; changes apply immediately
-and both Back and Done retain them. DF142768 exits unsaved, source unchanged.
+for all six locations, plus filtered/empty lists across all seven components and
+cross-component Random. Entry alone preserves names; changes apply immediately
+and both Back and Done retain them. DF137580 exits unsaved, source unchanged.
 
 The rename icon opens `name_creator` in LOCATION_NAME context3 with a pointer to
 the selected location's language_name and namer entity245 in this fixture.
@@ -188,10 +189,15 @@ samples. These are diagnostic observations, not runtime UI inputs.
 owned consecutive raw-word IDs and an owned language_word_table. The builder
 reads raw word flags, preserves native order and uses vector allocation helpers;
 it does not read name_creator. Supported PE and function bytes are pinned.
-The protected `df3d location-name-words` diagnostic matches all35846 ordered
-word/part-of-speech pairs across13 native cases and leaves the main-interface
-and GPS structures unchanged. MSVC and core19/19 pass
-(`build/qa/location-name-words`). Management70 remains unchanged; no product
+Native English-form lookup0xd2cb50 and normalization0x52cee0 use owned strings.
+Normalization lowercases/folds CP437 query bytes; the displayed native filter
+field itself holds uppercase input. The inline substring operation is audited
+against pinned0x1fc330; the provider never calls that UI helper. The protected
+`df3d location-name-words component [query]` diagnostic matches all36760 ordered
+word/part-of-speech pairs and English forms across29 native cases and leaves the
+main-interface and GPS structures unchanged. AL counts across components are
+139,211,81,81,40,112,121; ZZZZ produces seven empty lists.
+MSVC and core19/19 pass (`build/qa/location-name-filter`). Management70 remains unchanged; no product
 transport or rename control is exposed yet.
 
 Capture found a DFHack binding error: name_creator.word_index_asp is declared
@@ -201,9 +207,12 @@ already-correct language_word_table.parts type. External DFHack XML is unchanged
 The initial205453/205930 word-part samples are superseded; failed210714/210908
 comparisons are not acceptance. This is a binding defect, not a native DF bug.
 
+Per-component Random uses the currently displayed filtered list and writes the
+clicked component without changing selection. With Of X selected and AL active,
+clicking Front Compound Random changes only the front word to an Of X choice.
 Native whole-name handlers931860/a92860 are located but still require ownership
-and effect audits. Filtering, native word forms, per-component Random's current
-list semantics, physical Escape, typed mutations and the rendered editor remain
+and effect audits. Random with an empty list, scrolling, physical Escape, native
+language display columns, typed mutations and the rendered editor remain
 unfinished. DFHack Translation::generateName reconstructs the algorithm and is
 not used as a substitute for calling DF.
 

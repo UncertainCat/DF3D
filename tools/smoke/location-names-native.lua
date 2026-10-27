@@ -39,13 +39,13 @@ local function capture(label,location)
  end
  if creator.name then local _,a=df.sizeof(creator.name);local _,b=df.sizeof(location:getName());row.direct_name_target=a==b end
  if creator.namer then row.namer_id=creator.namer.id end
- if creator.open and (label:match('%-name%-open$') or label:match('%-selected$'))then
+ if creator.open and (label:match('%-name%-open$') or label:match('%-selected$') or label:match('%-filter%-ale$') or label:match('%-filter%-al$') or label:match('%-matrix%-'))then
   local guards={}
   for _,object in ipairs{m,g}do
    local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
    guards[#guards+1]={bytes=bytes,address=at,size=n}
   end
-  local text,code=dfhack.run_command_silent('df3d','location-name-words',tostring(creator.cur_name_place))
+  local text,code=dfhack.run_command_silent('df3d','location-name-words',tostring(creator.cur_name_place),dfhack.df2utf(creator.cull_str))
   assert(code==0,text);local observed=require('json').decode(text)
   assert(observed.valid and #observed.words==#creator.word_index,'native word-selector count mismatch')
   for i,pair in ipairs(observed.words)do
@@ -54,12 +54,13 @@ local function capture(label,location)
     f:write(require('json').encode({name=label,index=i,bridge=observed.words,native_words=row.word_index,native_parts=row.word_parts}));f:close()
     error('native word-selector mismatch at '..i..': '..tostring(pair[1])..'/'..tostring(pair[2])..' versus '..tostring(creator.word_index[i-1])..'/'..tostring(word_part(i-1)))
    end
+   assert(pair[3]==dfhack.df2utf(df.global.world.raws.language.words[pair[1]].forms[pair[2]]),'native English word form mismatch')
   end
   for _,guard in ipairs(guards)do
    assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'word observation changed native UI/gps')
    df.delete(guard.bytes)
   end
-  row.bridge_word_count=#observed.words;row.bridge_ui_unchanged=true
+  row.bridge_word_count=#observed.words;row.bridge_ui_unchanged=true;row.bridge_forms_verified=true
  end
  for y=0,g.dimy-1 do
   local chars={};for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch) or ' 'end
@@ -106,6 +107,12 @@ for i,location in ipairs(choices)do
   key('STRING_A097');key('STRING_A108');key('STRING_A101');capture(prefix..'-filter-ale',location)
   key('STRING_A000');capture(prefix..'-filter-al',location)
   key('SELECT');capture(prefix..'-filter-enter',location)
+  pixel(608,142);capture(prefix..'-filtered-other-component-random',location)
+  for part=0,6 do pixel(476,142+36*part);capture(prefix..'-matrix-al-'..part,location)end
+  pixel(832,142);key('STRING_A000');key('STRING_A000')
+  for n=1,4 do key('STRING_A122')end
+  for part=0,6 do pixel(476,142+36*part);capture(prefix..'-matrix-no-match-'..part,location)end
+  pixel(832,142);for n=1,4 do key('STRING_A000')end;key('SELECT')
   key('_MOUSE_R');capture(prefix..'-edited-back',location)
   if creator.open then key('_MOUSE_R')end
   assert(not creator.open and details.open,'edited name Back did not return')
@@ -118,4 +125,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==70,'incomplete name mutation reference')
+assert(#records==85,'incomplete name mutation/filter reference')

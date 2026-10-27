@@ -28,7 +28,7 @@
 #include <numeric>
 
 namespace df3d_area {
-std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component) {
+std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component,const std::string& queryCp437) {
   if(component>6 || !df::global::world || !DFHack::Maps::IsValid())return std::nullopt;
   // Native name-editor initialization calls this semantic selector builder,
   // passing all raw word IDs. It reads raw language words and writes only the
@@ -37,9 +37,14 @@ std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint
   static const bool compatible=[] {
     if(!locationRefreshFunction())return false;
     auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
-    uint64_t h=UINT64_C(14695981039346656037);
-    for(size_t i=0;i<0x9a4;++i){h^=base[0xd35530+i];h*=UINT64_C(1099511628211);}
-    return h==UINT64_C(0x77bd9190661f5681);
+    const auto hash=[&](size_t rva,size_t size) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<size;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0xd35530,0x9a4)==UINT64_C(0x77bd9190661f5681) &&
+        hash(0xd2cb50,0xf0)==UINT64_C(0xf7ab8eceaadda09f) &&
+        hash(0x52cee0,0x19e)==UINT64_C(0xc25c2d8a6eb9fcac) &&
+        hash(0x1fc330,0x28c)==UINT64_C(0xc8d8335c19ae0818);
   }();
   if(!compatible)return std::nullopt;
   const auto& words=df::global::world->raws.language.words;
@@ -50,6 +55,12 @@ std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint
   using Build=void(__fastcall*)(df::language_word_table*,std::vector<int32_t>*);
   const auto build=reinterpret_cast<Build>(reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr))+0xd35530);
   build(&table,&ids);
+  const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+  using Form=void(__fastcall*)(void*,int32_t,std::string*,int32_t,int32_t);
+  using Lower=void(__fastcall*)(std::string*);
+  const auto form=reinterpret_cast<Form>(base+0xd2cb50);
+  const auto lower=reinterpret_cast<Lower>(base+0x52cee0);
+  std::string query=queryCp437;lower(&query);
   // Audited name component -> semantic selector table mapping at1fc387..1fc3b8.
   constexpr int slots[]={0,1,3,3,4,2,5};
   const auto slot=static_cast<df::language_word_table_index>(slots[component]);
@@ -58,7 +69,12 @@ std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint
   std::vector<LocationNameWord> result;result.reserve(selected.size());
   for(size_t i=0;i<selected.size();++i) {
     if(selected[i]<0 || size_t(selected[i])>=words.size() || int(parts[i])<0 || int(parts[i])>8)return std::nullopt;
-    result.push_back({selected[i],int32_t(parts[i])});
+    std::string english;form(nullptr,selected[i],&english,0,int32_t(parts[i]));
+    // Native1fc330 has no independent filter helper: it normalizes an owned
+    // query with52cee0 and retains substring matches in native English forms.
+    // Reproduce that audited string operation without a name_creator object.
+    if(!query.empty() && english.find(query)==std::string::npos)continue;
+    result.push_back({selected[i],int32_t(parts[i]),DF2UTF(english)});
   }
   return result;
 }

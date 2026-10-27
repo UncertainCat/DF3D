@@ -60,9 +60,9 @@ struct LocationDetailsCore {
 // Caller owns a DF safe point. Current-site identities only, copied world facts;
 // no retained native pointers and no viewscreen/widget/cursor inputs.
 std::optional<LocationDetailsCore> observeNativeLocationDetailsCore(int32_t siteId,int32_t id);
-struct LocationNameWord { int32_t word=-1,partOfSpeech=-1; };
+struct LocationNameWord { int32_t word=-1,partOfSpeech=-1; std::string english; };
 // Native word-selector construction with independently owned input/output.
-std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component);
+std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component,const std::string& queryCp437={});
 // Native Details entry refreshes semantic caches; ordinary reads/renders do not.
 // Caller owns a safe point. This does not populate staffing slots or open any UI.
 // Returns false without writes for an invalid identity or unsupported executable.

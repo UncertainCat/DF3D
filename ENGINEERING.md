@@ -475,8 +475,23 @@ three documented Godot diagnostics. All three complete panels match native
 RGB exactly. Actual viewport events verify relocated Random/Done/filter
 controls, the last visible word and Shift-wheel page sizes; the established
 default-size scrollbar and text-input regressions remain passing.
-Long headers, automatic interface scaling and responsive Details composition
-remain separate acceptance work.
+Automatic interface scaling and responsive Details composition remain separate
+acceptance work; long-header component evidence follows.
+
+Native naming headers are centered without panel clipping. Protected
+`build/stockpile-storage-native-location-names-20261027-001451` passes133
+observations, adding controlled60/100/180-byte first names to the paused owned
+clone. The original name is restored before subsequent actions; name/RNG and
+source-save checks pass and DF exits unsaved. Native formatted headers reach
+192 characters (194 English characters before quotes). The fixture's
+`long_header_reference` retains those formatter results and bounded hashes.
+`build/qa/location-name-long-header-scoped` passes core19/19 and the GPU check
+with only documented diagnostics: whole-panel RGB matches all three cases,
+as do the overflowing yellow/cyan glyphs within x0..999,y88..111, excluding
+the selected-zone icon at x40..71,y100..111. Native's later sprite pass draws
+that icon over the longest header, and its right HUD covers text from x1000.
+Those two overlaps remain explicit main-scene composition work; this component
+check does not establish their parity. No header rendering change was needed.
 
 ## Native squad assignment reference
 

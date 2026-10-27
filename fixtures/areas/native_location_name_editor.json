@@ -8616,5 +8616,46 @@
       "long headers",
       "automatic UI scaling"
     ]
+  },
+  "long_header_reference": {
+    "run": "build/stockpile-storage-native-location-names-20261027-001451",
+    "result_sha256": "160ecd23a580d3dda0e591b40564755af41da70aa8ad404c1ce3658841861075",
+    "cases": [
+      {
+        "name": "INN_TAVERN-1-long-header-60",
+        "headers": {
+          "english": "Abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij the Oily Meal",
+          "native": "Abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij Uzolfathkal"
+        },
+        "panel_rgb_sha256": "a135e3b7c6f30cb30828a9ad1d5ed809cff3d5aa9b291f01b26c295fd858b392",
+        "glyph_mask_sha256": "ec217ed2192e3e91d99f236366127d722ba4e519920631b84b9824305f1af782"
+      },
+      {
+        "name": "INN_TAVERN-1-long-header-100",
+        "headers": {
+          "english": "Abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij the Oily Meal",
+          "native": "Abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij Uzolfathkal"
+        },
+        "panel_rgb_sha256": "a52b6ec23392e3bb91a9c1746ceaea385f93920d69221679757f9f4d6294a722",
+        "glyph_mask_sha256": "ccb860a0b2b834a6b7d8d634b48528785b5a4efc540c8966b58fd115e5a3648b"
+      },
+      {
+        "name": "INN_TAVERN-1-long-header-180",
+        "headers": {
+          "english": "Abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij the Oily Meal",
+          "native": "Abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij Uzolfathkal"
+        },
+        "panel_rgb_sha256": "a52b6ec23392e3bb91a9c1746ceaea385f93920d69221679757f9f4d6294a722",
+        "glyph_mask_sha256": "e7b603263bd123d8efc43ab32129f068b9a16f43dd4beaec9ad3058642a917bc"
+      }
+    ],
+    "source_save_unchanged": true,
+    "owned_exit_without_save": true,
+    "name_and_rng_restored": true,
+    "scope": "Controlled 60/100/180-byte first names; native formatter headers, entire panel RGB and yellow/cyan glyph mask in x0..999,y88..111. Excludes selected zone icon x40..71,y100..111 and later right HUD overdraw starting at x1000; those belong to main-scene composition.",
+    "omissions": [
+      "main-scene header/HUD composition",
+      "automatic UI scaling"
+    ]
   }
 }

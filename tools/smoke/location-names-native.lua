@@ -315,6 +315,20 @@ for i,location in ipairs(choices)do
    window_input('name-resize-'..size)
    capture(prefix..'-resize-'..size,location)
   end
+  -- Controlled saved-name data on the owned paused clone; restore before edits.
+  local named=location:getName();local original_first=named.first_name
+  local ok,err=xpcall(function()
+   for _,length in ipairs{60,100,180}do
+    named.first_name=('abcdefghij'):rep(length//10)
+    local row=capture(prefix..'-long-header-'..length,location)
+    local text,code=dfhack.run_command_silent('df3d','location-name-read',tostring(df.global.plotinfo.site_id),tostring(location.id))
+    assert(code==0,text);local value=require('json').decode(text);assert(value.valid and value.header_valid)
+    row.header_strings={native=value.native_header,english=value.english_header}
+   end
+  end,debug.traceback)
+  named.first_name=original_first
+  assert(ok,err)
+  assert(require('json').encode(before)==require('json').encode(name_value(named)),'long-header name restore failed')
   for _,point in ipairs{{'selected',476,142},{'component',476,178},{'random',608,142},{'clear',668,214},
     {'whole',832,82},{'done',912,82},{'filter',832,142},{'word',744,178}}do
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
@@ -459,4 +473,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==130,'incomplete name mutation/filter reference')
+assert(#records==133,'incomplete name mutation/filter reference')

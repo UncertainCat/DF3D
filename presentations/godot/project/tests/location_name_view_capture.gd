@@ -70,6 +70,27 @@ func run() -> void:
 		view.scrollbar.move_to(0)
 		await click(view.position+Vector2(view.size.x-64,30));assert(closes>0)
 	closes=0
+	var long_headers: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).long_header_reference
+	for sample in long_headers.cases:
+		state.snapshot.native_header=sample.headers.native;state.snapshot.english_header=sample.headers.english;state.changed.emit()
+		await process_frame;await RenderingServer.frame_post_draw
+		image=root.get_texture().get_image();image.save_png(directory.path_join(sample.name+".png"))
+		crop=image.get_region(Rect2i(368,52,608,660));crop.convert(Image.FORMAT_RGB8)
+		hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
+		if hash.finish().hex_encode()!=sample.panel_rgb_sha256:
+			push_error("native long header panel "+sample.name);quit(1);return
+		var mask:=PackedByteArray();mask.resize(1000*24)
+		for y in 24:
+			for x in 1000:
+				var color:=image.get_pixel(x,y+88)
+				mask[y*1000+x]=1 if color==View.YELLOW else 2 if color==View.CYAN else 0
+		# Native selected-zone artwork is drawn later; this is a component check.
+		for y in range(12,24):
+			for x in range(40,72):mask[y*1000+x]=0
+		hash.start(HashingContext.HASH_SHA256);hash.update(mask)
+		if hash.finish().hex_encode()!=sample.glyph_mask_sha256:
+			push_error("native overflowing header glyphs "+sample.name);quit(1);return
+	state.snapshot.native_header=reference.native_header;state.snapshot.english_header=reference.english_header;state.changed.emit()
 	var scroll_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).scroll_drag_reference
 	for sample in scroll_reference.cases:
 		view.scrollbar.move_to(0)

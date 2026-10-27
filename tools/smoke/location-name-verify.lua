@@ -28,7 +28,17 @@ if request.op=='name_locations' then
 else
  local location;for _,v in ipairs(site.buildings)do if v.id==request.location_id then location=v;break end end
  local name=assert(location):getName()
- if request.op=='name_details' then
+ if request.op=='name_long_fixture' then
+  assert(not _G.df3d_name_long_fixture,'long name fixture already active')
+  _G.df3d_name_long_fixture={site=site.id,id=location.id,first=name.first_name,name=value(name),rng=rng()}
+  name.first_name=('abcdefghij'):rep(18)
+ elseif request.op=='name_long_restore' then
+  local guard=assert(_G.df3d_name_long_fixture)
+  assert(guard.site==site.id and guard.id==location.id,'long name restore target changed')
+  name.first_name=guard.first
+  assert(same(guard.name,value(name)) and same(guard.rng,rng()),'long name diagnostic changed unrelated state')
+  _G.df3d_name_long_fixture=nil
+ elseif request.op=='name_details' then
   assert(request.name==dfhack.df2utf(dfhack.translation.translateName(name,true)),'Details name did not refresh after naming')
  elseif request.op=='name_headers' then
   local text,code=dfhack.run_command_silent('df3d','location-name-read',tostring(site.id),tostring(location.id))

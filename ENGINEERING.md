@@ -490,8 +490,8 @@ with only documented diagnostics: whole-panel RGB matches all three cases,
 as do the overflowing yellow/cyan glyphs within x0..999,y88..111, excluding
 the selected-zone icon at x40..71,y100..111. Native's later sprite pass draws
 that icon over the longest header, and its right HUD covers text from x1000.
-Those two overlaps remain explicit main-scene composition work; this component
-check does not establish their parity. No header rendering change was needed.
+This component check does not establish those overlaps; separate main-scene
+evidence follows. No header text rendering change was needed.
 
 Protected `build/areas-acceptance-20261027-002330` verifies naming resize in the
 actual fortress scene at960x600,1600x900 and1200x800. The native frame and page
@@ -503,8 +503,21 @@ matches the native RGB reference exactly. The same run passes the six-location
 chooser/assigned routes,34 edits and queued/sent dismissal cases. Both source
 and clone manifests remain unchanged; the owned game exits unsaved, with only
 the known separate-thread diagnostic. The fixture's `main_resize_reference`
-records this evidence. Long-header sprite/HUD overlaps and responsive Details
-remain unverified by this run.
+records this evidence. Responsive Details remains unfinished.
+
+Protected `build/areas-acceptance-20261027-003611` verifies long-name composition
+in the actual fortress scene. The selected zone icon now keeps its32x32 size,
+centered in the32x36 cell, and draws above overflowing naming text as native
+does. Its complete32x36 RGB region matches native exactly; the entire1200x24
+yellow/cyan header mask also matches, including zone-icon and right-HUD
+occlusion with no exclusions. The right HUD needed no change. A paused-clone
+diagnostic temporarily sets a180-byte first name; ordinary quill entry reads
+it, and independent restoration checks prove original name/RNG state retained.
+Done at960x600 restores the parent panel before resizing back. All six naming
+routes,34 edits and pending-dismissal checks pass, with unchanged source/clone
+manifests and unsaved owned exit. Only the known separate-thread diagnostic
+remains. `main_long_header_reference` records the scope and native hashes;
+responsive Details and automatic scaling remain separate work.
 
 ## Native squad assignment reference
 

@@ -8654,9 +8654,11 @@
     "name_and_rng_restored": true,
     "scope": "Controlled 60/100/180-byte first names; native formatter headers, entire panel RGB and yellow/cyan glyph mask in x0..999,y88..111. Excludes selected zone icon x40..71,y100..111 and later right HUD overdraw starting at x1000; those belong to main-scene composition.",
     "omissions": [
-      "main-scene header/HUD composition",
       "automatic UI scaling"
-    ]
+    ],
+    "main_glyph_mask_sha256": "e189aa3d2adf7852fcb3c2fe5a52c6f3a257149c5eda466e4dc66504d15fced8",
+    "main_glyph_mask_scope": "Entire1200x24 header strip at y88, includes selected-zone artwork and right HUD occlusion without exclusions.",
+    "selected_zone_icon_rgb_sha256": "f4cc51e90b2f7c49f124a5ba1654d6e84026b97a3ded66620dc49a337a279d42"
   },
   "main_resize_reference": {
     "run": "build/areas-acceptance-20261027-002330",
@@ -8716,8 +8718,21 @@
     "owned_exit_without_save": true,
     "diagnostics": "known separate-thread notice only",
     "omissions": [
-      "long-header zone icon and right HUD overlaps",
       "responsive Details and automatic UI scaling"
+    ]
+  },
+  "main_long_header_reference": {
+    "run": "build/areas-acceptance-20261027-003611",
+    "result_sha256": "0182a817825b8518dc881ffb9e948cab7ca4b591a0031518f9f26a0ae72e3847",
+    "scope": "Actual fortress quill entry with controlled180-byte first name; complete header glyph mask and selected-zone icon RGB match native including overlaps, without exclusions.",
+    "native_name_and_rng_restored": true,
+    "compact_done_restores_parent": true,
+    "source_and_clone_unchanged": true,
+    "owned_exit_without_save": true,
+    "diagnostics": "known separate-thread notice only",
+    "omissions": [
+      "responsive Details",
+      "automatic UI scaling"
     ]
   }
 }

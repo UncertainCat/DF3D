@@ -443,6 +443,8 @@ func naming_routes(locations: Array) -> void:
 		if not await wait_ui(func():return names.phase==names.Phase.Ready,"complete native naming choices"):return
 		if not check(details.name_view.visible and not details.heading.visible and names.snapshot.id==id,"naming target/visibility"):return
 		if id==1:
+			await naming_long_header(details,id)
+			if stopped:return
 			await naming_resize(details,id)
 			if stopped:return
 		await native("name_choices",{"location_id":id,"component":0,"query":"","choices":names.rows})
@@ -482,6 +484,37 @@ func naming_routes(locations: Array) -> void:
 	print("LOCATION_NAMING_SCENE_PASS locations=",cases)
 	editor.close_panel()
 
+func naming_long_header(details, id: int) -> void:
+	step="main naming long header"
+	await pointer_click(Vector2(912,82))
+	if not await wait_ui(func():return not details.name_workflow.active and editor.details_state.phase==editor.details_state.Phase.Ready,"before long-name fixture"):return
+	await native("name_long_fixture",{"location_id":id})
+	await click_control(details.rename_button)
+	var names=details.name_workflow.names
+	if not await wait_ui(func():return names.phase==names.Phase.Ready,"long-name observation"):return
+	await native("name_headers",{"location_id":id,"native_header":names.snapshot.native_header,"english_header":names.snapshot.english_header})
+	await capture("naming_long_header")
+	var header_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).long_header_reference
+	var image:=root.get_texture().get_image()
+	var mask:=PackedByteArray();mask.resize(1200*24)
+	for y in 24:
+		for x in 1200:
+			var color:=image.get_pixel(x,y+88)
+			mask[y*1200+x]=1 if color==Color8(255,225,17) else 2 if color==Color8(18,254,207) else 0
+	var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(mask)
+	var glyphs_match: bool=hash.finish().hex_encode()==header_reference.main_glyph_mask_sha256
+	var icon:=image.get_region(Rect2i(40,100,32,36));icon.convert(Image.FORMAT_RGB8)
+	hash.start(HashingContext.HASH_SHA256);hash.update(icon.get_data())
+	var icon_matches: bool=hash.finish().hex_encode()==header_reference.selected_zone_icon_rgb_sha256
+	write_json("naming-long-header-evidence.json",{"native_header":names.snapshot.native_header,"english_header":names.snapshot.english_header})
+	await native("name_long_restore",{"location_id":id})
+	if not check(glyphs_match,"native long header including zone icon and right HUD overdraw"):return
+	if not check(icon_matches,"native selected-zone icon size and composition"):return
+	await pointer_click(Vector2(912,82))
+	if not await wait_ui(func():return not details.name_workflow.active and editor.details_state.phase==editor.details_state.Phase.Ready,"after long-name restoration"):return
+	await click_control(details.rename_button)
+	if not await wait_ui(func():return names.phase==names.Phase.Ready,"restored naming observation"):return
+
 func naming_resize(details, id: int) -> void:
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).resize_reference
 	var names=details.name_workflow.names
@@ -508,6 +541,15 @@ func naming_resize(details, id: int) -> void:
 		if not check(details.name_view.entering_filter,"resized filter hitbox"):return
 		await pointer_key(KEY_ENTER)
 		if not check(not details.name_view.entering_filter,"resized filter Enter"):return
+		if sample.name=="small":
+			await pointer_click(rect.position+Vector2(rect.size.x-64,30))
+			if not await wait_ui(func():return not details.name_workflow.active and editor.details_state.phase==editor.details_state.Phase.Ready,"compact naming Done"):return
+			editor._process(0);await process_frame
+			if not check(editor.panel.modulate.a==1.0,"parent must return after compact naming Done"):return
+			root.size=Vector2i(1200,800);scene._fortress_hud.apply_ui_scale()
+			for frame in 8:editor._process(0);await process_frame
+			await click_control(details.rename_button)
+			if not await wait_ui(func():return names.phase==names.Phase.Ready,"naming after compact Done"):return
 		observations.append({"viewport":sample.viewport,"rect":sample.rect,"page":sample.page,"selected_word":choice.word,"selected_part":choice.part})
 	write_json("naming-resize-evidence.json",{"cases":observations,"native_selection_effects":3,"scope":"actual fortress composition, native frame geometry, resized last-row selection and filter focus; Details and HUD overlap parity remain separate"})
 

@@ -1323,8 +1323,11 @@ func _process(delta: float) -> void:
 	var view := get_viewport().get_visible_rect().size
 	# Native compact naming replaces the parent zone panel below150 columns.
 	# Retain its owner/input lifetime while suppressing the parent's drawing.
-	var compact_naming: bool=details_view!=null and details_layer.visible and details_view.name_workflow.active and floori(view.x/8)<150
+	var naming_active: bool=details_view!=null and details_layer.visible and details_view.name_workflow.active
+	var compact_naming: bool=naming_active and floori(view.x/8)<150
 	panel.modulate.a=0.0 if compact_naming else 1.0
+	# Native draws the selected zone's world graphic after overflowing name text.
+	zone_menu.type_icon.z_index=1 if naming_active else 0
 	canvas.scale = stockpile_scale(view,hud.ui_scale_vector()) if hud != null and kind_picker.selected == 0 else Vector2.ONE
 	if hud != null and kind_picker.selected == 0:
 		# Keep the minimum three-column panel between the viewer's side chrome.

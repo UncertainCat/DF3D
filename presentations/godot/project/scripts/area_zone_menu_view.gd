@@ -65,6 +65,8 @@ func configure(source) -> void:
 	var type_border := TextureRect.new(); type_border.position = Vector2(6,46); type_border.size = Vector2(32,36)
 	type_border.texture = art.texture("ZONE_TYPE_INACTIVE"); selected_panel.add_child(type_border)
 	type_icon = TextureRect.new(); type_icon.position = Vector2(6,46); type_icon.size = Vector2(32,36)
+	# Native32x32 world graphic is centered in the32x36 UI cell, not stretched.
+	type_icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	type_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; selected_panel.add_child(type_icon)
 	type_label = Label.new(); type_label.position = Vector2(46,46); type_label.size = Vector2(168,36)
 	type_label.add_theme_font_size_override("font_size",12); type_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

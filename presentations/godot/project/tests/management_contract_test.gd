@@ -334,6 +334,7 @@ func run() -> void:
 	await test_work_detail_edits()
 	await test_area_operations()
 	await test_location_names()
+	await test_location_recognition()
 	assert(Contract.is_mutation(A.DismissAlert) and not Contract.is_mutation(A.PrepareAlertDismissal))
 	for request in [{"action":A.DismissAlert},{"action":A.DismissAlert,"expected_list_revision":0},
 		{"action":A.PrepareAlertDismissal,"expected_list_revision":1},
@@ -859,3 +860,28 @@ func test_area_operations() -> void:
 		assert(edited.area.operation==Contract.AreaOperation.LocationQuantity)
 		assert(edited.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)
 		assert(edited.area.location_details.revision==9223372036854775807)
+
+func test_location_recognition() -> void:
+	var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.LocationRecognitionRead,
+		"location_site_id":651,"location_id":0}
+	for key in ["location_site_id","location_id"]:
+		var invalid := request.duplicate(true);invalid.erase(key)
+		assert(world.area_request(invalid)==0)
+	var sequence: int=world.area_request(request);assert(sequence>0)
+	var state: Dictionary=await receipt(sequence)
+	var snapshot: Dictionary=state.area.location_recognition
+	assert(snapshot=={"site_id":651,"location_id":0,"religion_id":383,"revision":9007199254740993,
+		"tier":2,"rank":1,"worshippers":53,"priest_threshold":10,"high_priest_threshold":25,
+		"state":Contract.LocationRecognitionState.RecognizeHighPriest,"continuing_agreements":[41,42]})
+	request.action=A.AreaUpdate;request.operation=Contract.AreaOperation.LocationRecognize
+	request.expected_revision=snapshot.revision
+	for key in ["location_site_id","location_id","expected_revision"]:
+		var invalid := request.duplicate(true);invalid.erase(key)
+		assert(world.area_request(invalid)==0)
+	for value in [0,-1,1.5]:
+		var invalid := request.duplicate(true);invalid.expected_revision=value
+		assert(world.area_request(invalid)==0)
+	sequence=world.area_request(request);assert(sequence>0)
+	state=await receipt(sequence)
+	assert(state.area.location_recognition==snapshot)
+	assert(state.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)

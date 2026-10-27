@@ -167,6 +167,13 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
   // Preserve legacy top-level rows while the area domain carries the complete
   // operation selector and incremental-list envelope, like other new domains.
   Dictionary area;area["areas"]=areas;area["choices"]=choices;area["next_cursor"]=int64_t(s.nextCursor);area["truncated"]=s.truncated;
+  if(s.locationRecognition) {
+    const auto& r=*s.locationRecognition;Dictionary n;Array agreements;
+    n["site_id"]=r.siteId;n["location_id"]=r.locationId;n["religion_id"]=r.religionId;n["revision"]=r.revision;
+    n["tier"]=r.tier;n["rank"]=r.rank;n["worshippers"]=r.worshippers;n["priest_threshold"]=r.priestThreshold;n["high_priest_threshold"]=r.highPriestThreshold;
+    n["state"]=int(r.state);for(auto id:r.continuingAgreements)agreements.push_back(id);n["continuing_agreements"]=agreements;
+    area["location_recognition"]=n;
+  }
   if(s.locationName)area["location_name"]=locationNameDictionary(*s.locationName);
   if(s.locationNamePage) {
     const auto& p=*s.locationNamePage;Dictionary page;Array rows;
@@ -522,7 +529,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   a.give = data.get("give", true);
   a.unlink = data.get("unlink", false);
   a.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
-  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationNameEdit)));
+  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationRecognize)));
   const auto nameQueryBytes=[&](const Dictionary& row,std::vector<uint8_t>& out) {
     const PackedByteArray bytes=row["query_bytes"];
     if(bytes.size()>4096){valid=false;return;}

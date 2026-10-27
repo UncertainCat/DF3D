@@ -199,7 +199,14 @@ struct LocationNamePage {
   uint32_t cursor=0,total=0,nextCursor=0;bool truncated=false;
   std::vector<LocationNameChoice> choices;
 };
+struct LocationRecognition {
+  int32_t siteId=-1,locationId=-1,religionId=-1;int64_t revision=0;
+  int32_t tier=-1,rank=0,worshippers=0,priestThreshold=0,highPriestThreshold=0;
+  LocationRecognitionState state=LocationRecognitionState::NoAction;
+  std::vector<int32_t> continuingAgreements;
+};
 struct AreaState {
+  std::optional<LocationRecognition> locationRecognition;
   std::optional<LocationNameSnapshot> locationName;
   std::optional<LocationNamePage> locationNamePage;
   LocationEntryOutcome locationEntryOutcome=LocationEntryOutcome::None;

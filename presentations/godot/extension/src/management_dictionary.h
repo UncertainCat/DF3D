@@ -71,6 +71,8 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
         return require("origin");
     case A::Inspect: case A::Remove: return require("building_id");
     case A::AreaUpdate:
+        if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationRecognize))
+            return require("location_site_id") && require("location_id") && require("expected_revision");
         if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationNameEdit))
             return require("location_site_id") && require("location_id") && require("expected_revision") && require("name_edit");
         if(data.has("operation") && data["operation"].get_type()==godot::Variant::INT &&
@@ -85,6 +87,8 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
              int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationAccess)))return true;
         return require("id");
     case A::AreaInspect:
+        if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationRecognitionRead))
+            return require("location_site_id") && require("location_id");
         if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationNameRead))
             return require("location_site_id") && require("location_id");
         if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationNameChoices))

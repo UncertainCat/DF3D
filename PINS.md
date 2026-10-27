@@ -22,10 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management72 requires native-language and English header strings in every naming
-snapshot, including choice pages and successful edits. Rebuild/install bridge and
-viewer together; `Local\\df3d_management_v72` isolates older peers. Do not infer
-these strings from v71 recordings. Snapshot/grid/session versions are unchanged.
+Management73 adds separate LocationRecognitionRead/LocationRecognize operations
+and a revision-bound recognition snapshot. Rebuild/install bridge and viewer
+together; `Local\\df3d_management_v73` isolates older peers. Old recordings have
+unknown recognition facts; do not infer them from the legacy recognized flag.
+Snapshot/grid/session versions are unchanged.
 
 
 Snapshot schema **11** and resident terrain grid **6** preserve root tissue

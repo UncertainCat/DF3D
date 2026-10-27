@@ -2940,3 +2940,58 @@ TEST_CASE("Location quantity edits preserve exact intent and reject malformed pa
       CHECK(encoded->area()->quantity_value()==(variant==0?999:0));CHECK(encoded->area()->expected_revision()==9007199254740993ULL);}
   }
 }
+
+TEST_CASE("Recognition requests own target and revision without unrelated edit payloads") {
+  for(bool apply:{false,true})for(int variant=0;variant<11;++variant) {
+    wm::ManagementRequest r;r.action=apply?wm::ManagementAction::AreaUpdate:wm::ManagementAction::AreaInspect;
+    auto& a=r.area;a.kind=wm::AreaKind::Zone;a.locationSiteId=651;a.locationId=0;
+    a.operation=apply?wm::AreaOperation::LocationRecognize:wm::AreaOperation::LocationRecognitionRead;
+    a.expectedRevision=apply?9007199254740993LL:0;
+    if(variant==1)a.expectedRevision=apply?0:17;
+    if(variant==2)a.locationSiteId=-1;
+    if(variant==3)a.locationId=-1;
+    if(variant==4)a.id=4;
+    if(variant==5)a.kind=wm::AreaKind::Stockpile;
+    if(variant==6)r.action=apply?wm::ManagementAction::AreaInspect:wm::ManagementAction::AreaUpdate;
+    if(variant==7)a.nameEdit.emplace();
+    if(variant==8)a.quantityId=0;
+    if(variant==9)a.expectedListRevision=1;
+    if(variant==10)a.expectedRevision=-1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* q=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(apply);CAPTURE(variant);CHECK(bool(wire::validateConstructionRequest(*q))==(variant!=0));
+    if(!variant && apply)CHECK(q->area()->expected_revision()==9007199254740993ULL);
+  }
+}
+TEST_CASE("Recognition replies retain exact revisions and reject mixed or missing outcomes") {
+  for(bool apply:{false,true})for(int variant=0;variant<10;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    auto receipt=wire::CreateLocationRecognition(b,651,0,383,variant==1?0:9007199254740993ULL,
+        variant==2?3:2,1,53,10,25,wire::LocationRecognitionState::RecognizeHighPriest,
+        b.CreateVector(std::vector<int32_t>{variant==3?-1:42}));
+    wire::AreaStateBuilder a(b);
+    a.add_operation(variant==4?wire::AreaOperation::LocationDetails:apply?wire::AreaOperation::LocationRecognize:wire::AreaOperation::LocationRecognitionRead);
+    if(variant!=5)a.add_location_recognition(receipt);
+    if(apply || variant==6)a.add_location_edit_outcome(variant==6?wire::LocationEditOutcome::Unknown:wire::LocationEditOutcome::Completed);
+    if(variant==7)a.add_area_id(2);
+    auto area=a.Finish();wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(area);
+    root.add_action(variant==8?wire::ManagementAction::AreaDelete:apply?wire::ManagementAction::AreaUpdate:wire::ManagementAction::AreaInspect);
+    root.add_status(variant==9?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(apply);CAPTURE(variant);CHECK(bool(wire::validateManagementState(*state))==(variant!=0));
+    if(!variant) {
+      const auto decoded=codec::decodeArea(state->area());REQUIRE(decoded.locationRecognition);
+      CHECK(decoded.locationRecognition->revision==9007199254740993LL);
+      CHECK(decoded.locationRecognition->continuingAgreements==std::vector<int32_t>{42});
+      CHECK(decoded.locationRecognition->state==wm::LocationRecognitionState::RecognizeHighPriest);
+    }
+  }
+  for(auto outcome:{wire::LocationEditOutcome::Rejected,wire::LocationEditOutcome::Stale,wire::LocationEditOutcome::Unknown}) {
+    flatbuffers::FlatBufferBuilder b;wire::AreaStateBuilder a(b);a.add_operation(wire::AreaOperation::LocationRecognize);a.add_location_edit_outcome(outcome);
+    auto area=a.Finish();wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(area);
+    root.add_action(wire::ManagementAction::AreaUpdate);root.add_status(wire::ManagementStatus::Rejected);b.Finish(root.Finish());
+    CHECK_FALSE(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())));
+  }
+  flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateAreaState(b));
+  CHECK_FALSE(codec::decodeArea(flatbuffers::GetRoot<wire::AreaState>(b.GetBufferPointer())).locationRecognition);
+}

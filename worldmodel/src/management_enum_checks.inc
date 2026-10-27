@@ -122,7 +122,9 @@ static_assert(static_cast<int>(wm::AreaOperation::LocationQuantity) == static_ca
 static_assert(static_cast<int>(wm::AreaOperation::LocationNameRead) == static_cast<int>(df3d::mirror::AreaOperation::LocationNameRead));
 static_assert(static_cast<int>(wm::AreaOperation::LocationNameChoices) == static_cast<int>(df3d::mirror::AreaOperation::LocationNameChoices));
 static_assert(static_cast<int>(wm::AreaOperation::LocationNameEdit) == static_cast<int>(df3d::mirror::AreaOperation::LocationNameEdit));
-static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 31);
+static_assert(static_cast<int>(wm::AreaOperation::LocationRecognitionRead) == static_cast<int>(df3d::mirror::AreaOperation::LocationRecognitionRead));
+static_assert(static_cast<int>(wm::AreaOperation::LocationRecognize) == static_cast<int>(df3d::mirror::AreaOperation::LocationRecognize));
+static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 33);
 static_assert(static_cast<int>(wm::AreaRoomOutcome::None) == static_cast<int>(df3d::mirror::AreaRoomOutcome::None));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Completed) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Completed));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Rejected) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Rejected));
@@ -150,6 +152,13 @@ static_assert(static_cast<int>(wm::LocationNameMode::SelectWord) == static_cast<
 static_assert(static_cast<int>(wm::LocationNameMode::RandomComponent) == static_cast<int>(df3d::mirror::LocationNameMode::RandomComponent));
 static_assert(static_cast<int>(wm::LocationNameMode::RandomWhole) == static_cast<int>(df3d::mirror::LocationNameMode::RandomWhole));
 static_assert(sizeof(df3d::mirror::EnumValuesLocationNameMode()) / sizeof(df3d::mirror::LocationNameMode) == 4);
+static_assert(static_cast<int>(wm::LocationRecognitionState::NoAction) == static_cast<int>(df3d::mirror::LocationRecognitionState::NoAction));
+static_assert(static_cast<int>(wm::LocationRecognitionState::NeedsTemple) == static_cast<int>(df3d::mirror::LocationRecognitionState::NeedsTemple));
+static_assert(static_cast<int>(wm::LocationRecognitionState::NeedsComplex) == static_cast<int>(df3d::mirror::LocationRecognitionState::NeedsComplex));
+static_assert(static_cast<int>(wm::LocationRecognitionState::NeedsWorshippers) == static_cast<int>(df3d::mirror::LocationRecognitionState::NeedsWorshippers));
+static_assert(static_cast<int>(wm::LocationRecognitionState::RecognizePriesthood) == static_cast<int>(df3d::mirror::LocationRecognitionState::RecognizePriesthood));
+static_assert(static_cast<int>(wm::LocationRecognitionState::RecognizeHighPriest) == static_cast<int>(df3d::mirror::LocationRecognitionState::RecognizeHighPriest));
+static_assert(sizeof(df3d::mirror::EnumValuesLocationRecognitionState()) / sizeof(df3d::mirror::LocationRecognitionState) == 6);
 static_assert(static_cast<int>(wm::AlertOperation::OpenCategory) == static_cast<int>(df3d::mirror::AlertOperation::OpenCategory));
 static_assert(static_cast<int>(wm::AlertOperation::Inspect) == static_cast<int>(df3d::mirror::AlertOperation::Inspect));
 static_assert(static_cast<int>(wm::AlertOperation::OpenUnit) == static_cast<int>(df3d::mirror::AlertOperation::OpenUnit));

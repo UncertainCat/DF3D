@@ -84,6 +84,13 @@ AreaState decodeArea(const m::AreaState* a) {
     value.words.assign(v.words()->begin(),v.words()->end());value.parts.assign(v.parts()->begin(),v.parts()->end());
     value.language=v.language();value.type=v.type();value.hasName=v.has_name();return n;
   };
+  if(a && a->location_recognition()) {
+    const auto& r=*a->location_recognition();LocationRecognition n;
+    n.siteId=r.site_id();n.locationId=r.location_id();n.religionId=r.religion_id();n.revision=int64_t(r.revision());
+    n.tier=r.tier();n.rank=r.rank();n.worshippers=r.worshippers();n.priestThreshold=r.priest_threshold();n.highPriestThreshold=r.high_priest_threshold();
+    n.state=LocationRecognitionState(r.state());n.continuingAgreements.assign(r.continuing_agreements()->begin(),r.continuing_agreements()->end());
+    out.locationRecognition=std::move(n);
+  }
   if(a && a->location_name())out.locationName=nameSnapshot(*a->location_name());
   if(a && a->location_name_page()) {
     const auto& p=*a->location_name_page();LocationNamePage n;n.snapshot=nameSnapshot(*p.snapshot());

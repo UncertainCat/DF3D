@@ -129,6 +129,8 @@ enum AreaOperation {
 	LocationNameRead = 28,
 	LocationNameChoices = 29,
 	LocationNameEdit = 30,
+	LocationRecognitionRead = 31,
+	LocationRecognize = 32,
 }
 enum AreaRoomOutcome {
 	None = 0,
@@ -161,6 +163,14 @@ enum LocationNameMode {
 	SelectWord = 1,
 	RandomComponent = 2,
 	RandomWhole = 3,
+}
+enum LocationRecognitionState {
+	NoAction = 0,
+	NeedsTemple = 1,
+	NeedsComplex = 2,
+	NeedsWorshippers = 3,
+	RecognizePriesthood = 4,
+	RecognizeHighPriest = 5,
 }
 enum AlertOperation {
 	OpenCategory = 0,

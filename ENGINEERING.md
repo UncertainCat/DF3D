@@ -838,6 +838,26 @@ MSVC build and root/core `build/qa/location-recognition-receipt` pass. These che
 do not individually mutate every hashed field or establish transport, disconnect,
 late-reply or rendered acceptance. Protocol remains72 and UI exposure is unchanged.
 
+Management73 defines separate `LocationRecognitionRead` (AreaInspect) and
+`LocationRecognize` (AreaUpdate) operations. Both require explicit site/location
+identity and no zone ID or unrelated edit fields. Reads require revision0;
+apply requires the exact nonzero recognition revision. The reply carries a typed
+recognition snapshot with native state, thresholds, population and ordered
+continuing agreement IDs; successful apply also carries Completed. Rejected,
+Stale and Unknown apply outcomes carry no snapshot. Missing legacy recognition
+is unknown; the old Details `recognized` boolean cannot populate it.
+
+The schema validators, neutral model, Godot dictionary and generated enum
+contracts preserve signed-63-bit revisions exactly, including values above2^53.
+The snapshot bounds continuing agreement IDs to4096; an oversized observation
+must fail before apply, not truncate an eligibility receipt. Management73 uses
+`Local\\df3d_management_v73`; rebuild/install bridge and viewer together. No
+snapshot/grid/session version changed. This commit establishes the contract only:
+the DF handler, epoch-bound live acceptance and visible control remain pending.
+Core evidence is `build/qa/location-recognition-contract73`; adapter evidence is
+`build/qa/location-recognition-adapter73-final`. Synthetic contract data does not establish
+native effects or rendered fidelity.
+
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and
 existing religious temple, copies its site priesthood rank and configured

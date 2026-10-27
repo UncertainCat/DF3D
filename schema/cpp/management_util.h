@@ -6,6 +6,7 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 #include "location_name_util.h"
+#include "location_recognition_util.h"
 namespace df3d::mirror {
 // Shared by wire validation and the private Lua builder's owned recipe blobs.
 inline const char* validateOwnerAppearance(const SelectionAppearance& image,size_t& payload) {
@@ -19,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 72;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v72";
+inline constexpr uint32_t kManagementVersion = 73;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v73";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -52,8 +53,10 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
        (a.query() && a.query()->size()))return "invalid owner query bytes";
   }
   const auto op=static_cast<uint8_t>(a.operation());
-  if(op>30) return "Unsupported area operation";
+  if(op>32) return "Unsupported area operation";
   const bool nameRead=op==28,nameChoices=op==29,nameEdit=op==30;
+  const bool recognitionRead=op==31,recognize=op==32;
+  const bool recognition=recognitionRead || recognize;
   const bool naming=nameRead || nameChoices || nameEdit;
   const bool linkTarget=op==26;
   const bool multi=op>=16 && op<=18;
@@ -70,8 +73,8 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   const bool update=action==ManagementAction::AreaUpdate;
   bool allowed=op==0;
   switch(a.operation()) {
-    case AreaOperation::LocationNameRead: case AreaOperation::LocationNameChoices: allowed=inspect;break;
-    case AreaOperation::LocationNameEdit: allowed=update;break;
+    case AreaOperation::LocationRecognitionRead: case AreaOperation::LocationNameRead: case AreaOperation::LocationNameChoices: allowed=inspect;break;
+    case AreaOperation::LocationRecognize: case AreaOperation::LocationNameEdit: allowed=update;break;
     case AreaOperation::LinkTarget: case AreaOperation::SettingsPage: case AreaOperation::LocationList: case AreaOperation::Links: case AreaOperation::PaintCounts: case AreaOperation::LocationChoices: case AreaOperation::LocationDetails: case AreaOperation::LocationStaffCandidates:
       allowed=inspect; break;
     case AreaOperation::SettingsSet: case AreaOperation::Preset: case AreaOperation::Rename:
@@ -89,7 +92,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   if(a.kind()>AreaKind::Workshop || (a.kind()==AreaKind::Workshop)!=(op==15))
     return "Workshop kind is only valid for workshop links";
   const bool stock=op==1 || op==2 || op==3 || op==10 || op==13 || linkTarget;
-  const bool zone=(op>=6 && op<=9) || op==11 || op==12 || op==14 || multi || counts || locationChoices || locationDetails || staffCandidates || naming;
+  const bool zone=(op>=6 && op<=9) || op==11 || op==12 || op==14 || multi || counts || locationChoices || locationDetails || staffCandidates || naming || recognition;
   if((stock && a.kind()!=AreaKind::Stockpile) || (zone && a.kind()!=AreaKind::Zone))
     return "Area kind is not valid for this operation";
   if(op && ((op!=16 && ((!linkTarget && a.origin()) || a.width()!=1 || a.height()!=1)) ||
@@ -123,7 +126,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     {a.scope()!=0 && op!=2, "scope"}, {a.value()!=0 && op!=2 && !locationAccess, "value"},
     {a.preset()!=0 && op!=3, "preset"}, {present(a.name()) && op!=4, "name"},
     {present(a.spans()) && op!=5 && !counts, "spans"}, {a.paint_mode()!=0 && op!=5, "paint_mode"},
-    {a.paint_z()!=-1 && op!=5 && !counts, "paint_z"}, {a.location_id()!=-2 && op!=7 && !locationDetails && !staffCandidates && !naming, "location_id"},
+    {a.paint_z()!=-1 && op!=5 && !counts, "paint_z"}, {a.location_id()!=-2 && op!=7 && !locationDetails && !staffCandidates && !naming && !recognition, "location_id"},
     {a.location_kind()!=0 && op!=8 && !locationChoices, "location_kind"}, {a.profession()!=-1 && op!=8, "profession"},
     {a.deity_kind()!=-1 && op!=8, "deity_kind"}, {a.deity_id()!=-1 && op!=8, "deity_id"},
     {areaZoneSettingsPresent(a.zone_settings()) && op!=9, "zone_settings"},
@@ -138,7 +141,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     {a.count_generation()!=0 && !counts, "count_generation"},
     {a.paint_preview()!=nullptr && !counts, "paint_preview"},
     {a.occupation_id()!=-1 && !staffCandidates && !staffEdit, "occupation_id"},
-    {a.location_site_id()!=-1 && !locationDetails && !staffCandidates && !naming, "location_site_id"},
+    {a.location_site_id()!=-1 && !locationDetails && !staffCandidates && !naming && !recognition, "location_site_id"},
     {a.name_query()!=nullptr && !nameChoices, "name_query"},
     {a.name_edit()!=nullptr && !nameEdit, "name_edit"},
     {a.category_opening() && op!=1, "category_opening"},
@@ -209,6 +212,8 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   if(staffEdit && (a.occupation_id()<0 || !a.expected_list_revision()))return "invalid staff edit request";
   if(locationDetails && (a.location_site_id()<0 || a.location_id()<0 || a.id()!=-1 || ((locationOpen || locationAccess || staffEdit || quantityEdit)?!a.expected_revision():a.expected_revision()!=0) ||
       present(a.query()) || a.cursor()))return "invalid location details request";
+  if(recognition && (a.location_site_id()<0 || a.location_id()<0 || a.id()!=-1 || present(a.query()) || a.cursor() ||
+      (recognitionRead?a.expected_revision()!=0:!a.expected_revision()) || a.expected_revision()>INT64_MAX))return "invalid recognition request";
   if(naming) {
     if(a.location_site_id()<0 || a.location_id()<0 || a.id()!=-1 || present(a.query()) || a.cursor() ||
         (nameRead?a.expected_revision()!=0:!a.expected_revision()))return "invalid location naming identity";
@@ -221,7 +226,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
       if(auto error=validateLocationNameEdit(*a.name_edit()))return error;
     }
   }
-  if(op && !multi && !counts && !locationChoices && !locationDetails && !staffCandidates && !naming && !(op==5 && create) && a.id()<0) return "area id required";
+  if(op && !multi && !counts && !locationChoices && !locationDetails && !staffCandidates && !naming && !recognition && !(op==5 && create) && a.id()<0) return "area id required";
   if(op==5 && create && a.paint_z()<0) return "area paint z required";
   if(op==15 && (a.link_id()<0 || a.link_id()==a.id())) return "invalid area link";
   if(op==5 && create && (a.zone_type()<-1 || a.zone_type()>255)) return "invalid area edit";
@@ -854,7 +859,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if ((a->areas() && a->areas()->size()>64) || (a->choices() && a->choices()->size()>128)) return "area response too large";
     const auto count=[](const auto* v)->size_t{return v ? v->size() : 0;};
     const auto textSize=[](const flatbuffers::String* v)->size_t{return v ? v->size() : 0;};
-    if(a->operation()>AreaOperation::LocationNameEdit || a->area_id()<-1 ||
+    if(a->operation()>AreaOperation::LocationRecognize || a->area_id()<-1 ||
         textSize(a->list_key())>64 || textSize(a->query())>128 ||
         a->candidate_kind()>3 || a->sort()>(a->candidate_kind()==1?4:3) || a->list_revision()>INT64_MAX ||
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
@@ -877,6 +882,22 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     const bool nameRead=a->operation()==AreaOperation::LocationNameRead;
     const bool nameChoices=a->operation()==AreaOperation::LocationNameChoices;
     const bool nameEdit=a->operation()==AreaOperation::LocationNameEdit;
+    const bool recognize=a->operation()==AreaOperation::LocationRecognize;
+    const bool recognition=recognize || a->operation()==AreaOperation::LocationRecognitionRead;
+    if(a->location_recognition() && !recognition)return "recognition snapshot without operation";
+    if(recognition) {
+      if(s.action()!=(recognize?ManagementAction::AreaUpdate:ManagementAction::AreaInspect))return "recognition action mismatch";
+      if(a->area_id()!=-1 || a->next_cursor() || a->truncated() || count(a->areas()) || count(a->choices()) ||
+          count(a->settings()) || count(a->locations()) || count(a->candidates()) || count(a->links()) ||
+          textSize(a->list_key()) || textSize(a->query()) || a->candidate_kind() || a->sort() || a->sort_descending() ||
+          a->list_revision() || a->build_phase() || a->build_done() || a->build_total() || a->omitted() ||
+          a->location_catalog() || a->location_details() || a->location_name() || a->location_name_page() || a->location_staff_candidates())
+        return "mixed recognition reply";
+      if(recognize && (a->location_edit_outcome()==LocationEditOutcome::None || a->location_edit_outcome()>LocationEditOutcome::Unknown ||
+          ((a->location_edit_outcome()==LocationEditOutcome::Completed)!=(s.status()==ManagementStatus::Ok))))return "invalid recognition outcome";
+      if((s.status()==ManagementStatus::Ok)!=(a->location_recognition()!=nullptr))return "invalid recognition presence";
+      if(a->location_recognition())if(auto error=validateLocationRecognition(*a->location_recognition()))return error;
+    }
     const bool naming=nameRead || nameChoices || nameEdit;
     if(a->location_name() && !nameRead && !nameEdit)return "name snapshot without naming operation";
     if(a->location_name_page() && !nameChoices)return "name page without choices operation";
@@ -907,7 +928,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(a->location_staff_candidates())if(auto error=validateLocationStaffCandidates(*a->location_staff_candidates()))return error;
     }
     if(!locationOpen && a->location_entry_outcome()!=LocationEntryOutcome::None)return "entry outcome without entry operation";
-    if(!locationEdit && !nameEdit && a->location_edit_outcome()!=LocationEditOutcome::None)return "edit outcome without edit operation";
+    if(!locationEdit && !nameEdit && !recognize && a->location_edit_outcome()!=LocationEditOutcome::None)return "edit outcome without edit operation";
     if(a->location_details() && !locationDetails)return "location details without operation";
     if(locationDetails) {
       if(s.action()!=((locationOpen || locationEdit)?ManagementAction::AreaUpdate:ManagementAction::AreaInspect))return "location details action mismatch";

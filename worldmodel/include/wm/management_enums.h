@@ -131,6 +131,8 @@ enum class AreaOperation : uint8_t {
   LocationNameRead = 28,
   LocationNameChoices = 29,
   LocationNameEdit = 30,
+  LocationRecognitionRead = 31,
+  LocationRecognize = 32,
 };
 enum class AreaRoomOutcome : uint8_t {
   None = 0,
@@ -163,6 +165,14 @@ enum class LocationNameMode : uint8_t {
   SelectWord = 1,
   RandomComponent = 2,
   RandomWhole = 3,
+};
+enum class LocationRecognitionState : uint8_t {
+  NoAction = 0,
+  NeedsTemple = 1,
+  NeedsComplex = 2,
+  NeedsWorshippers = 3,
+  RecognizePriesthood = 4,
+  RecognizeHighPriest = 5,
 };
 enum class AlertOperation : uint8_t {
   OpenCategory = 0,

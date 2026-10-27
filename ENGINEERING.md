@@ -2796,7 +2796,10 @@ capture was inspected. All1,368 save-file hashes match across restart, both save
 manifests remain unchanged, and the owned replacement exits unsaved. The live
 result is passed_with_known_issues (only the rendering-thread notice); core is
 clean in `build/qa/squad-producer-restart`. Archery-specific producer replacement
-has not been run. Initial145650 tried reopening before scene readiness;145822
+also passes in151109 (DF163404 replaced by155036), using the shared candidate
+restart helper introduced for owner coverage below. Its reopened capture was
+inspected;1,368 restart hashes and both save manifests match, with only the
+known rendering-thread notice. Initial145650 tried reopening before scene readiness;145822
 used the cleared-assignment verifier for a never-assigned zone. Neither is
 acceptance. The verifier now distinguishes an absent fresh zone-side record
 from native's retained zero-use record after clearing an assignment.
@@ -3715,8 +3718,21 @@ processes exit unsaved and both save manifests remain unchanged. Core passes in
 `build/qa/owner-disconnect-reopen`. Initial150330 clicked before container layout
 settled and targeted another row; it is not acceptance. The test now uses the
 established layout-aware control-click helper and verifies the intent's owner
-ID before dispatch. Product code is unchanged. These cases cover same-process
-reconnect; owner-picker producer replacement remains unverified.
+ID before dispatch. Product code is unchanged.
+
+`-OwnerDisconnect restart` additionally holds the completed owner receipt until
+actual DF process loss. Protected `areas-acceptance-20261027-150919` replaces
+DF176736 with166276 and verifies a new epoch/generation, unknown old outcome,
+retired picker authority and no area replay during the idle check. Native
+readback confirms the old unsaved zone is absent. After scene readiness, actual
+viewport input creates an unassigned bedroom, opens fresh candidates, waits for
+visible portraits, dismisses the picker and removes the zone. Native ownership
+and the new selection agree. The reopened capture was visually inspected.
+All1,368 restart save hashes and both final save manifests match; the owned
+replacement exits unsaved. Only the known rendering-thread notice remains.
+Core passes cleanly in `build/qa/candidate-owner-restart`. The shared candidate
+restart helper also passes Archery151109, retaining squad-specific reciprocal
+record assertions separately from owner snapshot and portrait assertions.
 
 `fixtures/areas/native_zone_assignment.json` retains the supported executable's
 semantic owner entry point, virtual leaves, allocation helpers and picker call

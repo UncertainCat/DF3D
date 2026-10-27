@@ -190,6 +190,7 @@ func pointer_areas() -> void:
 				if owner_disconnect=="none":await pointer_owner(id,origin)
 				else:await pointer_owner_disconnect(id,origin,owner_disconnect)
 				if stopped: return
+				if owner_disconnect=="restart":await native("final");return
 				await click_control(editor.zone_menu.controls.remove)
 				if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"remove owner test zone"): return
 				await native("removed",{"id":id}); await native("final"); return
@@ -335,7 +336,7 @@ func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
 		write_json("squad-unobserved-receipt.json",reply);expected_use=2
 	await native("squad",{"id":id,"squad_id":target_id,"use":expected_use})
 	if disconnect_mode=="restart":
-		await pointer_squad_restart(id,target_id,ticket)
+		await pointer_candidate_restart(id,target_id,ticket,"squad")
 		return
 	world.detach_live();actions.poll()
 	var outcome:Dictionary=actions.result(ticket)
@@ -376,14 +377,14 @@ func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
 	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
 	if not check(not view.visible and settled(),"reopened squad picker did not dismiss"):return
 
-func pointer_squad_restart(id: int, target_id: int, ticket: int) -> void:
+func pointer_candidate_restart(id: int, target_id: int, ticket: int, kind: String) -> void:
 	var old_epoch:int=world.poll_session().get("fortress_epoch",0)
 	var old_generation:int=world.session_generation()
 	handshake+=1
 	write_json("request-%d.json"%handshake,{"op":"reload"})
 	var file:=FileAccess.open(directory+"/verify.tmp",FileAccess.WRITE)
 	file.store_string(str(handshake));file.close()
-	if not check(DirAccess.rename_absolute(directory+"/verify.tmp",directory+"/verify.txt")==OK,"squad restart handshake failed"):return
+	if not check(DirAccess.rename_absolute(directory+"/verify.tmp",directory+"/verify.txt")==OK,"candidate restart handshake failed"):return
 	var deadline:=Time.get_ticks_msec()+690000
 	var ack:Dictionary={}
 	var lost:=false
@@ -397,23 +398,23 @@ func pointer_squad_restart(id: int, target_id: int, ticket: int) -> void:
 			var path:=directory+"/%s-%d"%[state,handshake]
 			if not FileAccess.file_exists(path):continue
 			var reply:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
-			if state=="failed":check(false,"squad restart: "+str(reply.reason));return
-			if state=="incomplete":incomplete("squad restart: "+str(reply.reason),true);return
+			if state=="failed":check(false,"candidate restart: "+str(reply.reason));return
+			if state=="incomplete":incomplete("candidate restart: "+str(reply.reason),true);return
 			ack=reply
 		await create_timer(0.02).timeout
-	if not check(not ack.is_empty(),"squad restart timed out"):return
+	if not check(not ack.is_empty(),"candidate restart timed out"):return
 	var epoch:=int(str(ack.epoch))
-	if not check(epoch!=old_epoch and (epoch>>32)==int(ack.pid),"replacement squad epoch invalid"):return
+	if not check(epoch!=old_epoch and (epoch>>32)==int(ack.pid),"replacement candidate epoch invalid"):return
 	deadline=Time.get_ticks_msec()+60000
 	while Time.get_ticks_msec()<deadline:
 		world.poll_session();actions.poll(0.02);editor._process(0.02)
 		if actions._epoch==epoch and actions._active==0 and actions._queue.is_empty():break
 		await create_timer(0.02).timeout
-	if not check(lost and actions._epoch==epoch,"replacement squad service not ready"):return
+	if not check(lost and actions._epoch==epoch,"replacement candidate service not ready"):return
 	var outcome:Dictionary=actions.result(ticket)
-	write_json("squad-restart-outcome.json",outcome)
-	write_json("squad-restart.json",{"old_epoch":str(old_epoch),"new_epoch":str(epoch),"old_generation":old_generation,"new_generation":world.session_generation(),"pid":ack.pid})
-	if not check(outcome.get("outcome")=="unknown" and not actions._requests.has(ticket) and editor.request_ticket==0 and editor.selected.is_empty() and editor.candidates_state.area.is_empty() and not editor.candidates_view.visible,"restart retained squad authority"):return
+	write_json(kind+"-restart-outcome.json",outcome)
+	write_json(kind+"-restart.json",{"old_epoch":str(old_epoch),"new_epoch":str(epoch),"old_generation":old_generation,"new_generation":world.session_generation(),"pid":ack.pid})
+	if not check(outcome.get("outcome")=="unknown" and not actions._requests.has(ticket) and editor.request_ticket==0 and editor.selected.is_empty() and editor.candidates_state.area.is_empty() and not editor.candidates_view.visible,"restart retained candidate authority"):return
 	var count:int=area_receipts().size()
 	for frame in 30:
 		actions.poll(0.02);editor._process(0.02);await process_frame
@@ -431,7 +432,7 @@ func pointer_squad_restart(id: int, target_id: int, ticket: int) -> void:
 	var launcher:Button=scene._fortress_hud.navigation.Zones
 	launcher.show();await click_control(launcher,true)
 	if not await wait_ui(func():return editor.available and editor.panel.visible and settled(),"replacement Zones launcher"):return
-	var zone:String=JSON.parse_string(FileAccess.get_file_as_string(directory+"/zone-squads-only.json")).zone
+	var zone:String="Bedroom" if kind=="owner" else JSON.parse_string(FileAccess.get_file_as_string(directory+"/zone-squads-only.json")).zone
 	await click_control(editor.zone_menu.buttons[zone])
 	for corner in 2:
 		await pointer_click(tile_screen(tile))
@@ -439,14 +440,21 @@ func pointer_squad_restart(id: int, target_id: int, ticket: int) -> void:
 	await click_control(editor.paint_view.accept_button)
 	if not await wait_ui(func():return settled() and not editor.selected.is_empty(),"replacement zone create"):return
 	var fresh_id:int=editor.selected.id
-	await click_control(editor.zone_menu.controls.squads)
-	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and editor.candidates_state.rows.size()==25 and editor.candidates_state.cursor==0,"replacement squad list"):return
-	var fresh:Dictionary={}
-	for row in editor.candidates_state.rows:
-		if int(row.id)==target_id:fresh=row;break
-	if not check(not fresh.is_empty() and int(fresh.squad_use)==0 and editor.candidates_state.squad_first==0,"replacement inherited old squad assignment"):return
-	await native("squad",{"id":fresh_id,"squad_id":target_id,"use":0,"never_assigned":true})
-	await capture("squad_restart_reopened")
+	if kind=="owner":
+		if not check(int(editor.selected.owner_id)==-1,"replacement inherited old owner"):return
+		await native("snapshot",{"id":fresh_id,"expected":{"owner_id":-1}})
+		await click_control(editor.zone_menu.controls.owner)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"replacement owner list"):return
+		if not await owner_portraits_ready():return
+	else:
+		await click_control(editor.zone_menu.controls.squads)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and editor.candidates_state.rows.size()==25 and editor.candidates_state.cursor==0,"replacement squad list"):return
+		var fresh:Dictionary={}
+		for row in editor.candidates_state.rows:
+			if int(row.id)==target_id:fresh=row;break
+		if not check(not fresh.is_empty() and int(fresh.squad_use)==0 and editor.candidates_state.squad_first==0,"replacement inherited old squad assignment"):return
+		await native("squad",{"id":fresh_id,"squad_id":target_id,"use":0,"never_assigned":true})
+	await capture(kind+"_restart_reopened")
 	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
 	await click_control(editor.zone_menu.controls.remove)
 	if not await wait_ui(func():return settled() and editor.selected.is_empty(),"replacement zone removal"):return
@@ -1647,7 +1655,7 @@ func pointer_owner_disconnect(id: int, origin: Vector3i, mode: String) -> void:
 	if not check(ticket>0 and editor.candidates_state.mutating,"owner assignment not queued"):return
 	if not check(int(actions._requests[ticket].request.get("owner_id",-1))==unit,"owner pointer targeted a different row"):return
 	var expected_owner: int=-1
-	if mode=="sent":
+	if mode in ["sent","restart"]:
 		var deadline:=Time.get_ticks_msec()+30000
 		while actions._requests.has(ticket) and int(actions._requests[ticket].sequence)==0 and Time.get_ticks_msec()<deadline:
 			world.poll();actions.poll()
@@ -1664,6 +1672,9 @@ func pointer_owner_disconnect(id: int, origin: Vector3i, mode: String) -> void:
 		if not check(not reply.is_empty() and actions.result(ticket).is_empty(),"owner unobserved receipt absent"):return
 		write_json("owner-unobserved-receipt.json",reply);expected_owner=unit
 	await native("snapshot",{"id":id,"expected":{"owner_id":expected_owner}})
+	if mode=="restart":
+		await pointer_candidate_restart(id,unit,ticket,"owner")
+		return
 	world.detach_live();actions.poll()
 	var outcome:Dictionary=actions.result(ticket)
 	write_json("owner-disconnect-outcome.json",outcome)
@@ -1689,18 +1700,21 @@ func pointer_owner_disconnect(id: int, origin: Vector3i, mode: String) -> void:
 	if not check(int(editor.selected.owner_id)==expected_owner,"fresh owner selection differs"):return
 	await click_control(editor.zone_menu.controls.owner)
 	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner reopened candidates"):return
-	if not await wait_ui(func():
+	if not await owner_portraits_ready():return
+	await capture("owner_reconnected_reopened")
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(not editor.candidates_view.visible and settled(),"owner reopened picker failed to dismiss"):return
+	await native("snapshot",{"id":id,"expected":{"owner_id":expected_owner}})
+
+func owner_portraits_ready() -> bool:
+	return await wait_ui(func():
 		var visible_count:=0
 		var clip:Rect2=editor.candidates_view.scroll.get_global_rect()
 		for slot in editor.candidates_view.portrait_slots:
 			if not clip.intersects(slot.view.get_global_rect()) or world.unit_tile(int(slot.id)).x<0:continue
 			visible_count+=1
 			if slot.view.texture==null:return false
-		return visible_count>0,"reconnected owner portraits"):return
-	await capture("owner_reconnected_reopened")
-	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
-	if not check(not editor.candidates_view.visible and settled(),"owner reopened picker failed to dismiss"):return
-	await native("snapshot",{"id":id,"expected":{"owner_id":expected_owner}})
+		return visible_count>0,"reconnected owner portraits")
 
 func pointer_owner(id: int, origin: Vector3i) -> void:
 	step = "pointer owner selector"

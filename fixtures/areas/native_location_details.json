@@ -14114,14 +14114,19 @@
         "year": 106
       }
     ],
-    "scope": "Paused diagnostic holder unit_id=-1; native nil-unit lookup, not full death/departure simulation. Removal is verified semantically and through the rendered viewer; replacement remains unverified.",
+    "scope": "Paused diagnostic holder unit_id=-1; native nil-unit lookup, not full death/departure simulation. Removal is verified semantically and through the rendered viewer; replacement is verified at the native callback boundary.",
     "rendered_reference": {
       "run": "build/areas-acceptance-20261027-075530",
       "status": "passed_with_known_issues",
       "known_diagnostic": "godot-separate-thread-notice",
       "holder_kind": 2,
       "unit_id": -1,
-      "row_crop_xywh": [384, 340, 576, 36],
+      "row_crop_xywh": [
+        384,
+        340,
+        576,
+        36
+      ],
       "compared_rgb_pixels": 20736,
       "different_rgb_pixels": 0,
       "pointer_removal_native_effects_verified": true,
@@ -14129,6 +14134,70 @@
       "owned_exit_without_save": true
     },
     "source_preserved": true,
-    "owned_exit_without_save": true
+    "owned_exit_without_save": true,
+    "replacement_reference": {
+      "native": "build/stockpile-storage-native-location-recognition-replaceabsentpriest-20261027-080100",
+      "semantic": "build/stockpile-storage-native-location-recognition-actionreplaceabsentpriest-20261027-080134",
+      "status": "passed",
+      "scope": "Vacant picker opened then historical holder restored before selection; no direct occupied-row replacement gesture. Original unit retained with historical association -1.",
+      "new_events": [
+        {
+          "civ": 383,
+          "histfig": 9375,
+          "id": 64037,
+          "link_type": 10,
+          "position_id": 0,
+          "seconds": 157249,
+          "type": "REMOVE_HF_ENTITY_LINK",
+          "year": 106
+        },
+        {
+          "civ": 383,
+          "histfig": 10379,
+          "id": 64038,
+          "link_type": 10,
+          "position_id": 0,
+          "seconds": 157249,
+          "type": "ADD_HF_ENTITY_LINK",
+          "year": 106
+        }
+      ],
+      "stale_dependencies": [
+        {
+          "dependency": "membership strength",
+          "eligible": true,
+          "outcome": 4
+        },
+        {
+          "dependency": "membership eligibility",
+          "eligible": false,
+          "outcome": 4
+        },
+        {
+          "dependency": "custom profession",
+          "eligible": true,
+          "outcome": 4
+        },
+        {
+          "dependency": "unit inactive",
+          "eligible": false,
+          "outcome": 4
+        },
+        {
+          "dependency": "nemesis group leader",
+          "eligible": true,
+          "outcome": 4
+        },
+        {
+          "dependency": "uniform pickup",
+          "eligible": true,
+          "outcome": 4
+        }
+      ],
+      "captured_effects_match_native": true,
+      "completed_replay_refused": true,
+      "source_preserved": true,
+      "owned_exit_without_save": true
+    }
   }
 }

@@ -687,6 +687,12 @@ if recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (r
  if recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' then pixel(944,assignment_row_y);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')end
  local expected_holder=assignment.histfig
  local previous_holder=expected_holder>=0 and assert(df.historical_figure.find(expected_holder)) or nil
+ local previous_holder_unit=previous_holder and previous_holder.unit_id
+ if recognition_case=='replaceabsentpriest' then
+  -- Missing association only; retain the original unit for effect comparisons.
+  assert(previous_holder);previous_holder.unit_id=-1
+  assert(not df.unit.find(previous_holder.unit_id))
+ end
  local linked_squad,seeded_assignment_job
  if recognition_case=='assignspypriest' then
   -- Native follow-up c2fde0 reads responsibilities+25 (ESPIONAGE) at0x341.
@@ -980,7 +986,7 @@ if recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (r
     end
    end end
   end
-  if not unit_id and previous_holder then state.previous_holder=selected_state(previous_holder.unit_id,previous_holder.id)end
+  if not unit_id and previous_holder then state.previous_holder=selected_state(previous_holder_unit,previous_holder.id)end
   return state
  end
  cancelled.selected=selected_state()

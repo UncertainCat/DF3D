@@ -634,8 +634,20 @@ and actual pointer removal with independently checked native history effects.
 The complete 576x36 holder row matches the native075231 capture with zero
 different RGB pixels (20,736 compared). Both save manifests remain unchanged;
 owned DF exits unsaved. The run passes with only the known rendering-thread
-notice. Absent-unit holder replacement remains unverified; this fixture still
-isolates a missing unit association rather than simulating departure or death.
+notice. This fixture isolates a missing unit association rather than simulating
+departure or death.
+
+Native replaceabsentpriest080100 and semantic actionreplaceabsentpriest080134
+also verify replacement of that historical holder. The callback oracle opens
+a vacant picker and restores the original holder before selection, modelling
+a target becoming occupied while the picker is open; occupied rows do not offer
+direct replacement in the UI. Both paths retain the old figure's unit_id=-1,
+remove its religious position link and appoint HF10379, with matching captured
+recognition, unit/HF/nemesis/actor records and history events. The original unit
+record remains present for comparison; this is not a death simulation. Six
+selected-receipt stale probes and completed replay refusal pass. Both protected
+runs pass cleanly, preserve the source and exit owned DF unsaved. This establishes
+the native callback branch, not a new viewer replacement gesture.
 
 Native assignspypriest074638 and semantic actionassignspypriest075018 exercise
 the follow-up ESPIONAGE responsibility at position offset0x341. The responsibility

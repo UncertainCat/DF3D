@@ -10,6 +10,13 @@
 
 namespace df { struct entity_position; }
 namespace df3d_area {
+// Read-only global tracker facts; callers own a safe point. Unknown entity types
+// retain an empty row, matching native slot consumption. No UI state is read.
+struct ContinuingAgreementRow {
+  int32_t agreementId=-1,subjectId=-1,entityId=-1,entityType=-1,tier=-1,profession=-1,year=0,yearTick=0;
+  std::string heading,applicant,date;
+};
+std::optional<std::vector<ContinuingAgreementRow>> observeNativeContinuingAgreements();
 // World facts for the staged recognition workflow. No menu state or mutation
 // permission is implied; the command transaction/typed transport is separate.
 struct LocationRecognitionFacts {

@@ -28,7 +28,7 @@
   "gaps": [
     "Tracker scrolling, sizing and global visibility arbitration",
     "Map selection outside the panel and other input devices",
-    "Native semantic provider, typed transport and viewer"
+    "Typed transport, model, viewer, lifecycle and global visibility integration"
   ],
   "native_audit": {
     "renderer": "3d6950",
@@ -41,10 +41,10 @@
     "selectors": "Exclude concluded flag bit 2; require entity type 5 (religion) or 10 (guild). Tier 1/2 selects heading. Enumeration follows continuing list order.",
     "helpers": {
       "a946e0": "Existing pinned native English name formatter; caller uses true,false.",
-      "132e0c0": "Native profession formatter uses owned output plus profession/race/caste/plural/capitalized/default-race inputs. Leaf audit in progress; explicit default race avoids UI-mode fallback.",
-      "773390": "Native month formatter maps index 0..11 to immutable names and tail-calls string assign6fa10. Audit must include split tail and jump table through7734df."
+      "132e0c0": "Audited owned-output profession formatter; explicit default race bypasses UI-mode fallback. Pinned raw lookup helpers 132cc10,30cea0,30cf70,1bb330,144ea0,aa3bd0 and capitalization52d3c0. Live guild text matches and guarded objects remain unchanged.",
+      "773390": "Pinned full month switch, split tail and jump table through7734df. Writes an owned string from immutable literals; all twelve native month names match."
     },
-    "ownership": "Whole renderer writes native UI/GPS and must not be called or borrowed at runtime. Independent facts and formatting helpers require a separate provider."
+    "ownership": "Read-only provider observes world agreement records and invokes native semantic formatters with owned strings. Whole renderer/UI scratch is never called or borrowed. Provider is diagnostic-only until typed transport and presentation integration."
   },
   "cases": [
     {
@@ -3121,6 +3121,337 @@
           "selected_agreement_id": 0,
           "selected_location": 0
         }
+      }
+    ]
+  },
+  "provider_reference": {
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-110336",
+    "result_sha256": "d63faf3de7799e967c65adb1a457c3979ecf6b3b808af7372dd547b4feef71c6",
+    "plugin_sha256": "BDF7F614075EA53863F4BEE640B99B323433E5D10BA046FBE3CA4EB5066796F8",
+    "owned_pid": 106332,
+    "status": "passed",
+    "source_manifest": "unchanged",
+    "checks": [
+      "Each heading/applicant/date equals independently read native text cells",
+      "Two consecutive reads return identical rows",
+      "Native main_interface and gps bytes unchanged",
+      "All six fixture agreement, first subject, Location payload and party object bytes unchanged"
+    ],
+    "cases": [
+      {
+        "name": "tracker-two-complexes",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "24fb0b46034fed97095f6ac18544fc546f7f7bb914f6d2fea0a1719de7623d14"
+      },
+      {
+        "name": "tracker-temple-date",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "5af5ed4d4b61fb6020a6a1c51a4494fa94bfd6ba1e2fbdc568c7b54214c1026a"
+      },
+      {
+        "name": "tracker-complex-next-month",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "a459f2222b4a67bcfc308dd74aad220ba3734573a99f441492f1f116c7228eb2"
+      },
+      {
+        "name": "tracker-concluded-first",
+        "row_count": 2,
+        "agreement_ids": [
+          2147483603,
+          2147483605
+        ],
+        "rows_sha256": "f7d45fbc3d3e44ea80429e4a711c85a76efc8be8f9d1e0db9c5f26afc1173a7b"
+      },
+      {
+        "name": "tracker-missing-applicant",
+        "row_count": 2,
+        "agreement_ids": [
+          2147483603,
+          2147483605
+        ],
+        "rows_sha256": "f7d45fbc3d3e44ea80429e4a711c85a76efc8be8f9d1e0db9c5f26afc1173a7b"
+      },
+      {
+        "name": "tracker-non-location-first",
+        "row_count": 2,
+        "agreement_ids": [
+          2147483603,
+          2147483605
+        ],
+        "rows_sha256": "f7d45fbc3d3e44ea80429e4a711c85a76efc8be8f9d1e0db9c5f26afc1173a7b"
+      },
+      {
+        "name": "tracker-guildhall-farmer",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "d88036a3db96296017d5543b5fdd496b5427ee0bc2a8b9126aac0b7f0cc6b7fa"
+      },
+      {
+        "name": "tracker-grand-guildhall-farmer",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "149974e3ed6f21586376f7134f32f1b1e72fd775ef99b42a8cf3385ecb809ea1"
+      },
+      {
+        "name": "tracker-grand-guildhall-carpenter",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "5cf82db1cf83c963d4d1922bfa27090e078deb811057e85d1fd79d6de936edeb"
+      },
+      {
+        "name": "tracker-grand-guildhall-miner",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "59ad0c5edd36db53c85ce6dd76eaa6b2f933fc577d85d437aad6dc2bffc93eb0"
+      },
+      {
+        "name": "tracker-guild-invalid-tier",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "c1bbb5f43bfdc5ad6e7d24149841e23bb7dbda611ae53478d700089010a49740"
+      },
+      {
+        "name": "tracker-month-0",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "9c8de735e26e028b61c0c3705635d672ef1b4786187599362a1c726cefda0b3e"
+      },
+      {
+        "name": "tracker-month-1",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "90cd270497db9ba5327e86263fb6511cccbad4e066386c4b5e459a72aee193ec"
+      },
+      {
+        "name": "tracker-month-2",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "c5425effd421a9dffcfdd2c775637e30da89952e4d8e62ac43709c537d2d52bc"
+      },
+      {
+        "name": "tracker-month-3",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "b8a90018d7fd4a2a16f8fd4bdd92316f979613539feb185cad652c7a9e233212"
+      },
+      {
+        "name": "tracker-month-4",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0d78be73d7e19caa9148d1e38908f19f4fc9df70f765b822c747521e64515e2b"
+      },
+      {
+        "name": "tracker-month-5",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "7add6ddc1f48873d4924263fc0e19ead683b6f5f3d52ff4c0330799f5061d2e6"
+      },
+      {
+        "name": "tracker-month-6",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "e0e51a9544e0d805d53ed02f7b4876ff0e93d5152badcb1658db799c0857e288"
+      },
+      {
+        "name": "tracker-month-7",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "8d9c9750484a386a5a2e581b795e202c0de5ba01916c4f86f5bcd0774eb3b6d4"
+      },
+      {
+        "name": "tracker-month-8",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "8f917f629b6594e35b5cf4189ecedcf2e81713458509085d3527164935927ded"
+      },
+      {
+        "name": "tracker-month-9",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "5644445a590601ddbc8dadcfaf0b19a172bb970ec5a60dfe8eaf91cc7e01a50f"
+      },
+      {
+        "name": "tracker-month-10",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "b24f1266e1b48793a5a3fb74c9784f2f4920c4698856f2cf438cb33bb64b7377"
+      },
+      {
+        "name": "tracker-month-11",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0f1631264c4ab15394a4c784ea5ea8cd7ffe943781a13d5633a55896ca6355c2"
+      },
+      {
+        "name": "tracker-hover-heading",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0f1631264c4ab15394a4c784ea5ea8cd7ffe943781a13d5633a55896ca6355c2"
+      },
+      {
+        "name": "tracker-click-heading",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0f1631264c4ab15394a4c784ea5ea8cd7ffe943781a13d5633a55896ca6355c2"
+      },
+      {
+        "name": "tracker-hover-applicant",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0f1631264c4ab15394a4c784ea5ea8cd7ffe943781a13d5633a55896ca6355c2"
+      },
+      {
+        "name": "tracker-click-applicant",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0f1631264c4ab15394a4c784ea5ea8cd7ffe943781a13d5633a55896ca6355c2"
+      },
+      {
+        "name": "tracker-hover-date",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0f1631264c4ab15394a4c784ea5ea8cd7ffe943781a13d5633a55896ca6355c2"
+      },
+      {
+        "name": "tracker-click-date",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0f1631264c4ab15394a4c784ea5ea8cd7ffe943781a13d5633a55896ca6355c2"
+      },
+      {
+        "name": "tracker-hover-blank",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0f1631264c4ab15394a4c784ea5ea8cd7ffe943781a13d5633a55896ca6355c2"
+      },
+      {
+        "name": "tracker-click-blank",
+        "row_count": 3,
+        "agreement_ids": [
+          2147483603,
+          2147483604,
+          2147483605
+        ],
+        "rows_sha256": "0f1631264c4ab15394a4c784ea5ea8cd7ffe943781a13d5633a55896ca6355c2"
+      },
+      {
+        "name": "tracker-no-visible-rows",
+        "row_count": 1,
+        "agreement_ids": [
+          2147483603
+        ],
+        "rows_sha256": "823a9c3c16874e4b807751535567d66894467eabfb21852f92ca69edc59b141f"
       }
     ]
   }

@@ -577,6 +577,30 @@ if recognition_case=='petitiontracker' then
    local pen=dfhack.screen.readTile(x,y)
    row.tracker_cells[#row.tracker_cells+1]={x=x,y=y,ch=pen.ch,fg=pen.fg,bg=pen.bg,bold=pen.bold,tile=pen.tile}
   end end
+  local guards={}
+  local function guard(object)
+   local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+   guards[#guards+1]={bytes=bytes,address=address,size=size}
+  end
+  guard(m);guard(g)
+  for _,id in ipairs(fixture_agreements)do
+   local agreement=df.agreement.find(id);guard(agreement);guard(agreement.details[0]);guard(agreement.details[0].data.Location);guard(agreement.parties[0])
+  end
+  local function read()
+   local text,code=dfhack.run_command_silent('df3d','continuing-agreements-read')
+   assert(code==0,text);local result=require('json').decode(text);assert(result.valid,'tracker provider unavailable');return result.rows
+  end
+  row.provider=read();assert(require('json').encode(row.provider)==require('json').encode(read()),'tracker repeated read unstable')
+  for _,v in ipairs(guards)do assert(dfhack.internal.memcmp(v.bytes,v.address,v.size)==0,'tracker read changed guarded state');df.delete(v.bytes)end
+  row.provider_guards=true
+  for index,facts in ipairs(row.provider)do
+   for offset,field in ipairs{'heading','applicant','date'}do
+    local text={};local y=19+(index-1)*4+offset-1
+    for x=124,147 do local ch=dfhack.screen.readTile(x,y).ch&255;text[#text+1]=ch==0 and ' ' or string.char(ch)end
+    local actual=dfhack.df2utf(table.concat(text)):gsub('%s+$','')
+    assert(actual==facts[field],'tracker native text mismatch '..label..' '..index..' '..field..' '..actual..' / '..facts[field])
+   end
+  end
   return row
  end
  shot('two-complexes')

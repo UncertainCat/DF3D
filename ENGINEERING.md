@@ -1053,17 +1053,35 @@ handles religion(type5) or guild(type10). The nonmatching first applicant in
 this fixture leaves a blank row block before the two visible requests; zero
 visible text is not evidence that the frame is hidden. Temple heading selects tier1/2;
 English entity name uses the already pinned native formatter a946e0 with
-true,false. Guild profession formatter132e0c0 and month formatter773390 are
-candidate semantic helpers under ownership audit. The month switch uses only
-immutable literals and an owned string assignment; its split tail and jump
-table extend beyond the first unwind entry. The profession formatter accepts
-an explicit default race, which can avoid its UI-mode fallback. Its raw-based
-profession/caste lookup leaves still require complete dependency verification. Date arithmetic
-and row selection are inline in the renderer. The whole renderer writes native
-UI/GPS and is not an admissible runtime API. The existing agreement browser's
-English summaries are not native tracker copy. A semantic provider, transport,
-viewer and interaction/visibility/scrolling evidence remain
-unfinished; this discovery does not expose the tracker.
+true,false. Guild formatter132e0c0 receives an owned string and explicit
+profession, fortress race, caste-1, plural/capitalized flags and default race.
+Passing that default explicitly bypasses its UI-mode fallback. The raw lookup
+helpers132cc10,30cea0,30cf70,1bb330,144ea0,aa3bd0 and capitalization52d3c0
+are pinned; they read creature/caste names and write supplied strings. Month
+formatter773390 uses immutable literals and an owned string assignment; its
+pin includes the split tail and jump table through7734df. Date arithmetic and
+row selection remain the audited inline renderer operations. The whole renderer
+writes native UI/GPS and is not an admissible runtime API.
+
+`observeNativeContinuingAgreements` provides pointer-free ordered facts and
+native-formatted text through the staged `df3d continuing-agreements-read`
+diagnostic. Unsupported resolved entity types retain empty rows, preserving
+native slot consumption. Missing/concluded agreements and missing applicants
+are skipped. Malformed owned pointers, unsupported date/profession ranges,
+more than4096 source IDs and oversized names fail the observation rather than
+publish partial facts. Native interface/menu scratch is never read or borrowed.
+The existing agreement browser's English summaries are not used.
+
+MSVC build and core tests (`petition-tracker-provider`) pass. Protected native110336 compares every returned heading,
+applicant and date with independent native text cells across32 states, covering
+temple/guild tiers, all months, exclusion cases and the interaction probes.
+Repeated reads are identical. Byte guards retain main_interface, GPS and each
+fixture agreement/first-subject/Location-payload/party object unchanged; this is
+not a claim about every allocation in the process. Owned DF106332 exits unsaved
+with source hashes unchanged. `provider_reference` stores bounded digests and
+the installed plugin hash. Protocol78 is unchanged; this diagnostic provider has
+no typed viewer route yet. Transport, model, presentation, lifecycle and global
+visibility/scrolling integration remain unfinished.
 
 ## Native Location name editor discovery
 

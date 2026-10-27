@@ -2220,6 +2220,20 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(result)for(auto id:*result)value[field].append(id);
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
+      if (parameters[0] == "continuing-agreements-read") {
+        if(parameters.size()!=1)return CR_WRONG_USAGE;
+        const auto rows=df3d_area::observeNativeContinuingAgreements();
+        Json::Value value(Json::objectValue);value["valid"]=rows.has_value();value["rows"]=Json::Value(Json::arrayValue);
+        if(rows)for(const auto& row:*rows) {
+          Json::Value entry(Json::objectValue);
+          entry["agreement_id"]=row.agreementId;entry["subject_id"]=row.subjectId;entry["entity_id"]=row.entityId;
+          entry["entity_type"]=row.entityType;entry["tier"]=row.tier;entry["profession"]=row.profession;
+          entry["year"]=row.year;entry["year_tick"]=row.yearTick;
+          entry["heading"]=row.heading;entry["applicant"]=row.applicant;entry["date"]=row.date;
+          value["rows"].append(entry);
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
       if (parameters[0] == "location-recognition-read") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t ids[2]{};

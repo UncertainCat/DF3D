@@ -629,6 +629,75 @@ std::optional<LocationNameText> formatNativeLocationName(const LocationNameValue
   reinterpret_cast<English>(base+0xa946e0)(&name,&english,true,false);
   return LocationNameText{DF2UTF(native),DF2UTF(english)};
 }
+std::optional<std::vector<ContinuingAgreementRow>> observeNativeContinuingAgreements() {
+  if(!df::global::world || !df::global::plotinfo || !DFHack::Maps::IsValid())return std::nullopt;
+  static const bool compatible=[] {
+    if(!locationRefreshFunction())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t count) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return       hash(0x3f9956,0xa40)==UINT64_C(0xcd6dc373b6ce5233) &&
+      hash(0x132e0c0,0x368)==UINT64_C(0x5020a6b8e463a24d) &&
+      hash(0x132cc10,0x14a4)==UINT64_C(0x32cb3990ee45026b) &&
+      hash(0x30cea0,0xc3)==UINT64_C(0x47a07e027acb5ada) &&
+      hash(0x30cf70,0x174)==UINT64_C(0x6f623c8eaf55f9c1) &&
+      hash(0x1bb330,0xcc)==UINT64_C(0x22cd601a57c49cb0) &&
+      hash(0x144ea0,0xdb)==UINT64_C(0x9573d664061028ca) &&
+      hash(0xaa3bd0,0x1c3)==UINT64_C(0xf9cd818efc6bad8) &&
+      hash(0x52d3c0,0x288)==UINT64_C(0x6e1fbc2416fba9fc) &&
+      hash(0x773390,0x150)==UINT64_C(0x4549a748969f469c);
+  }();
+  if(!compatible)return std::nullopt;
+  const auto& ids=df::global::plotinfo->continuing_agreement_id;
+  if(ids.size()>4096)return std::nullopt;
+  const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+  using Profession=bool(*)(std::string*,int16_t,int16_t,int16_t,bool,bool,int16_t);
+  using Month=void(*)(int32_t,std::string*);
+  const auto profession=reinterpret_cast<Profession>(base+0x132e0c0);
+  const auto month=reinterpret_cast<Month>(base+0x773390);
+  std::vector<ContinuingAgreementRow> rows;
+  for(auto id:ids) {
+    const auto* agreement=df::agreement::find(id);
+    if(!agreement || agreement->flags.bits.convicted_accepted || agreement->details.empty())continue;
+    const auto* subject=agreement->details.front();if(!subject)return std::nullopt;
+    if(subject->type!=df::agreement_details_type::Location)continue;
+    const auto* data=subject->data.Location;if(!data)return std::nullopt;
+    const auto* party=binsearch_in_vector(agreement->parties,data->applicant);
+    if(!party || party->entity_ids.empty())continue;
+    const auto* entity=df::historical_entity::find(party->entity_ids.front());if(!entity)continue;
+    ContinuingAgreementRow row;
+    row.agreementId=id;row.subjectId=subject->id;row.entityId=entity->id;row.entityType=int32_t(entity->type);
+    row.tier=data->tier;row.profession=int32_t(data->profession);row.year=subject->year;row.yearTick=subject->year_tick;
+    // Renderer3f9a69 advances a blank slot for other resolved entity types.
+    if(row.entityType==5 || row.entityType==10) {
+      if(row.yearTick<0 || row.yearTick>=403200)return std::nullopt;
+      if(row.entityType==5) {
+        auto text=formatNativeLocationName(copyLocationName(entity->name));if(!text)return std::nullopt;
+        row.applicant=std::move(text->english);
+        if(row.tier==1)row.heading="Build temple";
+        if(row.tier==2)row.heading="Build temple complex";
+      } else {
+        if(row.profession<0 || row.profession>134)return std::nullopt;
+        const auto race=df::global::plotinfo->race_id;
+        // Explicit default race avoids the formatter's -2 UI-mode fallback.
+        // Raw profession/caste lookups are read-only; all output is owned.
+        std::string text;profession(&text,int16_t(row.profession),race,-1,true,true,race);
+        row.applicant=DF2UTF(text)+" guild";
+        if(row.tier==1)row.heading="Build guildhall";
+        if(row.tier==2)row.heading="Build grand guildhall";
+      }
+      const int32_t days=row.yearTick/1200,day=days%28+1;
+      std::string name;month(days/28,&name);
+      const char* suffix=(day==1 || day==21)?"st":(day==2 || day==22)?"nd":(day==3 || day==23)?"rd":"th";
+      row.date=std::to_string(day)+suffix+" "+DF2UTF(name)+", "+std::to_string(row.year);
+    }
+    if(row.applicant.size()>4096)return std::nullopt;
+    rows.push_back(std::move(row));
+  }
+  return rows;
+}
 std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32_t id) {
   const auto observed=observeNativeLocationDetailsCore(siteId,id);
   if(!observed || !locationRefreshFunction())return std::nullopt;

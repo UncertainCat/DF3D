@@ -383,8 +383,26 @@ out of the fixture. MSVC and core19/19 pass in
 `build/qa/location-religious-candidate-rows`. The shared-builder regression
 `areas_acceptance.ps1 -StaffOnly` in protected054430 passes ordinary staff editing
 with empty diagnostics, unchanged source/clone manifests and unsaved owned exit.
-Religious alternate sorting/search, assignment and rendered viewer integration
-remain unfinished.
+Religious alternate sorting/search and rendered viewer integration remain unfinished.
+
+`assignNativeLocationReligiousStaff` calls pinned native position assignment,
+actor insertion and follow-up routines with semantic records. It revalidates the
+current holder receipt and candidate eligibility, uses the existing removal
+primitive for replacement, and checks the resulting assignment before reporting
+Applied. Unexpected post-effect results are Unknown and must not be replayed.
+The paused diagnostic is `location-religious-assign site location entity assignment
+unit expected-holder revision`; it is not exposed through management transport.
+Protected actionassignpriest055118 compares the ordinary vacant-priest mutation
+with native054344, aligning RNG only inside the disposable test. All captured
+recognition, selected-unit/figure/nemesis/personality/actor facts and full new events
+match exactly, including RNG afterward. Five invalid identity components, zero
+revision, a stale revision and completed-request replay are refused; UI/gps byte
+guards pass. MSVC and core19/19 pass in
+`build/qa/location-religious-assignment-semantic-final`, with source preservation
+and unsaved owned exit. Replacement, military/job/high-priest/plotter/historical
+variants and post-effect Unknown injection remain unverified. The existing holder
+receipt does not bind all selected-candidate dependencies; add that receipt before
+management/viewer exposure. Protocol74 remains unchanged.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

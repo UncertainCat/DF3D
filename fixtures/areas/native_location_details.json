@@ -10435,7 +10435,7 @@
     "omissions": [
       "Position flag/caste/historical-figure eligibility boundary variants",
       "Alternate sorting, filtering and keyboard input",
-      "Assignment mutation helper audit and full unit/job/squad side effects",
+      "Assignment replacement/military/job/high-priest/plotter variants and post-effect Unknown injection",
       "Bridge receipt/transport and viewer assignment workflow",
       "High-priest/historical-holder variants"
     ],
@@ -12221,6 +12221,31 @@
       "omissions": [
         "No rendered religious viewer picker or alternate sorting/search/input verification.",
         "Raw mixed-encoding diagnostic names are excluded from this fixture."
+      ]
+    },
+    "assignment_semantic_reference": {
+      "source": "build/stockpile-storage-native-location-recognition-actionassignpriest-20261027-055118",
+      "result_sha256": "665df27421fb97681fd3a92a943361175b6717601b395c31200ffc2036b02fc9",
+      "native_reference": "build/stockpile-storage-native-location-recognition-assignpriest-20261027-054344/result.json",
+      "plugin_sha256": "811EADED56A87538E1CF88C1C75EAFDF355CCD84C0A015330B1851B77AF0419C",
+      "status": "passed",
+      "compared_fields": [
+        "recognition",
+        "selected",
+        "new_events"
+      ],
+      "rng_aligned_for_controlled_comparison": true,
+      "native_ui_and_gps_bytes_unchanged": true,
+      "invalid_identity_components_rejected": 5,
+      "zero_revision_rejected": true,
+      "stale_revision_rejected": true,
+      "completed_request_replay_stale": true,
+      "source_preserved": true,
+      "owned_unsaved_exit": true,
+      "omissions": [
+        "Only the ordinary vacant-priest mutation is paired against native; replacement, military, active-job, high-priest, plotter and historical-holder variants remain.",
+        "Selected-candidate dependency receipt, management transport and rendered viewer assignment are not implemented.",
+        "Post-effect Unknown injection remains untested."
       ]
     }
   }

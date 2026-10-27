@@ -89,5 +89,9 @@ std::optional<LocationStaffCandidates> observeNativeReligiousCandidates(
 // Requires the exact observed revision at the same safe point as mutation.
 LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
     int32_t entityId,int32_t assignmentId,int32_t expectedHolderId,uint64_t expectedRevision);
+// Diagnostic primitive. Revalidates current candidate eligibility; transport
+// must additionally bind the selected candidate's dependencies before exposure.
+LocationStaffEditOutcome assignNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
+    int32_t entityId,int32_t assignmentId,int32_t unitId,int32_t expectedHolderId,uint64_t expectedRevision);
 
 }

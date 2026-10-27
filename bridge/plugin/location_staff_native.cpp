@@ -471,6 +471,48 @@ std::optional<LocationStaffCandidates> observeNativeReligiousCandidates(
   return result;
 }
 
+LocationStaffEditOutcome assignNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
+    int32_t entityId,int32_t assignmentId,int32_t unitId,int32_t expectedHolderId,uint64_t expectedRevision) {
+  const auto& native=religiousStaffAssignmentFunctions();
+  if(!native)return LocationStaffEditOutcome::Unavailable;
+  if(!expectedRevision || expectedRevision>uint64_t(INT64_MAX) || unitId<0)return LocationStaffEditOutcome::Rejected;
+  const auto receipt=observeNativeLocationReligiousStaff(siteId,locationId,entityId,assignmentId);
+  if(!receipt)return LocationStaffEditOutcome::Rejected;
+  if(receipt->revision!=expectedRevision || receipt->holderId!=expectedHolderId)return LocationStaffEditOutcome::Stale;
+  const auto candidates=observeNativeReligiousCandidateIds(siteId,locationId,entityId,assignmentId);
+  if(!candidates || std::find(candidates->begin(),candidates->end(),unitId)==candidates->end())return LocationStaffEditOutcome::Rejected;
+  auto* unit=df::unit::find(unitId);if(!unit)return LocationStaffEditOutcome::Rejected;
+  auto* figure=df::historical_figure::find(unit->hist_figure_id);
+  if(!figure)return LocationStaffEditOutcome::Rejected;
+  df::nemesis_record* selected=nullptr;
+  for(auto* nemesis:df::global::world->nemesis.all) {
+    if(nemesis && nemesis->figure==figure) {
+      if(selected)return LocationStaffEditOutcome::Rejected;
+      selected=nemesis;
+    }
+  }
+  if(!selected || selected->unit!=unit)return LocationStaffEditOutcome::Rejected;
+  auto* entity=df::historical_entity::find(entityId);
+  auto* position=binsearch_in_vector(entity->positions.own,receipt->positionId);
+  if(!position)return LocationStaffEditOutcome::Rejected;
+  // Finish all admission checks before removing a previous holder. Any failure
+  // after a native effect is Unknown; callers must not automatically replay it.
+  if(expectedHolderId>=0) {
+    const auto removed=removeNativeLocationReligiousStaff(siteId,locationId,entityId,assignmentId,expectedHolderId,expectedRevision);
+    if(removed!=LocationStaffEditOutcome::Applied)return removed;
+  }
+  try {
+    if(position->squad_size>0)native.military(unit,true);
+    native.assign(figure,assignmentId,entityId,100,true,-1,-1);
+    native.insert(selected,&df::global::world->nemesis.civilized_actor);
+    native.followup(nullptr,entity,position,selected);
+    const auto* assignment=binsearch_in_vector(entity->positions.assignments,assignmentId);
+    if(!assignment || assignment->histfig!=figure->id || assignment->histfig2!=figure->id)
+      return LocationStaffEditOutcome::Unknown;
+    return LocationStaffEditOutcome::Applied;
+  } catch(const std::exception&) {return LocationStaffEditOutcome::Unknown;}
+}
+
 LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
     int32_t entityId,int32_t assignmentId,int32_t expectedHolderId,uint64_t expectedRevision) {
   const auto& native=religiousStaffMutationFunctions();

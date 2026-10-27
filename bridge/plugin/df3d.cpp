@@ -1762,6 +1762,20 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               seed.valid,seed.id,seed.x,seed.y,seed.z,int(seed.furniture),seed.inUse);
           return CR_OK;
       }
+      if(parameters[0]=="location-religious-assign") {
+        if(parameters.size()!=8)return CR_WRONG_USAGE;
+        int32_t ids[6]{};uint64_t revision=0;
+        for(size_t i=0;i<6;++i) {
+          const auto& text=parameters[i+1];const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        const auto& text=parameters[7];const auto parsed=std::from_chars(text.data(),text.data()+text.size(),revision);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        Json::Value value(Json::objectValue);
+        value["outcome"]=int(df3d_area::assignNativeLocationReligiousStaff(ids[0],ids[1],ids[2],ids[3],ids[4],ids[5],revision));
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
       if(parameters[0]=="location-religious-remove" || parameters[0]=="location-religious-receipt" || parameters[0]=="location-religious-candidates" || parameters[0]=="location-religious-candidate-rows") {
         const bool candidateRows=parameters[0]=="location-religious-candidate-rows";
         const bool candidates=candidateRows || parameters[0]=="location-religious-candidates";

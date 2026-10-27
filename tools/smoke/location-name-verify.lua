@@ -28,7 +28,9 @@ if request.op=='name_locations' then
 else
  local location;for _,v in ipairs(site.buildings)do if v.id==request.location_id then location=v;break end end
  local name=assert(location):getName()
- if request.op=='name_headers' then
+ if request.op=='name_details' then
+  assert(request.name==dfhack.df2utf(dfhack.translation.translateName(name,true)),'Details name did not refresh after naming')
+ elseif request.op=='name_headers' then
   local text,code=dfhack.run_command_silent('df3d','location-name-read',tostring(site.id),tostring(location.id))
   assert(code==0,text);local observed=json.decode(text);assert(observed.valid and observed.header_valid)
   assert(request.native_header==observed.native_header and request.english_header==observed.english_header,'header transport differs')

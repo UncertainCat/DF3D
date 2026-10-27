@@ -357,7 +357,21 @@ GPU checks with only their documented diagnostics. The quill's32x36 RGB crop
 matches native223634 for all six reference locations. Actual Godot pointer tests
 cover blocked entry, opening, Done, reopening and parent retirement, while the
 naming capture also checks blocked scrollbar clicks/drags. These use a pending
-service stub for navigation and do not establish live integrated mutation effects.
+service stub for navigation; live mutation evidence follows separately.
+
+Protected `areas_acceptance.ps1 -NamingScene` runs the actual fortress scene on
+an owned unsaved clone. `build/areas-acceptance-20261026-231531` covers all six
+locations: quill entry, complete component-zero choices,24 viewport-driven edits
+(Select, Clear, cross-component Random and whole Random), native field/RNG/header
+readback, Done/Details refresh, reopen/Escape and Back/chooser refresh. Naming
+edits refresh the observed parent zone; returning to the chooser rereads its
+native list, preserving scroll instead of retaining old names. This also queues
+the list read behind a sent mutation on dismissal, though that pending-close
+case still needs integrated live acceptance. Both source and clone save manifests
+remain unchanged; the owned process exits unsaved. The run passes with only the
+known separate-thread notice. The naming fixture records its digest and scope.
+Assigned-zone entry, integrated interruption lifecycle and remaining native input
+and layout cases are not covered by this run; Details remains unexposed.
 
 ## Native squad assignment reference
 

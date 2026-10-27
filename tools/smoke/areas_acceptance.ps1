@@ -1,6 +1,6 @@
 # Protected, owned, never-saved acceptance. SaveId names a NEW disposable copy
 # of region5; existing saves are refused. The copy is retained for inspection.
-param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$ZoneAnimalsOnly,[switch]$ZoneSquadsOnly,[ValidateSet("Barracks","ArcheryRange")][string]$SquadZone="Barracks",[ValidateSet("none","queued","sent")][string]$SquadDisconnect="none",[ValidateSet("none","queued","sent")][string]$AnimalDisconnect="none",[switch]$ZoneOwnerOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[ValidateSet("none","stale","queued","sent","late","restart")][string]$QuantityLifecycle="none",[switch]$StaffOnly,[switch]$QuantityOnly,[switch]$NamingOnly,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
+param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$ZoneAnimalsOnly,[switch]$ZoneSquadsOnly,[ValidateSet("Barracks","ArcheryRange")][string]$SquadZone="Barracks",[ValidateSet("none","queued","sent")][string]$SquadDisconnect="none",[ValidateSet("none","queued","sent")][string]$AnimalDisconnect="none",[switch]$ZoneOwnerOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[ValidateSet("none","stale","queued","sent","late","restart")][string]$QuantityLifecycle="none",[switch]$StaffOnly,[switch]$QuantityOnly,[switch]$NamingOnly,[switch]$NamingScene,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
@@ -34,6 +34,10 @@ function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  return $r
 }
 try {
+ if($NamingScene) {
+  if($PSBoundParameters.Keys | Where-Object {$_ -notin @('NamingScene','SaveId','DfPath')}){throw 'NamingScene is a separate protected GPU lane'}
+  $LocationScene=$true;Write-Lf "$out/naming-scene.txt" 'viewport'
+ }
  if($QuantityLifecycle -ne "none") {
   if(-not $LocationScene -or $Controller -or $ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $ZoneRenameOnly -or $ZoneGatherOnly -or $ZoneOverlapOnly -or $ZoneDefaultsOnly -or $ZoneAnimalsOnly -or $ZoneSquadsOnly -or $ZoneOwnerOnly -or $StockpilesOnly -or $StockpilePaintOnly -or $StockpileFitOnly -or $StockpileResizeOnly -or $MultiOnly -or $PaintCountsOnly -or $StaffOnly -or $QuantityOnly -or $StaffScene){throw "QuantityLifecycle requires LocationScene without other scopes"}
   Write-Lf "$out/quantity-lifecycle.json" (@{mode=$QuantityLifecycle} | ConvertTo-Json -Compress)
@@ -213,7 +217,7 @@ try {
     }
     Write-Lf "$out/status-$index.json" (@{holding=$holding;bytes=$bytes;builders=$builders} | ConvertTo-Json -Depth 6 -Compress)
    }
-   $verifier=if($NamingOnly -and $request.op -like 'name_*'){'location-name-verify.lua'}elseif(($QuantityOnly -or $LocationScene) -and $request.op -like 'quantity_*'){'location-quantity-verify.lua'}elseif($StockpileResizeOnly -and $request.op -like 'resize_*'){'stockpile-resize-verify.lua'}elseif(($StaffOnly -or $LocationScene) -and $request.op -like 'staff_edit_*'){'location-staff-edit-verify.lua'}elseif(($PaintCountsOnly -or $LocationScene) -and $request.op -like 'paint_counts_*'){'areas-paint-counts-verify.lua'}elseif($MultiOnly -and $request.op -like 'multi_*'){'areas-multi-verify.lua'}else{'areas-acceptance-verify.lua'}
+   $verifier=if(($NamingOnly -or $NamingScene) -and $request.op -like 'name_*'){'location-name-verify.lua'}elseif(($QuantityOnly -or $LocationScene) -and $request.op -like 'quantity_*'){'location-quantity-verify.lua'}elseif($StockpileResizeOnly -and $request.op -like 'resize_*'){'stockpile-resize-verify.lua'}elseif(($StaffOnly -or $LocationScene) -and $request.op -like 'staff_edit_*'){'location-staff-edit-verify.lua'}elseif(($PaintCountsOnly -or $LocationScene) -and $request.op -like 'paint_counts_*'){'areas-paint-counts-verify.lua'}elseif($MultiOnly -and $request.op -like 'multi_*'){'areas-multi-verify.lua'}else{'areas-acceptance-verify.lua'}
    $r=Invoke-LuaFile $verifier "[==[$out]==],$index"
    if(($r.Output -join "`n") -notmatch 'SEMANTIC_(PASS|INCOMPLETE)'){throw "Native verification $index failed: $($r.Output)"}
    Write-Ack "$out/ack-$index" 'ok'

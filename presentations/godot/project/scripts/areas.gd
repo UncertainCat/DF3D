@@ -30,6 +30,7 @@ var details_closing:=false
 var details_layer: Control
 var details_parent_shield: Control
 var details_origin := ""
+var details_name_dirty := false
 var details_parent_ticket := 0
 var details_parent_refresh_again := false
 var locations_state = preload("res://scripts/area_locations_state.gd").new()
@@ -507,17 +508,26 @@ func open_location_details(target: Dictionary, assigned := false) -> void:
 		details_view.quantity_view.input_allowed=func():return ui_host.allows_panel_input(self)
 		details_view.quantity_view.workflow.changed.connect(_finish_details_close)
 		details_view.staff_workflow.applied.connect(_refresh_details_parent)
+		details_view.name_workflow.names.applied.connect(_refresh_details_parent)
+		details_view.name_workflow.names.changed.connect(func():
+			if details_view.name_workflow.names.phase==details_view.name_workflow.names.Phase.Editing:details_name_dirty=true)
 		details_view.layout(get_viewport().get_visible_rect().size)
 	details_origin="zone" if assigned else "chooser"
+	details_name_dirty=false
 	details_parent_shield.position=panel.position;details_parent_shield.size=panel.size
 	details_state.open(target)
 	update_controls()
 
 func close_location_details() -> void:
+	# Reobserve chooser names after explicit edits, including a sent edit whose
+	# reply arrives after dismissal. The service orders this read behind it.
+	var refresh_names:=details_name_dirty and details_origin=="chooser"
+	details_name_dirty=false
 	details_origin=""
 	if details_layer!=null:details_layer.hide()
 	if details_view!=null:
 		details_view.name_workflow.close(false)
+		if refresh_names:locations_state.read()
 		var workflow=details_view.quantity_view.workflow
 		# Typed values are already explicit edits. Hide and retire input now,
 		# retaining this exact owner only until its ordered receipts settle.

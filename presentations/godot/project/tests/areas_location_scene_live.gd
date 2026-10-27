@@ -38,6 +38,9 @@ func pointer_areas() -> void:
 		if not check(control.get_node("Name").text==reference.title and control.get_node("Subtitle").text==reference.subtitle,
 			"Location row copy differs from native: %d actual=%s/%s native=%s/%s" % [index,control.get_node("Name").text,control.get_node("Subtitle").text,reference.title,reference.subtitle]): return
 	var observed_locations: Array=editor.locations_state.rows.duplicate(true)
+	if FileAccess.file_exists(directory+"/naming-scene.txt"):
+		await naming_routes(observed_locations)
+		return
 	editor.close_panel()
 	await details_transport(observed_locations)
 	if stopped: return
@@ -417,6 +420,50 @@ func assigned_details(area: Dictionary, edit_staff: bool = false) -> void:
 	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"assigned Details Back"):return
 	check(editor.panel.visible and editor.stockpile_page=="types" and int(editor.selected.location_id)==int(area.location_id),"assigned Back lost zone parent")
+
+func naming_routes(locations: Array) -> void:
+	var cases:=0
+	for index in locations.size():
+		var id:=int(locations[index].id)
+		step="scene naming location %d"%id
+		await click_control(editor.locations_view.choices[index].get_node("Details"))
+		if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready,"naming Details entry"):return
+		var details=editor.details_view
+		await click_control(details.rename_button)
+		var names=details.name_workflow.names
+		if not await wait_ui(func():return names.phase==names.Phase.Ready,"complete native naming choices"):return
+		if not check(details.name_view.visible and not details.heading.visible and names.snapshot.id==id,"naming target/visibility"):return
+		await native("name_choices",{"location_id":id,"component":0,"query":"","choices":names.rows})
+		await capture("naming_%d"%id)
+		for mode in [1,0,2,3]:
+			await native("name_guard",{"location_id":id})
+			if stopped:return
+			var chosen: Dictionary=names.rows[0].duplicate(true)
+			await pointer_click({1:Vector2(744,178),0:Vector2(668,142),2:Vector2(608,358),3:Vector2(832,82)}[mode])
+			if not await wait_ui(func():return names.phase==names.Phase.Ready and names.ticket==0,"naming mutation receipt and choices"):return
+			var value: Dictionary=names.snapshot.value.duplicate(true)
+			value.first_name_bytes=Array(value.first_name_bytes);value.nickname_bytes=Array(value.nickname_bytes)
+			if mode in [0,1]:
+				await native("name_edit_check",{"location_id":id,"mode":mode,"target":0,"word":chosen.word,"part":chosen.part,"value":value})
+			else:
+				await native("name_random_check",{"location_id":id,"mode":mode,"target":6,"displayed":0,"value":value})
+			await native("name_headers",{"location_id":id,"native_header":names.snapshot.native_header,"english_header":names.snapshot.english_header})
+			if stopped:return
+		await pointer_click(Vector2(912,82))
+		if not await wait_ui(func():return not details.name_workflow.active and editor.details_state.phase==editor.details_state.Phase.Ready,"Details refreshed after naming"):return
+		await native("name_details",{"location_id":id,"name":editor.details_state.snapshot.name})
+		var final_name: String=editor.details_state.snapshot.name
+		await click_control(details.rename_button)
+		if not await wait_ui(func():return names.phase==names.Phase.Ready,"reopened naming"):return
+		await pointer_key(KEY_ESCAPE)
+		if not check(not details.name_workflow.active and editor.details_origin=="chooser","Escape must return to Details"):return
+		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		if not await wait_ui(func():return editor.details_origin.is_empty() and editor.locations_view.visible and not editor.locations_state.busy(),"naming Details Back"):return
+		if not check(editor.locations_state.rows[index].name==final_name,"chooser retained old location name"):return
+		cases+=1
+	write_json("naming-scene-evidence.json",{"locations":cases,"mutations":cases*4,"scope":"quill entry, full choices, four edits and native readback, Done refresh, reopen/Escape/Back"})
+	print("LOCATION_NAMING_SCENE_PASS locations=",cases)
+	editor.close_panel()
 
 func details_routes(locations: Array) -> void:
 	step="fortress Details entry routes"

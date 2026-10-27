@@ -7927,5 +7927,37 @@
       608,
       660
     ]
+  },
+  "scene_reference": {
+    "run": "build/areas-acceptance-20261026-231531",
+    "protocol": 72,
+    "driver": "areas_acceptance.ps1 -NamingScene",
+    "locations": 6,
+    "mutations": 24,
+    "native_checks": {
+      "name_choices": 6,
+      "name_details": 6,
+      "name_edit_check": 12,
+      "name_guard": 24,
+      "name_headers": 24,
+      "name_random_check": 12
+    },
+    "result_sha256": "0182a817825b8518dc881ffb9e948cab7ca4b591a0031518f9f26a0ae72e3847",
+    "scope": [
+      "viewport quill entry through chooser Details",
+      "complete native component-zero choices",
+      "Select, Clear, cross-component Random, whole Random with native fields/RNG/header readback",
+      "Done refreshes Details; Back refreshes chooser names",
+      "reopen, physical Escape to Details, right-click Back to chooser"
+    ],
+    "save_preservation": "Both source and owned clone manifests unchanged; unsaved owned exit",
+    "diagnostics": "passed_with_known_issues: separate-thread notice only",
+    "omissions": [
+      "assigned-zone entry",
+      "queued/sent/late/epoch/restart integrated lifecycle",
+      "native scrolling/hover/focus timing",
+      "non-ASCII input",
+      "long-header and resize cases"
+    ]
   }
 }

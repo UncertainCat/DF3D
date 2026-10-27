@@ -17,6 +17,8 @@
 #include "df/metaphysical_profilest.h"
 #include "df/language_word.h"
 #include "df/entity_position_assignment.h"
+#include "df/entity_site_link.h"
+#include "df/entity_site_ab_profilest.h"
 #include "df/entity_position_responsibility.h"
 #include "df/unit.h"
 #include "df/job_skill.h"
@@ -42,9 +44,8 @@
 #include <numeric>
 
 namespace df3d_area {
-std::unique_ptr<df::entity_position> prepareNativeLocationRecognitionPosition(int32_t siteId,int32_t locationId) {
-  const auto facts=observeNativeLocationRecognition(siteId,locationId);
-  if(!facts)return {};
+static std::unique_ptr<df::entity_position> prepareNativeLocationRecognitionPositionImpl(const LocationRecognitionFacts& observed) {
+  const auto* facts=&observed;
   const auto state=locationRecognitionState(*facts);
   if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)return {};
   const bool high=state==LocationRecognitionState::RecognizeHighPriest;
@@ -136,9 +137,8 @@ std::optional<bool> recognitionAgreementMatches(const df::agreement* agreement,i
   return applicant && std::binary_search(applicant->entity_ids.begin(),applicant->entity_ids.end(),religionId);
 }
 }
-std::optional<std::vector<int32_t>> concludeNativeLocationRecognitionAgreements(int32_t siteId,int32_t locationId) {
-  const auto facts=observeNativeLocationRecognition(siteId,locationId);
-  if(!facts)return std::nullopt;
+static std::optional<std::vector<int32_t>> concludeNativeLocationRecognitionAgreementsImpl(const LocationRecognitionFacts& observed) {
+  const auto* facts=&observed;
   const auto state=locationRecognitionState(*facts);
   if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)
     return std::nullopt;
@@ -173,9 +173,8 @@ std::optional<std::vector<int32_t>> concludeNativeLocationRecognitionAgreements(
   }
   return ids;
 }
-std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughts(int32_t siteId,int32_t locationId) {
-  const auto facts=observeNativeLocationRecognition(siteId,locationId);
-  if(!facts)return std::nullopt;
+static std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughtsImpl(const LocationRecognitionFacts& observed) {
+  const auto* facts=&observed;
   const auto state=locationRecognitionState(*facts);
   if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)
     return std::nullopt;
@@ -221,6 +220,121 @@ std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughts(int32
     apply(unit,&thought);
   }
   return ids;
+}
+std::unique_ptr<df::entity_position> prepareNativeLocationRecognitionPosition(int32_t siteId,int32_t locationId) {
+  const auto facts=observeNativeLocationRecognition(siteId,locationId);
+  if(!facts)return {};
+  return prepareNativeLocationRecognitionPositionImpl(*facts);
+}
+std::optional<std::vector<int32_t>> concludeNativeLocationRecognitionAgreements(int32_t siteId,int32_t locationId) {
+  const auto facts=observeNativeLocationRecognition(siteId,locationId);
+  if(!facts)return std::nullopt;
+  return concludeNativeLocationRecognitionAgreementsImpl(*facts);
+}
+std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughts(int32_t siteId,int32_t locationId) {
+  const auto facts=observeNativeLocationRecognition(siteId,locationId);
+  if(!facts)return std::nullopt;
+  return applyNativeLocationRecognitionThoughtsImpl(*facts);
+}
+LocationRecognitionOutcome recognizeNativeLocation(int32_t siteId,int32_t locationId) {
+  const auto facts=observeNativeLocationRecognition(siteId,locationId);
+  if(!facts)return LocationRecognitionOutcome::Rejected;
+  const auto state=locationRecognitionState(*facts);
+  if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)
+    return LocationRecognitionOutcome::Rejected;
+  static const bool compatible=[] {
+    if(!locationRefreshFunction())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t size) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<size;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0xb96300,0xce)==UINT64_C(0x718bdbff364f1818) &&
+      hash(0xb97610,0x8d8)==UINT64_C(0xe3c18f2100d8cb4a) &&
+      hash(0xe1450,0x101)==UINT64_C(0xe9db8d770dfaf694) &&
+      hash(0xc30000,0x1f0)==UINT64_C(0x4e448b8aaad2fd47) &&
+      hash(0x9364d0,0x1da)==UINT64_C(0x65231f4d74787177) &&
+      hash(0x30ffb0,0x19a)==UINT64_C(0x0e9cc013df4012c2) &&
+      hash(0xbbe40,0xad)==UINT64_C(0x062a266340f9bf38);
+  }();
+  if(!compatible)return LocationRecognitionOutcome::Rejected;
+  const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+  auto* religion=df::historical_entity::find(facts->religionId);
+  if(!religion || !religion->entity_raw || religion->positions.next_assignment_id<0 ||
+      religion->positions.next_assignment_id==INT32_MAX)return LocationRecognitionOutcome::Rejected;
+  auto& positions=religion->positions;
+  const bool high=state==LocationRecognitionState::RecognizeHighPriest;
+  df::entity_position* target=nullptr;
+  df::entity_position_assignment* previous=nullptr;
+  for(auto* position:positions.own) {
+    if(!position)return LocationRecognitionOutcome::Rejected;
+    if(position->code==(high?"HIGH_PRIEST":"PRIEST"))target=position;
+    if(high && position->code=="PRIEST")for(auto* assignment:positions.assignments) {
+      if(!assignment)return LocationRecognitionOutcome::Rejected;
+      if(assignment->position_id==position->id && assignment->st_id==siteId)previous=assignment;
+    }
+  }
+  for(auto* assignment:positions.assignments)
+    if(!assignment || assignment->id>=positions.next_assignment_id)return LocationRecognitionOutcome::Rejected;
+  if(high && !previous)return LocationRecognitionOutcome::Rejected;
+  df::historical_figure* holder=previous && previous->histfig>=0?df::historical_figure::find(previous->histfig):nullptr;
+  if(previous && previous->histfig>=0 && !holder)return LocationRecognitionOutcome::Rejected;
+  if(!target && (positions.next_position_id<0 || positions.next_position_id==INT32_MAX))return LocationRecognitionOutcome::Rejected;
+  if(!target)for(auto* position:positions.own)if(position->id>=positions.next_position_id)return LocationRecognitionOutcome::Rejected;
+  // Native HF helpers operate on this semantic global container, never UI state.
+  static_assert(offsetof(df::world_history,hf_civ_actors)==0x360);
+  if(reinterpret_cast<uintptr_t>(&df::global::world->history)!=base+0x24f9cb8)return LocationRecognitionOutcome::Rejected;
+  bool begun=false;
+  try {
+    auto assignment=std::make_unique<df::entity_position_assignment>();
+    positions.own.reserve(positions.own.size()+(target?0:1));
+    positions.assignments.reserve(positions.assignments.size()+1);
+    // Preserve native effect/RNG order with the original eligibility snapshot.
+    // Removing the only continuing agreement must not revoke this same intent.
+    begun=true;
+    if(!concludeNativeLocationRecognitionAgreementsImpl(*facts) ||
+       !applyNativeLocationRecognitionThoughtsImpl(*facts))return LocationRecognitionOutcome::Unknown;
+    if(!target) {
+      auto prepared=prepareNativeLocationRecognitionPositionImpl(*facts);
+      if(!prepared)return LocationRecognitionOutcome::Unknown;
+      target=prepared.get();++positions.next_position_id;
+      positions.own.push_back(prepared.release());
+    }
+    if(high) {
+      target->flags.set(df::entity_position_flags::HAS_RECEIVED_POSITIONS,true);
+      target->flags.set(df::entity_position_flags::ACTIVE,true);
+    }
+    assignment->id=positions.next_assignment_id++;
+    assignment->position_id=target->id;assignment->st_id=siteId;
+    assignment->flags.set(df::entity_position_profile_flags::active,true);
+    auto* added=assignment.get();positions.assignments.push_back(assignment.release());
+    if(holder) {
+      const auto remove=reinterpret_cast<void (*)(df::historical_figure*,int32_t,int32_t,bool,bool)>(base+0xb96300);
+      const auto assign=reinterpret_cast<void (*)(df::historical_figure*,int32_t,int32_t,int16_t,bool,int32_t,int32_t)>(base+0xb97610);
+      remove(holder,previous->id,religion->id,false,false);
+      assign(holder,added->id,religion->id,100,true,-1,-1);
+      const auto track=reinterpret_cast<void (*)(df::historical_figure*,std::vector<df::historical_figure*>*)>(base+0xe1450);
+      track(holder,&df::global::world->history.hf_civ_actors);
+      const auto effects=reinterpret_cast<void (*)(void*,df::historical_entity*,df::entity_position*,df::historical_figure*)>(base+0xc30000);
+      effects(&df::global::world->history,religion,target,holder);
+    }
+    const auto siteLink=reinterpret_cast<df::entity_site_link* (*)(df::historical_entity*,int32_t,bool)>(base+0x9364d0);
+    auto* link=siteLink(religion,siteId,true);if(!link)return LocationRecognitionOutcome::Unknown;
+    link->type=df::entity_site_link_type::Local_Activity;link->flags.bits.base_of_operation=true;
+    if(high) {
+      const auto profile=reinterpret_cast<df::entity_site_ab_profilest* (*)(df::entity_site_link*,int32_t,bool)>(base+0x30ffb0);
+      auto* entry=profile(link,locationId,true);if(!entry)return LocationRecognitionOutcome::Unknown;
+      entry->purpose_flag.bits.place_of_worship=true;
+    } else link->flags.bits.residence=true;
+    // Native3ad8e0 mixes row construction with semantic cache resolution. Use
+    // only its bbe40 position lookup; never supply a native Details UI object.
+    const auto resolve=reinterpret_cast<df::entity_position* (*)(df::historical_entity*,df::entity_position_assignment*)>(base+0xbbe40);
+    for(auto* current:positions.assignments)if(current->st_id==siteId)resolve(religion,current);
+    if(!prepareNativeLocationStaff(siteId,locationId))return LocationRecognitionOutcome::Unknown;
+    return LocationRecognitionOutcome::Applied;
+  } catch(const std::exception&) {
+    return begun?LocationRecognitionOutcome::Unknown:LocationRecognitionOutcome::Rejected;
+  }
 }
 std::optional<LocationRecognitionFacts> observeNativeLocationRecognition(int32_t siteId,int32_t locationId) {
   if(siteId<0 || locationId<0 || !df::global::world || !df::global::plotinfo ||

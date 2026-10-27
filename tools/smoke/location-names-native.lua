@@ -508,19 +508,22 @@ local temple=choices[1];assert(temple.id==0)
 local religion=assert(df.historical_entity.find(temple.deity_data.Religion))
 local mode_file=io.open(out..'/recognition-case');local recognition_case='promote'
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew')
+local semantic_recognition=recognition_case:sub(1,6)=='action'
+if semantic_recognition then recognition_case=recognition_case:sub(7)end
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver')
 local fixture_agreements={}
-if recognition_case=='petitions' or recognition_case=='agreements' then
+if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
  -- Each list starts with a nonmatching applicant, then two matching entries.
  for list_index,list in ipairs{df.global.plotinfo.petitions,df.global.plotinfo.continuing_agreement_id}do
-  for entry=1,3 do
+  if recognition_case~='waiver' or list_index==2 then
+  for entry=1,(recognition_case=='waiver' and 1 or 3)do
    local agreement=df.agreement:new();local party=df.agreement_party:new()
    local subject=df.agreement_details:new();local location=df.agreement_details_data_location:new()
    agreement.id=2147483600+#fixture_agreements
    local all=df.global.world.agreements.all
    assert(#all==0 or all[#all-1].id<agreement.id,'agreement fixture ID occupied')
-   party.id=0;party.entity_ids:insert('#',entry==1 and df.global.plotinfo.group_id or religion.id)
+   party.id=0;party.entity_ids:insert('#',recognition_case~='waiver' and entry==1 and df.global.plotinfo.group_id or religion.id)
    assert(entry~=1 or df.global.plotinfo.group_id~=religion.id,'nonmatching applicant fixture invalid')
    location.applicant=0;location.government=1;location.site=df.global.plotinfo.site_id
    location.type=df.abstract_building_type.TEMPLE;location.deity_type=df.religious_practice_type.RELIGION_ENID
@@ -530,6 +533,7 @@ if recognition_case=='petitions' or recognition_case=='agreements' then
    agreement.flags.whole=list_index==1 and 1 or 0
    all:insert('#',agreement);list:insert('#',agreement.id)
    fixture_agreements[#fixture_agreements+1]=agreement.id
+  end
   end
  end
 end
@@ -698,6 +702,7 @@ local ok,err=xpcall(function()
   assert(agreement_ok,agreement_error)
   difficulty.high_priesthood_unit_count=original_threshold
  end
+ if recognition_case=='waiver' then difficulty.high_priesthood_unit_count=54 end
  local before=capture('TEMPLE-0-recognition-before',temple);before.recognition=recognition_state()
  if recognition_case=='positionhigh' or recognition_case=='positionnew' then
   local marker=assert(io.open(out..'/recognition-reference'));local path=marker:read('*a'):match('^%s*(.-)%s*$');marker:close()
@@ -821,7 +826,38 @@ local ok,err=xpcall(function()
   end
   return
  end
- pixel(500,214)
+ local expected_action=nil
+ local function recognize(site,id)
+  local text,code=dfhack.run_command_silent('df3d','location-recognize',tostring(site or df.global.plotinfo.site_id),tostring(id or temple.id))
+  assert(code==0,text);return require('json').decode(text).outcome
+ end
+ if semantic_recognition then
+  local marker=assert(io.open(out..'/recognition-reference'));local path=marker:read('*a'):match('^%s*(.-)%s*$');marker:close()
+  local file=assert(io.open(path,'rb'));local reference=require('json').decode(file:read('*a'));file:close()
+  assert(reference.success and #reference.records==3 and reference.records[1].recognition.case==recognition_case,'invalid complete recognition reference')
+  expected_action=reference.records[2].recognition
+  restore_rng(reference.records[1].recognition.rng)
+  local guards={}
+  for _,object in ipairs{m,g}do
+   local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+   guards[#guards+1]={bytes=bytes,address=at,size=n}
+  end
+  local rejection_baseline=recognition_state()
+  for _,target in ipairs{{-1,temple.id},{df.global.plotinfo.site_id,-1},{df.global.plotinfo.site_id+1,temple.id},{df.global.plotinfo.site_id,2147483647},{df.global.plotinfo.site_id,1}}do
+   assert(recognize(target[1],target[2])==0,'invalid full recognition target accepted')
+  end
+  local eligible_tier=contents.location_tier;contents.location_tier=0
+  assert(recognize()==0,'ineligible full recognition accepted');contents.location_tier=eligible_tier
+  local rejected=recognition_state()
+  for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links','temple_emotions','rng','recognized','bridge','petitions','continuing','agreements'}do
+   assert(require('json').encode(rejected[field])==require('json').encode(rejection_baseline[field]),'rejected recognition changed '..field)
+  end
+  local outcome=recognize();assert(outcome==1,'semantic recognition did not complete: '..outcome)
+  for _,guard in ipairs(guards)do
+   assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'recognition changed native UI/gps')
+   df.delete(guard.bytes)
+  end
+ else pixel(500,214)end
  local after=capture('TEMPLE-0-recognition-after',temple);after.recognition=recognition_state()
  assert(before.recognition.bridge.rank==(first_recognition and 0 or 1),'initial semantic priesthood rank mismatch')
  assert(after.recognition.bridge.rank==(first_recognition and 1 or 2),'recognized semantic priesthood rank mismatch')
@@ -859,9 +895,16 @@ local ok,err=xpcall(function()
   after.recognition.new_events[#after.recognition.new_events+1]=item
  end
  assert(require('json').encode(before.recognition.assignments)~=require('json').encode(after.recognition.assignments),'recognition did not change assignments')
- pixel(500,214)
+ if expected_action then
+  for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links','temple_emotions','rng','new_events','recognized','bridge','petitions','continuing','agreements'}do
+   if expected_action[field]~=nil then
+    assert(require('json').encode(after.recognition[field])==require('json').encode(expected_action[field]),'complete recognition differs from native '..field)
+   end
+  end
+ end
+ if semantic_recognition then assert(recognize()==0,'completed recognition replay was not rejected')else pixel(500,214)end
  local repeated=capture('TEMPLE-0-recognition-repeat',temple);repeated.recognition=recognition_state()
- for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links','temple_emotions','petitions','continuing','agreements'}do
+ for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links','temple_emotions','petitions','continuing','agreements','rng'}do
   assert(require('json').encode(after.recognition[field])==require('json').encode(repeated.recognition[field]),'repeat recognition changed '..field)
  end
 end,debug.traceback)

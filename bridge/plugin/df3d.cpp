@@ -2001,6 +2001,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
+      if (parameters[0] == "location-recognize") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t ids[2]{};
+        for(size_t i=0;i<2;++i) {
+          const auto& text=parameters[i+1];
+          const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        Json::Value value(Json::objectValue);
+        value["outcome"]=int(df3d_area::recognizeNativeLocation(ids[0],ids[1]));
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
       if (parameters[0] == "location-recognition-position") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t ids[2]{};

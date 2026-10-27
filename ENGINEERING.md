@@ -723,7 +723,8 @@ concluding an agreement can remove the population waiver before the thought
 wrapper rechecks eligibility. The complete command must validate one current
 receipt before any effects, prepare all required inputs, and execute its internal
 steps without reinterpreting its own intermediate state as a new user intent.
-Typed transport, position/history integration and viewer exposure remain pending.
+The staged full semantic action below uses one eligibility snapshot internally.
+Complete dependency receipts, typed transport and viewer exposure remain pending.
 
 `prepareNativeLocationRecognitionPosition` creates an independently owned,
 unpublished PRIEST or HIGH_PRIEST template for the staged transaction. It returns
@@ -760,8 +761,49 @@ agreement facts remain unchanged. Source manifests are preserved and the owned
 games exit unsaved. DLL SHA256 is
 `d2b8a579863edb72230482a36ba11f6e074b983238906444c7dc78729507341c`, protocol72.
 MSVC build passes; root/core evidence is `build/qa/location-recognition-position`.
-This does not establish publication, holder promotion, existing-template reuse,
-empty-deity/word fallback variants or the complete recognition transaction.
+This preparation-only evidence does not establish publication or holder effects;
+the full-action evidence below covers those separately. Empty-deity/word fallback
+variants remain unverified.
+
+`recognizeNativeLocation` implements the staged complete semantic action behind
+`df3d location-recognize <site> <location>`. It observes eligibility once, validates
+the religion, target template, prior assignment/holder and ID counters, and
+allocates the new assignment before effects. Internal agreement, thought and
+position routines consume that same eligibility snapshot. This preserves native
+effect/RNG order even when concluding the only agreement removes the population
+waiver. Templates are reused when present; new owned templates and assignments
+are published with native counter updates.
+
+Byte-guarded native helpers b96300/b97610 transfer the holder's position links;
+e1450 tracks the figure in world history and c30000 applies its promotion effects,
+including the history event. The latter receives world history, not its figures
+vector. Native9364d0/30ffb0 supply site links and place-of-worship profiles.
+Nativebbe40 resolves assignment caches, followed by existing semantic staff
+preparation. The native3ad8e0 Details row builder is not called. Native UI objects
+are never supplied to the semantic action. Rejected means no semantic effects
+began; any unavailable step or caught exception after effects may begin reports
+Unknown, which must never be automatically replayed. This is diagnostic staging:
+there is no revision-bound management request or viewer control yet.
+
+`recognition_complete_action_reference` retains bounded provenance and effect
+digests for six protected native/bridge pairs on2026-10-27: promotion024305,
+first recognition reusing PRIEST024546, vacant-priest promotion024639, sole
+agreement waiver024738, new PRIEST025146 and petitions025232. Use
+`-LocationNames -RecognitionOnly -RecognitionCase actionpromote|actionfirst|actionempty|actionwaiver|actionnew|actionpetitions`
+with `-RecognitionReference <matching-native-result.json>`. The test alone restores
+the native pre-action RNG. Every captured position/assignment field, counter,
+site/holder link, history event, emotion and final RNG matches the native action;
+agreement fields are compared when present in the reference. Native UI/gps bytes
+remain unchanged. Completed repeats reject without captured effects. The new and
+petition runs also verify five invalid targets and an ineligible tier reject
+without captured effects or RNG changes. All owned runs exit unsaved and preserve
+source manifests. Installed DLL SHA256 is
+`4724b625143dcb0303d02ede63af451c03079e4b278bbb2039c46021e02bf761`, protocol72.
+MSVC build passes; root/core evidence is `build/qa/location-recognition-action`.
+This does not establish existing HIGH_PRIEST-template reuse, empty-deity/word
+fallbacks, every personality field, failure injection after effects begin, or the
+remaining dependency receipt, transport and rendered lifecycle work. Zones and
+Locations remain staged.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and

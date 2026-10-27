@@ -7619,5 +7619,242 @@
         "final_rng_sha256": "f1f44181d1e41eacc598c5ef83dbcf2f10dbed8bed15ab4494d84dc0bce4c282"
       }
     }
+  },
+  "recognition_complete_action_reference": {
+    "plugin_sha256": "4724b625143dcb0303d02ede63af451c03079e4b278bbb2039c46021e02bf761",
+    "method": "Protected paired owned paused clones; seed native pre-action RNG only in test, then compare complete semantic action to native click. Source manifests preserved and owned sessions exit unsaved.",
+    "scope": "Captured positions, assignments, counters, site and holder links, history events, emotions, RNG and agreement effects match native. Main-interface/gps bytes unchanged. Completed repeats reject without captured effects. New/petitions cases additionally reject five invalid targets and an ineligible tier without captured effects or RNG changes.",
+    "omissions": [
+      "Full dependency receipt and epoch-bound transport",
+      "Viewer control and rendered lifecycle acceptance",
+      "Existing HIGH_PRIEST template reuse",
+      "Empty-deity/word fallback variants",
+      "Failure injection after effects begin",
+      "Uncaptured personality fields and allocations"
+    ],
+    "branches": {
+      "promote": {
+        "native_capture": "build/stockpile-storage-native-location-recognition-promote-20261027-020539",
+        "native_sha256": "f477ef18bffd957710fe88a02e9aa3d5389bed090b4c14a7d93ec19a86266dc0",
+        "bridge_capture": "build/stockpile-storage-native-location-recognition-actionpromote-20261027-024305",
+        "bridge_sha256": "4a6dd35549ef6cb7b719f5190adcbdbca393eba0282c366784be54f6e4ead671",
+        "compared_fields": [
+          "positions",
+          "assignments",
+          "event_count",
+          "next_position",
+          "next_assignment",
+          "site_links",
+          "holder_links",
+          "temple_emotions",
+          "rng",
+          "new_events",
+          "recognized",
+          "bridge"
+        ],
+        "after_effects_sha256": "4fe626699d91df2d06b0c5080cf92b05fd40d5729782df9b61f37b0d713e54c2",
+        "positions_added": 1,
+        "assignments_added": 1,
+        "new_events": [
+          {
+            "appointer_hfid": -1,
+            "civ": 383,
+            "histfig": 9375,
+            "id": 64037,
+            "link_type": 10,
+            "position_id": 1,
+            "promise_to_hfid": -1,
+            "seconds": 157249,
+            "type": "ADD_HF_ENTITY_LINK",
+            "year": 106
+          }
+        ],
+        "new_emotions": 54,
+        "final_rank": 2,
+        "repeat_unchanged": true,
+        "invalid_and_ineligible_checks": 0
+      },
+      "first": {
+        "native_capture": "build/stockpile-storage-native-location-recognition-first-20261027-024521",
+        "native_sha256": "414030c5ec459d9ef6d0e1b7e6bf46600f040db779b562642a2682579d7e2f53",
+        "bridge_capture": "build/stockpile-storage-native-location-recognition-actionfirst-20261027-024546",
+        "bridge_sha256": "ab9a48fd5d44e7111a2677e749df4ad7eac7c921485c534f08cd40aa83eb9fd5",
+        "compared_fields": [
+          "positions",
+          "assignments",
+          "event_count",
+          "next_position",
+          "next_assignment",
+          "site_links",
+          "holder_links",
+          "temple_emotions",
+          "rng",
+          "new_events",
+          "recognized",
+          "bridge",
+          "petitions",
+          "continuing",
+          "agreements"
+        ],
+        "after_effects_sha256": "699d7ca084e2989f8a5a24cae243241bd61e5658f417a57ac932619df8dd1bac",
+        "positions_added": 0,
+        "assignments_added": 1,
+        "new_events": [],
+        "new_emotions": 54,
+        "final_rank": 1,
+        "repeat_unchanged": true,
+        "invalid_and_ineligible_checks": 0
+      },
+      "empty": {
+        "native_capture": "build/stockpile-storage-native-location-recognition-empty-20261027-024612",
+        "native_sha256": "60fc4a71e685aff4cce93f1a1d3169168fd2eacab92a6ff0e0441a94e55a0a58",
+        "bridge_capture": "build/stockpile-storage-native-location-recognition-actionempty-20261027-024639",
+        "bridge_sha256": "230c2b8a1926ad903ea948c6c2cedfad098872eeb5ac8805013236791ee11177",
+        "compared_fields": [
+          "positions",
+          "assignments",
+          "event_count",
+          "next_position",
+          "next_assignment",
+          "site_links",
+          "holder_links",
+          "temple_emotions",
+          "rng",
+          "new_events",
+          "recognized",
+          "bridge",
+          "petitions",
+          "continuing",
+          "agreements"
+        ],
+        "after_effects_sha256": "59a25f5072caeaa6ab1218a64ad6f2c0902e2f70cd4eeaa3471b391d7a7f200d",
+        "positions_added": 1,
+        "assignments_added": 1,
+        "new_events": [],
+        "new_emotions": 54,
+        "final_rank": 2,
+        "repeat_unchanged": true,
+        "invalid_and_ineligible_checks": 0
+      },
+      "waiver": {
+        "native_capture": "build/stockpile-storage-native-location-recognition-waiver-20261027-024706",
+        "native_sha256": "4c575809d5493676efd3b0a76dbb6906f5a6fdf6e38a4f553f5de23bf82ddc33",
+        "bridge_capture": "build/stockpile-storage-native-location-recognition-actionwaiver-20261027-024738",
+        "bridge_sha256": "760d486a7895a80e668c44dbed115999881925fbb0af6e3c18c5c72e77f37164",
+        "compared_fields": [
+          "positions",
+          "assignments",
+          "event_count",
+          "next_position",
+          "next_assignment",
+          "site_links",
+          "holder_links",
+          "temple_emotions",
+          "rng",
+          "new_events",
+          "recognized",
+          "bridge",
+          "petitions",
+          "continuing",
+          "agreements"
+        ],
+        "after_effects_sha256": "2b70317a5c002ecc11877c4840672492805dac70f222308ce0f650b481123791",
+        "positions_added": 1,
+        "assignments_added": 1,
+        "new_events": [
+          {
+            "appointer_hfid": -1,
+            "civ": 383,
+            "histfig": 9375,
+            "id": 64037,
+            "link_type": 10,
+            "position_id": 1,
+            "promise_to_hfid": -1,
+            "seconds": 157249,
+            "type": "ADD_HF_ENTITY_LINK",
+            "year": 106
+          }
+        ],
+        "new_emotions": 54,
+        "final_rank": 2,
+        "repeat_unchanged": true,
+        "invalid_and_ineligible_checks": 0
+      },
+      "new": {
+        "native_capture": "build/stockpile-storage-native-location-recognition-new-20261027-022556",
+        "native_sha256": "df79e64460edf871e8706e1bddccbaa518412e9b1e5d3d5e9803c1af78790242",
+        "bridge_capture": "build/stockpile-storage-native-location-recognition-actionnew-20261027-025146",
+        "bridge_sha256": "c5c8b54456fc8e9c7f0c1665fef1294ebb1e1b6fff783ddbe2e754f4904b1168",
+        "compared_fields": [
+          "positions",
+          "assignments",
+          "event_count",
+          "next_position",
+          "next_assignment",
+          "site_links",
+          "holder_links",
+          "temple_emotions",
+          "rng",
+          "new_events",
+          "recognized",
+          "bridge",
+          "petitions",
+          "continuing",
+          "agreements"
+        ],
+        "after_effects_sha256": "ccff20e3638a215e883d4d4ae2a2fe726ba9fc37f739d04eafb0f8b6c8bb6a4a",
+        "positions_added": 1,
+        "assignments_added": 1,
+        "new_events": [],
+        "new_emotions": 54,
+        "final_rank": 1,
+        "repeat_unchanged": true,
+        "invalid_and_ineligible_checks": 6
+      },
+      "petitions": {
+        "native_capture": "build/stockpile-storage-native-location-recognition-petitions-20261027-021231",
+        "native_sha256": "f1e1ab8d0fb23179b3186b0af931027e8d66dd2c9c8e0bb553670e6fee34f838",
+        "bridge_capture": "build/stockpile-storage-native-location-recognition-actionpetitions-20261027-025232",
+        "bridge_sha256": "b548f7313227704049f0f8b12c1f15565dc52e6e3a6007f331e7049cdd9f54f2",
+        "compared_fields": [
+          "positions",
+          "assignments",
+          "event_count",
+          "next_position",
+          "next_assignment",
+          "site_links",
+          "holder_links",
+          "temple_emotions",
+          "rng",
+          "new_events",
+          "recognized",
+          "bridge",
+          "petitions",
+          "continuing",
+          "agreements"
+        ],
+        "after_effects_sha256": "a2fd90bc1418242f005f60f536e4a291bcf1c5e190e28513cd1c2a0c2c51559b",
+        "positions_added": 1,
+        "assignments_added": 1,
+        "new_events": [
+          {
+            "appointer_hfid": -1,
+            "civ": 383,
+            "histfig": 9375,
+            "id": 64037,
+            "link_type": 10,
+            "position_id": 1,
+            "promise_to_hfid": -1,
+            "seconds": 157249,
+            "type": "ADD_HF_ENTITY_LINK",
+            "year": 106
+          }
+        ],
+        "new_emotions": 54,
+        "final_rank": 2,
+        "repeat_unchanged": true,
+        "invalid_and_ineligible_checks": 6
+      }
+    }
   }
 }

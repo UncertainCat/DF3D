@@ -2,6 +2,16 @@
 local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local m=df.global.game.main_interface;local details=m.location_details;local creator=m.name_creator
+local function word_part(index)
+ -- DF's1fc330 copies and indexes this vector in4-byte units. The current
+ -- DFHack name_creator binding incorrectly declares vector<part_of_speech>
+ -- (int16); language_word_table.parts correctly specifies int32 storage.
+ local _,address=df.sizeof(creator:_field('word_index_asp'))
+ local first=df.reinterpret_cast('uint64_t',address).value
+ local last=df.reinterpret_cast('uint64_t',address+8).value
+ assert(last-first==#creator.word_index*4,'native name word/part vector size mismatch')
+ return df.reinterpret_cast('int32_t',first+index*4).value
+end
 local function key(value)gui.simulateInput(view,value);view:render(dfhack.getTickCount())end
 local function pixel(x,y)
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
@@ -20,9 +30,37 @@ local function capture(label,location)
   name_place=creator.cur_name_place,word_place=creator.cur_word_place,filter=creator.cull_str,
   entering_filter=creator.entering_cull_str,entering_first_name=creator.entering_first_name,
   word_count=#creator.word_index,word_index={},word_parts={},lines={}}
- for i=0,math.min(#creator.word_index,40)-1 do row.word_index[#row.word_index+1]=creator.word_index[i];row.word_parts[#row.word_parts+1]=creator.word_index_asp[i]end
+ for i=0,#creator.word_index-1 do row.word_index[#row.word_index+1]=creator.word_index[i];row.word_parts[#row.word_parts+1]=word_part(i)end
+ if #records==0 then
+  row.native_fields={}
+  for _,field in ipairs{'open','context','namer','name','name_type','cur_name_place','cur_word_place','word_sel','word_index','word_index_asp','cull_str'}do
+   local _,address=df.sizeof(creator:_field(field));row.native_fields[field]=address-dfhack.internal.getImageBase()
+  end
+ end
  if creator.name then local _,a=df.sizeof(creator.name);local _,b=df.sizeof(location:getName());row.direct_name_target=a==b end
  if creator.namer then row.namer_id=creator.namer.id end
+ if creator.open and (label:match('%-name%-open$') or label:match('%-selected$'))then
+  local guards={}
+  for _,object in ipairs{m,g}do
+   local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+   guards[#guards+1]={bytes=bytes,address=at,size=n}
+  end
+  local text,code=dfhack.run_command_silent('df3d','location-name-words',tostring(creator.cur_name_place))
+  assert(code==0,text);local observed=require('json').decode(text)
+  assert(observed.valid and #observed.words==#creator.word_index,'native word-selector count mismatch')
+  for i,pair in ipairs(observed.words)do
+   if pair[1]~=creator.word_index[i-1] or pair[2]~=word_part(i-1)then
+    local f=assert(io.open(out..'/word-mismatch.json','w'))
+    f:write(require('json').encode({name=label,index=i,bridge=observed.words,native_words=row.word_index,native_parts=row.word_parts}));f:close()
+    error('native word-selector mismatch at '..i..': '..tostring(pair[1])..'/'..tostring(pair[2])..' versus '..tostring(creator.word_index[i-1])..'/'..tostring(word_part(i-1)))
+   end
+  end
+  for _,guard in ipairs(guards)do
+   assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'word observation changed native UI/gps')
+   df.delete(guard.bytes)
+  end
+  row.bridge_word_count=#observed.words;row.bridge_ui_unchanged=true
+ end
  for y=0,g.dimy-1 do
   local chars={};for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch) or ' 'end
   row.lines[#row.lines+1]=table.concat(chars):gsub('%s+$','')
@@ -52,3 +90,32 @@ for i,location in ipairs(choices)do
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
 assert(#records==18,'incomplete location name entry coverage')
+
+for i,location in ipairs(choices)do
+ pixel(664,238+36*(i-1));assert(details.open and details.selected_ab==location)
+ pixel(944,82);assert(creator.open)
+ local prefix=df.abstract_building_type[location:getType()]..'-'..location.id
+ if location:getType()==df.abstract_building_type.INN_TAVERN then
+  for part=0,6 do
+   pixel(476,142+36*part);capture(prefix..'-part-'..part..'-selected',location)
+   pixel(668,142+36*part);capture(prefix..'-part-'..part..'-clear',location)
+   pixel(756,178);capture(prefix..'-part-'..part..'-first-word',location)
+   pixel(608,142+36*part);capture(prefix..'-part-'..part..'-random',location)
+  end
+  pixel(832,142);capture(prefix..'-filter-focus',location)
+  key('STRING_A097');key('STRING_A108');key('STRING_A101');capture(prefix..'-filter-ale',location)
+  key('STRING_A000');capture(prefix..'-filter-al',location)
+  key('SELECT');capture(prefix..'-filter-enter',location)
+  key('_MOUSE_R');capture(prefix..'-edited-back',location)
+  if creator.open then key('_MOUSE_R')end
+  assert(not creator.open and details.open,'edited name Back did not return')
+  pixel(944,82);capture(prefix..'-edited-reopen',location)
+ end
+ pixel(832,82);capture(prefix..'-whole-random',location)
+ pixel(912,82);capture(prefix..'-done',location)
+ assert(not creator.open and details.open,'Done did not return to Details')
+ pixel(944,82);capture(prefix..'-random-reopen',location)
+ key('_MOUSE_R');assert(not creator.open and details.open)
+ key('LEAVESCREEN');assert(selector.open and not details.open)
+end
+assert(#records==70,'incomplete name mutation reference')

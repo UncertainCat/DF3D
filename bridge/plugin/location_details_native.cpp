@@ -4,6 +4,7 @@
 #include "modules/Maps.h"
 #include "modules/Items.h"
 #include "df/world.h"
+#include "df/language_word_table.h"
 #include "df/item.h"
 #include "df/items_other_id.h"
 #include "modules/Translation.h"
@@ -24,8 +25,43 @@
 #include "df/plotinfost.h"
 #include "df/world_site.h"
 #include <algorithm>
+#include <numeric>
 
 namespace df3d_area {
+std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component) {
+  if(component>6 || !df::global::world || !DFHack::Maps::IsValid())return std::nullopt;
+  // Native name-editor initialization calls this semantic selector builder,
+  // passing all raw word IDs. It reads raw language words and writes only the
+  // supplied vectors; its two callees are vector insertion/allocation helpers.
+  // No name_creator object, menu, filter, cursor or cached choices are borrowed.
+  static const bool compatible=[] {
+    if(!locationRefreshFunction())return false;
+    auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    uint64_t h=UINT64_C(14695981039346656037);
+    for(size_t i=0;i<0x9a4;++i){h^=base[0xd35530+i];h*=UINT64_C(1099511628211);}
+    return h==UINT64_C(0x77bd9190661f5681);
+  }();
+  if(!compatible)return std::nullopt;
+  const auto& words=df::global::world->raws.language.words;
+  if(words.size()>size_t(INT32_MAX) || std::any_of(words.begin(),words.end(),[](auto* v){return v==nullptr;}))return std::nullopt;
+  std::vector<int32_t> ids(words.size());std::iota(ids.begin(),ids.end(),0);
+  df::language_word_table table;
+  static_assert(sizeof(table)==0x120);
+  using Build=void(__fastcall*)(df::language_word_table*,std::vector<int32_t>*);
+  const auto build=reinterpret_cast<Build>(reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr))+0xd35530);
+  build(&table,&ids);
+  // Audited name component -> semantic selector table mapping at1fc387..1fc3b8.
+  constexpr int slots[]={0,1,3,3,4,2,5};
+  const auto slot=static_cast<df::language_word_table_index>(slots[component]);
+  const auto& selected=table.words[slot];const auto& parts=table.parts[slot];
+  if(selected.size()!=parts.size())return std::nullopt;
+  std::vector<LocationNameWord> result;result.reserve(selected.size());
+  for(size_t i=0;i<selected.size();++i) {
+    if(selected[i]<0 || size_t(selected[i])>=words.size() || int(parts[i])<0 || int(parts[i])>8)return std::nullopt;
+    result.push_back({selected[i],int32_t(parts[i])});
+  }
+  return result;
+}
 std::optional<LocationDetailsCore> observeNativeLocationDetailsCore(int32_t siteId,int32_t id) {
   if(siteId<0 || id<0 || !df::global::plotinfo || !DFHack::Maps::IsValid() ||
       siteId!=df::global::plotinfo->site_id)return std::nullopt;

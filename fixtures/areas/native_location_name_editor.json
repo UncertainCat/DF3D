@@ -1,11 +1,12 @@
 {
   "provenance": {
-    "run": "build/stockpile-storage-native-location-names-20261026-205453",
-    "result_sha256": "f8809127c9775de8a8e88373e40bd96fb5d3fcb7541e03909e827aed718eadfb",
+    "run": "build/stockpile-storage-native-location-names-20261026-211043",
+    "result_sha256": "905eb9d3b312bc9f767e1d10e5f8c6a5e1d2dd3e1d092a25430c08f6bf7da40c",
     "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "bridge_sha256": "e5e4fa2d6608fe2fbe441e2b0c5a266b77bdd85280eb1e0f104eb90dc0e976be",
     "source_save_unchanged": true,
     "unsaved_exit": true,
-    "scope": "Native chooser Details -> rename icon -> name creator -> right-click Back for all six fixture locations. Open/Back retains every language_name field. Diagnostic UI fields are not runtime APIs."
+    "scope": "70 native observations: entry/Back across six locations; seven tavern component select/Clear/first-word/Random workflows; filter focus/ALE/AL/Enter; edited Back/reopen; whole-name Random/Done/reopen for six locations.13 complete bridge/native word-table comparisons,35846 ordered pairs, native main-interface/GPS unchanged."
   },
   "observations": [
     {
@@ -45,10 +46,26 @@
           -1
         ]
       },
+      "native_fields": {
+        "context": 25832700,
+        "cull_str": 25833080,
+        "cur_name_place": 25832724,
+        "cur_word_place": 25832728,
+        "name": 25832712,
+        "name_type": 25832720,
+        "namer": 25832704,
+        "open": 25832696,
+        "word_index": 25833024,
+        "word_index_asp": 25833048,
+        "word_sel": 25832736
+      },
       "word_count": 0,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 3217,
       "context": 3,
       "creator_open": true,
       "details_open": true,
@@ -89,7 +106,7 @@
       "namer_id": 245,
       "word_count": 3217,
       "word_place": 0,
-      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -131,7 +148,8 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -173,9 +191,12 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 3217,
       "context": 3,
       "creator_open": true,
       "details_open": true,
@@ -216,7 +237,7 @@
       "namer_id": 245,
       "word_count": 3217,
       "word_place": 0,
-      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -258,7 +279,8 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -300,9 +322,12 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 3217,
       "context": 3,
       "creator_open": true,
       "details_open": true,
@@ -343,7 +368,7 @@
       "namer_id": 245,
       "word_count": 3217,
       "word_place": 0,
-      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -385,7 +410,8 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -427,9 +453,12 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 3217,
       "context": 3,
       "creator_open": true,
       "details_open": true,
@@ -470,7 +499,7 @@
       "namer_id": 245,
       "word_count": 3217,
       "word_place": 0,
-      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -512,7 +541,8 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -554,9 +584,12 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 3217,
       "context": 3,
       "creator_open": true,
       "details_open": true,
@@ -597,7 +630,7 @@
       "namer_id": 245,
       "word_count": 3217,
       "word_place": 0,
-      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -639,7 +672,8 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -681,9 +715,12 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 3217,
       "context": 3,
       "creator_open": true,
       "details_open": true,
@@ -724,7 +761,7 @@
       "namer_id": 245,
       "word_count": 3217,
       "word_place": 0,
-      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     },
     {
       "context": 3,
@@ -766,28 +803,2331 @@
       },
       "namer_id": 245,
       "word_count": 3217,
-      "word_place": 0
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-whole-random",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          1762,
+          -1,
+          -1,
+          0,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-done",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          1762,
+          -1,
+          -1,
+          0,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-random-reopen",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          1762,
+          -1,
+          -1,
+          0,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 3217,
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-0-selected",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          -1,
+          -1,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-0-clear",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          -1,
+          -1,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-0-first-word",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          0,
+          -1,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-0-random",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          -1,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 5301,
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-1-selected",
+      "name_place": 1,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          -1,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 5301,
+      "word_place": 1,
+      "word_choices_sample": "aad19c98de9b98ba5989c3b85dfe6d44558b6f8a43e2dd1d9b13abb7f7c5fb39"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-1-clear",
+      "name_place": 1,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          -1,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 5301,
+      "word_place": 1,
+      "word_choices_sample": "aad19c98de9b98ba5989c3b85dfe6d44558b6f8a43e2dd1d9b13abb7f7c5fb39"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-1-first-word",
+      "name_place": 1,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          0,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 5301,
+      "word_place": 1,
+      "word_choices_sample": "aad19c98de9b98ba5989c3b85dfe6d44558b6f8a43e2dd1d9b13abb7f7c5fb39"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-1-random",
+      "name_place": 1,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 5301,
+      "word_place": 1,
+      "word_choices_sample": "aad19c98de9b98ba5989c3b85dfe6d44558b6f8a43e2dd1d9b13abb7f7c5fb39"
+    },
+    {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 849,
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-2-selected",
+      "name_place": 2,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 849,
+      "word_place": 3,
+      "word_choices_sample": "4496237ef947558f62f056b0341bcb0022e833af9f02566da7849217726f2e63"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-2-clear",
+      "name_place": 2,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          -1,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 849,
+      "word_place": 3,
+      "word_choices_sample": "4496237ef947558f62f056b0341bcb0022e833af9f02566da7849217726f2e63"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-2-first-word",
+      "name_place": 2,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 849,
+      "word_place": 3,
+      "word_choices_sample": "4496237ef947558f62f056b0341bcb0022e833af9f02566da7849217726f2e63"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-2-random",
+      "name_place": 2,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 849,
+      "word_place": 3,
+      "word_choices_sample": "4496237ef947558f62f056b0341bcb0022e833af9f02566da7849217726f2e63"
+    },
+    {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 849,
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-3-selected",
+      "name_place": 3,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 849,
+      "word_place": 3,
+      "word_choices_sample": "4496237ef947558f62f056b0341bcb0022e833af9f02566da7849217726f2e63"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-3-clear",
+      "name_place": 3,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 849,
+      "word_place": 3,
+      "word_choices_sample": "4496237ef947558f62f056b0341bcb0022e833af9f02566da7849217726f2e63"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-3-first-word",
+      "name_place": 3,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 849,
+      "word_place": 3,
+      "word_choices_sample": "4496237ef947558f62f056b0341bcb0022e833af9f02566da7849217726f2e63"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-3-random",
+      "name_place": 3,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 849,
+      "word_place": 3,
+      "word_choices_sample": "4496237ef947558f62f056b0341bcb0022e833af9f02566da7849217726f2e63"
+    },
+    {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 1228,
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-4-selected",
+      "name_place": 4,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 1228,
+      "word_place": 4,
+      "word_choices_sample": "f7c57c40e8dc8511151ca6ceacb76644032fbe9e0bc136d65afe4b5dfe85dd74"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-4-clear",
+      "name_place": 4,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 1228,
+      "word_place": 4,
+      "word_choices_sample": "f7c57c40e8dc8511151ca6ceacb76644032fbe9e0bc136d65afe4b5dfe85dd74"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-4-first-word",
+      "name_place": 4,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          2,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 1228,
+      "word_place": 4,
+      "word_choices_sample": "f7c57c40e8dc8511151ca6ceacb76644032fbe9e0bc136d65afe4b5dfe85dd74"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-4-random",
+      "name_place": 4,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 1228,
+      "word_place": 4,
+      "word_choices_sample": "f7c57c40e8dc8511151ca6ceacb76644032fbe9e0bc136d65afe4b5dfe85dd74"
+    },
+    {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 2442,
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-5-selected",
+      "name_place": 5,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 2442,
+      "word_place": 2,
+      "word_choices_sample": "6ff8dd6ddd49776fe9f8269c0f1a4e4d94d796f896d25b3bdb9d7be135475894"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-5-clear",
+      "name_place": 5,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          -1,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 2442,
+      "word_place": 2,
+      "word_choices_sample": "6ff8dd6ddd49776fe9f8269c0f1a4e4d94d796f896d25b3bdb9d7be135475894"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-5-first-word",
+      "name_place": 5,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          0,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 2442,
+      "word_place": 2,
+      "word_choices_sample": "6ff8dd6ddd49776fe9f8269c0f1a4e4d94d796f896d25b3bdb9d7be135475894"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-5-random",
+      "name_place": 5,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 2442,
+      "word_place": 2,
+      "word_choices_sample": "6ff8dd6ddd49776fe9f8269c0f1a4e4d94d796f896d25b3bdb9d7be135475894"
+    },
+    {
+      "bridge_ui_unchanged": true,
+      "bridge_word_count": 2658,
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-6-selected",
+      "name_place": 6,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 2658,
+      "word_place": 5,
+      "word_choices_sample": "f7551ad57630b752a7ca4be7b99ed55af157e21e8d408c3955473ee9b3d20551"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-6-clear",
+      "name_place": 6,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 2658,
+      "word_place": 5,
+      "word_choices_sample": "f7551ad57630b752a7ca4be7b99ed55af157e21e8d408c3955473ee9b3d20551"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-6-first-word",
+      "name_place": 6,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          1
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          0
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 2658,
+      "word_place": 5,
+      "word_choices_sample": "f7551ad57630b752a7ca4be7b99ed55af157e21e8d408c3955473ee9b3d20551"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-part-6-random",
+      "name_place": 6,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          1
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          261
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 2658,
+      "word_place": 5,
+      "word_choices_sample": "f7551ad57630b752a7ca4be7b99ed55af157e21e8d408c3955473ee9b3d20551"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": true,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-filter-focus",
+      "name_place": 6,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          1
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          261
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 2658,
+      "word_place": 5,
+      "word_choices_sample": "f7551ad57630b752a7ca4be7b99ed55af157e21e8d408c3955473ee9b3d20551"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": true,
+      "entering_first_name": false,
+      "filter": "ALE",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-filter-ale",
+      "name_place": 6,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          1
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          261
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 8,
+      "word_place": 5,
+      "word_choices_sample": "5eb620458c06c6cc001a69f9ac934308dbe6ad1d8ca6c2def1289dabfed84399"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": true,
+      "entering_first_name": false,
+      "filter": "AL",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-filter-al",
+      "name_place": 6,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          1
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          261
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 121,
+      "word_place": 5,
+      "word_choices_sample": "3333da60d1ddd3b0d7b39e2694313fb2a7971b988d28c428abfc77a01a9eff53"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "AL",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-filter-enter",
+      "name_place": 6,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          1
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          261
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 121,
+      "word_place": 5,
+      "word_choices_sample": "3333da60d1ddd3b0d7b39e2694313fb2a7971b988d28c428abfc77a01a9eff53"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "AL",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-edited-back",
+      "name_place": 6,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          1
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          261
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 121,
+      "word_place": 5,
+      "word_choices_sample": "3333da60d1ddd3b0d7b39e2694313fb2a7971b988d28c428abfc77a01a9eff53"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-edited-reopen",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          5,
+          2,
+          2,
+          0,
+          0,
+          1
+        ],
+        "type": 28,
+        "words": [
+          278,
+          1528,
+          1847,
+          1520,
+          791,
+          420,
+          261
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-whole-random",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          -1,
+          -1,
+          287,
+          -1,
+          -1,
+          1599,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-done",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          -1,
+          -1,
+          287,
+          -1,
+          -1,
+          1599,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-random-reopen",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          -1,
+          -1,
+          287,
+          -1,
+          -1,
+          1599,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-whole-random",
+      "name_place": 0,
+      "name_type": 54,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 54,
+        "words": [
+          -1,
+          -1,
+          1700,
+          -1,
+          -1,
+          1546,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-done",
+      "name_place": 0,
+      "name_type": 54,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 54,
+        "words": [
+          -1,
+          -1,
+          1700,
+          -1,
+          -1,
+          1546,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-random-reopen",
+      "name_place": 0,
+      "name_type": 54,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 54,
+        "words": [
+          -1,
+          -1,
+          1700,
+          -1,
+          -1,
+          1546,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-whole-random",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          0,
+          1033
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-done",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          0,
+          1033
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-random-reopen",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          0,
+          1033
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-whole-random",
+      "name_place": 0,
+      "name_type": 43,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 43,
+        "words": [
+          -1,
+          -1,
+          1534,
+          -1,
+          -1,
+          2188,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-done",
+      "name_place": 0,
+      "name_type": 43,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 43,
+        "words": [
+          -1,
+          -1,
+          1534,
+          -1,
+          -1,
+          2188,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-random-reopen",
+      "name_place": 0,
+      "name_type": 43,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 43,
+        "words": [
+          -1,
+          -1,
+          1534,
+          -1,
+          -1,
+          2188,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 5,
+      "kind": "GUILDHALL",
+      "name": "GUILDHALL-5-whole-random",
+      "name_place": 0,
+      "name_type": 52,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          1,
+          0
+        ],
+        "type": 52,
+        "words": [
+          -1,
+          -1,
+          1780,
+          -1,
+          -1,
+          737,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 5,
+      "kind": "GUILDHALL",
+      "name": "GUILDHALL-5-done",
+      "name_place": 0,
+      "name_type": 52,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          1,
+          0
+        ],
+        "type": 52,
+        "words": [
+          -1,
+          -1,
+          1780,
+          -1,
+          -1,
+          737,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 5,
+      "kind": "GUILDHALL",
+      "name": "GUILDHALL-5-random-reopen",
+      "name_place": 0,
+      "name_type": 52,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          1,
+          0
+        ],
+        "type": 52,
+        "words": [
+          -1,
+          -1,
+          1780,
+          -1,
+          -1,
+          737,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
     }
   ],
   "screenshots": {
-    "GUILDHALL-5-before.png": "192235a263957c141331d8063fe14f48454a4274a79b38899e749f38c9769dfe",
-    "GUILDHALL-5-name-back.png": "192235a263957c141331d8063fe14f48454a4274a79b38899e749f38c9769dfe",
-    "GUILDHALL-5-name-open.png": "85cb8fb5fef05d9a82ca78caf2dfef830e3430fca723a16e30de0dc6d94c88ef",
-    "HOSPITAL-2-before.png": "1fe2a5d1edad1bde139e396a6d73cbff127c74317dd999c7636b8b6fc5cc1383",
-    "HOSPITAL-2-name-back.png": "1fe2a5d1edad1bde139e396a6d73cbff127c74317dd999c7636b8b6fc5cc1383",
-    "HOSPITAL-2-name-open.png": "02fa5dcb98c4358d94ab6ed61f1d1afafc90107915cd0b6bd20276b24986134d",
-    "INN_TAVERN-1-before.png": "0db1cab6dffb98ddfe1d3af2c0502d32b42496ecd0ebc5db31af6552db907b3a",
-    "INN_TAVERN-1-name-back.png": "0db1cab6dffb98ddfe1d3af2c0502d32b42496ecd0ebc5db31af6552db907b3a",
-    "INN_TAVERN-1-name-open.png": "d549c3af6ea4a738cec03d23e1bdd9c025d6f01c7671d7b4e7ff82eb0530d20d",
-    "LIBRARY-4-before.png": "18168dac43b1dfcb6586c69c2370e54e39ef857374ebf8342be8d5a45d71ce3c",
+    "GUILDHALL-5-before.png": "6327079376764881b24d91bb7c3251a85f402176cfb857a7ae14fa45d834746e",
+    "GUILDHALL-5-done.png": "4d3cc0831d00afc8254de21790e1445d16a75483d1251fd3dc82d77ca75c6c93",
+    "GUILDHALL-5-name-back.png": "1721f8086268ea975b847a37331bde01e75b0ef5816d578d7700159a644579e4",
+    "GUILDHALL-5-name-open.png": "3c619f68beadb279291ac2ac55f803a08502b4858c2145f3a0882d7049846393",
+    "GUILDHALL-5-random-reopen.png": "180d1e6edc554ae3544f6ef9f518d9bc9af90159df56683e154e34801aebe687",
+    "GUILDHALL-5-whole-random.png": "93953be0704e178d3cc4417e634bb8dff3082780cc2226307e94ab1d2758bf3a",
+    "HOSPITAL-2-before.png": "322ae4b8243e85305c287b64daa96a81d477efa21d20812e996defa9551a9237",
+    "HOSPITAL-2-done.png": "a8b7114ce44eeec99285c726f8d6e19bbf97f82cec0f96f24ad57e66d632d313",
+    "HOSPITAL-2-name-back.png": "322ae4b8243e85305c287b64daa96a81d477efa21d20812e996defa9551a9237",
+    "HOSPITAL-2-name-open.png": "3430e09d8d23a90a2d5696b1d110350c7e1be459886b6e0ead31da1b0f3056fa",
+    "HOSPITAL-2-random-reopen.png": "0e03bdb208844598236507f0ef55e6fd3d3f82eda794dea8b564c7e206730802",
+    "HOSPITAL-2-whole-random.png": "0f861fd90be146f639e24b14301b41b43222c2e409fdfdd41da634fd7a9f5746",
+    "INN_TAVERN-1-before.png": "0df948994c8287faf6ace997a50075879120306fdd66a58cb55583d5ec297a4b",
+    "INN_TAVERN-1-done.png": "159ab08bbaac200a70ce0eee3c36ea5e4e159ff412bd97e36a851bd5ac5f9b9b",
+    "INN_TAVERN-1-edited-back.png": "f9a6cf2c5c7ae2286ade453115ef5c4f568b7ed13c936514d9f3e4ae152c6668",
+    "INN_TAVERN-1-edited-reopen.png": "140e9761279bb5d1263875b43b6d063e8cc2ee4d2d7d6efca8f6de5ba3463480",
+    "INN_TAVERN-1-filter-al.png": "58021cedac5c34a5493fe1d3da56d686e62bd98d28ca38a33cf6c1e2bab6474f",
+    "INN_TAVERN-1-filter-ale.png": "ae98fbe6469ad2d68f60ad5c81d6198884881ffdc6ff6e1155fcda076095d909",
+    "INN_TAVERN-1-filter-enter.png": "58021cedac5c34a5493fe1d3da56d686e62bd98d28ca38a33cf6c1e2bab6474f",
+    "INN_TAVERN-1-filter-focus.png": "95ce1ee621bcb04e6d8fd836f986eda14a3a6ed22497461e78fe246fc2a495e9",
+    "INN_TAVERN-1-name-back.png": "0df948994c8287faf6ace997a50075879120306fdd66a58cb55583d5ec297a4b",
+    "INN_TAVERN-1-name-open.png": "58473e2fb62134f8fc926d4e7bdd2e3bfd556df9100ccc9f4ead04b2adc8ec5d",
+    "INN_TAVERN-1-part-0-clear.png": "d549c3af6ea4a738cec03d23e1bdd9c025d6f01c7671d7b4e7ff82eb0530d20d",
+    "INN_TAVERN-1-part-0-first-word.png": "6b3bd49bd70ce4919dade23a23c16d1c678ab618a352833b180007cab3b93fd0",
+    "INN_TAVERN-1-part-0-random.png": "4f67ff661473440df2de5c55095ce81eec27e749efe8d8afbbe10ddfa495599a",
+    "INN_TAVERN-1-part-0-selected.png": "d549c3af6ea4a738cec03d23e1bdd9c025d6f01c7671d7b4e7ff82eb0530d20d",
+    "INN_TAVERN-1-part-1-clear.png": "33caf13e6fff65de1a971146e1dce7280c4c66b1d0cd21b7fad2625d0de3fa8a",
+    "INN_TAVERN-1-part-1-first-word.png": "d1055d411aa4f6e0ed2e0fed9ef6938f82e8f795e487bc415db1e981b092875a",
+    "INN_TAVERN-1-part-1-random.png": "97b238dda6f03979041bdfbb578c261e051a34317bf2eb525b7351f3908dcadf",
+    "INN_TAVERN-1-part-1-selected.png": "33caf13e6fff65de1a971146e1dce7280c4c66b1d0cd21b7fad2625d0de3fa8a",
+    "INN_TAVERN-1-part-2-clear.png": "32523fdf9cf15c18cbbbae0837c2fbde2b4c4db22540b67f289a31c03efb2206",
+    "INN_TAVERN-1-part-2-first-word.png": "1e63a9900fbbcc325b31a54b39e583bb6b1429dfc8636233699c2072afdc9812",
+    "INN_TAVERN-1-part-2-random.png": "f2f11b15e877567343f3f44a5b5f21bd6d80fcb917b1ee98b214b1ebca7a710c",
+    "INN_TAVERN-1-part-2-selected.png": "6d7b88fb7dcd07dbaeb9775e39992de6ad1d8c065a2091379275f31c2330c00f",
+    "INN_TAVERN-1-part-3-clear.png": "add563bd6c5e4003c157eeb7555d35dfd228b0833a1e651af3bd2342b2148144",
+    "INN_TAVERN-1-part-3-first-word.png": "4805782a23286bf2f9e4d6349852af4abd147ad4ab770d49cdbbb9742b9dbdef",
+    "INN_TAVERN-1-part-3-random.png": "bb5a25d2f7f8b56c4cdae5c6ba9f9fcc51bcd02286a89cd22d33b2cd8606db2a",
+    "INN_TAVERN-1-part-3-selected.png": "add563bd6c5e4003c157eeb7555d35dfd228b0833a1e651af3bd2342b2148144",
+    "INN_TAVERN-1-part-4-clear.png": "5d5066bff1ec69e393248a57eb6170c8245a157cea9bb46f1db8ec144ad14169",
+    "INN_TAVERN-1-part-4-first-word.png": "d6e2c0500b2433498f3222f306bbff08de65d4520e7e9b38f2650be40ae412cb",
+    "INN_TAVERN-1-part-4-random.png": "3744cb3072e33e7b32a04a76da1f58147f6b8967fb32ea9ef2135234abb47b3f",
+    "INN_TAVERN-1-part-4-selected.png": "5d5066bff1ec69e393248a57eb6170c8245a157cea9bb46f1db8ec144ad14169",
+    "INN_TAVERN-1-part-5-clear.png": "7bb473463ce54429e6339887e68768c7cea7aa2144c23a5713c31600f12aa9b5",
+    "INN_TAVERN-1-part-5-first-word.png": "c3dd82a523ce0e1ab85ed000d091bc1bcd3590c8f51be261a332fbbaee5cb2ef",
+    "INN_TAVERN-1-part-5-random.png": "a64a7ea1ba0aec0411ebac845c7f76a097f7788c14ff274660c11319ef051341",
+    "INN_TAVERN-1-part-5-selected.png": "b36d5f9c32dc4e1e9097bf5c046e4199f3a6b083cba087c763c8fbee5875edf9",
+    "INN_TAVERN-1-part-6-clear.png": "ff437722748dd6db20acd93002e24ab76abafb223fa953f6c4b3d149a116375f",
+    "INN_TAVERN-1-part-6-first-word.png": "71ed830951b5dde85f5b5d817264987fd4006d2948195be79f2cbfaf7857957d",
+    "INN_TAVERN-1-part-6-random.png": "7988892fca81ebffe5a5c4f31853193ec2d9bce15f5a4a310edc89f113ec1d99",
+    "INN_TAVERN-1-part-6-selected.png": "ff437722748dd6db20acd93002e24ab76abafb223fa953f6c4b3d149a116375f",
+    "INN_TAVERN-1-random-reopen.png": "3c57e31cb0a30cc4e5fa2e59503255ad911a885f96114cbc328136d0ac071bdc",
+    "INN_TAVERN-1-whole-random.png": "3c57e31cb0a30cc4e5fa2e59503255ad911a885f96114cbc328136d0ac071bdc",
+    "LIBRARY-4-before.png": "21ec6fc0acd1eac290a13bd3d86e52a0bb4c61f01e96cc9fb9182ec62f1ae324",
+    "LIBRARY-4-done.png": "cbf4e6d47ef0348c7a5a3159c335352a48da9e1dfec8d240b8e2d4b599f5a541",
     "LIBRARY-4-name-back.png": "21ec6fc0acd1eac290a13bd3d86e52a0bb4c61f01e96cc9fb9182ec62f1ae324",
-    "LIBRARY-4-name-open.png": "a7e23163e3aff2e77949a7552252f0941920755acd49482912e5e656b0ef0dc7",
-    "TEMPLE-0-before.png": "770f41ad238ed5432e3f8dca930c3d66b163cbf4aebe06bc1ee6539cbf393692",
-    "TEMPLE-0-name-back.png": "8c76865e1519707a54b27654cdd1f95f3d57119ddfc415ab3d10b95744b46ef3",
-    "TEMPLE-0-name-open.png": "7a3b9fc0f8f05cba589cda12c7fd25448a55733d7f0b999fe08572e62cdc908e",
-    "TEMPLE-3-before.png": "075117e9c344fd5de57c64737fdb29fb53c8a3a8e60035a792dec2cfbb9bcd8b",
-    "TEMPLE-3-name-back.png": "075117e9c344fd5de57c64737fdb29fb53c8a3a8e60035a792dec2cfbb9bcd8b",
-    "TEMPLE-3-name-open.png": "8f3ad76e8fd05b72e13dea72786ab5bdad683a8c076891eacdb631313fcb8e98"
+    "LIBRARY-4-name-open.png": "bba19dd16f0de0380d2c75bd5920299b5bf2cf6b4bd8b7950df5ad1db4363b76",
+    "LIBRARY-4-random-reopen.png": "7144f376ed56d80040b4f4d53c997c6e6a9673f01ff4a36b34ccd09da1df33da",
+    "LIBRARY-4-whole-random.png": "7144f376ed56d80040b4f4d53c997c6e6a9673f01ff4a36b34ccd09da1df33da",
+    "TEMPLE-0-before.png": "dc32fa7e6914572b4be6848829b6f8f27fd9244fe7d68eb8cd723d44932dacad",
+    "TEMPLE-0-done.png": "9e741d951c256eba32c4401c76ff300ac4efe778ac264113d382fc76c08fad39",
+    "TEMPLE-0-name-back.png": "a05ac262b72f5696f1244c7a5aaa684db5298c8113ebf0de7516f186b886fd07",
+    "TEMPLE-0-name-open.png": "ec5d61f8595958077dce410d6aa56f71bb4a45d9b5d76744613c7d7ae2feef12",
+    "TEMPLE-0-random-reopen.png": "f39a46650894fb109d0afb775c06c1acfecee24b440baa60a850cacfe6545ac2",
+    "TEMPLE-0-whole-random.png": "f39a46650894fb109d0afb775c06c1acfecee24b440baa60a850cacfe6545ac2",
+    "TEMPLE-3-before.png": "2e3cf368eb26e27c4a89fd0e3ec3389e485bfee4c057aa479dba33eb9249fc64",
+    "TEMPLE-3-done.png": "ad9d149d724157bf5da072b10b17abba0fc76004836917c8f706b7a7aacdd189",
+    "TEMPLE-3-name-back.png": "2e3cf368eb26e27c4a89fd0e3ec3389e485bfee4c057aa479dba33eb9249fc64",
+    "TEMPLE-3-name-open.png": "7b871f10ea975cc31c46503f62dd36d5b3bd53c033c1805da70963c1b550636f",
+    "TEMPLE-3-random-reopen.png": "34731fb5e57def107d49d6e126fe3dce9728af974b8331a2acc6c97c97c23388",
+    "TEMPLE-3-whole-random.png": "34731fb5e57def107d49d6e126fe3dce9728af974b8331a2acc6c97c97c23388"
   },
   "layout": {
     "viewport": [
@@ -856,173 +3196,1306 @@
     "word_row_pitch": 36
   },
   "remaining": [
-    "Locate and audit native owned-input word eligibility, list ordering, filtering, translation and random-name routines.",
-    "Observe actual per-component and whole-name mutations, Clear, selection/filter/scroll, Done and physical Escape behavior.",
-    "Implement revision-guarded semantic name editing without native name_creator scratch.",
+    "Expose native word forms/filtering and audit whole-name/per-component randomization with owned inputs.",
+    "Observe cross-component filtered Random, scrolling, keyboard/physical Escape behavior.",
+    "Implement revision-guarded semantic name editing and typed transport without native name_creator scratch.",
     "Build native editor and verify rendered effects and lifecycle before exposure."
   ],
   "word_choices_samples": {
-    "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55": [
+    "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": {
+      "count": 0,
+      "first40": []
+    },
+    "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf": {
+      "count": 3217,
+      "first40": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          0
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          13,
+          3
+        ],
+        [
+          14,
+          0
+        ],
+        [
+          15,
+          0
+        ],
+        [
+          16,
+          0
+        ],
+        [
+          18,
+          0
+        ],
+        [
+          18,
+          2
+        ],
+        [
+          19,
+          0
+        ],
+        [
+          20,
+          0
+        ],
+        [
+          21,
+          0
+        ],
+        [
+          21,
+          2
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          25,
+          2
+        ],
+        [
+          26,
+          0
+        ],
+        [
+          26,
+          2
+        ],
+        [
+          26,
+          4
+        ],
+        [
+          26,
+          7
+        ],
+        [
+          27,
+          0
+        ]
+      ]
+    },
+    "aad19c98de9b98ba5989c3b85dfe6d44558b6f8a43e2dd1d9b13abb7f7c5fb39": {
+      "count": 5301,
+      "first40": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          1
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          0
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          14,
+          0
+        ],
+        [
+          15,
+          0
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          16,
+          0
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          18,
+          0
+        ],
+        [
+          18,
+          1
+        ],
+        [
+          19,
+          0
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          20,
+          0
+        ],
+        [
+          20,
+          1
+        ],
+        [
+          21,
+          0
+        ],
+        [
+          21,
+          1
+        ]
+      ]
+    },
+    "4496237ef947558f62f056b0341bcb0022e833af9f02566da7849217726f2e63": {
+      "count": 849,
+      "first40": [
+        [
+          1,
+          2
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          15,
+          2
+        ],
+        [
+          17,
+          2
+        ],
+        [
+          18,
+          2
+        ],
+        [
+          21,
+          2
+        ],
+        [
+          22,
+          2
+        ],
+        [
+          25,
+          2
+        ],
+        [
+          26,
+          2
+        ],
+        [
+          44,
+          2
+        ],
+        [
+          48,
+          2
+        ],
+        [
+          51,
+          2
+        ],
+        [
+          53,
+          2
+        ],
+        [
+          55,
+          2
+        ],
+        [
+          57,
+          2
+        ],
+        [
+          64,
+          2
+        ],
+        [
+          82,
+          2
+        ],
+        [
+          83,
+          2
+        ],
+        [
+          85,
+          2
+        ],
+        [
+          101,
+          2
+        ],
+        [
+          103,
+          2
+        ],
+        [
+          143,
+          2
+        ],
+        [
+          158,
+          2
+        ],
+        [
+          168,
+          2
+        ],
+        [
+          169,
+          2
+        ],
+        [
+          170,
+          2
+        ],
+        [
+          173,
+          2
+        ],
+        [
+          177,
+          2
+        ],
+        [
+          186,
+          2
+        ],
+        [
+          195,
+          2
+        ],
+        [
+          197,
+          2
+        ],
+        [
+          202,
+          2
+        ],
+        [
+          203,
+          2
+        ],
+        [
+          207,
+          2
+        ],
+        [
+          220,
+          2
+        ],
+        [
+          222,
+          2
+        ],
+        [
+          242,
+          2
+        ]
+      ]
+    },
+    "f7c57c40e8dc8511151ca6ceacb76644032fbe9e0bc136d65afe4b5dfe85dd74": {
+      "count": 1228,
+      "first40": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          10,
+          0
+        ],
+        [
+          13,
+          3
+        ],
+        [
+          15,
+          2
+        ],
+        [
+          16,
+          0
+        ],
+        [
+          18,
+          0
+        ],
+        [
+          18,
+          2
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          26,
+          0
+        ],
+        [
+          27,
+          0
+        ],
+        [
+          27,
+          1
+        ],
+        [
+          28,
+          0
+        ],
+        [
+          29,
+          0
+        ],
+        [
+          30,
+          0
+        ],
+        [
+          31,
+          0
+        ],
+        [
+          32,
+          0
+        ],
+        [
+          32,
+          1
+        ],
+        [
+          33,
+          0
+        ],
+        [
+          34,
+          0
+        ],
+        [
+          35,
+          0
+        ],
+        [
+          36,
+          0
+        ],
+        [
+          38,
+          0
+        ],
+        [
+          38,
+          1
+        ],
+        [
+          39,
+          0
+        ],
+        [
+          39,
+          1
+        ],
+        [
+          40,
+          0
+        ],
+        [
+          41,
+          0
+        ],
+        [
+          42,
+          0
+        ],
+        [
+          43,
+          0
+        ],
+        [
+          43,
+          1
+        ],
+        [
+          45,
+          0
+        ],
+        [
+          46,
+          0
+        ],
+        [
+          46,
+          1
+        ],
+        [
+          47,
+          0
+        ],
+        [
+          47,
+          1
+        ],
+        [
+          48,
+          2
+        ],
+        [
+          49,
+          0
+        ]
+      ]
+    },
+    "6ff8dd6ddd49776fe9f8269c0f1a4e4d94d796f896d25b3bdb9d7be135475894": {
+      "count": 2442,
+      "first40": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          10,
+          0
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          0
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          14,
+          0
+        ],
+        [
+          15,
+          0
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          16,
+          0
+        ],
+        [
+          17,
+          0
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          18,
+          0
+        ],
+        [
+          19,
+          0
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          20,
+          0
+        ],
+        [
+          20,
+          1
+        ],
+        [
+          21,
+          0
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          26,
+          0
+        ],
+        [
+          27,
+          0
+        ],
+        [
+          28,
+          0
+        ],
+        [
+          28,
+          1
+        ],
+        [
+          29,
+          0
+        ],
+        [
+          30,
+          0
+        ],
+        [
+          30,
+          1
+        ],
+        [
+          31,
+          0
+        ],
+        [
+          31,
+          1
+        ],
+        [
+          32,
+          0
+        ],
+        [
+          33,
+          0
+        ],
+        [
+          33,
+          1
+        ]
+      ]
+    },
+    "f7551ad57630b752a7ca4be7b99ed55af157e21e8d408c3955473ee9b3d20551": {
+      "count": 2658,
+      "first40": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          1
+        ],
+        [
+          8,
+          1
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          15,
+          0
+        ],
+        [
+          17,
+          0
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          18,
+          0
+        ],
+        [
+          18,
+          1
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          20,
+          1
+        ],
+        [
+          21,
+          0
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          26,
+          8
+        ],
+        [
+          27,
+          1
+        ],
+        [
+          27,
+          8
+        ],
+        [
+          28,
+          1
+        ],
+        [
+          29,
+          1
+        ],
+        [
+          30,
+          1
+        ],
+        [
+          31,
+          1
+        ],
+        [
+          32,
+          0
+        ],
+        [
+          32,
+          1
+        ],
+        [
+          32,
+          8
+        ],
+        [
+          33,
+          0
+        ],
+        [
+          33,
+          1
+        ],
+        [
+          34,
+          1
+        ],
+        [
+          35,
+          1
+        ],
+        [
+          36,
+          1
+        ],
+        [
+          37,
+          8
+        ]
+      ]
+    },
+    "5eb620458c06c6cc001a69f9ac934308dbe6ad1d8ca6c2def1289dabfed84399": {
+      "count": 8,
+      "first40": [
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          1530,
+          0
+        ],
+        [
+          1703,
+          1
+        ],
+        [
+          1706,
+          1
+        ],
+        [
+          1756,
+          1
+        ],
+        [
+          1868,
+          1
+        ],
+        [
+          2057,
+          1
+        ]
+      ]
+    },
+    "3333da60d1ddd3b0d7b39e2694313fb2a7971b988d28c428abfc77a01a9eff53": {
+      "count": 121,
+      "first40": [
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          26,
+          8
+        ],
+        [
+          28,
+          1
+        ],
+        [
+          95,
+          1
+        ],
+        [
+          111,
+          1
+        ],
+        [
+          111,
+          8
+        ],
+        [
+          186,
+          0
+        ],
+        [
+          186,
+          1
+        ],
+        [
+          263,
+          1
+        ],
+        [
+          263,
+          8
+        ],
+        [
+          314,
+          1
+        ],
+        [
+          437,
+          1
+        ],
+        [
+          515,
+          1
+        ],
+        [
+          516,
+          1
+        ],
+        [
+          522,
+          0
+        ],
+        [
+          602,
+          1
+        ],
+        [
+          621,
+          1
+        ],
+        [
+          699,
+          0
+        ],
+        [
+          699,
+          1
+        ],
+        [
+          700,
+          1
+        ],
+        [
+          715,
+          1
+        ],
+        [
+          716,
+          1
+        ],
+        [
+          817,
+          1
+        ],
+        [
+          817,
+          8
+        ],
+        [
+          822,
+          8
+        ],
+        [
+          866,
+          1
+        ],
+        [
+          876,
+          1
+        ],
+        [
+          935,
+          1
+        ],
+        [
+          935,
+          8
+        ],
+        [
+          999,
+          0
+        ],
+        [
+          1000,
+          1
+        ],
+        [
+          1025,
+          8
+        ],
+        [
+          1038,
+          1
+        ],
+        [
+          1059,
+          0
+        ],
+        [
+          1059,
+          1
+        ],
+        [
+          1071,
+          1
+        ],
+        [
+          1093,
+          0
+        ],
+        [
+          1093,
+          1
+        ]
+      ]
+    }
+  },
+  "provider_reference": {
+    "function_rva": "0xd35530",
+    "length": "0x9a4",
+    "fnv1a64": "77bd9190661f5681",
+    "signature": "void(language_word_table*, vector<int32_t>*)",
+    "inputs": "Owned consecutive raw word IDs, as native initialization does; owned output table. Reads authoritative raw word flags.",
+    "calls": [
+      "0x70e20 vector<int32_t> insertion/allocation",
+      "0x287020 vector<int32_t> insertion/allocation"
+    ],
+    "component_to_table": [
+      0,
+      1,
+      3,
+      3,
+      4,
+      2,
+      5
+    ],
+    "comparisons": [
       {
-        "word_id": 0,
-        "part_of_speech": 0
+        "name": "TEMPLE-0-name-open",
+        "count": 3217,
+        "ui_unchanged": true
       },
       {
-        "word_id": 1,
-        "part_of_speech": 0
+        "name": "INN_TAVERN-1-name-open",
+        "count": 3217,
+        "ui_unchanged": true
       },
       {
-        "word_id": 1,
-        "part_of_speech": 0
+        "name": "HOSPITAL-2-name-open",
+        "count": 3217,
+        "ui_unchanged": true
       },
       {
-        "word_id": 2,
-        "part_of_speech": 0
+        "name": "TEMPLE-3-name-open",
+        "count": 3217,
+        "ui_unchanged": true
       },
       {
-        "word_id": 2,
-        "part_of_speech": 2
+        "name": "LIBRARY-4-name-open",
+        "count": 3217,
+        "ui_unchanged": true
       },
       {
-        "word_id": 2,
-        "part_of_speech": 0
+        "name": "GUILDHALL-5-name-open",
+        "count": 3217,
+        "ui_unchanged": true
       },
       {
-        "word_id": 3,
-        "part_of_speech": 0
+        "name": "INN_TAVERN-1-part-0-selected",
+        "count": 3217,
+        "ui_unchanged": true
       },
       {
-        "word_id": 4,
-        "part_of_speech": 0
+        "name": "INN_TAVERN-1-part-1-selected",
+        "count": 5301,
+        "ui_unchanged": true
       },
       {
-        "word_id": 4,
-        "part_of_speech": 4
+        "name": "INN_TAVERN-1-part-2-selected",
+        "count": 849,
+        "ui_unchanged": true
       },
       {
-        "word_id": 4,
-        "part_of_speech": 0
+        "name": "INN_TAVERN-1-part-3-selected",
+        "count": 849,
+        "ui_unchanged": true
       },
       {
-        "word_id": 4,
-        "part_of_speech": 7
+        "name": "INN_TAVERN-1-part-4-selected",
+        "count": 1228,
+        "ui_unchanged": true
       },
       {
-        "word_id": 6,
-        "part_of_speech": 0
+        "name": "INN_TAVERN-1-part-5-selected",
+        "count": 2442,
+        "ui_unchanged": true
       },
       {
-        "word_id": 6,
-        "part_of_speech": 3
-      },
-      {
-        "word_id": 7,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 7,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 8,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 9,
-        "part_of_speech": 1
-      },
-      {
-        "word_id": 9,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 11,
-        "part_of_speech": 4
-      },
-      {
-        "word_id": 11,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 12,
-        "part_of_speech": 7
-      },
-      {
-        "word_id": 12,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 13,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 14,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 15,
-        "part_of_speech": 1
-      },
-      {
-        "word_id": 16,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 18,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 18,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 19,
-        "part_of_speech": 2
-      },
-      {
-        "word_id": 20,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 21,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 21,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 23,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 24,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 25,
-        "part_of_speech": 2
-      },
-      {
-        "word_id": 26,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 26,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 26,
-        "part_of_speech": 0
-      },
-      {
-        "word_id": 26,
-        "part_of_speech": 1
-      },
-      {
-        "word_id": 27,
-        "part_of_speech": 0
+        "name": "INN_TAVERN-1-part-6-selected",
+        "count": 2658,
+        "ui_unchanged": true
       }
-    ]
+    ],
+    "protocol": "Protected df3d location-name-words component diagnostic only; no wire change or product UI yet."
+  },
+  "binding_correction": {
+    "issue": "DFHack name_creator_interfacest.word_index_asp declares vector<part_of_speech> with16-bit elements; DF stores32-bit entries. language_word_table.parts already has correct32-bit storage.",
+    "evidence": "Native1fc330 copies in4-byte units;1ff8ef..1ff903 indexes the selected part by4 then stores low16 bits in language_name. First discrepancy at index3 was correct pair1/2 versus misread1/0.",
+    "status": "Capture uses a bounded32-bit read of the native vector. Runtime provider uses the correctly typed owned language_word_table and never name_creator. External DFHack XML unchanged.",
+    "supersedes": "The initial205453 first-word part-of-speech samples and205930 raw word_parts were incorrectly decoded. Name values, layout and entry behavior remain valid; current observations replace the samples."
+  },
+  "native_routine_candidates": {
+    "whole_name": "Native name creator1ff624..1ff660 calls entity wrapper931860(entity,name,type), or a92860(name,language,type,major,minor). These are candidates for further ownership/effect auditing; not exposed by current provider.",
+    "filter": "UI helper1fc330 copies the selected semantic table and filters uppercase English forms via d2cb50/52cee0. Do not call it with native name_creator scratch.",
+    "inline_edits": "Clear and word selection are direct language_name field writes at1ff830..1ff850 and1ff8c6..1ff908. Per-component Random indexes the currently displayed filtered list, not an independently regenerated target-component table; cross-component behavior still needs live observation."
   }
 }

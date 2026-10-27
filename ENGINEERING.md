@@ -169,21 +169,43 @@ Modified-key/clipboard input remains outside this evidence.
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout
 reference needed to implement the unfinished Details rename action. Protected
 `stockpile_storage_native.ps1 -LocationNames` run
-`build/stockpile-storage-native-location-names-20261026-205453` captures18 states:
-Details, name creator and right-click Back for six locations. Every name field
-remains unchanged. DF142060 exits unsaved, source manifest unchanged.
+`build/stockpile-storage-native-location-names-20261026-211043` captures70 states:
+entry/Back across six locations, all seven tavern components' Clear/word/Random
+actions, filter focus/ALE/AL/Enter, edited Back/reopen and whole-name Random/Done
+for all six locations. Entry alone preserves names; changes apply immediately
+and both Back and Done retain them. DF142768 exits unsaved, source unchanged.
 
 The rename icon opens `name_creator` in LOCATION_NAME context3 with a pointer to
 the selected location's language_name and namer entity245 in this fixture.
 Native name types are Temple21, Tavern28, Hospital54, Library43 and Guildhall52.
 The editor has seven name components, per-component Random/Clear, whole-name
 Random/Done, a search field and a word list. Initial Front Compound choices
-contain3217 word/part-of-speech pairs in this fixture; the capture retains the
-first40. These are diagnostic observations, not permission to read native UI
-scratch at runtime. Semantic word eligibility/order/filtering, randomization and
-name updates still need native routine discovery and owned-input audits. Actual
-mutation, Done, physical Escape and rendered editor acceptance remain unfinished.
-No rename control is exposed by this discovery.
+contain3217 word/part-of-speech pairs in this fixture. Other component counts are
+5301,849,849,1228,2442,2658. The fixture retains complete-list hashes and first40
+samples. These are diagnostic observations, not runtime UI inputs.
+
+`observeNativeLocationNameWords` calls native selector builder RVA0xd35530 with
+owned consecutive raw-word IDs and an owned language_word_table. The builder
+reads raw word flags, preserves native order and uses vector allocation helpers;
+it does not read name_creator. Supported PE and function bytes are pinned.
+The protected `df3d location-name-words` diagnostic matches all35846 ordered
+word/part-of-speech pairs across13 native cases and leaves the main-interface
+and GPS structures unchanged. MSVC and core19/19 pass
+(`build/qa/location-name-words`). Management70 remains unchanged; no product
+transport or rename control is exposed yet.
+
+Capture found a DFHack binding error: name_creator.word_index_asp is declared
+as16-bit enum elements, but native copies/indexes32-bit entries. The corrected
+diagnostic reads the bounded vector as32-bit; the runtime provider uses the
+already-correct language_word_table.parts type. External DFHack XML is unchanged.
+The initial205453/205930 word-part samples are superseded; failed210714/210908
+comparisons are not acceptance. This is a binding defect, not a native DF bug.
+
+Native whole-name handlers931860/a92860 are located but still require ownership
+and effect audits. Filtering, native word forms, per-component Random's current
+list semantics, physical Escape, typed mutations and the rendered editor remain
+unfinished. DFHack Translation::generateName reconstructs the algorithm and is
+not used as a substitute for calling DF.
 
 ## Native squad assignment reference
 

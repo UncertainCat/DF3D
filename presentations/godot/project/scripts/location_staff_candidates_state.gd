@@ -11,6 +11,8 @@ var revision := 0
 var ticket := 0
 var generation := 0
 var service
+var religious := false
+var target_receipt: Dictionary = {}
 var _pending_rows: Array = []
 var _seen: Dictionary = {}
 var _seen_sources: Dictionary = {}
@@ -27,7 +29,7 @@ func configure(source) -> void:
 func close() -> void:
 	generation += 1
 	var previous := ticket
-	ticket = 0; identity = {}; rows = []; revision = 0; _clear_pending()
+	ticket = 0; identity = {}; rows = []; revision = 0; religious = false; target_receipt = {}; _clear_pending()
 	phase = Phase.Closed
 	if service != null and previous != 0: service.detach(previous)
 	changed.emit()
@@ -51,6 +53,16 @@ func open(target: Dictionary) -> void:
 	phase = Phase.Reading
 	_read(0)
 
+func open_religious(target: Dictionary) -> void:
+	close()
+	for key in ["site_id","location_id","entity_id","assignment_id"]:
+		if typeof(target.get(key))!=TYPE_INT or target[key]<0 or target[key]>2147483647:
+			_reject();return
+	if typeof(target.get("holder_id"))!=TYPE_INT or target.holder_id < -1 or target.holder_id>2147483647:
+		_reject();return
+	if service==null:phase=Phase.Unavailable;changed.emit();return
+	religious=true;identity=target.duplicate(true);phase=Phase.Reading;_read(0)
+
 func refresh() -> void:
 	if phase != Phase.Ready or ticket != 0: return
 	_clear_pending(); phase = Phase.Refreshing
@@ -60,7 +72,10 @@ func _read(cursor: int) -> void:
 	var owner := generation
 	var intent := {"action":C.ManagementAction.AreaInspect,"operation":C.AreaOperation.LocationStaffCandidates,
 		"kind":C.AreaKind.Zone,"location_site_id":identity.site_id,"location_id":identity.location_id,
-		"occupation_id":identity.occupation_id,"cursor":cursor,"expected_list_revision":_revision}
+		"occupation_id":identity.get("occupation_id",-1),"cursor":cursor,"expected_list_revision":_revision}
+	if religious:
+		intent.operation=C.AreaOperation.LocationReligiousCandidates;intent.erase("occupation_id")
+		intent.religious_entity_id=identity.entity_id;intent.religious_assignment_id=identity.assignment_id
 	ticket = service.submit("areas",intent,func(received,result,sent):
 		if generation == owner and ticket == received: _receive(result,sent))
 	if ticket == 0:
@@ -78,12 +93,20 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if int(result.get("status",C.ManagementStatus.Rejected)) != C.ManagementStatus.Ok:
 		_reject(); return
 	var area: Dictionary = result.get("area",{})
-	var page: Dictionary = area.get("location_staff_candidates",{})
+	var page: Dictionary = area.get("location_religious_candidates" if religious else "location_staff_candidates",{})
 	if int(result.get("action",-1)) != int(sent.action) or int(area.get("operation",-1)) != int(sent.operation):
 		_reject(); return
-	for key in ["site_id","location_id","occupation_id","role"]:
-		if typeof(page.get(key)) != TYPE_INT or page[key] != identity[key]:
-			_reject(); return
+	if religious:
+		var target: Dictionary=page.get("target",{})
+		for key in ["site_id","location_id","entity_id","assignment_id","holder_id"]:
+			if typeof(target.get(key))!=TYPE_INT or target[key]!=identity[key]:_reject();return
+		if typeof(target.get("revision"))!=TYPE_INT or target.revision<=0:_reject();return
+		if int(sent.cursor)==0:target_receipt=target.duplicate(true)
+		elif target!=target_receipt:_reject();return
+	else:
+		for key in ["site_id","location_id","occupation_id","role"]:
+			if typeof(page.get(key)) != TYPE_INT or page[key] != identity[key]:
+				_reject(); return
 	for key in ["revision","cursor","next_cursor","total"]:
 		if typeof(page.get(key)) != TYPE_INT:
 			_reject(); return

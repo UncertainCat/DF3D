@@ -513,6 +513,21 @@ The fixture retains bounded transport evidence. Assignment viewer rendering,
 disconnect/late-reply lifecycle and post-effect Unknown injection remain unfinished;
 no new gameplay UI is exposed by this handler.
 
+`location_religious_assignment_workflow.gd` owns the viewer-side vacant-row
+assignment sequence. It loads a complete list through the shared candidate
+state, then obtains a selected receipt before submitting at most one assignment.
+The receipt must match the list's complete target, selected unit/HF and list
+revision. Details locks while that action is pending. Closing detaches queued
+work and retires callback ownership; late success cannot refresh another panel.
+Failed/uncertain assignment cannot reopen on the same Details revision. Session
+replacement retires the list without replay. The candidate state retains native
+rows and comparison keys, rejects partial lists, and requires identical target
+receipts across continuation pages. Controlled workflow, ordinary candidate and
+religious removal regression checks plus core pass in
+`build/qa/location-religious-assignment-workflow-final`. These are injected-service
+checks. The assignment workflow still needs visible-picker integration, native
+alternate sort/filter verification and rendered/live lifecycle acceptance.
+
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no
 implemented presentation route yet. Its scope must be retained in the management

@@ -4221,7 +4221,6 @@
     ]
   },
   "remaining": [
-    "producer replacement with pending quantity work",
     "modified-key and clipboard input behavior"
   ],
   "transport_reference": {
@@ -5976,7 +5975,7 @@
     }
   },
   "lifecycle_reference": {
-    "driver": "areas_acceptance.ps1 -LocationScene -QuantityLifecycle stale|queued|sent|late",
+    "driver": "areas_acceptance.ps1 -LocationScene -QuantityLifecycle stale|queued|sent|late|restart",
     "runs": {
       "stale": {
         "run": "build/areas-acceptance-20261026-204052",
@@ -6124,17 +6123,65 @@
           "scene_quantity_lifecycle_ready.png": "84c5030747be025848682ff3d83aafa21a3ea589233efbac420cb27bf1deaec5",
           "scene_quantity_lifecycle_reopened.png": "673e523d9399849876ce6f0d7d98c5c7f0b467ccc77f5a931b489558c8d6c567"
         }
+      },
+      "restart": {
+        "run": "build/areas-acceptance-20261026-205208",
+        "status": "passed_with_known_issues",
+        "result": {
+          "driver": "res://tests/areas_location_scene_live.gd",
+          "reasons": [],
+          "status": "passed",
+          "surface": "main scene GPU; viewport input and native readback"
+        },
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "identity": {
+          "new_epoch": "385464724881409",
+          "new_generation": 2,
+          "old_epoch": "617324239388673",
+          "old_generation": 1,
+          "pid": 89748.0
+        },
+        "outcome": {
+          "message": "Management connection ended; sent outcomes are unknown and will not be replayed",
+          "outcome": "unknown",
+          "status": 3
+        },
+        "new_requests": {
+          "9": {
+            "domain": "construction",
+            "request": {
+              "action": 0
+            }
+          }
+        },
+        "source_and_clone_unchanged": true,
+        "unsaved_exit": true,
+        "godot_log_sha256": "d17f91621ed8a96ec54fe8684e6955e950a5010fb3e26dc0ead47145ab9252d0",
+        "screenshots": {
+          "scene_quantity_lifecycle_ready.png": "7a7e6b96cd9eca2049e08a3b689918d491201a82e5f8da53b67c33c911a30256",
+          "scene_quantity_lifecycle_reopened.png": "1bb6ad86fdcddbfdc86e6c448a32685946284138afd6497a314b60fc2b4b70f8",
+          "scene_quantity_restart_retired.png": "6dd8c8667470526d2c19415588cf487a0c29d2d273d5d864875ede58b4670e06"
+        }
       }
     },
     "scope": {
       "stale": "Diagnostic native value41 invalidates displayed revision; viewport input2 then24 receives Stale, drops dependent digits and hides controls. Fresh opening observes41 with no draft.",
       "late": "First edit2 completes in DF before service observes its reply. Right-click hides Details; a visible chooser Details click for another target is blocked during drain. Reply drains24 to the original target, cannot revive the panel, then fresh Temple Details has no inherited draft.",
       "queued": "Disconnect before service dispatch: not_sent, native original unchanged, queue/input/identity retired. Reconnect issues no automatic edit/open; explicit reopening reads original.",
-      "sent": "DF completes first digit2 before the service observes it. Disconnect reports unknown, drops dependent24, and reconnect neither replays nor reopens. Explicit reopening reads native2."
+      "sent": "DF completes first digit2 before the service observes it. Disconnect reports unknown, drops dependent24, and reconnect neither replays nor reopens. Explicit reopening reads native2.",
+      "restart": "First digit2 completes in the old DF process with its receipt held unobserved and dependent24 queued. Protected restart changes PID/epoch and generation. Old outcome becomes unknown, pending identity/draft retire, no Location read/open/edit auto-submits. Normal construction-channel claim is allowed. After terrain/playable readiness, explicit reopening observes the saved original quantity, not unsaved2/24."
     },
     "limitations": [
       "Focused on tavern goblets; full13-field input/effect matrix remains in rendered_reference.",
-      "Disconnect detaches/reconnects the viewer to the same paused producer. Process replacement with pending quantity work has not been exercised by this scope.",
       "No claim of native rename or remaining Location Details controls."
     ]
   }

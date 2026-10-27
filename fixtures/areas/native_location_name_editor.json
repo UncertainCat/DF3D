@@ -1,0 +1,1028 @@
+{
+  "provenance": {
+    "run": "build/stockpile-storage-native-location-names-20261026-205453",
+    "result_sha256": "f8809127c9775de8a8e88373e40bd96fb5d3fcb7541e03909e827aed718eadfb",
+    "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "source_save_unchanged": true,
+    "unsaved_exit": true,
+    "scope": "Native chooser Details -> rename icon -> name creator -> right-click Back for all six fixture locations. Open/Back retains every language_name field. Diagnostic UI fields are not runtime APIs."
+  },
+  "observations": [
+    {
+      "context": 0,
+      "creator_open": false,
+      "details_open": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-before",
+      "name_place": 0,
+      "name_type": -1,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          341,
+          -1,
+          -1,
+          1545,
+          -1
+        ]
+      },
+      "word_count": 0,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-name-open",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          341,
+          -1,
+          -1,
+          1545,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-name-back",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          341,
+          -1,
+          -1,
+          1545,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": false,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-before",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          -1,
+          -1,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-name-open",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          -1,
+          -1,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "name": "INN_TAVERN-1-name-back",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 28,
+        "words": [
+          -1,
+          -1,
+          1612,
+          -1,
+          -1,
+          515,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": false,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-before",
+      "name_place": 0,
+      "name_type": 28,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 54,
+        "words": [
+          -1,
+          -1,
+          1732,
+          -1,
+          -1,
+          1546,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-name-open",
+      "name_place": 0,
+      "name_type": 54,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 54,
+        "words": [
+          -1,
+          -1,
+          1732,
+          -1,
+          -1,
+          1546,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 2,
+      "kind": "HOSPITAL",
+      "name": "HOSPITAL-2-name-back",
+      "name_place": 0,
+      "name_type": 54,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 54,
+        "words": [
+          -1,
+          -1,
+          1732,
+          -1,
+          -1,
+          1546,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": false,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-before",
+      "name_place": 0,
+      "name_type": 54,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          976,
+          -1,
+          -1,
+          1443,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-name-open",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          976,
+          -1,
+          -1,
+          1443,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 3,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-3-name-back",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 21,
+        "words": [
+          -1,
+          -1,
+          976,
+          -1,
+          -1,
+          1443,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": false,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-before",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 43,
+        "words": [
+          -1,
+          -1,
+          1134,
+          -1,
+          -1,
+          1604,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-name-open",
+      "name_place": 0,
+      "name_type": 43,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 43,
+        "words": [
+          -1,
+          -1,
+          1134,
+          -1,
+          -1,
+          1604,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 4,
+      "kind": "LIBRARY",
+      "name": "LIBRARY-4-name-back",
+      "name_place": 0,
+      "name_type": 43,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": 43,
+        "words": [
+          -1,
+          -1,
+          1134,
+          -1,
+          -1,
+          1604,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": false,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 5,
+      "kind": "GUILDHALL",
+      "name": "GUILDHALL-5-before",
+      "name_place": 0,
+      "name_type": 43,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "type": 52,
+        "words": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          1340,
+          397
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    },
+    {
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 5,
+      "kind": "GUILDHALL",
+      "name": "GUILDHALL-5-name-open",
+      "name_place": 0,
+      "name_type": 52,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "type": 52,
+        "words": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          1340,
+          397
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "first_word_choices_sample": "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55"
+    },
+    {
+      "context": 3,
+      "creator_open": false,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 5,
+      "kind": "GUILDHALL",
+      "name": "GUILDHALL-5-name-back",
+      "name_place": 0,
+      "name_type": 52,
+      "name_value": {
+        "first_name": "",
+        "has_name": true,
+        "language": 0,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "type": 52,
+        "words": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          1340,
+          397
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0
+    }
+  ],
+  "screenshots": {
+    "GUILDHALL-5-before.png": "192235a263957c141331d8063fe14f48454a4274a79b38899e749f38c9769dfe",
+    "GUILDHALL-5-name-back.png": "192235a263957c141331d8063fe14f48454a4274a79b38899e749f38c9769dfe",
+    "GUILDHALL-5-name-open.png": "85cb8fb5fef05d9a82ca78caf2dfef830e3430fca723a16e30de0dc6d94c88ef",
+    "HOSPITAL-2-before.png": "1fe2a5d1edad1bde139e396a6d73cbff127c74317dd999c7636b8b6fc5cc1383",
+    "HOSPITAL-2-name-back.png": "1fe2a5d1edad1bde139e396a6d73cbff127c74317dd999c7636b8b6fc5cc1383",
+    "HOSPITAL-2-name-open.png": "02fa5dcb98c4358d94ab6ed61f1d1afafc90107915cd0b6bd20276b24986134d",
+    "INN_TAVERN-1-before.png": "0db1cab6dffb98ddfe1d3af2c0502d32b42496ecd0ebc5db31af6552db907b3a",
+    "INN_TAVERN-1-name-back.png": "0db1cab6dffb98ddfe1d3af2c0502d32b42496ecd0ebc5db31af6552db907b3a",
+    "INN_TAVERN-1-name-open.png": "d549c3af6ea4a738cec03d23e1bdd9c025d6f01c7671d7b4e7ff82eb0530d20d",
+    "LIBRARY-4-before.png": "18168dac43b1dfcb6586c69c2370e54e39ef857374ebf8342be8d5a45d71ce3c",
+    "LIBRARY-4-name-back.png": "21ec6fc0acd1eac290a13bd3d86e52a0bb4c61f01e96cc9fb9182ec62f1ae324",
+    "LIBRARY-4-name-open.png": "a7e23163e3aff2e77949a7552252f0941920755acd49482912e5e656b0ef0dc7",
+    "TEMPLE-0-before.png": "770f41ad238ed5432e3f8dca930c3d66b163cbf4aebe06bc1ee6539cbf393692",
+    "TEMPLE-0-name-back.png": "8c76865e1519707a54b27654cdd1f95f3d57119ddfc415ab3d10b95744b46ef3",
+    "TEMPLE-0-name-open.png": "7a3b9fc0f8f05cba589cda12c7fd25448a55733d7f0b999fe08572e62cdc908e",
+    "TEMPLE-3-before.png": "075117e9c344fd5de57c64737fdb29fb53c8a3a8e60035a792dec2cfbb9bcd8b",
+    "TEMPLE-3-name-back.png": "075117e9c344fd5de57c64737fdb29fb53c8a3a8e60035a792dec2cfbb9bcd8b",
+    "TEMPLE-3-name-open.png": "8f3ad76e8fd05b72e13dea72786ab5bdad683a8c076891eacdb631313fcb8e98"
+  },
+  "layout": {
+    "viewport": [
+      1200,
+      800
+    ],
+    "rename_icon_center": [
+      944,
+      82
+    ],
+    "heading": "Name the location",
+    "components": [
+      "Front Compound",
+      "Rear Compound",
+      "First Adjective",
+      "Second Adjective",
+      "Hyphen Compound",
+      "The X",
+      "Of X"
+    ],
+    "component_centers": [
+      [
+        476,
+        142
+      ],
+      [
+        476,
+        178
+      ],
+      [
+        476,
+        214
+      ],
+      [
+        476,
+        250
+      ],
+      [
+        476,
+        286
+      ],
+      [
+        476,
+        322
+      ],
+      [
+        476,
+        358
+      ]
+    ],
+    "whole_random_center": [
+      832,
+      82
+    ],
+    "done_center": [
+      912,
+      82
+    ],
+    "component_random_x": 608,
+    "component_clear_x": 668,
+    "filter_center": [
+      832,
+      142
+    ],
+    "word_first_row_y": 178,
+    "word_row_pitch": 36
+  },
+  "remaining": [
+    "Locate and audit native owned-input word eligibility, list ordering, filtering, translation and random-name routines.",
+    "Observe actual per-component and whole-name mutations, Clear, selection/filter/scroll, Done and physical Escape behavior.",
+    "Implement revision-guarded semantic name editing without native name_creator scratch.",
+    "Build native editor and verify rendered effects and lifecycle before exposure."
+  ],
+  "word_choices_samples": {
+    "fd9c7dfd2ecf3093540a4c781ef50872bc5efd3eaba26014d57530cf661e1c55": [
+      {
+        "word_id": 0,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 1,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 1,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 2,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 2,
+        "part_of_speech": 2
+      },
+      {
+        "word_id": 2,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 3,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 4,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 4,
+        "part_of_speech": 4
+      },
+      {
+        "word_id": 4,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 4,
+        "part_of_speech": 7
+      },
+      {
+        "word_id": 6,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 6,
+        "part_of_speech": 3
+      },
+      {
+        "word_id": 7,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 7,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 8,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 9,
+        "part_of_speech": 1
+      },
+      {
+        "word_id": 9,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 11,
+        "part_of_speech": 4
+      },
+      {
+        "word_id": 11,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 12,
+        "part_of_speech": 7
+      },
+      {
+        "word_id": 12,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 13,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 14,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 15,
+        "part_of_speech": 1
+      },
+      {
+        "word_id": 16,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 18,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 18,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 19,
+        "part_of_speech": 2
+      },
+      {
+        "word_id": 20,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 21,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 21,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 23,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 24,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 25,
+        "part_of_speech": 2
+      },
+      {
+        "word_id": 26,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 26,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 26,
+        "part_of_speech": 0
+      },
+      {
+        "word_id": 26,
+        "part_of_speech": 1
+      },
+      {
+        "word_id": 27,
+        "part_of_speech": 0
+      }
+    ]
+  }
+}

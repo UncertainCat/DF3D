@@ -100,7 +100,7 @@ the known separate-render-thread notice. `rendered_reference` records this
 evidence. Earlier runs failing disabled staged launcher clicks or a clipped
 chooser row are not overall acceptance; the driver now enables staged test
 clicks and scrolls assigned choices into view. Product availability is unchanged.
-Producer replacement with pending quantity work remains unverified. Other unfinished Details
+Other unfinished Details
 controls keep the overall Zones/Locations surface staged.
 
 The fixture's `entry_focus_reference` records ten additional observations from
@@ -149,8 +149,41 @@ location, the panel stays closed, and a new location has no inherited draft.
 All runs preserve both save manifests and exit unsaved, with only the known
 separate-render-thread notice. Core19/19 passes in
 `build/qa/location-quantity-lifecycle`. These cases use tavern goblets and viewer
-detach/reconnect to the same producer; they do not establish process replacement
-or modified-key/clipboard input. The full thirteen-field matrix remains separate.
+detach/reconnect to the same producer. The full thirteen-field matrix remains separate.
+
+The additional `-QuantityLifecycle restart` run
+`build/areas-acceptance-20261026-205208` replaces DF143732 with89748 after the
+first digit2 completes but before the viewer observes it. Generation1 becomes2,
+the fortress epoch changes, the old outcome becomes unknown, and pending24 and
+the old Details target retire. No Location read/open/edit automatically submits;
+the ordinary construction-channel startup claim is allowed. Explicit reopening
+after playable readiness observes the saved original quantity. Both save manifests
+and1368 hashes across restart remain unchanged; both processes exit unsaved.
+Only the known rendering-thread notice remains; core19/19 passes in
+`build/qa/location-quantity-restart`. Earlier attempts counted unrelated startup
+requests or clicked before terrain readiness and are not accepted runs.
+Modified-key/clipboard input remains outside this evidence.
+
+## Native Location name editor discovery
+
+`fixtures/areas/native_location_name_editor.json` retains the native entry/layout
+reference needed to implement the unfinished Details rename action. Protected
+`stockpile_storage_native.ps1 -LocationNames` run
+`build/stockpile-storage-native-location-names-20261026-205453` captures18 states:
+Details, name creator and right-click Back for six locations. Every name field
+remains unchanged. DF142060 exits unsaved, source manifest unchanged.
+
+The rename icon opens `name_creator` in LOCATION_NAME context3 with a pointer to
+the selected location's language_name and namer entity245 in this fixture.
+Native name types are Temple21, Tavern28, Hospital54, Library43 and Guildhall52.
+The editor has seven name components, per-component Random/Clear, whole-name
+Random/Done, a search field and a word list. Initial Front Compound choices
+contain3217 word/part-of-speech pairs in this fixture; the capture retains the
+first40. These are diagnostic observations, not permission to read native UI
+scratch at runtime. Semantic word eligibility/order/filtering, randomization and
+name updates still need native routine discovery and owned-input audits. Actual
+mutation, Done, physical Escape and rendered editor acceptance remain unfinished.
+No rename control is exposed by this discovery.
 
 ## Native squad assignment reference
 

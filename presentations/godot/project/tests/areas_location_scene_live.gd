@@ -893,11 +893,13 @@ func quantity_scroll_location(index: int) -> void:
 	check(view.scroll.get_global_rect().has_point(view.choices[index].get_global_rect().get_center()),"location chooser target outside clip")
 
 func quantity_lifecycle_open() -> void:
+	if not await wait_ui(func():return scene._loader.entered and scene._fortress_hud.enabled,"quantity lifecycle playable fortress"):return
 	var area:=await inspect(23,1)
 	if stopped:return
 	var zones: Button=scene._fortress_hud.navigation.Zones
 	zones.show();scene._fortress_hud.layout(scene._fortress_hud.logical_view_size())
 	if not editor.panel.visible:await click_control(zones,true)
+	if stopped:return
 	if not await wait_ui(func():return editor.panel.visible and editor.available and settled(),"quantity lifecycle Zones"):return
 	editor.use_area(area)
 	await click_control(editor.zone_menu.controls.location)
@@ -956,6 +958,16 @@ func quantity_lifecycle(mode: String) -> void:
 		await quantity_lifecycle_choose(1)
 		if stopped:return
 		if not check(int(model.snapshot.supplies[0].desired)==41 and flow.text=="" and flow.editing==-1,"fresh Details reused stale draft"):return
+	elif mode=="restart":
+		await quantity_unobserved(ticket)
+		if stopped:return
+		await native("quantity_check",{"location_id":1,"quantity_id":0,"value":2})
+		await quantity_restart(ticket)
+		if stopped:return
+		await native("quantity_check",{"location_id":1,"quantity_id":0,"value":original})
+		await quantity_lifecycle_open()
+		if stopped:return
+		if not check(int(model.snapshot.supplies[0].desired)==original and flow.editing==-1 and flow.queue.is_empty(),"replacement quantity opening reused old work"):return
 	elif mode=="late":
 		await quantity_unobserved(ticket)
 		if stopped:return
@@ -1006,3 +1018,64 @@ func quantity_lifecycle(mode: String) -> void:
 	editor.close_panel()
 	await native("quantity_seed",{"location_id":1,"quantity_id":0,"value":original})
 	if not stopped:print("LOCATION_QUANTITY_LIFECYCLE_PASS mode=",mode)
+
+func quantity_restart(ticket: int) -> void:
+	var old_epoch: int=world.poll_session().get("fortress_epoch",0)
+	var old_generation: int=world.session_generation()
+	var new_requests: Dictionary={}
+	var first_new_ticket: int=actions._next_ticket
+	var observe:=func(received: int, _result: Dictionary):
+		if received>=first_new_ticket and actions._requests.has(received):
+			var item: Dictionary=actions._requests[received]
+			new_requests[received]={"domain":item.domain,"request":item.request.duplicate(true)}
+	actions.completed.connect(observe)
+	handshake+=1
+	write_json("request-%d.json"%handshake,{"op":"reload"})
+	var file:=FileAccess.open(directory+"/verify.tmp",FileAccess.WRITE)
+	file.store_string(str(handshake));file.close()
+	if not check(DirAccess.rename_absolute(directory+"/verify.tmp",directory+"/verify.txt")==OK,"quantity restart handshake failed"):return
+	var deadline:=Time.get_ticks_msec()+690000
+	var ack: Dictionary={}
+	var lost:=false
+	while ack.is_empty() and Time.get_ticks_msec()<deadline:
+		world.poll_session()
+		var header: Dictionary=world.poll_management_header()
+		# Keep the old success unobserved until actual transport/generation loss.
+		# Otherwise normal polling would settle it before the lane stops DF.
+		lost=lost or not bool(header.get("transport_alive",true)) or world.session_generation()!=old_generation or int(header.get("world_epoch",old_epoch)) not in [0,old_epoch]
+		if lost:actions.poll(0.02);editor._process(0.02)
+		for state in ["failed","incomplete","ack"]:
+			var path:=directory+"/%s-%d"%[state,handshake]
+			if not FileAccess.file_exists(path):continue
+			var reply: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
+			if state=="failed":check(false,"quantity restart: "+str(reply.reason));return
+			if state=="incomplete":incomplete("quantity restart: "+str(reply.reason),true);return
+			ack=reply
+		await create_timer(0.02).timeout
+	if not check(not ack.is_empty(),"quantity restart timed out; no replay"):return
+	var epoch:=int(str(ack.epoch))
+	if not check(epoch!=old_epoch and (epoch>>32)==int(ack.pid),"quantity replacement epoch invalid"):return
+	deadline=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll_session();actions.poll(0.02);editor._process(0.02)
+		if actions._epoch==epoch and actions._active==0 and actions._queue.is_empty():break
+		await create_timer(0.02).timeout
+	if not check(lost and actions._epoch==epoch and actions._active==0 and actions._queue.is_empty(),"quantity replacement service not ready"):return
+	var outcome: Dictionary=actions.result(ticket)
+	write_json("quantity-lifecycle-outcome.json",outcome)
+	write_json("quantity-restart.json",{"old_epoch":str(old_epoch),"new_epoch":str(epoch),"old_generation":old_generation,"new_generation":world.session_generation(),"pid":ack.pid})
+	var model=editor.details_state;var flow=editor.details_view.quantity_view.workflow
+	if not check(outcome.get("outcome")=="unknown" and not actions._requests.has(ticket),"old quantity receipt survived producer replacement"):return
+	if not check(model.identity.is_empty() and model.snapshot.is_empty() and flow.queue.is_empty() and not flow.pending and flow.editing==-1 and not editor.details_layer.visible and not editor.details_closing,"replacement retained quantity authority"):return
+	for frame in 30:
+		actions.poll(0.02);editor._process(0.02);await process_frame
+	for received in actions._requests:
+		if int(received)>=first_new_ticket:
+			var item: Dictionary=actions._requests[received]
+			new_requests[received]={"domain":item.domain,"request":item.request.duplicate(true)}
+	actions.completed.disconnect(observe)
+	write_json("quantity-restart-new-requests.json",new_requests)
+	for item in new_requests.values():
+		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails],"replacement automatically submitted Location work"):return
+	if not check(model.identity.is_empty() and not editor.details_layer.visible,"replacement reopened quantity editor"):return
+	await capture("quantity_restart_retired")

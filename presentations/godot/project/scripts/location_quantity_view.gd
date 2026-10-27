@@ -19,7 +19,9 @@ func configure(source,model) -> void:
 	details.changed.connect(refresh);refresh()
 
 func layout(view: Vector2) -> void:
-	position=Vector2(384,60+fposmod(view.y,12)*0.5);size=Vector2(576,636)
+	position=Vector2(384,60+fposmod(view.y,12)*0.5)
+	size=Vector2(floori(view.x/8)*8-624,floori(view.y/12)*12-156)
+	queue_redraw()
 
 func refresh() -> void:
 	rows=[]
@@ -69,13 +71,14 @@ func displayed_value(row: Dictionary) -> String:
 func _draw() -> void:
 	if theme==null:return
 	var font: Font=theme.default_font
-	var background: Texture2D=art.texture("BUTTON_RECTANGLE_DARK")
+	var background: Texture2D=art.texture("BUTTON_RECTANGLE")
+	var columns:=int(size.x/8)
 	for row in rows:
 		var top:=Vector2(0,(int(row.y)-6)*12)
 		if background!=null:
 			for y in 3:
-				for x in 72:
-					draw_texture_rect_region(background,Rect2(top+Vector2(x*8,y*12),Vector2(8,12)),Rect2((0 if x==0 else 16 if x==71 else 8),y*12,8,12))
+				for x in columns:
+					draw_texture_rect_region(background,Rect2(top+Vector2(x*8,y*12),Vector2(8,12)),Rect2((0 if x==0 else 16 if x==columns-1 else 8),y*12,8,12))
 		for action in 3:
 			var texture: Texture2D=art.texture(ICONS[action])
 			if texture!=null:draw_texture_rect(texture,button_rect(row,action),false)

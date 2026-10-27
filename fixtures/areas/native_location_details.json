@@ -2067,6 +2067,8 @@
           368,
           468
         ],
+        "top_left_border_rgb_sha256": "4eedaded48700c4e32b52368001958338bfe684173d6d24c2cb0cce6a4189716",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "6cf34578ad9e2c9052714599831a7e7f95edc3aaddfb2c1dff3ba37108491523",
         "type_icon_rgb_sha256": "0052248a3f628be9e4bfbf0d0ca63894759ddfdf5e2ad423643b6a531ecd2c46",
         "text_rows": [
@@ -2122,7 +2124,14 @@
             "y": 35,
             "text": "          Pit/Pond           Garbage Dump             Performer"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          264,
+          336,
+          36
+        ],
+        "first_quantity_rgb_sha256": "05371408fd8cccb2b501c813bcef1d93e2a9b3525556c4b159f6eed473d99db9"
       },
       {
         "name": "TEMPLE-0-details-resize-wide",
@@ -2138,6 +2147,8 @@
           1008,
           768
         ],
+        "top_left_border_rgb_sha256": "5407d01a7aeccf3e599acd042a8a9c8fa7ea350237c2affee0e84626221b22c9",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "051f070872cd1478a983883d25c0aac2381a169b5721b85fc3a95e70b447cca0",
         "type_icon_rgb_sha256": "0052248a3f628be9e4bfbf0d0ca63894759ddfdf5e2ad423643b6a531ecd2c46",
         "text_rows": [
@@ -2189,7 +2200,14 @@
             "y": 35,
             "text": "          Pit/Pond           Garbage Dump             Performer"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          264,
+          976,
+          36
+        ],
+        "first_quantity_rgb_sha256": "6041cb888ee261e8adaadb585b3c34d489b0d8c402a41fe503c3186798446904"
       },
       {
         "name": "TEMPLE-0-details-resize-default",
@@ -2205,6 +2223,8 @@
           608,
           660
         ],
+        "top_left_border_rgb_sha256": "5db25fd2ab8fdc840154bef8ed9673fa18590334bd7e0582cc3e255d6b5c4e32",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "3621a855b9c9fcb992cdf91ca576cfc7bd121e4c1b8a6980c0b815bfd8ccb84f",
         "type_icon_rgb_sha256": "0052248a3f628be9e4bfbf0d0ca63894759ddfdf5e2ad423643b6a531ecd2c46",
         "text_rows": [
@@ -2260,7 +2280,14 @@
             "y": 35,
             "text": "          Pit/Pond           Garbage Dump             Performer"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          268,
+          576,
+          36
+        ],
+        "first_quantity_rgb_sha256": "08827d0fdd77144959703c603e064a219176819154f1b19d46f13d2a6881ddea"
       },
       {
         "name": "INN_TAVERN-1-details-resize-small",
@@ -2276,6 +2303,8 @@
           368,
           468
         ],
+        "top_left_border_rgb_sha256": "4eedaded48700c4e32b52368001958338bfe684173d6d24c2cb0cce6a4189716",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "430547e129de53fa25aecf22c22def27c3fe67936ba272b87a1d78e28c7baac8",
         "type_icon_rgb_sha256": "645137c61b4936f4adce08e9cf1c54d0e97138d5f2ea5fe0825582c148bf2870",
         "text_rows": [
@@ -2315,7 +2344,14 @@
             "y": 29,
             "text": "          Dining Hall        Barracks                 Performer"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          192,
+          336,
+          36
+        ],
+        "first_quantity_rgb_sha256": "0e61d8a7cf261b0944103a4e0838822dcefb36f8d1d419855fd85f54b50f21bd"
       },
       {
         "name": "INN_TAVERN-1-details-resize-wide",
@@ -2331,6 +2367,8 @@
           1008,
           768
         ],
+        "top_left_border_rgb_sha256": "5407d01a7aeccf3e599acd042a8a9c8fa7ea350237c2affee0e84626221b22c9",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "75f6590c137a529b4f48cf14aa124ba0ac401c9ca908dc2ef61402a146968d94",
         "type_icon_rgb_sha256": "645137c61b4936f4adce08e9cf1c54d0e97138d5f2ea5fe0825582c148bf2870",
         "text_rows": [
@@ -2370,7 +2408,14 @@
             "y": 29,
             "text": "          Dining Hall        Barracks                 Performer"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          192,
+          976,
+          36
+        ],
+        "first_quantity_rgb_sha256": "4d0f0f2e0b38a3a2b830fbf2e1c7258fe36957e0176cc29e51d9bcd98bc4d302"
       },
       {
         "name": "INN_TAVERN-1-details-resize-default",
@@ -2386,6 +2431,8 @@
           608,
           660
         ],
+        "top_left_border_rgb_sha256": "5db25fd2ab8fdc840154bef8ed9673fa18590334bd7e0582cc3e255d6b5c4e32",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "b2eb3cbda2532e6b3f0771976dddf13d977f6d15bd8be40fa3313723ae5d6e2a",
         "type_icon_rgb_sha256": "645137c61b4936f4adce08e9cf1c54d0e97138d5f2ea5fe0825582c148bf2870",
         "text_rows": [
@@ -2429,7 +2476,14 @@
             "y": 29,
             "text": "          Dining Hall        Barracks                 Performer"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          196,
+          576,
+          36
+        ],
+        "first_quantity_rgb_sha256": "1b27089a7870da57b981aaee6c13ea0ab38123bf6908425ee7ae2be13b82b25c"
       },
       {
         "name": "HOSPITAL-2-details-resize-small",
@@ -2445,6 +2499,8 @@
           368,
           468
         ],
+        "top_left_border_rgb_sha256": "4eedaded48700c4e32b52368001958338bfe684173d6d24c2cb0cce6a4189716",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "adbc0fdd9fbb43108b900c5e6af9c0d98f392c90d5e8f2ca783094ae0b2b619e",
         "type_icon_rgb_sha256": "60e1f7260442005ecfdde9d070311719968e1437b9bf4f25b220e5ca9b7f1425",
         "text_rows": [
@@ -2504,7 +2560,14 @@
             "y": 38,
             "text": "          Water Source       Animal Training     Soap (Desired): 0 (5)"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          228,
+          336,
+          36
+        ],
+        "first_quantity_rgb_sha256": "66a2e53e1373459c638a6eebe806582ae9c6f1926b7124e2eeaeea45166654fa"
       },
       {
         "name": "HOSPITAL-2-details-resize-wide",
@@ -2520,6 +2583,8 @@
           1008,
           768
         ],
+        "top_left_border_rgb_sha256": "5407d01a7aeccf3e599acd042a8a9c8fa7ea350237c2affee0e84626221b22c9",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "658fb499112ff7b94133c8ca39b9a9d212fe7508b7b23885261b8ba9099c16b8",
         "type_icon_rgb_sha256": "60e1f7260442005ecfdde9d070311719968e1437b9bf4f25b220e5ca9b7f1425",
         "text_rows": [
@@ -2611,7 +2676,14 @@
             "y": 62,
             "text": "                                                      Bone Doctor"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          228,
+          976,
+          36
+        ],
+        "first_quantity_rgb_sha256": "ca0964beb2dab10f595ea15c170bb4c888feed068db2c6fecaddd0a151a633b1"
       },
       {
         "name": "HOSPITAL-2-details-resize-default",
@@ -2627,6 +2699,8 @@
           608,
           660
         ],
+        "top_left_border_rgb_sha256": "5db25fd2ab8fdc840154bef8ed9673fa18590334bd7e0582cc3e255d6b5c4e32",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "bec741d07d5af12ab7f0ce50d7bc4cfeda7b470e5b9e18258959ab03d0b31eca",
         "type_icon_rgb_sha256": "60e1f7260442005ecfdde9d070311719968e1437b9bf4f25b220e5ca9b7f1425",
         "text_rows": [
@@ -2710,7 +2784,14 @@
             "y": 53,
             "text": "                                                      Diagnostician"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          232,
+          576,
+          36
+        ],
+        "first_quantity_rgb_sha256": "75d0b8149e5fb3e55a9c3b471e5f667407449f35857e027d9c5882f75a8d1277"
       },
       {
         "name": "TEMPLE-3-details-resize-small",
@@ -2726,6 +2807,8 @@
           368,
           468
         ],
+        "top_left_border_rgb_sha256": "4eedaded48700c4e32b52368001958338bfe684173d6d24c2cb0cce6a4189716",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "d295a2d54b6e6913927f5b3b5767adc9d7237ce430c57b3d3ac9c8cb78d6c5bf",
         "type_icon_rgb_sha256": "0052248a3f628be9e4bfbf0d0ca63894759ddfdf5e2ad423643b6a531ecd2c46",
         "text_rows": [
@@ -2777,7 +2860,14 @@
             "y": 35,
             "text": "          Pit/Pond           Garbage Dump             Performer"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          264,
+          336,
+          36
+        ],
+        "first_quantity_rgb_sha256": "d63f35a0a18554e0907542612bbdeb8121a02c76078d49c71871af542461cdbc"
       },
       {
         "name": "TEMPLE-3-details-resize-wide",
@@ -2793,6 +2883,8 @@
           1008,
           768
         ],
+        "top_left_border_rgb_sha256": "5407d01a7aeccf3e599acd042a8a9c8fa7ea350237c2affee0e84626221b22c9",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "1e2f2d62b5575bcfa0ed5f9e57dcc4e27880ad808ce1b0d08812aace7e948108",
         "type_icon_rgb_sha256": "0052248a3f628be9e4bfbf0d0ca63894759ddfdf5e2ad423643b6a531ecd2c46",
         "text_rows": [
@@ -2844,7 +2936,14 @@
             "y": 35,
             "text": "          Pit/Pond           Garbage Dump             Performer"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          264,
+          976,
+          36
+        ],
+        "first_quantity_rgb_sha256": "711db9f6fc8d6fe783d12cad8b37cb4883ac0712993f017ad46f329dc480386d"
       },
       {
         "name": "TEMPLE-3-details-resize-default",
@@ -2860,6 +2959,8 @@
           608,
           660
         ],
+        "top_left_border_rgb_sha256": "5db25fd2ab8fdc840154bef8ed9673fa18590334bd7e0582cc3e255d6b5c4e32",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "1c9a65a030e108d5f3bb7b401ed474c9c9577f025a284006185dfa3ab9d742c5",
         "type_icon_rgb_sha256": "0052248a3f628be9e4bfbf0d0ca63894759ddfdf5e2ad423643b6a531ecd2c46",
         "text_rows": [
@@ -2915,7 +3016,14 @@
             "y": 35,
             "text": "          Pit/Pond           Garbage Dump             Performer"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          268,
+          576,
+          36
+        ],
+        "first_quantity_rgb_sha256": "ea777fb3ce3c7a96a52a8ef7a8451961be505bec6d63097103dd7ff2b8e6302a"
       },
       {
         "name": "LIBRARY-4-details-resize-small",
@@ -2931,6 +3039,8 @@
           368,
           468
         ],
+        "top_left_border_rgb_sha256": "4eedaded48700c4e32b52368001958338bfe684173d6d24c2cb0cce6a4189716",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "e13e904dcd41f3f4948d73343c2938cdb70804418ff5c087d7daf7e13f91a66c",
         "type_icon_rgb_sha256": "52fd3e9af9d54a3494413094ce895881f9b1f3942ae366e686da02c5de147dbd",
         "text_rows": [
@@ -2982,7 +3092,14 @@
             "y": 38,
             "text": "          Water Source       Animal Training          Scribe"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          228,
+          336,
+          36
+        ],
+        "first_quantity_rgb_sha256": "8b9f9934275949cb0e283727b05ef2aa67d1fae3679ca114231ebabc0f95d597"
       },
       {
         "name": "LIBRARY-4-details-resize-wide",
@@ -2998,6 +3115,8 @@
           1008,
           768
         ],
+        "top_left_border_rgb_sha256": "5407d01a7aeccf3e599acd042a8a9c8fa7ea350237c2affee0e84626221b22c9",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "7783d028098ee0b7d9610bf6d218c83c87fe80668d603b3b0f877e6590d62c44",
         "type_icon_rgb_sha256": "52fd3e9af9d54a3494413094ce895881f9b1f3942ae366e686da02c5de147dbd",
         "text_rows": [
@@ -3049,7 +3168,14 @@
             "y": 38,
             "text": "          Water Source       Animal Training          Scribe"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          228,
+          976,
+          36
+        ],
+        "first_quantity_rgb_sha256": "cd6a34ec8231ba1d2b3143bd8dbbad23c05357d5663f8a91122c2db8f96d2419"
       },
       {
         "name": "LIBRARY-4-details-resize-default",
@@ -3065,6 +3191,8 @@
           608,
           660
         ],
+        "top_left_border_rgb_sha256": "5db25fd2ab8fdc840154bef8ed9673fa18590334bd7e0582cc3e255d6b5c4e32",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "f9aff0e2bd88f230e5852c1a943175492b3e63417a5f1d88113c1286b9960e0d",
         "type_icon_rgb_sha256": "52fd3e9af9d54a3494413094ce895881f9b1f3942ae366e686da02c5de147dbd",
         "text_rows": [
@@ -3120,7 +3248,14 @@
             "y": 38,
             "text": "          Water Source       Animal Training          Scribe"
           }
-        ]
+        ],
+        "first_quantity_rect": [
+          384,
+          232,
+          576,
+          36
+        ],
+        "first_quantity_rgb_sha256": "7ccb12cd13f209b0741b8d18ab56034043b474ce25cb0f3730aa12edd8a8f7c6"
       },
       {
         "name": "GUILDHALL-5-details-resize-small",
@@ -3136,6 +3271,8 @@
           368,
           468
         ],
+        "top_left_border_rgb_sha256": "4eedaded48700c4e32b52368001958338bfe684173d6d24c2cb0cce6a4189716",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "32cc43723dfb3060395d8afb42752031451e86588b5dade9a685983e4138f68b",
         "type_icon_rgb_sha256": "529b321854e98ef6ce2455b5a464a6a9eaa89cc81d582c5bea451a6980cfb8d5",
         "text_rows": [
@@ -3175,6 +3312,8 @@
           1008,
           768
         ],
+        "top_left_border_rgb_sha256": "5407d01a7aeccf3e599acd042a8a9c8fa7ea350237c2affee0e84626221b22c9",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "50beec82b5ecfed2937b3f111d81cb13f7ed43a6d1ae1b31cf416e1bbedd183c",
         "type_icon_rgb_sha256": "529b321854e98ef6ce2455b5a464a6a9eaa89cc81d582c5bea451a6980cfb8d5",
         "text_rows": [
@@ -3214,6 +3353,8 @@
           608,
           660
         ],
+        "top_left_border_rgb_sha256": "5db25fd2ab8fdc840154bef8ed9673fa18590334bd7e0582cc3e255d6b5c4e32",
+        "quill_rgb_sha256": "63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2",
         "panel_rgb_sha256": "f897105f6540c3f93f6525ad0512539def468403430f8c0d0c743c014e837021",
         "type_icon_rgb_sha256": "529b321854e98ef6ce2455b5a464a6a9eaa89cc81d582c5bea451a6980cfb8d5",
         "text_rows": [

@@ -69,6 +69,33 @@ func run() -> void:
 					var actual:=image.get_pixel(int(cell.x)*8+x,int(cell.y)*12+4+y)
 					if absf(actual.r-color.r)+absf(actual.g-color.g)+absf(actual.b-color.b)>0.035:push_error("Composed native Details glyph mismatch "+str(cell));quit(1);return
 		if image.save_png(directory.path_join("location_%d.png"%int(sample.details.id)))!=OK:quit(1);return
+		model.identity={"site_id":int(model.snapshot.site_id),"id":int(model.snapshot.id)}
+		for native_case in resizing.cases:
+			if int(native_case.id)!=int(sample.details.id):continue
+			root.size=Vector2i(native_case.viewport[0],native_case.viewport[1]);view.layout(Vector2(root.size))
+			for frame_index in 3:await process_frame;await RenderingServer.frame_post_draw
+			var frame_rect:=Rect2i(native_case.frame[0],native_case.frame[1],native_case.frame[2],native_case.frame[3])
+			assert(view.position==Vector2(frame_rect.position) and view.size==Vector2(frame_rect.size),"native Details frame geometry")
+			image=root.get_texture().get_image()
+			image.save_png(directory.path_join(native_case.name+".png"))
+			var top:=image.get_region(Rect2i(frame_rect.position,Vector2i(frame_rect.size.x,4)));top.convert(Image.FORMAT_RGB8)
+			var left:=image.get_region(Rect2i(frame_rect.position,Vector2i(4,frame_rect.size.y)));left.convert(Image.FORMAT_RGB8)
+			digest.start(HashingContext.HASH_SHA256);digest.update(top.get_data());digest.update(left.get_data())
+			if digest.finish().hex_encode()!=native_case.top_left_border_rgb_sha256:push_error("Native Details resized frame "+native_case.name);quit(1);return
+			var quill_point:=Vector2(frame_rect.position)+Vector2(frame_rect.size.x-48,12)
+			var quill:=image.get_region(Rect2i(Vector2i(quill_point),Vector2i(32,36)));quill.convert(Image.FORMAT_RGB8)
+			digest.start(HashingContext.HASH_SHA256);digest.update(quill.get_data())
+			if digest.finish().hex_encode()!=native_case.quill_rgb_sha256:push_error("Native Details resized quill "+native_case.name);quit(1);return
+			if native_case.has("first_quantity_rect"):
+				var q: Array=native_case.first_quantity_rect
+				var quantity:=image.get_region(Rect2i(q[0],q[1],q[2],q[3]));quantity.convert(Image.FORMAT_RGB8)
+				digest.start(HashingContext.HASH_SHA256);digest.update(quantity.get_data())
+				if digest.finish().hex_encode()!=native_case.first_quantity_rgb_sha256:push_error("Native Details resized quantity row "+native_case.name);quit(1);return
+			await click(quill_point+Vector2(16,18));assert(view.name_workflow.active,"resized Details quill input")
+			var name_rect: Rect2=view.name_view.get_global_rect()
+			await click(name_rect.position+Vector2(name_rect.size.x-64,30));assert(not view.name_workflow.active,"resized naming Done")
+		service.calls.clear()
+		root.size=Vector2i(1200,800);view.layout(Vector2(root.size))
 		var confirmed: Array=view.heading.rows.duplicate(true)
 		model.phase=model.Phase.Editing;model.changed.emit()
 		if not view.visible or view.heading.rows!=confirmed or not view.access_view.buttons[0].disabled:push_error("Pending Details view lost confirmed facts");quit(1);return

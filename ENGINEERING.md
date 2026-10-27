@@ -529,7 +529,16 @@ height follows whole-cell viewport height minus132. Quantity buttons retain
 fixed positions and can extend beyond the narrow frame. The short hospital
 view has no visible staff rows and needs further input/scrollbar investigation.
 The source manifest remains unchanged and the owned game exits unsaved.
-These references do not establish resized viewer parity.
+The viewer frame and quill follow these dimensions; quantity backgrounds span
+the interior width while their buttons retain native fixed positions. Quantity
+rows use installed `BUTTON_RECTANGLE`, correcting the darker background formerly
+used by DF3D. `build/qa/location-details-quantity-native-background` passes
+core19/19, quantity GPU/input checks and Details composition/input checks with
+only documented GPU diagnostics. Across all18 resized cases, frame top/left
+borders and quill RGB crops match native; every location with quantities also
+matches its entire first quantity row. Actual viewport clicks open naming at
+the moved quill and close it with Done. This is component evidence; responsive
+staff geometry and full resized main-scene acceptance remain unfinished.
 
 Details now includes its previously missing location-type artwork beside the
 heading. The installed32x32 icon starts two pixels into the40x36 picture region
@@ -537,7 +546,8 @@ at384,64 in the default viewport. All six native40x36 RGB crops match exactly
 in `build/qa/location-details-type-icons-positioned`; core19/19 and the existing
 Details input/composition checks also pass, with only documented GPU diagnostics.
 The icon follows the parent Details visibility and hides for naming/staff
-selection. Frame, row-width, staff-capacity and responsive input work remains.
+selection. Staff width/capacity, remaining Details actions and full responsive
+main-scene verification remain unfinished.
 
 ## Native squad assignment reference
 

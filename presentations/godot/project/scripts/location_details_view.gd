@@ -59,7 +59,9 @@ func open_name() -> void:
 	name_view.reset_input();name_workflow.open()
 
 func layout(view: Vector2) -> void:
-	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(608,660)
+	position=Vector2(368,48+fposmod(view.y,12)*0.5)
+	size=Vector2(floori(view.x/8)*8-592,floori(view.y/12)*12-132)
+	rename_button.position=Vector2(size.x-48,12)
 	for child in [heading,body,value_view,staff_view,quantity_view]:
 		child.layout(view);child.position-=position
 	access_view.position=Vector2(16,60);access_view.size=Vector2(576,36)
@@ -102,6 +104,7 @@ func _draw() -> void:
 	if name_view!=null and name_view.visible:return
 	var frame: Texture2D=art.texture("HOVER_RECTANGLE")
 	if frame==null:return
-	for y in 55:
-		for x in 76:
-			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2((0 if x==0 else 16 if x==75 else 8),(0 if y==0 else 24 if y==54 else 12),8,12))
+	var columns:=int(size.x/8);var lines:=int(size.y/12)
+	for y in lines:
+		for x in columns:
+			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2((0 if x==0 else 16 if x==columns-1 else 8),(0 if y==0 else 24 if y==lines-1 else 12),8,12))

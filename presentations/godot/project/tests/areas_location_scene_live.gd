@@ -1318,7 +1318,7 @@ func quantity_lifecycle(mode: String) -> void:
 	await native("quantity_seed",{"location_id":1,"quantity_id":0,"value":original})
 	if not stopped:print("LOCATION_QUANTITY_LIFECYCLE_PASS mode=",mode)
 
-func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
+func quantity_restart(ticket: int, evidence_prefix:="quantity", fresh_tracker_list:=false) -> void:
 	var old_epoch: int=world.poll_session().get("fortress_epoch",0)
 	var old_generation: int=world.session_generation()
 	var new_requests: Dictionary={}
@@ -1375,7 +1375,7 @@ func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
 	actions.completed.disconnect(observe)
 	write_json(evidence_prefix+"-restart-new-requests.json",new_requests)
 	for item in new_requests.values():
-		if not check(item.domain!="agreements" or not bool(item.request.get("tracker",false)),"replacement automatically submitted tracker work"):return
+		if not check(item.domain!="agreements" or not bool(item.request.get("tracker",false)) or (fresh_tracker_list and int(item.request.action)==36),"replacement automatically submitted stale tracker work"):return
 		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit,Contract.AreaOperation.LocationRecognitionRead,Contract.AreaOperation.LocationRecognize,Contract.AreaOperation.LocationReligiousStaffRead,Contract.AreaOperation.LocationReligiousStaffRemove,Contract.AreaOperation.LocationReligiousCandidates,Contract.AreaOperation.LocationReligiousAssignmentRead,Contract.AreaOperation.LocationReligiousAssign,Contract.AreaOperation.LocationSpecializationRead,Contract.AreaOperation.LocationSpecializationSet,Contract.AreaOperation.LocationStaffAssignmentsRead],"replacement automatically submitted Location work"):return
 	if not check(model.identity.is_empty() and not editor.details_layer.visible,"replacement reopened quantity editor"):return
 	await capture(evidence_prefix+"_restart_retired")
@@ -1548,6 +1548,8 @@ func religious_staff_route(locations: Array) -> void:
 		await tracker_transport();return
 	if lifecycle=="tracker-hud":
 		await tracker_hud();return
+	if lifecycle.begins_with("hud-"):
+		await tracker_hud_lifecycle(lifecycle.trim_prefix("hud-"));return
 	if lifecycle.begins_with("popup-"):
 		await popup_lifecycle(lifecycle.trim_prefix("popup-"));return
 	if lifecycle.begins_with("tracker-"):
@@ -1697,13 +1699,52 @@ func specialization_scene() -> void:
 		evidence.append({"unit_id":change.unit_id,"viewport_clicks":2,"native_effects_matched":true,"restored":true})
 	write_json("specialization-scene-evidence.json",{"cases":evidence})
 
+func tracker_hud_lifecycle(mode: String) -> void:
+	step="main tracker lifecycle "+mode
+	editor.close_panel()
+	await native("religious_tracker",{"seed":true})
+	if stopped:return
+	var tracker=scene._ui.ensure_agreement_tracker()
+	if not await wait_ui(func():return tracker.reader.ready and tracker.reader.snapshot().size()==3,"main tracker initial list"):return
+	var event:=InputEventMouseMotion.new();event.position=tracker.list_view.position+Vector2(24,60);event.global_position=event.position;root.push_input(event,true)
+	if not await wait_ui(func():return tracker.popup_reader.ready and actions._active==0 and actions._queue.is_empty(),"main tracker initial popup"):return
+	var original: Dictionary=tracker.popup_reader.snapshot()
+	tracker.popup_reader.refresh();var ticket: int=tracker.popup_reader.ticket
+	if not check(ticket>0,"main tracker pending read"):return
+	if mode!="queued":
+		var reply:=await quantity_unobserved(ticket)
+		if stopped:return
+		if not check(reply.agreement.tracker_details==original.details,"main tracker held receipt"):return
+	if mode=="restart":
+		await quantity_restart(ticket,"tracker-hud",true)
+		if stopped:return
+	else:
+		world.detach_live();actions.poll()
+		if not check(actions.result(ticket).get("outcome")==("not_sent" if mode=="queued" else "unknown"),"main tracker disconnect outcome"):return
+		if not check(not tracker.list_view.visible and not tracker.popup_view.visible and not tracker.hover_claimed,"main tracker retained visible facts on loss"):return
+		if not check(world.attach(),"main tracker reconnect"):return
+	if not await wait_ui(func():return tracker.reader.ready,"main tracker fresh session list"):return
+	if not check(tracker.popup_reader.target.is_empty() and not tracker.popup_view.visible and not tracker.hover_claimed and not scene._ui.tile_hover.obscured,"main tracker replayed previous hover"):return
+	if not check(not actions._requests.has(ticket),"main tracker retained old ticket"):return
+	if mode=="restart":
+		if not check(tracker.reader.snapshot().is_empty(),"main replacement inherited unsaved agreements"):return
+	else:
+		root.push_input(event,true)
+		if not await wait_ui(func():return tracker.popup_reader.ready,"main tracker fresh pointer observation"):return
+		if not check(tracker.popup_reader.snapshot()==original,"main tracker fresh facts changed"):return
+		await native("religious_tracker",{"restore":true})
+		if stopped:return
+	tracker.retire()
+	write_json("tracker-hud-lifecycle-evidence.json",{"mode":mode,"ticket":ticket,"outcome":actions.result(ticket),"fresh_list":true,"old_hover_retired":true})
+
 func tracker_hud() -> void:
 	step="main scene petition tracker"
 	editor.close_panel()
 	var expected:=await native("religious_tracker",{"seed":true})
 	if stopped:return
-	var tracker=scene._ui.ensure_agreement_tracker()
-	if not await wait_ui(func():return tracker.reader.ready,"HUD tracker rows"):return
+	var tracker=scene._ui.agreement_tracker
+	if not check(tracker!=null,"tracker absent from normal live startup"):return
+	if not await wait_ui(func():return tracker.reader.ready and tracker.reader.snapshot().size()==expected.rows.size(),"HUD tracker rows"):return
 	if not check(tracker.reader.snapshot().size()==expected.rows.size(),"HUD native row count"):return
 	var samples: Array=[]
 	for dimensions in [Vector2i(1200,800),Vector2i(960,600),Vector2i(1600,900)]:
@@ -1731,10 +1772,24 @@ func tracker_hud() -> void:
 	var leave:=InputEventMouseMotion.new();leave.position=Vector2(400,400);leave.global_position=leave.position;root.push_input(leave,true)
 	await process_frame;await process_frame
 	if not check(not tracker.hover_claimed and not scene._ui.tile_hover.obscured and not tracker.popup_view.visible,"HUD hover leave"):return
+	root.size=Vector2i(1200,800)
+	await process_frame;await process_frame
+	interaction.select_tool(interaction.Tool.DIG)
+	var clicks: Array=[]
+	for offset in [Vector2(24,60),Vector2(24,24),Vector2(24,48),Vector2(1,60)]:
+		var point: Vector2=tracker.list_view.position+offset
+		var press:=InputEventMouseButton.new();press.position=point;press.global_position=point;press.button_index=MOUSE_BUTTON_LEFT;press.button_mask=MOUSE_BUTTON_MASK_LEFT;press.pressed=true
+		root.push_input(press,true)
+		if not check(interaction._dragging,"tracker intercepted map press at "+str(offset)):return
+		clicks.append({"offset":[offset.x,offset.y],"start":[interaction._start.x,interaction._start.y,interaction._start.z]})
+		# Cancel before release: verify routing without submitting a designation.
+		interaction.cancel_selection();press.pressed=false;press.button_mask=0;root.push_input(press,true)
+		await process_frame
+	interaction.select_tool(interaction.Tool.INSPECT_ITEMS)
 	tracker.retire()
 	await native("religious_tracker",{"restore":true})
 	if stopped:return
-	write_json("tracker-hud-evidence.json",{"samples":samples,"info_gate":true,"terrain_priority":true,"pointer_leave":true})
+	write_json("tracker-hud-evidence.json",{"samples":samples,"info_gate":true,"terrain_priority":true,"pointer_leave":true,"map_press":clicks})
 
 func tracker_transport() -> void:
 	step="native tracker typed transport"

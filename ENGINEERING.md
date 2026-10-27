@@ -1281,8 +1281,8 @@ include these cases:37 list and35 popup comparisons pass in
 `build/qa/petition-tracker-names`, with only the documented render-thread,
 device-finalize and shutdown-object diagnostics; core passes cleanly. This
 verifies applicant truncation and accented names, not arbitrary long location
-names. HUD visibility, hover timing, resize/overflow and input integration
-remain unfinished; the isolated views are not exposed in gameplay.
+names. Main-scene visibility, timing, resize/overflow and input evidence follow
+below; the tracker is now exposed in live gameplay.
 
 Native123023 tests popup activation before any frame wait: all35 cases show
 the popup on the first render after entering a row and remove it on the first
@@ -1360,7 +1360,7 @@ visibility and logical UI scaling. A pending petition target claims hover
 immediately, without changing the views' mouse-ignore input behavior. The
 headless composition check exercises scaled pointer targets, separators,
 independent visibility, late replies and session retirement without replay.
-The main scene's staged `ensure_agreement_tracker()` creates this owner before
+The live main scene's `ensure_agreement_tracker()` creates this owner before
 terrain hover processing and connects immediate hover claims to terrain-query
 retirement. Session activation compares full-width generation/epoch identities;
 repeated context cannot reactivate a reader retired by the action service.
@@ -1375,9 +1375,30 @@ and pointer leave. The rendered1200 capture was inspected. The run reports only
 the known rendering-thread notice; owned DF162592 exits unsaved and both save
 manifests remain unchanged. Earlier130628/130900 runs timed out on OS pointer
 queries;131132 failed because the test compared a diagnostic-only agreement ID
-with popup details. These are failed runs, not acceptance. Product activation
-remains staged pending main-owner disconnect/restart and map click-through
-acceptance; existing reader lifecycle tests do not substitute for those flows.
+with popup details. These are failed runs, not acceptance.
+
+The tracker is enabled for live main scenes. Protected131642 and131739 verify
+queued/sent disconnects through the main owner, with not-sent/unknown outcomes,
+immediate view retirement, fresh list recovery and a new pointer event required
+to reopen help. Session loss clears the cached pointer as well as the readers.
+Protected131836 replaces DF154116 with150552 while holding a native popup reply;
+the old outcome is unknown and the replacement's list is empty, with no inherited
+hover. Fresh read-only list requests are expected; old popup requests are not.
+All three runs pass with only the known rendering-thread notice and unchanged
+saves; restart also verifies1368 save-file hashes.
+
+Protected132011 verifies map presses through the heading, blank applicant row,
+separator and border. Each begins a real map drag, cancelled before release so
+no designation is submitted. Protected132252 repeats resize, native facts, Info
+gating, pointer leave and these presses through normal startup, without staging
+the tracker. Owned DF154808 exits unsaved; both save manifests remain unchanged;
+only the known rendering-thread notice is reported. The preceding132113 failed
+because test setup bypassed the scene's semantic queue. Main-scene fixture
+Catalog/area requests now share that queue with background observations.
+Protected132434 repeats the held sent-reply disconnect through normal startup
+with that shared fixture queue. It passes with the known thread notice only,
+owned DF132384 closed unsaved and both save manifests unchanged. Core and the
+HUD/terrain-hover regressions pass cleanly in `build/qa/petition-hud-exposed`.
 
 ## Native Location name editor discovery
 

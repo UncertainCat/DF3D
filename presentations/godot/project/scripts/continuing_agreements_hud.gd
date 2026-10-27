@@ -37,6 +37,7 @@ func bind(service) -> void:
 	reader.configure(service);popup_reader.configure(reader)
 	reader.changed.connect(_list_changed)
 	popup_reader.changed.connect(_popup_changed)
+	service.session_changed.connect(_pointer_left)
 
 func activate() -> void:
 	reader.set_active(true)

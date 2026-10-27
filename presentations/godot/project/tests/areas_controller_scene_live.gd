@@ -2,6 +2,28 @@ extends "res://tests/areas_controller_live.gd"
 # Actual main-scene viewport input. Broad callback coverage lives in the parent.
 var scene
 
+# A live main scene also owns background observations. Fixture setup must share
+# its semantic queue instead of replacing a request's private receipt.
+func seed_catalog() -> void:
+	if stopped:return
+	var ticket: int=actions.submit("construction",{"action":Contract.ManagementAction.Catalog},Callable())
+	if not check(ticket>0,"catalog seed not queued"):return
+	if not await wait_ui(func():return not actions.result(ticket).is_empty(),"catalog seed"):return
+	var result: Dictionary=actions.result(ticket)
+	check(result.get("status")==S.Ok and result.get("action")==Contract.ManagementAction.Catalog,"catalog seed failed")
+
+func request(data: Dictionary, refusal: String="", expect_rejected:=false) -> Dictionary:
+	if stopped:return {}
+	var ticket: int=actions.submit("areas",data,Callable())
+	if not check(ticket>0,"area fixture request not queued"):return {}
+	if not await wait_ui(func():return not actions.result(ticket).is_empty(),"area fixture request"):return {}
+	var result: Dictionary=actions.result(ticket)
+	if refusal.is_empty() and not expect_rejected:
+		if not check(result.get("status")==S.Ok,str(result.get("message","request failed"))):return {}
+	else:
+		if not check(result.get("status")==S.Rejected and str(result.get("message",""))==refusal,"expected refusal: "+refusal):return {}
+	return result.get("area",{})
+
 func run() -> void:
 	directory = OS.get_environment("DF3D_AREAS_ACCEPTANCE")
 	if directory.is_empty() or DisplayServer.get_name() == "headless":

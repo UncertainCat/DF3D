@@ -90,11 +90,12 @@ func setup(owner, audio_panel, original_ui) -> void:
 		hover.actions = actions
 		add_child(hover)
 		tile_hover=hover
+	if view._fixture=="":ensure_agreement_tracker()
 	view._interaction.enable_shell()
 	audio_panel.launcher.hide()
 	if view._loader != null: view._set_play_enabled(false)
 
-# Staged composition entry used by protected acceptance before product exposure.
+# One owner per live main scene; fixture rendering has no live agreement source.
 func ensure_agreement_tracker():
 	if agreement_tracker!=null:return agreement_tracker
 	agreement_tracker=preload("res://scripts/continuing_agreements_hud.gd").new()

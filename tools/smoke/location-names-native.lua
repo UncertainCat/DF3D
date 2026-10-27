@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -658,11 +658,33 @@ end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local original_priest_threshold=difficulty.priesthood_unit_count
-if recognition_case=='assignpriest' or recognition_case:sub(1,7)=='replace' then
+if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' then
+ local assignment_row_y=recognition_case=='assignhighpriest' and 394 or 358
+ local promotion_rng
  local assignment
  for _,a in ipairs(religion.positions.assignments)do if a.st_id==df.global.plotinfo.site_id then assert(not assignment);assignment=a end end
  assert(assignment and assignment.histfig>=0)
- if recognition_case=='assignpriest' then pixel(944,358);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')end
+ if recognition_case=='assignhighpriest' then
+  if semantic_recognition then
+   local marker=assert(io.open(out..'/recognition-reference'));local path=marker:read('*a'):match('^%s*(.-)%s*$');marker:close()
+   local file=assert(io.open(path));local reference=require('json').decode(file:read('*a'));file:close()
+   restore_rng(assert(reference.records[1].promotion_rng))
+  end
+  promotion_rng=rng_snapshot()
+  view:render(dfhack.getTickCount())
+  pixel(500,214)
+  assert(recognition_state().bridge.rank==2,'native high-priest recognition failed')
+  local position
+  for _,p in ipairs(religion.positions.own)do if p.code=='HIGH_PRIEST' then assert(not position);position=p end end
+  assert(position,'native promotion did not create high-priest position')
+  assignment=nil
+  for _,a in ipairs(religion.positions.assignments)do
+   if a.st_id==df.global.plotinfo.site_id and a.position_id==position.id then assert(not assignment);assignment=a end
+  end
+  assert(assignment and assignment.histfig>=0,'native promotion did not transfer holder')
+  capture('TEMPLE-high-priest-promoted',temple);table.remove(records)
+ end
+ if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' then pixel(944,assignment_row_y);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')end
  local expected_holder=assignment.histfig
  local previous_holder=expected_holder>=0 and assert(df.historical_figure.find(expected_holder)) or nil
  local linked_squad,seeded_assignment_job
@@ -681,6 +703,7 @@ if recognition_case=='assignpriest' or recognition_case:sub(1,7)=='replace' then
   assert(dfhack.job.linkIntoWorld(seeded_assignment_job,true));assert(dfhack.job.addWorker(seeded_assignment_job,unit))
  end
  local vacant=capture(expected_holder>=0 and 'TEMPLE-priest-occupied' or 'TEMPLE-priest-vacant',temple);vacant.recognition=recognition_state()
+ vacant.promotion_rng=promotion_rng
  local function candidates(ids,rows)
   local guards={}
   for _,object in ipairs{m,g}do
@@ -715,7 +738,7 @@ if recognition_case=='assignpriest' or recognition_case:sub(1,7)=='replace' then
   -- selection, modelling a target that became occupied while the picker was open.
   local first,second=assignment.histfig,assignment.histfig2
   if expected_holder>=0 then assignment.histfig=-1;assignment.histfig2=-1;view:render(dfhack.getTickCount())end
-  pixel(592,358)
+  pixel(592,assignment_row_y)
   assignment.histfig=first;assignment.histfig2=second
  end
  open_picker()

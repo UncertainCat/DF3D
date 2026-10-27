@@ -454,6 +454,20 @@ exit owned DF unsaved; UI/gps guards and core checks pass in
 receipt evidence. This is provider coverage, not assignment transport, viewer
 lifecycle or exhaustive high-priest/plotter dependency acceptance.
 
+The `assignhighpriest`/`actionassignhighpriest` pair062709/062743 promotes
+through native recognition, resolves the newly allocated HIGH_PRIEST position1
+and assignment3, then removes its holder through the visible second staff row
+at Y394. The former priest assignment remains present at Y358. Native offers45
+candidates here, compared with42 for the priest fixture; semantic source order,
+default skill order, tail scrolling and all145 eligibility probes match.
+The first candidate is unit5813/HF9375. Reassignment emits ADD_HF_ENTITY_LINK
+64039 for position1. All captured initialized effects, history and RNG match;
+six selected-candidate stale probes and replay rejection pass. Test-only RNG
+alignment before promotion preserves identical generated titles. Promoted and
+assigned native captures were inspected. Both runs preserve source saves and
+exit owned DF unsaved. This covers the ordinary high-priest reassignment branch,
+not plotter effects, absent-unit historical holders or viewer integration.
+
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no
 implemented presentation route yet. Its scope must be retained in the management

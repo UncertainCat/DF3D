@@ -13050,6 +13050,159 @@
         "Management transport and viewer assignment remain unfinished.",
         "High-priest and plotter dependency coverage remains incomplete."
       ]
+    },
+    "high_priest_reference": {
+      "native_source": "build/stockpile-storage-native-location-recognition-assignhighpriest-20261027-062709/result.json",
+      "semantic_source": "build/stockpile-storage-native-location-recognition-actionassignhighpriest-20261027-062743/result.json",
+      "native_sha256": "7d6da2c8d0117f280f3067eb1d09afc9b68721716a02938061a40823a73949ba",
+      "semantic_sha256": "4b1caea9a9dcdc2c023b95b07fe207286e06abb40a98e71b26c059a37616146c",
+      "position_id": 1,
+      "assignment_id": 3,
+      "candidate_ids": [
+        5574,
+        5575,
+        5697,
+        5813,
+        5984,
+        6135,
+        6136,
+        6274,
+        6538,
+        6540,
+        6541,
+        6542,
+        6544,
+        6553,
+        6678,
+        6684,
+        6685,
+        6807,
+        6809,
+        6811,
+        6814,
+        6815,
+        6819,
+        6822,
+        6824,
+        6827,
+        6831,
+        6836,
+        6837,
+        6838,
+        6971,
+        6972,
+        6973,
+        6974,
+        7123,
+        7124,
+        7125,
+        7206,
+        7209,
+        7268,
+        7275,
+        7276,
+        7280,
+        7282,
+        7349
+      ],
+      "displayed_ids": [
+        5813,
+        7123,
+        6811,
+        6973,
+        5697,
+        6274,
+        6685,
+        7282,
+        6809,
+        7206,
+        6815,
+        6553,
+        7124,
+        6542,
+        6678,
+        7276,
+        7125,
+        6836,
+        6807,
+        6837,
+        6831,
+        6971,
+        6972,
+        6814,
+        6824,
+        7280,
+        6827,
+        6684,
+        7209,
+        7275,
+        5984,
+        6538,
+        6540,
+        6838,
+        7268,
+        6136,
+        6544,
+        6541,
+        6819,
+        6135,
+        6822,
+        6974,
+        7349,
+        5574,
+        5575
+      ],
+      "candidate_boundary_count": 145,
+      "selected_unit": 5813,
+      "selected_histfig": 9375,
+      "new_events": [
+        {
+          "civ": 383,
+          "histfig": 9375,
+          "id": 64039,
+          "link_type": 10,
+          "position_id": 1,
+          "seconds": 157249,
+          "type": "ADD_HF_ENTITY_LINK",
+          "year": 106
+        }
+      ],
+      "stale_probes": [
+        {
+          "dependency": "membership strength",
+          "eligible": true,
+          "outcome": 4
+        },
+        {
+          "dependency": "membership eligibility",
+          "eligible": false,
+          "outcome": 4
+        },
+        {
+          "dependency": "custom profession",
+          "eligible": true,
+          "outcome": 4
+        },
+        {
+          "dependency": "unit inactive",
+          "eligible": false,
+          "outcome": 4
+        },
+        {
+          "dependency": "nemesis group leader",
+          "eligible": true,
+          "outcome": 4
+        },
+        {
+          "dependency": "uniform pickup",
+          "eligible": true,
+          "outcome": 4
+        }
+      ],
+      "semantic_matches_native": true,
+      "limitations": [
+        "Plotter effects, absent-unit historical holders and viewer integration remain unverified."
+      ]
     }
   }
 }

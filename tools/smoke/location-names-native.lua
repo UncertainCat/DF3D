@@ -147,6 +147,13 @@ local function capture(label,location,keep_pointer)
   row.lines[#row.lines+1]=table.concat(chars):gsub('%s+$','')
  end
  records[#records+1]=row
+ if label:match('^tracker%-map%-hover%-') then
+  row.popup_cells={}
+  for y=3,20 do for x=g.dimx-97,g.dimx-37 do
+   local pen=dfhack.screen.readTile(x,y)
+   row.popup_cells[#row.popup_cells+1]={x=x,y=y,ch=pen.ch,fg=pen.fg,bg=pen.bg,bold=pen.bold,tile=pen.tile}
+  end end
+ end
  local f=assert(io.open(out..'/shot.tmp','w'));f:write(label);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local limit=dfhack.getTickCount()+30000
  while true do local ack=io.open(out..'/ack-'..label);if ack then ack:close();break end;assert(dfhack.getTickCount()<limit,'capture timeout');script.sleep(1,'frames')end
@@ -640,7 +647,7 @@ if recognition_case=='petitiontracker' then
  key('_MOUSE_R');assert(not selector.open)
  key('_MOUSE_R')
  shot('map-idle')
- for _,target in ipairs{{'heading',1070,286},{'applicant',1070,298},{'date',1070,310},{'blank',1070,250}}do
+ local function map_hover(target)
   local deadline=dfhack.getTickCount()+900
   repeat
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
@@ -653,6 +660,14 @@ if recognition_case=='petitiontracker' then
   g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=target[3]//12
   shot('map-hover-'..target[1],true)
  end
+ for _,target in ipairs{{'heading',1070,286},{'applicant',1070,298},{'date',1070,310},{'blank',1070,250}}do map_hover(target)end
+ location.tier=1;map_hover({'temple',1070,298})
+ location.tier=0;map_hover({'temple-invalid-tier',1070,298})
+ a.parties[0].entity_ids[0]=guild.id;location.type=df.abstract_building_type.GUILDHALL;location.profession=df.profession.FARMER
+ location.tier=1;map_hover({'guildhall',1070,298})
+ location.tier=2;map_hover({'grand-guildhall',1070,298})
+ location.tier=0;map_hover({'guild-invalid-tier',1070,298})
+ a.parties[0].entity_ids[0]=religion.id;location.type=df.abstract_building_type.TEMPLE;location.tier=2
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.
  -- Remove each owned pointer before destroying its allocation.

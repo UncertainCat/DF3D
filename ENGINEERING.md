@@ -1140,8 +1140,24 @@ therefore do not establish an inert tracker. `popup_reference` retains the text
 and audited bounds: columns-97 through columns-37, rows3 through20. This is a
 separate renderer path, not a main-hover enum. The whole renderer remains a
 prohibited runtime API; independent semantic helpers still need auditing.
-The visible HUD, popup provider and rendering, and native visibility, sizing
-and interaction integration remain unfinished.
+Expanded native113748 captures temple/complex and guildhall/grand-guildhall
+tiers, invalid tier0 and the unsupported blank applicant. `popup_reference`
+retains native CP437 text runs with foreground/background/bold values and full
+cell digests before screenshot acknowledgement; the value symbol is byte15.
+Tier1 asks for2000 value and tier2 for10000. Temple text additionally requires
+priest/high-priest elevation. The reference guild has no assigned location.
+All43 records complete in owned DF162904, source unchanged, unsaved exit.
+
+The popup renderer selects locations inline: site lookup7db20 is read-only;
+flag bits1,0,3 exclude locations; matching candidates are counted, and the
+highest stored location value strictly above zero wins (first on ties).
+Temple matching compares the agreement's deity/religion fields. Guild matching
+calls2b61e0, which resolves professions through fortress guild links and calls
+bbef0 with a live link cache index. That lookup writes the index, so this is
+not an owned-input runtime helper. A safe independent path remains unresolved;
+do not call the whole renderer or borrow these caches. The visible HUD, popup
+provider and rendering, and native visibility, sizing and interaction
+integration remain unfinished.
 
 ## Native Location name editor discovery
 

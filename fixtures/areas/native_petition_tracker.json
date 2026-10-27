@@ -3526,8 +3526,8 @@
     ]
   },
   "popup_reference": {
-    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-113436",
-    "result_sha256": "2e4c5851517172b1f7f150bbd07b811a199efe6d5e736207905b4566f3eace4d",
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-113748",
+    "result_sha256": "003bd304e04aa6a1cf3e499ff06c011eb5b6da299965a6ca47ab9ea55b678b35",
     "status": "passed",
     "owned_exit": "unsaved",
     "source_manifest": "unchanged",
@@ -3719,7 +3719,47 @@
             "y": 20,
             "text": ""
           }
-        ]
+        ],
+        "text_runs": [
+          {"x":54,"y":5,"style":[7,0,true],"cp437_hex":"4163636570746564"},
+          {"x":63,"y":5,"style":[7,0,true],"cp437_hex":"7065746974696f6e3a"},
+          {"x":54,"y":7,"style":[3,0,true],"cp437_hex":"4275696c64"},
+          {"x":60,"y":7,"style":[3,0,true],"cp437_hex":"61"},
+          {"x":62,"y":7,"style":[3,0,true],"cp437_hex":"74656d706c65"},
+          {"x":69,"y":7,"style":[3,0,true],"cp437_hex":"636f6d706c6578"},
+          {"x":54,"y":8,"style":[7,0,false],"cp437_hex":"666f72"},
+          {"x":54,"y":9,"style":[6,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":9,"style":[6,0,true],"cp437_hex":"42656a6577656c6564"},
+          {"x":68,"y":9,"style":[6,0,true],"cp437_hex":"43726565642e"},
+          {"x":54,"y":11,"style":[7,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":11,"style":[7,0,true],"cp437_hex":"6173736f636961746564"},
+          {"x":69,"y":11,"style":[7,0,true],"cp437_hex":"7a6f6e6573"},
+          {"x":75,"y":11,"style":[7,0,true],"cp437_hex":"6d757374"},
+          {"x":80,"y":11,"style":[7,0,true],"cp437_hex":"68617665"},
+          {"x":85,"y":11,"style":[7,0,true],"cp437_hex":"656e6f756768"},
+          {"x":92,"y":11,"style":[7,0,true],"cp437_hex":"76616c75652e"},
+          {"x":99,"y":11,"style":[7,0,true],"cp437_hex":"2831303030300f29"},
+          {"x":54,"y":12,"style":[5,0,true],"cp437_hex":"41"},
+          {"x":56,"y":12,"style":[5,0,true],"cp437_hex":"68696768"},
+          {"x":61,"y":12,"style":[5,0,true],"cp437_hex":"707269657374"},
+          {"x":68,"y":12,"style":[5,0,true],"cp437_hex":"6d757374"},
+          {"x":73,"y":12,"style":[5,0,true],"cp437_hex":"7468656e"},
+          {"x":78,"y":12,"style":[5,0,true],"cp437_hex":"6265"},
+          {"x":81,"y":12,"style":[5,0,true],"cp437_hex":"656c6576617465642e"},
+          {"x":54,"y":14,"style":[6,0,true],"cp437_hex":"43757272656e74"},
+          {"x":62,"y":14,"style":[6,0,true],"cp437_hex":"74656d706c65"},
+          {"x":69,"y":14,"style":[6,0,true],"cp437_hex":"6c6f636174696f6e3a"},
+          {"x":54,"y":15,"style":[6,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":15,"style":[6,0,true],"cp437_hex":"476f6c64656e"},
+          {"x":65,"y":15,"style":[6,0,true],"cp437_hex":"536872696e652c"},
+          {"x":73,"y":15,"style":[6,0,true],"cp437_hex":"353637350f"},
+          {"x":54,"y":18,"style":[7,0,false],"cp437_hex":"41677265656d656e74"},
+          {"x":64,"y":18,"style":[7,0,false],"cp437_hex":"646174653a"},
+          {"x":70,"y":18,"style":[7,0,false],"cp437_hex":"317374"},
+          {"x":74,"y":18,"style":[7,0,false],"cp437_hex":"4f6273696469616e2c"},
+          {"x":84,"y":18,"style":[7,0,false],"cp437_hex":"313036"}
+        ],
+        "cells_sha256": "728bc49deae3a91bb2ea16b6a670084347970a348cc0088b693eb8e131be9236"
       },
       {
         "name": "tracker-map-hover-applicant",
@@ -3808,7 +3848,47 @@
             "y": 20,
             "text": ""
           }
-        ]
+        ],
+        "text_runs": [
+          {"x":54,"y":5,"style":[7,0,true],"cp437_hex":"4163636570746564"},
+          {"x":63,"y":5,"style":[7,0,true],"cp437_hex":"7065746974696f6e3a"},
+          {"x":54,"y":7,"style":[3,0,true],"cp437_hex":"4275696c64"},
+          {"x":60,"y":7,"style":[3,0,true],"cp437_hex":"61"},
+          {"x":62,"y":7,"style":[3,0,true],"cp437_hex":"74656d706c65"},
+          {"x":69,"y":7,"style":[3,0,true],"cp437_hex":"636f6d706c6578"},
+          {"x":54,"y":8,"style":[7,0,false],"cp437_hex":"666f72"},
+          {"x":54,"y":9,"style":[6,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":9,"style":[6,0,true],"cp437_hex":"42656a6577656c6564"},
+          {"x":68,"y":9,"style":[6,0,true],"cp437_hex":"43726565642e"},
+          {"x":54,"y":11,"style":[7,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":11,"style":[7,0,true],"cp437_hex":"6173736f636961746564"},
+          {"x":69,"y":11,"style":[7,0,true],"cp437_hex":"7a6f6e6573"},
+          {"x":75,"y":11,"style":[7,0,true],"cp437_hex":"6d757374"},
+          {"x":80,"y":11,"style":[7,0,true],"cp437_hex":"68617665"},
+          {"x":85,"y":11,"style":[7,0,true],"cp437_hex":"656e6f756768"},
+          {"x":92,"y":11,"style":[7,0,true],"cp437_hex":"76616c75652e"},
+          {"x":99,"y":11,"style":[7,0,true],"cp437_hex":"2831303030300f29"},
+          {"x":54,"y":12,"style":[5,0,true],"cp437_hex":"41"},
+          {"x":56,"y":12,"style":[5,0,true],"cp437_hex":"68696768"},
+          {"x":61,"y":12,"style":[5,0,true],"cp437_hex":"707269657374"},
+          {"x":68,"y":12,"style":[5,0,true],"cp437_hex":"6d757374"},
+          {"x":73,"y":12,"style":[5,0,true],"cp437_hex":"7468656e"},
+          {"x":78,"y":12,"style":[5,0,true],"cp437_hex":"6265"},
+          {"x":81,"y":12,"style":[5,0,true],"cp437_hex":"656c6576617465642e"},
+          {"x":54,"y":14,"style":[6,0,true],"cp437_hex":"43757272656e74"},
+          {"x":62,"y":14,"style":[6,0,true],"cp437_hex":"74656d706c65"},
+          {"x":69,"y":14,"style":[6,0,true],"cp437_hex":"6c6f636174696f6e3a"},
+          {"x":54,"y":15,"style":[6,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":15,"style":[6,0,true],"cp437_hex":"476f6c64656e"},
+          {"x":65,"y":15,"style":[6,0,true],"cp437_hex":"536872696e652c"},
+          {"x":73,"y":15,"style":[6,0,true],"cp437_hex":"353637350f"},
+          {"x":54,"y":18,"style":[7,0,false],"cp437_hex":"41677265656d656e74"},
+          {"x":64,"y":18,"style":[7,0,false],"cp437_hex":"646174653a"},
+          {"x":70,"y":18,"style":[7,0,false],"cp437_hex":"317374"},
+          {"x":74,"y":18,"style":[7,0,false],"cp437_hex":"4f6273696469616e2c"},
+          {"x":84,"y":18,"style":[7,0,false],"cp437_hex":"313036"}
+        ],
+        "cells_sha256": "728bc49deae3a91bb2ea16b6a670084347970a348cc0088b693eb8e131be9236"
       },
       {
         "name": "tracker-map-hover-date",
@@ -3897,7 +3977,47 @@
             "y": 20,
             "text": ""
           }
-        ]
+        ],
+        "text_runs": [
+          {"x":54,"y":5,"style":[7,0,true],"cp437_hex":"4163636570746564"},
+          {"x":63,"y":5,"style":[7,0,true],"cp437_hex":"7065746974696f6e3a"},
+          {"x":54,"y":7,"style":[3,0,true],"cp437_hex":"4275696c64"},
+          {"x":60,"y":7,"style":[3,0,true],"cp437_hex":"61"},
+          {"x":62,"y":7,"style":[3,0,true],"cp437_hex":"74656d706c65"},
+          {"x":69,"y":7,"style":[3,0,true],"cp437_hex":"636f6d706c6578"},
+          {"x":54,"y":8,"style":[7,0,false],"cp437_hex":"666f72"},
+          {"x":54,"y":9,"style":[6,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":9,"style":[6,0,true],"cp437_hex":"42656a6577656c6564"},
+          {"x":68,"y":9,"style":[6,0,true],"cp437_hex":"43726565642e"},
+          {"x":54,"y":11,"style":[7,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":11,"style":[7,0,true],"cp437_hex":"6173736f636961746564"},
+          {"x":69,"y":11,"style":[7,0,true],"cp437_hex":"7a6f6e6573"},
+          {"x":75,"y":11,"style":[7,0,true],"cp437_hex":"6d757374"},
+          {"x":80,"y":11,"style":[7,0,true],"cp437_hex":"68617665"},
+          {"x":85,"y":11,"style":[7,0,true],"cp437_hex":"656e6f756768"},
+          {"x":92,"y":11,"style":[7,0,true],"cp437_hex":"76616c75652e"},
+          {"x":99,"y":11,"style":[7,0,true],"cp437_hex":"2831303030300f29"},
+          {"x":54,"y":12,"style":[5,0,true],"cp437_hex":"41"},
+          {"x":56,"y":12,"style":[5,0,true],"cp437_hex":"68696768"},
+          {"x":61,"y":12,"style":[5,0,true],"cp437_hex":"707269657374"},
+          {"x":68,"y":12,"style":[5,0,true],"cp437_hex":"6d757374"},
+          {"x":73,"y":12,"style":[5,0,true],"cp437_hex":"7468656e"},
+          {"x":78,"y":12,"style":[5,0,true],"cp437_hex":"6265"},
+          {"x":81,"y":12,"style":[5,0,true],"cp437_hex":"656c6576617465642e"},
+          {"x":54,"y":14,"style":[6,0,true],"cp437_hex":"43757272656e74"},
+          {"x":62,"y":14,"style":[6,0,true],"cp437_hex":"74656d706c65"},
+          {"x":69,"y":14,"style":[6,0,true],"cp437_hex":"6c6f636174696f6e3a"},
+          {"x":54,"y":15,"style":[6,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":15,"style":[6,0,true],"cp437_hex":"476f6c64656e"},
+          {"x":65,"y":15,"style":[6,0,true],"cp437_hex":"536872696e652c"},
+          {"x":73,"y":15,"style":[6,0,true],"cp437_hex":"353637350f"},
+          {"x":54,"y":18,"style":[7,0,false],"cp437_hex":"41677265656d656e74"},
+          {"x":64,"y":18,"style":[7,0,false],"cp437_hex":"646174653a"},
+          {"x":70,"y":18,"style":[7,0,false],"cp437_hex":"317374"},
+          {"x":74,"y":18,"style":[7,0,false],"cp437_hex":"4f6273696469616e2c"},
+          {"x":84,"y":18,"style":[7,0,false],"cp437_hex":"313036"}
+        ],
+        "cells_sha256": "728bc49deae3a91bb2ea16b6a670084347970a348cc0088b693eb8e131be9236"
       },
       {
         "name": "tracker-map-hover-blank",
@@ -3986,14 +4106,637 @@
             "y": 20,
             "text": ""
           }
-        ]
+        ],
+        "text_runs": [
+          {"x":54,"y":5,"style":[7,0,true],"cp437_hex":"4163636570746564"},
+          {"x":63,"y":5,"style":[7,0,true],"cp437_hex":"7065746974696f6e3a"}
+        ],
+        "cells_sha256": "48858d4d7d3537b8e42d42f43a21ec7b2b102778e9056c493dec1b504ddf4363"
+      },
+      {
+        "name": "tracker-map-hover-temple",
+        "pointer": [
+          1070,
+          298,
+          133,
+          24
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": " Accepted petition:"
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": " Build a temple"
+          },
+          {
+            "y": 8,
+            "text": " for"
+          },
+          {
+            "y": 9,
+            "text": " The Bejeweled Creed."
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": " The associated zones must have enough value. (2000 )"
+          },
+          {
+            "y": 12,
+            "text": " A priest must then be elevated."
+          },
+          {
+            "y": 13,
+            "text": ""
+          },
+          {
+            "y": 14,
+            "text": " Current temple location:"
+          },
+          {
+            "y": 15,
+            "text": " The Golden Shrine, 5675"
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": " Agreement date: 1st Obsidian, 106"
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ],
+        "text_runs": [
+          {"x":54,"y":5,"style":[7,0,true],"cp437_hex":"4163636570746564"},
+          {"x":63,"y":5,"style":[7,0,true],"cp437_hex":"7065746974696f6e3a"},
+          {"x":54,"y":7,"style":[3,0,true],"cp437_hex":"4275696c64"},
+          {"x":60,"y":7,"style":[3,0,true],"cp437_hex":"61"},
+          {"x":62,"y":7,"style":[3,0,true],"cp437_hex":"74656d706c65"},
+          {"x":54,"y":8,"style":[7,0,false],"cp437_hex":"666f72"},
+          {"x":54,"y":9,"style":[6,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":9,"style":[6,0,true],"cp437_hex":"42656a6577656c6564"},
+          {"x":68,"y":9,"style":[6,0,true],"cp437_hex":"43726565642e"},
+          {"x":54,"y":11,"style":[7,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":11,"style":[7,0,true],"cp437_hex":"6173736f636961746564"},
+          {"x":69,"y":11,"style":[7,0,true],"cp437_hex":"7a6f6e6573"},
+          {"x":75,"y":11,"style":[7,0,true],"cp437_hex":"6d757374"},
+          {"x":80,"y":11,"style":[7,0,true],"cp437_hex":"68617665"},
+          {"x":85,"y":11,"style":[7,0,true],"cp437_hex":"656e6f756768"},
+          {"x":92,"y":11,"style":[7,0,true],"cp437_hex":"76616c75652e"},
+          {"x":99,"y":11,"style":[7,0,true],"cp437_hex":"28323030300f29"},
+          {"x":54,"y":12,"style":[5,0,true],"cp437_hex":"41"},
+          {"x":56,"y":12,"style":[5,0,true],"cp437_hex":"707269657374"},
+          {"x":63,"y":12,"style":[5,0,true],"cp437_hex":"6d757374"},
+          {"x":68,"y":12,"style":[5,0,true],"cp437_hex":"7468656e"},
+          {"x":73,"y":12,"style":[5,0,true],"cp437_hex":"6265"},
+          {"x":76,"y":12,"style":[5,0,true],"cp437_hex":"656c6576617465642e"},
+          {"x":54,"y":14,"style":[2,0,true],"cp437_hex":"43757272656e74"},
+          {"x":62,"y":14,"style":[2,0,true],"cp437_hex":"74656d706c65"},
+          {"x":69,"y":14,"style":[2,0,true],"cp437_hex":"6c6f636174696f6e3a"},
+          {"x":54,"y":15,"style":[2,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":15,"style":[2,0,true],"cp437_hex":"476f6c64656e"},
+          {"x":65,"y":15,"style":[2,0,true],"cp437_hex":"536872696e652c"},
+          {"x":73,"y":15,"style":[2,0,true],"cp437_hex":"353637350f"},
+          {"x":54,"y":18,"style":[7,0,false],"cp437_hex":"41677265656d656e74"},
+          {"x":64,"y":18,"style":[7,0,false],"cp437_hex":"646174653a"},
+          {"x":70,"y":18,"style":[7,0,false],"cp437_hex":"317374"},
+          {"x":74,"y":18,"style":[7,0,false],"cp437_hex":"4f6273696469616e2c"},
+          {"x":84,"y":18,"style":[7,0,false],"cp437_hex":"313036"}
+        ],
+        "cells_sha256": "63ef12c18eedc72fd8f0b4734d0e24ead7e442a836e6279437742ec0ec003d35"
+      },
+      {
+        "name": "tracker-map-hover-temple-invalid-tier",
+        "pointer": [
+          1070,
+          298,
+          133,
+          24
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": " Accepted petition:"
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": ""
+          },
+          {
+            "y": 8,
+            "text": " for"
+          },
+          {
+            "y": 9,
+            "text": " The Bejeweled Creed."
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": " The associated zones must have enough value. ( )"
+          },
+          {
+            "y": 12,
+            "text": ""
+          },
+          {
+            "y": 13,
+            "text": ""
+          },
+          {
+            "y": 14,
+            "text": " Current temple location:"
+          },
+          {
+            "y": 15,
+            "text": " The Golden Shrine, 5675"
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": " Agreement date: 1st Obsidian, 106"
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ],
+        "text_runs": [
+          {"x":54,"y":5,"style":[7,0,true],"cp437_hex":"4163636570746564"},
+          {"x":63,"y":5,"style":[7,0,true],"cp437_hex":"7065746974696f6e3a"},
+          {"x":54,"y":8,"style":[7,0,false],"cp437_hex":"666f72"},
+          {"x":54,"y":9,"style":[6,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":9,"style":[6,0,true],"cp437_hex":"42656a6577656c6564"},
+          {"x":68,"y":9,"style":[6,0,true],"cp437_hex":"43726565642e"},
+          {"x":54,"y":11,"style":[7,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":11,"style":[7,0,true],"cp437_hex":"6173736f636961746564"},
+          {"x":69,"y":11,"style":[7,0,true],"cp437_hex":"7a6f6e6573"},
+          {"x":75,"y":11,"style":[7,0,true],"cp437_hex":"6d757374"},
+          {"x":80,"y":11,"style":[7,0,true],"cp437_hex":"68617665"},
+          {"x":85,"y":11,"style":[7,0,true],"cp437_hex":"656e6f756768"},
+          {"x":92,"y":11,"style":[7,0,true],"cp437_hex":"76616c75652e"},
+          {"x":99,"y":11,"style":[7,0,true],"cp437_hex":"280f29"},
+          {"x":54,"y":14,"style":[2,0,true],"cp437_hex":"43757272656e74"},
+          {"x":62,"y":14,"style":[2,0,true],"cp437_hex":"74656d706c65"},
+          {"x":69,"y":14,"style":[2,0,true],"cp437_hex":"6c6f636174696f6e3a"},
+          {"x":54,"y":15,"style":[2,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":15,"style":[2,0,true],"cp437_hex":"476f6c64656e"},
+          {"x":65,"y":15,"style":[2,0,true],"cp437_hex":"536872696e652c"},
+          {"x":73,"y":15,"style":[2,0,true],"cp437_hex":"353637350f"},
+          {"x":54,"y":18,"style":[7,0,false],"cp437_hex":"41677265656d656e74"},
+          {"x":64,"y":18,"style":[7,0,false],"cp437_hex":"646174653a"},
+          {"x":70,"y":18,"style":[7,0,false],"cp437_hex":"317374"},
+          {"x":74,"y":18,"style":[7,0,false],"cp437_hex":"4f6273696469616e2c"},
+          {"x":84,"y":18,"style":[7,0,false],"cp437_hex":"313036"}
+        ],
+        "cells_sha256": "cb6f3cb4951616c16033f13eba1d15ee5f331a67beea781b63b7e03686acab83"
+      },
+      {
+        "name": "tracker-map-hover-guildhall",
+        "pointer": [
+          1070,
+          298,
+          133,
+          24
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": " Accepted petition:"
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": " Build a guildhall"
+          },
+          {
+            "y": 8,
+            "text": " for"
+          },
+          {
+            "y": 9,
+            "text": " Farmers guild."
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": " The associated zones must have enough value. (2000 )"
+          },
+          {
+            "y": 12,
+            "text": ""
+          },
+          {
+            "y": 13,
+            "text": " No guildhall location currently assigned to a zone."
+          },
+          {
+            "y": 14,
+            "text": ""
+          },
+          {
+            "y": 15,
+            "text": ""
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": " Agreement date: 1st Obsidian, 106"
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ],
+        "text_runs": [
+          {"x":54,"y":5,"style":[7,0,true],"cp437_hex":"4163636570746564"},
+          {"x":63,"y":5,"style":[7,0,true],"cp437_hex":"7065746974696f6e3a"},
+          {"x":54,"y":7,"style":[3,0,true],"cp437_hex":"4275696c64"},
+          {"x":60,"y":7,"style":[3,0,true],"cp437_hex":"61"},
+          {"x":62,"y":7,"style":[3,0,true],"cp437_hex":"6775696c6468616c6c"},
+          {"x":54,"y":8,"style":[7,0,false],"cp437_hex":"666f72"},
+          {"x":54,"y":9,"style":[6,0,true],"cp437_hex":"4661726d657273"},
+          {"x":62,"y":9,"style":[6,0,true],"cp437_hex":"6775696c642e"},
+          {"x":54,"y":11,"style":[7,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":11,"style":[7,0,true],"cp437_hex":"6173736f636961746564"},
+          {"x":69,"y":11,"style":[7,0,true],"cp437_hex":"7a6f6e6573"},
+          {"x":75,"y":11,"style":[7,0,true],"cp437_hex":"6d757374"},
+          {"x":80,"y":11,"style":[7,0,true],"cp437_hex":"68617665"},
+          {"x":85,"y":11,"style":[7,0,true],"cp437_hex":"656e6f756768"},
+          {"x":92,"y":11,"style":[7,0,true],"cp437_hex":"76616c75652e"},
+          {"x":99,"y":11,"style":[7,0,true],"cp437_hex":"28323030300f29"},
+          {"x":54,"y":13,"style":[4,0,true],"cp437_hex":"4e6f"},
+          {"x":57,"y":13,"style":[4,0,true],"cp437_hex":"6775696c6468616c6c"},
+          {"x":67,"y":13,"style":[4,0,true],"cp437_hex":"6c6f636174696f6e"},
+          {"x":76,"y":13,"style":[4,0,true],"cp437_hex":"63757272656e746c79"},
+          {"x":86,"y":13,"style":[4,0,true],"cp437_hex":"61737369676e6564"},
+          {"x":95,"y":13,"style":[4,0,true],"cp437_hex":"746f"},
+          {"x":98,"y":13,"style":[4,0,true],"cp437_hex":"61"},
+          {"x":100,"y":13,"style":[4,0,true],"cp437_hex":"7a6f6e652e"},
+          {"x":54,"y":18,"style":[7,0,false],"cp437_hex":"41677265656d656e74"},
+          {"x":64,"y":18,"style":[7,0,false],"cp437_hex":"646174653a"},
+          {"x":70,"y":18,"style":[7,0,false],"cp437_hex":"317374"},
+          {"x":74,"y":18,"style":[7,0,false],"cp437_hex":"4f6273696469616e2c"},
+          {"x":84,"y":18,"style":[7,0,false],"cp437_hex":"313036"}
+        ],
+        "cells_sha256": "2a24522f860d8cb4726ecc2922a6e45daa1bb81c393559374f635d3f171f0d59"
+      },
+      {
+        "name": "tracker-map-hover-grand-guildhall",
+        "pointer": [
+          1070,
+          298,
+          133,
+          24
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": " Accepted petition:"
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": " Build a grand guildhall"
+          },
+          {
+            "y": 8,
+            "text": " for"
+          },
+          {
+            "y": 9,
+            "text": " Farmers guild."
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": " The associated zones must have enough value. (10000 )"
+          },
+          {
+            "y": 12,
+            "text": ""
+          },
+          {
+            "y": 13,
+            "text": " No guildhall location currently assigned to a zone."
+          },
+          {
+            "y": 14,
+            "text": ""
+          },
+          {
+            "y": 15,
+            "text": ""
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": " Agreement date: 1st Obsidian, 106"
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ],
+        "text_runs": [
+          {"x":54,"y":5,"style":[7,0,true],"cp437_hex":"4163636570746564"},
+          {"x":63,"y":5,"style":[7,0,true],"cp437_hex":"7065746974696f6e3a"},
+          {"x":54,"y":7,"style":[3,0,true],"cp437_hex":"4275696c64"},
+          {"x":60,"y":7,"style":[3,0,true],"cp437_hex":"61"},
+          {"x":62,"y":7,"style":[3,0,true],"cp437_hex":"6772616e64"},
+          {"x":68,"y":7,"style":[3,0,true],"cp437_hex":"6775696c6468616c6c"},
+          {"x":54,"y":8,"style":[7,0,false],"cp437_hex":"666f72"},
+          {"x":54,"y":9,"style":[6,0,true],"cp437_hex":"4661726d657273"},
+          {"x":62,"y":9,"style":[6,0,true],"cp437_hex":"6775696c642e"},
+          {"x":54,"y":11,"style":[7,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":11,"style":[7,0,true],"cp437_hex":"6173736f636961746564"},
+          {"x":69,"y":11,"style":[7,0,true],"cp437_hex":"7a6f6e6573"},
+          {"x":75,"y":11,"style":[7,0,true],"cp437_hex":"6d757374"},
+          {"x":80,"y":11,"style":[7,0,true],"cp437_hex":"68617665"},
+          {"x":85,"y":11,"style":[7,0,true],"cp437_hex":"656e6f756768"},
+          {"x":92,"y":11,"style":[7,0,true],"cp437_hex":"76616c75652e"},
+          {"x":99,"y":11,"style":[7,0,true],"cp437_hex":"2831303030300f29"},
+          {"x":54,"y":13,"style":[4,0,true],"cp437_hex":"4e6f"},
+          {"x":57,"y":13,"style":[4,0,true],"cp437_hex":"6775696c6468616c6c"},
+          {"x":67,"y":13,"style":[4,0,true],"cp437_hex":"6c6f636174696f6e"},
+          {"x":76,"y":13,"style":[4,0,true],"cp437_hex":"63757272656e746c79"},
+          {"x":86,"y":13,"style":[4,0,true],"cp437_hex":"61737369676e6564"},
+          {"x":95,"y":13,"style":[4,0,true],"cp437_hex":"746f"},
+          {"x":98,"y":13,"style":[4,0,true],"cp437_hex":"61"},
+          {"x":100,"y":13,"style":[4,0,true],"cp437_hex":"7a6f6e652e"},
+          {"x":54,"y":18,"style":[7,0,false],"cp437_hex":"41677265656d656e74"},
+          {"x":64,"y":18,"style":[7,0,false],"cp437_hex":"646174653a"},
+          {"x":70,"y":18,"style":[7,0,false],"cp437_hex":"317374"},
+          {"x":74,"y":18,"style":[7,0,false],"cp437_hex":"4f6273696469616e2c"},
+          {"x":84,"y":18,"style":[7,0,false],"cp437_hex":"313036"}
+        ],
+        "cells_sha256": "70a6f56abce739e43f641cccee9b9ec96fa8d9e9cc957d0448ca265229a55b81"
+      },
+      {
+        "name": "tracker-map-hover-guild-invalid-tier",
+        "pointer": [
+          1070,
+          298,
+          133,
+          24
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": " Accepted petition:"
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": ""
+          },
+          {
+            "y": 8,
+            "text": " for"
+          },
+          {
+            "y": 9,
+            "text": " Farmers guild."
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": " The associated zones must have enough value. ( )"
+          },
+          {
+            "y": 12,
+            "text": ""
+          },
+          {
+            "y": 13,
+            "text": " No guildhall location currently assigned to a zone."
+          },
+          {
+            "y": 14,
+            "text": ""
+          },
+          {
+            "y": 15,
+            "text": ""
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": " Agreement date: 1st Obsidian, 106"
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ],
+        "text_runs": [
+          {"x":54,"y":5,"style":[7,0,true],"cp437_hex":"4163636570746564"},
+          {"x":63,"y":5,"style":[7,0,true],"cp437_hex":"7065746974696f6e3a"},
+          {"x":54,"y":8,"style":[7,0,false],"cp437_hex":"666f72"},
+          {"x":54,"y":9,"style":[6,0,true],"cp437_hex":"4661726d657273"},
+          {"x":62,"y":9,"style":[6,0,true],"cp437_hex":"6775696c642e"},
+          {"x":54,"y":11,"style":[7,0,true],"cp437_hex":"546865"},
+          {"x":58,"y":11,"style":[7,0,true],"cp437_hex":"6173736f636961746564"},
+          {"x":69,"y":11,"style":[7,0,true],"cp437_hex":"7a6f6e6573"},
+          {"x":75,"y":11,"style":[7,0,true],"cp437_hex":"6d757374"},
+          {"x":80,"y":11,"style":[7,0,true],"cp437_hex":"68617665"},
+          {"x":85,"y":11,"style":[7,0,true],"cp437_hex":"656e6f756768"},
+          {"x":92,"y":11,"style":[7,0,true],"cp437_hex":"76616c75652e"},
+          {"x":99,"y":11,"style":[7,0,true],"cp437_hex":"280f29"},
+          {"x":54,"y":13,"style":[4,0,true],"cp437_hex":"4e6f"},
+          {"x":57,"y":13,"style":[4,0,true],"cp437_hex":"6775696c6468616c6c"},
+          {"x":67,"y":13,"style":[4,0,true],"cp437_hex":"6c6f636174696f6e"},
+          {"x":76,"y":13,"style":[4,0,true],"cp437_hex":"63757272656e746c79"},
+          {"x":86,"y":13,"style":[4,0,true],"cp437_hex":"61737369676e6564"},
+          {"x":95,"y":13,"style":[4,0,true],"cp437_hex":"746f"},
+          {"x":98,"y":13,"style":[4,0,true],"cp437_hex":"61"},
+          {"x":100,"y":13,"style":[4,0,true],"cp437_hex":"7a6f6e652e"},
+          {"x":54,"y":18,"style":[7,0,false],"cp437_hex":"41677265656d656e74"},
+          {"x":64,"y":18,"style":[7,0,false],"cp437_hex":"646174653a"},
+          {"x":70,"y":18,"style":[7,0,false],"cp437_hex":"317374"},
+          {"x":74,"y":18,"style":[7,0,false],"cp437_hex":"4f6273696469616e2c"},
+          {"x":84,"y":18,"style":[7,0,false],"cp437_hex":"313036"}
+        ],
+        "cells_sha256": "6ca006fecaeaddd238bd81a08bea49c1a91bdab584c22d937945dd7872d5756e"
       }
     ],
     "gaps": [
-      "Guild and temple-tier variants, missing or fulfilled location requirements",
+      "Missing, multiple and fulfilled location requirements; exclusion and tie cases",
       "Native semantic helper audit and owned provider",
-      "Popup styling and rendered viewer comparison",
+      "Popup frame artwork and rendered viewer comparison",
       "Timing, dismissal and interaction boundaries"
-    ]
+    ],
+    "selection_audit": {
+      "site_lookup": "7db20: read-only binary lookup",
+      "excluded_location_flag_bits": [
+        1,
+        0,
+        3
+      ],
+      "selection": "Highest contents.value strictly above initial zero; first wins equal values. Count includes matching zero-value locations even though none is selected.",
+      "temple_match": "Location deity/religion fields must match agreement Location payload.",
+      "guild_match": "Native 2b61e0 resolves profession against fortress guild links; its cached lookup bbef0 writes link cache indices. Do not call this helper against borrowed live cache storage.",
+      "runtime_status": "Not implemented; renderer is not a callable runtime API."
+    }
   }
 }

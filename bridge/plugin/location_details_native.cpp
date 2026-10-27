@@ -6,6 +6,7 @@
 #include "df/world.h"
 #include "df/language_word_table.h"
 #include "df/language_name.h"
+#include "df/language_translation.h"
 #include "df/item.h"
 #include "df/items_other_id.h"
 #include "modules/Translation.h"
@@ -29,7 +30,7 @@
 #include <numeric>
 
 namespace df3d_area {
-std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component,const std::string& queryCp437) {
+std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component,const std::string& queryCp437,int32_t language) {
   if(component>6 || !df::global::world || !DFHack::Maps::IsValid())return std::nullopt;
   // Native name-editor initialization calls this semantic selector builder,
   // passing all raw word IDs. It reads raw language words and writes only the
@@ -45,7 +46,8 @@ std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint
     return hash(0xd35530,0x9a4)==UINT64_C(0x77bd9190661f5681) &&
         hash(0xd2cb50,0xf0)==UINT64_C(0xf7ab8eceaadda09f) &&
         hash(0x52cee0,0x19e)==UINT64_C(0xc25c2d8a6eb9fcac) &&
-        hash(0x1fc330,0x28c)==UINT64_C(0xc8d8335c19ae0818);
+        hash(0x1fc330,0x28c)==UINT64_C(0xc8d8335c19ae0818) &&
+        hash(0x1fdf5f,0x83)==UINT64_C(0xbae5c91a8beb8614);
   }();
   if(!compatible)return std::nullopt;
   const auto& words=df::global::world->raws.language.words;
@@ -68,6 +70,9 @@ std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint
   const auto& selected=table.words[slot];const auto& parts=table.parts[slot];
   if(selected.size()!=parts.size())return std::nullopt;
   std::vector<LocationNameWord> result;result.reserve(selected.size());
+  const auto& translations=df::global::world->raws.language.translations;
+  const auto* translation=language>=0 && size_t(language)<translations.size()?translations[language]:nullptr;
+  static_assert(offsetof(df::language_translation,words)==0x50);
   for(size_t i=0;i<selected.size();++i) {
     if(selected[i]<0 || size_t(selected[i])>=words.size() || int(parts[i])<0 || int(parts[i])>8)return std::nullopt;
     std::string english;form(nullptr,selected[i],&english,0,int32_t(parts[i]));
@@ -75,7 +80,13 @@ std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint
     // query with52cee0 and retains substring matches in native English forms.
     // Reproduce that audited string operation without a name_creator object.
     if(!query.empty() && english.find(query)==std::string::npos)continue;
-    result.push_back({selected[i],int32_t(parts[i]),DF2UTF(english)});
+    // Native draw1fdf5f..1fdfe2 reads the stored name language and raw word
+    // translation directly, independently of part of speech. Missing language
+    // displays blank. Do not borrow name_creator or reproduce its text clipping.
+    std::string translated;
+    if(translation && size_t(selected[i])<translation->words.size() && translation->words[selected[i]])
+      translated=DF2UTF(*translation->words[selected[i]]);
+    result.push_back({selected[i],int32_t(parts[i]),DF2UTF(english),std::move(translated)});
   }
   return result;
 }

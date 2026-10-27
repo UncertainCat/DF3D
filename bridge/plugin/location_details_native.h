@@ -60,9 +60,9 @@ struct LocationDetailsCore {
 // Caller owns a DF safe point. Current-site identities only, copied world facts;
 // no retained native pointers and no viewscreen/widget/cursor inputs.
 std::optional<LocationDetailsCore> observeNativeLocationDetailsCore(int32_t siteId,int32_t id);
-struct LocationNameWord { int32_t word=-1,partOfSpeech=-1; std::string english; };
+struct LocationNameWord { int32_t word=-1,partOfSpeech=-1; std::string english,translated; };
 // Native word-selector construction with independently owned input/output.
-std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component,const std::string& queryCp437={});
+std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component,const std::string& queryCp437={},int32_t language=-1);
 // Consumes DF RNG for a nonempty displayed component/filter pool. Does not write
 // a location name. Empty-pool native input behavior is not yet accepted.
 std::optional<LocationNameWord> chooseNativeLocationNameWord(uint8_t displayedComponent,const std::string& queryCp437={});

@@ -169,12 +169,12 @@ Modified-key/clipboard input remains outside this evidence.
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout
 reference needed to implement the unfinished Details rename action. Protected
 `stockpile_storage_native.ps1 -LocationNames` run
-`build/stockpile-storage-native-location-names-20261026-215017` captures89 states:
+`build/stockpile-storage-native-location-names-20261026-215409` captures89 states:
 entry/Back across six locations, all seven tavern components' Clear/word/Random
 actions, filter focus/ALE/AL/Enter, edited Back/reopen and whole-name Random/Done
 for all six locations, plus filtered/empty lists across all seven components and
 cross-component Random. Entry alone preserves names; changes apply immediately
-and both Back and Done retain them. DF139208 exits unsaved, source unchanged.
+and both Back and Done retain them. DF146572 exits unsaved, source unchanged.
 
 The rename icon opens `name_creator` in LOCATION_NAME context3 with a pointer to
 the selected location's language_name and namer entity245 in this fixture.
@@ -195,11 +195,16 @@ Native English-form lookup0xd2cb50 and normalization0x52cee0 use owned strings.
 Normalization lowercases/folds CP437 query bytes; the displayed native filter
 field itself holds uppercase input. The inline substring operation is audited
 against pinned0x1fc330; the provider never calls that UI helper. The protected
-`df3d location-name-words component [query]` diagnostic matches all36761 ordered
+`df3d location-name-words component [query] [language]` diagnostic matches all36761 ordered
 word/part-of-speech pairs and English forms across30 native cases and leaves the
 main-interface and GPS structures unchanged. AL counts across components are
 139,211,81,81,40,112,121; ZZZZ produces seven empty lists.
-MSVC and core19/19 pass (`build/qa/location-name-edit-invalid`). Management70 remains unchanged; no product
+The language column copies the raw translation selected by the stored name's
+language and word ID, following pinned inline draw1fdf5f..1fdfe2. All36761
+translations match native raw values; language-1 produces3217 blank cells.
+The fixture records all nine native grammatical labels and literal addresses.
+English and language-word clipping remains a presentation responsibility.
+MSVC and core19/19 pass (`build/qa/location-name-columns`). Management70 remains unchanged; no product
 transport or rename control is exposed yet.
 
 Capture found a DFHack binding error: name_creator.word_index_asp is declared
@@ -251,8 +256,8 @@ parameter and eligibility cases reject without name/RNG effects, including
 filtered-out selection and empty random pools. Rejecting an empty pool is a
 bridge guard; native empty-list button behavior remains unverified. Typed
 transport and session/epoch ownership remain unfinished.
-Random with an empty list, scrolling, physical Escape, native
-language display columns, typed mutations and the rendered editor remain
+Random with an empty list, scrolling, physical Escape,
+typed mutations and the rendered three-column editor remain
 unfinished. DFHack Translation::generateName reconstructs the algorithm and is
 not used as a substitute for calling DF.
 

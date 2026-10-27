@@ -80,7 +80,7 @@ local function capture(label,location)
    row.bridge_hidden_name_change_detected=true
   end
   assert(require('json').encode(rng_before)==require('json').encode(rng_snapshot()),'name observation consumed RNG')
-  local text,code=dfhack.run_command_silent('df3d','location-name-words',tostring(creator.cur_name_place),dfhack.df2utf(creator.cull_str))
+  local text,code=dfhack.run_command_silent('df3d','location-name-words',tostring(creator.cur_name_place),dfhack.df2utf(creator.cull_str),tostring(location:getName().language))
   assert(code==0,text);local observed=require('json').decode(text)
   assert(observed.valid and #observed.words==#creator.word_index,'native word-selector count mismatch')
   for i,pair in ipairs(observed.words)do
@@ -90,12 +90,23 @@ local function capture(label,location)
     error('native word-selector mismatch at '..i..': '..tostring(pair[1])..'/'..tostring(pair[2])..' versus '..tostring(creator.word_index[i-1])..'/'..tostring(word_part(i-1)))
    end
    assert(pair[3]==dfhack.df2utf(df.global.world.raws.language.words[pair[1]].forms[pair[2]]),'native English word form mismatch')
+   local language=location:getName().language;local translations=df.global.world.raws.language.translations
+   local translated=''
+   if language>=0 and language<#translations and pair[1]<#translations[language].words then translated=translations[language].words[pair[1]].value end
+   assert(pair[4]==dfhack.df2utf(translated),'native language word mismatch')
+  end
+  if label=='TEMPLE-0-name-open' then
+   local blank_text,blank_code=dfhack.run_command_silent('df3d','location-name-words','0','','-1')
+   assert(blank_code==0,blank_text);local blank=require('json').decode(blank_text)
+   assert(blank.valid and #blank.words==#observed.words)
+   for _,pair in ipairs(blank.words)do assert(pair[4]=='','missing language should be blank')end
+   row.bridge_missing_language_blank=true
   end
   for _,guard in ipairs(guards)do
    assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'word observation changed native UI/gps')
    df.delete(guard.bytes)
   end
-  row.bridge_word_count=#observed.words;row.bridge_ui_unchanged=true;row.bridge_forms_verified=true
+  row.bridge_word_count=#observed.words;row.bridge_ui_unchanged=true;row.bridge_forms_verified=true;row.bridge_translations_verified=true
  end
  for y=0,g.dimy-1 do
   local chars={};for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch) or ' 'end

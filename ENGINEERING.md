@@ -569,8 +569,20 @@ This exposed and corrected a viewer reconnect defect: ownerless Unavailable stat
 now retires to Closed when fresh Details becomes Ready; reconnect alone neither
 submits nor reopens anything. The controlled regression also verifies this fresh
 gesture, with core and workflow checks passing in location-religious-reconnect.
-Late replies after changing location, producer restart, disconnect between receipt
-read and mutation dispatch, and post-effect Unknown injection remain separate gaps.
+`assignment-late` protected072950 completes native assignment before closing
+temple Details and opening tavern1. The late reply cannot revive the old target
+or alter the new panel; fresh temple Details observes holder10379. Native guards
+confirm no extra effects. `assignment-restart` protected073052 replaces DF157768
+with154200 after native assignment but before the viewer receives success. The
+old request becomes Unknown, all assignment authority retires, and the replacement
+submits only Catalog automatically. Replay checks explicitly include the religious
+candidate/read/assign operations. Fresh native and viewer observations restore
+saved holder9375, proving the unsaved assignment did not survive restart or replay.
+Both runs preserve both manifests, exit owned DF unsaved and pass_with_known_issues
+only for the separate-thread notice. Tavern and restored temple captures were
+inspected. Fixture retirement_reference retains bounded provenance. Disconnect
+between receipt read and mutation dispatch, and post-effect Unknown injection
+remain separate gaps.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

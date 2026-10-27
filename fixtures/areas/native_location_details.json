@@ -13267,7 +13267,7 @@
         }
       },
       "limitations": [
-        "Late replies after changing location, producer restart, disconnect between receipt read and mutation dispatch, and post-effect Unknown injection remain unverified.",
+        "Disconnect between receipt read and mutation dispatch, and post-effect Unknown injection remain unverified.",
         "Religious filtered pixel parity, non-ASCII editing and all scrollbar hover/drag states remain unverified."
       ],
       "scrollbar_art_reference": {
@@ -13842,6 +13842,47 @@
         "known_diagnostic": "godot-separate-thread-notice",
         "source_save_directories_preserved": 2,
         "owned_exit_without_save": true
+      }
+    ],
+    "retirement_reference": [
+      {
+        "applied_holder": 10379,
+        "fresh_holder": 10379,
+        "old_owner_retired": true,
+        "old_ticket": 16,
+        "restart": false,
+        "provenance": "build/areas-acceptance-20261027-072950",
+        "status": "passed_with_known_issues",
+        "known_diagnostic": "godot-separate-thread-notice",
+        "source_save_directories_preserved": 2,
+        "owned_exit_without_save": true
+      },
+      {
+        "applied_holder": 10379,
+        "fresh_holder": 9375,
+        "old_owner_retired": true,
+        "old_ticket": 16,
+        "restart": true,
+        "provenance": "build/areas-acceptance-20261027-073052",
+        "status": "passed_with_known_issues",
+        "known_diagnostic": "godot-separate-thread-notice",
+        "source_save_directories_preserved": 2,
+        "owned_exit_without_save": true,
+        "session": {
+          "new_epoch": "662283957043201",
+          "new_generation": 2,
+          "old_epoch": "677608400355329",
+          "old_generation": 1,
+          "pid": 154200.0
+        },
+        "automatic_requests": {
+          "17": {
+            "domain": "construction",
+            "request": {
+              "action": 0
+            }
+          }
+        }
       }
     ]
   }

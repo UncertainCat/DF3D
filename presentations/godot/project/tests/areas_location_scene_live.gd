@@ -1375,7 +1375,7 @@ func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
 	actions.completed.disconnect(observe)
 	write_json(evidence_prefix+"-restart-new-requests.json",new_requests)
 	for item in new_requests.values():
-		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit,Contract.AreaOperation.LocationRecognitionRead,Contract.AreaOperation.LocationRecognize,Contract.AreaOperation.LocationReligiousStaffRead,Contract.AreaOperation.LocationReligiousStaffRemove],"replacement automatically submitted Location work"):return
+		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit,Contract.AreaOperation.LocationRecognitionRead,Contract.AreaOperation.LocationRecognize,Contract.AreaOperation.LocationReligiousStaffRead,Contract.AreaOperation.LocationReligiousStaffRemove,Contract.AreaOperation.LocationReligiousCandidates,Contract.AreaOperation.LocationReligiousAssignmentRead,Contract.AreaOperation.LocationReligiousAssign],"replacement automatically submitted Location work"):return
 	if not check(model.identity.is_empty() and not editor.details_layer.visible,"replacement reopened quantity editor"):return
 	await capture(evidence_prefix+"_restart_retired")
 
@@ -1580,6 +1580,8 @@ func religious_staff_route(locations: Array) -> void:
 	await pointer_click(assign_point)
 	if not await wait_ui(func():return selector.is_visible_in_tree() and selector.actions_enabled,"religious candidate picker visible"):return
 	await native("religious_candidates_readback",{"rows":flow.candidates.rows})
+	if lifecycle in ["assignment-late","assignment-restart"]:
+		await religious_assignment_retire(lifecycle=="assignment-restart",row_index,int(setup.holder_id));return
 	if lifecycle.begins_with("assignment-"):
 		await religious_assignment_disconnect(lifecycle=="assignment-sent",row_index);return
 	await capture("religious_assignment_candidates")
@@ -1624,6 +1626,52 @@ func religious_staff_route(locations: Array) -> void:
 	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"religious Details Back"):return
 	write_json("religious-staff-scene-evidence.json",{"before":setup.before,"after":effects.after,"event":effects.event,"viewport_click":true,"details_refreshed":true,"vacant_repeat_unchanged":true,"details_closed":true})
+
+func religious_assignment_retire(restart: bool, row_index: int, original_holder: int) -> void:
+	step="religious assignment retire restart="+str(restart)
+	var flow=editor.details_view.religious_assignment_workflow
+	var selector=editor.details_view.staff_candidates_view
+	var chosen: Dictionary=selector.rows[0].duplicate(true)
+	await native("religious_guard")
+	await pointer_click(selector.global_position+Vector2(80,54))
+	await quantity_unobserved(flow.ticket)
+	if stopped:return
+	actions.poll()
+	var ticket: int=flow.ticket
+	if not check(ticket>0 and flow.mode==flow.Mode.Applying,"retirement assignment not pending"):return
+	var reply:=await quantity_unobserved(ticket,false)
+	if stopped:return
+	if not check(int(reply.area.location_religious_staff.holder_id)==int(chosen.histfig_id),"retirement requires native assignment"):return
+	await native("religious_assignment_applied",{"unit_id":chosen.unit_id,"histfig_id":chosen.histfig_id})
+	if stopped:return
+	if restart:
+		await quantity_restart(ticket,"religious-assignment")
+		if stopped:return
+		if not check(flow.target.is_empty() and flow.owner.is_empty() and flow.selected.is_empty() and flow.ticket==0,"restart retained assignment authority"):return
+		await quantity_lifecycle_open()
+		if stopped:return
+	else:
+		await native("religious_guard")
+		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		if not check(not editor.details_layer.visible and flow.target.is_empty() and flow.owner.is_empty(),"dismissal retained assignment owner"):return
+		await quantity_lifecycle_choose(1)
+		if stopped:return
+		if not check(flow.target.is_empty() and flow.owner.is_empty() and flow.mode==flow.Mode.Closed and int(editor.details_state.identity.id)==1,"late assignment revived on another location"):return
+		await native("religious_unchanged")
+		await capture("religious_assignment_late_other_location")
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"retired assignment chooser"):return
+	await quantity_lifecycle_choose(0)
+	if stopped:return
+	var expected: int=original_holder if restart else int(chosen.histfig_id)
+	var observed: Dictionary=editor.details_view.staff_view.rows[row_index]
+	if not check(int(observed.histfig_id)==expected and flow.mode==flow.Mode.Closed,"fresh retired assignment holder differs"):return
+	if restart:
+		var restored:=await native("religious_setup")
+		if not check(int(restored.holder_id)==original_holder,"restart preserved unsaved assignment"):return
+	await capture("religious_assignment_retire_reopened")
+	write_json("religious-assignment-retire-evidence.json",{"restart":restart,"old_ticket":ticket,"old_owner_retired":true,"applied_holder":chosen.histfig_id,"fresh_holder":observed.histfig_id})
+	editor.close_panel()
 
 func religious_assignment_disconnect(sent: bool, row_index: int) -> void:
 	step="religious assignment disconnect sent="+str(sent)

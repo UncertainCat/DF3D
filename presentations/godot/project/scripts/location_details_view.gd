@@ -5,6 +5,8 @@ var art=preload("res://scripts/original_ui.gd").new()
 var state
 var heading
 var body
+var recognition_workflow=preload("res://scripts/location_recognition_workflow.gd").new()
+var recognition_view
 var value_view
 var access_view
 var quantity_view
@@ -50,7 +52,17 @@ func configure(source, model, help=null) -> void:
 	rename_button.position=Vector2(560,12);rename_button.size=Vector2(32,36)
 	rename_button.focus_mode=Control.FOCUS_NONE
 	rename_button.pressed.connect(open_name)
+	recognition_workflow.configure(model)
+	recognition_workflow.changed.connect(refresh)
+	recognition_view=preload("res://scripts/location_recognition_view.gd").new();add_child(recognition_view);recognition_view.configure(source,recognition_workflow)
+	recognition_view.input_allowed=func():return not input_allowed.is_valid() or input_allowed.call()
+	recognition_view.action_requested=recognize
 	state.changed.connect(refresh);refresh()
+
+func recognize() -> void:
+	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
+	if quantity_view.workflow.pending or not quantity_view.workflow.queue.is_empty():return
+	quantity_view.workflow.finish();recognition_workflow.recognize()
 
 func open_name() -> void:
 	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
@@ -62,7 +74,7 @@ func layout(view: Vector2) -> void:
 	position=Vector2(368,48+fposmod(view.y,12)*0.5)
 	size=Vector2(floori(view.x/8)*8-592,floori(view.y/12)*12-132)
 	rename_button.position=Vector2(size.x-48,12)
-	for child in [heading,body,value_view,staff_view,quantity_view]:
+	for child in [heading,body,value_view,staff_view,quantity_view,recognition_view]:
 		child.layout(view);child.position-=position
 	access_view.position=Vector2(16,60);access_view.size=Vector2(576,36)
 	staff_candidates_view.layout(view);staff_candidates_view.position-=position
@@ -90,6 +102,9 @@ func refresh() -> void:
 	if revision!=_candidate_revision:
 		_candidate_revision=revision
 		staff_candidates_view.display_rows(candidates.rows if revision>0 else [])
+	recognition_view.refresh()
+	recognition_view.visible=not selecting and not naming and not recognition_view.current.is_empty()
+	recognition_view.actions_enabled=state.phase==state.Phase.Ready and staff_workflow.mode==staff_workflow.Mode.Closed and not naming and not quantity_view.workflow.pending and quantity_view.workflow.queue.is_empty()
 	queue_redraw()
 
 func _exit_tree() -> void:
@@ -98,6 +113,8 @@ func _exit_tree() -> void:
 	staff_workflow.dispose()
 	if name_workflow.changed.is_connected(refresh):name_workflow.changed.disconnect(refresh)
 	name_workflow.dispose()
+	if recognition_workflow.changed.is_connected(refresh):recognition_workflow.changed.disconnect(refresh)
+	recognition_workflow.dispose()
 
 func _draw() -> void:
 	if staff_candidates_view!=null and staff_candidates_view.visible:return

@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -537,7 +537,7 @@ if recognition_case=='petitions' or recognition_case=='agreements' or recognitio
   end
  end
 end
-local first_recognition=recognition_case=='first' or recognition_case=='new' or recognition_case=='positionnew'
+local first_recognition=recognition_case=='firstguidance' or recognition_case=='first' or recognition_case=='new' or recognition_case=='positionnew'
 if recognition_case=='empty' or first_recognition then
  -- Controlled world fixture on the owned unsaved clone; never a runtime path.
  local changed=0
@@ -657,7 +657,14 @@ local function recognition_state()
 end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
+local original_priest_threshold=difficulty.priesthood_unit_count
 local ok,err=xpcall(function()
+ if recognition_case=='firstguidance' then
+  difficulty.priesthood_unit_count=54
+  local row=capture('TEMPLE-0-recognition-first-population',temple);row.recognition=recognition_state()
+  assert(row.recognition.bridge.state==3,'first population state mismatch')
+  difficulty.priesthood_unit_count=original_priest_threshold
+ end
  if recognition_case=='eligibility' then
   for tier=0,1 do
    contents.location_tier=tier
@@ -908,7 +915,7 @@ local ok,err=xpcall(function()
   end
  end
  assert(#after.recognition.new_temple_emotions==54,'unexpected native recognition thought recipients')
- local creates_position=recognition_case~='first'
+ local creates_position=recognition_case~='first' and recognition_case~='firstguidance'
  assert(after.recognition.next_position-before.recognition.next_position==(creates_position and 1 or 0),'unexpected native position allocation')
  assert(after.recognition.next_assignment-before.recognition.next_assignment==1,'unexpected native assignment allocation')
  if recognition_case=='petitions' then
@@ -943,6 +950,6 @@ local ok,err=xpcall(function()
   assert(require('json').encode(after.recognition[field])==require('json').encode(repeated.recognition[field]),'repeat recognition changed '..field)
  end
 end,debug.traceback)
-contents.location_tier=original;difficulty.high_priesthood_unit_count=original_threshold
+contents.location_tier=original;difficulty.high_priesthood_unit_count=original_threshold;difficulty.priesthood_unit_count=original_priest_threshold
 assert(ok,err)
-assert(#records==((recognition_case=='thoughts' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew') and 2 or recognition_case=='eligibility' and 9 or recognition_only and 3 or 161),'incomplete recognition mutation reference')
+assert(#records==((recognition_case=='thoughts' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew') and 2 or recognition_case=='eligibility' and 9 or recognition_case=='firstguidance' and 4 or recognition_only and 3 or 161),'incomplete recognition mutation reference')

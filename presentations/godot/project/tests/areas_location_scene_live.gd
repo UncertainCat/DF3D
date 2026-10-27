@@ -47,6 +47,8 @@ func pointer_areas() -> void:
 		if not check(control.get_node("Name").text==reference.title and control.get_node("Subtitle").text==reference.subtitle,
 			"Location row copy differs from native: %d actual=%s/%s native=%s/%s" % [index,control.get_node("Name").text,control.get_node("Subtitle").text,reference.title,reference.subtitle]): return
 	var observed_locations: Array=editor.locations_state.rows.duplicate(true)
+	if FileAccess.file_exists(directory+"/recognition-scene.txt"):
+		await recognition_route(observed_locations);return
 	if FileAccess.file_exists(directory+"/naming-scene.txt"):
 		await naming_routes(observed_locations)
 		return
@@ -1374,3 +1376,41 @@ func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
 		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit],"replacement automatically submitted Location work"):return
 	if not check(model.identity.is_empty() and not editor.details_layer.visible,"replacement reopened quantity editor"):return
 	await capture(evidence_prefix+"_restart_retired")
+
+func recognition_route(locations: Array) -> void:
+	step="recognition scene fixture"
+	var setup:=await native("recognition_setup")
+	if stopped:return
+	var index:=-1
+	for i in locations.size():
+		if int(locations[i].id)==int(setup.location_id):index=i;break
+	if not check(index>=0,"recognition temple absent from chooser"):return
+	await click_control(editor.locations_view.choices[index].get_node("Details"))
+	var details=editor.details_view
+	var recognition=details.recognition_workflow.recognition
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and recognition.phase==recognition.Phase.Ready,"recognition Details and receipt"):return
+	write_json("recognition-entry.json",{"details":editor.details_state.snapshot,"recognition":recognition.snapshot})
+	# Native entry refresh recomputes the tier. Seed the controlled recognition
+	# case after entry, then observe it through the ordinary read-only refresh.
+	setup=await native("recognition_setup")
+	editor.details_state.refresh()
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and recognition.phase==recognition.Phase.Ready and recognition.snapshot.state==Contract.LocationRecognitionState.RecognizeHighPriest,"controlled recognition tier after entry"):return
+	if not check(details.recognition_view.visible and recognition.snapshot.state==Contract.LocationRecognitionState.RecognizeHighPriest,"recognition action missing"):return
+	await capture("recognition_before")
+	step="recognition scene apply"
+	await native("recognition_guard")
+	await pointer_click(details.recognition_view.global_position+Vector2(116,18))
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and recognition.phase==recognition.Phase.Ready and recognition.snapshot.rank==2,"recognition applied and Details refreshed"):return
+	if not check(not details.recognition_view.visible and recognition.snapshot.state==Contract.LocationRecognitionState.NoAction,"completed recognition action retained"):return
+	await native("recognition_readback",{"snapshot":recognition.snapshot,"revision":str(recognition.snapshot.revision)})
+	var effects:=await native("recognition_applied")
+	if stopped:return
+	await capture("recognition_after")
+	step="recognition scene completed click"
+	await native("recognition_guard")
+	await pointer_click(details.recognition_view.global_position+Vector2(116,18))
+	await create_timer(0.1).timeout;actions.poll()
+	await native("recognition_unchanged")
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"recognition Details Back"):return
+	write_json("recognition-scene-evidence.json",{"before":setup.before,"after":effects.after,"viewport_click":true,"details_refreshed":true,"completed_control_hidden":true})

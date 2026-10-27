@@ -108,6 +108,8 @@ func run() -> void:
 		if view.visible or not view.heading.rows.is_empty():push_error("Closed Details view retained facts");quit(1);return
 	model.snapshot=numbers(data.cases[0].details.duplicate(true));model.phase=model.Phase.Ready
 	model.identity={"site_id":651,"id":int(model.snapshot.id)};model.changed.emit()
+	# Opening temple Details may request recognition; measure subsequent input only.
+	service.calls.clear()
 	view.input_allowed=func():return false
 	await click(Vector2(944,82));assert(not view.name_workflow.active and service.calls.is_empty())
 	view.input_allowed=func():return true

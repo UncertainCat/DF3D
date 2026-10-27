@@ -903,13 +903,33 @@ temple observation starts a recognition read for that exact Details lifetime and
 revision. Applying excludes other Details edits; confirmed completion refreshes
 Details/staff, while an unknown result releases unrelated controls without replay.
 Changing target, closing or another Details operation retires the old recognition
-owner. This coordinator is staged until the native recognition view is connected.
+owner. Details now connects this coordinator to `location_recognition_view.gd`.
 `build/qa/location-recognition-workflow` exercises the real semantic action service
 with a controlled producer, including exact >2^53 revision handling, no optimistic
 changes, stale/unknown refusal, unsent cancellation, late success, epoch changes,
 malformed successful replies and the Details edit/refresh boundary. It is a clean
 headless pass, not rendered or real-disconnect acceptance. Root/core evidence is
 `build/qa/location-recognition-controller-core`.
+
+The recognition view displays native state and sourced captions, using installed
+`HORIZONTAL_OPTION_CONFIRM` artwork. It excludes naming, staff selection and
+pending quantity edits, retains the confirmed row during apply, and prevents
+duplicate input. `recognition_visual_reference` records seven native primary-row
+states at1200x800, including first-priest population refusal. All seven full-row
+RGB hashes match in `build/qa/location-recognition-view`; the composed Details
+regression passes in `build/qa/location-recognition-composition-final`. Both GPU
+runs have only documented Godot diagnostics.
+
+Protected `areas_acceptance.ps1 -LocationScene -RecognitionScene -SaveId
+df3d-areas-<new-name>` run `build/areas-acceptance-20261027-034556` verifies the
+actual viewport click, native promotion effects, refreshed staff, hidden completed
+action, unchanged effects after clicking its former position, and Back. The test
+sets its controlled temple tier after Details entry, which recomputes that tier;
+it then refreshes the semantic observation before clicking. Before/after images
+were inspected. Source and clone manifests remain unchanged, with unsaved owned
+exit. The run passed with known Godot diagnostics. This does not establish other
+viewport sizes, held-button behavior, first/vacant-priest scene variants or real
+disconnect/restart/late-reply workflows. Zones remains hidden.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and

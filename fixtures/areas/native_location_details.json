@@ -8004,5 +8004,184 @@
       "Disconnect/restart/late-reply workflows",
       "Rendered control"
     ]
+  },
+  "recognition_visual_reference": {
+    "viewport": [
+      1200,
+      800
+    ],
+    "rect": [
+      384,
+      196,
+      576,
+      36
+    ],
+    "button_rect": [
+      384,
+      196,
+      248,
+      36
+    ],
+    "button_art": "HORIZONTAL_OPTION_CONFIRM",
+    "art_evidence": "6336/6336 background pixels outside text match the installed 8x12-cell patch for native high-priest action.",
+    "cases": [
+      {
+        "source": "build/stockpile-storage-native-location-recognition-eligibility-20261027-014329",
+        "source_sha256": "6dcdd9a17783659cfe3e134fa4c4b867bbe92a155beebe711f098be1cb7eaaf4",
+        "name": "TEMPLE-0-recognition-guidance-0",
+        "facts": {
+          "continuing_agreements": [],
+          "high_priest_threshold": 25,
+          "location_id": 0,
+          "priest_threshold": 10,
+          "rank": 1,
+          "religion_id": 383,
+          "site_id": 651,
+          "state": 1,
+          "tier": 0,
+          "valid": true,
+          "worshippers": 53
+        },
+        "text": "You can recognize a priesthood once this is a temple.",
+        "rgb_sha256": "73ee066089ca5c044a9d9d758a9ba3424151966a2b42bf0ae28b3301b4a98235"
+      },
+      {
+        "source": "build/stockpile-storage-native-location-recognition-eligibility-20261027-014329",
+        "source_sha256": "6dcdd9a17783659cfe3e134fa4c4b867bbe92a155beebe711f098be1cb7eaaf4",
+        "name": "TEMPLE-0-recognition-guidance-1",
+        "facts": {
+          "continuing_agreements": [],
+          "high_priest_threshold": 25,
+          "location_id": 0,
+          "priest_threshold": 10,
+          "rank": 1,
+          "religion_id": 383,
+          "site_id": 651,
+          "state": 2,
+          "tier": 1,
+          "valid": true,
+          "worshippers": 53
+        },
+        "text": "You can recognize a high priest when this is a temple complex.",
+        "rgb_sha256": "5179644536cb1fd682550eadd237d77a51bd4040a3873a61f1ad514f9525d66e"
+      },
+      {
+        "source": "build/stockpile-storage-native-location-recognition-eligibility-20261027-014329",
+        "source_sha256": "6dcdd9a17783659cfe3e134fa4c4b867bbe92a155beebe711f098be1cb7eaaf4",
+        "name": "TEMPLE-0-recognition-population-denied",
+        "facts": {
+          "continuing_agreements": [],
+          "high_priest_threshold": 54,
+          "location_id": 0,
+          "priest_threshold": 10,
+          "rank": 1,
+          "religion_id": 383,
+          "site_id": 651,
+          "state": 3,
+          "tier": 2,
+          "valid": true,
+          "worshippers": 53
+        },
+        "text": "High priest: 54 worshippers needed",
+        "rgb_sha256": "7e3fad9cbab7caa171096e2707513e74568bd3eb62516f6f235387482ecb8e90"
+      },
+      {
+        "source": "build/stockpile-storage-native-location-recognition-eligibility-20261027-014329",
+        "source_sha256": "6dcdd9a17783659cfe3e134fa4c4b867bbe92a155beebe711f098be1cb7eaaf4",
+        "name": "TEMPLE-0-recognition-before",
+        "facts": {
+          "continuing_agreements": [],
+          "high_priest_threshold": 25,
+          "location_id": 0,
+          "priest_threshold": 10,
+          "rank": 1,
+          "religion_id": 383,
+          "site_id": 651,
+          "state": 5,
+          "tier": 2,
+          "valid": true,
+          "worshippers": 53
+        },
+        "text": "Recognize high priest",
+        "rgb_sha256": "6fe25fe4bef403c7ed2470bc76721f5234d54d2ae27f9316989459532cb7e92d"
+      },
+      {
+        "source": "build/stockpile-storage-native-location-recognition-eligibility-20261027-014329",
+        "source_sha256": "6dcdd9a17783659cfe3e134fa4c4b867bbe92a155beebe711f098be1cb7eaaf4",
+        "name": "TEMPLE-0-recognition-after",
+        "facts": {
+          "continuing_agreements": [],
+          "high_priest_threshold": 25,
+          "location_id": 0,
+          "priest_threshold": 10,
+          "rank": 2,
+          "religion_id": 383,
+          "site_id": 651,
+          "state": 0,
+          "tier": 2,
+          "valid": true,
+          "worshippers": 53
+        },
+        "text": "",
+        "rgb_sha256": "5f58583a71a8239139dc1b744262d44904a0eb02e5111f387d9b6e0403edd2f1"
+      },
+      {
+        "source": "build/stockpile-storage-native-location-recognition-firstguidance-20261027-033645",
+        "source_sha256": "4f4450f1615d77f0b6ba30e65411fe1285a456c4c0de04ee90e0089deac62a91",
+        "name": "TEMPLE-0-recognition-first-population",
+        "facts": {
+          "continuing_agreements": [],
+          "high_priest_threshold": 25,
+          "location_id": 0,
+          "priest_threshold": 54,
+          "rank": 0,
+          "religion_id": 383,
+          "site_id": 651,
+          "state": 3,
+          "tier": 1,
+          "valid": true,
+          "worshippers": 53
+        },
+        "text": "Priest: 54 worshippers needed",
+        "rgb_sha256": "7e770a9e4083c22a44a59979d82b6cae3da70f31d6e371e8547f3ac632aa039d"
+      },
+      {
+        "source": "build/stockpile-storage-native-location-recognition-firstguidance-20261027-033645",
+        "source_sha256": "4f4450f1615d77f0b6ba30e65411fe1285a456c4c0de04ee90e0089deac62a91",
+        "name": "TEMPLE-0-recognition-before",
+        "facts": {
+          "continuing_agreements": [],
+          "high_priest_threshold": 25,
+          "location_id": 0,
+          "priest_threshold": 10,
+          "rank": 0,
+          "religion_id": 383,
+          "site_id": 651,
+          "state": 4,
+          "tier": 1,
+          "valid": true,
+          "worshippers": 53
+        },
+        "text": "Recognize priesthood",
+        "rgb_sha256": "df54434bf239c37e5dd7debc642b21fdecba4bf67ce82efe11c19fd64f6b89c9"
+      }
+    ],
+    "omissions": [
+      "Other viewport widths/heights",
+      "Hover tooltip and held-button behavior"
+    ],
+    "scene_reference": {
+      "source": "build/areas-acceptance-20261027-034556",
+      "source_sha256": "92c9f3e3553c8a7fc531d000df9dc1b2ad3cc03b31ed44a1d00c2a8193ac6267",
+      "viewport_click": true,
+      "details_refreshed": true,
+      "completed_control_hidden": true,
+      "status": "passed_with_known_issues",
+      "save_preservation": "Source and clone manifests unchanged; owned unsaved exit",
+      "omissions": [
+        "First/vacant-priest scene variants",
+        "Real disconnect/restart/late replies"
+      ]
+    }
   }
 }

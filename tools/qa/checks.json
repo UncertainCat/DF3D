@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "location_recognition_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_recognition_view_capture.gd",
+      "completion": "LOCATION_RECOGNITION_VIEW_PASS",
+      "timeout": 60,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "location_recognition_state_test",
       "lane": "core",
       "kind": "godot",

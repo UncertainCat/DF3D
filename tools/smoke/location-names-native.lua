@@ -37,14 +37,24 @@ local function name_value(name)
  for i=0,6 do value.words[#value.words+1]=name.words[i];value.parts_of_speech[#value.parts_of_speech+1]=name.parts_of_speech[i]end
  return value
 end
-local function capture(label,location)
- g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0
- view:render(dfhack.getTickCount());script.sleep(3,'frames')
+local function capture(label,location,keep_pointer)
+ if not keep_pointer then g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0 end
+ local pointer={g.precise_mouse_x,g.precise_mouse_y,g.mouse_x,g.mouse_y}
+ local function retain_pointer()
+  if keep_pointer then
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=pointer[1];g.precise_mouse_y=pointer[2];g.mouse_x=pointer[3];g.mouse_y=pointer[4]
+   gui.simulateInput(view,{})
+  end
+ end
+ for i=1,3 do retain_pointer();view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+ retain_pointer();view:render(dfhack.getTickCount())
  local row={name=label,id=location.id,kind=df.abstract_building_type[location:getType()],details_open=details.open,
   creator_open=creator.open,context=creator.context,name_type=creator.name_type,name_value=name_value(location:getName()),
   name_place=creator.cur_name_place,word_place=creator.cur_word_place,filter=creator.cull_str,
   entering_filter=creator.entering_cull_str,entering_first_name=creator.entering_first_name,
-  word_count=#creator.word_index,word_index={},word_parts={},lines={}}
+  word_count=#creator.word_index,word_index={},word_parts={},lines={},scroll_position=creator.scroll_position_word,
+  pointer={g.precise_mouse_x,g.precise_mouse_y,g.mouse_x,g.mouse_y}}
  for i=0,#creator.word_index-1 do row.word_index[#row.word_index+1]=creator.word_index[i];row.word_parts[#row.word_parts+1]=word_part(i)end
  if #records==0 then
   row.native_fields={}
@@ -290,6 +300,24 @@ for i,location in ipairs(choices)do
  pixel(944,82);assert(creator.open)
  local prefix=df.abstract_building_type[location:getType()]..'-'..location.id
  if location:getType()==df.abstract_building_type.INN_TAVERN then
+  local before=name_value(location:getName());local before_rng=rng_snapshot()
+  for _,point in ipairs{{'selected',476,142},{'component',476,178},{'random',608,142},{'clear',668,214},
+    {'whole',832,82},{'done',912,82},{'filter',832,142},{'word',744,178}}do
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=point[2];g.precise_mouse_y=point[3];g.mouse_x=point[2]//8;g.mouse_y=point[3]//12
+   capture(prefix..'-hover-'..point[1],location,true)
+  end
+  for _,event in ipairs{{'wheel-down','STANDARDSCROLL_DOWN'},{'wheel-up','STANDARDSCROLL_UP'},
+    {'page-down','STANDARDSCROLL_PAGEDOWN'},{'page-up','STANDARDSCROLL_PAGEUP'}}do
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=744;g.precise_mouse_y=178;g.mouse_x=93;g.mouse_y=14
+   key(event[2]);capture(prefix..'-scroll-'..event[1],location)
+  end
+  pixel(952,694);capture(prefix..'-scroll-arrow-down',location)
+  pixel(952,166);capture(prefix..'-scroll-arrow-up',location)
+  assert(require('json').encode(before)==require('json').encode(name_value(location:getName())),'hover/scroll changed name')
+  assert(require('json').encode(before_rng)==require('json').encode(rng_snapshot()),'hover/scroll consumed RNG')
+  key('_MOUSE_R');pixel(944,82);assert(creator.open and creator.cur_word_place==0)
   for part=0,6 do
    pixel(476,142+36*part);capture(prefix..'-part-'..part..'-selected',location)
    simple_edit(prefix..'-part-'..part..'-clear',location,0,part)
@@ -370,4 +398,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==92,'incomplete name mutation/filter reference')
+assert(#records==106,'incomplete name mutation/filter reference')

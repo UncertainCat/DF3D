@@ -8027,5 +8027,197 @@
     "rgb_sha256": "1978ac4e13e5ac74668b486224b604e37eb7290bd39b9d23c8547e737e51a949",
     "focused_empty_rgb_sha256": "068de5aa42f9a840dcfbab801e96711758c72d6f59ee2ca72f3725a0ba7b027c",
     "draw_evidence": "DF53.16 RVA1fc803..1fc837 divides inclusive row bounds into thirds;1fdb5e..1fdbce focused placeholder/cursor; RVA15ec82c underscore,15ec860 ellipsis. Cursor appears tick modulo1000 below500."
+  },
+  "hover_scroll_reference": {
+    "run": "build/stockpile-storage-native-location-names-20261026-233639",
+    "result_sha256": "919ac9edb200676b9dc3e88bef6f732f599af89e87059d8bcc98254ae957ae65",
+    "observations": 106,
+    "cases": [
+      {
+        "name": "INN_TAVERN-1-hover-selected",
+        "pointer": [
+          476,
+          142,
+          59,
+          11
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-hover-component",
+        "pointer": [
+          476,
+          178,
+          59,
+          14
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-hover-random",
+        "pointer": [
+          608,
+          142,
+          76,
+          11
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-hover-clear",
+        "pointer": [
+          668,
+          214,
+          83,
+          17
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-hover-whole",
+        "pointer": [
+          832,
+          82,
+          104,
+          6
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-hover-done",
+        "pointer": [
+          912,
+          82,
+          114,
+          6
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-hover-filter",
+        "pointer": [
+          832,
+          142,
+          104,
+          11
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-hover-word",
+        "pointer": [
+          744,
+          178,
+          93,
+          14
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-wheel-down",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-wheel-up",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-page-down",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-page-up",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-arrow-down",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "scroll_position": 1,
+        "word_count": 3217,
+        "panel_rgb_sha256": "db3fe9886f6438db9c0e08b7456cece67c2431a922daed1f883e5d5e5780d3ae"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-arrow-up",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "scroll_position": 0,
+        "word_count": 3217,
+        "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1"
+      }
+    ],
+    "findings": [
+      "Eight immediate control/row hover panels match the baseline exactly with retained native pointer coordinates.",
+      "STANDARDSCROLL_DOWN/UP/PAGEDOWN/PAGEUP leave scroll position zero; these diagnostic input names do not establish physical wheel behavior.",
+      "Scrollbar down arrow advances from zero to one; up arrow returns to zero.",
+      "Hover/scroll probes preserve structured name and full RNG snapshot."
+    ],
+    "omissions": [
+      "physical mouse wheel and modified wheel",
+      "scrollbar track/drag and end clamps",
+      "timed tooltip behavior"
+    ],
+    "source_unchanged": true,
+    "owned_exit_without_save": true,
+    "supersedes": [
+      "233110 serialization failure (userdata diagnostic field removed)",
+      "233439 hover pointer reset between frames; hover claims inconclusive"
+    ]
   }
 }

@@ -387,8 +387,22 @@ with only documented diagnostics. The entire240x588 filtered-list region and
 240x36 empty focused filter match native RGB exactly, including accented words;
 the initial full-panel reference still matches. The cursor-visible phase is
 checked for a rendered change, not claimed as a separate native pixel capture.
-Fixture imports explicitly decode UTF-8. Hover, native scrolling interaction,
+Fixture imports explicitly decode UTF-8. Remaining scrolling interaction,
 non-ASCII input and long-header/resize acceptance remain outstanding.
+
+Protected native capture `build/stockpile-storage-native-location-names-20261026-233639`
+adds14 observations to the92 naming cases. Eight immediate hover captures retain
+and record the native pointer over selected/unselected components, Random,
+Clear, whole Random, Done, filter and first word. Their full panel RGB digests
+equal the baseline exactly; no hover highlight should be invented for these
+controls. The down/up scrollbar arrows move the actual `scroll_position_word`
+from0 to1 and back. Four `STANDARDSCROLL` diagnostic inputs leave it at0; this
+does not establish physical mouse-wheel behavior. Name fields and full RNG state
+are unchanged by the probes. All106 observations pass and the protected source
+save remains unchanged after unsaved exit. The fixture retains bounded evidence.
+Physical wheel/modified wheel, track/drag/end clamps and timed tooltip behavior
+remain unverified. Earlier233439 hover captures lost their injected pointer
+between frames and cannot support hover conclusions;233110 failed serialization.
 
 ## Native squad assignment reference
 

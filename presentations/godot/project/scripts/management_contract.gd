@@ -133,6 +133,9 @@ enum AreaOperation {
 	LocationRecognize = 32,
 	LocationReligiousStaffRead = 33,
 	LocationReligiousStaffRemove = 34,
+	LocationReligiousCandidates = 35,
+	LocationReligiousAssignmentRead = 36,
+	LocationReligiousAssign = 37,
 }
 enum AreaRoomOutcome {
 	None = 0,

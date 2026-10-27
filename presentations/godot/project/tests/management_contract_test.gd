@@ -336,6 +336,7 @@ func run() -> void:
 	await test_location_names()
 	await test_location_recognition()
 	await test_location_religious_staff()
+	await test_location_religious_assignment()
 	assert(Contract.is_mutation(A.DismissAlert) and not Contract.is_mutation(A.PrepareAlertDismissal))
 	for request in [{"action":A.DismissAlert},{"action":A.DismissAlert,"expected_list_revision":0},
 		{"action":A.PrepareAlertDismissal,"expected_list_revision":1},
@@ -913,3 +914,30 @@ func test_location_religious_staff() -> void:
 	snapshot.holder_id=-1;snapshot.unit_id=-1;snapshot.removable=false
 	assert(state.area.location_religious_staff==snapshot)
 	assert(state.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)
+
+func test_location_religious_assignment() -> void:
+	var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.LocationReligiousCandidates,
+		"location_site_id":651,"location_id":0,"religious_entity_id":383,"religious_assignment_id":2}
+	var sequence: int=world.area_request(request);assert(sequence>0)
+	var state: Dictionary=await receipt(sequence)
+	var page: Dictionary=state.area.location_religious_candidates
+	assert(page.revision==9007199254740993 and page.cursor==0 and page.next_cursor==0 and page.total==1 and page.rows.size()==1)
+	assert(page.rows[0].unit_id==7123 and page.rows[0].histfig_id==10379 and page.rows[0].skills==[{"id":70,"rating":3,"experience":25,"weight":1}])
+	assert(page.rows[0].name_sort_key==PackedByteArray([97,255]) and page.rows[0].profession_sort_key==PackedByteArray([128,0]))
+	assert(page.target.holder_id==-1 and page.target.revision==9007199254740994)
+	request.operation=Contract.AreaOperation.LocationReligiousAssignmentRead
+	request.unit_id=7123;request.expected_list_revision=page.revision;request.religious_holder_id=-1
+	for key in ["unit_id","expected_list_revision","religious_holder_id"]:
+		var invalid := request.duplicate(true);invalid.erase(key);assert(world.area_request(invalid)==0)
+	sequence=world.area_request(request);assert(sequence>0)
+	state=await receipt(sequence)
+	var selected: Dictionary=state.area.location_religious_assignment
+	assert(selected.target==page.target and selected.unit_id==7123 and selected.histfig_id==10379 and selected.nemesis_id==7120)
+	assert(selected.revision==9007199254740995 and selected.list_revision==page.revision and selected.eligible)
+	request.operation=Contract.AreaOperation.LocationReligiousAssign;request.action=A.AreaUpdate;request.expected_revision=selected.revision
+	for key in ["expected_revision","expected_list_revision","religious_holder_id","unit_id"]:
+		var invalid := request.duplicate(true);invalid.erase(key);assert(world.area_request(invalid)==0)
+	sequence=world.area_request(request);assert(sequence>0)
+	state=await receipt(sequence)
+	assert(state.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)
+	assert(state.area.location_religious_staff.holder_id==10379 and state.area.location_religious_staff.unit_id==7123)

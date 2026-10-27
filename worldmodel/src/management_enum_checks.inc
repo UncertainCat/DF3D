@@ -126,7 +126,10 @@ static_assert(static_cast<int>(wm::AreaOperation::LocationRecognitionRead) == st
 static_assert(static_cast<int>(wm::AreaOperation::LocationRecognize) == static_cast<int>(df3d::mirror::AreaOperation::LocationRecognize));
 static_assert(static_cast<int>(wm::AreaOperation::LocationReligiousStaffRead) == static_cast<int>(df3d::mirror::AreaOperation::LocationReligiousStaffRead));
 static_assert(static_cast<int>(wm::AreaOperation::LocationReligiousStaffRemove) == static_cast<int>(df3d::mirror::AreaOperation::LocationReligiousStaffRemove));
-static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 35);
+static_assert(static_cast<int>(wm::AreaOperation::LocationReligiousCandidates) == static_cast<int>(df3d::mirror::AreaOperation::LocationReligiousCandidates));
+static_assert(static_cast<int>(wm::AreaOperation::LocationReligiousAssignmentRead) == static_cast<int>(df3d::mirror::AreaOperation::LocationReligiousAssignmentRead));
+static_assert(static_cast<int>(wm::AreaOperation::LocationReligiousAssign) == static_cast<int>(df3d::mirror::AreaOperation::LocationReligiousAssign));
+static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 38);
 static_assert(static_cast<int>(wm::AreaRoomOutcome::None) == static_cast<int>(df3d::mirror::AreaRoomOutcome::None));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Completed) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Completed));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Rejected) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Rejected));

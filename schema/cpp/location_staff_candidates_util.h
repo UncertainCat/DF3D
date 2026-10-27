@@ -7,11 +7,9 @@
 #include <string>
 
 namespace df3d::mirror {
-inline std::optional<std::string> validateLocationStaffCandidates(const LocationStaffCandidates& c) {
-  switch(c.role()) {case 0:case 1:case 2:case 5:case 7:case 8:case 9:case 10:break;
-    default:return "invalid staff candidate role";}
+template<class Page> inline std::optional<std::string> validateLocationCandidatePage(const Page& c) {
   const size_t count=c.rows()?c.rows()->size():0;
-  if(c.site_id()<0 || c.location_id()<0 || c.occupation_id()<0 || !c.revision() || c.revision()>INT64_MAX ||
+  if(!c.revision() || c.revision()>INT64_MAX ||
       c.total()>INT32_MAX || c.cursor()%128 || c.cursor()>c.total() || (c.cursor() && c.cursor()==c.total()) ||
       count>128 || count!=std::min(uint32_t(128),c.total()-c.cursor()) ||
       c.next_cursor()!=(c.cursor()+count<c.total()?c.cursor()+count:0))return "invalid staff candidate page";
@@ -43,4 +41,16 @@ inline std::optional<std::string> validateLocationStaffCandidates(const Location
   }
   return std::nullopt;
 }
+inline std::optional<std::string> validateLocationStaffCandidates(const LocationStaffCandidates& c) {
+  switch(c.role()) {case 0:case 1:case 2:case 5:case 7:case 8:case 9:case 10:break;
+    default:return "invalid staff candidate role";}
+  if(c.site_id()<0 || c.location_id()<0 || c.occupation_id()<0)return "invalid staff candidate target";
+  return validateLocationCandidatePage(c);
+}
+inline bool validLocationReligiousStaff(const LocationReligiousStaff* r) {
+  return r && r->site_id()>=0 && r->location_id()>=0 && r->entity_id()>=0 && r->assignment_id()>=0 &&
+    r->position_id()>=0 && r->holder_id()>=-1 && r->unit_id()>=-1 && r->revision() && r->revision()<=INT64_MAX &&
+    (r->holder_id()!=-1 || (r->unit_id()==-1 && !r->removable()));
+}
+
 }

@@ -84,11 +84,16 @@ AreaState decodeArea(const m::AreaState* a) {
     value.words.assign(v.words()->begin(),v.words()->end());value.parts.assign(v.parts()->begin(),v.parts()->end());
     value.language=v.language();value.type=v.type();value.hasName=v.has_name();return n;
   };
-  if(a && a->location_religious_staff()) {
-    const auto& r=*a->location_religious_staff();LocationReligiousStaff n;
+  const auto religiousTarget=[](const auto& r) {
+    LocationReligiousStaff n;
     n.siteId=r.site_id();n.locationId=r.location_id();n.entityId=r.entity_id();n.assignmentId=r.assignment_id();
-    n.positionId=r.position_id();n.holderId=r.holder_id();n.unitId=r.unit_id();n.revision=int64_t(r.revision());n.removable=r.removable();
-    out.locationReligiousStaff=n;
+    n.positionId=r.position_id();n.holderId=r.holder_id();n.unitId=r.unit_id();n.revision=int64_t(r.revision());n.removable=r.removable();return n;
+  };
+  if(a && a->location_religious_staff())out.locationReligiousStaff=religiousTarget(*a->location_religious_staff());
+  if(a && a->location_religious_assignment()) {
+    const auto& r=*a->location_religious_assignment();LocationReligiousAssignment n;
+    n.target=religiousTarget(*r.target());n.unitId=r.unit_id();n.histfigId=r.histfig_id();n.nemesisId=r.nemesis_id();
+    n.revision=int64_t(r.revision());n.listRevision=int64_t(r.list_revision());n.eligible=r.eligible();out.locationReligiousAssignment=n;
   }
   if(a && a->location_recognition()) {
     const auto& r=*a->location_recognition();LocationRecognition n;
@@ -136,6 +141,20 @@ AreaState decodeArea(const m::AreaState* a) {
       v.rows.push_back(std::move(row));
     }
     out.locationStaffCandidates=std::move(v);
+  }
+  if(const auto* c=a->location_religious_candidates()) {
+    LocationReligiousCandidates v;v.target=religiousTarget(*c->target());
+    v.revision=int64_t(c->revision());v.cursor=c->cursor();v.nextCursor=c->next_cursor();v.total=c->total();
+    if(c->rows())for(const auto* r:*c->rows()) {
+      LocationStaffCandidate row;row.unitId=r->unit_id();row.histfigId=r->histfig_id();row.name=text(r->name());row.score=r->score();
+      row.baseName=text(r->base_name());row.professionName=text(r->profession_name());row.professionColor=r->profession_color();row.legendary=r->legendary();
+      row.sourceIndex=r->source_index();row.professionOrder=r->profession_order();row.statusOrder=r->status_order();
+      if(r->name_sort_key())row.nameSortKey.assign(r->name_sort_key()->begin(),r->name_sort_key()->end());
+      if(r->profession_sort_key())row.professionSortKey.assign(r->profession_sort_key()->begin(),r->profession_sort_key()->end());
+      if(r->skills())for(const auto* skill:*r->skills())row.skills.push_back({skill->id(),skill->rating(),skill->experience(),skill->weight()});
+      v.rows.push_back(std::move(row));
+    }
+    out.locationReligiousCandidates=std::move(v);
   }
   if(const auto* d=a->location_details()) {
     LocationDetails v;v.siteId=d->site_id();v.id=d->id();v.kind=d->kind();v.name=text(d->name());v.revision=int64_t(d->revision());

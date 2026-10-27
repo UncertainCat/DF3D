@@ -481,6 +481,24 @@ lists, invalid observations and restore-after-invalidation. The snapshot is not
 yet connected to management transport or the viewer; these tests establish no
 new rendered or live acceptance.
 
+Management75 defines LocationReligiousCandidates, LocationReligiousAssignmentRead
+and LocationReligiousAssign. Candidate pages contain their complete target receipt
+and a separate list revision. Selecting a unit requires that list revision and
+expected holder; the returned assignment receipt contains target, unit/HF/nemesis,
+list revision, candidate revision and eligibility. Assignment requires both
+revisions and the expected holder. Completed assignment replies carry refreshed
+religious staff facts; Rejected/Stale/Unknown replies carry no success receipt.
+Validators reject missing identities, foreign fields, malformed pages, mixed
+payloads and invalid outcomes. Model and Godot codecs preserve63-bit receipt
+integers and candidate comparison keys. Protocol75 uses a separate shared-memory
+region and requires matching bridge/viewer builds. Core checks pass in
+`build/qa/location-religious-contract75`; the extension, fake-producer Godot
+contract and Lua checks pass in `build/qa/location-religious-contract75-adapter`.
+MSVC also builds the contract. The new operations are not yet wired to the native
+management handler or viewer workflow; no new gameplay UI is exposed by this
+contract change. The installed development plugin remains74 until handler work
+and the matching75 installation are ready for protected live acceptance.
+
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no
 implemented presentation route yet. Its scope must be retained in the management

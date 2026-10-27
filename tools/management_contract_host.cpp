@@ -15,6 +15,13 @@ void require(bool ok,const char* what){if(!ok)throw std::runtime_error(what);}
 // prove transport fidelity, not native effects or area-builder acceptance.
 void verifyAreaOperation(const m::AreaRequest& q) {
   const auto op=int(q.operation());
+  if(op>=35 && op<=37) {
+    require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 && q.location_id()==0,"religious selection target");
+    require(q.religious_entity_id()==383 && q.religious_assignment_id()==2 && q.religious_holder_id()==-1,"religious selection identity");
+    require(q.unit_id()==(op==35?-1:7123),"religious selected unit");
+    require(q.expected_list_revision()==(op==35?0:9007199254740993ULL),"religious list revision");
+    require(q.expected_revision()==(op==37?9007199254740995ULL:0),"religious candidate revision");return;
+  }
   if(op==33 || op==34) {
     require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 && q.location_id()==0,"religious target");
     require(q.religious_entity_id()==383 && q.religious_assignment_id()==2 && q.religious_holder_id()==(op==34?9375:-1),"religious assignment");
@@ -112,6 +119,24 @@ void verifyAreaOperation(const m::AreaRequest& q) {
   }
 }
 flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBuilder& b,const m::AreaRequest& q) {
+  if(q.operation()>=m::AreaOperation::LocationReligiousCandidates && q.operation()<=m::AreaOperation::LocationReligiousAssign) {
+    const bool apply=q.operation()==m::AreaOperation::LocationReligiousAssign;
+    const auto target=m::CreateLocationReligiousStaff(b,651,0,383,2,0,apply?10379:-1,apply?7123:-1,9007199254740994ULL,apply);
+    flatbuffers::Offset<m::LocationReligiousCandidates> candidates;
+    flatbuffers::Offset<m::LocationReligiousAssignment> assignment;
+    if(q.operation()==m::AreaOperation::LocationReligiousCandidates) {
+      const auto skill=m::CreateLocationStaffSkill(b,70,3,25,1);
+      const auto row=m::CreateLocationStaffCandidate(b,7123,10379,b.CreateString("Synthetic candidate"),3,b.CreateVector(std::vector{skill}),b.CreateString("Synthetic"),b.CreateString("candidate"),13,true,0,809,100000,b.CreateVector(std::vector<uint8_t>{97,255}),b.CreateVector(std::vector<uint8_t>{128,0}));
+      candidates=m::CreateLocationReligiousCandidates(b,target,9007199254740993ULL,0,0,1,b.CreateVector(std::vector{row}));
+    }
+    if(q.operation()==m::AreaOperation::LocationReligiousAssignmentRead)assignment=m::CreateLocationReligiousAssignment(b,target,7123,10379,7120,9007199254740995ULL,9007199254740993ULL,true);
+    m::AreaStateBuilder area(b);area.add_operation(q.operation());
+    if(candidates.o)area.add_location_religious_candidates(candidates);
+    if(assignment.o)area.add_location_religious_assignment(assignment);
+    if(apply){area.add_location_religious_staff(target);area.add_location_edit_outcome(m::LocationEditOutcome::Completed);}
+    return area.Finish();
+  }
+
   if(q.operation()==m::AreaOperation::LocationReligiousStaffRead || q.operation()==m::AreaOperation::LocationReligiousStaffRemove) {
     const bool apply=q.operation()==m::AreaOperation::LocationReligiousStaffRemove;
     const auto receipt=m::CreateLocationReligiousStaff(b,651,0,383,2,0,apply?-1:9375,apply?-1:5813,9007199254740993ULL,!apply);
@@ -790,7 +815,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);

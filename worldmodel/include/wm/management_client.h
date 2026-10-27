@@ -210,7 +210,19 @@ struct LocationReligiousStaff {
   int32_t siteId=-1,locationId=-1,entityId=-1,assignmentId=-1,positionId=-1,holderId=-1,unitId=-1;
   int64_t revision=0;bool removable=false;
 };
+struct LocationReligiousCandidates {
+  LocationReligiousStaff target;
+  int64_t revision=0;uint32_t cursor=0,nextCursor=0,total=0;
+  std::vector<LocationStaffCandidate> rows;
+};
+struct LocationReligiousAssignment {
+  LocationReligiousStaff target;
+  int32_t unitId=-1,histfigId=-1,nemesisId=-1;
+  int64_t revision=0,listRevision=0;bool eligible=false;
+};
 struct AreaState {
+  std::optional<LocationReligiousCandidates> locationReligiousCandidates;
+  std::optional<LocationReligiousAssignment> locationReligiousAssignment;
   std::optional<LocationReligiousStaff> locationReligiousStaff;
   std::optional<LocationRecognition> locationRecognition;
   std::optional<LocationNameSnapshot> locationName;

@@ -3055,3 +3055,53 @@ TEST_CASE("Religious staff replies preserve receipts and reject invalid authorit
   flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateAreaState(b));
   CHECK_FALSE(codec::decodeArea(flatbuffers::GetRoot<wire::AreaState>(b.GetBufferPointer())).locationReligiousStaff);
 }
+
+TEST_CASE("Religious assignment requests require independent list and candidate authority") {
+  for(int op=35;op<=37;++op)for(int variant=0;variant<15;++variant) {
+    wm::ManagementRequest r;r.action=op==37?wm::ManagementAction::AreaUpdate:wm::ManagementAction::AreaInspect;
+    auto& a=r.area;a.kind=wm::AreaKind::Zone;a.operation=static_cast<wm::AreaOperation>(op);
+    a.locationSiteId=651;a.locationId=0;a.religiousEntityId=383;a.religiousAssignmentId=2;
+    a.unitId=op==35?-1:7123;a.expectedListRevision=op==35?0:9007199254740993LL;
+    a.expectedRevision=op==37?9007199254740995LL:0;
+    if(variant==1)a.locationSiteId=-1;
+    if(variant==2)a.locationId=-1;
+    if(variant==3)a.religiousEntityId=-1;
+    if(variant==4)a.religiousAssignmentId=-1;
+    if(variant==5)a.occupationId=1;
+    if(variant==6)a.unitId=op==35?1:-1;
+    if(variant==7)a.expectedRevision=op==37?0:1;
+    if(variant==8)a.cursor=1;
+    if(variant==9)a.expectedListRevision=-1;
+    if(variant==10)a.id=1;
+    if(variant==11)a.kind=wm::AreaKind::Stockpile;
+    if(variant==12)a.quantityId=1;
+    if(variant==13)r.action=wm::ManagementAction::AreaDelete;
+    if(variant==14){if(op==35)a.cursor=128;else a.expectedListRevision=0;}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* q=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(op);CAPTURE(variant);CHECK(bool(wire::validateConstructionRequest(*q))==(variant!=0));
+  }
+}
+TEST_CASE("Religious selection replies preserve wide receipts and reject mixed authority") {
+  for(bool list:{false,true})for(int variant=0;variant<11;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    auto target=wire::CreateLocationReligiousStaff(b,651,0,383,2,0,-1,-1,variant==1?0:9007199254740994ULL,false);
+    auto page=wire::CreateLocationReligiousCandidates(b,target,variant==2?0:9007199254740993ULL,variant==3?1:0);
+    auto selected=wire::CreateLocationReligiousAssignment(b,target,variant==3?-1:7123,10379,7120,
+        variant==2?0:9007199254740995ULL,variant==4?0:9007199254740993ULL,variant!=5);
+    wire::AreaStateBuilder a(b);a.add_operation(list?wire::AreaOperation::LocationReligiousCandidates:wire::AreaOperation::LocationReligiousAssignmentRead);
+    if(variant!=6){if(list)a.add_location_religious_candidates(page);else a.add_location_religious_assignment(selected);}
+    if(variant==7)a.add_location_religious_staff(target);
+    if(variant==8)a.add_location_edit_outcome(wire::LocationEditOutcome::Completed);
+    auto area=a.Finish();wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(area);
+    root.add_action(variant==9?wire::ManagementAction::AreaUpdate:wire::ManagementAction::AreaInspect);
+    root.add_status(variant==10?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    b.Finish(root.Finish());const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=variant!=0 && !(list && (variant==4 || variant==5));
+    CAPTURE(list);CAPTURE(variant);CHECK(bool(wire::validateManagementState(*state))==invalid);
+    if(!invalid){const auto decoded=codec::decodeArea(state->area());
+      if(list){REQUIRE(decoded.locationReligiousCandidates);CHECK(decoded.locationReligiousCandidates->revision==9007199254740993LL);}
+      else {REQUIRE(decoded.locationReligiousAssignment);CHECK(decoded.locationReligiousAssignment->revision==9007199254740995LL);CHECK(decoded.locationReligiousAssignment->target.revision==9007199254740994LL);}
+    }
+  }
+}

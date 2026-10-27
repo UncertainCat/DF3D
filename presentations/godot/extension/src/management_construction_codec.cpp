@@ -167,11 +167,15 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
   // Preserve legacy top-level rows while the area domain carries the complete
   // operation selector and incremental-list envelope, like other new domains.
   Dictionary area;area["areas"]=areas;area["choices"]=choices;area["next_cursor"]=int64_t(s.nextCursor);area["truncated"]=s.truncated;
-  if(s.locationReligiousStaff) {
-    const auto& r=*s.locationReligiousStaff;Dictionary n;
-    n["site_id"]=r.siteId;n["location_id"]=r.locationId;n["entity_id"]=r.entityId;n["assignment_id"]=r.assignmentId;
-    n["position_id"]=r.positionId;n["holder_id"]=r.holderId;n["unit_id"]=r.unitId;n["revision"]=r.revision;n["removable"]=r.removable;
-    area["location_religious_staff"]=n;
+  const auto religiousTarget=[](const wm::LocationReligiousStaff& r) {
+    Dictionary n;n["site_id"]=r.siteId;n["location_id"]=r.locationId;n["entity_id"]=r.entityId;n["assignment_id"]=r.assignmentId;
+    n["position_id"]=r.positionId;n["holder_id"]=r.holderId;n["unit_id"]=r.unitId;n["revision"]=r.revision;n["removable"]=r.removable;return n;
+  };
+  if(s.locationReligiousStaff)area["location_religious_staff"]=religiousTarget(*s.locationReligiousStaff);
+  if(s.locationReligiousAssignment) {
+    const auto& r=*s.locationReligiousAssignment;Dictionary n;n["target"]=religiousTarget(r.target);
+    n["unit_id"]=r.unitId;n["histfig_id"]=r.histfigId;n["nemesis_id"]=r.nemesisId;
+    n["revision"]=r.revision;n["list_revision"]=r.listRevision;n["eligible"]=r.eligible;area["location_religious_assignment"]=n;
   }
   if(s.locationRecognition) {
     const auto& r=*s.locationRecognition;Dictionary n;Array agreements;
@@ -214,6 +218,23 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
       row["skills"]=skills;rows.push_back(row);
     }
     v["rows"]=rows;area["location_staff_candidates"]=v;
+  }
+  if(s.locationReligiousCandidates) {
+    const auto& c=*s.locationReligiousCandidates;Dictionary v;Array rows;
+    v["target"]=religiousTarget(c.target);
+    v["revision"]=c.revision;v["cursor"]=int64_t(c.cursor);v["next_cursor"]=int64_t(c.nextCursor);v["total"]=int64_t(c.total);
+    for(const auto& r:c.rows) {
+      Dictionary row;Array skills;row["unit_id"]=r.unitId;row["histfig_id"]=r.histfigId;row["name"]=String::utf8(r.name.c_str());row["score"]=r.score;
+      row["base_name"]=String::utf8(r.baseName.c_str());row["profession_name"]=String::utf8(r.professionName.c_str());row["profession_color"]=r.professionColor;row["legendary"]=r.legendary;
+      row["source_index"]=r.sourceIndex;row["profession_order"]=r.professionOrder;row["status_order"]=r.statusOrder;
+      PackedByteArray nameKey,professionKey;
+      for(auto byte:r.nameSortKey)nameKey.push_back(byte);
+      for(auto byte:r.professionSortKey)professionKey.push_back(byte);
+      row["name_sort_key"]=nameKey;row["profession_sort_key"]=professionKey;
+      for(const auto& s:r.skills) {Dictionary skill;skill["id"]=s.id;skill["rating"]=s.rating;skill["experience"]=s.experience;skill["weight"]=s.weight;skills.push_back(skill);}
+      row["skills"]=skills;rows.push_back(row);
+    }
+    v["rows"]=rows;area["location_religious_candidates"]=v;
   }
   if(s.locationDetails) {
     const auto& d=*s.locationDetails;Dictionary v;Array supplies,zones;
@@ -535,7 +556,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   a.give = data.get("give", true);
   a.unlink = data.get("unlink", false);
   a.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
-  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationReligiousStaffRemove)));
+  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationReligiousAssign)));
   const auto nameQueryBytes=[&](const Dictionary& row,std::vector<uint8_t>& out) {
     const PackedByteArray bytes=row["query_bytes"];
     if(bytes.size()>4096){valid=false;return;}

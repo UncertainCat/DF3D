@@ -180,6 +180,27 @@ The warning reader's MSVC build/install passes, installed bridge SHA256
 Core passes cleanly in `build/qa/farm-warning-native`. Production behavior and
 protocol80 are unchanged; this is verified native API discovery.
 
+`farm-choices-read <building id> <season>` now builds caller-owned plant rows
+using native eligibility, season flags, warning, capitalized plural-name formatter
+`0x144d90` and string comparator `0xb9d50`. There is no usable whole-list semantic
+entry point: the native builders mutate global UI vectors. The provider therefore
+explicitly reproduces their inline seed mask/material bounds and selected/seed
+priority, retaining reverse-raw stable ties. These portions are bridge code,
+not calls into DF, and require continued native comparison. Fallow is a separate
+control, not a fabricated plant row.
+
+Protected143922 compares12 observations against native row names and seed flags;
+fresh order matches all rebuilt tab entries. Native retains its entry order
+after choosing a crop until a tab rebuild, so the presentation must retain that
+local list rather than reorder immediately from a fresh response. Two such
+post-mutation observations verify names/flags/membership without asserting fresh
+order. Guards remain unchanged; DF166088 exits unsaved and the source manifest
+is unchanged. `choices_reference` records coverage and limitations. MSVC install
+passes with bridge SHA256
+`0CAA7790F5DEA3904B01F52F73E6B99E8BB69D130CBF7011E9242080BC722101`;
+core passes in `build/qa/farm-choices-native`. The provider is diagnostic-only;
+the management adapter/transport and actual farm UI remain unfinished.
+
 Next extend the reference to mixed footprints, season boundaries and seed
 flags, and locate the remaining native list semantics. Do not replace
 the adapter with another reconstruction of the list builder. Verify ordering,

@@ -4874,5 +4874,741 @@
       "Seed mask is static/list observation evidence, not a new runtime availability implementation.",
       "Reader returns current-season warning only. Sheet context still controls its display and whether a new choice is refused."
     ]
+  },
+  "choices_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261027-143922",
+    "owned_df_pid": 166088,
+    "owned_exit_unsaved": true,
+    "source_manifest_unchanged": true,
+    "inputs": [
+      {
+        "Algorithm": "SHA256",
+        "Hash": "0CAA7790F5DEA3904B01F52F73E6B99E8BB69D130CBF7011E9242080BC722101",
+        "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "DA789CF08187EBE723E8C5A32478F30C80F6A429EC3929B8AD3AECBB47E49C78",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "8E6A188C08633357053826BA66416582D2F589B4095F8594BF72BBD757C4E529",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-multi-discovery-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "14D1F2A57CCEC5A0FB304972C093445285DD6545EB214282B7C601099354AC11",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "68C3304E6220527F42DA85B8CA21A44FB3D203E0DC182FAAE9D60CCE7D7562FF",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\production.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "2395AE36A3E281947C1BB940EEF03EAD5694A1538272768FD9AD9639B442C04F",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-owner-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "9DE5FA5C1002FF21AD9728C9E3DB5C3C463EB76BDE9A3556947A1E9B64C7307E",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.ps1"
+      }
+    ],
+    "native_name_rva": "0x144d90",
+    "native_compare_rva": "0xb9d50",
+    "inline_list_rules": [
+      "seed flags and plant material bounds from1a5583..1a55ae",
+      "selected priority2, available-seed priority1, otherwise0",
+      "reverse raw traversal with stable native name comparison"
+    ],
+    "cases": [
+      {
+        "name": "farm-selected",
+        "selected_season": 1,
+        "selected_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 175,
+              "current_season_warning": false,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 174,
+              "current_season_warning": false,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "season": 1
+        }
+      },
+      {
+        "name": "farm-season-0",
+        "selected_season": 0,
+        "selected_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          173,
+          188,
+          177,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "season": 0
+        }
+      },
+      {
+        "name": "farm-season-1",
+        "selected_season": 1,
+        "selected_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 175,
+              "current_season_warning": false,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 174,
+              "current_season_warning": false,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "season": 1
+        }
+      },
+      {
+        "name": "farm-season-2",
+        "selected_season": 2,
+        "selected_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 175,
+              "current_season_warning": false,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 174,
+              "current_season_warning": false,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            }
+          ],
+          "season": 2
+        }
+      },
+      {
+        "name": "farm-season-3",
+        "selected_season": 3,
+        "selected_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          173,
+          188
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            }
+          ],
+          "season": 3
+        }
+      },
+      {
+        "name": "farm-summer-before-choice",
+        "selected_season": 1,
+        "selected_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 175,
+              "current_season_warning": false,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 174,
+              "current_season_warning": false,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "season": 1
+        }
+      },
+      {
+        "name": "farm-summer-red-choice",
+        "selected_season": 1,
+        "selected_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 175,
+              "current_season_warning": false,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 174,
+              "current_season_warning": false,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "season": 1
+        }
+      },
+      {
+        "name": "farm-summer-fallow",
+        "selected_season": 1,
+        "selected_crops": [
+          173,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": false,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 174,
+              "current_season_warning": false,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 175,
+              "current_season_warning": false,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "season": 1
+        }
+      },
+      {
+        "name": "farm-spring-before-no-seeds-choice",
+        "selected_season": 0,
+        "selected_crops": [
+          173,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          173,
+          188,
+          177,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "season": 0
+        }
+      },
+      {
+        "name": "farm-spring-no-seeds-choice",
+        "selected_season": 0,
+        "selected_crops": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          173,
+          188,
+          177,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": false,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            },
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            }
+          ],
+          "season": 0
+        }
+      },
+      {
+        "name": "farm-summer-after-spring-choice",
+        "selected_season": 1,
+        "selected_crops": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          188,
+          174,
+          173,
+          177,
+          175,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 174,
+              "current_season_warning": false,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 175,
+              "current_season_warning": false,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "season": 1
+        }
+      },
+      {
+        "name": "farm-summer-red-choice-after-spring",
+        "selected_season": 1,
+        "selected_crops": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          188,
+          174,
+          173,
+          177,
+          175,
+          176
+        ],
+        "guards_unchanged": true,
+        "fresh_order_compared": true,
+        "choices": {
+          "building_id": 227,
+          "rows": [
+            {
+              "crop_id": 188,
+              "current_season_warning": false,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 174,
+              "current_season_warning": false,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 173,
+              "current_season_warning": false,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 177,
+              "current_season_warning": false,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "crop_id": 175,
+              "current_season_warning": false,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "crop_id": 176,
+              "current_season_warning": true,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "season": 1
+        }
+      }
+    ],
+    "limitations": [
+      "Whole native list builder cannot be called because it mutates UI globals. Inline list rules are explicit bridge code, not a call into a native list provider.",
+      "Native retains entry order after changing a crop until tab rebuild; fresh list order is compared only for rebuilt entries.",
+      "One underground farm, no duplicate or non-ASCII names and no mixed-footprint proof."
+    ]
   }
 }

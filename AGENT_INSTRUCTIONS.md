@@ -142,6 +142,11 @@ copy, fabricated progress percentages or broader native-UI departures.
   artwork stable while hovering instead of using the unrelated tooltip enum
   as a graphic selector. Preserve native tooltip text, timing and assignment
   semantics. Record both corrections separately in the native bug register.
+- Maintainer decision, 2026-10-27: hide the hospital Details staff scrollbar
+  when no staff rows fit. Do not reproduce native's malformed scrollbar over
+  the soap controls or let it scroll an invisible list. This display/input
+  exception is limited to the unusable zero-row scrollbar; record it in the
+  native bug register.
 - Before extending an incomplete gameplay UI, locate the DF routine or existing
   semantic API that supplies its choices, eligibility, ordering and actions.
   Prefer exposing that behavior over reconstructing it in Godot or the bridge.

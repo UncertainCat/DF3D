@@ -1573,6 +1573,27 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           return df3d_management::printStockpileLinkTarget(out,values[0],int16_t(values[1]),int16_t(values[2]),int16_t(values[3]),values[4]!=0)?CR_OK:CR_FAILURE;
         }
+        if(parameters[0]=="farm-choices-read") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t values[2]{};
+          for(size_t i=0;i<2;++i) {
+            const auto& raw=parameters[i+1];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          if(values[0]<0 || values[1]<0 || values[1]>3)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(values[0]));
+          const auto choices=df3d_production::farmChoices(farm,values[1]);if(!choices)return CR_FAILURE;
+          Json::Value result(Json::objectValue),rows(Json::arrayValue);
+          for(const auto& choice:*choices) {
+            Json::Value row(Json::objectValue);row["crop_id"]=choice.cropId;row["name"]=DF2UTF(choice.name);
+            row["seeds_available"]=choice.seedsAvailable;row["current_season_warning"]=choice.currentSeasonWarning;
+            rows.append(std::move(row));
+          }
+          result["building_id"]=values[0];result["season"]=values[1];result["rows"]=std::move(rows);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="farm-eligibility-read") {
           if(parameters.size()!=3)return CR_WRONG_USAGE;
           int32_t values[2]{};

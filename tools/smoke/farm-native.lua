@@ -29,11 +29,16 @@ local script=require('gui.script')
    for _,args in ipairs{{'-1','0'},{tostring(b.id),'-1'},{tostring(b.id),'32768'},{'2147483647','0'}}do
     local _,code=dfhack.run_command_silent('df3d','farm-eligibility-read',args[1],args[2]);assert(code~=0,'invalid target accepted')
    end
+   local choices={}
+   for season=0,3 do
+    local text,code=dfhack.run_command_silent('df3d','farm-choices-read',tostring(b.id),tostring(season))
+    assert(code==0,text);choices[#choices+1]=require('json').decode(text)
+   end
    for _,entry in ipairs(guards)do
     assert(dfhack.internal.memcmp(entry.bytes,entry.address,entry.size)==0,'semantic farm read changed guarded state')
     df.delete(entry.bytes)
    end
-   return rows
+   return rows,choices
   end
   local cold=semantic_rows()
   local function capture(name)
@@ -70,7 +75,7 @@ local script=require('gui.script')
    local result
    for i=1,100 do result=adapter{action=16,seq=1,production={building_id=b.id}};if not result.pending then break end end
    assert(not result.pending,'adapter read did not finish');row.adapter=result
-   row.semantic=semantic_rows();row.semantic_guards_unchanged=true
+   row.semantic,row.choices=semantic_rows();row.semantic_guards_unchanged=true
    assert(require('json').encode(row.semantic)==require('json').encode(cold),'semantic read depends on native sheet history')
    local eligible={}
    for _,entry in ipairs(row.semantic)do
@@ -78,6 +83,19 @@ local script=require('gui.script')
    end
    for _,id in ipairs(row.crops)do if id>=0 then assert(eligible[id],'native menu includes an ineligible crop');eligible[id]=nil end end
    assert(next(eligible)==nil,'native menu omits a semantic eligible crop')
+   local choices=row.choices[row.selected_season+1].rows
+   assert(#choices==#row.crops-1,'choice count differs')
+   local by_id={};for _,choice in ipairs(choices)do by_id[choice.crop_id]=choice end
+   -- DF retains its entry order after a choice until the tab is rebuilt.
+   local rebuilt=name~='farm-summer-fallow' and name~='farm-spring-no-seeds-choice'
+   for index=2,#row.crops do
+    local id=row.crops[index];local choice=assert(by_id[id],'native choice missing')
+    if rebuilt then assert(choices[index-1].crop_id==id,'native choice order differs')end
+    assert(choice.seeds_available==row.seeds[index],'native seed availability differs')
+    local line=row.lines[18+(index-1)*3]:sub(62)
+    assert(line:sub(1,#choice.name)==choice.name,'native choice name differs')
+   end
+   row.fresh_choice_order_compared=rebuilt
    records[#records+1]=row
    local f=assert(io.open(out..'/shot','w'));f:write(name);f:close()
    local limit=dfhack.getTickCount()+30000

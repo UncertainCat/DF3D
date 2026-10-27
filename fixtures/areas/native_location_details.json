@@ -8328,5 +8328,231 @@
       ],
       "note": "Source completed_control_hidden was sampled after Back and is not visibility evidence; use the immediate completed_action_absent assertion and screenshots. Driver now labels the post-Back field details_closed."
     }
+  },
+  "religious_staff_removal_reference": {
+    "source": "build/stockpile-storage-native-location-recognition-removepriest-20261027-041214",
+    "source_sha256": "afb6b3e33e86e372813485a37751f726afbb938b94cd2d3ae91668e2e4f3d795",
+    "viewport": [
+      1200,
+      800
+    ],
+    "remove_click": [
+      944,
+      358
+    ],
+    "before_assignments": [
+      {
+        "claim_count": 0,
+        "flags": [
+          "active"
+        ],
+        "histfig": 1018,
+        "histfig2": 1018,
+        "id": 0,
+        "location": -1,
+        "position_id": 0,
+        "position_vector_idx": -1,
+        "site": 61,
+        "squad_id": -1,
+        "vassal_of_entity_id": -1,
+        "vassal_of_position_profile_id": -1
+      },
+      {
+        "claim_count": 0,
+        "flags": [
+          "active"
+        ],
+        "histfig": -1,
+        "histfig2": 5005,
+        "id": 1,
+        "location": -1,
+        "position_id": 0,
+        "position_vector_idx": -1,
+        "site": 90,
+        "squad_id": -1,
+        "vassal_of_entity_id": -1,
+        "vassal_of_position_profile_id": -1
+      },
+      {
+        "claim_count": 0,
+        "flags": [
+          "active"
+        ],
+        "histfig": 9375,
+        "histfig2": 9375,
+        "id": 2,
+        "location": -1,
+        "position_id": 0,
+        "position_vector_idx": 0,
+        "site": 651,
+        "squad_id": -1,
+        "vassal_of_entity_id": -1,
+        "vassal_of_position_profile_id": -1
+      }
+    ],
+    "after_assignments": [
+      {
+        "claim_count": 0,
+        "flags": [
+          "active"
+        ],
+        "histfig": 1018,
+        "histfig2": 1018,
+        "id": 0,
+        "location": -1,
+        "position_id": 0,
+        "position_vector_idx": -1,
+        "site": 61,
+        "squad_id": -1,
+        "vassal_of_entity_id": -1,
+        "vassal_of_position_profile_id": -1
+      },
+      {
+        "claim_count": 0,
+        "flags": [
+          "active"
+        ],
+        "histfig": -1,
+        "histfig2": 5005,
+        "id": 1,
+        "location": -1,
+        "position_id": 0,
+        "position_vector_idx": -1,
+        "site": 90,
+        "squad_id": -1,
+        "vassal_of_entity_id": -1,
+        "vassal_of_position_profile_id": -1
+      },
+      {
+        "claim_count": 0,
+        "flags": [
+          "active"
+        ],
+        "histfig": -1,
+        "histfig2": 9375,
+        "id": 2,
+        "location": -1,
+        "position_id": 0,
+        "position_vector_idx": 0,
+        "site": 651,
+        "squad_id": -1,
+        "vassal_of_entity_id": -1,
+        "vassal_of_position_profile_id": -1
+      }
+    ],
+    "before_holder": {
+      "id": 9375,
+      "links": [
+        {
+          "entity_id": 245,
+          "strength": 100,
+          "type": "MEMBER"
+        },
+        {
+          "entity_id": 383,
+          "strength": 100,
+          "type": "MEMBER"
+        },
+        {
+          "entity_id": 865,
+          "strength": 100,
+          "type": "MEMBER"
+        },
+        {
+          "assignment_id": 2,
+          "entity_id": 383,
+          "start_year": 103,
+          "strength": 100,
+          "type": "POSITION"
+        },
+        {
+          "assignment_id": 7,
+          "entity_id": 865,
+          "start_year": 104,
+          "strength": 100,
+          "type": "POSITION"
+        },
+        {
+          "assignment_id": 9,
+          "entity_id": 865,
+          "start_year": 104,
+          "strength": 100,
+          "type": "POSITION"
+        }
+      ]
+    },
+    "after_holder": {
+      "id": 9375,
+      "links": [
+        {
+          "entity_id": 245,
+          "strength": 100,
+          "type": "MEMBER"
+        },
+        {
+          "entity_id": 383,
+          "strength": 100,
+          "type": "MEMBER"
+        },
+        {
+          "entity_id": 865,
+          "strength": 100,
+          "type": "MEMBER"
+        },
+        {
+          "assignment_id": 7,
+          "entity_id": 865,
+          "start_year": 104,
+          "strength": 100,
+          "type": "POSITION"
+        },
+        {
+          "assignment_id": 9,
+          "entity_id": 865,
+          "start_year": 104,
+          "strength": 100,
+          "type": "POSITION"
+        },
+        {
+          "assignment_id": 2,
+          "end_year": 106,
+          "entity_id": 383,
+          "start_year": 103,
+          "strength": 100,
+          "type": "FORMER_POSITION"
+        }
+      ]
+    },
+    "new_events": [
+      {
+        "id": 64037,
+        "seconds": 157249,
+        "type": "REMOVE_HF_ENTITY_LINK",
+        "year": 106
+      }
+    ],
+    "rank_before": 1,
+    "rank_after": 1,
+    "unchanged_fields": [
+      "positions",
+      "next_position",
+      "next_assignment",
+      "temple_emotions",
+      "rng"
+    ],
+    "repeat_unchanged": true,
+    "scope": "Actual native remove click, vacant row artwork inspected, source preserved and owned unsaved exit. No runtime semantic removal implementation yet.",
+    "native_call": {
+      "address": "0x3307a4",
+      "helper": "0xb96300",
+      "arguments": "historical figure, assignment ID, religion ID, true, true"
+    },
+    "omissions": [
+      "Unit job and noble-office cleanup side effects",
+      "All history-event payload fields",
+      "High-priest and absent-unit holder variants",
+      "Semantic bridge action and revision binding",
+      "Viewer input and lifecycle"
+    ]
   }
 }

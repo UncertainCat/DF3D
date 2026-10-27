@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='removepriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -658,6 +658,43 @@ end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local original_priest_threshold=difficulty.priesthood_unit_count
+if recognition_case=='removepriest' then
+ local assignment
+ for _,a in ipairs(religion.positions.assignments)do if a.st_id==df.global.plotinfo.site_id then assert(not assignment);assignment=a end end
+ assert(assignment and assignment.histfig>=0)
+ local holder=assert(df.historical_figure.find(assignment.histfig))
+ local function holder_state()
+  local result={id=holder.id,links={}}
+  for _,link in ipairs(holder.entity_links)do
+   local row={type=df.histfig_entity_link_type[link:getType()],entity_id=link.entity_id,strength=link.link_strength}
+   if df.histfig_entity_link_positionst:is_instance(link) then row.assignment_id=link.assignment_id;row.start_year=link.start_year
+   elseif df.histfig_entity_link_former_positionst:is_instance(link) then row.assignment_id=link.assignment_id;row.start_year=link.start_year;row.end_year=link.end_year end
+   result.links[#result.links+1]=row
+  end
+  return result
+ end
+ local ok,err=xpcall(function()
+  local before=capture('TEMPLE-0-priest-remove-before',temple);before.recognition=recognition_state();before.holder=holder_state()
+  pixel(944,358)
+  local after=capture('TEMPLE-0-priest-remove-after',temple);after.recognition=recognition_state();after.holder=holder_state()
+  assert(assignment.histfig==-1,'native religious removal did not vacate assignment')
+  assert(after.recognition.bridge.rank==before.recognition.bridge.rank,'removal changed recognition rank')
+  for _,field in ipairs{'positions','next_position','next_assignment','temple_emotions','rng'}do
+   assert(require('json').encode(before.recognition[field])==require('json').encode(after.recognition[field]),'removal unexpectedly changed '..field)
+  end
+  after.new_events={}
+  for i=before.recognition.event_count,#df.global.world.history.events-1 do
+   local event=df.global.world.history.events[i]
+   after.new_events[#after.new_events+1]={id=event.id,type=df.history_event_type[event:getType()],year=event.year,seconds=event.seconds}
+  end
+  pixel(944,358)
+  local repeated=capture('TEMPLE-0-priest-remove-repeat',temple);repeated.recognition=recognition_state();repeated.holder=holder_state()
+  assert(require('json').encode(after.recognition)==require('json').encode(repeated.recognition),'empty remove changed recognition records')
+  assert(require('json').encode(after.holder)==require('json').encode(repeated.holder),'empty remove changed holder links')
+ end,debug.traceback)
+ contents.location_tier=original
+ assert(ok,err);assert(#records==3,'incomplete priest removal reference');return
+end
 local ok,err=xpcall(function()
  if recognition_case=='firstguidance' then
   difficulty.priesthood_unit_count=54

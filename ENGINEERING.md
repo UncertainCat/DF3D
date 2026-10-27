@@ -165,6 +165,36 @@ Only the known rendering-thread notice remains; core19/19 passes in
 requests or clicked before terrain readiness and are not accepted runs.
 Modified-key/clipboard input remains outside this evidence.
 
+## Native religious staff removal reference
+
+Religious staff editing remains distinct from recognition and ordinary occupation
+editing. `location_staff_view.gd` renders religious holders/removal artwork, but
+its input path accepts only ordinary occupations. Do not wire religious removal
+to a holder-ID clear: native removal preserves assignment/template identity,
+records a former-position link and emits history.
+
+`native_location_details.json.religious_staff_removal_reference` records protected
+`-LocationNames -RecognitionOnly -RecognitionCase removepriest` run041214 on
+2026-10-27. Clicking(944,358) vacates assignment2 for religion383/site651, preserves
+histfig2=9375 and rank1, replaces holder9375's POSITION link with FORMER_POSITION
+(start103/end106), and adds one REMOVE_HF_ENTITY_LINK event. Templates, allocation
+counters, temple emotions and RNG remain unchanged; clicking the now-empty removal
+position repeats no effects. The vacant-row screenshot was inspected. The native
+run passes, preserves its source and exits unsaved. This is an oracle, not a
+semantic or viewer implementation.
+
+Input branch3307a4 calls nativeb96300(holder, assignment, entity, true, true),
+unlike recognition promotion's false/false arguments. It also conditionally
+cleans noble-office/unit jobs before and after that call, then rebuilds native
+Details rows. Audit those semantic conditions before implementing removal; never
+call the native UI handler or row builder. Unit/job cleanup, all event fields,
+high-priest/absent-unit variants and typed lifecycle remain unverified.
+
+The petition capture021231 shows its continuing-agreement tracker in a separate
+panel beneath the minimap, outside the Details frame. That global tracker has no
+implemented presentation route yet. Its scope must be retained in the management
+backlog; adding its text to the recognition row would not reproduce this layout.
+
 ## Native Location name editor discovery
 
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout

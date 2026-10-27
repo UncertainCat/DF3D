@@ -7803,5 +7803,129 @@
       "naming-owner disconnect/reconnect/epoch lifecycle"
     ],
     "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe"
+  },
+  "view_reference": {
+    "name": "INN_TAVERN-1-part-0-selected",
+    "native_header": "Uzolfathkal",
+    "english_header": "The Oily Meal",
+    "words": [
+      -1,
+      -1,
+      1612,
+      -1,
+      -1,
+      515,
+      -1
+    ],
+    "parts": [
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rows": [
+      {
+        "english": "abbey",
+        "part": 0,
+        "translated": "kulet",
+        "word": 0
+      },
+      {
+        "english": "ace",
+        "part": 0,
+        "translated": "alak",
+        "word": 1
+      },
+      {
+        "english": "ace",
+        "part": 2,
+        "translated": "alak",
+        "word": 1
+      },
+      {
+        "english": "act",
+        "part": 0,
+        "translated": "bidok",
+        "word": 2
+      },
+      {
+        "english": "act",
+        "part": 4,
+        "translated": "bidok",
+        "word": 2
+      },
+      {
+        "english": "acted",
+        "part": 7,
+        "translated": "bidok",
+        "word": 2
+      },
+      {
+        "english": "after",
+        "part": 3,
+        "translated": "nicol",
+        "word": 3
+      },
+      {
+        "english": "age",
+        "part": 0,
+        "translated": "anam",
+        "word": 4
+      },
+      {
+        "english": "ages",
+        "part": 1,
+        "translated": "anam",
+        "word": 4
+      },
+      {
+        "english": "age",
+        "part": 4,
+        "translated": "anam",
+        "word": 4
+      },
+      {
+        "english": "aged",
+        "part": 7,
+        "translated": "anam",
+        "word": 4
+      },
+      {
+        "english": "ale",
+        "part": 0,
+        "translated": "mabdug",
+        "word": 6
+      },
+      {
+        "english": "ales",
+        "part": 1,
+        "translated": "mabdug",
+        "word": 6
+      },
+      {
+        "english": "ancient",
+        "part": 0,
+        "translated": "zustash",
+        "word": 7
+      },
+      {
+        "english": "ancient",
+        "part": 2,
+        "translated": "zustash",
+        "word": 7
+      }
+    ],
+    "total": 3217,
+    "scope": "First15 rendered rows and native header; total controls scrollbar. Row forms from verified transport share native language0. No synthetic display copy.",
+    "panel_rgb_sha256": "7cb3f32164ba5815c2d915ae43f94fc3375b98ab763dc7072eb4765e02b248b1",
+    "panel_rect": [
+      368,
+      52,
+      608,
+      660
+    ]
   }
 }

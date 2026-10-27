@@ -331,6 +331,21 @@ queries, stale/unknown outcomes, queued/sent cancellation, late replies, epoch
 changes and parent retirement. This is deterministic ownership evidence, not
 protected live-owner or rendered UI acceptance.
 
+`location_name_view.gd` is a standalone, unexposed naming component using these
+native headers and ordered rows. Its seven component controls, Random/Clear,
+filter and three word columns use installed artwork and recorded native copy.
+`location_name_view_capture` compares the entire608x660 panel at1200x800 against
+the native223634 initial selection: RGB pixels match exactly. The reference
+digest and first15 visible native rows are in the naming fixture; no game art is
+stored there. `build/qa/location-name-view-parity` passes core19/19 and the owner
+test; the renderer/input check passes with only the documented separate-thread,
+device-finalize and shutdown-object diagnostics. Real Godot input exercises
+component, row and Random/Clear routes, ten-byte ASCII filtering, Backspace,
+Enter, Escape and Done. These checks establish the standalone initial rendering
+and local routes, not a complete editor. Details integration, protected live
+owner acceptance, native scrolling/hover/focus behavior, non-ASCII input and
+long-header/resize cases remain unfinished.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

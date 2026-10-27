@@ -2479,6 +2479,15 @@
       ]
     },
     {
+      "id": "location_name_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_name_view_capture.gd",
+      "completion": "LOCATION_NAME_VIEW_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "location_quantity_view_capture",
       "lane": "gpu",
       "kind": "godot",

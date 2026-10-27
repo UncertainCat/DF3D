@@ -511,7 +511,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='staffindicatorhelp' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='staffindicatorhelp' or recognition_case=='staffindicatorart' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -560,6 +560,73 @@ if recognition_case=='new' or recognition_case=='positionnew' then
  assert(changed==1,'unexpected priest template fixture count')
 end
 pixel(664,238);assert(details.open and details.selected_ab==temple)
+if recognition_case=='staffindicatorart' then
+ local unit=assert(df.unit.find(6536));local occupation=assert(unit.occupations[0]);assert(occupation.id==87)
+ local original_role=occupation.type
+ local function entries()
+  local values={}
+  for _,o in ipairs(unit.occupations)do values[#values+1]={kind=0,id=o.id,type=o.type,subtype=-1,custom=-1,custom_code='',name=''}end
+  for kind,key in ipairs{'WORKSHOP_ANY','FURNACE_ANY'}do
+   for _,b in ipairs(df.global.world.buildings.other[key])do
+    local p=b:getWorkshopProfile()
+    if p then for _,id in ipairs(p.permitted_workers)do if id==unit.id then
+     local custom=b:getCustomType();local definition=custom>=0 and df.building_def.find(custom) or nil
+     values[#values+1]={kind=kind,id=b.id,type=b:getType(),subtype=b:getSubtype(),custom=custom,custom_code=definition and definition.code or '',name=''}
+    end end end
+   end
+  end
+  for i,d in ipairs(df.global.plotinfo.labor_info.work_details)do
+   for _,id in ipairs(d.assigned_units)do if id==unit.id then values[#values+1]={kind=3,id=i,type=d.icon,subtype=-1,custom=-1,custom_code='',name=dfhack.df2utf(d.name)}end end
+  end
+  return values
+ end
+ local original_entries=require('json').encode(entries())
+ local function shot(name)
+  local observed=entries();local row=capture('TEMPLE-staff-art-'..name,temple)
+  row.assignment_entries=observed
+  assert(require('json').encode(entries())==require('json').encode(observed),'render changed assignments')
+ end
+ local function add(vector)
+  local before={};for _,id in ipairs(vector)do assert(id~=unit.id);before[#before+1]=id end
+  vector:insert('#',unit.id)
+  local values={};for _,id in ipairs(vector)do values[#values+1]=id end;table.sort(values)
+  for i,id in ipairs(values)do vector[i-1]=id end
+  return function()vector:resize(0);for _,id in ipairs(before)do vector:insert('#',id)end end
+ end
+ for _,role in ipairs{0,1,2,3,4,5,6,7,8,9,10}do occupation.type=role;shot('occupation-'..role)end
+ occupation.type=df.occupation_type.UNUSED_01
+ for kind,key in ipairs{'WORKSHOP_ANY','FURNACE_ANY'}do
+  local building
+  for _,b in ipairs(df.global.world.buildings.other[key])do if b:getWorkshopProfile()then building=b;break end end
+  assert(building)
+  local original_type,original_custom=building.type,building.custom_type
+  local restore=add(building:getWorkshopProfile().permitted_workers)
+  local maximum=kind==1 and 24 or 6
+  for subtype=0,maximum do
+   if not(kind==1 and subtype==23)then building.type=subtype;building.custom_type=-1;shot(string.lower(key)..'-'..subtype)end
+  end
+  for _,definition in ipairs(df.global.world.raws.buildings.all)do
+   if definition.building_type==building:getType()then
+    building.type=kind==1 and df.workshop_type.Custom or df.furnace_type.Custom;building.custom_type=definition.id
+    shot('custom-'..kind..'-'..definition.code)
+   end
+  end
+  building.type=original_type;building.custom_type=original_custom;restore()
+ end
+ local detail=assert(df.global.plotinfo.labor_info.work_details[0]);local original_icon=detail.icon
+ local restore=add(detail.assigned_units)
+ for icon=0,18 do detail.icon=icon;shot('work-detail-'..icon)end
+ detail.icon=original_icon;restore()
+ -- Overflow retains source order: one occupation plus five work details.
+ occupation.type=original_role
+ local restores={}
+ for index=0,4 do restores[#restores+1]=add(assert(df.global.plotinfo.labor_info.work_details[index]).assigned_units)end
+ shot('overflow')
+ for _,undo in ipairs(restores)do undo()end
+ assert(require('json').encode(entries())==original_entries,'art fixture restoration failed')
+ local row=capture('TEMPLE-staff-art-restored',temple);row.restored=true
+ return
+end
 if recognition_case=='staffindicatorhelp' then
  local unit=assert(df.unit.find(6536));local occupation=assert(unit.occupations[0]);assert(occupation.id==87)
  local original=occupation.type

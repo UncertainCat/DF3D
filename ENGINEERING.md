@@ -883,6 +883,21 @@ closure during notification, mismatched HF identity, rejection, empty records,
 wide revisions and invalid entry shapes. These controlled lifecycle checks do
 not establish actual rendered or disconnect acceptance for the indicators.
 
+Protected `staffindicatorart103128` records64 independent rendered cases:
+eleven occupation selectors (including the unused selector),24 built-in workshop
+selectors, seven furnace selectors, both installed custom workshops,19 work-detail
+icons and a six-assignment overflow case. Diagnostic subtype/raw/occupation/detail
+changes restore the original ordered assignment records. Owned DF154452 exits
+unsaved with the source manifest unchanged. The fixture's `art_reference` stores
+semantic inputs and RGB crop hashes, never artwork. `location-staff-all-art-final`
+matches every native crop exactly, including SOAP_MAKER and SCREW_PRESS and the
+first four visible overflow entries. Core passes cleanly; the GPU check reports
+only known shutdown/render-thread diagnostics. An earlier102754 screw-press
+screenshot contained a partially missing native panel and was rejected as a
+reference; the fresh capture changes only that crop among all64 cases. No viewer
+art change was needed. The supported install has no custom furnace raw; custom
+furnaces, viewport resizing and live reader retirement remain separate coverage.
+
 `location_staff_indicators.gd` maps audited semantic assignments to installed
 occupation, building and work-detail art, preserving native order and slot
 consumption. Building LIST_ICON art is32x32 centered vertically in its32x36 slot;

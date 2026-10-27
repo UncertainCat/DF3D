@@ -104,6 +104,11 @@ func run() -> void:
  var portrait:=InputEventMouseMotion.new();portrait.position=Vector2(592,394);portrait.global_position=portrait.position;root.push_input(portrait,true)
  await process_frame
  assert(not help.displayed.begins_with("staff_"),"portrait does not activate assignment help")
+ for sample in assignments.staff_indicator_reference.art_reference.cases:
+  assignment_receipts.values[6536]={"entries":numbers(sample.entries.duplicate(true))};view.queue_redraw()
+  for i in 2:await process_frame;await RenderingServer.frame_post_draw
+  if "-custom-" in sample.name:root.get_texture().get_image().save_png(directory.path_join(sample.name+".png"))
+  check_indicator_crops(root.get_texture().get_image(),{"crops":[sample]})
  var help_keys={261:"tavern_keeper",262:"performer",263:"scholar",264:"scribe",265:"mercenary",266:"monster_slayer",267:"doctor",268:"workshop"}
  for sample in assignments.staff_indicator_reference.help_reference.cases:
   if int(sample.hover)<0:continue

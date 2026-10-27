@@ -2770,8 +2770,18 @@ Protected rendered runs `build/areas-acceptance-20261026-184816` (Barracks queue
 `build/areas-acceptance-20261026-185105` (Archery sent) pass with known Godot
 diagnostics. Their source and clone manifests are unchanged; each owned DF
 exits unsaved. Core19/19 passes in `build/qa/squad-disconnect-core`.
-This covers client transport loss and same-fortress reconnect, not producer
-restart or explicit picker reopening after reconnect.
+Explicit reopening after same-fortress reconnect is also verified by protected
+`areas-acceptance-20261027-145259` (Barracks sent) and145405 (Archery queued).
+Actual launcher, map selection and squad controls obtain fresh candidate rows;
+the old target has use2 after the sent/unknown outcome and use0 after queued/
+not_sent. Both reopen at row0, dismiss normally and preserve native reciprocal
+records without replay. Reopened captures were visually inspected. DF170136 and
+DF164672 exit unsaved, both save manifests match, and the only diagnostic is the
+known rendering-thread notice. Core passes in `build/qa/squad-reconnect-reopen`.
+The harness waits for the assignment's actual send behind background requests
+and scopes no-replay accounting to area actions and picker ownership. Initial
+145023 and145134 failed those older global-queue assumptions and are not accepted
+runs. Product code is unchanged. Producer restart remains unverified here.
 
 ## Animal keyboard activation and portrait reference
 

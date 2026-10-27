@@ -315,7 +315,11 @@ func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
 	if not check(ticket>0,"disconnect mutation not queued"):return
 	var expected_use:=0
 	if disconnect_mode=="sent":
-		actions.poll()
+		var send_deadline:=Time.get_ticks_msec()+30000
+		while actions._requests.has(ticket) and int(actions._requests[ticket].sequence)==0 and Time.get_ticks_msec()<send_deadline:
+			world.poll();actions.poll()
+			if actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0:break
+			await create_timer(0.02).timeout
 		if not check(actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0,"disconnect mutation not sent"):return
 		var sequence:int=actions._requests[ticket].sequence
 		var reply:Dictionary={}
@@ -340,12 +344,31 @@ func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
 		if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
 		await create_timer(0.02).timeout
 	if not check(bool(world.poll_management().get("transport_alive",false)),"squad reconnect timed out"):return
-	var next_ticket:int=actions._next_ticket
+	var area_count:int=area_receipts().size()
 	for frame in 30:
 		world.poll();actions.poll();editor._process(0.02);await process_frame
-	if not check(actions._next_ticket==next_ticket and editor.candidates_state.area.is_empty() and not view.visible,"reconnect replayed or reopened squad picker"):return
+	if not check(area_receipts().size()==area_count and editor.request_ticket==0 and editor.candidates_state.area.is_empty() and not view.visible,"reconnect replayed or reopened squad picker"):return
 	await native("squad",{"id":id,"squad_id":target_id,"use":expected_use})
 	await capture("squad_disconnected_retired")
+	# Explicit reopening must observe the existing effect, never replay the old click.
+	var launcher:Button=scene._fortress_hud.navigation.Zones
+	launcher.show()
+	await click_control(launcher,true)
+	if not await wait_ui(func():return editor.panel.visible and editor.available and settled(),"reconnected Zones launcher"):return
+	var p:Dictionary=fixture.origin
+	var tile:=Vector3i(int(p.x)+8,int(p.y)+8,int(p.z))
+	await pointer_click(tile_screen(tile))
+	if not await wait_ui(func():return settled() and int(editor.selected.get("id",-1))==id,"reconnected zone selection"):return
+	await click_control(editor.zone_menu.controls.squads)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and editor.candidates_state.rows.size()==25 and editor.candidates_state.cursor==0,"fresh squad candidates"):return
+	var fresh:Dictionary={}
+	for row in editor.candidates_state.rows:
+		if int(row.id)==target_id:fresh=row;break
+	if not check(not fresh.is_empty() and int(fresh.squad_use)==expected_use and editor.candidates_state.squad_first==0,"reopened squad picker retained stale use or scroll"):return
+	await native("squad",{"id":id,"squad_id":target_id,"use":expected_use})
+	await capture("squad_reconnected_reopened")
+	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
+	if not check(not view.visible and settled(),"reopened squad picker did not dismiss"):return
 
 func pointer_animal_disconnect(id: int, disconnect_mode: String) -> void:
 	step="animal "+disconnect_mode+" disconnect"

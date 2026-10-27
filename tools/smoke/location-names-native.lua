@@ -508,7 +508,7 @@ local temple=choices[1];assert(temple.id==0)
 local religion=assert(df.historical_entity.find(temple.deity_data.Religion))
 local mode_file=io.open(out..'/recognition-case');local recognition_case='promote'
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -533,7 +533,7 @@ if recognition_case=='petitions' or recognition_case=='agreements' then
   end
  end
 end
-local first_recognition=recognition_case=='first' or recognition_case=='new'
+local first_recognition=recognition_case=='first' or recognition_case=='new' or recognition_case=='positionnew'
 if recognition_case=='empty' or first_recognition then
  -- Controlled world fixture on the owned unsaved clone; never a runtime path.
  local changed=0
@@ -545,7 +545,7 @@ if recognition_case=='empty' or first_recognition then
  end
  assert(changed==1,'unexpected recognition fixture assignment count')
 end
-if recognition_case=='new' then
+if recognition_case=='new' or recognition_case=='positionnew' then
  -- Keep old allocations/links owned by the world, but force native template
  -- creation instead of reuse. This diagnostic state is discarded unsaved.
  local changed=0
@@ -699,6 +699,45 @@ local ok,err=xpcall(function()
   difficulty.high_priesthood_unit_count=original_threshold
  end
  local before=capture('TEMPLE-0-recognition-before',temple);before.recognition=recognition_state()
+ if recognition_case=='positionhigh' or recognition_case=='positionnew' then
+  local marker=assert(io.open(out..'/recognition-reference'));local path=marker:read('*a'):match('^%s*(.-)%s*$');marker:close()
+  local file=assert(io.open(path,'rb'));local reference=require('json').decode(file:read('*a'));file:close()
+  assert(reference.success and #reference.records==3,'invalid native position reference')
+  local expected_before=reference.records[1].recognition;local expected_after=reference.records[2].recognition
+  assert(expected_before.case==(first_recognition and 'new' or 'promote'),'wrong position reference branch')
+  local function invoke(command,site,id)
+   local text,code=dfhack.run_command_silent('df3d',command,tostring(site),tostring(id))
+   assert(code==0,text);return require('json').decode(text)
+  end
+  local guards={}
+  for _,object in ipairs{m,g}do
+   local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+   guards[#guards+1]={bytes=bytes,address=at,size=n}
+  end
+  for _,target in ipairs{{-1,temple.id},{df.global.plotinfo.site_id,2147483647},{df.global.plotinfo.site_id+1,temple.id},{df.global.plotinfo.site_id,1}}do
+   assert(not invoke('location-recognition-position',target[1],target[2]).prepared,'invalid position target accepted')
+  end
+  local rejected=recognition_state()
+  assert(require('json').encode(before.recognition.rng)==require('json').encode(rejected.rng),'rejected position preparation consumed RNG')
+  restore_rng(expected_before.rng)
+  assert(invoke('location-recognition-thoughts',df.global.plotinfo.site_id,temple.id).applied,'native preceding thought step unavailable')
+  local prepared=invoke('location-recognition-position',df.global.plotinfo.site_id,temple.id)
+  assert(prepared.prepared,'native position preparation unavailable')
+  for _,guard in ipairs(guards)do
+   assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'position preparation changed native UI/gps')
+   df.delete(guard.bytes)
+  end
+  local after=capture('TEMPLE-0-recognition-position-after',temple);after.recognition=recognition_state();after.recognition.prepared=prepared.position
+  local expected=expected_after.positions[#expected_after.positions]
+  for field,value in pairs(expected)do
+   assert(require('json').encode(prepared.position[field])==require('json').encode(value),'prepared position differs from native field '..field)
+  end
+  assert(require('json').encode(after.recognition.rng)==require('json').encode(expected_after.rng),'position preparation RNG differs from native')
+  for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links','petitions','continuing','agreements'}do
+   assert(require('json').encode(before.recognition[field])==require('json').encode(after.recognition[field]),'unpublished position changed '..field)
+  end
+  return
+ end
  if recognition_case=='agreements' then
   local marker=assert(io.open(out..'/recognition-reference'));local path=marker:read('*a'):match('^%s*(.-)%s*$');marker:close()
   local file=assert(io.open(path,'rb'));local reference=require('json').decode(file:read('*a'));file:close()
@@ -828,4 +867,4 @@ local ok,err=xpcall(function()
 end,debug.traceback)
 contents.location_tier=original;difficulty.high_priesthood_unit_count=original_threshold
 assert(ok,err)
-assert(#records==((recognition_case=='thoughts' or recognition_case=='agreements') and 2 or recognition_case=='eligibility' and 9 or recognition_only and 3 or 161),'incomplete recognition mutation reference')
+assert(#records==((recognition_case=='thoughts' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew') and 2 or recognition_case=='eligibility' and 9 or recognition_only and 3 or 161),'incomplete recognition mutation reference')

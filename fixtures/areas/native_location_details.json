@@ -7327,5 +7327,297 @@
       2147483601,
       2147483604
     ]
+  },
+  "recognition_position_preparation_reference": {
+    "plugin_sha256": "d2b8a579863edb72230482a36ba11f6e074b983238906444c7dc78729507341c",
+    "method": "Paired protected owned paused clones. Restore native pre-action RNG only in the test; apply the verified native thought primitive, then prepare and destroy an unpublished owned position. Native full action supplies the expected template and final RNG. All runs preserve source manifests and exit unsaved.",
+    "scope": "Every captured position field and complete final RNG match native for first-template PRIEST and HIGH_PRIEST creation. Invalid targets preserve RNG; UI/gps and all captured world position/assignment/history/agreement facts remain unchanged by preparation (thought effects are applied separately).",
+    "omissions": [
+      "Publication of position/assignment and ID counters",
+      "Holder promotion/history/site effects",
+      "Existing-template reuse workflow",
+      "No-deity/empty-sphere and missing-word fallback variants",
+      "Complete transaction receipt and viewer control"
+    ],
+    "branches": {
+      "priest": {
+        "native_capture": "build/stockpile-storage-native-location-recognition-new-20261027-022556",
+        "native_sha256": "df79e64460edf871e8706e1bddccbaa518412e9b1e5d3d5e9803c1af78790242",
+        "bridge_capture": "build/stockpile-storage-native-location-recognition-positionnew-20261027-022646",
+        "bridge_sha256": "9df3d979256c8826316efae3bea6e9b1e2606af55df35d15bee059c6f0579242",
+        "prepared_position": {
+          "allowed_class": [],
+          "allowed_creature": [],
+          "appointed_by": [],
+          "appointed_by_civ": [],
+          "best_appointment_precedence": 30001,
+          "code": "PRIEST",
+          "color": [
+            6,
+            0,
+            1
+          ],
+          "commander_civ": [],
+          "commander_id": [],
+          "commander_types": [],
+          "demand_max": 0,
+          "description": "",
+          "execution_skill": -1,
+          "flags": [
+            "ELECTED",
+            "DUTY_BOUND",
+            "HAS_RESPONSIBILITIES",
+            "CHAT_WORTHY",
+            "DO_NOT_CULL",
+            "IS_LEADER",
+            "IS_DIPLOMAT",
+            "ACCOUNT_EXEMPT",
+            "RULES_FROM_LOCATION",
+            "MENIAL_WORK_EXEMPTION",
+            "PUNISHMENT_EXEMPTION",
+            "HAS_RECEIVED_POSITIONS",
+            "ACTIVE"
+          ],
+          "id": 1,
+          "land_holder": 0,
+          "land_name": "",
+          "mandate_max": 0,
+          "name": "holy treasure",
+          "name_female_forms": [
+            "",
+            ""
+          ],
+          "name_forms": [
+            "holy treasure",
+            "holy treasures"
+          ],
+          "name_male_forms": [
+            "",
+            ""
+          ],
+          "number": -1,
+          "precedence": 200,
+          "rejected_class": [],
+          "rejected_creature": [],
+          "replaced_by": -1,
+          "required_bedroom": 0,
+          "required_boxes": 0,
+          "required_cabinets": 0,
+          "required_dining": 0,
+          "required_office": 0,
+          "required_racks": 0,
+          "required_stands": 0,
+          "required_tomb": 0,
+          "requires_population": 0,
+          "responsibilities": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spouse_female_forms": [
+            "",
+            ""
+          ],
+          "spouse_forms": [
+            "",
+            ""
+          ],
+          "spouse_male_forms": [
+            "",
+            ""
+          ],
+          "squad_forms": [
+            "",
+            ""
+          ],
+          "squad_size": 0,
+          "succession_by_position": []
+        },
+        "final_rng_sha256": "4478b9158b0c3efd5b8b31c4bb3de013de1c4bf3e77311f22f85b68fac041e32"
+      },
+      "high_priest": {
+        "native_capture": "build/stockpile-storage-native-location-recognition-promote-20261027-020539",
+        "native_sha256": "f477ef18bffd957710fe88a02e9aa3d5389bed090b4c14a7d93ec19a86266dc0",
+        "bridge_capture": "build/stockpile-storage-native-location-recognition-positionhigh-20261027-022731",
+        "bridge_sha256": "9009279f29e4c1fa3e93e0e5a3f01a42b1193f30a9a438666115caf3f12f132d",
+        "prepared_position": {
+          "allowed_class": [],
+          "allowed_creature": [],
+          "appointed_by": [],
+          "appointed_by_civ": [],
+          "best_appointment_precedence": 30001,
+          "code": "HIGH_PRIEST",
+          "color": [
+            6,
+            0,
+            1
+          ],
+          "commander_civ": [],
+          "commander_id": [],
+          "commander_types": [],
+          "demand_max": 3,
+          "description": "",
+          "execution_skill": -1,
+          "flags": [
+            "IS_LAW_MAKER",
+            "ELECTED",
+            "DUTY_BOUND",
+            "HAS_RESPONSIBILITIES",
+            "FLASHES",
+            "BRAG_ON_KILL",
+            "CHAT_WORTHY",
+            "DO_NOT_CULL",
+            "KILL_QUEST",
+            "IS_LEADER",
+            "IS_DIPLOMAT",
+            "EXPORTED_IN_LEGENDS",
+            "DETERMINES_COIN_DESIGN",
+            "ACCOUNT_EXEMPT",
+            "RULES_FROM_LOCATION",
+            "MENIAL_WORK_EXEMPTION",
+            "PUNISHMENT_EXEMPTION",
+            "HAS_RECEIVED_POSITIONS",
+            "ACTIVE",
+            "QUEST_GIVER",
+            "SPECIAL_BURIAL"
+          ],
+          "id": 1,
+          "land_holder": 0,
+          "land_name": "",
+          "mandate_max": 2,
+          "name": "exalted wealth",
+          "name_female_forms": [
+            "",
+            ""
+          ],
+          "name_forms": [
+            "exalted wealth",
+            "exalted wealths"
+          ],
+          "name_male_forms": [
+            "",
+            ""
+          ],
+          "number": -1,
+          "precedence": 50,
+          "rejected_class": [],
+          "rejected_creature": [],
+          "replaced_by": -1,
+          "required_bedroom": 0,
+          "required_boxes": 0,
+          "required_cabinets": 0,
+          "required_dining": 0,
+          "required_office": 0,
+          "required_racks": 0,
+          "required_stands": 0,
+          "required_tomb": 0,
+          "requires_population": 0,
+          "responsibilities": [
+            true,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spouse_female_forms": [
+            "",
+            ""
+          ],
+          "spouse_forms": [
+            "",
+            ""
+          ],
+          "spouse_male_forms": [
+            "",
+            ""
+          ],
+          "squad_forms": [
+            "",
+            ""
+          ],
+          "squad_size": 0,
+          "succession_by_position": []
+        },
+        "final_rng_sha256": "f1f44181d1e41eacc598c5ef83dbcf2f10dbed8bed15ab4494d84dc0bce4c282"
+      }
+    }
   }
 }

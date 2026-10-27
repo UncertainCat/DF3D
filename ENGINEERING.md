@@ -725,6 +725,44 @@ receipt before any effects, prepare all required inputs, and execute its interna
 steps without reinterpreting its own intermediate state as a new user intent.
 Typed transport, position/history integration and viewer exposure remain pending.
 
+`prepareNativeLocationRecognitionPosition` creates an independently owned,
+unpublished PRIEST or HIGH_PRIEST template for the staged transaction. It returns
+no object if the target template already exists (the full workflow must reuse it),
+the target is invalid/ineligible, or the supported-code checks fail. It consumes
+ordinary DF RNG and must not be called for display previews. It does not increment
+the entity's position counter or publish a pointer into world state.
+Failure after generation begins can still consume RNG; the eventual command must
+track that boundary for unknown outcomes rather than treating every null result
+as proof that nothing happened.
+
+Native semantic generator9909a0 supplies the religious title word; native71f30
+chooses the exact native prefix. First-priest colors use native76d4e0 with three
+owned parallel vectors, following native reverse sphere order and deity/color
+selection. High priests inherit the existing priest's color. Those routines are
+byte-hash guarded, including the complete color function and jump table. The
+remaining field/flag setup is inline in native input32dc5b..32e441 and32e861..32f135
+and follows those branches. DFHack's object constructor was inspected against
+native109220; the color field is explicitly supplied by the recognition path.
+Prefixes/fallbacks come from native strings1629b28..1629bc0 and15e9088.
+
+`recognition_position_preparation_reference` compares first-priest native022556
+with bridge022646 and high-priest native020539 with bridge022731 on20261027.
+Use protected `-RecognitionCase positionnew|positionhigh -RecognitionReference
+<native-result.json>` with a corresponding fresh `new|promote` capture. The harness
+restores the native pre-action RNG on its disposable clone, applies the verified
+thought primitive, then calls diagnostic `df3d location-recognition-position
+<site> <location>`. This serializes the owned position and destroys it; no pointer
+crosses the diagnostic boundary. Every captured position field and complete final
+RNG match native, including title forms, colors, flags, responsibilities and
+requirements. Invalid targets preserve RNG. Native main-interface/gps bytes and
+captured world positions, assignments, counters, history, site/holder links and
+agreement facts remain unchanged. Source manifests are preserved and the owned
+games exit unsaved. DLL SHA256 is
+`d2b8a579863edb72230482a36ba11f6e074b983238906444c7dc78729507341c`, protocol72.
+MSVC build passes; root/core evidence is `build/qa/location-recognition-position`.
+This does not establish publication, holder promotion, existing-template reuse,
+empty-deity/word fallback variants or the complete recognition transaction.
+
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and
 existing religious temple, copies its site priesthood rank and configured

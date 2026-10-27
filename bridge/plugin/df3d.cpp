@@ -19,6 +19,7 @@
 #include "paint_water_native.h"
 #include "location_catalog_native.h"
 #include "location_details_native.h"
+#include "df/entity_position.h"
 #include "location_staff_native.h"
 #include "location_staff_page.h"
 #include "jsoncpp-ex.h"
@@ -1997,6 +1998,64 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             supply["stored"]=row.supplies[i].stored;supply["desired"]=row.supplies[i].desired;
             value["supplies"].append(supply);
           }
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
+      if (parameters[0] == "location-recognition-position") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t ids[2]{};
+        for(size_t i=0;i<2;++i) {
+          const auto& text=parameters[i+1];
+          const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        const auto result=df3d_area::prepareNativeLocationRecognitionPosition(ids[0],ids[1]);
+        Json::Value value(Json::objectValue);value["prepared"]=bool(result);
+        if(result) {
+          const auto& p=*result;auto& row=value["position"];
+          row["code"]=p.code;row["name"]=DF2UTF(p.name[0]);
+          row["land_name"]=DF2UTF(p.land_name);row["description"]=DF2UTF(p.description);
+          row["id"]=int(p.id);
+          row["squad_size"]=int(p.squad_size);
+          row["land_holder"]=int(p.land_holder);
+          row["requires_population"]=int(p.requires_population);
+          row["execution_skill"]=int(p.execution_skill);
+          row["precedence"]=int(p.precedence);
+          row["replaced_by"]=int(p.replaced_by);
+          row["number"]=int(p.number);
+          row["required_boxes"]=int(p.required_boxes);
+          row["required_cabinets"]=int(p.required_cabinets);
+          row["required_racks"]=int(p.required_racks);
+          row["required_stands"]=int(p.required_stands);
+          row["required_office"]=int(p.required_office);
+          row["required_bedroom"]=int(p.required_bedroom);
+          row["required_dining"]=int(p.required_dining);
+          row["required_tomb"]=int(p.required_tomb);
+          row["mandate_max"]=int(p.mandate_max);
+          row["demand_max"]=int(p.demand_max);
+          row["best_appointment_precedence"]=int(p.best_appointment_precedence);
+          row["allowed_creature"]=Json::Value(Json::arrayValue);for(auto v:p.allowed_creature)row["allowed_creature"].append(int(v));
+          row["rejected_creature"]=Json::Value(Json::arrayValue);for(auto v:p.rejected_creature)row["rejected_creature"].append(int(v));
+          row["commander_id"]=Json::Value(Json::arrayValue);for(auto v:p.commander_id)row["commander_id"].append(int(v));
+          row["commander_civ"]=Json::Value(Json::arrayValue);for(auto v:p.commander_civ)row["commander_civ"].append(int(v));
+          row["commander_types"]=Json::Value(Json::arrayValue);for(auto v:p.commander_types)row["commander_types"].append(int(v));
+          row["appointed_by"]=Json::Value(Json::arrayValue);for(auto v:p.appointed_by)row["appointed_by"].append(int(v));
+          row["appointed_by_civ"]=Json::Value(Json::arrayValue);for(auto v:p.appointed_by_civ)row["appointed_by_civ"].append(int(v));
+          row["succession_by_position"]=Json::Value(Json::arrayValue);for(auto v:p.succession_by_position)row["succession_by_position"].append(int(v));
+          row["color"]=Json::Value(Json::arrayValue);for(auto v:p.color)row["color"].append(int(v));
+          row["name_forms"]=Json::Value(Json::arrayValue);for(const auto& v:p.name)row["name_forms"].append(DF2UTF(v));
+          row["name_female_forms"]=Json::Value(Json::arrayValue);for(const auto& v:p.name_female)row["name_female_forms"].append(DF2UTF(v));
+          row["name_male_forms"]=Json::Value(Json::arrayValue);for(const auto& v:p.name_male)row["name_male_forms"].append(DF2UTF(v));
+          row["spouse_forms"]=Json::Value(Json::arrayValue);for(const auto& v:p.spouse)row["spouse_forms"].append(DF2UTF(v));
+          row["spouse_female_forms"]=Json::Value(Json::arrayValue);for(const auto& v:p.spouse_female)row["spouse_female_forms"].append(DF2UTF(v));
+          row["spouse_male_forms"]=Json::Value(Json::arrayValue);for(const auto& v:p.spouse_male)row["spouse_male_forms"].append(DF2UTF(v));
+          row["squad_forms"]=Json::Value(Json::arrayValue);for(const auto& v:p.squad)row["squad_forms"].append(DF2UTF(v));
+          row["allowed_class"]=Json::Value(Json::arrayValue);for(const auto* v:p.allowed_class)row["allowed_class"].append(DF2UTF(*v));
+          row["rejected_class"]=Json::Value(Json::arrayValue);for(const auto* v:p.rejected_class)row["rejected_class"].append(DF2UTF(*v));
+          row["flags"]=Json::Value(Json::arrayValue);
+          for(int i=0;i<=31;++i)if(p.flags.is_set(static_cast<df::entity_position_flags>(i)))
+            row["flags"].append(ENUM_KEY_STR(entity_position_flags,static_cast<df::entity_position_flags>(i)));
+          row["responsibilities"]=Json::Value(Json::arrayValue);for(bool v:p.responsibilities)row["responsibilities"].append(v);
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }

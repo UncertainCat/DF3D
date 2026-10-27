@@ -4,9 +4,11 @@
 #include "location_catalog_native.h"
 #include <cstdint>
 #include <optional>
+#include <memory>
 #include <string>
 #include <vector>
 
+namespace df { struct entity_position; }
 namespace df3d_area {
 // World facts for the staged recognition workflow. No menu state or mutation
 // permission is implied; the command transaction/typed transport is separate.
@@ -44,6 +46,11 @@ std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughts(int32
 // and removes the first matching entry from each pending/continuing list, in
 // native order. Not a complete recognition action or replay-safe command.
 std::optional<std::vector<int32_t>> concludeNativeLocationRecognitionAgreements(int32_t siteId,int32_t locationId);
+// Owned unpublished position for the staged recognition transaction. Consumes
+// native RNG; never use as a display preview. Null means unavailable, ineligible,
+// or an existing template that the full transaction should reuse. Caller owns a
+// safe point and must include df/entity_position.h when destroying this result.
+std::unique_ptr<df::entity_position> prepareNativeLocationRecognitionPosition(int32_t siteId,int32_t locationId);
 enum class LocationAccess : uint8_t { Visitors, Residents, Citizens, Members };
 struct LocationAccessFlags { bool visitors=false,residents=false,members=false; };
 // Native160005: members overrides visitors, which overrides residents.

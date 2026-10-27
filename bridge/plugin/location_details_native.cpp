@@ -13,6 +13,9 @@
 #include "modules/Units.h"
 #include "df/historical_entity.h"
 #include "df/historical_figure.h"
+#include "df/historical_figure_info.h"
+#include "df/metaphysical_profilest.h"
+#include "df/language_word.h"
 #include "df/entity_position_assignment.h"
 #include "df/entity_position_responsibility.h"
 #include "df/unit.h"
@@ -39,6 +42,88 @@
 #include <numeric>
 
 namespace df3d_area {
+std::unique_ptr<df::entity_position> prepareNativeLocationRecognitionPosition(int32_t siteId,int32_t locationId) {
+  const auto facts=observeNativeLocationRecognition(siteId,locationId);
+  if(!facts)return {};
+  const auto state=locationRecognitionState(*facts);
+  if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)return {};
+  const bool high=state==LocationRecognitionState::RecognizeHighPriest;
+  auto* religion=df::historical_entity::find(facts->religionId);
+  if(!religion || !religion->entity_raw || religion->positions.next_position_id<0 ||
+      religion->positions.next_position_id==INT32_MAX)return {};
+  const df::entity_position* priest=nullptr;
+  for(const auto* position:religion->positions.own) {
+    if(!position)return {};
+    if(position->code==(high?"HIGH_PRIEST":"PRIEST"))return {};
+    if(position->code=="PRIEST")priest=position;
+  }
+  if(high && !priest)return {};
+  static const bool compatible=[] {
+    if(!locationRefreshFunction())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t size) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<size;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0x9909a0,0x326)==UINT64_C(0xe38c7959ebcf3e23) &&
+      hash(0x71f30,0x53)==UINT64_C(0x5eb4fcfbdedb7745) &&
+      hash(0x76d4e0,0x5ea4)==UINT64_C(0x9fd8c4a763ca6e3f);
+  }();
+  if(!compatible)return {};
+  const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+  const auto random=reinterpret_cast<int32_t (*)(int32_t)>(base+0x71f30);
+  const auto colors=reinterpret_cast<void (*)(int16_t,std::vector<int16_t>*,std::vector<int16_t>*,std::vector<int16_t>*)>(base+0x76d4e0);
+  const auto generate=reinterpret_cast<void (*)(df::historical_entity*,df::language_name*,int16_t,df::historical_entity*,int32_t)>(base+0x9909a0);
+  auto position=std::make_unique<df::entity_position>();
+  position->id=religion->positions.next_position_id;
+  position->code=high?"HIGH_PRIEST":"PRIEST";
+  // Native32e861..32eb29 chooses a deity, accumulates its sphere colors in
+  // reverse order through76d4e0, then chooses a parallel color triple.
+  position->color={7,0,1};
+  if(high)position->color=priest->color;
+  else {
+    df::historical_figure* deity=nullptr;
+    const auto& deities=religion->relations.deities;
+    if(!deities.empty())deity=df::historical_figure::find(deities[random(int32_t(deities.size()))]);
+    if(deity) {
+      std::vector<int16_t> foreground,background,bright;
+      if(deity->info && deity->info->metaphysical) {
+        const auto& spheres=deity->info->metaphysical->spheres;
+        for(auto it=spheres.rbegin();it!=spheres.rend();++it)colors(int16_t(*it),&foreground,&background,&bright);
+      }
+      if(foreground.empty()){foreground.push_back(7);background.push_back(0);bright.push_back(1);}
+      if(foreground.size()!=background.size() || foreground.size()!=bright.size())return {};
+      const auto index=random(int32_t(foreground.size()));
+      position->color={foreground[index],background[index],bright[index]};
+    }
+  }
+  df::language_name name;
+  generate(religion,&name,0x24,religion,-1);
+  // Native32df9d..32e28a /32ed28..32efb5 use the generated THE word,
+  // with native prefixes/fallbacks at1629b28..1629bc0 and15e9088.
+  if(name.words[5]!=-1) {
+    const auto* word=df::language_word::find(name.words[5]);if(!word)return {};
+    const char* prefixesHigh[]={"high ","first ","exalted "};
+    const char* prefixesPriest[]={"holy ","sacred "};
+    const auto choice=random(high?3:2);
+    const std::string prefix=high?prefixesHigh[choice]:prefixesPriest[choice];
+    position->name[0]=prefix+word->forms[word->flags.bits.the_noun_sing?0:1];
+    position->name[1]=prefix+word->forms[1];
+  } else position->name=high?std::array<std::string,2>{"high priest","high priests"}:
+                            std::array<std::string,2>{"priest","priests"};
+  // Template setup is inline in native recognition; naming/color selection
+  // above delegates to semantic routines with independently owned scratch.
+  for(int flag:{1,2,7,10,11,13,14,17,21,22,25,26,27})
+    position->flags.set(static_cast<df::entity_position_flags>(flag),true);
+  position->responsibilities[15]=true;
+  position->number=-1;position->precedence=high?50:200;
+  if(high) {
+    for(int flag:{0,8,9,12,15,16,28,29})position->flags.set(static_cast<df::entity_position_flags>(flag),true);
+    for(int responsibility:{0,2,10})position->responsibilities[responsibility]=true;
+    position->mandate_max=2;position->demand_max=3;
+  }
+  return position;
+}
 namespace {
 // Shared native first-subject/applicant test used by rendering and recognition.
 // Missing IDs/empty agreements are skipped; malformed owned pointers reject.

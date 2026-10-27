@@ -15,6 +15,34 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 | Animal picker blank right edge lets clicks select the map behind the visible panel, changing the parent zone while assignments still target the original zone. | Consume clicks inside the visible panel while releasing search focus and preserving the picker target. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_blank_input`, native `build/stockpile-storage-native-zone-animals-20261026-150439`, rendered `build/areas-acceptance-20261026-150814`. |
 | Animal picker remains active after selecting another zone or empty terrain, so Enter assigns to an old, no-longer-shown zone. | Close the picker and retire its assignment target when map selection changes. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_outside_panel_selection`, native `build/stockpile-storage-native-zone-animals-20261026-153041`, rendered `build/areas-acceptance-20261026-153847`. |
 
+## Native Location supply editing reference
+
+`fixtures/areas/native_location_supply_edit.json` records43 observations from
+protected `build/stockpile-storage-native-location-supplies-20261026-191813`.
+The new `stockpile_storage_native.ps1 -LocationSupplies` scope opens native
+Details through chooser icons and exercises tavern goblets, hospital thread
+and library copy counts. Clicking the number icon starts with an empty input
+string while retaining the old value until input changes. Digits update the
+semantic field immediately; Enter leaves numeric entry. Three digits are
+accepted, letters/minus are ignored, Backspace updates immediately, and empty
+input writes zero. Plus/minus change one displayed unit and stop at0/999.
+Thread uses15000 raw units per displayed unit. Right-click and simulated
+LEAVESCREEN close Details without undoing typed values; this is not evidence
+for physical Escape/Options routing. DF137712 exits unsaved, source unchanged.
+Core19/19 passes in `build/qa/location-supply-reference`.
+
+Supported-build numeric dispatch at RVA0x8baa33..0x8bab54 reads global Details
+entry scratch, calls text editor0xc396d0 with length3/flags4 and parser0x52c0f0,
+then writes the selected scalar and applies inline field-specific scaling.
+Plus/minus writes are inline in the main input handler0x311c10..0x35f274.
+Neither whole UI handler is a permissible runtime semantic service. The fixture
+pins inspected byte ranges and records the remaining helper ownership audit.
+Other supply fields, partial raw-unit quantities, complete input/side-effect
+coverage, semantic transport and editable Godot controls remain unfinished.
+The existing Details supply/copy display is still read-only. Early diagnostic
+runs with zero matched cases or incorrect chooser coordinates are not accepted
+workflow evidence; the current scope requires all three workflows and43 records.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

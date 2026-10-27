@@ -161,6 +161,7 @@ func pointer_areas() -> void:
 				if disconnect_mode!="none":
 					await pointer_squad_disconnect(id,disconnect_mode)
 					if stopped:return
+					if disconnect_mode=="restart":await native("final");return
 					await native("remove_target",{"id":id});await native("removed",{"id":id});await native("final");return
 				await click_control(editor.zone_menu.controls.remove)
 				if not await wait_ui(func():return settled() and editor.selected.is_empty(),"remove squad test zone"):return
@@ -314,7 +315,7 @@ func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
 	var ticket:int=editor.request_ticket
 	if not check(ticket>0,"disconnect mutation not queued"):return
 	var expected_use:=0
-	if disconnect_mode=="sent":
+	if disconnect_mode in ["sent","restart"]:
 		var send_deadline:=Time.get_ticks_msec()+30000
 		while actions._requests.has(ticket) and int(actions._requests[ticket].sequence)==0 and Time.get_ticks_msec()<send_deadline:
 			world.poll();actions.poll()
@@ -331,6 +332,9 @@ func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
 		if not check(not reply.is_empty() and actions.result(ticket).is_empty(),"missing unobserved native receipt"):return
 		write_json("squad-unobserved-receipt.json",reply);expected_use=2
 	await native("squad",{"id":id,"squad_id":target_id,"use":expected_use})
+	if disconnect_mode=="restart":
+		await pointer_squad_restart(id,target_id,ticket)
+		return
 	world.detach_live();actions.poll()
 	var outcome:Dictionary=actions.result(ticket)
 	write_json("squad-disconnect-outcome.json",outcome)
@@ -369,6 +373,82 @@ func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
 	await capture("squad_reconnected_reopened")
 	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
 	if not check(not view.visible and settled(),"reopened squad picker did not dismiss"):return
+
+func pointer_squad_restart(id: int, target_id: int, ticket: int) -> void:
+	var old_epoch:int=world.poll_session().get("fortress_epoch",0)
+	var old_generation:int=world.session_generation()
+	handshake+=1
+	write_json("request-%d.json"%handshake,{"op":"reload"})
+	var file:=FileAccess.open(directory+"/verify.tmp",FileAccess.WRITE)
+	file.store_string(str(handshake));file.close()
+	if not check(DirAccess.rename_absolute(directory+"/verify.tmp",directory+"/verify.txt")==OK,"squad restart handshake failed"):return
+	var deadline:=Time.get_ticks_msec()+690000
+	var ack:Dictionary={}
+	var lost:=false
+	while ack.is_empty() and Time.get_ticks_msec()<deadline:
+		world.poll_session()
+		var header:Dictionary=world.poll_management_header()
+		# Preserve the unobserved success until actual producer loss.
+		lost=lost or not bool(header.get("transport_alive",true)) or world.session_generation()!=old_generation or int(header.get("world_epoch",old_epoch)) not in [0,old_epoch]
+		if lost:actions.poll(0.02);editor._process(0.02)
+		for state in ["failed","incomplete","ack"]:
+			var path:=directory+"/%s-%d"%[state,handshake]
+			if not FileAccess.file_exists(path):continue
+			var reply:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
+			if state=="failed":check(false,"squad restart: "+str(reply.reason));return
+			if state=="incomplete":incomplete("squad restart: "+str(reply.reason),true);return
+			ack=reply
+		await create_timer(0.02).timeout
+	if not check(not ack.is_empty(),"squad restart timed out"):return
+	var epoch:=int(str(ack.epoch))
+	if not check(epoch!=old_epoch and (epoch>>32)==int(ack.pid),"replacement squad epoch invalid"):return
+	deadline=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll_session();actions.poll(0.02);editor._process(0.02)
+		if actions._epoch==epoch and actions._active==0 and actions._queue.is_empty():break
+		await create_timer(0.02).timeout
+	if not check(lost and actions._epoch==epoch,"replacement squad service not ready"):return
+	var outcome:Dictionary=actions.result(ticket)
+	write_json("squad-restart-outcome.json",outcome)
+	write_json("squad-restart.json",{"old_epoch":str(old_epoch),"new_epoch":str(epoch),"old_generation":old_generation,"new_generation":world.session_generation(),"pid":ack.pid})
+	if not check(outcome.get("outcome")=="unknown" and not actions._requests.has(ticket) and editor.request_ticket==0 and editor.selected.is_empty() and editor.candidates_state.area.is_empty() and not editor.candidates_view.visible,"restart retained squad authority"):return
+	var count:int=area_receipts().size()
+	for frame in 30:
+		actions.poll(0.02);editor._process(0.02);await process_frame
+	if not check(area_receipts().size()==count and editor.request_ticket==0,"restart replayed area work"):return
+	await native("removed",{"id":id})
+	fixture=JSON.parse_string(FileAccess.get_file_as_string(directory+"/fixture.json"))
+	deadline=Time.get_ticks_msec()+120000
+	while not scene._loader.entered and Time.get_ticks_msec()<deadline:
+		actions.poll(0.02);editor._process(0.02);await create_timer(0.02).timeout
+	if not check(scene._loader.entered,"replacement scene did not finish loading"):return
+	var p:Dictionary=fixture.origin
+	var tile:=Vector3i(int(p.x)+8,int(p.y)+8,int(p.z))
+	world.set_top_z(tile.z)
+	scene.camera_rig.focus_on(Vector3(tile.x+0.5,tile.z+1.0,tile.y+0.5),30)
+	var launcher:Button=scene._fortress_hud.navigation.Zones
+	launcher.show();await click_control(launcher,true)
+	if not await wait_ui(func():return editor.available and editor.panel.visible and settled(),"replacement Zones launcher"):return
+	var zone:String=JSON.parse_string(FileAccess.get_file_as_string(directory+"/zone-squads-only.json")).zone
+	await click_control(editor.zone_menu.buttons[zone])
+	for corner in 2:
+		await pointer_click(tile_screen(tile))
+		if not await wait_ui(settled,"replacement zone corner"):return
+	await click_control(editor.paint_view.accept_button)
+	if not await wait_ui(func():return settled() and not editor.selected.is_empty(),"replacement zone create"):return
+	var fresh_id:int=editor.selected.id
+	await click_control(editor.zone_menu.controls.squads)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and editor.candidates_state.rows.size()==25 and editor.candidates_state.cursor==0,"replacement squad list"):return
+	var fresh:Dictionary={}
+	for row in editor.candidates_state.rows:
+		if int(row.id)==target_id:fresh=row;break
+	if not check(not fresh.is_empty() and int(fresh.squad_use)==0 and editor.candidates_state.squad_first==0,"replacement inherited old squad assignment"):return
+	await native("squad",{"id":fresh_id,"squad_id":target_id,"use":0,"never_assigned":true})
+	await capture("squad_restart_reopened")
+	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
+	await click_control(editor.zone_menu.controls.remove)
+	if not await wait_ui(func():return settled() and editor.selected.is_empty(),"replacement zone removal"):return
+	await native("removed",{"id":fresh_id})
 
 func pointer_animal_disconnect(id: int, disconnect_mode: String) -> void:
 	step="animal "+disconnect_mode+" disconnect"

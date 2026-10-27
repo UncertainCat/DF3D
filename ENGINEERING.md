@@ -2781,7 +2781,25 @@ known rendering-thread notice. Core passes in `build/qa/squad-reconnect-reopen`.
 The harness waits for the assignment's actual send behind background requests
 and scopes no-replay accounting to area actions and picker ownership. Initial
 145023 and145134 failed those older global-queue assumptions and are not accepted
-runs. Product code is unchanged. Producer restart remains unverified here.
+runs. Product code is unchanged.
+
+`-SquadDisconnect restart` holds a completed assignment receipt until actual
+producer loss, then uses the protected lane's replacement handshake. Barracks
+run `areas-acceptance-20261027-150012` passes: DF169108 is replaced by145772 with
+a new epoch/generation, the old receipt becomes unknown, picker authority
+retires, and no area work is issued during the post-replacement idle check.
+Native readback confirms the unsaved old zone is absent. After the replacement
+scene finishes loading, actual viewport input creates a fresh zone and opens
+25 candidates at row0; both semantic rows and native reciprocal records confirm
+no inherited assignment. The fresh zone is removed through the UI. The reopened
+capture was inspected. All1,368 save-file hashes match across restart, both save
+manifests remain unchanged, and the owned replacement exits unsaved. The live
+result is passed_with_known_issues (only the rendering-thread notice); core is
+clean in `build/qa/squad-producer-restart`. Archery-specific producer replacement
+has not been run. Initial145650 tried reopening before scene readiness;145822
+used the cleared-assignment verifier for a never-assigned zone. Neither is
+acceptance. The verifier now distinguishes an absent fresh zone-side record
+from native's retained zero-use record after clearing an assignment.
 
 ## Animal keyboard activation and portrait reference
 

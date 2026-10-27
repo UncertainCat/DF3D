@@ -944,7 +944,10 @@ elseif request.op=='squad' then
  local b,s=building(),assert(df.squad.find(request.squad_id));local n,m=0,0
  for _,r in ipairs(b.squad_room_info) do if r.squad_id==s.id then n=n+1;assert(r.mode.whole==request.use,'zone squad use') end end
  for _,r in ipairs(s.rooms) do if r.building_id==b.id then m=m+1;assert(r.mode.whole==request.use,'squad room use') end end
- local count=request.use==0 and 0 or 1;assert(n==1 and m==count,'native squad reciprocal membership')
+ local count=request.use==0 and 0 or 1
+ local zone_count=request.never_assigned and 0 or 1
+ if request.never_assigned then assert(request.use==0,'fresh squad must be unassigned')end
+ assert(n==zone_count and m==count,'native squad reciprocal membership')
  if _G.df3d_squad_racks then result.rack_effects=squad_racks.verify(s.id,request.use)end
 elseif request.op=='pile_link' then
  local source,target=building(),assert(df.building.find(request.target_id))

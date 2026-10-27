@@ -9,6 +9,8 @@ const ACCESS_HELP = [
 	["This option indicates","that the location is","only open to members."]]
 const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature."]
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
+# Native staffindicators091520 text-cell captures; remaining roles need captures.
+const STAFF_HELP={"performer":["This creature is a","performer."],"work_detail":["This creature is","assigned to a work","detail."]}
 # Native specializationhover085117, hover259/260, exact24-cell wrapping.
 const SPECIALIZATION_HELP = [
 	["This worker is not","specialized and will do","any free tasks that","become available.","Click to toggle."],
@@ -44,6 +46,9 @@ func enter_access(owner: int, mode: int) -> void:
 
 func enter_specialization(owner: int, specialized: bool) -> void:
 	state.enter(owner,"specialization_"+str(int(specialized)),Time.get_ticks_msec());_process(0)
+
+func enter_staff_indicator(owner: int, kind: String) -> void:
+	if STAFF_HELP.has(kind):state.enter(owner,"staff_"+kind,Time.get_ticks_msec());_process(0)
 
 func leave(owner: int) -> void:
 	if widget_owner==owner: widget_owner=0
@@ -89,6 +94,7 @@ func _draw() -> void:
 			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2(0 if x==0 else 8,frame_y,8,12))
 	var lines: Array
 	if displayed.begins_with("specialization_"): lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("specialization_"))]
+	elif displayed.begins_with("staff_"): lines=STAFF_HELP[displayed.trim_prefix("staff_")]
 	elif displayed.begins_with("squad_"): lines=SQUAD_HELP[int(displayed.trim_prefix("squad_"))]
 	elif displayed.begins_with("containment_"): lines=CONTAINMENT_HELP[int(displayed.trim_prefix("containment_"))-1]
 	else: lines=OWNER_RECENTER_HELP if displayed=="owner_recenter" else (OWNER_FILTER_HELP if displayed=="owner_filter" else ACCESS_HELP[int(displayed)])

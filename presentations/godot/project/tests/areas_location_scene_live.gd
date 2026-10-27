@@ -1655,6 +1655,18 @@ func specialization_scene() -> void:
 		for i in view.rows.size():
 			if int(view.rows[i].get("names",{}).get("holder_id",-1))==int(change.unit_id):row=view.rows[i];row_index=i;break
 		if not check(row_index>=view.first,"specialization row absent"):return
+		if not await wait_ui(func():return not details.assignments_reader.receipt(row).is_empty(),"assignment indicator receipt"):return
+		var assigned: Dictionary=details.assignments_reader.receipt(row)
+		var expected_assignments:=await native("religious_assignments",{"unit_id":change.unit_id})
+		if not check(assigned.entries.size()==expected_assignments.entries.size(),"visible assignment count"):return
+		for i in assigned.entries.size():
+			for key in ["kind","id","type","subtype","custom","name","custom_code"]:
+				if not check(assigned.entries[i][key]==expected_assignments.entries[i][key],"visible assignment native field "+key):return
+		var indicator_point: Vector2=view.global_position+Vector2((view.row_columns()-20)*8+16,(int(view.geometry.first_y)-6+(row_index-view.first)*3)*12+18)
+		var indicator_hover:=InputEventMouseMotion.new();indicator_hover.position=indicator_point;indicator_hover.global_position=indicator_point;root.push_input(indicator_hover,true)
+		await create_timer(0.65).timeout
+		if not check(view.hover_help.displayed==("staff_work_detail" if int(change.unit_id)==5813 else "staff_performer"),"visible assignment tooltip"):return
+		await capture("assignment_%d"%int(change.unit_id))
 		if not await wait_ui(func():return reader.receipt(row).get("eligible",false),"specialization displayed receipt"):return
 		if not check(reader.receipt(row).specialized==change.before.specialized,"specialization initial displayed state"):return
 		var point: Vector2=view.global_position+view.specialization_rect(row_index-view.first).get_center()

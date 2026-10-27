@@ -20,6 +20,8 @@ var unit_icons: Dictionary={}
 var icon_elapsed:=0.0
 var picture_frame=preload("res://scripts/native_unit_picture_frame.gd").new()
 var specialization_reader
+var assignments_reader
+const Indicators=preload("res://scripts/location_staff_indicators.gd")
 var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
@@ -30,6 +32,10 @@ func visible_rows() -> Array:
 func specialization_rect(index: int) -> Rect2:
 	# Native3b154b/3b857e: rightmost row cell minus23, four by three cells.
 	return Rect2((row_columns()-24)*8,(int(geometry.first_y)-6+index*3)*12,32,36)
+
+func assignment_slots(row: Dictionary) -> Array:
+	if assignments_reader==null:return []
+	return Indicators.slots(assignments_reader.receipt(row).get("entries",[]),row_columns())
 
 func configure(source, help=null) -> void:
 	hover_help=help
@@ -113,6 +119,12 @@ func update_specialization_hover() -> void:
 				var facts: Dictionary=specialization_reader.receipt(rows[first+index])
 				if facts.get("eligible",false):
 					hover_help.enter_specialization(get_instance_id(),facts.specialized);return
+	if pointer_known and is_visible_in_tree() and not geometry.is_empty():
+		for index in int(geometry.visible_count):
+			for slot in assignment_slots(rows[first+index]):
+				var region:=Rect2(slot.column*8,(int(geometry.first_y)-6+index*3)*12,32,36)
+				if not slot.help.is_empty() and region.has_point(pointer_position):
+					hover_help.enter_staff_indicator(get_instance_id(),slot.help);return
 	hover_help.leave(get_instance_id())
 
 func _leave_specialization_hover() -> void:
@@ -190,6 +202,17 @@ func _draw() -> void:
 					for y in 3:
 						for x in 4:draw_texture_rect_region(background,Rect2(region.position+Vector2(x*8,y*12),Vector2(8,12)),Rect2(8,y*12,8,12))
 				if worker!=null:draw_texture_rect(worker,region,false)
+		for slot in assignment_slots(row):
+			if slot.token.is_empty():continue
+			var indicator: Texture2D=art.texture(slot.token)
+			if indicator==null and not slot.fallback.is_empty():indicator=art.texture(slot.fallback)
+			if indicator==null:continue
+			var region:=Rect2(top+Vector2(slot.column*8,0),Vector2(32,36))
+			if background!=null:
+				for y in 3:
+					for x in 4:draw_texture_rect_region(background,Rect2(region.position+Vector2(x*8,y*12),Vector2(8,12)),Rect2(8,y*12,8,12))
+			if slot.building:region=Rect2(region.position+Vector2(0,2),Vector2(32,32))
+			draw_texture_rect(indicator,region,false)
 		if int(row.get("unit_id",-1))>=0 or int(row.get("histfig_id",-1))>=0:
 			# Native232551: four cells at the right edge of the row, before
 			# the scrollbar when present. Religious holders use the same art.

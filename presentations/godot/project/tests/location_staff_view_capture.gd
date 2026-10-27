@@ -6,6 +6,12 @@ class Receipts:
  func receipt(row: Dictionary) -> Dictionary:return values.get(row.names.holder_id,{})
 var removed: Array=[]
 var specialized: Array=[]
+func check_indicator_crops(image: Image, reference: Dictionary) -> void:
+ for sample in reference.crops:
+  var r: Array=sample.rect
+  var crop:=image.get_region(Rect2i(int(r[0]),int(r[1]),int(r[2]),int(r[3])));crop.convert(Image.FORMAT_RGB8)
+  var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
+  assert(hash.finish().hex_encode()==sample.sha256,"native indicator crop "+sample.name)
 func click(point: Vector2) -> void:
  for pressed in [true,false]:
   var event:=InputEventMouseButton.new();event.position=point;event.global_position=point
@@ -78,6 +84,26 @@ func run() -> void:
  assert(specialized.size()==2 and specialized[0].row.names.holder_id==5813 and specialized[0].facts.specialized and specialized[1].row.names.holder_id==6536 and not specialized[1].facts.specialized,"native specialization row hitboxes")
  view.actions_enabled=false;await click(Vector2(784,358));assert(specialized.size()==2,"disabled gesture")
  view.actions_enabled=true;receipts.values[5813].eligible=false;await click(Vector2(784,358));assert(specialized.size()==2,"native ineligibility prevents gesture")
+ var assignment_receipts=Receipts.new();view.assignments_reader=assignment_receipts
+ var assignments: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json"))
+ for sample in assignments.staff_indicator_reference.semantic_reference.all_sources:
+  assignment_receipts.values[int(sample.unit_id)]=numbers(sample.duplicate(true))
+ view.queue_redraw()
+ for i in 2:await process_frame;await RenderingServer.frame_post_draw
+ root.get_texture().get_image().save_png(directory.path_join("assignments.png"))
+ check_indicator_crops(root.get_texture().get_image(),assignments.staff_indicator_reference.render_reference)
+ var slots: Array=view.assignment_slots(view.rows[1])
+ assert(slots.size()==4 and slots[0].column==52 and slots[3].column==64,"native four indicator slots")
+ var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.configure(world);help.layout(Vector2(1200,800));view.hover_help=help
+ for point in [Vector2(816,394),Vector2(816,358)]:
+  var move:=InputEventMouseMotion.new();move.position=point;move.global_position=point;root.push_input(move,true)
+  await create_timer(0.6).timeout;await process_frame;await RenderingServer.frame_post_draw
+  assert(help.displayed==("staff_performer" if point.y==394 else "staff_work_detail"),"approved visible indicator hover")
+  root.get_texture().get_image().save_png(directory.path_join("assignment_hover_%d.png"%int(point.y)))
+  check_indicator_crops(root.get_texture().get_image(),assignments.staff_indicator_reference.render_reference)
+ var portrait:=InputEventMouseMotion.new();portrait.position=Vector2(592,394);portrait.global_position=portrait.position;root.push_input(portrait,true)
+ await process_frame
+ assert(not help.displayed.begins_with("staff_"),"portrait does not activate assignment help")
  receipts.values.clear();await click(Vector2(784,394));assert(specialized.size()==2,"missing receipt prevents gesture")
  view.display({})
  if not view.rows.is_empty() or not view.geometry.is_empty():push_error("Staff close retained facts");quit(1);return

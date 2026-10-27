@@ -12,6 +12,7 @@ var access_view
 var quantity_view
 var staff_view
 var specialization_reader=preload("res://scripts/location_specialization_reader.gd").new()
+var assignments_reader=preload("res://scripts/location_staff_assignments_reader.gd").new()
 var specialization_workflow=preload("res://scripts/location_specialization_workflow.gd").new()
 var religious_staff_workflow=preload("res://scripts/location_religious_staff_workflow.gd").new()
 var religious_assignment_workflow=preload("res://scripts/location_religious_assignment_workflow.gd").new()
@@ -39,6 +40,8 @@ func configure(source, model, help=null) -> void:
 	staff_view=preload("res://scripts/location_staff_view.gd").new();add_child(staff_view);staff_view.configure(source,help)
 	specialization_reader.configure(model);staff_view.specialization_reader=specialization_reader
 	specialization_reader.changed.connect(staff_view.queue_redraw)
+	assignments_reader.configure(model);staff_view.assignments_reader=assignments_reader
+	assignments_reader.changed.connect(staff_view.queue_redraw)
 	specialization_workflow.configure(model)
 	staff_view.specialization_requested.connect(toggle_specialization)
 	access_view=preload("res://scripts/location_access_view.gd").new();add_child(access_view);access_view.configure(source,model,help)
@@ -81,7 +84,10 @@ func _process(_delta: float) -> void:
 	if state==null or staff_view==null:return
 	if is_visible_in_tree() and staff_view.visible and state.phase==state.Phase.Ready:
 		specialization_reader.display(staff_view.visible_rows())
-	elif not specialization_reader.owner.is_empty():specialization_reader.clear()
+		assignments_reader.display(staff_view.visible_rows())
+	else:
+		if not specialization_reader.owner.is_empty():specialization_reader.clear()
+		if not assignments_reader.owner.is_empty():assignments_reader.clear()
 
 func toggle_specialization(row: Dictionary, displayed: Dictionary) -> void:
 	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or religious_assignment_active() or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
@@ -158,6 +164,8 @@ func refresh() -> void:
 	queue_redraw()
 
 func _exit_tree() -> void:
+	if assignments_reader.changed.is_connected(staff_view.queue_redraw):assignments_reader.changed.disconnect(staff_view.queue_redraw)
+	assignments_reader.dispose()
 	if specialization_reader.changed.is_connected(staff_view.queue_redraw):specialization_reader.changed.disconnect(staff_view.queue_redraw)
 	specialization_reader.dispose();specialization_workflow.dispose()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

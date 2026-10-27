@@ -8,6 +8,13 @@ func run() -> void:
 	if not assets.load_assets(OS.get_environment("DF3D_DF_PATH")):quit(1);return
 	var view=View.new();root.add_child(view);view.configure(assets);view.layout(Vector2(1200,800))
 	var data: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_petition_tracker.json"))
+	for sample in data.name_render_reference.cases:
+		var row: Dictionary={}
+		for value in sample.rows:
+			if value.agreement_id==sample.details.agreement_id:row=value
+		data.popup_render_reference.cases.append({"name":sample.name,"row":row})
+		data.popup_provider_reference.cases.append({"name":sample.name,"facts":sample.details})
+		data.popup_reference.cases.append({"name":sample.name,"text_runs":sample.popup_text_runs})
 	var frame: Image=assets.ui_texture("HOVER_RECTANGLE").get_image()
 	var right: Image=assets.ui_texture("HOVER_RECTANGLE_JOIN_E_SE").get_image()
 	var font:=Image.load_from_file(assets.ui_font_path())

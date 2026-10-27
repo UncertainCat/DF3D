@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "continuing_agreements_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/continuing_agreements_view_capture.gd",
+      "completion": "CONTINUING_AGREEMENTS_VIEW_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "continuing_agreement_popup_view_capture",
       "lane": "gpu",
       "kind": "godot",

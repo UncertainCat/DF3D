@@ -640,7 +640,10 @@ if recognition_case=='petitiontracker' then
     local text={};local y=19+(index-1)*4+offset-1
     for x=124,147 do local ch=dfhack.screen.readTile(x,y).ch&255;text[#text+1]=ch==0 and ' ' or string.char(ch)end
     local actual=dfhack.df2utf(table.concat(text)):gsub('%s+$','')
-    assert(actual==facts[field],'tracker native text mismatch '..label..' '..index..' '..field..' '..actual..' / '..facts[field])
+    local expected=dfhack.utf2df(facts[field])
+    if #expected>=23 then expected=expected:sub(1,19)..'...'end
+    expected=dfhack.df2utf(expected)
+    assert(actual==expected,'tracker native text mismatch '..label..' '..index..' '..field..' '..actual..' / '..expected)
    end
   end
   return row
@@ -766,6 +769,20 @@ if recognition_case=='petitiontracker' then
  assert(site.buildings[#site.buildings-1]==second);site.buildings:erase(#site.buildings-1)
  df.delete(second);second=nil;guild_lookup_probe=nil
  a.parties[0].entity_ids[0]=religion.id;location.type=df.abstract_building_type.TEMPLE;location.profession=df.profession.FARMER;location.tier=2
+ -- Owned unsaved reference: exercise both native truncation boundaries and
+ -- CP437 glyphs without replacing the religion's identity or semantic links.
+ local original_name=name_value(religion.name)
+ religion.name.nickname='';religion.name.has_name=true
+ for i=0,6 do religion.name.words[i]=-1 end
+ for _,case in ipairs{{'name22',string.rep('a',22)},{'name23',string.rep('a',23)},
+  {'name54',string.rep('a',54)},{'name55',string.rep('a',55)},
+  {'name-cp437',string.char(130,129,135)..' diagnostic'}}do
+  religion.name.first_name=case[2];map_hover({case[1],1070,298})
+ end
+ religion.name.first_name=original_name.first_name;religion.name.nickname=original_name.nickname
+ religion.name.language=original_name.language;religion.name.type=original_name.type;religion.name.has_name=original_name.has_name
+ for i=0,6 do religion.name.words[i]=original_name.words[i+1];religion.name.parts_of_speech[i]=original_name.parts_of_speech[i+1]end
+ assert(require('json').encode(name_value(religion.name))==require('json').encode(original_name),'tracker name reference restoration differs')
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.
  -- Remove each owned pointer before destroying its allocation.

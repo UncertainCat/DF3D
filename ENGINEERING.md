@@ -1260,9 +1260,29 @@ multiple locations and guild/temple completion colors. It passes in
 `build/qa/petition-popup-view-fixed` with known render-thread/device-finalize/
 shutdown-object diagnostics. This is a cell-and-installed-art oracle, not an OS
 screenshot comparison; the original capture omitted the leftmost frame column.
-Long/non-ASCII names still need native reference coverage. The tracker list
-renderer, HUD visibility, hover timing, resize/overflow and input integration
-remain unfinished; the isolated popup is not exposed in gameplay.
+`continuing_agreements_view.gd` renders the list from native row text and order,
+including blank unsupported applicant slots. Native3f6834 sizes the frame in
+four-row increments beneath row18 and clamps it above the bottom toolbar.
+The last-column coordinate base places a150-column viewport's frame at122..147
+and text at124. Native3f9b30 and corresponding temple/date paths shorten strings
+of23 or more CP437 characters to the first19 plus three periods. The local
+hit lookup covers each slot's three text rows, including blank applicants,
+and excludes separators. It does not dispatch clicks or activate a reader.
+
+`tracker_render_reference` retains provider inputs and independent frame/text
+cells from110336. Its GPU check covers all32 recorded states, comparing every
+pixel of captured columns123..147 through the actual frame bottom; the original
+capture omitted leftmost column122. Protected native122649 adds five controlled
+religion names at22/23 and54/55 characters and with accented CP437 glyphs. The
+original name is restored before cleanup, all69 records pass, source hashes
+remain unchanged and owned DF162508 exits unsaved. `name_render_reference`
+retains the independent provider rows and native cells. Both renderer checks
+include these cases:37 list and35 popup comparisons pass in
+`build/qa/petition-tracker-names`, with only the documented render-thread,
+device-finalize and shutdown-object diagnostics; core passes cleanly. This
+verifies applicant truncation and accented names, not arbitrary long location
+names. HUD visibility, hover timing, resize/overflow and input integration
+remain unfinished; the isolated views are not exposed in gameplay.
 
 ## Native Location name editor discovery
 

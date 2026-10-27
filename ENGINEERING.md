@@ -169,12 +169,12 @@ Modified-key/clipboard input remains outside this evidence.
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout
 reference needed to implement the unfinished Details rename action. Protected
 `stockpile_storage_native.ps1 -LocationNames` run
-`build/stockpile-storage-native-location-names-20261026-213607` captures88 states:
+`build/stockpile-storage-native-location-names-20261026-213908` captures89 states:
 entry/Back across six locations, all seven tavern components' Clear/word/Random
 actions, filter focus/ALE/AL/Enter, edited Back/reopen and whole-name Random/Done
 for all six locations, plus filtered/empty lists across all seven components and
 cross-component Random. Entry alone preserves names; changes apply immediately
-and both Back and Done retain them. DF132948 exits unsaved, source unchanged.
+and both Back and Done retain them. DF125096 exits unsaved, source unchanged.
 
 The rename icon opens `name_creator` in LOCATION_NAME context3 with a pointer to
 the selected location's language_name and namer entity245 in this fixture.
@@ -199,7 +199,7 @@ against pinned0x1fc330; the provider never calls that UI helper. The protected
 word/part-of-speech pairs and English forms across30 native cases and leaves the
 main-interface and GPS structures unchanged. AL counts across components are
 139,211,81,81,40,112,121; ZZZZ produces seven empty lists.
-MSVC and core19/19 pass (`build/qa/location-name-generate`). Management70 remains unchanged; no product
+MSVC and core19/19 pass (`build/qa/location-name-generate-edges`). Management70 remains unchanged; no product
 transport or rename control is exposed yet.
 
 Capture found a DFHack binding error: name_creator.word_index_asp is declared
@@ -224,12 +224,15 @@ an exhausted cursor2496 refills to cursor4 with identical state. Location writes
 remain unfinished; this diagnostic selection capability does not expose a Random UI.
 `generateNativeLocationName` calls native entity wrapper931860/core generator
 a92860 with an owned language_name copy, fortress civilization and the native
-location-kind category. Six native Random comparisons match every structured
+location-kind category. Seven native Random comparisons match every structured
 name field and complete RNG state, while bridge calls leave UI/GPS, original
 name, entity and entity-raw object bytes unchanged. Seven native routine pins
 cover generator branches, reset, language lookup, RNG and word selection. The
-special-race first-name branch is statically audited but not separately exercised
-by this fixture civilization; invalid-identity coverage also remains. The
+special-race first-name branch is exercised by temporarily enabling the current
+race's HAS_ANY_UTTERANCES flag in the owned paused diagnostic, restoring it before
+ordinary naming. Both paths produce the same first name and cleared word fields.
+Four invalid/non-current target cases per comparison (28 total) reject without
+consuming RNG. This fixture manipulation never occurs in runtime code. The
 protected diagnostic returns a generated value without writing a location.
 Random with an empty list, scrolling, physical Escape, native
 language display columns, typed mutations and the rendered editor remain

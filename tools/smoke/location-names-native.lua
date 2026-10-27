@@ -119,6 +119,13 @@ local function random_whole(label,location)
   local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
   guards[#guards+1]={bytes=bytes,address=at,size=n}
  end
+ local rejected=0
+ for _,ids in ipairs{{-1,location.id},{df.global.plotinfo.site_id,-1},{df.global.plotinfo.site_id,2147483647},{df.global.plotinfo.site_id+1,location.id}}do
+  local bad_text,bad_code=dfhack.run_command_silent('df3d','location-name-generate',tostring(ids[1]),tostring(ids[2]))
+  assert(bad_code==0 and not require('json').decode(bad_text).valid,'invalid naming target accepted')
+  assert(require('json').encode(before)==require('json').encode(rng_snapshot()),'invalid target consumed RNG')
+  rejected=rejected+1
+ end
  local text,code=dfhack.run_command_silent('df3d','location-name-generate',tostring(df.global.plotinfo.site_id),tostring(location.id))
  assert(code==0,text);local generated=require('json').decode(text)
  assert(generated.valid,'native whole-name generation rejected')
@@ -134,7 +141,8 @@ local function random_whole(label,location)
  native.first_name=dfhack.df2utf(native.first_name);native.nickname=dfhack.df2utf(native.nickname)
  assert(require('json').encode(generated.name)==require('json').encode(native),'whole-name value mismatch')
  local row=capture(label,location)
- row.bridge_generation={rng_identical=true,name_identical=true,ui_name_entity_unchanged=true,namer_id=creator.namer.id}
+ row.bridge_generation={rng_identical=true,name_identical=true,ui_name_entity_unchanged=true,namer_id=creator.namer.id,invalid_targets_rejected_without_rng=rejected}
+ return row
 end
 m.bottom_mode_selected=-1;key('D_CIVZONE');m.civzone.cur_bld=assert(df.building.find(23));view:render(dfhack.getTickCount())
 pixel(336,190);local selector=m.location_selector;assert(selector.open,'chooser did not open')
@@ -204,6 +212,21 @@ for i,location in ipairs(choices)do
   assert(not creator.open and details.open,'edited name Back did not return')
   pixel(944,82);capture(prefix..'-edited-reopen',location)
  end
+ if i==1 then
+  -- Owned, paused diagnostic: exercise the native utterance-name branch and
+  -- restore the creature raw flag before ordinary naming/exit. Never a product input.
+  local race=df.global.world.raws.creatures.all[creator.namer.race]
+  local original=race.flags.HAS_ANY_UTTERANCES
+  race.flags.HAS_ANY_UTTERANCES=true
+  local ok,err=xpcall(function()
+   local row=random_whole(prefix..'-utterance-random',location)
+   assert(row.name_value.first_name~='' and row.name_value.language==-1,'utterance branch not exercised')
+   row.bridge_generation.utterance_branch=true
+  end,debug.traceback)
+  race.flags.HAS_ANY_UTTERANCES=original
+  assert(race.flags.HAS_ANY_UTTERANCES==original,'utterance flag restore failed')
+  assert(ok,err)
+ end
  random_whole(prefix..'-whole-random',location)
  pixel(912,82);capture(prefix..'-done',location)
  assert(not creator.open and details.open,'Done did not return to Details')
@@ -211,4 +234,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==88,'incomplete name mutation/filter reference')
+assert(#records==89,'incomplete name mutation/filter reference')

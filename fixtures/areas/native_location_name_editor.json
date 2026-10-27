@@ -1,12 +1,12 @@
 {
   "provenance": {
-    "run": "build/stockpile-storage-native-location-names-20261026-213607",
-    "result_sha256": "df65df96b6cde2b4df4e890c4987e3a8dd706d035f27afd76dc4a31267989178",
+    "run": "build/stockpile-storage-native-location-names-20261026-213908",
+    "result_sha256": "6f01cfd1fc184cef1f6fe05e97b4addbf7d620772e6291fb6d586794e474a394",
     "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
     "bridge_sha256": "7a2b05ada4372213d79ede941ea5e0548296e2574837215b701aebef4206de96",
     "source_save_unchanged": true,
     "unsaved_exit": true,
-    "scope": "88 native observations: six location entry/Back and whole-name Random/Done/reopen; seven tavern component select/Clear/word/Random workflows; filter input and all-component AL/ZZZZ matrices; filtered cross-component Random, singleton and RNG-refill cases. 30 complete word comparisons, 36761 ordered pairs and English forms, and 10 Random comparisons; main-interface/GPS unchanged."
+    "scope": "89 native observations: six location entry/Back and whole-name Random/Done/reopen; seven tavern component select/Clear/word/Random workflows; filter input and all-component AL/ZZZZ matrices; filtered cross-component Random, singleton and RNG-refill cases. 30 complete word comparisons, 36761 ordered pairs and English forms, and 10 Random comparisons; main-interface/GPS unchanged."
   },
   "observations": [
     {
@@ -814,6 +814,58 @@
     },
     {
       "bridge_generation": {
+        "invalid_targets_rejected_without_rng": 4,
+        "name_identical": true,
+        "namer_id": 245,
+        "rng_identical": true,
+        "ui_name_entity_unchanged": true,
+        "utterance_branch": true
+      },
+      "context": 3,
+      "creator_open": true,
+      "details_open": true,
+      "direct_name_target": true,
+      "entering_filter": false,
+      "entering_first_name": false,
+      "filter": "",
+      "id": 0,
+      "kind": "TEMPLE",
+      "name": "TEMPLE-0-utterance-random",
+      "name_place": 0,
+      "name_type": 21,
+      "name_value": {
+        "first_name": "Krombin",
+        "has_name": true,
+        "language": -1,
+        "nickname": "",
+        "parts_of_speech": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "type": -1,
+        "words": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1
+        ]
+      },
+      "namer_id": 245,
+      "word_count": 3217,
+      "word_place": 0,
+      "word_choices_sample": "4fae1cec9858342d96953707355b4605c1e6e173f3c90042e8c7a3ada90e2daf"
+    },
+    {
+      "bridge_generation": {
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -839,7 +891,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -849,11 +901,11 @@
         "words": [
           -1,
           -1,
+          1823,
           -1,
           -1,
-          -1,
-          1443,
-          1929
+          0,
+          -1
         ]
       },
       "namer_id": 245,
@@ -882,7 +934,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -892,11 +944,11 @@
         "words": [
           -1,
           -1,
+          1823,
           -1,
           -1,
-          -1,
-          1443,
-          1929
+          0,
+          -1
         ]
       },
       "namer_id": 245,
@@ -925,7 +977,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -935,11 +987,11 @@
         "words": [
           -1,
           -1,
+          1823,
           -1,
           -1,
-          -1,
-          1443,
-          1929
+          0,
+          -1
         ]
       },
       "namer_id": 245,
@@ -1081,14 +1133,14 @@
     },
     {
       "bridge_random": {
-        "cursor_after": 32,
-        "cursor_before": 28,
+        "cursor_after": 60,
+        "cursor_before": 56,
         "displayed_component": 0,
-        "part": 1,
+        "part": 0,
         "rng_identical": true,
         "target": 0,
         "ui_and_name_unchanged": true,
-        "word": 1117
+        "word": 156
       },
       "context": 3,
       "creator_open": true,
@@ -1108,7 +1160,7 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
+          0,
           0,
           2,
           0,
@@ -1118,7 +1170,7 @@
         ],
         "type": 28,
         "words": [
-          1117,
+          156,
           -1,
           1612,
           -1,
@@ -1154,7 +1206,7 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
+          0,
           0,
           2,
           0,
@@ -1164,7 +1216,7 @@
         ],
         "type": 28,
         "words": [
-          1117,
+          156,
           -1,
           1612,
           -1,
@@ -1197,7 +1249,7 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
+          0,
           0,
           2,
           0,
@@ -1207,7 +1259,7 @@
         ],
         "type": 28,
         "words": [
-          1117,
+          156,
           -1,
           1612,
           -1,
@@ -1240,7 +1292,7 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
+          0,
           0,
           2,
           0,
@@ -1250,7 +1302,7 @@
         ],
         "type": 28,
         "words": [
-          1117,
+          156,
           0,
           1612,
           -1,
@@ -1266,14 +1318,14 @@
     },
     {
       "bridge_random": {
-        "cursor_after": 36,
-        "cursor_before": 32,
+        "cursor_after": 64,
+        "cursor_before": 60,
         "displayed_component": 1,
-        "part": 6,
+        "part": 2,
         "rng_identical": true,
         "target": 1,
         "ui_and_name_unchanged": true,
-        "word": 617
+        "word": 2131
       },
       "context": 3,
       "creator_open": true,
@@ -1293,8 +1345,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           0,
           0,
@@ -1303,8 +1355,8 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
+          156,
+          2131,
           1612,
           -1,
           -1,
@@ -1339,8 +1391,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           0,
           0,
@@ -1349,8 +1401,8 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
+          156,
+          2131,
           1612,
           -1,
           -1,
@@ -1382,8 +1434,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           0,
           0,
           0,
@@ -1392,8 +1444,8 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
+          156,
+          2131,
           -1,
           -1,
           -1,
@@ -1425,8 +1477,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           0,
           0,
@@ -1435,8 +1487,8 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
+          156,
+          2131,
           1,
           -1,
           -1,
@@ -1451,14 +1503,14 @@
     },
     {
       "bridge_random": {
-        "cursor_after": 40,
-        "cursor_before": 36,
+        "cursor_after": 68,
+        "cursor_before": 64,
         "displayed_component": 2,
         "part": 2,
         "rng_identical": true,
         "target": 2,
         "ui_and_name_unchanged": true,
-        "word": 1766
+        "word": 552
       },
       "context": 3,
       "creator_open": true,
@@ -1478,8 +1530,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           0,
           0,
@@ -1488,9 +1540,9 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
+          156,
+          2131,
+          552,
           -1,
           -1,
           515,
@@ -1524,8 +1576,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           0,
           0,
@@ -1534,9 +1586,9 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
+          156,
+          2131,
+          552,
           -1,
           -1,
           515,
@@ -1567,8 +1619,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           0,
           0,
@@ -1577,9 +1629,9 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
+          156,
+          2131,
+          552,
           -1,
           -1,
           515,
@@ -1610,8 +1662,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           2,
           0,
@@ -1620,9 +1672,9 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
+          156,
+          2131,
+          552,
           1,
           -1,
           515,
@@ -1636,14 +1688,14 @@
     },
     {
       "bridge_random": {
-        "cursor_after": 44,
-        "cursor_before": 40,
+        "cursor_after": 72,
+        "cursor_before": 68,
         "displayed_component": 3,
         "part": 2,
         "rng_identical": true,
         "target": 3,
         "ui_and_name_unchanged": true,
-        "word": 1996
+        "word": 426
       },
       "context": 3,
       "creator_open": true,
@@ -1663,8 +1715,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           2,
           0,
@@ -1673,10 +1725,10 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
+          156,
+          2131,
+          552,
+          426,
           -1,
           515,
           -1
@@ -1709,8 +1761,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           2,
           0,
@@ -1719,10 +1771,10 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
+          156,
+          2131,
+          552,
+          426,
           -1,
           515,
           -1
@@ -1752,8 +1804,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           2,
           0,
@@ -1762,10 +1814,10 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
+          156,
+          2131,
+          552,
+          426,
           -1,
           515,
           -1
@@ -1795,8 +1847,8 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
-          1,
-          6,
+          0,
+          2,
           2,
           2,
           2,
@@ -1805,10 +1857,10 @@
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
+          156,
+          2131,
+          552,
+          426,
           1,
           515,
           -1
@@ -1821,14 +1873,14 @@
     },
     {
       "bridge_random": {
-        "cursor_after": 48,
-        "cursor_before": 44,
+        "cursor_after": 76,
+        "cursor_before": 72,
         "displayed_component": 4,
-        "part": 2,
+        "part": 1,
         "rng_identical": true,
         "target": 4,
         "ui_and_name_unchanged": true,
-        "word": 703
+        "word": 228
       },
       "context": 3,
       "creator_open": true,
@@ -1848,21 +1900,21 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           0
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
+          156,
+          2131,
+          552,
+          426,
+          228,
           515,
           -1
         ]
@@ -1894,21 +1946,21 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           0
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
+          156,
+          2131,
+          552,
+          426,
+          228,
           515,
           -1
         ]
@@ -1937,21 +1989,21 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           0
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
+          156,
+          2131,
+          552,
+          426,
+          228,
           -1,
           -1
         ]
@@ -1980,21 +2032,21 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           0
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
+          156,
+          2131,
+          552,
+          426,
+          228,
           0,
           -1
         ]
@@ -2006,14 +2058,14 @@
     },
     {
       "bridge_random": {
-        "cursor_after": 52,
-        "cursor_before": 48,
+        "cursor_after": 80,
+        "cursor_before": 76,
         "displayed_component": 5,
         "part": 0,
         "rng_identical": true,
         "target": 5,
         "ui_and_name_unchanged": true,
-        "word": 1706
+        "word": 747
       },
       "context": 3,
       "creator_open": true,
@@ -2033,22 +2085,22 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           0
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
           -1
         ]
       },
@@ -2079,22 +2131,22 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           0
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
           -1
         ]
       },
@@ -2122,22 +2174,22 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           0
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
           -1
         ]
       },
@@ -2165,22 +2217,22 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           1
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2191,14 +2243,14 @@
     },
     {
       "bridge_random": {
-        "cursor_after": 56,
-        "cursor_before": 52,
+        "cursor_after": 84,
+        "cursor_before": 80,
         "displayed_component": 6,
         "part": 8,
         "rng_identical": true,
         "target": 6,
         "ui_and_name_unchanged": true,
-        "word": 1328
+        "word": 2174
       },
       "context": 3,
       "creator_open": true,
@@ -2218,23 +2270,23 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           8
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
-          1328
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
+          2174
         ]
       },
       "namer_id": 245,
@@ -2251,7 +2303,7 @@
         "rng_identical": true,
         "target": 6,
         "ui_and_name_unchanged": true,
-        "word": 838
+        "word": 2063
       },
       "context": 3,
       "creator_open": true,
@@ -2271,23 +2323,23 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           1
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
-          838
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
+          2063
         ]
       },
       "namer_id": 245,
@@ -2317,23 +2369,23 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           1
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
-          838
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
+          2063
         ]
       },
       "namer_id": 245,
@@ -2343,8 +2395,8 @@
     },
     {
       "bridge_random": {
-        "cursor_after": 56,
-        "cursor_before": 56,
+        "cursor_after": 84,
+        "cursor_before": 84,
         "displayed_component": 6,
         "part": 1,
         "rng_identical": true,
@@ -2370,22 +2422,22 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           1
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2413,22 +2465,22 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           1
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2459,22 +2511,22 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           1
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2505,22 +2557,22 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           1
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2548,22 +2600,22 @@
         "language": 0,
         "nickname": "",
         "parts_of_speech": [
+          0,
+          2,
+          2,
+          2,
           1,
-          6,
-          2,
-          2,
-          2,
           0,
           1
         ],
         "type": 28,
         "words": [
-          1117,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          156,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2574,14 +2626,14 @@
     },
     {
       "bridge_random": {
-        "cursor_after": 60,
-        "cursor_before": 56,
+        "cursor_after": 88,
+        "cursor_before": 84,
         "displayed_component": 6,
         "part": 1,
         "rng_identical": true,
         "target": 0,
         "ui_and_name_unchanged": true,
-        "word": 111
+        "word": 28
       },
       "context": 3,
       "creator_open": true,
@@ -2602,21 +2654,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2648,21 +2700,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2694,21 +2746,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2740,21 +2792,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2786,21 +2838,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2832,21 +2884,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2878,21 +2930,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2924,21 +2976,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -2970,21 +3022,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -3016,21 +3068,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -3062,21 +3114,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -3108,21 +3160,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -3154,21 +3206,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -3200,21 +3252,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -3246,21 +3298,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -3289,21 +3341,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -3332,21 +3384,21 @@
         "nickname": "",
         "parts_of_speech": [
           1,
-          6,
           2,
           2,
           2,
+          1,
           0,
           1
         ],
         "type": 28,
         "words": [
-          111,
-          617,
-          1766,
-          1996,
-          703,
-          1706,
+          28,
+          2131,
+          552,
+          426,
+          228,
+          747,
           0
         ]
       },
@@ -3357,6 +3409,7 @@
     },
     {
       "bridge_generation": {
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -3382,7 +3435,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -3392,11 +3445,11 @@
         "words": [
           -1,
           -1,
+          1965,
           -1,
           -1,
-          -1,
-          1667,
-          1562
+          151,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3425,7 +3478,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -3435,11 +3488,11 @@
         "words": [
           -1,
           -1,
+          1965,
           -1,
           -1,
-          -1,
-          1667,
-          1562
+          151,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3468,7 +3521,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -3478,11 +3531,11 @@
         "words": [
           -1,
           -1,
+          1965,
           -1,
           -1,
-          -1,
-          1667,
-          1562
+          151,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3492,6 +3545,7 @@
     },
     {
       "bridge_generation": {
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -3527,7 +3581,7 @@
         "words": [
           -1,
           -1,
-          2170,
+          536,
           -1,
           -1,
           1546,
@@ -3570,7 +3624,7 @@
         "words": [
           -1,
           -1,
-          2170,
+          536,
           -1,
           -1,
           1546,
@@ -3613,7 +3667,7 @@
         "words": [
           -1,
           -1,
-          2170,
+          536,
           -1,
           -1,
           1546,
@@ -3627,6 +3681,7 @@
     },
     {
       "bridge_generation": {
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -3652,21 +3707,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          8
+          0
         ],
         "type": 21,
         "words": [
           -1,
           -1,
+          1961,
           -1,
           -1,
-          -1,
-          1549,
-          111
+          1545,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3695,21 +3750,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          8
+          0
         ],
         "type": 21,
         "words": [
           -1,
           -1,
+          1961,
           -1,
           -1,
-          -1,
-          1549,
-          111
+          1545,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3738,21 +3793,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          8
+          0
         ],
         "type": 21,
         "words": [
           -1,
           -1,
+          1961,
           -1,
           -1,
-          -1,
-          1549,
-          111
+          1545,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3762,6 +3817,7 @@
     },
     {
       "bridge_generation": {
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -3787,7 +3843,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -3797,11 +3853,11 @@
         "words": [
           -1,
           -1,
+          361,
           -1,
           -1,
-          -1,
-          1599,
-          1523
+          1604,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3830,7 +3886,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -3840,11 +3896,11 @@
         "words": [
           -1,
           -1,
+          361,
           -1,
           -1,
-          -1,
-          1599,
-          1523
+          1604,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3873,7 +3929,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -3883,11 +3939,11 @@
         "words": [
           -1,
           -1,
+          361,
           -1,
           -1,
-          -1,
-          1599,
-          1523
+          1604,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3897,6 +3953,7 @@
     },
     {
       "bridge_generation": {
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -3932,10 +3989,10 @@
         "words": [
           -1,
           -1,
-          1666,
+          2170,
           -1,
           -1,
-          383,
+          1157,
           -1
         ]
       },
@@ -3975,10 +4032,10 @@
         "words": [
           -1,
           -1,
-          1666,
+          2170,
           -1,
           -1,
-          383,
+          1157,
           -1
         ]
       },
@@ -4018,10 +4075,10 @@
         "words": [
           -1,
           -1,
-          1666,
+          2170,
           -1,
           -1,
-          383,
+          1157,
           -1
         ]
       },
@@ -4032,94 +4089,95 @@
     }
   ],
   "screenshots": {
-    "GUILDHALL-5-before.png": "cfd7fff11433b1b91aa0ad8e5b4ce04006463668c5e1a852be8883c69ab6b376",
-    "GUILDHALL-5-done.png": "9ac379c294c28d0b58c2ee7852619d7f65e5a4f88c36145ce2012241eb5a7c47",
-    "GUILDHALL-5-name-back.png": "cfd7fff11433b1b91aa0ad8e5b4ce04006463668c5e1a852be8883c69ab6b376",
-    "GUILDHALL-5-name-open.png": "590e13c7f2872e32c5c9049518f94b12cfa0bc23cc17799a56f87fa2a4ce73db",
-    "GUILDHALL-5-random-reopen.png": "fdad40f8a267b709c8bd10a211b017efd458b14c400ef488dac8c3fc880e85d3",
-    "GUILDHALL-5-whole-random.png": "cf6e7aeec5e78c69ced1121c7baf83c9ee1faee5e348aba2d7d8b8580262168c",
+    "GUILDHALL-5-before.png": "a59e9a9fe9219ab8a6d4309458d4dedbe5c7f4a73bb79d988e8deafb38a4dfea",
+    "GUILDHALL-5-done.png": "29b7bfaa743b6f88432037c05a085aebef51639b1ef6a06c2ab3b1a38c8e5805",
+    "GUILDHALL-5-name-back.png": "192235a263957c141331d8063fe14f48454a4274a79b38899e749f38c9769dfe",
+    "GUILDHALL-5-name-open.png": "fcb1cbdfa68166d82019101c020b470b1401d2fcb3c946c2d2b3069fca929237",
+    "GUILDHALL-5-random-reopen.png": "3b8bcb4ae34fed4cb0f6326435d139bcddee642aea8a228977536a8d3b4e40d1",
+    "GUILDHALL-5-whole-random.png": "3b8bcb4ae34fed4cb0f6326435d139bcddee642aea8a228977536a8d3b4e40d1",
     "HOSPITAL-2-before.png": "0fc4327bd6896ac396bf2fde4fb64cc506288a26c47fc4ca383eba07a0991f6d",
-    "HOSPITAL-2-done.png": "653b90339a54b127b6bcb47734cf5c9d5ec597c3e14c869ce6d488f9d43ed9dc",
-    "HOSPITAL-2-name-back.png": "1c6c802ebbcc2e14465b6b476df3aca690d68a6c57b4567a12e0a8dc973426dd",
+    "HOSPITAL-2-done.png": "57f86e08f8640731dc8fcc06d70afb0e6a75fb5caf6300a0de82b7beeff70459",
+    "HOSPITAL-2-name-back.png": "0fc4327bd6896ac396bf2fde4fb64cc506288a26c47fc4ca383eba07a0991f6d",
     "HOSPITAL-2-name-open.png": "67b54ad24d834635f2c18be8afd20daa076e8400ecfbedb9508f01730c68a25d",
-    "HOSPITAL-2-random-reopen.png": "c356f198dfb578dde5d354ccdfce2b9a1fb0bc81cebbd54d18fa3f39b95026cf",
-    "HOSPITAL-2-whole-random.png": "c356f198dfb578dde5d354ccdfce2b9a1fb0bc81cebbd54d18fa3f39b95026cf",
-    "INN_TAVERN-1-before.png": "3202b6048d83a069440f283f79858c4657defecc16acec834765f4bed7263476",
-    "INN_TAVERN-1-done.png": "df3f2ac6da78806389cebf23828af078f43ffc15f80b96d755be27374411654c",
-    "INN_TAVERN-1-edited-back.png": "077f4190335339f7339cfc0098771ac6b667b685e1b012c9a3f1be783769bb36",
-    "INN_TAVERN-1-edited-reopen.png": "9459a6fc8c0c185004e9e9337f74f9b6e6919d9236ecacfb5390ca6da88753f2",
-    "INN_TAVERN-1-filter-al.png": "c10117c5a654fbf8933b57ccfbe2c5143f46a1a7189bb25f79854bb1da5b549d",
-    "INN_TAVERN-1-filter-ale.png": "87e63a827053a409e7a4efdc0c4a50eedfd9c67f26ce0ba66366c1d9bba1858e",
-    "INN_TAVERN-1-filter-enter.png": "074d5e84a58f85c48e3ec00b3708319e37c68b0f42bbce3b1f812880cefaf134",
-    "INN_TAVERN-1-filter-focus.png": "56edd4d72a23eb4fdbfa9496a07956aa46a00254a279d8faa8b1a09d606b6a75",
-    "INN_TAVERN-1-filtered-other-component-random.png": "9e6a2f24e2db5279739023536c77e7adda7724bb2bd052b0bb482ce7fb8fd8b9",
-    "INN_TAVERN-1-matrix-al-0.png": "7992243b91ab93f27747a840e64b564fcf85fb13b863fcc346241675798893cf",
-    "INN_TAVERN-1-matrix-al-1.png": "1d966ee3eba4f406f7f278a93487f981e6a9c084caef825f5cb1e504841bce1e",
-    "INN_TAVERN-1-matrix-al-2.png": "cba37fedc3fdab9f3c792f4025683cd3df560f0cfc07df6ba9b700213c876633",
-    "INN_TAVERN-1-matrix-al-3.png": "9bccb549de491ad25fd8c5ef517baaaef087676e6fe4970bf25fb34e37164b9b",
-    "INN_TAVERN-1-matrix-al-4.png": "73b18418a387c38a94f97a0ef46abd37f835ba1f14bf39110f3807878aaf4b88",
-    "INN_TAVERN-1-matrix-al-5.png": "b2d967422efcc3ade8f4b78be01c7eb42022a31598dffd9fa6fc08d11c8bd6bb",
-    "INN_TAVERN-1-matrix-al-6.png": "687107e1565a85d3ccad4bc3dfe122b50e3a8ddebf3c3f60ba7df4a2daaac01f",
-    "INN_TAVERN-1-matrix-no-match-0.png": "da5172d1e4bc75d248859162175352617966184ddfd04ef6a5a18edc5b3dff89",
-    "INN_TAVERN-1-matrix-no-match-1.png": "bb53fb0c912349eb76a027483124af92b8d14fb06dba0a108d81efc955294c9d",
-    "INN_TAVERN-1-matrix-no-match-2.png": "d4670924135e0feec969c66fa16af20b31693333a3a9c762e0e50c3d7f93135e",
-    "INN_TAVERN-1-matrix-no-match-3.png": "5e59b3e0b43b80157c937db4ba25f9b01d9f63a6aac99c80f36417976773e509",
-    "INN_TAVERN-1-matrix-no-match-4.png": "fccdeec0699f148ea667758206d0758fdd06b50c17692c76af26724b21fd2244",
-    "INN_TAVERN-1-matrix-no-match-5.png": "879b83faf2227bd5ec5c0255ac4865a772bbf4c4b3073e136d6052a5580888bd",
-    "INN_TAVERN-1-matrix-no-match-6.png": "3e6ed3025f5d070e8b568cd3f5903165fa19b504566db7b89b5f2957ae7d5934",
-    "INN_TAVERN-1-name-back.png": "3202b6048d83a069440f283f79858c4657defecc16acec834765f4bed7263476",
-    "INN_TAVERN-1-name-open.png": "97688e98ab145e73b588349c82c75aa512671c6a03ea34999f06de4be938f494",
-    "INN_TAVERN-1-part-0-clear.png": "97688e98ab145e73b588349c82c75aa512671c6a03ea34999f06de4be938f494",
-    "INN_TAVERN-1-part-0-first-word.png": "c3a0abb23bca87c05347f3251389423b67a2178a8f73d9a3086e197170c839c9",
-    "INN_TAVERN-1-part-0-random.png": "a01eae6de68bc19acd9873ae7adce3b9fd7486faec5a48c4c49100f01b89a4bf",
-    "INN_TAVERN-1-part-0-selected.png": "495d8f47cf6e5d6d1dc83070d569f2ba9351b1ccf92320a15da68bc748779c2e",
-    "INN_TAVERN-1-part-1-clear.png": "d698ccce400c699fa395d397240672040626681c1af5fcc00a1c822e602a603c",
-    "INN_TAVERN-1-part-1-first-word.png": "03c9bac01726c0cccf9f35ef811c9176d45bc0776ab698974760d0378bf57fe5",
-    "INN_TAVERN-1-part-1-random.png": "4d76d60ba8d484f20adc3e65ca2d99da0731aa51462baf85a945ff5d798ce961",
-    "INN_TAVERN-1-part-1-selected.png": "d698ccce400c699fa395d397240672040626681c1af5fcc00a1c822e602a603c",
-    "INN_TAVERN-1-part-2-clear.png": "e450334a24978abd8aff825df84f456e5f7fb7d41a79c7db7a3143ff1bc3dd8c",
-    "INN_TAVERN-1-part-2-first-word.png": "58b43046176febc94e70d1bdbac31b290d7ac39cf044a954d0c93c2de69f88e9",
-    "INN_TAVERN-1-part-2-random.png": "0250197dc04e82fb635fc435ad50b773e974dc4d82e6b8966b79c57c745edb4a",
-    "INN_TAVERN-1-part-2-selected.png": "8fc530e4447a41b59642ef27ac3b03c8901d453955c35596b60a67f9bd109065",
-    "INN_TAVERN-1-part-3-clear.png": "af5c30a0e14454d02c0591ce5efbc0b460b4b5ba995b76017bfdb61a14aababf",
-    "INN_TAVERN-1-part-3-first-word.png": "6e64b9d8e287edecc5b43efe5afe688eafe79b16a374789d33e1cbe10bf60306",
-    "INN_TAVERN-1-part-3-random.png": "7809b2791f288f14a22dd394d94ad2418f9918b0433515df6d05e0f7fcbb14a0",
-    "INN_TAVERN-1-part-3-selected.png": "5401f7863acf170957a61ee1489d5369f9c7e7ad6aadc0e0975903c043873b55",
-    "INN_TAVERN-1-part-4-clear.png": "f3d82578ee27f4af96a4471d54677ae0bd3c6f6b0b8a8048d61c3804f7f0cfe2",
-    "INN_TAVERN-1-part-4-first-word.png": "ca670fc7d0a21d8224bfc87db923a9ae4452a81735c8a270d9d85e04ace5bc93",
-    "INN_TAVERN-1-part-4-random.png": "d00f7850a549007ce1963754a049ae556d9ac2be2a0503d1f18f7e8813ad77aa",
-    "INN_TAVERN-1-part-4-selected.png": "f3d82578ee27f4af96a4471d54677ae0bd3c6f6b0b8a8048d61c3804f7f0cfe2",
-    "INN_TAVERN-1-part-5-clear.png": "7cc807b97e8e23c683f7b3bc1b29a7134d859d15e49e33808a5df377f4b1cead",
-    "INN_TAVERN-1-part-5-first-word.png": "f41637d9172f9857d76590aa1ff7b926333f28b5e59a38aad1927939fd679048",
-    "INN_TAVERN-1-part-5-random.png": "e0089a3d0e06b52672d67c451464b0e25b022ab56d95be15e2e4f63b4edd5e3b",
-    "INN_TAVERN-1-part-5-selected.png": "a1b41ed8c60f40846fe01a1b8ea63b7d6bf1663bcfc0c813efcc7f502aa4e332",
-    "INN_TAVERN-1-part-6-clear.png": "23ad35ec7c6b8a0446c00ea2d649eda40e13e496b9ca33a2584cabb8001af968",
-    "INN_TAVERN-1-part-6-first-word.png": "fd6ccfd325261f27e80de1dc8452947f8d80c68b5d13ca8d8f7d7d9167117171",
-    "INN_TAVERN-1-part-6-random.png": "c75cc7c37c1c316b97305044876cb79770dd7031b3214398880576046daf8720",
-    "INN_TAVERN-1-part-6-selected.png": "f0804cfd8e862c381eb249fa5aa6a45fb0725f4502f5298f32d5e49ad731e2bc",
-    "INN_TAVERN-1-random-refill.png": "d9026f2f3a08ba49733587f09f434279d905ce795dba151ba3d9f31d726471c7",
-    "INN_TAVERN-1-random-reopen.png": "2a1cf6157f26c6f8bce090b747750f1df6efcd980c8d59c207a3a0ee37d4361d",
-    "INN_TAVERN-1-singleton-random.png": "9efa927dfd2d754b41032b68f9e1a1e962cc08d005184927a34ec683fcc696ce",
-    "INN_TAVERN-1-singleton-selected.png": "5acc6a45e080c2acaf92548d3b26190dad63456e1e586e2867ee418f47f5dd29",
-    "INN_TAVERN-1-whole-random.png": "3c912586a0d66e7059c35c1715846c0e41fe250f0c24a45d2a85b2c68d7325a4",
-    "LIBRARY-4-before.png": "99ee7fa0956d713566840f4184deb3d39f9423ea9beae5c221579e6abe96deaa",
-    "LIBRARY-4-done.png": "3f1c4a49c12402d3aa3aa24f72d6a82bdae161f5dfcbae40a9114e2af41549b8",
-    "LIBRARY-4-name-back.png": "99ee7fa0956d713566840f4184deb3d39f9423ea9beae5c221579e6abe96deaa",
-    "LIBRARY-4-name-open.png": "c5fb938f9e2579745d1148d15825a5a6d5098f9925e2dca22fb4d0bc7cdb3227",
-    "LIBRARY-4-random-reopen.png": "310289dcd3d66b64c3394bcc6c00cdebaf9bc70e98f93a109a2d6a87e7c23daf",
-    "LIBRARY-4-whole-random.png": "310289dcd3d66b64c3394bcc6c00cdebaf9bc70e98f93a109a2d6a87e7c23daf",
-    "TEMPLE-0-before.png": "13fae88a8274a79e9ee9daac4988ad3c6fa44132c68d04abc5639675c950edb0",
-    "TEMPLE-0-done.png": "e946ea5d9d1628922f5050efb0c3b99e09ecd1d42779ef8810ea2ce45c0c18cc",
-    "TEMPLE-0-name-back.png": "13fae88a8274a79e9ee9daac4988ad3c6fa44132c68d04abc5639675c950edb0",
-    "TEMPLE-0-name-open.png": "ec5d61f8595958077dce410d6aa56f71bb4a45d9b5d76744613c7d7ae2feef12",
-    "TEMPLE-0-random-reopen.png": "aef1ce2fe03319d79980d069e607fc0b5cc8c4a86107722c9f2fa99310945c5f",
-    "TEMPLE-0-whole-random.png": "be3807e68cc847204f6def1230f67b4b6feb60c38d13224b612e818ca6f66e0f",
-    "TEMPLE-3-before.png": "cae166cc03f490f16e1b0d396706d93363eaa4d9abfe21a7923c514f752f8d56",
-    "TEMPLE-3-done.png": "515cb8e5b8b6e0e5c8f55c357274ed09f46fc172c7660d6a6454569dbde6be74",
-    "TEMPLE-3-name-back.png": "cae166cc03f490f16e1b0d396706d93363eaa4d9abfe21a7923c514f752f8d56",
-    "TEMPLE-3-name-open.png": "fa4b13a92f826b85f910f2e133ca5b8cdbdbd201ebbb3996adcb3dff3e9e4335",
-    "TEMPLE-3-random-reopen.png": "ceca1b49d5f497f24e53a086335e396ca3f0c14915cad2f1055e36f018054367",
-    "TEMPLE-3-whole-random.png": "ceca1b49d5f497f24e53a086335e396ca3f0c14915cad2f1055e36f018054367"
+    "HOSPITAL-2-random-reopen.png": "64398301f804434c74529e306d48a01ce34c0f82eac22dc82f3a5302f46917a9",
+    "HOSPITAL-2-whole-random.png": "64398301f804434c74529e306d48a01ce34c0f82eac22dc82f3a5302f46917a9",
+    "INN_TAVERN-1-before.png": "0df948994c8287faf6ace997a50075879120306fdd66a58cb55583d5ec297a4b",
+    "INN_TAVERN-1-done.png": "c829d9ae268af7fc213b33dda8287deee8e566beab47cd06842336910d7de966",
+    "INN_TAVERN-1-edited-back.png": "54232079b4f53c2807fae4806e57aaf0364ef7a0fcf86c23b8cb9f7b395050d4",
+    "INN_TAVERN-1-edited-reopen.png": "e8864feed5fe8c6dd7915b08c318a7ce852b0a927eaaf442bf4e398edb90a11a",
+    "INN_TAVERN-1-filter-al.png": "0c09b61f720cb6e68361a030de71727aeb0e0466032ab63c7880929abb607491",
+    "INN_TAVERN-1-filter-ale.png": "e2ba80e27f3370e57b0e34391d99baf1e52287c1a84a2f813060ef798aa10119",
+    "INN_TAVERN-1-filter-enter.png": "6ccdedcc8fdd04ce2cd331d5eb4ada2e6f5f79610dff5a4b7d041a56fe2c9868",
+    "INN_TAVERN-1-filter-focus.png": "fc6846456cb780ab21a9e9bc0b8fc42ec085de76579c0c224c232162a3c5fed2",
+    "INN_TAVERN-1-filtered-other-component-random.png": "b8d55e2347f1f3a6062811bd516550ff3a0fa314acc5fe1125215e4982be8692",
+    "INN_TAVERN-1-matrix-al-0.png": "133aa21a6ccd95d4dc5b2f7c9de21e2e08a6a45dbfec24256b591feb2233505d",
+    "INN_TAVERN-1-matrix-al-1.png": "12451041a4ee974b6866066094f020d0e4946b8577482d1cd788fd4fe1a1644d",
+    "INN_TAVERN-1-matrix-al-2.png": "8a82d1e55b8aabfd5f80eec07ead81b74784038f762112369436819243362780",
+    "INN_TAVERN-1-matrix-al-3.png": "b9592592508bb1a55a47f492605b72f9a96621484ff1ba73711317d278893f26",
+    "INN_TAVERN-1-matrix-al-4.png": "3157f17ae6c5ef8851628b726631e8c4ab8fcf770476dcccbb4bb9761e25f99f",
+    "INN_TAVERN-1-matrix-al-5.png": "add8d602227c31ee48a7a374812cebf0b5150de666e48d508afd4b0f48344bf6",
+    "INN_TAVERN-1-matrix-al-6.png": "b8d55e2347f1f3a6062811bd516550ff3a0fa314acc5fe1125215e4982be8692",
+    "INN_TAVERN-1-matrix-no-match-0.png": "afd74646bfe94604ebe6020a48a3e7990a342df486c2632cb888cca1088f3060",
+    "INN_TAVERN-1-matrix-no-match-1.png": "e03445a1a644a3f06de02a24fc02d7964a6c6f7738a6d871bf6b1c9239437e71",
+    "INN_TAVERN-1-matrix-no-match-2.png": "b82b3eb62f7fa127eafda9d12572982bf5dec84d96ae9efc4f0bfadb3586b038",
+    "INN_TAVERN-1-matrix-no-match-3.png": "ec9eb3a956244644504fe3f78719eb4f8587b69c9f90f13940cc08c6b76377ef",
+    "INN_TAVERN-1-matrix-no-match-4.png": "092da44375caaaa0639f646972223bdc70c1f4b0892e0a5f978e7c821121f539",
+    "INN_TAVERN-1-matrix-no-match-5.png": "8b9dde36ece86cb7c9291185f6a001fddc1168da0a6bf9523e52514e8b1e2f3a",
+    "INN_TAVERN-1-matrix-no-match-6.png": "d4af52930329161356651a249a3975f3f15031ae56ed64c8990372d9ae3a3ddf",
+    "INN_TAVERN-1-name-back.png": "862e2de61efd5ebffe382fdbfdf9dbf557f76732f84d1117873c5069445c6ddd",
+    "INN_TAVERN-1-name-open.png": "495d8f47cf6e5d6d1dc83070d569f2ba9351b1ccf92320a15da68bc748779c2e",
+    "INN_TAVERN-1-part-0-clear.png": "58473e2fb62134f8fc926d4e7bdd2e3bfd556df9100ccc9f4ead04b2adc8ec5d",
+    "INN_TAVERN-1-part-0-first-word.png": "6c4e65eff9eb2662292dda592e46afe0bea3aeb094955fa3a9b4204f0d62af33",
+    "INN_TAVERN-1-part-0-random.png": "91f9f25833f2db925948d8016064155008d583c92a4de0979eb8ed58db835dbb",
+    "INN_TAVERN-1-part-0-selected.png": "58473e2fb62134f8fc926d4e7bdd2e3bfd556df9100ccc9f4ead04b2adc8ec5d",
+    "INN_TAVERN-1-part-1-clear.png": "bc1c1899116d814902254803d46b00b4f587fe1ebc9fe666bc6bb992712c8ff2",
+    "INN_TAVERN-1-part-1-first-word.png": "622d36f3b10d7ffde297d28b6414ad9133b1fea5aa46a030f2794566afa81b76",
+    "INN_TAVERN-1-part-1-random.png": "4386ad23589e460f96e88390d9205ddce75e78b7029cd0ac63449ee873879c2e",
+    "INN_TAVERN-1-part-1-selected.png": "bc1c1899116d814902254803d46b00b4f587fe1ebc9fe666bc6bb992712c8ff2",
+    "INN_TAVERN-1-part-2-clear.png": "69c02e95c1fed18db49b685272a54e603f8c6483fbb6354d7e4cf6c9649a0fd1",
+    "INN_TAVERN-1-part-2-first-word.png": "db5a675327b43a0dd296524d9b97bdb8d35ef812d294591194f00bc34f386cfa",
+    "INN_TAVERN-1-part-2-random.png": "df37af343ba7455d729488fa0edffb683351c184117665c9bb2d3ffc1034e11f",
+    "INN_TAVERN-1-part-2-selected.png": "1b9d7259f28da1fcb84d316b71dde7a0ffec7fcf1cbb836c175b02e529d22dfd",
+    "INN_TAVERN-1-part-3-clear.png": "bdf660b1fb01e6d012e74d98bdb930e590496bb31bbaf95e01aaa182902ee21b",
+    "INN_TAVERN-1-part-3-first-word.png": "2ed8a3e5d29fc6df00e01a038bc6120630f023c82c5fd6b6ee7f1a7ac72e6c46",
+    "INN_TAVERN-1-part-3-random.png": "923ca61bcdfdff57867ed415737a57eee1fe598a06deca29fa04629198700a75",
+    "INN_TAVERN-1-part-3-selected.png": "bdf660b1fb01e6d012e74d98bdb930e590496bb31bbaf95e01aaa182902ee21b",
+    "INN_TAVERN-1-part-4-clear.png": "f027bbb2cd127b35601cc45c413b1af12a81aafd8cbc7dbb01810321427e9134",
+    "INN_TAVERN-1-part-4-first-word.png": "4a877730a992869b7565ccd6e13724c92eb313d54f1d59582c3927c530e6b9ce",
+    "INN_TAVERN-1-part-4-random.png": "586bb8a4e8a8bd0a6b2db12841dd749e10cc21d41a928300c87779dd66263eb8",
+    "INN_TAVERN-1-part-4-selected.png": "f027bbb2cd127b35601cc45c413b1af12a81aafd8cbc7dbb01810321427e9134",
+    "INN_TAVERN-1-part-5-clear.png": "99ea68462e90a057bf6f50444484cfcf7ad3ff104f9bb7e2a67178dae414006c",
+    "INN_TAVERN-1-part-5-first-word.png": "9d1ccc3bd2ac4c7b95a8c4f65c7b187178f4f72ea81ec2262b5bb5a021547c45",
+    "INN_TAVERN-1-part-5-random.png": "c1b1ef78175fa5b47df7e71fa93eb125d6299866484efb0ea145924782ec3148",
+    "INN_TAVERN-1-part-5-selected.png": "e1a3e8f96f06c5e897b68d2beb429ea8816ae9437babbb8249e14ede962d935c",
+    "INN_TAVERN-1-part-6-clear.png": "b35a0beb8b632da3b88e242220c1a41898781ee133d573c777d916c5e8e7a6d8",
+    "INN_TAVERN-1-part-6-first-word.png": "734783eeb3f9fc95c6d96ab8358c437364d448bda77223a2cd0a61eb0717c43a",
+    "INN_TAVERN-1-part-6-random.png": "5a0415a6eb48f2fd1aaeea45e4810bd35fe249dc5dd39e563e603e093baba08c",
+    "INN_TAVERN-1-part-6-selected.png": "b35a0beb8b632da3b88e242220c1a41898781ee133d573c777d916c5e8e7a6d8",
+    "INN_TAVERN-1-random-refill.png": "796dbc5a77473577ab4356354dca237b52a8bd11418fde29a013a6201edb72cc",
+    "INN_TAVERN-1-random-reopen.png": "96a811016c860035532cea11285bf391dd82405c3846f100997be7002d48f64d",
+    "INN_TAVERN-1-singleton-random.png": "4b831d3bca582ec07b11983ee1a2d3d12b02a4711111be444abf5ce9c936db36",
+    "INN_TAVERN-1-singleton-selected.png": "2ebda45b3c771debf8b4053c5f5f810f4166657d43f022d156321f32e0ced607",
+    "INN_TAVERN-1-whole-random.png": "96a811016c860035532cea11285bf391dd82405c3846f100997be7002d48f64d",
+    "LIBRARY-4-before.png": "d98b12f9d823f7c070f508227e20cfc619f77dc2c868aadcb7faf307c3a4dfbe",
+    "LIBRARY-4-done.png": "cd675767056d76ef1f4f2038290aeaf010e7221ce2095d407d24032fa1bb3a3d",
+    "LIBRARY-4-name-back.png": "d98b12f9d823f7c070f508227e20cfc619f77dc2c868aadcb7faf307c3a4dfbe",
+    "LIBRARY-4-name-open.png": "df08a34a9981a208c28f85c59b359f75f68eaa8f1b3a7752ba8caef8c5f90acd",
+    "LIBRARY-4-random-reopen.png": "5c777393ee632b62a439faf32b5cf21a674736f6891c5cd93c3718eeedbb2ec0",
+    "LIBRARY-4-whole-random.png": "5c777393ee632b62a439faf32b5cf21a674736f6891c5cd93c3718eeedbb2ec0",
+    "TEMPLE-0-before.png": "e2c5e36b44fca761d9494da3e8254881ea57da309288d1819c088862d9a06f12",
+    "TEMPLE-0-done.png": "ea586e201512e69ee4b5215f19dfc94d689055340d5253e30e5ca836b4245057",
+    "TEMPLE-0-name-back.png": "e2c5e36b44fca761d9494da3e8254881ea57da309288d1819c088862d9a06f12",
+    "TEMPLE-0-name-open.png": "78e5bcbb6d6a5bd79c32a605e45e0a11fd77979a134cf04bb18a027a62635485",
+    "TEMPLE-0-random-reopen.png": "d57cc0dfaca78abf8b9804f12f0c3c9bdd8566c9e153f5b00763c4ae0393e98e",
+    "TEMPLE-0-utterance-random.png": "ce67638c10b502d7c2088b8e194616bd06c661a2a83d607836b3d2325d3e658c",
+    "TEMPLE-0-whole-random.png": "d57cc0dfaca78abf8b9804f12f0c3c9bdd8566c9e153f5b00763c4ae0393e98e",
+    "TEMPLE-3-before.png": "ed37fd99c999f28effd5e0af463e739fdeae74dffdcbff85a62c322e3400666d",
+    "TEMPLE-3-done.png": "cdaa15c456ffa6796ddf43845d8a4c4997d0fc8dae7aa5e0bb8c4b243c909303",
+    "TEMPLE-3-name-back.png": "ed37fd99c999f28effd5e0af463e739fdeae74dffdcbff85a62c322e3400666d",
+    "TEMPLE-3-name-open.png": "216b3a7a013cdd2735eef1aae932a296d26a74d064bb2bbdc19503e96fe25bff",
+    "TEMPLE-3-random-reopen.png": "b84cf8cd7c7d00afb18d32bd103faa335dfa43dd33e0e9e7b28eb6358016d18d",
+    "TEMPLE-3-whole-random.png": "c5ced221f8bbd7d93b4fd60c54bd08fa429056ada7fccd28c5254fc469990b69"
   },
   "layout": {
     "viewport": [
@@ -4188,7 +4246,7 @@
     "word_row_pitch": 36
   },
   "remaining": [
-    "Complete generation edge coverage, including special-race naming and invalid identities.",
+    "Integrate native generation with revision-guarded location name mutations.",
     "Observe scrolling, empty-list Random, keyboard/physical Escape behavior and native language display columns.",
     "Implement revision-guarded semantic name editing and typed transport without native name_creator scratch.",
     "Build native editor and verify rendered effects and lifecycle before exposure."
@@ -6483,7 +6541,7 @@
     "supersedes": "The initial205453 first-word part-of-speech samples and205930 raw word_parts were incorrectly decoded. Name values, layout and entry behavior remain valid; current observations replace the samples."
   },
   "native_routine_candidates": {
-    "whole_name": "Resolved entity wrapper931860 and core generatora92860, with owned language_name copy and authoritative civilization input. Six native comparisons below; guarded location writes remain unimplemented.",
+    "whole_name": "Resolved entity wrapper931860 and core generatora92860, with owned language_name copy and authoritative civilization input. Seven native comparisons below; guarded location writes remain unimplemented.",
     "filter": "Resolved via native owned-string helpers and pinned inline substring operation; native cull field displays uppercase input, but filtering normalizes an owned copy to lowercase.",
     "inline_edits": "Clear and word selection directly write language_name at1ff830..1ff850 and1ff8c6..1ff908. Per-component Random at1ff79c..1ff82b indexes the currently displayed filtered list and writes the clicked component. Live AL/OfX -> Front Random preserves selected component6/filter and changes only component0 to a member of the OfX list. Native selector d35ee0 matches choice and RNG effect with an owned nonempty list; semantic writes remain unimplemented.",
     "entry": "Native32c051 resolves plotinfo.civ_id (RVA2393670, plotinfost offset2440) through entity lookup7daf0; null entity/name prevents opening. Type dispatch32c097..32c1c8 maps Temple21, Library43, Tavern28, Guildhall52, Hospital54. Uses civilization, not abstract_building.site_owner_id."
@@ -6496,80 +6554,80 @@
     "comparisons": [
       {
         "name": "INN_TAVERN-1-part-0-random",
-        "cursor_after": 32,
-        "cursor_before": 28,
+        "cursor_after": 60,
+        "cursor_before": 56,
         "displayed_component": 0,
-        "part": 1,
+        "part": 0,
         "rng_identical": true,
         "target": 0,
         "ui_and_name_unchanged": true,
-        "word": 1117
+        "word": 156
       },
       {
         "name": "INN_TAVERN-1-part-1-random",
-        "cursor_after": 36,
-        "cursor_before": 32,
+        "cursor_after": 64,
+        "cursor_before": 60,
         "displayed_component": 1,
-        "part": 6,
+        "part": 2,
         "rng_identical": true,
         "target": 1,
         "ui_and_name_unchanged": true,
-        "word": 617
+        "word": 2131
       },
       {
         "name": "INN_TAVERN-1-part-2-random",
-        "cursor_after": 40,
-        "cursor_before": 36,
+        "cursor_after": 68,
+        "cursor_before": 64,
         "displayed_component": 2,
         "part": 2,
         "rng_identical": true,
         "target": 2,
         "ui_and_name_unchanged": true,
-        "word": 1766
+        "word": 552
       },
       {
         "name": "INN_TAVERN-1-part-3-random",
-        "cursor_after": 44,
-        "cursor_before": 40,
+        "cursor_after": 72,
+        "cursor_before": 68,
         "displayed_component": 3,
         "part": 2,
         "rng_identical": true,
         "target": 3,
         "ui_and_name_unchanged": true,
-        "word": 1996
+        "word": 426
       },
       {
         "name": "INN_TAVERN-1-part-4-random",
-        "cursor_after": 48,
-        "cursor_before": 44,
+        "cursor_after": 76,
+        "cursor_before": 72,
         "displayed_component": 4,
-        "part": 2,
+        "part": 1,
         "rng_identical": true,
         "target": 4,
         "ui_and_name_unchanged": true,
-        "word": 703
+        "word": 228
       },
       {
         "name": "INN_TAVERN-1-part-5-random",
-        "cursor_after": 52,
-        "cursor_before": 48,
+        "cursor_after": 80,
+        "cursor_before": 76,
         "displayed_component": 5,
         "part": 0,
         "rng_identical": true,
         "target": 5,
         "ui_and_name_unchanged": true,
-        "word": 1706
+        "word": 747
       },
       {
         "name": "INN_TAVERN-1-part-6-random",
-        "cursor_after": 56,
-        "cursor_before": 52,
+        "cursor_after": 84,
+        "cursor_before": 80,
         "displayed_component": 6,
         "part": 8,
         "rng_identical": true,
         "target": 6,
         "ui_and_name_unchanged": true,
-        "word": 1328
+        "word": 2174
       },
       {
         "name": "INN_TAVERN-1-random-refill",
@@ -6580,12 +6638,12 @@
         "rng_identical": true,
         "target": 6,
         "ui_and_name_unchanged": true,
-        "word": 838
+        "word": 2063
       },
       {
         "name": "INN_TAVERN-1-singleton-random",
-        "cursor_after": 56,
-        "cursor_before": 56,
+        "cursor_after": 84,
+        "cursor_before": 84,
         "displayed_component": 6,
         "part": 1,
         "rng_identical": true,
@@ -6595,14 +6653,14 @@
       },
       {
         "name": "INN_TAVERN-1-filtered-other-component-random",
-        "cursor_after": 60,
-        "cursor_before": 56,
+        "cursor_after": 88,
+        "cursor_before": 84,
         "displayed_component": 6,
         "part": 1,
         "rng_identical": true,
         "target": 0,
         "ui_and_name_unchanged": true,
-        "word": 111
+        "word": 28
       }
     ],
     "diagnostic": "Snapshot active RNG state, call protected location-name-pick, verify UI/GPS/name bytes unchanged, restore test RNG snapshot, click native Random, compare selected word/part and all624 RNG words plus context/cursor. Runtime never snapshots/restores RNG.",
@@ -6649,7 +6707,17 @@
     ],
     "comparisons": [
       {
+        "name": "TEMPLE-0-utterance-random",
+        "invalid_targets_rejected_without_rng": 4,
+        "name_identical": true,
+        "namer_id": 245,
+        "rng_identical": true,
+        "ui_name_entity_unchanged": true,
+        "utterance_branch": true
+      },
+      {
         "name": "TEMPLE-0-whole-random",
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -6657,6 +6725,7 @@
       },
       {
         "name": "INN_TAVERN-1-whole-random",
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -6664,6 +6733,7 @@
       },
       {
         "name": "HOSPITAL-2-whole-random",
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -6671,6 +6741,7 @@
       },
       {
         "name": "TEMPLE-3-whole-random",
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -6678,6 +6749,7 @@
       },
       {
         "name": "LIBRARY-4-whole-random",
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -6685,6 +6757,7 @@
       },
       {
         "name": "GUILDHALL-5-whole-random",
+        "invalid_targets_rejected_without_rng": 4,
         "name_identical": true,
         "namer_id": 245,
         "rng_identical": true,
@@ -6692,6 +6765,6 @@
       }
     ],
     "diagnostic": "Compare native whole-name Random and owned generation from the same diagnostic RNG snapshot. All name fields, context/cursor and624 RNG words match. Bridge call leaves UI/GPS/original name/entity/entity-raw object bytes unchanged.",
-    "limitations": "Fixture civilization245 exercises ordinary race naming. Special-race first-name path is statically audited but not separately live-tested. No typed mutation or product UI exposure."
+    "limitations": "Ordinary civilization245 plus controlled HAS_ANY_UTTERANCES branch matched. Flag restored before ordinary flow; four invalid/noncurrent targets per case rejected without RNG consumption (28 checks). No typed mutation or product UI exposure."
   }
 }

@@ -109,6 +109,25 @@ func run() -> void:
   for i in 2:await process_frame;await RenderingServer.frame_post_draw
   if "-custom-" in sample.name:root.get_texture().get_image().save_png(directory.path_join(sample.name+".png"))
   check_indicator_crops(root.get_texture().get_image(),{"crops":[sample]})
+ # The same native crops must follow the panel when the viewport changes.
+ for sample in assignments.staff_indicator_reference.semantic_reference.all_sources:
+  assignment_receipts.values[int(sample.unit_id)]=numbers(sample.duplicate(true))
+ for dimensions in [Vector2i(960,600),Vector2i(1600,900),Vector2i(1200,800)]:
+  root.size=dimensions;view.layout(Vector2(dimensions));help.layout(Vector2(dimensions));view.queue_redraw()
+  for frame in 2:await process_frame;await RenderingServer.frame_post_draw
+  var reference: Dictionary=assignments.staff_indicator_reference.render_reference.duplicate(true)
+  for crop in reference.crops:
+   crop.rect[0]+=dimensions.x-1200;crop.rect[1]+=(dimensions.y%12-800%12)/2
+  check_indicator_crops(root.get_texture().get_image(),reference)
+  var move:=InputEventMouseMotion.new();move.position=Vector2(dimensions.x-384,390+dimensions.y%12*0.5);move.global_position=move.position;root.push_input(move,true)
+  await create_timer(0.6).timeout;await process_frame;await RenderingServer.frame_post_draw
+  assert(help.displayed=="staff_performer","resized visible indicator hover")
+  check_indicator_crops(root.get_texture().get_image(),reference)
+  root.get_texture().get_image().save_png(directory.path_join("indicators_%dx%d.png"%[dimensions.x,dimensions.y]))
+  if dimensions.x!=1200:
+   move=InputEventMouseMotion.new();move.position=Vector2(816,394);move.global_position=move.position;root.push_input(move,true)
+   await process_frame
+   assert(not help.displayed.begins_with("staff_"),"old indicator position inactive after resize")
  var help_keys={261:"tavern_keeper",262:"performer",263:"scholar",264:"scribe",265:"mercenary",266:"monster_slayer",267:"doctor",268:"workshop"}
  for sample in assignments.staff_indicator_reference.help_reference.cases:
   if int(sample.hover)<0:continue

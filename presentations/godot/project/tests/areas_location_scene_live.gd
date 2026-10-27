@@ -1375,7 +1375,7 @@ func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
 	actions.completed.disconnect(observe)
 	write_json(evidence_prefix+"-restart-new-requests.json",new_requests)
 	for item in new_requests.values():
-		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit,Contract.AreaOperation.LocationRecognitionRead,Contract.AreaOperation.LocationRecognize,Contract.AreaOperation.LocationReligiousStaffRead,Contract.AreaOperation.LocationReligiousStaffRemove,Contract.AreaOperation.LocationReligiousCandidates,Contract.AreaOperation.LocationReligiousAssignmentRead,Contract.AreaOperation.LocationReligiousAssign],"replacement automatically submitted Location work"):return
+		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit,Contract.AreaOperation.LocationRecognitionRead,Contract.AreaOperation.LocationRecognize,Contract.AreaOperation.LocationReligiousStaffRead,Contract.AreaOperation.LocationReligiousStaffRemove,Contract.AreaOperation.LocationReligiousCandidates,Contract.AreaOperation.LocationReligiousAssignmentRead,Contract.AreaOperation.LocationReligiousAssign,Contract.AreaOperation.LocationSpecializationRead,Contract.AreaOperation.LocationSpecializationSet,Contract.AreaOperation.LocationStaffAssignmentsRead],"replacement automatically submitted Location work"):return
 	if not check(model.identity.is_empty() and not editor.details_layer.visible,"replacement reopened quantity editor"):return
 	await capture(evidence_prefix+"_restart_retired")
 
@@ -1708,6 +1708,12 @@ func indicators_lifecycle(mode: String) -> void:
 		await quantity_lifecycle_choose(1)
 		if stopped:return
 		if not check(int(editor.details_state.identity.id)==1 and reader.receipt(row).is_empty(),"late indicator revived on another location"):return
+	elif mode=="restart":
+		await quantity_restart(ticket,"indicators")
+		if stopped:return
+		if not check(reader.owner.is_empty() and reader.rows.is_empty() and reader.receipts.is_empty() and reader.ticket==0,"indicator restart retained display"):return
+		await quantity_lifecycle_open()
+		if stopped:return
 	else:
 		world.detach_live();actions.poll()
 		if not check(actions.result(ticket).get("outcome")==("not_sent" if mode=="queued" else "unknown"),"indicator disconnect outcome"):return

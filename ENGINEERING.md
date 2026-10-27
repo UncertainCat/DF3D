@@ -896,7 +896,7 @@ only known shutdown/render-thread diagnostics. An earlier102754 screw-press
 screenshot contained a partially missing native panel and was rejected as a
 reference; the fresh capture changes only that crop among all64 cases. No viewer
 art change was needed. The supported install has no custom furnace raw; custom
-furnaces, viewport resizing and producer-restart retirement remain separate coverage.
+furnaces remain outside installed-art coverage; no supported raw is available.
 
 `location_staff_indicators.gd` maps audited semantic assignments to installed
 occupation, building and work-detail art, preserving native order and slot
@@ -925,8 +925,20 @@ passed_with_known_issues (only the known render-thread notice); owned DF159036,
 126636 and160648 exit unsaved and both save manifests remain unchanged.
 Run these through `areas_acceptance.ps1 -LocationScene -ReligiousStaffScene
 -ReligiousStaffLifecycle indicators-queued` (or `indicators-sent` /
-`indicators-late`). Producer restart and visible-row scrolling remain separate
-live coverage gaps.
+`indicators-late`). Protected scene104245 adds `indicators-restart`: owned
+DF117032 is replaced by DF132632 while an old successful receipt remains
+unobserved. The old request becomes unknown, all reader state clears, only the
+construction Catalog bootstrap runs automatically, and reopening returns fresh
+matching facts. Both save manifests remain unchanged; only the known
+render-thread notice is reported. The shared restart guard also explicitly
+rejects automatic specialization and staff-indicator reads/edits.
+`location-staff-indicators-restart-resize` passes core and reader tests cleanly;
+the staff GPU check reports only known diagnostics. It translates the five native
+RGB reference crops to960x600,1600x900 and1200x800, matches all pixels before
+and during hover, verifies the visible performer hitbox at each size, and checks
+that the old coordinates stop activating staff help. This establishes resize
+behavior for these populated rows, not native layout parity for every viewport.
+Visible-row scrolling remains separate live coverage.
 
 Protected `staffindicatorhelp102205` captures all ten occupation-role tooltip
 routes and separate workshop/furnace membership probes. All four medical roles

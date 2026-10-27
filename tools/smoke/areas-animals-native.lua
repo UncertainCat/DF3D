@@ -751,13 +751,52 @@ local function find_job(id)
  for _,value in require('utils').listpairs(df.global.world.jobs.list)do if value.id==id then return value end end
 end
 local chosen_unit,chosen_item,pen_zone,pond_zone
-for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
+local resize_marker=io.open(out..'/picker-resize','r')
+local resize_only=resize_marker~=nil
+if resize_marker then
+ resize_marker:close()
+ -- Owned unsaved diagnostic: enough eligible items to expose the full page.
+ local original=assert(df.global.world.items.other.ANY_CRITTER[0])
+ local pet=df.item_petst:is_instance(original)
+ assert(pet or df.item_verminst:is_instance(original))
+ for index=1,32 do
+  local extra=pet and df.item_petst:new() or df.item_verminst:new()
+  extra.id=df.global.item_next_id;df.global.item_next_id=extra.id+1
+  extra.race=original.race;extra.caste=original.caste
+  extra.flags.whole=original.flags.whole;extra.flags2.whole=original.flags2.whole
+  extra.pos:assign(original.pos)
+  df.global.world.items.all:insert('#',extra)
+  df.global.world.items.other.ANY_CRITTER:insert('#',extra)
+  df.global.world.items.other[pet and 'PET' or 'VERMIN']:insert('#',extra)
+ end
+end
+for _,probe in ipairs(resize_only and {{'Pond',60,438}} or {{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}})do
  local kind=probe[1]=='Pen' and 'Pen' or 'Pond'
  pixel(probe[2],probe[3]);mapclick(p);mapclick(p)
  assert(ui.cur_bld and ui.cur_bld.type==df.civzone_type[kind],'native animal zone creation failed: '..tostring(ui.cur_bld and df.civzone_type[ui.cur_bld.type]))
  local zone=ui.cur_bld
  pixel(304,114);capture(probe[1]..'-zone')
  pixel(336,154);local opened=capture(probe[1]..'-picker')
+ if resize_only then
+  local function find_scroll(widget)
+   if df.widget_scroll_rows:is_instance(widget)then return df.reinterpret_cast(df.widget_scroll_rows,widget)end
+   for _,child in ipairs(children(widget))do local found=find_scroll(child);if found then return found end end
+  end
+  for _,size in ipairs{'small','wide','default'}do
+   animal_window_input('name-resize-'..size)
+   view:render(dfhack.getTickCount());script.sleep(2,'frames')
+   local rows={};local list=assert(walk(main.unit_selector,rows,0,true));local scroll=assert(find_scroll(list))
+   local filter=df.reinterpret_cast(df.widget_textbox,assert(dfhack.gui.getWidget(assert(dfhack.gui.getWidget(main.unit_selector,'Unit selector')),'Filter box')))
+   records[#records+1]={name='animal-resize',size=size,dimx=g.dimx,dimy=g.dimy,
+    pixel_width=g.screen_pixel_x,pixel_height=g.screen_pixel_y,rows=rows,
+    num_visible=scroll.num_visible,scroll=scroll.scroll,cursor=list.cursor_idx,
+    scroll_rect={scroll.rect.x1,scroll.rect.y1,scroll.rect.x2,scroll.rect.y2},
+    filter_rect={filter.rect.x1,filter.rect.y1,filter.rect.x2,filter.rect.y2}}
+   capture('animal-resize-'..size)
+   assert(#zone.assigned_units==0,'resize changed animal assignments')
+  end
+  return
+ end
  if probe[1]=='Pen' or probe[1]=='Pond' then navigation(probe[1],opened) end
  if probe[1]=='Pen' or probe[1]=='Pond' then animal_search_input(probe[1]) end
  if probe[1]=='Pond' then

@@ -432,6 +432,24 @@ local function window_input(label,action,observe)
  end
  assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');if observe~=false then input_state(label)end
 end
+local resize_marker=io.open(out..'/picker-resize','r')
+if resize_marker then
+ resize_marker:close()
+ for _,size in ipairs{'small','wide','default'}do
+  window_input('resize','name-resize-'..size,false)
+  view:render(dfhack.getTickCount());script.sleep(2,'frames')
+  local list=assert(unit_list(selector,0));local scroll=assert(find_widget(list,df.widget_scroll_rows,0))
+  local rows={};widget_rows(selector,rows,0)
+  records[#records+1]={name='owner-resize',size=size,dimx=g.dimx,dimy=g.dimy,
+   pixel_width=g.screen_pixel_x,pixel_height=g.screen_pixel_y,rows=rows,
+   num_visible=scroll.num_visible,scroll=scroll.scroll,cursor=list.cursor_idx,
+   scroll_rect={scroll.rect.x1,scroll.rect.y1,scroll.rect.x2,scroll.rect.y2},
+   filter_rect={filter.rect.x1,filter.rect.y1,filter.rect.x2,filter.rect.y2}}
+  capture('owner-resize-'..size)
+  assert(zone.assigned_unit_id==-1,'resize changed owner')
+ end
+ return
+end
 -- Hidden-desktop SDL polls reset GPS mouse coordinates. Retain pointer/focus
 -- during the native input/render loop. Recenter supplies a positive control.
 -- Sample rendered glyphs immediately; asynchronous screenshots lose this pointer.

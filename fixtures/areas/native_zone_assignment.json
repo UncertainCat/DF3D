@@ -8512,5 +8512,193 @@
       "Broader Zones/Locations UI remains staged.",
       "Animal candidate admission is a separate pending audit."
     ]
+  },
+  "picker_resize_reference": {
+    "evidence": "build/stockpile-storage-native-zone-owner-20261027-152427",
+    "scope": "Native Tomb owner selector",
+    "observations": [
+      {
+        "cursor": 0,
+        "dimx": 120,
+        "dimy": 50,
+        "filter_rect": [
+          49,
+          43,
+          87,
+          45
+        ],
+        "name": "owner-resize",
+        "num_visible": 11,
+        "pixel_height": 600,
+        "pixel_width": 960,
+        "scroll": 0,
+        "scroll_rect": [
+          47,
+          7,
+          103,
+          40
+        ],
+        "size": "small",
+        "widgets": [
+          {
+            "name": "",
+            "type": "<type: unit_selector_interfacest>",
+            "x": 46,
+            "y": 4,
+            "x2": 102,
+            "y2": 46
+          },
+          {
+            "name": "Unit selector",
+            "type": "<type: widget_unit_list>",
+            "x": 47,
+            "y": 5,
+            "x2": 101,
+            "y2": 45
+          },
+          {
+            "name": "Unit List",
+            "type": "<type: widget_table>",
+            "x": 45,
+            "y": 5,
+            "x2": 101,
+            "y2": 45
+          },
+          {
+            "name": "Filter box",
+            "type": "<type: widget_textbox>",
+            "x": 49,
+            "y": 43,
+            "x2": 87,
+            "y2": 45
+          }
+        ],
+        "capture": "build/stockpile-storage-native-zone-owner-20261027-152427/owner-resize-small.png",
+        "capture_sha256": "dd03466e599a283b667980d1bf43311ba694d4db6887e8f241add1b6885b6410"
+      },
+      {
+        "cursor": 0,
+        "dimx": 200,
+        "dimy": 75,
+        "filter_rect": [
+          49,
+          68,
+          87,
+          70
+        ],
+        "name": "owner-resize",
+        "num_visible": 19,
+        "pixel_height": 900,
+        "pixel_width": 1600,
+        "scroll": 0,
+        "scroll_rect": [
+          47,
+          7,
+          166,
+          65
+        ],
+        "size": "wide",
+        "widgets": [
+          {
+            "name": "",
+            "type": "<type: unit_selector_interfacest>",
+            "x": 46,
+            "y": 4,
+            "x2": 167,
+            "y2": 71
+          },
+          {
+            "name": "Unit selector",
+            "type": "<type: widget_unit_list>",
+            "x": 47,
+            "y": 5,
+            "x2": 166,
+            "y2": 70
+          },
+          {
+            "name": "Unit List",
+            "type": "<type: widget_table>",
+            "x": 45,
+            "y": 5,
+            "x2": 164,
+            "y2": 70
+          },
+          {
+            "name": "Filter box",
+            "type": "<type: widget_textbox>",
+            "x": 49,
+            "y": 68,
+            "x2": 87,
+            "y2": 70
+          }
+        ],
+        "capture": "build/stockpile-storage-native-zone-owner-20261027-152427/owner-resize-wide.png",
+        "capture_sha256": "5d84f1659abcfd58049d7301c18f0f14fc9c75b7ada81e2247c77b26b57ef983"
+      },
+      {
+        "cursor": 0,
+        "dimx": 150,
+        "dimy": 66,
+        "filter_rect": [
+          49,
+          59,
+          87,
+          61
+        ],
+        "name": "owner-resize",
+        "num_visible": 16,
+        "pixel_height": 800,
+        "pixel_width": 1200,
+        "scroll": 0,
+        "scroll_rect": [
+          47,
+          7,
+          116,
+          56
+        ],
+        "size": "default",
+        "widgets": [
+          {
+            "name": "",
+            "type": "<type: unit_selector_interfacest>",
+            "x": 46,
+            "y": 4,
+            "x2": 117,
+            "y2": 62
+          },
+          {
+            "name": "Unit selector",
+            "type": "<type: widget_unit_list>",
+            "x": 47,
+            "y": 5,
+            "x2": 116,
+            "y2": 61
+          },
+          {
+            "name": "Unit List",
+            "type": "<type: widget_table>",
+            "x": 45,
+            "y": 5,
+            "x2": 114,
+            "y2": 61
+          },
+          {
+            "name": "Filter box",
+            "type": "<type: widget_textbox>",
+            "x": 49,
+            "y": 59,
+            "x2": 87,
+            "y2": 61
+          }
+        ],
+        "capture": "build/stockpile-storage-native-zone-owner-20261027-152427/owner-resize-default.png",
+        "capture_sha256": "7b8b557e7e5f013a05e9a6fa6a5638c9c20ff0272d1c4e267163f7b2b63c4642"
+      }
+    ],
+    "save_preservation": "Owned source unchanged",
+    "limitations": [
+      "Geometry and initial top-page capacity only; resize scroll clamping, held dragging and filter input are not yet covered.",
+      "No runtime layout correction is established by this native reference."
+    ]
   }
 }

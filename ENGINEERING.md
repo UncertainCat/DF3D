@@ -21,6 +21,29 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Locations integration verification
 
+### Remaining assignment-picker resize gap
+
+Protected native `stockpile_storage_native.ps1 -ZoneOwner -PickerResize`
+(`stockpile-storage-native-zone-owner-20261027-152427`) and
+`-ZoneAnimals -PickerResize` (`stockpile-storage-native-zone-animals-20261027-152649`)
+establish native capacities11/19/16 at960x600/1600x900/1200x800. Both keep the
+filter at cell rows43/68/59 respectively and extend the scroll rectangle to
+rows40/65/56. The owner selector also changes width; the animal selector remains
+fixed-width. `picker_resize_reference` in the respective owner/animal fixtures
+retains widget rectangles, grid/pixel dimensions and screenshot hashes.
+The animal run adds32 eligible critter items only to the owned unsaved process;
+the earlier Pen152533 had only16 candidates and could not establish tall-page
+capacity. Owner-small and animal-small/wide captures were inspected. All runs
+pass cleanly and preserve the source manifest; DF161860 and179804 exit unsaved.
+Core passes in `build/qa/native-picker-resize`.
+
+This identifies a runtime gap: `area_candidates_view` fixes owner/animal page
+capacity at16, body height684 and filter position648, while `areas.gd` fixes
+the outer panel size. Implement native height/width propagation together with
+scroll/input geometry and visible recipe demand. These native captures establish
+initial top-page geometry only; scroll clamping, held dragging and actual filter
+input across resize still need comparison. Zones remains gated.
+
 Protected `areas-acceptance-20261027-133446 -LocationScene` passes the full
 existing main-scene Locations suite with the live petition tracker enabled.
 Coverage includes six locations through both Details entry routes, native

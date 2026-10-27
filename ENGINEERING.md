@@ -601,6 +601,25 @@ the main native UI input handler or borrowing its scratch is not an alternative.
 Petition/threshold variants, other priesthood states and viewer controls remain
 unverified; the staged Details route stays hidden.
 
+`recognition_mutation_reference` adds the actual native promotion from protected
+`build/stockpile-storage-native-location-names-20261027-011510` (161 observations,
+source manifest unchanged, owned unsaved exit). With Temple0 temporarily at
+tier2, clicking the recognition button creates `HIGH_PRIEST` position1 and
+assignment3, moves holder9375 from priest assignment2 to the new assignment,
+retains the vacated priest slot and advances both entity ID counters. One
+`ADD_HF_ENTITY_LINK` history event is added. `entity_recognized` remains false
+before and after; it is not a recognition-status substitute. The button
+disappears, and repeating its old click changes no captured positions,
+assignments or event/ID counts. The original tier is restored, and the lane
+discards all other changes without saving. Root/core19/19 passes in
+`build/qa/location-recognition-native-effects`.
+This is a mutation oracle for the occupied-priest promotion branch, not bridge
+acceptance. Complete history-event payloads, historical-figure links, entity-site
+metadata, petition effects and empty-priest cases still need observation before
+implementing the transaction. The inspected native helpers9364d0,30ffb0,c30000
+and76d4e0 do not individually implement recognition; they must not be treated
+as a ready-made semantic command merely because the input branch calls them.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

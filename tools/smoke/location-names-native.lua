@@ -498,3 +498,42 @@ for i,location in ipairs(choices)do
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
 assert(#records==158,'incomplete name mutation/filter reference')
+
+-- Native-only mutation oracle, after naming's RNG assertions. The lane owns
+-- this paused disposable clone and exits without saving any recognition effects.
+local temple=choices[1];assert(temple.id==0)
+pixel(664,238);assert(details.open and details.selected_ab==temple)
+local religion=assert(df.historical_entity.find(temple.deity_data.Religion))
+local function recognition_state()
+ local result={positions={},assignments={},next_position=religion.positions.next_position_id,
+  next_assignment=religion.positions.next_assignment_id,event_count=#df.global.world.history.events,
+  recognized=temple:getContents().need_more.entity_recognized}
+ for _,p in ipairs(religion.positions.own)do
+  result.positions[#result.positions+1]={id=p.id,code=p.code,name=dfhack.df2utf(p.name[0])}
+ end
+ for _,a in ipairs(religion.positions.assignments)do
+  result.assignments[#result.assignments+1]={id=a.id,position_id=a.position_id,histfig=a.histfig,
+   histfig2=a.histfig2,site=a.st_id,location=a.ab_id,position_vector_idx=a.position_vector_idx}
+ end
+ return result
+end
+local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=2
+local ok,err=xpcall(function()
+ local before=capture('TEMPLE-0-recognition-before',temple);before.recognition=recognition_state()
+ pixel(500,214)
+ local after=capture('TEMPLE-0-recognition-after',temple);after.recognition=recognition_state()
+ after.recognition.new_events={}
+ for i=before.recognition.event_count,#df.global.world.history.events-1 do
+  local event=df.global.world.history.events[i]
+  after.recognition.new_events[#after.recognition.new_events+1]={id=event.id,type=df.history_event_type[event:getType()]}
+ end
+ assert(require('json').encode(before.recognition.assignments)~=require('json').encode(after.recognition.assignments),'recognition did not change assignments')
+ pixel(500,214)
+ local repeated=capture('TEMPLE-0-recognition-repeat',temple);repeated.recognition=recognition_state()
+ for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment'}do
+  assert(require('json').encode(after.recognition[field])==require('json').encode(repeated.recognition[field]),'repeat recognition changed '..field)
+ end
+end,debug.traceback)
+contents.location_tier=original
+assert(ok,err)
+assert(#records==161,'incomplete recognition mutation reference')

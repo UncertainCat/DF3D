@@ -3765,5 +3765,193 @@
       "bridge semantic observation and action",
       "viewer controls"
     ]
+  },
+  "recognition_mutation_reference": {
+    "source": "build/stockpile-storage-native-location-names-20261027-011510/result.json",
+    "result_sha256": "57872d2f01211a91ca429eb6beb4d305d6c4b48c967df1ac5237f553d1efc2d2",
+    "cases": [
+      {
+        "name": "TEMPLE-0-recognition-before",
+        "state": {
+          "assignments": [
+            {
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61
+            },
+            {
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90
+            },
+            {
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": 0,
+              "site": 651
+            }
+          ],
+          "event_count": 54231,
+          "next_assignment": 3,
+          "next_position": 1,
+          "positions": [
+            {
+              "code": "PRIEST",
+              "id": 0,
+              "name": "sacred vault"
+            }
+          ],
+          "recognized": false
+        },
+        "action_text": "Recognize high priest"
+      },
+      {
+        "name": "TEMPLE-0-recognition-after",
+        "state": {
+          "assignments": [
+            {
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61
+            },
+            {
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90
+            },
+            {
+              "histfig": -1,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": 0,
+              "site": 651
+            },
+            {
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 3,
+              "location": -1,
+              "position_id": 1,
+              "position_vector_idx": 1,
+              "site": 651
+            }
+          ],
+          "event_count": 54232,
+          "new_events": [
+            {
+              "id": 64037,
+              "type": "ADD_HF_ENTITY_LINK"
+            }
+          ],
+          "next_assignment": 4,
+          "next_position": 2,
+          "positions": [
+            {
+              "code": "PRIEST",
+              "id": 0,
+              "name": "sacred vault"
+            },
+            {
+              "code": "HIGH_PRIEST",
+              "id": 1,
+              "name": "exalted wealth"
+            }
+          ],
+          "recognized": false
+        },
+        "action_text": ""
+      },
+      {
+        "name": "TEMPLE-0-recognition-repeat",
+        "state": {
+          "assignments": [
+            {
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61
+            },
+            {
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90
+            },
+            {
+              "histfig": -1,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": 0,
+              "site": 651
+            },
+            {
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 3,
+              "location": -1,
+              "position_id": 1,
+              "position_vector_idx": 1,
+              "site": 651
+            }
+          ],
+          "event_count": 54232,
+          "next_assignment": 4,
+          "next_position": 2,
+          "positions": [
+            {
+              "code": "PRIEST",
+              "id": 0,
+              "name": "sacred vault"
+            },
+            {
+              "code": "HIGH_PRIEST",
+              "id": 1,
+              "name": "exalted wealth"
+            }
+          ],
+          "recognized": false
+        },
+        "action_text": ""
+      }
+    ],
+    "source_save_unchanged": true,
+    "owned_exit_without_save": true,
+    "scope": "Native click at500,214 with controlled Temple0 tier2 after naming checks. Existing priest promoted to newly created HIGH_PRIEST assignment, old priest assignment retained empty, one ADD_HF_ENTITY_LINK event; repeat click changes no captured assignment/position/count. Tier restored, all other effects discarded by owned unsaved exit.",
+    "omissions": [
+      "complete event payload and historical-figure links",
+      "entity-site metadata and petition effects",
+      "unoccupied/no-existing-priest branches",
+      "bridge command parity",
+      "disconnect and stale revision behavior"
+    ]
   }
 }

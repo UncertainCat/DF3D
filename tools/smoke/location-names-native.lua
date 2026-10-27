@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -658,7 +658,7 @@ end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local original_priest_threshold=difficulty.priesthood_unit_count
-if recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' then
+if recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' then
  local assignment_row_y=recognition_case=='assignhighpriest' and 394 or 358
  local promotion_rng
  local assignment
@@ -684,10 +684,19 @@ if recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest'
   assert(assignment and assignment.histfig>=0,'native promotion did not transfer holder')
   capture('TEMPLE-high-priest-promoted',temple);table.remove(records)
  end
- if recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' then pixel(944,assignment_row_y);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')end
+ if recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' then pixel(944,assignment_row_y);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')end
  local expected_holder=assignment.histfig
  local previous_holder=expected_holder>=0 and assert(df.historical_figure.find(expected_holder)) or nil
  local linked_squad,seeded_assignment_job
+ if recognition_case=='assignspypriest' then
+  -- Native follow-up c2fde0 reads responsibilities+25 (ESPIONAGE) at0x341.
+  -- Exercise that semantic branch only in this unsaved diagnostic fixture.
+  local position
+  for _,p in ipairs(religion.positions.own)do if p.id==assignment.position_id then position=p end end
+  assert(position);position.responsibilities[df.entity_position_responsibility.ESPIONAGE]=true
+  local _,base=df.sizeof(position);local _,at=df.sizeof(position:_field('responsibilities'))
+  assert(at-base+df.entity_position_responsibility.ESPIONAGE==0x341)
+ end
  if recognition_case=='assigncommandpriest' then
   -- Controlled semantic branch fixture, not a new player-facing position type.
   local position
@@ -975,7 +984,7 @@ if recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest'
   return state
  end
  cancelled.selected=selected_state()
- local assignment_expected,assign_semantic,assign_revision
+ local assignment_expected,assign_semantic,assign_revision,assign_observe
  if semantic_recognition then
   local marker=assert(io.open(out..'/recognition-reference'));local path=marker:read('*a'):match('^%s*(.-)%s*$');marker:close()
   local file=assert(io.open(path));local reference=require('json').decode(file:read('*a'));file:close()
@@ -987,6 +996,7 @@ if recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest'
    assert(code==0,text);local receipt=require('json').decode(text);assert(receipt.valid);return receipt
   end
   local receipt=assignment_receipt();assert(receipt.eligible and receipt.holder_id==expected_holder and receipt.histfig_id==chosen.histfig_id)
+  assign_observe=assignment_receipt
   assign_revision=receipt.revision
   assign_semantic=function(ids,revision)
    local args=ids or {df.global.plotinfo.site_id,temple.id,religion.id,assignment.id,chosen.id,expected_holder}
@@ -1090,6 +1100,21 @@ if recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest'
   assigned.selected_after_stale_replay=selected_state()
   assert(require('json').encode(without_lookup_indexes(assigned.selected))==require('json').encode(without_lookup_indexes(assigned.selected_after_stale_replay)),'stale replay changed selected unit')
   assigned.semantic_matches_native=true
+  if recognition_case=='assignspypriest' then
+   local plots=assert(df.historical_figure.find(chosen.histfig_id).info.relationships.intrigues)
+   assert(#plots.plots==1 and plots.plots[0].plot_type==12 and plots.plots[0].parameter==religion.id)
+   assigned.plot_receipt_probes={}
+   for _,probe in ipairs{{plots,'next_plot_id'},{plots.plots[0],'id'},{plots.plots[0],'plot_type'},{plots.plots[0],'parameter'}}do
+    local before=assign_observe().revision;local object,field=probe[1],probe[2];local original=object[field]
+    object[field]=original+1;assert(assign_observe().revision~=before,'receipt missed plot '..field)
+    local seeded=require('json').encode(selected_state())
+    local args={df.global.plotinfo.site_id,temple.id,religion.id,assignment.id,chosen.id,assignment.histfig}
+    assert(assign_semantic(args,before)==4,'changed plot receipt was accepted '..field)
+    assert(require('json').encode(selected_state())==seeded,'stale plot request changed selected records '..field)
+    object[field]=original;assert(assign_observe().revision==before,'plot receipt did not restore '..field)
+    assigned.plot_receipt_probes[#assigned.plot_receipt_probes+1]=field
+   end
+  end
  end
  contents.location_tier=original;assert(#records==4);return
 end

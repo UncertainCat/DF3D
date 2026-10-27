@@ -38,6 +38,7 @@
 #include "df/historical_figure_relationships.h"
 #include "df/intrigue_perspectivest.h"
 #include "df/intrigue_actorst.h"
+#include "df/intrigue_plotst.h"
 #include <cstddef>
 #include "df/occupation_type.h"
 #include "df/plotinfost.h"
@@ -574,6 +575,13 @@ std::optional<LocationReligiousAssignmentReceipt> observeNativeReligiousAssignme
     number(info->reputation!=nullptr);number(info->relationships!=nullptr);
     const auto* intrigue=info->relationships?info->relationships->intrigues:nullptr;number(intrigue!=nullptr);
     if(intrigue) {
+      // Native c2fde0 searches existing type/parameter pairs and allocates from
+      // next_plot_id when ESPIONAGE is set on the assigned position.
+      number(intrigue->next_plot_id);number(intrigue->plots.size());
+      for(const auto* plot:intrigue->plots) {
+        if(!plot)return std::nullopt;
+        number(plot->id);number(plot->plot_type);number(plot->parameter);
+      }
       number(intrigue->next_intrigue_id);number(intrigue->intrigue.size());
       for(const auto* actor:intrigue->intrigue) {
         if(!actor)return std::nullopt;

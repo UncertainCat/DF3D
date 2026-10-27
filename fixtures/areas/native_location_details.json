@@ -14023,6 +14023,64 @@
         "source_preserved": true,
         "owned_exit_without_save": true
       }
-    ]
+    ],
+    "espionage_reference": {
+      "native": "build/stockpile-storage-native-location-recognition-assignspypriest-20261027-074638",
+      "semantic": "build/stockpile-storage-native-location-recognition-actionassignspypriest-20261027-075018",
+      "semantic_matches_native": true,
+      "selected_unit": 7123,
+      "plot_receipt_probes": [
+        "next_plot_id",
+        "id",
+        "plot_type",
+        "parameter"
+      ],
+      "plots": [
+        {
+          "actor_nemesis_id": -1,
+          "agreement": -1,
+          "delegated_plot_hfid": -1,
+          "delegated_plot_id": -1,
+          "id": 0,
+          "message_id": -1,
+          "parameter": 383,
+          "parent_plot": -1,
+          "parent_plot_hfid": -1,
+          "plot_type": 12,
+          "plotter_nemesis_id": -1,
+          "task_id": -1
+        }
+      ],
+      "nemesis_flags": [
+        "CHAT_WORTHY",
+        "DO_NOT_CULL",
+        "POTENTIAL_PLOTTER_ACTOR"
+      ],
+      "actor_counts": {
+        "civilized_actor": [
+          1691,
+          1692
+        ],
+        "independent_actor": [
+          523,
+          523
+        ],
+        "new_plotter_actor": [
+          0,
+          1
+        ],
+        "plotter_actor": [
+          244,
+          244
+        ],
+        "religious_actor": [
+          82,
+          82
+        ]
+      },
+      "source_preserved": true,
+      "owned_exit_without_save": true,
+      "scope": "Controlled ESPIONAGE responsibility; native follow-up effects and plot receipt staleness. Not a new player-facing role."
+    }
   }
 }

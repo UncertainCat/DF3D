@@ -618,8 +618,25 @@ Six selected-receipt dependency probes and completed replay refusal also pass.
 All four runs preserve the source and exit owned DF unsaved. The command fixture
 reacquires the native unit-list widget after reopening; retaining an earlier
 widget pointer caused an initial diagnostic cursor assertion, not a product bug.
-Bounded military_assignment_reference records provenance and scope. Plotter and
-absent-unit historical branches remain outside this evidence.
+Bounded military_assignment_reference records provenance and scope. Absent-unit
+historical branches remain outside this evidence.
+
+Native assignspypriest074638 and semantic actionassignspypriest075018 exercise
+the follow-up ESPIONAGE responsibility at position offset0x341. The responsibility
+is set only in the paused diagnostic clone, not exposed as a new gameplay role.
+For unit7123/HF10379, native adds nemesis7120 to new_plotter_actor, sets
+POTENTIAL_PLOTTER_ACTOR and creates plot0/type12/parameter383. The semantic path
+matches the captured selected records, recognition, actor lists and history,
+including native RNG use and the existing uninitialized-focus-counter exclusion.
+This audit found missing receipt inputs: next_plot_id and each existing plot's
+id/type/parameter now participate in the selected receipt. Four live dependency
+probes independently change these fields, require a changed receipt and Stale
+mutation refusal, prove captured selected records unchanged by refusal, and
+restore the original receipt. Native and semantic lanes pass, preserve the source
+and exit owned DF unsaved. This covers espionage-triggered plot initialization;
+it does not exhaust personality-threshold or pre-existing-plot deduplication cases.
+MSVC rebuild passes; installed management75 plugin SHA256 is
+7A446431629448412B32FC6D81A518419EA4A71DDFCD5CDB8342D25D9CD63461.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

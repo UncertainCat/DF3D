@@ -896,7 +896,7 @@ only known shutdown/render-thread diagnostics. An earlier102754 screw-press
 screenshot contained a partially missing native panel and was rejected as a
 reference; the fresh capture changes only that crop among all64 cases. No viewer
 art change was needed. The supported install has no custom furnace raw; custom
-furnaces, viewport resizing and live reader retirement remain separate coverage.
+furnaces, viewport resizing and producer-restart retirement remain separate coverage.
 
 `location_staff_indicators.gd` maps audited semantic assignments to installed
 occupation, building and work-detail art, preserving native order and slot
@@ -913,8 +913,20 @@ passes cleanly. Protected scene101533 verifies both live row receipts against
 independent native assignments, visible hover help, and existing specialization/
 religious assignment workflows. Owned DF145552 exits unsaved; both save manifests
 remain unchanged. Only the known render-thread notice is reported. Screens stay
-hidden pending broader subtype/overflow/custom artwork and indicator lifecycle
-acceptance.
+hidden pending completion of the remaining Zones/Locations workflows.
+
+Protected scene103817/103916/104016 exercises indicator reads queued before
+send, sent with a successful native reply held unobserved, and closed before
+that reply is delivered. Disconnect clears the reader and Details; reconnect
+neither replays reads nor reopens the panel. Closing and selecting another
+location cannot publish the old row receipt. Reopening the original location
+loads fresh facts equal to the initial receipt. All three runs report
+passed_with_known_issues (only the known render-thread notice); owned DF159036,
+126636 and160648 exit unsaved and both save manifests remain unchanged.
+Run these through `areas_acceptance.ps1 -LocationScene -ReligiousStaffScene
+-ReligiousStaffLifecycle indicators-queued` (or `indicators-sent` /
+`indicators-late`). Producer restart and visible-row scrolling remain separate
+live coverage gaps.
 
 Protected `staffindicatorhelp102205` captures all ten occupation-role tooltip
 routes and separate workshop/furnace membership probes. All four medical roles

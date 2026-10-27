@@ -1543,6 +1543,8 @@ func religious_staff_route(locations: Array) -> void:
 	var details=editor.details_view
 	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and details.recognition_workflow.recognition.phase==details.recognition_workflow.recognition.Phase.Ready,"religious Details entry"):return
 	var view=details.staff_view
+	if lifecycle.begins_with("indicators-"):
+		await indicators_lifecycle(lifecycle.trim_prefix("indicators-"));return
 	if lifecycle.begins_with("specialization-"):
 		await specialization_lifecycle(lifecycle.trim_prefix("specialization-"));return
 	if lifecycle=="none":
@@ -1685,6 +1687,48 @@ func specialization_scene() -> void:
 			await capture("specialization_%d_%s"%[int(change.unit_id),str(expected.specialized)])
 		evidence.append({"unit_id":change.unit_id,"viewport_clicks":2,"native_effects_matched":true,"restored":true})
 	write_json("specialization-scene-evidence.json",{"cases":evidence})
+
+func indicators_lifecycle(mode: String) -> void:
+	step="staff indicators lifecycle "+mode
+	var details=editor.details_view
+	var reader=details.assignments_reader
+	var row: Dictionary=details.staff_view.rows[0].duplicate(true)
+	if not await wait_ui(func():return reader.ticket==0 and details.specialization_reader.ticket==0 and not reader.receipt(row).is_empty() and actions._active==0 and actions._queue.is_empty(),"indicator initial pass"):return
+	var original: Dictionary=reader.receipt(row)
+	reader.clear();reader.display(details.staff_view.visible_rows())
+	var ticket: int=reader.ticket
+	if not check(ticket>0,"indicator new pass absent"):return
+	if mode!="queued":
+		var reply:=await quantity_unobserved(ticket)
+		if stopped:return
+		if not check(int(reply.area.location_staff_assignments.unit_id)==int(original.unit_id),"indicator unobserved identity"):return
+	if mode=="late":
+		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		if not check(reader.owner.is_empty() and reader.rows.is_empty() and reader.receipts.is_empty() and reader.ticket==0,"closed indicator owner retained"):return
+		await quantity_lifecycle_choose(1)
+		if stopped:return
+		if not check(int(editor.details_state.identity.id)==1 and reader.receipt(row).is_empty(),"late indicator revived on another location"):return
+	else:
+		world.detach_live();actions.poll()
+		if not check(actions.result(ticket).get("outcome")==("not_sent" if mode=="queued" else "unknown"),"indicator disconnect outcome"):return
+		if not check(reader.owner.is_empty() and reader.rows.is_empty() and reader.receipts.is_empty() and reader.ticket==0 and not editor.details_layer.visible,"indicator disconnect retained display"):return
+		if not check(not actions._requests.has(ticket) and actions._active==0 and actions._queue.is_empty(),"indicator request survived disconnect"):return
+		if not check(world.attach(),"indicator reconnect failed"):return
+		if not await wait_ui(func():return world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)),"indicator reconnect"):return
+		var next_ticket: int=actions._next_ticket
+		for frame in 30:world.poll();actions.poll();editor._process(0.02);await process_frame
+		if not check(actions._next_ticket==next_ticket and reader.owner.is_empty() and not editor.details_layer.visible,"indicator reconnect replayed or reopened"):return
+		await quantity_lifecycle_open()
+		if stopped:return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"indicator fresh chooser"):return
+	await quantity_lifecycle_choose(0)
+	if stopped:return
+	if not await wait_ui(func():return not reader.receipt(row).is_empty(),"indicator fresh receipt"):return
+	if not check(reader.receipt(row)==original,"indicator fresh facts differ"):return
+	await capture("indicators_lifecycle_"+mode)
+	write_json("indicators-lifecycle-evidence.json",{"mode":mode,"ticket":ticket,"owner_retired":true,"fresh_facts_match":true})
+	editor.close_panel()
 
 func specialization_lifecycle(mode: String) -> void:
 	step="specialization lifecycle "+mode

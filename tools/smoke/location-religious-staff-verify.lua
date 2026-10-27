@@ -36,13 +36,24 @@ elseif request.op=='religious_guard' then
   guards[#guards+1]={bytes=bytes,address=address,size=size}
  end
  _G.df3d_religious_guard={state=capture(),ui=guards}
-elseif request.op=='religious_unchanged' or request.op=='religious_applied' then
+elseif request.op=='religious_unchanged' or request.op=='religious_applied' or request.op=='religious_assignment_applied' then
  local guard=assert(_G.df3d_religious_guard);result.ui_changed={}
  for i,v in ipairs(guard.ui)do result.ui_changed[i]=dfhack.internal.memcmp(v.bytes,v.address,v.size)~=0;df.delete(v.bytes)end
  assert(not result.ui_changed[1],"religious request changed native main interface")
  _G.df3d_religious_guard=nil
  result.after=capture()
  if request.op=='religious_unchanged' then assert(json.encode(result.after)==json.encode(guard.state),'refusal changed native records')
+ elseif request.op=='religious_assignment_applied' then
+  local unit=assert(df.unit.find(request.unit_id));local figure=assert(df.historical_figure.find(request.histfig_id))
+  assert(unit.hist_figure_id==figure.id and assignment.histfig==figure.id and assignment.histfig2==figure.id)
+  assert(result.after.events==guard.state.events+1,'assignment event count')
+  local links=0
+  for _,link in ipairs(figure.entity_links)do
+   if link:getType()==df.histfig_entity_link_type.POSITION and link.entity_id==entity.id and link:getPosition()==assignment.id then links=links+1 end
+  end
+  assert(links==1,'selected position link missing')
+  local event=df.global.world.history.events[#df.global.world.history.events-1]
+  assert(df.history_event_add_hf_entity_linkst:is_instance(event) and event.civ==entity.id and event.histfig==figure.id and event.position_id==assignment.position_id)
  else
   local before=assert(_G.df3d_religious_before);local after=result.after
   assert(after.holder==-1 and after.holder2==before.holder2 and after.events==before.events+1,'native removal effects missing')
@@ -65,6 +76,22 @@ elseif request.op=='religious_unchanged' or request.op=='religious_applied' then
   assert(event.civ==entity.id and event.histfig==before.holder and event.position_id==assignment.position_id)
   result.event={id=event.id,civ=event.civ,histfig=event.histfig,position_id=event.position_id,link_type=event.link_type,year=event.year,seconds=event.seconds}
  end
+elseif request.op=='religious_candidates_readback' then
+ local text,code=dfhack.run_command_silent('df3d','location-religious-candidate-rows',tostring(site.id),tostring(temple.id),tostring(entity.id),tostring(assignment.id))
+ assert(code==0,text);local rows=json.decode(text).rows;assert(#rows==#request.rows)
+ for i,row in ipairs(rows)do
+  for _,key in ipairs{'unit_id','histfig_id','score','source_index','profession_order','status_order','skills'}do
+   assert(json.encode(row[key])==json.encode(request.rows[i][key]),'candidate transport mismatch '..key)
+  end
+ end
+elseif request.op=='religious_assignment_readback' then
+ local text,code=dfhack.run_command_silent('df3d','location-religious-assignment-receipt',tostring(site.id),tostring(temple.id),tostring(entity.id),tostring(assignment.id),tostring(request.unit_id))
+ assert(code==0,text);local r=json.decode(text)
+ assert(r.valid and r.eligible and r.revision==request.revision and r.histfig_id==request.histfig_id and r.nemesis_id==request.nemesis_id,'selected receipt mismatch')
+elseif request.op=='religious_assignment_change' then
+ local unit=assert(df.unit.find(request.unit_id))
+ if request.restore then unit.uniform.pickup_flags.whole=assert(_G.df3d_religious_pickup)
+ else _G.df3d_religious_pickup=unit.uniform.pickup_flags.whole;unit.uniform.pickup_flags.whole=unit.uniform.pickup_flags.whole~1 end
 elseif request.op=='religious_change' then
  if request.restore then assignment.histfig2=assert(_G.df3d_religious_original_holder2)
  else _G.df3d_religious_original_holder2=assignment.histfig2;assignment.histfig2=-1 end

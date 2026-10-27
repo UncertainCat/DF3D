@@ -13203,6 +13203,22 @@
       "limitations": [
         "Plotter effects, absent-unit historical holders and viewer integration remain unverified."
       ]
+    },
+    "transport_reference": {
+      "candidate_count": 42,
+      "completed": true,
+      "histfig_id": 10379,
+      "stale_checks": 4,
+      "unit_id": 7123,
+      "provenance": "build/areas-acceptance-20261027-064723",
+      "management_version": 75,
+      "save_directories_preserved": 2,
+      "owned_exit_without_save": true,
+      "coverage": "Candidate facts and selected receipt readback, assignment position link and history event, candidate dependency stale, changed target stale, restored target old-list rejection, completed replay rejection.",
+      "limitations": [
+        "No rendered assignment picker or disconnect lifecycle acceptance.",
+        "No post-effect Unknown injection."
+      ]
     }
   }
 }

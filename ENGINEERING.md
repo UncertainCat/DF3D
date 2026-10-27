@@ -494,10 +494,24 @@ integers and candidate comparison keys. Protocol75 uses a separate shared-memory
 region and requires matching bridge/viewer builds. Core checks pass in
 `build/qa/location-religious-contract75`; the extension, fake-producer Godot
 contract and Lua checks pass in `build/qa/location-religious-contract75-adapter`.
-MSVC also builds the contract. The new operations are not yet wired to the native
-management handler or viewer workflow; no new gameplay UI is exposed by this
-contract change. The installed development plugin remains74 until handler work
-and the matching75 installation are ready for protected live acceptance.
+MSVC also builds the contract. The native handler reobserves the holder and full candidate list at a safe point
+before serving pages, issuing selected receipts or assigning. Selection requires
+membership in that list and the expected holder. Assignment additionally requires
+the current selected-candidate revision. Entering mutation retires the list;
+Applied requires a fresh target identifying the selected holder/unit, otherwise
+the result remains Unknown and cannot replay. The installed development bridge
+and viewer now match75. Protected `areas_acceptance.ps1 -ReligiousStaffOnly`
+in064723 verifies42 candidate rows and selected receipt against native diagnostic
+readback, then unit7123/HF10379 assignment with independent position-link and
+ADD_HF_ENTITY_LINK checks. Candidate uniform changes, changed holder state,
+restored target with an old list and completed replay all refuse the request.
+Existing removal coverage still passes. Both save manifests remain unchanged;
+owned DF exits unsaved and diagnostics are empty. Native main-interface guards
+pass; gps redraw changes also occur in the no-request control. Core checks pass
+in `build/qa/location-religious-handler-core`, and MSVC builds successfully.
+The fixture retains bounded transport evidence. Assignment viewer rendering,
+disconnect/late-reply lifecycle and post-effect Unknown injection remain unfinished;
+no new gameplay UI is exposed by this handler.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

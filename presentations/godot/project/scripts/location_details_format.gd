@@ -47,7 +47,11 @@ static func occupation_label(role: Variant) -> Variant:
 # cells for verbatim ellipsis. The view supplies its measured field width;
 # hospital-with-scrollbar and fitting lists differ (12 versus14 cells).
 static func staff_holder_name(value: Variant, cells: int) -> Variant:
-	if typeof(value)!=TYPE_STRING or cells<3: return null
+	if typeof(value)!=TYPE_STRING: return null
+	# Native3b8465 compares the negative field limit as an unsigned length;
+	# narrow Details therefore keeps the full name (resize reference004035).
+	if cells<0:return value
+	if cells<=3:return value.left(cells)
 	return value if value.length()<=cells else value.left(cells-3)+"..."
 
 # Capture221753 varies row count within each kind. The scrollbar consumes two

@@ -26,7 +26,17 @@ func configure(source) -> void:
 
 func layout(view: Vector2) -> void:
 	position=Vector2(384,60+fposmod(view.y,12)*0.5)
-	size=Vector2(576,636)
+	size=Vector2(floori(view.x/8)*8-624,636)
+	update_geometry()
+	queue_redraw()
+
+func row_columns() -> int:
+	return int(size.x/8)-(2 if int(geometry.get("max_scroll",0))>0 else 0)
+
+func update_geometry() -> void:
+	if geometry.is_empty():return
+	geometry.width=row_columns()-58
+	if native_scroll!=null:native_scroll.position.x=size.x-16
 
 func _gui_input(event: InputEvent) -> void:
 	if not actions_enabled or geometry.is_empty() or not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT:return
@@ -35,7 +45,7 @@ func _gui_input(event: InputEvent) -> void:
 		if int(row.get("source",-1))!=0:continue
 		var top: float=(int(geometry.first_y)-6+index*3)*12
 		var occupied:=int(row.get("unit_id",-1))>=0 or int(row.get("histfig_id",-1))>=0
-		var left: float=(66 if int(geometry.max_scroll)>0 else 68)*8 if occupied else 192
+		var left: float=(row_columns()-4)*8 if occupied else 192
 		if Rect2(left,top,32,36).has_point(event.position):
 			if occupied:removal_requested.emit(int(row.occupation_id))
 			else:assignment_requested.emit(int(row.occupation_id))
@@ -58,6 +68,7 @@ func display(details: Dictionary, offset:=-1) -> void:
 			native_scroll.position=Vector2(560,(int(geometry.first_y)-6)*12)
 			native_scroll.page=int(geometry.capacity);native_scroll.size=Vector2(16,native_scroll.page*36)
 			native_scroll.set_rows(rows.size(),first)
+	update_geometry()
 	queue_redraw()
 	update_icons()
 
@@ -85,8 +96,8 @@ func update_icons() -> void:
 func _draw() -> void:
 	if geometry.is_empty() or theme==null:return
 	var font: Font=theme.default_font
-	var background: Texture2D=art.texture("BUTTON_RECTANGLE_DARK")
-	var columns:=70 if int(geometry.max_scroll)>0 else 72
+	var background: Texture2D=art.texture("BUTTON_RECTANGLE")
+	var columns:=row_columns()
 	for i in int(geometry.visible_count):
 		var row: Dictionary=rows[first+i]
 		var top:=Vector2(0,(int(geometry.first_y)-6+i*3)*12)
@@ -109,11 +120,6 @@ func _draw() -> void:
 			# Native232551: empty ordinary slot; selector action is still pending.
 			var assign: Texture2D=art.texture("LOCATION_ASSIGN_OCCUPATION")
 			if assign!=null:draw_texture_rect(assign,Rect2(top+Vector2(192,0),Vector2(32,36)),false)
-		if int(row.get("unit_id",-1))>=0 or int(row.get("histfig_id",-1))>=0:
-			# Native232551: four cells at the right edge of the row, before
-			# the scrollbar when present. Religious holders use the same art.
-			var remove_worker: Texture2D=art.texture("LOCATION_OCCUPATION_REMOVE_WORKER")
-			if remove_worker!=null:draw_texture_rect(remove_worker,Rect2(top+Vector2((columns-4)*8,0),Vector2(32,36)),false)
 		var label: Variant=null
 		var token: String=""
 		if int(row.get("source",-1))==1:
@@ -129,3 +135,14 @@ func _draw() -> void:
 		if label is String:font.draw_string(get_canvas_item(),top+Vector2(48,24),label,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
 		var holder=Format.staff_holder_name(names.get("holder_name"),int(geometry.width))
 		if holder is String:font.draw_string(get_canvas_item(),top+Vector2(248,24),holder,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
+		if int(row.get("unit_id",-1))>=0 or int(row.get("histfig_id",-1))>=0:
+			# Native232551: four cells at the right edge of the row, before
+			# the scrollbar when present. Religious holders use the same art.
+			var remove_worker: Texture2D=art.texture("LOCATION_OCCUPATION_REMOVE_WORKER")
+			# Native graphical cells replace underlying text, including the
+			# transparent margins of the remove icon.
+			if background!=null:
+				for y in 3:
+					for x in range(columns-4,columns):
+						draw_texture_rect_region(background,Rect2(top+Vector2(x*8,y*12),Vector2(8,12)),Rect2(16 if x==columns-1 else 8,y*12,8,12))
+			if remove_worker!=null:draw_texture_rect(remove_worker,Rect2(top+Vector2((columns-4)*8,0),Vector2(32,36)),false)

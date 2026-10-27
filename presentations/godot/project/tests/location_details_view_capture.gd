@@ -91,6 +91,11 @@ func run() -> void:
 				var quantity:=image.get_region(Rect2i(q[0],q[1],q[2],q[3]));quantity.convert(Image.FORMAT_RGB8)
 				digest.start(HashingContext.HASH_SHA256);digest.update(quantity.get_data())
 				if digest.finish().hex_encode()!=native_case.first_quantity_rgb_sha256:push_error("Native Details resized quantity row "+native_case.name);quit(1);return
+			for region in native_case.get("staff_width_regions",[]):
+				var r: Array=region.rect
+				var staff:=image.get_region(Rect2i(r[0],r[1],r[2],r[3]));staff.convert(Image.FORMAT_RGB8)
+				digest.start(HashingContext.HASH_SHA256);digest.update(staff.get_data())
+				if digest.finish().hex_encode()!=region.rgb_sha256:push_error("Native Details staff width/art "+native_case.name);quit(1);return
 			await click(quill_point+Vector2(16,18));assert(view.name_workflow.active,"resized Details quill input")
 			var name_rect: Rect2=view.name_view.get_global_rect()
 			await click(name_rect.position+Vector2(name_rect.size.x-64,30));assert(not view.name_workflow.active,"resized naming Done")

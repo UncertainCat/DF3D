@@ -2131,7 +2131,27 @@
           336,
           36
         ],
-        "first_quantity_rgb_sha256": "05371408fd8cccb2b501c813bcef1d93e2a9b3525556c4b159f6eed473d99db9"
+        "first_quantity_rgb_sha256": "05371408fd8cccb2b501c813bcef1d93e2a9b3525556c4b159f6eed473d99db9",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              336,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              688,
+              336,
+              32,
+              36
+            ],
+            "rgb_sha256": "c234a9ddfcaa2863207fdc0b8ab5d77c7658b7e24e79f2762e794a3b26bcaf11"
+          }
+        ]
       },
       {
         "name": "TEMPLE-0-details-resize-wide",
@@ -2207,7 +2227,27 @@
           976,
           36
         ],
-        "first_quantity_rgb_sha256": "6041cb888ee261e8adaadb585b3c34d489b0d8c402a41fe503c3186798446904"
+        "first_quantity_rgb_sha256": "6041cb888ee261e8adaadb585b3c34d489b0d8c402a41fe503c3186798446904",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              336,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              1328,
+              336,
+              32,
+              36
+            ],
+            "rgb_sha256": "c234a9ddfcaa2863207fdc0b8ab5d77c7658b7e24e79f2762e794a3b26bcaf11"
+          }
+        ]
       },
       {
         "name": "TEMPLE-0-details-resize-default",
@@ -2287,7 +2327,27 @@
           576,
           36
         ],
-        "first_quantity_rgb_sha256": "08827d0fdd77144959703c603e064a219176819154f1b19d46f13d2a6881ddea"
+        "first_quantity_rgb_sha256": "08827d0fdd77144959703c603e064a219176819154f1b19d46f13d2a6881ddea",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              340,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              928,
+              340,
+              32,
+              36
+            ],
+            "rgb_sha256": "c234a9ddfcaa2863207fdc0b8ab5d77c7658b7e24e79f2762e794a3b26bcaf11"
+          }
+        ]
       },
       {
         "name": "INN_TAVERN-1-details-resize-small",
@@ -2351,7 +2411,27 @@
           336,
           36
         ],
-        "first_quantity_rgb_sha256": "0e61d8a7cf261b0944103a4e0838822dcefb36f8d1d419855fd85f54b50f21bd"
+        "first_quantity_rgb_sha256": "0e61d8a7cf261b0944103a4e0838822dcefb36f8d1d419855fd85f54b50f21bd",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              300,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              688,
+              300,
+              32,
+              36
+            ],
+            "rgb_sha256": "3b900ac817806794c7d442662ccf816e3fc232eb8fdec0cfa3335e41f47a3a74"
+          }
+        ]
       },
       {
         "name": "INN_TAVERN-1-details-resize-wide",
@@ -2415,7 +2495,27 @@
           976,
           36
         ],
-        "first_quantity_rgb_sha256": "4d0f0f2e0b38a3a2b830fbf2e1c7258fe36957e0176cc29e51d9bcd98bc4d302"
+        "first_quantity_rgb_sha256": "4d0f0f2e0b38a3a2b830fbf2e1c7258fe36957e0176cc29e51d9bcd98bc4d302",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              300,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              1328,
+              300,
+              32,
+              36
+            ],
+            "rgb_sha256": "3b900ac817806794c7d442662ccf816e3fc232eb8fdec0cfa3335e41f47a3a74"
+          }
+        ]
       },
       {
         "name": "INN_TAVERN-1-details-resize-default",
@@ -2483,7 +2583,27 @@
           576,
           36
         ],
-        "first_quantity_rgb_sha256": "1b27089a7870da57b981aaee6c13ea0ab38123bf6908425ee7ae2be13b82b25c"
+        "first_quantity_rgb_sha256": "1b27089a7870da57b981aaee6c13ea0ab38123bf6908425ee7ae2be13b82b25c",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              304,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              928,
+              304,
+              32,
+              36
+            ],
+            "rgb_sha256": "3b900ac817806794c7d442662ccf816e3fc232eb8fdec0cfa3335e41f47a3a74"
+          }
+        ]
       },
       {
         "name": "HOSPITAL-2-details-resize-small",
@@ -2867,7 +2987,27 @@
           336,
           36
         ],
-        "first_quantity_rgb_sha256": "d63f35a0a18554e0907542612bbdeb8121a02c76078d49c71871af542461cdbc"
+        "first_quantity_rgb_sha256": "d63f35a0a18554e0907542612bbdeb8121a02c76078d49c71871af542461cdbc",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              336,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              688,
+              336,
+              32,
+              36
+            ],
+            "rgb_sha256": "c234a9ddfcaa2863207fdc0b8ab5d77c7658b7e24e79f2762e794a3b26bcaf11"
+          }
+        ]
       },
       {
         "name": "TEMPLE-3-details-resize-wide",
@@ -2943,7 +3083,27 @@
           976,
           36
         ],
-        "first_quantity_rgb_sha256": "711db9f6fc8d6fe783d12cad8b37cb4883ac0712993f017ad46f329dc480386d"
+        "first_quantity_rgb_sha256": "711db9f6fc8d6fe783d12cad8b37cb4883ac0712993f017ad46f329dc480386d",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              336,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              1328,
+              336,
+              32,
+              36
+            ],
+            "rgb_sha256": "c234a9ddfcaa2863207fdc0b8ab5d77c7658b7e24e79f2762e794a3b26bcaf11"
+          }
+        ]
       },
       {
         "name": "TEMPLE-3-details-resize-default",
@@ -3023,7 +3183,27 @@
           576,
           36
         ],
-        "first_quantity_rgb_sha256": "ea777fb3ce3c7a96a52a8ef7a8451961be505bec6d63097103dd7ff2b8e6302a"
+        "first_quantity_rgb_sha256": "ea777fb3ce3c7a96a52a8ef7a8451961be505bec6d63097103dd7ff2b8e6302a",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              340,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              928,
+              340,
+              32,
+              36
+            ],
+            "rgb_sha256": "c234a9ddfcaa2863207fdc0b8ab5d77c7658b7e24e79f2762e794a3b26bcaf11"
+          }
+        ]
       },
       {
         "name": "LIBRARY-4-details-resize-small",
@@ -3099,7 +3279,27 @@
           336,
           36
         ],
-        "first_quantity_rgb_sha256": "8b9f9934275949cb0e283727b05ef2aa67d1fae3679ca114231ebabc0f95d597"
+        "first_quantity_rgb_sha256": "8b9f9934275949cb0e283727b05ef2aa67d1fae3679ca114231ebabc0f95d597",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              336,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              688,
+              336,
+              32,
+              36
+            ],
+            "rgb_sha256": "c234a9ddfcaa2863207fdc0b8ab5d77c7658b7e24e79f2762e794a3b26bcaf11"
+          }
+        ]
       },
       {
         "name": "LIBRARY-4-details-resize-wide",
@@ -3175,7 +3375,27 @@
           976,
           36
         ],
-        "first_quantity_rgb_sha256": "cd6a34ec8231ba1d2b3143bd8dbbad23c05357d5663f8a91122c2db8f96d2419"
+        "first_quantity_rgb_sha256": "cd6a34ec8231ba1d2b3143bd8dbbad23c05357d5663f8a91122c2db8f96d2419",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              336,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              1328,
+              336,
+              32,
+              36
+            ],
+            "rgb_sha256": "c234a9ddfcaa2863207fdc0b8ab5d77c7658b7e24e79f2762e794a3b26bcaf11"
+          }
+        ]
       },
       {
         "name": "LIBRARY-4-details-resize-default",
@@ -3255,7 +3475,27 @@
           576,
           36
         ],
-        "first_quantity_rgb_sha256": "7ccb12cd13f209b0741b8d18ab56034043b474ce25cb0f3730aa12edd8a8f7c6"
+        "first_quantity_rgb_sha256": "7ccb12cd13f209b0741b8d18ab56034043b474ce25cb0f3730aa12edd8a8f7c6",
+        "staff_width_regions": [
+          {
+            "rect": [
+              416,
+              340,
+              104,
+              12
+            ],
+            "rgb_sha256": "0e38c6337fff742a68518ab50c3abcd21fb05da781d8ba020598d835a6c9b472"
+          },
+          {
+            "rect": [
+              928,
+              340,
+              32,
+              36
+            ],
+            "rgb_sha256": "c234a9ddfcaa2863207fdc0b8ab5d77c7658b7e24e79f2762e794a3b26bcaf11"
+          }
+        ]
       },
       {
         "name": "GUILDHALL-5-details-resize-small",

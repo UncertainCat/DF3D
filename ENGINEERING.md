@@ -546,8 +546,19 @@ at384,64 in the default viewport. All six native40x36 RGB crops match exactly
 in `build/qa/location-details-type-icons-positioned`; core19/19 and the existing
 Details input/composition checks also pass, with only documented GPU diagnostics.
 The icon follows the parent Details visibility and hides for naming/staff
-selection. Staff width/capacity, remaining Details actions and full responsive
-main-scene verification remain unfinished.
+selection. Staff rows also follow the interior width, moving remove controls
+and the scrollbar to the right edge. Their backgrounds use `BUTTON_RECTANGLE`;
+the older staff tile fixture's dark-background mapping was incorrect against
+the supported-build RGB captures. Remove cells replace underlying name text,
+including transparent icon margins. Negative holder-field widths retain full
+names, matching native3b8465 and the narrow captures.
+`build/qa/location-staff-width-cells` passes core19/19, formatting, Details and
+staff GPU checks. Twelve temple/tavern/library resize cases compare native row
+background and rightmost control RGB regions. `location-staff-width-input`
+additionally passes moved remove-button clicks at all three sizes, inactive old
+positions, and the existing staff scroll input/art checks. GPU runs retain only
+documented diagnostics. Vertical staff capacity, remaining Details actions and
+full responsive main-scene verification remain unfinished.
 
 ## Native squad assignment reference
 

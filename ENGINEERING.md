@@ -603,7 +603,7 @@ unverified; the staged Details route stays hidden.
 
 `recognition_mutation_reference.branches` records focused native transactions.
 Run `stockpile_storage_native.ps1 -LocationNames -RecognitionOnly` with Windows
-PowerShell5; optional `-RecognitionCase empty|first` changes the owned fixture
+PowerShell5; optional `-RecognitionCase empty|first|new` changes the owned fixture
 before opening Details. These scopes skip naming replay and capture three states
 (before, after, repeated old-point click), preserving source manifests and exiting
 the owned clone unsaved. They do not cover naming or restore all world mutations.
@@ -625,11 +625,35 @@ These controlled fixtures retain other historical links; they are branch probes,
 not a claim that every constructed starting state arises in ordinary play.
 Repeat clicks leave captured positions, assignments, counters, site profiles and
 holder links unchanged. Root/core19/19 passes in `build/qa/location-recognition-branches`.
-These are mutation oracles, not bridge acceptance. Full position-template fields,
-assignment flags, petition/threshold branches and first PRIEST template allocation
-still require observation. Native helpers9364d0,30ffb0,c30000 and76d4e0 do not
+These are mutation oracles, not bridge acceptance. Expanded template/assignment
+and emotion evidence follows below; petition mutation effects remain unverified.
+Native helpers9364d0,30ffb0,c30000 and76d4e0 do not
 individually implement recognition; a call from the input branch does not make
 one a ready-made semantic command.
+
+`recognition_effect_details_reference` records promotion015654, new-template015621
+and first-site reuse015727 on20261027. Each captures position fields (including
+all name forms, responsibilities, flags, requirements and appointment vectors),
+assignment flags and scope, and EstablishedTemple emotions. The `new` case moves
+the current assignment to site-1 and renames the old PRIEST code on the disposable
+clone, preserving its allocations and links while forcing native template creation.
+DF creates one PRIEST position and an empty active current-site assignment;
+first-site reuse creates only the assignment. Promotion creates HIGH_PRIEST and
+transfers the holder as above. Generated names vary with DF RNG; captured names
+are observations, not fixed expectations. Nonempty class/claim vectors remain
+outside these fixtures.
+
+All three actions add54 EstablishedTemple emotions for religion383, although the
+eligibility counter reports53 worshippers. Recipient7351 is inactive and incoming:
+native counter2a6e00 excludes inactive units, while recognition's loop32d6b8..32d857
+also admits incoming inactive units. It uses native eligibility138ed20, historical
+figure lookup13b3090, membership-strength lookupb973c0 and thought application13eff80.
+Do not reuse the population count as a recipient enumeration. The fixtures group
+the actual emotion payloads by recipient; repeated old-point clicks change none
+of the captured emotions, templates, assignments, histories or links. All three
+protected runs pass with unchanged source manifests and owned unsaved exits;
+root/core19/19 passes in `build/qa/location-recognition-full-effects-final`. This is native
+effect evidence, not an implemented recognition command or complete side-effect audit.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and

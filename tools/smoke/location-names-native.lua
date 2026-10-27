@@ -508,29 +508,58 @@ local temple=choices[1];assert(temple.id==0)
 local religion=assert(df.historical_entity.find(temple.deity_data.Religion))
 local mode_file=io.open(out..'/recognition-case');local recognition_case='promote'
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='eligibility')
-if recognition_case=='empty' or recognition_case=='first' then
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility')
+local first_recognition=recognition_case=='first' or recognition_case=='new'
+if recognition_case=='empty' or first_recognition then
  -- Controlled world fixture on the owned unsaved clone; never a runtime path.
  local changed=0
  for _,assignment in ipairs(religion.positions.assignments)do
   if assignment.st_id==df.global.plotinfo.site_id then
-   if recognition_case=='first' then assignment.st_id=-1 else assignment.histfig=-1 end
+   if first_recognition then assignment.st_id=-1 else assignment.histfig=-1 end
    changed=changed+1
   end
  end
  assert(changed==1,'unexpected recognition fixture assignment count')
 end
+if recognition_case=='new' then
+ -- Keep old allocations/links owned by the world, but force native template
+ -- creation instead of reuse. This diagnostic state is discarded unsaved.
+ local changed=0
+ for _,position in ipairs(religion.positions.own)do
+  if position.code=='PRIEST' then position.code='DF3D_FIXTURE_OLD_PRIEST';changed=changed+1 end
+ end
+ assert(changed==1,'unexpected priest template fixture count')
+end
 pixel(664,238);assert(details.open and details.selected_ab==temple)
 local function recognition_state()
+ local function values(vector)
+  local result={};for _,value in ipairs(vector)do result[#result+1]=value end;return result
+ end
+ local function flags(array,enum)
+  local result={};for i=0,enum._last_item do if array[i] then result[#result+1]=enum[i] end end;return result
+ end
  local result={case=recognition_case,positions={},assignments={},site_links={},holder_links={},next_position=religion.positions.next_position_id,
   next_assignment=religion.positions.next_assignment_id,event_count=#df.global.world.history.events,
-  recognized=temple:getContents().need_more.entity_recognized}
+  recognized=temple:getContents().need_more.entity_recognized,temple_emotions={}}
  for _,p in ipairs(religion.positions.own)do
-  result.positions[#result.positions+1]={id=p.id,code=p.code,name=dfhack.df2utf(p.name[0])}
+  local item={id=p.id,code=p.code,name=dfhack.df2utf(p.name[0]),flags=flags(p.flags,df.entity_position_flags)}
+  for _,field in ipairs{'squad_size','land_holder','requires_population','execution_skill','precedence','replaced_by','number','required_boxes','required_cabinets','required_racks','required_stands','required_office','required_bedroom','required_dining','required_tomb','mandate_max','demand_max','best_appointment_precedence'}do item[field]=p[field]end
+  for _,field in ipairs{'allowed_creature','rejected_creature','commander_id','commander_civ','commander_types','appointed_by','appointed_by_civ','succession_by_position','responsibilities','color'}do item[field]=values(p[field])end
+  for _,field in ipairs{'name','name_female','name_male','spouse','spouse_female','spouse_male','squad'}do
+   item[field..'_forms']={dfhack.df2utf(p[field][0]),dfhack.df2utf(p[field][1])}
+  end
+  item.land_name=dfhack.df2utf(p.land_name);item.description=dfhack.df2utf(p.description)
+  for _,field in ipairs{'allowed_class','rejected_class'}do
+   item[field]={};for _,value in ipairs(p[field])do item[field][#item[field]+1]=dfhack.df2utf(value.value)end
+  end
+  result.positions[#result.positions+1]=item
  end
  for _,a in ipairs(religion.positions.assignments)do
   result.assignments[#result.assignments+1]={id=a.id,position_id=a.position_id,histfig=a.histfig,
-   histfig2=a.histfig2,site=a.st_id,location=a.ab_id,position_vector_idx=a.position_vector_idx}
+   histfig2=a.histfig2,site=a.st_id,location=a.ab_id,position_vector_idx=a.position_vector_idx,
+   flags=flags(a.flags,df.entity_position_profile_flags),squad_id=a.squad_id,
+   vassal_of_entity_id=a.vassal_of_entity_id,vassal_of_position_profile_id=a.vassal_of_position_profile_id,
+   claim_count=#a.claim}
   if a.histfig>=0 and not result.holder_links[tostring(a.histfig)] then
    local holder=assert(df.historical_figure.find(a.histfig));local links={}
    for _,link in ipairs(holder.entity_links)do
@@ -546,6 +575,18 @@ local function recognition_state()
     end
    end
    result.holder_links[tostring(a.histfig)]=links
+  end
+ end
+ for _,unit in ipairs(df.global.world.units.active)do
+  local soul=unit.status.current_soul
+  if soul then
+   for _,emotion in ipairs(soul.personality.emotions)do
+    if emotion.thought==df.unit_thought_type.EstablishedTemple then
+     local item={unit_id=unit.id,unit_flags1=unit.flags1.whole,flags=emotion.flags.whole}
+     for _,field in ipairs{'type','strength','relative_strength','thought','subthought','severity','next_overcome_timer','year','year_tick'}do item[field]=emotion[field]end
+     result.temple_emotions[#result.temple_emotions+1]=item
+    end
+   end
   end
  end
  for _,link in ipairs(religion.site_links)do
@@ -582,7 +623,7 @@ local function recognition_state()
  result.bridge_ui_rng_unchanged=true
  return result
 end
-local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=recognition_case=='first' and 1 or 2
+local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local ok,err=xpcall(function()
  if recognition_case=='eligibility' then
@@ -632,10 +673,23 @@ local ok,err=xpcall(function()
  local before=capture('TEMPLE-0-recognition-before',temple);before.recognition=recognition_state()
  pixel(500,214)
  local after=capture('TEMPLE-0-recognition-after',temple);after.recognition=recognition_state()
- assert(before.recognition.bridge.rank==(recognition_case=='first' and 0 or 1),'initial semantic priesthood rank mismatch')
- assert(after.recognition.bridge.rank==(recognition_case=='first' and 1 or 2),'recognized semantic priesthood rank mismatch')
- assert(before.recognition.bridge.state==(recognition_case=='first' and 4 or 5),'native recognition action state mismatch')
- assert(after.recognition.bridge.state==(recognition_case=='first' and 2 or 0),'native post-recognition state mismatch')
+ assert(before.recognition.bridge.rank==(first_recognition and 0 or 1),'initial semantic priesthood rank mismatch')
+ assert(after.recognition.bridge.rank==(first_recognition and 1 or 2),'recognized semantic priesthood rank mismatch')
+ assert(before.recognition.bridge.state==(first_recognition and 4 or 5),'native recognition action state mismatch')
+ assert(after.recognition.bridge.state==(first_recognition and 2 or 0),'native post-recognition state mismatch')
+ local prior_emotions={}
+ for _,emotion in ipairs(before.recognition.temple_emotions)do prior_emotions[require('json').encode(emotion)]=true end
+ after.recognition.new_temple_emotions={}
+ for _,emotion in ipairs(after.recognition.temple_emotions)do
+  if not prior_emotions[require('json').encode(emotion)]then
+   assert(emotion.subthought==religion.id,'recognition thought targets another religion')
+   after.recognition.new_temple_emotions[#after.recognition.new_temple_emotions+1]=emotion
+  end
+ end
+ assert(#after.recognition.new_temple_emotions==54,'unexpected native recognition thought recipients')
+ local creates_position=recognition_case~='first'
+ assert(after.recognition.next_position-before.recognition.next_position==(creates_position and 1 or 0),'unexpected native position allocation')
+ assert(after.recognition.next_assignment-before.recognition.next_assignment==1,'unexpected native assignment allocation')
  after.recognition.new_events={}
  for i=before.recognition.event_count,#df.global.world.history.events-1 do
   local event=df.global.world.history.events[i]
@@ -648,7 +702,7 @@ local ok,err=xpcall(function()
  assert(require('json').encode(before.recognition.assignments)~=require('json').encode(after.recognition.assignments),'recognition did not change assignments')
  pixel(500,214)
  local repeated=capture('TEMPLE-0-recognition-repeat',temple);repeated.recognition=recognition_state()
- for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links'}do
+ for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links','temple_emotions'}do
   assert(require('json').encode(after.recognition[field])==require('json').encode(repeated.recognition[field]),'repeat recognition changed '..field)
  end
 end,debug.traceback)

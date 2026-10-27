@@ -5149,5 +5149,1895 @@
       "complete eligibility dependency revision and mutation API",
       "typed viewer transport and rendered controls"
     ]
+  },
+  "recognition_effect_details_reference": {
+    "provenance": {
+      "method": "Protected owned paused native recognition; controlled tier/assignment/template-code fixture changes discarded unsaved. Source manifest preserved. Three observations per branch; no UI runtime API.",
+      "plugin_sha256": "d232475866efba93e7f2cfb110c38130644aa9160dff5463f7cdbe528be138f7",
+      "scope": "Position template fields, assignment flags and native EstablishedTemple emotions in promotion, first-site reuse and first-template creation. Randomized native names are captured values, not fixed product expectations.",
+      "omissions": [
+        "Petition cancellation effects",
+        "Nonempty claim vectors and allowed/rejected class vectors",
+        "Complete unit state and historical-figure side effects",
+        "Bridge mutation and viewer acceptance"
+      ]
+    },
+    "branches": {
+      "promote": {
+        "capture": "build/stockpile-storage-native-location-recognition-promote-20261027-015654",
+        "sha256": "88d0e3a76bd9841795e6bbec2e83a87d7d0ef0dd4b4707101ba3557f3e76afac",
+        "before": {
+          "positions": [
+            {
+              "allowed_class": [],
+              "allowed_creature": [],
+              "appointed_by": [],
+              "appointed_by_civ": [],
+              "best_appointment_precedence": 30001,
+              "code": "PRIEST",
+              "color": [
+                6,
+                0,
+                1
+              ],
+              "commander_civ": [],
+              "commander_id": [],
+              "commander_types": [],
+              "demand_max": 0,
+              "description": "",
+              "execution_skill": -1,
+              "flags": [
+                "ELECTED",
+                "DUTY_BOUND",
+                "HAS_RESPONSIBILITIES",
+                "CHAT_WORTHY",
+                "DO_NOT_CULL",
+                "IS_LEADER",
+                "IS_DIPLOMAT",
+                "ACCOUNT_EXEMPT",
+                "HAS_MET_POP_REQ",
+                "RULES_FROM_LOCATION",
+                "MENIAL_WORK_EXEMPTION",
+                "PUNISHMENT_EXEMPTION",
+                "HAS_RECEIVED_POSITIONS",
+                "ACTIVE",
+                "HAS_MET_MARKET_REQ"
+              ],
+              "id": 0,
+              "land_holder": 0,
+              "land_name": "",
+              "mandate_max": 0,
+              "name": "sacred vault",
+              "name_female_forms": [
+                "",
+                ""
+              ],
+              "name_forms": [
+                "sacred vault",
+                "sacred vaults"
+              ],
+              "name_male_forms": [
+                "",
+                ""
+              ],
+              "number": -1,
+              "precedence": 200,
+              "rejected_class": [],
+              "rejected_creature": [],
+              "replaced_by": -1,
+              "required_bedroom": 0,
+              "required_boxes": 0,
+              "required_cabinets": 0,
+              "required_dining": 0,
+              "required_office": 0,
+              "required_racks": 0,
+              "required_stands": 0,
+              "required_tomb": 0,
+              "requires_population": 0,
+              "responsibilities": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spouse_female_forms": [
+                "",
+                ""
+              ],
+              "spouse_forms": [
+                "",
+                ""
+              ],
+              "spouse_male_forms": [
+                "",
+                ""
+              ],
+              "squad_forms": [
+                "",
+                ""
+              ],
+              "squad_size": 0,
+              "succession_by_position": []
+            }
+          ],
+          "assignments": [
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": 0,
+              "site": 651,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            }
+          ],
+          "next_position": 1,
+          "next_assignment": 3
+        },
+        "after": {
+          "positions": [
+            {
+              "allowed_class": [],
+              "allowed_creature": [],
+              "appointed_by": [],
+              "appointed_by_civ": [],
+              "best_appointment_precedence": 30001,
+              "code": "PRIEST",
+              "color": [
+                6,
+                0,
+                1
+              ],
+              "commander_civ": [],
+              "commander_id": [],
+              "commander_types": [],
+              "demand_max": 0,
+              "description": "",
+              "execution_skill": -1,
+              "flags": [
+                "ELECTED",
+                "DUTY_BOUND",
+                "HAS_RESPONSIBILITIES",
+                "CHAT_WORTHY",
+                "DO_NOT_CULL",
+                "IS_LEADER",
+                "IS_DIPLOMAT",
+                "ACCOUNT_EXEMPT",
+                "HAS_MET_POP_REQ",
+                "RULES_FROM_LOCATION",
+                "MENIAL_WORK_EXEMPTION",
+                "PUNISHMENT_EXEMPTION",
+                "HAS_RECEIVED_POSITIONS",
+                "ACTIVE",
+                "HAS_MET_MARKET_REQ"
+              ],
+              "id": 0,
+              "land_holder": 0,
+              "land_name": "",
+              "mandate_max": 0,
+              "name": "sacred vault",
+              "name_female_forms": [
+                "",
+                ""
+              ],
+              "name_forms": [
+                "sacred vault",
+                "sacred vaults"
+              ],
+              "name_male_forms": [
+                "",
+                ""
+              ],
+              "number": -1,
+              "precedence": 200,
+              "rejected_class": [],
+              "rejected_creature": [],
+              "replaced_by": -1,
+              "required_bedroom": 0,
+              "required_boxes": 0,
+              "required_cabinets": 0,
+              "required_dining": 0,
+              "required_office": 0,
+              "required_racks": 0,
+              "required_stands": 0,
+              "required_tomb": 0,
+              "requires_population": 0,
+              "responsibilities": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spouse_female_forms": [
+                "",
+                ""
+              ],
+              "spouse_forms": [
+                "",
+                ""
+              ],
+              "spouse_male_forms": [
+                "",
+                ""
+              ],
+              "squad_forms": [
+                "",
+                ""
+              ],
+              "squad_size": 0,
+              "succession_by_position": []
+            },
+            {
+              "allowed_class": [],
+              "allowed_creature": [],
+              "appointed_by": [],
+              "appointed_by_civ": [],
+              "best_appointment_precedence": 30001,
+              "code": "HIGH_PRIEST",
+              "color": [
+                6,
+                0,
+                1
+              ],
+              "commander_civ": [],
+              "commander_id": [],
+              "commander_types": [],
+              "demand_max": 3,
+              "description": "",
+              "execution_skill": -1,
+              "flags": [
+                "IS_LAW_MAKER",
+                "ELECTED",
+                "DUTY_BOUND",
+                "HAS_RESPONSIBILITIES",
+                "FLASHES",
+                "BRAG_ON_KILL",
+                "CHAT_WORTHY",
+                "DO_NOT_CULL",
+                "KILL_QUEST",
+                "IS_LEADER",
+                "IS_DIPLOMAT",
+                "EXPORTED_IN_LEGENDS",
+                "DETERMINES_COIN_DESIGN",
+                "ACCOUNT_EXEMPT",
+                "RULES_FROM_LOCATION",
+                "MENIAL_WORK_EXEMPTION",
+                "PUNISHMENT_EXEMPTION",
+                "HAS_RECEIVED_POSITIONS",
+                "ACTIVE",
+                "QUEST_GIVER",
+                "SPECIAL_BURIAL"
+              ],
+              "id": 1,
+              "land_holder": 0,
+              "land_name": "",
+              "mandate_max": 2,
+              "name": "high pearl",
+              "name_female_forms": [
+                "",
+                ""
+              ],
+              "name_forms": [
+                "high pearl",
+                "high pearls"
+              ],
+              "name_male_forms": [
+                "",
+                ""
+              ],
+              "number": -1,
+              "precedence": 50,
+              "rejected_class": [],
+              "rejected_creature": [],
+              "replaced_by": -1,
+              "required_bedroom": 0,
+              "required_boxes": 0,
+              "required_cabinets": 0,
+              "required_dining": 0,
+              "required_office": 0,
+              "required_racks": 0,
+              "required_stands": 0,
+              "required_tomb": 0,
+              "requires_population": 0,
+              "responsibilities": [
+                true,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spouse_female_forms": [
+                "",
+                ""
+              ],
+              "spouse_forms": [
+                "",
+                ""
+              ],
+              "spouse_male_forms": [
+                "",
+                ""
+              ],
+              "squad_forms": [
+                "",
+                ""
+              ],
+              "squad_size": 0,
+              "succession_by_position": []
+            }
+          ],
+          "assignments": [
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": -1,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": 0,
+              "site": 651,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 3,
+              "location": -1,
+              "position_id": 1,
+              "position_vector_idx": 1,
+              "site": 651,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            }
+          ],
+          "next_position": 2,
+          "next_assignment": 4
+        },
+        "native_worshipper_count": 53,
+        "new_emotion_count": 54,
+        "new_emotions_by_payload": [
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 124,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5574,
+              5575,
+              6685,
+              6971,
+              7209,
+              7275
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 136,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5697,
+              5698,
+              6135,
+              6274,
+              6538,
+              6540,
+              6542,
+              6678,
+              6684,
+              6729,
+              6807,
+              6809,
+              6810,
+              6811,
+              6814,
+              6815,
+              6822,
+              6824,
+              6827,
+              6836,
+              6837,
+              6838,
+              6973,
+              6974,
+              7041,
+              7049,
+              7123,
+              7124,
+              7125,
+              7190,
+              7280,
+              7282,
+              7283,
+              7349,
+              7351
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 103,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5813,
+              5984,
+              6136,
+              6541,
+              6544,
+              7206
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 76,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5981,
+              6553,
+              6831,
+              6972,
+              7276
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 50,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 136,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              6819,
+              7268
+            ]
+          }
+        ],
+        "inactive_recipients": [
+          {
+            "unit_id": 7351,
+            "unit_flags1": 2147484674
+          }
+        ],
+        "repeat_captured_effects_unchanged": true
+      },
+      "new": {
+        "capture": "build/stockpile-storage-native-location-recognition-new-20261027-015621",
+        "sha256": "ded9868335e71910905eebd2b35d5d9881358b589969b3e8e0b0123940ea7761",
+        "before": {
+          "positions": [
+            {
+              "allowed_class": [],
+              "allowed_creature": [],
+              "appointed_by": [],
+              "appointed_by_civ": [],
+              "best_appointment_precedence": 30001,
+              "code": "DF3D_FIXTURE_OLD_PRIEST",
+              "color": [
+                6,
+                0,
+                1
+              ],
+              "commander_civ": [],
+              "commander_id": [],
+              "commander_types": [],
+              "demand_max": 0,
+              "description": "",
+              "execution_skill": -1,
+              "flags": [
+                "ELECTED",
+                "DUTY_BOUND",
+                "HAS_RESPONSIBILITIES",
+                "CHAT_WORTHY",
+                "DO_NOT_CULL",
+                "IS_LEADER",
+                "IS_DIPLOMAT",
+                "ACCOUNT_EXEMPT",
+                "HAS_MET_POP_REQ",
+                "RULES_FROM_LOCATION",
+                "MENIAL_WORK_EXEMPTION",
+                "PUNISHMENT_EXEMPTION",
+                "HAS_RECEIVED_POSITIONS",
+                "ACTIVE",
+                "HAS_MET_MARKET_REQ"
+              ],
+              "id": 0,
+              "land_holder": 0,
+              "land_name": "",
+              "mandate_max": 0,
+              "name": "sacred vault",
+              "name_female_forms": [
+                "",
+                ""
+              ],
+              "name_forms": [
+                "sacred vault",
+                "sacred vaults"
+              ],
+              "name_male_forms": [
+                "",
+                ""
+              ],
+              "number": -1,
+              "precedence": 200,
+              "rejected_class": [],
+              "rejected_creature": [],
+              "replaced_by": -1,
+              "required_bedroom": 0,
+              "required_boxes": 0,
+              "required_cabinets": 0,
+              "required_dining": 0,
+              "required_office": 0,
+              "required_racks": 0,
+              "required_stands": 0,
+              "required_tomb": 0,
+              "requires_population": 0,
+              "responsibilities": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spouse_female_forms": [
+                "",
+                ""
+              ],
+              "spouse_forms": [
+                "",
+                ""
+              ],
+              "spouse_male_forms": [
+                "",
+                ""
+              ],
+              "squad_forms": [
+                "",
+                ""
+              ],
+              "squad_size": 0,
+              "succession_by_position": []
+            }
+          ],
+          "assignments": [
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": -1,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            }
+          ],
+          "next_position": 1,
+          "next_assignment": 3
+        },
+        "after": {
+          "positions": [
+            {
+              "allowed_class": [],
+              "allowed_creature": [],
+              "appointed_by": [],
+              "appointed_by_civ": [],
+              "best_appointment_precedence": 30001,
+              "code": "DF3D_FIXTURE_OLD_PRIEST",
+              "color": [
+                6,
+                0,
+                1
+              ],
+              "commander_civ": [],
+              "commander_id": [],
+              "commander_types": [],
+              "demand_max": 0,
+              "description": "",
+              "execution_skill": -1,
+              "flags": [
+                "ELECTED",
+                "DUTY_BOUND",
+                "HAS_RESPONSIBILITIES",
+                "CHAT_WORTHY",
+                "DO_NOT_CULL",
+                "IS_LEADER",
+                "IS_DIPLOMAT",
+                "ACCOUNT_EXEMPT",
+                "HAS_MET_POP_REQ",
+                "RULES_FROM_LOCATION",
+                "MENIAL_WORK_EXEMPTION",
+                "PUNISHMENT_EXEMPTION",
+                "HAS_RECEIVED_POSITIONS",
+                "ACTIVE",
+                "HAS_MET_MARKET_REQ"
+              ],
+              "id": 0,
+              "land_holder": 0,
+              "land_name": "",
+              "mandate_max": 0,
+              "name": "sacred vault",
+              "name_female_forms": [
+                "",
+                ""
+              ],
+              "name_forms": [
+                "sacred vault",
+                "sacred vaults"
+              ],
+              "name_male_forms": [
+                "",
+                ""
+              ],
+              "number": -1,
+              "precedence": 200,
+              "rejected_class": [],
+              "rejected_creature": [],
+              "replaced_by": -1,
+              "required_bedroom": 0,
+              "required_boxes": 0,
+              "required_cabinets": 0,
+              "required_dining": 0,
+              "required_office": 0,
+              "required_racks": 0,
+              "required_stands": 0,
+              "required_tomb": 0,
+              "requires_population": 0,
+              "responsibilities": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spouse_female_forms": [
+                "",
+                ""
+              ],
+              "spouse_forms": [
+                "",
+                ""
+              ],
+              "spouse_male_forms": [
+                "",
+                ""
+              ],
+              "squad_forms": [
+                "",
+                ""
+              ],
+              "squad_size": 0,
+              "succession_by_position": []
+            },
+            {
+              "allowed_class": [],
+              "allowed_creature": [],
+              "appointed_by": [],
+              "appointed_by_civ": [],
+              "best_appointment_precedence": 30001,
+              "code": "PRIEST",
+              "color": [
+                6,
+                0,
+                1
+              ],
+              "commander_civ": [],
+              "commander_id": [],
+              "commander_types": [],
+              "demand_max": 0,
+              "description": "",
+              "execution_skill": -1,
+              "flags": [
+                "ELECTED",
+                "DUTY_BOUND",
+                "HAS_RESPONSIBILITIES",
+                "CHAT_WORTHY",
+                "DO_NOT_CULL",
+                "IS_LEADER",
+                "IS_DIPLOMAT",
+                "ACCOUNT_EXEMPT",
+                "RULES_FROM_LOCATION",
+                "MENIAL_WORK_EXEMPTION",
+                "PUNISHMENT_EXEMPTION",
+                "HAS_RECEIVED_POSITIONS",
+                "ACTIVE"
+              ],
+              "id": 1,
+              "land_holder": 0,
+              "land_name": "",
+              "mandate_max": 0,
+              "name": "holy gold",
+              "name_female_forms": [
+                "",
+                ""
+              ],
+              "name_forms": [
+                "holy gold",
+                "holy golds"
+              ],
+              "name_male_forms": [
+                "",
+                ""
+              ],
+              "number": -1,
+              "precedence": 200,
+              "rejected_class": [],
+              "rejected_creature": [],
+              "replaced_by": -1,
+              "required_bedroom": 0,
+              "required_boxes": 0,
+              "required_cabinets": 0,
+              "required_dining": 0,
+              "required_office": 0,
+              "required_racks": 0,
+              "required_stands": 0,
+              "required_tomb": 0,
+              "requires_population": 0,
+              "responsibilities": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spouse_female_forms": [
+                "",
+                ""
+              ],
+              "spouse_forms": [
+                "",
+                ""
+              ],
+              "spouse_male_forms": [
+                "",
+                ""
+              ],
+              "squad_forms": [
+                "",
+                ""
+              ],
+              "squad_size": 0,
+              "succession_by_position": []
+            }
+          ],
+          "assignments": [
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": -1,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": -1,
+              "histfig2": -1,
+              "id": 3,
+              "location": -1,
+              "position_id": 1,
+              "position_vector_idx": 1,
+              "site": 651,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            }
+          ],
+          "next_position": 2,
+          "next_assignment": 4
+        },
+        "native_worshipper_count": 53,
+        "new_emotion_count": 54,
+        "new_emotions_by_payload": [
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 124,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5574,
+              5575,
+              6685,
+              6971,
+              7209,
+              7275
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 136,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5697,
+              5698,
+              6135,
+              6274,
+              6538,
+              6540,
+              6542,
+              6678,
+              6684,
+              6729,
+              6807,
+              6809,
+              6810,
+              6811,
+              6814,
+              6815,
+              6822,
+              6824,
+              6827,
+              6836,
+              6837,
+              6838,
+              6973,
+              6974,
+              7041,
+              7049,
+              7123,
+              7124,
+              7125,
+              7190,
+              7280,
+              7282,
+              7283,
+              7349,
+              7351
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 103,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5813,
+              5984,
+              6136,
+              6541,
+              6544,
+              7206
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 76,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5981,
+              6553,
+              6831,
+              6972,
+              7276
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 50,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 136,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              6819,
+              7268
+            ]
+          }
+        ],
+        "inactive_recipients": [
+          {
+            "unit_id": 7351,
+            "unit_flags1": 2147484674
+          }
+        ],
+        "repeat_captured_effects_unchanged": true
+      },
+      "first": {
+        "capture": "build/stockpile-storage-native-location-recognition-first-20261027-015727",
+        "sha256": "0b48728ed8bd92899f661c982f5485695ef04cc3a1a14cb004395673c64c72c6",
+        "before": {
+          "positions": [
+            {
+              "allowed_class": [],
+              "allowed_creature": [],
+              "appointed_by": [],
+              "appointed_by_civ": [],
+              "best_appointment_precedence": 30001,
+              "code": "PRIEST",
+              "color": [
+                6,
+                0,
+                1
+              ],
+              "commander_civ": [],
+              "commander_id": [],
+              "commander_types": [],
+              "demand_max": 0,
+              "description": "",
+              "execution_skill": -1,
+              "flags": [
+                "ELECTED",
+                "DUTY_BOUND",
+                "HAS_RESPONSIBILITIES",
+                "CHAT_WORTHY",
+                "DO_NOT_CULL",
+                "IS_LEADER",
+                "IS_DIPLOMAT",
+                "ACCOUNT_EXEMPT",
+                "HAS_MET_POP_REQ",
+                "RULES_FROM_LOCATION",
+                "MENIAL_WORK_EXEMPTION",
+                "PUNISHMENT_EXEMPTION",
+                "HAS_RECEIVED_POSITIONS",
+                "ACTIVE",
+                "HAS_MET_MARKET_REQ"
+              ],
+              "id": 0,
+              "land_holder": 0,
+              "land_name": "",
+              "mandate_max": 0,
+              "name": "sacred vault",
+              "name_female_forms": [
+                "",
+                ""
+              ],
+              "name_forms": [
+                "sacred vault",
+                "sacred vaults"
+              ],
+              "name_male_forms": [
+                "",
+                ""
+              ],
+              "number": -1,
+              "precedence": 200,
+              "rejected_class": [],
+              "rejected_creature": [],
+              "replaced_by": -1,
+              "required_bedroom": 0,
+              "required_boxes": 0,
+              "required_cabinets": 0,
+              "required_dining": 0,
+              "required_office": 0,
+              "required_racks": 0,
+              "required_stands": 0,
+              "required_tomb": 0,
+              "requires_population": 0,
+              "responsibilities": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spouse_female_forms": [
+                "",
+                ""
+              ],
+              "spouse_forms": [
+                "",
+                ""
+              ],
+              "spouse_male_forms": [
+                "",
+                ""
+              ],
+              "squad_forms": [
+                "",
+                ""
+              ],
+              "squad_size": 0,
+              "succession_by_position": []
+            }
+          ],
+          "assignments": [
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": -1,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            }
+          ],
+          "next_position": 1,
+          "next_assignment": 3
+        },
+        "after": {
+          "positions": [
+            {
+              "allowed_class": [],
+              "allowed_creature": [],
+              "appointed_by": [],
+              "appointed_by_civ": [],
+              "best_appointment_precedence": 30001,
+              "code": "PRIEST",
+              "color": [
+                6,
+                0,
+                1
+              ],
+              "commander_civ": [],
+              "commander_id": [],
+              "commander_types": [],
+              "demand_max": 0,
+              "description": "",
+              "execution_skill": -1,
+              "flags": [
+                "ELECTED",
+                "DUTY_BOUND",
+                "HAS_RESPONSIBILITIES",
+                "CHAT_WORTHY",
+                "DO_NOT_CULL",
+                "IS_LEADER",
+                "IS_DIPLOMAT",
+                "ACCOUNT_EXEMPT",
+                "HAS_MET_POP_REQ",
+                "RULES_FROM_LOCATION",
+                "MENIAL_WORK_EXEMPTION",
+                "PUNISHMENT_EXEMPTION",
+                "HAS_RECEIVED_POSITIONS",
+                "ACTIVE",
+                "HAS_MET_MARKET_REQ"
+              ],
+              "id": 0,
+              "land_holder": 0,
+              "land_name": "",
+              "mandate_max": 0,
+              "name": "sacred vault",
+              "name_female_forms": [
+                "",
+                ""
+              ],
+              "name_forms": [
+                "sacred vault",
+                "sacred vaults"
+              ],
+              "name_male_forms": [
+                "",
+                ""
+              ],
+              "number": -1,
+              "precedence": 200,
+              "rejected_class": [],
+              "rejected_creature": [],
+              "replaced_by": -1,
+              "required_bedroom": 0,
+              "required_boxes": 0,
+              "required_cabinets": 0,
+              "required_dining": 0,
+              "required_office": 0,
+              "required_racks": 0,
+              "required_stands": 0,
+              "required_tomb": 0,
+              "requires_population": 0,
+              "responsibilities": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spouse_female_forms": [
+                "",
+                ""
+              ],
+              "spouse_forms": [
+                "",
+                ""
+              ],
+              "spouse_male_forms": [
+                "",
+                ""
+              ],
+              "squad_forms": [
+                "",
+                ""
+              ],
+              "squad_size": 0,
+              "succession_by_position": []
+            }
+          ],
+          "assignments": [
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": -1,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            },
+            {
+              "claim_count": 0,
+              "flags": [
+                "active"
+              ],
+              "histfig": -1,
+              "histfig2": -1,
+              "id": 3,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": 0,
+              "site": 651,
+              "squad_id": -1,
+              "vassal_of_entity_id": -1,
+              "vassal_of_position_profile_id": -1
+            }
+          ],
+          "next_position": 1,
+          "next_assignment": 4
+        },
+        "native_worshipper_count": 53,
+        "new_emotion_count": 54,
+        "new_emotions_by_payload": [
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 124,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5574,
+              5575,
+              6685,
+              6971,
+              7209,
+              7275
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 136,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5697,
+              5698,
+              6135,
+              6274,
+              6538,
+              6540,
+              6542,
+              6678,
+              6684,
+              6729,
+              6807,
+              6809,
+              6810,
+              6811,
+              6814,
+              6815,
+              6822,
+              6824,
+              6827,
+              6836,
+              6837,
+              6838,
+              6973,
+              6974,
+              7041,
+              7049,
+              7123,
+              7124,
+              7125,
+              7190,
+              7280,
+              7282,
+              7283,
+              7349,
+              7351
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 103,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5813,
+              5984,
+              6136,
+              6541,
+              6544,
+              7206
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 100,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 76,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              5981,
+              6553,
+              6831,
+              6972,
+              7276
+            ]
+          },
+          {
+            "emotion": {
+              "flags": 0,
+              "next_overcome_timer": 0,
+              "relative_strength": 50,
+              "severity": 0,
+              "strength": 100,
+              "subthought": 383,
+              "thought": 253,
+              "type": 136,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "unit_ids": [
+              6819,
+              7268
+            ]
+          }
+        ],
+        "inactive_recipients": [
+          {
+            "unit_id": 7351,
+            "unit_flags1": 2147484674
+          }
+        ],
+        "repeat_captured_effects_unchanged": true
+      }
+    }
   }
 }

@@ -1762,6 +1762,35 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               seed.valid,seed.id,seed.x,seed.y,seed.z,int(seed.furniture),seed.inUse);
           return CR_OK;
       }
+      if(parameters[0]=="location-specialization-read" || parameters[0]=="location-specialization-set") {
+        const bool edit=parameters[0]=="location-specialization-set";
+        if(parameters.size()!=(edit?9:7))return CR_WRONG_USAGE;
+        int32_t ids[6]{};
+        for(size_t i=0;i<6;++i) {
+          const auto& text=parameters[i+1];const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        if(ids[2]<0 || ids[2]>1)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        const auto source=static_cast<df3d_area::LocationStaffSource>(ids[2]);
+        Json::Value value(Json::objectValue);
+        if(edit) {
+          uint64_t revision=0;const auto& text=parameters[7];
+          const auto parsed=std::from_chars(text.data(),text.data()+text.size(),revision);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size() ||
+              (parameters[8]!="0" && parameters[8]!="1"))return CR_WRONG_USAGE;
+          value["outcome"]=int(df3d_area::setNativeLocationStaffSpecialization(
+              ids[0],ids[1],source,ids[3],ids[4],ids[5],revision,parameters[8]=="1"));
+        } else {
+          const auto receipt=df3d_area::observeNativeLocationStaffSpecialization(ids[0],ids[1],source,ids[3],ids[4],ids[5]);
+          value["valid"]=receipt.has_value();
+          if(receipt) {
+            value["revision"]=std::to_string(receipt->revision);value["eligible"]=receipt->eligible;
+            value["specialized"]=receipt->specialized;value["unit_id"]=receipt->unitId;value["histfig_id"]=receipt->histfigId;
+          }
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
       if(parameters[0]=="location-religious-assignment-receipt") {
         if(parameters.size()!=6)return CR_WRONG_USAGE;
         int32_t ids[5]{};
@@ -2760,6 +2789,8 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d location-staff-candidates <site id> <location id> <occupation id> [cursor revision] (semantic candidates; read-only)\n"
         "df3d location-staff-set <site id> <location id> <occupation id> <unit id|-1> <revision> (protected staff mutation)\n"
         "df3d location-staff-read <site id> <location id> (semantic staffing rows; read-only)\n"
+        "df3d location-specialization-read <site> <location> <source> <entity|-1> <row> <unit> (semantic receipt)\n"
+        "df3d location-specialization-set <site> <location> <source> <entity|-1> <row> <unit> <revision> <0|1> (protected mutation)\n"
         "df3d location-staff-prepare <site id> <location id> (create missing empty roles; protected acceptance)\n"
         "df3d location-access-set <site id> <location id> <mode 0..3> <revision> (protected access mutation)\n"
         "df3d location-name-words <component 0..6> [query] [language] (protected native word-selector observation)\n"

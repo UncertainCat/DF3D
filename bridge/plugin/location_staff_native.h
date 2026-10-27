@@ -66,6 +66,18 @@ std::optional<LocationStaffSnapshot> observeNativeLocationStaff(int32_t siteId,i
 // order are preserved. False means no publication; repeat entry reuses empty slots.
 bool prepareNativeLocationStaff(int32_t siteId,int32_t id);
 enum class LocationStaffEditOutcome : uint8_t { Unavailable, Rejected, Applied, Unknown, Stale };
+struct LocationStaffSpecializationReceipt {
+  int32_t unitId=-1,histfigId=-1;
+  uint64_t revision=0;
+  bool eligible=false,specialized=false;
+};
+// Explicit row identity: occupation uses entityId=-1 and occupation id;
+// religious position uses entity id and assignment id. Transport owns epochs.
+std::optional<LocationStaffSpecializationReceipt> observeNativeLocationStaffSpecialization(
+    int32_t siteId,int32_t locationId,LocationStaffSource source,int32_t entityId,int32_t rowId,int32_t unitId);
+LocationStaffEditOutcome setNativeLocationStaffSpecialization(
+    int32_t siteId,int32_t locationId,LocationStaffSource source,int32_t entityId,int32_t rowId,int32_t unitId,
+    uint64_t expectedRevision,bool specialized);
 // Caller validates current receipt/epoch at the same safe point. unitId==-1
 // removes; otherwise native assignment replaces that unit's prior occupations.
 LocationStaffEditOutcome editNativeLocationStaff(int32_t siteId,int32_t locationId,

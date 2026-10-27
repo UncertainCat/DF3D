@@ -639,6 +639,25 @@ are a separate renderer path beginning3b867d, still requiring complete mapping.
 The captured native effect includes labor recalculation; a flag-only mutation
 would be incomplete. Fixture specialization_reference records the bounded cases.
 
+The specialization bridge primitive now observes an explicit occupation or
+religious assignment row, resolves its current unit/HF, calls the native
+eligibility predicates and binds effective eligibility, specialization and labor
+state in a receipt. Mutation requires that receipt and a different desired state,
+sets the native flag and invokes the pinned labor routine. Missing/changed row
+ownership is refused, stale receipts are refused, and post-effect observation
+failure returns Unknown. Management transport and viewer integration remain
+unfinished; transport must add epoch, request retirement and no-replay ownership.
+The paused diagnostic commands are location-specialization-read/set.
+
+Protected actionspecialization081207 matches native080737 for both priest5813
+and performer6536, including every captured flag/labor entry and exact restoration
+after a fresh reverse request. Invalid identities, zero revision, no-op requests,
+stale profession changes, current ineligible Baby profession and completed replay
+are refused without changing captured flags/labors. Main-interface and gps byte
+guards remain unchanged during mutation. The run passes cleanly, preserves the
+source and exits owned DF unsaved. Broader eligibility variants and actual viewer
+input/lifecycle acceptance remain outside this primitive-level evidence.
+
 Native removeabsentpriest075231 and semantic actionremoveabsentpriest075305 cover
 removal with the historical holder's unit association set to-1 in a paused clone.
 This isolates native nil-unit lookup without deleting unrelated live unit records;

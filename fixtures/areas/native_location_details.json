@@ -14628,6 +14628,28 @@
     "input_rva": "3300cf-330164",
     "labor_recalculation_rva": "4390d0",
     "caste_predicate_rva": "1376500",
-    "exclusion_predicate_rva": "13b99b0"
+    "exclusion_predicate_rva": "13b99b0",
+    "semantic_reference": {
+      "run": "build/stockpile-storage-native-location-recognition-actionspecialization-20261027-081207",
+      "status": "passed",
+      "matched_units": [
+        5813,
+        6536
+      ],
+      "flags_and_labors_match_native": true,
+      "fresh_reverse_restores_original": true,
+      "refused": [
+        "invalid row identities",
+        "zero revision",
+        "same desired state",
+        "stale profession receipt",
+        "ineligible Baby profession",
+        "completed replay"
+      ],
+      "ui_and_gps_bytes_unchanged": true,
+      "source_preserved": true,
+      "owned_exit_without_save": true,
+      "scope": "Bridge primitive only; management transport, viewer integration, broader eligibility and lifecycle acceptance remain unfinished."
+    }
   }
 }

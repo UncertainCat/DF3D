@@ -352,6 +352,57 @@ LocationStaffEditOutcome editNativeLocationStaff(int32_t siteId,int32_t location
   }
 }
 
+std::optional<LocationStaffSpecializationReceipt> observeNativeLocationStaffSpecialization(
+    int32_t siteId,int32_t locationId,LocationStaffSource source,int32_t entityId,int32_t rowId,int32_t unitId) {
+  const auto& predicates=religiousCandidateFunctions();
+  if(!predicates || !staffMutationFunctions() || unitId<0 || rowId<0 ||
+      (source!=LocationStaffSource::Occupation && source!=LocationStaffSource::ReligiousPosition) ||
+      (source==LocationStaffSource::Occupation && entityId!=-1))return std::nullopt;
+  const auto staff=observeNativeLocationStaff(siteId,locationId);if(!staff)return std::nullopt;
+  const LocationStaffRow* target=nullptr;
+  for(const auto& row:staff->rows) {
+    if(row.source!=source || (source==LocationStaffSource::Occupation?row.occupationId!=rowId:
+        row.entityId!=entityId || row.assignmentId!=rowId))continue;
+    if(target)return std::nullopt;
+    target=&row;
+  }
+  if(!target || !target->names || target->names->holderKind!=1 || target->names->holderId!=unitId)return std::nullopt;
+  auto* unit=df::unit::find(unitId);if(!unit || unit->hist_figure_id!=target->histfigId)return std::nullopt;
+  LocationStaffSpecializationReceipt result;
+  result.unitId=unitId;result.histfigId=unit->hist_figure_id;
+  // Native location input3300cf..330164 and renderer3b84e9..3b8678.
+  result.eligible=int(unit->profession)!=103 && int(unit->profession)!=104 &&
+      !predicates.caste(unit->race,unit->caste) && !predicates.excluded(unit,df::global::plotinfo->group_id);
+  result.specialized=unit->flags4.bits.only_do_assigned_jobs;
+  uint64_t hash=UINT64_C(14695981039346656037);
+  const auto number=[&](uint64_t value) {
+    for(unsigned i=0;i<8;++i){hash^=value&255;hash*=UINT64_C(1099511628211);value>>=8;}
+  };
+  number(siteId);number(locationId);number(uint8_t(source));number(entityId);number(rowId);
+  number(unitId);number(result.histfigId);number(target->role);number(target->positionId);number(target->groupId);
+  number(df::global::plotinfo->group_id);number(unit->race);number(unit->caste);number(int(unit->profession));
+  number(result.eligible);number(result.specialized);
+  for(bool labor:unit->status.labors)number(labor);
+  hash&=uint64_t(INT64_MAX);result.revision=hash?hash:1;return result;
+}
+LocationStaffEditOutcome setNativeLocationStaffSpecialization(
+    int32_t siteId,int32_t locationId,LocationStaffSource source,int32_t entityId,int32_t rowId,int32_t unitId,
+    uint64_t expectedRevision,bool specialized) {
+  const auto& native=staffMutationFunctions();if(!native)return LocationStaffEditOutcome::Unavailable;
+  if(!expectedRevision || expectedRevision>uint64_t(INT64_MAX))return LocationStaffEditOutcome::Rejected;
+  const auto receipt=observeNativeLocationStaffSpecialization(siteId,locationId,source,entityId,rowId,unitId);
+  if(!receipt)return LocationStaffEditOutcome::Rejected;
+  if(receipt->revision!=expectedRevision)return LocationStaffEditOutcome::Stale;
+  if(!receipt->eligible || receipt->specialized==specialized)return LocationStaffEditOutcome::Rejected;
+  auto* unit=df::unit::find(unitId);if(!unit)return LocationStaffEditOutcome::Rejected;
+  try {
+    unit->flags4.bits.only_do_assigned_jobs=specialized;
+    native.labors(unit);
+    const auto after=observeNativeLocationStaffSpecialization(siteId,locationId,source,entityId,rowId,unitId);
+    return after && after->specialized==specialized?LocationStaffEditOutcome::Applied:LocationStaffEditOutcome::Unknown;
+  } catch(const std::exception&) {return LocationStaffEditOutcome::Unknown;}
+}
+
 std::optional<LocationReligiousStaffReceipt> observeNativeLocationReligiousStaff(
     int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId) {
   if(!religiousStaffMutationFunctions())return std::nullopt;

@@ -569,10 +569,56 @@ if recognition_case=='specialization' then
   return result
  end
  local before=state()
+ local reference
+ local function command(name,args)
+  local text,code=dfhack.run_command_silent('df3d',name,table.unpack(args))
+  assert(code==0,text);return require('json').decode(text)
+ end
+ if semantic_recognition then
+  local marker=assert(io.open(out..'/recognition-reference'));local path=marker:read('*a'):match('^%s*(.-)%s*$');marker:close()
+  local file=assert(io.open(path));reference=require('json').decode(file:read('*a'));file:close()
+  assert(reference.success and #reference.records==5)
+  assert(require('json').encode(before)==require('json').encode(reference.records[1].units),'initial specialization state differs')
+ end
  capture('TEMPLE-specialization-before',temple).units=before
- for _,target in ipairs{{'priest',358},{'performer',394}}do
+ for index,target in ipairs{{'priest',358},{'performer',394}}do
   local original=state()
-  pixel(784,target[2])
+  local args,receipt,change
+  local function read()return command('location-specialization-read',args)end
+  local function apply(revision,value)
+   local values={table.unpack(args)};values[#values+1]=revision;values[#values+1]=value and '1' or '0'
+   return command('location-specialization-set',values).outcome
+  end
+  if semantic_recognition then
+   change=reference.records[index*2].changed[1]
+   local staff=command('location-staff-read',{tostring(df.global.plotinfo.site_id),tostring(temple.id)})
+   for _,row in ipairs(staff.rows)do
+    if row.names.holder_kind==1 and row.names.holder_id==change.unit_id then
+     assert(not args,'ambiguous specialization row')
+     args={tostring(df.global.plotinfo.site_id),tostring(temple.id),row.occupation and '0' or '1',
+      tostring(row.entity),tostring(row.occupation and row.occupation.id or row.assignment),tostring(change.unit_id)}
+    end
+   end
+   assert(args);receipt=read();assert(receipt.valid and receipt.eligible and receipt.specialized==change.before.specialized)
+   for i=1,6 do
+    if i~=3 and not(i==4 and args[i]=='-1')then
+     local old=args[i];args[i]='-1';assert(not read().valid);assert(apply(receipt.revision,change.after.specialized)==1);args[i]=old
+    end
+   end
+   assert(apply('0',change.after.specialized)==1)
+   assert(apply(receipt.revision,receipt.specialized)==1)
+   local unit=assert(df.unit.find(change.unit_id));local old=unit.profession
+   unit.profession=df.profession.BABY
+   local stale=read();assert(stale.valid and not stale.eligible and stale.revision~=receipt.revision)
+   assert(apply(receipt.revision,change.after.specialized)==4)
+   assert(apply(stale.revision,change.after.specialized)==1)
+   unit.profession=old;assert(read().revision==receipt.revision)
+   assert(require('json').encode(state())==require('json').encode(original),'refusal changed specialization/labors')
+   local guards={}
+   for _,object in ipairs{m,g}do local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n);guards[#guards+1]={bytes=bytes,address=at,size=n}end
+   assert(apply(receipt.revision,change.after.specialized)==2)
+   for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'specialization changed UI/gps');df.delete(guard.bytes)end
+  else pixel(784,target[2])end
   local row=capture('TEMPLE-specialization-'..target[1]..'-toggle',temple)
   row.changed={};local after=state()
   for id,value in pairs(after)do
@@ -581,7 +627,14 @@ if recognition_case=='specialization' then
    end
   end
   assert(#row.changed==1,'native specialization must toggle one unit')
-  pixel(784,target[2]);local restored=state()
+  if semantic_recognition then
+   assert(require('json').encode(row.changed)==require('json').encode(reference.records[index*2].changed),'specialization effects differ from native')
+   assert(apply(receipt.revision,change.after.specialized)==4,'specialization replay accepted')
+   assert(require('json').encode(state())==require('json').encode(after),'replay changed state')
+   row.semantic_matches_native=true;row.stale_and_ineligible_refused=true
+   assert(apply(read().revision,change.before.specialized)==2)
+  else pixel(784,target[2])end
+  local restored=state()
   assert(require('json').encode(restored)==require('json').encode(original),'native specialization did not restore')
   capture('TEMPLE-specialization-'..target[1]..'-restored',temple)
  end

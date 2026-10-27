@@ -544,8 +544,18 @@ The religious picker selects this sheet locally, with no native UI state input
 or bundled artwork. Other location scrollbars retain their observed source.
 The fixture stores bounded visual evidence. Core and controlled assignment checks
 pass in build/qa/location-religious-scrollbar.
-Native alternate sort/filter verification and sent/disconnect/late/restart assignment
-lifecycle acceptance remain unfinished. Overall Zones availability stays hidden.
+Protected native072000 records both directions of Name, Cat, Prof and Skills
+through eight header clicks, plus actual textbox input for a, AMOS, zzzzzz and
+glass (40,2,0,2 matches). All displayed identities and ordering are retained in
+interaction_reference. Rendered scene072046 replays those pointer/key inputs
+against current transported candidate rows, checking exact complete order and
+cursor/scroll reset. Reopening between queries clears the previous draft; a final
+fresh open still assigns successfully with native effect readback. Both manifests
+remain unchanged and owned DF exits unsaved; the only diagnostic is the known
+separate-thread notice. The filtered capture was inspected. This establishes
+these ASCII searches and sort directions, not religious filtered pixel parity,
+non-ASCII editing, or every scrollbar hover/drag state. Sent/disconnect/late/restart
+assignment lifecycle acceptance remains unfinished. Overall Zones stays hidden.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

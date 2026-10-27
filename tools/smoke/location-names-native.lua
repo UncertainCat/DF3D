@@ -812,6 +812,34 @@ if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or r
   assert(score==row.score and require('json').encode(skills)==require('json').encode(row.skills),'religious skill facts differ')
  end
  local initial_displayed=opened.selector.displayed
+ opened.interactions={}
+ local function interaction(label)
+  view:render(dfhack.getTickCount())
+  opened.selector.displayed={};names(list,0,true)
+  table.sort(opened.selector.displayed,function(a,b)return a.y==b.y and a.tree_index<b.tree_index or a.y<b.y end)
+  local ids={};for _,row in ipairs(opened.selector.displayed)do ids[#ids+1]=row.id end
+  local sorting={};for _,sort in ipairs(list.sorting_by)do sorting[#sorting+1]=sort.ident end
+  opened.interactions[#opened.interactions+1]={name=label,ids=ids,sorting=sorting,
+   sort_flags=list.sort_flags.whole,filter_bytes={list.filter_str:byte(1,#list.filter_str)}}
+ end
+ for header,x in ipairs{432,512,584,680}do
+  for click=1,2 do pixel(x,70);interaction('sort-'..header..'-'..click)end
+ end
+ -- Fresh native open restores the default sort without mutating widget scratch.
+ key('_MOUSE_R');open_picker();list=assert(find_list(selector,0))
+ for _,query in ipairs{'a','AMOS','zzzzzz','glass'}do
+  key('_MOUSE_R');open_picker();list=assert(find_list(selector,0))
+  pixel(500,730);script.sleep(2,'frames')
+  for i=1,#query do
+   df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
+   key(('STRING_A%03d'):format(query:byte(i)))
+   script.sleep(2,'frames')
+  end
+  assert(list.filter_str==query:lower(),'religious filter input was not delivered: '..query..' => '..list.filter_str)
+  interaction('filter-'..query)
+ end
+ key('_MOUSE_R');open_picker();list=assert(find_list(selector,0))
+ opened.selector.displayed=initial_displayed
  g.mouse_x=60;g.mouse_y=20;g.precise_mouse_x=480;g.precise_mouse_y=240
  for i=1,8 do key('STANDARDSCROLL_PAGEDOWN')end
  opened.tail=capture('TEMPLE-priest-selector-tail',temple);table.remove(records)

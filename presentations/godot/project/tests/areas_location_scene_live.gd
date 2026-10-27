@@ -1581,6 +1581,32 @@ func religious_staff_route(locations: Array) -> void:
 	if not await wait_ui(func():return selector.is_visible_in_tree() and selector.actions_enabled,"religious candidate picker visible"):return
 	await native("religious_candidates_readback",{"rows":flow.candidates.rows})
 	await capture("religious_assignment_candidates")
+	var input_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json"))
+	for sample in input_reference.religious_staff_assignment_reference.interaction_reference.states:
+		var label: String=sample.name
+		if label.begins_with("sort-"):
+			var header:=int(label.split("-")[1])-1
+			await pointer_click(Vector2([432,512,584,680][header],70))
+		else:
+			await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+			await pointer_click(assign_point)
+			if not await wait_ui(func():return selector.is_visible_in_tree() and selector.actions_enabled,"religious filter reopen"):return
+			await pointer_click(Vector2(500,730))
+			for character in label.trim_prefix("filter-"):
+				for pressed in [true,false]:
+					var event:=InputEventKey.new();event.unicode=character.unicode_at(0);event.keycode=character.to_upper().unicode_at(0);event.pressed=pressed
+					root.push_input(event,true)
+				await process_frame
+		var actual: Array=[]
+		for row in selector.rows:actual.append(int(row.unit_id))
+		var expected: Array=[]
+		for id in sample.ids:expected.append(int(id))
+		if not check(actual==expected,"religious native order/filter differs: "+label):return
+		if not check(selector.first==0 and selector.selected==0,"religious input did not reset cursor/scroll: "+label):return
+	await capture("religious_assignment_filtered")
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	await pointer_click(assign_point)
+	if not await wait_ui(func():return selector.is_visible_in_tree() and selector.actions_enabled,"religious assignment after filters"):return
 	host.set_overlay_blocked(true)
 	await pointer_key(KEY_ENTER);await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	if not check(flow.mode==flow.Mode.Choosing,"overlay admitted religious picker input"):return

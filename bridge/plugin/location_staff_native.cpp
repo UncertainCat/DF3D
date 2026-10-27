@@ -103,6 +103,38 @@ bool staffCandidateProfession(df::profession profession) {
     default:return true;
   }
 }
+std::optional<LocationStaffCandidate> candidateRow(df::unit* unit,int32_t sourceIndex,
+    const std::vector<std::pair<int32_t,int32_t>>& weights,const StaffOrderingFunctions& order) {
+    LocationStaffCandidate row;row.unitId=unit->id;row.histfigId=unit->hist_figure_id;
+    row.sourceIndex=sourceIndex;
+    std::string nameKey,professionKey;
+    order.name(unit,&nameKey,false);order.profession(unit,&professionKey,false);
+    order.normalize(&nameKey);order.normalize(&professionKey);
+    row.nameSortKey.assign(nameKey.begin(),nameKey.end());
+    row.professionSortKey.assign(professionKey.begin(),professionKey.end());
+    std::array<int32_t,2> category{};const StaffUnitReference reference{unit};
+    order.category(&category,&reference);
+    row.professionOrder=category[0];row.statusOrder=category[1];
+    const auto baseName=DFHack::Translation::translateName(DFHack::Units::getVisibleName(unit));
+    const auto readable=readableStaffName(unit);
+    row.name=DF2UTF(readable);row.baseName=DF2UTF(baseName);
+    if(baseName.empty())row.professionName=row.name;
+    else if(readable==baseName)row.professionName.clear();
+    else if(readable.compare(0,baseName.size()+2,baseName+", ")==0)
+      row.professionName=DF2UTF(readable.substr(baseName.size()+2));
+    else return std::nullopt; // Never invent a split for unrecognized native facts.
+    row.professionColor=DFHack::Units::getProfessionColor(unit);
+    if(const auto* soul=unit->status.current_soul)for(const auto* skill:soul->skills) {
+      if(!skill)continue;
+      // Name animation depends on every skill, not just this occupation's list.
+      row.legendary=row.legendary || skill->rating>=15;
+      for(const auto& weight:weights)if(int32_t(skill->id)==weight.first) {
+        row.skills.push_back({weight.first,int32_t(skill->rating),skill->experience,weight.second});
+        row.score+=weight.second*int32_t(skill->rating);break;
+      }
+    }
+    return row;
+}
 LocationStaffNames names(int32_t unitId,int32_t histfigId) {
   LocationStaffNames result;
   // Native191420: a resolvable unit wins. Historical fallback has no profession.
@@ -181,35 +213,9 @@ std::optional<LocationStaffCandidates> observeNativeLocationStaffCandidates(
         {assigned=true;break;}
     if(assigned)continue;
     for(const auto* held:unit->occupations) {if(!held)return std::nullopt;bind(unit->id,held);}
-    LocationStaffCandidate row;row.unitId=unit->id;row.histfigId=unit->hist_figure_id;
-    row.sourceIndex=int32_t(out.rows.size());
-    std::string nameKey,professionKey;
-    order.name(unit,&nameKey,false);order.profession(unit,&professionKey,false);
-    order.normalize(&nameKey);order.normalize(&professionKey);
-    row.nameSortKey.assign(nameKey.begin(),nameKey.end());
-    row.professionSortKey.assign(professionKey.begin(),professionKey.end());
-    std::array<int32_t,2> category{};const StaffUnitReference reference{unit};
-    order.category(&category,&reference);
-    row.professionOrder=category[0];row.statusOrder=category[1];
-    const auto baseName=DFHack::Translation::translateName(DFHack::Units::getVisibleName(unit));
-    const auto readable=readableStaffName(unit);
-    row.name=DF2UTF(readable);row.baseName=DF2UTF(baseName);
-    if(baseName.empty())row.professionName=row.name;
-    else if(readable==baseName)row.professionName.clear();
-    else if(readable.compare(0,baseName.size()+2,baseName+", ")==0)
-      row.professionName=DF2UTF(readable.substr(baseName.size()+2));
-    else return std::nullopt; // Never invent a split for unrecognized native facts.
-    row.professionColor=DFHack::Units::getProfessionColor(unit);
-    if(const auto* soul=unit->status.current_soul)for(const auto* skill:soul->skills) {
-      if(!skill)continue;
-      // Name animation depends on every skill, not just this occupation's list.
-      row.legendary=row.legendary || skill->rating>=15;
-      for(const auto& weight:weights)if(int32_t(skill->id)==weight.first) {
-        row.skills.push_back({weight.first,int32_t(skill->rating),skill->experience,weight.second});
-        row.score+=weight.second*int32_t(skill->rating);break;
-      }
-    }
-    out.rows.push_back(std::move(row));
+    auto candidate=candidateRow(unit,int32_t(out.rows.size()),weights,order);
+    if(!candidate)return std::nullopt;
+    out.rows.push_back(std::move(*candidate));
   }
   std::stable_sort(out.rows.begin(),out.rows.end(),[](const auto& a,const auto& b){return a.score>b.score;});
   return out;
@@ -442,6 +448,26 @@ std::optional<std::vector<int32_t>> observeNativeReligiousCandidateIds(
     if(excluded || profession<0 || profession>134 || native.profession[profession]!=0)continue;
     result.push_back(unit->id);
   }
+  return result;
+}
+
+std::optional<LocationStaffCandidates> observeNativeReligiousCandidates(
+    int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId) {
+  const auto ids=observeNativeReligiousCandidateIds(siteId,locationId,entityId,assignmentId);
+  const auto& order=staffOrderingFunctions();
+  if(!ids || !order)return std::nullopt;
+  // Native context9 with a position target uses these social-skill weights,
+  // independently of the ordinary occupation role. Capture052156.
+  const std::vector<std::pair<int32_t,int32_t>> weights={
+      {70,1},{71,1},{72,1},{76,1},{77,1},{78,1},{79,1},{80,1},{81,1},{82,1}};
+  LocationStaffCandidates result;
+  for(auto id:*ids) {
+    auto* unit=df::unit::find(id);if(!unit)return std::nullopt;
+    auto row=candidateRow(unit,int32_t(result.rows.size()),weights,order);
+    if(!row)return std::nullopt;
+    result.rows.push_back(std::move(*row));
+  }
+  std::stable_sort(result.rows.begin(),result.rows.end(),[](const auto& a,const auto& b){return a.score>b.score;});
   return result;
 }
 

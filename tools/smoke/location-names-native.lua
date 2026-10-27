@@ -664,14 +664,14 @@ if recognition_case=='assignpriest' then
  assert(assignment and assignment.histfig>=0)
  pixel(944,358);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')
  local vacant=capture('TEMPLE-priest-vacant',temple);vacant.recognition=recognition_state()
- local function candidates(ids)
+ local function candidates(ids,rows)
   local guards={}
   for _,object in ipairs{m,g}do
    local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
    guards[#guards+1]={bytes=bytes,address=at,size=n}
   end
   local args=ids or {df.global.plotinfo.site_id,temple.id,religion.id,assignment.id}
-  local text,code=dfhack.run_command_silent('df3d','location-religious-candidates',tostring(args[1]),tostring(args[2]),tostring(args[3]),tostring(args[4]))
+  local text,code=dfhack.run_command_silent('df3d',rows and 'location-religious-candidate-rows' or 'location-religious-candidates',tostring(args[1]),tostring(args[2]),tostring(args[3]),tostring(args[4]))
   for _,guard in ipairs(guards)do
    assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'religious candidates changed native UI/gps');df.delete(guard.bytes)
   end
@@ -720,7 +720,7 @@ if recognition_case=='assignpriest' then
   assert(depth<10);visible=visible and (widget.flag.whole&1)==1
   if df.widget_unit_name:is_instance(widget) and visible then
    local name=df.reinterpret_cast(df.widget_unit_name,widget)
-   opened.selector.displayed[#opened.selector.displayed+1]={id=name.u.id,histfig_id=name.u.hist_figure_id,x=widget.rect.x1,y=widget.rect.y1,x2=widget.rect.x2,y2=widget.rect.y2}
+   opened.selector.displayed[#opened.selector.displayed+1]={id=name.u.id,histfig_id=name.u.hist_figure_id,x=widget.rect.x1,y=widget.rect.y1,x2=widget.rect.x2,y2=widget.rect.y2,flags=widget.flag.whole,tree_index=#opened.selector.displayed}
   end
   if not df.widget_container:is_instance(widget)then return end
   local _,address=df.sizeof(df.reinterpret_cast(df.widget_container,widget).children)
@@ -730,7 +730,34 @@ if recognition_case=='assignpriest' then
  end
  names(list,0,true)
  assert(#opened.selector.displayed>0,'religious displayed candidates missing')
- table.sort(opened.selector.displayed,function(a,b)return a.y<b.y end)
+ table.sort(opened.selector.displayed,function(a,b)return a.y==b.y and a.tree_index<b.tree_index or a.y<b.y end)
+ opened.semantic_rows=candidates(nil,true);assert(opened.semantic_rows.valid)
+ assert(#opened.semantic_rows.rows==#opened.selector.displayed)
+ for i,row in ipairs(opened.semantic_rows.rows)do
+  assert(row.unit_id==opened.selector.displayed[i].id,'religious displayed order differs at '..i)
+  assert(row.unit_id==native_ids[row.source_index+1],'religious source index differs')
+  local unit=assert(df.unit.find(row.unit_id));assert(row.histfig_id==unit.hist_figure_id)
+  local skills={};local score=0
+  if unit.status.current_soul then for _,skill in ipairs(unit.status.current_soul.skills)do
+   if list.skills[skill.id]~=0 then
+    skills[#skills+1]={id=skill.id,rating=skill.rating,experience=skill.experience,weight=list.skills[skill.id]}
+    score=score+skill.rating*list.skills[skill.id]
+   end
+  end end
+  assert(score==row.score and require('json').encode(skills)==require('json').encode(row.skills),'religious skill facts differ')
+ end
+ local initial_displayed=opened.selector.displayed
+ g.mouse_x=60;g.mouse_y=20;g.precise_mouse_x=480;g.precise_mouse_y=240
+ for i=1,8 do key('STANDARDSCROLL_PAGEDOWN')end
+ opened.tail=capture('TEMPLE-priest-selector-tail',temple);table.remove(records)
+ opened.selector.displayed={};names(list,0,true)
+ opened.tail.displayed=opened.selector.displayed;opened.selector.displayed=initial_displayed
+ local row_index={};for i,row in ipairs(opened.semantic_rows.rows)do row_index[row.unit_id]=i end
+ local previous=0;local seen=0
+ for _,row in ipairs(opened.tail.displayed)do if (row.flags&2)~=0 then
+  local index=assert(row_index[row.id]);assert(index>previous,'scrolled native rows out of order');previous=index;seen=seen+1
+ end end
+ assert(seen>0 and previous==#opened.semantic_rows.rows,'native scroll did not expose final candidate')
  opened.recognition=recognition_state();assert(require('json').encode(opened.recognition)==require('json').encode(vacant.recognition),'opening selector changed simulation')
  key('_MOUSE_R');assert(not selector.flag.VISIBILITY_ACTIVE,'religious selector cancel failed')
  local cancelled=capture('TEMPLE-priest-selector-cancelled',temple);cancelled.recognition=recognition_state()

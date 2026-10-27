@@ -371,6 +371,20 @@ Source preservation and unsaved owned exit pass, as do MSVC and core19/19 in
 historical-figure boundary coverage, rendered ordering, filtering, labels,
 assignment mutation, dependency receipts or viewer integration; those remain
 unfinished. Management protocol74 is unchanged.
+`observeNativeReligiousCandidates` supplies candidate names, sort keys, profession
+facts and social skills through the same fact builder as ordinary staff. Its
+`location-religious-candidate-rows` diagnostic matches native default skill order,
+source indexes and all42 candidates' skill data in protected054344. The earlier
+Y-only widget capture scrambled offscreen ties: native clamps those rows to a
+shared Y. The corrected reference preserves widget-tree order for equal Y and
+verifies the final16 rows after scrolling to the bottom; that image was inspected.
+No product ordering exception is involved. Mixed-encoding diagnostic names stay
+out of the fixture. MSVC and core19/19 pass in
+`build/qa/location-religious-candidate-rows`. The shared-builder regression
+`areas_acceptance.ps1 -StaffOnly` in protected054430 passes ordinary staff editing
+with empty diagnostics, unchanged source/clone manifests and unsaved owned exit.
+Religious alternate sorting/search, assignment and rendered viewer integration
+remain unfinished.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

@@ -1762,8 +1762,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               seed.valid,seed.id,seed.x,seed.y,seed.z,int(seed.furniture),seed.inUse);
           return CR_OK;
       }
-      if(parameters[0]=="location-religious-remove" || parameters[0]=="location-religious-receipt" || parameters[0]=="location-religious-candidates") {
-        const bool candidates=parameters[0]=="location-religious-candidates";
+      if(parameters[0]=="location-religious-remove" || parameters[0]=="location-religious-receipt" || parameters[0]=="location-religious-candidates" || parameters[0]=="location-religious-candidate-rows") {
+        const bool candidateRows=parameters[0]=="location-religious-candidate-rows";
+        const bool candidates=candidateRows || parameters[0]=="location-religious-candidates";
         const bool reading=candidates || parameters[0]=="location-religious-receipt";
         if(parameters.size()!=(reading?5:7))return CR_WRONG_USAGE;
         int32_t ids[5]{};
@@ -1774,7 +1775,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         Json::Value value(Json::objectValue);
-        if(candidates) {
+        if(candidateRows) {
+          const auto candidates=df3d_area::observeNativeReligiousCandidates(ids[0],ids[1],ids[2],ids[3]);
+          value["valid"]=candidates.has_value();value["rows"]=Json::Value(Json::arrayValue);
+          if(candidates)for(const auto& candidate:candidates->rows) {
+            Json::Value row(Json::objectValue);row["unit_id"]=candidate.unitId;row["histfig_id"]=candidate.histfigId;
+            row["name"]=candidate.name;row["base_name"]=candidate.baseName;row["profession_name"]=candidate.professionName;
+            row["score"]=candidate.score;row["source_index"]=candidate.sourceIndex;
+            row["profession_order"]=candidate.professionOrder;row["status_order"]=candidate.statusOrder;
+            row["profession_color"]=candidate.professionColor;row["legendary"]=candidate.legendary;
+            row["skills"]=Json::Value(Json::arrayValue);
+            for(const auto& skill:candidate.skills) {
+              Json::Value item(Json::objectValue);item["id"]=skill.id;item["rating"]=skill.rating;
+              item["experience"]=skill.experience;item["weight"]=skill.weight;row["skills"].append(item);
+            }
+            value["rows"].append(row);
+          }
+        } else if(candidates) {
           const auto rows=df3d_area::observeNativeReligiousCandidateIds(ids[0],ids[1],ids[2],ids[3]);
           value["valid"]=rows.has_value();value["unit_ids"]=Json::Value(Json::arrayValue);
           if(rows)for(auto id:*rows)value["unit_ids"].append(id);

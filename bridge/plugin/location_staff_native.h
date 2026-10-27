@@ -83,6 +83,9 @@ std::optional<LocationReligiousStaffReceipt> observeNativeLocationReligiousStaff
 // Native candidate membership in source order; presentation sorting is separate.
 std::optional<std::vector<int32_t>> observeNativeReligiousCandidateIds(
     int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId);
+// Candidate facts and default skill order; role remains -1 for position targets.
+std::optional<LocationStaffCandidates> observeNativeReligiousCandidates(
+    int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId);
 // Requires the exact observed revision at the same safe point as mutation.
 LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
     int32_t entityId,int32_t assignmentId,int32_t expectedHolderId,uint64_t expectedRevision);

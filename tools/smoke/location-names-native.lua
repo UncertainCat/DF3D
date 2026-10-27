@@ -573,6 +573,17 @@ if recognition_case=='petitiontracker' then
  local second;local guild_lookup_probe
  local function shot(label,keep_pointer)
   local row=capture('tracker-'..label,temple,keep_pointer);row.tracker_cells={};row.inputs={}
+  if label=='two-complexes' then
+   row.main_interface_fields={}
+   for _,field in ipairs{'designation','building','construction','civzone','burrow','view','hospital','location_list',
+    'job_details','buildjob','assign_trade','trade','diplomacy','petitions','stocks','announcements','assign_display_item',
+    'name_creator','image_creator','unit_selector','announcement_alert','custom_symbol','patrol_routes','squad_equipment',
+    'squad_schedule','squad_selector','burrow_selector','location_selector','location_details','hauling_stop_conditions',
+    'assign_vehicle','stockpile','stockpile_link','stockpile_tools','custom_stockpile','view_sheets','info','squads',
+    'create_squad','assign_uniform','create_work_order','hotkey','options','help','settings'}do
+    local _,address=df.sizeof(m:_field(field));row.main_interface_fields[field]=address-dfhack.internal.getImageBase()
+   end
+  end
   row.interaction={petitions_open=m.petitions.open,selected_agreement_id=m.petitions.selected_agreement_id,details_open=details.open,selected_location=details.selected_ab and details.selected_ab.id or -1}
   row.location_probe={id=temple.id,value=temple.contents.location_value,tier=temple.contents.location_tier,
    ruined=temple.flags[0],missing=temple.flags[1],pwg_ruined=temple.flags[3],deity_type=temple.deity_type,religion=temple.deity_data.Religion,
@@ -686,6 +697,17 @@ if recognition_case=='petitiontracker' then
  key('_MOUSE_R')
  shot('map-idle')
  local function map_hover(target)
+  local function title()
+   local text={};for x=g.dimx-96,g.dimx-79 do text[#text+1]=string.char(dfhack.screen.readTile(x,5).ch&255)end
+   return table.concat(text):find('Accepted petition:',1,true)~=nil
+  end
+  g.mouse_x=0;g.mouse_y=40;g.precise_mouse_x=0;g.precise_mouse_y=480
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+  local after_leave=title()
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=target[3]//12
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+  local first_render=title()
   local deadline=dfhack.getTickCount()+900
   repeat
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
@@ -696,7 +718,8 @@ if recognition_case=='petitiontracker' then
   -- Reapply the intended pointer before capture snapshots its retained input.
   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
   g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=target[3]//12
-  shot('map-hover-'..target[1],true)
+  local row=shot('map-hover-'..target[1],true)
+  row.hover_activation={after_leave=after_leave,first_render=first_render}
  end
  for _,target in ipairs{{'heading',1070,286},{'applicant',1070,298},{'date',1070,310},{'blank',1070,250}}do map_hover(target)end
  location.tier=1;map_hover({'temple',1070,298})

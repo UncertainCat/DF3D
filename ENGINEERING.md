@@ -1284,6 +1284,21 @@ verifies applicant truncation and accented names, not arbitrary long location
 names. HUD visibility, hover timing, resize/overflow and input integration
 remain unfinished; the isolated views are not exposed in gameplay.
 
+Native123023 tests popup activation before any frame wait: all35 cases show
+the popup on the first render after entering a row and remove it on the first
+render after leaving. This separate popup does not use the instruction-tooltip
+delay. `tracker_visibility_reference` records these observations and diagnostic
+main-interface field addresses. The previously unresolved18a6ff8 is `squads`;
+its open flag skips tracker sizing/target selection at3f6852 and replaces the
+list with renderer4411f0 at3f980a. Address18a7200 is `create_work_order`; its
+renderer38c900 diverts the list path at3f97d8. Popup suppression is separate:
+3f6b50..3f6bcd also checks sidebar mode, settings, view sheets, trade assignment,
+trade, stocks and display-item assignment. Scalar18a938c and info interior
+18a6378 still need precise field mapping, and earlier renderer gates/panel
+transitions remain to verify. These diagnostic fields are not permissible
+runtime inputs; the HUD must own equivalent local presentation state. All69
+records pass in owned DF165832, which exits unsaved with source hashes unchanged.
+
 ## Native Location name editor discovery
 
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout

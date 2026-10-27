@@ -10502,5 +10502,247 @@
         ]
       }
     ]
+  },
+  "tracker_visibility_reference": {
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-123023",
+    "result_sha256": "028bdc903e720d6bb76a90cac24bfc8070121d088e88e563b644ef3a0d2156f1",
+    "status": "passed",
+    "owned_exit": "unsaved",
+    "source_manifest": "unchanged",
+    "scope": "Single native render immediately after leaving/entering each row, before the delayed screenshot capture. No instruction-tooltip timer is advanced between leave and entry. Fields are diagnostic address evidence, never runtime inputs.",
+    "main_interface_fields": {
+      "announcement_alert": "0x18a3598",
+      "announcements": "0x18a2938",
+      "assign_display_item": "0x18a2ac8",
+      "assign_trade": "0x18a1f78",
+      "assign_uniform": "0x18a71d8",
+      "assign_vehicle": "0x18a41a8",
+      "building": "0x18a16e0",
+      "buildjob": "0x18a1f68",
+      "burrow": "0x18a1870",
+      "burrow_selector": "0x18a4010",
+      "civzone": "0x18a1818",
+      "construction": "0x18a1788",
+      "create_squad": "0x18a7128",
+      "create_work_order": "0x18a7200",
+      "custom_stockpile": "0x18a4238",
+      "custom_symbol": "0x18a36b0",
+      "designation": "0x18a1640",
+      "diplomacy": "0x18a2590",
+      "hauling_stop_conditions": "0x18a4190",
+      "help": "0x18a75b8",
+      "hospital": "0x18a19c8",
+      "hotkey": "0x18a7278",
+      "image_creator": "0x18a2f48",
+      "info": "0x18a61c0",
+      "job_details": "0x18a1a58",
+      "location_details": "0x18a40e0",
+      "location_list": "0x18a19e0",
+      "location_selector": "0x18a4058",
+      "name_creator": "0x18a2cf8",
+      "options": "0x18a72a0",
+      "patrol_routes": "0x18a3b08",
+      "petitions": "0x18a26e0",
+      "settings": "0x18a7af0",
+      "squad_equipment": "0x18a3ba8",
+      "squad_schedule": "0x18a3f58",
+      "squad_selector": "0x18a3fe0",
+      "squads": "0x18a6ff8",
+      "stockpile": "0x18a41d8",
+      "stockpile_link": "0x18a41e8",
+      "stockpile_tools": "0x18a4208",
+      "stocks": "0x18a2710",
+      "trade": "0x18a21b0",
+      "unit_selector": "0x18a33e0",
+      "view": "0x18a1888",
+      "view_sheets": "0x18a4330"
+    },
+    "cases": [
+      {
+        "name": "tracker-map-hover-heading",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-applicant",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-date",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-blank",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-invalid-tier",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guildhall",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-grand-guildhall",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guild-invalid-tier",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-zero-value",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-one-value",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-value-met-tier-unmet",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-tier-met",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-excluded-0",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-excluded-1",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-excluded-3",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-no-match",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-higher-second",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-tie",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-lower-second",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-zero-second",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-temple-multiple-both-zero",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guild-selected",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guild-value-met-tier-unmet",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guild-tier-met",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guild-zero-value",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guild-wrong-profession",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guild-excluded-0",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guild-excluded-1",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-guild-excluded-3",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-name22",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-name23",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-name54",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-name55",
+        "after_leave": false,
+        "first_render": true
+      },
+      {
+        "name": "tracker-map-hover-name-cp437",
+        "after_leave": false,
+        "first_render": true
+      }
+    ],
+    "visibility_audit": {
+      "list": "3f6852 skips sizing/target selection when squads.open;3f980a calls squads renderer4411f0 instead of tracker.3f97d8/3f9800 routes create_work_order renderer38c900 before tracker. Additional earlier renderer gates remain to audit.",
+      "popup": "3f6b50..3f6bcd gates sidebar mode, unresolved scalar18a938c, create_work_order, unresolved info interior18a6378, settings, view_sheets, assign_trade, trade, stocks, assign_display_item. List visibility is separate. Whole native renderer and its UI scratch remain prohibited runtime inputs.",
+      "timing": "35 cases show popup on first render and remove it on first leave render. Earlier Details-open captures suppress it.",
+      "pending": [
+        "Map unresolved info.open/scalar fields and earlier renderer gates.",
+        "Exercise actual supported panel transitions and map clicks.",
+        "Capture resize, overflow and full left frame columns."
+      ]
+    }
   }
 }

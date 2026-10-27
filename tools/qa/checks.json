@@ -2488,6 +2488,15 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "location_name_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_name_state_test.gd",
+      "completion": "LOCATION_NAME_STATE_PASS",
+      "timeout": 40,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "location_quantity_workflow_test",
       "lane": "core",
       "kind": "godot",

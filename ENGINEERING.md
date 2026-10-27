@@ -315,6 +315,22 @@ Source/clone manifests remain unchanged, the owned process exits unsaved and
 diagnostics are empty. Long-header clipping, nickname-policy variants and the
 rendered editor remain unfinished. See the naming fixture's filter/header evidence.
 
+`location_name_state.gd` owns the local component/filter, complete ordered choice
+pages and explicit edit queue. Only complete lists are selectable; short transport
+pages continue at the returned cursor. Query changes detach obsolete reads without
+detaching sent edits. Each queued edit uses the latest confirmed name receipt.
+Stale/rejected/unknown outcomes clear queued work; unknown mutations are never
+replayed. Empty-list Random submits nothing and query bytes are limited to10.
+Close/session changes retire the owner and ignore late replies.
+`location_name_workflow.gd` binds that lifetime to Details. Closing an edited or
+pending editor refreshes the same Details target; parent generation/identity
+changes retire it without refreshing the new target. These classes are not yet
+connected to a visible naming panel. `build/qa/location-name-workflow` passes
+core19/19 and service-backed owner tests for ordering, short pages, obsolete
+queries, stale/unknown outcomes, queued/sent cancellation, late replies, epoch
+changes and parent retirement. This is deterministic ownership evidence, not
+protected live-owner or rendered UI acceptance.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

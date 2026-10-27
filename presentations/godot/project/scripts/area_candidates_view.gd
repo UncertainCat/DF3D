@@ -56,8 +56,7 @@ func configure(source, model) -> void:
 	scroll = ScrollContainer.new(); scroll.position = Vector2(0,24); scroll.size = Vector2(576,600)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED; body.add_child(scroll)
 	var bar := scroll.get_v_scroll_bar(); bar.custom_minimum_size.x = 16
-	bar.changed.connect(func():
-		if state.kind == 3: apply_owner_scroll())
+	bar.changed.connect(apply_owner_scroll)
 	var track := art.make_style("SCROLLBAR",0)
 	track.set_texture_margin(SIDE_TOP,12); track.set_texture_margin(SIDE_BOTTOM,12)
 	bar.add_theme_stylebox_override("scroll",track)
@@ -172,7 +171,7 @@ func refresh() -> void:
 	scroll.size = Vector2(360 if state.kind == 2 else maxi(456,(viewport_columns-80)*8),page_rows()*36) if state.kind in [1,2] else Vector2(536 if state.rows.size()>10 else 552,360)
 	owner_scrollbar.position = Vector2(544,36) if state.kind == 3 else Vector2(360 if state.kind == 2 else maxi(456,(viewport_columns-80)*8),24)
 	owner_scrollbar.size.y = 360 if state.kind == 3 else (viewport_rows-16)*12
-	owner_scrollbar.page = 10 if state.kind == 3 else page_rows()
+	owner_scrollbar.page = 10 if state.kind == 3 else mini(page_rows(),maxi(1,state.rows.size()+(1 if state.can_remove_owner() else 0)-owner_scrollbar.first))
 	var standalone_scroll:bool = state.kind != 3
 	if owner_scrollbar.use_standalone_sheet != standalone_scroll:
 		owner_scrollbar.use_standalone_sheet = standalone_scroll; owner_scrollbar.textures.clear()
@@ -308,6 +307,12 @@ func refresh() -> void:
 	call_deferred("apply_owner_scroll")
 
 func apply_owner_scroll() -> void:
+	if state.kind in [1,2]:
+		# Native resize retains the first row and counts only remaining rows in
+		# the page, leaving unused space below a short tail.
+		owner_scrollbar.page = mini(page_rows(),maxi(1,owner_scrollbar.count-owner_scrollbar.first))
+		scroll.size.y = owner_scrollbar.page * 36
+		owner_scrollbar.queue_redraw()
 	scroll.scroll_vertical = owner_scrollbar.first * 36
 
 func _input(event: InputEvent) -> void:

@@ -459,6 +459,27 @@ if resize_marker then
   records[#records+1]={name='owner-resize-input',size=size,page_cursor=page_cursor,filter_focus=true,focused_navigation_inert=true,enter_releases_focus=true}
   assert(zone.assigned_unit_id==-1,'resize changed owner')
  end
+ local list=assert(unit_list(selector,0));local scroll=assert(find_widget(list,df.widget_scroll_rows,0))
+ local function resize_scroll(label)
+  view:render(dfhack.getTickCount())
+  local bar={};for _,field in ipairs{'sel','sel_min','sel_max','page_size','scroller_sy','scroller_ey'}do bar[field]=scroll.scrollbar[field]end
+  records[#records+1]={name='owner-resize-scroll',label=label,scroll=scroll.scroll,cursor=list.cursor_idx,
+   num_visible=scroll.num_visible,scrolling=scroll.scrolling,mouse_lbut_lift=df.global.enabler.mouse_lbut_lift,bar=bar}
+ end
+ for i=1,100 do gui.simulateInput(view,'STANDARDSCROLL_PAGEDOWN');view:render(dfhack.getTickCount())end
+ resize_scroll('tail-default')
+ for _,size in ipairs{'small','wide','default'}do
+  window_input('resize-tail','name-resize-'..size,false)
+  resize_scroll('tail-'..size);capture('owner-resize-tail-'..size)
+ end
+ for i=1,100 do gui.simulateInput(view,'STANDARDSCROLL_PAGEUP');view:render(dfhack.getTickCount())end
+ gui.simulateInput(view,'STANDARDSCROLL_PAGEDOWN');view:render(dfhack.getTickCount())
+ resize_scroll('selection-default')
+ for _,size in ipairs{'small','wide','default'}do
+  window_input('resize-selection','name-resize-'..size,false)
+  resize_scroll('selection-'..size)
+ end
+ assert(zone.assigned_unit_id==-1,'resize scroll changed owner')
  return
 end
 -- Hidden-desktop SDL polls reset GPS mouse coordinates. Retain pointer/focus

@@ -337,6 +337,20 @@ func run() -> void:
 		var bar_hash := HashingContext.new(); bar_hash.start(HashingContext.HASH_SHA256); bar_hash.update(bar_crop.get_data())
 		if bar_hash.finish().hex_encode() != str(sample.rgb_sha256):
 			push_error("Native owner scrollbar pixels differ at "+str(sample.first)); quit(1); return
+	for sample in header_reference.picker_resize_scroll_reference.observations:
+		var resized=controller.candidates_view
+		var label:String=str(sample.label)
+		if label=="tail-default" and resized.owner_selected!=171:
+			resized.owner_selected=171;owner_bar.move_to(156)
+		elif label=="selection-default" and resized.owner_selected!=16:
+			resized.owner_selected=16;owner_bar.move_to(1)
+		var dimensions:=Vector2i(960,600) if label.ends_with("small") else Vector2i(1600,900) if label.ends_with("wide") else Vector2i(1200,800)
+		root.size=dimensions;resized.layout(Vector2(dimensions))
+		await process_frame;await RenderingServer.frame_post_draw
+		resized.layout(Vector2(dimensions))
+		await process_frame;await RenderingServer.frame_post_draw
+		if owner_bar.first!=int(sample.scroll) or owner_bar.page!=int(sample.num_visible) or resized.owner_selected!=int(sample.cursor) or resized.scroll.scroll_vertical!=int(sample.scroll)*36:
+			push_error("Owner resize retained scroll differs: "+label+" first="+str(owner_bar.first)+" page="+str(owner_bar.page)+" cursor="+str(resized.owner_selected)+" pixels="+str(resized.scroll.scroll_vertical));quit(1);return
 	controller.candidates_state.area = saved_owner_area; controller.candidates_state.rows = navigation_rows
 	controller.candidates_state.receipt = 101; controller.candidates_state.changed.emit()
 	await process_frame; await RenderingServer.frame_post_draw

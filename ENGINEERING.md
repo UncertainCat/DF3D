@@ -80,8 +80,27 @@ recovery and the existing assignment/removal workflows. The wide capture was
 inspected. It passes with only the known rendering-thread notice; DF167052 exits
 unsaved and both save manifests remain unchanged. Core and candidate/controller
 checks pass in `build/qa/picker-width-final`.
-Resize scroll clamping and held dragging still need native comparison.
-Zones remains gated.
+Native owner154958 records tail and interior-selection resizing. The first row
+and cursor remain unchanged, even when shrinking hides the cursor; widening a
+tail leaves blank space instead of moving its first row. Page size counts the
+remaining rows. `native_zone_assignment.json.picker_resize_scroll_reference`
+retains these observations. DF3D now preserves this behavior and reapplies its
+scroll offset when Godot propagates container bounds. GPU
+`build/qa/picker-resize-tail-gpu` checks the recorded offsets, page sizes and
+cursor through all transitions; it passes with the known three diagnostics.
+Earlier picker-resize-tail/debug runs exposed Godot's old-page clamp and are
+not acceptance. Core and state/controller checks pass in
+`build/qa/picker-resize-tail-final`.
+Protected owner155746 verifies tail offsets and waits for visible portraits
+before capture, alongside the full owner workflow. The wide tail capture was
+inspected. Animal155615 verifies the shared page-size change and existing animal
+workflow. Both pass with only the known rendering-thread notice; DF143948 and
+150360 exit unsaved and both save manifests remain unchanged in each run.
+Owner155440 also passed geometry/effects, but its early tail capture did not
+wait for portraits and is not portrait acceptance.
+Held dragging across resize still needs real window-input comparison. A
+synthetic held-input attempt in native155327 lost its scrolling state before
+resize and does not establish held-drag behavior. Zones remains gated.
 
 Protected `areas-acceptance-20261027-133446 -LocationScene` passes the full
 existing main-scene Locations suite with the live petition tracker enabled.

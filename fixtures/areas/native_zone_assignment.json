@@ -8730,5 +8730,150 @@
       ],
       "save_preservation": "Owned source unchanged"
     }
+  },
+  "picker_resize_scroll_reference": {
+    "evidence": "build/stockpile-storage-native-zone-owner-20261027-154958",
+    "observations": [
+      {
+        "bar": {
+          "page_size": 16,
+          "scroller_ey": 55,
+          "scroller_sy": 51,
+          "sel": 156,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "cursor": 171,
+        "label": "tail-default",
+        "mouse_lbut_lift": 0,
+        "name": "owner-resize-scroll",
+        "num_visible": 16,
+        "scroll": 156,
+        "scrolling": false
+      },
+      {
+        "bar": {
+          "page_size": 11,
+          "scroller_ey": 38,
+          "scroller_sy": 37,
+          "sel": 156,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "cursor": 171,
+        "label": "tail-small",
+        "mouse_lbut_lift": 0,
+        "name": "owner-resize-scroll",
+        "num_visible": 11,
+        "scroll": 156,
+        "scrolling": false
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "scroller_ey": 64,
+          "scroller_sy": 60,
+          "sel": 156,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "cursor": 171,
+        "label": "tail-wide",
+        "mouse_lbut_lift": 0,
+        "name": "owner-resize-scroll",
+        "num_visible": 16,
+        "scroll": 156,
+        "scrolling": false
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "scroller_ey": 55,
+          "scroller_sy": 51,
+          "sel": 156,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "cursor": 171,
+        "label": "tail-default",
+        "mouse_lbut_lift": 0,
+        "name": "owner-resize-scroll",
+        "num_visible": 16,
+        "scroll": 156,
+        "scrolling": false
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "scroller_ey": 13,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "cursor": 16,
+        "label": "selection-default",
+        "mouse_lbut_lift": 0,
+        "name": "owner-resize-scroll",
+        "num_visible": 16,
+        "scroll": 1,
+        "scrolling": false
+      },
+      {
+        "bar": {
+          "page_size": 11,
+          "scroller_ey": 10,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "cursor": 16,
+        "label": "selection-small",
+        "mouse_lbut_lift": 0,
+        "name": "owner-resize-scroll",
+        "num_visible": 11,
+        "scroll": 1,
+        "scrolling": false
+      },
+      {
+        "bar": {
+          "page_size": 19,
+          "scroller_ey": 14,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "cursor": 16,
+        "label": "selection-wide",
+        "mouse_lbut_lift": 0,
+        "name": "owner-resize-scroll",
+        "num_visible": 19,
+        "scroll": 1,
+        "scrolling": false
+      },
+      {
+        "bar": {
+          "page_size": 16,
+          "scroller_ey": 13,
+          "scroller_sy": 9,
+          "sel": 1,
+          "sel_max": 171,
+          "sel_min": 0
+        },
+        "cursor": 16,
+        "label": "selection-default",
+        "mouse_lbut_lift": 0,
+        "name": "owner-resize-scroll",
+        "num_visible": 16,
+        "scroll": 1,
+        "scrolling": false
+      }
+    ],
+    "save_preservation": "Owned source unchanged",
+    "limitations": [
+      "Held dragging across resize is not covered."
+    ]
   }
 }

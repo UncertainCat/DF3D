@@ -1878,6 +1878,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
+      if (parameters[0] == "location-name-generate") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t ids[2]{};
+        for(size_t i=0;i<2;++i) {
+          const auto& text=parameters[i+1];const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        const auto name=df3d_area::generateNativeLocationName(ids[0],ids[1]);
+        Json::Value value(Json::objectValue);value["valid"]=bool(name);
+        if(name) {
+          auto& v=value["name"];v["first_name"]=DF2UTF(name->firstNameCp437);v["nickname"]=DF2UTF(name->nicknameCp437);
+          v["language"]=name->language;v["type"]=name->type;v["has_name"]=name->hasName;
+          v["words"]=Json::Value(Json::arrayValue);v["parts_of_speech"]=Json::Value(Json::arrayValue);
+          for(size_t i=0;i<7;++i){v["words"].append(name->words[i]);v["parts_of_speech"].append(name->parts[i]);}
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
       if (parameters[0] == "location-quantity-edit") {
         if(parameters.size()!=7)return CR_WRONG_USAGE;
         int32_t values[5]{};
@@ -2517,6 +2535,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d location-access-set <site id> <location id> <mode 0..3> <revision> (protected access mutation)\n"
         "df3d location-name-words <component 0..6> [query] (protected native word-selector observation)\n"
         "df3d location-name-pick <component 0..6> [query] (protected native selection; consumes RNG)\n"
+        "df3d location-name-generate <site id> <location id> (protected owned name generation; consumes RNG)\n"
         "df3d location-quantity-edit <site id> <location id> <quantity 0..10> <mode 0..2> <value> <revision> (protected quantity mutation)\n"
         "df3d location-details-refresh <site id> <location id> (refresh semantic caches; protected acceptance)\n"
         "df3d location-details-read <site id> <location id> (partial semantic Details facts; read-only)\n"

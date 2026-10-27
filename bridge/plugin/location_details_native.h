@@ -66,6 +66,17 @@ std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint
 // Consumes DF RNG for a nonempty displayed component/filter pool. Does not write
 // a location name. Empty-pool native input behavior is not yet accepted.
 std::optional<LocationNameWord> chooseNativeLocationNameWord(uint8_t displayedComponent,const std::string& queryCp437={});
+struct LocationNameValue {
+  std::string firstNameCp437,nicknameCp437;
+  std::array<int32_t,7> words{};
+  std::array<int16_t,7> parts{};
+  int32_t language=-1;
+  int16_t type=-1;
+  bool hasName=false;
+};
+// Native whole-name Random on an owned name copy. Consumes ordinary DF RNG;
+// does not write the selected location or open/borrow its native editor.
+std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32_t id);
 // Native Details entry refreshes semantic caches; ordinary reads/renders do not.
 // Caller owns a safe point. This does not populate staffing slots or open any UI.
 // Returns false without writes for an invalid identity or unsupported executable.

@@ -112,6 +112,30 @@ local function random_component(label,location,target)
   rng_identical=true,ui_and_name_unchanged=true,cursor_before=before.cursor,cursor_after=after.cursor}
  return row
 end
+local function random_whole(label,location)
+ local before=rng_snapshot();local guards={}
+ assert(creator.namer and creator.namer.id==df.global.plotinfo.civ_id,'unexpected native naming entity')
+ for _,object in ipairs{m,g,location:getName(),creator.namer,creator.namer.entity_raw}do
+  local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+  guards[#guards+1]={bytes=bytes,address=at,size=n}
+ end
+ local text,code=dfhack.run_command_silent('df3d','location-name-generate',tostring(df.global.plotinfo.site_id),tostring(location.id))
+ assert(code==0,text);local generated=require('json').decode(text)
+ assert(generated.valid,'native whole-name generation rejected')
+ local after=rng_snapshot()
+ for _,guard in ipairs(guards)do
+  assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'whole-name generation changed UI/name/entity')
+  df.delete(guard.bytes)
+ end
+ restore_rng(before);pixel(832,82)
+ local native_after=rng_snapshot()
+ assert(require('json').encode(after)==require('json').encode(native_after),'whole-name RNG mismatch')
+ local native=name_value(location:getName())
+ native.first_name=dfhack.df2utf(native.first_name);native.nickname=dfhack.df2utf(native.nickname)
+ assert(require('json').encode(generated.name)==require('json').encode(native),'whole-name value mismatch')
+ local row=capture(label,location)
+ row.bridge_generation={rng_identical=true,name_identical=true,ui_name_entity_unchanged=true,namer_id=creator.namer.id}
+end
 m.bottom_mode_selected=-1;key('D_CIVZONE');m.civzone.cur_bld=assert(df.building.find(23));view:render(dfhack.getTickCount())
 pixel(336,190);local selector=m.location_selector;assert(selector.open,'chooser did not open')
 local choices={};for _,v in ipairs(selector.valid_ab)do choices[#choices+1]=v end
@@ -180,7 +204,7 @@ for i,location in ipairs(choices)do
   assert(not creator.open and details.open,'edited name Back did not return')
   pixel(944,82);capture(prefix..'-edited-reopen',location)
  end
- pixel(832,82);capture(prefix..'-whole-random',location)
+ random_whole(prefix..'-whole-random',location)
  pixel(912,82);capture(prefix..'-done',location)
  assert(not creator.open and details.open,'Done did not return to Details')
  pixel(944,82);capture(prefix..'-random-reopen',location)

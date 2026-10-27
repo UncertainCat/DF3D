@@ -5,6 +5,7 @@
 #include "modules/Items.h"
 #include "df/world.h"
 #include "df/language_word_table.h"
+#include "df/language_name.h"
 #include "df/item.h"
 #include "df/items_other_id.h"
 #include "modules/Translation.h"
@@ -105,6 +106,50 @@ std::optional<LocationNameWord> chooseNativeLocationNameWord(uint8_t displayedCo
   });
   if(found==choices->end())return std::nullopt;
   return *found;
+}
+std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32_t id) {
+  const auto observed=observeNativeLocationDetailsCore(siteId,id);
+  if(!observed || !locationRefreshFunction())return std::nullopt;
+  static const bool compatible=[] {
+    auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t count) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0x931860,0x2f9)==UINT64_C(0x3f40974d82863764) &&
+        hash(0xa92860,0x17cb)==UINT64_C(0x627504395969e689) &&
+        hash(0x930be0,0xc7c)==UINT64_C(0x300195a029c0e420) &&
+        hash(0x65ff0,0x63)==UINT64_C(0x6f20abe9b56596f8) &&
+        hash(0x1fa3e0,0x9b)==UINT64_C(0x1e0d5c1bd19aa9f2) &&
+        hash(0xeb68b0,0x1e3)==UINT64_C(0x4bcd46a418e7a7bb) &&
+        hash(0xd35ee0,0x163)==UINT64_C(0xc1e4fe91eb73c848);
+  }();
+  if(!compatible)return std::nullopt;
+  auto* entity=df::historical_entity::find(df::global::plotinfo->civ_id);
+  auto* site=df::world_site::find(siteId);
+  if(!entity || !entity->entity_raw || !site)return std::nullopt;
+  const auto found=std::lower_bound(site->buildings.begin(),site->buildings.end(),id,
+      [](const df::abstract_building* location,int32_t key){return location->id<key;});
+  if(found==site->buildings.end() || (*found)->id!=id || !(*found)->getName())return std::nullopt;
+  // Native32c051 resolves the fortress civilization;32c097..32c1c8 selects
+  // category from location kind, independently of the name's stored type.
+  constexpr int16_t types[]={-1,28,21,43,52,54};
+  static_assert(offsetof(df::plotinfost,civ_id)==0x2440);
+  static_assert(offsetof(df::historical_entity,entity_raw)==8);
+  static_assert(offsetof(df::historical_entity,race)==0x98);
+  static_assert(sizeof(df::language_name)==0x78);
+  df::language_name generated=*(*found)->getName();
+  using Generate=void(__fastcall*)(df::historical_entity*,df::language_name*,int16_t);
+  const auto generate=reinterpret_cast<Generate>(reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr))+0x931860);
+  // The entity wrapper reads raw word tables/language/race. Its ordinary and
+  // special-race branches write only the supplied name and consume native RNG.
+  // No name_creator input, native UI scratch or DFHack-generated substitute.
+  generate(entity,&generated,types[observed->kind]);
+  LocationNameValue value;value.firstNameCp437=generated.first_name;value.nicknameCp437=generated.nickname;
+  value.words=generated.words;
+  for(size_t i=0;i<7;++i)value.parts[i]=int16_t(generated.parts_of_speech[i]);
+  value.language=generated.language;value.type=int16_t(generated.type);value.hasName=generated.has_name;
+  return value;
 }
 std::optional<LocationDetailsCore> observeNativeLocationDetailsCore(int32_t siteId,int32_t id) {
   if(siteId<0 || id<0 || !df::global::plotinfo || !DFHack::Maps::IsValid() ||

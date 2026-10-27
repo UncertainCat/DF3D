@@ -1147,6 +1147,14 @@ cell digests before screenshot acknowledgement; the value symbol is byte15.
 Tier1 asks for2000 value and tier2 for10000. Temple text additionally requires
 priest/high-priest elevation. The reference guild has no assigned location.
 All43 records complete in owned DF162904, source unchanged, unsaved exit.
+The expanded51-record reference114139 also records diagnostic temple fields:
+zero value produces the native no-location message, value1 selects the temple,
+and value10000 stays yellow at tier1 but becomes green at tier2. Ruined,
+nonexistent and post-worldgen-ruined flags (bits0,1,3), and a mismatched religion,
+produce the red no-location message. Diagnostic fields are restored before
+cleanup; owned DF141652 exits unsaved with the source unchanged. These cases
+verify stored-tier color selection independently of numeric value. Multiple
+matching locations, ties and guild-location selection still need live coverage.
 
 The popup renderer selects locations inline: site lookup7db20 is read-only;
 flag bits1,0,3 exclude locations; matching candidates are counted, and the

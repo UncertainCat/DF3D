@@ -573,6 +573,9 @@ if recognition_case=='petitiontracker' then
  local function shot(label,keep_pointer)
   local row=capture('tracker-'..label,temple,keep_pointer);row.tracker_cells={};row.inputs={}
   row.interaction={petitions_open=m.petitions.open,selected_agreement_id=m.petitions.selected_agreement_id,details_open=details.open,selected_location=details.selected_ab and details.selected_ab.id or -1}
+  row.location_probe={id=temple.id,value=temple.contents.location_value,tier=temple.contents.location_tier,
+   ruined=temple.flags[0],missing=temple.flags[1],pwg_ruined=temple.flags[3],deity_type=temple.deity_type,religion=temple.deity_data.Religion,
+   requested_deity_type=location.deity_type,requested_religion=location.deity_data.Religion}
   for _,id in ipairs(fixture_agreements)do
    local agreement=assert(df.agreement.find(id));local detail=agreement.details[0]
    row.inputs[#row.inputs+1]={id=id,flags=agreement.flags.whole,kind=detail.type,year=detail.year,tick=detail.year_tick,
@@ -668,6 +671,19 @@ if recognition_case=='petitiontracker' then
  location.tier=2;map_hover({'grand-guildhall',1070,298})
  location.tier=0;map_hover({'guild-invalid-tier',1070,298})
  a.parties[0].entity_ids[0]=religion.id;location.type=df.abstract_building_type.TEMPLE;location.tier=2
+ local original_value=temple.contents.location_value;local original_tier=temple.contents.location_tier
+ temple.contents.location_value=0;map_hover({'temple-zero-value',1070,298})
+ temple.contents.location_value=1;map_hover({'temple-one-value',1070,298})
+ temple.contents.location_value=10000;map_hover({'temple-value-met-tier-unmet',1070,298})
+ temple.contents.location_tier=2;map_hover({'temple-tier-met',1070,298})
+ temple.contents.location_value=original_value;temple.contents.location_tier=original_tier
+ for _,flag in ipairs{0,1,3}do
+  local old=temple.flags[flag];temple.flags[flag]=true
+  map_hover({'temple-excluded-'..flag,1070,298});temple.flags[flag]=old
+ end
+ local original_religion=location.deity_data.Religion;location.deity_data.Religion=-1
+ map_hover({'temple-no-match',1070,298});location.deity_data.Religion=original_religion
+ assert(temple.contents.location_value==original_value and temple.contents.location_tier==original_tier)
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.
  -- Remove each owned pointer before destroying its allocation.

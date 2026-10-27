@@ -1079,8 +1079,26 @@ Repeated reads are identical. Byte guards retain main_interface, GPS and each
 fixture agreement/first-subject/Location-payload/party object unchanged; this is
 not a claim about every allocation in the process. Owned DF106332 exits unsaved
 with source hashes unchanged. `provider_reference` stores bounded digests and
-the installed plugin hash. Protocol78 is unchanged; this diagnostic provider has
-no typed viewer route yet. Transport, model, presentation, lifecycle and global
+the installed plugin hash. Management79 adds `AgreementList` with `tracker:true` and an explicit tracker
+result flag plus ordered rows. History filters, pagination and inspection IDs
+are rejected in tracker mode. Empty successful reads carry an empty required
+vector; rejected/absent observations do not masquerade as empty success. Rows
+retain source identities and text without pointers; unknown applicant types
+retain blank slots. The validator bounds rows and strings to a224KiB budget.
+The service routes directly to the native provider, bypassing the old Lua
+agreement summaries. Bridge, model and Godot codec preserve every field.
+
+Core, Godot management contract and agreement fixtures pass cleanly in
+`petition-tracker-contract79`; MSVC builds the matching bridge. Protected
+`areas_acceptance.ps1 -LocationScene -ReligiousStaffScene
+-ReligiousStaffLifecycle tracker` run111801 verifies empty, three-row populated,
+and restored-empty results through the actual action service and shared memory.
+All fields match native readback, including the blank row, native temple/guild
+labels and dates. Native UI and religious records remain unchanged across reads.
+Owned DF129176 exits unsaved with both save manifests unchanged; the sole known
+diagnostic is the render-thread notice. `transport_reference` records the
+protocol79 plugin hash. Rebuild/install both peers together; older recordings
+cannot infer tracker facts. Presentation, reader lifecycle and global
 visibility/scrolling integration remain unfinished.
 
 ## Native Location name editor discovery

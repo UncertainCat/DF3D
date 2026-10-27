@@ -1744,7 +1744,7 @@ table ReportState {
 }
 // Pending comes from plotinfo.petitions, never the cached native menu vector.
 enum AgreementStatus : uint8 { Pending, Accepted, Unapproved, Concluded }
-table AgreementRequest { id:int32 = -1; before_id:int32 = -1; query:string; pending_only:bool; }
+table AgreementRequest { id:int32 = -1; before_id:int32 = -1; query:string; pending_only:bool; tracker:bool; }
 table AgreementDetail {
   id:int32; kind:int16 = -1; site_id:int32 = -1; year:int32; year_tick:int32;
   applicant_party:int32 = -1; government_party:int32 = -1;
@@ -1756,7 +1756,12 @@ table AgreementInfo {
   id:int32; status:AgreementStatus; not_approved:bool; concluded:bool; continuing:bool;
   details:[AgreementDetail]; parties:[AgreementParty]; summary:string; complete:bool = true; reason:string;
 }
-table AgreementState { agreements:[AgreementInfo]; next_before_id:int32 = -1; pending_only:bool; detail:string; }
+table ContinuingAgreementRow {
+  agreement_id:int32 = -1; subject_id:int32 = -1; entity_id:int32 = -1; entity_type:int32 = -1;
+  tier:int32 = -1; profession:int32 = -1; year:int32; year_tick:int32;
+  heading:string; applicant:string; date:string;
+}
+table AgreementState { agreements:[AgreementInfo]; next_before_id:int32 = -1; pending_only:bool; detail:string; tracker:bool; tracker_rows:[ContinuingAgreementRow]; }
 table TradeRequest { depot_id:int32 = -1; item_id:int32 = -1; expected_revision:uint64; requested:int8 = -1; anyone:int8 = -1; cursor:uint32; query:string; receipt:uint64; side:uint8; selected:int8 = -1; }
 table TradeDepot { id:int32; origin:TilePos; revision:uint64; requested:bool; anyone:bool; accessible:bool; ready:bool; broker:string; hauling:uint32; goods:uint32; }
 table TradeCaravan { id:int32; name:string; state:string; days_remaining:int32; }
@@ -1822,7 +1827,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 78;
+  schema_version:uint32 = 79;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1868,7 +1873,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 78;
+  schema_version:uint32 = 79;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

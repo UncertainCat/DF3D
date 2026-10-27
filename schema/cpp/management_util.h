@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 78;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v78";
+inline constexpr uint32_t kManagementVersion = 79;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v79";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -552,6 +552,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* a=r.agreement();
     if(!a || a->id() < -1 || a->before_id() < -1 || (a->query() && a->query()->size()>128))return "invalid agreement request";
     if(r.action()==ManagementAction::AgreementInspect && (a->id()<0 || a->before_id()!=-1 || (a->query() && a->query()->size()) || a->pending_only()))return "invalid agreement inspection";
+    if(a->tracker() && (r.action()!=ManagementAction::AgreementList || a->before_id()!=-1 || a->pending_only() || (a->query() && a->query()->size())))return "invalid tracker request";
     if(r.action()==ManagementAction::AgreementList && a->id()!=-1)return "unexpected agreement identity";
   } else if(r.agreement())return "unexpected agreement payload";
   if ((r.action() == ManagementAction::Inspect || r.action() == ManagementAction::Remove) &&
@@ -1504,6 +1505,20 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(const auto* a=s.agreement()) {
     if(a->next_before_id() < -1 || (a->detail() && a->detail()->size()>2048) || (a->agreements() && a->agreements()->size()>16))return "invalid agreement state";
+    if(a->tracker()) {
+      if(s.action()!=ManagementAction::AgreementList || s.status()!=ManagementStatus::Ok || !a->tracker_rows() || a->tracker_rows()->size()>4096 ||
+          (a->agreements() && a->agreements()->size()) || a->next_before_id()!=-1 || a->pending_only() || (a->detail() && a->detail()->size()))return "invalid tracker state";
+      size_t budget=0;
+      for(const auto* row:*a->tracker_rows()) {
+        if(!row || row->agreement_id()<0 || row->subject_id()<0 || row->entity_id()<0 || row->entity_type()<0 ||
+            !row->heading() || row->heading()->size()>128 || !row->applicant() || row->applicant()->size()>4096 || !row->date() || row->date()->size()>128)return "invalid tracker row";
+        const bool described=row->entity_type()==5 || row->entity_type()==10;
+        if(described && (row->year_tick()<0 || row->year_tick()>=403200 || !row->date()->size()))return "invalid tracker date";
+        if(!described && (row->heading()->size() || row->applicant()->size() || row->date()->size()))return "invalid tracker blank row";
+        budget+=160+row->heading()->size()+row->applicant()->size()+row->date()->size();
+      }
+      if(budget>224*1024)return "tracker budget exceeded";
+    } else if(a->tracker_rows() && a->tracker_rows()->size())return "unexpected tracker rows";
     size_t bytes=0;std::set<int32_t> ids;
     auto text=[&](const flatbuffers::String* t){if(!t || t->size()>2048)return false;bytes+=t->size();return true;};
     if(a->agreements())for(const auto* v:*a->agreements()) {

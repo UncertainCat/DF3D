@@ -28,7 +28,7 @@
   "gaps": [
     "Tracker scrolling, sizing and global visibility arbitration",
     "Map selection outside the panel and other input devices",
-    "Typed transport, model, viewer, lifecycle and global visibility integration"
+    "Viewer, reader lifecycle and global visibility integration"
   ],
   "native_audit": {
     "renderer": "3d6950",
@@ -3452,6 +3452,76 @@
           2147483603
         ],
         "rows_sha256": "823a9c3c16874e4b807751535567d66894467eabfb21852f92ca69edc59b141f"
+      }
+    ]
+  },
+  "transport_reference": {
+    "capture": "build/areas-acceptance-20261027-111801",
+    "evidence_sha256": "f93118e99f4f2d5171ac2571932dc453940393412092236e483495faa4ac9cb5",
+    "management_version": 79,
+    "plugin_sha256": "EC07868F4C504F9501A35B4B05FE5D961EEEA105483F09A29157978428D42904",
+    "owned_pid": 129176,
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "save_manifests": "both unchanged",
+    "scope": "Actual Godot action service, typed shared-memory response and model dictionary; compare every field against the native provider, with native UI and religious records guarded unchanged.",
+    "cases": [
+      {
+        "phase": "empty",
+        "rows": [],
+        "ticket": 11
+      },
+      {
+        "phase": "populated",
+        "rows": [
+          {
+            "agreement_id": 2147483501,
+            "applicant": "",
+            "date": "",
+            "entity_id": 865,
+            "entity_type": 1,
+            "heading": "",
+            "profession": 41,
+            "subject_id": 0,
+            "tier": 2,
+            "year": 106,
+            "year_tick": 1200
+          },
+          {
+            "agreement_id": 2147483502,
+            "applicant": "The Bejeweled Creed",
+            "date": "3rd Granite, 106",
+            "entity_id": 383,
+            "entity_type": 5,
+            "heading": "Build temple complex",
+            "profession": 41,
+            "subject_id": 0,
+            "tier": 2,
+            "year": 106,
+            "year_tick": 2400
+          },
+          {
+            "agreement_id": 2147483503,
+            "applicant": "Farmers guild",
+            "date": "4th Granite, 106",
+            "entity_id": 375,
+            "entity_type": 10,
+            "heading": "Build guildhall",
+            "profession": 41,
+            "subject_id": 0,
+            "tier": 1,
+            "year": 106,
+            "year_tick": 3600
+          }
+        ],
+        "ticket": 14
+      },
+      {
+        "phase": "restored",
+        "rows": [],
+        "ticket": 15
       }
     ]
   }

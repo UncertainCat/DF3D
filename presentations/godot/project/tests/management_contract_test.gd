@@ -576,6 +576,8 @@ func reject_agreement(request: Dictionary, message: String) -> void:
 	assert(world.last_error() == message)
 
 func test_agreements() -> void:
+	for invalid in [{"action":36,"tracker":1},{"action":37,"id":1,"tracker":true},{"action":36,"tracker":true,"query":"x"},{"action":36,"tracker":true,"pending_only":true},{"action":36,"tracker":true,"before_id":1}]:
+		assert(world.management_request("agreements",invalid)==0)
 	reject_agreement({"action":37}, "Missing management field: id")
 	reject_agreement({"action":37,"id":-1}, "invalid agreement inspection")
 	for key in ["id","before_id"]:
@@ -613,7 +615,7 @@ func test_agreements() -> void:
 		elif index in [8,9]: ids = []
 		var rows: Array = []
 		for id in ids: rows.append(agreement_row(id, request.action == 37))
-		assert(state.agreement == {"agreements":rows,"next_before_id":-1,"pending_only":index == 1,
+		assert(state.agreement == {"agreements":rows,"next_before_id":-1,"pending_only":index == 1,"tracker":false,"tracker_rows":[],
 			"detail":"Pending means a native unapproved petition. Accepted and concluded are native states; no denial or expiry is inferred."})
 
 func agreement_row(id: int, inspect: bool) -> Dictionary:

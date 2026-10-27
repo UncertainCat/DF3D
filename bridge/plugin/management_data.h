@@ -184,7 +184,11 @@ struct AgreementDetail {
 };
 struct AgreementParty {int32_t id=0;std::vector<int32_t> entityIds,histfigIds;std::string name;};
 struct AgreementInfo {int32_t id=0;uint8_t status=0;bool notApproved=false,concluded=false,continuing=false,complete=true;std::vector<AgreementDetail> details;std::vector<AgreementParty> parties;std::string summary,reason;};
-struct AgreementState {std::vector<AgreementInfo> agreements;int32_t nextBeforeId=-1;bool pendingOnly=false;std::string detail;};
+struct ContinuingAgreementRow {
+ int32_t agreementId=-1,subjectId=-1,entityId=-1,entityType=-1,tier=-1,profession=-1,year=0,yearTick=0;
+ std::string heading,applicant,date;
+};
+struct AgreementState {std::vector<AgreementInfo> agreements;int32_t nextBeforeId=-1;bool pendingOnly=false;std::string detail;bool tracker=false;std::vector<ContinuingAgreementRow> trackerRows;};
 
 // --- trade ---
 struct TradeDepot { int32_t id=-1,x=0,y=0,z=0; uint64_t revision=0; bool requested=false,anyone=false,accessible=false,ready=false; std::string broker; uint32_t hauling=0,goods=0; };

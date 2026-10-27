@@ -651,7 +651,9 @@ void publish() {
   std::vector<flatbuffers::Offset<m::TradeGood>> tg;
   for(const auto& g:trade.goods)tg.push_back(m::CreateTradeGood(b,g.id,b.CreateString(g.description),g.quantity,g.selected,g.selectable,b.CreateString(g.reason)));
   auto tradeResult=m::CreateTradeState(b,b.CreateVector(td),b.CreateVector(tc),b.CreateVector(tg),trade.nextCursor,trade.selectedDepot,b.CreateString(trade.detail));
-  auto agreementResult=m::CreateAgreementState(b,b.CreateVector(agreementRows),agreements.nextBeforeId,agreements.pendingOnly,b.CreateString(agreements.detail));
+  std::vector<flatbuffers::Offset<m::ContinuingAgreementRow>> trackerRows;
+  for(const auto& row:agreements.trackerRows)trackerRows.push_back(m::CreateContinuingAgreementRow(b,row.agreementId,row.subjectId,row.entityId,row.entityType,row.tier,row.profession,row.year,row.yearTick,b.CreateString(row.heading),b.CreateString(row.applicant),b.CreateString(row.date)));
+  auto agreementResult=m::CreateAgreementState(b,b.CreateVector(agreementRows),agreements.nextBeforeId,agreements.pendingOnly,b.CreateString(agreements.detail),agreements.tracker,b.CreateVector(trackerRows));
   auto creatureResult=creature_data::build(b,creature);
   flatbuffers::Offset<m::WorldHover> terrainResult;
   if(worldHover) {
@@ -2325,6 +2327,17 @@ void runPaintCounts(const m::AreaRequest& a) {
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->action()==m::ManagementAction::AgreementList && r->agreement() && r->agreement()->tracker()) {
+    message.clear();status=m::ManagementStatus::Rejected;agreements={};
+    auto rows=df3d_area::observeNativeContinuingAgreements();size_t budget=0;
+    if(rows)for(const auto& row:*rows)budget+=160+row.heading.size()+row.applicant.size()+row.date.size();
+    if(rows && budget<=224*1024) {
+      agreements.tracker=true;
+      for(auto& row:*rows)agreements.trackerRows.push_back({row.agreementId,row.subjectId,row.entityId,row.entityType,row.tier,row.profession,row.year,row.yearTick,std::move(row.heading),std::move(row.applicant),std::move(row.date)});
+      status=m::ManagementStatus::Ok;
+    }
+    publish();return;
+  }
   static df3d_area::LocationReligiousCandidateSnapshot religiousSnapshot;
   if(r->area() && r->area()->operation()==m::AreaOperation::LocationStaffAssignmentsRead) {
     const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;

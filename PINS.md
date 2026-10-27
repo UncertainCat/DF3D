@@ -22,15 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management78 adds the native custom-building raw code to staff assignment
-entries. Building entries with a custom ID require its nonempty raw code;
-other entries carry no custom code. This identity is supplied by DF and does not
-depend on map visibility or local raw ordering. Older recordings cannot infer
-it from a custom numeric ID. Rebuild/install bridge and viewer together;
-`Local\\df3d_management_v78` isolates older peers. Management77 ordered assignment
-facts and Management76 specialization authority remain separate. Snapshot/grid/
-session versions are unchanged. Contract acceptance does not establish rendered
-indicator acceptance.
+Management79 adds an explicit tracker mode to AgreementList and ordered native
+continuing-agreement rows. Tracker mode rejects history filters and inspection
+identities; an empty successful tracker observation remains distinct from an
+absent/rejected one. Unsupported applicant types retain blank rows. Older
+recordings cannot infer these rows from agreement-browser summaries. Rebuild
+and install bridge and viewer together; `Local\\df3d_management_v79` isolates
+older peers. Management78 custom-building raw identities remain unchanged.
+Snapshot/grid/session versions are unchanged. Contract acceptance does not
+establish tracker presentation acceptance.
 
 
 Snapshot schema **11** and resident terrain grid **6** preserve root tissue

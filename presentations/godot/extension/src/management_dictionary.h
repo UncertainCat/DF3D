@@ -22,7 +22,7 @@ inline bool managementDictionaryTypes(const godot::Dictionary& data,
     if(!typed("action",Variant::INT,true))return false;
     for(auto key:integers)if(!typed(key,Variant::INT))return false;
     for(auto key:{"definition","query","recipe","name"})if(!typed(key,Variant::STRING))return false;
-    for(auto key:{"give","unlink","cancel","remove_condition","pending_only","announcements_only","retracting","from_end","refresh","alert_button"})
+    for(auto key:{"give","unlink","cancel","remove_condition","pending_only","tracker","announcements_only","retracting","from_end","refresh","alert_button"})
         if(!typed(key,Variant::BOOL))return false;
     if(!typed("origin",Variant::VECTOR3I)||!typed("items",Variant::ARRAY))return false;
     if(data.has("items")) {

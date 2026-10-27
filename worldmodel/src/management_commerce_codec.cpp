@@ -93,7 +93,9 @@ AgreementState decodeAgreement(const m::AgreementState* a) {
     return out;
   auto& n = out;
   n.nextBeforeId = a->next_before_id();
-  n.pendingOnly = a->pending_only();
+  n.pendingOnly = a->pending_only();n.tracker=a->tracker();
+  if(a->tracker_rows())for(const auto* row:*a->tracker_rows())
+    n.trackerRows.push_back({row->agreement_id(),row->subject_id(),row->entity_id(),row->entity_type(),row->tier(),row->profession(),row->year(),row->year_tick(),row->heading()->str(),row->applicant()->str(),row->date()->str()});
   if (a->detail())
     n.detail = a->detail()->str();
   if (a->agreements())
@@ -155,6 +157,6 @@ flatbuffers::Offset<m::TradeRequest> encodeTrade(flatbuffers::FlatBufferBuilder&
 flatbuffers::Offset<m::AgreementRequest> encodeAgreement(flatbuffers::FlatBufferBuilder& b,
                                                          const AgreementRequest& value) {
   const auto& a = value;
-  return m::CreateAgreementRequest(b, a.id, a.beforeId, b.CreateString(a.query), a.pendingOnly);
+  return m::CreateAgreementRequest(b, a.id, a.beforeId, b.CreateString(a.query), a.pendingOnly, a.tracker);
 }
 }  // namespace wm::detail::management

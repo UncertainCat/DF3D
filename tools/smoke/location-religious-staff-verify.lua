@@ -31,7 +31,35 @@ local function capture()
  if unit then state.unit={id=unit.id,profession=unit.profession,profession2=unit.profession2,squad=unit.military.squad_id,position=unit.military.squad_position,job=unit.job.current_job and unit.job.current_job.id or -1}end
  return state
 end
-if request.op=='religious_assignments' then
+if request.op=='religious_tracker' then
+ local list=df.global.plotinfo.continuing_agreement_id;local all=df.global.world.agreements.all
+ if request.seed then
+  assert(not _G.df3d_tracker_allocations and #list==0,'tracker fixture requires empty continuing list')
+  local guild
+  for _,candidate in ipairs(df.global.world.entities.all)do if candidate.type==10 then guild=candidate;break end end
+  assert(guild);_G.df3d_tracker_allocations={}
+  for index,entity_id in ipairs{df.global.plotinfo.group_id,entity.id,guild.id}do
+   local a=df.agreement:new();local party=df.agreement_party:new();local subject=df.agreement_details:new();local data=df.agreement_details_data_location:new()
+   a.id=2147483500+index;assert(#all==0 or all[#all-1].id<a.id)
+   party.id=0;party.entity_ids:insert('#',entity_id)
+   data.applicant=0;data.government=1;data.site=site.id;data.type=index==3 and df.abstract_building_type.GUILDHALL or df.abstract_building_type.TEMPLE
+   data.tier=index==3 and 1 or 2;data.profession=df.profession.FARMER;data.deity_type=df.religious_practice_type.RELIGION_ENID;data.deity_data.Religion=entity.id
+   subject.id=0;subject.type=df.agreement_details_type.Location;subject.year=106;subject.year_tick=index*1200;subject.data.Location=data
+   a.parties:insert('#',party);a.details:insert('#',subject);all:insert('#',a);list:insert('#',a.id)
+   _G.df3d_tracker_allocations[#_G.df3d_tracker_allocations+1]={a,party,subject,data}
+  end
+ elseif request.restore then
+  local allocations=assert(_G.df3d_tracker_allocations)
+  for i=#allocations,1,-1 do
+   local a,party,subject,data=table.unpack(allocations[i]);assert(list[#list-1]==a.id and all[#all-1]==a)
+   list:erase(#list-1);all:erase(#all-1);a.parties:resize(0);a.details:resize(0);subject.data.Location=nil
+   df.delete(data);df.delete(subject);df.delete(party);df.delete(a)
+  end
+  _G.df3d_tracker_allocations=nil
+ end
+ local text,code=dfhack.run_command_silent('df3d','continuing-agreements-read');assert(code==0,text)
+ local current=json.decode(text);assert(current.valid);result.rows=current.rows
+elseif request.op=='religious_assignments' then
  local unit=assert(df.unit.find(request.unit_id));result.unit_id=unit.id;result.histfig_id=unit.hist_figure_id
  result.occupation_id=-1;result.entity_id=-1;result.assignment_id=-1
  if assignment.histfig==unit.hist_figure_id then result.entity_id=entity.id;result.assignment_id=assignment.id

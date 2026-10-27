@@ -295,11 +295,11 @@ Clicking the previous remove location has no effects; Back closes Details.
 Before/after captures were inspected. The run is passed_with_known_issues for
 only documented Godot diagnostics, preserves both save manifests and exits owned
 DF unsaved. `scene_reference` retains bounded provenance and evidence. This does
-not establish producer-restart acceptance. The vacant religious
+not establish all religious assignment controls. The vacant religious
 assignment icon/action and specialization controls are still unfinished; the
 broader Zones/Locations entry routes remain hidden.
 
-`-LocationScene -ReligiousStaffScene -ReligiousStaffLifecycle queued|sent|late`
+`-LocationScene -ReligiousStaffScene -ReligiousStaffLifecycle queued|sent|late|restart`
 checks real ownership transitions. Protected051200 disconnects before receipt-read
 dispatch and returns not_sent with the original holder9375 intact. Protected051311
 lets DF complete removal while withholding its reply, then disconnects: the outcome
@@ -310,8 +310,16 @@ revive the temple target; a fresh temple observation sees the vacancy. The taver
 capture was inspected. All three runs pass_with_known_issues only for deferred
 Godot diagnostics, preserve both manifests and exit owned DF unsaved. Bounded
 `lifecycle_reference` records provenance. Core19/19 and the controlled workflow
-checks pass. Producer restart remains unverified, as does disconnect between a
-completed receipt read and queued mutation (that boundary has controlled tests).
+checks pass. Protected051631 additionally replaces DF156880 with144264 after
+confirmed native removal but before observing its reply. Session generation1-to-2
+retires the old request as Unknown. Only the automatic Catalog claim is submitted;
+no religious read/removal or Details work replays. Explicit fresh reopening and
+native readback restore saved holder9375, proving the unsaved removal did not
+survive replacement. Both saves remain unchanged, both owned games exit unsaved
+and the run passes_with_known_issues. The restored staff-row capture was inspected;
+it does not assess completion of the separate recognition refresh. Core19/19
+passes in `build/qa/location-religious-restart-core`. Disconnect between a completed
+receipt read and queued mutation still has controlled-test coverage only.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

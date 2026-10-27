@@ -1375,7 +1375,7 @@ func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
 	actions.completed.disconnect(observe)
 	write_json(evidence_prefix+"-restart-new-requests.json",new_requests)
 	for item in new_requests.values():
-		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit,Contract.AreaOperation.LocationRecognitionRead,Contract.AreaOperation.LocationRecognize],"replacement automatically submitted Location work"):return
+		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit,Contract.AreaOperation.LocationRecognitionRead,Contract.AreaOperation.LocationRecognize,Contract.AreaOperation.LocationReligiousStaffRead,Contract.AreaOperation.LocationReligiousStaffRemove],"replacement automatically submitted Location work"):return
 	if not check(model.identity.is_empty() and not editor.details_layer.visible,"replacement reopened quantity editor"):return
 	await capture(evidence_prefix+"_restart_retired")
 
@@ -1549,6 +1549,8 @@ func religious_staff_route(locations: Array) -> void:
 	var point: Vector2=view.global_position+Vector2((view.row_columns()-4)*8+16,(int(view.geometry.first_y)-6+(row_index-view.first)*3)*12+18)
 	await capture("religious_staff_before")
 	var lifecycle:=FileAccess.get_file_as_string(directory+"/religious-staff-scene.txt").strip_edges()
+	if lifecycle=="restart":
+		await religious_staff_restart(point,int(setup.holder_id),row_index);return
 	if lifecycle=="late":
 		await religious_staff_late(point,row_index);return
 	if lifecycle in ["queued","sent"]:
@@ -1644,4 +1646,37 @@ func religious_staff_late(point: Vector2, row_index: int) -> void:
 	if stopped:return
 	if not check(int(editor.details_view.staff_view.rows[row_index].histfig_id)==-1 and not flow.active,"fresh religious observation missed removal"):return
 	write_json("religious-late-evidence.json",{"old_ticket":ticket,"other_location":1,"old_owner_retired":true,"fresh_holder":-1})
+	editor.close_panel()
+
+func religious_staff_restart(point: Vector2, holder: int, row_index: int) -> void:
+	step="religious staff producer restart"
+	var flow=editor.details_view.religious_staff_workflow
+	await native("religious_guard")
+	await pointer_click(point)
+	await quantity_unobserved(flow.ticket)
+	if stopped:return
+	actions.poll()
+	var ticket: int=flow.ticket
+	if not check(ticket>0 and flow.phase==flow.Phase.Applying,"restart religious mutation missing"):return
+	var reply:=await quantity_unobserved(ticket,false)
+	if stopped:return
+	if not check(reply.area.location_religious_staff.holder_id==-1,"restart requires completed removal"):return
+	await native("religious_applied")
+	if stopped:return
+	await quantity_restart(ticket,"religious")
+	if stopped:return
+	if not check(flow.target.is_empty() and flow.owner.is_empty() and flow.ticket==0 and not flow.active,"restart retained religious authority"):return
+	await quantity_lifecycle_open()
+	if stopped:return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"replacement religious chooser"):return
+	await quantity_lifecycle_choose(0)
+	if stopped:return
+	var observed: Dictionary=editor.details_view.staff_view.rows[row_index]
+	if not check(int(observed.histfig_id)==holder and not flow.active,"replacement retained unsaved removal or replayed it"):return
+	var restored:=await native("religious_setup")
+	if stopped:return
+	if not check(int(restored.holder_id)==holder,"replacement native holder differs"):return
+	await capture("religious_restart_reopened")
+	write_json("religious-restart-evidence.json",{"old_ticket":ticket,"old_owner_retired":true,"old_applied_holder":-1,"fresh_holder":observed.histfig_id})
 	editor.close_panel()

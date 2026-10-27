@@ -9522,7 +9522,7 @@
       "owned_unsaved_exit": true,
       "scope": "Actual rendered fortress scene, viewport-routed native removal icon, independent native effects, refreshed staff/recognition and repeated vacant click then Back.",
       "omissions": [
-        "Producer restart; real queued/sent disconnect and late replacement are covered in lifecycle_reference",
+        "Queued/sent disconnect, late replacement and producer restart are covered in lifecycle_reference",
         "Religious vacant assignment control remains unfinished",
         "Responsive and high-priest/historical-holder variants"
       ]
@@ -9572,13 +9572,43 @@
           },
           "source_and_clone_preserved": true,
           "owned_unsaved_exit": true
+        },
+        {
+          "mode": "restart",
+          "source": "build/areas-acceptance-20261027-051631",
+          "sha256": "81c2cbeef9fd47b5b5a5461b232a81d6b5409acef6db8396e3c4c6b9cc749ae4",
+          "status": "passed_with_known_issues",
+          "evidence": {
+            "fresh_holder": 9375,
+            "old_applied_holder": -1,
+            "old_owner_retired": true,
+            "old_ticket": 10
+          },
+          "session": {
+            "new_epoch": "619609161990145",
+            "new_generation": 2,
+            "old_epoch": "673794469396481",
+            "old_generation": 1,
+            "pid": 144264.0
+          },
+          "new_requests": {
+            "11": {
+              "domain": "construction",
+              "request": {
+                "action": 0
+              }
+            }
+          },
+          "source_and_clone_preserved": true,
+          "owned_unsaved_exit": true,
+          "image_inspected": "scene_religious_restart_reopened.png",
+          "image_scope": "Restored occupied staff row; separate recognition refresh may still be pending."
         }
       ],
       "protocol": 74,
       "plugin_sha256": "f00a502b076201ee65828a78a7167519b4419c55a105d8ccc4d47ea363924228",
       "scope": "Actual scene pointer removal; queued receipt read disconnected before dispatch, completed native mutation reply deliberately unobserved before disconnect, and late reply after closing and opening another location. Fresh reopening checks holder identity.",
       "omissions": [
-        "Producer restart",
         "Disconnect after read completes but mutation remains queued",
         "High-priest and historical-holder variants",
         "Religious assignment/specialization workflow remains unfinished"

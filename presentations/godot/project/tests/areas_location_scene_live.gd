@@ -1380,7 +1380,7 @@ func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
 func recognition_route(locations: Array) -> void:
 	step="recognition scene fixture"
 	var variant:=FileAccess.get_file_as_string(directory+"/recognition-variant.txt").strip_edges()
-	var first:=variant=="first"
+	var first:=variant in ["first","new"]
 	var expected_action: int=Contract.LocationRecognitionState.RecognizePriesthood if first else Contract.LocationRecognitionState.RecognizeHighPriest
 	var expected_rank:=1 if first else 2
 	var setup:=await native("recognition_setup",{"variant":variant})

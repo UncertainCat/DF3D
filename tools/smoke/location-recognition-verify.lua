@@ -29,22 +29,29 @@ local function command(name)
 end
 if request.op=='recognition_setup' then
  local variant=request.variant or 'promote'
- assert(variant=='promote' or variant=='first' or variant=='empty')
+ assert(variant=='promote' or variant=='first' or variant=='empty' or variant=='new')
  if not _G.df3d_recognition_variant then
   _G.df3d_recognition_variant=variant
   if variant~='promote' then
    local changed=0
    for _,a in ipairs(religion.positions.assignments)do
     if a.st_id==site.id then
-     if variant=='first' then a.st_id=-1 else a.histfig=-1 end
+     if variant=='first' or variant=='new' then a.st_id=-1 else a.histfig=-1 end
      changed=changed+1
     end
    end
    assert(changed==1,'unexpected recognition fixture assignments')
+   if variant=='new' then
+    local templates=0
+    for _,p in ipairs(religion.positions.own)do
+     if p.code=='PRIEST' then p.code='DF3D_FIXTURE_OLD_PRIEST';templates=templates+1 end
+    end
+    assert(templates==1,'unexpected priest template fixture count')
+   end
   end
  end
  assert(_G.df3d_recognition_variant==variant)
- temple:getContents().location_tier=variant=='first' and 1 or 2
+ temple:getContents().location_tier=(variant=='first' or variant=='new') and 1 or 2
  result.before=capture()
  assert(#result.before.assignments>0,'priest fixture missing')
  _G.df3d_recognition_transport_before=result.before

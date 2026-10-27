@@ -8299,10 +8299,30 @@
           },
           "status": "passed_with_known_issues",
           "save_preservation": "Verified unchanged manifests for 2 save directories."
+        },
+        {
+          "variant": "new",
+          "source": "build/areas-acceptance-20261027-040652",
+          "source_sha256": "631a79b903e8c71ac4bcd0dd41bf3d084daa4d052d6729e21c66e1024e04df55",
+          "viewport_click": true,
+          "details_refreshed": true,
+          "completed_action_absent": true,
+          "positions_added": 1.0,
+          "assignments_added": 1.0,
+          "events_added": 0.0,
+          "thoughts_added": 54.0,
+          "rng_changed": true,
+          "new_assignment": {
+            "histfig": -1.0,
+            "id": 3.0,
+            "position": 1.0,
+            "site": 651.0
+          },
+          "status": "passed_with_known_issues",
+          "save_preservation": "Verified unchanged manifests for 2 save directories."
         }
       ],
       "omissions": [
-        "New PRIEST template creation through scene",
         "Existing HIGH_PRIEST template reuse",
         "Lifecycle variants for first/vacant branches"
       ],

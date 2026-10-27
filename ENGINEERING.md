@@ -576,7 +576,10 @@ proposed but is not yet approved or implemented. The diagnostic's raw
 `staff_count` sums parallel vectors; it must not be interpreted as a row count.
 The wide screenshot and composition fixture independently establish eight rows.
 
-Temple recognition remains unfinished. Supported-build native renderer
+Temple recognition has a typed semantic action and integrated Details control,
+with scoped native, rendered and lifecycle evidence below. Remaining gaps include
+secondary petition progress/warning rows, responsive/held-button reference,
+existing HIGH_PRIEST reuse and post-effect failure injection. Supported-build native renderer
 RVA3b6c18..3b7483 checks the religion's `PRIEST`/`HIGH_PRIEST` position codes and
 assignments at the current site, then tier, petition and worshipper conditions.
 The current receipt's tier and `recognized` flag alone do not establish the
@@ -594,12 +597,11 @@ action was submitted. Core19/19 and existing formatting pass in
 `build/qa/location-recognition-native-reference`.
 The native input branch at32cdf5..32f2d1 contains eligibility checks and substantial
 inline position/assignment changes; no independently callable recognition
-transaction has yet been verified. The next bridge work must expose semantic
-recognition state and an identity/revision-checked action, audit native helper
-ownership and actual effects, and test refusal and lifecycle behavior. Calling
+transaction is exposed by that UI handler. The owned semantic transaction below
+uses audited native helpers and an identity/revision-checked action. Calling
 the main native UI input handler or borrowing its scratch is not an alternative.
-Petition/threshold variants, other priesthood states and viewer controls remain
-unverified; the staged Details route stays hidden.
+The initial captures alone do not establish petition/threshold variants or viewer
+controls; the later evidence below covers those scopes. Details stays staged.
 
 `recognition_mutation_reference.branches` records focused native transactions.
 Run `stockpile_storage_native.ps1 -LocationNames -RecognitionOnly` with Windows
@@ -784,8 +786,8 @@ preparation. The native3ad8e0 Details row builder is not called. Native UI objec
 are never supplied to the semantic action. Rejected means no semantic effects
 began; any unavailable step or caught exception after effects may begin reports
 Unknown, which must never be automatically replayed. This is diagnostic staging:
-the local revision check below is required. The management handler below adds
-typed request admission; the viewer control is still pending.
+the local revision check below is required. The management handler adds typed
+request admission and the integrated viewer control below uses that path.
 
 `recognition_complete_action_reference` retains bounded provenance and effect
 digests for six protected native/bridge pairs on2026-10-27: promotion024305,
@@ -852,8 +854,8 @@ contracts preserve signed-63-bit revisions exactly, including values above2^53.
 The snapshot bounds continuing agreement IDs to4096; an oversized observation
 must fail before apply, not truncate an eligibility receipt. Management73 uses
 `Local\\df3d_management_v73`; rebuild/install bridge and viewer together. No
-snapshot/grid/session version changed. The DF handler below consumes this contract; dedicated disconnect/epoch-change
-acceptance and the visible control remain pending.
+snapshot/grid/session version changed. The DF handler and viewer below consume
+this contract; their evidence is separate from these initial contract checks.
 Core evidence is `build/qa/location-recognition-contract73`; adapter evidence is
 `build/qa/location-recognition-adapter73-final`. Synthetic contract data does not establish
 native effects or rendered fidelity.
@@ -888,7 +890,9 @@ the already rebuilt management73 viewer. MSVC and root/core
 `build/qa/location-recognition-transport73` pass. This evidence covers promotion
 transport, not first/empty-priest transport variants, oversized-agreement or
 post-effect-refresh failure injection, disconnect/restart/late replies or a
-rendered recognition control. Those remain unfinished; Zones stays hidden.
+rendered recognition control. Those initial transport limits are addressed by
+the scene/lifecycle evidence below; oversized-agreement and post-effect-refresh
+failure injection remain open. Zones stays hidden.
 
 `location_recognition_state.gd` owns the recognition receipt independently of
 Details. It retains the prior display during apply, accepts one explicit intent,
@@ -954,7 +958,7 @@ guidance. Save manifests remain unchanged and both owned processes exit unsaved;
 the run passes with known Godot diagnostics. Loss during native mutation is not
 covered by this controlled post-completion interruption.
 
-`-RecognitionVariant first|empty` exercises distinct native branches through the
+`-RecognitionVariant first|empty|new` exercises distinct native branches through the
 same scene control, without lifecycle modes. First040302 reuses PRIEST, adds one
 vacant assignment and54 thoughts, creates no history event, and preserves RNG.
 Empty040359 creates HIGH_PRIEST and a vacant assignment, adds54 thoughts without
@@ -964,8 +968,11 @@ pass with known Godot diagnostics and preserve source/clone saves. The first
 post-action image was inspected. `variant_scene_reference` retains bounded effects
 and provenance. Its source visibility flag was sampled after Back, so it is not
 evidence that first recognition hides tier guidance; the driver now names that
-field details_closed. New PRIEST creation through the scene and existing
-HIGH_PRIEST reuse remain uncovered, as do lifecycle combinations for these branches.
+field details_closed. New040652 additionally verifies creation of a PRIEST
+template through the scene: one position and vacant assignment,54 thoughts, no
+history event, and advanced RNG. It passes with known Godot diagnostics and
+unchanged source/clone manifests. Existing HIGH_PRIEST reuse remains uncovered,
+as do lifecycle combinations for these branches.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and
@@ -977,7 +984,7 @@ object is passed. Rank includes vacant current-site assignments, matching the
 renderer. Continuing-agreement IDs follow native first-subject/applicant-party
 filtering and retain source order. The primary-row state is derived from these
 facts as described below; it is not mutation authorization or a complete receipt.
-No revision-bound action exists yet.
+The revision-bound action uses the separate receipt provider described above.
 The diagnostic command uses DFHack's suspended-core command path and retains
 no native pointers in its result. It adds no management wire fields or UI exposure.
 `recognition_bridge_read_reference` records promotion/empty/first runs013435,
@@ -1007,7 +1014,8 @@ remain unchanged by reads. The tier and threshold are restored, source manifests
 are preserved, and both games exit unsaved. MSVC build and core19/19 pass;
 `build/qa/location-recognition-eligibility` includes the native-derived state tests.
 This covers the primary row, not secondary petition progress/warning rows.
-Typed transport, complete dependency/receipt binding and mutation remain pending.
+Typed transport, dependency/receipt binding and mutation use the separate
+providers and evidence above; secondary petition rows remain unfinished.
 
 ## Native squad assignment reference
 

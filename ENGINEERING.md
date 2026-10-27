@@ -774,8 +774,7 @@ source order and carries semantic source kind, ID, type/subtype/custom ID and
 work-detail name. It does not clip to a viewport or publish graphic tile IDs.
 Its independent revision hashes the target and returned ordered facts.
 Protected diagnostic location-staff-assignments-read accepts explicit
-site/location/source/entity/row/unit identities; management remains version76
-until the separate transport contract is added.
+site/location/source/entity/row/unit identities.
 
 Protected actionstaffindicators092335 matches the independent native records for
 both baseline workers and the all-source fixture. Repeated reads match; adding
@@ -783,9 +782,30 @@ memberships changes the revision, and restoring assignments restores the exact
 receipt. Thirty foreign-identity probes are refused. Full main-interface/gps
 byte guards and captured assignment records remain unchanged during reads.
 Owned DF160752 exits unsaved with the source manifest unchanged. The MSVC plugin
-build and location-staff-assignment-provider core gate pass. Installed plugin
+build and location-staff-assignment-provider core gate pass. Reader-acceptance plugin
 SHA256 is FB2B71F7522F4133488950007F49E971C9E20FB007F106B4C85AB44FAEB75733.
 This establishes the semantic reader, not viewer transport or indicator parity.
+
+Management77 adds LocationStaffAssignmentsRead (operation40) and an optional
+LocationStaffAssignments reply. The target binds exactly one occupation or
+religious row and a current unit/HF. Ordered entries carry semantic kind, ID,
+type/subtype/custom ID and work-detail name; empty entries are valid but an
+absent vector is not. Validation rejects foreign mutation fields, mixed reply
+payloads, descending source kinds, foreign entry fields, absent targets and
+invalid revisions. Snapshot/grid/session versions are unchanged; older management
+peers are isolated by the new shared-region name. PINS.md records migration.
+The neutral model and Godot adapter preserve wide integer revisions and distinguish
+empty memberships from missing observations. Contract-only operation40 has no
+native handler yet; the verified diagnostic provider remains independent.
+
+Core and actual Godot-adapter checks pass in location-staff-assignments-contract,
+covering both target forms, four source kinds, empty entries, malformed authority
+and forbidden edit fields. MSVC build passes; the matching installed77 plugin is
+SHA25622788F43704D6A2212A0D712AE452B03BCBD7B4C0DE9A843EB1645B53DA007AE.
+Protected areas093637 passes the existing specialization/religious-assignment
+suite, preserves both save manifests, reports no diagnostics and exits owned
+DF137148 unsaved. This proves protocol compatibility, not operation40 native
+handler or viewer acceptance.
 
 Protected actionspecialization081207 matches native080737 for both priest5813
 and performer6536, including every captured flag/labor entry and exact restoration

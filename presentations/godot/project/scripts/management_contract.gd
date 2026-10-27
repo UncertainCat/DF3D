@@ -138,6 +138,13 @@ enum AreaOperation {
 	LocationReligiousAssign = 37,
 	LocationSpecializationRead = 38,
 	LocationSpecializationSet = 39,
+	LocationStaffAssignmentsRead = 40,
+}
+enum LocationStaffAssignmentKind {
+	Occupation = 0,
+	Workshop = 1,
+	Furnace = 2,
+	WorkDetail = 3,
 }
 enum AreaRoomOutcome {
 	None = 0,

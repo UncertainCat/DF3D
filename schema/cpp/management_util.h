@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 76;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v76";
+inline constexpr uint32_t kManagementVersion = 77;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v77";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -53,13 +53,13 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
        (a.query() && a.query()->size()))return "invalid owner query bytes";
   }
   const auto op=static_cast<uint8_t>(a.operation());
-  if(op>39) return "Unsupported area operation";
+  if(op>40) return "Unsupported area operation";
   const bool nameRead=op==28,nameChoices=op==29,nameEdit=op==30;
   const bool recognitionRead=op==31,recognize=op==32;
   const bool recognition=recognitionRead || recognize;
   const bool religiousRead=op==33,religiousRemove=op==34;
   const bool religiousCandidates=op==35,religiousAssignmentRead=op==36,religiousAssign=op==37;
-  const bool specializationRead=op==38,specializationSet=op==39;
+  const bool specializationRead=op==38 || op==40,specializationSet=op==39;
   const bool specialization=specializationRead || specializationSet;
   const bool religiousSelection=religiousAssignmentRead || religiousAssign;
   const bool religious=religiousRead || religiousRemove || religiousCandidates || religiousSelection;
@@ -79,7 +79,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   const bool update=action==ManagementAction::AreaUpdate;
   bool allowed=op==0;
   switch(a.operation()) {
-    case AreaOperation::LocationSpecializationRead: case AreaOperation::LocationReligiousCandidates: case AreaOperation::LocationReligiousAssignmentRead: case AreaOperation::LocationReligiousStaffRead: case AreaOperation::LocationRecognitionRead: case AreaOperation::LocationNameRead: case AreaOperation::LocationNameChoices: allowed=inspect;break;
+    case AreaOperation::LocationStaffAssignmentsRead: case AreaOperation::LocationSpecializationRead: case AreaOperation::LocationReligiousCandidates: case AreaOperation::LocationReligiousAssignmentRead: case AreaOperation::LocationReligiousStaffRead: case AreaOperation::LocationRecognitionRead: case AreaOperation::LocationNameRead: case AreaOperation::LocationNameChoices: allowed=inspect;break;
     case AreaOperation::LocationSpecializationSet: case AreaOperation::LocationReligiousAssign: case AreaOperation::LocationReligiousStaffRemove: case AreaOperation::LocationRecognize: case AreaOperation::LocationNameEdit: allowed=update;break;
     case AreaOperation::LinkTarget: case AreaOperation::SettingsPage: case AreaOperation::LocationList: case AreaOperation::Links: case AreaOperation::PaintCounts: case AreaOperation::LocationChoices: case AreaOperation::LocationDetails: case AreaOperation::LocationStaffCandidates:
       allowed=inspect; break;
@@ -890,7 +890,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if ((a->areas() && a->areas()->size()>64) || (a->choices() && a->choices()->size()>128)) return "area response too large";
     const auto count=[](const auto* v)->size_t{return v ? v->size() : 0;};
     const auto textSize=[](const flatbuffers::String* v)->size_t{return v ? v->size() : 0;};
-    if(a->operation()>AreaOperation::LocationSpecializationSet || a->area_id()<-1 ||
+    if(a->operation()>AreaOperation::LocationStaffAssignmentsRead || a->area_id()<-1 ||
         textSize(a->list_key())>64 || textSize(a->query())>128 ||
         a->candidate_kind()>3 || a->sort()>(a->candidate_kind()==1?4:3) || a->list_revision()>INT64_MAX ||
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
@@ -914,6 +914,34 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     const bool nameChoices=a->operation()==AreaOperation::LocationNameChoices;
     const bool nameEdit=a->operation()==AreaOperation::LocationNameEdit;
     const bool specializationSet=a->operation()==AreaOperation::LocationSpecializationSet;
+    const bool assignments=a->operation()==AreaOperation::LocationStaffAssignmentsRead;
+    if(a->location_staff_assignments() && !assignments)return "assignments without operation";
+    if(assignments) {
+      if(s.action()!=ManagementAction::AreaInspect ||
+          ((s.status()==ManagementStatus::Ok)!=(a->location_staff_assignments()!=nullptr)))return "invalid assignments presence/action";
+      if(a->area_id()!=-1 || a->next_cursor() || a->truncated() || count(a->areas()) || count(a->choices()) ||
+          count(a->settings()) || count(a->locations()) || count(a->candidates()) || count(a->links()) ||
+          textSize(a->list_key()) || textSize(a->query()) || a->candidate_kind() || a->sort() || a->sort_descending() ||
+          a->list_revision() || a->build_phase() || a->build_done() || a->build_total() || a->omitted() ||
+          a->location_catalog() || a->location_details() || a->location_name() || a->location_name_page() ||
+          a->location_staff_candidates() || a->location_recognition() || a->location_religious_staff() ||
+          a->location_religious_candidates() || a->location_religious_assignment() || a->location_specialization())return "mixed assignments reply";
+      if(const auto* r=a->location_staff_assignments()) {
+        if(r->site_id()<0 || r->location_id()<0 || r->unit_id()<0 || r->histfig_id()<0 || r->occupation_id()<-1 ||
+            (r->occupation_id()>=0?(r->entity_id()!=-1 || r->assignment_id()!=-1):(r->entity_id()<0 || r->assignment_id()<0)) ||
+            !r->revision() || r->revision()>INT64_MAX || !r->entries())return "invalid assignment target";
+        auto previous=LocationStaffAssignmentKind::Occupation;
+        for(const auto* e:*r->entries()) {
+          if(!e || e->kind()>LocationStaffAssignmentKind::WorkDetail || e->kind()<previous || e->id()<0 ||
+              e->type()<-1 || e->subtype()<-1 || e->custom()<-1 || !e->name() || textSize(e->name())>4096)
+            return "invalid assignment entry";
+          const bool building=e->kind()==LocationStaffAssignmentKind::Workshop || e->kind()==LocationStaffAssignmentKind::Furnace;
+          if(!building && (e->subtype()!=-1 || e->custom()!=-1))return "foreign assignment building fields";
+          if(e->kind()!=LocationStaffAssignmentKind::WorkDetail && textSize(e->name()))return "foreign assignment name";
+          previous=e->kind();
+        }
+      }
+    }
     const bool specialization=specializationSet || a->operation()==AreaOperation::LocationSpecializationRead;
     if(a->location_specialization() && !specialization)return "specialization without operation";
     if(specialization) {

@@ -1179,7 +1179,7 @@ table SessionCommand {
 // Bounded fortress management channel; independently versioned from map snapshots.
 enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
-enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity, LocationNameRead, LocationNameChoices, LocationNameEdit, LocationRecognitionRead, LocationRecognize, LocationReligiousStaffRead, LocationReligiousStaffRemove, LocationReligiousCandidates, LocationReligiousAssignmentRead, LocationReligiousAssign, LocationSpecializationRead, LocationSpecializationSet }
+enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity, LocationNameRead, LocationNameChoices, LocationNameEdit, LocationRecognitionRead, LocationRecognize, LocationReligiousStaffRead, LocationReligiousStaffRemove, LocationReligiousCandidates, LocationReligiousAssignmentRead, LocationReligiousAssign, LocationSpecializationRead, LocationSpecializationSet, LocationStaffAssignmentsRead }
 enum LocationNameMode : uint8 { Clear, SelectWord, RandomComponent, RandomWhole }
 enum LocationQuantityMode : uint8 { Set, Increase, Decrease }
 enum LocationEntryOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
@@ -1411,6 +1411,18 @@ table LocationReligiousAssignment {
   revision:uint64; list_revision:uint64; eligible:bool;
 }
 
+enum LocationStaffAssignmentKind : uint8 { Occupation, Workshop, Furnace, WorkDetail }
+table LocationStaffAssignment {
+  kind:LocationStaffAssignmentKind; id:int32 = -1; type:int32 = -1;
+  subtype:int32 = -1; custom:int32 = -1; name:string;
+}
+table LocationStaffAssignments {
+  site_id:int32 = -1; location_id:int32 = -1;
+  occupation_id:int32 = -1; entity_id:int32 = -1; assignment_id:int32 = -1;
+  unit_id:int32 = -1; histfig_id:int32 = -1; revision:uint64;
+  entries:[LocationStaffAssignment];
+}
+
 table LocationSpecialization {
   site_id:int32 = -1; location_id:int32 = -1;
   occupation_id:int32 = -1; entity_id:int32 = -1; assignment_id:int32 = -1;
@@ -1496,6 +1508,7 @@ table AreaState {
   location_religious_candidates:LocationReligiousCandidates;
   location_religious_assignment:LocationReligiousAssignment;
   location_specialization:LocationSpecialization;
+  location_staff_assignments:LocationStaffAssignments;
 }
 // Production recipes are opaque semantic keys revalidated against the selected building.
 table ProductionRequest {
@@ -1809,7 +1822,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 76;
+  schema_version:uint32 = 77;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1855,7 +1868,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 76;
+  schema_version:uint32 = 77;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

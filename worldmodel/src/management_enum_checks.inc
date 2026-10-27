@@ -131,7 +131,13 @@ static_assert(static_cast<int>(wm::AreaOperation::LocationReligiousAssignmentRea
 static_assert(static_cast<int>(wm::AreaOperation::LocationReligiousAssign) == static_cast<int>(df3d::mirror::AreaOperation::LocationReligiousAssign));
 static_assert(static_cast<int>(wm::AreaOperation::LocationSpecializationRead) == static_cast<int>(df3d::mirror::AreaOperation::LocationSpecializationRead));
 static_assert(static_cast<int>(wm::AreaOperation::LocationSpecializationSet) == static_cast<int>(df3d::mirror::AreaOperation::LocationSpecializationSet));
-static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 40);
+static_assert(static_cast<int>(wm::AreaOperation::LocationStaffAssignmentsRead) == static_cast<int>(df3d::mirror::AreaOperation::LocationStaffAssignmentsRead));
+static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 41);
+static_assert(static_cast<int>(wm::LocationStaffAssignmentKind::Occupation) == static_cast<int>(df3d::mirror::LocationStaffAssignmentKind::Occupation));
+static_assert(static_cast<int>(wm::LocationStaffAssignmentKind::Workshop) == static_cast<int>(df3d::mirror::LocationStaffAssignmentKind::Workshop));
+static_assert(static_cast<int>(wm::LocationStaffAssignmentKind::Furnace) == static_cast<int>(df3d::mirror::LocationStaffAssignmentKind::Furnace));
+static_assert(static_cast<int>(wm::LocationStaffAssignmentKind::WorkDetail) == static_cast<int>(df3d::mirror::LocationStaffAssignmentKind::WorkDetail));
+static_assert(sizeof(df3d::mirror::EnumValuesLocationStaffAssignmentKind()) / sizeof(df3d::mirror::LocationStaffAssignmentKind) == 4);
 static_assert(static_cast<int>(wm::AreaRoomOutcome::None) == static_cast<int>(df3d::mirror::AreaRoomOutcome::None));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Completed) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Completed));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Rejected) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Rejected));

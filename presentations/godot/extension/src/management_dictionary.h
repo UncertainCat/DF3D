@@ -93,7 +93,7 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
              int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationAccess)))return true;
         return require("id");
     case A::AreaInspect:
-        if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationSpecializationRead))
+        if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationSpecializationRead) || int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationStaffAssignmentsRead))
             return require("location_site_id") && require("location_id") && require("unit_id");
         if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LocationReligiousAssignmentRead))
             return require("location_site_id") && require("location_id") && require("religious_entity_id") && require("religious_assignment_id") && require("religious_holder_id") && require("unit_id") && require("expected_list_revision");

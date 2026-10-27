@@ -224,7 +224,16 @@ struct LocationSpecialization {
   int32_t siteId=-1,locationId=-1,occupationId=-1,entityId=-1,assignmentId=-1,unitId=-1,histfigId=-1;
   int64_t revision=0;bool eligible=false,specialized=false;
 };
+struct LocationStaffAssignment {
+  LocationStaffAssignmentKind kind=LocationStaffAssignmentKind::Occupation;
+  int32_t id=-1,type=-1,subtype=-1,custom=-1;std::string name;
+};
+struct LocationStaffAssignments {
+  int32_t siteId=-1,locationId=-1,occupationId=-1,entityId=-1,assignmentId=-1,unitId=-1,histfigId=-1;
+  int64_t revision=0;std::vector<LocationStaffAssignment> entries;
+};
 struct AreaState {
+  std::optional<LocationStaffAssignments> locationStaffAssignments;
   std::optional<LocationSpecialization> locationSpecialization;
   std::optional<LocationReligiousCandidates> locationReligiousCandidates;
   std::optional<LocationReligiousAssignment> locationReligiousAssignment;

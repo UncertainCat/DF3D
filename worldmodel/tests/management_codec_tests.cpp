@@ -3148,3 +3148,47 @@ TEST_CASE("Specialization responses preserve wide revisions and reject malformed
     if(!invalid){const auto decoded=codec::decodeArea(s->area());REQUIRE(decoded.locationSpecialization);CHECK(decoded.locationSpecialization->revision==9007199254740993LL);CHECK_FALSE(decoded.locationSpecialization->specialized);}
   }
 }
+
+TEST_CASE("Staff assignment read requests bind one row and carry no mutation fields") {
+  for(bool occupation:{false,true})for(int variant=0;variant<10;++variant) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::AreaInspect;
+    auto& a=r.area;a.kind=wm::AreaKind::Zone;a.operation=wm::AreaOperation::LocationStaffAssignmentsRead;
+    a.locationSiteId=651;a.locationId=0;a.unitId=5813;
+    if(occupation)a.occupationId=87;else {a.religiousEntityId=383;a.religiousAssignmentId=2;}
+    if(variant==1)a.unitId=-1;
+    if(variant==2)a.locationSiteId=-1;
+    if(variant==3)a.locationId=-1;
+    if(variant==4){if(occupation)a.religiousEntityId=1;else a.occupationId=1;}
+    if(variant==5)a.expectedRevision=1;
+    if(variant==6)a.value=1;
+    if(variant==7)a.expectedListRevision=1;
+    if(variant==8)a.kind=wm::AreaKind::Stockpile;
+    if(variant==9)r.action=wm::ManagementAction::AreaUpdate;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    CAPTURE(occupation);CAPTURE(variant);
+    CHECK(bool(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())))==(variant!=0));
+  }
+}
+TEST_CASE("Staff assignment replies preserve order and distinguish empty from absent") {
+  for(int variant=0;variant<14;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<wire::LocationStaffAssignment>> entries;
+    if(variant!=1)for(int k=0;k<4;++k)entries.push_back(wire::CreateLocationStaffAssignment(b,
+        wire::LocationStaffAssignmentKind(variant==2?4:variant==3?3-k:k),variant==4?-1:k,1,
+        variant==5?2:-1,-1,b.CreateString(k==3 || variant==6?"Synthetic detail":"")));
+    auto r=wire::CreateLocationStaffAssignments(b,variant==7?-1:651,0,variant==8?87:-1,383,2,5813,9375,
+        variant==9?0:9007199254740993ULL,variant==10?0:b.CreateVector(entries));
+    wire::AreaStateBuilder a(b);a.add_operation(variant==11?wire::AreaOperation::LocationSpecializationRead:wire::AreaOperation::LocationStaffAssignmentsRead);
+    if(variant!=12)a.add_location_staff_assignments(r);
+    if(variant==13)a.add_location_edit_outcome(wire::LocationEditOutcome::Completed);
+    auto area=a.Finish();wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(area);
+    root.add_action(wire::ManagementAction::AreaInspect);root.add_status(wire::ManagementStatus::Ok);
+    b.Finish(root.Finish());const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(variant);CHECK(bool(wire::validateManagementState(*state))==(variant>1));
+    if(variant<2) {auto decoded=codec::decodeArea(state->area());REQUIRE(decoded.locationStaffAssignments);
+      CHECK(decoded.locationStaffAssignments->revision==9007199254740993LL);
+      CHECK(decoded.locationStaffAssignments->entries.size()==(variant==1?0:4));
+      if(!variant)CHECK(decoded.locationStaffAssignments->entries[3].name=="Synthetic detail");
+    }
+  }
+}

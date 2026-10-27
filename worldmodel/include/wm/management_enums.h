@@ -140,6 +140,13 @@ enum class AreaOperation : uint8_t {
   LocationReligiousAssign = 37,
   LocationSpecializationRead = 38,
   LocationSpecializationSet = 39,
+  LocationStaffAssignmentsRead = 40,
+};
+enum class LocationStaffAssignmentKind : uint8_t {
+  Occupation = 0,
+  Workshop = 1,
+  Furnace = 2,
+  WorkDetail = 3,
 };
 enum class AreaRoomOutcome : uint8_t {
   None = 0,

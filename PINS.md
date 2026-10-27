@@ -22,14 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management76 adds location staff specialization reads and conditional edits.
-Receipts bind an explicit occupation or religious assignment row and current unit;
-the desired state is explicit. Rebuild/install bridge and viewer together;
-`Local\\df3d_management_v76` isolates older peers. Older recordings have no
-specialization facts or mutation authority. Management75 religious assignment
-list/selected receipts remain independent. Snapshot/grid/session versions are
-unchanged. Wire-contract acceptance alone does not establish native handler,
-viewer input or lifecycle acceptance.
+Management77 adds read-only ordered staff assignment facts, bound to an explicit
+occupation or religious row and current unit/HF. Empty entries are a valid
+observation; absent facts confer no membership information. Rebuild/install
+bridge and viewer together; `Local\\df3d_management_v77` isolates older peers.
+Older recordings cannot supply assignment facts; do not infer them from a row's
+role or specialization flag. Management76 specialization read/edit authority and
+Management75 religious assignment receipts remain separate. Snapshot/grid/session
+versions are unchanged. Contract acceptance does not establish handler or viewer
+acceptance.
 
 
 Snapshot schema **11** and resident terrain grid **6** preserve root tissue

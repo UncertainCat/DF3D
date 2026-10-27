@@ -890,6 +890,27 @@ transport, not first/empty-priest transport variants, oversized-agreement or
 post-effect-refresh failure injection, disconnect/restart/late replies or a
 rendered recognition control. Those remain unfinished; Zones stays hidden.
 
+`location_recognition_state.gd` owns the recognition receipt independently of
+Details. It retains the prior display during apply, accepts one explicit intent,
+validates reply action/operation/target/revision, and publishes only confirmed
+snapshots. Stale, rejected and unknown responses clear the actionable receipt;
+none automatically retries. A malformed successful mutation is Unknown. Closing
+cancels unsent work and detaches sent work; generation checks prevent late replies
+from reviving or retargeting the owner. Session changes retire it.
+
+`location_recognition_workflow.gd` coordinates that owner with Details. A ready
+temple observation starts a recognition read for that exact Details lifetime and
+revision. Applying excludes other Details edits; confirmed completion refreshes
+Details/staff, while an unknown result releases unrelated controls without replay.
+Changing target, closing or another Details operation retires the old recognition
+owner. This coordinator is staged until the native recognition view is connected.
+`build/qa/location-recognition-workflow` exercises the real semantic action service
+with a controlled producer, including exact >2^53 revision handling, no optimistic
+changes, stale/unknown refusal, unsent cancellation, late success, epoch changes,
+malformed successful replies and the Details edit/refresh boundary. It is a clean
+headless pass, not rendered or real-disconnect acceptance. Root/core evidence is
+`build/qa/location-recognition-controller-core`.
+
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and
 existing religious temple, copies its site priesthood rank and configured

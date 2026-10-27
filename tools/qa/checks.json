@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "location_recognition_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_recognition_state_test.gd",
+      "completion": "LOCATION_RECOGNITION_STATE_PASS",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "release_lifecycle_test",
       "lane": "core",
       "kind": "python",

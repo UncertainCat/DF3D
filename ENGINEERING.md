@@ -938,7 +938,16 @@ RGB reference crops to960x600,1600x900 and1200x800, matches all pixels before
 and during hover, verifies the visible performer hitbox at each size, and checks
 that the old coordinates stop activating staff help. This establishes resize
 behavior for these populated rows, not native layout parity for every viewport.
-Visible-row scrolling remains separate live coverage.
+Protected scene104705 adds `indicators-scroll` using the real hospital roster
+and viewport scrollbar arrows. Both a queued read and an unobserved successful
+native read are retired when the chief medical dwarf scrolls out. Neither fills
+the newly exposed vacant doctor row; the visible diagnosticians6542/6555 and
+surgeon6817 receive their own identities. Scrolling back reloads matching facts
+without changing the Details snapshot. Core and reader tests pass cleanly in
+`location-staff-indicators-scroll`; the live run reports only the known
+render-thread notice. Owned DF161884 exits unsaved with both save manifests
+unchanged. This verifies one-row scrolling in both request states; the existing
+native staff scrollbar reference covers its separate layout and input behavior.
 
 Protected `staffindicatorhelp102205` captures all ten occupation-role tooltip
 routes and separate workshop/furnace membership probes. All four medical roles

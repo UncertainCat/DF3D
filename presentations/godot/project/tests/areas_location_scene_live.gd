@@ -1688,7 +1688,52 @@ func specialization_scene() -> void:
 		evidence.append({"unit_id":change.unit_id,"viewport_clicks":2,"native_effects_matched":true,"restored":true})
 	write_json("specialization-scene-evidence.json",{"cases":evidence})
 
+func indicators_scroll() -> void:
+	step="staff indicators scroll lifecycle"
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	await quantity_lifecycle_choose(2)
+	if stopped:return
+	var details=editor.details_view
+	var view=details.staff_view
+	var reader=details.assignments_reader
+	var row: Dictionary=view.rows[0].duplicate(true)
+	var snapshot: Dictionary=editor.details_state.snapshot.duplicate(true)
+	var evidence: Array=[]
+	for sent in [false,true]:
+		if not await wait_ui(func():return reader.ticket==0 and details.specialization_reader.ticket==0 and not reader.receipt(row).is_empty() and actions._active==0 and actions._queue.is_empty(),"indicator scroll initial pass"):return
+		var original: Dictionary=reader.receipt(row)
+		reader.clear();reader.display(view.visible_rows())
+		var ticket: int=reader.ticket
+		if not check(ticket>0,"indicator scroll pending read absent"):return
+		if sent:
+			await quantity_unobserved(ticket)
+			if stopped:return
+		var bar=view.native_scroll
+		await pointer_click(bar.global_position+Vector2(8,bar.size.y-6))
+		if not check(view.first==1 and bar.first==1 and row not in view.visible_rows(),"indicator scroll did not retire first row"):return
+		if not check(reader.receipt(row).is_empty() and row not in reader.rows and reader.ticket!=ticket,"scrolled-away indicator retained"):return
+		if not await wait_ui(func():return reader.ticket==0 and details.specialization_reader.ticket==0 and actions._active==0 and actions._queue.is_empty(),"indicator scrolled pass"):return
+		if not check(reader.receipt(row).is_empty() and view.assignment_slots(view.rows[1]).is_empty(),"old reply populated vacant row"):return
+		var observed: Array=[]
+		for visible in view.visible_rows():
+			var holder: int=visible.get("names",{}).get("holder_id",-1)
+			if holder<0:continue
+			var facts: Dictionary=reader.receipt(visible)
+			if not check(int(facts.get("unit_id",-1))==holder and int(facts.get("occupation_id",-1))==int(visible.occupation_id),"scrolled indicator row identity"):return
+			observed.append(holder)
+		if not check(6817 in observed,"newly visible surgeon facts missing"):return
+		await capture("indicators_scroll_"+("sent" if sent else "queued"))
+		await pointer_click(bar.global_position+Vector2(8,6))
+		if not check(view.first==0,"indicator scroll back failed"):return
+		if not await wait_ui(func():return not reader.receipt(row).is_empty(),"indicator scroll fresh original row"):return
+		if not check(reader.receipt(row)==original and editor.details_state.snapshot==snapshot,"scroll changed facts or Details"):return
+		evidence.append({"sent":sent,"ticket":ticket,"visible_units":observed,"old_row_retired":true,"fresh_facts_match":true})
+	write_json("indicators-scroll-evidence.json",{"cases":evidence})
+	editor.close_panel()
+
 func indicators_lifecycle(mode: String) -> void:
+	if mode=="scroll":
+		await indicators_scroll();return
 	step="staff indicators lifecycle "+mode
 	var details=editor.details_view
 	var reader=details.assignments_reader

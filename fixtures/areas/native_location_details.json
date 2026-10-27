@@ -9614,5 +9614,744 @@
         "Religious assignment/specialization workflow remains unfinished"
       ]
     }
+  },
+  "religious_staff_assignment_reference": {
+    "source": "build/stockpile-storage-native-location-recognition-assignpriest-20261027-052156",
+    "result_sha256": "afca205c88f1bd1a7cadb10f7dd796906b5d37ae4133a6b692080ab76049e15e",
+    "status": "passed",
+    "method": "Native pointer removal followed by vacant assignment picker; record raw candidate set, rendered widget order, cancel, reopen and choose first displayed candidate. Owned paused clone exits unsaved.",
+    "selector": {
+      "assignment_id": 2,
+      "context": 9,
+      "displayed": [
+        {
+          "histfig_id": 10379,
+          "id": 7123,
+          "x": 52,
+          "x2": 81,
+          "y": 9,
+          "y2": 8
+        },
+        {
+          "histfig_id": 10194,
+          "id": 6811,
+          "x": 52,
+          "x2": 81,
+          "y": 12,
+          "y2": 11
+        },
+        {
+          "histfig_id": 10287,
+          "id": 6973,
+          "x": 52,
+          "x2": 81,
+          "y": 15,
+          "y2": 14
+        },
+        {
+          "histfig_id": 9316,
+          "id": 5697,
+          "x": 52,
+          "x2": 81,
+          "y": 18,
+          "y2": 17
+        },
+        {
+          "histfig_id": 9794,
+          "id": 6274,
+          "x": 52,
+          "x2": 81,
+          "y": 21,
+          "y2": 20
+        },
+        {
+          "histfig_id": 10112,
+          "id": 6685,
+          "x": 52,
+          "x2": 81,
+          "y": 24,
+          "y2": 23
+        },
+        {
+          "histfig_id": 10525,
+          "id": 7282,
+          "x": 52,
+          "x2": 81,
+          "y": 27,
+          "y2": 26
+        },
+        {
+          "histfig_id": 10192,
+          "id": 6809,
+          "x": 52,
+          "x2": 81,
+          "y": 30,
+          "y2": 29
+        },
+        {
+          "histfig_id": 10431,
+          "id": 7206,
+          "x": 52,
+          "x2": 81,
+          "y": 33,
+          "y2": 32
+        },
+        {
+          "histfig_id": 10012,
+          "id": 6553,
+          "x": 52,
+          "x2": 81,
+          "y": 36,
+          "y2": 35
+        },
+        {
+          "histfig_id": 10380,
+          "id": 7124,
+          "x": 52,
+          "x2": 81,
+          "y": 39,
+          "y2": 38
+        },
+        {
+          "histfig_id": 10003,
+          "id": 6542,
+          "x": 52,
+          "x2": 81,
+          "y": 42,
+          "y2": 41
+        },
+        {
+          "histfig_id": 10105,
+          "id": 6678,
+          "x": 52,
+          "x2": 81,
+          "y": 45,
+          "y2": 44
+        },
+        {
+          "histfig_id": 10520,
+          "id": 7276,
+          "x": 52,
+          "x2": 81,
+          "y": 48,
+          "y2": 47
+        },
+        {
+          "histfig_id": 10381,
+          "id": 7125,
+          "x": 52,
+          "x2": 81,
+          "y": 51,
+          "y2": 50
+        },
+        {
+          "histfig_id": 10211,
+          "id": 6836,
+          "x": 52,
+          "x2": 81,
+          "y": 54,
+          "y2": 53
+        },
+        {
+          "histfig_id": 9650,
+          "id": 6136,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10005,
+          "id": 6544,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10512,
+          "id": 7268,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10213,
+          "id": 6838,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10002,
+          "id": 6541,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10200,
+          "id": 6819,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 9649,
+          "id": 6135,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10560,
+          "id": 7349,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10001,
+          "id": 6540,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10288,
+          "id": 6974,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10202,
+          "id": 6822,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 9999,
+          "id": 6538,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10286,
+          "id": 6972,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10434,
+          "id": 7209,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10207,
+          "id": 6831,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10285,
+          "id": 6971,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10212,
+          "id": 6837,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10190,
+          "id": 6807,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10519,
+          "id": 7275,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 9268,
+          "id": 5574,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10203,
+          "id": 6824,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10111,
+          "id": 6684,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10197,
+          "id": 6814,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10204,
+          "id": 6827,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 10523,
+          "id": 7280,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        },
+        {
+          "histfig_id": 9267,
+          "id": 5575,
+          "x": 52,
+          "x2": 81,
+          "y": 57,
+          "y2": 56
+        }
+      ],
+      "entity_id": 383,
+      "filter": "",
+      "flags": 0,
+      "position_id": 0,
+      "skill_type": 0,
+      "skills": [
+        {
+          "skill": 70,
+          "weight": 1
+        },
+        {
+          "skill": 71,
+          "weight": 1
+        },
+        {
+          "skill": 72,
+          "weight": 1
+        },
+        {
+          "skill": 76,
+          "weight": 1
+        },
+        {
+          "skill": 77,
+          "weight": 1
+        },
+        {
+          "skill": 78,
+          "weight": 1
+        },
+        {
+          "skill": 79,
+          "weight": 1
+        },
+        {
+          "skill": 80,
+          "weight": 1
+        },
+        {
+          "skill": 81,
+          "weight": 1
+        },
+        {
+          "skill": 82,
+          "weight": 1
+        }
+      ],
+      "sort_flags": 512,
+      "sorting": [
+        "Skills"
+      ]
+    },
+    "candidates": [
+      {
+        "id": 5574,
+        "histfig_id": 9268,
+        "profession": 2
+      },
+      {
+        "id": 5575,
+        "histfig_id": 9267,
+        "profession": 84
+      },
+      {
+        "id": 5697,
+        "histfig_id": 9316,
+        "profession": 0
+      },
+      {
+        "id": 6135,
+        "histfig_id": 9649,
+        "profession": 0
+      },
+      {
+        "id": 6136,
+        "histfig_id": 9650,
+        "profession": 112
+      },
+      {
+        "id": 6274,
+        "histfig_id": 9794,
+        "profession": 52
+      },
+      {
+        "id": 6538,
+        "histfig_id": 9999,
+        "profession": 29
+      },
+      {
+        "id": 6540,
+        "histfig_id": 10001,
+        "profession": 34
+      },
+      {
+        "id": 6541,
+        "histfig_id": 10002,
+        "profession": 127
+      },
+      {
+        "id": 6542,
+        "histfig_id": 10003,
+        "profession": 70
+      },
+      {
+        "id": 6544,
+        "histfig_id": 10005,
+        "profession": 41
+      },
+      {
+        "id": 6553,
+        "histfig_id": 10012,
+        "profession": 13
+      },
+      {
+        "id": 6678,
+        "histfig_id": 10105,
+        "profession": 3
+      },
+      {
+        "id": 6684,
+        "histfig_id": 10111,
+        "profession": 50
+      },
+      {
+        "id": 6685,
+        "histfig_id": 10112,
+        "profession": 43
+      },
+      {
+        "id": 6807,
+        "histfig_id": 10190,
+        "profession": 2
+      },
+      {
+        "id": 6809,
+        "histfig_id": 10192,
+        "profession": 18
+      },
+      {
+        "id": 6811,
+        "histfig_id": 10194,
+        "profession": 84
+      },
+      {
+        "id": 6814,
+        "histfig_id": 10197,
+        "profession": 38
+      },
+      {
+        "id": 6819,
+        "histfig_id": 10200,
+        "profession": 32
+      },
+      {
+        "id": 6822,
+        "histfig_id": 10202,
+        "profession": 31
+      },
+      {
+        "id": 6824,
+        "histfig_id": 10203,
+        "profession": 41
+      },
+      {
+        "id": 6827,
+        "histfig_id": 10204,
+        "profession": 40
+      },
+      {
+        "id": 6831,
+        "histfig_id": 10207,
+        "profession": 27
+      },
+      {
+        "id": 6836,
+        "histfig_id": 10211,
+        "profession": 8
+      },
+      {
+        "id": 6837,
+        "histfig_id": 10212,
+        "profession": 76
+      },
+      {
+        "id": 6838,
+        "histfig_id": 10213,
+        "profession": 84
+      },
+      {
+        "id": 6971,
+        "histfig_id": 10285,
+        "profession": 59
+      },
+      {
+        "id": 6972,
+        "histfig_id": 10286,
+        "profession": 9
+      },
+      {
+        "id": 6973,
+        "histfig_id": 10287,
+        "profession": 63
+      },
+      {
+        "id": 6974,
+        "histfig_id": 10288,
+        "profession": 102
+      },
+      {
+        "id": 7123,
+        "histfig_id": 10379,
+        "profession": 32
+      },
+      {
+        "id": 7124,
+        "histfig_id": 10380,
+        "profession": 71
+      },
+      {
+        "id": 7125,
+        "histfig_id": 10381,
+        "profession": 64
+      },
+      {
+        "id": 7206,
+        "histfig_id": 10431,
+        "profession": 2
+      },
+      {
+        "id": 7209,
+        "histfig_id": 10434,
+        "profession": 3
+      },
+      {
+        "id": 7268,
+        "histfig_id": 10512,
+        "profession": 1
+      },
+      {
+        "id": 7275,
+        "histfig_id": 10519,
+        "profession": 8
+      },
+      {
+        "id": 7276,
+        "histfig_id": 10520,
+        "profession": 43
+      },
+      {
+        "id": 7280,
+        "histfig_id": 10523,
+        "profession": 102
+      },
+      {
+        "id": 7282,
+        "histfig_id": 10525,
+        "profession": 70
+      },
+      {
+        "id": 7349,
+        "histfig_id": 10560,
+        "profession": 21
+      }
+    ],
+    "chosen": {
+      "histfig_id": 10379,
+      "id": 7123,
+      "x": 52,
+      "x2": 81,
+      "y": 9,
+      "y2": 8
+    },
+    "after_assignments": [
+      {
+        "claim_count": 0,
+        "flags": [
+          "active"
+        ],
+        "histfig": 1018,
+        "histfig2": 1018,
+        "id": 0,
+        "location": -1,
+        "position_id": 0,
+        "position_vector_idx": -1,
+        "site": 61,
+        "squad_id": -1,
+        "vassal_of_entity_id": -1,
+        "vassal_of_position_profile_id": -1
+      },
+      {
+        "claim_count": 0,
+        "flags": [
+          "active"
+        ],
+        "histfig": -1,
+        "histfig2": 5005,
+        "id": 1,
+        "location": -1,
+        "position_id": 0,
+        "position_vector_idx": -1,
+        "site": 90,
+        "squad_id": -1,
+        "vassal_of_entity_id": -1,
+        "vassal_of_position_profile_id": -1
+      },
+      {
+        "claim_count": 0,
+        "flags": [
+          "active"
+        ],
+        "histfig": 10379,
+        "histfig2": 10379,
+        "id": 2,
+        "location": -1,
+        "position_id": 0,
+        "position_vector_idx": 0,
+        "site": 651,
+        "squad_id": -1,
+        "vassal_of_entity_id": -1,
+        "vassal_of_position_profile_id": -1
+      }
+    ],
+    "after_holder_links": {
+      "1018": [
+        {
+          "entity_id": 383,
+          "entity_vector_idx": -1,
+          "strength": 100,
+          "type": "MEMBER"
+        },
+        {
+          "assignment_id": 0,
+          "assignment_vector_idx": -1,
+          "entity_id": 383,
+          "entity_vector_idx": -1,
+          "start_year": 24,
+          "strength": 100,
+          "type": "POSITION"
+        }
+      ],
+      "10379": [
+        {
+          "entity_id": 383,
+          "entity_vector_idx": -1,
+          "strength": 100,
+          "type": "MEMBER"
+        },
+        {
+          "assignment_id": 2,
+          "assignment_vector_idx": -1,
+          "entity_id": 383,
+          "entity_vector_idx": -1,
+          "start_year": 106,
+          "strength": 100,
+          "type": "POSITION"
+        }
+      ]
+    },
+    "new_events": [
+      {
+        "civ": 383,
+        "histfig": 10379,
+        "id": 64038,
+        "link_type": 10,
+        "position_id": 0,
+        "seconds": 157249,
+        "type": "ADD_HF_ENTITY_LINK",
+        "year": 106
+      }
+    ],
+    "selector_closed": true,
+    "opening_and_cancellation_unchanged": true,
+    "source_preserved": true,
+    "owned_unsaved_exit": true,
+    "images_inspected": [
+      "TEMPLE-priest-selector.png",
+      "TEMPLE-priest-assigned.png"
+    ],
+    "native_entry": {
+      "selector_context": 9,
+      "wrapper_rva": "0x3a39b0",
+      "membership_strength_rva": "0xb973c0",
+      "position_eligibility_rva": "0xb96d80",
+      "constraint": "Wrapper owns native UI; do not call it as a runtime semantic service. Audit leaf predicates, ordering and mutation separately."
+    },
+    "omissions": [
+      "Eligibility boundary probes and read-only native predicate parity",
+      "Name/profession/skill sorting, filtering, scrolling and keyboard input",
+      "Assignment mutation helper audit and full unit/job/squad side effects",
+      "Bridge receipt/transport and viewer assignment workflow",
+      "High-priest/historical-holder variants"
+    ]
   }
 }

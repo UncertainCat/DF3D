@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -658,6 +658,73 @@ end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local original_priest_threshold=difficulty.priesthood_unit_count
+if recognition_case=='assignpriest' then
+ local assignment
+ for _,a in ipairs(religion.positions.assignments)do if a.st_id==df.global.plotinfo.site_id then assert(not assignment);assignment=a end end
+ assert(assignment and assignment.histfig>=0)
+ pixel(944,358);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')
+ local vacant=capture('TEMPLE-priest-vacant',temple);vacant.recognition=recognition_state()
+ pixel(592,358)
+ local selector=m.unit_selector
+ assert(selector.flag.VISIBILITY_ACTIVE,'religious assignment selector did not open')
+ local function find_list(widget,depth)
+  assert(depth<10)
+  if df.widget_unit_list:is_instance(widget)then return df.reinterpret_cast(df.widget_unit_list,widget)end
+  if not df.widget_container:is_instance(widget)then return end
+  local _,address=df.sizeof(df.reinterpret_cast(df.widget_container,widget).children)
+  local first=df.reinterpret_cast('uint64_t',address).value;local last=df.reinterpret_cast('uint64_t',address+8).value
+  assert(last>=first and (last-first)%16==0 and last-first<=65536)
+  for at=first,last-1,16 do
+   local child=df.reinterpret_cast('uint64_t',at).value
+   if child~=0 then local found=find_list(df.reinterpret_cast(df.widget,child),depth+1);if found then return found end end
+  end
+ end
+ local list=assert(find_list(selector,0),'religious unit list missing')
+ local opened=capture('TEMPLE-priest-selector',temple)
+ opened.selector={context=selector.context,entity_id=selector.loc_ent and selector.loc_ent.id or -1,
+  position_id=selector.loc_position and selector.loc_position.id or -1,assignment_id=selector.loc_epp and selector.loc_epp.id or -1,
+  filter=list.filter_str,skill_type=list.skill_type,flags=list.flags.whole,sort_flags=list.sort_flags.whole,candidates={}}
+ for _,entry in ipairs(list.entry_list)do
+  assert(entry.t==0 and entry.u,'nonunit religious candidate')
+  opened.selector.candidates[#opened.selector.candidates+1]={id=entry.u.id,histfig_id=entry.u.hist_figure_id,name=dfhack.df2utf(dfhack.units.getReadableName(entry.u)),profession=entry.u.profession}
+ end
+ assert(opened.selector.entity_id==religion.id and opened.selector.assignment_id==assignment.id)
+ opened.selector.displayed={};opened.selector.skills={};opened.selector.sorting={}
+ for _,sort in ipairs(list.sorting_by)do opened.selector.sorting[#opened.selector.sorting+1]=sort.ident end
+ for i=0,df.job_skill._last_item do if list.skills[i]~=0 then opened.selector.skills[#opened.selector.skills+1]={skill=i,weight=list.skills[i]}end end
+ local function names(widget,depth,visible)
+  assert(depth<10);visible=visible and (widget.flag.whole&1)==1
+  if df.widget_unit_name:is_instance(widget) and visible then
+   local name=df.reinterpret_cast(df.widget_unit_name,widget)
+   opened.selector.displayed[#opened.selector.displayed+1]={id=name.u.id,histfig_id=name.u.hist_figure_id,x=widget.rect.x1,y=widget.rect.y1,x2=widget.rect.x2,y2=widget.rect.y2}
+  end
+  if not df.widget_container:is_instance(widget)then return end
+  local _,address=df.sizeof(df.reinterpret_cast(df.widget_container,widget).children)
+  local first=df.reinterpret_cast('uint64_t',address).value;local last=df.reinterpret_cast('uint64_t',address+8).value
+  assert(last>=first and (last-first)%16==0 and last-first<=65536)
+  for at=first,last-1,16 do local child=df.reinterpret_cast('uint64_t',at).value;if child~=0 then names(df.reinterpret_cast(df.widget,child),depth+1,visible)end end
+ end
+ names(list,0,true)
+ assert(#opened.selector.displayed>0,'religious displayed candidates missing')
+ table.sort(opened.selector.displayed,function(a,b)return a.y<b.y end)
+ opened.recognition=recognition_state();assert(require('json').encode(opened.recognition)==require('json').encode(vacant.recognition),'opening selector changed simulation')
+ key('_MOUSE_R');assert(not selector.flag.VISIBILITY_ACTIVE,'religious selector cancel failed')
+ local cancelled=capture('TEMPLE-priest-selector-cancelled',temple);cancelled.recognition=recognition_state()
+ assert(require('json').encode(cancelled.recognition)==require('json').encode(vacant.recognition),'cancelling selector changed simulation')
+ pixel(592,358);assert(selector.flag.VISIBILITY_ACTIVE)
+ local chosen=opened.selector.displayed[1]
+ assert(chosen.y<15,'unexpected first row geometry')
+ pixel(450,106)
+ assert(assignment.histfig==chosen.histfig_id,'native assignment did not choose first displayed candidate')
+ local assigned=capture('TEMPLE-priest-assigned',temple);assigned.recognition=recognition_state();assigned.chosen=chosen
+ assigned.selector_active=selector.flag.VISIBILITY_ACTIVE;assigned.new_events={}
+ for i=cancelled.recognition.event_count,#df.global.world.history.events-1 do
+  local event=df.global.world.history.events[i];local value={id=event.id,type=df.history_event_type[event:getType()],year=event.year,seconds=event.seconds}
+  if df.history_event_add_hf_entity_linkst:is_instance(event)then for _,field in ipairs{'civ','histfig','link_type','position_id'}do value[field]=event[field]end end
+  assigned.new_events[#assigned.new_events+1]=value
+ end
+ contents.location_tier=original;assert(#records==4);return
+end
 if recognition_case:sub(1,6)=='remove' then
  local assignment
  for _,a in ipairs(religion.positions.assignments)do if a.st_id==df.global.plotinfo.site_id then assert(not assignment);assignment=a end end

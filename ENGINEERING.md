@@ -321,6 +321,29 @@ it does not assess completion of the separate recognition refresh. Core19/19
 passes in `build/qa/location-religious-restart-core`. Disconnect between a completed
 receipt read and queued mutation still has controlled-test coverage only.
 
+The vacant religious assignment reference is captured separately by
+`stockpile_storage_native.ps1 -LocationNames -RecognitionOnly -RecognitionCase assignpriest`.
+Protected052156 removes the existing priest, opens the native picker at(592,358),
+cancels without simulation changes, reopens and selects the first displayed row.
+The selector context is OCCUPATION_ASSIGNMENT(9), with religion383/position0/
+assignment2. Its42 eligible units are stored in a different order from the rendered
+rows: the default sorting key is Skills, with weight1 for skills70,71,72 and76..82.
+The first displayed unit7123/HF10379 becomes the assignment's histfig and histfig2;
+the picker closes and emits ADD_HF_ENTITY_LINK64038 for religion383/position0.
+The picker and assigned-row captures were inspected. Source preservation and
+unsaved owned exit pass; core19/19 passes. `religious_staff_assignment_reference`
+retains numeric candidate identities, rendered order, weights and native effects;
+raw mixed-encoding screen strings are not imported as product copy.
+
+Native input3302be..330330 initializes the shared unit selector, sets context9 and
+passes occupation/entity/position/assignment pointers. Wrapper3a39b0 calls membership
+strengthb973c0 and position eligibilityb96d80 for historical figures before list
+construction. These are investigation entry points, not verified runtime APIs:
+the wrapper owns widgets and must not be borrowed. Audit the leaf predicates,
+owned ordering inputs and assignment mutation before implementing the religious
+selector. Filtering/sort/input boundaries, full assignment side effects, bridge
+receipts and the viewer picker remain unfinished.
+
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no
 implemented presentation route yet. Its scope must be retained in the management

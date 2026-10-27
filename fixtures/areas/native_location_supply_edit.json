@@ -4221,7 +4221,8 @@
     ]
   },
   "remaining": [
-    "quantity-specific rendered stale/disconnect/late reply cases"
+    "producer replacement with pending quantity work",
+    "modified-key and clipboard input behavior"
   ],
   "transport_reference": {
     "run": "build/areas-acceptance-20261026-194640",
@@ -5291,8 +5292,7 @@
     "component_scope": "Native glyph positions/colors and installed number/plus/minus pixels; actual pointer/digit/left/backspace/Enter input for all13 cases. Disabled controls cannot submit.",
     "scene_scope": "Staged Zones entry, chooser Details, rapid12 typing, plus/minus, Enter, independent DF readback; pending2 then24 on right-click dismissal drains to24 without retaining the panel; original quantities restored by diagnostic seeding. Full existing LocationScene also passes.",
     "omissions": [
-      "quantity-specific rendered stale/disconnect/late reply cases",
-      "Later hover_escape_reference supplies native hover and rendered Escape evidence."
+      "Later hover_escape_reference and lifecycle_reference supply hover, Escape, stale, disconnect and late-reply evidence."
     ]
   },
   "hover_escape_reference": {
@@ -5974,5 +5974,168 @@
       "unsaved_exit": true,
       "scope": "Actual viewport Escape during tavern quantity entry with queued2 then24 hides Details, drains ordered edits, independently confirms native24 and returns to the chooser. Full LocationScene passes13 quantity cases, both Details routes and20 staff actions; other four quantity dismissals use right-click."
     }
+  },
+  "lifecycle_reference": {
+    "driver": "areas_acceptance.ps1 -LocationScene -QuantityLifecycle stale|queued|sent|late",
+    "runs": {
+      "stale": {
+        "run": "build/areas-acceptance-20261026-204052",
+        "status": "passed_with_known_issues",
+        "result": {
+          "driver": "res://tests/areas_location_scene_live.gd",
+          "reasons": [],
+          "status": "passed",
+          "surface": "main scene GPU; viewport input and native readback"
+        },
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "godot_log_sha256": "bef227ea5c184092d094eba5dc8bea4f5306ef90c70711eb065e23a55d674917",
+        "source_and_clone_unchanged": true,
+        "unsaved_exit": true,
+        "quantity-lifecycle-outcome.json": {
+          "sha256": "255c979ca42d6e1b505cc530432d761cb179323a1047d97517c8b8deb8feebf0",
+          "status": 3,
+          "outcome": null,
+          "sequence": 10,
+          "location_edit_outcome": 3
+        },
+        "screenshots": {
+          "scene_quantity_lifecycle_ready.png": "84c5030747be025848682ff3d83aafa21a3ea589233efbac420cb27bf1deaec5",
+          "scene_quantity_lifecycle_reopened.png": "d2c1a948956c26e9506a1121bb1acece7a83c1ee1e3cd5e39a78695db886a250",
+          "scene_quantity_stale_retired.png": "7df64ab44a4e7bfe8237fb6443b624864f15a685a83e1bcf10e52f2735401e46"
+        }
+      },
+      "late": {
+        "run": "build/areas-acceptance-20261026-204454",
+        "status": "passed_with_known_issues",
+        "result": {
+          "driver": "res://tests/areas_location_scene_live.gd",
+          "reasons": [],
+          "status": "passed",
+          "surface": "main scene GPU; viewport input and native readback"
+        },
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "godot_log_sha256": "02d269c9ab1d50738962ae6636efb6eb75bd2b14b2e31f0b3e2603ba42ef95ce",
+        "source_and_clone_unchanged": true,
+        "unsaved_exit": true,
+        "quantity-unobserved-receipt.json": {
+          "sha256": "d71fbf17ed0bcde5952c518b25b0daaf557a9ea89385fdafd575884599624d2c",
+          "status": 2,
+          "outcome": null,
+          "sequence": 10,
+          "location_edit_outcome": 1
+        },
+        "screenshots": {
+          "scene_quantity_late_retired.png": "e7d4fd91c8e06c604e48d3874b253b07832117cff1c901b9f76a4681a5148baf",
+          "scene_quantity_lifecycle_ready.png": "84c5030747be025848682ff3d83aafa21a3ea589233efbac420cb27bf1deaec5",
+          "scene_quantity_lifecycle_reopened.png": "384c99ca32802155e614d42916ad04b7cd921cd78d50c13c27842c05b5f05ba9"
+        }
+      },
+      "queued": {
+        "run": "build/areas-acceptance-20261026-204242",
+        "status": "passed_with_known_issues",
+        "result": {
+          "driver": "res://tests/areas_location_scene_live.gd",
+          "reasons": [],
+          "status": "passed",
+          "surface": "main scene GPU; viewport input and native readback"
+        },
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "godot_log_sha256": "f15c58d4ffcd6ce6c0424d8a4be674338d4ceb9223ccaf8ff3f7b950bfc19892",
+        "source_and_clone_unchanged": true,
+        "unsaved_exit": true,
+        "quantity-lifecycle-outcome.json": {
+          "sha256": "e6a4b64bbdbec56b761bd14e9170a387ad3b287a8f1c497877ce25146036f0ec",
+          "status": 3,
+          "outcome": "not_sent",
+          "sequence": null,
+          "location_edit_outcome": null
+        },
+        "screenshots": {
+          "scene_quantity_disconnect_retired.png": "eea123ec3f63160759e27a632de5e197011519817669d1c2ade81aed9b7b57e8",
+          "scene_quantity_lifecycle_ready.png": "84c5030747be025848682ff3d83aafa21a3ea589233efbac420cb27bf1deaec5",
+          "scene_quantity_lifecycle_reopened.png": "1bb6ad86fdcddbfdc86e6c448a32685946284138afd6497a314b60fc2b4b70f8"
+        }
+      },
+      "sent": {
+        "run": "build/areas-acceptance-20261026-204338",
+        "status": "passed_with_known_issues",
+        "result": {
+          "driver": "res://tests/areas_location_scene_live.gd",
+          "reasons": [],
+          "status": "passed",
+          "surface": "main scene GPU; viewport input and native readback"
+        },
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "godot_log_sha256": "0b5d342b7084c1d7bcae8b43e4eee0e44d7fc01cb9329eb329fc6110ef5f1ae4",
+        "source_and_clone_unchanged": true,
+        "unsaved_exit": true,
+        "quantity-lifecycle-outcome.json": {
+          "sha256": "7217a405e05591946df614671a2345634be995d70bf2d8306247393ba0920542",
+          "status": 3,
+          "outcome": "unknown",
+          "sequence": null,
+          "location_edit_outcome": null
+        },
+        "quantity-unobserved-receipt.json": {
+          "sha256": "019bf5b3b2a15e0755e18822438bd567df4366497b3e401bb3d9edcd891275c1",
+          "status": 2,
+          "outcome": null,
+          "sequence": 10,
+          "location_edit_outcome": 1
+        },
+        "screenshots": {
+          "scene_quantity_disconnect_retired.png": "2a39b6753186a32c0dafbb658dfb6652fe6ed642c7dd70fb77f9a90b16927c9b",
+          "scene_quantity_lifecycle_ready.png": "84c5030747be025848682ff3d83aafa21a3ea589233efbac420cb27bf1deaec5",
+          "scene_quantity_lifecycle_reopened.png": "673e523d9399849876ce6f0d7d98c5c7f0b467ccc77f5a931b489558c8d6c567"
+        }
+      }
+    },
+    "scope": {
+      "stale": "Diagnostic native value41 invalidates displayed revision; viewport input2 then24 receives Stale, drops dependent digits and hides controls. Fresh opening observes41 with no draft.",
+      "late": "First edit2 completes in DF before service observes its reply. Right-click hides Details; a visible chooser Details click for another target is blocked during drain. Reply drains24 to the original target, cannot revive the panel, then fresh Temple Details has no inherited draft.",
+      "queued": "Disconnect before service dispatch: not_sent, native original unchanged, queue/input/identity retired. Reconnect issues no automatic edit/open; explicit reopening reads original.",
+      "sent": "DF completes first digit2 before the service observes it. Disconnect reports unknown, drops dependent24, and reconnect neither replays nor reopens. Explicit reopening reads native2."
+    },
+    "limitations": [
+      "Focused on tavern goblets; full13-field input/effect matrix remains in rendered_reference.",
+      "Disconnect detaches/reconnects the viewer to the same paused producer. Process replacement with pending quantity work has not been exercised by this scope.",
+      "No claim of native rename or remaining Location Details controls."
+    ]
   }
 }

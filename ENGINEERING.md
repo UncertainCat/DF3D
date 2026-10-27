@@ -100,8 +100,7 @@ the known separate-render-thread notice. `rendered_reference` records this
 evidence. Earlier runs failing disabled staged launcher clicks or a clipped
 chooser row are not overall acceptance; the driver now enables staged test
 clicks and scrolls assigned choices into view. Product availability is unchanged.
-Quantity-specific rendered stale/disconnect/late-reply cases remain unverified.
-Other unfinished Details
+Producer replacement with pending quantity work remains unverified. Other unfinished Details
 controls keep the overall Zones/Locations surface staged.
 
 The fixture's `entry_focus_reference` records ten additional observations from
@@ -135,6 +134,23 @@ staff actions. DF25468 exits unsaved with two unchanged save manifests; only
 the known separate-render-thread notice remains. Core19/19 passes in
 `build/qa/location-quantity-hover-escape`. No runtime behavior changed for this
 verification; Details already routed Escape correctly.
+
+`areas_acceptance.ps1 -LocationScene -QuantityLifecycle stale|queued|sent|late`
+runs focused main-scene checks on fresh protected clones. The fixture's
+`lifecycle_reference` records four passing runs: stale204052, queued204242,
+sent204338 and late204454 on2026-10-26. A native diagnostic change to41 makes
+typed2/24 stale; dependent input is discarded and reopening observes41.
+Disconnect before dispatch reports not_sent and leaves DF unchanged. Disconnect
+after DF completes2 but before the viewer observes it reports unknown, discards
+dependent24, and fresh opening observes2. Reconnection neither replays work nor
+reopens the editor. With a late successful reply, closing hides Details and a
+visible chooser click cannot retarget its draining queue;24 reaches the original
+location, the panel stays closed, and a new location has no inherited draft.
+All runs preserve both save manifests and exit unsaved, with only the known
+separate-render-thread notice. Core19/19 passes in
+`build/qa/location-quantity-lifecycle`. These cases use tavern goblets and viewer
+detach/reconnect to the same producer; they do not establish process replacement
+or modified-key/clipboard input. The full thirteen-field matrix remains separate.
 
 ## Native squad assignment reference
 

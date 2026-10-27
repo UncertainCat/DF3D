@@ -6,6 +6,9 @@ var details_parent_checked: Dictionary={}
 var details_staff_count:=0
 var quantity_cases:=0
 func pointer_areas() -> void:
+	if FileAccess.file_exists(directory+"/quantity-lifecycle.json"):
+		await quantity_lifecycle(str(JSON.parse_string(FileAccess.get_file_as_string(directory+"/quantity-lifecycle.json")).mode))
+		return
 	step = "scene location reference setup"
 	await seed_catalog()
 	if stopped: return
@@ -888,3 +891,118 @@ func quantity_scroll_location(index: int) -> void:
 		if not check(view.native_scroll.first!=old,"location chooser scroll did not advance"):return
 	for frame in 2:editor._process(0);await process_frame
 	check(view.scroll.get_global_rect().has_point(view.choices[index].get_global_rect().get_center()),"location chooser target outside clip")
+
+func quantity_lifecycle_open() -> void:
+	var area:=await inspect(23,1)
+	if stopped:return
+	var zones: Button=scene._fortress_hud.navigation.Zones
+	zones.show();scene._fortress_hud.layout(scene._fortress_hud.logical_view_size())
+	if not editor.panel.visible:await click_control(zones,true)
+	if not await wait_ui(func():return editor.panel.visible and editor.available and settled(),"quantity lifecycle Zones"):return
+	editor.use_area(area)
+	await click_control(editor.zone_menu.controls.location)
+	if not await wait_ui(func():return settled() and not editor.locations_state.busy() and editor.locations_view.visible,"quantity lifecycle chooser"):return
+	await quantity_lifecycle_choose(1)
+
+func quantity_lifecycle_choose(id: int) -> void:
+	var index: int=-1
+	for i in editor.locations_state.rows.size():
+		if int(editor.locations_state.rows[i].id)==id:index=i;break
+	if not check(index>=0,"quantity lifecycle location absent"):return
+	await quantity_scroll_location(index)
+	await click_control(editor.locations_view.choices[index].get_node("Details"))
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and editor.details_layer.visible,"quantity lifecycle Details"):return
+	check(int(editor.details_state.snapshot.id)==id,"quantity lifecycle wrong location")
+
+func quantity_unobserved(ticket: int) -> Dictionary:
+	actions.poll()
+	if not check(actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0,"quantity mutation not sent"):return {}
+	var sequence: int=actions._requests[ticket].sequence
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();var reply: Dictionary=world.poll_management()
+		if int(reply.get("request_seq",0))==sequence and int(reply.get("status",0))==S.Ok:
+			if not check(actions.result(ticket).is_empty(),"quantity receipt already observed"):return {}
+			write_json("quantity-unobserved-receipt.json",reply);return reply
+		await create_timer(0.02).timeout
+	check(false,"quantity native receipt timed out");return {}
+
+func quantity_lifecycle(mode: String) -> void:
+	step="quantity lifecycle "+mode
+	await seed_catalog()
+	await quantity_lifecycle_open()
+	if stopped:return
+	var model=editor.details_state;var view=editor.details_view.quantity_view;var flow=view.workflow
+	var original: int=model.snapshot.supplies[0].desired
+	var origin: Dictionary=model.identity.duplicate(true)
+	await capture("quantity_lifecycle_ready")
+	if mode=="stale":
+		await native("quantity_seed",{"location_id":1,"quantity_id":0,"value":41})
+		if stopped:return
+	await pointer_click(view.global_position+view.button_rect(view.rows[0],0).get_center())
+	await quantity_digit(2);await quantity_digit(4)
+	var ticket: int=model.ticket
+	if not check(ticket>0 and flow.pending and flow.queue.size()==1,"quantity lifecycle requires queued dependent input"):return
+	if mode=="stale":
+		if not await wait_ui(func():return model.phase==model.Phase.Stale,"stale quantity receipt"):return
+		if not check(flow.queue.is_empty() and not flow.pending and flow.editing==-1 and model.snapshot.is_empty(),"stale quantity retained authority"):return
+		var next_ticket: int=actions._next_ticket
+		await quantity_digit(7)
+		await capture("quantity_stale_retired")
+		if not check(actions._next_ticket==next_ticket and not view.is_visible_in_tree(),"stale quantity accepted hidden input"):return
+		await native("quantity_check",{"location_id":1,"quantity_id":0,"value":41})
+		write_json("quantity-lifecycle-outcome.json",actions.result(ticket))
+		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		await quantity_lifecycle_choose(1)
+		if stopped:return
+		if not check(int(model.snapshot.supplies[0].desired)==41 and flow.text=="" and flow.editing==-1,"fresh Details reused stale draft"):return
+	elif mode=="late":
+		await quantity_unobserved(ticket)
+		if stopped:return
+		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		if not check(editor.details_closing and not editor.details_layer.visible,"late quantity close did not retire visible input"):return
+		# Exercise the visible chooser before polling the old receipt. Opening
+		# another target must remain blocked until the typed queue drains.
+		if not check(editor.locations_view.is_visible_in_tree() and editor.locations_view.choices[0].get_node("Details").is_visible_in_tree(),"late target-switch control is not visible"):return
+		await click_control(editor.locations_view.choices[0].get_node("Details"))
+		if not check(editor.details_closing and model.identity==origin and not editor.details_layer.visible,"closing quantity owner was retargeted"):return
+		if not await wait_ui(func():return not editor.details_closing,"late quantity drain"):return
+		if not check(model.snapshot.is_empty() and model.phase==model.Phase.Closed and not editor.details_layer.visible,"late receipt revived closed Details"):return
+		await native("quantity_check",{"location_id":1,"quantity_id":0,"value":24})
+		await capture("quantity_late_retired")
+		await quantity_lifecycle_choose(0)
+		if stopped:return
+		if not check(flow.text=="" and flow.editing==-1 and flow.queue.is_empty(),"new target inherited late draft"):return
+	else:
+		var expected:=original
+		if mode=="sent":
+			await quantity_unobserved(ticket)
+			if stopped:return
+			expected=2
+		await native("quantity_check",{"location_id":1,"quantity_id":0,"value":expected})
+		world.detach_live();actions.poll()
+		var outcome: Dictionary=actions.result(ticket)
+		write_json("quantity-lifecycle-outcome.json",outcome)
+		if not check(outcome.get("outcome")==("unknown" if mode=="sent" else "not_sent"),"quantity disconnect outcome differs"):return
+		if not check(model.identity.is_empty() and model.snapshot.is_empty() and flow.queue.is_empty() and not flow.pending and flow.editing==-1 and not editor.details_layer.visible and not editor.details_closing,"disconnect retained quantity authority"):return
+		if not check(not actions._requests.has(ticket) and actions._queue.is_empty() and actions._active==0,"disconnected quantity remains dispatchable"):return
+		if not check(world.attach(),"quantity reconnect failed"):return
+		var deadline:=Time.get_ticks_msec()+60000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll();editor._process(0.02)
+			if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
+			await create_timer(0.02).timeout
+		if not check(bool(world.poll_management().get("transport_alive",false)),"quantity reconnect timeout"):return
+		var next_ticket: int=actions._next_ticket
+		for frame in 30:
+			world.poll();actions.poll();editor._process(0.02);await process_frame
+		if not check(actions._next_ticket==next_ticket and model.identity.is_empty() and not editor.details_layer.visible,"reconnect replayed or reopened quantity editor"):return
+		await native("quantity_check",{"location_id":1,"quantity_id":0,"value":expected})
+		await capture("quantity_disconnect_retired")
+		await quantity_lifecycle_open()
+		if stopped:return
+		if not check(int(model.snapshot.supplies[0].desired)==expected and flow.editing==-1 and flow.queue.is_empty(),"reopened quantity failed fresh observation"):return
+	await capture("quantity_lifecycle_reopened")
+	editor.close_panel()
+	await native("quantity_seed",{"location_id":1,"quantity_id":0,"value":original})
+	if not stopped:print("LOCATION_QUANTITY_LIFECYCLE_PASS mode=",mode)

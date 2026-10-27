@@ -77,6 +77,7 @@ AreaState decodeArea(const m::AreaState* a) {
   const auto nameSnapshot=[](const m::LocationNameSnapshot& s) {
     LocationNameSnapshot n;n.siteId=s.site_id();n.id=s.id();n.kind=s.kind();n.namerId=s.namer_id();
     n.namerRace=s.namer_race();n.revision=int64_t(s.revision());
+    n.nativeHeader=s.native_header()->str();n.englishHeader=s.english_header()->str();
     const auto& v=*s.value();auto& value=n.value;
     value.firstNameBytes.assign(v.first_name_bytes()->begin(),v.first_name_bytes()->end());
     value.nicknameBytes.assign(v.nickname_bytes()->begin(),v.nickname_bytes()->end());

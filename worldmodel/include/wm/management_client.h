@@ -191,7 +191,7 @@ struct LocationNameValue {
 };
 struct LocationNameSnapshot {
   int32_t siteId=-1,id=-1,namerId=-1;int16_t namerRace=-1;uint8_t kind=0;
-  int64_t revision=0;LocationNameValue value;
+  int64_t revision=0;LocationNameValue value;std::string nativeHeader,englishHeader;
 };
 struct LocationNameChoice { int32_t word=-1;int16_t part=-1;std::string english,translated; };
 struct LocationNamePage {

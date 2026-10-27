@@ -295,7 +295,7 @@ flatbuffers::Offset<m::LocationNameSnapshot> buildLocationName(flatbuffers::Flat
       b.CreateVector(reinterpret_cast<const uint8_t*>(n.firstNameCp437.data()),n.firstNameCp437.size()),
       b.CreateVector(reinterpret_cast<const uint8_t*>(n.nicknameCp437.data()),n.nicknameCp437.size()),
       b.CreateVector(n.words.data(),n.words.size()),b.CreateVector(n.parts.data(),n.parts.size()),n.language,n.type,n.hasName);
-  return m::CreateLocationNameSnapshot(b,s.siteId,s.id,s.kind,s.namerId,s.namerRace,df3d_area::locationNameRevision(s),value);
+  return m::CreateLocationNameSnapshot(b,s.siteId,s.id,s.kind,s.namerId,s.namerRace,df3d_area::locationNameRevision(s),value,b.CreateString(s.nativeHeader),b.CreateString(s.englishHeader));
 }
 bool publishableLocationName(const df3d_area::LocationNameSnapshot& s) {
   flatbuffers::FlatBufferBuilder b;b.Finish(buildLocationName(b,s));
@@ -2289,7 +2289,7 @@ void run(color_ostream& out) {
       if(choices && choices->size()<=UINT32_MAX && q.cursor()<=choices->size()) {
         NativeLocationNamePage page;page.snapshot=*snapshot;page.component=q.component();page.query=query;
         page.cursor=q.cursor();page.total=uint32_t(choices->size());
-        uint64_t bytes=512+query.size()+snapshot->name.firstNameCp437.size()+snapshot->name.nicknameCp437.size();
+        uint64_t bytes=512+query.size()+snapshot->name.firstNameCp437.size()+snapshot->name.nicknameCp437.size()+snapshot->nativeHeader.size()+snapshot->englishHeader.size();
         for(size_t i=q.cursor();i<choices->size() && page.choices.size()<m::kLocationNamePageRows;++i) {
           const auto size=64+(*choices)[i].english.size()+(*choices)[i].translated.size();
           if(bytes+size>m::kLocationNamePageBytes)break;

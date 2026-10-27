@@ -49,7 +49,7 @@ TEST_CASE("Location naming replies decode exact structured names and ordered for
   auto v=wire::CreateLocationNameValue(b,b.CreateVector(std::vector<uint8_t>{0x82,0xff}),
       b.CreateVector(std::vector<uint8_t>{}),b.CreateVector(std::vector<int32_t>(7,-1)),
       b.CreateVector(std::vector<int16_t>(7,8)),-1,-1,true);
-  auto s=wire::CreateLocationNameSnapshot(b,651,1,1,245,0,9007199254740993ULL,v);
+  auto s=wire::CreateLocationNameSnapshot(b,651,1,1,245,0,9007199254740993ULL,v,b.CreateString("Native"),b.CreateString("English"));
   std::vector<flatbuffers::Offset<wire::LocationNameChoice>> choices;
   choices.push_back(wire::CreateLocationNameChoice(b,0,0,b.CreateString("abbey"),b.CreateString("kulet")));
   choices.push_back(wire::CreateLocationNameChoice(b,0,1,b.CreateString("abbeys"),b.CreateString("kulet")));
@@ -59,6 +59,8 @@ TEST_CASE("Location naming replies decode exact structured names and ordered for
   CHECK_FALSE(wire::validateLocationNamePage(*encoded->location_name_page()));
   auto decoded=codec::decodeArea(encoded);REQUIRE(decoded.locationNamePage);
   CHECK(decoded.locationNamePage->snapshot.revision==9007199254740993LL);
+  CHECK(decoded.locationNamePage->snapshot.nativeHeader=="Native");
+  CHECK(decoded.locationNamePage->snapshot.englishHeader=="English");
   CHECK(decoded.locationNamePage->snapshot.value.firstNameBytes==std::vector<uint8_t>{0x82,0xff});
   REQUIRE(decoded.locationNamePage->choices.size()==2);
   CHECK(decoded.locationNamePage->choices[0].part==0);CHECK(decoded.locationNamePage->choices[1].part==1);

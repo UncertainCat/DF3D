@@ -303,9 +303,17 @@ nickname settings; capitalization edits only owned strings. The native draw adds
 quotes around English. No name-creator state or DFHack formatting reconstruction
 is used. Protected `build/stockpile-storage-native-location-names-20261026-223634`
 matches60 drawn lines across30 observations, with unchanged UI/GPS, name and RNG.
-Source preservation and unsaved exit pass. The diagnostic name-read command
-exposes these strings; viewer transport, long-header clipping and nickname-policy
-variants remain unfinished. See the naming fixture's filter/header evidence.
+Source preservation and unsaved exit pass. The diagnostic name-read command and
+management72 snapshots expose these strings. Both are required, bounded to16KiB
+each and counted in the64KiB choice-page budget. They are display output; the
+canonical edit revision still identifies the structured name and civilization,
+independently of nickname display policy. No old recording is given a reconstructed
+header. Core19/19 and Godot contracts pass in `build/qa/location-name-v72-fixed`;
+protected `build/areas-acceptance-20261026-224739` verifies56 header pairs after
+reads and all four edit modes, along with the prior paging and rejection checks.
+Source/clone manifests remain unchanged, the owned process exits unsaved and
+diagnostics are empty. Long-header clipping, nickname-policy variants and the
+rendered editor remain unfinished. See the naming fixture's filter/header evidence.
 
 ## Native squad assignment reference
 

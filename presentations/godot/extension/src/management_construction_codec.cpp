@@ -25,6 +25,7 @@ Dictionary locationNameDictionary(const wm::LocationNameSnapshot& s) {
   Dictionary out,value;Array words,parts;
   out["site_id"]=s.siteId;out["id"]=s.id;out["kind"]=s.kind;out["revision"]=s.revision;
   out["namer_id"]=s.namerId;out["namer_race"]=s.namerRace;
+  out["native_header"]=String::utf8(s.nativeHeader.c_str());out["english_header"]=String::utf8(s.englishHeader.c_str());
   value["first_name_bytes"]=nameBytes(s.value.firstNameBytes);value["nickname_bytes"]=nameBytes(s.value.nicknameBytes);
   for(auto word:s.value.words)words.push_back(word);for(auto part:s.value.parts)parts.push_back(part);
   value["words"]=words;value["parts"]=parts;value["language"]=s.value.language;

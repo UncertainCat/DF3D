@@ -79,6 +79,7 @@ struct LocationNameSnapshot {
   int16_t namerRace=-1;
   uint8_t kind=0;
   LocationNameValue name;
+  std::string nativeHeader,englishHeader;
 };
 std::optional<LocationNameSnapshot> observeNativeLocationName(int32_t siteId,int32_t id);
 struct LocationNameText { std::string native,english; };

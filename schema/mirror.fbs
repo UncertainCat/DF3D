@@ -1405,6 +1405,7 @@ table LocationNameSnapshot {
   site_id:int32 = -1; id:int32 = -1; kind:uint8;
   namer_id:int32 = -1; namer_race:int16 = -1;
   revision:uint64; value:LocationNameValue;
+  native_header:string; english_header:string;
 }
 table LocationNameChoice {
   word:int32 = -1; part:int16 = -1;
@@ -1769,7 +1770,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 71;
+  schema_version:uint32 = 72;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1815,7 +1816,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 71;
+  schema_version:uint32 = 72;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

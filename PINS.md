@@ -22,13 +22,19 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management72 requires native-language and English header strings in every naming
+snapshot, including choice pages and successful edits. Rebuild/install bridge and
+viewer together; `Local\\df3d_management_v72` isolates older peers. Do not infer
+these strings from v71 recordings. Snapshot/grid/session versions are unchanged.
+
+
 Snapshot schema **11** and resident terrain grid **6** preserve root tissue
 separately from trunk wood, in addition to the schema10/grid5 semantic tile
 subterranean status, brook-surface identity and native building occupancy.
 The fixed snapshot TileState remains eight bytes; environment facts use a
 sparse per-block vector. Resident tiles are fourteen bytes. Rebuild/reinstall
 bridge and viewer together; older schema/grid readers reject the new layouts.
-Management is **70**. Session **12** adds authoritative moon phase (0..27,-1 unavailable) to
+Management is **72**. Session **12** adds authoritative moon phase (0..27,-1 unavailable) to
 the original fortress name, rank and capital status from session11. Rebuild/reinstall bridge and viewer together; the v12 session
 region rejects older peers. Missing old identity facts must remain unavailable,
 not be inferred from the translated name. Snapshot/grid versions are unchanged.

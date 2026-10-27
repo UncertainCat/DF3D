@@ -28,7 +28,11 @@ if request.op=='name_locations' then
 else
  local location;for _,v in ipairs(site.buildings)do if v.id==request.location_id then location=v;break end end
  local name=assert(location):getName()
- if request.op=='name_read' then
+ if request.op=='name_headers' then
+  local text,code=dfhack.run_command_silent('df3d','location-name-read',tostring(site.id),tostring(location.id))
+  assert(code==0,text);local observed=json.decode(text);assert(observed.valid and observed.header_valid)
+  assert(request.native_header==observed.native_header and request.english_header==observed.english_header,'header transport differs')
+ elseif request.op=='name_read' then
   assert(same(request.value,value(name)),'structured name readback differs')
  elseif request.op=='name_guard' then
   _G.df3d_name_transport_guard={name=value(name),rng=rng()}

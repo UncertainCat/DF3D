@@ -8,6 +8,7 @@ namespace df3d::mirror {
 // Transport storage bounds, not native naming rules. Never truncate a name or
 // form to satisfy these limits; report an unavailable payload instead.
 inline constexpr uint32_t kLocationNameBytes=4096;
+inline constexpr uint32_t kLocationNameHeaderBytes=16384;
 inline constexpr uint32_t kLocationNamePageRows=128;
 inline constexpr uint32_t kLocationNamePageBytes=64*1024;
 inline std::optional<std::string> validateLocationNameQuery(const LocationNameQuery& q) {
@@ -30,6 +31,8 @@ inline std::optional<std::string> validateLocationNameEdit(const LocationNameEdi
   return std::nullopt;
 }
 inline std::optional<std::string> validateLocationNameSnapshot(const LocationNameSnapshot& s) {
+  if(!s.native_header() || !s.english_header() || s.native_header()->size()>kLocationNameHeaderBytes ||
+      s.english_header()->size()>kLocationNameHeaderBytes)return "invalid location name headers";
   if(s.site_id()<0 || s.id()<0 || s.kind()<1 || s.kind()>5 || s.namer_id()<0 || s.namer_race()<-1 ||
       !s.revision() || s.revision()>INT64_MAX || !s.value())return "invalid location name identity";
   const auto& v=*s.value();
@@ -54,7 +57,8 @@ inline std::optional<std::string> validateLocationNamePage(const LocationNamePag
       p.next_cursor()!=(p.truncated()?end:0) || (p.truncated() && !p.choices()->size()))
     return "invalid location name pagination";
   const auto& value=*p.snapshot()->value();
-  uint64_t bytes=512+p.query_bytes()->size()+value.first_name_bytes()->size()+value.nickname_bytes()->size();
+  uint64_t bytes=512+p.query_bytes()->size()+value.first_name_bytes()->size()+value.nickname_bytes()->size()+
+      p.snapshot()->native_header()->size()+p.snapshot()->english_header()->size();
   for(const auto* choice:*p.choices()) {
     if(!choice || choice->word()<0 || choice->part()<0 || choice->part()>8 ||
         !choice->english() || !choice->translated())return "invalid location name choice";

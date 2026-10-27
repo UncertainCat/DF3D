@@ -138,6 +138,8 @@ std::optional<LocationNameSnapshot> observeNativeLocationName(int32_t siteId,int
   if(found==site->buildings.end() || (*found)->id!=id || !(*found)->getName())return std::nullopt;
   LocationNameSnapshot value;value.siteId=siteId;value.id=id;value.kind=details->kind;
   value.namerId=entity->id;value.namerRace=entity->race;value.name=copyLocationName(*(*found)->getName());
+  const auto text=formatNativeLocationName(value.name);if(!text)return std::nullopt;
+  value.nativeHeader=text->native;value.englishHeader=text->english;
   return value;
 }
 std::optional<LocationNameText> formatNativeLocationName(const LocationNameValue& value) {

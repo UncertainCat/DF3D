@@ -21,6 +21,7 @@ func exercise() -> void:
 		var reply:=await request(read)
 		if stopped:return
 		var snapshot: Dictionary=reply.location_name
+		await verify_headers(snapshot)
 		await native("name_read",{"location_id":int(location.id),"value":json_name(snapshot.value)})
 		await native("name_unchanged",identity)
 		# All components on the first location; a filtered page on every kind.
@@ -56,6 +57,7 @@ func exercise() -> void:
 					var result:=await request(edit)
 					if stopped:return
 					if not check(result.location_edit_outcome==Contract.LocationEditOutcome.Completed,"edit outcome"):return
+					await verify_headers(result.location_name)
 					await native("name_edit_check",{"location_id":int(location.id),"mode":mode,"target":component,
 						"word":edit.name_edit.word,"part":edit.name_edit.part,"value":json_name(result.location_name.value)})
 					if result.location_name.revision!=snapshot.revision:
@@ -75,6 +77,7 @@ func exercise() -> void:
 			var result:=await request(edit)
 			if stopped:return
 			if not check(result.location_edit_outcome==Contract.LocationEditOutcome.Completed,"random outcome"):return
+			await verify_headers(result.location_name)
 			await native("name_random_check",{"location_id":int(location.id),"mode":mode,"target":6,"displayed":0,
 				"value":json_name(result.location_name.value)})
 			if result.location_name.revision!=snapshot.revision:
@@ -91,3 +94,6 @@ func exercise() -> void:
 				await native("name_unchanged",identity)
 		cases+=1
 	write_json("naming-evidence.json",{"locations":cases,"scope":"read, complete pages, all four edit modes, stale and invalid targets, native fields and RNG; exact Random oracle covered separately"})
+
+func verify_headers(snapshot: Dictionary) -> void:
+	await native("name_headers",{"location_id":snapshot.id,"native_header":snapshot.native_header,"english_header":snapshot.english_header})

@@ -7778,5 +7778,30 @@
       "long header clipping"
     ],
     "result_sha256": "e32f2e49cfdc206385d8587bcedcc014f36c0c08a788158619e577a28dcac1c8"
+  },
+  "header_transport_reference": {
+    "protocol": 72,
+    "run": "build/areas-acceptance-20261026-224739",
+    "status": "passed",
+    "locations": 6,
+    "header_comparisons": 56,
+    "choice_lists": 19,
+    "ordered_forms": 18024,
+    "clear_select_writes": 38,
+    "random_writes": 12,
+    "unchanged_name_rng_checks": 99,
+    "source_and_clone_unchanged": true,
+    "owned_exit_without_save": true,
+    "installed_bridge_sha256": "A15C3C337A1AAF05FDC94BDB9C611FD897D2F40A998BAD30999FCF0216BA1069",
+    "diagnostics": {
+      "known_engine": [],
+      "unclassified": []
+    },
+    "scope": "Exact header transport after reads and all four edit modes; formatter-to-drawn-native comparison remains the separate header provider reference. Complete choice pages, stale and invalid target guards retained.",
+    "omissions": [
+      "rendered naming editor",
+      "naming-owner disconnect/reconnect/epoch lifecycle"
+    ],
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe"
   }
 }

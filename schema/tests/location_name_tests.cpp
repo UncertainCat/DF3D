@@ -12,11 +12,11 @@ flatbuffers::Offset<m::LocationNameSnapshot> snapshot(flatbuffers::FlatBufferBui
   if(variant==4)first.resize(m::kLocationNameBytes+1);
   auto v=m::CreateLocationNameValue(b,b.CreateVector(first),b.CreateVector(nick),
       b.CreateVector(words),b.CreateVector(parts),-1,-1,true);
-  return m::CreateLocationNameSnapshot(b,651,1,1,245,0,variant==5?0:17,v);
+  return m::CreateLocationNameSnapshot(b,651,1,1,245,0,variant==5?0:17,v,variant==6?0:b.CreateString("Native"),b.CreateString(variant==7?std::string(m::kLocationNameHeaderBytes+1,'x'):"English"));
 }
 }
 TEST_CASE("Structured name contract preserves CP437 and independent native fields") {
-  for(int variant=-1;variant<6;++variant) {
+  for(int variant=-1;variant<8;++variant) {
     flatbuffers::FlatBufferBuilder b;auto s=snapshot(b,variant);b.Finish(s);
     const auto* value=flatbuffers::GetRoot<m::LocationNameSnapshot>(b.GetBufferPointer());
     CHECK(bool(m::validateLocationNameSnapshot(*value))==(variant>=0));

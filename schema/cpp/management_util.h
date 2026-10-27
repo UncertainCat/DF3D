@@ -19,8 +19,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 71;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v71";
+inline constexpr uint32_t kManagementVersion = 72;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v72";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;

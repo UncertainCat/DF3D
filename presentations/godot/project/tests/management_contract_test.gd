@@ -642,6 +642,7 @@ func test_location_names() -> void:
 	var state: Dictionary=await receipt(sequence)
 	var snapshot: Dictionary=state.area.location_name
 	assert(snapshot.revision==9007199254740993 and snapshot.site_id==651 and snapshot.id==0)
+	assert(snapshot.native_header=="Synthetic native header" and snapshot.english_header=="Synthetic English header")
 	assert(snapshot.value.first_name_bytes==PackedByteArray([130,255]))
 	assert(snapshot.value.words==[0,-1,-1,-1,-1,-1,-1] and snapshot.value.parts==[0,8,0,0,0,0,0])
 	request.operation=Contract.AreaOperation.LocationNameChoices;request.expected_revision=snapshot.revision

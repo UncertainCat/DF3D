@@ -106,7 +106,7 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
   if(q.operation()>=m::AreaOperation::LocationNameRead && q.operation()<=m::AreaOperation::LocationNameEdit) {
     const auto value=m::CreateLocationNameValue(b,b.CreateVector(std::vector<uint8_t>{130,255}),b.CreateVector(std::vector<uint8_t>{}),
         b.CreateVector(std::vector<int32_t>{0,-1,-1,-1,-1,-1,-1}),b.CreateVector(std::vector<int16_t>{0,8,0,0,0,0,0}),0,28,true);
-    const auto snapshot=m::CreateLocationNameSnapshot(b,651,0,1,245,0,9007199254740993ULL,value);
+    const auto snapshot=m::CreateLocationNameSnapshot(b,651,0,1,245,0,9007199254740993ULL,value,b.CreateString("Synthetic native header"),b.CreateString("Synthetic English header"));
     flatbuffers::Offset<m::LocationNamePage> page;
     if(q.operation()==m::AreaOperation::LocationNameChoices) {
       const auto first=m::CreateLocationNameChoice(b,0,0,b.CreateString("Synthetic noun"),b.CreateString("Synthetic native"));

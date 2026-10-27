@@ -4221,8 +4221,7 @@
     ]
   },
   "remaining": [
-    "quantity-specific rendered stale/disconnect/late reply cases",
-    "quantity hover behavior and physical Escape comparison"
+    "quantity-specific rendered stale/disconnect/late reply cases"
   ],
   "transport_reference": {
     "run": "build/areas-acceptance-20261026-194640",
@@ -5293,7 +5292,687 @@
     "scene_scope": "Staged Zones entry, chooser Details, rapid12 typing, plus/minus, Enter, independent DF readback; pending2 then24 on right-click dismissal drains to24 without retaining the panel; original quantities restored by diagnostic seeding. Full existing LocationScene also passes.",
     "omissions": [
       "quantity-specific rendered stale/disconnect/late reply cases",
-      "quantity hover behavior and physical Escape comparison"
+      "Later hover_escape_reference supplies native hover and rendered Escape evidence."
     ]
+  },
+  "hover_escape_reference": {
+    "run": "build/stockpile-storage-native-location-supplies-20261026-203045",
+    "result_sha256": "ca5319bd29906137937e069d7bab87e123e183ea676df02c9854c5f4559786a5",
+    "source_save_unchanged": true,
+    "unsaved_exit": true,
+    "observations": [
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "instruments",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 0,
+        "kind": "TEMPLE",
+        "name": "TEMPLE-0-instruments-hover-0",
+        "pointer": [
+          752,
+          282
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "instruments",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 0,
+        "kind": "TEMPLE",
+        "name": "TEMPLE-0-instruments-hover-1",
+        "pointer": [
+          784,
+          282
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "instruments",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 0,
+        "kind": "TEMPLE",
+        "name": "TEMPLE-0-instruments-hover-2",
+        "pointer": [
+          816,
+          282
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "goblets",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 1,
+        "kind": "INN_TAVERN",
+        "name": "INN_TAVERN-1-goblets-hover-0",
+        "pointer": [
+          752,
+          210
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "goblets",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 1,
+        "kind": "INN_TAVERN",
+        "name": "INN_TAVERN-1-goblets-hover-1",
+        "pointer": [
+          784,
+          210
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "goblets",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 1,
+        "kind": "INN_TAVERN",
+        "name": "INN_TAVERN-1-goblets-hover-2",
+        "pointer": [
+          816,
+          210
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "instruments",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 1,
+        "kind": "INN_TAVERN",
+        "name": "INN_TAVERN-1-instruments-hover-0",
+        "pointer": [
+          752,
+          246
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "instruments",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 1,
+        "kind": "INN_TAVERN",
+        "name": "INN_TAVERN-1-instruments-hover-1",
+        "pointer": [
+          784,
+          246
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "instruments",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 1,
+        "kind": "INN_TAVERN",
+        "name": "INN_TAVERN-1-instruments-hover-2",
+        "pointer": [
+          816,
+          246
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "thread",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-thread-hover-0",
+        "pointer": [
+          720,
+          246
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "thread",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-thread-hover-1",
+        "pointer": [
+          752,
+          246
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "thread",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-thread-hover-2",
+        "pointer": [
+          784,
+          246
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "cloth",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-cloth-hover-0",
+        "pointer": [
+          720,
+          282
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "cloth",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-cloth-hover-1",
+        "pointer": [
+          752,
+          282
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "cloth",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-cloth-hover-2",
+        "pointer": [
+          784,
+          282
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "splints",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-splints-hover-0",
+        "pointer": [
+          720,
+          318
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "splints",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-splints-hover-1",
+        "pointer": [
+          752,
+          318
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "splints",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-splints-hover-2",
+        "pointer": [
+          784,
+          318
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "crutches",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-crutches-hover-0",
+        "pointer": [
+          720,
+          354
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "crutches",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-crutches-hover-1",
+        "pointer": [
+          752,
+          354
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "crutches",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-crutches-hover-2",
+        "pointer": [
+          784,
+          354
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "powder",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-powder-hover-0",
+        "pointer": [
+          720,
+          390
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "powder",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-powder-hover-1",
+        "pointer": [
+          752,
+          390
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "powder",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-powder-hover-2",
+        "pointer": [
+          784,
+          390
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "buckets",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-buckets-hover-0",
+        "pointer": [
+          720,
+          426
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "buckets",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-buckets-hover-1",
+        "pointer": [
+          752,
+          426
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "buckets",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-buckets-hover-2",
+        "pointer": [
+          784,
+          426
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "soap",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-soap-hover-0",
+        "pointer": [
+          720,
+          462
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "soap",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-soap-hover-1",
+        "pointer": [
+          752,
+          462
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "soap",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 2,
+        "kind": "HOSPITAL",
+        "name": "HOSPITAL-2-soap-hover-2",
+        "pointer": [
+          784,
+          462
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "instruments",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 3,
+        "kind": "TEMPLE",
+        "name": "TEMPLE-3-instruments-hover-0",
+        "pointer": [
+          752,
+          282
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "instruments",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 3,
+        "kind": "TEMPLE",
+        "name": "TEMPLE-3-instruments-hover-1",
+        "pointer": [
+          784,
+          282
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "instruments",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 3,
+        "kind": "TEMPLE",
+        "name": "TEMPLE-3-instruments-hover-2",
+        "pointer": [
+          816,
+          282
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "copies",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 4,
+        "kind": "LIBRARY",
+        "name": "LIBRARY-4-copies-hover-0",
+        "pointer": [
+          720,
+          246
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "copies",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 4,
+        "kind": "LIBRARY",
+        "name": "LIBRARY-4-copies-hover-1",
+        "pointer": [
+          752,
+          246
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "copies",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 4,
+        "kind": "LIBRARY",
+        "name": "LIBRARY-4-copies-hover-2",
+        "pointer": [
+          784,
+          246
+        ]
+      },
+      {
+        "action": 0,
+        "displayed_hover": -1,
+        "field": "paper",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 4,
+        "kind": "LIBRARY",
+        "name": "LIBRARY-4-paper-hover-0",
+        "pointer": [
+          720,
+          318
+        ]
+      },
+      {
+        "action": 1,
+        "displayed_hover": -1,
+        "field": "paper",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 4,
+        "kind": "LIBRARY",
+        "name": "LIBRARY-4-paper-hover-1",
+        "pointer": [
+          752,
+          318
+        ]
+      },
+      {
+        "action": 2,
+        "displayed_hover": -1,
+        "field": "paper",
+        "hover": -1,
+        "hover_enabled": false,
+        "hover_name": "NONE",
+        "id": 4,
+        "kind": "LIBRARY",
+        "name": "LIBRARY-4-paper-hover-2",
+        "pointer": [
+          784,
+          318
+        ]
+      },
+      {
+        "displayed_hover": 279,
+        "hover": 279,
+        "hover_enabled": true,
+        "hover_name": "LOCATION_DETAILS_RENAME",
+        "id": 1,
+        "kind": "INN_TAVERN",
+        "name": "hover-rename-positive-control"
+      },
+      {
+        "editing": true,
+        "entry_rva": 25837960,
+        "id": 1,
+        "kind": "INN_TAVERN",
+        "name": "physical-escape-before",
+        "open": true,
+        "target_offset": 8,
+        "text": "42",
+        "text_rva": 25837928,
+        "values": {
+          "buckets": 0,
+          "cloth": 0,
+          "copies": 2,
+          "crutches": 0,
+          "goblets": 42,
+          "instruments": 567,
+          "paper": 0,
+          "powder": 0,
+          "soap": 0,
+          "splints": 0,
+          "thread": 0
+        }
+      },
+      {
+        "editing": true,
+        "entry_rva": 25837960,
+        "id": 1,
+        "kind": "INN_TAVERN",
+        "name": "physical-escape-after",
+        "open": false,
+        "selector_open": true,
+        "target_offset": 8,
+        "text": "42",
+        "text_rva": 25837928,
+        "top_screen": "<type: viewscreen_dwarfmodest>",
+        "values": {
+          "buckets": 0,
+          "cloth": 0,
+          "copies": 2,
+          "crutches": 0,
+          "goblets": 42,
+          "instruments": 567,
+          "paper": 0,
+          "powder": 0,
+          "soap": 0,
+          "splints": 0,
+          "thread": 0
+        }
+      }
+    ],
+    "scope": "39 number/plus/minus hover cases after 900 ms: NONE, no instructions. Rename positive control reports LOCATION_DETAILS_RENAME (279) and enabled instructions. Glyphs and hover fields sampled before asynchronous screenshot acknowledgement. Native window Escape during tavern goblet entry closes Details, retains 42 and leaves the chooser open on viewscreen_dwarfmodest. Window messages pass through SDL; simulated LEAVESCREEN is separate evidence.",
+    "limitations": [
+      "Hidden-desktop asynchronous screenshots may lose the pointer; immediate glyphs and hover fields are the hover evidence.",
+      "Window Escape was checked for tavern goblets; not every field or modified-key/clipboard behavior."
+    ],
+    "rendered": {
+      "run": "build/areas-acceptance-20261026-203252",
+      "result": {
+        "driver": "res://tests/areas_location_scene_live.gd",
+        "reasons": [],
+        "status": "passed",
+        "surface": "main scene GPU; viewport input and native readback"
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "godot_log_sha256": "89fa977907182f43f8a13dce68445227bcd1c34503f7699f1db2337c67c373b5",
+      "source_and_clone_unchanged": true,
+      "unsaved_exit": true,
+      "scope": "Actual viewport Escape during tavern quantity entry with queued2 then24 hides Details, drains ordered edits, independently confirms native24 and returns to the chooser. Full LocationScene passes13 quantity cases, both Details routes and20 staff actions; other four quantity dismissals use right-click."
+    }
   }
 }

@@ -7,9 +7,9 @@ local function pixel(x,y)
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12;key('_MOUSE_L')
 end
-local function capture(label,location)
- g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0
- view:render(dfhack.getTickCount());script.sleep(3,'frames')
+local function capture(label,location,keep_pointer)
+ if not keep_pointer then g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0 end
+ view:render(dfhack.getTickCount());if not keep_pointer then script.sleep(3,'frames')end
  local contents=location:getContents();local _,base=df.sizeof(contents)
  local row={name=label,id=location.id,kind=df.abstract_building_type[location:getType()],open=details.open,
   text=details.desired_number_str,editing=details.entering_desired_number~=nil,values={},lines={}}
@@ -18,6 +18,10 @@ local function capture(label,location)
  if details.entering_desired_number then local _,address=df.sizeof(details.entering_desired_number);row.target_offset=address-base end
  for _,field in ipairs{'goblets','instruments','paper','splints','thread','cloth','crutches','powder','buckets','soap','copies'}do row.values[field]=contents['desired_'..field]end
  for y=0,g.dimy-1 do local bytes={};for x=0,g.dimx-1 do bytes[#bytes+1]=dfhack.screen.readTile(x,y).ch end;row.lines[#row.lines+1]=bytes end
+ if keep_pointer then
+  row.hover=m.current_hover;row.hover_name=df.main_hover_instruction[m.current_hover]
+  row.hover_enabled=m.hover_instructions_on;row.displayed_hover=m.last_displayed_hover_inst
+ end
  records[#records+1]=row
  local f=assert(io.open(out..'/shot.tmp','w'));f:write(label);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local limit=dfhack.getTickCount()+30000
@@ -199,3 +203,66 @@ key('CURSOR_LEFT');key('STRING_A055');record('left-then-digit')
 key('SELECT');record('enter-finishes')
 key('LEAVESCREEN');assert(selector.open and not details.open)
 assert(#records==131,'incomplete numeric focus reference')
+
+-- Hover is read only after the ordinary native cold delay; no runtime scratch use.
+local hover_cases=0
+for i,location in ipairs(choices)do
+ local kind=df.abstract_building_type[location:getType()]
+ if fields[kind]then
+  pixel(664,238+36*(i-1));assert(details.open and details.selected_ab==location)
+  for _,field in ipairs(fields[kind])do
+   local prefix=kind..'-'..location.id..'-'..field[1]
+   local position
+   for _,row in ipairs(records)do if row.name==prefix..'-open' then position=row.pointer;break end end
+   assert(position)
+   for action=0,2 do
+    local hx,hy=position[1]+12+32*action,position[2]
+    local deadline=dfhack.getTickCount()+900
+    repeat
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+     g.precise_mouse_x=hx;g.precise_mouse_y=hy;g.mouse_x=hx//8;g.mouse_y=hy//12
+     gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+    until dfhack.getTickCount()>=deadline
+    local row=capture(prefix..'-hover-'..action,location,true)
+    row.pointer={hx,hy};row.field=field[1];row.action=action
+    row.hover_text={}
+    for y=1,18 do
+     local chars={};for x=g.dimx-24,g.dimx-1 do local ch=row.lines[y][x+1];chars[#chars+1]=ch>=33 and ch<=255 and string.char(ch) or ' 'end
+     row.hover_text[#row.hover_text+1]=table.concat(chars):gsub('%s+$','')
+    end
+    hover_cases=hover_cases+1
+   end
+  end
+  key('LEAVESCREEN');assert(selector.open and not details.open)
+ end
+end
+assert(hover_cases==39 and #records==170,'incomplete quantity hover reference')
+
+pixel(664,238+36*(index-1));assert(details.open and details.selected_ab==tavern)
+local deadline=dfhack.getTickCount()+900
+repeat
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+ g.precise_mouse_x=944;g.precise_mouse_y=82;g.mouse_x=118;g.mouse_y=6
+ gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+until dfhack.getTickCount()>=deadline
+-- Reapply after the frame wait: SDL can reset the hidden-desktop pointer.
+g.precise_mouse_x=944;g.precise_mouse_y=82;g.mouse_x=118;g.mouse_y=6
+gui.simulateInput(view,{})
+local control=capture('hover-rename-positive-control',tavern,true)
+assert(control.hover==279 and control.hover_enabled,'native rename hover positive control failed')
+
+pixel(x,y);key('STRING_A052');key('STRING_A050')
+capture('physical-escape-before',tavern)
+local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('escape');f:close()
+assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+local limit=dfhack.getTickCount()+30000
+while true do
+ local ack=io.open(out..'/owner-input-ack','r');if ack then ack:close();break end
+ assert(dfhack.getTickCount()<limit,'window Escape timeout');script.sleep(1,'frames')
+end
+assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames')
+local escaped=capture('physical-escape-after',tavern)
+escaped.top_screen=tostring(dfhack.gui.getCurViewscreen()._type)
+escaped.selector_open=selector.open
+assert(tavern:getContents().desired_goblets==42,'Escape changed typed quantity')
+assert(#records==173,'incomplete hover and window Escape reference')

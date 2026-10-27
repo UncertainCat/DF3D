@@ -100,8 +100,8 @@ the known separate-render-thread notice. `rendered_reference` records this
 evidence. Earlier runs failing disabled staged launcher clicks or a clipped
 chooser row are not overall acceptance; the driver now enables staged test
 clicks and scrolls assigned choices into view. Product availability is unchanged.
-Quantity-specific rendered stale/disconnect/late-reply cases, hover behavior
-and physical Escape comparison remain unverified. Other unfinished Details
+Quantity-specific rendered stale/disconnect/late-reply cases remain unverified.
+Other unfinished Details
 controls keep the overall Zones/Locations surface staged.
 
 The fixture's `entry_focus_reference` records ten additional observations from
@@ -114,7 +114,27 @@ Left followed by a digit appends it. Enter finishes entry. This uses simulated
 native keys and does not establish physical Escape behavior. DF115424 exits
 unsaved with unchanged source. Early diagnostic
 runs with zero matched cases or incorrect chooser coordinates are not accepted
-workflow evidence; the current scope requires131 records and thirteen field cases.
+workflow evidence; the current scope requires173 records and thirteen field cases.
+
+The fixture's `hover_escape_reference` records protected native run
+`build/stockpile-storage-native-location-supplies-20261026-203045`.
+All39 quantity-button hover cases report NONE with no instructions after900ms;
+the rename positive control reports LOCATION_DETAILS_RENAME279 with instructions.
+Immediate glyph/hover sampling precedes asynchronous screenshots, which can lose
+the pointer on the hidden desktop. Quantity controls therefore add no tooltip.
+Window Escape during tavern goblet entry closes Details, retains the typed42
+and leaves the chooser open on viewscreen_dwarfmodest. This is separate from
+simulated LEAVESCREEN evidence. DF136220 exits unsaved, source unchanged.
+Modified keys/clipboard and window Escape on every quantity field remain outside
+this evidence.
+Protected rendered run `build/areas-acceptance-20261026-203252` exercises actual
+viewport Escape during tavern entry with queued2 then24. Details hides, ordered
+edits drain, independent DF readback confirms24, and the chooser returns.
+The full LocationScene also passes13 quantity cases, both Details routes and20
+staff actions. DF25468 exits unsaved with two unchanged save manifests; only
+the known separate-render-thread notice remains. Core19/19 passes in
+`build/qa/location-quantity-hover-escape`. No runtime behavior changed for this
+verification; Details already routed Escape correctly.
 
 ## Native squad assignment reference
 

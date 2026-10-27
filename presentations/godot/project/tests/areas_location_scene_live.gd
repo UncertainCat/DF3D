@@ -442,7 +442,10 @@ func details_routes(locations: Array) -> void:
 		if stopped:return
 		await capture("details_route_%d"%int(row.id))
 		var closing_quantity:=await quantity_prepare_close()
-		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		# Native window Escape from tavern numeric entry returns to the chooser
+		# and retains the typed value, just like right-click Details dismissal.
+		if int(row.id)==1:await pointer_key(KEY_ESCAPE)
+		else:await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 		if not closing_quantity.is_empty():
 			if not check(editor.details_closing and not editor.details_layer.visible,"pending quantity dismissal must hide without cancelling"):return
 			if not await wait_ui(func():return not editor.details_closing,"quantity drain after dismissal"):return
@@ -451,6 +454,7 @@ func details_routes(locations: Array) -> void:
 			if stopped:return
 		if not await wait_ui(func():return editor.details_origin.is_empty() and editor.locations_view.visible,"chooser Details Back"):return
 		if not check(editor.locations_view.native_scroll.first==scroll_before and editor.details_state.snapshot.is_empty(),"Back reset chooser scroll or retained Details"):return
+		if int(row.id)==1:print("LOCATION_QUANTITY_ESCAPE_PASS pending_value_retained=true chooser_visible=true")
 		var after:=await inspect(23,1)
 		if not check(int(after.location_id)==int(area.location_id) and int(after.location_site_id)==int(area.location_site_id),"Details navigation assigned the zone"):return
 	if not check(details_staff_count==10,"full route ordinary staff matrix incomplete"):return

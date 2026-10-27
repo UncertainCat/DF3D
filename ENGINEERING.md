@@ -554,8 +554,23 @@ fresh open still assigns successfully with native effect readback. Both manifest
 remain unchanged and owned DF exits unsaved; the only diagnostic is the known
 separate-thread notice. The filtered capture was inspected. This establishes
 these ASCII searches and sort directions, not religious filtered pixel parity,
-non-ASCII editing, or every scrollbar hover/drag state. Sent/disconnect/late/restart
-assignment lifecycle acceptance remains unfinished. Overall Zones stays hidden.
+non-ASCII editing, or every scrollbar hover/drag state. Overall Zones stays hidden.
+
+`-ReligiousStaffLifecycle assignment-queued|assignment-sent` tests assignment
+disconnects separately from removal. Protected072621 disconnects before sending
+the selected-candidate read: not_sent, native vacancy unchanged, no reconnect
+replay, and a fresh explicit picker open succeeds. Protected072723 withholds the
+reply after native assignment completes: Unknown, retired target/list/selection,
+no reconnect replay, and fresh Details observes holder10379. Independent native
+link/history checks confirm exactly one assignment. Both runs preserve both save
+manifests, exit owned DF unsaved and pass_with_known_issues only for the known
+separate-thread notice. The reopened assigned-row capture was inspected.
+This exposed and corrected a viewer reconnect defect: ownerless Unavailable state
+now retires to Closed when fresh Details becomes Ready; reconnect alone neither
+submits nor reopens anything. The controlled regression also verifies this fresh
+gesture, with core and workflow checks passing in location-religious-reconnect.
+Late replies after changing location, producer restart, disconnect between receipt
+read and mutation dispatch, and post-effect Unknown injection remain separate gaps.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

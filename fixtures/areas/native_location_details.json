@@ -13267,7 +13267,7 @@
         }
       },
       "limitations": [
-        "Sent/disconnect/late/restart assignment lifecycle remains unverified.",
+        "Late replies after changing location, producer restart, disconnect between receipt read and mutation dispatch, and post-effect Unknown injection remain unverified.",
         "Religious filtered pixel parity, non-ASCII editing and all scrollbar hover/drag states remain unverified."
       ],
       "scrollbar_art_reference": {
@@ -13817,6 +13817,32 @@
         "source_save_directories_preserved": 2,
         "owned_exit_without_save": true
       }
-    }
+    },
+    "disconnect_reference": [
+      {
+        "fresh_holder": -1,
+        "no_replay": true,
+        "outcome": "not_sent",
+        "sent": false,
+        "target_retired": true,
+        "provenance": "build/areas-acceptance-20261027-072621",
+        "status": "passed_with_known_issues",
+        "known_diagnostic": "godot-separate-thread-notice",
+        "source_save_directories_preserved": 2,
+        "owned_exit_without_save": true
+      },
+      {
+        "fresh_holder": 10379,
+        "no_replay": true,
+        "outcome": "unknown",
+        "sent": true,
+        "target_retired": true,
+        "provenance": "build/areas-acceptance-20261027-072723",
+        "status": "passed_with_known_issues",
+        "known_diagnostic": "godot-separate-thread-notice",
+        "source_save_directories_preserved": 2,
+        "owned_exit_without_save": true
+      }
+    ]
   }
 }

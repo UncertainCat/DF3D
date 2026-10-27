@@ -115,7 +115,11 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	mode=Mode.Applying;_send(true,candidate.revision)
 
 func _details_changed() -> void:
-	if owner.is_empty():return
+	if owner.is_empty():
+		# Session loss retires authority. A later explicit Details observation may
+		# enable a new gesture; reconnect alone must never submit or reopen it.
+		if mode==Mode.Unavailable and details.phase==details.Phase.Ready:close()
+		return
 	if _key()!=owner or details.phase not in [details.Phase.Ready,details.Phase.Editing]:close()
 
 func _candidates_changed() -> void:

@@ -90,6 +90,11 @@ func run() -> void:
 	details.identity.id=0;details.generation+=1;details.phase=Details.Phase.Ready;details.changed.emit();workflow.close();workflow.open(row);service.poll()
 	count=world.calls.size();world.state={"world_epoch":6,"revision":1,"status":0};service.poll();service.poll()
 	check(world.calls.size()==count and workflow.mode==Model.Mode.Unavailable,"epoch loss retires list without replay")
+	details.generation+=1;details.snapshot.revision+=1;details.phase=Details.Phase.Ready;details.changed.emit()
+	service.poll()
+	check(workflow.mode==Model.Mode.Closed and world.calls.size()==count,"fresh Details enables gestures without replay")
+	workflow.open(row);service.poll()
+	check(workflow.mode==Model.Mode.Choosing and world.calls.size()==count+1,"fresh explicit gesture opens after session loss")
 	workflow.dispose()
 	# A partial religious list never becomes selectable, and continuations must
 	# retain the exact target receipt even when the list revision stays unchanged.

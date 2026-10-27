@@ -1580,6 +1580,8 @@ func religious_staff_route(locations: Array) -> void:
 	await pointer_click(assign_point)
 	if not await wait_ui(func():return selector.is_visible_in_tree() and selector.actions_enabled,"religious candidate picker visible"):return
 	await native("religious_candidates_readback",{"rows":flow.candidates.rows})
+	if lifecycle.begins_with("assignment-"):
+		await religious_assignment_disconnect(lifecycle=="assignment-sent",row_index);return
 	await capture("religious_assignment_candidates")
 	var input_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json"))
 	for sample in input_reference.religious_staff_assignment_reference.interaction_reference.states:
@@ -1622,6 +1624,61 @@ func religious_staff_route(locations: Array) -> void:
 	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"religious Details Back"):return
 	write_json("religious-staff-scene-evidence.json",{"before":setup.before,"after":effects.after,"event":effects.event,"viewport_click":true,"details_refreshed":true,"vacant_repeat_unchanged":true,"details_closed":true})
+
+func religious_assignment_disconnect(sent: bool, row_index: int) -> void:
+	step="religious assignment disconnect sent="+str(sent)
+	var flow=editor.details_view.religious_assignment_workflow
+	var selector=editor.details_view.staff_candidates_view
+	var chosen: Dictionary=selector.rows[0].duplicate(true)
+	await native("religious_guard")
+	await pointer_click(selector.global_position+Vector2(80,54))
+	var ticket: int=flow.ticket
+	if not check(ticket>0 and flow.mode==flow.Mode.Reading,"assignment pending read missing"):return
+	if sent:
+		await quantity_unobserved(ticket)
+		if stopped:return
+		actions.poll()
+		ticket=flow.ticket
+		if not check(ticket>0 and flow.mode==flow.Mode.Applying,"assignment pending mutation missing"):return
+		var reply:=await quantity_unobserved(ticket,false)
+		if stopped:return
+		if not check(int(reply.area.location_religious_staff.holder_id)==int(chosen.histfig_id),"unobserved assignment holder differs"):return
+	world.detach_live();actions.poll()
+	var outcome: Dictionary=actions.result(ticket)
+	if not check(outcome.get("outcome")==("unknown" if sent else "not_sent"),"assignment disconnect outcome differs"):return
+	if not check(flow.target.is_empty() and flow.owner.is_empty() and flow.selected.is_empty() and flow.ticket==0 and flow.mode in [flow.Mode.Closed,flow.Mode.Unavailable] and not editor.details_layer.visible,"disconnect retained assignment authority"):return
+	if not check(not actions._requests.has(ticket) and actions._queue.is_empty() and actions._active==0,"assignment remains dispatchable"):return
+	await native("religious_assignment_applied" if sent else "religious_unchanged",{"unit_id":chosen.unit_id,"histfig_id":chosen.histfig_id})
+	if stopped:return
+	await native("religious_guard")
+	if not check(world.attach(),"assignment reconnect failed"):return
+	var deadline:=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();editor._process(0.02)
+		if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
+		await create_timer(0.02).timeout
+	if not check(bool(world.poll_management().get("transport_alive",false)),"assignment reconnect timeout"):return
+	var next_ticket: int=actions._next_ticket
+	for frame in 30:
+		world.poll();actions.poll();editor._process(0.02);await process_frame
+	if not check(actions._next_ticket==next_ticket and flow.target.is_empty() and flow.owner.is_empty() and not editor.details_layer.visible,"reconnect replayed or reopened assignment"):return
+	await native("religious_unchanged")
+	await quantity_lifecycle_open()
+	if stopped:return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"assignment fresh chooser"):return
+	await quantity_lifecycle_choose(0)
+	if stopped:return
+	var observed: Dictionary=editor.details_view.staff_view.rows[row_index]
+	if not check(int(observed.histfig_id)==(int(chosen.histfig_id) if sent else -1) and flow.mode==flow.Mode.Closed,"fresh assignment holder differs"):return
+	if not sent:
+		var staff=editor.details_view.staff_view
+		await pointer_click(staff.global_position+Vector2(208,(int(staff.geometry.first_y)-6+(row_index-staff.first)*3)*12+18))
+		if not await wait_ui(func():return selector.is_visible_in_tree() and selector.actions_enabled,"fresh assignment gesture after reconnect"):return
+		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	await capture("religious_assignment_disconnect_reopened")
+	write_json("religious-assignment-disconnect-evidence.json",{"sent":sent,"outcome":outcome.outcome,"no_replay":true,"fresh_holder":observed.histfig_id,"target_retired":true})
+	editor.close_panel()
 
 func religious_staff_disconnect(sent: bool, point: Vector2, holder: int, row_index: int) -> void:
 	step="religious staff disconnect sent="+str(sent)

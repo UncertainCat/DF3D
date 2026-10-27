@@ -14801,6 +14801,408 @@
     }
   },
   "staff_indicator_reference": {
+    "dispatch_reference": {
+      "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+      "tables": {
+        "occupation": [
+          {
+            "value": 0,
+            "branch_rva": "0x3b8701",
+            "graphic_enum": 387
+          },
+          {
+            "value": 1,
+            "branch_rva": "0x3b8708",
+            "graphic_enum": 388
+          },
+          {
+            "value": 2,
+            "branch_rva": "0x3b870f",
+            "graphic_enum": 391
+          },
+          {
+            "value": 3,
+            "branch_rva": "0x3b871d",
+            "graphic_enum": 389
+          },
+          {
+            "value": 4,
+            "branch_rva": "0x3b8724",
+            "graphic_enum": 390
+          },
+          {
+            "value": 5,
+            "branch_rva": "0x3b8716",
+            "graphic_enum": 392
+          },
+          {
+            "value": 6,
+            "branch_rva": "0x3b887f",
+            "skip_without_slot": true
+          },
+          {
+            "value": 7,
+            "branch_rva": "0x3b872b",
+            "graphic_enum": 393
+          },
+          {
+            "value": 8,
+            "branch_rva": "0x3b872b",
+            "graphic_enum": 393
+          },
+          {
+            "value": 9,
+            "branch_rva": "0x3b872b",
+            "graphic_enum": 393
+          },
+          {
+            "value": 10,
+            "branch_rva": "0x3b872b",
+            "graphic_enum": 393
+          }
+        ],
+        "workshop": [
+          {
+            "value": 0,
+            "branch_rva": "0x3b8973",
+            "token": "BUILDING_ICON_WORKSHOP_CARPENTER",
+            "binding_rva": "0x1170761",
+            "graphic_global_rva": "0x264b030"
+          },
+          {
+            "value": 1,
+            "branch_rva": "0x3b897e",
+            "token": "BUILDING_ICON_WORKSHOP_FARMER",
+            "binding_rva": "0x1171705",
+            "graphic_global_rva": "0x264b098"
+          },
+          {
+            "value": 2,
+            "branch_rva": "0x3b8989",
+            "token": "BUILDING_ICON_WORKSHOP_MASON",
+            "binding_rva": "0x11707fb",
+            "graphic_global_rva": "0x264b034"
+          },
+          {
+            "value": 3,
+            "branch_rva": "0x3b8994",
+            "token": "BUILDING_ICON_WORKSHOP_CRAFTS",
+            "binding_rva": "0x11709c9",
+            "graphic_global_rva": "0x264b040"
+          },
+          {
+            "value": 4,
+            "branch_rva": "0x3b899f",
+            "token": "BUILDING_ICON_WORKSHOP_JEWELER",
+            "binding_rva": "0x1170a63",
+            "graphic_global_rva": "0x264b044"
+          },
+          {
+            "value": 5,
+            "branch_rva": "0x3b89aa",
+            "token": "BUILDING_ICON_WORKSHOP_METALSMITH",
+            "binding_rva": "0x1170895",
+            "graphic_global_rva": "0x264b038"
+          },
+          {
+            "value": 6,
+            "branch_rva": "0x3b89aa",
+            "token": "BUILDING_ICON_WORKSHOP_METALSMITH",
+            "binding_rva": "0x1170895",
+            "graphic_global_rva": "0x264b038"
+          },
+          {
+            "value": 7,
+            "branch_rva": "0x3b89b5",
+            "token": "BUILDING_ICON_WORKSHOP_BOWYER",
+            "binding_rva": "0x1170c31",
+            "graphic_global_rva": "0x264b050"
+          },
+          {
+            "value": 8,
+            "branch_rva": "0x3b89c0",
+            "token": "BUILDING_ICON_WORKSHOP_MECHANIC",
+            "binding_rva": "0x1170ccb",
+            "graphic_global_rva": "0x264b054"
+          },
+          {
+            "value": 9,
+            "branch_rva": "0x3b89cb",
+            "token": "BUILDING_ICON_WORKSHOP_SIEGE",
+            "binding_rva": "0x1170d65",
+            "graphic_global_rva": "0x264b058"
+          },
+          {
+            "value": 10,
+            "branch_rva": "0x3b89d6",
+            "token": "BUILDING_ICON_WORKSHOP_BUTCHER",
+            "binding_rva": "0x117149d",
+            "graphic_global_rva": "0x264b088"
+          },
+          {
+            "value": 11,
+            "branch_rva": "0x3b89e1",
+            "token": "BUILDING_ICON_WORKSHOP_LEATHER",
+            "binding_rva": "0x1171101",
+            "graphic_global_rva": "0x264b070"
+          },
+          {
+            "value": 12,
+            "branch_rva": "0x3b89ec",
+            "token": "BUILDING_ICON_WORKSHOP_TANNER",
+            "binding_rva": "0x1171537",
+            "graphic_global_rva": "0x264b08c"
+          },
+          {
+            "value": 13,
+            "branch_rva": "0x3b89f7",
+            "token": "BUILDING_ICON_WORKSHOP_CLOTHES",
+            "binding_rva": "0x1171235",
+            "graphic_global_rva": "0x264b078"
+          },
+          {
+            "value": 14,
+            "branch_rva": "0x3b89ff",
+            "token": "BUILDING_ICON_WORKSHOP_FISHERY",
+            "binding_rva": "0x11715d1",
+            "graphic_global_rva": "0x264b090"
+          },
+          {
+            "value": 15,
+            "branch_rva": "0x3b8a07",
+            "token": "BUILDING_ICON_WORKSHOP_STILL",
+            "binding_rva": "0x1171403",
+            "graphic_global_rva": "0x264b084"
+          },
+          {
+            "value": 16,
+            "branch_rva": "0x3b8a0f",
+            "token": "BUILDING_ICON_WORKSHOP_LOOM",
+            "binding_rva": "0x117119b",
+            "graphic_global_rva": "0x264b074"
+          },
+          {
+            "value": 17,
+            "branch_rva": "0x3b8a17",
+            "token": "BUILDING_ICON_WORKSHOP_QUERN",
+            "binding_rva": "0x117179f",
+            "graphic_global_rva": "0x264b09c"
+          },
+          {
+            "value": 18,
+            "branch_rva": "0x3b8a1f",
+            "token": "BUILDING_ICON_WORKSHOP_KENNEL",
+            "binding_rva": "0x1171839",
+            "graphic_global_rva": "0x264b0a0"
+          },
+          {
+            "value": 19,
+            "branch_rva": "0x3b8a27",
+            "token": "BUILDING_ICON_WORKSHOP_KITCHEN",
+            "binding_rva": "0x117166b",
+            "graphic_global_rva": "0x264b094"
+          },
+          {
+            "value": 20,
+            "branch_rva": "0x3b8a2f",
+            "token": "BUILDING_ICON_WORKSHOP_ASHERY",
+            "binding_rva": "0x1170dff",
+            "graphic_global_rva": "0x264b05c"
+          },
+          {
+            "value": 21,
+            "branch_rva": "0x3b8a37",
+            "token": "BUILDING_ICON_WORKSHOP_DYER",
+            "binding_rva": "0x11712cf",
+            "graphic_global_rva": "0x264b07c"
+          },
+          {
+            "value": 22,
+            "branch_rva": "0x3b8a3f",
+            "token": "BUILDING_ICON_WORKSHOP_MILLSTONE",
+            "binding_rva": "0x117334b",
+            "graphic_global_rva": "0x264b154"
+          },
+          {
+            "value": 23,
+            "branch_rva": "0x3b8a47",
+            "custom_raw_list_icon": true,
+            "fallback": {
+              "token": "BUILDING_ICON_WORKSHOPS",
+              "binding_rva": "0x11701f7"
+            }
+          },
+          {
+            "value": 24,
+            "branch_rva": "0x3b8a76",
+            "token": "BUILDING_ICON_WORKSHOPS",
+            "binding_rva": "0x11701f7",
+            "graphic_global_rva": "0x264b00c"
+          }
+        ],
+        "furnace": [
+          {
+            "value": 0,
+            "branch_rva": "0x3b8bdd",
+            "token": "BUILDING_ICON_FURNACE_WOOD",
+            "binding_rva": "0x1170e99",
+            "graphic_global_rva": "0x264b060"
+          },
+          {
+            "value": 1,
+            "branch_rva": "0x3b8be5",
+            "token": "BUILDING_ICON_FURNACE_SMELTER",
+            "binding_rva": "0x1170f33",
+            "graphic_global_rva": "0x264b064"
+          },
+          {
+            "value": 2,
+            "branch_rva": "0x3b8bed",
+            "token": "BUILDING_ICON_FURNACE_GLASS",
+            "binding_rva": "0x1170fcd",
+            "graphic_global_rva": "0x264b068"
+          },
+          {
+            "value": 3,
+            "branch_rva": "0x3b8bf5",
+            "token": "BUILDING_ICON_FURNACE_KILN",
+            "binding_rva": "0x1171067",
+            "graphic_global_rva": "0x264b06c"
+          },
+          {
+            "value": 4,
+            "branch_rva": "0x3b8be5",
+            "token": "BUILDING_ICON_FURNACE_SMELTER",
+            "binding_rva": "0x1170f33",
+            "graphic_global_rva": "0x264b064"
+          },
+          {
+            "value": 5,
+            "branch_rva": "0x3b8bed",
+            "token": "BUILDING_ICON_FURNACE_GLASS",
+            "binding_rva": "0x1170fcd",
+            "graphic_global_rva": "0x264b068"
+          },
+          {
+            "value": 6,
+            "branch_rva": "0x3b8bf5",
+            "token": "BUILDING_ICON_FURNACE_KILN",
+            "binding_rva": "0x1171067",
+            "graphic_global_rva": "0x264b06c"
+          },
+          {
+            "value": 7,
+            "branch_rva": "0x3b8bfd",
+            "custom_raw_list_icon": true,
+            "fallback": {
+              "token": "BUILDING_ICON_WORKSHOPS_FURNACES",
+              "binding_rva": "0x117092f"
+            }
+          }
+        ],
+        "work_detail": [
+          {
+            "value": 0,
+            "branch_rva": "0x3b8d4f",
+            "graphic_enum": 364
+          },
+          {
+            "value": 1,
+            "branch_rva": "0x3b8d56",
+            "graphic_enum": 365
+          },
+          {
+            "value": 2,
+            "branch_rva": "0x3b8d5d",
+            "graphic_enum": 366
+          },
+          {
+            "value": 3,
+            "branch_rva": "0x3b8d64",
+            "graphic_enum": 367
+          },
+          {
+            "value": 4,
+            "branch_rva": "0x3b8d6b",
+            "graphic_enum": 368
+          },
+          {
+            "value": 5,
+            "branch_rva": "0x3b8d72",
+            "graphic_enum": 369
+          },
+          {
+            "value": 6,
+            "branch_rva": "0x3b8d79",
+            "graphic_enum": 370
+          },
+          {
+            "value": 7,
+            "branch_rva": "0x3b8d80",
+            "graphic_enum": 371
+          },
+          {
+            "value": 8,
+            "branch_rva": "0x3b8d87",
+            "graphic_enum": 372
+          },
+          {
+            "value": 9,
+            "branch_rva": "0x3b8d8e",
+            "graphic_enum": 373
+          },
+          {
+            "value": 10,
+            "branch_rva": "0x3b8d9c",
+            "graphic_enum": 375
+          },
+          {
+            "value": 11,
+            "branch_rva": "0x3b8da3",
+            "graphic_enum": 376
+          },
+          {
+            "value": 12,
+            "branch_rva": "0x3b8daa",
+            "graphic_enum": 377
+          },
+          {
+            "value": 13,
+            "branch_rva": "0x3b8db1",
+            "graphic_enum": 378
+          },
+          {
+            "value": 14,
+            "branch_rva": "0x3b8db8",
+            "graphic_enum": 379
+          },
+          {
+            "value": 15,
+            "branch_rva": "0x3b8dbf",
+            "graphic_enum": 380
+          },
+          {
+            "value": 16,
+            "branch_rva": "0x3b8dc6",
+            "graphic_enum": 381
+          },
+          {
+            "value": 17,
+            "branch_rva": "0x3b8dcd",
+            "graphic_enum": 382
+          },
+          {
+            "value": 18,
+            "branch_rva": "0x3b8d95",
+            "graphic_enum": 374
+          }
+        ]
+      },
+      "limitations": [
+        "Static dispatch evidence complements protected native captures; it does not prove rendered parity.",
+        "Hover hitbox and occupation-art defects remain subject to maintainer approval."
+      ]
+    },
     "transport_reference": {
       "run": "build/areas-acceptance-20261027-094532",
       "status": "passed",

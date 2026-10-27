@@ -822,6 +822,21 @@ MSVC build passes. Installed plugin SHA256 is
 7403D4DA076C457C49E73DF4840EDF7618A0857AC030B49F4902DAF65612CF6B.
 This establishes live transport, not rendered assignment-indicator acceptance.
 
+`tools/smoke/inspect_native_staff_indicators.py` pins the executable SHA256 and
+reads the four native renderer jump tables. It resolves workshop/furnace graphic
+globals back to the installed `BUILDING_ICON_*` token comparisons in DF's asset
+loader, instead of inferring artwork from building names. The fixture's
+`staff_indicator_reference.dispatch_reference` records all11 occupation,
+25 workshop,8 furnace and19 work-detail selectors. Occupation6 skips without
+consuming a slot; the four medical occupations share graphic393. Magma and
+ordinary forge/furnace variants share their respective icons. Custom workshop
+and furnace branches use the raw LIST_ICON with different fallback tokens.
+Work-detail18 (Siege Operator) selects graphic374, before the custom graphics
+375..382. The bounded native renderer audit additionally shows that unknown
+assigned workshop/furnace/work-detail selectors consume a four-cell slot even
+when no graphic is drawn. These are static dispatch findings; subtype-specific
+rendering, custom-raw lookup and overflow still require viewer/live acceptance.
+
 `location_staff_assignments_reader.gd` stages one serial observation pass for
 the current visible, resolvable staff rows. Its owner binds Details generation,
 identity and revision; refresh, scroll-window replacement, closure and session

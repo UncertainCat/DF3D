@@ -15,6 +15,22 @@ struct LocationRecognitionFacts {
   int32_t priestThreshold=0,highPriestThreshold=0;
   std::vector<int32_t> continuingAgreements;
 };
+enum class LocationRecognitionState : uint8_t {
+  NoAction, NeedsTemple, NeedsComplex, NeedsWorshippers, RecognizePriesthood, RecognizeHighPriest
+};
+// Native primary recognition row (3b6e66..3b733d). This describes presentation;
+// it is not permission to apply a mutation from an old observation.
+inline LocationRecognitionState locationRecognitionState(const LocationRecognitionFacts& facts) {
+  if(facts.tier<0 || facts.tier>2 || facts.rank<0 || facts.rank>2)return LocationRecognitionState::NoAction;
+  if(facts.tier<=facts.rank) {
+    if(facts.tier==0)return LocationRecognitionState::NeedsTemple;
+    if(facts.tier==1)return LocationRecognitionState::NeedsComplex;
+    return LocationRecognitionState::NoAction;
+  }
+  const auto threshold=facts.rank==1?facts.highPriestThreshold:facts.priestThreshold;
+  if(facts.continuingAgreements.empty() && facts.worshippers<threshold)return LocationRecognitionState::NeedsWorshippers;
+  return facts.rank==0?LocationRecognitionState::RecognizePriesthood:LocationRecognitionState::RecognizeHighPriest;
+}
 // Caller owns a DF safe point; returned data retains no native pointers.
 std::optional<LocationRecognitionFacts> observeNativeLocationRecognition(int32_t siteId,int32_t locationId);
 enum class LocationAccess : uint8_t { Visitors, Residents, Citizens, Members };

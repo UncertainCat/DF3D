@@ -639,8 +639,9 @@ The counter's complete186-byte body is checked against FNV1a7ae7f14c285d7534
 after the supported-build guard. Its unused receiver is null; no native UI
 object is passed. Rank includes vacant current-site assignments, matching the
 renderer. Continuing-agreement IDs follow native first-subject/applicant-party
-filtering and retain source order. These are facts, not a mutation authorization
-or a complete recognition-status receipt; no revision-bound action exists yet.
+filtering and retain source order. The primary-row state is derived from these
+facts as described below; it is not mutation authorization or a complete receipt.
+No revision-bound action exists yet.
 The diagnostic command uses DFHack's suspended-core command path and retains
 no native pointers in its result. It adds no management wire fields or UI exposure.
 `recognition_bridge_read_reference` records promotion/empty/first runs013435,
@@ -650,9 +651,27 @@ main-interface/gps bytes and full RNG, plus rejection of negative, wrong-site,
 missing and non-temple targets. Each owned run preserves the source and exits
 unsaved. MSVC plugin build and root/core19/19 pass; core evidence is
 `build/qa/location-recognition-bridge-read`. Installed plugin SHA256 is
-`d512ee59600a93ac54281c864aa3bfef4bb299dff10514af9cacafb0da528b70`, protocol72.
-Nonempty agreement and population-variation branches still need live evidence.
-Typed transport, complete eligibility/receipt binding and mutation remain pending.
+`d232475866efba93e7f2cfb110c38130644aa9160dff5463f7cdbe528be138f7`, protocol72
+(the original reader-only captures retain their earlier binary hash).
+
+`locationRecognitionState` supplies the native primary-row states: no action,
+temple/complex value guidance, population guidance, recognize priesthood, or
+recognize high priest. `recognition_eligibility_reference` records native
+`location-recognition-eligibility-20261027-014329` (nine observations) and
+`location-recognition-first-20261027-014502` (three). Use
+`-LocationNames -RecognitionOnly -RecognitionCase eligibility` for the former.
+With53 native worshippers, requirement54 shows "High priest: 54 worshippers needed"
+and clicking the former button changes no captured positions, assignments,
+history counts, site profiles or holder links. Requirement53 permits recognition.
+A temporary owned continuing Location agreement also permits recognition at54;
+the fixture removes it from both world vectors and deletes its objects before
+the real action. Tier0/1 guidance, post-recognition disappearance and the first
+priesthood action also match native text and bridge state. Native UI/gps and RNG
+remain unchanged by reads. The tier and threshold are restored, source manifests
+are preserved, and both games exit unsaved. MSVC build and core19/19 pass;
+`build/qa/location-recognition-eligibility` includes the native-derived state tests.
+This covers the primary row, not secondary petition progress/warning rows.
+Typed transport, complete dependency/receipt binding and mutation remain pending.
 
 ## Native squad assignment reference
 

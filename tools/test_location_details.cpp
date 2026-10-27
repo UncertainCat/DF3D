@@ -1,6 +1,22 @@
 #include "doctest.h"
 #include "../bridge/plugin/location_details_native.h"
 
+TEST_CASE("Recognition primary row distinguishes native tier guidance and inclusive population boundary") {
+  using namespace df3d_area;
+  LocationRecognitionFacts facts;facts.rank=1;facts.worshippers=53;
+  facts.priestThreshold=10;facts.highPriestThreshold=54;
+  facts.tier=0;CHECK(locationRecognitionState(facts)==LocationRecognitionState::NeedsTemple);
+  facts.tier=1;CHECK(locationRecognitionState(facts)==LocationRecognitionState::NeedsComplex);
+  facts.tier=2;CHECK(locationRecognitionState(facts)==LocationRecognitionState::NeedsWorshippers);
+  facts.highPriestThreshold=53;CHECK(locationRecognitionState(facts)==LocationRecognitionState::RecognizeHighPriest);
+  facts.rank=2;CHECK(locationRecognitionState(facts)==LocationRecognitionState::NoAction);
+  facts.rank=0;facts.tier=1;CHECK(locationRecognitionState(facts)==LocationRecognitionState::RecognizePriesthood);
+  facts.rank=1;facts.tier=2;facts.highPriestThreshold=54;
+  facts.continuingAgreements={2147483646};
+  CHECK(locationRecognitionState(facts)==LocationRecognitionState::RecognizeHighPriest);
+  facts.continuingAgreements.clear();CHECK(locationRecognitionState(facts)==LocationRecognitionState::NeedsWorshippers);
+}
+
 TEST_CASE("Name receipts include structured fields and naming identity independently of display text") {
   using namespace df3d_area;
   LocationNameSnapshot base;base.siteId=651;base.id=1;base.namerId=245;base.namerRace=0;base.kind=1;

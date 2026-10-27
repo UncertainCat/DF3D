@@ -508,8 +508,8 @@ local temple=choices[1];assert(temple.id==0)
 local religion=assert(df.historical_entity.find(temple.deity_data.Religion))
 local mode_file=io.open(out..'/recognition-case');local recognition_case='promote'
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first')
-if recognition_case~='promote' then
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='eligibility')
+if recognition_case=='empty' or recognition_case=='first' then
  -- Controlled world fixture on the owned unsaved clone; never a runtime path.
  local changed=0
  for _,assignment in ipairs(religion.positions.assignments)do
@@ -583,12 +583,59 @@ local function recognition_state()
  return result
 end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=recognition_case=='first' and 1 or 2
+local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local ok,err=xpcall(function()
+ if recognition_case=='eligibility' then
+  for tier=0,1 do
+   contents.location_tier=tier
+   local row=capture('TEMPLE-0-recognition-guidance-'..tier,temple);row.recognition=recognition_state()
+   assert(row.recognition.bridge.state==tier+1,'native tier guidance mismatch')
+   assert(row.lines[18]:find(tier==0 and 'You can recognize a priesthood once this is a temple.' or 'You can recognize a high priest when this is a temple complex.',1,true),'native tier hint absent')
+  end
+  contents.location_tier=2;difficulty.high_priesthood_unit_count=54
+  local denied=capture('TEMPLE-0-recognition-population-denied',temple);denied.recognition=recognition_state()
+  assert(denied.recognition.bridge.state==3 and denied.lines[18]:find('High priest: 54 worshippers',1,true),'native population guidance mismatch')
+  pixel(500,214)
+  local refused=capture('TEMPLE-0-recognition-population-refused',temple);refused.recognition=recognition_state()
+  for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links'}do
+   assert(require('json').encode(denied.recognition[field])==require('json').encode(refused.recognition[field]),'ineligible native click changed '..field)
+  end
+  difficulty.high_priesthood_unit_count=53
+  local boundary=capture('TEMPLE-0-recognition-population-exact',temple);boundary.recognition=recognition_state()
+  assert(boundary.recognition.bridge.state==5 and boundary.lines[18]:find('Recognize high priest',1,true),'native inclusive threshold mismatch')
+  -- A continuing agreement waives the population gate. Own every fixture
+  -- object and remove it before any native recognition action is submitted.
+  difficulty.high_priesthood_unit_count=54
+  local agreement=df.agreement:new();local party=df.agreement_party:new()
+  local subject=df.agreement_details:new();local location=df.agreement_details_data_location:new()
+  local all=df.global.world.agreements.all;local continuing=df.global.plotinfo.continuing_agreement_id
+  agreement.id=2147483646;assert(#all==0 or all[#all-1].id<agreement.id,'recognition fixture ID occupied')
+  party.id=0;party.entity_ids:insert('#',religion.id)
+  location.applicant=0;location.government=1;location.site=df.global.plotinfo.site_id
+  location.type=df.abstract_building_type.TEMPLE;location.deity_type=df.religious_practice_type.RELIGION_ENID
+  location.deity_data.Religion=religion.id;location.tier=2
+  subject.id=0;subject.type=df.agreement_details_type.Location;subject.data.Location=location
+  agreement.parties:insert('#',party);agreement.details:insert('#',subject)
+  all:insert('#',agreement);continuing:insert('#',agreement.id)
+  local agreement_ok,agreement_error=xpcall(function()
+   local row=capture('TEMPLE-0-recognition-agreement-waiver',temple);row.recognition=recognition_state()
+   assert(row.recognition.bridge.state==5 and row.lines[18]:find('Recognize high priest',1,true),'native continuing-agreement waiver mismatch')
+   assert(#row.recognition.bridge.continuing_agreements==1 and row.recognition.bridge.continuing_agreements[1]==agreement.id)
+  end,debug.traceback)
+  assert(continuing[#continuing-1]==agreement.id and all[#all-1]==agreement,'recognition fixture ownership changed')
+  continuing:erase(#continuing-1);all:erase(#all-1)
+  agreement.parties:resize(0);agreement.details:resize(0);subject.data.Location=nil
+  df.delete(location);df.delete(subject);df.delete(party);df.delete(agreement)
+  assert(agreement_ok,agreement_error)
+  difficulty.high_priesthood_unit_count=original_threshold
+ end
  local before=capture('TEMPLE-0-recognition-before',temple);before.recognition=recognition_state()
  pixel(500,214)
  local after=capture('TEMPLE-0-recognition-after',temple);after.recognition=recognition_state()
  assert(before.recognition.bridge.rank==(recognition_case=='first' and 0 or 1),'initial semantic priesthood rank mismatch')
  assert(after.recognition.bridge.rank==(recognition_case=='first' and 1 or 2),'recognized semantic priesthood rank mismatch')
+ assert(before.recognition.bridge.state==(recognition_case=='first' and 4 or 5),'native recognition action state mismatch')
+ assert(after.recognition.bridge.state==(recognition_case=='first' and 2 or 0),'native post-recognition state mismatch')
  after.recognition.new_events={}
  for i=before.recognition.event_count,#df.global.world.history.events-1 do
   local event=df.global.world.history.events[i]
@@ -605,6 +652,6 @@ local ok,err=xpcall(function()
   assert(require('json').encode(after.recognition[field])==require('json').encode(repeated.recognition[field]),'repeat recognition changed '..field)
  end
 end,debug.traceback)
-contents.location_tier=original
+contents.location_tier=original;difficulty.high_priesthood_unit_count=original_threshold
 assert(ok,err)
-assert(#records==(recognition_only and 3 or 161),'incomplete recognition mutation reference')
+assert(#records==(recognition_case=='eligibility' and 9 or recognition_only and 3 or 161),'incomplete recognition mutation reference')

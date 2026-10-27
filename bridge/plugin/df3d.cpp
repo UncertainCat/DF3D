@@ -2014,6 +2014,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           value["site_id"]=result->siteId;value["location_id"]=result->locationId;value["religion_id"]=result->religionId;
           value["tier"]=result->tier;value["rank"]=result->rank;value["worshippers"]=result->worshippers;
           value["priest_threshold"]=result->priestThreshold;value["high_priest_threshold"]=result->highPriestThreshold;
+          value["state"]=int(df3d_area::locationRecognitionState(*result));
           value["continuing_agreements"]=Json::Value(Json::arrayValue);
           for(auto id:result->continuingAgreements)value["continuing_agreements"].append(id);
         }

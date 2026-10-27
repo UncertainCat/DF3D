@@ -4836,5 +4836,318 @@
       "typed viewer transport",
       "revision-bound mutation command"
     ]
+  },
+  "recognition_eligibility_reference": {
+    "cases": [
+      {
+        "source": "build/stockpile-storage-native-location-recognition-eligibility-20261027-014329/result.json",
+        "result_sha256": "6dcdd9a17783659cfe3e134fa4c4b867bbe92a155beebe711f098be1cb7eaaf4",
+        "rows": [
+          {
+            "name": "TEMPLE-0-recognition-guidance-0",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 1,
+              "tier": 0,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "You can recognize a priesthood once this is a temple.",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "73ee066089ca5c044a9d9d758a9ba3424151966a2b42bf0ae28b3301b4a98235"
+          },
+          {
+            "name": "TEMPLE-0-recognition-guidance-1",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 2,
+              "tier": 1,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "You can recognize a high priest when this is a temple complex.",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "5179644536cb1fd682550eadd237d77a51bd4040a3873a61f1ad514f9525d66e"
+          },
+          {
+            "name": "TEMPLE-0-recognition-population-denied",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 54,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 3,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "High priest: 54 worshippers needed",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "7e3fad9cbab7caa171096e2707513e74568bd3eb62516f6f235387482ecb8e90"
+          },
+          {
+            "name": "TEMPLE-0-recognition-population-refused",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 54,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 3,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "High priest: 54 worshippers needed",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "7e3fad9cbab7caa171096e2707513e74568bd3eb62516f6f235387482ecb8e90"
+          },
+          {
+            "name": "TEMPLE-0-recognition-population-exact",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 53,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 5,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "Recognize high priest",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "6fe25fe4bef403c7ed2470bc76721f5234d54d2ae27f9316989459532cb7e92d"
+          },
+          {
+            "name": "TEMPLE-0-recognition-agreement-waiver",
+            "facts": {
+              "continuing_agreements": [
+                2147483646
+              ],
+              "high_priest_threshold": 54,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 5,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "Recognize high priest",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "6fe25fe4bef403c7ed2470bc76721f5234d54d2ae27f9316989459532cb7e92d"
+          },
+          {
+            "name": "TEMPLE-0-recognition-before",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 5,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "Recognize high priest",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "6fe25fe4bef403c7ed2470bc76721f5234d54d2ae27f9316989459532cb7e92d"
+          },
+          {
+            "name": "TEMPLE-0-recognition-after",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 2,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 0,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "5f58583a71a8239139dc1b744262d44904a0eb02e5111f387d9b6e0403edd2f1"
+          },
+          {
+            "name": "TEMPLE-0-recognition-repeat",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 2,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 0,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "5f58583a71a8239139dc1b744262d44904a0eb02e5111f387d9b6e0403edd2f1"
+          }
+        ]
+      },
+      {
+        "source": "build/stockpile-storage-native-location-recognition-first-20261027-014502/result.json",
+        "result_sha256": "05fcb3152ce78b89b0bed361853a5ad643f7ca6a6ba76127061cb10e3cf7300f",
+        "rows": [
+          {
+            "name": "TEMPLE-0-recognition-before",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 0,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 4,
+              "tier": 1,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "Recognize priesthood",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "df54434bf239c37e5dd7debc642b21fdecba4bf67ce82efe11c19fd64f6b89c9"
+          },
+          {
+            "name": "TEMPLE-0-recognition-after",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 2,
+              "tier": 1,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "You can recognize a high priest when this is a temple complex.",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "5179644536cb1fd682550eadd237d77a51bd4040a3873a61f1ad514f9525d66e"
+          },
+          {
+            "name": "TEMPLE-0-recognition-repeat",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "state": 2,
+              "tier": 1,
+              "valid": true,
+              "worshippers": 53
+            },
+            "native_text": "You can recognize a high priest when this is a temple complex.",
+            "rect": [
+              384,
+              196,
+              576,
+              36
+            ],
+            "rgb_sha256": "5179644536cb1fd682550eadd237d77a51bd4040a3873a61f1ad514f9525d66e"
+          }
+        ]
+      }
+    ],
+    "plugin_sha256": "d232475866efba93e7f2cfb110c38130644aa9160dff5463f7cdbe528be138f7",
+    "scope": "Primary recognition row states verified against native text and actual refusal: tiers0/1, population53 with requirement54/53, temporary continuing-agreement waiver, recognized state and first priesthood. Ineligible click preserves captured world effects; owned synthetic agreement removed and deleted before actual mutation. Original tier and threshold restored; source manifests unchanged and owned exits unsaved.",
+    "omissions": [
+      "secondary petition progress/warning rows",
+      "complete eligibility dependency revision and mutation API",
+      "typed viewer transport and rendered controls"
+    ]
   }
 }

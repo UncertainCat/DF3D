@@ -7,6 +7,7 @@
 #endif
 
 #include "PluginManager.h"
+#include "df/plant_raw.h"
 #include "construction_site_native.h"
 #include "tile_description_native.h"
 #include "stockpile_native.h"
@@ -82,6 +83,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#include "farm_native.h"
 #endif
 
 // DF3D mirror layer (generated header comes from schema/mirror.fbs via flatc;
@@ -1570,6 +1572,27 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(size_t i=1;i<4;++i)if(values[i]<0 || values[i]>32767)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           return df3d_management::printStockpileLinkTarget(out,values[0],int16_t(values[1]),int16_t(values[2]),int16_t(values[3]),values[4]!=0)?CR_OK:CR_FAILURE;
+        }
+        if(parameters[0]=="farm-eligibility-read") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t values[2]{};
+          for(size_t i=0;i<2;++i) {
+            const auto& raw=parameters[i+1];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          if(values[0]<0 || values[1]<0 || values[1]>32767)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(values[0]));
+          if(!farm || !df::plant_raw::find(values[1]))return CR_FAILURE;
+          const auto& native=df3d_production::farmFunctions();if(!native)return CR_FAILURE;
+          std::array<uint8_t,4> seasons{};
+          native.seasons(int16_t(values[1]),&seasons);
+          Json::Value result(Json::objectValue),flags(Json::arrayValue);
+          for(auto value:seasons)flags.append(value!=0);
+          result["building_id"]=values[0];result["crop_id"]=values[1];
+          result["seasons"]=std::move(flags);result["eligible"]=native.eligible(farm,values[1]);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="stockpile-tile-types-read") {
           if(parameters.size()!=3)return CR_WRONG_USAGE;

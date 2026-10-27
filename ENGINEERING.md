@@ -129,8 +129,34 @@ the chosen crop unchanged; clicking fallow sets only summer to-1. The cause of
 the red-row refusal still needs isolation. The adapter's numeric seed counts
 are not established as native availability semantics.
 
-Next compare independently owned semantic calls against this reference and
-extend it to mixed footprints, season boundaries and seed flags. Do not replace
+`farm_native.h` now exposes the two semantic readers behind
+`df3d farm-eligibility-read <building id> <crop id>`. The command resolves a live
+farm and valid plant ID; the routines receive that semantic building/ID and a
+caller-owned four-byte season output. They receive no selected sheet, season or
+native menu vector. The gate checks the supported PE identity and complete
+function bytes, including both immediate tile predicates; the four ranges have
+no base relocations. This diagnostic does not change the production adapter or
+management protocol80.
+
+Protected142754 verifies157 seed-bearing plant raws before opening the sheet
+and after all eight captured observations. Cold and warm results are identical,
+and native eligibility plus the requested season exactly matches menu membership
+for all four tabs. Four invalid-target requests are rejected. Farm, plotinfo,
+main-interface, GPS and RNG object/range guards remain byte-identical; those
+guards do not claim coverage of every reachable heap allocation. DF150556 exits
+unsaved with the source manifest unchanged. The fixture's `semantic_reference`
+retains the157 results, cases, input hashes and guard scope. This establishes
+membership and season flags on this underground footprint, not ordering,
+seed availability, warning colors, mutation rules or mixed-footprint behavior.
+
+MSVC build/install passes with bridge SHA256
+`23C46D4D0CF96B7989A1C6D84839842DD0AF4A6878310BEFC0703A412E2B770F`.
+Core passes cleanly in `build/qa/farm-native-semantics`. The initial build failed
+a Windows `EVENT_MAX` macro collision from the new header's include order;
+the corrected header is included after DFHack's EventManager declarations.
+
+Next extend the reference to mixed footprints, season boundaries and seed
+flags, and locate the remaining native list semantics. Do not replace
 the adapter with another reconstruction of the list builder. Verify ordering,
 mutation eligibility and lifecycle separately. No runtime replacement,
 building-management acceptance or launcher promotion follows from these

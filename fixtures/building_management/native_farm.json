@@ -1736,7 +1736,1923 @@
   "limitations": [
     "One existing underground farm, eight observations at1200x800; not mixed-footprint or modded-raw coverage.",
     "The red sweet-pod click was inert; this alone does not identify whether seed availability or the red warning caused refusal.",
-    "No independently owned native semantic calls tested yet; adapter output is retained to expose differences, not establish expected runtime behavior.",
-    "Screen text is ASCII-only and panel-bounded. Artwork remains in ignored captures, not this fixture."
-  ]
+    "Screen text is ASCII-only and panel-bounded. Artwork remains in ignored captures, not this fixture.",
+    "Adapter output is retained to expose differences, not establish expected runtime behavior. Semantic-reader coverage is scoped separately below."
+  ],
+  "semantic_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261027-142754",
+    "owned_df_pid": 150556,
+    "owned_exit_unsaved": true,
+    "source_manifest_unchanged": true,
+    "inputs": [
+      {
+        "Algorithm": "SHA256",
+        "Hash": "23C46D4D0CF96B7989A1C6D84839842DD0AF4A6878310BEFC0703A412E2B770F",
+        "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "DA789CF08187EBE723E8C5A32478F30C80F6A429EC3929B8AD3AECBB47E49C78",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "8E6A188C08633357053826BA66416582D2F589B4095F8594BF72BBD757C4E529",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-multi-discovery-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "174A5F63B12AF213D22900E0D85E8092898D80C2313CE53FCD27000A39B73F6E",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "68C3304E6220527F42DA85B8CA21A44FB3D203E0DC182FAAE9D60CCE7D7562FF",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\production.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "2395AE36A3E281947C1BB940EEF03EAD5694A1538272768FD9AD9639B442C04F",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-owner-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "9DE5FA5C1002FF21AD9728C9E3DB5C3C463EB76BDE9A3556947A1E9B64C7307E",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.ps1"
+      }
+    ],
+    "reader_sha256": "585e3cf7642211a1426b752fdea82748cfefee7ab1089ea1db900cc3764bb5b1",
+    "native_routines": {
+      "footprint_rva": "0x557770",
+      "seasons_rva": "0xaae1a0"
+    },
+    "seed_bearing_raw_count": 157,
+    "cold_before_sheet_and_eight_warm_observations_equal": true,
+    "invalid_requests_rejected": [
+      [
+        "-1",
+        "0"
+      ],
+      [
+        "227",
+        "-1"
+      ],
+      [
+        "227",
+        "32768"
+      ],
+      [
+        "2147483647",
+        "0"
+      ]
+    ],
+    "guarded_objects": [
+      "farm object",
+      "plotinfo object",
+      "main_interface object",
+      "gps object",
+      "RNG words/cursors/context"
+    ],
+    "rows": [
+      {
+        "building_id": 227,
+        "crop_id": 0,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 1,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 2,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 3,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 4,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 5,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 6,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 7,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 8,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 9,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 10,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 11,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 12,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 13,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 14,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 15,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 16,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 17,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 18,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 19,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 20,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 21,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 22,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 23,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 24,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 25,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 26,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 27,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 28,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 29,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 30,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 31,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 32,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 33,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 34,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 35,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 36,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 37,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 38,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 39,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 40,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 41,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 42,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 43,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 44,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 45,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 46,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 47,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 48,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 49,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 50,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 51,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 52,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 53,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 54,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 55,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 56,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 57,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 58,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 59,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 60,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 61,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 62,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 63,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 64,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 65,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 66,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 67,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 68,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 69,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 70,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 71,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 72,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 73,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 74,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 75,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 76,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 77,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 78,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 79,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 80,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 81,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 82,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 83,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 84,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 85,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 86,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 87,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 88,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 89,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 90,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 132,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 133,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 134,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 135,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 136,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 137,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 138,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 139,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 140,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 141,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 142,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 143,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 144,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 145,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 146,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 147,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 148,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 149,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 150,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 151,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 152,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 153,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 154,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 155,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 156,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 157,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 158,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 159,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 160,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 161,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 162,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 163,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 164,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 165,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 166,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 167,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 168,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 169,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 170,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 171,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 172,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 173,
+        "eligible": true,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 174,
+        "eligible": true,
+        "seasons": [
+          false,
+          true,
+          true,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 175,
+        "eligible": true,
+        "seasons": [
+          false,
+          true,
+          true,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 176,
+        "eligible": true,
+        "seasons": [
+          true,
+          true,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 177,
+        "eligible": true,
+        "seasons": [
+          true,
+          true,
+          true,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 178,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 179,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 181,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 182,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 183,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 185,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 186,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 187,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 188,
+        "eligible": true,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 189,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 190,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 191,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 192,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 193,
+        "eligible": false,
+        "seasons": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 198,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 200,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 216,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 220,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 221,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "building_id": 227,
+        "crop_id": 223,
+        "eligible": false,
+        "seasons": [
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    ],
+    "cases": [
+      {
+        "name": "farm-selected",
+        "selected_season": 1,
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true
+      },
+      {
+        "name": "farm-season-0",
+        "selected_season": 0,
+        "menu_crops": [
+          -1,
+          173,
+          188,
+          177,
+          176
+        ],
+        "guards_unchanged": true
+      },
+      {
+        "name": "farm-season-1",
+        "selected_season": 1,
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true
+      },
+      {
+        "name": "farm-season-2",
+        "selected_season": 2,
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177
+        ],
+        "guards_unchanged": true
+      },
+      {
+        "name": "farm-season-3",
+        "selected_season": 3,
+        "menu_crops": [
+          -1,
+          173,
+          188
+        ],
+        "guards_unchanged": true
+      },
+      {
+        "name": "farm-summer-before-choice",
+        "selected_season": 1,
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true
+      },
+      {
+        "name": "farm-summer-red-choice",
+        "selected_season": 1,
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true
+      },
+      {
+        "name": "farm-summer-fallow",
+        "selected_season": 1,
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "guards_unchanged": true
+      }
+    ],
+    "limitations": [
+      "One existing underground footprint; no mixed-footprint or modded-raw proof.",
+      "Validates eligibility membership and season flags, not native ordering, seed availability, display warnings or mutation rules.",
+      "Object guards cover object bytes, not all heap allocations reachable from those objects."
+    ]
+  }
 }

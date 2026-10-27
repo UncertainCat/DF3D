@@ -1122,8 +1122,26 @@ agreements and starts a replacement read: old rows never reappear, and the new
 observation is ready and empty. All three owned runs exit unsaved with both
 save manifests unchanged and only the known render-thread notice. Core and
 reader checks pass cleanly in `build/qa/continuing-agreements-lifecycle`.
-Producer-restart checks remain pending, as do the visible HUD and native
-visibility, sizing and interaction integration.
+Protected tracker-restart113152 replaces DF162548 with DF146692 while ticket14
+holds an unobserved success. The old ticket becomes unknown, reader rows and
+readiness clear, and only the ordinary construction Catalog is submitted
+automatically. Explicit activation reads the new fortress's empty continuing
+list; the unsaved diagnostic agreements do not cross the restart. Both save
+manifests remain unchanged, owned DF exits unsaved, and the sole diagnostic is
+the known render-thread notice. Core and reader checks pass cleanly in
+`build/qa/continuing-agreements-restart`.
+
+Native popup reference113436 closes Details and the chooser before hovering
+tracker rows. Heading, applicant and date all draw a separate Accepted petition
+popup; the unsupported blank row still draws its title. Native text rows are
+retained before screenshot acknowledgement. The OS screenshots lose the pointer
+and do not establish popup visual parity. The earlier Details-open hover probes
+therefore do not establish an inert tracker. `popup_reference` retains the text
+and audited bounds: columns-97 through columns-37, rows3 through20. This is a
+separate renderer path, not a main-hover enum. The whole renderer remains a
+prohibited runtime API; independent semantic helpers still need auditing.
+The visible HUD, popup provider and rendering, and native visibility, sizing
+and interaction integration remain unfinished.
 
 ## Native Location name editor discovery
 

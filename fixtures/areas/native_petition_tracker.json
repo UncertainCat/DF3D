@@ -28,7 +28,7 @@
   "gaps": [
     "Tracker scrolling, sizing and global visibility arbitration",
     "Map selection outside the panel and other input devices",
-    "Viewer, reader lifecycle and global visibility integration"
+    "Viewer HUD and global visibility integration; reader producer restart verified separately in ENGINEERING.md"
   ],
   "native_audit": {
     "renderer": "3d6950",
@@ -3523,6 +3523,477 @@
         "rows": [],
         "ticket": 15
       }
+    ]
+  },
+  "popup_reference": {
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-113436",
+    "result_sha256": "2e4c5851517172b1f7f150bbd07b811a199efe6d5e736207905b4566f3eace4d",
+    "status": "passed",
+    "owned_exit": "unsaved",
+    "source_manifest": "unchanged",
+    "evidence": "Native text rows retained before screenshot acknowledgement; OS PNGs lose the pointer and do not establish popup visual parity.",
+    "bounds_audit": {
+      "renderer_range": [
+        "3f7dda",
+        "3f92fe"
+      ],
+      "left": "columns - 97",
+      "right": "columns - 37",
+      "top": 3,
+      "bottom": 20
+    },
+    "cases": [
+      {
+        "name": "tracker-map-idle",
+        "pointer": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": ""
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": ""
+          },
+          {
+            "y": 8,
+            "text": ""
+          },
+          {
+            "y": 9,
+            "text": ""
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": ""
+          },
+          {
+            "y": 12,
+            "text": ""
+          },
+          {
+            "y": 13,
+            "text": ""
+          },
+          {
+            "y": 14,
+            "text": ""
+          },
+          {
+            "y": 15,
+            "text": ""
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": ""
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "name": "tracker-map-hover-heading",
+        "pointer": [
+          1070,
+          286,
+          133,
+          23
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": " Accepted petition:"
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": " Build a temple complex"
+          },
+          {
+            "y": 8,
+            "text": " for"
+          },
+          {
+            "y": 9,
+            "text": " The Bejeweled Creed."
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": " The associated zones must have enough value. (10000 )"
+          },
+          {
+            "y": 12,
+            "text": " A high priest must then be elevated."
+          },
+          {
+            "y": 13,
+            "text": ""
+          },
+          {
+            "y": 14,
+            "text": " Current temple location:"
+          },
+          {
+            "y": 15,
+            "text": " The Golden Shrine, 5675"
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": " Agreement date: 1st Obsidian, 106"
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "name": "tracker-map-hover-applicant",
+        "pointer": [
+          1070,
+          298,
+          133,
+          24
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": " Accepted petition:"
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": " Build a temple complex"
+          },
+          {
+            "y": 8,
+            "text": " for"
+          },
+          {
+            "y": 9,
+            "text": " The Bejeweled Creed."
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": " The associated zones must have enough value. (10000 )"
+          },
+          {
+            "y": 12,
+            "text": " A high priest must then be elevated."
+          },
+          {
+            "y": 13,
+            "text": ""
+          },
+          {
+            "y": 14,
+            "text": " Current temple location:"
+          },
+          {
+            "y": 15,
+            "text": " The Golden Shrine, 5675"
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": " Agreement date: 1st Obsidian, 106"
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "name": "tracker-map-hover-date",
+        "pointer": [
+          1070,
+          310,
+          133,
+          25
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": " Accepted petition:"
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": " Build a temple complex"
+          },
+          {
+            "y": 8,
+            "text": " for"
+          },
+          {
+            "y": 9,
+            "text": " The Bejeweled Creed."
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": " The associated zones must have enough value. (10000 )"
+          },
+          {
+            "y": 12,
+            "text": " A high priest must then be elevated."
+          },
+          {
+            "y": 13,
+            "text": ""
+          },
+          {
+            "y": 14,
+            "text": " Current temple location:"
+          },
+          {
+            "y": 15,
+            "text": " The Golden Shrine, 5675"
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": " Agreement date: 1st Obsidian, 106"
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "name": "tracker-map-hover-blank",
+        "pointer": [
+          1070,
+          250,
+          133,
+          20
+        ],
+        "interaction": {
+          "details_open": false,
+          "petitions_open": false,
+          "selected_agreement_id": 0,
+          "selected_location": 0
+        },
+        "popup_lines": [
+          {
+            "y": 3,
+            "text": ""
+          },
+          {
+            "y": 4,
+            "text": ""
+          },
+          {
+            "y": 5,
+            "text": " Accepted petition:"
+          },
+          {
+            "y": 6,
+            "text": ""
+          },
+          {
+            "y": 7,
+            "text": ""
+          },
+          {
+            "y": 8,
+            "text": ""
+          },
+          {
+            "y": 9,
+            "text": ""
+          },
+          {
+            "y": 10,
+            "text": ""
+          },
+          {
+            "y": 11,
+            "text": ""
+          },
+          {
+            "y": 12,
+            "text": ""
+          },
+          {
+            "y": 13,
+            "text": ""
+          },
+          {
+            "y": 14,
+            "text": ""
+          },
+          {
+            "y": 15,
+            "text": ""
+          },
+          {
+            "y": 16,
+            "text": ""
+          },
+          {
+            "y": 17,
+            "text": ""
+          },
+          {
+            "y": 18,
+            "text": ""
+          },
+          {
+            "y": 19,
+            "text": ""
+          },
+          {
+            "y": 20,
+            "text": ""
+          }
+        ]
+      }
+    ],
+    "gaps": [
+      "Guild and temple-tier variants, missing or fulfilled location requirements",
+      "Native semantic helper audit and owned provider",
+      "Popup styling and rendered viewer comparison",
+      "Timing, dismissal and interaction boundaries"
     ]
   }
 }

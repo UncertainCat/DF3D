@@ -1375,6 +1375,7 @@ func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
 	actions.completed.disconnect(observe)
 	write_json(evidence_prefix+"-restart-new-requests.json",new_requests)
 	for item in new_requests.values():
+		if not check(item.domain!="agreements" or not bool(item.request.get("tracker",false)),"replacement automatically submitted tracker work"):return
 		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit,Contract.AreaOperation.LocationRecognitionRead,Contract.AreaOperation.LocationRecognize,Contract.AreaOperation.LocationReligiousStaffRead,Contract.AreaOperation.LocationReligiousStaffRemove,Contract.AreaOperation.LocationReligiousCandidates,Contract.AreaOperation.LocationReligiousAssignmentRead,Contract.AreaOperation.LocationReligiousAssign,Contract.AreaOperation.LocationSpecializationRead,Contract.AreaOperation.LocationSpecializationSet,Contract.AreaOperation.LocationStaffAssignmentsRead],"replacement automatically submitted Location work"):return
 	if not check(model.identity.is_empty() and not editor.details_layer.visible,"replacement reopened quantity editor"):return
 	await capture(evidence_prefix+"_restart_retired")
@@ -1735,7 +1736,17 @@ func tracker_lifecycle(mode: String) -> void:
 		var reply:=await quantity_unobserved(ticket)
 		if stopped:return
 		if not check(reply.agreement.tracker and reply.agreement.tracker_rows==original,"tracker held receipt differs"):return
-	if mode=="late":
+	if mode=="restart":
+		await quantity_restart(ticket,"tracker")
+		if stopped:return
+		if not check(not reader.active and not reader.ready and reader.ticket==0 and reader.snapshot().is_empty(),"tracker restart retained old rows"):return
+		var current:=await native("religious_tracker",{})
+		if stopped:return
+		if not check(current.rows.is_empty(),"replacement fortress retained unsaved tracker fixture"):return
+		reader.set_active(true)
+		if not await wait_ui(func():return reader.ready,"replacement tracker observation"):return
+		if not check(reader.snapshot().is_empty(),"replacement tracker inherited old rows"):return
+	elif mode=="late":
 		reader.set_active(false)
 		await native("religious_tracker",{"restore":true})
 		if stopped:return

@@ -635,6 +635,24 @@ if recognition_case=='petitiontracker' then
   pixel(target[2],target[3]);assert(dfhack.gui.getCurViewscreen()==view,'tracker click changed native viewscreen')
   shot('click-'..target[1],true)
  end
+ -- Tracker hover uses a separate popup, suppressed by open management panels.
+ key('LEAVESCREEN');assert(not details.open and selector.open)
+ key('_MOUSE_R');assert(not selector.open)
+ key('_MOUSE_R')
+ shot('map-idle')
+ for _,target in ipairs{{'heading',1070,286},{'applicant',1070,298},{'date',1070,310},{'blank',1070,250}}do
+  local deadline=dfhack.getTickCount()+900
+  repeat
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=target[3]//12
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+  until dfhack.getTickCount()>=deadline
+  -- The frame wait can reset GPS mouse coordinates on the hidden desktop.
+  -- Reapply the intended pointer before capture snapshots its retained input.
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=target[3]//12
+  shot('map-hover-'..target[1],true)
+ end
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.
  -- Remove each owned pointer before destroying its allocation.

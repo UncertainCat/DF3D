@@ -4667,5 +4667,174 @@
       "other historical and unit side effects not covered by captured fields",
       "bridge command parity and lifecycle"
     ]
+  },
+  "recognition_bridge_read_reference": {
+    "cases": [
+      {
+        "case": "promote",
+        "source": "build/stockpile-storage-native-location-recognition-promote-20261027-013435/result.json",
+        "result_sha256": "50b521094f92e7b805649f87214a786866ed37ece62dc911ee806655614a2262",
+        "rows": [
+          {
+            "name": "TEMPLE-0-recognition-before",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            }
+          },
+          {
+            "name": "TEMPLE-0-recognition-after",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 2,
+              "religion_id": 383,
+              "site_id": 651,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            }
+          },
+          {
+            "name": "TEMPLE-0-recognition-repeat",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 2,
+              "religion_id": 383,
+              "site_id": 651,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            }
+          }
+        ]
+      },
+      {
+        "case": "empty",
+        "source": "build/stockpile-storage-native-location-recognition-empty-20261027-013502/result.json",
+        "result_sha256": "17e6c58aa7734b76261c64466b52bd10759d1e89769de4a1190885fc880d2052",
+        "rows": [
+          {
+            "name": "TEMPLE-0-recognition-before",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            }
+          },
+          {
+            "name": "TEMPLE-0-recognition-after",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 2,
+              "religion_id": 383,
+              "site_id": 651,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            }
+          },
+          {
+            "name": "TEMPLE-0-recognition-repeat",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 2,
+              "religion_id": 383,
+              "site_id": 651,
+              "tier": 2,
+              "valid": true,
+              "worshippers": 53
+            }
+          }
+        ]
+      },
+      {
+        "case": "first",
+        "source": "build/stockpile-storage-native-location-recognition-first-20261027-013529/result.json",
+        "result_sha256": "cf38691e66ca5e4963bb7c0f2302204275020a2bfc393f96af54035032c47225",
+        "rows": [
+          {
+            "name": "TEMPLE-0-recognition-before",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 0,
+              "religion_id": 383,
+              "site_id": 651,
+              "tier": 1,
+              "valid": true,
+              "worshippers": 53
+            }
+          },
+          {
+            "name": "TEMPLE-0-recognition-after",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "tier": 1,
+              "valid": true,
+              "worshippers": 53
+            }
+          },
+          {
+            "name": "TEMPLE-0-recognition-repeat",
+            "facts": {
+              "continuing_agreements": [],
+              "high_priest_threshold": 25,
+              "location_id": 0,
+              "priest_threshold": 10,
+              "rank": 1,
+              "religion_id": 383,
+              "site_id": 651,
+              "tier": 1,
+              "valid": true,
+              "worshippers": 53
+            }
+          }
+        ]
+      }
+    ],
+    "plugin_sha256": "d512ee59600a93ac54281c864aa3bfef4bb299dff10514af9cacafb0da528b70",
+    "management_protocol": 72,
+    "scope": "Diagnostic location-recognition-read; native worshipper count, copied current-site rank/configured thresholds/continuing agreements. Repeated reads stable and native UI/gps bytes plus full RNG unchanged. Negative/wrong-site/missing/non-temple targets rejected. Three owned unsaved runs preserve source manifests.",
+    "omissions": [
+      "nonempty continuing-agreement branches",
+      "population threshold and religion variants",
+      "typed viewer transport",
+      "revision-bound mutation command"
+    ]
   }
 }

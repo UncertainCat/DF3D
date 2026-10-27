@@ -8,6 +8,15 @@
 #include <vector>
 
 namespace df3d_area {
+// World facts for the staged recognition workflow. No menu state or mutation
+// permission is implied; the command transaction/typed transport is separate.
+struct LocationRecognitionFacts {
+  int32_t siteId=-1,locationId=-1,religionId=-1,tier=-1,rank=0,worshippers=0;
+  int32_t priestThreshold=0,highPriestThreshold=0;
+  std::vector<int32_t> continuingAgreements;
+};
+// Caller owns a DF safe point; returned data retains no native pointers.
+std::optional<LocationRecognitionFacts> observeNativeLocationRecognition(int32_t siteId,int32_t locationId);
 enum class LocationAccess : uint8_t { Visitors, Residents, Citizens, Members };
 struct LocationAccessFlags { bool visitors=false,residents=false,members=false; };
 // Native160005: members overrides visitors, which overrides residents.

@@ -26,10 +26,76 @@
 #include "df/abstract_building_contents.h"
 #include "df/plotinfost.h"
 #include "df/world_site.h"
+#include "df/abstract_building_templest.h"
+#include "df/entity_position.h"
+#include "df/agreement.h"
+#include "df/agreement_party.h"
+#include "df/agreement_details.h"
+#include "df/agreement_details_data_location.h"
+#include "df/agreement_details_type.h"
+#include "df/religious_practice_type.h"
+#include "df/historical_entity_type.h"
 #include <algorithm>
 #include <numeric>
 
 namespace df3d_area {
+std::optional<LocationRecognitionFacts> observeNativeLocationRecognition(int32_t siteId,int32_t locationId) {
+  if(siteId<0 || locationId<0 || !df::global::world || !df::global::plotinfo ||
+     !DFHack::Maps::IsValid() || siteId!=df::global::plotinfo->site_id)return std::nullopt;
+  auto* site=df::world_site::find(siteId);if(!site)return std::nullopt;
+  df::abstract_building* location=nullptr;
+  for(auto* candidate:site->buildings)if(candidate && candidate->id==locationId){location=candidate;break;}
+  if(!location || location->getType()!=df::abstract_building_type::TEMPLE)return std::nullopt;
+  if(location->flags.is_set(df::abstract_building_flags::DOES_NOT_EXIST) ||
+     location->flags.is_set(df::abstract_building_flags::WG_RUINED) ||
+     location->flags.is_set(df::abstract_building_flags::PWG_RUINED))return std::nullopt;
+  auto* temple=static_cast<df::abstract_building_templest*>(location);
+  if(temple->deity_type!=df::religious_practice_type::RELIGION_ENID)return std::nullopt;
+  auto* religion=df::historical_entity::find(temple->deity_data.Religion);
+  const auto* contents=temple->getContents();
+  if(!religion || religion->type!=df::historical_entity_type::Religion || !contents)return std::nullopt;
+  // Native2a6e00 is the semantic worshipper counter used by recognition input.
+  // Its first ABI argument is unused. It reads active units/HF relationships,
+  // including native eligibility helpers, not location_details/gps scratch.
+  static const bool compatible=[] {
+    if(!locationRefreshFunction())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    uint64_t hash=UINT64_C(14695981039346656037);
+    for(size_t i=0;i<0xba;++i){hash^=base[0x2a6e00+i];hash*=UINT64_C(1099511628211);}
+    return hash==UINT64_C(0x7ae7f14c285d7534);
+  }();
+  if(!compatible)return std::nullopt;
+  LocationRecognitionFacts result;
+  result.siteId=siteId;result.locationId=locationId;result.religionId=religion->id;result.tier=contents->location_tier;
+  // Native3b6c18 scans position codes and current-site assignments, including
+  // vacant slots. Holder and abstract-building assignment do not filter rank.
+  for(const auto* position:religion->positions.own) {
+    if(!position)return std::nullopt;
+    const int rank=position->code=="HIGH_PRIEST"?2:position->code=="PRIEST"?1:0;
+    if(rank<=result.rank)continue;
+    for(const auto* assignment:religion->positions.assignments) {
+      if(!assignment)return std::nullopt;
+      if(assignment->position_id==position->id && assignment->st_id==siteId){result.rank=rank;break;}
+    }
+  }
+  const auto& difficulty=df::global::plotinfo->main.custom_difficulty;
+  result.priestThreshold=difficulty.priesthood_unit_count;result.highPriestThreshold=difficulty.high_priesthood_unit_count;
+  using Count=int32_t (*)(void*,int32_t,int32_t);
+  const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+  result.worshippers=reinterpret_cast<Count>(const_cast<uint8_t*>(base)+0x2a6e00)(nullptr,1,religion->id);
+  // Native3b6e76 checks the first subject and its applicant party. Preserve
+  // continuing-agreement order; do not invent extra site/tier filters.
+  for(auto id:df::global::plotinfo->continuing_agreement_id) {
+    const auto* agreement=df::agreement::find(id);if(!agreement || agreement->details.empty())continue;
+    const auto* subject=agreement->details.front();if(!subject)return std::nullopt;
+    if(subject->type!=df::agreement_details_type::Location)continue;
+    const auto* data=subject->data.Location;if(!data)return std::nullopt;
+    const auto* applicant=binsearch_in_vector(agreement->parties,data->applicant);
+    if(applicant && std::binary_search(applicant->entity_ids.begin(),applicant->entity_ids.end(),religion->id))
+      result.continuingAgreements.push_back(id);
+  }
+  return result;
+}
 std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component,const std::string& queryCp437,int32_t language) {
   if(component>6 || !df::global::world || !DFHack::Maps::IsValid())return std::nullopt;
   // Native name-editor initialization calls this semantic selector builder,

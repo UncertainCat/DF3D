@@ -2000,6 +2000,25 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
+      if (parameters[0] == "location-recognition-read") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t ids[2]{};
+        for(size_t i=0;i<2;++i) {
+          const auto& text=parameters[i+1];
+          const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        const auto result=df3d_area::observeNativeLocationRecognition(ids[0],ids[1]);
+        Json::Value value(Json::objectValue);value["valid"]=result.has_value();
+        if(result) {
+          value["site_id"]=result->siteId;value["location_id"]=result->locationId;value["religion_id"]=result->religionId;
+          value["tier"]=result->tier;value["rank"]=result->rank;value["worshippers"]=result->worshippers;
+          value["priest_threshold"]=result->priestThreshold;value["high_priest_threshold"]=result->highPriestThreshold;
+          value["continuing_agreements"]=Json::Value(Json::arrayValue);
+          for(auto id:result->continuingAgreements)value["continuing_agreements"].append(id);
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
       if (parameters[0] == "location-affiliation-read") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t ids[2]{};

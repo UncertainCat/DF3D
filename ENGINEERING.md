@@ -631,6 +631,29 @@ still require observation. Native helpers9364d0,30ffb0,c30000 and76d4e0 do not
 individually implement recognition; a call from the input branch does not make
 one a ready-made semantic command.
 
+The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
+through `observeNativeLocationRecognition`. It validates the current site and
+existing religious temple, copies its site priesthood rank and configured
+population thresholds, and calls DF's semantic worshipper counter at2a6e00.
+The counter's complete186-byte body is checked against FNV1a7ae7f14c285d7534
+after the supported-build guard. Its unused receiver is null; no native UI
+object is passed. Rank includes vacant current-site assignments, matching the
+renderer. Continuing-agreement IDs follow native first-subject/applicant-party
+filtering and retain source order. These are facts, not a mutation authorization
+or a complete recognition-status receipt; no revision-bound action exists yet.
+The diagnostic command uses DFHack's suspended-core command path and retains
+no native pointers in its result. It adds no management wire fields or UI exposure.
+`recognition_bridge_read_reference` records promotion/empty/first runs013435,
+013502 and013529 on20261027. They verify rank transitions1->2,1->2,0->1,
+native worshippers53, thresholds10/25, stable repeated results, unchanged native
+main-interface/gps bytes and full RNG, plus rejection of negative, wrong-site,
+missing and non-temple targets. Each owned run preserves the source and exits
+unsaved. MSVC plugin build and root/core19/19 pass; core evidence is
+`build/qa/location-recognition-bridge-read`. Installed plugin SHA256 is
+`d512ee59600a93ac54281c864aa3bfef4bb299dff10514af9cacafb0da528b70`, protocol72.
+Nonempty agreement and population-variation branches still need live evidence.
+Typed transport, complete eligibility/receipt binding and mutation remain pending.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

@@ -555,6 +555,31 @@ local function recognition_state()
   for _,profile in ipairs(link.ab_profile)do item.ab_profile[#item.ab_profile+1]={id=profile.id,purpose_flags=profile.purpose_flag.whole}end
   result.site_links[#result.site_links+1]=item
  end
+ local guards={};local rng_before=rng_snapshot()
+ for _,object in ipairs{m,g}do
+  local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+  guards[#guards+1]={bytes=bytes,address=at,size=n}
+ end
+ local function read()
+  local text,code=dfhack.run_command_silent('df3d','location-recognition-read',tostring(df.global.plotinfo.site_id),tostring(temple.id))
+  assert(code==0,text);return require('json').decode(text)
+ end
+ result.bridge=read();assert(result.bridge.valid,'recognition facts unavailable')
+ assert(require('json').encode(result.bridge)==require('json').encode(read()),'recognition read unstable')
+ assert(result.bridge.religion_id==religion.id and result.bridge.tier==temple:getContents().location_tier)
+ assert(result.bridge.worshippers==53,'native worshipper counter mismatch')
+ assert(result.bridge.priest_threshold==df.global.plotinfo.main.custom_difficulty.priesthood_unit_count)
+ assert(result.bridge.high_priest_threshold==df.global.plotinfo.main.custom_difficulty.high_priesthood_unit_count)
+ for _,target in ipairs{{-1,temple.id},{df.global.plotinfo.site_id+1,temple.id},{df.global.plotinfo.site_id,-1},{df.global.plotinfo.site_id,2147483647},{df.global.plotinfo.site_id,1}}do
+  local text,code=dfhack.run_command_silent('df3d','location-recognition-read',tostring(target[1]),tostring(target[2]))
+  assert(code==0 and not require('json').decode(text).valid,'invalid recognition target accepted')
+ end
+ for _,guard in ipairs(guards)do
+  assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'recognition observation changed native UI/gps')
+  df.delete(guard.bytes)
+ end
+ assert(require('json').encode(rng_before)==require('json').encode(rng_snapshot()),'recognition observation consumed RNG')
+ result.bridge_ui_rng_unchanged=true
  return result
 end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=recognition_case=='first' and 1 or 2
@@ -562,6 +587,8 @@ local ok,err=xpcall(function()
  local before=capture('TEMPLE-0-recognition-before',temple);before.recognition=recognition_state()
  pixel(500,214)
  local after=capture('TEMPLE-0-recognition-after',temple);after.recognition=recognition_state()
+ assert(before.recognition.bridge.rank==(recognition_case=='first' and 0 or 1),'initial semantic priesthood rank mismatch')
+ assert(after.recognition.bridge.rank==(recognition_case=='first' and 1 or 2),'recognized semantic priesthood rank mismatch')
  after.recognition.new_events={}
  for i=before.recognition.event_count,#df.global.world.history.events-1 do
   local event=df.global.world.history.events[i]

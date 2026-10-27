@@ -677,6 +677,24 @@ values across Godot/Lua JSON rather than treating1056 and1056.0 as different.
 This is transport/effect acceptance; rendered controls and disconnect/late-reply
 specialization workflows remain unverified.
 
+location_specialization_workflow.gd owns an explicit toggle gesture against an
+exact current Details row and displayed specialization receipt. It reads a fresh
+native receipt before sending the explicit opposite state once; a changed unit,
+HF, target, eligibility or displayed state prevents mutation. Completion requires
+matching identity and the desired state before refreshing Details. Generation,
+target and ticket guards retire closed/replaced/session-lost work; unsuccessful
+or potentially sent edits block another gesture on that same Details owner.
+The caller must obtain fresh displayed facts and wire the native controls; this
+component is not yet connected to LocationDetailsView.
+
+Controlled location-specialization-workflow-final core/engine checks cover both
+row types, exact wide revisions, explicit zero for reverse edits, duplicate
+gestures, malformed/changed receipts, refusal/Unknown behavior, synchronous owner
+cancellation, queued and sent read/edit closure, late success on another location
+and epoch replacement. Queued-edit closure is observed in the workflow changed
+callback before the service can dispatch in the same poll. These tests establish
+ownership behavior, not rendered or live disconnect acceptance.
+
 Protected actionspecialization081207 matches native080737 for both priest5813
 and performer6536, including every captured flag/labor entry and exact restoration
 after a fresh reverse request. Invalid identities, zero revision, no-op requests,

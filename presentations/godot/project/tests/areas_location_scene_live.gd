@@ -1532,6 +1532,9 @@ func recognition_restart() -> void:
 
 func religious_staff_route(locations: Array) -> void:
 	step="religious staff scene entry"
+	var lifecycle:=FileAccess.get_file_as_string(directory+"/religious-staff-scene.txt").strip_edges()
+	var setup:=await native("religious_setup",{"absent":lifecycle=="absent"})
+	if stopped:return
 	var index:=-1
 	for i in locations.size():
 		if int(locations[i].id)==0:index=i;break
@@ -1539,8 +1542,6 @@ func religious_staff_route(locations: Array) -> void:
 	await click_control(editor.locations_view.choices[index].get_node("Details"))
 	var details=editor.details_view
 	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and details.recognition_workflow.recognition.phase==details.recognition_workflow.recognition.Phase.Ready,"religious Details entry"):return
-	var setup:=await native("religious_setup")
-	if stopped:return
 	var view=details.staff_view
 	var row_index:=-1
 	for i in view.rows.size():
@@ -1548,7 +1549,9 @@ func religious_staff_route(locations: Array) -> void:
 	if not check(row_index>=view.first and row_index<view.first+int(view.geometry.visible_count),"religious holder not visible"):return
 	var point: Vector2=view.global_position+Vector2((view.row_columns()-4)*8+16,(int(view.geometry.first_y)-6+(row_index-view.first)*3)*12+18)
 	await capture("religious_staff_before")
-	var lifecycle:=FileAccess.get_file_as_string(directory+"/religious-staff-scene.txt").strip_edges()
+	if lifecycle=="absent":
+		var held: Dictionary=view.rows[row_index]
+		if not check(int(held.unit_id)==-1 and int(held.histfig_id)==int(setup.holder_id) and int(held.names.holder_kind)==2,"historical holder fallback missing"):return
 	if lifecycle=="restart":
 		await religious_staff_restart(point,int(setup.holder_id),row_index);return
 	if lifecycle=="late":
@@ -1562,6 +1565,11 @@ func religious_staff_route(locations: Array) -> void:
 	var effects:=await native("religious_applied")
 	if stopped:return
 	await capture("religious_staff_after")
+	if lifecycle=="absent":
+		write_json("religious-absent-scene-evidence.json",{"holder_id":setup.holder_id,"holder_kind":2,"unit_id":-1,"removed":true,"native_effects":effects})
+		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		if not await wait_ui(func():return editor.details_origin.is_empty(),"historical holder Details Back"):return
+		return
 	step="religious vacant repeat"
 	await native("religious_guard")
 	await pointer_click(point)

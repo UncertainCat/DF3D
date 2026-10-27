@@ -27,6 +27,9 @@ local function capture()
  return state
 end
 if request.op=='religious_setup' then
+ if request.absent then
+  local holder=assert(df.historical_figure.find(assignment.histfig));holder.unit_id=-1
+ end
  assert(assignment.histfig>=0);_G.df3d_religious_holder=assignment.histfig;result.holder_id=assignment.histfig;result.before=capture()
  _G.df3d_religious_before=result.before
 elseif request.op=='religious_guard' then

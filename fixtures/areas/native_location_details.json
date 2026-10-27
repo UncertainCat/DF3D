@@ -14114,7 +14114,20 @@
         "year": 106
       }
     ],
-    "scope": "Paused diagnostic holder unit_id=-1; native nil-unit lookup, not full death/departure simulation or rendered viewer acceptance.",
+    "scope": "Paused diagnostic holder unit_id=-1; native nil-unit lookup, not full death/departure simulation. Removal is verified semantically and through the rendered viewer; replacement remains unverified.",
+    "rendered_reference": {
+      "run": "build/areas-acceptance-20261027-075530",
+      "status": "passed_with_known_issues",
+      "known_diagnostic": "godot-separate-thread-notice",
+      "holder_kind": 2,
+      "unit_id": -1,
+      "row_crop_xywh": [384, 340, 576, 36],
+      "compared_rgb_pixels": 20736,
+      "different_rgb_pixels": 0,
+      "pointer_removal_native_effects_verified": true,
+      "save_manifests_unchanged": 2,
+      "owned_exit_without_save": true
+    },
     "source_preserved": true,
     "owned_exit_without_save": true
   }

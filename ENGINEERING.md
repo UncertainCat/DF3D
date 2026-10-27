@@ -628,8 +628,14 @@ removable with holder9375 and unit-1. Removal matches captured native historical
 links, assignment, recognition and history effects, while restored unit association
 invalidates the old receipt. Invalid identities/revisions, stale dependencies and
 repeat removal remain refused. Both runs pass, preserve the source and exit owned
-DF unsaved. Absent-unit holder replacement and rendered historical-holder rows
-are separate from this semantic removal evidence.
+DF unsaved. Rendered run areas-acceptance-20261027-075530 additionally verifies
+the historical-holder name without a portrait/frame, its enabled remove button,
+and actual pointer removal with independently checked native history effects.
+The complete 576x36 holder row matches the native075231 capture with zero
+different RGB pixels (20,736 compared). Both save manifests remain unchanged;
+owned DF exits unsaved. The run passes with only the known rendering-thread
+notice. Absent-unit holder replacement remains unverified; this fixture still
+isolates a missing unit association rather than simulating departure or death.
 
 Native assignspypriest074638 and semantic actionassignspypriest075018 exercise
 the follow-up ESPIONAGE responsibility at position offset0x341. The responsibility

@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -559,6 +559,34 @@ if recognition_case=='new' or recognition_case=='positionnew' then
  assert(changed==1,'unexpected priest template fixture count')
 end
 pixel(664,238);assert(details.open and details.selected_ab==temple)
+if recognition_case=='specialization' then
+ local function state()
+  local result={}
+  for _,unit in ipairs(df.global.world.units.active)do
+   local labors={};for i=0,df.unit_labor._last_item do labors[#labors+1]=unit.status.labors[i]end
+   result[tostring(unit.id)]={flags4=unit.flags4.whole,specialized=unit.flags4.only_do_assigned_jobs,labors=labors}
+  end
+  return result
+ end
+ local before=state()
+ capture('TEMPLE-specialization-before',temple).units=before
+ for _,target in ipairs{{'priest',358},{'performer',394}}do
+  local original=state()
+  pixel(784,target[2])
+  local row=capture('TEMPLE-specialization-'..target[1]..'-toggle',temple)
+  row.changed={};local after=state()
+  for id,value in pairs(after)do
+   if value.specialized~=original[id].specialized then
+    row.changed[#row.changed+1]={unit_id=tonumber(id),before=original[id],after=value}
+   end
+  end
+  assert(#row.changed==1,'native specialization must toggle one unit')
+  pixel(784,target[2]);local restored=state()
+  assert(require('json').encode(restored)==require('json').encode(original),'native specialization did not restore')
+  capture('TEMPLE-specialization-'..target[1]..'-restored',temple)
+ end
+ assert(#records==5);return
+end
 local function recognition_state()
  local function values(vector)
   local result={};for _,value in ipairs(vector)do result[#result+1]=value end;return result

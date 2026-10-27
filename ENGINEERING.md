@@ -620,6 +620,25 @@ reacquires the native unit-list widget after reopening; retaining an earlier
 widget pointer caused an initial diagnostic cursor assertion, not a product bug.
 Bounded military_assignment_reference records provenance and scope.
 
+Location staff specialization is still missing from the viewer. Native reference
+specialization080737 clicks the toggle at x784 on priest and performer rows,
+then clicks again to restore each state. Priest5813 changes specialized true to
+false with 82 labor entries changed; performer6536 changes false to true with
+87 labor entries changed. All captured flags4 and labor arrays restore exactly.
+The protected run passes, preserves the source and exits owned DF unsaved.
+This is native reference evidence, not acceptance of a DF3D implementation.
+
+Supported executable input at RVA3300cf..330164 rejects professions103/104,
+calls caste predicate1376500 and exclusion predicate13b99b0, flips flags4 bit10,
+then calls labor recalculation4390d0. The semantic predicates and full labor
+routine already have pinned wrappers in location_religious_candidates_native.h
+and location_staff_mutation_native.h. Use those semantic routines; do not call
+the input handler or borrow widget state. Renderer3b84e9..3b8678 uses the same
+eligibility checks, flag and tooltip IDs259/260. Adjacent occupation indicators
+are a separate renderer path beginning3b867d, still requiring complete mapping.
+The captured native effect includes labor recalculation; a flag-only mutation
+would be incomplete. Fixture specialization_reference records the bounded cases.
+
 Native removeabsentpriest075231 and semantic actionremoveabsentpriest075305 cover
 removal with the historical holder's unit association set to-1 in a paused clone.
 This isolates native nil-unit lookup without deleting unrelated live unit records;

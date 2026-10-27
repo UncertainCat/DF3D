@@ -78,6 +78,34 @@ std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint
   }
   return result;
 }
+std::optional<LocationNameWord> chooseNativeLocationNameWord(uint8_t displayedComponent,const std::string& queryCp437) {
+  const auto choices=observeNativeLocationNameWords(displayedComponent,queryCp437);
+  if(!choices || choices->empty())return std::nullopt;
+  static const bool compatible=[] {
+    auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    uint64_t h=UINT64_C(14695981039346656037);
+    for(size_t i=0;i<0x163;++i){h^=base[0xd35ee0+i];h*=UINT64_C(1099511628211);}
+    return h==UINT64_C(0xc1e4fe91eb73c848);
+  }();
+  if(!compatible)return std::nullopt;
+  df::language_word_table table;
+  const auto slot=static_cast<df::language_word_table_index>(0);
+  for(const auto& choice:*choices) {
+    table.words[slot].push_back(choice.word);
+    table.parts[slot].push_back(static_cast<df::part_of_speech>(choice.partOfSpeech));
+  }
+  // Native nonempty selector uses the same eb68b0 RNG/bucket calculation as
+  // name-editor Random1ff79c..1ff82b. Own both vectors and outputs; the helper's
+  // empty-table fallback is intentionally unreachable. A singleton draws no RNG.
+  using Choose=void(__fastcall*)(df::language_word_table*,int32_t*,int16_t*,int32_t);
+  const auto choose=reinterpret_cast<Choose>(reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr))+0xd35ee0);
+  int32_t word=-1;int16_t part=-1;choose(&table,&word,&part,0);
+  const auto found=std::find_if(choices->begin(),choices->end(),[&](const auto& row) {
+    return row.word==word && row.partOfSpeech==part;
+  });
+  if(found==choices->end())return std::nullopt;
+  return *found;
+}
 std::optional<LocationDetailsCore> observeNativeLocationDetailsCore(int32_t siteId,int32_t id) {
   if(siteId<0 || id<0 || !df::global::plotinfo || !DFHack::Maps::IsValid() ||
       siteId!=df::global::plotinfo->site_id)return std::nullopt;

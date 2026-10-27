@@ -169,12 +169,12 @@ Modified-key/clipboard input remains outside this evidence.
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout
 reference needed to implement the unfinished Details rename action. Protected
 `stockpile_storage_native.ps1 -LocationNames` run
-`build/stockpile-storage-native-location-names-20261026-211934` captures85 states:
+`build/stockpile-storage-native-location-names-20261026-212747` captures85 states:
 entry/Back across six locations, all seven tavern components' Clear/word/Random
 actions, filter focus/ALE/AL/Enter, edited Back/reopen and whole-name Random/Done
 for all six locations, plus filtered/empty lists across all seven components and
 cross-component Random. Entry alone preserves names; changes apply immediately
-and both Back and Done retain them. DF137580 exits unsaved, source unchanged.
+and both Back and Done retain them. DF144648 exits unsaved, source unchanged.
 
 The rename icon opens `name_creator` in LOCATION_NAME context3 with a pointer to
 the selected location's language_name and namer entity245 in this fixture.
@@ -197,7 +197,7 @@ against pinned0x1fc330; the provider never calls that UI helper. The protected
 word/part-of-speech pairs and English forms across29 native cases and leaves the
 main-interface and GPS structures unchanged. AL counts across components are
 139,211,81,81,40,112,121; ZZZZ produces seven empty lists.
-MSVC and core19/19 pass (`build/qa/location-name-filter`). Management70 remains unchanged; no product
+MSVC and core19/19 pass (`build/qa/location-name-pick`). Management70 remains unchanged; no product
 transport or rename control is exposed yet.
 
 Capture found a DFHack binding error: name_creator.word_index_asp is declared
@@ -210,6 +210,15 @@ comparisons are not acceptance. This is a binding defect, not a native DF bug.
 Per-component Random uses the currently displayed filtered list and writes the
 clicked component without changing selection. With Of X selected and AL active,
 clicking Front Compound Random changes only the front word to an Of X choice.
+`chooseNativeLocationNameWord` calls native selector0xd35ee0 using independently
+owned vectors containing that displayed component/filter pool. Its nonempty
+branch uses the same native RNG and bucket calculation as the editor's inline
+Random action. Eight protected comparisons match the chosen word/part and all
+624 RNG words, stream and cursor; bridge calls leave UI, GPS and name bytes
+unchanged. RNG snapshot/restore exists only in the controlled diagnostic, never
+in this runtime provider. Empty pools are rejected before the helper's unrelated
+fallback can run. Singleton/refill-boundary acceptance and location writes remain
+unfinished; this diagnostic selection capability does not expose a Random UI.
 Native whole-name handlers931860/a92860 are located but still require ownership
 and effect audits. Random with an empty list, scrolling, physical Escape, native
 language display columns, typed mutations and the rendered editor remain

@@ -63,6 +63,9 @@ std::optional<LocationDetailsCore> observeNativeLocationDetailsCore(int32_t site
 struct LocationNameWord { int32_t word=-1,partOfSpeech=-1; std::string english; };
 // Native word-selector construction with independently owned input/output.
 std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component,const std::string& queryCp437={});
+// Consumes DF RNG for a nonempty displayed component/filter pool. Does not write
+// a location name. Empty-pool native input behavior is not yet accepted.
+std::optional<LocationNameWord> chooseNativeLocationNameWord(uint8_t displayedComponent,const std::string& queryCp437={});
 // Native Details entry refreshes semantic caches; ordinary reads/renders do not.
 // Caller owns a safe point. This does not populate staffing slots or open any UI.
 // Returns false without writes for an invalid identity or unsupported executable.

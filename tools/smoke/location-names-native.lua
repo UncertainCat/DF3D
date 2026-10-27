@@ -2,6 +2,21 @@
 local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local m=df.global.game.main_interface;local details=m.location_details;local creator=m.name_creator
+local function rng_snapshot()
+ -- Controlled comparison only; runtime never snapshots or restores RNG.
+ local base=dfhack.internal.getImageBase()
+ local context=df.reinterpret_cast('int16_t',base+0x2159084).value
+ assert(context>=0 and context<16,'unexpected RNG context')
+ local state={context=context,cursor=df.reinterpret_cast('uint32_t',base+0x2131b30+context*4).value,words={}}
+ for i=0,623 do state.words[#state.words+1]=df.reinterpret_cast('uint32_t',base+0x234e990+context*0x9c0+i*4).value end
+ return state
+end
+local function restore_rng(state)
+ local base=dfhack.internal.getImageBase()
+ assert(df.reinterpret_cast('int16_t',base+0x2159084).value==state.context,'RNG context changed')
+ df.reinterpret_cast('uint32_t',base+0x2131b30+state.context*4).value=state.cursor
+ for i,value in ipairs(state.words)do df.reinterpret_cast('uint32_t',base+0x234e990+state.context*0x9c0+(i-1)*4).value=value end
+end
 local function word_part(index)
  -- DF's1fc330 copies and indexes this vector in4-byte units. The current
  -- DFHack name_creator binding incorrectly declares vector<part_of_speech>
@@ -72,6 +87,30 @@ local function capture(label,location)
  while true do local ack=io.open(out..'/ack-'..label);if ack then ack:close();break end;assert(dfhack.getTickCount()<limit,'capture timeout');script.sleep(1,'frames')end
  return row
 end
+local function random_component(label,location,target)
+ local before=rng_snapshot()
+ local guards={}
+ for _,object in ipairs{m,g,location:getName()}do
+  local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+  guards[#guards+1]={bytes=bytes,address=at,size=n}
+ end
+ local text,code=dfhack.run_command_silent('df3d','location-name-pick',tostring(creator.cur_name_place),dfhack.df2utf(creator.cull_str))
+ assert(code==0,text);local picked=require('json').decode(text)
+ assert(picked.valid,'native selector rejected nonempty list')
+ local after=rng_snapshot()
+ for _,guard in ipairs(guards)do
+  assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'native pick changed UI/name')
+  df.delete(guard.bytes)
+ end
+ restore_rng(before)
+ pixel(608,142+36*target)
+ local native_after=rng_snapshot()
+ assert(require('json').encode(after)==require('json').encode(native_after),'component Random RNG mismatch')
+ assert(location:getName().words[target]==picked.word and location:getName().parts_of_speech[target]==picked.part,'component Random choice mismatch')
+ local row=capture(label,location)
+ row.bridge_random={word=picked.word,part=picked.part,target=target,displayed_component=creator.cur_name_place,
+  rng_identical=true,ui_and_name_unchanged=true}
+end
 m.bottom_mode_selected=-1;key('D_CIVZONE');m.civzone.cur_bld=assert(df.building.find(23));view:render(dfhack.getTickCount())
 pixel(336,190);local selector=m.location_selector;assert(selector.open,'chooser did not open')
 local choices={};for _,v in ipairs(selector.valid_ab)do choices[#choices+1]=v end
@@ -101,13 +140,13 @@ for i,location in ipairs(choices)do
    pixel(476,142+36*part);capture(prefix..'-part-'..part..'-selected',location)
    pixel(668,142+36*part);capture(prefix..'-part-'..part..'-clear',location)
    pixel(756,178);capture(prefix..'-part-'..part..'-first-word',location)
-   pixel(608,142+36*part);capture(prefix..'-part-'..part..'-random',location)
+   random_component(prefix..'-part-'..part..'-random',location,part)
   end
   pixel(832,142);capture(prefix..'-filter-focus',location)
   key('STRING_A097');key('STRING_A108');key('STRING_A101');capture(prefix..'-filter-ale',location)
   key('STRING_A000');capture(prefix..'-filter-al',location)
   key('SELECT');capture(prefix..'-filter-enter',location)
-  pixel(608,142);capture(prefix..'-filtered-other-component-random',location)
+  random_component(prefix..'-filtered-other-component-random',location,0)
   for part=0,6 do pixel(476,142+36*part);capture(prefix..'-matrix-al-'..part,location)end
   pixel(832,142);key('STRING_A000');key('STRING_A000')
   for n=1,4 do key('STRING_A122')end

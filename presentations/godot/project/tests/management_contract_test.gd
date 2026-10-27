@@ -576,7 +576,7 @@ func reject_agreement(request: Dictionary, message: String) -> void:
 	assert(world.last_error() == message)
 
 func test_agreements() -> void:
-	for invalid in [{"action":36,"tracker":1},{"action":37,"id":1,"tracker":true},{"action":36,"tracker":true,"query":"x"},{"action":36,"tracker":true,"pending_only":true},{"action":36,"tracker":true,"before_id":1}]:
+	for invalid in [{"action":36,"tracker":1},{"action":37,"id":-1,"tracker":true},{"action":36,"tracker":true,"query":"x"},{"action":36,"tracker":true,"pending_only":true},{"action":36,"tracker":true,"before_id":1}]:
 		assert(world.management_request("agreements",invalid)==0)
 	reject_agreement({"action":37}, "Missing management field: id")
 	reject_agreement({"action":37,"id":-1}, "invalid agreement inspection")

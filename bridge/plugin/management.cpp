@@ -653,7 +653,9 @@ void publish() {
   auto tradeResult=m::CreateTradeState(b,b.CreateVector(td),b.CreateVector(tc),b.CreateVector(tg),trade.nextCursor,trade.selectedDepot,b.CreateString(trade.detail));
   std::vector<flatbuffers::Offset<m::ContinuingAgreementRow>> trackerRows;
   for(const auto& row:agreements.trackerRows)trackerRows.push_back(m::CreateContinuingAgreementRow(b,row.agreementId,row.subjectId,row.entityId,row.entityType,row.tier,row.profession,row.year,row.yearTick,b.CreateString(row.heading),b.CreateString(row.applicant),b.CreateString(row.date)));
-  auto agreementResult=m::CreateAgreementState(b,b.CreateVector(agreementRows),agreements.nextBeforeId,agreements.pendingOnly,b.CreateString(agreements.detail),agreements.tracker,b.CreateVector(trackerRows));
+  flatbuffers::Offset<m::ContinuingAgreementDetails> trackerDetails;
+  if(agreements.trackerDetails) {const auto& d=*agreements.trackerDetails;trackerDetails=m::CreateContinuingAgreementDetails(b,d.requiredValue,d.matchingLocations,d.locationId,d.locationValue,d.locationTier,d.siteAvailable,d.tierMet,b.CreateString(d.locationName));}
+  auto agreementResult=m::CreateAgreementState(b,b.CreateVector(agreementRows),agreements.nextBeforeId,agreements.pendingOnly,b.CreateString(agreements.detail),agreements.tracker,b.CreateVector(trackerRows),trackerDetails);
   auto creatureResult=creature_data::build(b,creature);
   flatbuffers::Offset<m::WorldHover> terrainResult;
   if(worldHover) {
@@ -2327,6 +2329,17 @@ void runPaintCounts(const m::AreaRequest& a) {
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->action()==m::ManagementAction::AgreementInspect && r->agreement() && r->agreement()->tracker()) {
+    message.clear();status=m::ManagementStatus::Rejected;agreements={};
+    auto facts=df3d_area::observeNativeContinuingAgreementDetails(r->agreement()->id());
+    if(facts) {
+      auto& row=facts->agreement;agreements.tracker=true;
+      agreements.trackerRows.push_back({row.agreementId,row.subjectId,row.entityId,row.entityType,row.tier,row.profession,row.year,row.yearTick,std::move(row.heading),std::move(row.applicant),std::move(row.date)});
+      agreements.trackerDetails=ContinuingAgreementDetails{facts->requiredValue,facts->matchingLocations,facts->locationId,facts->locationValue,facts->locationTier,facts->siteAvailable,facts->tierMet,std::move(facts->locationName)};
+      status=m::ManagementStatus::Ok;
+    }
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::AgreementList && r->agreement() && r->agreement()->tracker()) {
     message.clear();status=m::ManagementStatus::Rejected;agreements={};
     auto rows=df3d_area::observeNativeContinuingAgreements();size_t budget=0;

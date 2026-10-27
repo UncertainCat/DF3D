@@ -1195,9 +1195,27 @@ Repeated reads match. Byte guards cover UI/GPS, current site, its entity links,
 buildings and contents, plus the diagnostic agreement allocations; all remain
 unchanged. Owned DF157652 exits unsaved with source unchanged. Fixture
 `popup_provider_reference` retains the facts, guard scope and installed plugin
-hash. Core passes in `build/qa/petition-popup-provider`. Typed popup transport,
-the visible HUD and popup rendering, and native visibility, sizing and
-interaction integration remain unfinished.
+hash. Core passes in `build/qa/petition-popup-provider`.
+
+Management80 adds popup inspection with AgreementInspect, tracker=true and a
+specific continuing agreement ID. Successful replies contain one tracker row
+and required `tracker_details`: required value, matching count, selected
+location identity/name/value/tier, site availability and tier completion.
+Lists exclude popup facts. Validators reject missing or incoherent facts,
+wrong result modes and fabricated fields on blank applicant types. Rejected
+inspection carries no popup. Bridge, world model and Godot preserve all fields;
+old recordings cannot infer them. Rebuild/install both version80 peers together.
+Core, management contract and agreement fixture checks pass cleanly in
+`build/qa/petition-popup-contract80`, including15 popup reply variants and
+tracker request validation. MSVC builds the matching plugin.
+Protected tracker120344 compares all eight popup fields and the echoed row
+through the actual Godot action service for blank, temple and guild applicants.
+Inspection of the removed temple agreement rejects without retained facts.
+Native UI/religious guards pass; owned DF156836 exits unsaved with both save
+manifests unchanged. This run is passed_with_known_issues for the render-thread
+notice only. `popup_transport_reference` retains the plugin hash and facts.
+Popup reader lifecycle, the visible HUD and popup rendering, and native
+visibility, sizing and interaction integration remain unfinished.
 
 ## Native Location name editor discovery
 

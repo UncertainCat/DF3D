@@ -3205,7 +3205,7 @@ TEST_CASE("Tracker requests exclude history filters and inspection authority") {
     if(variant==5)r.agreement.id=1;
     flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
     const auto* q=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
-    CAPTURE(variant);CHECK(q->agreement()->tracker());CHECK(bool(wire::validateConstructionRequest(*q))==(variant!=0));
+    CAPTURE(variant);CHECK(q->agreement()->tracker());CHECK(bool(wire::validateConstructionRequest(*q))==(variant>1));
   }
 }
 TEST_CASE("Tracker replies distinguish empty success from absence and preserve blank slots") {
@@ -3226,6 +3226,31 @@ TEST_CASE("Tracker replies distinguish empty success from absence and preserve b
       const auto decoded=codec::decodeAgreement(state->agreement());CHECK(decoded.tracker);
       REQUIRE(decoded.trackerRows.size()==(variant==1?0:2));
       if(!variant){CHECK(decoded.trackerRows[0].applicant.empty());CHECK(decoded.trackerRows[1].agreementId==9);CHECK(decoded.trackerRows[1].applicant=="Synthetic applicant");}
+    }
+  }
+}
+
+TEST_CASE("Tracker popup replies require one row and coherent location facts") {
+  for(int variant=0;variant<15;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    const bool absent=variant==1 || variant==2 || variant==13;
+    const bool blank=variant==2;
+    auto row=wire::CreateContinuingAgreementRow(b,9,0,10,blank?0:5,2,-1,106,0,b.CreateString(""),b.CreateString(blank?"":"Synthetic applicant"),b.CreateString(blank?"":"Synthetic date"));
+    std::vector<flatbuffers::Offset<wire::ContinuingAgreementRow>> rows;if(variant!=5)rows.push_back(row);
+    auto details=wire::CreateContinuingAgreementDetails(b,blank?-1:10000,variant==6?-1:absent||variant==12?0:1,
+        variant==7?-2:absent?-1:3,absent||variant==10?0:5675,absent?-1:1,!blank&&variant!=11,variant==9,
+        variant==8?0:b.CreateString(!absent||variant==13?"Synthetic location":""));
+    auto a=wire::CreateAgreementState(b,0,-1,false,b.CreateString(""),variant!=14,b.CreateVector(rows),variant==3?0:details);
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_agreement(a);
+    root.add_action(variant==4?wire::ManagementAction::AgreementList:wire::ManagementAction::AgreementInspect);
+    root.add_status(wire::ManagementStatus::Ok);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(variant);CHECK(bool(wire::validateManagementState(*state))==(variant>=3));
+    if(variant<3) {
+      auto decoded=codec::decodeAgreement(state->agreement());REQUIRE(decoded.trackerDetails);
+      CHECK(decoded.trackerRows.size()==1);CHECK(decoded.trackerDetails->locationId==(absent?-1:3));
+      CHECK(decoded.trackerDetails->locationName==(absent?"":"Synthetic location"));
+      CHECK(decoded.trackerDetails->requiredValue==(blank?-1:10000));
     }
   }
 }

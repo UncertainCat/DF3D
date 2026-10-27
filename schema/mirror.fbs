@@ -1761,7 +1761,8 @@ table ContinuingAgreementRow {
   tier:int32 = -1; profession:int32 = -1; year:int32; year_tick:int32;
   heading:string; applicant:string; date:string;
 }
-table AgreementState { agreements:[AgreementInfo]; next_before_id:int32 = -1; pending_only:bool; detail:string; tracker:bool; tracker_rows:[ContinuingAgreementRow]; }
+table ContinuingAgreementDetails { required_value:int32 = -1; matching_locations:int32; location_id:int32 = -1; location_value:int32; location_tier:int32 = -1; site_available:bool; tier_met:bool; location_name:string; }
+table AgreementState { agreements:[AgreementInfo]; next_before_id:int32 = -1; pending_only:bool; detail:string; tracker:bool; tracker_rows:[ContinuingAgreementRow]; tracker_details:ContinuingAgreementDetails; }
 table TradeRequest { depot_id:int32 = -1; item_id:int32 = -1; expected_revision:uint64; requested:int8 = -1; anyone:int8 = -1; cursor:uint32; query:string; receipt:uint64; side:uint8; selected:int8 = -1; }
 table TradeDepot { id:int32; origin:TilePos; revision:uint64; requested:bool; anyone:bool; accessible:bool; ready:bool; broker:string; hauling:uint32; goods:uint32; }
 table TradeCaravan { id:int32; name:string; state:string; days_remaining:int32; }
@@ -1827,7 +1828,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 79;
+  schema_version:uint32 = 80;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1873,7 +1874,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 79;
+  schema_version:uint32 = 80;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -96,6 +96,7 @@ AgreementState decodeAgreement(const m::AgreementState* a) {
   n.pendingOnly = a->pending_only();n.tracker=a->tracker();
   if(a->tracker_rows())for(const auto* row:*a->tracker_rows())
     n.trackerRows.push_back({row->agreement_id(),row->subject_id(),row->entity_id(),row->entity_type(),row->tier(),row->profession(),row->year(),row->year_tick(),row->heading()->str(),row->applicant()->str(),row->date()->str()});
+  if(const auto* d=a->tracker_details())n.trackerDetails=ContinuingAgreementDetails{d->required_value(),d->matching_locations(),d->location_id(),d->location_value(),d->location_tier(),d->site_available(),d->tier_met(),d->location_name()->str()};
   if (a->detail())
     n.detail = a->detail()->str();
   if (a->agreements())

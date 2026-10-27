@@ -1715,7 +1715,28 @@ func tracker_transport() -> void:
 				if not check(rows[index][field]==expected.rows[index][field],"tracker native field "+field):return
 		await native("religious_unchanged")
 		if stopped:return
-		evidence.append({"phase":phase,"rows":rows,"ticket":ticket})
+		var popups: Array=[]
+		for row in rows:
+			var expected_popup:=await native("religious_tracker_details",{"agreement_id":row.agreement_id})
+			if stopped:return
+			await native("religious_guard")
+			var popup_ticket: int=actions.submit("agreements",{"action":37,"tracker":true,"id":row.agreement_id},Callable())
+			if not check(popup_ticket>0,"popup request not queued"):return
+			if not await wait_ui(func():return not actions.result(popup_ticket).is_empty(),"popup native result"):return
+			var popup: Dictionary=actions.result(popup_ticket)
+			if not check(popup.status==S.Ok and popup.action==37 and popup.agreement.tracker and popup.agreement.tracker_rows==[row],"popup identity or mode differs"):return
+			if not check(popup.agreement.has("tracker_details") and expected_popup.facts.valid,"popup facts absent"):return
+			for field in ["required_value","matching_locations","location_id","location_value","location_tier","site_available","tier_met","location_name"]:
+				if not check(popup.agreement.tracker_details[field]==expected_popup.facts[field],"popup field mismatch "+field):return
+			await native("religious_unchanged")
+			if stopped:return
+			popups.append({"ticket":popup_ticket,"agreement_id":row.agreement_id,"facts":popup.agreement.tracker_details})
+		if phase=="restored":
+			var missing: int=actions.submit("agreements",{"action":37,"tracker":true,"id":2147483502},Callable())
+			if not await wait_ui(func():return not actions.result(missing).is_empty(),"removed popup refusal"):return
+			var rejected: Dictionary=actions.result(missing)
+			if not check(rejected.status==S.Rejected and not rejected.agreement.tracker and not rejected.agreement.has("tracker_details"),"removed popup retained facts"):return
+		evidence.append({"phase":phase,"rows":rows,"ticket":ticket,"popups":popups})
 	reader.dispose()
 	write_json("tracker-transport-evidence.json",{"cases":evidence,"reader_retired":not reader.active and reader.snapshot().is_empty()})
 	editor.close_panel()

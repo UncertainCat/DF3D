@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <optional>
 
 namespace df3d_management {
 
@@ -188,7 +189,8 @@ struct ContinuingAgreementRow {
  int32_t agreementId=-1,subjectId=-1,entityId=-1,entityType=-1,tier=-1,profession=-1,year=0,yearTick=0;
  std::string heading,applicant,date;
 };
-struct AgreementState {std::vector<AgreementInfo> agreements;int32_t nextBeforeId=-1;bool pendingOnly=false;std::string detail;bool tracker=false;std::vector<ContinuingAgreementRow> trackerRows;};
+struct ContinuingAgreementDetails {int32_t requiredValue=-1,matchingLocations=0,locationId=-1,locationValue=0,locationTier=-1;bool siteAvailable=false,tierMet=false;std::string locationName;};
+struct AgreementState {std::vector<AgreementInfo> agreements;int32_t nextBeforeId=-1;bool pendingOnly=false;std::string detail;bool tracker=false;std::vector<ContinuingAgreementRow> trackerRows;std::optional<ContinuingAgreementDetails> trackerDetails;};
 
 // --- trade ---
 struct TradeDepot { int32_t id=-1,x=0,y=0,z=0; uint64_t revision=0; bool requested=false,anyone=false,accessible=false,ready=false; std::string broker; uint32_t hauling=0,goods=0; };

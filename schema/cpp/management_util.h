@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 79;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v79";
+inline constexpr uint32_t kManagementVersion = 80;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v80";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -552,7 +552,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* a=r.agreement();
     if(!a || a->id() < -1 || a->before_id() < -1 || (a->query() && a->query()->size()>128))return "invalid agreement request";
     if(r.action()==ManagementAction::AgreementInspect && (a->id()<0 || a->before_id()!=-1 || (a->query() && a->query()->size()) || a->pending_only()))return "invalid agreement inspection";
-    if(a->tracker() && (r.action()!=ManagementAction::AgreementList || a->before_id()!=-1 || a->pending_only() || (a->query() && a->query()->size())))return "invalid tracker request";
+    if(a->tracker() && (a->before_id()!=-1 || a->pending_only() || (a->query() && a->query()->size())))return "invalid tracker request";
     if(r.action()==ManagementAction::AgreementList && a->id()!=-1)return "unexpected agreement identity";
   } else if(r.agreement())return "unexpected agreement payload";
   if ((r.action() == ManagementAction::Inspect || r.action() == ManagementAction::Remove) &&
@@ -1506,7 +1506,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   if(const auto* a=s.agreement()) {
     if(a->next_before_id() < -1 || (a->detail() && a->detail()->size()>2048) || (a->agreements() && a->agreements()->size()>16))return "invalid agreement state";
     if(a->tracker()) {
-      if(s.action()!=ManagementAction::AgreementList || s.status()!=ManagementStatus::Ok || !a->tracker_rows() || a->tracker_rows()->size()>4096 ||
+      if((s.action()!=ManagementAction::AgreementList && s.action()!=ManagementAction::AgreementInspect) || s.status()!=ManagementStatus::Ok || !a->tracker_rows() || a->tracker_rows()->size()>4096 ||
           (a->agreements() && a->agreements()->size()) || a->next_before_id()!=-1 || a->pending_only() || (a->detail() && a->detail()->size()))return "invalid tracker state";
       size_t budget=0;
       for(const auto* row:*a->tracker_rows()) {
@@ -1518,7 +1518,18 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         budget+=160+row->heading()->size()+row->applicant()->size()+row->date()->size();
       }
       if(budget>224*1024)return "tracker budget exceeded";
-    } else if(a->tracker_rows() && a->tracker_rows()->size())return "unexpected tracker rows";
+      if(s.action()==ManagementAction::AgreementInspect) {
+        const auto* d=a->tracker_details();
+        if(!d || a->tracker_rows()->size()!=1 || !d->location_name() || d->location_name()->size()>4096 ||
+           d->matching_locations()<0 || d->matching_locations()>65536 || d->location_id() < -1)return "invalid tracker details";
+        const auto* row=a->tracker_rows()->Get(0);
+        if(d->location_id()<0) {
+          if(d->location_value()!=0 || d->location_tier()!=-1 || d->tier_met() || d->location_name()->size())return "invalid absent tracker location";
+        } else if(!d->site_available() || d->matching_locations()<1 || d->location_value()<=0 || d->tier_met()!=(d->location_tier()>=row->tier()))return "invalid selected tracker location";
+        if(!d->site_available() && d->matching_locations()!=0)return "invalid absent tracker site";
+        if(row->entity_type()!=5 && row->entity_type()!=10 && (d->required_value()!=-1 || d->site_available() || d->matching_locations()!=0 || d->location_id()!=-1))return "invalid blank tracker details";
+      } else if(a->tracker_details())return "unexpected tracker details";
+    } else if(a->tracker_details() || (a->tracker_rows() && a->tracker_rows()->size()))return "unexpected tracker rows";
     size_t bytes=0;std::set<int32_t> ids;
     auto text=[&](const flatbuffers::String* t){if(!t || t->size()>2048)return false;bytes+=t->size();return true;};
     if(a->agreements())for(const auto* v:*a->agreements()) {

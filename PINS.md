@@ -22,15 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management79 adds an explicit tracker mode to AgreementList and ordered native
-continuing-agreement rows. Tracker mode rejects history filters and inspection
-identities; an empty successful tracker observation remains distinct from an
-absent/rejected one. Unsupported applicant types retain blank rows. Older
-recordings cannot infer these rows from agreement-browser summaries. Rebuild
-and install bridge and viewer together; `Local\\df3d_management_v79` isolates
-older peers. Management78 custom-building raw identities remain unchanged.
-Snapshot/grid/session versions are unchanged. Contract acceptance does not
-establish tracker presentation acceptance.
+Management80 adds tracker popup inspection through AgreementInspect with
+tracker=true and an explicit agreement ID. A successful popup carries exactly
+one native tracker row and required typed location/value/tier facts; list
+results exclude popup facts. Missing/rejected observations are distinct from
+empty list success. History filters remain excluded from both tracker modes.
+Older recordings cannot infer popup selection or requirements. Rebuild and
+install bridge and viewer together; `Local\\df3d_management_v80` isolates older
+peers. Snapshot/grid/session versions are unchanged. Transport acceptance does
+not establish tracker presentation acceptance.
 
 
 Snapshot schema **11** and resident terrain grid **6** preserve root tissue

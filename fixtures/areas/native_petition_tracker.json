@@ -7880,7 +7880,7 @@
     ],
     "gaps": [
       "Non-ASCII/long popup names, guild-link eligibility and duplicate profession links",
-      "Typed popup transport and viewer lifecycle",
+      "Popup reader and viewer lifecycle",
       "Popup frame artwork and rendered viewer comparison",
       "Timing, dismissal and interaction boundaries"
     ],
@@ -8418,6 +8418,63 @@
           "valid": true
         },
         "guarded_unchanged": true
+      }
+    ]
+  },
+  "popup_transport_reference": {
+    "capture": "build/areas-acceptance-20261027-120344",
+    "evidence_sha256": "45c1383d256405c7c05308fe6c116c1ff435d2c9cc9dcdce2a9c6e9bae4490b4",
+    "plugin_sha256": "0B66CE38B948918257E07F2DCB77AE62194D629792813E6791D0C64B529237A2",
+    "management_version": 80,
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "owned_exit": "unsaved",
+    "save_manifests": "both unchanged",
+    "scope": "Actual Godot action service, native readback for all popup fields and source row; removed agreement rejects without popup facts; UI/religious guards unchanged.",
+    "cases": [
+      {
+        "agreement_id": 2147483501,
+        "facts": {
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": -1,
+          "site_available": false,
+          "tier_met": false
+        },
+        "ticket": 15
+      },
+      {
+        "agreement_id": 2147483502,
+        "facts": {
+          "location_id": 0,
+          "location_name": "The Golden Shrine",
+          "location_tier": 1,
+          "location_value": 5675,
+          "matching_locations": 1,
+          "required_value": 10000,
+          "site_available": true,
+          "tier_met": false
+        },
+        "ticket": 16
+      },
+      {
+        "agreement_id": 2147483503,
+        "facts": {
+          "location_id": -1,
+          "location_name": "",
+          "location_tier": -1,
+          "location_value": 0,
+          "matching_locations": 0,
+          "required_value": 2000,
+          "site_available": true,
+          "tier_met": false
+        },
+        "ticket": 17
       }
     ]
   }

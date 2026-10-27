@@ -59,6 +59,9 @@ if request.op=='religious_tracker' then
  end
  local text,code=dfhack.run_command_silent('df3d','continuing-agreements-read');assert(code==0,text)
  local current=json.decode(text);assert(current.valid);result.rows=current.rows
+elseif request.op=='religious_tracker_details' then
+ local text,code=dfhack.run_command_silent('df3d','continuing-agreement-details-read',tostring(request.agreement_id));assert(code==0,text)
+ result.facts=json.decode(text)
 elseif request.op=='religious_assignments' then
  local unit=assert(df.unit.find(request.unit_id));result.unit_id=unit.id;result.histfig_id=unit.hist_figure_id
  result.occupation_id=-1;result.entity_id=-1;result.assignment_id=-1

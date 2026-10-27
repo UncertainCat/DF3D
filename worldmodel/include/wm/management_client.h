@@ -503,7 +503,8 @@ struct ContinuingAgreementRow {
  int32_t agreementId=-1,subjectId=-1,entityId=-1,entityType=-1,tier=-1,profession=-1,year=0,yearTick=0;
  std::string heading,applicant,date;
 };
-struct AgreementState {std::vector<AgreementInfo> agreements;int32_t nextBeforeId=-1;bool pendingOnly=false;std::string detail;bool tracker=false;std::vector<ContinuingAgreementRow> trackerRows;};
+struct ContinuingAgreementDetails {int32_t requiredValue=-1,matchingLocations=0,locationId=-1,locationValue=0,locationTier=-1;bool siteAvailable=false,tierMet=false;std::string locationName;};
+struct AgreementState {std::vector<AgreementInfo> agreements;int32_t nextBeforeId=-1;bool pendingOnly=false;std::string detail;bool tracker=false;std::vector<ContinuingAgreementRow> trackerRows;std::optional<ContinuingAgreementDetails> trackerDetails;};
 struct AgreementRequest {int32_t id=-1,beforeId=-1;std::string query;bool pendingOnly=false,tracker=false;};
 struct TradeRequest { int32_t depotId=-1,itemId=-1; uint64_t expectedRevision=0; int8_t requested=-1,anyone=-1; uint32_t cursor=0; std::string query; uint64_t receipt=0; uint8_t side=0; int8_t selected=-1; };
 struct TradeDepot { int32_t id=-1,x=0,y=0,z=0; uint64_t revision=0; bool requested=false,anyone=false,accessible=false,ready=false; std::string broker; uint32_t hauling=0,goods=0; };

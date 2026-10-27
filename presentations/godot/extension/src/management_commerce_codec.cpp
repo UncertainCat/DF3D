@@ -67,6 +67,13 @@ void writeAgreement(Dictionary& result, const wm::AgreementState& s) {
     value["heading"]=String::utf8(row.heading.c_str());value["applicant"]=String::utf8(row.applicant.c_str());value["date"]=String::utf8(row.date.c_str());trackerRows.push_back(value);
   }
   agreement["tracker_rows"]=trackerRows;
+  if(s.trackerDetails) {
+    const auto& d=*s.trackerDetails;Dictionary details;
+    details["required_value"]=d.requiredValue;details["matching_locations"]=d.matchingLocations;
+    details["location_id"]=d.locationId;details["location_value"]=d.locationValue;details["location_tier"]=d.locationTier;
+    details["site_available"]=d.siteAvailable;details["tier_met"]=d.tierMet;details["location_name"]=String::utf8(d.locationName.c_str());
+    agreement["tracker_details"]=details;
+  }
   result["agreement"] = agreement;
 }
 
@@ -127,7 +134,7 @@ bool validateAgreementShape(const Dictionary& data, String& error) {
 //     -1 starts newest. query: String <=128 UTF-8 bytes, 36 only; exact decimal
 //     id or case-insensitive substring of summary, party names, descriptions.
 // pending_only: bool, default false, 36 only; plotinfo.petitions membership, echoed.
-// tracker: bool, default false; 36 only, excludes history filters and pagination.
+// tracker: bool, default false; 36 lists, 37 reads popup facts for id; excludes history filters and pagination.
 // A successful tracker reply has tracker=true and ordered tracker_rows; no history rows.
 // Reply poll_management()["agreement"]: agreements[]{id, status (0 Pending,
 // 1 Accepted, 2 Unapproved, 3 Concluded), not_approved, concluded, continuing,
@@ -152,7 +159,7 @@ bool readAgreement(const Dictionary& data, wm::ManagementRequest& r, String& err
   value.query = query.utf8().get_data();
   if (value.query.size() > 128) valid = false;
   value.pendingOnly = data.get("pending_only", false);value.tracker=data.get("tracker",false);
-  if(value.tracker && (r.action!=wm::ManagementAction::AgreementList || value.beforeId!=-1 || !value.query.empty() || value.pendingOnly))valid=false;
+  if(value.tracker && (value.beforeId!=-1 || !value.query.empty() || value.pendingOnly))valid=false;
   if (r.action == wm::ManagementAction::AgreementList && value.id != -1) valid = false;
   if (r.action == wm::ManagementAction::AgreementInspect &&
       (value.beforeId != -1 || !value.query.empty() || value.pendingOnly)) valid = false;

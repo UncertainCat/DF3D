@@ -3698,6 +3698,26 @@ and its separate evidence are described above.
 
 ## Native zone owner assignment audit
 
+Owner picker client-loss coverage runs through `areas_acceptance.ps1
+-ControllerScene -ZoneOwnerOnly -OwnerDisconnect queued|sent`. It uses an actual
+visible candidate click and checks its queued owner ID. The sent case waits for
+its own sequence behind background reads, observes DF completion without
+delivering the receipt, then disconnects. Queued work retires as not_sent;
+sent work retires as unknown. Both clear picker authority, reconnect without
+replaying area work, and explicitly reopen through the Zones launcher and map.
+Fresh selection and native snapshots agree on the unapplied/applied owner;
+the picker reopens and dismisses, and the zone is removed through the UI.
+
+Protected150549 (queued, DF173784) and150658 (sent, DF163868) pass with only the
+known rendering-thread notice. The latter additionally waits for visible owner
+portraits to recover; its reopened capture was visually inspected. Both owned
+processes exit unsaved and both save manifests remain unchanged. Core passes in
+`build/qa/owner-disconnect-reopen`. Initial150330 clicked before container layout
+settled and targeted another row; it is not acceptance. The test now uses the
+established layout-aware control-click helper and verifies the intent's owner
+ID before dispatch. Product code is unchanged. These cases cover same-process
+reconnect; owner-picker producer replacement remains unverified.
+
 `fixtures/areas/native_zone_assignment.json` retains the supported executable's
 semantic owner entry point, virtual leaves, allocation helpers and picker call
 sites. It retains native input references and the matching bridge effect checks

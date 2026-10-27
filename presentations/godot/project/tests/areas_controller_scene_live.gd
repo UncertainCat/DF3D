@@ -186,7 +186,9 @@ func pointer_areas() -> void:
 				if not await wait_ui(func():return settled() and editor.selected.is_empty(),"remove animal test zone"):return
 				await native("removed",{"id":id});await native("final");return
 			if zone_owner_only:
-				await pointer_owner(id,origin)
+				var owner_disconnect:String=JSON.parse_string(FileAccess.get_file_as_string(directory+"/zone-owner-only.json")).get("disconnect","none")
+				if owner_disconnect=="none":await pointer_owner(id,origin)
+				else:await pointer_owner_disconnect(id,origin,owner_disconnect)
 				if stopped: return
 				await click_control(editor.zone_menu.controls.remove)
 				if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"remove owner test zone"): return
@@ -1634,6 +1636,71 @@ func selector_scroll_workflow(selector := "owner") -> bool:
 	for index in range(ceili(float(total)/16)+1): await pointer_key(KEY_PAGEUP)
 	if not check(view.owner_selected==0 and bar.first==0,"selector keyboard return to top"):return false
 	return true
+
+func pointer_owner_disconnect(id: int, origin: Vector3i, mode: String) -> void:
+	step="owner "+mode+" disconnect"
+	await click_control(editor.zone_menu.controls.owner)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner lifecycle candidates"):return
+	var unit:int=editor.candidates_state.rows[0].id
+	await click_control(editor.candidates_view.choices[0])
+	var ticket:int=editor.request_ticket
+	if not check(ticket>0 and editor.candidates_state.mutating,"owner assignment not queued"):return
+	if not check(int(actions._requests[ticket].request.get("owner_id",-1))==unit,"owner pointer targeted a different row"):return
+	var expected_owner: int=-1
+	if mode=="sent":
+		var deadline:=Time.get_ticks_msec()+30000
+		while actions._requests.has(ticket) and int(actions._requests[ticket].sequence)==0 and Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll()
+			if actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0:break
+			await create_timer(0.02).timeout
+		if not check(actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0,"owner assignment not sent"):return
+		var sequence:int=actions._requests[ticket].sequence
+		var reply:Dictionary={}
+		deadline=Time.get_ticks_msec()+30000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();var candidate:Dictionary=world.poll_management()
+			if int(candidate.get("request_seq",0))==sequence and int(candidate.get("status",0))==S.Ok:reply=candidate;break
+			await create_timer(0.02).timeout
+		if not check(not reply.is_empty() and actions.result(ticket).is_empty(),"owner unobserved receipt absent"):return
+		write_json("owner-unobserved-receipt.json",reply);expected_owner=unit
+	await native("snapshot",{"id":id,"expected":{"owner_id":expected_owner}})
+	world.detach_live();actions.poll()
+	var outcome:Dictionary=actions.result(ticket)
+	write_json("owner-disconnect-outcome.json",outcome)
+	if not check(outcome.get("outcome")==("unknown" if mode=="sent" else "not_sent"),"owner disconnect outcome differs"):return
+	if not check(editor.selected.is_empty() and editor.candidates_state.area.is_empty() and not editor.candidates_view.visible and editor.request_ticket==0 and not actions._requests.has(ticket),"owner disconnect retained authority"):return
+	if not check(world.attach(),"owner reconnect failed"):return
+	var deadline:=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();editor._process(0.02)
+		if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
+		await create_timer(0.02).timeout
+	if not check(bool(world.poll_management().get("transport_alive",false)),"owner reconnect timeout"):return
+	var count:int=area_receipts().size()
+	for frame in 30:
+		world.poll();actions.poll();editor._process(0.02);await process_frame
+	if not check(area_receipts().size()==count and editor.request_ticket==0 and editor.candidates_state.area.is_empty() and not editor.candidates_view.visible,"owner reconnect replayed or reopened picker"):return
+	await native("snapshot",{"id":id,"expected":{"owner_id":expected_owner}})
+	var launcher:Button=scene._fortress_hud.navigation.Zones
+	launcher.show();await click_control(launcher,true)
+	if not await wait_ui(func():return editor.panel.visible and editor.available and settled(),"owner reconnect launcher"):return
+	await pointer_click(tile_screen(origin))
+	if not await wait_ui(func():return settled() and int(editor.selected.get("id",-1))==id,"owner reconnect selection"):return
+	if not check(int(editor.selected.owner_id)==expected_owner,"fresh owner selection differs"):return
+	await click_control(editor.zone_menu.controls.owner)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner reopened candidates"):return
+	if not await wait_ui(func():
+		var visible_count:=0
+		var clip:Rect2=editor.candidates_view.scroll.get_global_rect()
+		for slot in editor.candidates_view.portrait_slots:
+			if not clip.intersects(slot.view.get_global_rect()) or world.unit_tile(int(slot.id)).x<0:continue
+			visible_count+=1
+			if slot.view.texture==null:return false
+		return visible_count>0,"reconnected owner portraits"):return
+	await capture("owner_reconnected_reopened")
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(not editor.candidates_view.visible and settled(),"owner reopened picker failed to dismiss"):return
+	await native("snapshot",{"id":id,"expected":{"owner_id":expected_owner}})
 
 func pointer_owner(id: int, origin: Vector3i) -> void:
 	step = "pointer owner selector"

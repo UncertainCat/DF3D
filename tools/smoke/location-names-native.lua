@@ -583,6 +583,10 @@ if recognition_case=='petitiontracker' then
     'create_squad','assign_uniform','create_work_order','hotkey','options','help','settings'}do
     local _,address=df.sizeof(m:_field(field));row.main_interface_fields[field]=address-dfhack.internal.getImageBase()
    end
+   for _,field in ipairs{'main_designation_selected','bottom_mode_selected'}do
+    local _,address=df.sizeof(m:_field(field));row.main_interface_fields[field]=address-dfhack.internal.getImageBase()
+   end
+   local _,address=df.sizeof(m.info:_field('open'));row.main_interface_fields['info.open']=address-dfhack.internal.getImageBase()
   end
   row.interaction={petitions_open=m.petitions.open,selected_agreement_id=m.petitions.selected_agreement_id,details_open=details.open,selected_location=details.selected_ab and details.selected_ab.id or -1}
   row.location_probe={id=temple.id,value=temple.contents.location_value,tier=temple.contents.location_tier,
@@ -806,6 +810,24 @@ if recognition_case=='petitiontracker' then
  religion.name.language=original_name.language;religion.name.type=original_name.type;religion.name.has_name=original_name.has_name
  for i=0,6 do religion.name.words[i]=original_name.words[i+1];religion.name.parts_of_speech[i]=original_name.parts_of_speech[i+1]end
  assert(require('json').encode(name_value(religion.name))==require('json').encode(original_name),'tracker name reference restoration differs')
+ local function panel_probe(label)
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=1070;g.precise_mouse_y=298;g.mouse_x=133;g.mouse_y=24
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+  local function text(x,y,count)
+   local chars={};for i=0,count-1 do chars[#chars+1]=string.char(dfhack.screen.readTile(x+i,y).ch&255)end
+   return table.concat(chars)
+  end
+  local facts={list_heading=text(124,23,20),popup_title=text(54,5,18),sidebar_mode=df.global.plotinfo.main.mode,
+   designation=m.main_designation_selected,bottom_mode=m.bottom_mode_selected,squads=m.squads.open,
+   info=m.info.open,stocks=m.stocks.open,create_work_order=m.create_work_order.open}
+  local row=capture('tracker-panel-'..label,temple,true);row.panel_probe=facts
+ end
+ panel_probe('idle')
+ for _,entry in ipairs{{'squads','D_SQUADS','squads'},{'residents','D_UNITLIST','info'},{'stocks','D_STOCKS','stocks'}}do
+  key(entry[2]);assert(m[entry[3]].open,'native tracker panel did not open '..entry[1]);panel_probe(entry[1])
+  key(entry[1]=='squads' and 'D_SQUADS' or 'LEAVESCREEN');assert(not m[entry[3]].open,'native tracker panel did not close '..entry[1]);panel_probe(entry[1]..'-closed')
+ end
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.
  -- Remove each owned pointer before destroying its allocation.

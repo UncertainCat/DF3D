@@ -1293,11 +1293,21 @@ its open flag skips tracker sizing/target selection at3f6852 and replaces the
 list with renderer4411f0 at3f980a. Address18a7200 is `create_work_order`; its
 renderer38c900 diverts the list path at3f97d8. Popup suppression is separate:
 3f6b50..3f6bcd also checks sidebar mode, settings, view sheets, trade assignment,
-trade, stocks and display-item assignment. Scalar18a938c and info interior
-18a6378 still need precise field mapping, and earlier renderer gates/panel
-transitions remain to verify. These diagnostic fields are not permissible
+trade, stocks and display-item assignment. These diagnostic fields are not permissible
 runtime inputs; the HUD must own equivalent local presentation state. All69
 records pass in owned DF165832, which exits unsaved with source hashes unchanged.
+
+Native123717 resolves18a938c to `bottom_mode_selected` and18a6378 to `info.open`.
+It opens Squads, Residents and Stocks through their native keyboard commands,
+then observes the same tracker row after each open/close. Squads replaces the
+list; Residents and Stocks keep it visible but suppress the popup. Closing
+restores both immediately. `tracker_panel_reference` records seven observations
+and the diagnostic field mapping. Squads closes with its own D_SQUADS toggle;
+earlier123408 right-click and123534 LEAVESCREEN attempts did not close it and
+failed the harness assertion. Info and Stocks close with LEAVESCREEN. The final
+76-record run passes, owned DF152464 exits unsaved, and source hashes remain
+unchanged. Actual Create Work Order/other-panel transitions, bottom/sidebar
+modes, map clicks and resize/overflow still need coverage before HUD exposure.
 
 ## Native Location name editor discovery
 

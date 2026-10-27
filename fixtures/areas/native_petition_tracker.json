@@ -10744,5 +10744,124 @@
         "Capture resize, overflow and full left frame columns."
       ]
     }
+  },
+  "tracker_panel_reference": {
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-123717",
+    "result_sha256": "ca4316babb2e0c2859a624e12b4869091fb2682070b70cff376dedab496f00ba",
+    "status": "passed",
+    "owned_exit": "unsaved",
+    "source_manifest": "unchanged",
+    "field_mapping": {
+      "info.open": "0x18a6378",
+      "bottom_mode_selected": "0x18a938c",
+      "main_designation_selected": "0x18a9384"
+    },
+    "navigation": "Open using D_SQUADS/D_UNITLIST/D_STOCKS; close Squads with D_SQUADS, Info/Stocks with LEAVESCREEN. Earlier123408 right-click and123534 LEAVESCREEN attempts did not close Squads; those runs failed their harness assertion and exited unsaved.",
+    "cases": [
+      {
+        "name": "tracker-panel-idle",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-squads",
+        "list_visible": false,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": true,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-squads-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-residents",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": true,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-residents-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      },
+      {
+        "name": "tracker-panel-stocks",
+        "list_visible": true,
+        "popup_visible": false,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": true
+        }
+      },
+      {
+        "name": "tracker-panel-stocks-closed",
+        "list_visible": true,
+        "popup_visible": true,
+        "native_state": {
+          "bottom_mode": -1,
+          "create_work_order": false,
+          "designation": -1,
+          "info": false,
+          "sidebar_mode": 0,
+          "squads": false,
+          "stocks": false
+        }
+      }
+    ],
+    "pending": [
+      "Create Work Order actual transition",
+      "Bottom menu and sidebar modes",
+      "Other popup-gate panels and overlays",
+      "Map clicks, resize and overflow"
+    ]
   }
 }

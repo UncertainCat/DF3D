@@ -6871,7 +6871,8 @@
     "whole_name": "Resolved entity wrapper931860 and core generatora92860, with owned language_name copy and authoritative civilization input. Seven native comparisons below; guarded location writes are verified below.",
     "filter": "Resolved via native owned-string helpers and pinned inline substring operation; native cull field displays uppercase input, but filtering normalizes an owned copy to lowercase.",
     "inline_edits": "Clear and word selection directly write language_name at1ff830..1ff850 and1ff8c6..1ff908. Per-component Random at1ff79c..1ff82b indexes the currently displayed filtered list and writes the clicked component. Live AL/OfX -> Front Random preserves selected component6/filter and changes only component0 to a member of the OfX list. Native selector d35ee0 matches choice and RNG effect with an owned nonempty list; guarded semantic writes are verified below.",
-    "entry": "Native32c051 resolves plotinfo.civ_id (RVA2393670, plotinfost offset2440) through entity lookup7daf0; null entity/name prevents opening. Type dispatch32c097..32c1c8 maps Temple21, Library43, Tavern28, Guildhall52, Hospital54. Uses civilization, not abstract_building.site_owner_id."
+    "entry": "Native32c051 resolves plotinfo.civ_id (RVA2393670, plotinfost offset2440) through entity lookup7daf0; null entity/name prevents opening. Type dispatch32c097..32c1c8 maps Temple21, Library43, Tavern28, Guildhall52, Hospital54. Uses civilization, not abstract_building.site_owner_id.",
+    "name_header": "Native draw1fcce7 calls a94030(name, owned string) for native-language header;1fcd85 calls a946e0(name, owned string, true, false) for quoted English header. Candidate ownership/pins/runtime comparisons still require audit; DFHack Translation::translateName reconstructs formatting and is not the intended provider."
   },
   "random_word_provider": {
     "function_rva": "0xd35ee0",
@@ -7503,5 +7504,56 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
       "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe"
     }
+  },
+  "filter_behavior_reference": {
+    "run": "build/stockpile-storage-native-location-names-20261026-223134",
+    "status": "passed",
+    "records": [
+      {
+        "creator_open": true,
+        "empty_random": {
+          "name_unchanged": true,
+          "rng_unchanged": true
+        },
+        "filter": "ZZZZ",
+        "name": "INN_TAVERN-1-empty-random",
+        "word_count": 0
+      },
+      {
+        "creator_open": true,
+        "filter": "ZZZZZZZZZZ",
+        "filter_limit": {
+          "accepted": "ZZZZZZZZZZ",
+          "accepted_bytes": 10,
+          "attempted_bytes": 36
+        },
+        "name": "INN_TAVERN-1-filter-length",
+        "word_count": 0
+      },
+      {
+        "creator_open": false,
+        "filter": "ZZZZZZZZZZ",
+        "filter_exit": {
+          "entering_filter": true,
+          "filter": "ZZZZZZZZZZ",
+          "open": false
+        },
+        "name": "INN_TAVERN-1-filter-leavescreen",
+        "word_count": 0
+      }
+    ],
+    "source_unchanged": true,
+    "owned_exit_without_save": true,
+    "screenshots": {
+      "INN_TAVERN-1-empty-random.png": "ee0f577c24369f81fb057720765f1a8763b2f66d5d195e845cef5ab8d17b397f",
+      "INN_TAVERN-1-filter-length.png": "d01f21294f6ad45d66af1073ad5d8b559b7c6b2844ceb64d2a690e73d5fdff9f",
+      "INN_TAVERN-1-filter-leavescreen.png": "2ba5cb3eb1baaf1854c8716b467485faf8b04328af913b3af6cbe04973273031"
+    },
+    "scope": "Native simulated input with explicit filter focus; Back is the LEAVESCREEN semantic event, not physical Windows Escape. Empty-list Random leaves name and RNG unchanged. Focused filter accepts10 of36 attempted bytes. Back closes editor while entering_filter remains true in retired native scratch.",
+    "omissions": [
+      "physical Escape",
+      "scroll behavior",
+      "visible DF3D editor"
+    ]
   }
 }

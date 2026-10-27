@@ -316,7 +316,22 @@ for i,location in ipairs(choices)do
   pixel(832,142);key('STRING_A000');key('STRING_A000')
   for n=1,4 do key('STRING_A122')end
   for part=0,6 do pixel(476,142+36*part);capture(prefix..'-matrix-no-match-'..part,location)end
-  pixel(832,142);for n=1,4 do key('STRING_A000')end;key('SELECT')
+  assert(#creator.word_index==0,'empty-list reference requires zero choices')
+  local empty_name=name_value(location:getName());local empty_rng=rng_snapshot()
+  pixel(608,142+36*6)
+  local empty=capture(prefix..'-empty-random',location)
+  empty.empty_random={name_unchanged=require('json').encode(empty_name)==require('json').encode(name_value(location:getName())),
+   rng_unchanged=require('json').encode(empty_rng)==require('json').encode(rng_snapshot())}
+  if creator.entering_cull_str then key('SELECT')end
+  pixel(832,142);assert(creator.entering_cull_str,'filter must have keyboard focus')
+  for n=1,32 do key('STRING_A122')end
+  local length=capture(prefix..'-filter-length',location)
+  length.filter_limit={attempted_bytes=36,accepted_bytes=#creator.cull_str,accepted=creator.cull_str}
+  key('LEAVESCREEN')
+  local escaped=capture(prefix..'-filter-leavescreen',location)
+  escaped.filter_exit={open=creator.open,entering_filter=creator.entering_cull_str,filter=creator.cull_str}
+  if not creator.open then pixel(944,82)end
+  pixel(832,142);for n=1,40 do key('STRING_A000')end;key('SELECT')
   key('_MOUSE_R');capture(prefix..'-edited-back',location)
   if creator.open then key('_MOUSE_R')end
   assert(not creator.open and details.open,'edited name Back did not return')
@@ -344,4 +359,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==89,'incomplete name mutation/filter reference')
+assert(#records==92,'incomplete name mutation/filter reference')

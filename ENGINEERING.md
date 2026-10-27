@@ -254,10 +254,9 @@ attempts preserve both. UI/GPS remain unchanged. The protected diagnostic restor
 fixture name/RNG only for independent native comparison. Twenty invalid identity,
 parameter and eligibility cases reject without name/RNG effects, including
 filtered-out selection and empty random pools. Rejecting an empty pool is a
-bridge guard; native empty-list button behavior remains unverified. Typed
+bridge guard; native empty-list Random is a no-op as verified below. Typed
 transport is covered below; naming-owner session/epoch lifecycle remains unfinished.
-Random with an empty list, scrolling, physical Escape,
-the rendered three-column editor remain
+Scrolling, physical Escape and the rendered three-column editor remain
 unfinished. DFHack Translation::generateName reconstructs the algorithm and is
 not used as a substitute for calling DF.
 
@@ -286,6 +285,21 @@ saving; source/clone manifests stayed unchanged and diagnostics were empty.
 `areas_acceptance.ps1 -NamingOnly` reproduces this transport scope. Naming-owner
 disconnect/reconnect/epoch lifecycle and rendered editor acceptance remain required
 before product exposure; the hidden editor is still unfinished.
+
+Native `build/stockpile-storage-native-location-names-20261026-223134` adds
+focused filter/empty-list behavior to the existing92-observation reference run.
+Empty-list component Random changes neither the name nor RNG. A focused filter
+accepts10 of36 attempted bytes. The LEAVESCREEN event closes the editor even with
+filter focus; the retired native scratch still has its entering-filter flag set.
+This is semantic input evidence, not a physical Windows Escape test. The first
+length probe had toggled focus off and is superseded by the explicitly focused
+run. Its screenshot was inspected; source preservation and unsaved exit pass.
+The future viewer should treat empty-list Random as a local no-op and preserve
+the native ten-byte input limit; the4096-byte transport bound is not a UI limit.
+Native header draw calls `a94030` for the native-language line and `a946e0`
+with flags true/false for English. These are provider candidates pending owned
+input/pin audit and live comparison; DFHack's formatting reconstruction is not
+the native routine. See the naming fixture's filter/header evidence.
 
 ## Native squad assignment reference
 

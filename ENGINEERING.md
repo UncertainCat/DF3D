@@ -19,6 +19,34 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Locations integration verification
+
+Protected `areas-acceptance-20261027-133446 -LocationScene` passes the full
+existing main-scene Locations suite with the live petition tracker enabled.
+Coverage includes six locations through both Details entry routes, native
+Details observations and entry effects/refusals, access changes and glyphs,
+candidate order/metadata/portraits,20 staff assignment/removal workflows, supply
+editing, parent input shielding, creation, chooser scrolling, assignment,
+unassignment/reassignment and fixture cleanup. The hospital scrolled-staff
+capture was visually inspected. This is the harness's coverage, not a claim
+that every Zones workflow or minimum-window case is complete.
+
+Main-scene fixtures use the scene's semantic queue, including rejection probes.
+Receipt-count assertions retain originating intents so cancelled background
+reads are distinguishable from cancelled user actions. The access scaffold owns
+its own Details model; it must not create a second set of readers on the mounted
+editor's model. Earlier132700,132906,133033 and133229 runs failed obsolete
+receipt-accounting/direct-request assumptions and are not acceptance.
+
+The audit also fixed access-hover teardown: deferred leave checks the help
+object's lifetime at execution, and pointer entry checks it before use.
+`location_access_view_test` covers help freed before deferred leave. Core and
+this regression pass cleanly in `build/qa/location-integration-audit`.
+The live run reports only the known rendering-thread notice; DF146896 exits
+unsaved, and both save manifests remain unchanged. Zones remains gated while
+the remaining overall coverage is reconciled; the minimum-height hospital
+scrollbar exception in the native bug register still awaits approval.
+
 ## Native Location supply editing reference
 
 `fixtures/areas/native_location_supply_edit.json` records121 observations from

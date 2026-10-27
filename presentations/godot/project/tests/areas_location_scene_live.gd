@@ -5,6 +5,13 @@ var candidate_portrait_audited := false
 var details_parent_checked: Dictionary={}
 var details_staff_count:=0
 var quantity_cases:=0
+func area_control_receipts() -> Array:
+	# Automatic tracker/terrain/staff-indicator observations are independent of
+	# an explicit area action. Retain cancellations and every other area receipt.
+	return receipts.filter(func(result):
+		var intent: Dictionary=result.get("_intent",{})
+		if result.get("action",intent.get("action",-1)) not in [Contract.ManagementAction.AreaInspect,Contract.ManagementAction.AreaUpdate]:return false
+		return int(result.get("area",{}).get("operation",intent.get("operation",-1))) not in [Contract.AreaOperation.LocationSpecializationRead,Contract.AreaOperation.LocationStaffAssignmentsRead,Contract.AreaOperation.LocationRecognitionRead])
 func pointer_areas() -> void:
 	if FileAccess.file_exists(directory+"/naming-restart.txt"):
 		await naming_restart();return
@@ -233,18 +240,10 @@ func details_transport(observed_locations: Array) -> void:
 			else:
 				if not check(detail==originals[int(expected.id)],"Unrelated Details snapshot changed"): return
 	step="location Details invalid site"
-	var seq: int=world.area_request({"action":9,"operation":Contract.AreaOperation.LocationDetails,"kind":1,
+	var result:=await area_receipt({"action":9,"operation":Contract.AreaOperation.LocationDetails,"kind":1,
 		"location_site_id":2147483647,"location_id":0})
-	if not check(seq>0,"Details refusal request not sent"): return
-	var deadline:=Time.get_ticks_msec()+30000
-	while Time.get_ticks_msec()<deadline:
-		world.poll()
-		var result: Dictionary=world.poll_management()
-		if int(result.get("request_seq",0))==seq and int(result.get("status",S.Idle)) not in [S.Idle,S.Pending]:
-			check(int(result.status)==S.Rejected and not result.get("area",{}).has("location_details") and str(result.get("message",""))=="","Details refusal leaked data or authored copy")
-			return
-		await create_timer(0.01).timeout
-	incomplete("Details refusal wait cap hit; no replay",true)
+	if stopped:return
+	check(int(result.status)==S.Rejected and not result.get("area",{}).has("location_details") and str(result.get("message",""))=="","Details refusal leaked data or authored copy")
 
 func staff_candidates_transport(details: Dictionary) -> void:
 	var evidence: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_staff_selector.json"))
@@ -291,17 +290,9 @@ func staff_candidates_transport(details: Dictionary) -> void:
 			else:invalid.expected_list_revision=int(page.revision)
 			# Invalid observations clear the retained list. A previously issued receipt
 			# must stay stale even when the original target and identical rows return.
-			var seq: int=world.area_request(invalid)
-			if not check(seq>0,"candidate refusal request not sent"):return
-			var deadline:=Time.get_ticks_msec()+30000
-			var received:=false
-			while Time.get_ticks_msec()<deadline:
-				world.poll();var state: Dictionary=world.poll_management()
-				if int(state.get("request_seq",0))==seq and int(state.get("status",S.Idle)) not in [S.Idle,S.Pending]:
-					if not check(int(state.status)==S.Rejected and not state.get("area",{}).has("location_staff_candidates") and str(state.get("message",""))=="","candidate refusal leaked data or authored copy"):return
-					received=true;break
-				await create_timer(0.01).timeout
-			if not received:incomplete("candidate refusal wait cap; no replay",true);return
+			var state:=await area_receipt(invalid)
+			if stopped:return
+			if not check(int(state.status)==S.Rejected and not state.get("area",{}).has("location_staff_candidates") and str(state.get("message",""))=="","candidate refusal leaked data or authored copy"):return
 		candidate_state.open({"site_id":int(details.site_id),"location_id":int(details.id),"occupation_id":occupation_id,"role":int(expected.role)})
 		if not await wait_ui(func():return candidate_state.ticket==0,"staff selector controller read"):return
 		if not check(candidate_state.phase==candidate_state.Phase.Ready and candidate_state.rows==page.rows and candidate_state.revision>int(page.revision),"controller did not publish the fresh native list"):return
@@ -808,7 +799,7 @@ func details_parent_input() -> void:
 	var page: String=editor.stockpile_page
 	await native("guard_before")
 	if stopped:return
-	var count:=receipts.size()
+	var count:=area_control_receipts().size()
 	var clicked: Array=[]
 	for key in ["location","location_details","owner","rename","repaint","suspend"]:
 		var control: Control=editor.zone_menu.controls[key]
@@ -821,7 +812,7 @@ func details_parent_input() -> void:
 	for i in 5:world.poll();actions.poll();editor._process(0.02);await process_frame
 	if not check(editor.details_origin==route and editor.details_state.snapshot==details and editor.selected==original
 		and editor.request_ticket==0 and editor.stockpile_page==page and editor.mode=="inspect"
-		and receipts.size()==count and not editor.zone_menu.name_entry.visible,"Details parent shield allowed a hidden edit or request"):return
+		and area_control_receipts().size()==count and not editor.zone_menu.name_entry.visible,"Details parent shield allowed a hidden edit or request"):return
 	await native("guard_after")
 	if stopped:return
 	details_parent_checked[route]=clicked
@@ -852,14 +843,14 @@ func staff_route_edits() -> void:
 		var original: Dictionary=model.snapshot.duplicate(true)
 		var origin: String=editor.details_origin
 		# Cancel before the driver polls the manually driven action service.
-		var receipts_before:=receipts.size()
+		var receipts_before:=area_control_receipts().size()
 		await pointer_click(staff_route_point(view,int(row.occupation_id),false))
 		if not check(flow.mode==flow.Mode.Choosing and flow.candidates.ticket>0,"staff route did not queue selector read"):return
 		var cancelled_ticket: int=flow.candidates.ticket
 		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 		for i in 3:world.poll();actions.poll();await process_frame
 		if not check(flow.mode==flow.Mode.Closed and flow.candidates.ticket==0 and model.snapshot==original
-			and receipts.size()==receipts_before+1 and actions.result(cancelled_ticket).get("outcome")=="not_sent"
+			and area_control_receipts().size()==receipts_before+1 and actions.result(cancelled_ticket).get("outcome")=="not_sent"
 			and editor.details_origin==origin,"queued selector cancellation leaked work or closed Details"):return
 		await pointer_click(staff_route_point(view,int(row.occupation_id),false))
 		if not await wait_ui(func():return selector.is_visible_in_tree() and selector.actions_enabled,"full route candidate list"):return
@@ -963,16 +954,18 @@ func details_entry() -> void:
 	if stopped: return
 	step="Details state service integration"
 	var model=editor.details_state
-	var receipt_count:=receipts.size()
+	var receipt_count:=area_control_receipts().size()
 	model.open({"site_id":int(target.site_id),"id":int(target.id)})
 	if not await wait_ui(func(): return model.ticket==0,"Details state entry"): return
 	if not check(model.phase==model.Phase.Ready and int(model.snapshot.id)==int(target.id),"Details state entry did not become ready"): return
-	if not check(receipts.size()==receipt_count+2 and int(receipts[-2].area.operation)==Contract.AreaOperation.LocationDetails
-		and int(receipts[-1].area.operation)==Contract.AreaOperation.LocationOpen,"Details state must observe then enter exactly once"): return
+	var entry_receipts: Array=area_control_receipts().slice(receipt_count).filter(func(result):return int(result.get("area",{}).get("operation",-1)) in [Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationOpen])
+	if not check(entry_receipts.size()==2 and int(entry_receipts[0].area.operation)==Contract.AreaOperation.LocationDetails
+		and int(entry_receipts[1].area.operation)==Contract.AreaOperation.LocationOpen,"Details state must observe then enter exactly once"): return
 	var observed: Dictionary=model.snapshot.duplicate(true)
 	model.refresh();model.refresh()
 	if not await wait_ui(func(): return model.ticket==0,"Details state refresh"): return
-	if not check(receipts.size()==receipt_count+3 and int(receipts[-1].area.operation)==Contract.AreaOperation.LocationDetails
+	entry_receipts=area_control_receipts().slice(receipt_count).filter(func(result):return int(result.get("area",{}).get("operation",-1)) in [Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationOpen])
+	if not check(entry_receipts.size()==3 and int(entry_receipts[-1].area.operation)==Contract.AreaOperation.LocationDetails
 		and model.snapshot==observed,"Details state refresh must be observational and stable"): return
 	editor.close_panel()
 	check(model.phase==model.Phase.Closed and model.snapshot.is_empty(),"closing Areas must retire Details state")
@@ -980,9 +973,9 @@ func details_entry() -> void:
 
 func details_access(locations: Array) -> void:
 	step="Details access through state and service"
-	var model=editor.details_state
-	# Mount the production bar in a test scaffold while the full Details route
-	# remains unfinished. Clicks use the viewport, never direct pressed signals.
+	var model=preload("res://scripts/location_details_state.gd").new();model.configure(actions)
+	# Isolate access mutations in a production view with its own state. Sharing
+	# the mounted editor's state would create two recognition/indicator owners.
 	var layer:=CanvasLayer.new();layer.layer=128;root.add_child(layer)
 	var details_view=preload("res://scripts/location_details_view.gd").new();layer.add_child(details_view)
 	details_view.configure(world,model,scene._fortress_hud.native_help);details_view.layout(Vector2(1200,800))
@@ -1027,12 +1020,13 @@ func details_access(locations: Array) -> void:
 		var modes=[0,1,2,3] if int(model.snapshot.kind) in [2,4] else [0,1,2]
 		for mode in modes:
 			var before: Dictionary=model.snapshot.duplicate(true)
-			var count:=receipts.size()
+			var count:=area_control_receipts().size()
 			await click_control(bar.buttons[mode]);await click_control(bar.buttons[mode]);model.refresh()
 			if not await wait_ui(func(): return model.ticket==0,"access mutation"): return
-			if not check(model.phase==model.Phase.Ready and receipts.size()==count+1
-				and int(receipts[-1].area.operation)==Contract.AreaOperation.LocationAccess
-				and int(receipts[-1].area.location_edit_outcome)==Contract.LocationEditOutcome.Completed,"access mutation receipt differs"): return
+			write_json("access-receipts.json",{"mode":mode,"phase":model.phase,"receipts":area_control_receipts().slice(count)})
+			if not check(model.phase==model.Phase.Ready and area_control_receipts().size()==count+1
+				and int(area_control_receipts()[-1].area.operation)==Contract.AreaOperation.LocationAccess
+				and int(area_control_receipts()[-1].area.location_edit_outcome)==Contract.LocationEditOutcome.Completed,"access mutation receipt differs"): return
 			if not check(int(model.snapshot.access)==mode,"access mutation snapshot differs"): return
 			if not check(int(bar.current.selected)==mode and not bar.buttons[mode].disabled,"permission bar did not reflect confirmed state"): return
 			if not await wait_ui(func(): return scene._fortress_hud.native_help.displayed==str(mode),"access help after click"): return
@@ -1072,7 +1066,7 @@ func details_access(locations: Array) -> void:
 			var staff=details_view.staff_view
 			var scroll=staff.native_scroll
 			var before_scroll: Dictionary=model.snapshot.duplicate(true)
-			var scroll_receipts:=receipts.size()
+			var scroll_receipts:=area_control_receipts().size()
 			var point: Vector2=scroll.global_position+Vector2(8,scroll.size.y-6)
 			await access_motion(point)
 			for i in 3:
@@ -1080,24 +1074,24 @@ func details_access(locations: Array) -> void:
 					var event:=InputEventMouseButton.new();event.position=point;event.global_position=point
 					event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed
 					root.push_input(event,true);await process_frame
-			if not check(staff.first==3 and scroll.first==3 and model.snapshot==before_scroll and receipts.size()==scroll_receipts,"staff scrolling changed simulation or failed to reach lower roles"):return
+			if not check(staff.first==3 and scroll.first==3 and model.snapshot==before_scroll and area_control_receipts().size()==scroll_receipts,"staff scrolling changed simulation or failed to reach lower roles"):return
 			model.refresh()
 			if not await wait_ui(func():return model.ticket==0,"staff scroll refresh"):return
 			if not check(staff.first==3,"Details refresh reset staff scroll"):return
 			for frame in 3:await process_frame;await RenderingServer.frame_post_draw
 			if not check(root.get_texture().get_image().save_png(directory+"/scene_staff_scrolled.png")==OK,"staff scroll capture failed"):return
-		var count:=receipts.size()
+		var count:=area_control_receipts().size()
 		if 3 not in modes:
 			model.set_access(3)
-			if not check(model.ticket==0 and receipts.size()==count,"unavailable members sent"): return
+			if not check(model.ticket==0 and area_control_receipts().size()==count,"unavailable members sent"): return
 		# Deliberately stale displayed receipt: bridge refusal must stop the owner.
 		model.snapshot.revision=int(model.snapshot.revision)^1
 		model.set_access(0)
 		if not await wait_ui(func(): return model.ticket==0,"stale access mutation"): return
 		if not check(model.phase==model.Phase.Stale and model.snapshot.is_empty(),"stale access did not invalidate owner"): return
 		if not check(not scene._fortress_hud.native_help.visible and scene._fortress_hud.minimap_panel.visible,"invalidated access retained help"): return
-		count=receipts.size();model.set_access(1);model.refresh()
-		if not check(model.ticket==0 and receipts.size()==count,"stale access replayed"): return
+		count=area_control_receipts().size();model.set_access(1);model.refresh()
+		if not check(model.ticket==0 and area_control_receipts().size()==count,"stale access replayed"): return
 		await native("paint_counts_location_details",{"phase":"access_check_%d_%d" % [int(row.id),int(modes[-1])]})
 		if stopped: return
 	model.close()
@@ -1129,17 +1123,10 @@ func access_motion(position: Vector2) -> void:
 	await process_frame;await process_frame
 
 func entry_failure(intent: Dictionary, outcome: int) -> void:
-	var seq: int=world.area_request(intent)
-	if not check(seq>0,"entry refusal request not sent"): return
-	var deadline=Time.get_ticks_msec()+30000
-	while Time.get_ticks_msec()<deadline:
-		world.poll();var state: Dictionary=world.poll_management()
-		if int(state.get("request_seq",0))==seq and int(state.get("status",S.Idle)) in [S.Ok,S.Rejected]:
-			check(int(state.status)==S.Rejected and int(state.get("area",{}).get("location_entry_outcome",0))==outcome
-				and not state.get("area",{}).has("location_details") and str(state.get("message",""))=="","entry refusal outcome differs")
-			return
-		await create_timer(0.01).timeout
-	incomplete("entry refusal wait cap hit; no replay",true)
+	var state:=await area_receipt(intent)
+	if stopped:return
+	check(int(state.status)==S.Rejected and int(state.get("area",{}).get("location_entry_outcome",0))==outcome
+		and not state.get("area",{}).has("location_details") and str(state.get("message",""))=="","entry refusal outcome differs")
 
 func quantity_digit(digit: int) -> void:
 	for pressed in [true,false]:

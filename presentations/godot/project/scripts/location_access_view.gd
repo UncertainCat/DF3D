@@ -24,14 +24,18 @@ func configure(source, model, help=null) -> void:
 		icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.mouse_filter=Control.MOUSE_FILTER_IGNORE
 		button.add_child(icon);button.pressed.connect(_choose.bind(mode));add_child(button);buttons.append(button)
 		if hover_help!=null:
-			button.mouse_entered.connect(func(): hover_help.enter_access(button.get_instance_id(),mode))
+			button.mouse_entered.connect(func():
+				if is_instance_valid(hover_help):hover_help.enter_access(button.get_instance_id(),mode))
 			# A neighboring button enters during the same input dispatch. Defer the
 			# old owner's leave so that transition preserves the native cold timer.
-			button.mouse_exited.connect(func(): hover_help.leave.call_deferred(button.get_instance_id()))
+			button.mouse_exited.connect(func(): _leave_help.call_deferred(button.get_instance_id()))
 	state.changed.connect(refresh);refresh()
 
 func _choose(mode: int) -> void:
 	if not buttons[mode].disabled and buttons[mode].visible: state.set_access(mode)
+
+func _leave_help(owner: int) -> void:
+	if is_instance_valid(hover_help):hover_help.leave(owner)
 
 static func content(details: Dictionary) -> Dictionary:
 	if typeof(details.get("kind"))!=TYPE_INT or int(details.kind) not in [1,2,3,4,5]: return {}

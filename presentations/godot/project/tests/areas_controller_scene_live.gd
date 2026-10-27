@@ -12,12 +12,16 @@ func seed_catalog() -> void:
 	var result: Dictionary=actions.result(ticket)
 	check(result.get("status")==S.Ok and result.get("action")==Contract.ManagementAction.Catalog,"catalog seed failed")
 
-func request(data: Dictionary, refusal: String="", expect_rejected:=false) -> Dictionary:
+func area_receipt(data: Dictionary) -> Dictionary:
 	if stopped:return {}
 	var ticket: int=actions.submit("areas",data,Callable())
 	if not check(ticket>0,"area fixture request not queued"):return {}
 	if not await wait_ui(func():return not actions.result(ticket).is_empty(),"area fixture request"):return {}
-	var result: Dictionary=actions.result(ticket)
+	return actions.result(ticket)
+
+func request(data: Dictionary, refusal: String="", expect_rejected:=false) -> Dictionary:
+	var result:=await area_receipt(data)
+	if stopped:return {}
 	if refusal.is_empty() and not expect_rejected:
 		if not check(result.get("status")==S.Ok,str(result.get("message","request failed"))):return {}
 	else:
@@ -47,7 +51,10 @@ func run() -> void:
 	if check(scene._loader.entered,"main scene did not enter fortress"):
 		actions = scene._ui.actions; host = scene._ui.host; interaction = scene._interaction
 		actions.set_process(false)
-		actions.completed.connect(func(_ticket,result): receipts.append(result.duplicate(true)))
+		actions.completed.connect(func(ticket,result):
+			var observation: Dictionary=result.duplicate(true)
+			observation["_intent"]=actions._requests.get(ticket,{}).get("request",{}).duplicate(true)
+			receipts.append(observation))
 		editor = scene._ui.controller("areas"); editor.set_process(false)
 		await pointer_areas()
 	var status := "failed" if failed else ("incomplete" if not reasons.is_empty() else "passed")

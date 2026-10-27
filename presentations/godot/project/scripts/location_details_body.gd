@@ -1,6 +1,6 @@
 extends Control
-# Shared native body rows. Full heading, staff and editing controls are owned by
-# the unfinished Details view; this component does not expose a partial route.
+# Shared native body rows. The Details owner composes heading, staff and editing
+# controls; this component only renders the supplied semantic snapshot.
 const Format = preload("res://scripts/location_details_format.gd")
 const GRAY := Color8(192,192,192)
 const WHITE := Color8(255,255,255)

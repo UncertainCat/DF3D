@@ -1,6 +1,6 @@
 extends Control
-# Native210852/214045 name/type and affiliation rows. Full Details controls and
-# value artwork remain unfinished; this component does not expose the route.
+# Native210852/214045 name/type and affiliation rows. The Details owner composes
+# these with the value artwork and editing controls.
 const Format=preload("res://scripts/location_details_format.gd")
 const TEMPLE_TIERS=["Shrine","Temple","Temple complex"]
 const GUILD_TIERS=["meeting place","guildhall","grand guildhall"]

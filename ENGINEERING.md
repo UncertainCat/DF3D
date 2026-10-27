@@ -226,7 +226,7 @@ unchanged. RNG snapshot/restore exists only in the controlled diagnostic, never
 in this runtime provider. Empty pools are rejected before the helper's unrelated
 fallback can run. The ABBEYS singleton returns word0/part1 without consuming RNG;
 an exhausted cursor2496 refills to cursor4 with identical state. Location writes
-remain unfinished; this diagnostic selection capability does not expose a Random UI.
+are verified below; the viewer's Random UI remains unfinished.
 `generateNativeLocationName` calls native entity wrapper931860/core generator
 a92860 with an owned language_name copy, fortress civilization and the native
 location-kind category. Seven native Random comparisons match every structured
@@ -257,9 +257,25 @@ filtered-out selection and empty random pools. Rejecting an empty pool is a
 bridge guard; native empty-list button behavior remains unverified. Typed
 transport and session/epoch ownership remain unfinished.
 Random with an empty list, scrolling, physical Escape,
-typed mutations and the rendered three-column editor remain
+typed mutation transport and the rendered three-column editor remain
 unfinished. DFHack Translation::generateName reconstructs the algorithm and is
 not used as a substitute for calling DF.
+
+The schema now defines staged `LocationNameValue`, `LocationNameSnapshot`,
+`LocationNameChoice` and `LocationNamePage` payloads. They are not yet fields of
+the active request/reply envelope and do not change management70 interoperability.
+`location_name_util.h` validates exact seven-element word/grammar arrays,
+independent has-name/type fields, current identity receipts and page progress.
+Name strings and filter queries are explicit CP437 bytes; display forms are full
+UTF-8 strings. Empty native language text is preserved. Transport limits are4096
+bytes per name string/query,128 rows and64KiB per choice-page payload; these are
+storage bounds, never truncation or native eligibility rules. Duplicate word IDs
+with different parts remain separate ordered choices. Schema tests cover opaque
+high bytes, unused-component grammar, invalid identity/shape and malformed pages.
+Request operations, model/extension codecs, session ownership and the coordinated
+protocol-version migration remain to be connected before product use. The full
+core gate passes19/19 in `build/qa/location-name-contract`; no runtime bridge or
+viewer binary changed for these unreferenced schema definitions.
 
 ## Native squad assignment reference
 

@@ -1385,6 +1385,29 @@ table LocationDetails {
   staff:LocationStaffSnapshot;
   affiliation:LocationAffiliation; // Absent in legacy records; not an empty affiliation.
 }
+// Naming payload definitions are staged independently of the active v70
+// request/reply envelope. Wiring them requires a coordinated protocol migration.
+table LocationNameValue {
+  first_name_bytes:[uint8]; nickname_bytes:[uint8]; // Exact native CP437, not UTF-8.
+  words:[int32]; parts:[int16]; // Exactly seven, including unused components.
+  language:int32 = -1; type:int16 = -1; has_name:bool;
+}
+table LocationNameSnapshot {
+  site_id:int32 = -1; id:int32 = -1; kind:uint8;
+  namer_id:int32 = -1; namer_race:int16 = -1;
+  revision:uint64; value:LocationNameValue;
+}
+table LocationNameChoice {
+  word:int32 = -1; part:int16 = -1;
+  english:string; translated:string; // Full native forms; clipping belongs to the viewer.
+}
+table LocationNamePage {
+  snapshot:LocationNameSnapshot;
+  component:uint8; query_bytes:[uint8]; // Exact owned CP437 filter.
+  cursor:uint32; total:uint32; next_cursor:uint32; truncated:bool;
+  choices:[LocationNameChoice]; // Native order, including distinct grammatical forms.
+}
+
 table AreaState {
   areas:[AreaInfo]; choices:[AreaChoice]; next_cursor:uint32; truncated:bool;
   operation:AreaOperation;

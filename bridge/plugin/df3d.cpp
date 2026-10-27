@@ -1762,7 +1762,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               seed.valid,seed.id,seed.x,seed.y,seed.z,int(seed.furniture),seed.inUse);
           return CR_OK;
       }
-      if(parameters[0]=="location-specialization-read" || parameters[0]=="location-specialization-set") {
+      if(parameters[0]=="location-specialization-read" || parameters[0]=="location-specialization-set" || parameters[0]=="location-staff-assignments-read") {
         const bool edit=parameters[0]=="location-specialization-set";
         if(parameters.size()!=(edit?9:7))return CR_WRONG_USAGE;
         int32_t ids[6]{};
@@ -1781,6 +1781,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               (parameters[8]!="0" && parameters[8]!="1"))return CR_WRONG_USAGE;
           value["outcome"]=int(df3d_area::setNativeLocationStaffSpecialization(
               ids[0],ids[1],source,ids[3],ids[4],ids[5],revision,parameters[8]=="1"));
+        } else if(parameters[0]=="location-staff-assignments-read") {
+          const auto receipt=df3d_area::observeNativeLocationStaffAssignments(ids[0],ids[1],source,ids[3],ids[4],ids[5]);
+          value["valid"]=receipt.has_value();
+          if(receipt) {
+            value["revision"]=std::to_string(receipt->revision);value["unit_id"]=receipt->unitId;value["histfig_id"]=receipt->histfigId;
+            value["entries"]=Json::Value(Json::arrayValue);
+            for(const auto& entry:receipt->entries) {
+              Json::Value row(Json::objectValue);row["kind"]=int(entry.kind);row["id"]=entry.id;
+              row["type"]=entry.type;row["subtype"]=entry.subtype;row["custom"]=entry.custom;row["name"]=entry.name;
+              value["entries"].append(std::move(row));
+            }
+          }
         } else {
           const auto receipt=df3d_area::observeNativeLocationStaffSpecialization(ids[0],ids[1],source,ids[3],ids[4],ids[5]);
           value["valid"]=receipt.has_value();
@@ -2790,6 +2802,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d location-staff-set <site id> <location id> <occupation id> <unit id|-1> <revision> (protected staff mutation)\n"
         "df3d location-staff-read <site id> <location id> (semantic staffing rows; read-only)\n"
         "df3d location-specialization-read <site> <location> <source> <entity|-1> <row> <unit> (semantic receipt)\n"
+        "df3d location-staff-assignments-read <site> <location> <source> <entity|-1> <row> <unit> (ordered memberships)\n"
         "df3d location-specialization-set <site> <location> <source> <entity|-1> <row> <unit> <revision> <0|1> (protected mutation)\n"
         "df3d location-staff-prepare <site id> <location id> (create missing empty roles; protected acceptance)\n"
         "df3d location-access-set <site id> <location id> <mode 0..3> <revision> (protected access mutation)\n"

@@ -583,8 +583,51 @@ if recognition_case=='staffindicators' then
   end
   return result
  end
- local original=facts()
- local baseline=capture('TEMPLE-staff-indicators-before',temple);baseline.units=original
+ local function semantic(expected)
+  if not semantic_recognition then return nil end
+  local receipts={}
+  for _,u in ipairs(expected)do
+   local args={df.global.plotinfo.site_id,temple.id,0,-1,87,u.unit_id}
+   if u.unit_id==5813 then
+    args[3]=1;args[4]=religion.id;args[5]=-1
+    for _,a in ipairs(religion.positions.assignments)do
+     if a.st_id==args[1] and a.histfig==df.unit.find(u.unit_id).hist_figure_id then args[5]=a.id end
+    end
+    assert(args[5]>=0)
+   end
+   local guards={}
+   for _,object in ipairs{m,g}do
+    local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+    guards[#guards+1]={bytes=bytes,address=at,size=n}
+   end
+   local function read(values)
+    local text,code=dfhack.run_command_silent('df3d','location-staff-assignments-read',table.unpack(values))
+    assert(code==0,text);return require('json').decode(text)
+   end
+   local observed=read(args);assert(observed.valid and observed.unit_id==u.unit_id)
+   local entries={}
+   for _,o in ipairs(u.occupations)do entries[#entries+1]={kind=0,id=o.id,type=o.type,subtype=-1,custom=-1,name=''}end
+   for kind,key in ipairs{'workshops','furnaces'}do
+    for _,b in ipairs(u[key])do entries[#entries+1]={kind=kind,id=b.id,type=b.type,subtype=b.subtype,custom=b.custom,name=''}end
+   end
+   for _,d in ipairs(u.work_details)do entries[#entries+1]={kind=3,id=d.index,type=d.icon,subtype=-1,custom=-1,name=d.name}end
+   assert(require('json').encode(observed.entries)==require('json').encode(entries),'semantic assignment records differ')
+   assert(require('json').encode(read(args))==require('json').encode(observed),'repeat assignment observation differs')
+   for _,i in ipairs{1,2,4,5,6}do
+    local invalid={table.unpack(args)};invalid[i]=2147483647
+    assert(not read(invalid).valid,'foreign assignment identity accepted')
+   end
+   for _,guard in ipairs(guards)do
+    assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'assignment observation changed native UI/gps')
+    df.delete(guard.bytes)
+   end
+   receipts[#receipts+1]=observed
+  end
+  assert(require('json').encode(facts())==require('json').encode(expected),'assignment observation changed records')
+  return receipts
+ end
+ local original=facts();local original_receipts=semantic(original)
+ local baseline=capture('TEMPLE-staff-indicators-before',temple);baseline.units=original;baseline.semantic=original_receipts
  for _,target in ipairs{{'performer-icon',816,394},{'performer-portrait',592,394},{'priest-icon',816,358},{'priest-portrait',592,358}}do
   local function move()
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
@@ -621,7 +664,9 @@ if recognition_case=='staffindicators' then
   assert(found,'assignment fixture missing '..kind)
  end
  add_worker(assert(df.global.plotinfo.labor_info.work_details[0]).assigned_units)
- local row=capture('TEMPLE-staff-indicators-all-sources',temple);row.units=facts();row.cells={}
+ local fixture=facts();local fixture_receipts=semantic(fixture)
+ if semantic_recognition then assert(fixture_receipts[2].revision~=original_receipts[2].revision,'membership change did not change revision')end
+ local row=capture('TEMPLE-staff-indicators-all-sources',temple);row.units=fixture;row.semantic=fixture_receipts;row.cells={}
  for y=31,33 do for x=100,115 do
   local pen=dfhack.screen.readTile(x,y)
   row.cells[#row.cells+1]={x=x,y=y,ch=pen.ch,tile=pen.tile,fg=pen.fg,bg=pen.bg,bold=pen.bold}
@@ -630,6 +675,10 @@ if recognition_case=='staffindicators' then
   restore.vector:resize(0);for _,id in ipairs(restore.before)do restore.vector:insert('#',id)end
  end
  assert(require('json').encode(facts())==require('json').encode(original),'assignment fixture restoration failed')
+ if semantic_recognition then
+  assert(require('json').encode(semantic(original))==require('json').encode(original_receipts),'restored assignment receipt differs')
+  row.semantic_restored=true;row.ui_and_gps_unchanged=true;row.invalid_identities_refused=30
+ end
  return
 end
 if recognition_case=='specializationhover' then

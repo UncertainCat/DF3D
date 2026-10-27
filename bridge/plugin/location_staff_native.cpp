@@ -44,6 +44,10 @@
 #include "df/plotinfost.h"
 #include "df/world.h"
 #include "df/world_site.h"
+#include "df/building_workshopst.h"
+#include "df/building_furnacest.h"
+#include "df/workshop_profile.h"
+#include "df/work_detail.h"
 #include <algorithm>
 #include <memory>
 #include <exception>
@@ -388,6 +392,72 @@ std::optional<LocationStaffSpecializationReceipt> observeNativeLocationStaffSpec
   for(bool labor:unit->status.labors)number(labor);
   hash&=uint64_t(INT64_MAX);result.revision=hash?hash:1;return result;
 }
+std::optional<LocationStaffAssignments> observeNativeLocationStaffAssignments(
+    int32_t siteId,int32_t locationId,LocationStaffSource source,int32_t entityId,int32_t rowId,int32_t unitId) {
+  // The UI renderer is evidence, never invoked. Its membership helpers are
+  // stateless; each receives a caller-owned copy of a semantic ID vector.
+  static const bool supported=[] {
+    if(!staffOrderingFunctions())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t length) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<length;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0xe1420,0x2d)==UINT64_C(0x442cad2865cdb4a5) &&
+        hash(0xb9f70,0x25)==UINT64_C(0xe6e732b038db044e) &&
+        hash(0xbabe0,0xab)==UINT64_C(0x1bd318997a061458) &&
+        hash(0x3b867d,0x82b)==UINT64_C(0xeac528ebb5f5eb01);
+  }();
+  if(!supported || !df::global::world || !df::global::plotinfo)return std::nullopt;
+  const auto target=observeNativeLocationStaffSpecialization(siteId,locationId,source,entityId,rowId,unitId);
+  if(!target)return std::nullopt;
+  auto* unit=df::unit::find(unitId);if(!unit)return std::nullopt;
+  LocationStaffAssignments out;
+  out.siteId=siteId;out.locationId=locationId;out.occupationId=target->occupationId;
+  out.entityId=target->entityId;out.assignmentId=target->assignmentId;
+  out.unitId=unitId;out.histfigId=target->histfigId;
+  const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+  using Find=int32_t (*)(int32_t,const std::vector<int32_t>*);
+  const auto linear=reinterpret_cast<Find>(const_cast<uint8_t*>(base+0xe1420));
+  const auto sorted=reinterpret_cast<Find>(const_cast<uint8_t*>(base+0xb9f70));
+  for(const auto* value:unit->occupations) {
+    if(!value)return std::nullopt;
+    out.entries.push_back({LocationStaffAssignmentKind::Occupation,value->id,int32_t(value->type)});
+  }
+  const auto buildings=[&](const auto& list,LocationStaffAssignmentKind kind) {
+    for(auto* building:list) {
+      if(!building)return false;
+      auto* profile=building->getWorkshopProfile();if(!profile)continue;
+      const auto workers=profile->permitted_workers;
+      if(linear(unitId,&workers)==-1)continue;
+      out.entries.push_back({kind,building->id,int32_t(building->getType()),
+          int32_t(building->getSubtype()),building->getCustomType()});
+    }
+    return true;
+  };
+  if(!buildings(df::global::world->buildings.other.WORKSHOP_ANY,LocationStaffAssignmentKind::Workshop) ||
+      !buildings(df::global::world->buildings.other.FURNACE_ANY,LocationStaffAssignmentKind::Furnace))return std::nullopt;
+  const auto& details=df::global::plotinfo->labor_info.work_details;
+  for(size_t index=0;index<details.size();++index) {
+    const auto* detail=details[index];if(!detail || index>size_t(INT32_MAX))return std::nullopt;
+    const auto workers=detail->assigned_units;
+    if(sorted(unitId,&workers)==-1)continue;
+    out.entries.push_back({LocationStaffAssignmentKind::WorkDetail,int32_t(index),int32_t(detail->icon),-1,-1,
+        DF2UTF(detail->name)});
+  }
+  uint64_t hash=UINT64_C(14695981039346656037);
+  const auto number=[&](uint64_t value) {
+    for(unsigned i=0;i<8;++i){hash^=value&255;hash*=UINT64_C(1099511628211);value>>=8;}
+  };
+  for(int32_t id:{siteId,locationId,out.occupationId,out.entityId,out.assignmentId,unitId,out.histfigId})number(id);
+  number(out.entries.size());
+  for(const auto& entry:out.entries) {
+    number(uint8_t(entry.kind));number(entry.id);number(entry.type);number(entry.subtype);number(entry.custom);
+    number(entry.name.size());for(unsigned char ch:entry.name)number(ch);
+  }
+  hash&=uint64_t(INT64_MAX);out.revision=hash?hash:1;return out;
+}
+
 LocationStaffEditOutcome setNativeLocationStaffSpecialization(
     int32_t siteId,int32_t locationId,LocationStaffSource source,int32_t entityId,int32_t rowId,int32_t unitId,
     uint64_t expectedRevision,bool specialized) {

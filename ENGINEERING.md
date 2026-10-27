@@ -758,11 +758,34 @@ testing detail mode. Renderer3b867d..3b8ea8 walks unit occupations, workshop/fur
 lists via getWorkshopProfile and permitted_workers, then work details. It contains
 no separate religious-position indicator loop. Native helpers0xe1420/0xb9f70
 perform membership lookup; the encompassing renderer owns UI state and must not
-be called as a runtime semantic service. A future provider should expose these
+be called as a runtime semantic service. The provider exposes these
 ordered world facts with owned row identity; Godot must not infer assignment
 membership from specialization flags or the row's location role. Workshop/furnace
 graphics are separate native overlays, so GPS tile IDs alone are not their image
-reference. No indicator runtime provider or viewer rendering is implemented yet.
+reference. Viewer transport and indicator rendering remain unfinished.
+
+observeNativeLocationStaffAssignments validates the current staff row/unit/HF
+through the specialization reader, then copies occupation records and calls native
+membership helpers on private ID-vector copies. Workshop membership uses linear
+lookup0xe1420; work-detail membership uses0xb9f70 and its hybrid search0xbabe0.
+Their complete bodies and the audited renderer range are hash-pinned after the
+supported PE gate. No viewscreen/widget state is accessed. Output preserves
+source order and carries semantic source kind, ID, type/subtype/custom ID and
+work-detail name. It does not clip to a viewport or publish graphic tile IDs.
+Its independent revision hashes the target and returned ordered facts.
+Protected diagnostic location-staff-assignments-read accepts explicit
+site/location/source/entity/row/unit identities; management remains version76
+until the separate transport contract is added.
+
+Protected actionstaffindicators092335 matches the independent native records for
+both baseline workers and the all-source fixture. Repeated reads match; adding
+memberships changes the revision, and restoring assignments restores the exact
+receipt. Thirty foreign-identity probes are refused. Full main-interface/gps
+byte guards and captured assignment records remain unchanged during reads.
+Owned DF160752 exits unsaved with the source manifest unchanged. The MSVC plugin
+build and location-staff-assignment-provider core gate pass. Installed plugin
+SHA256 is FB2B71F7522F4133488950007F49E971C9E20FB007F106B4C85AB44FAEB75733.
+This establishes the semantic reader, not viewer transport or indicator parity.
 
 Protected actionspecialization081207 matches native080737 for both priest5813
 and performer6536, including every captured flag/labor entry and exact restoration

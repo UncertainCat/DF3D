@@ -14803,7 +14803,7 @@
   "staff_indicator_reference": {
     "native": "build/stockpile-storage-native-location-recognition-staffindicators-20261027-091520",
     "status": "passed",
-    "scope": "Native baseline and controlled workshop/furnace/work-detail membership fixture. No runtime provider or rendered viewer acceptance yet.",
+    "scope": "Native baseline and controlled workshop/furnace/work-detail fixture plus semantic provider comparison. Viewer transport/rendering unfinished.",
     "renderer_rva": "3b867d-3b8ea8",
     "source_order": [
       "unit.occupations",
@@ -15041,6 +15041,108 @@
       "portrait_hitbox": "Confirmed for occupation and work-detail indicators; visible icons do not activate help. Workshop/furnace renderer also tests the portrait X coordinate but needs targeted capture.",
       "occupation_art": "Hovering performer portrait changes first indicator tile from136347 to132199 because hover instruction262 overwrites graphic enum388.",
       "correction_status": "Awaiting maintainer approval; no runtime correction."
+    },
+    "semantic_reference": {
+      "run": "build/stockpile-storage-native-location-recognition-actionstaffindicators-20261027-092335",
+      "status": "passed",
+      "baseline": [
+        {
+          "entries": [
+            {
+              "custom": -1,
+              "id": 10,
+              "kind": 3,
+              "name": "Metalworks",
+              "subtype": -1,
+              "type": 10
+            }
+          ],
+          "histfig_id": 9375,
+          "revision": "7160942074189791621",
+          "unit_id": 5813,
+          "valid": true
+        },
+        {
+          "entries": [
+            {
+              "custom": -1,
+              "id": 87,
+              "kind": 0,
+              "name": "",
+              "subtype": -1,
+              "type": 1
+            }
+          ],
+          "histfig_id": 9998,
+          "revision": "9214547251855528420",
+          "unit_id": 6536,
+          "valid": true
+        }
+      ],
+      "all_sources": [
+        {
+          "entries": [
+            {
+              "custom": -1,
+              "id": 10,
+              "kind": 3,
+              "name": "Metalworks",
+              "subtype": -1,
+              "type": 10
+            }
+          ],
+          "histfig_id": 9375,
+          "revision": "7160942074189791621",
+          "unit_id": 5813,
+          "valid": true
+        },
+        {
+          "entries": [
+            {
+              "custom": -1,
+              "id": 87,
+              "kind": 0,
+              "name": "",
+              "subtype": -1,
+              "type": 1
+            },
+            {
+              "custom": -1,
+              "id": 3,
+              "kind": 1,
+              "name": "",
+              "subtype": 2,
+              "type": 13
+            },
+            {
+              "custom": -1,
+              "id": 56,
+              "kind": 2,
+              "name": "",
+              "subtype": 0,
+              "type": 5
+            },
+            {
+              "custom": -1,
+              "id": 0,
+              "kind": 3,
+              "name": "Miners",
+              "subtype": -1,
+              "type": 0
+            }
+          ],
+          "histfig_id": 9998,
+          "revision": "7509337072060389896",
+          "unit_id": 6536,
+          "valid": true
+        }
+      ],
+      "invalid_identities_refused": 30,
+      "ui_and_gps_unchanged": true,
+      "semantic_restored": true,
+      "source_preserved": true,
+      "owned_exit_without_save": true,
+      "scope": "Diagnostic provider only; transport and viewer indicator acceptance remain unfinished."
     }
   }
 }

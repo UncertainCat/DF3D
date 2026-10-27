@@ -72,6 +72,21 @@ struct LocationStaffSpecializationReceipt {
   uint64_t revision=0;
   bool eligible=false,specialized=false;
 };
+enum class LocationStaffAssignmentKind : uint8_t { Occupation, Workshop, Furnace, WorkDetail };
+struct LocationStaffAssignment {
+  LocationStaffAssignmentKind kind=LocationStaffAssignmentKind::Occupation;
+  int32_t id=-1,type=-1,subtype=-1,custom=-1;
+  std::string name;
+};
+struct LocationStaffAssignments {
+  int32_t siteId=-1,locationId=-1,occupationId=-1,entityId=-1,assignmentId=-1;
+  int32_t unitId=-1,histfigId=-1;
+  uint64_t revision=0;
+  std::vector<LocationStaffAssignment> entries;
+};
+// Ordered semantic membership, independent of viewport capacity or hover state.
+std::optional<LocationStaffAssignments> observeNativeLocationStaffAssignments(
+    int32_t siteId,int32_t locationId,LocationStaffSource source,int32_t entityId,int32_t rowId,int32_t unitId);
 // Explicit row identity: occupation uses entityId=-1 and occupation id;
 // religious position uses entity id and assignment id. Transport owns epochs.
 std::optional<LocationStaffSpecializationReceipt> observeNativeLocationStaffSpecialization(

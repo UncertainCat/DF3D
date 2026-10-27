@@ -1,6 +1,7 @@
 extends RefCounted
 # A vacant-row gesture owns one list, one selected receipt and at most one edit.
 signal changed
+signal applied
 const C=preload("res://scripts/management_contract.gd")
 const Candidates=preload("res://scripts/location_staff_candidates_state.gd")
 enum Mode { Closed, Choosing, Reading, Applying, Rejected, Stale, Unknown, Unavailable }
@@ -85,7 +86,7 @@ func _finish(next: Mode, completed:=false) -> void:
 	if not completed:blocked_owner=owner.duplicate(true)
 	if details!=null and _key()==owner and details.phase==details.Phase.Editing:
 		details.phase=details.Phase.Ready
-		if completed:details.refresh()
+		if completed:details.refresh();applied.emit()
 		else:details.changed.emit()
 	changed.emit()
 

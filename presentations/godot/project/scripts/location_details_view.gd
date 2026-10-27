@@ -12,9 +12,11 @@ var access_view
 var quantity_view
 var staff_view
 var religious_staff_workflow=preload("res://scripts/location_religious_staff_workflow.gd").new()
+var religious_assignment_workflow=preload("res://scripts/location_religious_assignment_workflow.gd").new()
 var staff_workflow=preload("res://scripts/location_staff_workflow.gd").new()
 var staff_candidates_view
 var _candidate_revision:=0
+var _candidate_identity: Dictionary={}
 var name_workflow=preload("res://scripts/location_name_workflow.gd").new()
 var name_view
 var rename_button: TextureButton
@@ -39,13 +41,16 @@ func configure(source, model, help=null) -> void:
 	religious_staff_workflow.configure(model)
 	religious_staff_workflow.changed.connect(refresh)
 	staff_view.religious_removal_requested.connect(remove_religious_staff)
+	religious_assignment_workflow.configure(model)
+	religious_assignment_workflow.changed.connect(refresh)
+	staff_view.religious_assignment_requested.connect(assign_religious_staff)
 	staff_workflow.configure(model)
 	staff_workflow.changed.connect(refresh)
 	staff_workflow.applied.connect(func():staff_view.display(state.snapshot,0))
 	staff_view.assignment_requested.connect(func(id):staff_workflow.open(id))
 	staff_view.removal_requested.connect(func(id):staff_workflow.open(id,true))
-	staff_candidates_view.unit_chosen.connect(staff_workflow.choose)
-	staff_candidates_view.cancelled.connect(staff_workflow.close)
+	staff_candidates_view.unit_chosen.connect(_choose_staff)
+	staff_candidates_view.cancelled.connect(_cancel_staff)
 	name_workflow.configure(model)
 	name_view=preload("res://scripts/location_name_view.gd").new();add_child(name_view);name_view.configure(source,name_workflow.names)
 	name_view.input_allowed=func():return not input_allowed.is_valid() or input_allowed.call()
@@ -63,18 +68,34 @@ func configure(source, model, help=null) -> void:
 	recognition_view.action_requested=recognize
 	state.changed.connect(refresh);refresh()
 
+func religious_assignment_active() -> bool:
+	return religious_assignment_workflow.mode in [religious_assignment_workflow.Mode.Choosing,religious_assignment_workflow.Mode.Reading,religious_assignment_workflow.Mode.Applying]
+
+func assign_religious_staff(row: Dictionary) -> void:
+	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or religious_assignment_active() or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
+	if quantity_view.workflow.pending or not quantity_view.workflow.queue.is_empty():return
+	quantity_view.workflow.finish();religious_assignment_workflow.open(row)
+
+func _choose_staff(unit_id: int) -> void:
+	if religious_assignment_workflow.mode==religious_assignment_workflow.Mode.Choosing:religious_assignment_workflow.choose(unit_id)
+	else:staff_workflow.choose(unit_id)
+
+func _cancel_staff() -> void:
+	if religious_assignment_active():religious_assignment_workflow.close()
+	else:staff_workflow.close()
+
 func remove_religious_staff(row: Dictionary) -> void:
-	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
+	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or religious_assignment_active() or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
 	if quantity_view.workflow.pending or not quantity_view.workflow.queue.is_empty():return
 	quantity_view.workflow.finish();religious_staff_workflow.remove(row)
 
 func recognize() -> void:
-	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
+	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or religious_assignment_active() or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
 	if quantity_view.workflow.pending or not quantity_view.workflow.queue.is_empty():return
 	quantity_view.workflow.finish();recognition_workflow.recognize()
 
 func open_name() -> void:
-	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
+	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or religious_assignment_active() or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
 	if quantity_view.workflow.pending or not quantity_view.workflow.queue.is_empty():return
 	quantity_view.workflow.finish()
 	name_view.reset_input();name_workflow.open()
@@ -93,27 +114,29 @@ func refresh() -> void:
 	visible=state.snapshot.get("kind") in [1,2,3,4,5]
 	heading.display(state.snapshot);body.display(state.snapshot,quantity_view.FIELDS.get(int(state.snapshot.get("kind",0)),{}).keys());value_view.display(state.snapshot)
 	staff_view.display(state.snapshot)
-	var selecting: bool=staff_workflow.mode==staff_workflow.Mode.Choosing
+	var religious_selecting: bool=religious_assignment_workflow.mode==religious_assignment_workflow.Mode.Choosing
+	var selecting: bool=staff_workflow.mode==staff_workflow.Mode.Choosing or religious_selecting
 	var naming: bool=name_workflow.active
 	var kind: int=int(state.snapshot.get("kind",0))
 	type_icon.texture=art.texture(["","ZONE_TAVERN","ZONE_TEMPLE","ZONE_LIBRARY","ZONE_GUILDHALL","ZONE_HOSPITAL"][kind]) if kind in range(1,6) else null
 	type_icon.visible=not selecting and not naming
 	for child in [heading,body,value_view,staff_view,access_view,quantity_view]:child.visible=not selecting and not naming
-	quantity_view.actions_enabled=staff_workflow.mode==staff_workflow.Mode.Closed and not naming
-	staff_view.actions_enabled=state.phase==state.Phase.Ready and staff_workflow.mode==staff_workflow.Mode.Closed and not naming
+	quantity_view.actions_enabled=staff_workflow.mode==staff_workflow.Mode.Closed and not religious_assignment_active() and not naming
+	staff_view.actions_enabled=state.phase==state.Phase.Ready and staff_workflow.mode==staff_workflow.Mode.Closed and not religious_assignment_active() and not naming
 	name_view.visible=naming
 	rename_button.visible=not selecting and not naming
-	rename_button.disabled=state.phase!=state.Phase.Ready or staff_workflow.mode!=staff_workflow.Mode.Closed
+	rename_button.disabled=state.phase!=state.Phase.Ready or staff_workflow.mode!=staff_workflow.Mode.Closed or religious_assignment_active()
+	staff_candidates_view.row_background_token="BUTTON_RECTANGLE" if religious_selecting else "BUTTON_RECTANGLE_DARK"
 	staff_candidates_view.visible=selecting
-	var candidates=staff_workflow.candidates
+	var candidates=religious_assignment_workflow.candidates if religious_selecting else staff_workflow.candidates
 	staff_candidates_view.actions_enabled=selecting and candidates.phase==candidates.Phase.Ready
 	var revision: int=candidates.revision if staff_candidates_view.actions_enabled else 0
-	if revision!=_candidate_revision:
-		_candidate_revision=revision
+	if revision!=_candidate_revision or candidates.identity!=_candidate_identity:
+		_candidate_revision=revision;_candidate_identity=candidates.identity.duplicate(true)
 		staff_candidates_view.display_rows(candidates.rows if revision>0 else [])
 	recognition_view.refresh()
 	recognition_view.visible=not selecting and not naming and not recognition_view.current.is_empty()
-	recognition_view.actions_enabled=state.phase==state.Phase.Ready and staff_workflow.mode==staff_workflow.Mode.Closed and not naming and not quantity_view.workflow.pending and quantity_view.workflow.queue.is_empty()
+	recognition_view.actions_enabled=state.phase==state.Phase.Ready and staff_workflow.mode==staff_workflow.Mode.Closed and not religious_assignment_active() and not naming and not quantity_view.workflow.pending and quantity_view.workflow.queue.is_empty()
 	queue_redraw()
 
 func _exit_tree() -> void:
@@ -122,6 +145,8 @@ func _exit_tree() -> void:
 	staff_workflow.dispose()
 	if religious_staff_workflow.changed.is_connected(refresh):religious_staff_workflow.changed.disconnect(refresh)
 	religious_staff_workflow.dispose()
+	if religious_assignment_workflow.changed.is_connected(refresh):religious_assignment_workflow.changed.disconnect(refresh)
+	religious_assignment_workflow.dispose()
 	if name_workflow.changed.is_connected(refresh):name_workflow.changed.disconnect(refresh)
 	name_workflow.dispose()
 	if recognition_workflow.changed.is_connected(refresh):recognition_workflow.changed.disconnect(refresh)

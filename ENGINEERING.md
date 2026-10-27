@@ -525,8 +525,21 @@ rows and comparison keys, rejects partial lists, and requires identical target
 receipts across continuation pages. Controlled workflow, ordinary candidate and
 religious removal regression checks plus core pass in
 `build/qa/location-religious-assignment-workflow-final`. These are injected-service
-checks. The assignment workflow still needs visible-picker integration, native
-alternate sort/filter verification and rendered/live lifecycle acceptance.
+checks. The staged Details view connects vacant religious row icons to the shared
+candidate picker, routes choose/cancel to its owning workflow and retires it on
+panel replacement. Other Details actions are gated during selection; completed
+assignment refreshes Details and parent observations. Religious rows use installed
+BUTTON_RECTANGLE artwork, matching native054344; ordinary candidate rows retain
+their separately observed DARK variant. Protected scene070144 exercises actual
+viewport open, queued cancellation, reopen, overlay blocking and first-row
+assignment, with independent native link/history readback. Both saves remain
+unchanged and owned DF exits unsaved. It passes_with_known_issues only for the
+known Godot separate-thread notice. Inspected candidate and completed-row captures
+retain native layout; all317952 candidate-row and3360 header pixels match the
+native reference exactly.26 scrollbar-edge pixels differ and remain unresolved;
+this is not whole-panel pixel parity. The fixture stores bounded visual evidence.
+Native alternate sort/filter verification and sent/disconnect/late/restart assignment
+lifecycle acceptance remain unfinished. Overall Zones availability stays hidden.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

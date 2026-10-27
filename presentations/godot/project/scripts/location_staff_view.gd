@@ -2,6 +2,7 @@ extends Control
 signal assignment_requested(occupation_id: int)
 signal removal_requested(occupation_id: int)
 signal religious_removal_requested(row: Dictionary)
+signal religious_assignment_requested(row: Dictionary)
 # Native staff rows and assignment/removal hit regions. Religious assignment,
 # specialization and remaining input details keep the parent entry routes hidden.
 const Format=preload("res://scripts/location_details_format.gd")
@@ -49,8 +50,8 @@ func _gui_input(event: InputEvent) -> void:
 		var left: float=(row_columns()-4)*8 if occupied else 192
 		if Rect2(left,top,32,36).has_point(event.position):
 			if int(row.get("source",-1))==1:
-				if not occupied:continue
-				religious_removal_requested.emit(row.duplicate(true))
+				if occupied:religious_removal_requested.emit(row.duplicate(true))
+				else:religious_assignment_requested.emit(row.duplicate(true))
 			elif occupied:removal_requested.emit(int(row.occupation_id))
 			else:assignment_requested.emit(int(row.occupation_id))
 			accept_event();return
@@ -120,8 +121,8 @@ func _draw() -> void:
 						draw_texture_rect_region(picture,Rect2(top+Vector2(192+x*8,y*12),Vector2(8,12)),Rect2((0 if x==0 else 16 if x==4 else 8),y*12,8,12))
 			var unit_icon: Texture2D=unit_icons.get(int(names.get("holder_id",-1)))
 			if unit_icon!=null:draw_texture_rect(unit_icon,Rect2(top+Vector2(194,2),Vector2(32,32)),false)
-		elif int(row.get("source",-1))==0 and int(row.get("unit_id",-2))==-1 and int(row.get("histfig_id",-2))==-1:
-			# Native232551: empty ordinary slot; selector action is still pending.
+		elif int(row.get("source",-1)) in [0,1] and int(row.get("unit_id",-2))==-1 and int(row.get("histfig_id",-2))==-1:
+			# Native232551 ordinary /054344 religious vacant assignment icon.
 			var assign: Texture2D=art.texture("LOCATION_ASSIGN_OCCUPATION")
 			if assign!=null:draw_texture_rect(assign,Rect2(top+Vector2(192,0),Vector2(32,36)),false)
 		var label: Variant=null

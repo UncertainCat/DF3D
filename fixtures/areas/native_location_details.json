@@ -13219,6 +13219,57 @@
         "No rendered assignment picker or disconnect lifecycle acceptance.",
         "No post-effect Unknown injection."
       ]
+    },
+    "visual_reference": {
+      "details_refreshed": true,
+      "histfig_id": 10379,
+      "overlay_blocked": true,
+      "queued_cancel": "not_sent",
+      "unit_id": 7123,
+      "viewport_click": true,
+      "provenance": "build/areas-acceptance-20261027-070144",
+      "status": "passed_with_known_issues",
+      "known_diagnostic": "godot-separate-thread-notice",
+      "source_save_directories_preserved": 2,
+      "owned_exit_without_save": true,
+      "native_picker_reference": "build/stockpile-storage-native-location-recognition-assignpriest-20261027-054344/TEMPLE-priest-selector.png",
+      "row_background_token": "BUTTON_RECTANGLE",
+      "pixel_comparison": {
+        "rows": {
+          "rect": [
+            376,
+            88,
+            552,
+            576
+          ],
+          "pixels": 317952,
+          "different": 0
+        },
+        "header": {
+          "rect": [
+            416,
+            64,
+            280,
+            12
+          ],
+          "pixels": 3360,
+          "different": 0
+        },
+        "whole_picker": {
+          "rect": [
+            368,
+            52,
+            592,
+            708
+          ],
+          "pixels": 419136,
+          "different": 26
+        }
+      },
+      "limitations": [
+        "26 scrollbar-edge pixels differ from native; unresolved.",
+        "Alternate sorting/filtering and sent/disconnect/late/restart assignment lifecycle remain unverified."
+      ]
     }
   }
 }

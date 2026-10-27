@@ -1567,6 +1567,32 @@ func religious_staff_route(locations: Array) -> void:
 	await pointer_click(point)
 	await create_timer(0.1).timeout;actions.poll()
 	await native("religious_unchanged")
+	step="religious assignment picker"
+	var flow=details.religious_assignment_workflow
+	var selector=details.staff_candidates_view
+	var assign_point: Vector2=view.global_position+Vector2(208,(int(view.geometry.first_y)-6+(row_index-view.first)*3)*12+18)
+	await pointer_click(assign_point)
+	if not check(flow.mode==flow.Mode.Choosing and flow.candidates.ticket>0,"religious icon did not queue candidate read"):return
+	var cancelled_ticket: int=flow.candidates.ticket
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	for i in 3:world.poll();actions.poll();await process_frame
+	if not check(flow.mode==flow.Mode.Closed and actions.result(cancelled_ticket).get("outcome")=="not_sent" and editor.details_layer.visible,"queued religious cancel changed owner"):return
+	await pointer_click(assign_point)
+	if not await wait_ui(func():return selector.is_visible_in_tree() and selector.actions_enabled,"religious candidate picker visible"):return
+	await native("religious_candidates_readback",{"rows":flow.candidates.rows})
+	await capture("religious_assignment_candidates")
+	host.set_overlay_blocked(true)
+	await pointer_key(KEY_ENTER);await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not check(flow.mode==flow.Mode.Choosing,"overlay admitted religious picker input"):return
+	host.set_overlay_blocked(false)
+	var chosen: Dictionary=selector.rows[0].duplicate(true)
+	await native("religious_guard")
+	await pointer_click(selector.global_position+Vector2(80,54))
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and flow.mode==flow.Mode.Closed and int(details.staff_view.rows[row_index].histfig_id)==int(chosen.histfig_id),"religious assignment and Details refresh"):return
+	if not check(not selector.visible and selector.all_rows.is_empty(),"completed religious picker retained rows"):return
+	await native("religious_assignment_applied",{"unit_id":chosen.unit_id,"histfig_id":chosen.histfig_id})
+	await capture("religious_assignment_completed")
+	write_json("religious-assignment-scene-evidence.json",{"unit_id":chosen.unit_id,"histfig_id":chosen.histfig_id,"viewport_click":true,"queued_cancel":"not_sent","overlay_blocked":true,"details_refreshed":true})
 	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"religious Details Back"):return
 	write_json("religious-staff-scene-evidence.json",{"before":setup.before,"after":effects.after,"event":effects.event,"viewport_click":true,"details_refreshed":true,"vacant_repeat_unchanged":true,"details_closed":true})

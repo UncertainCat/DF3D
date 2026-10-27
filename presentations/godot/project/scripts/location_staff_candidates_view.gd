@@ -2,6 +2,7 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 signal unit_chosen(unit_id: int)
 signal cancelled
 var actions_enabled:=false
+var row_background_token:="BUTTON_RECTANGLE_DARK"
 var input_allowed: Callable
 # Native candidate rows, protected capture20260930-005254. Parent workflow remains
 # hidden until input, portraits and complete live acceptance have been verified.
@@ -224,8 +225,8 @@ func _draw() -> void:
 	for index in mini(16,rows.size()-first):
 		var row: Dictionary=rows[first+index]
 		var top := 3+index*3
-		var suffix := "SELECTED" if first+index==selected else "DARK"
-		patch("BUTTON_RECTANGLE_"+suffix,Vector2i(1,top),69,3)
+		var token := "BUTTON_RECTANGLE_SELECTED" if first+index==selected else row_background_token
+		patch(token,Vector2i(1,top),69,3)
 		patch("",Vector2i(1,top),5,3,picture.texture(first+index==selected))
 		# Protected020926: native anchored full-body image32x32, offset2,2.
 		var icon: Texture2D=unit_icons.get(int(row.get("unit_id",-1)))

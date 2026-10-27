@@ -12,6 +12,10 @@ var staff_view
 var staff_workflow=preload("res://scripts/location_staff_workflow.gd").new()
 var staff_candidates_view
 var _candidate_revision:=0
+var name_workflow=preload("res://scripts/location_name_workflow.gd").new()
+var name_view
+var rename_button: TextureButton
+var input_allowed: Callable
 
 func configure(source, model, help=null) -> void:
 	state=model;art.configure(source);theme=art.theme
@@ -30,7 +34,23 @@ func configure(source, model, help=null) -> void:
 	staff_view.removal_requested.connect(func(id):staff_workflow.open(id,true))
 	staff_candidates_view.unit_chosen.connect(staff_workflow.choose)
 	staff_candidates_view.cancelled.connect(staff_workflow.close)
+	name_workflow.configure(model)
+	name_view=preload("res://scripts/location_name_view.gd").new();add_child(name_view);name_view.configure(source,name_workflow.names)
+	name_view.input_allowed=func():return not input_allowed.is_valid() or input_allowed.call()
+	name_view.cancelled.connect(name_workflow.close)
+	name_workflow.changed.connect(refresh)
+	rename_button=TextureButton.new();add_child(rename_button)
+	rename_button.texture_normal=art.texture("UNIT_SHEET_CUSTOMIZE")
+	rename_button.position=Vector2(560,12);rename_button.size=Vector2(32,36)
+	rename_button.focus_mode=Control.FOCUS_NONE
+	rename_button.pressed.connect(open_name)
 	state.changed.connect(refresh);refresh()
+
+func open_name() -> void:
+	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
+	if quantity_view.workflow.pending or not quantity_view.workflow.queue.is_empty():return
+	quantity_view.workflow.finish()
+	name_view.reset_input();name_workflow.open()
 
 func layout(view: Vector2) -> void:
 	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(608,660)
@@ -38,15 +58,20 @@ func layout(view: Vector2) -> void:
 		child.layout(view);child.position-=position
 	access_view.position=Vector2(16,60);access_view.size=Vector2(576,36)
 	staff_candidates_view.layout(view);staff_candidates_view.position-=position
+	name_view.layout(view);name_view.position-=position
 
 func refresh() -> void:
 	visible=state.snapshot.get("kind") in [1,2,3,4,5]
 	heading.display(state.snapshot);body.display(state.snapshot,quantity_view.FIELDS.get(int(state.snapshot.get("kind",0)),{}).keys());value_view.display(state.snapshot)
 	staff_view.display(state.snapshot)
 	var selecting: bool=staff_workflow.mode==staff_workflow.Mode.Choosing
-	for child in [heading,body,value_view,staff_view,access_view,quantity_view]:child.visible=not selecting
-	quantity_view.actions_enabled=staff_workflow.mode==staff_workflow.Mode.Closed
-	staff_view.actions_enabled=state.phase==state.Phase.Ready and staff_workflow.mode==staff_workflow.Mode.Closed
+	var naming: bool=name_workflow.active
+	for child in [heading,body,value_view,staff_view,access_view,quantity_view]:child.visible=not selecting and not naming
+	quantity_view.actions_enabled=staff_workflow.mode==staff_workflow.Mode.Closed and not naming
+	staff_view.actions_enabled=state.phase==state.Phase.Ready and staff_workflow.mode==staff_workflow.Mode.Closed and not naming
+	name_view.visible=naming
+	rename_button.visible=not selecting and not naming
+	rename_button.disabled=state.phase!=state.Phase.Ready or staff_workflow.mode!=staff_workflow.Mode.Closed
 	staff_candidates_view.visible=selecting
 	var candidates=staff_workflow.candidates
 	staff_candidates_view.actions_enabled=selecting and candidates.phase==candidates.Phase.Ready
@@ -60,9 +85,12 @@ func _exit_tree() -> void:
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)
 	if staff_workflow.changed.is_connected(refresh):staff_workflow.changed.disconnect(refresh)
 	staff_workflow.dispose()
+	if name_workflow.changed.is_connected(refresh):name_workflow.changed.disconnect(refresh)
+	name_workflow.dispose()
 
 func _draw() -> void:
 	if staff_candidates_view!=null and staff_candidates_view.visible:return
+	if name_view!=null and name_view.visible:return
 	var frame: Texture2D=art.texture("HOVER_RECTANGLE")
 	if frame==null:return
 	for y in 55:

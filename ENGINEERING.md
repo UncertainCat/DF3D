@@ -324,14 +324,13 @@ replayed. Empty-list Random submits nothing and query bytes are limited to10.
 Close/session changes retire the owner and ignore late replies.
 `location_name_workflow.gd` binds that lifetime to Details. Closing an edited or
 pending editor refreshes the same Details target; parent generation/identity
-changes retire it without refreshing the new target. These classes are not yet
-connected to a visible naming panel. `build/qa/location-name-workflow` passes
+changes retire it without refreshing the new target. `build/qa/location-name-workflow` passes
 core19/19 and service-backed owner tests for ordering, short pages, obsolete
 queries, stale/unknown outcomes, queued/sent cancellation, late replies, epoch
 changes and parent retirement. This is deterministic ownership evidence, not
 protected live-owner or rendered UI acceptance.
 
-`location_name_view.gd` is a standalone, unexposed naming component using these
+`location_name_view.gd` is a naming component using these
 native headers and ordered rows. Its seven component controls, Random/Clear,
 filter and three word columns use installed artwork and recorded native copy.
 `location_name_view_capture` compares the entire608x660 panel at1200x800 against
@@ -342,9 +341,23 @@ test; the renderer/input check passes with only the documented separate-thread,
 device-finalize and shutdown-object diagnostics. Real Godot input exercises
 component, row and Random/Clear routes, ten-byte ASCII filtering, Backspace,
 Enter, Escape and Done. These checks establish the standalone initial rendering
-and local routes, not a complete editor. Details integration, protected live
+and local routes, not a complete editor. Protected live
 owner acceptance, native scrolling/hover/focus behavior, non-ASCII input and
 long-header/resize cases remain unfinished.
+
+Details connects the native quill control to the naming workflow and hides its
+other controls while naming is active. Done/Back returns to Details; closing the
+parent retires naming without refreshing a new target. Opening ends quantity
+entry only after submitted quantities settle. Hidden/reopened naming clears
+filter focus and dragging. Its child scrollbar honors the same input gate;
+Reports inherits that gate without redeclaring it. The full Details route remains
+unexposed pending completion. `build/qa/location-name-integration-fixed` passes
+core19/19, Areas and Reports panel/controller checks, plus both naming and Details
+GPU checks with only their documented diagnostics. The quill's32x36 RGB crop
+matches native223634 for all six reference locations. Actual Godot pointer tests
+cover blocked entry, opening, Done, reopening and parent retirement, while the
+naming capture also checks blocked scrollbar clicks/drags. These use a pending
+service stub for navigation and do not establish live integrated mutation effects.
 
 ## Native squad assignment reference
 

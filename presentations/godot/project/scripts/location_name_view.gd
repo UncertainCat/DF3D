@@ -1,5 +1,5 @@
 extends Control
-# Native naming reference223634. This component is not an exposed Details route.
+# Native naming reference223634. Details owns the editor lifetime.
 signal cancelled
 const Art=preload("res://scripts/original_ui.gd")
 const COMPONENTS=["Front Compound","Rear Compound","First Adjective","Second Adjective","Hyphen Compound","The X","Of X"]
@@ -20,8 +20,14 @@ func configure(source,model) -> void:
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();add_child(scrollbar);scrollbar.configure(source)
 	scrollbar.position=Vector2(576,108);scrollbar.size=Vector2(16,540);scrollbar.page=15
+	scrollbar.input_allowed=func():return not input_allowed.is_valid() or input_allowed.call()
 	scrollbar.row_changed.connect(func(value):first=value;queue_redraw())
 	state.changed.connect(refresh);refresh()
+	visibility_changed.connect(func():if not is_visible_in_tree():reset_input())
+
+func reset_input() -> void:
+	entering_filter=false;first=0;scrollbar.dragging=false
+	scrollbar.set_rows(state.rows.size(),first);queue_redraw()
 
 func layout(view: Vector2) -> void:
 	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(608,660)

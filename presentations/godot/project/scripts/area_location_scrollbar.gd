@@ -8,6 +8,7 @@ var dragging := false
 var hover_cell := -1
 var source
 var textures: Dictionary = {}
+var input_allowed: Callable
 
 func configure(world) -> void:
 	source = world
@@ -43,6 +44,7 @@ func drag_to(y: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree(): return
+	if input_allowed.is_valid() and not input_allowed.call():dragging=false;return
 	if dragging and event is InputEventMouseMotion:
 		var local: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
 		drag_to(local.y); get_viewport().set_input_as_handled()
@@ -50,6 +52,7 @@ func _input(event: InputEvent) -> void:
 		dragging = false; get_viewport().set_input_as_handled(); queue_redraw()
 
 func _gui_input(event: InputEvent) -> void:
+	if input_allowed.is_valid() and not input_allowed.call():dragging=false;return
 	if event is InputEventMouseMotion:
 		hover_cell = floori(event.position.y/12); queue_redraw()
 	if not event is InputEventMouseButton or not event.pressed: return

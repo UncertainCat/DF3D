@@ -59,5 +59,11 @@ func run() -> void:
 	await key(KEY_ENTER);assert(not view.entering_filter)
 	await click(Vector2(832,142));await key(KEY_ESCAPE);assert(closes==1 and not view.entering_filter)
 	await click(Vector2(912,82));assert(closes==2)
+	view.input_allowed=func():return false
+	await click(Vector2(952,694));assert(view.first==0,"blocked child scrollbar must not move")
+	view.scrollbar.dragging=true
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(952,600);root.push_input(motion,true)
+	assert(not view.scrollbar.dragging and view.first==0,"blocked input retires scrollbar drag")
+	view.entering_filter=true;view.hide();assert(not view.entering_filter)
 	view.queue_free();await process_frame;assets.queue_free();await process_frame
 	print("LOCATION_NAME_VIEW_CAPTURE_PASS");quit()

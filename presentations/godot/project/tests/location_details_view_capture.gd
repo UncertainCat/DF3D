@@ -1,5 +1,16 @@
 extends SceneTree
 const View=preload("res://scripts/location_details_view.gd")
+class Service:
+	extends RefCounted
+	signal session_changed
+	var calls: Array=[]
+	func submit(domain,intent,_callback):calls.append([domain,intent]);return calls.size()
+	func detach(_ticket):pass
+func click(point: Vector2) -> void:
+	for pressed in [true,false]:
+		var event:=InputEventMouseButton.new();event.position=point;event.global_position=point
+		event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;root.push_input(event,true)
+	await process_frame
 func _initialize() -> void:call_deferred("run")
 func numbers(value):
 	if typeof(value)==TYPE_FLOAT:return int(value)
@@ -14,6 +25,7 @@ func run() -> void:
 	var assets:=Df3dWorld.new();root.add_child(assets)
 	if not assets.load_assets(OS.get_environment("DF3D_DF_PATH")):quit(1);return
 	var model=preload("res://scripts/location_details_state.gd").new()
+	var service:=Service.new();model.configure(service)
 	var view=View.new();root.add_child(view);view.configure(assets,model);view.layout(Vector2(1200,800))
 	var font:=Image.load_from_file(assets.ui_font_path());var frame: Image=assets.ui_texture("HOVER_RECTANGLE").get_image()
 	var mapping={119288:Vector2i(0,0),119289:Vector2i(8,0),119290:Vector2i(16,0),119352:Vector2i(0,12),119353:Vector2i(8,12),119354:Vector2i(16,12),119416:Vector2i(0,24),119417:Vector2i(8,24),119418:Vector2i(16,24)}
@@ -25,6 +37,10 @@ func run() -> void:
 		model.snapshot=numbers(sample.details.duplicate(true));model.phase=model.Phase.Ready;model.changed.emit()
 		for i in 3:await process_frame;await RenderingServer.frame_post_draw
 		var image:=root.get_texture().get_image()
+		# Native223634 INN_TAVERN-1-before, quill at928,64 (all six kinds).
+		var rename_crop:=image.get_region(Rect2i(928,64,32,36));rename_crop.convert(Image.FORMAT_RGB8)
+		var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(rename_crop.get_data())
+		assert(digest.finish().hex_encode()=="63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2","native Rename artwork")
 		for cell in sample.border:
 			if not mapping.has(int(cell.tile)):push_error("Unmapped native Details frame");quit(1);return
 			var origin: Vector2i=mapping[int(cell.tile)]
@@ -50,5 +66,16 @@ func run() -> void:
 		if not view.visible or view.heading.rows!=confirmed or not view.access_view.buttons[0].disabled:push_error("Pending Details view lost confirmed facts");quit(1);return
 		model.close()
 		if view.visible or not view.heading.rows.is_empty():push_error("Closed Details view retained facts");quit(1);return
+	model.snapshot=numbers(data.cases[0].details.duplicate(true));model.phase=model.Phase.Ready
+	model.identity={"site_id":651,"id":int(model.snapshot.id)};model.changed.emit()
+	view.input_allowed=func():return false
+	await click(Vector2(944,82));assert(not view.name_workflow.active and service.calls.is_empty())
+	view.input_allowed=func():return true
+	await click(Vector2(944,82));assert(view.name_workflow.active and service.calls.size()==1)
+	assert(view.name_view.visible and not view.heading.visible and not view.staff_view.visible and not view.quantity_view.visible and not view.rename_button.visible)
+	view.name_view.entering_filter=true
+	await click(Vector2(912,82));assert(not view.name_workflow.active and view.heading.visible and not view.name_view.entering_filter)
+	await click(Vector2(944,82));assert(view.name_workflow.active and not view.name_view.entering_filter)
+	model.close();assert(not view.name_workflow.active and not view.visible)
 	view.queue_free();assets.queue_free();await process_frame
 	print("LOCATION_DETAILS_VIEW_CAPTURE_PASS");quit(0)

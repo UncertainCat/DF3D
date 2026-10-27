@@ -502,6 +502,7 @@ func open_location_details(target: Dictionary, assigned := false) -> void:
 	if details_view==null:
 		details_view=preload("res://scripts/location_details_view.gd").new();details_layer.add_child(details_view)
 		details_view.configure(world,details_state,hud.native_help if hud!=null else null)
+		details_view.input_allowed=func():return ui_host.allows_panel_input(self)
 		details_view.staff_candidates_view.input_allowed=func():return ui_host.allows_panel_input(self)
 		details_view.quantity_view.input_allowed=func():return ui_host.allows_panel_input(self)
 		details_view.quantity_view.workflow.changed.connect(_finish_details_close)
@@ -516,6 +517,7 @@ func close_location_details() -> void:
 	details_origin=""
 	if details_layer!=null:details_layer.hide()
 	if details_view!=null:
+		details_view.name_workflow.close(false)
 		var workflow=details_view.quantity_view.workflow
 		# Typed values are already explicit edits. Hide and retire input now,
 		# retaining this exact owner only until its ordered receipts settle.
@@ -1725,7 +1727,9 @@ func handle_escape() -> void:
 func handle_back() -> void:
 	if stockpile_page == "rename": close_panel(); return
 	if not details_origin.is_empty():
-		if details_view.staff_workflow.mode==details_view.staff_workflow.Mode.Choosing:
+		if details_view.name_workflow.active:
+			details_view.name_workflow.close()
+		elif details_view.staff_workflow.mode==details_view.staff_workflow.Mode.Choosing:
 			details_view.staff_workflow.close()
 		else:close_location_details();update_controls()
 		return

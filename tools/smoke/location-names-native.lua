@@ -511,7 +511,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -560,6 +560,78 @@ if recognition_case=='new' or recognition_case=='positionnew' then
  assert(changed==1,'unexpected priest template fixture count')
 end
 pixel(664,238);assert(details.open and details.selected_ab==temple)
+if recognition_case=='staffindicators' then
+ local function facts()
+  local result={}
+  for _,id in ipairs{5813,6536}do
+   local u=assert(df.unit.find(id));local r={unit_id=id,occupations={},workshops={},furnaces={},work_details={}}
+   for _,o in ipairs(u.occupations)do r.occupations[#r.occupations+1]={id=o.id,type=o.type,unit_id=o.unit_id,histfig_id=o.histfig_id}end
+   for _,entry in ipairs{{'WORKSHOP_ANY','workshops'},{'FURNACE_ANY','furnaces'}}do
+    for _,b in ipairs(df.global.world.buildings.other[entry[1]])do
+     local profile=b:getWorkshopProfile()
+     if profile then for _,worker in ipairs(profile.permitted_workers)do
+      if worker==id then r[entry[2]][#r[entry[2]]+1]={id=b.id,type=b:getType(),subtype=b:getSubtype(),custom=b:getCustomType()}end
+     end end
+    end
+   end
+   for i,detail in ipairs(df.global.plotinfo.labor_info.work_details)do
+    for _,worker in ipairs(detail.assigned_units)do
+     if worker==id then r.work_details[#r.work_details+1]={index=i,icon=detail.icon,name=dfhack.df2utf(detail.name),mode=detail.flags.mode}end
+    end
+   end
+   result[#result+1]=r
+  end
+  return result
+ end
+ local original=facts()
+ local baseline=capture('TEMPLE-staff-indicators-before',temple);baseline.units=original
+ for _,target in ipairs{{'performer-icon',816,394},{'performer-portrait',592,394},{'priest-icon',816,358},{'priest-portrait',592,358}}do
+  local function move()
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+  end
+  local until_tick=dfhack.getTickCount()+900
+  repeat move();script.sleep(1,'frames')until dfhack.getTickCount()>=until_tick
+  move()
+  local cells={}
+  for y=28,33 do for x=96,119 do
+   local pen=dfhack.screen.readTile(x,y)
+   cells[#cells+1]={x=x,y=y,ch=pen.ch,tile=pen.tile,fg=pen.fg,bg=pen.bg,bold=pen.bold}
+  end end
+  local row=capture('TEMPLE-staff-indicators-'..target[1],temple,true);row.cells=cells
+  assert(require('json').encode(facts())==require('json').encode(original),'hover changed assignment facts')
+ end
+ -- Diagnostic-only world fixture: make every assignment source visible on one
+ -- row, without using any native panel or borrowing its list state at runtime.
+ local restores={}
+ local function add_worker(vector)
+  local before={};for _,id in ipairs(vector)do before[#before+1]=id;assert(id~=6536,'fixture worker already assigned')end
+  restores[#restores+1]={vector=vector,before=before}
+  vector:insert('#',6536)
+  local sorted={};for _,id in ipairs(vector)do sorted[#sorted+1]=id end;table.sort(sorted)
+  for i,id in ipairs(sorted)do vector[i-1]=id end
+ end
+ for _,kind in ipairs{'WORKSHOP_ANY','FURNACE_ANY'}do
+  local found=false
+  for _,b in ipairs(df.global.world.buildings.other[kind])do
+   local profile=b:getWorkshopProfile()
+   if profile then add_worker(profile.permitted_workers);found=true;break end
+  end
+  assert(found,'assignment fixture missing '..kind)
+ end
+ add_worker(assert(df.global.plotinfo.labor_info.work_details[0]).assigned_units)
+ local row=capture('TEMPLE-staff-indicators-all-sources',temple);row.units=facts();row.cells={}
+ for y=31,33 do for x=100,115 do
+  local pen=dfhack.screen.readTile(x,y)
+  row.cells[#row.cells+1]={x=x,y=y,ch=pen.ch,tile=pen.tile,fg=pen.fg,bg=pen.bg,bold=pen.bold}
+ end end
+ for _,restore in ipairs(restores)do
+  restore.vector:resize(0);for _,id in ipairs(restore.before)do restore.vector:insert('#',id)end
+ end
+ assert(require('json').encode(facts())==require('json').encode(original),'assignment fixture restoration failed')
+ return
+end
 if recognition_case=='specializationhover' then
  for index,target in ipairs{{'specialized',358,df.main_hover_instruction.INFO_UNIT_IS_SPECIALIZED},{'available',394,df.main_hover_instruction.INFO_UNIT_IS_NOT_SPECIALIZED}}do
   local until_tick=dfhack.getTickCount()+1800

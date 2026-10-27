@@ -14799,5 +14799,248 @@
       "save_manifests_unchanged_per_run": 2,
       "owned_exit_without_save": true
     }
+  },
+  "staff_indicator_reference": {
+    "native": "build/stockpile-storage-native-location-recognition-staffindicators-20261027-091520",
+    "status": "passed",
+    "scope": "Native baseline and controlled workshop/furnace/work-detail membership fixture. No runtime provider or rendered viewer acceptance yet.",
+    "renderer_rva": "3b867d-3b8ea8",
+    "source_order": [
+      "unit.occupations",
+      "world.buildings.other.WORKSHOP_ANY",
+      "world.buildings.other.FURNACE_ANY",
+      "plotinfo.labor_info.work_details"
+    ],
+    "baseline": [
+      {
+        "furnaces": [],
+        "occupations": [],
+        "unit_id": 5813,
+        "work_details": [
+          {
+            "icon": 10,
+            "index": 10,
+            "mode": 1,
+            "name": "Metalworks"
+          }
+        ],
+        "workshops": []
+      },
+      {
+        "furnaces": [],
+        "occupations": [
+          {
+            "histfig_id": 9998,
+            "id": 87,
+            "type": 1,
+            "unit_id": 6536
+          }
+        ],
+        "unit_id": 6536,
+        "work_details": [],
+        "workshops": []
+      }
+    ],
+    "all_sources": [
+      {
+        "furnaces": [],
+        "occupations": [],
+        "unit_id": 5813,
+        "work_details": [
+          {
+            "icon": 10,
+            "index": 10,
+            "mode": 1,
+            "name": "Metalworks"
+          }
+        ],
+        "workshops": []
+      },
+      {
+        "furnaces": [
+          {
+            "custom": -1,
+            "id": 56,
+            "subtype": 0,
+            "type": 5
+          }
+        ],
+        "occupations": [
+          {
+            "histfig_id": 9998,
+            "id": 87,
+            "type": 1,
+            "unit_id": 6536
+          }
+        ],
+        "unit_id": 6536,
+        "work_details": [
+          {
+            "icon": 0,
+            "index": 0,
+            "mode": 3,
+            "name": "Miners"
+          }
+        ],
+        "workshops": [
+          {
+            "custom": -1,
+            "id": 3,
+            "subtype": 2,
+            "type": 13
+          }
+        ]
+      }
+    ],
+    "hover_observations": [
+      {
+        "name": "TEMPLE-staff-indicators-performer-icon",
+        "pointer": [
+          816,
+          394,
+          102,
+          32
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "help_lines": [],
+        "first_indicator_tiles": [
+          {
+            "bg": 0,
+            "bold": true,
+            "ch": 0,
+            "fg": 7,
+            "tile": 135255,
+            "x": 100,
+            "y": 28
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "ch": 0,
+            "fg": 7,
+            "tile": 136347,
+            "x": 100,
+            "y": 31
+          }
+        ]
+      },
+      {
+        "name": "TEMPLE-staff-indicators-performer-portrait",
+        "pointer": [
+          592,
+          394,
+          74,
+          32
+        ],
+        "hover": 262,
+        "displayed_hover": 262,
+        "help_lines": [
+          "This creature is a",
+          "performer."
+        ],
+        "first_indicator_tiles": [
+          {
+            "bg": 0,
+            "bold": true,
+            "ch": 0,
+            "fg": 7,
+            "tile": 135255,
+            "x": 100,
+            "y": 28
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "ch": 0,
+            "fg": 7,
+            "tile": 132199,
+            "x": 100,
+            "y": 31
+          }
+        ]
+      },
+      {
+        "name": "TEMPLE-staff-indicators-priest-icon",
+        "pointer": [
+          816,
+          358,
+          102,
+          29
+        ],
+        "hover": -1,
+        "displayed_hover": -1,
+        "help_lines": [],
+        "first_indicator_tiles": [
+          {
+            "bg": 0,
+            "bold": true,
+            "ch": 0,
+            "fg": 7,
+            "tile": 135255,
+            "x": 100,
+            "y": 28
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "ch": 0,
+            "fg": 7,
+            "tile": 136347,
+            "x": 100,
+            "y": 31
+          }
+        ]
+      },
+      {
+        "name": "TEMPLE-staff-indicators-priest-portrait",
+        "pointer": [
+          592,
+          358,
+          74,
+          29
+        ],
+        "hover": 269,
+        "displayed_hover": 269,
+        "help_lines": [
+          "This creature is",
+          "assigned to a work",
+          "detail."
+        ],
+        "first_indicator_tiles": [
+          {
+            "bg": 0,
+            "bold": true,
+            "ch": 0,
+            "fg": 7,
+            "tile": 135255,
+            "x": 100,
+            "y": 28
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "ch": 0,
+            "fg": 7,
+            "tile": 136347,
+            "x": 100,
+            "y": 31
+          }
+        ]
+      }
+    ],
+    "assignment_facts_restored": true,
+    "source_preserved": true,
+    "owned_exit_without_save": true,
+    "limitations": [
+      "Native OS screenshots lose hover; use text cells for hover identity/copy.",
+      "Native workshop/furnace graphics use a separate overlay; GPS tile IDs alone do not describe their drawn icons.",
+      "Only native existing priest/performer and one workshop/furnace/detail fixture observed; other roles/subtypes and overflow remain unverified."
+    ],
+    "bugs": {
+      "portrait_hitbox": "Confirmed for occupation and work-detail indicators; visible icons do not activate help. Workshop/furnace renderer also tests the portrait X coordinate but needs targeted capture.",
+      "occupation_art": "Hovering performer portrait changes first indicator tile from136347 to132199 because hover instruction262 overwrites graphic enum388.",
+      "correction_status": "Awaiting maintainer approval; no runtime correction."
+    }
   }
 }

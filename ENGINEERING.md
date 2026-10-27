@@ -16,6 +16,8 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Animal picker remains active after selecting another zone or empty terrain, so Enter assigns to an old, no-longer-shown zone. | Close the picker and retire its assignment target when map selection changes. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_outside_panel_selection`, native `build/stockpile-storage-native-zone-animals-20261026-153041`, rendered `build/areas-acceptance-20261026-153847`. |
 | Fresh historical personality profiles leave current_focus and undistracted_focus uninitialized at offsets0x184/0x188. | No runtime correction; DF3D calls the same native initializer. | Discovered, not corrected. Native constructor5c02a0 and assignment accountant captures060438/060526/060814; fixture `assignment_cleanup_reference`. The oracle retains raw values and excludes only these newly allocated counters from comparison. |
 | Minimum-height hospital Details has no staff rows, but draws a malformed staff scrollbar over soap controls and scrolls an invisible list. | Proposed: hide the malformed scrollbar when no staff row fits. | Awaiting maintainer approval; not implemented. `native_location_details.json.staff_height_reference`, protected `build/stockpile-storage-native-location-names-20261027-010412`. |
+| Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Proposed: attach help to the visible indicator. | Awaiting maintainer approval; not implemented. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace code has the same coordinate dependency but targeted hover capture remains outstanding. |
+| Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Proposed: keep the occupation icon stable while showing help. | Awaiting maintainer approval; not implemented. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
 ## Native Location supply editing reference
 
@@ -743,6 +745,24 @@ cancellation, queued and sent read/edit closure, late success on another locatio
 and epoch replacement. Queued-edit closure is observed in the workflow changed
 callback before the service can dispatch in the same poll. These tests establish
 ownership behavior, not rendered or live disconnect acceptance.
+
+Remaining staff indicators have a native reference in
+native_location_details.json.staff_indicator_reference. Protected091520 reads
+existing priest5813 and performer6536 assignment records, then temporarily adds
+performer6536 to workshop3, furnace56 and Miners work detail0. Native renders the
+occupation, workshop, furnace and detail in that order; the diagnostic restores
+all assignment vectors exactly and exits owned DF146192 unsaved, source unchanged.
+The existing priest's Metalworks membership is shown even though its mode is
+EverybodyDoesThis: native renderer3b8d13 searches explicit assigned_units without
+testing detail mode. Renderer3b867d..3b8ea8 walks unit occupations, workshop/furnace
+lists via getWorkshopProfile and permitted_workers, then work details. It contains
+no separate religious-position indicator loop. Native helpers0xe1420/0xb9f70
+perform membership lookup; the encompassing renderer owns UI state and must not
+be called as a runtime semantic service. A future provider should expose these
+ordered world facts with owned row identity; Godot must not infer assignment
+membership from specialization flags or the row's location role. Workshop/furnace
+graphics are separate native overlays, so GPS tile IDs alone are not their image
+reference. No indicator runtime provider or viewer rendering is implemented yet.
 
 Protected actionspecialization081207 matches native080737 for both priest5813
 and performer6536, including every captured flag/labor entry and exact restoration

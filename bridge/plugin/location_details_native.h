@@ -33,6 +33,13 @@ inline LocationRecognitionState locationRecognitionState(const LocationRecogniti
 }
 // Caller owns a DF safe point; returned data retains no native pointers.
 std::optional<LocationRecognitionFacts> observeNativeLocationRecognition(int32_t siteId,int32_t locationId);
+// Recognition transaction primitive, not a standalone recognition action.
+// Caller holds the safe point and validates the complete transaction receipt.
+// Applies native EstablishedTemple thoughts in native active-unit order. Empty
+// optional means rejected before thought writes; returned IDs identify calls to
+// the native thought routine, which owns any further soul/eligibility filtering.
+// No UI objects are borrowed. Diagnostic staging only until the full command lands.
+std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughts(int32_t siteId,int32_t locationId);
 enum class LocationAccess : uint8_t { Visitors, Residents, Citizens, Members };
 struct LocationAccessFlags { bool visitors=false,residents=false,members=false; };
 // Native160005: members overrides visitors, which overrides residents.

@@ -655,6 +655,41 @@ protected runs pass with unchanged source manifests and owned unsaved exits;
 root/core19/19 passes in `build/qa/location-recognition-full-effects-final`. This is native
 effect evidence, not an implemented recognition command or complete side-effect audit.
 
+`applyNativeLocationRecognitionThoughts` is the staged thought primitive for the
+future recognition transaction. It validates the current temple and primary
+eligibility, collects recipients in native active-unit order using DF's eligibility,
+historical-figure lookup and membership-strength helpers, then invokes native
+thought initializer72510 and unit thought applier13eff80 with independently owned
+48-byte input. The complete helper bodies (including personality handler e198e0)
+are byte-hash guarded after the supported-build check. The input carries native
+EstablishedTemple253, religion ID and strength100. Incoming inactive units remain
+eligible; the population counter is not used to enumerate recipients. All local
+recipient/output allocations precede thought application. Native helper allocation
+failures still require the eventual transaction's unknown-outcome handling.
+
+Diagnostic `df3d location-recognition-thoughts <site> <location>` exercises this
+primitive only. It does not recognize a priesthood, carry a full transaction receipt,
+or suppress repeated requests, and is not exposed by the management protocol.
+The caller of the eventual complete transaction must validate its receipt at the
+same safe point. Protocol72 and UI availability remain unchanged.
+`recognition_thought_primitive_reference` records native promotion020539 and paired
+bridge020718 on20261027, using plugin SHA256
+`6eb48603ce4933ca26e2c4266ddf7f270325e0e3fac281d01a46648ce5638152`.
+Run the protected wrapper with `-LocationNames -RecognitionOnly -RecognitionCase thoughts`
+and `-RecognitionReference <native-result.json>` from a fresh promotion capture.
+The harness normalizes only semantic reference data (raw screen rows contain CP437),
+rejects invalid UTF-8 in retained fields and restores the native pre-action RNG
+in the disposable bridge fixture. Runtime does not restore RNG.
+
+All54 recipient IDs in order and every captured EstablishedTemple emotion field
+match native, including incoming inactive7351. Negative/wrong-site/non-temple
+and population-ineligible requests leave emotions and RNG unchanged. Native
+main-interface/gps bytes are unchanged by the primitive; positions, assignments,
+history count, site profiles and holder links also remain unchanged as intended.
+Both owned runs preserve the source and exit unsaved. This verifies the thought
+primitive, not all personality state or full recognition. MSVC build passes;
+root/core evidence is `build/qa/location-recognition-thought-primitive`.
+
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and
 existing religious temple, copies its site priesthood rank and configured

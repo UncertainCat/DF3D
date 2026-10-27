@@ -508,7 +508,7 @@ local temple=choices[1];assert(temple.id==0)
 local religion=assert(df.historical_entity.find(temple.deity_data.Religion))
 local mode_file=io.open(out..'/recognition-case');local recognition_case='promote'
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts')
 local first_recognition=recognition_case=='first' or recognition_case=='new'
 if recognition_case=='empty' or first_recognition then
  -- Controlled world fixture on the owned unsaved clone; never a runtime path.
@@ -540,7 +540,7 @@ local function recognition_state()
  end
  local result={case=recognition_case,positions={},assignments={},site_links={},holder_links={},next_position=religion.positions.next_position_id,
   next_assignment=religion.positions.next_assignment_id,event_count=#df.global.world.history.events,
-  recognized=temple:getContents().need_more.entity_recognized,temple_emotions={}}
+  recognized=temple:getContents().need_more.entity_recognized,temple_emotions={},rng=rng_snapshot()}
  for _,p in ipairs(religion.positions.own)do
   local item={id=p.id,code=p.code,name=dfhack.df2utf(p.name[0]),flags=flags(p.flags,df.entity_position_flags)}
   for _,field in ipairs{'squad_size','land_holder','requires_population','execution_skill','precedence','replaced_by','number','required_boxes','required_cabinets','required_racks','required_stands','required_office','required_bedroom','required_dining','required_tomb','mandate_max','demand_max','best_appointment_precedence'}do item[field]=p[field]end
@@ -671,6 +671,46 @@ local ok,err=xpcall(function()
   difficulty.high_priesthood_unit_count=original_threshold
  end
  local before=capture('TEMPLE-0-recognition-before',temple);before.recognition=recognition_state()
+ if recognition_case=='thoughts' then
+  local marker=assert(io.open(out..'/recognition-reference'));local path=marker:read('*a'):match('^%s*(.-)%s*$');marker:close()
+  local file=assert(io.open(path,'rb'));local reference=require('json').decode(file:read('*a'));file:close()
+  assert(reference.success and #reference.records==3,'invalid native effect reference')
+  local expected_before=reference.records[1].recognition;local expected_after=reference.records[2].recognition
+  assert(expected_before.case=='promote' and expected_before.rng,'native promotion reference lacks RNG')
+  assert(require('json').encode(before.recognition.temple_emotions)==require('json').encode(expected_before.temple_emotions),'thought fixture baseline mismatch')
+  local function apply(site,id)
+   local text,code=dfhack.run_command_silent('df3d','location-recognition-thoughts',tostring(site),tostring(id))
+   assert(code==0,text);return require('json').decode(text)
+  end
+  local guards={}
+  for _,object in ipairs{m,g}do
+   local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+   guards[#guards+1]={bytes=bytes,address=at,size=n}
+  end
+  for _,target in ipairs{{-1,temple.id},{df.global.plotinfo.site_id,-1},{df.global.plotinfo.site_id+1,temple.id},{df.global.plotinfo.site_id,1}}do
+   assert(not apply(target[1],target[2]).applied,'invalid thought target accepted')
+  end
+  difficulty.high_priesthood_unit_count=54
+  assert(not apply(df.global.plotinfo.site_id,temple.id).applied,'ineligible thought action accepted')
+  difficulty.high_priesthood_unit_count=original_threshold
+  local rejected=recognition_state()
+  assert(require('json').encode(rejected.temple_emotions)==require('json').encode(before.recognition.temple_emotions),'rejected thought action changed emotions')
+  assert(require('json').encode(rejected.rng)==require('json').encode(before.recognition.rng),'rejected thought action consumed RNG')
+  -- Controlled paired-effect comparison only. Runtime does not restore RNG.
+  restore_rng(expected_before.rng)
+  local applied=apply(df.global.plotinfo.site_id,temple.id)
+  assert(applied.applied and #applied.unit_ids==54,'native thought application unavailable')
+  for _,guard in ipairs(guards)do
+   assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'thought primitive changed native UI/gps')
+   df.delete(guard.bytes)
+  end
+  local after=capture('TEMPLE-0-recognition-thoughts-after',temple);after.recognition=recognition_state();after.recognition.applied=applied
+  assert(require('json').encode(after.recognition.temple_emotions)==require('json').encode(expected_after.temple_emotions),'bridge thoughts differ from native recognition')
+  for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links'}do
+   assert(require('json').encode(before.recognition[field])==require('json').encode(after.recognition[field]),'thought primitive changed '..field)
+  end
+  return
+ end
  pixel(500,214)
  local after=capture('TEMPLE-0-recognition-after',temple);after.recognition=recognition_state()
  assert(before.recognition.bridge.rank==(first_recognition and 0 or 1),'initial semantic priesthood rank mismatch')
@@ -708,4 +748,4 @@ local ok,err=xpcall(function()
 end,debug.traceback)
 contents.location_tier=original;difficulty.high_priesthood_unit_count=original_threshold
 assert(ok,err)
-assert(#records==(recognition_case=='eligibility' and 9 or recognition_only and 3 or 161),'incomplete recognition mutation reference')
+assert(#records==(recognition_case=='thoughts' and 2 or recognition_case=='eligibility' and 9 or recognition_only and 3 or 161),'incomplete recognition mutation reference')

@@ -39,6 +39,55 @@
 #include <numeric>
 
 namespace df3d_area {
+std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughts(int32_t siteId,int32_t locationId) {
+  const auto facts=observeNativeLocationRecognition(siteId,locationId);
+  if(!facts)return std::nullopt;
+  const auto state=locationRecognitionState(*facts);
+  if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)
+    return std::nullopt;
+  static const bool compatible=[] {
+    if(!locationRefreshFunction())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t size) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<size;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0x138ed20,0xff)==UINT64_C(0x430951f9f3e403c2) &&
+      hash(0x13b3090,0x19)==UINT64_C(0x901cd2f6d41c1657) &&
+      hash(0xb973c0,0x79)==UINT64_C(0xe30c0166fa2e4d2a) &&
+      hash(0x72510,0x24)==UINT64_C(0xb716fcb94e763c8b) &&
+      hash(0x13eff80,0xa0)==UINT64_C(0xb66acd69c2fb79b5) &&
+      hash(0xe198e0,0xafb6)==UINT64_C(0x69508c275f046381);
+  }();
+  if(!compatible)return std::nullopt;
+  const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+  const auto eligible=reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20);
+  const auto figure=reinterpret_cast<df::historical_figure* (*)(df::unit*)>(base+0x13b3090);
+  const auto strength=reinterpret_cast<int16_t (*)(df::historical_figure*,int16_t,int32_t)>(base+0xb973c0);
+  // Native72510 initializes this 0x30-byte semantic thought input. Recognition
+  // writes circumstance253, religion ID and strength100 at offsets0,4,12.
+  // It contains no retained pointers or menu state; zero unused padding too.
+  struct alignas(8) Thought { std::array<int32_t,12> fields{}; };
+  static_assert(sizeof(Thought)==0x30);
+  const auto initialize=reinterpret_cast<Thought* (*)(Thought*)>(base+0x72510);
+  const auto apply=reinterpret_cast<void (*)(df::unit*,Thought*)>(base+0x13eff80);
+  // Collect before any thought writes so vector allocation failure cannot leave
+  // only part of this primitive applied. All pointers stay within this safe point.
+  std::vector<df::unit*> units;
+  for(auto* unit:df::global::world->units.active) {
+    if(!unit || (unit->flags1.bits.inactive && !unit->flags1.bits.incoming) || !eligible(unit))continue;
+    auto* hf=figure(unit);
+    if(hf && strength(hf,0,facts->religionId)!=0)units.push_back(unit);
+  }
+  std::vector<int32_t> ids;ids.reserve(units.size());
+  for(auto* unit:units)ids.push_back(unit->id);
+  for(auto* unit:units) {
+    Thought thought;initialize(&thought);
+    thought.fields[0]=253;thought.fields[1]=facts->religionId;thought.fields[3]=100;
+    apply(unit,&thought);
+  }
+  return ids;
+}
 std::optional<LocationRecognitionFacts> observeNativeLocationRecognition(int32_t siteId,int32_t locationId) {
   if(siteId<0 || locationId<0 || !df::global::world || !df::global::plotinfo ||
      !DFHack::Maps::IsValid() || siteId!=df::global::plotinfo->site_id)return std::nullopt;

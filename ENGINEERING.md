@@ -404,6 +404,22 @@ Physical wheel/modified wheel, track/drag/end clamps and timed tooltip behavior
 remain unverified. Earlier233439 hover captures lost their injected pointer
 between frames and cannot support hover conclusions;233110 failed serialization.
 
+Native `build/stockpile-storage-native-location-names-20261026-234239` extends
+this to121 observations. Track clicks move15 rows; seven isolated drag probes
+match the existing scrollbar formula, including endpoints0 and3202 for3217
+choices. Installed `data/init/interface.txt` maps wheel and Shift-wheel to
+`CONTEXT_SCROLL` inputs (keys21..24 in native140f2b0), not `STANDARDSCROLL`.
+Those inputs move1/15 rows over the word list and leave it unchanged over the
+component controls or outside the panel. Naming now applies the15-row Shift
+modifier consistently over the list and scrollbar. This is native bound-input
+evidence, not OS-delivered wheel-message acceptance. The native probes preserve
+name/RNG state and the source save; DF exits unsaved. The fixture retains the
+scroll results and reference hashes. `build/qa/location-name-scroll-final`
+passes core19/19 and the real-renderer check with only documented diagnostics:
+viewport track/drag movement matches all nine native cases, their16x540
+scrollbar pixels match exactly, and wheel/Shift-wheel input matches the observed
+positions. Short-list drag geometry and timed tooltip behavior remain unverified.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

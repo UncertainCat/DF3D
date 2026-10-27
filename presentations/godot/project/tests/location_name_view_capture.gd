@@ -47,6 +47,31 @@ func run() -> void:
 	var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
 	assert(hash.finish().hex_encode()==reference.panel_rgb_sha256,"native full-panel pixel reference")
 	assert(view.position==Vector2(368,52) and view.size==Vector2(608,660))
+	var scroll_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).scroll_drag_reference
+	for sample in scroll_reference.cases:
+		view.scrollbar.move_to(0)
+		if sample.name.ends_with("track-below"):await click(Vector2(952,500))
+		elif sample.name.ends_with("track-above"):
+			view.scrollbar.move_to(1600);await click(Vector2(952,200))
+		else:
+			var start:=InputEventMouseButton.new();start.position=Vector2(952,178);start.button_index=MOUSE_BUTTON_LEFT;start.pressed=true;root.push_input(start,true)
+			var motion:=InputEventMouseMotion.new();motion.position=Vector2(952,int(sample.name.get_slice("drag-",1)));root.push_input(motion,true)
+			var stop:=InputEventMouseButton.new();stop.position=motion.position;stop.button_index=MOUSE_BUTTON_LEFT;stop.pressed=false;root.push_input(stop,true)
+		assert(view.first==int(sample.scroll_position),"native scrollbar movement "+sample.name)
+		var away:=InputEventMouseMotion.new();away.position=Vector2.ZERO;root.push_input(away,true)
+		await process_frame;await RenderingServer.frame_post_draw
+		crop=root.get_texture().get_image().get_region(Rect2i(944,160,16,540));crop.convert(Image.FORMAT_RGB8)
+		hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
+		assert(hash.finish().hex_encode()==sample.scrollbar_rgb_sha256,"native scrollbar pixels "+sample.name)
+	view.scrollbar.move_to(0)
+	for probe in [[Vector2(744,178),MOUSE_BUTTON_WHEEL_DOWN,false,1],
+		[Vector2(744,178),MOUSE_BUTTON_WHEEL_UP,false,0],
+		[Vector2(744,178),MOUSE_BUTTON_WHEEL_DOWN,true,15],
+		[Vector2(744,178),MOUSE_BUTTON_WHEEL_UP,true,0],
+		[Vector2(476,178),MOUSE_BUTTON_WHEEL_DOWN,false,0]]:
+		var wheel:=InputEventMouseButton.new();wheel.position=probe[0];wheel.button_index=probe[1];wheel.shift_pressed=probe[2];wheel.pressed=true
+		root.push_input(wheel,true);await process_frame
+		assert(view.first==probe[3],"native wheel binding and pointer region")
 	await click(Vector2(476,358));assert(state.component==6)
 	await click(Vector2(608,142));assert(state.calls[-1]==["random",0])
 	await click(Vector2(668,178));assert(state.calls[-1]==["clear",1])

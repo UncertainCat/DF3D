@@ -59,7 +59,7 @@ func _gui_input(event: InputEvent) -> void:
 	if event.button_index==MOUSE_BUTTON_RIGHT:
 		entering_filter=false;cancelled.emit();accept_event();return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-		if event.position.x>=352:scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1))
+		if event.position.x>=352:scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(15 if event.shift_pressed else 1))
 		accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	accept_event()

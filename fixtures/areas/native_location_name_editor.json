@@ -8219,5 +8219,91 @@
       "233110 serialization failure (userdata diagnostic field removed)",
       "233439 hover pointer reset between frames; hover claims inconclusive"
     ]
+  },
+  "scroll_drag_reference": {
+    "run": "build/stockpile-storage-native-location-names-20261026-234239",
+    "result_sha256": "d48f17a0e2ae5ed70490d5ef551566ccbaccf1e831edc1358f79e656b1a18704",
+    "observations": 121,
+    "total": 3217,
+    "page": 15,
+    "cases": [
+      {
+        "name": "INN_TAVERN-1-scroll-track-below",
+        "scroll_position": 15,
+        "scrollbar_rgb_sha256": "6124b65cd4b8ac1efa6786574e528362e9b6dc0ad99767362cec3c109f27eff6"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-track-above",
+        "scroll_position": 1585,
+        "scrollbar_rgb_sha256": "fb21a598d2bbcc4b2e1e2fbd49ed30de0d442a8b14110e6d9a520f24b452d6a0"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-drag-148",
+        "scroll_position": 0,
+        "scrollbar_rgb_sha256": "d064bc21890baed1027595c18659566437b33c8bfe403665477a2f827e67a545"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-drag-172",
+        "scroll_position": 0,
+        "scrollbar_rgb_sha256": "d064bc21890baed1027595c18659566437b33c8bfe403665477a2f827e67a545"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-drag-184",
+        "scroll_position": 74,
+        "scrollbar_rgb_sha256": "6124b65cd4b8ac1efa6786574e528362e9b6dc0ad99767362cec3c109f27eff6"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-drag-400",
+        "scroll_position": 1414,
+        "scrollbar_rgb_sha256": "f41b6ae3b7df51921b87a5854b34252b47a292789c22485cb52c44139acccddf"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-drag-676",
+        "scroll_position": 3202,
+        "scrollbar_rgb_sha256": "bc74f2e583d34db3d10fce87b62a466721d22c64ce5d8a81c795a15dc50b61d1"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-drag-700",
+        "scroll_position": 3202,
+        "scrollbar_rgb_sha256": "bc74f2e583d34db3d10fce87b62a466721d22c64ce5d8a81c795a15dc50b61d1"
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-drag-724",
+        "scroll_position": 3202,
+        "scrollbar_rgb_sha256": "bc74f2e583d34db3d10fce87b62a466721d22c64ce5d8a81c795a15dc50b61d1"
+      }
+    ],
+    "ownership": "Diagnostic reset isolates drag starts; name and full RNG preserved; source unchanged; unsaved owned exit",
+    "omissions": [
+      "OS-delivered wheel messages",
+      "short-list drag geometry"
+    ],
+    "context_scroll": [
+      {
+        "name": "INN_TAVERN-1-scroll-context-down",
+        "scroll_position": 1
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-context-up",
+        "scroll_position": 0
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-context-page-down",
+        "scroll_position": 15
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-context-page-up",
+        "scroll_position": 0
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-context-left",
+        "scroll_position": 0
+      },
+      {
+        "name": "INN_TAVERN-1-scroll-context-outside",
+        "scroll_position": 0
+      }
+    ],
+    "binding_evidence": "Installed data/init/interface.txt binds unmodified wheel to CONTEXT_SCROLL_UP/DOWN and shift-wheel to CONTEXT_SCROLL_PAGEUP/PAGEDOWN; native helper140f2b0 uses interface keys21..24."
   }
 }

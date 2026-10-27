@@ -313,8 +313,32 @@ for i,location in ipairs(choices)do
    g.precise_mouse_x=744;g.precise_mouse_y=178;g.mouse_x=93;g.mouse_y=14
    key(event[2]);capture(prefix..'-scroll-'..event[1],location)
   end
+  for _,event in ipairs{{'down','CONTEXT_SCROLL_DOWN',744,178},{'up','CONTEXT_SCROLL_UP',744,178},
+    {'page-down','CONTEXT_SCROLL_PAGEDOWN',744,178},{'page-up','CONTEXT_SCROLL_PAGEUP',744,178},
+    {'left','CONTEXT_SCROLL_DOWN',476,178},{'outside','CONTEXT_SCROLL_DOWN',20,20}}do
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=event[3];g.precise_mouse_y=event[4];g.mouse_x=event[3]//8;g.mouse_y=(event[4]-4)//12
+   key(event[2]);capture(prefix..'-scroll-context-'..event[1],location)
+  end
+  creator.scroll_position_word=0
   pixel(952,694);capture(prefix..'-scroll-arrow-down',location)
   pixel(952,166);capture(prefix..'-scroll-arrow-up',location)
+  pixel(952,500);capture(prefix..'-scroll-track-below',location)
+  creator.scroll_position_word=1600;creator.scrolling_word=false
+  view:render(dfhack.getTickCount());pixel(952,200);capture(prefix..'-scroll-track-above',location)
+  local old_lift=df.global.enabler.mouse_lbut_lift
+  for _,y in ipairs{148,172,184,400,676,700,724}do
+   -- Owned diagnostic reset isolates each drag; never a runtime input.
+   creator.scroll_position_word=0;creator.scrolling_word=false
+   g.precise_mouse_x=952;g.precise_mouse_y=178;g.mouse_x=119;g.mouse_y=14
+   df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+   g.precise_mouse_x=952;g.precise_mouse_y=y;g.mouse_x=119;g.mouse_y=(y-4)//12
+   gui.simulateInput(view,{'_MOUSE_L_DOWN'})
+   capture(prefix..'-scroll-drag-'..y,location)
+   df.global.enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+  end
+  df.global.enabler.mouse_lbut_lift=old_lift
   assert(require('json').encode(before)==require('json').encode(name_value(location:getName())),'hover/scroll changed name')
   assert(require('json').encode(before_rng)==require('json').encode(rng_snapshot()),'hover/scroll consumed RNG')
   key('_MOUSE_R');pixel(944,82);assert(creator.open and creator.cur_word_place==0)
@@ -398,4 +422,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==106,'incomplete name mutation/filter reference')
+assert(#records==121,'incomplete name mutation/filter reference')

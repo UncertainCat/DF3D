@@ -1901,6 +1901,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
+      if (parameters[0] == "location-name-edit") {
+        if(parameters.size()!=10)return CR_WRONG_USAGE;
+        int32_t values[7]{};
+        for(size_t i=0;i<7;++i) {
+          const auto& text=parameters[i+1];const auto parsed=std::from_chars(text.data(),text.data()+text.size(),values[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        uint64_t receipt=0;const auto& text=parameters[8];
+        const auto parsed=std::from_chars(text.data(),text.data()+text.size(),receipt);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size() || values[2]<0 || values[2]>3)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        const auto outcome=df3d_area::editNativeLocationName(values[0],values[1],receipt,
+            static_cast<df3d_area::LocationNameEdit>(values[2]),values[3],values[4],values[5],values[6],UTF2DF(parameters[9]));
+        out.print("{{\"outcome\":{}}}\n",int(outcome));return CR_OK;
+      }
       if (parameters[0] == "location-quantity-edit") {
         if(parameters.size()!=7)return CR_WRONG_USAGE;
         int32_t values[5]{};
@@ -2542,6 +2557,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d location-name-pick <component 0..6> [query] (protected native selection; consumes RNG)\n"
         "df3d location-name-generate <site id> <location id> (protected owned name generation; consumes RNG)\n"
         "df3d location-name-read <site id> <location id> (protected structured name and revision observation)\n"
+        "df3d location-name-edit <site> <id> <mode 0..3> <target> <displayed> <word> <part> <revision> <query> (protected name mutation)\n"
         "df3d location-quantity-edit <site id> <location id> <quantity 0..10> <mode 0..2> <value> <revision> (protected quantity mutation)\n"
         "df3d location-details-refresh <site id> <location id> (refresh semantic caches; protected acceptance)\n"
         "df3d location-details-read <site id> <location id> (partial semantic Details facts; read-only)\n"

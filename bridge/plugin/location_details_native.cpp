@@ -169,6 +169,56 @@ std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32
   generate(entity,&generated,types[observed->kind]);
   return copyLocationName(generated);
 }
+LocationAccessOutcome editNativeLocationName(int32_t siteId,int32_t id,uint64_t expectedRevision,
+    LocationNameEdit edit,int32_t target,int32_t displayed,int32_t word,int32_t part,
+    const std::string& queryCp437) {
+  if(!expectedRevision || expectedRevision>uint64_t(INT64_MAX) || uint8_t(edit)>3)return LocationAccessOutcome::Rejected;
+  const bool whole=edit==LocationNameEdit::RandomWhole;
+  if(whole ? (target!=-1 || displayed!=-1 || word!=-1 || part!=-1 || !queryCp437.empty()) :
+      (target<0 || target>6 || displayed<0 || displayed>6))return LocationAccessOutcome::Rejected;
+  if(edit==LocationNameEdit::SelectWord ? (target!=displayed || word<0 || part<0 || part>8) :
+      (word!=-1 || part!=-1))return LocationAccessOutcome::Rejected;
+  const auto observed=observeNativeLocationName(siteId,id);
+  if(!observed)return LocationAccessOutcome::Rejected;
+  if(locationNameRevision(*observed)!=expectedRevision)return LocationAccessOutcome::Stale;
+  static const bool compatible=[] {
+    auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    uint64_t h=UINT64_C(14695981039346656037);
+    for(size_t i=0;i<0x1382;++i){h^=base[0x1fe5c0+i];h*=UINT64_C(1099511628211);}
+    return h==UINT64_C(0x3326cd7614642632);
+  }();
+  if(!compatible)return LocationAccessOutcome::Rejected;
+  auto* site=df::world_site::find(siteId);if(!site)return LocationAccessOutcome::Rejected;
+  const auto found=std::lower_bound(site->buildings.begin(),site->buildings.end(),id,
+      [](const df::abstract_building* location,int32_t key){return location->id<key;});
+  if(found==site->buildings.end() || (*found)->id!=id || !(*found)->getName())return LocationAccessOutcome::Rejected;
+  auto* name=(*found)->getName();
+  // Everything above, including stale rejection, precedes RNG and mutations.
+  // Native writes are inline: preserve their exact field scope and use semantic
+  // native providers for choices/randomization, never the UI input handler.
+  if(whole) {
+    const auto generated=generateNativeLocationName(siteId,id);
+    if(!generated)return LocationAccessOutcome::Rejected;
+    name->first_name=generated->firstNameCp437;name->nickname=generated->nicknameCp437;
+    name->words=generated->words;
+    for(size_t i=0;i<7;++i)name->parts_of_speech[i]=static_cast<df::part_of_speech>(generated->parts[i]);
+    name->language=generated->language;name->type=static_cast<df::language_name_type>(generated->type);
+    name->has_name=generated->hasName;
+  } else {
+    if(edit==LocationNameEdit::SelectWord) {
+      const auto choices=observeNativeLocationNameWords(uint8_t(displayed),queryCp437);
+      if(!choices || std::none_of(choices->begin(),choices->end(),[&](const auto& row) {
+        return row.word==word && row.partOfSpeech==part;
+      }))return LocationAccessOutcome::Rejected;
+    } else if(edit==LocationNameEdit::RandomComponent) {
+      const auto picked=chooseNativeLocationNameWord(uint8_t(displayed),queryCp437);
+      if(!picked)return LocationAccessOutcome::Rejected;
+      word=picked->word;part=picked->partOfSpeech;
+    } else {word=-1;part=0;}
+    name->words[target]=word;name->parts_of_speech[target]=static_cast<df::part_of_speech>(part);
+  }
+  return LocationAccessOutcome::Completed;
+}
 std::optional<LocationDetailsCore> observeNativeLocationDetailsCore(int32_t siteId,int32_t id) {
   if(siteId<0 || id<0 || !df::global::plotinfo || !DFHack::Maps::IsValid() ||
       siteId!=df::global::plotinfo->site_id)return std::nullopt;

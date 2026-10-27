@@ -101,6 +101,10 @@ inline uint64_t locationNameRevision(const LocationNameSnapshot& v) {
 // Native whole-name Random on an owned name copy. Consumes ordinary DF RNG;
 // does not write the selected location or open/borrow its native editor.
 std::optional<LocationNameValue> generateNativeLocationName(int32_t siteId,int32_t id);
+enum class LocationNameEdit : uint8_t { Clear, SelectWord, RandomComponent, RandomWhole };
+LocationAccessOutcome editNativeLocationName(int32_t siteId,int32_t id,uint64_t expectedRevision,
+    LocationNameEdit edit,int32_t target,int32_t displayed,int32_t word,int32_t part,
+    const std::string& queryCp437);
 // Native Details entry refreshes semantic caches; ordinary reads/renders do not.
 // Caller owns a safe point. This does not populate staffing slots or open any UI.
 // Returns false without writes for an invalid identity or unsupported executable.

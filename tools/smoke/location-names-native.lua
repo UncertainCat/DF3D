@@ -107,6 +107,49 @@ local function capture(label,location)
  while true do local ack=io.open(out..'/ack-'..label);if ack then ack:close();break end;assert(dfhack.getTickCount()<limit,'capture timeout');script.sleep(1,'frames')end
  return row
 end
+local function prepare_edit(location,mode,target,displayed,word,part,query)
+ local json=require('json');local name=location:getName();local original=name_value(name);local rng=rng_snapshot()
+ local text,code=dfhack.run_command_silent('df3d','location-name-read',tostring(df.global.plotinfo.site_id),tostring(location.id))
+ assert(code==0,text);local observed=json.decode(text);assert(observed.valid)
+ local guards={}
+ for _,object in ipairs{m,g}do
+  local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+  guards[#guards+1]={bytes=bytes,address=at,size=n}
+ end
+ local function edit(receipt)
+  local output,result=dfhack.run_command_silent('df3d','location-name-edit',tostring(df.global.plotinfo.site_id),tostring(location.id),
+   tostring(mode),tostring(target),tostring(displayed),tostring(word),tostring(part),receipt,dfhack.df2utf(query))
+  assert(result==0,output);return json.decode(output).outcome
+ end
+ assert(edit(observed.revision=='1' and '2' or '1')==2,'stale name edit accepted')
+ assert(json.encode(name_value(name))==json.encode(original),'stale edit changed name')
+ assert(json.encode(rng_snapshot())==json.encode(rng),'stale edit consumed RNG')
+ assert(edit(observed.revision)==1,'valid name edit rejected')
+ local expected={name=name_value(name),rng=rng_snapshot()}
+ for _,guard in ipairs(guards)do
+  assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'semantic name edit changed UI/GPS')
+  df.delete(guard.bytes)
+ end
+ -- Restore only controlled fixture name/RNG for the independent native action.
+ name.first_name=original.first_name;name.nickname=original.nickname;name.language=original.language
+ name.type=original.type;name.has_name=original.has_name
+ for i=0,6 do name.words[i]=original.words[i+1];name.parts_of_speech[i]=original.parts_of_speech[i+1]end
+ restore_rng(rng)
+ return expected
+end
+local function check_edit(row,location,expected)
+ local json=require('json')
+ assert(json.encode(name_value(location:getName()))==json.encode(expected.name),'semantic/native name mutation differs')
+ assert(json.encode(rng_snapshot())==json.encode(expected.rng),'semantic/native edit RNG differs')
+ row.bridge_edit={name_identical=true,rng_identical=true,stale_rejected_without_effect=true,ui_unchanged=true}
+end
+local function simple_edit(label,location,mode,target)
+ local word,part=-1,-1
+ if mode==1 then word=creator.word_index[0];part=word_part(0)end
+ local expected=prepare_edit(location,mode,target,creator.cur_name_place,word,part,creator.cull_str)
+ if mode==0 then pixel(668,142+36*target)else pixel(756,178)end
+ local row=capture(label,location);check_edit(row,location,expected)
+end
 local function random_component(label,location,target)
  local before=rng_snapshot()
  local guards={}
@@ -123,11 +166,13 @@ local function random_component(label,location,target)
   df.delete(guard.bytes)
  end
  restore_rng(before)
+ local expected=prepare_edit(location,2,target,creator.cur_name_place,-1,-1,creator.cull_str)
  pixel(608,142+36*target)
  local native_after=rng_snapshot()
  assert(require('json').encode(after)==require('json').encode(native_after),'component Random RNG mismatch')
  assert(location:getName().words[target]==picked.word and location:getName().parts_of_speech[target]==picked.part,'component Random choice mismatch')
  local row=capture(label,location)
+ check_edit(row,location,expected)
  row.bridge_random={word=picked.word,part=picked.part,target=target,displayed_component=creator.cur_name_place,
   rng_identical=true,ui_and_name_unchanged=true,cursor_before=before.cursor,cursor_after=after.cursor}
  return row
@@ -154,13 +199,16 @@ local function random_whole(label,location)
   assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'whole-name generation changed UI/name/entity')
   df.delete(guard.bytes)
  end
- restore_rng(before);pixel(832,82)
+ restore_rng(before)
+ local expected=prepare_edit(location,3,-1,-1,-1,-1,'')
+ pixel(832,82)
  local native_after=rng_snapshot()
  assert(require('json').encode(after)==require('json').encode(native_after),'whole-name RNG mismatch')
  local native=name_value(location:getName())
  native.first_name=dfhack.df2utf(native.first_name);native.nickname=dfhack.df2utf(native.nickname)
  assert(require('json').encode(generated.name)==require('json').encode(native),'whole-name value mismatch')
  local row=capture(label,location)
+ check_edit(row,location,expected)
  row.bridge_generation={rng_identical=true,name_identical=true,ui_name_entity_unchanged=true,namer_id=creator.namer.id,invalid_targets_rejected_without_rng=rejected}
  return row
 end
@@ -191,8 +239,8 @@ for i,location in ipairs(choices)do
  if location:getType()==df.abstract_building_type.INN_TAVERN then
   for part=0,6 do
    pixel(476,142+36*part);capture(prefix..'-part-'..part..'-selected',location)
-   pixel(668,142+36*part);capture(prefix..'-part-'..part..'-clear',location)
-   pixel(756,178);capture(prefix..'-part-'..part..'-first-word',location)
+   simple_edit(prefix..'-part-'..part..'-clear',location,0,part)
+   simple_edit(prefix..'-part-'..part..'-first-word',location,1,part)
    random_component(prefix..'-part-'..part..'-random',location,part)
   end
   -- Exercise the native MT refill and singleton bypass on owned paused state.

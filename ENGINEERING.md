@@ -576,6 +576,31 @@ proposed but is not yet approved or implemented. The diagnostic's raw
 `staff_count` sums parallel vectors; it must not be interpreted as a row count.
 The wide screenshot and composition fixture independently establish eight rows.
 
+Temple recognition remains unfinished. Supported-build native renderer
+RVA3b6c18..3b7483 checks the religion's `PRIEST`/`HIGH_PRIEST` position codes and
+assignments at the current site, then tier, petition and worshipper conditions.
+The current receipt's tier and `recognized` flag alone do not establish the
+visible message or action. Do not infer recognition eligibility in Godot from
+value, localized position names, or the existing staff rows.
+`native_location_details.json.recognition_reference` records three controlled
+Temple0 tier states from protected
+`build/stockpile-storage-native-location-names-20261027-011053` (158 observations,
+source preserved, unsaved owned exit). The original tier is restored through
+cleanup. Tier0 shows "You can recognize a priesthood once this is a temple.",
+tier1 shows "You can recognize a high priest when this is a temple complex.",
+and tier2 offers "Recognize high priest" for this site's existing assignments.
+These captures establish text/layout for those states only; no recognition
+action was submitted. Core19/19 and existing formatting pass in
+`build/qa/location-recognition-native-reference`.
+The native input branch at32cdf5..32f2d1 contains eligibility checks and substantial
+inline position/assignment changes; no independently callable recognition
+transaction has yet been verified. The next bridge work must expose semantic
+recognition state and an identity/revision-checked action, audit native helper
+ownership and actual effects, and test refusal and lifecycle behavior. Calling
+the main native UI input handler or borrowing its scratch is not an alternative.
+Petition/threshold variants, other priesthood states and viewer controls remain
+unverified; the staged Details route stays hidden.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

@@ -294,6 +294,17 @@ for i,location in ipairs(choices)do
  pixel(664,238+36*(i-1));assert(details.open and details.selected_ab==location)
  local prefix=df.abstract_building_type[location:getType()]..'-'..location.id
  local before=capture(prefix..'-before',location)
+ if location.id==0 then
+  local contents=location:getContents();local original=contents.location_tier
+  local ok,err=xpcall(function()
+   for tier=0,2 do
+    contents.location_tier=tier
+    capture(prefix..'-recognition-tier-'..tier,location)
+   end
+  end,debug.traceback)
+  contents.location_tier=original
+  assert(ok,err)
+ end
  for _,size in ipairs{'small','wide','default'}do
   window_input('name-resize-'..size)
   capture(prefix..'-details-resize-'..size,location)
@@ -316,7 +327,7 @@ for i,location in ipairs(choices)do
  assert(require('json').encode(before.name_value)==require('json').encode(closed.name_value),'open/Back changed name')
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==40,'incomplete location name entry coverage')
+assert(#records==43,'incomplete location name entry coverage')
 
 for i,location in ipairs(choices)do
  pixel(664,238+36*(i-1));assert(details.open and details.selected_ab==location)
@@ -486,4 +497,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==155,'incomplete name mutation/filter reference')
+assert(#records==158,'incomplete name mutation/filter reference')

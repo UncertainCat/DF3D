@@ -3710,5 +3710,60 @@
       "zero-capacity scrollbar correction pending maintainer approval",
       "resized main-scene effects"
     ]
+  },
+  "recognition_reference": {
+    "source": "build/stockpile-storage-native-location-names-20261027-011053/result.json",
+    "result_sha256": "5061f26d7009dd665853a75b8124c95b86612f9477dd16afd6cf33a003269b28",
+    "cases": [
+      {
+        "tier": 0,
+        "name": "TEMPLE-0-recognition-tier-0",
+        "text": "You can recognize a priesthood once this is a temple.",
+        "rect": [
+          384,
+          196,
+          576,
+          36
+        ],
+        "rgb_sha256": "73ee066089ca5c044a9d9d758a9ba3424151966a2b42bf0ae28b3301b4a98235",
+        "action_visible": false
+      },
+      {
+        "tier": 1,
+        "name": "TEMPLE-0-recognition-tier-1",
+        "text": "You can recognize a high priest when this is a temple complex.",
+        "rect": [
+          384,
+          196,
+          576,
+          36
+        ],
+        "rgb_sha256": "5179644536cb1fd682550eadd237d77a51bd4040a3873a61f1ad514f9525d66e",
+        "action_visible": false
+      },
+      {
+        "tier": 2,
+        "name": "TEMPLE-0-recognition-tier-2",
+        "text": "Recognize high priest",
+        "rect": [
+          384,
+          196,
+          576,
+          36
+        ],
+        "rgb_sha256": "6fe25fe4bef403c7ed2470bc76721f5234d54d2ae27f9316989459532cb7e92d",
+        "action_visible": true
+      }
+    ],
+    "scope": "Diagnostic Temple0 contents.location_tier varied0/1/2 with original tier restored via xpcall cleanup; existing site religious assignments retained. Read-only visual evidence; no recognition action submitted.",
+    "native_renderer_rva": "0x3b6c18..0x3b7483",
+    "native_input_rva": "0x32cdf5..0x32f2d1",
+    "omissions": [
+      "other existing priesthood/high-priest assignment states",
+      "petition and worshipper threshold branches",
+      "recognition mutation effects",
+      "bridge semantic observation and action",
+      "viewer controls"
+    ]
   }
 }

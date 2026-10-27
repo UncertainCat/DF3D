@@ -39,6 +39,55 @@
 #include <numeric>
 
 namespace df3d_area {
+namespace {
+// Shared native first-subject/applicant test used by rendering and recognition.
+// Missing IDs/empty agreements are skipped; malformed owned pointers reject.
+std::optional<bool> recognitionAgreementMatches(const df::agreement* agreement,int32_t religionId) {
+  if(!agreement || agreement->details.empty())return false;
+  const auto* subject=agreement->details.front();if(!subject)return std::nullopt;
+  if(subject->type!=df::agreement_details_type::Location)return false;
+  const auto* data=subject->data.Location;if(!data)return std::nullopt;
+  const auto* applicant=binsearch_in_vector(agreement->parties,data->applicant);
+  return applicant && std::binary_search(applicant->entity_ids.begin(),applicant->entity_ids.end(),religionId);
+}
+}
+std::optional<std::vector<int32_t>> concludeNativeLocationRecognitionAgreements(int32_t siteId,int32_t locationId) {
+  const auto facts=observeNativeLocationRecognition(siteId,locationId);
+  if(!facts)return std::nullopt;
+  const auto state=locationRecognitionState(*facts);
+  if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)
+    return std::nullopt;
+  static const bool compatible=[] {
+    if(!locationRefreshFunction())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto hash=[&](size_t rva,size_t size) {
+      uint64_t h=UINT64_C(14695981039346656037);
+      for(size_t i=0;i<size;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
+    };
+    return hash(0xba150,0x44)==UINT64_C(0xc8bc8a24a03e77ba) &&
+      hash(0xbabe0,0xab)==UINT64_C(0x1bd318997a061458);
+  }();
+  if(!compatible)return std::nullopt;
+  auto* plot=df::global::plotinfo;
+  const std::array<std::vector<int32_t>*,2> lists{&plot->petitions,&plot->continuing_agreement_id};
+  std::array<df::agreement*,2> selected{};
+  std::vector<int32_t> ids;ids.reserve(2);
+  // Native32d371..32d6b8 concludes only the first matching agreement per list.
+  // Resolve both before publication; do not remove/delete the world agreements.
+  for(size_t i=0;i<lists.size();++i)for(auto id:*lists[i]) {
+    auto* agreement=df::agreement::find(id);
+    const auto matches=recognitionAgreementMatches(agreement,facts->religionId);
+    if(!matches)return std::nullopt;
+    if(*matches){selected[i]=agreement;ids.push_back(id);break;}
+  }
+  const auto remove=reinterpret_cast<void (*)(int32_t,std::vector<int32_t>*)>(
+    reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr))+0xba150);
+  for(size_t i=0;i<lists.size();++i)if(auto* agreement=selected[i]) {
+    agreement->flags.bits.convicted_accepted=true;
+    remove(agreement->id,lists[i]);
+  }
+  return ids;
+}
 std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughts(int32_t siteId,int32_t locationId) {
   const auto facts=observeNativeLocationRecognition(siteId,locationId);
   if(!facts)return std::nullopt;
@@ -135,13 +184,9 @@ std::optional<LocationRecognitionFacts> observeNativeLocationRecognition(int32_t
   // Native3b6e76 checks the first subject and its applicant party. Preserve
   // continuing-agreement order; do not invent extra site/tier filters.
   for(auto id:df::global::plotinfo->continuing_agreement_id) {
-    const auto* agreement=df::agreement::find(id);if(!agreement || agreement->details.empty())continue;
-    const auto* subject=agreement->details.front();if(!subject)return std::nullopt;
-    if(subject->type!=df::agreement_details_type::Location)continue;
-    const auto* data=subject->data.Location;if(!data)return std::nullopt;
-    const auto* applicant=binsearch_in_vector(agreement->parties,data->applicant);
-    if(applicant && std::binary_search(applicant->entity_ids.begin(),applicant->entity_ids.end(),religion->id))
-      result.continuingAgreements.push_back(id);
+    const auto matches=recognitionAgreementMatches(df::agreement::find(id),religion->id);
+    if(!matches)return std::nullopt;
+    if(*matches)result.continuingAgreements.push_back(id);
   }
   return result;
 }

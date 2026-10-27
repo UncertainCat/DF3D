@@ -40,6 +40,10 @@ std::optional<LocationRecognitionFacts> observeNativeLocationRecognition(int32_t
 // the native thought routine, which owns any further soul/eligibility filtering.
 // No UI objects are borrowed. Diagnostic staging only until the full command lands.
 std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughts(int32_t siteId,int32_t locationId);
+// Staged agreement primitive with the same safe-point/receipt contract. Marks
+// and removes the first matching entry from each pending/continuing list, in
+// native order. Not a complete recognition action or replay-safe command.
+std::optional<std::vector<int32_t>> concludeNativeLocationRecognitionAgreements(int32_t siteId,int32_t locationId);
 enum class LocationAccess : uint8_t { Visitors, Residents, Citizens, Members };
 struct LocationAccessFlags { bool visitors=false,residents=false,members=false; };
 // Native160005: members overrides visitors, which overrides residents.

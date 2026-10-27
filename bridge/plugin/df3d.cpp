@@ -2000,7 +2000,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
-      if (parameters[0] == "location-recognition-thoughts") {
+      if (parameters[0] == "location-recognition-thoughts" || parameters[0] == "location-recognition-agreements") {
         // Staged semantic primitive for protected effect verification. This is
         // not exposed by the management wire as a complete recognition action.
         if(parameters.size()!=3)return CR_WRONG_USAGE;
@@ -2010,10 +2010,13 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
           if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
         }
-        const auto result=df3d_area::applyNativeLocationRecognitionThoughts(ids[0],ids[1]);
+        const bool thoughts=parameters[0]=="location-recognition-thoughts";
+        const auto result=thoughts ? df3d_area::applyNativeLocationRecognitionThoughts(ids[0],ids[1]) :
+          df3d_area::concludeNativeLocationRecognitionAgreements(ids[0],ids[1]);
         Json::Value value(Json::objectValue);value["applied"]=result.has_value();
-        value["unit_ids"]=Json::Value(Json::arrayValue);
-        if(result)for(auto id:*result)value["unit_ids"].append(id);
+        const char* field=thoughts?"unit_ids":"agreement_ids";
+        value[field]=Json::Value(Json::arrayValue);
+        if(result)for(auto id:*result)value[field].append(id);
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
       if (parameters[0] == "location-recognition-read") {

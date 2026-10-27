@@ -7113,5 +7113,219 @@
       "Typed management transport and viewer control",
       "Entire personality state beyond captured emotion fields"
     ]
+  },
+  "recognition_agreement_primitive_reference": {
+    "method": "Protected owned paused native/bridge runs with six world-owned Location agreements: each list has one unrelated applicant followed by two matching applicants. Source manifests unchanged; all fixtures discarded by unsaved exit.",
+    "native_plugin_sha256": "6eb48603ce4933ca26e2c4266ddf7f270325e0e3fac281d01a46648ce5638152",
+    "bridge_plugin_sha256": "94c2145076a761cb6715981f335946db20ccba809d2f0b571a24fdf18374bb5f",
+    "scope": "First matching agreement per pending/continuing list is concluded and removed; other flags, unrelated applicants and later matches remain. Bridge invalid/ineligible calls preserve lists, flags and RNG; valid primitive leaves UI/gps and captured non-agreement effects unchanged.",
+    "omissions": [
+      "Complete revision-bound recognition transaction",
+      "Repeated primitive requests",
+      "Non-Location first subjects and malformed objects",
+      "Agreement histories beyond captured flags and ID lists"
+    ],
+    "runs": {
+      "native": {
+        "capture": "build/stockpile-storage-native-location-recognition-petitions-20261027-021231",
+        "sha256": "f1e1ab8d0fb23179b3186b0af931027e8d66dd2c9c8e0bb553670e6fee34f838",
+        "states": [
+          {
+            "agreements": [
+              {
+                "flags": 1,
+                "id": 2147483600
+              },
+              {
+                "flags": 1,
+                "id": 2147483601
+              },
+              {
+                "flags": 1,
+                "id": 2147483602
+              },
+              {
+                "flags": 0,
+                "id": 2147483603
+              },
+              {
+                "flags": 0,
+                "id": 2147483604
+              },
+              {
+                "flags": 0,
+                "id": 2147483605
+              }
+            ],
+            "petitions": [
+              2147483600,
+              2147483601,
+              2147483602
+            ],
+            "continuing": [
+              2147483603,
+              2147483604,
+              2147483605
+            ]
+          },
+          {
+            "agreements": [
+              {
+                "flags": 1,
+                "id": 2147483600
+              },
+              {
+                "flags": 3,
+                "id": 2147483601
+              },
+              {
+                "flags": 1,
+                "id": 2147483602
+              },
+              {
+                "flags": 0,
+                "id": 2147483603
+              },
+              {
+                "flags": 2,
+                "id": 2147483604
+              },
+              {
+                "flags": 0,
+                "id": 2147483605
+              }
+            ],
+            "petitions": [
+              2147483600,
+              2147483602
+            ],
+            "continuing": [
+              2147483603,
+              2147483605
+            ]
+          },
+          {
+            "agreements": [
+              {
+                "flags": 1,
+                "id": 2147483600
+              },
+              {
+                "flags": 3,
+                "id": 2147483601
+              },
+              {
+                "flags": 1,
+                "id": 2147483602
+              },
+              {
+                "flags": 0,
+                "id": 2147483603
+              },
+              {
+                "flags": 2,
+                "id": 2147483604
+              },
+              {
+                "flags": 0,
+                "id": 2147483605
+              }
+            ],
+            "petitions": [
+              2147483600,
+              2147483602
+            ],
+            "continuing": [
+              2147483603,
+              2147483605
+            ]
+          }
+        ]
+      },
+      "bridge": {
+        "capture": "build/stockpile-storage-native-location-recognition-agreements-20261027-021557",
+        "sha256": "2de65ac87f659d366a7526466df0eee21094af64498ff3cec659ee5366b40c1c",
+        "states": [
+          {
+            "agreements": [
+              {
+                "flags": 1,
+                "id": 2147483600
+              },
+              {
+                "flags": 1,
+                "id": 2147483601
+              },
+              {
+                "flags": 1,
+                "id": 2147483602
+              },
+              {
+                "flags": 0,
+                "id": 2147483603
+              },
+              {
+                "flags": 0,
+                "id": 2147483604
+              },
+              {
+                "flags": 0,
+                "id": 2147483605
+              }
+            ],
+            "petitions": [
+              2147483600,
+              2147483601,
+              2147483602
+            ],
+            "continuing": [
+              2147483603,
+              2147483604,
+              2147483605
+            ]
+          },
+          {
+            "agreements": [
+              {
+                "flags": 1,
+                "id": 2147483600
+              },
+              {
+                "flags": 3,
+                "id": 2147483601
+              },
+              {
+                "flags": 1,
+                "id": 2147483602
+              },
+              {
+                "flags": 0,
+                "id": 2147483603
+              },
+              {
+                "flags": 2,
+                "id": 2147483604
+              },
+              {
+                "flags": 0,
+                "id": 2147483605
+              }
+            ],
+            "petitions": [
+              2147483600,
+              2147483602
+            ],
+            "continuing": [
+              2147483603,
+              2147483605
+            ]
+          }
+        ]
+      }
+    },
+    "concluded_ids": [
+      2147483601,
+      2147483604
+    ]
   }
 }

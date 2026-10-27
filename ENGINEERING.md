@@ -626,7 +626,8 @@ not a claim that every constructed starting state arises in ordinary play.
 Repeat clicks leave captured positions, assignments, counters, site profiles and
 holder links unchanged. Root/core19/19 passes in `build/qa/location-recognition-branches`.
 These are mutation oracles, not bridge acceptance. Expanded template/assignment
-and emotion evidence follows below; petition mutation effects remain unverified.
+and emotion evidence follows below; focused agreement effects are also verified
+below, while the complete transaction remains unfinished.
 Native helpers9364d0,30ffb0,c30000 and76d4e0 do not
 individually implement recognition; a call from the input branch does not make
 one a ready-made semantic command.
@@ -689,6 +690,40 @@ history count, site profiles and holder links also remain unchanged as intended.
 Both owned runs preserve the source and exit unsaved. This verifies the thought
 primitive, not all personality state or full recognition. MSVC build passes;
 root/core evidence is `build/qa/location-recognition-thought-primitive`.
+
+`concludeNativeLocationRecognitionAgreements` supplies the staged agreement
+primitive. Native input32d371..32d6b8 selects the first matching agreement from
+pending petitions, then the first from continuing agreements. Matching uses the
+first Location subject and applicant-party membership, shared with the facts
+reader. The bridge resolves both selections before writes, sets the native
+concluded bit without clearing other flags, and calls DF's ID-removal helperba150
+(and guarded search helperbabe0). World agreement objects remain allocated and
+later matching entries remain listed. No separate native recognition transaction
+entry point has been found; this coordination follows the audited input branch.
+
+`recognition_agreement_primitive_reference` records native021231 and bridge021557
+on20261027. Native case `-RecognitionCase petitions` creates six controlled
+world-owned agreements, with an unrelated applicant before two matches in each
+list. Native concludes IDs2147483601 and2147483604 only; pending flags1 become3,
+continuing flags0 become2, and only those IDs leave their lists. Repeating the
+native completed recognition control changes nothing. The paired bridge case
+`-RecognitionCase agreements -RecognitionReference <native-result.json>` calls
+diagnostic `df3d location-recognition-agreements <site> <location>` and matches
+all captured agreement flags and both ID lists exactly. Negative, missing,
+wrong-site, non-temple and ineligible-tier requests preserve those fields and RNG.
+The valid primitive preserves RNG, native main-interface/gps bytes, emotions,
+positions, assignments, history count, and site/holder links. Both owned runs
+preserve source manifests and exit unsaved. The bridge DLL is
+`94c2145076a761cb6715981f335946db20ccba809d2f0b571a24fdf18374bb5f`, protocol72;
+MSVC build passes and root/core evidence is `build/qa/location-recognition-agreements`.
+
+Neither diagnostic primitive is a complete recognition command or replay-safe
+operation. Do not compose the diagnostic wrappers as the final transaction:
+concluding an agreement can remove the population waiver before the thought
+wrapper rechecks eligibility. The complete command must validate one current
+receipt before any effects, prepare all required inputs, and execute its internal
+steps without reinterpreting its own intermediate state as a new user intent.
+Typed transport, position/history integration and viewer exposure remain pending.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and

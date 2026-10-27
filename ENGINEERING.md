@@ -169,16 +169,18 @@ Modified-key/clipboard input remains outside this evidence.
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout
 reference needed to implement the unfinished Details rename action. Protected
 `stockpile_storage_native.ps1 -LocationNames` run
-`build/stockpile-storage-native-location-names-20261026-212747` captures85 states:
+`build/stockpile-storage-native-location-names-20261026-213101` captures88 states:
 entry/Back across six locations, all seven tavern components' Clear/word/Random
 actions, filter focus/ALE/AL/Enter, edited Back/reopen and whole-name Random/Done
 for all six locations, plus filtered/empty lists across all seven components and
 cross-component Random. Entry alone preserves names; changes apply immediately
-and both Back and Done retain them. DF144648 exits unsaved, source unchanged.
+and both Back and Done retain them. DF93512 exits unsaved, source unchanged.
 
 The rename icon opens `name_creator` in LOCATION_NAME context3 with a pointer to
 the selected location's language_name and namer entity245 in this fixture.
 Native name types are Temple21, Tavern28, Hospital54, Library43 and Guildhall52.
+Native entry32c051 resolves plotinfo.civ_id as the naming entity; a missing entity
+or name prevents opening. It does not use the location's site_owner_id.
 The editor has seven name components, per-component Random/Clear, whole-name
 Random/Done, a search field and a word list. Initial Front Compound choices
 contain3217 word/part-of-speech pairs in this fixture. Other component counts are
@@ -193,11 +195,11 @@ Native English-form lookup0xd2cb50 and normalization0x52cee0 use owned strings.
 Normalization lowercases/folds CP437 query bytes; the displayed native filter
 field itself holds uppercase input. The inline substring operation is audited
 against pinned0x1fc330; the provider never calls that UI helper. The protected
-`df3d location-name-words component [query]` diagnostic matches all36760 ordered
-word/part-of-speech pairs and English forms across29 native cases and leaves the
+`df3d location-name-words component [query]` diagnostic matches all36761 ordered
+word/part-of-speech pairs and English forms across30 native cases and leaves the
 main-interface and GPS structures unchanged. AL counts across components are
 139,211,81,81,40,112,121; ZZZZ produces seven empty lists.
-MSVC and core19/19 pass (`build/qa/location-name-pick`). Management70 remains unchanged; no product
+MSVC and core19/19 pass (`build/qa/location-name-rng-edges`). Management70 remains unchanged; no product
 transport or rename control is exposed yet.
 
 Capture found a DFHack binding error: name_creator.word_index_asp is declared
@@ -213,12 +215,13 @@ clicking Front Compound Random changes only the front word to an Of X choice.
 `chooseNativeLocationNameWord` calls native selector0xd35ee0 using independently
 owned vectors containing that displayed component/filter pool. Its nonempty
 branch uses the same native RNG and bucket calculation as the editor's inline
-Random action. Eight protected comparisons match the chosen word/part and all
+Random action. Ten protected comparisons match the chosen word/part and all
 624 RNG words, stream and cursor; bridge calls leave UI, GPS and name bytes
 unchanged. RNG snapshot/restore exists only in the controlled diagnostic, never
 in this runtime provider. Empty pools are rejected before the helper's unrelated
-fallback can run. Singleton/refill-boundary acceptance and location writes remain
-unfinished; this diagnostic selection capability does not expose a Random UI.
+fallback can run. The ABBEYS singleton returns word0/part1 without consuming RNG;
+an exhausted cursor2496 refills to cursor4 with identical state. Location writes
+remain unfinished; this diagnostic selection capability does not expose a Random UI.
 Native whole-name handlers931860/a92860 are located but still require ownership
 and effect audits. Random with an empty list, scrolling, physical Escape, native
 language display columns, typed mutations and the rendered editor remain

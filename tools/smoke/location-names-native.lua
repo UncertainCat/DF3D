@@ -109,7 +109,8 @@ local function random_component(label,location,target)
  assert(location:getName().words[target]==picked.word and location:getName().parts_of_speech[target]==picked.part,'component Random choice mismatch')
  local row=capture(label,location)
  row.bridge_random={word=picked.word,part=picked.part,target=target,displayed_component=creator.cur_name_place,
-  rng_identical=true,ui_and_name_unchanged=true}
+  rng_identical=true,ui_and_name_unchanged=true,cursor_before=before.cursor,cursor_after=after.cursor}
+ return row
 end
 m.bottom_mode_selected=-1;key('D_CIVZONE');m.civzone.cur_bld=assert(df.building.find(23));view:render(dfhack.getTickCount())
 pixel(336,190);local selector=m.location_selector;assert(selector.open,'chooser did not open')
@@ -142,6 +143,28 @@ for i,location in ipairs(choices)do
    pixel(756,178);capture(prefix..'-part-'..part..'-first-word',location)
    random_component(prefix..'-part-'..part..'-random',location,part)
   end
+  -- Exercise the native MT refill and singleton bypass on owned paused state.
+  local saved_rng=rng_snapshot();local refill=rng_snapshot();refill.cursor=0x9c0;restore_rng(refill)
+  local refilled=random_component(prefix..'-random-refill',location,6)
+  assert(refilled.bridge_random.cursor_before==0x9c0 and refilled.bridge_random.cursor_after==4,'RNG did not refill')
+  restore_rng(saved_rng)
+  local forms={}
+  for j=0,#creator.word_index-1 do forms[#forms+1]=df.global.world.raws.language.words[creator.word_index[j]].forms[word_part(j)] end
+  local singleton
+  for _,candidate in ipairs(forms)do
+   if #candidate>=4 and candidate:match('^[a-z]+$')then
+    local count=0;for _,form in ipairs(forms)do if form:find(candidate,1,true)then count=count+1 end end
+    if count==1 then singleton=candidate;break end
+   end
+  end
+  assert(singleton,'no singleton native word query')
+  pixel(832,142)
+  for j=1,#singleton do key(('STRING_A%03d'):format(singleton:byte(j)))end
+  key('SELECT');capture(prefix..'-singleton-selected',location)
+  assert(#creator.word_index==1,'singleton query did not produce one choice')
+  local single=random_component(prefix..'-singleton-random',location,6)
+  assert(single.bridge_random.cursor_before==single.bridge_random.cursor_after,'singleton consumed RNG')
+  pixel(832,142);for j=1,#singleton do key('STRING_A000')end;key('SELECT')
   pixel(832,142);capture(prefix..'-filter-focus',location)
   key('STRING_A097');key('STRING_A108');key('STRING_A101');capture(prefix..'-filter-ale',location)
   key('STRING_A000');capture(prefix..'-filter-al',location)
@@ -164,4 +187,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==85,'incomplete name mutation/filter reference')
+assert(#records==88,'incomplete name mutation/filter reference')

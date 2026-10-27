@@ -295,9 +295,23 @@ Clicking the previous remove location has no effects; Back closes Details.
 Before/after captures were inspected. The run is passed_with_known_issues for
 only documented Godot diagnostics, preserves both save manifests and exits owned
 DF unsaved. `scene_reference` retains bounded provenance and evidence. This does
-not establish real disconnect/restart/late-reply acceptance. The vacant religious
+not establish producer-restart acceptance. The vacant religious
 assignment icon/action and specialization controls are still unfinished; the
 broader Zones/Locations entry routes remain hidden.
+
+`-LocationScene -ReligiousStaffScene -ReligiousStaffLifecycle queued|sent|late`
+checks real ownership transitions. Protected051200 disconnects before receipt-read
+dispatch and returns not_sent with the original holder9375 intact. Protected051311
+lets DF complete removal while withholding its reply, then disconnects: the outcome
+is Unknown, ownership retires and reconnection submits no removal or automatic
+Details reopen. Explicit fresh reopening observes vacancy. Protected051421 closes
+Details after sent completion, opens tavern1 and verifies the late reply cannot
+revive the temple target; a fresh temple observation sees the vacancy. The tavern
+capture was inspected. All three runs pass_with_known_issues only for deferred
+Godot diagnostics, preserve both manifests and exit owned DF unsaved. Bounded
+`lifecycle_reference` records provenance. Core19/19 and the controlled workflow
+checks pass. Producer restart remains unverified, as does disconnect between a
+completed receipt read and queued mutation (that boundary has controlled tests).
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

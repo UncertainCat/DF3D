@@ -9522,9 +9522,66 @@
       "owned_unsaved_exit": true,
       "scope": "Actual rendered fortress scene, viewport-routed native removal icon, independent native effects, refreshed staff/recognition and repeated vacant click then Back.",
       "omissions": [
-        "Real disconnect/restart/late-response workflows; controlled state tests only",
+        "Producer restart; real queued/sent disconnect and late replacement are covered in lifecycle_reference",
         "Religious vacant assignment control remains unfinished",
         "Responsive and high-priest/historical-holder variants"
+      ]
+    },
+    "lifecycle_reference": {
+      "cases": [
+        {
+          "mode": "queued",
+          "source": "build/areas-acceptance-20261027-051200",
+          "sha256": "d48df0e608adcb8a7304b027fbb90420ba9156c21cc1f2f25469ef00219dec9b",
+          "status": "passed_with_known_issues",
+          "evidence": {
+            "fresh_holder": 9375,
+            "no_replay": true,
+            "outcome": "not_sent",
+            "sent": false,
+            "target_retired": true
+          },
+          "source_and_clone_preserved": true,
+          "owned_unsaved_exit": true
+        },
+        {
+          "mode": "sent",
+          "source": "build/areas-acceptance-20261027-051311",
+          "sha256": "db5477e2b863a466279961aeb67744bf2f6bc6bd840a1e8799a97325e885b474",
+          "status": "passed_with_known_issues",
+          "evidence": {
+            "fresh_holder": -1,
+            "no_replay": true,
+            "outcome": "unknown",
+            "sent": true,
+            "target_retired": true
+          },
+          "source_and_clone_preserved": true,
+          "owned_unsaved_exit": true
+        },
+        {
+          "mode": "late",
+          "source": "build/areas-acceptance-20261027-051421",
+          "sha256": "a03fabbbc3b089d2881072cb1da872063d58fb6c63b57db19f31e92534891487",
+          "status": "passed_with_known_issues",
+          "evidence": {
+            "fresh_holder": -1,
+            "old_owner_retired": true,
+            "old_ticket": 10,
+            "other_location": 1
+          },
+          "source_and_clone_preserved": true,
+          "owned_unsaved_exit": true
+        }
+      ],
+      "protocol": 74,
+      "plugin_sha256": "f00a502b076201ee65828a78a7167519b4419c55a105d8ccc4d47ea363924228",
+      "scope": "Actual scene pointer removal; queued receipt read disconnected before dispatch, completed native mutation reply deliberately unobserved before disconnect, and late reply after closing and opening another location. Fresh reopening checks holder identity.",
+      "omissions": [
+        "Producer restart",
+        "Disconnect after read completes but mutation remains queued",
+        "High-priest and historical-holder variants",
+        "Religious assignment/specialization workflow remains unfinished"
       ]
     }
   }

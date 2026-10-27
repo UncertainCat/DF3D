@@ -1215,8 +1215,8 @@ func quantity_lifecycle_choose(id: int) -> void:
 	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and editor.details_layer.visible,"quantity lifecycle Details"):return
 	check(int(editor.details_state.snapshot.id)==id,"quantity lifecycle wrong location")
 
-func quantity_unobserved(ticket: int) -> Dictionary:
-	actions.poll()
+func quantity_unobserved(ticket: int, dispatch:=true) -> Dictionary:
+	if dispatch:actions.poll()
 	if not check(actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0,"quantity mutation not sent"):return {}
 	var sequence: int=actions._requests[ticket].sequence
 	var deadline:=Time.get_ticks_msec()+30000
@@ -1548,6 +1548,11 @@ func religious_staff_route(locations: Array) -> void:
 	if not check(row_index>=view.first and row_index<view.first+int(view.geometry.visible_count),"religious holder not visible"):return
 	var point: Vector2=view.global_position+Vector2((view.row_columns()-4)*8+16,(int(view.geometry.first_y)-6+(row_index-view.first)*3)*12+18)
 	await capture("religious_staff_before")
+	var lifecycle:=FileAccess.get_file_as_string(directory+"/religious-staff-scene.txt").strip_edges()
+	if lifecycle=="late":
+		await religious_staff_late(point,row_index);return
+	if lifecycle in ["queued","sent"]:
+		await religious_staff_disconnect(lifecycle=="sent",point,int(setup.holder_id),row_index);return
 	step="religious staff scene remove"
 	await native("religious_guard")
 	await pointer_click(point)
@@ -1563,3 +1568,80 @@ func religious_staff_route(locations: Array) -> void:
 	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"religious Details Back"):return
 	write_json("religious-staff-scene-evidence.json",{"before":setup.before,"after":effects.after,"event":effects.event,"viewport_click":true,"details_refreshed":true,"vacant_repeat_unchanged":true,"details_closed":true})
+
+func religious_staff_disconnect(sent: bool, point: Vector2, holder: int, row_index: int) -> void:
+	step="religious staff disconnect sent="+str(sent)
+	var flow=editor.details_view.religious_staff_workflow
+	await native("religious_guard")
+	await pointer_click(point)
+	var ticket: int=flow.ticket
+	if not check(ticket>0 and flow.phase==flow.Phase.Reading,"religious pending read missing"):return
+	if sent:
+		await quantity_unobserved(ticket)
+		if stopped:return
+		actions.poll() # Receives the read and dispatches exactly one mutation.
+		ticket=flow.ticket
+		if not check(ticket>0 and flow.phase==flow.Phase.Applying,"religious pending mutation missing"):return
+		var reply:=await quantity_unobserved(ticket,false)
+		if stopped:return
+		if not check(not reply.area.location_religious_staff.removable and reply.area.location_religious_staff.holder_id==-1,"unobserved religious removal missing"):return
+	world.detach_live();actions.poll()
+	var outcome: Dictionary=actions.result(ticket)
+	if not check(outcome.get("outcome")==("unknown" if sent else "not_sent"),"religious disconnect outcome differs"):return
+	if not check(flow.target.is_empty() and flow.owner.is_empty() and flow.ticket==0 and not flow.active and not editor.details_layer.visible,"disconnect retained religious authority"):return
+	if not check(not actions._requests.has(ticket) and actions._queue.is_empty() and actions._active==0,"religious request remains dispatchable"):return
+	await native("religious_applied" if sent else "religious_unchanged")
+	if stopped:return
+	await native("religious_guard")
+	if not check(world.attach(),"religious reconnect failed"):return
+	var deadline:=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();editor._process(0.02)
+		if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
+		await create_timer(0.02).timeout
+	if not check(bool(world.poll_management().get("transport_alive",false)),"religious reconnect timeout"):return
+	var next_ticket: int=actions._next_ticket
+	for frame in 30:
+		world.poll();actions.poll();editor._process(0.02);await process_frame
+	if not check(actions._next_ticket==next_ticket and flow.target.is_empty() and flow.owner.is_empty() and not editor.details_layer.visible,"reconnect replayed or reopened religious action"):return
+	await native("religious_unchanged")
+	await capture("religious_disconnect_retired")
+	await quantity_lifecycle_open()
+	if stopped:return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"religious fresh chooser"):return
+	await quantity_lifecycle_choose(0)
+	if stopped:return
+	var observed: Dictionary=editor.details_view.staff_view.rows[row_index]
+	if not check(int(observed.histfig_id)==(-1 if sent else holder) and not flow.active,"fresh religious holder differs"):return
+	await capture("religious_disconnect_reopened")
+	write_json("religious-disconnect-evidence.json",{"sent":sent,"outcome":outcome.outcome,"no_replay":true,"fresh_holder":observed.histfig_id,"target_retired":true})
+	editor.close_panel()
+
+func religious_staff_late(point: Vector2, row_index: int) -> void:
+	step="religious staff late completion"
+	var flow=editor.details_view.religious_staff_workflow
+	await native("religious_guard")
+	await pointer_click(point)
+	await quantity_unobserved(flow.ticket)
+	if stopped:return
+	actions.poll()
+	var ticket: int=flow.ticket
+	if not check(ticket>0 and flow.phase==flow.Phase.Applying,"late religious mutation missing"):return
+	await quantity_unobserved(ticket,false)
+	if stopped:return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not check(not editor.details_layer.visible and flow.target.is_empty() and flow.owner.is_empty(),"dismissal retained religious owner"):return
+	await quantity_lifecycle_choose(1)
+	if stopped:return
+	if not check(flow.target.is_empty() and flow.owner.is_empty() and not flow.active and int(editor.details_state.identity.id)==1,"late religious reply revived on another location"):return
+	await native("religious_applied")
+	if stopped:return
+	await capture("religious_late_other_location")
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"religious late chooser"):return
+	await quantity_lifecycle_choose(0)
+	if stopped:return
+	if not check(int(editor.details_view.staff_view.rows[row_index].histfig_id)==-1 and not flow.active,"fresh religious observation missed removal"):return
+	write_json("religious-late-evidence.json",{"old_ticket":ticket,"other_location":1,"old_owner_retired":true,"fresh_holder":-1})
+	editor.close_panel()

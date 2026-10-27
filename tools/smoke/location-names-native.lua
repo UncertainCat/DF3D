@@ -66,7 +66,8 @@ local function capture(label,location,keep_pointer)
   entering_filter=creator.entering_cull_str,entering_first_name=creator.entering_first_name,
   word_count=#creator.word_index,word_index={},word_parts={},lines={},scroll_position=creator.scroll_position_word,
   pointer={g.precise_mouse_x,g.precise_mouse_y,g.mouse_x,g.mouse_y},grid={g.dimx,g.dimy},
-  staff_scroll=details.scroll_position_occupation,staff_count=#details.loc_occupation+#details.loc_position}
+  staff_scroll=details.scroll_position_occupation,staff_count=#details.loc_occupation+#details.loc_position,
+  hover=m.current_hover,displayed_hover=m.last_displayed_hover_inst}
  for i=0,#creator.word_index-1 do row.word_index[#row.word_index+1]=creator.word_index[i];row.word_parts[#row.word_parts+1]=word_part(i)end
  if #records==0 then
   row.native_fields={}
@@ -510,7 +511,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -559,6 +560,20 @@ if recognition_case=='new' or recognition_case=='positionnew' then
  assert(changed==1,'unexpected priest template fixture count')
 end
 pixel(664,238);assert(details.open and details.selected_ab==temple)
+if recognition_case=='specializationhover' then
+ for index,target in ipairs{{'specialized',358,df.main_hover_instruction.INFO_UNIT_IS_SPECIALIZED},{'available',394,df.main_hover_instruction.INFO_UNIT_IS_NOT_SPECIALIZED}}do
+  local until_tick=dfhack.getTickCount()+1800
+  repeat
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=784;g.precise_mouse_y=target[2];g.mouse_x=98;g.mouse_y=(target[2]-4)//12
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+  until dfhack.getTickCount()>=until_tick
+  g.precise_mouse_x=784;g.precise_mouse_y=target[2];g.mouse_x=98;g.mouse_y=(target[2]-4)//12
+  local row=capture('TEMPLE-specialization-hover-'..target[1],temple,true)
+  assert(row.displayed_hover==target[3],'specialization help did not appear: current='..tostring(row.hover)..' displayed='..tostring(row.displayed_hover)..' expected='..tostring(target[3]))
+ end
+ return
+end
 if recognition_case=='specialization' then
  local function state()
   local result={}

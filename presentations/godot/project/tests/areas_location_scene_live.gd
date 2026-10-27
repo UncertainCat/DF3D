@@ -1543,6 +1543,9 @@ func religious_staff_route(locations: Array) -> void:
 	var details=editor.details_view
 	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and details.recognition_workflow.recognition.phase==details.recognition_workflow.recognition.Phase.Ready,"religious Details entry"):return
 	var view=details.staff_view
+	if lifecycle=="none":
+		await specialization_scene()
+		if stopped:return
 	var row_index:=-1
 	for i in view.rows.size():
 		if int(view.rows[i].get("source",-1))==1 and int(view.rows[i].assignment_id)==int(setup.assignment_id):row_index=i;break
@@ -1634,6 +1637,34 @@ func religious_staff_route(locations: Array) -> void:
 	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"religious Details Back"):return
 	write_json("religious-staff-scene-evidence.json",{"before":setup.before,"after":effects.after,"event":effects.event,"viewport_click":true,"details_refreshed":true,"vacant_repeat_unchanged":true,"details_closed":true})
+
+func specialization_scene() -> void:
+	var details=editor.details_view
+	var view=details.staff_view
+	var reader=details.specialization_reader
+	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json"))
+	var evidence: Array=[]
+	for sample in fixture.specialization_reference.cases:
+		var change: Dictionary=sample.changed[0]
+		step="specialization scene "+str(change.unit_id)
+		await native("religious_specialization_setup",{"unit_id":change.unit_id,"expected":change.before})
+		if stopped:return
+		var row: Dictionary={};var row_index:=-1
+		for i in view.rows.size():
+			if int(view.rows[i].get("names",{}).get("holder_id",-1))==int(change.unit_id):row=view.rows[i];row_index=i;break
+		if not check(row_index>=view.first,"specialization row absent"):return
+		if not await wait_ui(func():return reader.receipt(row).get("eligible",false),"specialization displayed receipt"):return
+		if not check(reader.receipt(row).specialized==change.before.specialized,"specialization initial displayed state"):return
+		var point: Vector2=view.global_position+view.specialization_rect(row_index-view.first).get_center()
+		await capture("specialization_%d_before"%int(change.unit_id))
+		for expected in [change.after,change.before]:
+			await pointer_click(point)
+			if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and not details.specialization_workflow.active and reader.receipt(row).get("specialized")==expected.specialized,"specialization click and refreshed native state"):return
+			await native("religious_specialization_check",{"unit_id":change.unit_id,"expected":expected})
+			if stopped:return
+			await capture("specialization_%d_%s"%[int(change.unit_id),str(expected.specialized)])
+		evidence.append({"unit_id":change.unit_id,"viewport_clicks":2,"native_effects_matched":true,"restored":true})
+	write_json("specialization-scene-evidence.json",{"cases":evidence})
 
 func religious_assignment_retire(restart: bool, row_index: int, original_holder: int) -> void:
 	step="religious assignment retire restart="+str(restart)

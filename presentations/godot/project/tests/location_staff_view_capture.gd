@@ -1,5 +1,11 @@
 extends SceneTree
+const DetailsView=preload("res://scripts/location_details_view.gd")
+class Receipts:
+ extends RefCounted
+ var values: Dictionary={}
+ func receipt(row: Dictionary) -> Dictionary:return values.get(row.names.holder_id,{})
 var removed: Array=[]
+var specialized: Array=[]
 func click(point: Vector2) -> void:
  for pressed in [true,false]:
   var event:=InputEventMouseButton.new();event.position=point;event.global_position=point
@@ -62,6 +68,17 @@ func run() -> void:
   await click(point);assert(removed.size()==before+1 and removed[-1]==87,"resized remove hitbox")
   if dimensions.x!=1200:
    await click(Vector2(944,point.y));assert(removed.size()==before+1,"old remove position inactive")
+ var receipts=Receipts.new();view.specialization_reader=receipts
+ receipts.values={5813:{"eligible":true,"specialized":true},6536:{"eligible":true,"specialized":false}}
+ view.specialization_requested.connect(func(row,facts):specialized.append({"row":row,"facts":facts}))
+ view.queue_redraw()
+ for i in 2:await process_frame;await RenderingServer.frame_post_draw
+ root.get_texture().get_image().save_png(directory.path_join("specialization.png"))
+ for point in [Vector2(784,358),Vector2(784,394)]:await click(point)
+ assert(specialized.size()==2 and specialized[0].row.names.holder_id==5813 and specialized[0].facts.specialized and specialized[1].row.names.holder_id==6536 and not specialized[1].facts.specialized,"native specialization row hitboxes")
+ view.actions_enabled=false;await click(Vector2(784,358));assert(specialized.size()==2,"disabled gesture")
+ view.actions_enabled=true;receipts.values[5813].eligible=false;await click(Vector2(784,358));assert(specialized.size()==2,"native ineligibility prevents gesture")
+ receipts.values.clear();await click(Vector2(784,394));assert(specialized.size()==2,"missing receipt prevents gesture")
  view.display({})
  if not view.rows.is_empty() or not view.geometry.is_empty():push_error("Staff close retained facts");quit(1);return
  view.queue_free();world.queue_free();await process_frame

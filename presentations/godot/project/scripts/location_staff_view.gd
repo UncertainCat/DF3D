@@ -3,6 +3,7 @@ signal assignment_requested(occupation_id: int)
 signal removal_requested(occupation_id: int)
 signal religious_removal_requested(row: Dictionary)
 signal religious_assignment_requested(row: Dictionary)
+signal specialization_requested(row: Dictionary, displayed: Dictionary)
 # Native staff rows and assignment/removal hit regions. Religious assignment,
 # specialization and remaining input details keep the parent entry routes hidden.
 const Format=preload("res://scripts/location_details_format.gd")
@@ -18,8 +19,18 @@ var world
 var unit_icons: Dictionary={}
 var icon_elapsed:=0.0
 var picture_frame=preload("res://scripts/native_unit_picture_frame.gd").new()
+var specialization_reader
+var hover_help
 
-func configure(source) -> void:
+func visible_rows() -> Array:
+	return rows.slice(first,first+int(geometry.get("visible_count",0)))
+
+func specialization_rect(index: int) -> Rect2:
+	# Native3b154b/3b857e: rightmost row cell minus23, four by three cells.
+	return Rect2((row_columns()-24)*8,(int(geometry.first_y)-6+index*3)*12,32,36)
+
+func configure(source, help=null) -> void:
+	hover_help=help
 	world=source;art.configure(source);theme=art.theme
 	picture_frame.configure(source)
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_PASS
@@ -46,6 +57,10 @@ func _gui_input(event: InputEvent) -> void:
 		var row: Dictionary=rows[first+index]
 		if int(row.get("source",-1)) not in [0,1]:continue
 		var top: float=(int(geometry.first_y)-6+index*3)*12
+		if specialization_reader!=null and specialization_rect(index).has_point(event.position):
+			var facts: Dictionary=specialization_reader.receipt(row)
+			if facts.get("eligible",false):
+				specialization_requested.emit(row.duplicate(true),facts);accept_event();return
 		var occupied:=int(row.get("unit_id",-1))>=0 or int(row.get("histfig_id",-1))>=0
 		var left: float=(row_columns()-4)*8 if occupied else 192
 		if Rect2(left,top,32,36).has_point(event.position):
@@ -78,9 +93,24 @@ func display(details: Dictionary, offset:=-1) -> void:
 	update_icons()
 
 func _process(delta: float) -> void:
+	update_specialization_hover()
 	if not is_visible_in_tree() or geometry.is_empty():return
 	icon_elapsed+=delta
 	if icon_elapsed>=0.25:icon_elapsed=0;update_icons()
+
+func update_specialization_hover() -> void:
+	if not is_instance_valid(hover_help):return
+	if is_visible_in_tree() and specialization_reader!=null and not geometry.is_empty():
+		var point:=get_local_mouse_position()
+		for index in int(geometry.visible_count):
+			if specialization_rect(index).has_point(point):
+				var facts: Dictionary=specialization_reader.receipt(rows[first+index])
+				if facts.get("eligible",false):
+					hover_help.enter_specialization(get_instance_id(),facts.specialized);return
+	hover_help.leave(get_instance_id())
+
+func _exit_tree() -> void:
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 
 func update_icons() -> void:
 	var wanted: Dictionary={}
@@ -140,6 +170,16 @@ func _draw() -> void:
 		if label is String:font.draw_string(get_canvas_item(),top+Vector2(48,24),label,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
 		var holder=Format.staff_holder_name(names.get("holder_name"),int(geometry.width))
 		if holder is String:font.draw_string(get_canvas_item(),top+Vector2(248,24),holder,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
+		if specialization_reader!=null:
+			var facts: Dictionary=specialization_reader.receipt(row)
+			if facts.get("eligible",false):
+				var worker: Texture2D=art.texture("WORKER_ONLY_DO_ASSIGNED_JOBS" if facts.specialized else "WORKER_DO_ANY_AVAILABLE_JOB")
+				var region:=specialization_rect(i)
+				# Native graphical cells replace name text beneath transparent art.
+				if background!=null:
+					for y in 3:
+						for x in 4:draw_texture_rect_region(background,Rect2(region.position+Vector2(x*8,y*12),Vector2(8,12)),Rect2(8,y*12,8,12))
+				if worker!=null:draw_texture_rect(worker,region,false)
 		if int(row.get("unit_id",-1))>=0 or int(row.get("histfig_id",-1))>=0:
 			# Native232551: four cells at the right edge of the row, before
 			# the scrollbar when present. Religious holders use the same art.

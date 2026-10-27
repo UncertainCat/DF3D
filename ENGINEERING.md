@@ -684,8 +684,8 @@ HF, target, eligibility or displayed state prevents mutation. Completion require
 matching identity and the desired state before refreshing Details. Generation,
 target and ticket guards retire closed/replaced/session-lost work; unsuccessful
 or potentially sent edits block another gesture on that same Details owner.
-The caller must obtain fresh displayed facts and wire the native controls; this
-component is not yet connected to LocationDetailsView.
+LocationDetailsView connects the gesture to the staff panel's specialization
+hit regions, guarded by current panel state, overlays and pending quantity edits.
 
 location_specialization_reader.gd supplies display receipts through one serial
 pass over current visible, resolvable staff rows. Exact row membership, unit/HF,
@@ -695,11 +695,31 @@ retires its pending ticket and starts a new pass. Details refresh clears receipt
 even when the Details revision is unchanged, since specialization has its own
 revision. Generation guards discard late replies after scroll, closure or session
 retirement. Display receipts do not replace the gesture's fresh authorization.
-The reader is not yet wired to the rendered staff controls. Controlled core and
+LocationDetailsView requests its current visible staff window while Ready and
+retires display reads when hidden or editing. Controlled core and
 engine checks in build/qa/location-specialization-reader-final pass for serial
 reads, religious unit resolution, ineligibility, wide revisions, foreign rows,
 malformed receipts, redraw suppression and synchronous/late cancellation; these
 are ownership checks, not rendered or live lifecycle acceptance.
+
+The staff panel uses installed WORKER_ONLY_DO_ASSIGNED_JOBS and
+WORKER_DO_ANY_AVAILABLE_JOB art only for eligible native receipts. Native
+renderer3b154b/3b857e positions the four-by-three-cell toggle24 cells before
+the row end. Both32x36 icon crops match native080737 exactly (zero differing
+RGB pixels) in location-specialization-controls-final. The GPU gate checks
+occupied ordinary/religious row clicks, disabled input, absent receipts and
+native ineligibility; it reports passed_with_known_issues. Native hover259/260
+text and exact wrapping come from protected specializationhover085117; those
+text-cell records are authoritative, while its OS screenshots lost the hover.
+An attempted continuous-render screenshot capture085337 produced malformed
+graphics and is not visual evidence; that capture-loop change was removed.
+The tooltip uses the existing native hover timer; rendered specialization help
+still needs acceptance. Protected areas085442 exercises four actual viewport
+clicks, matching all captured labor/flag effects and restoring both workers,
+then passes the existing religious removal/assignment suite. It reports only
+the known rendering-thread notice, preserves both save manifests and exits
+owned DF148836 unsaved. Specialization-specific live disconnect, late reply and
+restart checks remain outstanding. Zones/Locations entry routes stay hidden.
 
 Controlled location-specialization-workflow-final core/engine checks cover both
 row types, exact wide revisions, explicit zero for reverse edits, duplicate

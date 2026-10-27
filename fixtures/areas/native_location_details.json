@@ -14203,7 +14203,7 @@
   "specialization_reference": {
     "native": "build/stockpile-storage-native-location-recognition-specialization-20261027-080737",
     "status": "passed",
-    "scope": "Native priest and performer toggles plus exact flags4/labors restoration. Viewer implementation and broader eligibility cases remain unfinished.",
+    "scope": "Native specialization semantics and connected viewer controls verified for priest and performer; broader eligibility, rendered tooltip and live lifecycle acceptance remain unfinished.",
     "click_x": 784,
     "cases": [
       {
@@ -14681,6 +14681,66 @@
       "save_manifests_unchanged": 2,
       "owned_exit_without_save": true,
       "scope": "Actual Godot management client and native handler; no rendered specialization control or lifecycle acceptance."
+    },
+    "display_reference": {
+      "native_tooltip_run": "build/stockpile-storage-native-location-recognition-specializationhover-20261027-085117",
+      "tooltip_scope": "Native rendered text cells and hover identities; OS screenshots do not retain the hover and are not pixel evidence.",
+      "tooltips": [
+        {
+          "hover": 259,
+          "lines": [
+            "This worker is",
+            "specialized and will",
+            "only do tasks that",
+            "match their workshop",
+            "assignments, work",
+            "details, and",
+            "occupations.  Click to",
+            "toggle."
+          ]
+        },
+        {
+          "hover": 260,
+          "lines": [
+            "This worker is not",
+            "specialized and will do",
+            "any free tasks that",
+            "become available.",
+            "Click to toggle."
+          ]
+        }
+      ],
+      "icons": [
+        "WORKER_ONLY_DO_ASSIGNED_JOBS",
+        "WORKER_DO_ANY_AVAILABLE_JOB"
+      ],
+      "icon_rects": [
+        [
+          768,
+          340,
+          32,
+          36
+        ],
+        [
+          768,
+          376,
+          32,
+          36
+        ]
+      ],
+      "icon_rgb_differences": [
+        0,
+        0
+      ],
+      "viewer_capture": "build/qa/location-staff-render/specialization.png",
+      "native_icon_run": "build/stockpile-storage-native-location-recognition-specialization-20261027-080737",
+      "gpu_gate": "build/qa/location-specialization-controls-final",
+      "gpu_status": "passed_with_known_issues",
+      "scene_run": "build/areas-acceptance-20261027-085442",
+      "scene_status": "passed_with_known_issues",
+      "scene_scope": "Four viewport clicks, both workers in both directions; exact all-active-unit labor and flags readback; original religious removal/assignment suite also passes.",
+      "save_manifests_unchanged": 2,
+      "owned_exit_without_save": true
     }
   }
 }

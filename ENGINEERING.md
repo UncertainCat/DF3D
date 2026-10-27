@@ -70,9 +70,29 @@ clone manifests remain unchanged, and diagnostics are empty. The fixture's
 `transport_reference` records these facts. This establishes semantic transport,
 not rendered controls or their disconnect/late-reply lifecycle.
 Editable Godot controls remain unfinished; the existing Details supply/copy
-display is still read-only. Early diagnostic
+display is still read-only. `location_details_state.gd` now submits quantity
+intents using the displayed revision and the existing receipt lifecycle.
+`location_quantity_workflow.gd` owns local text and a queue of explicit input:
+only consecutive unsent Sets for the same field coalesce. Steps and changes of
+field retain order; each next intent requires a confirmed prior response.
+Rejected, stale, unknown, closed or replaced owners discard dependent drafts.
+Ending numeric entry alone preserves already-requested values. The component
+is not yet wired into visible Details controls or panel dismissal.
+Core19/19 and state/workflow checks pass in
+`build/qa/location-quantity-workflow-final`; these are controlled service tests,
+not rendered or real-disconnect acceptance.
+
+The fixture's `entry_focus_reference` records ten additional observations from
+`build/stockpile-storage-native-location-supplies-20261026-195231`.
+Clicking the same number icon clears its text without changing the requested
+quantity. Plus/minus during entry change the scalar but retain the draft;
+subsequent typing writes the resulting digit string. Switching number icons
+starts an empty draft for the new field. Blank panel clicks retain entry, and
+Left followed by a digit appends it. Enter finishes entry. This uses simulated
+native keys and does not establish physical Escape behavior. DF115424 exits
+unsaved with unchanged source. Early diagnostic
 runs with zero matched cases or incorrect chooser coordinates are not accepted
-workflow evidence; the current scope requires121 records and thirteen field cases.
+workflow evidence; the current scope requires131 records and thirteen field cases.
 
 ## Native squad assignment reference
 

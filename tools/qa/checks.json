@@ -2479,6 +2479,15 @@
       ]
     },
     {
+      "id": "location_quantity_workflow_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_quantity_workflow_test.gd",
+      "completion": "LOCATION_QUANTITY_WORKFLOW_PASS",
+      "timeout": 40,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "location_details_state_test",
       "lane": "core",
       "kind": "godot",

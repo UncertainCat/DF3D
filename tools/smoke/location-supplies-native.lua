@@ -175,3 +175,27 @@ for i,location in ipairs(choices)do
  end
 end
 assert(field_cases==13 and #records==121,'incomplete all-field numeric coverage')
+
+-- Numeric focus behavior used by the viewer-owned entry component.
+local tavern
+local index
+for i,location in ipairs(choices)do if df.abstract_building_type[location:getType()]=='INN_TAVERN' then tavern=location;index=i;break end end
+assert(tavern);pixel(664,238+36*(index-1));assert(details.open and details.selected_ab==tavern)
+local function point(field)
+ for _,row in ipairs(records)do if row.name=='INN_TAVERN-'..tavern.id..'-'..field..'-open' then return table.unpack(row.pointer)end end
+ error('missing numeric pointer reference')
+end
+local x,y=point('goblets');local ix,iy=point('instruments')
+local function record(name)capture('editor-'..name,tavern)end
+pixel(x,y);key('STRING_A049');key('STRING_A050');record('twelve')
+pixel(x,y);record('same-number-icon')
+key('STRING_A051');pixel(x+32,y);record('plus-during-entry')
+key('STRING_A052');record('digit-after-plus')
+pixel(x+64,y);record('minus-during-entry')
+pixel(ix,iy);record('different-number-icon')
+key('STRING_A053');pixel(900,190);record('blank-panel-click')
+key('STRING_A054');record('digit-after-blank')
+key('CURSOR_LEFT');key('STRING_A055');record('left-then-digit')
+key('SELECT');record('enter-finishes')
+key('LEAVESCREEN');assert(selector.open and not details.open)
+assert(#records==131,'incomplete numeric focus reference')

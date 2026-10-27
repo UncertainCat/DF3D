@@ -67,6 +67,16 @@ func set_staff(occupation_id: int, unit_id: int, candidates_revision: int) -> vo
 	phase = Phase.Editing
 	_send(intent)
 
+func edit_quantity(quantity: int, mode: int, value: int) -> void:
+	if phase != Phase.Ready or ticket != 0 or quantity < 0 or quantity > 10 or mode not in [0,1,2]: return
+	if (mode == C.LocationQuantityMode.Set and (value < 0 or value > 999)) or (mode != C.LocationQuantityMode.Set and value != 0): return
+	var intent := _read_intent()
+	intent.action = C.ManagementAction.AreaUpdate; intent.operation = C.AreaOperation.LocationQuantity
+	intent.expected_revision = snapshot.revision
+	intent.quantity_id = quantity; intent.quantity_mode = mode; intent.quantity_value = value
+	phase = Phase.Editing
+	_send(intent)
+
 func _read_intent() -> Dictionary:
 	return {"action":C.ManagementAction.AreaInspect,"operation":C.AreaOperation.LocationDetails,
 		"kind":C.AreaKind.Zone,"location_site_id":identity.site_id,"location_id":identity.id}
@@ -82,7 +92,7 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	ticket = 0
 	var area: Dictionary = result.get("area",{})
 	var entry := int(sent.operation) == C.AreaOperation.LocationOpen
-	var edit := int(sent.operation) in [C.AreaOperation.LocationAccess,C.AreaOperation.LocationStaffEdit]
+	var edit := int(sent.operation) in [C.AreaOperation.LocationAccess,C.AreaOperation.LocationStaffEdit,C.AreaOperation.LocationQuantity]
 	if (result.get("outcome","") == "unknown" or int(area.get("location_entry_outcome",0)) == C.LocationEntryOutcome.Unknown
 		or int(area.get("location_edit_outcome",0)) == C.LocationEditOutcome.Unknown):
 		phase = Phase.Unknown; snapshot = {}; changed.emit(); return

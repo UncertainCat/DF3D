@@ -335,6 +335,7 @@ func run() -> void:
 	await test_area_operations()
 	await test_location_names()
 	await test_location_recognition()
+	await test_location_religious_staff()
 	assert(Contract.is_mutation(A.DismissAlert) and not Contract.is_mutation(A.PrepareAlertDismissal))
 	for request in [{"action":A.DismissAlert},{"action":A.DismissAlert,"expected_list_revision":0},
 		{"action":A.PrepareAlertDismissal,"expected_list_revision":1},
@@ -884,4 +885,31 @@ func test_location_recognition() -> void:
 	sequence=world.area_request(request);assert(sequence>0)
 	state=await receipt(sequence)
 	assert(state.area.location_recognition==snapshot)
+	assert(state.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)
+
+func test_location_religious_staff() -> void:
+	var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.LocationReligiousStaffRead,
+		"location_site_id":651,"location_id":0,"religious_entity_id":383,"religious_assignment_id":2}
+	for key in ["location_site_id","location_id","religious_entity_id","religious_assignment_id"]:
+		var invalid := request.duplicate(true);invalid.erase(key)
+		assert(world.area_request(invalid)==0)
+		invalid=request.duplicate(true);invalid[key]=1.5
+		assert(world.area_request(invalid)==0)
+	var sequence: int=world.area_request(request);assert(sequence>0)
+	var state: Dictionary=await receipt(sequence)
+	var snapshot: Dictionary=state.area.location_religious_staff
+	assert(snapshot=={"site_id":651,"location_id":0,"entity_id":383,"assignment_id":2,"position_id":0,
+		"holder_id":9375,"unit_id":5813,"revision":9007199254740993,"removable":true})
+	request.action=A.AreaUpdate;request.operation=Contract.AreaOperation.LocationReligiousStaffRemove
+	request.expected_revision=snapshot.revision;request.religious_holder_id=snapshot.holder_id
+	for key in ["location_site_id","location_id","religious_entity_id","religious_assignment_id","religious_holder_id","expected_revision"]:
+		var invalid := request.duplicate(true);invalid.erase(key)
+		assert(world.area_request(invalid)==0)
+	for value in [0,-1,1.5]:
+		var invalid := request.duplicate(true);invalid.expected_revision=value
+		assert(world.area_request(invalid)==0)
+	sequence=world.area_request(request);assert(sequence>0)
+	state=await receipt(sequence)
+	snapshot.holder_id=-1;snapshot.unit_id=-1;snapshot.removable=false
+	assert(state.area.location_religious_staff==snapshot)
 	assert(state.area.location_edit_outcome==Contract.LocationEditOutcome.Completed)

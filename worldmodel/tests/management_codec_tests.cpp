@@ -2995,3 +2995,63 @@ TEST_CASE("Recognition replies retain exact revisions and reject mixed or missin
   flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateAreaState(b));
   CHECK_FALSE(codec::decodeArea(flatbuffers::GetRoot<wire::AreaState>(b.GetBufferPointer())).locationRecognition);
 }
+
+TEST_CASE("Religious staff requests bind assignment identity and removal revision") {
+  for(bool apply:{false,true})for(int variant=0;variant<16;++variant) {
+    wm::ManagementRequest r;r.action=apply?wm::ManagementAction::AreaUpdate:wm::ManagementAction::AreaInspect;
+    auto& a=r.area;a.kind=wm::AreaKind::Zone;a.locationSiteId=651;a.locationId=0;
+    a.religiousEntityId=383;a.religiousAssignmentId=2;a.religiousHolderId=apply?9375:-1;
+    a.operation=apply?wm::AreaOperation::LocationReligiousStaffRemove:wm::AreaOperation::LocationReligiousStaffRead;
+    a.expectedRevision=apply?9007199254740993LL:0;
+    if(variant==1)a.expectedRevision=apply?0:17;
+    if(variant==2)a.locationSiteId=-1;
+    if(variant==3)a.locationId=-1;
+    if(variant==4)a.id=4;
+    if(variant==5)a.kind=wm::AreaKind::Stockpile;
+    if(variant==6)r.action=apply?wm::ManagementAction::AreaInspect:wm::ManagementAction::AreaUpdate;
+    if(variant==7)a.nameEdit.emplace();
+    if(variant==8)a.quantityId=0;
+    if(variant==9)a.expectedListRevision=1;
+    if(variant==10)a.expectedRevision=-1;
+    if(variant==11)a.religiousEntityId=-1;
+    if(variant==12)a.religiousAssignmentId=-1;
+    if(variant==13)a.religiousHolderId=apply?-1:9375;
+    if(variant==14)a.occupationId=2;
+    if(variant==15)a.operation=wm::AreaOperation::LocationRecognitionRead;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* q=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(apply);CAPTURE(variant);CHECK(bool(wire::validateConstructionRequest(*q))==(variant!=0));
+    if(!variant) {CHECK(q->area()->religious_entity_id()==383);CHECK(q->area()->religious_assignment_id()==2);}
+    if(!variant && apply)CHECK(q->area()->expected_revision()==9007199254740993ULL);
+  }
+}
+TEST_CASE("Religious staff replies preserve receipts and reject invalid authority") {
+  for(bool apply:{false,true})for(int variant=0;variant<13;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    auto receipt=wire::CreateLocationReligiousStaff(b,651,0,variant==1?-1:383,2,0,
+        variant==2?-2:apply?-1:9375,apply?-1:5813,variant==3?0:9007199254740993ULL,variant==4?true:!apply);
+    wire::AreaStateBuilder a(b);a.add_operation(variant==5?wire::AreaOperation::LocationDetails:apply?wire::AreaOperation::LocationReligiousStaffRemove:wire::AreaOperation::LocationReligiousStaffRead);
+    if(variant!=6)a.add_location_religious_staff(receipt);
+    if(apply || variant==7)a.add_location_edit_outcome(variant==7?wire::LocationEditOutcome::Unknown:wire::LocationEditOutcome::Completed);
+    if(variant==8)a.add_area_id(2);
+    if(variant==9)a.add_list_revision(3);
+    auto area=a.Finish();wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(area);
+    root.add_action(variant==10?wire::ManagementAction::AreaDelete:apply?wire::ManagementAction::AreaUpdate:wire::ManagementAction::AreaInspect);
+    root.add_status(variant==11?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    if(variant==12)root.add_schema_version(wire::kManagementVersion-1);
+    b.Finish(root.Finish());const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(apply);CAPTURE(variant);const bool invalid=variant!=0 && !(variant==4 && !apply);
+    CHECK(bool(wire::validateManagementState(*state))==invalid);
+    if(!invalid) {const auto decoded=codec::decodeArea(state->area());REQUIRE(decoded.locationReligiousStaff);
+      CHECK(decoded.locationReligiousStaff->revision==9007199254740993LL);CHECK(decoded.locationReligiousStaff->assignmentId==2);
+      CHECK(decoded.locationReligiousStaff->removable==!apply);}
+  }
+  for(auto outcome:{wire::LocationEditOutcome::Rejected,wire::LocationEditOutcome::Stale,wire::LocationEditOutcome::Unknown}) {
+    flatbuffers::FlatBufferBuilder b;wire::AreaStateBuilder a(b);a.add_operation(wire::AreaOperation::LocationReligiousStaffRemove);a.add_location_edit_outcome(outcome);
+    auto area=a.Finish();wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(area);
+    root.add_action(wire::ManagementAction::AreaUpdate);root.add_status(wire::ManagementStatus::Rejected);b.Finish(root.Finish());
+    CHECK_FALSE(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())));
+  }
+  flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateAreaState(b));
+  CHECK_FALSE(codec::decodeArea(flatbuffers::GetRoot<wire::AreaState>(b.GetBufferPointer())).locationReligiousStaff);
+}

@@ -133,6 +133,8 @@ enum class AreaOperation : uint8_t {
   LocationNameEdit = 30,
   LocationRecognitionRead = 31,
   LocationRecognize = 32,
+  LocationReligiousStaffRead = 33,
+  LocationReligiousStaffRemove = 34,
 };
 enum class AreaRoomOutcome : uint8_t {
   None = 0,

@@ -167,6 +167,12 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
   // Preserve legacy top-level rows while the area domain carries the complete
   // operation selector and incremental-list envelope, like other new domains.
   Dictionary area;area["areas"]=areas;area["choices"]=choices;area["next_cursor"]=int64_t(s.nextCursor);area["truncated"]=s.truncated;
+  if(s.locationReligiousStaff) {
+    const auto& r=*s.locationReligiousStaff;Dictionary n;
+    n["site_id"]=r.siteId;n["location_id"]=r.locationId;n["entity_id"]=r.entityId;n["assignment_id"]=r.assignmentId;
+    n["position_id"]=r.positionId;n["holder_id"]=r.holderId;n["unit_id"]=r.unitId;n["revision"]=r.revision;n["removable"]=r.removable;
+    area["location_religious_staff"]=n;
+  }
   if(s.locationRecognition) {
     const auto& r=*s.locationRecognition;Dictionary n;Array agreements;
     n["site_id"]=r.siteId;n["location_id"]=r.locationId;n["religion_id"]=r.religionId;n["revision"]=r.revision;
@@ -441,7 +447,7 @@ bool validateAreaShape(const Dictionary& data, String& error) {
                                   "expected_list_revision", "scope", "value", "preset", "paint_mode", "paint_z",
                                   "location_id", "location_kind", "profession", "deity_kind", "deity_id",
                                   "unit_id", "item_id", "assign", "squad_id", "squad_use", "organic", "inorganic", "candidate_kind", "sort",
-                                  "room_furniture", "interaction_id", "undo_token", "count_generation", "location_site_id", "occupation_id", "candidate_limit", "quantity_id", "quantity_mode", "quantity_value"},
+                                  "room_furniture", "interaction_id", "undo_token", "count_generation", "location_site_id", "occupation_id", "candidate_limit", "quantity_id", "quantity_mode", "quantity_value", "religious_entity_id", "religious_assignment_id", "religious_holder_id"},
                                  error) ||
       !managementRequiredFields(data, error))
     return false;
@@ -529,7 +535,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   a.give = data.get("give", true);
   a.unlink = data.get("unlink", false);
   a.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
-  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationRecognize)));
+  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationReligiousStaffRemove)));
   const auto nameQueryBytes=[&](const Dictionary& row,std::vector<uint8_t>& out) {
     const PackedByteArray bytes=row["query_bytes"];
     if(bytes.size()>4096){valid=false;return;}
@@ -551,6 +557,9 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
     edit.displayed=int8_t(displayed);edit.word=int32_t(word);edit.part=int16_t(part);nameQueryBytes(row,edit.queryBytes);
   }
   a.countGeneration=n("count_generation",0,0,INT64_MAX);
+  a.religiousEntityId=int32_t(n("religious_entity_id",-1,-1,INT32_MAX));
+  a.religiousAssignmentId=int32_t(n("religious_assignment_id",-1,-1,INT32_MAX));
+  a.religiousHolderId=int32_t(n("religious_holder_id",-1,-1,INT32_MAX));
   a.locationSiteId=int32_t(n("location_site_id",-1,-1,INT32_MAX));
   a.occupationId=int32_t(n("occupation_id",-1,-1,INT32_MAX));
   a.quantityId=int8_t(n("quantity_id",-1,-1,10));

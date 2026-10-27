@@ -15,6 +15,11 @@ void require(bool ok,const char* what){if(!ok)throw std::runtime_error(what);}
 // prove transport fidelity, not native effects or area-builder acceptance.
 void verifyAreaOperation(const m::AreaRequest& q) {
   const auto op=int(q.operation());
+  if(op==33 || op==34) {
+    require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 && q.location_id()==0,"religious target");
+    require(q.religious_entity_id()==383 && q.religious_assignment_id()==2 && q.religious_holder_id()==(op==34?9375:-1),"religious assignment");
+    require(q.expected_revision()==(op==33?0:9007199254740993ULL),"religious revision");return;
+  }
   if(op==31 || op==32) {
     require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 && q.location_id()==0,"recognition target");
     require(q.expected_revision()==(op==31?0:9007199254740993ULL),"recognition revision");return;
@@ -107,6 +112,13 @@ void verifyAreaOperation(const m::AreaRequest& q) {
   }
 }
 flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBuilder& b,const m::AreaRequest& q) {
+  if(q.operation()==m::AreaOperation::LocationReligiousStaffRead || q.operation()==m::AreaOperation::LocationReligiousStaffRemove) {
+    const bool apply=q.operation()==m::AreaOperation::LocationReligiousStaffRemove;
+    const auto receipt=m::CreateLocationReligiousStaff(b,651,0,383,2,0,apply?-1:9375,apply?-1:5813,9007199254740993ULL,!apply);
+    m::AreaStateBuilder area(b);area.add_operation(q.operation());area.add_location_religious_staff(receipt);
+    if(apply)area.add_location_edit_outcome(m::LocationEditOutcome::Completed);
+    return area.Finish();
+  }
   if(q.operation()==m::AreaOperation::LocationRecognitionRead || q.operation()==m::AreaOperation::LocationRecognize) {
     const auto receipt=m::CreateLocationRecognition(b,651,0,383,9007199254740993ULL,2,1,53,10,25,
         m::LocationRecognitionState::RecognizeHighPriest,b.CreateVector(std::vector<int32_t>{41,42}));
@@ -778,7 +790,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);

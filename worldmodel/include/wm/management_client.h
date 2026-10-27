@@ -86,6 +86,7 @@ struct AreaRequest {
   int64_t countGeneration=0;
   std::optional<AreaPaintPreview> paintPreview;
   int32_t locationSiteId=-1,occupationId=-1;
+  int32_t religiousEntityId=-1,religiousAssignmentId=-1,religiousHolderId=-1;
   int8_t quantityId=-1;
   LocationQuantityMode quantityMode=LocationQuantityMode::Set;
   int32_t quantityValue=0;
@@ -205,7 +206,12 @@ struct LocationRecognition {
   LocationRecognitionState state=LocationRecognitionState::NoAction;
   std::vector<int32_t> continuingAgreements;
 };
+struct LocationReligiousStaff {
+  int32_t siteId=-1,locationId=-1,entityId=-1,assignmentId=-1,positionId=-1,holderId=-1,unitId=-1;
+  int64_t revision=0;bool removable=false;
+};
 struct AreaState {
+  std::optional<LocationReligiousStaff> locationReligiousStaff;
   std::optional<LocationRecognition> locationRecognition;
   std::optional<LocationNameSnapshot> locationName;
   std::optional<LocationNamePage> locationNamePage;

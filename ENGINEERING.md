@@ -244,6 +244,23 @@ MSVC and core19/19 pass. Installed protocol73 plugin SHA256 is
 High-priest/absent-unit variants, patrol/equipment-bit readback, unknown-outcome
 injection, epoch-bound transport and viewer lifecycle remain open.
 
+Management74 defines `LocationReligiousStaffRead` and
+`LocationReligiousStaffRemove`. Both target an explicit site/location and religious
+entity/assignment; removal additionally requires a nonnegative expected holder
+and exact positive revision. Read requests carry no holder or revision. Ordinary
+occupation fields and unrelated edit payloads are rejected. Replies carry a
+pointer-free receipt with position, holder, unit, revision and removability;
+completed removal returns a non-removable fresh receipt. Rejected, Stale and
+Unknown outcomes carry no authoritative receipt. Transport epoch admission stays
+separate from dependency revision validation. Godot and model codecs preserve
+64-bit revisions exactly. Rebuild bridge and viewer together for
+`Local\\df3d_management_v74`; no migration fabricates receipt authority in older
+recordings. This contract alone does not enable religious staff controls; the
+management handler and rendered/lifecycle acceptance remain pending.
+MSVC and viewer builds, core19/19, Godot management round trips and Lua contract
+checks pass in `build/qa/location-religious-contract74-verified`. These are contract
+checks, not native management admission or rendered staff-action acceptance.
+
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no
 implemented presentation route yet. Its scope must be retained in the management

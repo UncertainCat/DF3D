@@ -84,6 +84,12 @@ AreaState decodeArea(const m::AreaState* a) {
     value.words.assign(v.words()->begin(),v.words()->end());value.parts.assign(v.parts()->begin(),v.parts()->end());
     value.language=v.language();value.type=v.type();value.hasName=v.has_name();return n;
   };
+  if(a && a->location_religious_staff()) {
+    const auto& r=*a->location_religious_staff();LocationReligiousStaff n;
+    n.siteId=r.site_id();n.locationId=r.location_id();n.entityId=r.entity_id();n.assignmentId=r.assignment_id();
+    n.positionId=r.position_id();n.holderId=r.holder_id();n.unitId=r.unit_id();n.revision=int64_t(r.revision());n.removable=r.removable();
+    out.locationReligiousStaff=n;
+  }
   if(a && a->location_recognition()) {
     const auto& r=*a->location_recognition();LocationRecognition n;
     n.siteId=r.site_id();n.locationId=r.location_id();n.religionId=r.religion_id();n.revision=int64_t(r.revision());
@@ -274,6 +280,7 @@ flatbuffers::Offset<m::AreaRequest> encodeArea(flatbuffers::FlatBufferBuilder& b
     const auto& e=*a.nameEdit;nameEdit=m::CreateLocationNameEdit(b,m::LocationNameMode(e.mode),e.target,e.displayed,e.word,e.part,b.CreateVector(e.queryBytes));
   }
   m::AreaRequestBuilder r(b);
+  r.add_religious_entity_id(a.religiousEntityId);r.add_religious_assignment_id(a.religiousAssignmentId);r.add_religious_holder_id(a.religiousHolderId);
   r.add_name_query(nameQuery);r.add_name_edit(nameEdit);
   r.add_kind(m::AreaKind(a.kind));r.add_id(a.id);
   if(a.operation==AreaOperation::None || a.operation==AreaOperation::MultiCreate || a.operation==AreaOperation::LinkTarget)r.add_origin(&ap);

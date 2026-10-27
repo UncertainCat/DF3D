@@ -8318,8 +8318,37 @@
     "source_and_clone_unchanged": true,
     "owned_exit_without_save": true,
     "diagnostics": "known separate-thread notice only",
-    "omissions": [
-      "producer restart/world-epoch replacement"
-    ]
+    "omissions": []
+  },
+  "restart_reference": {
+    "run": "build/areas-acceptance-20261026-235037",
+    "command": "areas_acceptance.ps1 -NamingScene -NamingRestart",
+    "result_sha256": "0182a817825b8518dc881ffb9e948cab7ca4b591a0031518f9f26a0ae72e3847",
+    "epochs": {
+      "new_epoch": "656099204136961",
+      "new_generation": 2,
+      "old_epoch": "540392785182721",
+      "old_generation": 1,
+      "pid": 152760.0
+    },
+    "outcome": "unknown",
+    "new_requests": {
+      "36": {
+        "domain": "construction",
+        "request": {
+          "action": 0
+        }
+      }
+    },
+    "scope": [
+      "sent Select changed native name; result remained unobserved; dependent whole Random queued",
+      "owned producer replaced; name editor and receipts retired",
+      "no automatic location reads/edits after replacement",
+      "independent native read and explicit reopened editor both match original saved name"
+    ],
+    "save_files_hashed": 1368,
+    "source_and_clone_unchanged": true,
+    "owned_exit_without_save": true,
+    "diagnostics": "known separate-thread notice only"
   }
 }

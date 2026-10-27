@@ -1,6 +1,6 @@
 # Protected, owned, never-saved acceptance. SaveId names a NEW disposable copy
 # of region5; existing saves are refused. The copy is retained for inspection.
-param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$ZoneAnimalsOnly,[switch]$ZoneSquadsOnly,[ValidateSet("Barracks","ArcheryRange")][string]$SquadZone="Barracks",[ValidateSet("none","queued","sent")][string]$SquadDisconnect="none",[ValidateSet("none","queued","sent")][string]$AnimalDisconnect="none",[switch]$ZoneOwnerOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[ValidateSet("none","stale","queued","sent","late","restart")][string]$QuantityLifecycle="none",[switch]$StaffOnly,[switch]$QuantityOnly,[switch]$NamingOnly,[switch]$NamingScene,[switch]$NamingDisconnect,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
+param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$ZoneAnimalsOnly,[switch]$ZoneSquadsOnly,[ValidateSet("Barracks","ArcheryRange")][string]$SquadZone="Barracks",[ValidateSet("none","queued","sent")][string]$SquadDisconnect="none",[ValidateSet("none","queued","sent")][string]$AnimalDisconnect="none",[switch]$ZoneOwnerOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[ValidateSet("none","stale","queued","sent","late","restart")][string]$QuantityLifecycle="none",[switch]$StaffOnly,[switch]$QuantityOnly,[switch]$NamingOnly,[switch]$NamingScene,[switch]$NamingDisconnect,[switch]$NamingRestart,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
@@ -34,11 +34,13 @@ function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  return $r
 }
 try {
- if($NamingDisconnect -and -not $NamingScene){throw 'NamingDisconnect requires NamingScene'}
+ if(($NamingDisconnect -or $NamingRestart) -and -not $NamingScene){throw 'NamingDisconnect requires NamingScene'}
+ if($NamingDisconnect -and $NamingRestart){throw 'Choose one naming lifecycle scope'}
  if($NamingScene) {
-  if($PSBoundParameters.Keys | Where-Object {$_ -notin @('NamingScene','NamingDisconnect','SaveId','DfPath')}){throw 'NamingScene is a separate protected GPU lane'}
+  if($PSBoundParameters.Keys | Where-Object {$_ -notin @('NamingScene','NamingDisconnect','NamingRestart','SaveId','DfPath')}){throw 'NamingScene is a separate protected GPU lane'}
   $LocationScene=$true;Write-Lf "$out/naming-scene.txt" 'viewport'
   if($NamingDisconnect){Write-Lf "$out/naming-disconnect.txt" 'queued-and-sent'}
+  if($NamingRestart){Write-Lf "$out/naming-restart.txt" 'sent'}
  }
  if($QuantityLifecycle -ne "none") {
   if(-not $LocationScene -or $Controller -or $ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $ZoneRenameOnly -or $ZoneGatherOnly -or $ZoneOverlapOnly -or $ZoneDefaultsOnly -or $ZoneAnimalsOnly -or $ZoneSquadsOnly -or $ZoneOwnerOnly -or $StockpilesOnly -or $StockpilePaintOnly -or $StockpileFitOnly -or $StockpileResizeOnly -or $MultiOnly -or $PaintCountsOnly -or $StaffOnly -or $QuantityOnly -or $StaffScene){throw "QuantityLifecycle requires LocationScene without other scopes"}

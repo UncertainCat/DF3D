@@ -6,6 +6,8 @@ var details_parent_checked: Dictionary={}
 var details_staff_count:=0
 var quantity_cases:=0
 func pointer_areas() -> void:
+	if FileAccess.file_exists(directory+"/naming-restart.txt"):
+		await naming_restart();return
 	if FileAccess.file_exists(directory+"/naming-disconnect.txt"):
 		await seed_catalog()
 		for sent in [false,true]:
@@ -476,6 +478,37 @@ func naming_routes(locations: Array) -> void:
 	write_json("naming-scene-evidence.json",{"locations":cases,"mutations":cases*5+1,"pending_close_cases":2,"assigned_routes":cases,"scope":"chooser and assigned quill entry, full choices, four edit modes and native readback, Done refresh, reopen/Escape/Back, queued cancellation and sent late receipt after dismissal"})
 	print("LOCATION_NAMING_SCENE_PASS locations=",cases)
 	editor.close_panel()
+
+func naming_restart() -> void:
+	step="naming producer restart"
+	await seed_catalog();await quantity_lifecycle_open()
+	if stopped:return
+	var details=editor.details_view
+	await click_control(details.rename_button)
+	var names=details.name_workflow.names
+	if not await wait_ui(func():return names.phase==names.Phase.Ready,"restart naming choices"):return
+	var original: Dictionary=names.snapshot.value.duplicate(true)
+	var id: int=names.snapshot.id
+	await pointer_click(Vector2(744,178))
+	var ticket: int=names.ticket
+	await pointer_click(Vector2(832,82))
+	if not check(ticket>0 and names.queue.size()==1,"restart requires naming edit plus dependent Random"):return
+	var applied:=await quantity_unobserved(ticket)
+	if stopped:return
+	if not check(applied.area.location_name.value!=original,"restart naming Select must change native name"):return
+	await quantity_restart(ticket,"naming")
+	if stopped:return
+	if not check(not details.name_workflow.active and names.identity.is_empty() and names.snapshot.is_empty() and names.queue.is_empty() and names.ticket==0,"restart retained naming authority"):return
+	var native_value:=original.duplicate(true)
+	native_value.first_name_bytes=Array(native_value.first_name_bytes);native_value.nickname_bytes=Array(native_value.nickname_bytes)
+	await native("name_read",{"location_id":id,"value":native_value})
+	await quantity_lifecycle_open()
+	if stopped:return
+	await click_control(details.rename_button)
+	if not await wait_ui(func():return names.phase==names.Phase.Ready,"fresh naming after producer replacement"):return
+	if not check(names.snapshot.value==original and names.queue.is_empty(),"replacement naming reused unsaved edit"):return
+	editor.close_panel()
+	print("LOCATION_NAMING_RESTART_PASS")
 
 func naming_disconnect(sent: bool) -> void:
 	step="naming disconnect sent="+str(sent)
@@ -1207,7 +1240,7 @@ func quantity_lifecycle(mode: String) -> void:
 	await native("quantity_seed",{"location_id":1,"quantity_id":0,"value":original})
 	if not stopped:print("LOCATION_QUANTITY_LIFECYCLE_PASS mode=",mode)
 
-func quantity_restart(ticket: int) -> void:
+func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
 	var old_epoch: int=world.poll_session().get("fortress_epoch",0)
 	var old_generation: int=world.session_generation()
 	var new_requests: Dictionary={}
@@ -1250,8 +1283,8 @@ func quantity_restart(ticket: int) -> void:
 		await create_timer(0.02).timeout
 	if not check(lost and actions._epoch==epoch and actions._active==0 and actions._queue.is_empty(),"quantity replacement service not ready"):return
 	var outcome: Dictionary=actions.result(ticket)
-	write_json("quantity-lifecycle-outcome.json",outcome)
-	write_json("quantity-restart.json",{"old_epoch":str(old_epoch),"new_epoch":str(epoch),"old_generation":old_generation,"new_generation":world.session_generation(),"pid":ack.pid})
+	write_json(evidence_prefix+"-lifecycle-outcome.json",outcome)
+	write_json(evidence_prefix+"-restart.json",{"old_epoch":str(old_epoch),"new_epoch":str(epoch),"old_generation":old_generation,"new_generation":world.session_generation(),"pid":ack.pid})
 	var model=editor.details_state;var flow=editor.details_view.quantity_view.workflow
 	if not check(outcome.get("outcome")=="unknown" and not actions._requests.has(ticket),"old quantity receipt survived producer replacement"):return
 	if not check(model.identity.is_empty() and model.snapshot.is_empty() and flow.queue.is_empty() and not flow.pending and flow.editing==-1 and not editor.details_layer.visible and not editor.details_closing,"replacement retained quantity authority"):return
@@ -1262,8 +1295,8 @@ func quantity_restart(ticket: int) -> void:
 			var item: Dictionary=actions._requests[received]
 			new_requests[received]={"domain":item.domain,"request":item.request.duplicate(true)}
 	actions.completed.disconnect(observe)
-	write_json("quantity-restart-new-requests.json",new_requests)
+	write_json(evidence_prefix+"-restart-new-requests.json",new_requests)
 	for item in new_requests.values():
-		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails],"replacement automatically submitted Location work"):return
+		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit],"replacement automatically submitted Location work"):return
 	if not check(model.identity.is_empty() and not editor.details_layer.visible,"replacement reopened quantity editor"):return
-	await capture("quantity_restart_retired")
+	await capture(evidence_prefix+"_restart_retired")

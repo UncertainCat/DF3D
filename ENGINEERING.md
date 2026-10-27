@@ -430,7 +430,20 @@ name. Independent native checks confirm the unsent edit changes nothing, the
 sent Select remains applied and the discarded Random consumes no RNG. Source
 and clone manifests stay unchanged and the owned game exits unsaved. The run
 passes with only the known separate-thread notice. Producer replacement and
-world-epoch restart acceptance remain separate unfinished cases.
+world-epoch restart acceptance are covered separately below.
+
+`areas_acceptance.ps1 -NamingScene -NamingRestart` covers that replacement case.
+Protected `build/areas-acceptance-20261026-235037` applies a Select without letting
+the UI observe its success, queues a dependent Random, then restarts the owned
+game without saving. PID125820/epoch540392785182721 is replaced by
+PID152760/epoch656099204136961; viewer generation advances1 to2. The old edit
+becomes `unknown`, naming authority retires and no location read or edit is
+submitted automatically (only the normal construction catalog reconnect).
+Independent native readback and explicit reopening both recover the original
+saved name. The protected restart hashes1368 files across source/clone save
+roots and verifies unchanged contents; final teardown also exits unsaved. The
+run passes with only the known separate-thread notice. Naming input/layout
+coverage gaps remain independent of this lifecycle acceptance.
 
 ## Native squad assignment reference
 

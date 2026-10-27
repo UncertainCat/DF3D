@@ -7963,5 +7963,69 @@
     ],
     "assigned_routes": 6,
     "pending_close_cases": 2
+  },
+  "filter_view_reference": {
+    "native_capture": "build/stockpile-storage-native-location-names-20261026-223634/INN_TAVERN-1-filter-ale.png",
+    "rows": [
+      {
+        "english": "ale",
+        "part": 0,
+        "translated": "mabdug",
+        "word": 6
+      },
+      {
+        "english": "ales",
+        "part": 1,
+        "translated": "mabdug",
+        "word": 6
+      },
+      {
+        "english": "equivalence",
+        "part": 0,
+        "translated": "maskir",
+        "word": 1530
+      },
+      {
+        "english": "dales",
+        "part": 1,
+        "translated": "isos",
+        "word": 1703
+      },
+      {
+        "english": "vales",
+        "part": 1,
+        "translated": "sebs\u00far",
+        "word": 1706
+      },
+      {
+        "english": "gales",
+        "part": 1,
+        "translated": "vutram",
+        "word": 1756
+      },
+      {
+        "english": "scales",
+        "part": 1,
+        "translated": "k\u00e5t\u00e2k",
+        "word": 1868
+      },
+      {
+        "english": "healers",
+        "part": 1,
+        "translated": "ikal",
+        "word": 2057
+      }
+    ],
+    "query": "ALE",
+    "component": 6,
+    "rect": [
+      720,
+      124,
+      240,
+      588
+    ],
+    "rgb_sha256": "1978ac4e13e5ac74668b486224b604e37eb7290bd39b9d23c8547e737e51a949",
+    "focused_empty_rgb_sha256": "068de5aa42f9a840dcfbab801e96711758c72d6f59ee2ca72f3725a0ba7b027c",
+    "draw_evidence": "DF53.16 RVA1fc803..1fc837 divides inclusive row bounds into thirds;1fdb5e..1fdbce focused placeholder/cursor; RVA15ec82c underscore,15ec860 ellipsis. Cursor appears tick modulo1000 below500."
   }
 }

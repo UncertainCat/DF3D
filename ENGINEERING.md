@@ -376,6 +376,20 @@ known separate-thread notice. The naming fixture records its digest and scope.
 Disconnect/reconnect, epoch/restart and remaining native input and layout cases
 are not covered by this run; Details remains unexposed.
 
+Naming's short-list layout and focused filter use the native223634 captures.
+When15 or fewer results fit without scrolling, rows expand to240 pixels and the
+grammar column moves one cell right; the wider translated-word column uses its
+native clipping threshold. An empty focused filter suppresses the ellipsis.
+Native draw1fdb5e..1fdbce appends an underscore for tick modulo1000 below500;
+the presentation uses the same phase calculation with an injected test clock.
+`build/qa/location-name-filter-fixed` passes core19/19 and the GPU/input capture
+with only documented diagnostics. The entire240x588 filtered-list region and
+240x36 empty focused filter match native RGB exactly, including accented words;
+the initial full-panel reference still matches. The cursor-visible phase is
+checked for a rendered change, not claimed as a separate native pixel capture.
+Fixture imports explicitly decode UTF-8. Hover, native scrolling interaction,
+non-ASCII input and long-header/resize acceptance remain outstanding.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

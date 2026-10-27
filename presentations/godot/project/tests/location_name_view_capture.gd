@@ -59,6 +59,26 @@ func run() -> void:
 	await key(KEY_ENTER);assert(not view.entering_filter)
 	await click(Vector2(832,142));await key(KEY_ESCAPE);assert(closes==1 and not view.entering_filter)
 	await click(Vector2(912,82));assert(closes==2)
+	var filtered: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).filter_view_reference
+	state.rows=filtered.rows.duplicate(true)
+	for row in state.rows:row.part=int(row.part)
+	state.query="ALE".to_ascii_buffer();state.component=6;view.entering_filter=true;view.ticks_override=750;state.changed.emit()
+	await process_frame;await RenderingServer.frame_post_draw
+	image=root.get_texture().get_image();image.save_png(directory.path_join("filtered.png"))
+	crop=image.get_region(Rect2i(720,124,240,588));crop.convert(Image.FORMAT_RGB8)
+	hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
+	assert(hash.finish().hex_encode()==filtered.rgb_sha256,"native short-list columns and focused filter")
+	state.query=PackedByteArray();state.changed.emit()
+	await process_frame;await RenderingServer.frame_post_draw
+	crop=root.get_texture().get_image().get_region(Rect2i(720,124,240,36));crop.convert(Image.FORMAT_RGB8)
+	hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
+	assert(hash.finish().hex_encode()==filtered.focused_empty_rgb_sha256,"native focused empty filter hides placeholder")
+	var hidden_cursor:=crop.get_data()
+	view.ticks_override=250;view._process(0)
+	await process_frame;await RenderingServer.frame_post_draw
+	crop=root.get_texture().get_image().get_region(Rect2i(720,124,240,36));crop.convert(Image.FORMAT_RGB8)
+	assert(crop.get_data()!=hidden_cursor,"focused underscore blink visible")
+	state.rows.resize(3217);state.rows.fill({"word":0,"part":0,"english":"","translated":""});state.changed.emit()
 	view.input_allowed=func():return false
 	await click(Vector2(952,694));assert(view.first==0,"blocked child scrollbar must not move")
 	view.scrollbar.dragging=true

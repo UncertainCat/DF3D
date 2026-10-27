@@ -14,6 +14,13 @@ var entering_filter:=false
 var input_allowed: Callable
 var _query:=PackedByteArray()
 var _component:=-1
+var ticks_override:=-1
+var _blink:=-1
+
+func _process(_delta: float) -> void:
+	if not is_visible_in_tree() or not entering_filter:return
+	var phase:=int((ticks_override if ticks_override>=0 else Time.get_ticks_msec())%1000<500)
+	if phase!=_blink:_blink=phase;queue_redraw()
 
 func configure(source,model) -> void:
 	art.configure(source);theme=art.theme;state=model
@@ -44,7 +51,7 @@ func available() -> bool:
 func component_rect(index: int) -> Rect2:return Rect2(16,72+index*36,184,36)
 func random_rect(index: int) -> Rect2:return Rect2(208,72+index*36,64,36)
 func clear_rect(index: int) -> Rect2:return Rect2(272,72+index*36,56,36)
-func row_rect(index: int) -> Rect2:return Rect2(352,108+index*36,224,36)
+func row_rect(index: int) -> Rect2:return Rect2(352,108+index*36,224 if state.rows.size()>15 else 240,36)
 
 func _gui_input(event: InputEvent) -> void:
 	if input_allowed.is_valid() and not input_allowed.call():return
@@ -100,9 +107,9 @@ func text(value: String, point: Vector2, color:=Color.WHITE) -> void:
 func button(token: String, rect: Rect2, caption: String, color:=Color.WHITE) -> void:
 	patch(token,rect);text(caption,rect.position+Vector2(floorf((rect.size.x-caption.length()*8)/2),24),color)
 
-static func short_word(value: String) -> String:
-	# Native1fde73/1fdfe2: nine-cell columns, threshold7 and six-cell result.
-	return value.left(3)+"..." if value.length()>=7 else value
+static func short_word(value: String, columns:=9) -> String:
+	# Native1fde73/1fdfe2: threshold width-2, result width-3 including dots.
+	return value.left(columns-6)+"..." if value.length()>=columns-2 else value
 
 func _draw() -> void:
 	if state==null:return
@@ -131,13 +138,18 @@ func _draw() -> void:
 				draw_texture_rect_region(filter,Rect2(352+x*8,72+y*12,8,12),Rect2(source_x*8,y*12,8,12))
 	var display:=""
 	for byte in state.query:display+=String.chr(byte if byte<128 else Art.CP437_HIGH[byte-128])
-	text(display if not display.is_empty() else "...",Vector2(368,96),Color.WHITE if entering_filter else Color8(160,160,160))
+	# Native1fdb5e..1fdbce suppresses the placeholder while focused and adds
+	# '_' during the first500ms of each1000ms tick period.
+	if entering_filter:
+		if (ticks_override if ticks_override>=0 else Time.get_ticks_msec())%1000<500:display+="_"
+	elif display.is_empty():display="..."
+	text(display,Vector2(368,96),Color.WHITE if entering_filter else Color8(160,160,160))
 	for index in mini(15,state.rows.size()-first):
 		var row: Dictionary=state.rows[first+index]
 		patch("BUTTON_RECTANGLE",row_rect(index))
 		text(short_word(row.english),Vector2(352,132+index*36),CYAN)
-		text(short_word(row.translated),Vector2(424,132+index*36),YELLOW)
-		text(PARTS[row.part],Vector2(496,132+index*36))
+		text(short_word(row.translated,9 if state.rows.size()>15 else 10),Vector2(424,132+index*36),YELLOW)
+		text(PARTS[row.part],Vector2(496 if state.rows.size()>15 else 504,132+index*36))
 
 func _exit_tree() -> void:
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

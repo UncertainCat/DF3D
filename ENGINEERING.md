@@ -47,6 +47,34 @@ unsaved, and both save manifests remain unchanged. Zones remains gated while
 the remaining overall coverage is reconciled; the minimum-height hospital
 scrollbar exception in the native bug register still awaits approval.
 
+`areas_acceptance.ps1 -ControllerScene -ZonesOnly` runs the default main-scene
+Zones workflow without repeating Stockpiles. Protected140736 passes creation,
+inline naming, owner selection/recentering/removal, immediate repaint with sparse
+brush sampling and explicit middle-tile sampling, erase, elevation round trips,
+right/Escape/reset retention, Accept without another mutation, removal and
+mixed-wall/wall-only/fortification boundaries. Native snapshots verify masks
+before exit and after reopening; state guards verify the exit itself is inert.
+The repaint capture was inspected. DF167632 exits unsaved with both save manifests
+unchanged; the only diagnostic is the known rendering-thread notice. Core passes
+cleanly in `build/qa/zones-controller-reconciled`.
+
+The older broad controller test incorrectly expected interpolated brush strokes,
+rollback on exit, a second mutation on Accept, and drag-completed rectangles.
+Those assertions now follow the existing native references and implementation;
+runtime painting is unchanged. Area receipt assertions exclude other domains'
+background reads and use contract mutation classification. Broad134256 failed
+that old classification;134851 and135633 failed obsolete repaint expectations.
+Focused140402 passed repaint but failed the staged boundary launcher. The
+corrected140736 run is acceptance for this focused scope, not a claim that the
+combined Stockpiles/Zones run or every separate assignment lane has been rerun.
+
+Open resize gap: `location_staff_view` still calls `staff_layout` with its default
+66 rows and only updates width on layout. The native height reference expects
+hospital capacities0/8/5 at600/900/800 pixels. The formatter supports these values,
+but the view is not wired to them. Fix viewport-height propagation, scroll clamps
+and visible-reader retirement together; resolve the pending zero-row scrollbar
+exception before claiming minimum-height parity or promoting Zones.
+
 ## Native Location supply editing reference
 
 `fixtures/areas/native_location_supply_edit.json` records121 observations from

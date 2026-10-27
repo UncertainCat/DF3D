@@ -2,6 +2,9 @@ extends "res://tests/areas_controller_live.gd"
 # Actual main-scene viewport input. Broad callback coverage lives in the parent.
 var scene
 
+func area_receipts() -> Array:
+	return receipts.filter(func(result):return Contract.domain_of(int(result.get("action",result.get("_intent",{}).get("action",-1))))=="areas")
+
 # A live main scene also owns background observations. Fixture setup must share
 # its semantic queue instead of replacing a request's private receipt.
 func seed_catalog() -> void:
@@ -112,7 +115,7 @@ func pointer_areas() -> void:
 	var zone_rename_only := FileAccess.file_exists(directory+"/zone-rename-only.json")
 	var zone_gather_only := FileAccess.file_exists(directory+"/zone-gather-only.json")
 	var zone_overlap_only := FileAccess.file_exists(directory+"/zone-overlap-only.json")
-	var destinations := ["Zones"] if zone_squads_only or zone_animals_only or zone_owner_only or zone_rename_only or zone_gather_only or zone_overlap_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
+	var destinations := ["Zones"] if FileAccess.file_exists(directory+"/zones-only.json") or zone_squads_only or zone_animals_only or zone_owner_only or zone_rename_only or zone_gather_only or zone_overlap_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
 	for destination in destinations:
 		step = "viewport "+destination
 		var launcher: Button = scene._fortress_hud.navigation[destination]
@@ -253,9 +256,9 @@ func pointer_squads(id: int) -> void:
 		await capture("squad_scrolled_use_"+str(use))
 	await native("squad_finish")
 	for position in [Vector2(440,118),Vector2(392,118),Vector2(500,465),Vector2(940,200),Vector2(1000,250),Vector2(1100,700)]:
-		var receipt_count:=receipts.size()
+		var receipt_count:=area_receipts().size()
 		await pointer_click(position)
-		if not check(view.visible and int(editor.selected.id)==id and int(editor.candidates_state.area.id)==id and receipts.size()==receipt_count,"inert squad panel click changed target or sent an action"):return
+		if not check(view.visible and int(editor.selected.id)==id and int(editor.candidates_state.area.id)==id and area_receipts().size()==receipt_count,"inert squad panel click changed target or sent an action"):return
 	var escape:=InputEventKey.new();escape.keycode=KEY_ESCAPE;escape.pressed=true;root.push_input(escape,true)
 	if not await wait_ui(func():return not view.visible and editor.panel.visible and settled(),"Escape closes only squad picker"):return
 	await click_control(editor.zone_menu.controls.squads)
@@ -273,17 +276,17 @@ func pointer_squads(id: int) -> void:
 		if child is Button and int(child.get_meta("squad_use",0))==2:stale_control=child;break
 	if not check(stale_control!=null,"missing stale squad control"):return
 	var stale_position:Vector2=stale_control.get_global_rect().get_center()
-	var before_stale:=receipts.size()
+	var before_stale:=area_receipts().size()
 	await pointer_click(stale_position)
 	var deadline:=Time.get_ticks_msec()+30000
 	while not settled() and Time.get_ticks_msec()<deadline:
 		world.poll();actions.poll();editor._process(0.02);await create_timer(0.02).timeout
-	if not check(settled() and editor.request_problem and editor.candidates_state.failed and receipts.size()==before_stale+1,"stale squad assignment did not reject once"):return
+	if not check(settled() and editor.request_problem and editor.candidates_state.failed and area_receipts().size()==before_stale+1,"stale squad assignment did not reject once"):return
 	await native("squad",{"id":id,"squad_id":target_id,"use":0})
 	await pointer_click(stale_position)
 	for i in 10:
 		world.poll();actions.poll();editor._process(0.1);await process_frame
-	if not check(receipts.size()==before_stale+1 and settled(),"failed squad picker replayed a mutation"):return
+	if not check(area_receipts().size()==before_stale+1 and settled(),"failed squad picker replayed a mutation"):return
 	await capture("squad_stale_rejected")
 	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
 	if not check(not view.visible and settled(),"close rejected squad picker"):return
@@ -962,16 +965,17 @@ func pointer_refuse_hides() -> void:
 	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and int(editor.selected.revision) != previous_revision,"same-size external material revision"): return
 	# Hold a page request in the action queue while the external edit invalidates
 	# its revision. This deterministically exercises terminal stale-read recovery.
-	var receipt_start := receipts.size()
+	var receipt_start := area_receipts().size()
 	editor.settings_state.read(2,editor.settings_state.leaf)
 	await native("external_hide_change",{"id":int(editor.selected.id),"fresh":false})
 	await native("guard_before")
 	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and editor.settings_state.rows[2].size() == 2 and int(editor.settings_state.rows[2][0].state) == 1 and int(editor.settings_state.rows[2][1].state) == 2,"stale in-flight page recovery"): return
 	await native("guard_after")
 	var saw_rejection := false
-	for result in receipts.slice(receipt_start):
-		if not check(int(result.action) == 9,"read recovery submitted a mutation"): return
-		if int(result.status) == 3 and str(result.message) == "Area changed; inspect again": saw_rejection = true
+	for result in area_receipts().slice(receipt_start):
+		var action: int=int(result.get("action",result.get("_intent",{}).get("action",-1)))
+		if not check(not Contract.is_mutation(action),"read recovery submitted a mutation"): return
+		if action==Contract.ManagementAction.AreaInspect and int(result.status) == 3 and str(result.message) == "Area changed; inspect again": saw_rejection = true
 	if not check(saw_rejection and editor.settings_state.query == "RAW HIDE" and editor.settings_state.leaf == "refuse/type","race was not exercised or navigation was lost"): return
 	await capture("refuse_read_recovery")
 
@@ -1119,48 +1123,51 @@ func pointer_drag(first: Vector2, last: Vector2) -> void:
 func pointer_repaint(origin: Vector3i, id: int, destination: String) -> void:
 	if destination == "Stockpiles":
 		await pointer_stockpile_repaint(origin,id); return
-	step = "viewport repaint "+destination
-	for cancel in ["right","escape","reset",""]:
-		await native("guard_before")
-		await click_control(editor.stockpile_view.controls.repaint if destination == "Stockpiles" else editor.zone_menu.controls.repaint)
-		if not check(editor.mode == "paint","repaint control did not enter paint mode for "+cancel): return
+	for ending in ["right","escape","reset","accept"]:
+		step = "immediate zone repaint "+ending
+		await click_control(editor.zone_menu.controls.repaint)
+		if not check(editor.mode == "paint","repaint control did not enter paint mode for "+ending): return
 		await click_control(editor.paint_view.buttons.brush)
 		await pointer_drag(tile_screen(origin),tile_screen(origin+Vector3i(2,0,0)))
-		if editor.paint_state.cells.size() != 3:
-			await capture("repaint_stroke_failure")
-			write_json("repaint_stroke_failure.json",{"cells":str(editor.paint_state.cells),"paint_z":editor.paint_state.z,"top_z":world.get_top_z(),"current_z":editor.current_z,"mode":editor.mode,"tool":editor.paint_tool,"ticket":editor.request_ticket,"focus":str(root.gui_get_focus_owner()),"first":str(tile_screen(origin)),"last":str(tile_screen(origin+Vector3i(2,0,0))),"selected":editor.selected})
-		if not check(editor.paint_state.cells.size() == 3,"viewport brush did not connect its stroke: "+str(editor.paint_state.cells)): return
-		await elevation_round_trip(origin,destination+"_repaint_"+cancel)
+		if not await wait_ui(func():return settled(),"zone sampled brush receipts"):return
+		if ending=="right":
+			if not check(editor.paint_state.cells.size()==2 and not editor.paint_state.cells.has(Vector2i(origin.x+1,origin.y)),"native brush must not interpolate unsampled tiles"):return
+			await native("snapshot",{"id":id,"expected":{"tile_count":2,"extents":[1,0,1]}})
+		await pointer_click(tile_screen(origin+Vector3i(1,0,0)))
+		if not await wait_ui(func():return settled(),"zone middle sample receipt"):return
+		if not check(editor.paint_state.cells.size() == 3,"viewport brush omitted an explicit sample: "+str(editor.paint_state.cells)): return
+		await native("snapshot",{"id":id,"expected":{"tile_count":3,"extents":[1,1,1]}})
+		await elevation_round_trip(origin,destination+"_repaint_"+ending)
 		if stopped: return
 		await click_control(editor.paint_view.buttons.erase)
 		await pointer_click(tile_screen(origin))
+		if not await wait_ui(func():return settled(),"zone erase receipt"):return
 		if not check(editor.paint_state.cells.size() == 2,"viewport erase did not remove the original tile"): return
-		await native("guard_after")
-		if not cancel.is_empty():
-			if cancel == "right": await pointer_click(tile_screen(origin),MOUSE_BUTTON_RIGHT)
-			elif cancel == "escape": await pointer_key(KEY_ESCAPE)
-			else:
-				await pointer_key(KEY_F10)
-				if not check(not editor.panel.visible and editor.paint_state.cells.is_empty(),"UI reset retained a paint draft"): return
-				var launcher: Button = scene._fortress_hud.navigation[destination]
-				for frame in 4:
-					scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-				if destination == "Zones": launcher.show()
-				await click_control(launcher,destination == "Zones")
-				if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"reopen after reset"): return
-				await pointer_click(tile_screen(origin))
-				if not await wait_ui(func(): return settled() and not editor.selected.is_empty(),"reinspect after reset"): return
-			if not check(editor.mode == "inspect" and int(editor.selected.id) == id,cancel+" did not cancel repaint"): return
-			await native("snapshot",{"id":id,"expected":{"tile_count":1,"x":origin.x,"y":origin.y}})
+		await native("snapshot",{"id":id,"expected":{"tile_count":2,"extents":[0,1,1]}})
+		await capture("zones_immediate_"+ending)
+		await native("guard_before")
+		if ending!="accept":
+			await click_control(editor.paint_view.buttons.rectangle)
+			await pointer_click(tile_screen(origin))
+			if not check(editor.dragging,"zone pending rectangle absent"):return
+			if ending=="right":await pointer_click(tile_screen(origin),MOUSE_BUTTON_RIGHT)
+			elif ending=="escape":await pointer_key(KEY_ESCAPE)
+			else:await pointer_key(KEY_F10)
+			if not await wait_ui(func():return settled() and not editor.panel.visible,"zone repaint exit"):return
+			await native("guard_after")
+			await native("snapshot",{"id":id,"expected":{"tile_count":2,"extents":[0,1,1]}})
+			var launcher: Button=scene._fortress_hud.navigation.Zones
+			launcher.show();await click_control(launcher,true)
+			if not await wait_ui(func():return editor.panel.visible and editor.available and settled(),"reopen Zones"):return
+			await pointer_click(tile_screen(origin+Vector3i(2,0,0)))
+			if not await wait_ui(func():return settled() and editor.mode=="inspect" and int(editor.selected.get("id",-1))==id,"reinspect retained zone"):return
 		else:
-			await capture(destination.to_lower()+"_mixed_draft")
-			if stopped: return
-			var before := receipts.size()
+			var before := area_receipts().size()
 			await click_control(editor.paint_view.accept_button)
 			if not await wait_ui(func(): return settled() and editor.mode == "inspect","pointer repaint Accept"): return
-			if not check(receipts.size() == before+1,"accepted viewport repaint submitted more than one request"): return
-			await native("snapshot",{"id":id,"expected":{"tile_count":2,"x":origin.x+1,"y":origin.y,"width":2,"height":1}})
-			await capture(destination.to_lower()+"_repainted")
+			if not check(area_receipts().size()==before,"zone Accept replayed committed paint"):return
+			await native("guard_after")
+			await native("snapshot",{"id":id,"expected":{"tile_count":2,"extents":[0,1,1]}})
 
 func pointer_stockpile_repaint(origin: Vector3i, id: int) -> void:
 	for ending in ["right","escape","reset","accept"]:
@@ -1181,10 +1188,10 @@ func pointer_stockpile_repaint(origin: Vector3i, id: int) -> void:
 		await native("snapshot",{"id":id,"expected":{"tile_count":1,"x":origin.x,"y":origin.y,"width":3,"height":1,"extents":[0,0,1]}})
 		await capture("stockpiles_immediate_"+ending)
 		if ending == "accept":
-			var before := receipts.size()
+			var before := area_receipts().size()
 			await click_control(editor.paint_view.accept_button)
 			if not await wait_ui(func(): return settled() and editor.mode == "inspect","repaint Accept"): return
-			if not check(receipts.size() == before,"Accept replayed already committed paint"): return
+			if not check(area_receipts().size() == before,"Accept replayed already committed paint"): return
 		else:
 			# A pending rectangle does not change Escape/right-click's whole-tool exit.
 			await click_control(editor.paint_view.buttons.rectangle)
@@ -1632,7 +1639,7 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	var tile: Vector3i = world.unit_tile(unit)
 	var recenter_area: Dictionary = editor.selected.duplicate(true)
 	for method in ["click","control-c"]:
-		var before_recenter := receipts.size()
+		var before_recenter := area_receipts().size()
 		if method=="click": await click_control(editor.candidates_view.focus_buttons[index])
 		else:
 			for row_step in index+1:
@@ -1640,7 +1647,7 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 			var recenter := InputEventKey.new();recenter.pressed=true;recenter.keycode=KEY_C;recenter.ctrl_pressed=true;root.push_input(recenter,true)
 		if not check(not editor.panel.visible and host.active==null,"owner recenter did not leave Zones: "+method):return
 		if not check(is_equal_approx(scene.camera_rig.position.x,tile.x+0.5) and is_equal_approx(scene.camera_rig.position.z,tile.y+0.5),"owner recenter did not focus observed unit"): return
-		if not check(receipts.size()==before_recenter,"owner recenter submitted a mutation"):return
+		if not check(area_receipts().size()==before_recenter,"owner recenter submitted a mutation"):return
 		await capture("zone_owner_recenter_"+method)
 		await native("snapshot",{"id":id,"expected":{"owner_id":-1}})
 		editor.open_panel()
@@ -1668,10 +1675,10 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"owner removal rows"): return
 	await capture("zone_owner_remove")
 	if not check(editor.stockpile_page=="owner" and not editor.candidates_view.remove.disabled,"owner removal control unavailable"): return
-	var before_remove := receipts.size()
+	var before_remove := area_receipts().size()
 	await click_control(editor.candidates_view.remove)
 	if not await wait_ui(func(): return settled() and editor.stockpile_page=="types","pointer remove owner"): return
-	if not check(receipts.size()>before_remove,"owner removal click sent no request"): return
+	if not check(area_receipts().size()>before_remove,"owner removal click sent no request"): return
 	await native("snapshot",{"id":id,"expected":{"owner_id":-1}})
 	var escape_area: Dictionary = editor.selected.duplicate(true)
 	# Escape follows native Options routing both with and without filter focus.
@@ -1679,10 +1686,10 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 		await click_control(editor.zone_menu.controls.owner)
 		if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"owner Escape rows"): return
 		if focused: root.push_input(shortcut,true)
-		var before_escape := receipts.size()
+		var before_escape := area_receipts().size()
 		await pointer_key(KEY_ESCAPE)
 		if not check(not editor.panel.visible and scene._ui.native_options.visible and host.overlay_blocked,"owner Escape did not open Options"): return
-		if not check(receipts.size()==before_escape,"owner Escape submitted a mutation"): return
+		if not check(area_receipts().size()==before_escape,"owner Escape submitted a mutation"): return
 		await capture("zone_owner_escape_"+str(focused))
 		await pointer_key(KEY_ESCAPE)
 		if not check(not scene._ui.native_options.visible and not host.overlay_blocked,"Options Escape did not release input"): return
@@ -1695,14 +1702,14 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 func elevation_round_trip(origin: Vector3i, label: String) -> void:
 	var cells: Dictionary = editor.paint_state.cells.duplicate()
 	var identity: Dictionary = editor.paint_state.area.duplicate(true)
-	var before := receipts.size()
+	var before := area_receipts().size()
 	world.set_top_z(origin.z+1); editor._process(0); await process_frame
 	if not check(editor.mode == "paint" and editor.paint_state.cells == cells and editor.paint_state.area == identity,"elevation discarded "+label): return
 	if not check(not editor.outline.visible,"off-plane outline visible for "+label): return
 	await capture(label.to_lower()+"_away")
 	world.set_top_z(origin.z); editor._process(0); await process_frame
 	if not check(editor.paint_state.cells == cells and editor.outline.visible,"return failed to restore "+label): return
-	check(receipts.size() == before,"camera elevation submitted a request for "+label)
+	check(area_receipts().size() == before,"camera elevation submitted a request for "+label)
 
 func pointer_zone_boundary_cells() -> void:
 	step = "native zone boundary extents"
@@ -1727,7 +1734,7 @@ func pointer_zone_boundary_cells() -> void:
 		for frame in 12:
 			scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
 		launcher.show()
-		await click_control(launcher)
+		await click_control(launcher,true)
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"boundary zone launcher"):
 			write_json("boundary_launcher_failure.json",{"visible":editor.panel.visible,"available":editor.available,"ticket":editor.request_ticket,"launcher_visible":launcher.is_visible_in_tree(),"launcher_rect":str(launcher.get_global_rect()),"mode":editor.mode})
 			await capture("boundary_launcher_failure")
@@ -1738,7 +1745,7 @@ func pointer_zone_boundary_cells() -> void:
 				var pos := tile_screen(tile)
 				if world.pick_tile(editor.camera.project_ray_origin(pos),editor.camera.project_ray_normal(pos),world.get_top_z()) != tile: return false
 			return true,"boundary tiles loaded/pickable"): return
-		await pointer_drag(tile_screen(first),tile_screen(last))
+		await pointer_click(tile_screen(first));await pointer_click(tile_screen(last))
 		if not check(editor.paint_state.cells.size() == int(sample.count),"boundary rectangle did not retain all selected cells"): return
 		await click_control(editor.paint_view.accept_button)
 		if not await wait_ui(func(): return settled() and not editor.selected.is_empty(),"boundary Accept"): return

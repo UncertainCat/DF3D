@@ -13267,7 +13267,7 @@
         }
       },
       "limitations": [
-        "Disconnect between receipt read and mutation dispatch, and post-effect Unknown injection remain unverified.",
+        "Bridge post-effect refresh failure/exception injection remains unverified.",
         "Religious filtered pixel parity, non-ASCII editing and all scrollbar hover/drag states remain unverified."
       ],
       "scrollbar_art_reference": {
@@ -13838,6 +13838,19 @@
         "sent": true,
         "target_retired": true,
         "provenance": "build/areas-acceptance-20261027-072723",
+        "status": "passed_with_known_issues",
+        "known_diagnostic": "godot-separate-thread-notice",
+        "source_save_directories_preserved": 2,
+        "owned_exit_without_save": true
+      },
+      {
+        "after_receipt": true,
+        "fresh_holder": -1,
+        "no_replay": true,
+        "outcome": "not_sent",
+        "sent": false,
+        "target_retired": true,
+        "provenance": "build/areas-acceptance-20261027-073400",
         "status": "passed_with_known_issues",
         "known_diagnostic": "godot-separate-thread-notice",
         "source_save_directories_preserved": 2,

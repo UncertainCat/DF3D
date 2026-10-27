@@ -1583,7 +1583,7 @@ func religious_staff_route(locations: Array) -> void:
 	if lifecycle in ["assignment-late","assignment-restart"]:
 		await religious_assignment_retire(lifecycle=="assignment-restart",row_index,int(setup.holder_id));return
 	if lifecycle.begins_with("assignment-"):
-		await religious_assignment_disconnect(lifecycle=="assignment-sent",row_index);return
+		await religious_assignment_disconnect(lifecycle=="assignment-sent",row_index,lifecycle=="assignment-receipt");return
 	await capture("religious_assignment_candidates")
 	var input_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json"))
 	for sample in input_reference.religious_staff_assignment_reference.interaction_reference.states:
@@ -1673,8 +1673,8 @@ func religious_assignment_retire(restart: bool, row_index: int, original_holder:
 	write_json("religious-assignment-retire-evidence.json",{"restart":restart,"old_ticket":ticket,"old_owner_retired":true,"applied_holder":chosen.histfig_id,"fresh_holder":observed.histfig_id})
 	editor.close_panel()
 
-func religious_assignment_disconnect(sent: bool, row_index: int) -> void:
-	step="religious assignment disconnect sent="+str(sent)
+func religious_assignment_disconnect(sent: bool, row_index: int, after_receipt:=false) -> void:
+	step="religious assignment disconnect sent="+str(sent)+" after_receipt="+str(after_receipt)
 	var flow=editor.details_view.religious_assignment_workflow
 	var selector=editor.details_view.staff_candidates_view
 	var chosen: Dictionary=selector.rows[0].duplicate(true)
@@ -1682,6 +1682,20 @@ func religious_assignment_disconnect(sent: bool, row_index: int) -> void:
 	await pointer_click(selector.global_position+Vector2(80,54))
 	var ticket: int=flow.ticket
 	if not check(ticket>0 and flow.mode==flow.Mode.Reading,"assignment pending read missing"):return
+	if after_receipt:
+		await quantity_unobserved(ticket)
+		if stopped:return
+		# Observe the real workflow enqueue, then lose transport before the same
+		# service poll can dispatch the mutation. Do not replace native receipts.
+		var gate: Dictionary={"ticket":0}
+		var disconnect:=func():
+			if gate.ticket==0 and flow.mode==flow.Mode.Applying and flow.ticket>0:
+				gate.ticket=flow.ticket;world.detach_live()
+		flow.changed.connect(disconnect)
+		actions.poll()
+		flow.changed.disconnect(disconnect)
+		ticket=int(gate.ticket)
+		if not check(ticket>0 and actions.result(ticket).get("outcome")=="not_sent","receipt boundary did not retire queued assignment"):return
 	if sent:
 		await quantity_unobserved(ticket)
 		if stopped:return
@@ -1725,7 +1739,7 @@ func religious_assignment_disconnect(sent: bool, row_index: int) -> void:
 		if not await wait_ui(func():return selector.is_visible_in_tree() and selector.actions_enabled,"fresh assignment gesture after reconnect"):return
 		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	await capture("religious_assignment_disconnect_reopened")
-	write_json("religious-assignment-disconnect-evidence.json",{"sent":sent,"outcome":outcome.outcome,"no_replay":true,"fresh_holder":observed.histfig_id,"target_retired":true})
+	write_json("religious-assignment-disconnect-evidence.json",{"sent":sent,"after_receipt":after_receipt,"outcome":outcome.outcome,"no_replay":true,"fresh_holder":observed.histfig_id,"target_retired":true})
 	editor.close_panel()
 
 func religious_staff_disconnect(sent: bool, point: Vector2, holder: int, row_index: int) -> void:

@@ -580,9 +580,16 @@ candidate/read/assign operations. Fresh native and viewer observations restore
 saved holder9375, proving the unsaved assignment did not survive restart or replay.
 Both runs preserve both manifests, exit owned DF unsaved and pass_with_known_issues
 only for the separate-thread notice. Tavern and restored temple captures were
-inspected. Fixture retirement_reference retains bounded provenance. Disconnect
-between receipt read and mutation dispatch, and post-effect Unknown injection
-remain separate gaps.
+inspected. Fixture retirement_reference retains bounded provenance.
+`assignment-receipt` protected073400 disconnects from the real workflow's changed
+signal after consuming the native selected receipt and enqueueing assignment,
+before the service dispatches it. The mutation returns not_sent, native vacancy
+and history remain unchanged, reconnect submits no replay, and a fresh explicit
+picker open succeeds. Both manifests remain unchanged and owned DF exits unsaved;
+the run passes_with_known_issues only for the separate-thread notice. Its result
+is stored alongside the other disconnect references. The bridge's post-effect
+refresh failure/exception branch still needs fault-injection coverage; successful
+native effects followed by transport loss do not establish that separate branch.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

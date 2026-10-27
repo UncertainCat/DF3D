@@ -461,9 +461,93 @@ func naming_routes(locations: Array) -> void:
 		if not await wait_ui(func():return editor.details_origin.is_empty() and editor.locations_view.visible and not editor.locations_state.busy(),"naming Details Back"):return
 		if not check(editor.locations_state.rows[index].name==final_name,"chooser retained old location name"):return
 		cases+=1
-	write_json("naming-scene-evidence.json",{"locations":cases,"mutations":cases*4,"scope":"quill entry, full choices, four edits and native readback, Done refresh, reopen/Escape/Back"})
+	for sent in [false,true]:
+		await naming_close_pending(sent)
+		if stopped:return
+	await naming_assigned_routes(locations)
+	if stopped:return
+	write_json("naming-scene-evidence.json",{"locations":cases,"mutations":cases*5+1,"pending_close_cases":2,"assigned_routes":cases,"scope":"chooser and assigned quill entry, full choices, four edit modes and native readback, Done refresh, reopen/Escape/Back, queued cancellation and sent late receipt after dismissal"})
 	print("LOCATION_NAMING_SCENE_PASS locations=",cases)
 	editor.close_panel()
+
+func naming_close_pending(sent: bool) -> void:
+	step="naming pending close sent="+str(sent)
+	await click_control(editor.locations_view.choices[0].get_node("Details"))
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready,"pending naming Details"):return
+	var details=editor.details_view
+	await click_control(details.rename_button)
+	var names=details.name_workflow.names
+	if not await wait_ui(func():return names.phase==names.Phase.Ready,"pending naming choices"):return
+	var id: int=names.snapshot.id
+	var chosen: Dictionary=names.rows[0].duplicate(true)
+	await native("name_guard",{"location_id":id})
+	await pointer_click(Vector2(744,178))
+	var ticket: int=names.ticket
+	if not check(ticket>0 and names.phase==names.Phase.Editing,"pending naming mutation missing"):return
+	var observed: Dictionary={}
+	if sent:
+		var reply:=await quantity_unobserved(ticket)
+		if stopped:return
+		observed=reply.area.location_name.value.duplicate(true)
+		observed.first_name_bytes=Array(observed.first_name_bytes);observed.nickname_bytes=Array(observed.nickname_bytes)
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not check(not details.name_workflow.active and not details.name_view.is_visible_in_tree(),"pending naming Back retained editor"):return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy() and settled(),"pending naming parent retired"):return
+	if not check(not details.name_workflow.active and names.snapshot.is_empty() and names.ticket==0 and editor.details_state.snapshot.is_empty(),"late naming reply revived retired state"):return
+	if sent:
+		await native("name_edit_check",{"location_id":id,"mode":1,"target":0,"word":chosen.word,"part":chosen.part,"value":observed})
+		await native("name_details",{"location_id":id,"name":editor.locations_state.rows[0].name})
+	else:
+		if not check(actions.result(ticket).get("outcome")=="not_sent","queued naming edit was sent on cancellation"):return
+		await native("name_unchanged",{"location_id":id})
+	if stopped:return
+	await click_control(editor.locations_view.choices[1].get_node("Details"))
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready,"new Details target after pending naming"):return
+	if not check(editor.details_state.snapshot.id!=id and not details.name_workflow.active,"new target inherited naming state"):return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+
+func naming_assigned_routes(locations: Array) -> void:
+	var original_id:=int(editor.selected.location_id)
+	for index in locations.size():
+		var id:=int(locations[index].id)
+		step="assigned naming location %d"%id
+		await quantity_scroll_location(index)
+		await click_control(editor.locations_view.choices[index])
+		if not await wait_ui(func():return settled() and not editor.locations_view.visible and int(editor.selected.get("location_id",-1))==id,"assigned naming zone"):return
+		await click_control(editor.zone_menu.controls.location_details)
+		if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready,"assigned naming Details"):return
+		if not check(editor.details_origin=="zone" and editor.details_state.snapshot.id==id,"assigned naming target"):return
+		var details=editor.details_view
+		await click_control(details.rename_button)
+		var names=details.name_workflow.names
+		if not await wait_ui(func():return names.phase==names.Phase.Ready,"assigned naming choices"):return
+		await native("name_guard",{"location_id":id})
+		var chosen: Dictionary=names.rows[0].duplicate(true)
+		await pointer_click(Vector2(744,178))
+		if not await wait_ui(func():return names.phase==names.Phase.Ready and names.ticket==0,"assigned naming edit"):return
+		var value: Dictionary=names.snapshot.value.duplicate(true)
+		value.first_name_bytes=Array(value.first_name_bytes);value.nickname_bytes=Array(value.nickname_bytes)
+		await native("name_edit_check",{"location_id":id,"mode":1,"target":0,"word":chosen.word,"part":chosen.part,"value":value})
+		await pointer_click(Vector2(912,82))
+		if not await wait_ui(func():return not details.name_workflow.active and editor.details_state.phase==editor.details_state.Phase.Ready,"assigned naming refresh"):return
+		await native("name_details",{"location_id":id,"name":editor.details_state.snapshot.name})
+		if stopped:return
+		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		if not check(editor.details_origin.is_empty() and editor.stockpile_page=="types","assigned naming Back"):return
+		await click_control(editor.zone_menu.controls.location)
+		if not await wait_ui(func():return settled() and not editor.locations_state.busy() and editor.locations_view.visible,"chooser after assigned naming"):return
+	if original_id<0:await click_control(editor.locations_view.remove)
+	else:
+		var index:=-1
+		for i in editor.locations_state.rows.size():
+			if int(editor.locations_state.rows[i].id)==original_id:index=i;break
+		if not check(index>=0,"original naming assignment missing"):return
+		await quantity_scroll_location(index)
+		await click_control(editor.locations_view.choices[index])
+	if not await wait_ui(func():return settled() and int(editor.selected.get("location_id",-1))==original_id,"restore naming assignment"):return
+	var restored:=await inspect(int(editor.selected.id),1)
+	check(int(restored.location_id)==original_id,"native naming assignment not restored")
 
 func details_routes(locations: Array) -> void:
 	step="fortress Details entry routes"

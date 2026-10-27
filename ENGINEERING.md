@@ -360,18 +360,21 @@ naming capture also checks blocked scrollbar clicks/drags. These use a pending
 service stub for navigation; live mutation evidence follows separately.
 
 Protected `areas_acceptance.ps1 -NamingScene` runs the actual fortress scene on
-an owned unsaved clone. `build/areas-acceptance-20261026-231531` covers all six
-locations: quill entry, complete component-zero choices,24 viewport-driven edits
+an owned unsaved clone. `build/areas-acceptance-20261026-232143` covers all six
+locations: quill entry, complete component-zero choices,31 viewport-driven edits
 (Select, Clear, cross-component Random and whole Random), native field/RNG/header
 readback, Done/Details refresh, reopen/Escape and Back/chooser refresh. Naming
 edits refresh the observed parent zone; returning to the chooser rereads its
 native list, preserving scroll instead of retaining old names. This also queues
-the list read behind a sent mutation on dismissal, though that pending-close
-case still needs integrated live acceptance. Both source and clone save manifests
+the list read behind a sent mutation on dismissal. The run checks queued
+cancellation leaves native name/RNG unchanged and a sent, unobserved edit survives
+dismissal without reviving either editor. A different Details target opens cleanly
+after both cases. It also exercises naming through all six assigned-zone Details
+routes and verifies restoration of the original zone assignment. Both source and clone save manifests
 remain unchanged; the owned process exits unsaved. The run passes with only the
 known separate-thread notice. The naming fixture records its digest and scope.
-Assigned-zone entry, integrated interruption lifecycle and remaining native input
-and layout cases are not covered by this run; Details remains unexposed.
+Disconnect/reconnect, epoch/restart and remaining native input and layout cases
+are not covered by this run; Details remains unexposed.
 
 ## Native squad assignment reference
 

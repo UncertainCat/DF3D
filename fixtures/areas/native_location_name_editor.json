@@ -7929,18 +7929,19 @@
     ]
   },
   "scene_reference": {
-    "run": "build/areas-acceptance-20261026-231531",
+    "run": "build/areas-acceptance-20261026-232143",
     "protocol": 72,
     "driver": "areas_acceptance.ps1 -NamingScene",
     "locations": 6,
-    "mutations": 24,
+    "mutations": 31,
     "native_checks": {
       "name_choices": 6,
-      "name_details": 6,
-      "name_edit_check": 12,
-      "name_guard": 24,
+      "name_details": 13,
+      "name_edit_check": 19,
+      "name_guard": 32,
       "name_headers": 24,
-      "name_random_check": 12
+      "name_random_check": 12,
+      "name_unchanged": 1
     },
     "result_sha256": "0182a817825b8518dc881ffb9e948cab7ca4b591a0031518f9f26a0ae72e3847",
     "scope": [
@@ -7948,16 +7949,19 @@
       "complete native component-zero choices",
       "Select, Clear, cross-component Random, whole Random with native fields/RNG/header readback",
       "Done refreshes Details; Back refreshes chooser names",
-      "reopen, physical Escape to Details, right-click Back to chooser"
+      "reopen, physical Escape to Details, right-click Back to chooser",
+      "assigned-zone Details entry and naming on all six locations; original assignment restored and verified",
+      "queued cancellation preserves native name/RNG; sent late edit survives dismissal without reviving editor; new target opens cleanly"
     ],
     "save_preservation": "Both source and owned clone manifests unchanged; unsaved owned exit",
     "diagnostics": "passed_with_known_issues: separate-thread notice only",
     "omissions": [
-      "assigned-zone entry",
-      "queued/sent/late/epoch/restart integrated lifecycle",
+      "disconnect/reconnect/epoch/restart integrated lifecycle",
       "native scrolling/hover/focus timing",
       "non-ASCII input",
       "long-header and resize cases"
-    ]
+    ],
+    "assigned_routes": 6,
+    "pending_close_cases": 2
   }
 }

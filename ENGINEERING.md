@@ -645,8 +645,11 @@ eligibility predicates and binds effective eligibility, specialization and labor
 state in a receipt. Mutation requires that receipt and a different desired state,
 sets the native flag and invokes the pinned labor routine. Missing/changed row
 ownership is refused, stale receipts are refused, and post-effect observation
-failure returns Unknown. Management handler and viewer integration remain
-unfinished; transport must add epoch, request retirement and no-replay ownership.
+failure returns Unknown. The management handler runs the same primitive at the
+request safe point under the existing epoch and request-sequence ownership.
+It emits a fresh receipt only after verified completion, retains no success
+receipt after an uncertain effect, and distinguishes stale from rejected requests.
+Viewer controls and their retirement/lifecycle acceptance remain unfinished.
 The paused diagnostic commands are location-specialization-read/set.
 
 Management76 defines LocationSpecializationRead/Set (38/39). Requests identify
@@ -659,8 +662,20 @@ location-specialization-contract-final, including both row identities and wide
 revisions. Protected areas-acceptance-20261027-082542 verifies the existing
 religious read/assignment/removal workflow across rebuilt version76 peers, with
 both save manifests unchanged, no diagnostics and owned unsaved exit. That run
-is compatibility evidence, not live acceptance of the new specialization ops;
-their native management handler is still pending.
+is compatibility evidence, not live acceptance of the new specialization ops.
+
+Protected areas-acceptance-20261027-083127 exercises both new operations through
+the real Godot management client and native handler for priest5813 and
+performer6536. Every captured labor entry and specialization flag matches the
+native reference; fresh reverse edits restore the original state. Stale
+profession receipts, current Baby ineligibility, four invalid identities per
+target, completed replay and fresh no-op edits are refused. Independent native
+checks verify unchanged other units and religious records. Existing religious
+assignment/removal checks also pass. Both save manifests remain unchanged,
+diagnostics are empty, and owned DF exits unsaved. The verifier compares numeric
+values across Godot/Lua JSON rather than treating1056 and1056.0 as different.
+This is transport/effect acceptance; rendered controls and disconnect/late-reply
+specialization workflows remain unverified.
 
 Protected actionspecialization081207 matches native080737 for both priest5813
 and performer6536, including every captured flag/labor entry and exact restoration

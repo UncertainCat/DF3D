@@ -10,6 +10,11 @@ local entity=assert(df.historical_entity.find(temple.deity_data.Religion));local
 for _,a in ipairs(entity.positions.assignments)do if a.st_id==site.id then assert(not assignment);assignment=a end end
 assert(assignment)
 local result={status='passed',site_id=site.id,location_id=temple.id,entity_id=entity.id,assignment_id=assignment.id}
+local function same_specialization(a,b)
+ -- Godot serializes fixture numbers as floats; compare numeric values, not
+ -- JSON spellings (1056 and1056.0 are the same captured bitfield).
+ return a.flags4==b.flags4 and a.specialized==b.specialized and json.encode(a.labors)==json.encode(b.labors)
+end
 local function receipt()
  local text,code=dfhack.run_command_silent('df3d','location-religious-receipt',tostring(site.id),tostring(temple.id),tostring(entity.id),tostring(assignment.id))
  assert(code==0,text);local r=json.decode(text);assert(r.valid);return r
@@ -26,7 +31,35 @@ local function capture()
  if unit then state.unit={id=unit.id,profession=unit.profession,profession2=unit.profession2,squad=unit.military.squad_id,position=unit.military.squad_position,job=unit.job.current_job and unit.job.current_job.id or -1}end
  return state
 end
-if request.op=='religious_setup' then
+if request.op=='religious_specialization_setup' then
+ local unit=assert(df.unit.find(request.unit_id));result.unit_id=unit.id
+ result.occupation_id=-1;result.entity_id=-1;result.assignment_id=-1
+ local holder=assert(df.historical_figure.find(assignment.histfig))
+ if holder.unit_id==unit.id then result.entity_id=entity.id;result.assignment_id=assignment.id
+ else
+  for _,o in ipairs(temple.occupations)do if o.unit_id==unit.id then assert(result.occupation_id==-1);result.occupation_id=o.id end end
+  assert(result.occupation_id>=0)
+ end
+ local original={}
+ for _,u in ipairs(df.global.world.units.active)do
+  local labors={};for i=0,df.unit_labor._last_item do labors[#labors+1]=u.status.labors[i]end
+  original[tostring(u.id)]={flags4=u.flags4.whole,specialized=u.flags4.only_do_assigned_jobs,labors=labors}
+ end
+ assert(same_specialization(original[tostring(unit.id)],request.expected),'native specialization initial state mismatch')
+ _G.df3d_specialization_before=original
+elseif request.op=='religious_specialization_check' then
+ local original=assert(_G.df3d_specialization_before)
+ for _,unit in ipairs(df.global.world.units.active)do
+  local labors={};for i=0,df.unit_labor._last_item do labors[#labors+1]=unit.status.labors[i]end
+  local actual={flags4=unit.flags4.whole,specialized=unit.flags4.only_do_assigned_jobs,labors=labors}
+  local expected=unit.id==request.unit_id and request.expected or original[tostring(unit.id)]
+  assert(same_specialization(actual,expected),'specialization native effects mismatch '..unit.id)
+ end
+elseif request.op=='religious_specialization_change' then
+ local unit=assert(df.unit.find(request.unit_id))
+ if request.restore then unit.profession=assert(_G.df3d_specialization_profession)
+ else _G.df3d_specialization_profession=unit.profession;unit.profession=df.profession.BABY end
+elseif request.op=='religious_setup' then
  if request.absent then
   local holder=assert(df.historical_figure.find(assignment.histfig));holder.unit_id=-1
  end

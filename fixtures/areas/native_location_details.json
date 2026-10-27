@@ -14650,6 +14650,37 @@
       "source_preserved": true,
       "owned_exit_without_save": true,
       "scope": "Bridge primitive only; management transport, viewer integration, broader eligibility and lifecycle acceptance remain unfinished."
+    },
+    "transport_reference": {
+      "run": "build/areas-acceptance-20261027-083127",
+      "status": "passed",
+      "cases": [
+        {
+          "ineligible_refused": true,
+          "invalid_targets": 4,
+          "native_effects_matched": true,
+          "no_op_refused": true,
+          "replay_refused": true,
+          "restored": true,
+          "stale_refused": true,
+          "unit_id": 5813.0
+        },
+        {
+          "ineligible_refused": true,
+          "invalid_targets": 4,
+          "native_effects_matched": true,
+          "no_op_refused": true,
+          "replay_refused": true,
+          "restored": true,
+          "stale_refused": true,
+          "unit_id": 6536.0
+        }
+      ],
+      "other_units_unchanged": true,
+      "religious_records_unchanged": true,
+      "save_manifests_unchanged": 2,
+      "owned_exit_without_save": true,
+      "scope": "Actual Godot management client and native handler; no rendered specialization control or lifecycle acceptance."
     }
   }
 }

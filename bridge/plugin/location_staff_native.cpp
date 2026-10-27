@@ -369,6 +369,9 @@ std::optional<LocationStaffSpecializationReceipt> observeNativeLocationStaffSpec
   if(!target || !target->names || target->names->holderKind!=1 || target->names->holderId!=unitId)return std::nullopt;
   auto* unit=df::unit::find(unitId);if(!unit || unit->hist_figure_id!=target->histfigId)return std::nullopt;
   LocationStaffSpecializationReceipt result;
+  result.siteId=siteId;result.locationId=locationId;
+  if(source==LocationStaffSource::Occupation)result.occupationId=rowId;
+  else {result.entityId=entityId;result.assignmentId=rowId;}
   result.unitId=unitId;result.histfigId=unit->hist_figure_id;
   // Native location input3300cf..330164 and renderer3b84e9..3b8678.
   result.eligible=int(unit->profession)!=103 && int(unit->profession)!=104 &&

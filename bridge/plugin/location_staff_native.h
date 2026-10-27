@@ -67,6 +67,7 @@ std::optional<LocationStaffSnapshot> observeNativeLocationStaff(int32_t siteId,i
 bool prepareNativeLocationStaff(int32_t siteId,int32_t id);
 enum class LocationStaffEditOutcome : uint8_t { Unavailable, Rejected, Applied, Unknown, Stale };
 struct LocationStaffSpecializationReceipt {
+  int32_t siteId=-1,locationId=-1,occupationId=-1,entityId=-1,assignmentId=-1;
   int32_t unitId=-1,histfigId=-1;
   uint64_t revision=0;
   bool eligible=false,specialized=false;

@@ -320,6 +320,7 @@ bool publishableLocationReligiousStaff(const df3d_area::LocationReligiousStaffRe
       (r.holderId!=-1 || (r.unitId==-1 && !r.removable));
 }
 struct NativeAreaPage {
+  std::optional<df3d_area::LocationStaffSpecializationReceipt> specialization;
   std::optional<df3d_area::LocationReligiousCandidatePage> religiousCandidates;
   std::optional<df3d_area::LocationReligiousAssignmentReceipt> religiousAssignment;
   uint64_t religiousListRevision=0;
@@ -544,6 +545,12 @@ void publish() {
     religiousAssignment=m::CreateLocationReligiousAssignment(b,buildLocationReligiousStaff(b,r.target),
         r.unitId,r.histfigId,r.nemesisId,r.revision,areaPage.religiousListRevision,r.eligible);
   }
+  flatbuffers::Offset<m::LocationSpecialization> specialization;
+  if(areaPage.specialization) {
+    const auto& r=*areaPage.specialization;
+    specialization=m::CreateLocationSpecialization(b,r.siteId,r.locationId,r.occupationId,r.entityId,r.assignmentId,
+        r.unitId,r.histfigId,r.revision,r.eligible,r.specialized);
+  }
   flatbuffers::Offset<m::LocationNameSnapshot> locationName;
   flatbuffers::Offset<m::LocationNamePage> locationNamePage;
   if(areaPage.locationName)locationName=buildLocationName(b,*areaPage.locationName);
@@ -565,7 +572,7 @@ void publish() {
       areaPage.interactionId,areaPage.undoToken,areaPage.roomOutcome,areaPage.roomsCreated,
       areaPage.roomsInUse,areaPage.roomsUnenclosed,areaPage.roomsRemoved,areaPage.roomsDormitories,
       areaPage.countGeneration,areaPage.paintedCount,areaPage.previewCount,locationCatalog,locationDetails,areaPage.locationEntryOutcome,areaPage.locationEditOutcome,staffCandidates,areaPage.settingsCount,
-      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{},locationName,locationNamePage,recognition,religiousStaff,religiousCandidates,religiousAssignment);
+      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{},locationName,locationNamePage,recognition,religiousStaff,religiousCandidates,religiousAssignment,specialization);
   auto reqs=[&](const std::vector<ProductionRequirement>& values){
     std::vector<flatbuffers::Offset<m::ProductionRequirement>> out;
     for(const auto& v:values) out.push_back(m::CreateProductionRequirement(b,b.CreateString(v.description),v.quantity,v.itemType));
@@ -2309,6 +2316,39 @@ void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
   static df3d_area::LocationReligiousCandidateSnapshot religiousSnapshot;
+  if(r->area() && (r->area()->operation()==m::AreaOperation::LocationSpecializationRead ||
+      r->area()->operation()==m::AreaOperation::LocationSpecializationSet)) {
+    const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;
+    const bool apply=a.operation()==m::AreaOperation::LocationSpecializationSet;
+    if(apply)areaPage.locationEditOutcome=m::LocationEditOutcome::Rejected;
+    const bool occupation=a.occupation_id()>=0;
+    const auto source=occupation?df3d_area::LocationStaffSource::Occupation:df3d_area::LocationStaffSource::ReligiousPosition;
+    const int32_t rowId=occupation?a.occupation_id():a.religious_assignment_id();
+    const auto observe=[&] {return df3d_area::observeNativeLocationStaffSpecialization(
+        a.location_site_id(),a.location_id(),source,a.religious_entity_id(),rowId,a.unit_id());};
+    auto receipt=observe();
+    if(receipt && apply && receipt->revision!=a.expected_revision()) {
+      receipt.reset();areaPage.locationEditOutcome=m::LocationEditOutcome::Stale;
+    }
+    if(receipt && apply) {
+      mutated=true;areaPage.locationEditOutcome=m::LocationEditOutcome::Unknown;
+      try {
+        const auto result=df3d_area::setNativeLocationStaffSpecialization(a.location_site_id(),a.location_id(),source,
+            a.religious_entity_id(),rowId,a.unit_id(),a.expected_revision(),a.value()!=0);
+        receipt.reset();
+        if(result==df3d_area::LocationStaffEditOutcome::Applied) {
+          receipt=observe();
+          if(receipt && receipt->specialized==(a.value()!=0))areaPage.locationEditOutcome=m::LocationEditOutcome::Completed;
+          else receipt.reset();
+        } else if(result!=df3d_area::LocationStaffEditOutcome::Unknown) {
+          mutated=false;areaPage.locationEditOutcome=result==df3d_area::LocationStaffEditOutcome::Stale?
+              m::LocationEditOutcome::Stale:m::LocationEditOutcome::Rejected;
+        }
+      } catch(...) {receipt.reset();}
+    }
+    if(receipt){areaPage.specialization=std::move(receipt);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
   if(r->area() && r->area()->operation()>=m::AreaOperation::LocationReligiousCandidates &&
       r->area()->operation()<=m::AreaOperation::LocationReligiousAssign) {
     const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;

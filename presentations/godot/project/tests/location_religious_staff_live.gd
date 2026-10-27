@@ -3,6 +3,8 @@ func exercise() -> void:
 	await seed_catalog()
 	if stopped:return
 	var setup:=await native("religious_setup")
+	await specialization_route(setup)
+	if stopped:return
 	var read: Dictionary={"action":Contract.ManagementAction.AreaInspect,"kind":1,
 		"operation":Contract.AreaOperation.LocationReligiousStaffRead,"location_site_id":int(setup.site_id),"location_id":int(setup.location_id),
 		"religious_entity_id":int(setup.entity_id),"religious_assignment_id":int(setup.assignment_id)}
@@ -108,3 +110,63 @@ func exercise() -> void:
 	await native("religious_unchanged")
 	write_json("religious-assignment-evidence.json",{"unit_id":selected.unit_id,"histfig_id":selected.histfig_id,"candidate_count":page.total,"stale_checks":4,"completed":true})
 	write_json("religious-staff-evidence.json",{"before":setup.before,"after":effects.after,"event":effects.event,"no_request_ui_changed":control.ui_changed,"apply_ui_changed":effects.ui_changed,"invalid_targets":5,"stale_checks":2,"vacant_rejections":1})
+
+func specialization_route(setup: Dictionary) -> void:
+	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json"))
+	var evidence: Array=[]
+	for sample in fixture.specialization_reference.cases:
+		var change: Dictionary=sample.changed[0]
+		step="specialization "+str(change.unit_id)
+		var target:=await native("religious_specialization_setup",{"unit_id":change.unit_id,"expected":change.before})
+		if stopped:return
+		var read: Dictionary={"action":Contract.ManagementAction.AreaInspect,"kind":1,
+			"operation":Contract.AreaOperation.LocationSpecializationRead,"location_site_id":int(setup.site_id),"location_id":int(setup.location_id),
+			"unit_id":int(change.unit_id),"occupation_id":int(target.occupation_id),"religious_entity_id":int(target.entity_id),"religious_assignment_id":int(target.assignment_id)}
+		await native("religious_guard")
+		var response:=await request(read)
+		if stopped:return
+		var observed: Dictionary=response.location_specialization
+		if not check(observed.unit_id==int(change.unit_id) and observed.eligible and observed.specialized==change.before.specialized,"specialization receipt mismatch"):return
+		await native("religious_unchanged")
+		var apply:=read.duplicate(true);apply.action=Contract.ManagementAction.AreaUpdate
+		apply.operation=Contract.AreaOperation.LocationSpecializationSet;apply.expected_revision=observed.revision;apply.value=int(change.after.specialized)
+		await native("religious_specialization_change",{"unit_id":change.unit_id})
+		var refused:=await request(apply,"",true)
+		if stopped:return
+		if not check(refused.location_edit_outcome==Contract.LocationEditOutcome.Stale and not refused.has("location_specialization"),"specialization stale response"):return
+		response=await request(read)
+		if stopped:return
+		if not check(not response.location_specialization.eligible,"specialization ineligible receipt"):return
+		var ineligible:=apply.duplicate(true);ineligible.expected_revision=response.location_specialization.revision
+		refused=await request(ineligible,"",true)
+		if stopped:return
+		if not check(refused.location_edit_outcome==Contract.LocationEditOutcome.Rejected,"specialization ineligible mutation"):return
+		await native("religious_specialization_change",{"unit_id":change.unit_id,"restore":true})
+		for key in ["location_id","location_site_id","unit_id","occupation_id" if int(target.occupation_id)>=0 else "religious_assignment_id"]:
+			var invalid:=apply.duplicate(true);invalid[key]=2147483647
+			refused=await request(invalid,"",true)
+			if stopped:return
+			if not check(refused.location_edit_outcome==Contract.LocationEditOutcome.Rejected and not refused.has("location_specialization"),"specialization invalid target"):return
+		await native("religious_specialization_check",{"unit_id":change.unit_id,"expected":change.before})
+		await native("religious_guard")
+		response=await request(apply)
+		if stopped:return
+		observed=response.location_specialization
+		if not check(response.location_edit_outcome==Contract.LocationEditOutcome.Completed and observed.specialized==change.after.specialized,"specialization completion"):return
+		await native("religious_unchanged")
+		await native("religious_specialization_check",{"unit_id":change.unit_id,"expected":change.after})
+		refused=await request(apply,"",true)
+		if stopped:return
+		if not check(refused.location_edit_outcome==Contract.LocationEditOutcome.Stale,"specialization replay refusal"):return
+		apply.expected_revision=observed.revision
+		refused=await request(apply,"",true)
+		if stopped:return
+		if not check(refused.location_edit_outcome==Contract.LocationEditOutcome.Rejected,"specialization no-op refusal"):return
+		await native("religious_specialization_check",{"unit_id":change.unit_id,"expected":change.after})
+		apply.value=int(change.before.specialized)
+		response=await request(apply)
+		if stopped:return
+		if not check(response.location_edit_outcome==Contract.LocationEditOutcome.Completed and response.location_specialization.specialized==change.before.specialized,"specialization restoration"):return
+		await native("religious_specialization_check",{"unit_id":change.unit_id,"expected":change.before})
+		evidence.append({"unit_id":change.unit_id,"native_effects_matched":true,"restored":true,"stale_refused":true,"ineligible_refused":true,"invalid_targets":4,"replay_refused":true,"no_op_refused":true})
+	write_json("specialization-transport-evidence.json",{"cases":evidence})

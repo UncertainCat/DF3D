@@ -68,6 +68,21 @@ func run() -> void:
      for px in 8:
       if image.get_pixel(944+column*8+px,int(row.top)+y*12+py)!=atlas.get_pixel((tile%64)*8+px,(tile/64)*12+py):
        push_error("Staff scrollbar art mismatch "+str([row.id,row.count,row.first,row.hover,y]));quit(1);return
+ # Native height reference: hospital capacity0/8/5 at600/900/800 pixels.
+ view.display(sample(2,8),3)
+ for height in [600,900,800]:
+  root.size=Vector2i(1200,height);view.layout(Vector2(1200,height))
+  await process_frame;await RenderingServer.frame_post_draw
+  var capacity: int={600:0,900:8,800:5}[height]
+  if int(view.geometry.capacity)!=capacity or view.visible_rows().size()!=capacity:
+   push_error("Hospital resize capacity mismatch");quit(1);return
+  if bar.visible!=(height==800) or view.first!=0 or bar.dragging:
+   push_error("Hospital resize retained unusable scrollbar/offset");quit(1);return
+  if height==600 and not view.unit_icons.is_empty():
+   push_error("Zero-row viewport retained staff icons");quit(1);return
+ view.display(sample(2,8),3)
+ view.layout(Vector2(1200,900))
+ if view.first!=0:push_error("Expanded staff viewport did not clamp scroll");quit(1);return
  view.display({})
  if bar.visible or bar.dragging:push_error("Closed staff retained scrollbar");quit(1);return
  view.queue_free();world.queue_free();await process_frame

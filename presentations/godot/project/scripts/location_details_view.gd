@@ -81,6 +81,9 @@ func religious_assignment_active() -> bool:
 	return religious_assignment_workflow.mode in [religious_assignment_workflow.Mode.Choosing,religious_assignment_workflow.Mode.Reading,religious_assignment_workflow.Mode.Applying]
 
 func _process(_delta: float) -> void:
+	update_staff_readers()
+
+func update_staff_readers() -> void:
 	if state==null or staff_view==null:return
 	if is_visible_in_tree() and staff_view.visible and state.phase==state.Phase.Ready:
 		specialization_reader.display(staff_view.visible_rows())
@@ -132,6 +135,7 @@ func layout(view: Vector2) -> void:
 	access_view.position=Vector2(16,60);access_view.size=Vector2(576,36)
 	staff_candidates_view.layout(view);staff_candidates_view.position-=position
 	name_view.layout(view);name_view.position-=position
+	update_staff_readers()
 
 func refresh() -> void:
 	visible=state.snapshot.get("kind") in [1,2,3,4,5]

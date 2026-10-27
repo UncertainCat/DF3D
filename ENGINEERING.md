@@ -15,7 +15,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Animal picker blank right edge lets clicks select the map behind the visible panel, changing the parent zone while assignments still target the original zone. | Consume clicks inside the visible panel while releasing search focus and preserving the picker target. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_blank_input`, native `build/stockpile-storage-native-zone-animals-20261026-150439`, rendered `build/areas-acceptance-20261026-150814`. |
 | Animal picker remains active after selecting another zone or empty terrain, so Enter assigns to an old, no-longer-shown zone. | Close the picker and retire its assignment target when map selection changes. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_outside_panel_selection`, native `build/stockpile-storage-native-zone-animals-20261026-153041`, rendered `build/areas-acceptance-20261026-153847`. |
 | Fresh historical personality profiles leave current_focus and undistracted_focus uninitialized at offsets0x184/0x188. | No runtime correction; DF3D calls the same native initializer. | Discovered, not corrected. Native constructor5c02a0 and assignment accountant captures060438/060526/060814; fixture `assignment_cleanup_reference`. The oracle retains raw values and excludes only these newly allocated counters from comparison. |
-| Minimum-height hospital Details has no staff rows, but draws a malformed staff scrollbar over soap controls and scrolls an invisible list. | Proposed: hide the malformed scrollbar when no staff row fits. | Awaiting maintainer approval; not implemented. `native_location_details.json.staff_height_reference`, protected `build/stockpile-storage-native-location-names-20261027-010412`. |
+| Minimum-height hospital Details has no staff rows, but draws a malformed staff scrollbar over soap controls and scrolls an invisible list. | Hide the scrollbar and cancel scrolling when no staff row fits. | Implemented under approval2026-10-27. `native_location_details.json.staff_height_reference`, native010412, GPU `build/qa/location-staff-resize` and live `areas-acceptance-20261027-144319`; capacities0/8/5 at600/900/800 pixels. |
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
@@ -44,8 +44,8 @@ object's lifetime at execution, and pointer entry checks it before use.
 this regression pass cleanly in `build/qa/location-integration-audit`.
 The live run reports only the known rendering-thread notice; DF146896 exits
 unsaved, and both save manifests remain unchanged. Zones remains gated while
-the remaining overall coverage is reconciled; the minimum-height hospital
-scrollbar exception in the native bug register still awaits approval.
+the remaining overall coverage is reconciled. The hospital scrollbar correction
+and subsequent full-suite verification are recorded below.
 
 `areas_acceptance.ps1 -ControllerScene -ZonesOnly` runs the default main-scene
 Zones workflow without repeating Stockpiles. Protected140736 passes creation,
@@ -68,12 +68,20 @@ Focused140402 passed repaint but failed the staged boundary launcher. The
 corrected140736 run is acceptance for this focused scope, not a claim that the
 combined Stockpiles/Zones run or every separate assignment lane has been rerun.
 
-Open resize gap: `location_staff_view` still calls `staff_layout` with its default
-66 rows and only updates width on layout. The native height reference expects
-hospital capacities0/8/5 at600/900/800 pixels. The formatter supports these values,
-but the view is not wired to them. Fix viewport-height propagation, scroll clamps
-and visible-reader retirement together; resolve the pending zero-row scrollbar
-exception before claiming minimum-height parity or promoting Zones.
+`location_staff_view` now propagates viewport height into staff layout, clamps
+scroll offsets and updates visible icons on resize. Details synchronously retires
+offscreen staff readers. At zero capacity, the approved hospital correction hides
+the malformed scrollbar and cancels dragging. GPU `build/qa/location-staff-resize`
+verifies hospital capacities0/8/5 at600/900/800 pixels, offset clamping and icon
+retirement; it passes with known thread, device-finalize and shutdown-object
+diagnostics. Protected `areas-acceptance-20261027-144319 -LocationScene` repeats
+the full Locations suite above and verifies those capacities, reader retirement,
+scrollbar visibility and unchanged Details facts on resize. The600/900 captures
+were visually inspected: soap remains unobstructed at600 and all eight staff
+rows fit at900. DF176040 exits unsaved; both save manifests remain unchanged.
+The live result is passed_with_known_issues (only the rendering-thread notice).
+Core passes cleanly in `build/qa/location-staff-resize-final`. This closes the
+staff-height gap, not the overall Zones exposure audit.
 
 ## Building production native-entry audit
 
@@ -1982,8 +1990,9 @@ staff GPU checks. Twelve temple/tavern/library resize cases compare native row
 background and rightmost control RGB regions. `location-staff-width-input`
 additionally passes moved remove-button clicks at all three sizes, inactive old
 positions, and the existing staff scroll input/art checks. GPU runs retain only
-documented diagnostics. Vertical staff capacity, remaining Details actions and
-full responsive main-scene verification remain unfinished.
+documented diagnostics. Vertical staff capacity is now wired and verified as
+recorded in Locations integration verification above; these width captures alone
+do not establish every Details action or responsive main-scene workflow.
 
 Protected `build/stockpile-storage-native-location-names-20261027-010412`
 passes155 observations and preserves its source manifest with an unsaved owned
@@ -1992,11 +2001,11 @@ capacity0/8/5 at960x600/1600x900/1200x800, matching native3b1506's signed
 division `(viewport_rows-first_text_row-8)/3`. The formatter accepts viewport
 rows and passes these observations plus existing fixtures in
 `build/qa/location-staff-native-height` (core19/19 and format tests). The view
-still uses default-height capacity pending the collapsed-scrollbar decision.
+now passes its current viewport height, with live resize coverage recorded above.
 At minimum height, native draws a stray staff arrow over the soap controls:
 bound scroll Down/Up changes the invisible list position0->1->0, while page
-Down/Up leaves it0 because page capacity is zero. Hiding that malformed bar is
-proposed but is not yet approved or implemented. The diagnostic's raw
+Down/Up leaves it0 because page capacity is zero. Under maintainer approval,
+DF3D hides that malformed bar and prevents invisible scrolling. The diagnostic's raw
 `staff_count` sums parallel vectors; it must not be interpreted as a row count.
 The wide screenshot and composition fixture independently establish eight rows.
 

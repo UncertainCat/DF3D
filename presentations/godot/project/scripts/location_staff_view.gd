@@ -25,6 +25,8 @@ const Indicators=preload("res://scripts/location_staff_indicators.gd")
 var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
+var viewport_rows:=66
+var staff_kind:=-1
 
 func visible_rows() -> Array:
 	return rows.slice(first,first+int(geometry.get("visible_count",0)))
@@ -49,8 +51,11 @@ func configure(source, help=null) -> void:
 	native_scroll.row_changed.connect(func(value):first=value;queue_redraw())
 
 func layout(view: Vector2) -> void:
+	var next_rows:=floori(view.y/12)
+	if next_rows!=viewport_rows or size.x!=floori(view.x/8)*8-624:_leave_specialization_hover()
+	viewport_rows=next_rows
 	position=Vector2(384,60+fposmod(view.y,12)*0.5)
-	size=Vector2(floori(view.x/8)*8-624,636)
+	size=Vector2(floori(view.x/8)*8-624,maxi(0,viewport_rows*12-156))
 	update_geometry()
 	queue_redraw()
 
@@ -58,9 +63,22 @@ func row_columns() -> int:
 	return int(size.x/8)-(2 if int(geometry.get("max_scroll",0))>0 else 0)
 
 func update_geometry() -> void:
-	if geometry.is_empty():return
-	geometry.width=row_columns()-58
-	if native_scroll!=null:native_scroll.position.x=size.x-16
+	geometry=Format.staff_layout(staff_kind,rows.size(),viewport_rows)
+	if geometry.is_empty():first=0
+	else:
+		first=clampi(first,0,int(geometry.max_scroll))
+		# Approved native-bug correction: no invisible hospital list scrolling.
+		if int(geometry.capacity)==0:first=0
+		geometry.width=row_columns()-58
+	if native_scroll!=null:
+		if geometry.is_empty():native_scroll.set_rows(0)
+		else:
+			native_scroll.position=Vector2(size.x-16,(int(geometry.first_y)-6)*12)
+			native_scroll.page=int(geometry.capacity)
+			native_scroll.size=Vector2(16,native_scroll.page*36)
+			native_scroll.set_rows(rows.size(),first)
+			if native_scroll.page==0:native_scroll.hide();native_scroll.dragging=false
+	update_icons()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion or event is InputEventMouseButton:
@@ -88,19 +106,11 @@ func display(details: Dictionary, offset:=-1) -> void:
 	var next_identity: Array=[details.get("site_id"),details.get("id"),details.get("kind")]
 	if offset>=0:first=offset
 	elif next_identity!=identity:first=0
-	identity=next_identity;rows=[];geometry={}
+	identity=next_identity;rows=[];geometry={};staff_kind=-1
 	var staff=details.get("staff")
 	if staff is Dictionary and staff.get("rows") is Array:
 		rows=staff.rows.duplicate(true)
-		geometry=Format.staff_layout(int(details.get("kind",0)),rows.size())
-		if not geometry.is_empty():first=clampi(first,0,int(geometry.max_scroll))
-	if native_scroll!=null:
-		if geometry.is_empty():
-			first=0;native_scroll.set_rows(0)
-		else:
-			native_scroll.position=Vector2(560,(int(geometry.first_y)-6)*12)
-			native_scroll.page=int(geometry.capacity);native_scroll.size=Vector2(16,native_scroll.page*36)
-			native_scroll.set_rows(rows.size(),first)
+		staff_kind=int(details.get("kind",0))
 	update_geometry()
 	queue_redraw()
 	update_icons()

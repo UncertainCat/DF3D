@@ -1080,6 +1080,21 @@ func details_access(locations: Array) -> void:
 			if not check(staff.first==3,"Details refresh reset staff scroll"):return
 			for frame in 3:await process_frame;await RenderingServer.frame_post_draw
 			if not check(root.get_texture().get_image().save_png(directory+"/scene_staff_scrolled.png")==OK,"staff scroll capture failed"):return
+			for height in [600,900,800]:
+				step="hospital staff viewport "+str(height)
+				root.size=Vector2i(1200,height);scene._fortress_hud.apply_ui_scale()
+				details_view.layout(Vector2(1200,height))
+				var capacity: int={600:0,900:8,800:5}[height]
+				if not check(int(staff.geometry.capacity)==capacity and staff.visible_rows().size()==capacity and staff.first==0,"hospital resize capacity/offset"):return
+				if not check(scroll.visible==(height==800) and not scroll.dragging,"hospital unusable scrollbar"):return
+				if height==600:
+					for reader in [details_view.specialization_reader,details_view.assignments_reader]:
+						if not check(reader.rows.is_empty() and reader.ticket==0,"zero-row viewport retained staff reads"):return
+					if not check(staff.unit_icons.is_empty(),"zero-row viewport retained portraits"):return
+				for frame in 8:await process_frame
+				await RenderingServer.frame_post_draw
+				if not check(root.get_texture().get_image().save_png(directory+"/scene_staff_height_%d.png"%height)==OK,"staff height capture failed"):return
+				if not check(model.snapshot==before_scroll,"staff resize changed Details facts"):return
 		var count:=area_control_receipts().size()
 		if 3 not in modes:
 			model.set_access(3)

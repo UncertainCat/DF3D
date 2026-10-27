@@ -674,8 +674,8 @@ checks verify unchanged other units and religious records. Existing religious
 assignment/removal checks also pass. Both save manifests remain unchanged,
 diagnostics are empty, and owned DF exits unsaved. The verifier compares numeric
 values across Godot/Lua JSON rather than treating1056 and1056.0 as different.
-This is transport/effect acceptance; rendered controls and disconnect/late-reply
-specialization workflows remain unverified.
+This run establishes transport/effect acceptance; rendered controls and lifecycle
+acceptance have separate evidence below.
 
 location_specialization_workflow.gd owns an explicit toggle gesture against an
 exact current Details row and displayed specialization receipt. It reads a fresh
@@ -713,13 +713,28 @@ text and exact wrapping come from protected specializationhover085117; those
 text-cell records are authoritative, while its OS screenshots lost the hover.
 An attempted continuous-render screenshot capture085337 produced malformed
 graphics and is not visual evidence; that capture-loop change was removed.
-The tooltip uses the existing native hover timer; rendered specialization help
-still needs acceptance. Protected areas085442 exercises four actual viewport
+The tooltip uses the existing native hover timer and local GUI mouse events;
+leave and hide retire the pointer owner. OS pointer polling is not used, since
+it does not represent routed input in hidden/offscreen viewports. GPU gate
+specialization-lifecycle-final verifies both native text-cell layouts against
+installed glyphs and the shared native frame. Protected areas090248 verifies
+hover activation, overlay-blocked clicks and four actual viewport
 clicks, matching all captured labor/flag effects and restoring both workers,
 then passes the existing religious removal/assignment suite. It reports only
 the known rendering-thread notice, preserves both save manifests and exits
-owned DF148836 unsaved. Specialization-specific live disconnect, late reply and
-restart checks remain outstanding. Zones/Locations entry routes stay hidden.
+owned DF159088 unsaved. Protected specialization lifecycle cases090354,
+090447,090540,090633 and090722 verify queued read cancellation, queued edit
+cancellation at the fresh-receipt boundary, sent edit disconnect, late success
+on another location and producer restart, respectively. Cancelled requests are
+not_sent; sent requests retired by disconnect/restart are unknown. Reconnection
+does not replay or reopen the gesture. Fresh observations reflect completed
+effects, or the saved original state after restart; only the normal Catalog
+bootstrap is sent automatically after restart. All five runs preserve both save
+manifests and exit owned DF unsaved, with only the known rendering-thread notice.
+Fixture display_reference/lifecycle_reference retain the bounded receipts.
+Core and ownership checks pass cleanly; GPU checks report passed_with_known_issues.
+Broader native eligibility coverage and remaining staff indicators are unfinished.
+Zones/Locations entry routes stay hidden.
 
 Controlled location-specialization-workflow-final core/engine checks cover both
 row types, exact wide revisions, explicit zero for reverse edits, duplicate

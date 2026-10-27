@@ -14203,7 +14203,7 @@
   "specialization_reference": {
     "native": "build/stockpile-storage-native-location-recognition-specialization-20261027-080737",
     "status": "passed",
-    "scope": "Native specialization semantics and connected viewer controls verified for priest and performer; broader eligibility, rendered tooltip and live lifecycle acceptance remain unfinished.",
+    "scope": "Native specialization semantics, rendered controls/help, viewport gestures and live retirement verified for priest and performer. Broader eligibility and remaining staff indicators are unfinished.",
     "click_x": 784,
     "cases": [
       {
@@ -14740,6 +14740,63 @@
       "scene_status": "passed_with_known_issues",
       "scene_scope": "Four viewport clicks, both workers in both directions; exact all-active-unit labor and flags readback; original religious removal/assignment suite also passes.",
       "save_manifests_unchanged": 2,
+      "owned_exit_without_save": true,
+      "hover_gpu_gate": "build/qa/specialization-lifecycle-final",
+      "hover_gpu_scope": "Native captured text cells and installed glyphs/shared frame; existing native frame reference reused.",
+      "hover_scene_run": "build/areas-acceptance-20261027-090248",
+      "hover_scene_scope": "Real viewport hover for both worker states; overlay-blocked clicks; native labor effects and original religious suite pass."
+    },
+    "lifecycle_reference": {
+      "status": "passed_with_known_issues",
+      "cases": [
+        {
+          "fresh_specialized": true,
+          "mode": "queued",
+          "mutated_before_retirement": false,
+          "no_replay": true,
+          "owner_retired": true,
+          "ticket": 11,
+          "run": "build/areas-acceptance-20261027-090354"
+        },
+        {
+          "fresh_specialized": true,
+          "mode": "receipt",
+          "mutated_before_retirement": false,
+          "no_replay": true,
+          "owner_retired": true,
+          "ticket": 12,
+          "run": "build/areas-acceptance-20261027-090447"
+        },
+        {
+          "fresh_specialized": false,
+          "mode": "sent",
+          "mutated_before_retirement": true,
+          "no_replay": true,
+          "owner_retired": true,
+          "ticket": 12,
+          "run": "build/areas-acceptance-20261027-090540"
+        },
+        {
+          "fresh_specialized": false,
+          "mode": "late",
+          "mutated_before_retirement": true,
+          "no_replay": true,
+          "owner_retired": true,
+          "ticket": 12,
+          "run": "build/areas-acceptance-20261027-090633"
+        },
+        {
+          "fresh_specialized": true,
+          "mode": "restart",
+          "mutated_before_retirement": true,
+          "no_replay": true,
+          "owner_retired": true,
+          "ticket": 12,
+          "run": "build/areas-acceptance-20261027-090722"
+        }
+      ],
+      "only_known_diagnostic": "godot-separate-thread-notice",
+      "save_manifests_unchanged_per_run": 2,
       "owned_exit_without_save": true
     }
   }

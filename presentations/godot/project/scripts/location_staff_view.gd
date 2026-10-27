@@ -21,6 +21,8 @@ var icon_elapsed:=0.0
 var picture_frame=preload("res://scripts/native_unit_picture_frame.gd").new()
 var specialization_reader
 var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
 
 func visible_rows() -> Array:
 	return rows.slice(first,first+int(geometry.get("visible_count",0)))
@@ -34,6 +36,9 @@ func configure(source, help=null) -> void:
 	world=source;art.configure(source);theme=art.theme
 	picture_frame.configure(source)
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_PASS
+	mouse_exited.connect(_leave_specialization_hover)
+	visibility_changed.connect(func():
+		if not is_visible_in_tree():_leave_specialization_hover())
 	native_scroll=preload("res://scripts/area_location_scrollbar.gd").new();add_child(native_scroll);native_scroll.configure(source)
 	native_scroll.row_changed.connect(func(value):first=value;queue_redraw())
 
@@ -52,6 +57,8 @@ func update_geometry() -> void:
 	if native_scroll!=null:native_scroll.position.x=size.x-16
 
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion or event is InputEventMouseButton:
+		pointer_known=true;pointer_position=event.position;update_specialization_hover()
 	if not actions_enabled or geometry.is_empty() or not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT:return
 	for index in int(geometry.visible_count):
 		var row: Dictionary=rows[first+index]
@@ -100,14 +107,17 @@ func _process(delta: float) -> void:
 
 func update_specialization_hover() -> void:
 	if not is_instance_valid(hover_help):return
-	if is_visible_in_tree() and specialization_reader!=null and not geometry.is_empty():
-		var point:=get_local_mouse_position()
+	if pointer_known and is_visible_in_tree() and specialization_reader!=null and not geometry.is_empty():
 		for index in int(geometry.visible_count):
-			if specialization_rect(index).has_point(point):
+			if specialization_rect(index).has_point(pointer_position):
 				var facts: Dictionary=specialization_reader.receipt(rows[first+index])
 				if facts.get("eligible",false):
 					hover_help.enter_specialization(get_instance_id(),facts.specialized);return
 	hover_help.leave(get_instance_id())
+
+func _leave_specialization_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 
 func _exit_tree() -> void:
 	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())

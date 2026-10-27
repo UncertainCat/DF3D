@@ -1543,6 +1543,8 @@ func religious_staff_route(locations: Array) -> void:
 	var details=editor.details_view
 	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and details.recognition_workflow.recognition.phase==details.recognition_workflow.recognition.Phase.Ready,"religious Details entry"):return
 	var view=details.staff_view
+	if lifecycle.begins_with("specialization-"):
+		await specialization_lifecycle(lifecycle.trim_prefix("specialization-"));return
 	if lifecycle=="none":
 		await specialization_scene()
 		if stopped:return
@@ -1656,7 +1658,13 @@ func specialization_scene() -> void:
 		if not await wait_ui(func():return reader.receipt(row).get("eligible",false),"specialization displayed receipt"):return
 		if not check(reader.receipt(row).specialized==change.before.specialized,"specialization initial displayed state"):return
 		var point: Vector2=view.global_position+view.specialization_rect(row_index-view.first).get_center()
+		var hover:=InputEventMouseMotion.new();hover.position=point;hover.global_position=point;root.push_input(hover,true)
+		await create_timer(0.65).timeout
+		if not check(view.hover_help.visible and view.hover_help.displayed=="specialization_"+str(int(change.before.specialized)),"specialization native tooltip hit region point=%s local=%s rect=%s view_visible=%s key=%s displayed=%s owner=%s"%[point,view.get_local_mouse_position(),view.specialization_rect(row_index-view.first),view.is_visible_in_tree(),view.hover_help.state.key,view.hover_help.displayed,view.hover_help.state.owner]):return
+		await native("religious_specialization_check",{"unit_id":change.unit_id,"expected":change.before})
 		await capture("specialization_%d_before"%int(change.unit_id))
+		host.set_overlay_blocked(true);await pointer_click(point);host.set_overlay_blocked(false)
+		if not check(not details.specialization_workflow.active,"overlay admitted specialization gesture"):return
 		for expected in [change.after,change.before]:
 			await pointer_click(point)
 			if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and not details.specialization_workflow.active and reader.receipt(row).get("specialized")==expected.specialized,"specialization click and refreshed native state"):return
@@ -1665,6 +1673,84 @@ func specialization_scene() -> void:
 			await capture("specialization_%d_%s"%[int(change.unit_id),str(expected.specialized)])
 		evidence.append({"unit_id":change.unit_id,"viewport_clicks":2,"native_effects_matched":true,"restored":true})
 	write_json("specialization-scene-evidence.json",{"cases":evidence})
+
+func specialization_lifecycle(mode: String) -> void:
+	step="specialization lifecycle "+mode
+	var details=editor.details_view
+	var view=details.staff_view
+	var flow=details.specialization_workflow
+	var reader=details.specialization_reader
+	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json"))
+	var change: Dictionary=fixture.specialization_reference.cases[0].changed[0]
+	await native("religious_specialization_setup",{"unit_id":change.unit_id,"expected":change.before})
+	if stopped:return
+	var row: Dictionary=view.rows[0].duplicate(true)
+	if not await wait_ui(func():return reader.ticket==0 and reader.receipt(row).get("eligible",false),"specialization lifecycle displayed facts"):return
+	var point: Vector2=view.global_position+view.specialization_rect(0).get_center()
+	await pointer_click(point)
+	var ticket: int=flow.ticket
+	if not check(ticket>0 and flow.phase==flow.Phase.Reading,"specialization pending fresh read missing"):return
+	var mutated: bool=mode in ["sent","late","restart"]
+	if mode=="receipt":
+		await quantity_unobserved(ticket)
+		if stopped:return
+		var gate: Dictionary={"ticket":0}
+		var disconnect:=func():
+			if gate.ticket==0 and flow.phase==flow.Phase.Applying and flow.ticket>0:
+				gate.ticket=flow.ticket;world.detach_live()
+		flow.changed.connect(disconnect);actions.poll();flow.changed.disconnect(disconnect)
+		ticket=int(gate.ticket)
+		if not check(ticket>0,"specialization queued edit boundary absent"):return
+	if mutated:
+		await quantity_unobserved(ticket)
+		if stopped:return
+		actions.poll();ticket=flow.ticket
+		if not check(ticket>0 and flow.phase==flow.Phase.Applying,"specialization pending edit missing"):return
+		var reply:=await quantity_unobserved(ticket,false)
+		if stopped:return
+		if not check(reply.area.location_specialization.specialized==change.after.specialized,"specialization unobserved native effect missing"):return
+	await native("religious_specialization_check",{"unit_id":change.unit_id,"expected":change.after if mutated else change.before})
+	if stopped:return
+	if mode=="late":
+		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		if not check(not editor.details_layer.visible and flow.owner.is_empty() and flow.target.is_empty(),"specialization dismissal retained owner"):return
+		await quantity_lifecycle_choose(1)
+		if stopped:return
+		if not check(int(editor.details_state.identity.id)==1 and not flow.active and flow.owner.is_empty(),"specialization late success revived on other location"):return
+	elif mode=="restart":
+		await quantity_restart(ticket,"specialization")
+		if stopped:return
+		await quantity_lifecycle_open()
+		if stopped:return
+	else:
+		world.detach_live();actions.poll()
+		if not check(actions.result(ticket).get("outcome")==("unknown" if mutated else "not_sent"),"specialization disconnect outcome"):return
+		if not check(not actions._requests.has(ticket) and actions._queue.is_empty() and actions._active==0,"specialization remains dispatchable"):return
+		if not check(flow.owner.is_empty() and flow.target.is_empty() and reader.owner.is_empty() and reader.rows.is_empty() and not editor.details_layer.visible,"specialization disconnect retained state"):return
+		if not check(world.attach(),"specialization reconnect failed"):return
+		var deadline:=Time.get_ticks_msec()+60000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll();editor._process(0.02)
+			if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
+			await create_timer(0.02).timeout
+		if not check(bool(world.poll_management().get("transport_alive",false)),"specialization reconnect timeout"):return
+		var next_ticket: int=actions._next_ticket
+		for frame in 30:world.poll();actions.poll();editor._process(0.02);await process_frame
+		if not check(actions._next_ticket==next_ticket and flow.owner.is_empty() and reader.owner.is_empty() and not editor.details_layer.visible,"specialization reconnect replayed or reopened"):return
+		await native("religious_specialization_check",{"unit_id":change.unit_id,"expected":change.after if mutated else change.before})
+		if stopped:return
+		await quantity_lifecycle_open()
+		if stopped:return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"specialization fresh chooser"):return
+	await quantity_lifecycle_choose(0)
+	if stopped:return
+	var expected: bool=change.after.specialized if mutated and mode!="restart" else change.before.specialized
+	if not await wait_ui(func():return reader.receipt(row).get("specialized")==expected,"specialization fresh observed state"):return
+	if not check(not flow.active and flow.target.is_empty(),"specialization retired gesture revived"):return
+	await capture("specialization_lifecycle_"+mode)
+	write_json("specialization-lifecycle-evidence.json",{"mode":mode,"ticket":ticket,"mutated_before_retirement":mutated,"fresh_specialized":expected,"owner_retired":true,"no_replay":true})
+	editor.close_panel()
 
 func religious_assignment_retire(restart: bool, row_index: int, original_holder: int) -> void:
 	step="religious assignment retire restart="+str(restart)

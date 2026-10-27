@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "continuing_agreements_hud_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/continuing_agreements_hud_test.gd",
+      "completion": "^CONTINUING_AGREEMENTS_HUD_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "continuing_agreements_layout_capture",
       "lane": "gpu",
       "kind": "godot",

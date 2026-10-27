@@ -1352,8 +1352,17 @@ and the designation mode closed before the next probe. This establishes native
 click pass-through, not exact map-coordinate parity or completed designation
 effects. `tracker_click_reference` retains all five results. The views' existing
 MOUSE_FILTER_IGNORE behavior is therefore intentional. The owned session exits
-unsaved with source hashes unchanged. Reader/view composition, local visibility
-and hover-target arbitration still need HUD integration and live verification.
+unsaved with source hashes unchanged.
+
+`continuing_agreements_hud.gd` composes the readers and views with explicit
+activation and session retirement. Its caller supplies separate list/popup
+visibility and logical UI scaling. A pending petition target claims hover
+immediately, without changing the views' mouse-ignore input behavior. The
+headless composition check exercises scaled pointer targets, separators,
+independent visibility, late replies and session retirement without replay.
+This owner is staged: main-scene activation, terrain-hover arbitration and
+protected live verification remain required before exposure. The component
+check is behavioral evidence, not rendered or live HUD acceptance.
 
 ## Native Location name editor discovery
 

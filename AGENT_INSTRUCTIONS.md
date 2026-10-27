@@ -137,6 +137,11 @@ copy, fabricated progress percentages or broader native-UI departures.
   assigning to the old, no-longer-shown zone as native DF does. This exception
   covers picker retirement on selection changes; record it in the native bug
   register separately from the inside-panel click boundary correction.
+- Maintainer decision, 2026-10-27: put location staff-indicator tooltips on
+  their visible icons instead of the worker portrait, and keep occupation
+  artwork stable while hovering instead of using the unrelated tooltip enum
+  as a graphic selector. Preserve native tooltip text, timing and assignment
+  semantics. Record both corrections separately in the native bug register.
 - Before extending an incomplete gameplay UI, locate the DF routine or existing
   semantic API that supplies its choices, eligibility, ordering and actions.
   Prefer exposing that behavior over reconstructing it in Godot or the bridge.

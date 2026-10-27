@@ -606,11 +606,11 @@ if recognition_case=='staffindicators' then
    end
    local observed=read(args);assert(observed.valid and observed.unit_id==u.unit_id)
    local entries={}
-   for _,o in ipairs(u.occupations)do entries[#entries+1]={kind=0,id=o.id,type=o.type,subtype=-1,custom=-1,name=''}end
+   for _,o in ipairs(u.occupations)do entries[#entries+1]={kind=0,id=o.id,type=o.type,subtype=-1,custom=-1,name='',custom_code=''}end
    for kind,key in ipairs{'workshops','furnaces'}do
-    for _,b in ipairs(u[key])do entries[#entries+1]={kind=kind,id=b.id,type=b.type,subtype=b.subtype,custom=b.custom,name=''}end
+    for _,b in ipairs(u[key])do entries[#entries+1]={kind=kind,id=b.id,type=b.type,subtype=b.subtype,custom=b.custom,name='',custom_code=b.custom>=0 and assert(df.building_def.find(b.custom)).code or ''}end
    end
-   for _,d in ipairs(u.work_details)do entries[#entries+1]={kind=3,id=d.index,type=d.icon,subtype=-1,custom=-1,name=d.name}end
+   for _,d in ipairs(u.work_details)do entries[#entries+1]={kind=3,id=d.index,type=d.icon,subtype=-1,custom=-1,name=d.name,custom_code=''}end
    assert(require('json').encode(observed.entries)==require('json').encode(entries),'semantic assignment records differ')
    assert(require('json').encode(read(args))==require('json').encode(observed),'repeat assignment observation differs')
    for _,i in ipairs{1,2,4,5,6}do

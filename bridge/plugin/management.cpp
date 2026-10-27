@@ -552,7 +552,7 @@ void publish() {
     const auto& r=*areaPage.staffAssignments;
     std::vector<flatbuffers::Offset<m::LocationStaffAssignment>> entries;
     for(const auto& e:r.entries)entries.push_back(m::CreateLocationStaffAssignment(b,
-        static_cast<m::LocationStaffAssignmentKind>(e.kind),e.id,e.type,e.subtype,e.custom,b.CreateString(e.name)));
+        static_cast<m::LocationStaffAssignmentKind>(e.kind),e.id,e.type,e.subtype,e.custom,b.CreateString(e.name),b.CreateString(e.customCode)));
     staffAssignments=m::CreateLocationStaffAssignments(b,r.siteId,r.locationId,r.occupationId,r.entityId,r.assignmentId,
         r.unitId,r.histfigId,r.revision,b.CreateVector(entries));
   }

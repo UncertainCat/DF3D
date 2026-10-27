@@ -6,6 +6,7 @@
 #include "modules/Units.h"
 #include "modules/Translation.h"
 #include "df/unit.h"
+#include "df/building_def.h"
 #include "df/unit_soul.h"
 #include "df/unit_skill.h"
 #include "df/caste_raw_flags.h"
@@ -430,8 +431,14 @@ std::optional<LocationStaffAssignments> observeNativeLocationStaffAssignments(
       auto* profile=building->getWorkshopProfile();if(!profile)continue;
       const auto workers=profile->permitted_workers;
       if(linear(unitId,&workers)==-1)continue;
-      out.entries.push_back({kind,building->id,int32_t(building->getType()),
-          int32_t(building->getSubtype()),building->getCustomType()});
+      LocationStaffAssignment entry{kind,building->id,int32_t(building->getType()),
+          int32_t(building->getSubtype()),building->getCustomType()};
+      if(entry.custom>=0) {
+        const auto* definition=df::building_def::find(entry.custom);
+        if(!definition || definition->building_type!=building->getType() || definition->code.empty() || definition->code.size()>64)return false;
+        entry.customCode=definition->code;
+      }
+      out.entries.push_back(std::move(entry));
     }
     return true;
   };
@@ -454,6 +461,7 @@ std::optional<LocationStaffAssignments> observeNativeLocationStaffAssignments(
   for(const auto& entry:out.entries) {
     number(uint8_t(entry.kind));number(entry.id);number(entry.type);number(entry.subtype);number(entry.custom);
     number(entry.name.size());for(unsigned char ch:entry.name)number(ch);
+    number(entry.customCode.size());for(unsigned char ch:entry.customCode)number(ch);
   }
   hash&=uint64_t(INT64_MAX);out.revision=hash?hash:1;return out;
 }

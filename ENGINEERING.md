@@ -835,8 +835,24 @@ areas100244 passes existing assignment/specialization/religious workflows,
 preserves both save manifests, reports no diagnostics and exits owned DF159772
 unsaved. Installed plugin SHA256 is
 0BA5AE553D96DFA93D2964479F6C486F961B7C5F9D24B3A7DBB401ABFAE594DB.
-This is contract compatibility evidence. Native custom-code generation and
-custom-building indicator acceptance remain unfinished.
+That run establishes contract compatibility. The native provider now resolves
+custom IDs through DF's building definitions, verifies the building family and
+copies the raw code into the receipt; missing definitions or unusable codes
+refuse the observation. The independent revision includes the code. Runtime
+does not use streamed map entities or reconstruct raw load order.
+Protected areas100709 verifies custom workshop ID0/code SOAP_MAKER on the
+diagnostic assigned workshop3, alongside the baseline and all-source phases.
+Missing raw IDs are refused; changing the code changes the receipt revision;
+restoring the code and assignments restores exact receipts. Thirty-two invalid
+target requests, native UI byte guards and independent world-record readbacks
+also pass. Owned DF160688 exits unsaved with both save manifests unchanged and
+no diagnostics. Diagnostic actionstaffindicators100813 independently passes
+the updated provider JSON, all-source memberships and restoration with owned
+DF156460 exiting unsaved. Core and reader checks pass in
+`build/qa/location-staff-custom-provider78`, and MSVC builds successfully.
+Installed plugin SHA256 is
+92355C63872455A56280A8B20981D5A31E412BDBDDD69910295B0CFE7DBD7486.
+Custom-furnace fixtures and rendered custom-building indicators remain unverified.
 
 `tools/smoke/inspect_native_staff_indicators.py` pins the executable SHA256 and
 reads the four native renderer jump tables. It resolves workshop/furnace graphic

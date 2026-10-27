@@ -1789,7 +1789,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             value["entries"]=Json::Value(Json::arrayValue);
             for(const auto& entry:receipt->entries) {
               Json::Value row(Json::objectValue);row["kind"]=int(entry.kind);row["id"]=entry.id;
-              row["type"]=entry.type;row["subtype"]=entry.subtype;row["custom"]=entry.custom;row["name"]=entry.name;
+              row["type"]=entry.type;row["subtype"]=entry.subtype;row["custom"]=entry.custom;row["name"]=entry.name;row["custom_code"]=entry.customCode;
               value["entries"].append(std::move(row));
             }
           }

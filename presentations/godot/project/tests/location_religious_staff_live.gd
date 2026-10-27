@@ -115,8 +115,8 @@ func exercise() -> void:
 
 func assignments_route() -> void:
 	var original: Dictionary={}
-	for phase in ["baseline","changed","restored"]:
-		if phase!="baseline":await native("religious_assignments_fixture",{"restore":phase=="restored"})
+	for phase in ["baseline","changed","custom","restored"]:
+		if phase!="baseline":await native("religious_assignments_fixture",{"restore":phase=="restored","custom":phase=="custom"})
 		for unit_id in [5813,6536]:
 			step="staff assignments "+phase+" "+str(unit_id)
 			var expected:=await native("religious_assignments",{"unit_id":unit_id})
@@ -134,7 +134,18 @@ func assignments_route() -> void:
 			for i in observed.entries.size():
 				for key in ["kind","id","type","subtype","custom"]:
 					if not check(observed.entries[i][key]==int(expected.entries[i][key]),"assignment entry mismatch "+key):return
-				if not check(observed.entries[i].name==expected.entries[i].name,"assignment name mismatch"):return
+				if not check(observed.entries[i].name==expected.entries[i].name and observed.entries[i].custom_code==expected.entries[i].custom_code,"assignment name/raw code mismatch"):return
+			if phase=="custom" and unit_id==6536:
+				await native("religious_assignments_fixture",{"custom_id":"missing"})
+				var missing:=await request(read,"",true)
+				if stopped:return
+				if not check(not missing.has("location_staff_assignments"),"missing custom raw accepted"):return
+				await native("religious_assignments_fixture",{"custom_id":"restore"})
+				await native("religious_assignments_fixture",{"custom_code":"change"})
+				var renamed:=await request(read)
+				if stopped:return
+				if not check(renamed.location_staff_assignments.revision!=observed.revision,"custom code did not change receipt revision"):return
+				await native("religious_assignments_fixture",{"custom_code":"restore"})
 			var repeated:=await request(read)
 			if stopped:return
 			if not check(repeated.location_staff_assignments==observed,"assignment repeat mismatch"):return

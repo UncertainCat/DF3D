@@ -14801,6 +14801,22 @@
     }
   },
   "staff_indicator_reference": {
+    "custom_transport_reference": {
+      "run": "build/areas-acceptance-20261027-100709",
+      "status": "passed",
+      "diagnostic_building_id": 3,
+      "custom_id": 0,
+      "custom_code": "SOAP_MAKER",
+      "missing_raw_refused": true,
+      "code_changes_revision": true,
+      "restored_receipts_identical": true,
+      "invalid_targets_refused": 32,
+      "native_ui_and_assignment_records_unchanged_by_reads": true,
+      "save_manifests_unchanged": 2,
+      "owned_exit_unsaved": true,
+      "diagnostic_provider_run": "build/stockpile-storage-native-location-recognition-actionstaffindicators-20261027-100813",
+      "limitations": "Paused diagnostic workshop subtype/raw substitution, restored exactly. Custom furnaces and rendered indicators remain unverified."
+    },
     "dispatch_reference": {
       "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
       "tables": {

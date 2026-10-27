@@ -38,7 +38,7 @@ if request.op=='religious_assignments' then
  else for _,o in ipairs(temple.occupations)do if o.unit_id==unit.id then result.occupation_id=o.id end end;assert(result.occupation_id>=0)end
  result.entries={}
  local function add(kind,id,type,subtype,custom,name)
-  result.entries[#result.entries+1]={kind=kind,id=id,type=type,subtype=subtype,custom=custom,name=name}
+  result.entries[#result.entries+1]={kind=kind,id=id,type=type,subtype=subtype,custom=custom,name=name,custom_code=custom>=0 and assert(df.building_def.find(custom)).code or ''}
  end
  for _,o in ipairs(unit.occupations)do add(0,o.id,o.type,-1,-1,'')end
  for kind,key in ipairs{'WORKSHOP_ANY','FURNACE_ANY'}do
@@ -53,7 +53,23 @@ if request.op=='religious_assignments' then
   for _,id in ipairs(d.assigned_units)do if id==unit.id then add(3,i,d.icon,-1,-1,dfhack.df2utf(d.name))end end
  end
 elseif request.op=='religious_assignments_fixture' then
- if request.restore then
+ if request.custom_id then
+  local old=assert(_G.df3d_assignments_custom)
+  old.building.custom_type=request.custom_id=='missing' and 2147483647 or old.definition.id
+ elseif request.custom_code then
+  local old=assert(_G.df3d_assignments_custom)
+  old.definition.code=request.custom_code=='change' and old.code..'_DF3D_PROBE' or old.code
+ elseif request.custom then
+  assert(not _G.df3d_assignments_custom)
+  local definition
+  for _,d in ipairs(df.global.world.raws.buildings.all)do if d.building_type==df.building_type.Workshop then definition=d;break end end
+  assert(definition,'fixture requires installed custom workshop raw')
+  local building=assert(_G.df3d_assignments_workshop)
+  _G.df3d_assignments_custom={building=building,type=building.type,custom=building.custom_type,definition=definition,code=definition.code}
+  building.type=df.workshop_type.Custom;building.custom_type=definition.id
+ elseif request.restore then
+  local old=_G.df3d_assignments_custom
+  if old then old.definition.code=old.code;old.building.type=old.type;old.building.custom_type=old.custom;_G.df3d_assignments_custom=nil end
   for _,r in ipairs(assert(_G.df3d_assignments_restore))do
    r.vector:resize(0);for _,id in ipairs(r.before)do r.vector:insert('#',id)end
   end
@@ -69,7 +85,7 @@ elseif request.op=='religious_assignments_fixture' then
   for _,key in ipairs{'WORKSHOP_ANY','FURNACE_ANY'}do
    local found=false
    for _,b in ipairs(df.global.world.buildings.other[key])do
-    local p=b:getWorkshopProfile();if p then add(p.permitted_workers);found=true;break end
+    local p=b:getWorkshopProfile();if p then add(p.permitted_workers);if key=='WORKSHOP_ANY' then _G.df3d_assignments_workshop=b end;found=true;break end
    end
    assert(found)
   end

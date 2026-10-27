@@ -603,6 +603,24 @@ The live run preserves both save manifests and exits owned DF unsaved, with no
 Godot diagnostics. Management remains75; installed plugin SHA256 is
 7A3036447F813A09622853DC21370FDDB0F25F24158C7F965A803E1940E2DF57.
 
+Native assignmilitarypriest074037 and semantic actionassignmilitarypriest074113
+select active soldier6811/HF10194, the second default row. Both preserve squad120,
+slot7 and all captured unit/uniform/squad records while adding the priest position
+link and event64038. Native assigncommandpriest074305 and semantic
+actionassigncommandpriest074343 repeat with a controlled position squad_size=10
+to exercise the conditional military preparation call. This is a diagnostic
+fixture, not a new player-facing religious position. The same military records
+remain unchanged; do not describe this case as removing the soldier from a squad.
+Both semantic runs match all captured recognition, selected-unit/HF/nemesis/actor,
+squad and event effects against their independent native runs, with the existing
+narrow exclusion for newly allocated uninitialized personality focus counters.
+Six selected-receipt dependency probes and completed replay refusal also pass.
+All four runs preserve the source and exit owned DF unsaved. The command fixture
+reacquires the native unit-list widget after reopening; retaining an earlier
+widget pointer caused an initial diagnostic cursor assertion, not a product bug.
+Bounded military_assignment_reference records provenance and scope. Plotter and
+absent-unit historical branches remain outside this evidence.
+
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no
 implemented presentation route yet. Its scope must be retained in the management

@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -658,7 +658,7 @@ end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local original_priest_threshold=difficulty.priesthood_unit_count
-if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' then
+if recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' then
  local assignment_row_y=recognition_case=='assignhighpriest' and 394 or 358
  local promotion_rng
  local assignment
@@ -684,10 +684,16 @@ if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or r
   assert(assignment and assignment.histfig>=0,'native promotion did not transfer holder')
   capture('TEMPLE-high-priest-promoted',temple);table.remove(records)
  end
- if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' then pixel(944,assignment_row_y);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')end
+ if recognition_case=='assignpriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' then pixel(944,assignment_row_y);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')end
  local expected_holder=assignment.histfig
  local previous_holder=expected_holder>=0 and assert(df.historical_figure.find(expected_holder)) or nil
  local linked_squad,seeded_assignment_job
+ if recognition_case=='assigncommandpriest' then
+  -- Controlled semantic branch fixture, not a new player-facing position type.
+  local position
+  for _,p in ipairs(religion.positions.own)do if p.id==assignment.position_id then position=p end end
+  assert(position and position.squad_size==0);position.squad_size=10
+ end
  if recognition_case=='replacesquadpriest' then
   local unit=assert(df.unit.find(previous_holder.unit_id));linked_squad=assert(df.squad.find(unit.military.squad_id))
   assert(unit.military.squad_position==0 and linked_squad.positions[0].occupant==previous_holder.id)
@@ -704,6 +710,7 @@ if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or r
  end
  local vacant=capture(expected_holder>=0 and 'TEMPLE-priest-occupied' or 'TEMPLE-priest-vacant',temple);vacant.recognition=recognition_state()
  vacant.promotion_rng=promotion_rng
+ if recognition_case=='assigncommandpriest' then vacant.seeded_squad_size=10 end
  local function candidates(ids,rows)
   local guards={}
   for _,object in ipairs{m,g}do
@@ -879,8 +886,19 @@ if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or r
   end
  end
  open_picker();assert(selector.flag.VISIBILITY_ACTIVE)
+ list=assert(find_list(selector,0))
  local chosen=opened.selector.displayed[1]
- assert(chosen.y<15,'unexpected first row geometry')
+ local chosen_index=1
+ if (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') then
+  chosen=nil
+  for i,row in ipairs(opened.selector.displayed)do
+   local unit=assert(df.unit.find(row.id))
+   if unit.military.squad_id>=0 then
+    chosen=row;chosen_index=i;linked_squad=assert(df.squad.find(unit.military.squad_id));break
+   end
+  end
+  assert(chosen,'no eligible military candidate')
+ else assert(chosen.y<15,'unexpected first row geometry')end
  local function selected_state(unit_id,figure_id)
   local unit=assert(df.unit.find(unit_id or chosen.id));local figure=assert(df.historical_figure.find(figure_id or chosen.histfig_id))
   local function values(vector)local out={};for _,v in ipairs(vector)do out[#out+1]=v end;return out end
@@ -1023,6 +1041,12 @@ if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or r
   for _,guard in ipairs(guards)do
    assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'religious assignment changed UI/gps');df.delete(guard.bytes)
   end
+ elseif (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') then
+  cancelled.selection_input={initial_cursor=list.cursor_idx,chosen_index=chosen_index,unit_id=chosen.id}
+  for i=2,chosen_index do key('STANDARDSCROLL_DOWN')end
+  cancelled.selection_input.final_cursor=list.cursor_idx
+  assert(list.cursor_idx==chosen_index-1,'native selected military cursor differs: '..list.cursor_idx..' expected '..(chosen_index-1))
+  key('SELECT')
  else pixel(450,106) end
  assert(assignment.histfig==chosen.histfig_id,'native assignment did not choose first displayed candidate')
  local assigned=capture('TEMPLE-priest-assigned',temple);assigned.recognition=recognition_state();assigned.chosen=chosen

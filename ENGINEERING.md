@@ -184,11 +184,28 @@ run passes, preserves its source and exits unsaved. This is an oracle, not a
 semantic or viewer implementation.
 
 Input branch3307a4 calls nativeb96300(holder, assignment, entity, true, true),
-unlike recognition promotion's false/false arguments. It also conditionally
-cleans noble-office/unit jobs before and after that call, then rebuilds native
-Details rows. Audit those semantic conditions before implementing removal; never
-call the native UI handler or row builder. Unit/job cleanup, all event fields,
-high-priest/absent-unit variants and typed lifecycle remain unverified.
+unlike recognition promotion's false/false arguments. Typed offsets identify the
+pre-call branch as squad-command cleanup: assignment.squad_id is at0x28,
+squad.positions at0xa0, and unit.military at0x1f0. It compares the first squad
+occupant with the holder, calls native13cbf10 to remove military membership,
+clears the occupant and patrol state, and sets equipment-update bits0x7ff.
+This is not noble-office cleanup. Post-call checks use position responsibilities
+at0x328: MANAGE_PRODUCTION and ACCOUNTING cancel matching ManageWorkOrders(195)
+and UpdateStockpileRecords(196) jobs through native1325080. They are not position
+flags. Nativeb96300 delegates link/assignment/history effects to b95d60.
+Do not call the native UI handler or its3ad8e0 row builder.
+
+Expanded native041831 captures unit5813 and all removal-event fields. This priest
+also commands squad125, but the religious assignment has no squad association:
+removal preserves that unrelated command, profession17 and absent current job.
+Controlled `-RecognitionCase removesquadpriest` run041939 associates that same
+assignment with squad125 before clicking. Native removal clears its leader and
+the unit's squad identity while retaining backpack28463 and flask28442. Both
+runs preserve RNG, pass repeated-empty-click checks, preserve source manifests
+and exit unsaved. `unit_and_squad_reference` retains the exact holder/link/event
+fields and measured offsets. No matching manager/accounting job was active;
+those cancellation branches, patrol-state effects, high-priest/absent-unit
+variants and typed lifecycle remain unverified. Semantic removal is not yet wired.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

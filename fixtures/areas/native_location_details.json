@@ -8548,11 +8548,301 @@
       "arguments": "historical figure, assignment ID, religion ID, true, true"
     },
     "omissions": [
-      "Unit job and noble-office cleanup side effects",
-      "All history-event payload fields",
+      "Manager/accounting current-job cancellation branches",
+      "Patrol-state and equipment-update effects",
       "High-priest and absent-unit holder variants",
       "Semantic bridge action and revision binding",
       "Viewer input and lifecycle"
+    ],
+    "unit_and_squad_reference": [
+      {
+        "case": "removepriest",
+        "source": "build/stockpile-storage-native-location-recognition-removepriest-20261027-041831",
+        "source_sha256": "54560b6f49661892ac05b76408c28990347a8b4535f92ade13876ee8d96445b5",
+        "before_holder": {
+          "id": 9375,
+          "links": [
+            {
+              "entity_id": 245,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "entity_id": 383,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "entity_id": 865,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "assignment_id": 2,
+              "entity_id": 383,
+              "start_year": 103,
+              "strength": 100,
+              "type": "POSITION"
+            },
+            {
+              "assignment_id": 7,
+              "entity_id": 865,
+              "start_year": 104,
+              "strength": 100,
+              "type": "POSITION"
+            },
+            {
+              "assignment_id": 9,
+              "entity_id": 865,
+              "start_year": 104,
+              "strength": 100,
+              "type": "POSITION"
+            }
+          ],
+          "native_offsets": {
+            "assignment_squad": 40,
+            "position_responsibilities": 808,
+            "unit_military": 496
+          },
+          "position_responsibilities": [
+            "RELIGION"
+          ],
+          "unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          }
+        },
+        "after_holder": {
+          "id": 9375,
+          "links": [
+            {
+              "entity_id": 245,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "entity_id": 383,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "entity_id": 865,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "assignment_id": 7,
+              "entity_id": 865,
+              "start_year": 104,
+              "strength": 100,
+              "type": "POSITION"
+            },
+            {
+              "assignment_id": 9,
+              "entity_id": 865,
+              "start_year": 104,
+              "strength": 100,
+              "type": "POSITION"
+            },
+            {
+              "assignment_id": 2,
+              "end_year": 106,
+              "entity_id": 383,
+              "start_year": 103,
+              "strength": 100,
+              "type": "FORMER_POSITION"
+            }
+          ],
+          "native_offsets": {
+            "assignment_squad": 40,
+            "position_responsibilities": 808,
+            "unit_military": 496
+          },
+          "position_responsibilities": [
+            "RELIGION"
+          ],
+          "unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          }
+        },
+        "new_events": [
+          {
+            "civ": 383,
+            "histfig": 9375,
+            "id": 64037,
+            "link_type": 10,
+            "position_id": 0,
+            "seconds": 157249,
+            "type": "REMOVE_HF_ENTITY_LINK",
+            "year": 106
+          }
+        ],
+        "repeat_unchanged": true
+      },
+      {
+        "case": "removesquadpriest",
+        "source": "build/stockpile-storage-native-location-recognition-removesquadpriest-20261027-041939",
+        "source_sha256": "687cb58e95581c888d5ef761468ca8b385510e764419675e4b32586bdc869641",
+        "before_holder": {
+          "id": 9375,
+          "links": [
+            {
+              "entity_id": 245,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "entity_id": 383,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "entity_id": 865,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "assignment_id": 2,
+              "entity_id": 383,
+              "start_year": 103,
+              "strength": 100,
+              "type": "POSITION"
+            },
+            {
+              "assignment_id": 7,
+              "entity_id": 865,
+              "start_year": 104,
+              "strength": 100,
+              "type": "POSITION"
+            },
+            {
+              "assignment_id": 9,
+              "entity_id": 865,
+              "start_year": 104,
+              "strength": 100,
+              "type": "POSITION"
+            }
+          ],
+          "native_offsets": {
+            "assignment_squad": 40,
+            "equipment_update": 37328984,
+            "position_responsibilities": 808,
+            "squad_backpack": 364,
+            "squad_positions": 160,
+            "squad_quiver": 360,
+            "unit_military": 496
+          },
+          "position_responsibilities": [
+            "RELIGION"
+          ],
+          "squad": {
+            "backpack": 28463,
+            "flask": 28442,
+            "id": 125,
+            "occupant": 9375,
+            "quiver": -1
+          },
+          "unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": 125,
+            "squad_position": 0
+          }
+        },
+        "after_holder": {
+          "id": 9375,
+          "links": [
+            {
+              "entity_id": 245,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "entity_id": 383,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "entity_id": 865,
+              "strength": 100,
+              "type": "MEMBER"
+            },
+            {
+              "assignment_id": 7,
+              "entity_id": 865,
+              "start_year": 104,
+              "strength": 100,
+              "type": "POSITION"
+            },
+            {
+              "assignment_id": 9,
+              "entity_id": 865,
+              "start_year": 104,
+              "strength": 100,
+              "type": "POSITION"
+            },
+            {
+              "assignment_id": 2,
+              "end_year": 106,
+              "entity_id": 383,
+              "start_year": 103,
+              "strength": 100,
+              "type": "FORMER_POSITION"
+            }
+          ],
+          "native_offsets": {
+            "assignment_squad": 40,
+            "equipment_update": 37328984,
+            "position_responsibilities": 808,
+            "squad_backpack": 364,
+            "squad_positions": 160,
+            "squad_quiver": 360,
+            "unit_military": 496
+          },
+          "position_responsibilities": [
+            "RELIGION"
+          ],
+          "squad": {
+            "backpack": 28463,
+            "flask": 28442,
+            "id": 125,
+            "occupant": -1,
+            "quiver": -1
+          },
+          "unit": {
+            "current_job": false,
+            "id": 5813,
+            "profession": 17,
+            "profession2": 17,
+            "squad_id": -1,
+            "squad_position": -1
+          }
+        },
+        "new_events": [
+          {
+            "civ": 383,
+            "histfig": 9375,
+            "id": 64037,
+            "link_type": 10,
+            "position_id": 0,
+            "seconds": 157249,
+            "type": "REMOVE_HF_ENTITY_LINK",
+            "year": 106
+          }
+        ],
+        "repeat_unchanged": true
+      }
     ]
   }
 }

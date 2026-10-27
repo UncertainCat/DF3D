@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='removepriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='removepriest' or recognition_case=='removesquadpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -658,13 +658,47 @@ end
 local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=first_recognition and 1 or 2
 local difficulty=df.global.plotinfo.main.custom_difficulty;local original_threshold=difficulty.high_priesthood_unit_count
 local original_priest_threshold=difficulty.priesthood_unit_count
-if recognition_case=='removepriest' then
+if recognition_case=='removepriest' or recognition_case=='removesquadpriest' then
  local assignment
  for _,a in ipairs(religion.positions.assignments)do if a.st_id==df.global.plotinfo.site_id then assert(not assignment);assignment=a end end
  assert(assignment and assignment.histfig>=0)
  local holder=assert(df.historical_figure.find(assignment.histfig))
+ local squad
+ if recognition_case=='removesquadpriest' then
+  local unit=assert(df.unit.find(holder.unit_id));squad=assert(df.squad.find(unit.military.squad_id))
+  assert(unit.military.squad_position==0 and squad.positions[0].occupant==holder.id)
+  assignment.squad_id=squad.id
+ end
  local function holder_state()
   local result={id=holder.id,links={}}
+  local unit=df.unit.find(holder.unit_id)
+  if unit then
+   result.unit={id=unit.id,profession=unit.profession,profession2=unit.profession2,
+    squad_id=unit.military.squad_id,squad_position=unit.military.squad_position,
+    current_job=unit.job.current_job and {id=unit.job.current_job.id,type=df.job_type[unit.job.current_job.job_type]} or false}
+  end
+  local function offset(object,field)
+   local _,base=df.sizeof(object);local _,address=df.sizeof(object:_field(field));return address-base
+  end
+  local position
+  for _,p in ipairs(religion.positions.own)do if p.id==assignment.position_id then position=p end end
+  assert(position)
+  result.native_offsets={assignment_squad=offset(assignment,'squad_id'),position_responsibilities=offset(position,'responsibilities')}
+  if unit then result.native_offsets.unit_military=offset(unit,'military') end
+  if squad then
+   local leader=squad.positions[0];local equipment=leader.equipment
+   result.squad={id=squad.id,occupant=leader.occupant,quiver=equipment.quiver,backpack=equipment.backpack,flask=equipment.flask}
+   result.native_offsets.squad_positions=offset(squad,'positions')
+   result.native_offsets.squad_quiver=offset(leader,'equipment')+offset(equipment,'quiver')
+   result.native_offsets.squad_backpack=offset(leader,'equipment')+offset(equipment,'backpack')
+   local _,address=df.sizeof(df.global.plotinfo.equipment:_field('update'))
+   result.native_offsets.equipment_update=address-dfhack.internal.getImageBase()
+  end
+  result.position_responsibilities={}
+  for i=0,df.entity_position_responsibility._last_item do
+   if position.responsibilities[i]then result.position_responsibilities[#result.position_responsibilities+1]=df.entity_position_responsibility[i]end
+  end
+
   for _,link in ipairs(holder.entity_links)do
    local row={type=df.histfig_entity_link_type[link:getType()],entity_id=link.entity_id,strength=link.link_strength}
    if df.histfig_entity_link_positionst:is_instance(link) then row.assignment_id=link.assignment_id;row.start_year=link.start_year
@@ -678,6 +712,7 @@ if recognition_case=='removepriest' then
   pixel(944,358)
   local after=capture('TEMPLE-0-priest-remove-after',temple);after.recognition=recognition_state();after.holder=holder_state()
   assert(assignment.histfig==-1,'native religious removal did not vacate assignment')
+  if squad then assert(after.holder.squad.occupant==-1 and after.holder.unit.squad_id==-1 and after.holder.unit.squad_position==-1,'native squad cleanup missing')end
   assert(after.recognition.bridge.rank==before.recognition.bridge.rank,'removal changed recognition rank')
   for _,field in ipairs{'positions','next_position','next_assignment','temple_emotions','rng'}do
    assert(require('json').encode(before.recognition[field])==require('json').encode(after.recognition[field]),'removal unexpectedly changed '..field)
@@ -685,7 +720,11 @@ if recognition_case=='removepriest' then
   after.new_events={}
   for i=before.recognition.event_count,#df.global.world.history.events-1 do
    local event=df.global.world.history.events[i]
-   after.new_events[#after.new_events+1]={id=event.id,type=df.history_event_type[event:getType()],year=event.year,seconds=event.seconds}
+   local item={id=event.id,type=df.history_event_type[event:getType()],year=event.year,seconds=event.seconds}
+   if df.history_event_remove_hf_entity_linkst:is_instance(event)then
+    for _,field in ipairs{'civ','histfig','link_type','position_id'}do item[field]=event[field]end
+   end
+   after.new_events[#after.new_events+1]=item
   end
   pixel(944,358)
   local repeated=capture('TEMPLE-0-priest-remove-repeat',temple);repeated.recognition=recognition_state();repeated.holder=holder_state()

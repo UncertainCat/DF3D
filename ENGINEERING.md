@@ -1214,8 +1214,24 @@ Inspection of the removed temple agreement rejects without retained facts.
 Native UI/religious guards pass; owned DF156836 exits unsaved with both save
 manifests unchanged. This run is passed_with_known_issues for the render-thread
 notice only. `popup_transport_reference` retains the plugin hash and facts.
-Popup reader lifecycle, the visible HUD and popup rendering, and native
-visibility, sizing and interaction integration remain unfinished.
+`continuing_agreement_popup_reader.gd` now owns reads for an exact currently
+displayed tracker row. Hover changes detach the old ticket and retire its
+callback generation. List loss, row removal or changed row facts clear the
+target and popup; session recovery does not activate it automatically. Replies
+must echo the selected row and carry typed popup facts. Defensive snapshots,
+one outstanding read and one-second refresh prevent redraw-driven requests.
+Core and the reader engine check pass in `build/qa/petition-popup-reader-fixed`,
+covering foreign/late replies, removed rows, session loss, refused submissions,
+malformed replies and synchronous closure. The initial check failed on a test
+constant shadowing Godot's Popup class; renaming it fixed the parse error.
+
+Protected tracker120807 uses the reader for all three popup observations, then
+holds a real successful reply while switching targets. The old reply cannot
+populate the replacement, which receives its own row; removing the agreements
+clears the reader. Both save manifests remain unchanged, owned DF151208 exits
+unsaved, and the only diagnostic is the known render-thread notice. Actual
+popup-reader disconnect/restart checks, the visible HUD and popup rendering,
+and native visibility, sizing and interaction integration remain unfinished.
 
 ## Native Location name editor discovery
 

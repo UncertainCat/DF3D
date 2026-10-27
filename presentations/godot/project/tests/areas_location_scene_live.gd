@@ -1696,6 +1696,7 @@ func specialization_scene() -> void:
 func tracker_transport() -> void:
 	step="native tracker typed transport"
 	var reader=preload("res://scripts/continuing_agreements_reader.gd").new();reader.configure(actions)
+	var popup_reader=preload("res://scripts/continuing_agreement_popup_reader.gd").new();popup_reader.configure(reader)
 	var evidence: Array=[]
 	for phase in ["empty","populated","restored"]:
 		var expected:=await native("religious_tracker",{"seed":phase=="populated","restore":phase=="restored"})
@@ -1720,24 +1721,38 @@ func tracker_transport() -> void:
 			var expected_popup:=await native("religious_tracker_details",{"agreement_id":row.agreement_id})
 			if stopped:return
 			await native("religious_guard")
-			var popup_ticket: int=actions.submit("agreements",{"action":37,"tracker":true,"id":row.agreement_id},Callable())
+			popup_reader.display(row);popup_reader.refresh()
+			var popup_ticket: int=popup_reader.ticket
 			if not check(popup_ticket>0,"popup request not queued"):return
 			if not await wait_ui(func():return not actions.result(popup_ticket).is_empty(),"popup native result"):return
 			var popup: Dictionary=actions.result(popup_ticket)
 			if not check(popup.status==S.Ok and popup.action==37 and popup.agreement.tracker and popup.agreement.tracker_rows==[row],"popup identity or mode differs"):return
 			if not check(popup.agreement.has("tracker_details") and expected_popup.facts.valid,"popup facts absent"):return
+			if not check(popup_reader.ready and popup_reader.snapshot().row==row and popup_reader.snapshot().details==popup.agreement.tracker_details,"popup reader facts differ"):return
 			for field in ["required_value","matching_locations","location_id","location_value","location_tier","site_available","tier_met","location_name"]:
 				if not check(popup.agreement.tracker_details[field]==expected_popup.facts[field],"popup field mismatch "+field):return
 			await native("religious_unchanged")
 			if stopped:return
 			popups.append({"ticket":popup_ticket,"agreement_id":row.agreement_id,"facts":popup.agreement.tracker_details})
+		if phase=="populated":
+			popup_reader.display(rows[0]);var held: int=popup_reader.ticket
+			await quantity_unobserved(held)
+			if stopped:return
+			popup_reader.display(rows[1]);var replacement: int=popup_reader.ticket
+			if not check(replacement>held and not popup_reader.ready and popup_reader.snapshot().is_empty(),"hover switch retained old popup"):return
+			actions.poll()
+			if not check(popup_reader.target==rows[1] and popup_reader.snapshot().is_empty(),"late reply populated replacement hover"):return
+			if not await wait_ui(func():return popup_reader.ready,"replacement hover receipt"):return
+			if not check(popup_reader.snapshot().row==rows[1],"replacement hover has wrong row"):return
+			popups.append({"held_ticket":held,"replacement_ticket":replacement,"late_reply_isolated":true})
 		if phase=="restored":
+			if not check(popup_reader.target.is_empty() and not popup_reader.ready and popup_reader.snapshot().is_empty(),"removed row retained popup reader"):return
 			var missing: int=actions.submit("agreements",{"action":37,"tracker":true,"id":2147483502},Callable())
 			if not await wait_ui(func():return not actions.result(missing).is_empty(),"removed popup refusal"):return
 			var rejected: Dictionary=actions.result(missing)
 			if not check(rejected.status==S.Rejected and not rejected.agreement.tracker and not rejected.agreement.has("tracker_details"),"removed popup retained facts"):return
 		evidence.append({"phase":phase,"rows":rows,"ticket":ticket,"popups":popups})
-	reader.dispose()
+	popup_reader.dispose();reader.dispose()
 	write_json("tracker-transport-evidence.json",{"cases":evidence,"reader_retired":not reader.active and reader.snapshot().is_empty()})
 	editor.close_panel()
 

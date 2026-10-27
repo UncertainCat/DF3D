@@ -9,6 +9,17 @@
   },
   "checks": [
     {
+      "id": "continuing_agreement_popup_reader_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/continuing_agreement_popup_reader_test.gd",
+      "completion": "^CONTINUING_AGREEMENT_POPUP_READER_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
       "id": "continuing_agreements_reader_test",
       "lane": "core",
       "kind": "godot",

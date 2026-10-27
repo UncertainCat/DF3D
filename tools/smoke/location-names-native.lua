@@ -758,6 +758,15 @@ if recognition_case=='assignpriest' or recognition_case=='assignhighpriest' or r
  end
  local list=assert(find_list(selector,0),'religious unit list missing')
  local opened=capture('TEMPLE-priest-selector',temple)
+ opened.scrollbar_tiles={}
+ for y=7,56 do for x=117,118 do
+  local cell={x=x,y=y}
+  for _,field in ipairs{'screentexpos','screentexpos_lower','screentexpos_top','screentexpos_top_lower'}do
+   cell[field]=g[field][x*g.dimy+y]
+  end
+  opened.scrollbar_tiles[#opened.scrollbar_tiles+1]=cell
+ end end
+ opened.scrollbar_base=g.graphical_interface.texpos_scrollbar[0][0]
  opened.selector={context=selector.context,entity_id=selector.loc_ent and selector.loc_ent.id or -1,
   position_id=selector.loc_position and selector.loc_position.id or -1,assignment_id=selector.loc_epp and selector.loc_epp.id or -1,
   filter=list.filter_str,skill_type=list.skill_type,flags=list.flags.whole,sort_flags=list.sort_flags.whole,candidates={}}

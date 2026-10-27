@@ -530,14 +530,20 @@ candidate picker, routes choose/cancel to its owning workflow and retires it on
 panel replacement. Other Details actions are gated during selection; completed
 assignment refreshes Details and parent observations. Religious rows use installed
 BUTTON_RECTANGLE artwork, matching native054344; ordinary candidate rows retain
-their separately observed DARK variant. Protected scene070144 exercises actual
+their separately observed DARK variant. Protected scene071432 exercises actual
 viewport open, queued cancellation, reopen, overlay blocking and first-row
 assignment, with independent native link/history readback. Both saves remain
 unchanged and owned DF exits unsaved. It passes_with_known_issues only for the
 known Godot separate-thread notice. Inspected candidate and completed-row captures
-retain native layout; all317952 candidate-row and3360 header pixels match the
-native reference exactly.26 scrollbar-edge pixels differ and remain unresolved;
-this is not whole-panel pixel parity. The fixture stores bounded visual evidence.
+retain native layout; all419136 picker pixels match native054344 exactly,
+including317952 candidate-row and3360 header pixels. Native071237 captures the
+actual scrollbar layers: this selector uses the standalone data/art/scrollbar.png
+sheet, not the similar INTERFACE_BITS sprites. All9600 scrollbar pixels match
+composition from that installed sheet; using it resolves the26 edge differences.
+The religious picker selects this sheet locally, with no native UI state input
+or bundled artwork. Other location scrollbars retain their observed source.
+The fixture stores bounded visual evidence. Core and controlled assignment checks
+pass in build/qa/location-religious-scrollbar.
 Native alternate sort/filter verification and sent/disconnect/late/restart assignment
 lifecycle acceptance remain unfinished. Overall Zones availability stays hidden.
 

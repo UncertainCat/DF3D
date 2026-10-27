@@ -127,6 +127,7 @@ func refresh() -> void:
 	rename_button.visible=not selecting and not naming
 	rename_button.disabled=state.phase!=state.Phase.Ready or staff_workflow.mode!=staff_workflow.Mode.Closed or religious_assignment_active()
 	staff_candidates_view.row_background_token="BUTTON_RECTANGLE" if religious_selecting else "BUTTON_RECTANGLE_DARK"
+	staff_candidates_view.scrollbar.use_classic_art=religious_selecting
 	staff_candidates_view.visible=selecting
 	var candidates=religious_assignment_workflow.candidates if religious_selecting else staff_workflow.candidates
 	staff_candidates_view.actions_enabled=selecting and candidates.phase==candidates.Phase.Ready

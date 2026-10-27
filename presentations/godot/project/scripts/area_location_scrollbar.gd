@@ -8,6 +8,8 @@ var dragging := false
 var hover_cell := -1
 var source
 var textures: Dictionary = {}
+var use_classic_art := false
+var classic_textures: Dictionary = {}
 var input_allowed: Callable
 
 func configure(world) -> void:
@@ -70,6 +72,7 @@ func _gui_input(event: InputEvent) -> void:
 	accept_event()
 
 func texture(token: String) -> Texture2D:
+	if use_classic_art: return classic_texture(token)
 	if not textures.has(token):
 		if source == null or not source.has_method("ui_texture"): return null
 		if token in ["SCROLLBAR","SCROLLBAR_OFFCENTER_SCROLLER","SCROLLBAR_OFFCENTER_SCROLLER_HOVER","SCROLLBAR_SMALL_SCROLLER","SCROLLBAR_SMALL_SCROLLER_HOVER"]:
@@ -83,6 +86,28 @@ func texture(token: String) -> Texture2D:
 			combined.blit_rect(right.get_image(),Rect2i(0,0,8,12),Vector2i(8,0))
 			textures[token] = ImageTexture.create_from_image(combined)
 	return textures[token]
+
+func classic_texture(token: String) -> Texture2D:
+	if classic_textures.is_empty():
+		if source == null: return null
+		var sheet := Image.load_from_file(source.assets_root().path_join("data/art/scrollbar.png"))
+		if sheet == null or sheet.get_size() != Vector2i(96,48): return null
+		# Native init.scrollbar_texpos layout, independently observed in the
+		# religious selector. This sheet differs from INTERFACE_BITS at edges.
+		var cells := {"SCROLLBAR":[0,12,24],"SCROLLBAR_UP_HOVER":[2],"SCROLLBAR_DOWN_HOVER":[14],
+			"SCROLLBAR_TOP_SCROLLER":[6],"SCROLLBAR_TOP_SCROLLER_HOVER":[8],
+			"SCROLLBAR_BOTTOM_SCROLLER":[42],"SCROLLBAR_BOTTOM_SCROLLER_HOVER":[44],
+			"SCROLLBAR_BLANK_SCROLLER":[30],"SCROLLBAR_BLANK_SCROLLER_HOVER":[32],
+			"SCROLLBAR_CENTER_SCROLLER":[18],"SCROLLBAR_CENTER_SCROLLER_HOVER":[20],
+			"SCROLLBAR_OFFCENTER_SCROLLER":[10,22],"SCROLLBAR_OFFCENTER_SCROLLER_HOVER":[34,46],
+			"SCROLLBAR_SMALL_SCROLLER":[26,38],"SCROLLBAR_SMALL_SCROLLER_HOVER":[28,40]}
+		for name in cells:
+			var combined := Image.create(16,12*cells[name].size(),false,Image.FORMAT_RGBA8)
+			for row in cells[name].size():
+				var cell: int = cells[name][row]
+				combined.blit_rect(sheet,Rect2i((cell%12)*8,(cell/12)*12,16,12),Vector2i(0,row*12))
+			classic_textures[name] = ImageTexture.create_from_image(combined)
+	return classic_textures.get(token)
 
 func _draw() -> void:
 	if count <= page: return

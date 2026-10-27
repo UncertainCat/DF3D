@@ -13227,7 +13227,7 @@
       "queued_cancel": "not_sent",
       "unit_id": 7123,
       "viewport_click": true,
-      "provenance": "build/areas-acceptance-20261027-070144",
+      "provenance": "build/areas-acceptance-20261027-071432",
       "status": "passed_with_known_issues",
       "known_diagnostic": "godot-separate-thread-notice",
       "source_save_directories_preserved": 2,
@@ -13263,13 +13263,23 @@
             708
           ],
           "pixels": 419136,
-          "different": 26
+          "different": 0
         }
       },
       "limitations": [
-        "26 scrollbar-edge pixels differ from native; unresolved.",
         "Alternate sorting/filtering and sent/disconnect/late/restart assignment lifecycle remain unverified."
-      ]
+      ],
+      "scrollbar_art_reference": {
+        "provenance": "build/stockpile-storage-native-location-recognition-assignpriest-20261027-071237",
+        "installed_sheet": "data/art/scrollbar.png",
+        "pixels": 9600,
+        "different": 0,
+        "observed_layer_tile_range": [
+          912,
+          959
+        ],
+        "graphical_interface_scrollbar_base": 120107
+      }
     }
   }
 }

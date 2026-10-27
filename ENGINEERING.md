@@ -928,8 +928,23 @@ sets its controlled temple tier after Details entry, which recomputes that tier;
 it then refreshes the semantic observation before clicking. Before/after images
 were inspected. Source and clone manifests remain unchanged, with unsaved owned
 exit. The run passed with known Godot diagnostics. This does not establish other
-viewport sizes, held-button behavior, first/vacant-priest scene variants or real
-disconnect/restart/late-reply workflows. Zones remains hidden.
+viewport sizes, held-button behavior or first/vacant-priest scene variants.
+Zones remains hidden.
+
+`-RecognitionLifecycle queued|sent|late` adds recognition lifecycle checks to
+that protected scene recipe. `recognition_visual_reference.lifecycle_reference`
+records queued035342, sent035445 and late035702 on2026-10-27. An unsent click
+retires as not_sent with no effects or RNG change. After native completion but
+before viewer receipt, detach retires the sent click as unknown; reconnect does
+not replay it. Explicit reopening reads the resulting rank from DF. Dismissing
+while a success is unobserved and opening a different location does not revive
+the retired recognition owner. Returning to the temple reads the promotion afresh.
+Reopening can show native tier guidance even at rank2 because Details entry
+recomputes tier; absence of an action, rather than absence of all text, is required.
+All three runs pass with known Godot diagnostics, preserve source/clone manifests
+and exit unsaved. Reopened disconnect images were inspected. These tests use the
+actual transport with controlled polling, not a simulated service. Producer
+process replacement and loss during mutation remain unverified for this workflow.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and

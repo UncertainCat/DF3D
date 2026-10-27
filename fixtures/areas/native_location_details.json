@@ -8180,7 +8180,56 @@
       "save_preservation": "Source and clone manifests unchanged; owned unsaved exit",
       "omissions": [
         "First/vacant-priest scene variants",
-        "Real disconnect/restart/late replies"
+        "Producer process restart"
+      ]
+    },
+    "lifecycle_reference": {
+      "cases": [
+        {
+          "mode": "queued",
+          "source": "build/areas-acceptance-20261027-035342",
+          "source_sha256": "66ada23d369104dc79ebad6fd8c2203384edfa71ccd170898b0a45dbecbb8a28",
+          "observed": {
+            "fresh_rank": 1,
+            "no_replay": true,
+            "outcome": "not_sent",
+            "sent": false
+          },
+          "status": "passed_with_known_issues",
+          "save_preservation": "Verified unchanged manifests for 2 save directories."
+        },
+        {
+          "mode": "sent",
+          "source": "build/areas-acceptance-20261027-035445",
+          "source_sha256": "75e1c6212a4bbe6390ac6a05c6be7c219584186a9c96aa9044d7644f36dd3e15",
+          "observed": {
+            "fresh_rank": 2,
+            "no_replay": true,
+            "outcome": "unknown",
+            "sent": true
+          },
+          "status": "passed_with_known_issues",
+          "save_preservation": "Verified unchanged manifests for 2 save directories."
+        },
+        {
+          "mode": "late",
+          "source": "build/areas-acceptance-20261027-035702",
+          "source_sha256": "0d450f83c44f976d1a9785b50043e8184adfc028f14e45e90475157a27cfe456",
+          "observed": {
+            "fresh_rank": 2,
+            "old_owner_retired": true,
+            "old_ticket": 11,
+            "other_location": 1
+          },
+          "status": "passed_with_known_issues",
+          "save_preservation": "Verified unchanged manifests for 2 save directories."
+        }
+      ],
+      "scope": "Actual viewport input and management transport; held reply after native completion; explicit detach/reattach and late reply after dismissal. Independent native effects/RNG/UI guards and fresh native receipt comparison.",
+      "omissions": [
+        "Producer process restart",
+        "Disconnect during native mutation rather than after completion",
+        "First/vacant-priest variants"
       ]
     }
   }

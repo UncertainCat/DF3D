@@ -1397,6 +1397,11 @@ func recognition_route(locations: Array) -> void:
 	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and recognition.phase==recognition.Phase.Ready and recognition.snapshot.state==Contract.LocationRecognitionState.RecognizeHighPriest,"controlled recognition tier after entry"):return
 	if not check(details.recognition_view.visible and recognition.snapshot.state==Contract.LocationRecognitionState.RecognizeHighPriest,"recognition action missing"):return
 	await capture("recognition_before")
+	var disconnect_mode:=FileAccess.get_file_as_string(directory+"/recognition-scene.txt").strip_edges()
+	if disconnect_mode=="late":
+		await recognition_late();return
+	if disconnect_mode in ["queued","sent"]:
+		await recognition_disconnect(disconnect_mode=="sent");return
 	step="recognition scene apply"
 	await native("recognition_guard")
 	await pointer_click(details.recognition_view.global_position+Vector2(116,18))
@@ -1414,3 +1419,77 @@ func recognition_route(locations: Array) -> void:
 	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"recognition Details Back"):return
 	write_json("recognition-scene-evidence.json",{"before":setup.before,"after":effects.after,"viewport_click":true,"details_refreshed":true,"completed_control_hidden":true})
+
+func recognition_disconnect(sent: bool) -> void:
+	step="recognition disconnect sent="+str(sent)
+	var details=editor.details_view
+	var recognition=details.recognition_workflow.recognition
+	await native("recognition_guard")
+	await pointer_click(details.recognition_view.global_position+Vector2(116,18))
+	var ticket: int=recognition.ticket
+	if not check(ticket>0 and recognition.phase==recognition.Phase.Applying,"recognition pending intent missing"):return
+	if sent:
+		var reply:=await quantity_unobserved(ticket)
+		if stopped:return
+		if not check(reply.area.location_recognition.rank==2,"unobserved recognition did not promote"):return
+	world.detach_live();actions.poll()
+	var outcome: Dictionary=actions.result(ticket)
+	write_json("recognition-disconnect-outcome.json",outcome)
+	if not check(outcome.get("outcome") == ("unknown" if sent else "not_sent"),"recognition disconnect outcome differs"):return
+	if not check(recognition.identity.is_empty() and recognition.snapshot.is_empty() and recognition.ticket==0 and not editor.details_layer.visible,"disconnect retained recognition authority"):return
+	if not check(not actions._requests.has(ticket) and actions._queue.is_empty() and actions._active==0,"disconnected recognition remains dispatchable"):return
+	await native("recognition_applied" if sent else "recognition_unchanged")
+	if stopped:return
+	await native("recognition_guard")
+	if not check(world.attach(),"recognition reconnect failed"):return
+	var deadline:=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();editor._process(0.02)
+		if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
+		await create_timer(0.02).timeout
+	if not check(bool(world.poll_management().get("transport_alive",false)),"recognition reconnect timeout"):return
+	var next_ticket: int=actions._next_ticket
+	for frame in 30:
+		world.poll();actions.poll();editor._process(0.02);await process_frame
+	if not check(actions._next_ticket==next_ticket and recognition.identity.is_empty() and recognition.snapshot.is_empty() and not editor.details_layer.visible,"reconnect replayed or reopened recognition"):return
+	await native("recognition_unchanged")
+	await capture("recognition_disconnect_retired")
+	await quantity_lifecycle_open()
+	if stopped:return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"recognition fresh chooser"):return
+	await quantity_lifecycle_choose(0)
+	if not await wait_ui(func():return recognition.phase==recognition.Phase.Ready,"recognition fresh observation after reconnect"):return
+	if not check(int(recognition.snapshot.rank)==(2 if sent else 1),"reopened recognition rank differs"):return
+	await native("recognition_readback",{"snapshot":recognition.snapshot,"revision":str(recognition.snapshot.revision)})
+	await capture("recognition_disconnect_reopened")
+	write_json("recognition-disconnect-evidence.json",{"sent":sent,"outcome":outcome.outcome,"no_replay":true,"fresh_rank":recognition.snapshot.rank})
+	editor.close_panel()
+
+func recognition_late() -> void:
+	step="recognition sent receipt after dismissal"
+	var details=editor.details_view
+	var recognition=details.recognition_workflow.recognition
+	await native("recognition_guard")
+	await pointer_click(details.recognition_view.global_position+Vector2(116,18))
+	var ticket: int=recognition.ticket
+	if not check(ticket>0,"late recognition intent missing"):return
+	await quantity_unobserved(ticket)
+	if stopped:return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not check(not editor.details_layer.visible and recognition.identity.is_empty() and recognition.snapshot.is_empty(),"dismissal retained recognition authority"):return
+	await quantity_lifecycle_choose(1)
+	if stopped:return
+	if not check(recognition.identity.is_empty() and recognition.snapshot.is_empty() and not details.recognition_view.visible,"late recognition revived in a different location"):return
+	await native("recognition_applied")
+	if stopped:return
+	await capture("recognition_late_other_location")
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"late recognition chooser"):return
+	await quantity_lifecycle_choose(0)
+	if not await wait_ui(func():return recognition.phase==recognition.Phase.Ready,"late recognition fresh observation"):return
+	# Reopening recomputes temple tier; native may show tier guidance even at rank2.
+	if not check(recognition.snapshot.rank==2 and not details.recognition_view.current.get("action",false),"fresh recognition did not observe promotion"):return
+	await native("recognition_readback",{"snapshot":recognition.snapshot,"revision":str(recognition.snapshot.revision)})
+	write_json("recognition-late-evidence.json",{"old_ticket":ticket,"other_location":1,"old_owner_retired":true,"fresh_rank":recognition.snapshot.rank})
+	editor.close_panel()

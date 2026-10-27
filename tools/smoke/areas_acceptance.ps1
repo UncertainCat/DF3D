@@ -1,6 +1,6 @@
 # Protected, owned, never-saved acceptance. SaveId names a NEW disposable copy
 # of region5; existing saves are refused. The copy is retained for inspection.
-param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$ZoneAnimalsOnly,[switch]$ZoneSquadsOnly,[ValidateSet("Barracks","ArcheryRange")][string]$SquadZone="Barracks",[ValidateSet("none","queued","sent")][string]$SquadDisconnect="none",[ValidateSet("none","queued","sent")][string]$AnimalDisconnect="none",[switch]$ZoneOwnerOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[ValidateSet("none","stale","queued","sent","late","restart")][string]$QuantityLifecycle="none",[switch]$StaffOnly,[switch]$QuantityOnly,[switch]$NamingOnly,[switch]$RecognitionOnly,[switch]$RecognitionScene,[switch]$NamingScene,[switch]$NamingDisconnect,[switch]$NamingRestart,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
+param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$ZoneAnimalsOnly,[switch]$ZoneSquadsOnly,[ValidateSet("Barracks","ArcheryRange")][string]$SquadZone="Barracks",[ValidateSet("none","queued","sent")][string]$SquadDisconnect="none",[ValidateSet("none","queued","sent")][string]$AnimalDisconnect="none",[switch]$ZoneOwnerOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[ValidateSet("none","stale","queued","sent","late","restart")][string]$QuantityLifecycle="none",[switch]$StaffOnly,[switch]$QuantityOnly,[switch]$NamingOnly,[switch]$RecognitionOnly,[switch]$RecognitionScene,[ValidateSet("none","queued","sent","late")][string]$RecognitionLifecycle="none",[switch]$NamingScene,[switch]$NamingDisconnect,[switch]$NamingRestart,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
@@ -9,7 +9,8 @@ New-Item -ItemType Directory -Path $out | Out-Null
 if($QuantityOnly -and ($Controller -or $ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $ZoneRenameOnly -or $ZoneGatherOnly -or $ZoneOverlapOnly -or $ZoneDefaultsOnly -or $ZoneAnimalsOnly -or $ZoneSquadsOnly -or $ZoneOwnerOnly -or $StockpilesOnly -or $StockpilePaintOnly -or $StockpileFitOnly -or $StockpileResizeOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene)){throw 'QuantityOnly is a separate protected semantic lane'}
 if($NamingOnly -and ($PSBoundParameters.Keys | Where-Object {$_ -notin @('NamingOnly','SaveId','DfPath')})){throw 'NamingOnly is a separate protected semantic lane'}
 if($RecognitionOnly -and ($PSBoundParameters.Keys | Where-Object {$_ -notin @('RecognitionOnly','SaveId','DfPath')})){throw 'RecognitionOnly is a separate protected semantic lane'}
-if($RecognitionScene -and (-not $LocationScene -or ($PSBoundParameters.Keys | Where-Object {$_ -notin @('RecognitionScene','LocationScene','SaveId','DfPath')}))){throw 'RecognitionScene requires only LocationScene and a new SaveId'}
+if($RecognitionScene -and (-not $LocationScene -or ($PSBoundParameters.Keys | Where-Object {$_ -notin @('RecognitionScene','RecognitionLifecycle','LocationScene','SaveId','DfPath')}))){throw 'RecognitionScene requires only LocationScene and a new SaveId'}
+if($RecognitionLifecycle -ne 'none' -and -not $RecognitionScene){throw 'RecognitionLifecycle requires RecognitionScene'}
 $summary='failed startup'; $entered=$false; $loaded=$false; $finalPaused=$false; $g=$null
 $saveManifests=@{}
 $oldInput=$env:DF3D_AREAS_ACCEPTANCE
@@ -160,7 +161,7 @@ try {
  if($LocationScene){$driver='areas_location_scene_live.gd'}
  if($StaffOnly){$driver='location_staff_edit_live.gd'}
  if($QuantityOnly){$driver='location_quantity_live.gd'}
- if($RecognitionScene){Write-Lf "$out/recognition-scene.txt" '1'}
+ if($RecognitionScene){Write-Lf "$out/recognition-scene.txt" $RecognitionLifecycle}
  if($NamingOnly){$driver='location_name_live.gd'}
  if($RecognitionOnly){$driver='location_recognition_live.gd'}
  $g=Start-ContainedProcess -Exe $(if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}) -Arguments "$renderer --path `"$project`" --script res://tests/$driver --log-file `"$out/godot.log`"" -WorkingDir $project

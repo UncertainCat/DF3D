@@ -3767,12 +3767,12 @@
     ]
   },
   "recognition_mutation_reference": {
-    "source": "build/stockpile-storage-native-location-names-20261027-011510/result.json",
-    "result_sha256": "57872d2f01211a91ca429eb6beb4d305d6c4b48c967df1ac5237f553d1efc2d2",
-    "cases": [
+    "branches": [
       {
-        "name": "TEMPLE-0-recognition-before",
-        "state": {
+        "case": "promote",
+        "source": "build/stockpile-storage-native-location-recognition-20261027-012235/result.json",
+        "result_sha256": "25c1afb3350171e6ce03d1cafc76cd131ec9078a01f11afa933be1e356053db7",
+        "before": {
           "assignments": [
             {
               "histfig": 1018,
@@ -3803,6 +3803,42 @@
             }
           ],
           "event_count": 54231,
+          "holder_links": {
+            "1018": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 0,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 24,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ],
+            "9375": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 2,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 103,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ]
+          },
           "next_assignment": 3,
           "next_position": 1,
           "positions": [
@@ -3812,13 +3848,68 @@
               "name": "sacred vault"
             }
           ],
-          "recognized": false
+          "recognized": false,
+          "site_links": [
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 61,
+              "target_site_x": 50,
+              "target_site_y": 120,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32768,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 90,
+              "target_site_x": 49,
+              "target_site_y": 121,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 651,
+              "target_site_x": 48,
+              "target_site_y": 64,
+              "type": 4
+            }
+          ]
         },
-        "action_text": "Recognize high priest"
-      },
-      {
-        "name": "TEMPLE-0-recognition-after",
-        "state": {
+        "after": {
           "assignments": [
             {
               "histfig": 1018,
@@ -3858,10 +3949,63 @@
             }
           ],
           "event_count": 54232,
+          "holder_links": {
+            "1018": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 0,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 24,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ],
+            "9375": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 2,
+                "end_year": 106,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 103,
+                "strength": 100,
+                "type": "FORMER_POSITION"
+              },
+              {
+                "assignment_id": 3,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 106,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ]
+          },
           "new_events": [
             {
+              "appointer_hfid": -1,
+              "civ": 383,
+              "histfig": 9375,
               "id": 64037,
-              "type": "ADD_HF_ENTITY_LINK"
+              "link_type": 10,
+              "position_id": 1,
+              "promise_to_hfid": -1,
+              "seconds": 157249,
+              "type": "ADD_HF_ENTITY_LINK",
+              "year": 106
             }
           ],
           "next_assignment": 4,
@@ -3875,16 +4019,205 @@
             {
               "code": "HIGH_PRIEST",
               "id": 1,
-              "name": "exalted wealth"
+              "name": "exalted treasury"
             }
           ],
-          "recognized": false
+          "recognized": false,
+          "site_links": [
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 61,
+              "target_site_x": 50,
+              "target_site_y": 120,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32768,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 90,
+              "target_site_x": 49,
+              "target_site_y": 121,
+              "type": 4
+            },
+            {
+              "ab_profile": [
+                {
+                  "id": 0,
+                  "purpose_flags": 2
+                }
+              ],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 651,
+              "target_site_x": 48,
+              "target_site_y": 64,
+              "type": 4
+            }
+          ]
         },
-        "action_text": ""
+        "repeat_unchanged": true,
+        "source_save_unchanged": true,
+        "owned_exit_without_save": true
       },
       {
-        "name": "TEMPLE-0-recognition-repeat",
-        "state": {
+        "case": "empty",
+        "source": "build/stockpile-storage-native-location-recognition-empty-20261027-012346/result.json",
+        "result_sha256": "7b806e1cdbd21c859a3fce555fd99474f2e0117ae49784dea1c1b40543d55624",
+        "before": {
+          "assignments": [
+            {
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61
+            },
+            {
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90
+            },
+            {
+              "histfig": -1,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": 0,
+              "site": 651
+            }
+          ],
+          "case": "empty",
+          "event_count": 54231,
+          "holder_links": {
+            "1018": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 0,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 24,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ]
+          },
+          "next_assignment": 3,
+          "next_position": 1,
+          "positions": [
+            {
+              "code": "PRIEST",
+              "id": 0,
+              "name": "sacred vault"
+            }
+          ],
+          "recognized": false,
+          "site_links": [
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 61,
+              "target_site_x": 50,
+              "target_site_y": 120,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32768,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 90,
+              "target_site_x": 49,
+              "target_site_y": 121,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 651,
+              "target_site_x": 48,
+              "target_site_y": 64,
+              "type": 4
+            }
+          ]
+        },
+        "after": {
           "assignments": [
             {
               "histfig": 1018,
@@ -3914,8 +4247,8 @@
               "site": 651
             },
             {
-              "histfig": 9375,
-              "histfig2": 9375,
+              "histfig": -1,
+              "histfig2": -1,
               "id": 3,
               "location": -1,
               "position_id": 1,
@@ -3923,7 +4256,28 @@
               "site": 651
             }
           ],
-          "event_count": 54232,
+          "case": "empty",
+          "event_count": 54231,
+          "holder_links": {
+            "1018": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 0,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 24,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ]
+          },
+          "new_events": [],
           "next_assignment": 4,
           "next_position": 2,
           "positions": [
@@ -3935,23 +4289,383 @@
             {
               "code": "HIGH_PRIEST",
               "id": 1,
-              "name": "exalted wealth"
+              "name": "first jewel"
             }
           ],
-          "recognized": false
+          "recognized": false,
+          "site_links": [
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 61,
+              "target_site_x": 50,
+              "target_site_y": 120,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32768,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 90,
+              "target_site_x": 49,
+              "target_site_y": 121,
+              "type": 4
+            },
+            {
+              "ab_profile": [
+                {
+                  "id": 0,
+                  "purpose_flags": 2
+                }
+              ],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 651,
+              "target_site_x": 48,
+              "target_site_y": 64,
+              "type": 4
+            }
+          ]
         },
-        "action_text": ""
+        "repeat_unchanged": true,
+        "source_save_unchanged": true,
+        "owned_exit_without_save": true,
+        "fixture_mutation": "Clear current-site assignment histfig before opening Details; tier2. Existing historical links retained."
+      },
+      {
+        "case": "first",
+        "source": "build/stockpile-storage-native-location-recognition-first-20261027-012425/result.json",
+        "result_sha256": "12f6171464ae9ccc4ae03c6ac7b6b3e32dbe4c96a888defbc88b04e0e13cff7e",
+        "before": {
+          "assignments": [
+            {
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61
+            },
+            {
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90
+            },
+            {
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": -1
+            }
+          ],
+          "case": "first",
+          "event_count": 54231,
+          "holder_links": {
+            "1018": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 0,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 24,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ],
+            "9375": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 2,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 103,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ]
+          },
+          "next_assignment": 3,
+          "next_position": 1,
+          "positions": [
+            {
+              "code": "PRIEST",
+              "id": 0,
+              "name": "sacred vault"
+            }
+          ],
+          "recognized": false,
+          "site_links": [
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 61,
+              "target_site_x": 50,
+              "target_site_y": 120,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32768,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 90,
+              "target_site_x": 49,
+              "target_site_y": 121,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 651,
+              "target_site_x": 48,
+              "target_site_y": 64,
+              "type": 4
+            }
+          ]
+        },
+        "after": {
+          "assignments": [
+            {
+              "histfig": 1018,
+              "histfig2": 1018,
+              "id": 0,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 61
+            },
+            {
+              "histfig": -1,
+              "histfig2": 5005,
+              "id": 1,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": 90
+            },
+            {
+              "histfig": 9375,
+              "histfig2": 9375,
+              "id": 2,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": -1,
+              "site": -1
+            },
+            {
+              "histfig": -1,
+              "histfig2": -1,
+              "id": 3,
+              "location": -1,
+              "position_id": 0,
+              "position_vector_idx": 0,
+              "site": 651
+            }
+          ],
+          "case": "first",
+          "event_count": 54231,
+          "holder_links": {
+            "1018": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 0,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 24,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ],
+            "9375": [
+              {
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "strength": 100,
+                "type": "MEMBER"
+              },
+              {
+                "assignment_id": 2,
+                "assignment_vector_idx": -1,
+                "entity_id": 383,
+                "entity_vector_idx": -1,
+                "start_year": 103,
+                "strength": 100,
+                "type": "POSITION"
+              }
+            ]
+          },
+          "new_events": [],
+          "next_assignment": 4,
+          "next_position": 1,
+          "positions": [
+            {
+              "code": "PRIEST",
+              "id": 0,
+              "name": "sacred vault"
+            }
+          ],
+          "recognized": false,
+          "site_links": [
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 61,
+              "target_site_x": 50,
+              "target_site_y": 120,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32768,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 90,
+              "target_site_x": 49,
+              "target_site_y": 121,
+              "type": 4
+            },
+            {
+              "ab_profile": [],
+              "end_hr": -1,
+              "entity_cache_index": -1,
+              "entity_id": 383,
+              "flags": 32769,
+              "former_flags": 0,
+              "initial_controlling_population": 0,
+              "last_check_controlling_population": 0,
+              "last_checked_army_year": -1,
+              "last_checked_army_year_tick": -1,
+              "link_strength": 100,
+              "position_profile_id": -1,
+              "start_hr": -1,
+              "target": 651,
+              "target_site_x": 48,
+              "target_site_y": 64,
+              "type": 4
+            }
+          ]
+        },
+        "repeat_unchanged": true,
+        "source_save_unchanged": true,
+        "owned_exit_without_save": true,
+        "fixture_mutation": "Set current-site assignment st_id to -1 before opening Details; tier1."
       }
     ],
-    "source_save_unchanged": true,
-    "owned_exit_without_save": true,
-    "scope": "Native click at500,214 with controlled Temple0 tier2 after naming checks. Existing priest promoted to newly created HIGH_PRIEST assignment, old priest assignment retained empty, one ADD_HF_ENTITY_LINK event; repeat click changes no captured assignment/position/count. Tier restored, all other effects discarded by owned unsaved exit.",
+    "scope": "Focused native click500,214 in owned paused clones. Promotion includes historical-figure links, entity-site profiles and ADD_HF_ENTITY_LINK payload; empty priest and no-current-site priesthood branches distinguish allocation and event effects. Repeat old-point click leaves captured facts unchanged. All effects discarded unsaved.",
     "omissions": [
-      "complete event payload and historical-figure links",
-      "entity-site metadata and petition effects",
-      "unoccupied/no-existing-priest branches",
-      "bridge command parity",
-      "disconnect and stale revision behavior"
+      "complete position template fields and assignment flags",
+      "petition branches and population refusals",
+      "first PRIEST template allocation when religion has no existing template",
+      "other historical and unit side effects not covered by captured fields",
+      "bridge command parity and lifecycle"
     ]
   }
 }

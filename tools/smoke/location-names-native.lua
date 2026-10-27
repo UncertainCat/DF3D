@@ -1,5 +1,6 @@
 -- Protected owned paused diagnostic only. Native name-editor scratch is not a runtime API.
 local out,view,records=...
+local marker=io.open(out..'/recognition-only');local recognition_only=marker~=nil;if marker then marker:close()end
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local m=df.global.game.main_interface;local details=m.location_details;local creator=m.name_creator
 local function rng_snapshot()
@@ -290,6 +291,7 @@ m.bottom_mode_selected=-1;key('D_CIVZONE');m.civzone.cur_bld=assert(df.building.
 pixel(336,190);local selector=m.location_selector;assert(selector.open,'chooser did not open')
 local choices={};for _,v in ipairs(selector.valid_ab)do choices[#choices+1]=v end
 assert(#choices==6,'unexpected location reference fixture')
+if not recognition_only then
 for i,location in ipairs(choices)do
  pixel(664,238+36*(i-1));assert(details.open and details.selected_ab==location)
  local prefix=df.abstract_building_type[location:getType()]..'-'..location.id
@@ -498,14 +500,29 @@ for i,location in ipairs(choices)do
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
 assert(#records==158,'incomplete name mutation/filter reference')
+end
 
 -- Native-only mutation oracle, after naming's RNG assertions. The lane owns
 -- this paused disposable clone and exits without saving any recognition effects.
 local temple=choices[1];assert(temple.id==0)
-pixel(664,238);assert(details.open and details.selected_ab==temple)
 local religion=assert(df.historical_entity.find(temple.deity_data.Religion))
+local mode_file=io.open(out..'/recognition-case');local recognition_case='promote'
+if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first')
+if recognition_case~='promote' then
+ -- Controlled world fixture on the owned unsaved clone; never a runtime path.
+ local changed=0
+ for _,assignment in ipairs(religion.positions.assignments)do
+  if assignment.st_id==df.global.plotinfo.site_id then
+   if recognition_case=='first' then assignment.st_id=-1 else assignment.histfig=-1 end
+   changed=changed+1
+  end
+ end
+ assert(changed==1,'unexpected recognition fixture assignment count')
+end
+pixel(664,238);assert(details.open and details.selected_ab==temple)
 local function recognition_state()
- local result={positions={},assignments={},next_position=religion.positions.next_position_id,
+ local result={case=recognition_case,positions={},assignments={},site_links={},holder_links={},next_position=religion.positions.next_position_id,
   next_assignment=religion.positions.next_assignment_id,event_count=#df.global.world.history.events,
   recognized=temple:getContents().need_more.entity_recognized}
  for _,p in ipairs(religion.positions.own)do
@@ -514,10 +531,33 @@ local function recognition_state()
  for _,a in ipairs(religion.positions.assignments)do
   result.assignments[#result.assignments+1]={id=a.id,position_id=a.position_id,histfig=a.histfig,
    histfig2=a.histfig2,site=a.st_id,location=a.ab_id,position_vector_idx=a.position_vector_idx}
+  if a.histfig>=0 and not result.holder_links[tostring(a.histfig)] then
+   local holder=assert(df.historical_figure.find(a.histfig));local links={}
+   for _,link in ipairs(holder.entity_links)do
+    if link.entity_id==religion.id then
+     local item={type=df.histfig_entity_link_type[link:getType()],entity_id=link.entity_id,
+      entity_vector_idx=link.entity_vector_idx,strength=link.link_strength}
+     if df.histfig_entity_link_positionst:is_instance(link) then
+      item.assignment_id=link.assignment_id;item.assignment_vector_idx=link.assignment_vector_idx;item.start_year=link.start_year
+     elseif df.histfig_entity_link_former_positionst:is_instance(link) then
+      item.assignment_id=link.assignment_id;item.start_year=link.start_year;item.end_year=link.end_year
+     end
+     links[#links+1]=item
+    end
+   end
+   result.holder_links[tostring(a.histfig)]=links
+  end
+ end
+ for _,link in ipairs(religion.site_links)do
+  local item={}
+  for _,field in ipairs{'target','entity_id','entity_cache_index','position_profile_id','type','start_hr','end_hr','link_strength','initial_controlling_population','last_check_controlling_population','target_site_x','target_site_y','last_checked_army_year','last_checked_army_year_tick'}do item[field]=link[field] end
+  item.flags=link.flags.whole;item.former_flags=link.former_flag.whole;item.ab_profile={}
+  for _,profile in ipairs(link.ab_profile)do item.ab_profile[#item.ab_profile+1]={id=profile.id,purpose_flags=profile.purpose_flag.whole}end
+  result.site_links[#result.site_links+1]=item
  end
  return result
 end
-local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=2
+local contents=temple:getContents();local original=contents.location_tier;contents.location_tier=recognition_case=='first' and 1 or 2
 local ok,err=xpcall(function()
  local before=capture('TEMPLE-0-recognition-before',temple);before.recognition=recognition_state()
  pixel(500,214)
@@ -525,15 +565,19 @@ local ok,err=xpcall(function()
  after.recognition.new_events={}
  for i=before.recognition.event_count,#df.global.world.history.events-1 do
   local event=df.global.world.history.events[i]
-  after.recognition.new_events[#after.recognition.new_events+1]={id=event.id,type=df.history_event_type[event:getType()]}
+  local item={id=event.id,type=df.history_event_type[event:getType()],year=event.year,seconds=event.seconds}
+  if df.history_event_add_hf_entity_linkst:is_instance(event) then
+   for _,field in ipairs{'civ','histfig','link_type','position_id','appointer_hfid','promise_to_hfid'}do item[field]=event[field]end
+  end
+  after.recognition.new_events[#after.recognition.new_events+1]=item
  end
  assert(require('json').encode(before.recognition.assignments)~=require('json').encode(after.recognition.assignments),'recognition did not change assignments')
  pixel(500,214)
  local repeated=capture('TEMPLE-0-recognition-repeat',temple);repeated.recognition=recognition_state()
- for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment'}do
+ for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links'}do
   assert(require('json').encode(after.recognition[field])==require('json').encode(repeated.recognition[field]),'repeat recognition changed '..field)
  end
 end,debug.traceback)
 contents.location_tier=original
 assert(ok,err)
-assert(#records==161,'incomplete recognition mutation reference')
+assert(#records==(recognition_only and 3 or 161),'incomplete recognition mutation reference')

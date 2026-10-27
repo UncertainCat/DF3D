@@ -601,24 +601,35 @@ the main native UI input handler or borrowing its scratch is not an alternative.
 Petition/threshold variants, other priesthood states and viewer controls remain
 unverified; the staged Details route stays hidden.
 
-`recognition_mutation_reference` adds the actual native promotion from protected
-`build/stockpile-storage-native-location-names-20261027-011510` (161 observations,
-source manifest unchanged, owned unsaved exit). With Temple0 temporarily at
-tier2, clicking the recognition button creates `HIGH_PRIEST` position1 and
-assignment3, moves holder9375 from priest assignment2 to the new assignment,
-retains the vacated priest slot and advances both entity ID counters. One
-`ADD_HF_ENTITY_LINK` history event is added. `entity_recognized` remains false
-before and after; it is not a recognition-status substitute. The button
-disappears, and repeating its old click changes no captured positions,
-assignments or event/ID counts. The original tier is restored, and the lane
-discards all other changes without saving. Root/core19/19 passes in
-`build/qa/location-recognition-native-effects`.
-This is a mutation oracle for the occupied-priest promotion branch, not bridge
-acceptance. Complete history-event payloads, historical-figure links, entity-site
-metadata, petition effects and empty-priest cases still need observation before
-implementing the transaction. The inspected native helpers9364d0,30ffb0,c30000
-and76d4e0 do not individually implement recognition; they must not be treated
-as a ready-made semantic command merely because the input branch calls them.
+`recognition_mutation_reference.branches` records focused native transactions.
+Run `stockpile_storage_native.ps1 -LocationNames -RecognitionOnly` with Windows
+PowerShell5; optional `-RecognitionCase empty|first` changes the owned fixture
+before opening Details. These scopes skip naming replay and capture three states
+(before, after, repeated old-point click), preserving source manifests and exiting
+the owned clone unsaved. They do not cover naming or restore all world mutations.
+The promotion reference is
+`build/stockpile-storage-native-location-recognition-20261027-012235`:
+with Temple0 at tier2, native creates `HIGH_PRIEST` position1 and assignment3,
+moves holder9375 from priest assignment2, and retains the vacant priest slot.
+It replaces the holder's old POSITION link with FORMER_POSITION (start103,
+end106), adds a POSITION link for assignment3 starting106, and adds one
+`ADD_HF_ENTITY_LINK` history event (religion383, holder9375, position1).
+The religion's site651 link gains abstract-building profile0 with purpose flag2
+(place_of_worship). `entity_recognized` stays false and is not a status substitute.
+`location-recognition-empty-20261027-012346` clears the current priest holder
+before opening Details: recognition creates an empty high-priest assignment and
+no history event. `location-recognition-first-20261027-012425` moves the existing
+site assignment to site-1 and uses tier1: recognition reuses the religion's PRIEST
+template, creates an empty current-site assignment, and adds no history event.
+These controlled fixtures retain other historical links; they are branch probes,
+not a claim that every constructed starting state arises in ordinary play.
+Repeat clicks leave captured positions, assignments, counters, site profiles and
+holder links unchanged. Root/core19/19 passes in `build/qa/location-recognition-branches`.
+These are mutation oracles, not bridge acceptance. Full position-template fields,
+assignment flags, petition/threshold branches and first PRIEST template allocation
+still require observation. Native helpers9364d0,30ffb0,c30000 and76d4e0 do not
+individually implement recognition; a call from the input branch does not make
+one a ready-made semantic command.
 
 ## Native squad assignment reference
 

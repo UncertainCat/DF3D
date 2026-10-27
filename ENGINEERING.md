@@ -795,8 +795,9 @@ payloads, descending source kinds, foreign entry fields, absent targets and
 invalid revisions. Snapshot/grid/session versions are unchanged; older management
 peers are isolated by the new shared-region name. PINS.md records migration.
 The neutral model and Godot adapter preserve wide integer revisions and distinguish
-empty memberships from missing observations. Contract-only operation40 has no
-native handler yet; the verified diagnostic provider remains independent.
+empty memberships from missing observations. The operation40 native handler
+calls the owned semantic provider with the explicit row/unit target. Invalid
+targets return Rejected without an assignment payload; reads never mutate DF.
 
 Core and actual Godot-adapter checks pass in location-staff-assignments-contract,
 covering both target forms, four source kinds, empty entries, malformed authority
@@ -806,6 +807,20 @@ Protected areas093637 passes the existing specialization/religious-assignment
 suite, preserves both save manifests, reports no diagnostics and exits owned
 DF137148 unsaved. This proves protocol compatibility, not operation40 native
 handler or viewer acceptance.
+
+The native handler and actual Godot transport pass protected areas094532
+(`build/areas-acceptance-20261027-094532`). Both religious and occupation rows
+match independent world-record reads at baseline, after adding workshop,
+furnace and work-detail memberships, and after exact restoration. Repeated
+receipts remain identical; membership changes alter the independent revision;
+24 invalid-target requests return no payload. Assignment records and complete
+main-interface/gps byte guards stay unchanged during reads. The full existing
+specialization/religious assignment suite also passes. Owned DF160408 exits
+unsaved, both save manifests remain unchanged, and diagnostics are empty.
+Core and Godot contract checks pass in location-staff-assignments-handler;
+MSVC build passes. Installed plugin SHA256 is
+7403D4DA076C457C49E73DF4840EDF7618A0857AC030B49F4902DAF65612CF6B.
+This establishes live transport, not rendered assignment-indicator acceptance.
 
 Protected actionspecialization081207 matches native080737 for both priest5813
 and performer6536, including every captured flag/labor entry and exact restoration

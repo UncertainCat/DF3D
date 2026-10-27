@@ -14801,6 +14801,21 @@
     }
   },
   "staff_indicator_reference": {
+    "transport_reference": {
+      "run": "build/areas-acceptance-20261027-094532",
+      "status": "passed",
+      "operation": 40,
+      "units": [5813, 6536],
+      "phases": ["baseline", "all_sources", "restored"],
+      "invalid_targets_refused": 24,
+      "repeated_receipts_identical": true,
+      "membership_changes_revision": true,
+      "restored_receipts_identical": true,
+      "native_ui_and_assignment_records_unchanged_by_reads": true,
+      "save_manifests_unchanged": 2,
+      "owned_exit_unsaved": true,
+      "limitations": "Semantic transport only; indicator rendering and hover remain separate."
+    },
     "native": "build/stockpile-storage-native-location-recognition-staffindicators-20261027-091520",
     "status": "passed",
     "scope": "Native baseline and controlled workshop/furnace/work-detail fixture plus semantic provider comparison. Viewer transport/rendering unfinished.",

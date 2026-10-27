@@ -3,6 +3,8 @@ func exercise() -> void:
 	await seed_catalog()
 	if stopped:return
 	var setup:=await native("religious_setup")
+	await assignments_route()
+	if stopped:return
 	await specialization_route(setup)
 	if stopped:return
 	var read: Dictionary={"action":Contract.ManagementAction.AreaInspect,"kind":1,
@@ -110,6 +112,45 @@ func exercise() -> void:
 	await native("religious_unchanged")
 	write_json("religious-assignment-evidence.json",{"unit_id":selected.unit_id,"histfig_id":selected.histfig_id,"candidate_count":page.total,"stale_checks":4,"completed":true})
 	write_json("religious-staff-evidence.json",{"before":setup.before,"after":effects.after,"event":effects.event,"no_request_ui_changed":control.ui_changed,"apply_ui_changed":effects.ui_changed,"invalid_targets":5,"stale_checks":2,"vacant_rejections":1})
+
+func assignments_route() -> void:
+	var original: Dictionary={}
+	for phase in ["baseline","changed","restored"]:
+		if phase!="baseline":await native("religious_assignments_fixture",{"restore":phase=="restored"})
+		for unit_id in [5813,6536]:
+			step="staff assignments "+phase+" "+str(unit_id)
+			var expected:=await native("religious_assignments",{"unit_id":unit_id})
+			var read: Dictionary={"action":Contract.ManagementAction.AreaInspect,"kind":1,
+				"operation":Contract.AreaOperation.LocationStaffAssignmentsRead,"location_site_id":int(expected.site_id),
+				"location_id":int(expected.location_id),"unit_id":unit_id,"occupation_id":int(expected.occupation_id),
+				"religious_entity_id":int(expected.entity_id),"religious_assignment_id":int(expected.assignment_id)}
+			await native("religious_guard")
+			var response:=await request(read)
+			if stopped:return
+			var observed: Dictionary=response.location_staff_assignments
+			for key in ["site_id","location_id","unit_id","histfig_id","occupation_id","entity_id","assignment_id"]:
+				if not check(observed[key]==expected[key],"assignment native mismatch "+key):return
+			if not check(observed.entries.size()==expected.entries.size(),"assignment entry count"):return
+			for i in observed.entries.size():
+				for key in ["kind","id","type","subtype","custom"]:
+					if not check(observed.entries[i][key]==int(expected.entries[i][key]),"assignment entry mismatch "+key):return
+				if not check(observed.entries[i].name==expected.entries[i].name,"assignment name mismatch"):return
+			var repeated:=await request(read)
+			if stopped:return
+			if not check(repeated.location_staff_assignments==observed,"assignment repeat mismatch"):return
+			if phase=="baseline":original[unit_id]=observed
+			elif phase=="restored":
+				if not check(observed==original[unit_id],"assignment restoration mismatch"):return
+			elif unit_id==6536:
+				if not check(observed.revision!=original[unit_id].revision,"membership revision unchanged"):return
+			for key in ["location_site_id","location_id","unit_id","occupation_id" if unit_id==6536 else "religious_assignment_id"]:
+				var invalid:=read.duplicate(true);invalid[key]=2147483647
+				var refused:=await request(invalid,"",true)
+				if stopped:return
+				if not check(not refused.has("location_staff_assignments"),"invalid assignment target accepted"):return
+			await native("religious_unchanged")
+			var after:=await native("religious_assignments",{"unit_id":unit_id})
+			if not check(after==expected,"assignment reads changed world records"):return
 
 func specialization_route(setup: Dictionary) -> void:
 	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json"))

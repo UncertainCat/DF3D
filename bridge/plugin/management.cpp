@@ -320,6 +320,7 @@ bool publishableLocationReligiousStaff(const df3d_area::LocationReligiousStaffRe
       (r.holderId!=-1 || (r.unitId==-1 && !r.removable));
 }
 struct NativeAreaPage {
+  std::optional<df3d_area::LocationStaffAssignments> staffAssignments;
   std::optional<df3d_area::LocationStaffSpecializationReceipt> specialization;
   std::optional<df3d_area::LocationReligiousCandidatePage> religiousCandidates;
   std::optional<df3d_area::LocationReligiousAssignmentReceipt> religiousAssignment;
@@ -546,6 +547,15 @@ void publish() {
         r.unitId,r.histfigId,r.nemesisId,r.revision,areaPage.religiousListRevision,r.eligible);
   }
   flatbuffers::Offset<m::LocationSpecialization> specialization;
+  flatbuffers::Offset<m::LocationStaffAssignments> staffAssignments;
+  if(areaPage.staffAssignments) {
+    const auto& r=*areaPage.staffAssignments;
+    std::vector<flatbuffers::Offset<m::LocationStaffAssignment>> entries;
+    for(const auto& e:r.entries)entries.push_back(m::CreateLocationStaffAssignment(b,
+        static_cast<m::LocationStaffAssignmentKind>(e.kind),e.id,e.type,e.subtype,e.custom,b.CreateString(e.name)));
+    staffAssignments=m::CreateLocationStaffAssignments(b,r.siteId,r.locationId,r.occupationId,r.entityId,r.assignmentId,
+        r.unitId,r.histfigId,r.revision,b.CreateVector(entries));
+  }
   if(areaPage.specialization) {
     const auto& r=*areaPage.specialization;
     specialization=m::CreateLocationSpecialization(b,r.siteId,r.locationId,r.occupationId,r.entityId,r.assignmentId,
@@ -572,7 +582,7 @@ void publish() {
       areaPage.interactionId,areaPage.undoToken,areaPage.roomOutcome,areaPage.roomsCreated,
       areaPage.roomsInUse,areaPage.roomsUnenclosed,areaPage.roomsRemoved,areaPage.roomsDormitories,
       areaPage.countGeneration,areaPage.paintedCount,areaPage.previewCount,locationCatalog,locationDetails,areaPage.locationEntryOutcome,areaPage.locationEditOutcome,staffCandidates,areaPage.settingsCount,
-      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{},locationName,locationNamePage,recognition,religiousStaff,religiousCandidates,religiousAssignment,specialization);
+      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{},locationName,locationNamePage,recognition,religiousStaff,religiousCandidates,religiousAssignment,specialization,staffAssignments);
   auto reqs=[&](const std::vector<ProductionRequirement>& values){
     std::vector<flatbuffers::Offset<m::ProductionRequirement>> out;
     for(const auto& v:values) out.push_back(m::CreateProductionRequirement(b,b.CreateString(v.description),v.quantity,v.itemType));
@@ -2316,6 +2326,15 @@ void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
   static df3d_area::LocationReligiousCandidateSnapshot religiousSnapshot;
+  if(r->area() && r->area()->operation()==m::AreaOperation::LocationStaffAssignmentsRead) {
+    const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;
+    const bool occupation=a.occupation_id()>=0;
+    const auto source=occupation?df3d_area::LocationStaffSource::Occupation:df3d_area::LocationStaffSource::ReligiousPosition;
+    auto receipt=df3d_area::observeNativeLocationStaffAssignments(a.location_site_id(),a.location_id(),source,
+        a.religious_entity_id(),occupation?a.occupation_id():a.religious_assignment_id(),a.unit_id());
+    if(receipt){areaPage.staffAssignments=std::move(receipt);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
   if(r->area() && (r->area()->operation()==m::AreaOperation::LocationSpecializationRead ||
       r->area()->operation()==m::AreaOperation::LocationSpecializationSet)) {
     const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;

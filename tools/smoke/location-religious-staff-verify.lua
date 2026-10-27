@@ -31,7 +31,51 @@ local function capture()
  if unit then state.unit={id=unit.id,profession=unit.profession,profession2=unit.profession2,squad=unit.military.squad_id,position=unit.military.squad_position,job=unit.job.current_job and unit.job.current_job.id or -1}end
  return state
 end
-if request.op=='religious_specialization_setup' then
+if request.op=='religious_assignments' then
+ local unit=assert(df.unit.find(request.unit_id));result.unit_id=unit.id;result.histfig_id=unit.hist_figure_id
+ result.occupation_id=-1;result.entity_id=-1;result.assignment_id=-1
+ if assignment.histfig==unit.hist_figure_id then result.entity_id=entity.id;result.assignment_id=assignment.id
+ else for _,o in ipairs(temple.occupations)do if o.unit_id==unit.id then result.occupation_id=o.id end end;assert(result.occupation_id>=0)end
+ result.entries={}
+ local function add(kind,id,type,subtype,custom,name)
+  result.entries[#result.entries+1]={kind=kind,id=id,type=type,subtype=subtype,custom=custom,name=name}
+ end
+ for _,o in ipairs(unit.occupations)do add(0,o.id,o.type,-1,-1,'')end
+ for kind,key in ipairs{'WORKSHOP_ANY','FURNACE_ANY'}do
+  for _,b in ipairs(df.global.world.buildings.other[key])do
+   local profile=b:getWorkshopProfile()
+   if profile then for _,id in ipairs(profile.permitted_workers)do
+    if id==unit.id then add(kind,b.id,b:getType(),b:getSubtype(),b:getCustomType(),'')end
+   end end
+  end
+ end
+ for i,d in ipairs(df.global.plotinfo.labor_info.work_details)do
+  for _,id in ipairs(d.assigned_units)do if id==unit.id then add(3,i,d.icon,-1,-1,dfhack.df2utf(d.name))end end
+ end
+elseif request.op=='religious_assignments_fixture' then
+ if request.restore then
+  for _,r in ipairs(assert(_G.df3d_assignments_restore))do
+   r.vector:resize(0);for _,id in ipairs(r.before)do r.vector:insert('#',id)end
+  end
+  _G.df3d_assignments_restore=nil
+ else
+  assert(not _G.df3d_assignments_restore);_G.df3d_assignments_restore={}
+  local function add(vector)
+   local before={};for _,id in ipairs(vector)do before[#before+1]=id;assert(id~=6536)end
+   _G.df3d_assignments_restore[#_G.df3d_assignments_restore+1]={vector=vector,before=before}
+   local values={table.unpack(before)};values[#values+1]=6536;table.sort(values)
+   vector:resize(0);for _,id in ipairs(values)do vector:insert('#',id)end
+  end
+  for _,key in ipairs{'WORKSHOP_ANY','FURNACE_ANY'}do
+   local found=false
+   for _,b in ipairs(df.global.world.buildings.other[key])do
+    local p=b:getWorkshopProfile();if p then add(p.permitted_workers);found=true;break end
+   end
+   assert(found)
+  end
+  add(assert(df.global.plotinfo.labor_info.work_details[0]).assigned_units)
+ end
+elseif request.op=='religious_specialization_setup' then
  local unit=assert(df.unit.find(request.unit_id));result.unit_id=unit.id
  result.occupation_id=-1;result.entity_id=-1;result.assignment_id=-1
  local holder=assert(df.historical_figure.find(assignment.histfig))

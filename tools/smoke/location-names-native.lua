@@ -714,10 +714,64 @@ if recognition_case=='assignpriest' then
  pixel(592,358);assert(selector.flag.VISIBILITY_ACTIVE)
  local chosen=opened.selector.displayed[1]
  assert(chosen.y<15,'unexpected first row geometry')
+ local function selected_state()
+  local unit=assert(df.unit.find(chosen.id));local figure=assert(df.historical_figure.find(chosen.histfig_id))
+  local function values(vector)local out={};for _,v in ipairs(vector)do out[#out+1]=v end;return out end
+  local function scalar_fields(object)
+   local out={};for k,v in pairs(object)do if type(v)=='number' or type(v)=='boolean' then out[k]=v end end;return out
+  end
+  local state={unit={id=unit.id,profession=unit.profession,profession2=unit.profession2,
+   flags1=unit.flags1.whole,flags2=unit.flags2.whole,flags3=unit.flags3.whole,
+   squad_id=unit.military.squad_id,squad_position=unit.military.squad_position,
+   current_job=unit.job.current_job and scalar_fields(unit.job.current_job) or false,occupations={}},
+   figure=scalar_fields(figure),entity_links={},site_links={},histfig_links={},nemesis=false,actors={}}
+  for _,o in ipairs(unit.occupations)do state.unit.occupations[#state.unit.occupations+1]=scalar_fields(o)end
+  for _,field in ipairs{'entity_links','site_links','histfig_links'}do
+   for _,link in ipairs(figure[field])do local row=scalar_fields(link);row.type=link:getType();state[field][#state[field]+1]=row end
+  end
+  if figure.info and figure.info.skills then
+   local skills=figure.info.skills;state.skills=scalar_fields(skills)
+   for _,field in ipairs{'skills','points','professions_held','profession_years'}do state.skills[field]=values(skills[field])end
+  end
+  state.profiles={}
+  for _,field in ipairs{'personality','reputation','relationships'}do
+   local profile=figure.info and figure.info[field]
+   state.profiles[field]=profile and scalar_fields(profile) or false
+  end
+  local function personality_state(p)
+   if not p then return false end
+   local result=scalar_fields(p);result.flags=p.flags.whole;result.traits=values(p.traits);result.habit=values(p.habit)
+   for _,field in ipairs{'values','ethics','emotions','dreams','preferences','mannerism','needs'}do
+    result[field]={};for _,entry in ipairs(p[field])do result[field][#result[field]+1]=scalar_fields(entry)end
+   end
+   return result
+  end
+  state.figure_personality=personality_state(figure.info and figure.info.personality and figure.info.personality.personality)
+  state.unit_personality=personality_state(unit.status.current_soul and unit.status.current_soul.personality)
+  local relationships=figure.info and figure.info.relationships
+  local intrigues=relationships and relationships.intrigues
+  state.intrigues=intrigues and scalar_fields(intrigues) or false
+  if intrigues then
+   for _,field in ipairs{'intrigue','plots','task','message'}do
+    state.intrigues[field]={};for _,entry in ipairs(intrigues[field])do state.intrigues[field][#state.intrigues[field]+1]=scalar_fields(entry)end
+   end
+  end
+  local nemesis
+  for _,n in ipairs(df.global.world.nemesis.all)do if n.figure==figure then assert(not nemesis);nemesis=n end end
+  assert(nemesis,'selected candidate has no nemesis')
+  state.nemesis=scalar_fields(nemesis);state.nemesis.flags={};state.nemesis.companions=values(nemesis.companions)
+  for i=0,df.nemesis_flags._last_item do if nemesis.flags[i]then state.nemesis.flags[#state.nemesis.flags+1]=df.nemesis_flags[i]end end
+  for _,field in ipairs{'independent_actor','civilized_actor','plotter_actor','new_plotter_actor','religious_actor'}do
+   state.actors[field]={};for _,n in ipairs(df.global.world.nemesis[field])do state.actors[field][#state.actors[field]+1]=n.id end
+  end
+  return state
+ end
+ cancelled.selected=selected_state()
  pixel(450,106)
  assert(assignment.histfig==chosen.histfig_id,'native assignment did not choose first displayed candidate')
  local assigned=capture('TEMPLE-priest-assigned',temple);assigned.recognition=recognition_state();assigned.chosen=chosen
  assigned.selector_active=selector.flag.VISIBILITY_ACTIVE;assigned.new_events={}
+ assigned.selected=selected_state()
  for i=cancelled.recognition.event_count,#df.global.world.history.events-1 do
   local event=df.global.world.history.events[i];local value={id=event.id,type=df.history_event_type[event:getType()],year=event.year,seconds=event.seconds}
   if df.history_event_add_hf_entity_linkst:is_instance(event)then for _,field in ipairs{'civ','histfig','link_type','position_id'}do value[field]=event[field]end end

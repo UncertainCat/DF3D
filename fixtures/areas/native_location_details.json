@@ -10352,6 +10352,536 @@
       "Assignment mutation helper audit and full unit/job/squad side effects",
       "Bridge receipt/transport and viewer assignment workflow",
       "High-priest/historical-holder variants"
-    ]
+    ],
+    "selected_effects_reference": {
+      "source": "build/stockpile-storage-native-location-recognition-assignpriest-20261027-053101",
+      "result_sha256": "dfe3e4231c93a23ac94c0f4e982d182098871546982349396e00a913cecff013",
+      "before": {
+        "entity_links": [
+          {
+            "entity_id": 245,
+            "entity_vector_idx": -1,
+            "link_strength": 100,
+            "type": 0
+          },
+          {
+            "entity_id": 383,
+            "entity_vector_idx": -1,
+            "link_strength": 100,
+            "type": 0
+          },
+          {
+            "entity_id": 865,
+            "entity_vector_idx": -1,
+            "link_strength": 100,
+            "type": 0
+          }
+        ],
+        "figure": {
+          "appeared_year": 105,
+          "art_count": 0,
+          "birth_time_bias": 0,
+          "birth_year_bias": 0,
+          "born_seconds": 279135,
+          "born_year": 53,
+          "breed_id": -1,
+          "caste": 1,
+          "civ_id": 245,
+          "cultural_identity": 23,
+          "curse_seconds": -1,
+          "curse_year": -1,
+          "defensive_skill_ip_sum": -1,
+          "died_seconds": -1,
+          "died_year": -1,
+          "family_head_id": 10379,
+          "gen_material_skill_ip_sum": -1,
+          "id": 10379,
+          "nemesis_id": 7120,
+          "old_seconds": 230521,
+          "old_year": 204,
+          "pool_id": 10379,
+          "population_id": 233,
+          "profession": 32,
+          "race": 572,
+          "sex": 1,
+          "temp_var": 0,
+          "unit_id": 7123
+        },
+        "figure_personality": false,
+        "histfig_links": [
+          {
+            "hf_vector_idx": 0,
+            "link_strength": 34,
+            "target_hf": 482,
+            "type": 4
+          }
+        ],
+        "intrigues": false,
+        "nemesis": {
+          "activeplotindex": -1,
+          "companions": [],
+          "flags": [],
+          "group_leader_id": -1,
+          "id": 7120,
+          "ideal_item_container_id": -1,
+          "member_idx": 66,
+          "next_plot_season_count": -1,
+          "next_plot_year": -1,
+          "pool_id": 7120,
+          "save_file_id": 1326,
+          "travel_link_nemid": -1,
+          "unit_id": 7123
+        },
+        "profiles": {
+          "personality": false,
+          "relationships": {
+            "flag": 0
+          },
+          "reputation": false
+        },
+        "site_links": [],
+        "skills": {
+          "account_balance": 0,
+          "points": [],
+          "profession": 102,
+          "profession_years": [],
+          "professions_held": [],
+          "skills": []
+        },
+        "unit": {
+          "current_job": false,
+          "flags1": 2147500033,
+          "flags2": 301989952,
+          "flags3": 8388866,
+          "id": 7123,
+          "occupations": [],
+          "profession": 32,
+          "profession2": 32,
+          "squad_id": -1,
+          "squad_position": -1
+        },
+        "unit_personality_sha256": "72c17f924fd8626dde6e87f0d91f45d5408b8a04f7b9bb19d8f5ccf71d57c8de"
+      },
+      "after": {
+        "entity_links": [
+          {
+            "entity_id": 245,
+            "entity_vector_idx": -1,
+            "link_strength": 100,
+            "type": 0
+          },
+          {
+            "entity_id": 383,
+            "entity_vector_idx": -1,
+            "link_strength": 100,
+            "type": 0
+          },
+          {
+            "entity_id": 865,
+            "entity_vector_idx": -1,
+            "link_strength": 100,
+            "type": 0
+          },
+          {
+            "assignment_id": 2,
+            "assignment_vector_idx": -1,
+            "entity_id": 383,
+            "entity_vector_idx": -1,
+            "link_strength": 100,
+            "start_year": 106,
+            "type": 10
+          }
+        ],
+        "figure": {
+          "appeared_year": 105,
+          "art_count": 0,
+          "birth_time_bias": 0,
+          "birth_year_bias": 0,
+          "born_seconds": 279135,
+          "born_year": 53,
+          "breed_id": -1,
+          "caste": 1,
+          "civ_id": 245,
+          "cultural_identity": 23,
+          "curse_seconds": -1,
+          "curse_year": -1,
+          "defensive_skill_ip_sum": -1,
+          "died_seconds": -1,
+          "died_year": -1,
+          "family_head_id": 10379,
+          "gen_material_skill_ip_sum": -1,
+          "id": 10379,
+          "nemesis_id": 7120,
+          "old_seconds": 230521,
+          "old_year": 204,
+          "pool_id": 10379,
+          "population_id": 233,
+          "profession": 32,
+          "race": 572,
+          "sex": 1,
+          "temp_var": 0,
+          "unit_id": 7123
+        },
+        "figure_personality": {
+          "civ_id": 245,
+          "combat_hardened": 0,
+          "cultural_identity": -1,
+          "current_focus": 0,
+          "dreams": [
+            {
+              "id": -1,
+              "local_id": 0,
+              "type": 2
+            }
+          ],
+          "emotions": [],
+          "ethics": [],
+          "flags": 0,
+          "habit": [],
+          "likes_outdoors": 0,
+          "longterm_stress": 0,
+          "mannerism": [
+            {
+              "situation": 5,
+              "type": 34
+            },
+            {
+              "situation": 2,
+              "type": 38
+            }
+          ],
+          "needs": [
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 0,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 3,
+              "need_level": 2
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 4,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 5,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 20,
+              "need_level": 2
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 1,
+              "need_level": 5
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 21,
+              "need_level": 5
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 22,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 23,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 24,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 25,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 6,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 27,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 28,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 12,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 29,
+              "need_level": 2
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 13,
+              "need_level": 5
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 7,
+              "need_level": 2
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 8,
+              "need_level": 2
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 14,
+              "need_level": 1
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 15,
+              "need_level": 2
+            },
+            {
+              "deity_id": -1,
+              "focus_level": 0,
+              "id": 16,
+              "need_level": 1
+            },
+            {
+              "deity_id": 482,
+              "focus_level": 0,
+              "id": 2,
+              "need_level": 1
+            }
+          ],
+          "next_dream_id": 1,
+          "outdoor_dislike_counter": 0,
+          "preferences": [],
+          "slack_end_year": -1,
+          "slack_end_year_tick": -1,
+          "stress": 0,
+          "temptation_anger": 0,
+          "temptation_greed": 0,
+          "temptation_lust": 0,
+          "temptation_power": 0,
+          "time_without_distress": 0,
+          "time_without_eustress": 0,
+          "traits": [
+            46,
+            57,
+            50,
+            61,
+            58,
+            50,
+            42,
+            43,
+            42,
+            67,
+            76,
+            47,
+            52,
+            40,
+            59,
+            57,
+            50,
+            34,
+            63,
+            45,
+            27,
+            60,
+            59,
+            55,
+            26,
+            41,
+            54,
+            55,
+            48,
+            41,
+            60,
+            55,
+            42,
+            51,
+            58,
+            60,
+            49,
+            72,
+            50,
+            41,
+            74,
+            59,
+            55,
+            55,
+            47,
+            46,
+            53,
+            52,
+            40,
+            41
+          ],
+          "undistracted_focus": 0,
+          "values": [
+            {
+              "strength": -7,
+              "type": 29
+            },
+            {
+              "strength": 19,
+              "type": 18
+            },
+            {
+              "strength": 21,
+              "type": 13
+            }
+          ]
+        },
+        "histfig_links": [
+          {
+            "hf_vector_idx": 0,
+            "link_strength": 34,
+            "target_hf": 482,
+            "type": 4
+          }
+        ],
+        "intrigues": false,
+        "nemesis": {
+          "activeplotindex": -1,
+          "companions": [],
+          "flags": [
+            "CHAT_WORTHY",
+            "DO_NOT_CULL"
+          ],
+          "group_leader_id": -1,
+          "id": 7120,
+          "ideal_item_container_id": -1,
+          "member_idx": 66,
+          "next_plot_season_count": -1,
+          "next_plot_year": -1,
+          "pool_id": 7120,
+          "save_file_id": 1326,
+          "travel_link_nemid": -1,
+          "unit_id": 7123
+        },
+        "profiles": {
+          "personality": {
+            "wg_mood": -1
+          },
+          "relationships": {
+            "flag": 0
+          },
+          "reputation": false
+        },
+        "site_links": [],
+        "skills": {
+          "account_balance": 0,
+          "points": [],
+          "profession": 102,
+          "profession_years": [],
+          "professions_held": [],
+          "skills": []
+        },
+        "unit": {
+          "current_job": false,
+          "flags1": 2147500033,
+          "flags2": 301989952,
+          "flags3": 8388866,
+          "id": 7123,
+          "occupations": [],
+          "profession": 32,
+          "profession2": 32,
+          "squad_id": -1,
+          "squad_position": -1
+        },
+        "unit_personality_sha256": "72c17f924fd8626dde6e87f0d91f45d5408b8a04f7b9bb19d8f5ccf71d57c8de"
+      },
+      "actor_lists": {
+        "civilized_actor": {
+          "before_count": 1691,
+          "after_count": 1692,
+          "before_sha256": "3e0558f9bce2e0dadafec97f74823a542527f847b5d76ed000ac203ed81d81ed",
+          "after_sha256": "0739fb477dca6ed3882c705ac7d6e63ba60a5f5ab14daaf1d5a42ae421113c2b",
+          "added": [
+            7120
+          ],
+          "removed": []
+        },
+        "independent_actor": {
+          "before_count": 523,
+          "after_count": 523,
+          "before_sha256": "0736aa2bf05c8651808b68cf092dabc17b0e224837cf525f18ffe0678480aeb5",
+          "after_sha256": "0736aa2bf05c8651808b68cf092dabc17b0e224837cf525f18ffe0678480aeb5",
+          "added": [],
+          "removed": []
+        },
+        "new_plotter_actor": {
+          "before_count": 0,
+          "after_count": 0,
+          "before_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "after_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "added": [],
+          "removed": []
+        },
+        "plotter_actor": {
+          "before_count": 244,
+          "after_count": 244,
+          "before_sha256": "e021b62d885b7cdf3948b0ef23ec401a89b85f8b0a3a5873c02a843292bfd9f4",
+          "after_sha256": "e021b62d885b7cdf3948b0ef23ec401a89b85f8b0a3a5873c02a843292bfd9f4",
+          "added": [],
+          "removed": []
+        },
+        "religious_actor": {
+          "before_count": 82,
+          "after_count": 82,
+          "before_sha256": "91e7f391fcd1e2e7d83148be344c4bec394589272755e4d620128fae4b33345d",
+          "after_sha256": "91e7f391fcd1e2e7d83148be344c4bec394589272755e4d620128fae4b33345d",
+          "added": [],
+          "removed": []
+        }
+      },
+      "rng_before_sha256": "3ba27c31e823fbe9b3abaf2213eb39507797d617046ba31a10dc917fb5893ce5",
+      "rng_after_sha256": "af71b25093380143b620127f0a8499eca2b4c1e6f5d28fa5ce9223b189e39f7d",
+      "source_preserved": true,
+      "owned_unsaved_exit": true,
+      "status": "passed",
+      "omissions": [
+        "Nested pointer fields within personality records are not recursively captured.",
+        "This ordinary vacant priest assignment does not exercise squad, current-job, replacement, high-priest or plotter branches."
+      ]
+    }
   }
 }

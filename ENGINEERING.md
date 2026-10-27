@@ -334,6 +334,22 @@ The picker and assigned-row captures were inspected. Source preservation and
 unsaved owned exit pass; core19/19 passes. `religious_staff_assignment_reference`
 retains numeric candidate identities, rendered order, weights and native effects;
 raw mixed-encoding screen strings are not imported as product copy.
+Expanded protected053101 captures the selected unit, historical figure links,
+nemesis flags, actor-list membership and personality profiles. Assignment adds
+nemesis7120 to civilized_actor, sets CHAT_WORTHY and DO_NOT_CULL, and initializes
+a previously absent historical personality profile, consuming RNG. The selected
+unit's captured personality, profession, job, squad and occupations stay unchanged.
+The fixture retains before/after semantic fields and bounded actor-list digests.
+Nested pointer fields are not recursively captured, and this case does not cover
+replacement, military, active-job, high-priest or plotter branches. Source
+preservation and unsaved owned exit pass; core19/19 passes in
+`build/qa/location-religious-assignment-effects-final`.
+
+Context9's callback chain resolves through3d4ae0/3cfe50 to3a8f50. Its religious
+branch invokes position assignmentb97610, inserts the selected nemesis into
+civilized_actor usingb9fa0, and invokesc2fde0 for actor follow-up. Position squad
+size can additionally invoke13d4d80. These require further branch/effect audits;
+the enclosing callback reads global picker state and remains forbidden runtime.
 
 Native input3302be..330330 initializes the shared unit selector, sets context9 and
 passes occupation/entity/position/assignment pointers. Wrapper3a39b0 calls membership

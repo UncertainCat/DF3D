@@ -31,16 +31,24 @@ func run() -> void:
 	var mapping={119288:Vector2i(0,0),119289:Vector2i(8,0),119290:Vector2i(16,0),119352:Vector2i(0,12),119353:Vector2i(8,12),119354:Vector2i(16,12),119416:Vector2i(0,24),119417:Vector2i(8,24),119418:Vector2i(16,24)}
 	var palette={7:Color8(192,192,192),15:Color.WHITE,14:Color8(255,225,17),11:Color8(18,254,207),13:Color8(232,17,255)}
 	var data: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_composition.json"))
+	var resizing: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json")).resize_reference
 	var directory:=ProjectSettings.globalize_path("res://../../../build/qa/location-details-render")
 	DirAccess.make_dir_recursive_absolute(directory)
 	for sample in data.cases:
 		model.snapshot=numbers(sample.details.duplicate(true));model.phase=model.Phase.Ready;model.changed.emit()
 		for i in 3:await process_frame;await RenderingServer.frame_post_draw
 		var image:=root.get_texture().get_image()
+		image.save_png(directory.path_join("location_%d.png"%int(sample.details.id)))
 		# Native223634 INN_TAVERN-1-before, quill at928,64 (all six kinds).
 		var rename_crop:=image.get_region(Rect2i(928,64,32,36));rename_crop.convert(Image.FORMAT_RGB8)
 		var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(rename_crop.get_data())
 		assert(digest.finish().hex_encode()=="63efbc6cf2f0ab243a30dead684b741ec9f1d1907c79f8ad4d02a7b5966cccd2","native Rename artwork")
+		var type_crop:=image.get_region(Rect2i(384,64,40,36));type_crop.convert(Image.FORMAT_RGB8)
+		digest.start(HashingContext.HASH_SHA256);digest.update(type_crop.get_data())
+		var type_hash:=digest.finish().hex_encode()
+		for native_case in resizing.cases:
+			if int(native_case.id)==int(sample.details.id) and native_case.name.ends_with("-default"):
+				if type_hash!=native_case.type_icon_rgb_sha256:push_error("Native Details type icon "+str(sample.details.id));quit(1);return
 		for cell in sample.border:
 			if not mapping.has(int(cell.tile)):push_error("Unmapped native Details frame");quit(1);return
 			var origin: Vector2i=mapping[int(cell.tile)]

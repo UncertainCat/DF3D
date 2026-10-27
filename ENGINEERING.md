@@ -519,6 +519,26 @@ manifests and unsaved owned exit. Only the known separate-thread diagnostic
 remains. `main_long_header_reference` records the scope and native hashes;
 responsive Details and automatic scaling remain separate work.
 
+Native Details resize evidence is retained in
+`native_location_details.json.resize_reference`: protected
+`build/stockpile-storage-native-location-names-20261027-004035` passes151
+observations, including18 Details captures across six locations at960x600,
+1600x900 and1200x800. Details keeps its x368 left edge and visible parent zone
+panel even at minimum width; its right edge leaves224 pixels and its frame
+height follows whole-cell viewport height minus132. Quantity buttons retain
+fixed positions and can extend beyond the narrow frame. The short hospital
+view has no visible staff rows and needs further input/scrollbar investigation.
+The source manifest remains unchanged and the owned game exits unsaved.
+These references do not establish resized viewer parity.
+
+Details now includes its previously missing location-type artwork beside the
+heading. The installed32x32 icon starts two pixels into the40x36 picture region
+at384,64 in the default viewport. All six native40x36 RGB crops match exactly
+in `build/qa/location-details-type-icons-positioned`; core19/19 and the existing
+Details input/composition checks also pass, with only documented GPU diagnostics.
+The icon follows the parent Details visibility and hides for naming/staff
+selection. Frame, row-width, staff-capacity and responsive input work remains.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

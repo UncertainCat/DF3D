@@ -293,6 +293,10 @@ for i,location in ipairs(choices)do
  pixel(664,238+36*(i-1));assert(details.open and details.selected_ab==location)
  local prefix=df.abstract_building_type[location:getType()]..'-'..location.id
  local before=capture(prefix..'-before',location)
+ for _,size in ipairs{'small','wide','default'}do
+  window_input('name-resize-'..size)
+  capture(prefix..'-details-resize-'..size,location)
+ end
  pixel(944,82)
  local opened=capture(prefix..'-name-open',location)
  assert(creator.open and creator.context==df.name_creator_context_type.LOCATION_NAME,'name creator did not open')
@@ -303,7 +307,7 @@ for i,location in ipairs(choices)do
  assert(require('json').encode(before.name_value)==require('json').encode(closed.name_value),'open/Back changed name')
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==18,'incomplete location name entry coverage')
+assert(#records==36,'incomplete location name entry coverage')
 
 for i,location in ipairs(choices)do
  pixel(664,238+36*(i-1));assert(details.open and details.selected_ab==location)
@@ -473,4 +477,4 @@ for i,location in ipairs(choices)do
  key('_MOUSE_R');assert(not creator.open and details.open)
  key('LEAVESCREEN');assert(selector.open and not details.open)
 end
-assert(#records==133,'incomplete name mutation/filter reference')
+assert(#records==151,'incomplete name mutation/filter reference')

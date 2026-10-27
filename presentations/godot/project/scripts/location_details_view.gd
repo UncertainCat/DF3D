@@ -15,12 +15,18 @@ var _candidate_revision:=0
 var name_workflow=preload("res://scripts/location_name_workflow.gd").new()
 var name_view
 var rename_button: TextureButton
+var type_icon: TextureRect
 var input_allowed: Callable
 
 func configure(source, model, help=null) -> void:
 	state=model;art.configure(source);theme=art.theme
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	heading=preload("res://scripts/location_details_heading.gd").new();add_child(heading);heading.configure(source)
+	type_icon=TextureRect.new();add_child(type_icon)
+	# Native header graphic starts two pixels into its40x36 picture region.
+	type_icon.position=Vector2(18,12);type_icon.size=Vector2(32,36)
+	type_icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;type_icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	type_icon.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	body=preload("res://scripts/location_details_body.gd").new();add_child(body);body.configure(source)
 	value_view=preload("res://scripts/location_value_view.gd").new();add_child(value_view);value_view.configure(source)
 	staff_view=preload("res://scripts/location_staff_view.gd").new();add_child(staff_view);staff_view.configure(source)
@@ -66,6 +72,9 @@ func refresh() -> void:
 	staff_view.display(state.snapshot)
 	var selecting: bool=staff_workflow.mode==staff_workflow.Mode.Choosing
 	var naming: bool=name_workflow.active
+	var kind: int=int(state.snapshot.get("kind",0))
+	type_icon.texture=art.texture(["","ZONE_TAVERN","ZONE_TEMPLE","ZONE_LIBRARY","ZONE_GUILDHALL","ZONE_HOSPITAL"][kind]) if kind in range(1,6) else null
+	type_icon.visible=not selecting and not naming
 	for child in [heading,body,value_view,staff_view,access_view,quantity_view]:child.visible=not selecting and not naming
 	quantity_view.actions_enabled=staff_workflow.mode==staff_workflow.Mode.Closed and not naming
 	staff_view.actions_enabled=state.phase==state.Phase.Ready and staff_workflow.mode==staff_workflow.Mode.Closed and not naming

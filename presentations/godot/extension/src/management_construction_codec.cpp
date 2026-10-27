@@ -181,7 +181,7 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
     const auto& r=*s.locationStaffAssignments;Dictionary n;Array entries;
     n["site_id"]=r.siteId;n["location_id"]=r.locationId;n["occupation_id"]=r.occupationId;n["entity_id"]=r.entityId;n["assignment_id"]=r.assignmentId;
     n["unit_id"]=r.unitId;n["histfig_id"]=r.histfigId;n["revision"]=r.revision;
-    for(const auto& e:r.entries) {Dictionary v;v["kind"]=int(e.kind);v["id"]=e.id;v["type"]=e.type;v["subtype"]=e.subtype;v["custom"]=e.custom;v["name"]=String::utf8(e.name.c_str());entries.push_back(v);}
+    for(const auto& e:r.entries) {Dictionary v;v["kind"]=int(e.kind);v["id"]=e.id;v["type"]=e.type;v["subtype"]=e.subtype;v["custom"]=e.custom;v["name"]=String::utf8(e.name.c_str());v["custom_code"]=String::utf8(e.customCode.c_str());entries.push_back(v);}
     n["entries"]=entries;area["location_staff_assignments"]=n;
   }
   if(s.locationReligiousAssignment) {

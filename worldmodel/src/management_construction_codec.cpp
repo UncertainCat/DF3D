@@ -98,7 +98,7 @@ AreaState decodeArea(const m::AreaState* a) {
     const auto& r=*a->location_staff_assignments();LocationStaffAssignments n;
     n.siteId=r.site_id();n.locationId=r.location_id();n.occupationId=r.occupation_id();n.entityId=r.entity_id();n.assignmentId=r.assignment_id();
     n.unitId=r.unit_id();n.histfigId=r.histfig_id();n.revision=int64_t(r.revision());
-    if(r.entries())for(const auto* e:*r.entries())if(e)n.entries.push_back({LocationStaffAssignmentKind(e->kind()),e->id(),e->type(),e->subtype(),e->custom(),e->name()?e->name()->str():""});
+    if(r.entries())for(const auto* e:*r.entries())if(e)n.entries.push_back({LocationStaffAssignmentKind(e->kind()),e->id(),e->type(),e->subtype(),e->custom(),e->name()?e->name()->str():"",e->custom_code()?e->custom_code()->str():""});
     out.locationStaffAssignments=std::move(n);
   }
   if(a && a->location_religious_staff())out.locationReligiousStaff=religiousTarget(*a->location_religious_staff());

@@ -226,7 +226,7 @@ struct LocationSpecialization {
 };
 struct LocationStaffAssignment {
   LocationStaffAssignmentKind kind=LocationStaffAssignmentKind::Occupation;
-  int32_t id=-1,type=-1,subtype=-1,custom=-1;std::string name;
+  int32_t id=-1,type=-1,subtype=-1,custom=-1;std::string name,customCode;
 };
 struct LocationStaffAssignments {
   int32_t siteId=-1,locationId=-1,occupationId=-1,entityId=-1,assignmentId=-1,unitId=-1,histfigId=-1;

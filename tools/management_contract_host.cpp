@@ -125,7 +125,7 @@ void verifyAreaOperation(const m::AreaRequest& q) {
 flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBuilder& b,const m::AreaRequest& q) {
   if(q.operation()==m::AreaOperation::LocationStaffAssignmentsRead) {
     std::vector<flatbuffers::Offset<m::LocationStaffAssignment>> entries;
-    if(q.occupation_id()<0)for(int k=0;k<4;++k)entries.push_back(m::CreateLocationStaffAssignment(b,m::LocationStaffAssignmentKind(k),k, k==1?13:k==2?5:1,k==1?2:k==2?0:-1,-1,b.CreateString(k==3?"Synthetic detail":"")));
+    if(q.occupation_id()<0)for(int k=0;k<4;++k)entries.push_back(m::CreateLocationStaffAssignment(b,m::LocationStaffAssignmentKind(k),k, k==1?13:k==2?5:1,k==1?23:k==2?0:-1,k==1?7:-1,b.CreateString(k==3?"Synthetic detail":""),b.CreateString(k==1?"SYNTHETIC_WORKSHOP":"")));
     const auto r=m::CreateLocationStaffAssignments(b,651,0,q.occupation_id(),q.religious_entity_id(),q.religious_assignment_id(),5813,9375,9007199254740993ULL,b.CreateVector(entries));
     m::AreaStateBuilder a(b);a.add_operation(q.operation());a.add_location_staff_assignments(r);return a.Finish();
   }

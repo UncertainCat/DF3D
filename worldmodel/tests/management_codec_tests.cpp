@@ -3170,12 +3170,13 @@ TEST_CASE("Staff assignment read requests bind one row and carry no mutation fie
   }
 }
 TEST_CASE("Staff assignment replies preserve order and distinguish empty from absent") {
-  for(int variant=0;variant<14;++variant) {
+  for(int variant=0;variant<17;++variant) {
     flatbuffers::FlatBufferBuilder b;
     std::vector<flatbuffers::Offset<wire::LocationStaffAssignment>> entries;
     if(variant!=1)for(int k=0;k<4;++k)entries.push_back(wire::CreateLocationStaffAssignment(b,
         wire::LocationStaffAssignmentKind(variant==2?4:variant==3?3-k:k),variant==4?-1:k,1,
-        variant==5?2:-1,-1,b.CreateString(k==3 || variant==6?"Synthetic detail":"")));
+        variant==5?2:-1,(k==1 || variant==16)?7:-1,b.CreateString(k==3 || variant==6?"Synthetic detail":""),
+        b.CreateString(variant==14?"":variant==15?std::string(65,'X'):k==1?"SYNTHETIC_WORKSHOP":"")));
     auto r=wire::CreateLocationStaffAssignments(b,variant==7?-1:651,0,variant==8?87:-1,383,2,5813,9375,
         variant==9?0:9007199254740993ULL,variant==10?0:b.CreateVector(entries));
     wire::AreaStateBuilder a(b);a.add_operation(variant==11?wire::AreaOperation::LocationSpecializationRead:wire::AreaOperation::LocationStaffAssignmentsRead);
@@ -3188,7 +3189,8 @@ TEST_CASE("Staff assignment replies preserve order and distinguish empty from ab
     if(variant<2) {auto decoded=codec::decodeArea(state->area());REQUIRE(decoded.locationStaffAssignments);
       CHECK(decoded.locationStaffAssignments->revision==9007199254740993LL);
       CHECK(decoded.locationStaffAssignments->entries.size()==(variant==1?0:4));
-      if(!variant)CHECK(decoded.locationStaffAssignments->entries[3].name=="Synthetic detail");
+      if(!variant) {CHECK(decoded.locationStaffAssignments->entries[3].name=="Synthetic detail");
+        CHECK(decoded.locationStaffAssignments->entries[1].customCode=="SYNTHETIC_WORKSHOP");}
     }
   }
 }

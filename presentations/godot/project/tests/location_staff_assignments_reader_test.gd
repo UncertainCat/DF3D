@@ -27,7 +27,7 @@ func check(ok: bool,message: String) -> void:
 	if not ok:failures+=1;push_error(message)
 func facts(row: Dictionary) -> Dictionary:
 	var value:=Gesture.row_target(row)
-	value.merge({"site_id":651,"location_id":0,"revision":9007199254740993,"entries":[{"kind":3,"id":10,"type":10,"subtype":-1,"custom":-1,"name":"Metalworks"}]})
+	value.merge({"site_id":651,"location_id":0,"revision":9007199254740993,"entries":[{"kind":3,"id":10,"type":10,"subtype":-1,"custom":-1,"name":"Metalworks","custom_code":""}]})
 	return value
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
@@ -70,13 +70,13 @@ func run() -> void:
 	service.session_changed.emit();service.reply(current,facts(ordinary))
 	check(reader.rows.is_empty() and current in service.detached,"session retirement ignores late receipt")
 	reader.dispose()
-	for entries in [null,{},[{}],[{"kind":4,"id":1,"type":1,"subtype":-1,"custom":-1,"name":""}],
-		[{"kind":0,"id":1,"type":1,"subtype":-1,"custom":-1,"name":"invented"}],
-		[{"kind":3,"id":1,"type":1,"subtype":0,"custom":-1,"name":"detail"}]]:
+	for entries in [null,{},[{}],[{"kind":4,"id":1,"type":1,"subtype":-1,"custom":-1,"name":"","custom_code":""}],
+		[{"kind":0,"id":1,"type":1,"subtype":-1,"custom":-1,"name":"invented","custom_code":""}],
+		[{"kind":3,"id":1,"type":1,"subtype":0,"custom":-1,"name":"detail","custom_code":""}]]:
 		check(not reader._valid_entries(entries),"malformed assignment entries refused")
 	check(reader._valid_entries([]),"empty vector is a valid observation")
 	var ordered: Array=[]
-	for kind in 4:ordered.append({"kind":kind,"id":kind,"type":kind,"subtype":-1,"custom":-1,"name":""})
+	for kind in 4:ordered.append({"kind":kind,"id":kind,"type":kind,"subtype":-1,"custom":-1,"name":"","custom_code":""})
 	check(reader._valid_entries(ordered),"all four sources accepted in native order")
 	ordered.reverse();check(not reader._valid_entries(ordered),"descending source order refused")
 	if failures==0:print("LOCATION_STAFF_ASSIGNMENTS_READER_PASS")

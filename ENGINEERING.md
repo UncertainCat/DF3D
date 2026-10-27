@@ -822,6 +822,22 @@ MSVC build passes. Installed plugin SHA256 is
 7403D4DA076C457C49E73DF4840EDF7618A0857AC030B49F4902DAF65612CF6B.
 This establishes live transport, not rendered assignment-indicator acceptance.
 
+Management78 appends `custom_code` to each assignment entry. Custom-building
+IDs require a nonempty raw code of at most64 bytes; other entries forbid it.
+The model and Godot adapter preserve this semantic identity, avoiding a lookup
+through whichever map buildings happen to be streamed. Older receipts cannot
+infer the code from numeric raw ordering. PINS.md records the migration; both
+bridge and viewer use `Local\\df3d_management_v78`.
+The custom-code contract and actual Godot adapter pass in
+`build/qa/location-staff-custom-contract78`; the visible-row reader passes in
+`build/qa/location-staff-custom-reader78`. MSVC builds successfully. Protected
+areas100244 passes existing assignment/specialization/religious workflows,
+preserves both save manifests, reports no diagnostics and exits owned DF159772
+unsaved. Installed plugin SHA256 is
+0BA5AE553D96DFA93D2964479F6C486F961B7C5F9D24B3A7DBB401ABFAE594DB.
+This is contract compatibility evidence. Native custom-code generation and
+custom-building indicator acceptance remain unfinished.
+
 `tools/smoke/inspect_native_staff_indicators.py` pins the executable SHA256 and
 reads the four native renderer jump tables. It resolves workshop/furnace graphic
 globals back to the installed `BUILDING_ICON_*` token comparisons in DF's asset

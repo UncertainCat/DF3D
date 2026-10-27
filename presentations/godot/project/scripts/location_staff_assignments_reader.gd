@@ -95,6 +95,8 @@ func _valid_entries(entries) -> bool:
 		if entry.kind<previous or entry.kind>C.LocationStaffAssignmentKind.WorkDetail or entry.id<0:return false
 		if entry.type< -1 or entry.subtype< -1 or entry.custom< -1 or typeof(entry.get("name"))!=TYPE_STRING:return false
 		if entry.name.to_utf8_buffer().size()>4096:return false
+		if typeof(entry.get("custom_code"))!=TYPE_STRING or entry.custom_code.to_utf8_buffer().size()>64:return false
+		if (entry.custom>=0)!=not entry.custom_code.is_empty():return false
 		if entry.kind not in [C.LocationStaffAssignmentKind.Workshop,C.LocationStaffAssignmentKind.Furnace] and (entry.subtype!= -1 or entry.custom!= -1):return false
 		if entry.kind!=C.LocationStaffAssignmentKind.WorkDetail and not entry.name.is_empty():return false
 		previous=entry.kind

@@ -1414,7 +1414,7 @@ table LocationReligiousAssignment {
 enum LocationStaffAssignmentKind : uint8 { Occupation, Workshop, Furnace, WorkDetail }
 table LocationStaffAssignment {
   kind:LocationStaffAssignmentKind; id:int32 = -1; type:int32 = -1;
-  subtype:int32 = -1; custom:int32 = -1; name:string;
+  subtype:int32 = -1; custom:int32 = -1; name:string; custom_code:string;
 }
 table LocationStaffAssignments {
   site_id:int32 = -1; location_id:int32 = -1;
@@ -1822,7 +1822,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 77;
+  schema_version:uint32 = 78;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1868,7 +1868,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 77;
+  schema_version:uint32 = 78;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

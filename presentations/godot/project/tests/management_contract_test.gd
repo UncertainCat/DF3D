@@ -978,4 +978,4 @@ func test_location_staff_assignments() -> void:
 		assert(observed.entries.size()==(0 if occupation else 4))
 		if not occupation:
 			for i in 4:assert(observed.entries[i].kind==i and observed.entries[i].id==i)
-			assert(observed.entries[3].name=="Synthetic detail" and observed.entries[1].subtype==2)
+			assert(observed.entries[3].name=="Synthetic detail" and observed.entries[1].subtype==23 and observed.entries[1].custom==7 and observed.entries[1].custom_code=="SYNTHETIC_WORKSHOP")

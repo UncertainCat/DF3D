@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 77;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v77";
+inline constexpr uint32_t kManagementVersion = 78;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v78";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -938,6 +938,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           const bool building=e->kind()==LocationStaffAssignmentKind::Workshop || e->kind()==LocationStaffAssignmentKind::Furnace;
           if(!building && (e->subtype()!=-1 || e->custom()!=-1))return "foreign assignment building fields";
           if(e->kind()!=LocationStaffAssignmentKind::WorkDetail && textSize(e->name()))return "foreign assignment name";
+          if(textSize(e->custom_code())>64 || ((building && e->custom()>=0)!=(textSize(e->custom_code())>0)))return "invalid assignment custom code";
           previous=e->kind();
         }
       }

@@ -22,15 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management77 adds read-only ordered staff assignment facts, bound to an explicit
-occupation or religious row and current unit/HF. Empty entries are a valid
-observation; absent facts confer no membership information. Rebuild/install
-bridge and viewer together; `Local\\df3d_management_v77` isolates older peers.
-Older recordings cannot supply assignment facts; do not infer them from a row's
-role or specialization flag. Management76 specialization read/edit authority and
-Management75 religious assignment receipts remain separate. Snapshot/grid/session
-versions are unchanged. Contract acceptance does not establish handler or viewer
-acceptance.
+Management78 adds the native custom-building raw code to staff assignment
+entries. Building entries with a custom ID require its nonempty raw code;
+other entries carry no custom code. This identity is supplied by DF and does not
+depend on map visibility or local raw ordering. Older recordings cannot infer
+it from a custom numeric ID. Rebuild/install bridge and viewer together;
+`Local\\df3d_management_v78` isolates older peers. Management77 ordered assignment
+facts and Management76 specialization authority remain separate. Snapshot/grid/
+session versions are unchanged. Contract acceptance does not establish rendered
+indicator acceptance.
 
 
 Snapshot schema **11** and resident terrain grid **6** preserve root tissue
@@ -39,7 +39,7 @@ subterranean status, brook-surface identity and native building occupancy.
 The fixed snapshot TileState remains eight bytes; environment facts use a
 sparse per-block vector. Resident tiles are fourteen bytes. Rebuild/reinstall
 bridge and viewer together; older schema/grid readers reject the new layouts.
-Management is **72**. Session **12** adds authoritative moon phase (0..27,-1 unavailable) to
+Management is **78**. Session **12** adds authoritative moon phase (0..27,-1 unavailable) to
 the original fortress name, rank and capital status from session11. Rebuild/reinstall bridge and viewer together; the v12 session
 region rejects older peers. Missing old identity facts must remain unavailable,
 not be inferred from the translated name. Snapshot/grid versions are unchanged.

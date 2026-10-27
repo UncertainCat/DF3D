@@ -687,6 +687,20 @@ or potentially sent edits block another gesture on that same Details owner.
 The caller must obtain fresh displayed facts and wire the native controls; this
 component is not yet connected to LocationDetailsView.
 
+location_specialization_reader.gd supplies display receipts through one serial
+pass over current visible, resolvable staff rows. Exact row membership, unit/HF,
+site/location, typed revision and native eligibility are validated before display.
+Redraws do not retry completed or refused reads; changing the visible window
+retires its pending ticket and starts a new pass. Details refresh clears receipts
+even when the Details revision is unchanged, since specialization has its own
+revision. Generation guards discard late replies after scroll, closure or session
+retirement. Display receipts do not replace the gesture's fresh authorization.
+The reader is not yet wired to the rendered staff controls. Controlled core and
+engine checks in build/qa/location-specialization-reader-final pass for serial
+reads, religious unit resolution, ineligibility, wide revisions, foreign rows,
+malformed receipts, redraw suppression and synchronous/late cancellation; these
+are ownership checks, not rendered or live lifecycle acceptance.
+
 Controlled location-specialization-workflow-final core/engine checks cover both
 row types, exact wide revisions, explicit zero for reverse edits, duplicate
 gestures, malformed/changed receipts, refusal/Unknown behavior, synchronous owner

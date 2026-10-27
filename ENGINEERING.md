@@ -2889,8 +2889,31 @@ work, reconnect to the same fortress, and verify no new picker tickets or replay
 These terminal cases clean up through the native verifier; ordinary lanes retain
 UI removal coverage. Both pass with known Godot diagnostics, unchanged source/
 clone manifests and unsaved exits. Core19/19 passes in
-`build/qa/animal-disconnect-core`. Producer restart, critter-item disconnect and
-explicit picker reopening after reconnect are not established by these runs.
+`build/qa/animal-disconnect-core`. Critter-item mutation disconnect remains
+outside these unit-assignment cases.
+
+Explicit same-process reopening passes in `areas-acceptance-20261027-151837`
+(sent, DF165384): actual launcher/map selection opens fresh candidates, the
+target's checkbox agrees with native assignment references, and dismissal works.
+The native verifier still checks cage removal, chain cleanup and retained jobs.
+The harness now waits for its own send behind background reads and scopes the
+no-replay check to area actions and picker ownership.
+
+`-AnimalDisconnect restart` uses the shared candidate replacement helper.
+Protected152009 replaces DF173408 with168692, retires the old receipt as unknown,
+verifies the unsaved zone is absent, and creates a fresh Pit/Pond through viewport
+input. Fresh candidate membership and native unit/zone references agree that the
+animal is unassigned. All displayed portraits load before capture; that capture
+was inspected. The fresh zone is removed through the UI. All1,368 restart hashes
+and both final save manifests match; both processes exit unsaved. These live
+runs pass with only the known rendering-thread notice, and core passes cleanly
+in `build/qa/animal-restart-reopen`.
+
+Initial151413 incorrectly expected the old cage-removal effects to survive an
+unsaved restart. A separate `assignment_membership` verifier checks fresh
+reciprocal zone/unit membership without asserting old fixture effects; ordinary
+`assignment` retains its stricter cage/chain/job assertions. Prototype151629
+passed membership but captured before portraits loaded;152009 adds that wait.
 
 Native `build/stockpile-storage-native-zone-animals-20261026-185722` distinguishes
 same-zone map clicks from selection changes. At exposed map pixel(964,390),

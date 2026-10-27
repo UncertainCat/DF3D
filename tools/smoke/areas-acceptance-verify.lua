@@ -908,7 +908,7 @@ elseif request.op=='assignment_before' then
   cursor=df.reinterpret_cast('int32_t',dfhack.internal.getImageBase()+0x2131b60).value}
  result.chain=chain.id;result.pending_job=pending;result.retained_job=retained;result.worker=worker.id;result.item=held_item.id
 
-elseif request.op=='assignment' then
+elseif request.op=='assignment' or request.op=='assignment_membership' then
  local b,u=building(),assert(df.unit.find(request.unit_id));local found=0;local contained={}
  for _,r in ipairs(u.general_refs) do
   if df.general_ref_building_civzone_assignedst:is_instance(r) then found=found+1;assert(request.assign and r.building_id==b.id,'wrong native zone reference')
@@ -919,6 +919,7 @@ elseif request.op=='assignment' then
  for _,z in ipairs(df.global.world.buildings.other.ACTIVITY_ZONE) do
   if z.id~=b.id then assert(not contains(z.assigned_units,u.id),'old zone retained unit') end
  end
+ if request.op=='assignment' then
  for _,c in ipairs(df.global.world.buildings.other.CAGE) do assert(not contains(c.assigned_units,u.id),'cage retained assignment') end
  local before=assert(_G.df3d_areas_containment)
  assert(before.id==u.id and before.refs==canonical(contained),'physical containment references changed')
@@ -934,6 +935,7 @@ elseif request.op=='assignment' then
  result.worker=saved.worker.id;result.worker_job=-1;result.item=saved.item.id
  result.item_in_job=false;result.item_refs=0
  result.chain=chain.id;result.pending_job_absent=true;result.retained_job=saved.retained;result.cursor_unchanged=true
+ end
 
 elseif request.op=='squad_before' then
  if not _G.df3d_squad_racks then result.racks=squad_racks.start(building(),{request.squad_id}) end

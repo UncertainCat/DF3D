@@ -181,6 +181,7 @@ func pointer_areas() -> void:
 				if animal_disconnect!="none":
 					await pointer_animal_disconnect(id,animal_disconnect)
 					if stopped:return
+					if animal_disconnect=="restart":await native("final");return
 					await native("remove_target",{"id":id});await native("removed",{"id":id});await native("final");return
 				await click_control(editor.zone_menu.controls.remove)
 				if not await wait_ui(func():return settled() and editor.selected.is_empty(),"remove animal test zone"):return
@@ -432,7 +433,7 @@ func pointer_candidate_restart(id: int, target_id: int, ticket: int, kind: Strin
 	var launcher:Button=scene._fortress_hud.navigation.Zones
 	launcher.show();await click_control(launcher,true)
 	if not await wait_ui(func():return editor.available and editor.panel.visible and settled(),"replacement Zones launcher"):return
-	var zone:String="Bedroom" if kind=="owner" else JSON.parse_string(FileAccess.get_file_as_string(directory+"/zone-squads-only.json")).zone
+	var zone:String="Bedroom" if kind=="owner" else ("Pond" if kind=="animal" else JSON.parse_string(FileAccess.get_file_as_string(directory+"/zone-squads-only.json")).zone)
 	await click_control(editor.zone_menu.buttons[zone])
 	for corner in 2:
 		await pointer_click(tile_screen(tile))
@@ -440,7 +441,10 @@ func pointer_candidate_restart(id: int, target_id: int, ticket: int, kind: Strin
 	await click_control(editor.paint_view.accept_button)
 	if not await wait_ui(func():return settled() and not editor.selected.is_empty(),"replacement zone create"):return
 	var fresh_id:int=editor.selected.id
-	if kind=="owner":
+	if kind=="animal":
+		await click_control(editor.zone_menu.controls.animals)
+		if not await animal_fresh_assignment(fresh_id,target_id,false,true):return
+	elif kind=="owner":
 		if not check(int(editor.selected.owner_id)==-1,"replacement inherited old owner"):return
 		await native("snapshot",{"id":fresh_id,"expected":{"owner_id":-1}})
 		await click_control(editor.zone_menu.controls.owner)
@@ -478,8 +482,12 @@ func pointer_animal_disconnect(id: int, disconnect_mode: String) -> void:
 	var ticket:int=editor.request_ticket
 	if not check(ticket>0,"disconnect animal mutation not queued"):return
 	var expected_use:=false
-	if disconnect_mode=="sent":
-		actions.poll()
+	if disconnect_mode in ["sent","restart"]:
+		var send_deadline:=Time.get_ticks_msec()+30000
+		while actions._requests.has(ticket) and int(actions._requests[ticket].sequence)==0 and Time.get_ticks_msec()<send_deadline:
+			world.poll();actions.poll()
+			if actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0:break
+			await create_timer(0.02).timeout
 		if not check(actions._requests.has(ticket) and int(actions._requests[ticket].sequence)>0,"disconnect mutation not sent"):return
 		var sequence:int=actions._requests[ticket].sequence
 		var reply:Dictionary={}
@@ -491,6 +499,9 @@ func pointer_animal_disconnect(id: int, disconnect_mode: String) -> void:
 		if not check(not reply.is_empty() and actions.result(ticket).is_empty(),"missing unobserved native receipt"):return
 		write_json("animal-unobserved-receipt.json",reply);expected_use=true
 	await native("assignment",{"id":id,"unit_id":target_id,"assign":expected_use})
+	if disconnect_mode=="restart":
+		await pointer_candidate_restart(id,target_id,ticket,"animal")
+		return
 	world.detach_live();actions.poll()
 	var outcome:Dictionary=actions.result(ticket)
 	write_json("animal-disconnect-outcome.json",outcome)
@@ -504,12 +515,38 @@ func pointer_animal_disconnect(id: int, disconnect_mode: String) -> void:
 		if world.terrain_loaded() and bool(world.poll_management().get("transport_alive",false)):break
 		await create_timer(0.02).timeout
 	if not check(bool(world.poll_management().get("transport_alive",false)),"animal reconnect timed out"):return
-	var next_ticket:int=actions._next_ticket
+	var count:int=area_receipts().size()
 	for frame in 30:
 		world.poll();actions.poll();editor._process(0.02);await process_frame
-	if not check(actions._next_ticket==next_ticket and editor.candidates_state.area.is_empty() and not view.visible,"reconnect replayed or reopened animal picker"):return
+	if not check(area_receipts().size()==count and editor.request_ticket==0 and editor.candidates_state.area.is_empty() and not view.visible,"reconnect replayed or reopened animal picker"):return
 	await native("assignment",{"id":id,"unit_id":target_id,"assign":expected_use})
 	await capture("animal_disconnected_retired")
+	var launcher:Button=scene._fortress_hud.navigation.Zones
+	launcher.show();await click_control(launcher,true)
+	if not await wait_ui(func():return editor.available and editor.panel.visible and settled(),"animal reconnect launcher"):return
+	var p:Dictionary=fixture.origin
+	await pointer_click(tile_screen(Vector3i(int(p.x)+8,int(p.y)+8,int(p.z))))
+	if not await wait_ui(func():return settled() and int(editor.selected.get("id",-1))==id,"animal reconnect selection"):return
+	await click_control(editor.zone_menu.controls.animals)
+	if not await animal_fresh_assignment(id,target_id,expected_use):return
+	await capture("animal_reconnected_reopened")
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(not view.visible and settled(),"reopened animal picker failed to dismiss"):return
+
+func animal_fresh_assignment(id: int, target_id: int, assigned: bool, replacement:=false) -> bool:
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"fresh animal list"):return false
+	var index:=-1
+	for i in editor.candidates_state.rows.size():
+		var row:Dictionary=editor.candidates_state.rows[i]
+		if int(row.get("entity",0))==1 and int(row.id)==target_id:index=i;break
+	if not check(index>=0 and bool(editor.candidates_state.rows[index].assigned)==assigned,"fresh animal assignment differs"):return false
+	await native("assignment_membership" if replacement else "assignment",{"id":id,"unit_id":target_id,"assign":assigned})
+	await pointer_key(KEY_PAGEUP)
+	for i in index:await pointer_key(KEY_DOWN)
+	return await wait_ui(func():
+		for slot in editor.candidates_view.portrait_slots:
+			if slot.view.texture==null:return false
+		return not editor.candidates_view.portrait_slots.is_empty(),"reopened animal portraits")
 
 func pointer_zone_gathering(id: int) -> void:
 	step = "viewport native gathering flags"

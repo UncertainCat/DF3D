@@ -817,16 +817,32 @@ if (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpan
  end
  local function panel_probe(label)
   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
-  g.precise_mouse_x=1070;g.precise_mouse_y=298;g.mouse_x=133;g.mouse_y=24
+  g.mouse_x=g.dimx-17;g.mouse_y=24;g.precise_mouse_x=g.mouse_x*8+6;g.precise_mouse_y=298
   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
   local function text(x,y,count)
    local chars={};for i=0,count-1 do chars[#chars+1]=string.char(dfhack.screen.readTile(x+i,y).ch&255)end
    return table.concat(chars)
   end
-  local facts={list_heading=text(124,23,20),popup_title=text(54,5,18),sidebar_mode=df.global.plotinfo.main.mode,
+  local facts={list_heading=text(g.dimx-26,23,20),popup_title=text(g.dimx-96,5,18),sidebar_mode=df.global.plotinfo.main.mode,
    designation=m.main_designation_selected,bottom_mode=m.bottom_mode_selected,squads=m.squads.open,
-   info=m.info.open,stocks=m.stocks.open,create_work_order=m.create_work_order.open}
+   info=m.info.open,stocks=m.stocks.open,create_work_order=m.create_work_order.open,reports_depth=#m.announcements.stack.children,reports_flags=m.announcements.stack.flag.whole}
+  local cells={}
+  if label:match('^layout%-')then
+   for _,bounds in ipairs{{g.dimx-28,g.dimx-3,18,g.dimy-4},{g.dimx-98,g.dimx-38,3,20}}do
+    for y=bounds[3],bounds[4]do for x=bounds[1],bounds[2]do
+     local pen=dfhack.screen.readTile(x,y);cells[#cells+1]={x=x,y=y,ch=pen.ch,fg=pen.fg,bg=pen.bg,bold=pen.bold,tile=pen.tile}
+    end end
+   end
+  end
   local row=capture('tracker-panel-'..label,temple,true);row.panel_probe=facts
+  if #cells>0 then
+   row.layout_cells=cells
+   local text,code=dfhack.run_command_silent('df3d','continuing-agreements-read');assert(code==0,text)
+   row.provider=require('json').decode(text).rows
+   text,code=dfhack.run_command_silent('df3d','continuing-agreement-details-read',tostring(a.id));assert(code==0,text)
+   row.popup_provider=require('json').decode(text)
+  end
+  return row
  end
  panel_probe('idle')
  for _,entry in ipairs{{'squads','D_SQUADS','squads'},{'residents','D_UNITLIST','info'},{'stocks','D_STOCKS','stocks'}}do
@@ -834,6 +850,9 @@ if (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpan
   key(entry[1]=='squads' and 'D_SQUADS' or 'LEAVESCREEN');assert(not m[entry[3]].open,'native tracker panel did not close '..entry[1]);panel_probe(entry[1]..'-closed')
  end
  if recognition_case=='petitiontrackerpanels' then
+  key('D_ANNOUNCE');panel_probe('reports');assert(#m.announcements.stack.children>0,'reports did not open')
+  key('LEAVESCREEN');local closed_reports=panel_probe('reports-closed')
+  assert(closed_reports.panel_probe.popup_title=='Accepted petition:','popup did not return after closing reports')
   for _,entry in ipairs{{'dig','D_DESIGNATE_DIG'},{'stockpiles','D_STOCKPILES'},{'zones','D_CIVZONE'},{'construction','D_BUILDING'}}do
    key(entry[2]);panel_probe(entry[1]);key('_MOUSE_R');panel_probe(entry[1]..'-closed')
   end
@@ -868,6 +887,22 @@ if (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpan
   indexed:resize(0);for _,assignment in ipairs(old_index)do indexed:insert('#',assignment)end
   assert(manager_position.responsibilities[responsibility]==original_manager and #indexed==#old_index)
   for i,assignment in ipairs(old_index)do assert(indexed[i-1]==assignment)end
+  local continuing=df.global.plotinfo.continuing_agreement_id;local original_count=#continuing
+  for _,size in ipairs{'small','wide','default'}do
+   window_input('name-resize-'..size);panel_probe('layout-'..size)
+   for i=1,20 do continuing:insert('#',a.id)end
+   panel_probe('layout-overflow-'..size)
+   continuing:resize(original_count)
+  end
+  for _,target in ipairs{{'heading',1070,286},{'blank',1070,250},{'separator',1070,274},{'left-border',979,298},{'outside-left',968,298}}do
+   key('D_DESIGNATE_DIG');assert(m.main_designation_selected==0 and df.global.selection_rect.start_x<0)
+   pixel(target[2],target[3])
+   local corner={df.global.selection_rect.start_x,df.global.selection_rect.start_y,df.global.selection_rect.start_z}
+   local row=panel_probe('click-'..target[1]);row.click_probe={pixel={target[2],target[3]},corner=corner}
+   if corner[1]>=0 then key('_MOUSE_R');assert(df.global.selection_rect.start_x<0,'rectangle did not cancel')end
+   if m.main_designation_selected~=-1 then key('_MOUSE_R')end
+   assert(m.main_designation_selected==-1,'designation mode did not close')
+  end
  end
  b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
  -- These diagnostic allocations belong only to this paused unsaved clone.

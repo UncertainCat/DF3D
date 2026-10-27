@@ -1327,8 +1327,33 @@ The final reference opens that icon and cancels without selecting an order,
 checks that the order count is unchanged, and restores/checks both responsibility
 and index. This is diagnostic fixture setup, not a proposed runtime assignment
 API. Owned DF163268 exits unsaved, source hashes unchanged. Competing hover
-overlays, map clicks, resize/overflow and other panel/sidebar gates remain
-unverified before HUD exposure.
+overlays and other panel/sidebar gates require separate observation rather
+than assuming that any active panel hides the list.
+
+Native125136 adds Reports and full-frame layout captures. Reports retains its
+widget child after closing: the stack flags change7 to5, so child count alone
+does not prove visibility. Its visible window covers the popup region while
+the tracker list remains visible. The first124931 probe failed on a nonexistent
+`announcements.open` field;125036 failed by mistaking retained children for an
+open window. The corrected lane passes and preserves source saves.
+`tracker_layout_reference` captures both complete frames at960x600,1600x900
+and1200x800, with three rows and23-row overflow at each size. Temporary extra
+continuing IDs are removed before fixture cleanup. The GPU check
+`continuing_agreements_layout_capture` compares every captured frame/glyph pixel
+of both views together and checks the native bottom border against the viewer's
+visible row count. All six cases pass in `build/qa/petition-tracker-layout`,
+including previously omitted left borders; only known render-thread,
+device-finalize and shutdown-object diagnostics remain. Core passes cleanly.
+
+Native125443 records the tracker input boundary using cancellable Dig
+rectangles. Clicking a heading, blank applicant slot, separator or left border
+starts a map rectangle, as does the adjacent map. Each rectangle is cancelled
+and the designation mode closed before the next probe. This establishes native
+click pass-through, not exact map-coordinate parity or completed designation
+effects. `tracker_click_reference` retains all five results. The views' existing
+MOUSE_FILTER_IGNORE behavior is therefore intentional. The owned session exits
+unsaved with source hashes unchanged. Reader/view composition, local visibility
+and hover-target arbitration still need HUD integration and live verification.
 
 ## Native Location name editor discovery
 

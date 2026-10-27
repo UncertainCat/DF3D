@@ -80,6 +80,9 @@ struct LocationReligiousStaffReceipt {
 // epoch ownership is supplied by transport, never native UI state.
 std::optional<LocationReligiousStaffReceipt> observeNativeLocationReligiousStaff(
     int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId);
+// Native candidate membership in source order; presentation sorting is separate.
+std::optional<std::vector<int32_t>> observeNativeReligiousCandidateIds(
+    int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId);
 // Requires the exact observed revision at the same safe point as mutation.
 LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
     int32_t entityId,int32_t assignmentId,int32_t expectedHolderId,uint64_t expectedRevision);

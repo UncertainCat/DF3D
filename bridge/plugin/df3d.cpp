@@ -1762,8 +1762,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               seed.valid,seed.id,seed.x,seed.y,seed.z,int(seed.furniture),seed.inUse);
           return CR_OK;
       }
-      if(parameters[0]=="location-religious-remove" || parameters[0]=="location-religious-receipt") {
-        const bool reading=parameters[0]=="location-religious-receipt";
+      if(parameters[0]=="location-religious-remove" || parameters[0]=="location-religious-receipt" || parameters[0]=="location-religious-candidates") {
+        const bool candidates=parameters[0]=="location-religious-candidates";
+        const bool reading=candidates || parameters[0]=="location-religious-receipt";
         if(parameters.size()!=(reading?5:7))return CR_WRONG_USAGE;
         int32_t ids[5]{};
         for(size_t i=0;i<(reading?4:5);++i) {
@@ -1773,7 +1774,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         Json::Value value(Json::objectValue);
-        if(reading) {
+        if(candidates) {
+          const auto rows=df3d_area::observeNativeReligiousCandidateIds(ids[0],ids[1],ids[2],ids[3]);
+          value["valid"]=rows.has_value();value["unit_ids"]=Json::Value(Json::arrayValue);
+          if(rows)for(auto id:*rows)value["unit_ids"].append(id);
+        } else if(reading) {
           const auto receipt=df3d_area::observeNativeLocationReligiousStaff(ids[0],ids[1],ids[2],ids[3]);
           value["valid"]=receipt.has_value();
           if(receipt) {

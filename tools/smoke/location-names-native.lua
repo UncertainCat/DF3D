@@ -664,6 +664,27 @@ if recognition_case=='assignpriest' then
  assert(assignment and assignment.histfig>=0)
  pixel(944,358);assert(assignment.histfig==-1,'native removal did not vacate religious assignment')
  local vacant=capture('TEMPLE-priest-vacant',temple);vacant.recognition=recognition_state()
+ local function candidates(ids)
+  local guards={}
+  for _,object in ipairs{m,g}do
+   local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n)
+   guards[#guards+1]={bytes=bytes,address=at,size=n}
+  end
+  local args=ids or {df.global.plotinfo.site_id,temple.id,religion.id,assignment.id}
+  local text,code=dfhack.run_command_silent('df3d','location-religious-candidates',tostring(args[1]),tostring(args[2]),tostring(args[3]),tostring(args[4]))
+  for _,guard in ipairs(guards)do
+   assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'religious candidates changed native UI/gps');df.delete(guard.bytes)
+  end
+  assert(code==0,text);return require('json').decode(text)
+ end
+ vacant.semantic_candidates=candidates();assert(vacant.semantic_candidates.valid,'religious candidates unavailable')
+ assert(require('json').encode(vacant.recognition)==require('json').encode(recognition_state()),'candidate observation changed captured simulation')
+ vacant.invalid_candidates={}
+ for i=1,4 do
+  local ids={df.global.plotinfo.site_id,temple.id,religion.id,assignment.id};ids[i]=-1
+  local rejected=candidates(ids);assert(not rejected.valid and #rejected.unit_ids==0)
+  vacant.invalid_candidates[#vacant.invalid_candidates+1]=i
+ end
  pixel(592,358)
  local selector=m.unit_selector
  assert(selector.flag.VISIBILITY_ACTIVE,'religious assignment selector did not open')
@@ -689,6 +710,9 @@ if recognition_case=='assignpriest' then
   opened.selector.candidates[#opened.selector.candidates+1]={id=entry.u.id,histfig_id=entry.u.hist_figure_id,name=dfhack.df2utf(dfhack.units.getReadableName(entry.u)),profession=entry.u.profession}
  end
  assert(opened.selector.entity_id==religion.id and opened.selector.assignment_id==assignment.id)
+ local native_ids={};for _,row in ipairs(opened.selector.candidates)do native_ids[#native_ids+1]=row.id end
+ assert(require('json').encode(native_ids)==require('json').encode(vacant.semantic_candidates.unit_ids),'religious candidate membership/source order differs from native')
+ opened.semantic_candidates=candidates();assert(require('json').encode(native_ids)==require('json').encode(opened.semantic_candidates.unit_ids),'open-picker candidate observation changed result')
  opened.selector.displayed={};opened.selector.skills={};opened.selector.sorting={}
  for _,sort in ipairs(list.sorting_by)do opened.selector.sorting[#opened.selector.sorting+1]=sort.ident end
  for i=0,df.job_skill._last_item do if list.skills[i]~=0 then opened.selector.skills[#opened.selector.skills+1]={skill=i,weight=list.skills[i]}end end
@@ -711,6 +735,29 @@ if recognition_case=='assignpriest' then
  key('_MOUSE_R');assert(not selector.flag.VISIBILITY_ACTIVE,'religious selector cancel failed')
  local cancelled=capture('TEMPLE-priest-selector-cancelled',temple);cancelled.recognition=recognition_state()
  assert(require('json').encode(cancelled.recognition)==require('json').encode(vacant.recognition),'cancelling selector changed simulation')
+ cancelled.candidate_boundaries={}
+ local probe_unit=assert(df.unit.find(opened.selector.displayed[1].id))
+ local function probe(object,field,value,label)
+  local old=object[field];object[field]=value
+  local semantic=candidates();assert(semantic.valid)
+  pixel(592,358);assert(selector.flag.VISIBILITY_ACTIVE)
+  local native={};for _,entry in ipairs(assert(find_list(selector,0)).entry_list)do native[#native+1]=entry.u.id end
+  assert(require('json').encode(native)==require('json').encode(semantic.unit_ids),'religious eligibility mismatch: '..label)
+  local included=false;for _,id in ipairs(native)do if id==probe_unit.id then included=true end end
+  cancelled.candidate_boundaries[#cancelled.candidate_boundaries+1]={case=label,included=included,count=#native}
+  key('_MOUSE_R');assert(not selector.flag.VISIBILITY_ACTIVE);object[field]=old
+ end
+ for profession=0,134 do probe(probe_unit,'profession',profession,'profession-'..profession)end
+ for _,flag in ipairs{'inactive','marauder','merchant','diplomat','active_invader','invader_origin','forest'}do
+  probe(probe_unit.flags1,flag,true,'unit-'..flag)
+ end
+ probe(probe_unit.flags3,'ghostly',true,'unit-ghostly')
+ local probe_figure=assert(df.historical_figure.find(probe_unit.hist_figure_id))
+ for _,link in ipairs(probe_figure.entity_links)do
+  if link:getType()==df.histfig_entity_link_type.MEMBER and (link.entity_id==religion.id or link.entity_id==df.global.plotinfo.group_id)then
+   probe(link,'link_strength',0,'membership-'..link.entity_id)
+  end
+ end
  pixel(592,358);assert(selector.flag.VISIBILITY_ACTIVE)
  local chosen=opened.selector.displayed[1]
  assert(chosen.y<15,'unexpected first row geometry')

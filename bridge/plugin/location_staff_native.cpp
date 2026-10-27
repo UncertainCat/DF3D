@@ -1,6 +1,7 @@
 #include "location_staff_native.h"
 #include "location_staff_order_native.h"
 #include "location_staff_mutation_native.h"
+#include "location_religious_candidates_native.h"
 #include "modules/Maps.h"
 #include "modules/Units.h"
 #include "modules/Translation.h"
@@ -410,6 +411,38 @@ std::optional<LocationReligiousStaffReceipt> observeNativeLocationReligiousStaff
   // Cleanup runs on current native records. Simulation timers, world time, RNG,
   // padding, pointer addresses and lookup caches are not receipt dependencies.
   hash&=uint64_t(INT64_MAX);result.revision=hash?hash:1;return result;
+}
+
+std::optional<std::vector<int32_t>> observeNativeReligiousCandidateIds(
+    int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId) {
+  const auto& native=religiousCandidateFunctions();
+  if(!native || !df::global::world)return std::nullopt;
+  const auto receipt=observeNativeLocationReligiousStaff(siteId,locationId,entityId,assignmentId);
+  if(!receipt)return std::nullopt;
+  auto* entity=df::historical_entity::find(entityId);
+  auto* position=binsearch_in_vector(entity->positions.own,receipt->positionId);
+  if(!position)return std::nullopt;
+  std::vector<int32_t> result;
+  const auto group=df::global::plotinfo->group_id;
+  for(auto* unit:df::global::world->units.active) {
+    if(!unit)return std::nullopt;
+    if(unit->flags1.bits.inactive || !native.unit(unit) || native.caste(unit->race,unit->caste) ||
+       native.excluded(unit,group))continue;
+    if(auto* figure=df::historical_figure::find(unit->hist_figure_id)) {
+      if(!native.membership(figure,0,group) || !native.eligible(figure,position,entity,nullptr,false))continue;
+    }
+    // Inline semantic checks in3a3eca..3a3f42. Religious selectors have no
+    // occupation target, so the ordinary same-occupation exclusion is absent.
+    bool excluded=false;
+    for(const auto* held:unit->occupations) {
+      if(!held)return std::nullopt;
+      if(int(held->type)==3 || int(held->type)==4){excluded=true;break;}
+    }
+    const int profession=int(unit->profession);
+    if(excluded || profession<0 || profession>134 || native.profession[profession]!=0)continue;
+    result.push_back(unit->id);
+  }
+  return result;
 }
 
 LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,

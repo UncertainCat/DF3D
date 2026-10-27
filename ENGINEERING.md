@@ -354,11 +354,23 @@ the enclosing callback reads global picker state and remains forbidden runtime.
 Native input3302be..330330 initializes the shared unit selector, sets context9 and
 passes occupation/entity/position/assignment pointers. Wrapper3a39b0 calls membership
 strengthb973c0 and position eligibilityb96d80 for historical figures before list
-construction. These are investigation entry points, not verified runtime APIs:
-the wrapper owns widgets and must not be borrowed. Audit the leaf predicates,
-owned ordering inputs and assignment mutation before implementing the religious
-selector. Filtering/sort/input boundaries, full assignment side effects, bridge
-receipts and the viewer picker remain unfinished.
+construction. The wrapper owns widgets and must not be borrowed.
+`observeNativeReligiousCandidateIds` now calls the pinned native unit/caste,
+excluded-position, membership and position-eligibility predicates with semantic
+records. It reproduces the inline occupation exclusions and reads the pinned
+immutable profession switch table. Native entity/assignment lookup caches may
+refresh; picker state is never an input. The paused diagnostic
+`df3d location-religious-candidates site location entity assignment` returns
+candidate IDs in source order and rejects invalid targets.
+Protected053750 matches all42 native candidates before opening and while inside
+the picker. All135 profession values, eight unit flags and two membership-strength
+probes match the native picker (145 cases). Four invalid identity components
+are rejected; captured simulation and main-interface/gps byte guards pass.
+Source preservation and unsaved owned exit pass, as do MSVC and core19/19 in
+`build/qa/location-religious-candidates`. This does not establish position/caste/
+historical-figure boundary coverage, rendered ordering, filtering, labels,
+assignment mutation, dependency receipts or viewer integration; those remain
+unfinished. Management protocol74 is unchanged.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

@@ -10882,6 +10882,799 @@
         "Nested pointer fields within personality records are not recursively captured.",
         "This ordinary vacant priest assignment does not exercise squad, current-job, replacement, high-priest or plotter branches."
       ]
+    },
+    "candidate_semantic_reference": {
+      "source": "build/stockpile-storage-native-location-recognition-assignpriest-20261027-053750",
+      "result_sha256": "25bba36f2383e2801dca83b73fe98ec5bcb042bc2a7de82243499e57cf8470d9",
+      "plugin_sha256": "D3EB58930602751D4305DB9C1B727E3CF31CCD8812EF3EC5ACAB8E6AB325B08A",
+      "status": "passed",
+      "source_order_ids": [
+        5574,
+        5575,
+        5697,
+        6135,
+        6136,
+        6274,
+        6538,
+        6540,
+        6541,
+        6542,
+        6544,
+        6553,
+        6678,
+        6684,
+        6685,
+        6807,
+        6809,
+        6811,
+        6814,
+        6819,
+        6822,
+        6824,
+        6827,
+        6831,
+        6836,
+        6837,
+        6838,
+        6971,
+        6972,
+        6973,
+        6974,
+        7123,
+        7124,
+        7125,
+        7206,
+        7209,
+        7268,
+        7275,
+        7276,
+        7280,
+        7282,
+        7349
+      ],
+      "invalid_identity_components": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "closed_and_open_picker_match": true,
+      "native_ui_and_gps_bytes_unchanged": true,
+      "captured_simulation_unchanged": true,
+      "boundaries": [
+        {
+          "case": "profession-0",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-1",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-2",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-3",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-4",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-5",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-6",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-7",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-8",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-9",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-10",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-11",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-12",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-13",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-14",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-15",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-16",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-17",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-18",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-19",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-20",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-21",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-22",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-23",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-24",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-25",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-26",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-27",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-28",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-29",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-30",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-31",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-32",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-33",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-34",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-35",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-36",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-37",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-38",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-39",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-40",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-41",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-42",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-43",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-44",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-45",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-46",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-47",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-48",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-49",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-50",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-51",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-52",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-53",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-54",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-55",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-56",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-57",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-58",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-59",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-60",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-61",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-62",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-63",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-64",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-65",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-66",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-67",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-68",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-69",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-70",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-71",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-72",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-73",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-74",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-75",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-76",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-77",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-78",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-79",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-80",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-81",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-82",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-83",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-84",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-85",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-86",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-87",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-88",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-89",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-90",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-91",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-92",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-93",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-94",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-95",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-96",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-97",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-98",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-99",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-100",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-101",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-102",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-103",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-104",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-105",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-106",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-107",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-108",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-109",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-110",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "profession-111",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-112",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-113",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-114",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-115",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-116",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-117",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-118",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-119",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-120",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-121",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-122",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-123",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-124",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-125",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-126",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-127",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-128",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-129",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-130",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-131",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-132",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-133",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "profession-134",
+          "count": 42,
+          "included": true
+        },
+        {
+          "case": "unit-inactive",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "unit-marauder",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "unit-merchant",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "unit-diplomat",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "unit-active_invader",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "unit-invader_origin",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "unit-forest",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "unit-ghostly",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "membership-383",
+          "count": 41,
+          "included": false
+        },
+        {
+          "case": "membership-865",
+          "count": 41,
+          "included": false
+        }
+      ],
+      "source_preserved": true,
+      "owned_unsaved_exit": true,
+      "omissions": [
+        "This provider returns membership/source order only, not rendered sorting, labels or search.",
+        "Position flag/caste/historical-figure eligibility boundary variants remain untested.",
+        "No assignment mutation, dependency receipt or viewer integration is established."
+      ]
     }
   }
 }

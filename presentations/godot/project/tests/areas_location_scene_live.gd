@@ -1546,6 +1546,8 @@ func religious_staff_route(locations: Array) -> void:
 	var view=details.staff_view
 	if lifecycle=="tracker":
 		await tracker_transport();return
+	if lifecycle=="tracker-hud":
+		await tracker_hud();return
 	if lifecycle.begins_with("popup-"):
 		await popup_lifecycle(lifecycle.trim_prefix("popup-"));return
 	if lifecycle.begins_with("tracker-"):
@@ -1694,6 +1696,45 @@ func specialization_scene() -> void:
 			await capture("specialization_%d_%s"%[int(change.unit_id),str(expected.specialized)])
 		evidence.append({"unit_id":change.unit_id,"viewport_clicks":2,"native_effects_matched":true,"restored":true})
 	write_json("specialization-scene-evidence.json",{"cases":evidence})
+
+func tracker_hud() -> void:
+	step="main scene petition tracker"
+	editor.close_panel()
+	var expected:=await native("religious_tracker",{"seed":true})
+	if stopped:return
+	var tracker=scene._ui.ensure_agreement_tracker()
+	if not await wait_ui(func():return tracker.reader.ready,"HUD tracker rows"):return
+	if not check(tracker.reader.snapshot().size()==expected.rows.size(),"HUD native row count"):return
+	var samples: Array=[]
+	for dimensions in [Vector2i(1200,800),Vector2i(960,600),Vector2i(1600,900)]:
+		root.size=dimensions
+		await process_frame;await process_frame
+		var point: Vector2=(tracker.list_view.position+Vector2(24,60))*tracker.scale
+		var event:=InputEventMouseMotion.new();event.position=point;event.global_position=point;root.push_input(event,true)
+		await process_frame;await process_frame
+		print("TRACKER_HUD_POINTER requested=",point," actual=",root.get_mouse_position()," gui=",root.gui_get_hovered_control()," active=",host.active," entered=",tracker.session_entered," list=",tracker.list_view.visible," rows=",tracker.list_view.displayed_rows," target=",tracker.popup_reader.target," ticket=",tracker.popup_reader.ticket," enabled=",scene._fortress_hud.enabled)
+		if not await wait_ui(func():return tracker.popup_reader.ready and tracker.hover_claimed,"HUD petition pointer"):return
+		if not check(scene._ui.tile_hover.obscured and not scene._ui.tile_hover.panel.visible,"terrain competes with petition"):return
+		var row: Dictionary=tracker.popup_reader.target
+		var facts:=await native("religious_tracker_details",{"agreement_id":row.agreement_id})
+		if stopped:return
+		for key in tracker.popup_reader.snapshot().details:
+			if not check(tracker.popup_reader.snapshot().details[key]==facts.facts[key],"HUD native popup "+key):return
+		await capture("tracker_hud_"+str(dimensions.x))
+		samples.append({"viewport":[dimensions.x,dimensions.y],"row":row,"details":tracker.popup_reader.snapshot().details})
+	# Existing Info owners keep the list but retire hover; close restores it.
+	scene._ui.open_destination("Residents")
+	await process_frame;await process_frame
+	if not check(tracker.list_view.visible and not tracker.hover_claimed and not tracker.popup_view.visible,"Info tracker gates"):return
+	host.close_active()
+	if not await wait_ui(func():return tracker.popup_reader.ready,"HUD popup after Info"):return
+	var leave:=InputEventMouseMotion.new();leave.position=Vector2(400,400);leave.global_position=leave.position;root.push_input(leave,true)
+	await process_frame;await process_frame
+	if not check(not tracker.hover_claimed and not scene._ui.tile_hover.obscured and not tracker.popup_view.visible,"HUD hover leave"):return
+	tracker.retire()
+	await native("religious_tracker",{"restore":true})
+	if stopped:return
+	write_json("tracker-hud-evidence.json",{"samples":samples,"info_gate":true,"terrain_priority":true,"pointer_leave":true})
 
 func tracker_transport() -> void:
 	step="native tracker typed transport"

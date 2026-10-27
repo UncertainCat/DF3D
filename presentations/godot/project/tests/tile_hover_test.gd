@@ -46,4 +46,13 @@ func run():
 	hover.actions.submitted[5].observer.call(6,{"status":Contract.ManagementStatus.Ok,"world_hover":{"tile":a,"entries":[{"text":"WRONG TILE","foreground":1,"bright":true}]}},{})
 	assert(not hover.panel.visible and hover.ticket==0)
 	hover.clear()
+	hover.observe(a,0.0)
+	var pending=hover.actions.submitted.back().observer
+	var count=hover.actions.submitted.size()
+	hover.set_obscured(true)
+	hover.observe(b,1.0)
+	pending.call(count,{"status":Contract.ManagementStatus.Ok,"world_hover":{"tile":a,"entries":[{"text":"STALE","foreground":1,"bright":true}]}},{})
+	assert(not hover.panel.visible and hover.ticket==0 and hover.actions.submitted.size()==count,"petition priority retires terrain and suppresses queries")
+	hover.set_obscured(false);hover.observe(b,0.0)
+	assert(hover.actions.submitted.size()==count+1,"terrain resumes after petition leave")
 	hover.free();print("TILE_HOVER_TEST_PASS");quit()

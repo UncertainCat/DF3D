@@ -11,6 +11,8 @@ var red_alert_dismissal
 var session_timer := 0.0
 var native_options
 var native_options_session
+var agreement_tracker
+var tile_hover
 
 func setup(owner, audio_panel, original_ui) -> void:
 	view = owner
@@ -87,9 +89,23 @@ func setup(owner, audio_panel, original_ui) -> void:
 		hover.camera = view.camera_rig.get_node("Camera3D")
 		hover.actions = actions
 		add_child(hover)
+		tile_hover=hover
 	view._interaction.enable_shell()
 	audio_panel.launcher.hide()
 	if view._loader != null: view._set_play_enabled(false)
+
+# Staged composition entry used by protected acceptance before product exposure.
+func ensure_agreement_tracker():
+	if agreement_tracker!=null:return agreement_tracker
+	agreement_tracker=preload("res://scripts/continuing_agreements_hud.gd").new()
+	agreement_tracker.name="ContinuingAgreements"
+	agreement_tracker.hud=view._fortress_hud
+	agreement_tracker.configure(world,actions)
+	add_child(agreement_tracker)
+	if tile_hover!=null:
+		move_child(agreement_tracker,tile_hover.get_index())
+		agreement_tracker.hover_claim_changed.connect(tile_hover.set_obscured)
+	return agreement_tracker
 
 func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null

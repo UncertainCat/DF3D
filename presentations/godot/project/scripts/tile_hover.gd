@@ -10,6 +10,11 @@ var target := Vector3i(-1,-1,-1)
 var ticket := 0
 var generation := 0
 var refresh := 0.0
+var obscured := false
+
+func set_obscured(value: bool) -> void:
+	obscured=value
+	if value:clear()
 
 func _ready() -> void:
 	layer=1
@@ -24,6 +29,7 @@ func clear() -> void:
 	if panel!=null: panel.hide()
 
 func observe(tile:Vector3i,delta:float) -> void:
+	if obscured:return
 	if tile!=target:
 		clear();target=tile
 	if tile.x<0 or tile.y<0 or tile.z<0 or actions==null: return
@@ -51,6 +57,7 @@ func layout() -> void:
 	panel.layout(view)
 
 func _process(delta:float) -> void:
+	if obscured:return
 	if hud==null or not hud.visible or not hud.enabled or hud.menu_open() or hud.interaction.construction_active or not world.terrain_loaded():
 		clear();return
 	if get_viewport().gui_get_hovered_control()!=null:

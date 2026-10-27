@@ -1360,9 +1360,24 @@ visibility and logical UI scaling. A pending petition target claims hover
 immediately, without changing the views' mouse-ignore input behavior. The
 headless composition check exercises scaled pointer targets, separators,
 independent visibility, late replies and session retirement without replay.
-This owner is staged: main-scene activation, terrain-hover arbitration and
-protected live verification remain required before exposure. The component
-check is behavioral evidence, not rendered or live HUD acceptance.
+The main scene's staged `ensure_agreement_tracker()` creates this owner before
+terrain hover processing and connects immediate hover claims to terrain-query
+retirement. Session activation compares full-width generation/epoch identities;
+repeated context cannot reactivate a reader retired by the action service.
+Viewport mouse events supply positions, and viewport exit retires the target.
+The protected window's OS cursor query is invalid, so injected events must not
+be followed by overwriting their viewport coordinates with that OS query.
+
+Protected `areas-acceptance-20261027-131254` (`tracker-hud`) verifies the actual
+main scene at1200x800,960x600 and1600x900: native popup facts, real event targeting,
+terrain-hover priority, Info list/popup separation, restoration after Info closes,
+and pointer leave. The rendered1200 capture was inspected. The run reports only
+the known rendering-thread notice; owned DF162592 exits unsaved and both save
+manifests remain unchanged. Earlier130628/130900 runs timed out on OS pointer
+queries;131132 failed because the test compared a diagnostic-only agreement ID
+with popup details. These are failed runs, not acceptance. Product activation
+remains staged pending main-owner disconnect/restart and map click-through
+acceptance; existing reader lifecycle tests do not substitute for those flows.
 
 ## Native Location name editor discovery
 

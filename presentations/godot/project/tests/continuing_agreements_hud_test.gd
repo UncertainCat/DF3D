@@ -20,7 +20,7 @@ func run() -> void:
 	# No installed art is needed for the actual geometry/reader composition.
 	var service=Service.new();owner.bind(service)
 	var row={"agreement_id":7,"entity_id":8,"entity_type":0,"tier":0,"heading":"","applicant":"","date":""}
-	owner.activate();service.reply(1,[row])
+	owner.sync_session(true,[1,4294967297]);service.reply(1,[row])
 	owner.update_hover(0,Vector2(1200,800),Vector2.ONE,Vector2(1000,235),true,true)
 	assert(owner.hover_claimed and owner.popup_reader.ticket==2 and not owner.popup_view.visible,"pending popup owns hover immediately")
 	owner.update_hover(0,Vector2(1200,800),Vector2.ONE,Vector2(1000,274),true,true)
@@ -36,9 +36,10 @@ func run() -> void:
 	owner.update_hover(0,Vector2(1200,800),Vector2.ONE,Vector2(1000,235),true,true)
 	assert(owner.popup_reader.ticket==4)
 	service.session_changed.emit();service.reply(4,[row])
+	owner.sync_session(true,[1,4294967297])
 	for frame in 10:owner.update_hover(1,Vector2(1200,800),Vector2.ONE,Vector2(1000,235),true,true)
 	assert(service.calls.size()==4 and not owner.hover_claimed and not owner.list_view.visible and not owner.popup_view.visible,"retired HUD cannot replay on redraw")
-	owner.activate();assert(service.calls.size()==5,"fresh explicit activation is required")
+	owner.sync_session(true,[1,8589934593]);assert(service.calls.size()==5,"full 64-bit epoch identifies fresh sessions")
 	owner.retire();service.reply(5,[row]);assert(not owner.list_view.visible)
 	owner.popup_reader.dispose();owner.reader.dispose()
 	owner.list_view.free();owner.popup_view.free();owner.free()

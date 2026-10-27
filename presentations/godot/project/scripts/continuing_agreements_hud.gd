@@ -8,9 +8,25 @@ var list_view
 var popup_view
 var hover_claimed:=false
 var list_allowed:=true
+var hud
+var world_source
+var session_entered:=false
+var session_identity: Array=[]
+var pointer_position:=Vector2(-1,-1)
+
+func _ready() -> void:
+	get_viewport().mouse_exited.connect(_pointer_left)
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouse:pointer_position=event.position
+
+func _pointer_left() -> void:
+	pointer_position=Vector2(-1,-1)
+	popup_reader.clear();_claim(false)
 
 func configure(world, service) -> void:
 	layer=1
+	world_source=world
 	list_view=preload("res://scripts/continuing_agreements_view.gd").new()
 	popup_view=preload("res://scripts/continuing_agreement_popup_view.gd").new()
 	add_child(list_view);add_child(popup_view)
@@ -27,6 +43,27 @@ func activate() -> void:
 
 func retire() -> void:
 	reader.clear()
+
+func sync_session(entered: bool, identity: Array) -> void:
+	# Called from this owner's process, after the semantic service has reconciled
+	# its session. A repeated context cannot undo service-triggered retirement.
+	var fresh:=entered and (not session_entered or identity!=session_identity)
+	if not entered and session_entered:retire()
+	session_entered=entered;session_identity=identity.duplicate()
+	if fresh:activate()
+
+func _process(delta: float) -> void:
+	if hud==null:return
+	sync_session(hud.entered and world_source.is_live(),[world_source.session_generation(),int(hud.session.get("fortress_epoch",0))])
+	var popup_allowed: bool=hud.enabled and not hud.menu_open()
+	var active=hud.ui_host.active
+	# Current Info, areas, construction and inspection owners suppress native
+	# popup targeting. Reports/alerts instead cover it with their higher layer.
+	if is_instance_valid(active) and active.get_script() not in [preload("res://scripts/reports_panel.gd"),preload("res://scripts/alert_popup_panel.gd")]:
+		popup_allowed=false
+	if get_viewport().gui_get_hovered_control()!=null:popup_allowed=false
+	update_hover(delta,get_viewport().get_visible_rect().size,hud.ui_scale_vector(),
+		pointer_position,hud.visible,popup_allowed)
 
 func _claim(value: bool) -> void:
 	if hover_claimed==value:return

@@ -511,7 +511,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='staffindicatorhelp' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -560,6 +560,59 @@ if recognition_case=='new' or recognition_case=='positionnew' then
  assert(changed==1,'unexpected priest template fixture count')
 end
 pixel(664,238);assert(details.open and details.selected_ab==temple)
+if recognition_case=='staffindicatorhelp' then
+ local unit=assert(df.unit.find(6536));local occupation=assert(unit.occupations[0]);assert(occupation.id==87)
+ local original=occupation.type
+ local function probe(label,instruction,x)
+  local function move()
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=394;g.mouse_x=x//8;g.mouse_y=(394-4)//12
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+  end
+  local until_tick=dfhack.getTickCount()+900
+  repeat move();script.sleep(1,'frames')until dfhack.getTickCount()>=until_tick
+  move()
+  local row={hover=m.current_hover,displayed_hover=m.last_displayed_hover_inst}
+  assert(row.hover==instruction,'unexpected staff hover '..label..' '..tostring(row.hover))
+  if instruction>=0 then assert(row.displayed_hover==instruction,'staff help did not appear')end
+  row.help_lines={};row.text_cells={}
+  if instruction>=0 then
+   for y=0,17 do
+    local chars={}
+    for col=126,149 do
+     local pen=dfhack.screen.readTile(col,y);chars[#chars+1]=string.char(pen.ch&255)
+     if pen.ch~=0 and pen.ch~=32 then row.text_cells[#row.text_cells+1]={x=col,y=y,ch=pen.ch,fg=pen.fg,bg=pen.bg,bold=pen.bold}end
+    end
+    local line=table.concat(chars):gsub('%z',' '):gsub('%s+$','')
+    if #line>0 then row.help_lines[#row.help_lines+1]=line end
+   end
+  end
+  local captured=capture('TEMPLE-staff-help-'..label,temple,true)
+  captured.help_lines=row.help_lines;captured.text_cells=row.text_cells
+  return captured
+ end
+ for _,entry in ipairs{{0,'tavern_keeper'},{1,'performer'},{2,'scholar'},{3,'mercenary'},{4,'monster_slayer'},{5,'scribe'},{7,'doctor'},{8,'diagnostician'},{9,'surgeon'},{10,'bone_doctor'}}do
+  occupation.type=entry[1]
+  local key=entry[1]>=7 and 'DOCTOR' or string.upper(entry[2])
+  local row=probe(entry[2],df.main_hover_instruction['INFO_UNIT_IS_'..key],592);row.role=entry[1]
+ end
+ -- Hide the occupation indicator so each building source is tested alone.
+ occupation.type=df.occupation_type.UNUSED_01
+ for _,kind in ipairs{'WORKSHOP_ANY','FURNACE_ANY'}do
+  local building
+  for _,b in ipairs(df.global.world.buildings.other[kind])do if b:getWorkshopProfile()then building=b;break end end
+  assert(building);local vector=building:getWorkshopProfile().permitted_workers
+  local original_workers={};for _,id in ipairs(vector)do assert(id~=unit.id);original_workers[#original_workers+1]=id end
+  vector:insert('#',unit.id)
+  probe(string.lower(kind)..'-icon',-1,816)
+  local row=probe(string.lower(kind)..'-portrait',df.main_hover_instruction.INFO_UNIT_IS_ASSIGNED_TO_WORKSHOP,592)
+  row.building_id=building.id;row.building_type=building:getType();row.subtype=building:getSubtype()
+  vector:resize(0);for _,id in ipairs(original_workers)do vector:insert('#',id)end
+ end
+ occupation.type=original
+ local row=capture('TEMPLE-staff-help-restored',temple);row.restored=true
+ return
+end
 if recognition_case=='staffindicators' then
  local function facts()
   local result={}

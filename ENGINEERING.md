@@ -16,8 +16,8 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Animal picker remains active after selecting another zone or empty terrain, so Enter assigns to an old, no-longer-shown zone. | Close the picker and retire its assignment target when map selection changes. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_outside_panel_selection`, native `build/stockpile-storage-native-zone-animals-20261026-153041`, rendered `build/areas-acceptance-20261026-153847`. |
 | Fresh historical personality profiles leave current_focus and undistracted_focus uninitialized at offsets0x184/0x188. | No runtime correction; DF3D calls the same native initializer. | Discovered, not corrected. Native constructor5c02a0 and assignment accountant captures060438/060526/060814; fixture `assignment_cleanup_reference`. The oracle retains raw values and excludes only these newly allocated counters from comparison. |
 | Minimum-height hospital Details has no staff rows, but draws a malformed staff scrollbar over soap controls and scrolls an invisible list. | Proposed: hide the malformed scrollbar when no staff row fits. | Awaiting maintainer approval; not implemented. `native_location_details.json.staff_height_reference`, protected `build/stockpile-storage-native-location-names-20261027-010412`. |
-| Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Approved2026-10-27; performer/work-detail implemented and verified in render/capture101533. Remaining role and building help pending. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace code has the same coordinate dependency but targeted hover capture remains outstanding. |
-| Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. Broader occupation captures remain pending. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
+| Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
+| Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
 ## Native Location supply editing reference
 
@@ -887,9 +887,8 @@ not establish actual rendered or disconnect acceptance for the indicators.
 occupation, building and work-detail art, preserving native order and slot
 consumption. Building LIST_ICON art is32x32 centered vertically in its32x36 slot;
 custom raw codes use the installed namespaced icon with native family fallbacks.
-Occupation art stays stable during hover under the approved exception. Performer
-and work-detail help use captured native text and the shared native timer on
-their visible icons. Other help messages remain pending.
+Occupation art stays stable during hover under the approved exception. All occupation, building and work-detail help uses captured native text and the
+shared native timer on visible icons.
 Five RGB crops (performer, workshop, furnace, miner and custom work-detail icon)
 match native091520 exactly, including under hover, in
 `build/qa/location-staff-indicators-crops`. The fixture stores native crop hashes,
@@ -899,8 +898,21 @@ passes cleanly. Protected scene101533 verifies both live row receipts against
 independent native assignments, visible hover help, and existing specialization/
 religious assignment workflows. Owned DF145552 exits unsaved; both save manifests
 remain unchanged. Only the known render-thread notice is reported. Screens stay
-hidden pending broader role/subtype/overflow/custom artwork, remaining tooltip
-copy and indicator lifecycle acceptance.
+hidden pending broader subtype/overflow/custom artwork and indicator lifecycle
+acceptance.
+
+Protected `staffindicatorhelp102205` captures all ten occupation-role tooltip
+routes and separate workshop/furnace membership probes. All four medical roles
+use the same doctor message; furnaces use the same specific-workshop message as
+workshops. Both building sources confirm native visible-icon misses and portrait
+activation. The probe retains text cells before requesting the OS screenshot,
+which clears hover. Diagnostic assignments/types are restored; owned DF144776
+exits unsaved with source hashes unchanged. `staff_indicator_reference.help_reference`
+stores the native lines and text style. GPU native-hover checks compare every
+message to those captured glyphs and the native frame; row tests exercise all
+twelve role/building routes on visible icons and verify unchanged icon pixels.
+`location-staff-all-help` and `location-staff-help-hitboxes` pass with only known
+Godot shutdown/render-thread diagnostics; core passes cleanly.
 
 Protected actionspecialization081207 matches native080737 for both priest5813
 and performer6536, including every captured flag/labor entry and exact restoration

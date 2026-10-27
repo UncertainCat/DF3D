@@ -104,6 +104,19 @@ func run() -> void:
  var portrait:=InputEventMouseMotion.new();portrait.position=Vector2(592,394);portrait.global_position=portrait.position;root.push_input(portrait,true)
  await process_frame
  assert(not help.displayed.begins_with("staff_"),"portrait does not activate assignment help")
+ var help_keys={261:"tavern_keeper",262:"performer",263:"scholar",264:"scribe",265:"mercenary",266:"monster_slayer",267:"doctor",268:"workshop"}
+ for sample in assignments.staff_indicator_reference.help_reference.cases:
+  if int(sample.hover)<0:continue
+  var entry: Dictionary={"kind":0,"id":87,"type":int(sample.get("role",1)),"subtype":-1,"custom":-1,"custom_code":"","name":""}
+  if sample.has("building_type"):
+   entry.kind=1 if int(sample.building_type)==13 else 2;entry.type=int(sample.building_type);entry.subtype=int(sample.subtype)
+  assignment_receipts.values[6536]={"entries":[entry]};view.queue_redraw()
+  for i in 2:await process_frame;await RenderingServer.frame_post_draw
+  var before_hover:=root.get_texture().get_image().get_region(Rect2i(800,376,32,36)).get_data()
+  var move:=InputEventMouseMotion.new();move.position=Vector2(816,394);move.global_position=move.position;root.push_input(move,true)
+  await create_timer(0.6).timeout;await process_frame;await RenderingServer.frame_post_draw
+  assert(help.displayed=="staff_"+help_keys[int(sample.hover)],"native staff help role "+sample.name)
+  assert(root.get_texture().get_image().get_region(Rect2i(800,376,32,36)).get_data()==before_hover,"approved stable hover art "+sample.name)
  receipts.values.clear();await click(Vector2(784,394));assert(specialized.size()==2,"missing receipt prevents gesture")
  view.display({})
  if not view.rows.is_empty() or not view.geometry.is_empty():push_error("Staff close retained facts");quit(1);return

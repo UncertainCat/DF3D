@@ -14801,6 +14801,196 @@
     }
   },
   "staff_indicator_reference": {
+    "help_reference": {
+      "run": "build/stockpile-storage-native-location-recognition-staffindicatorhelp-20261027-102205",
+      "status": "passed",
+      "cases": [
+        {
+          "name": "TEMPLE-staff-help-tavern_keeper",
+          "hover": 261,
+          "help_lines": [
+            "This creature is a",
+            "tavern keeper."
+          ],
+          "role": 0,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-performer",
+          "hover": 262,
+          "help_lines": [
+            "This creature is a",
+            "performer."
+          ],
+          "role": 1,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-scholar",
+          "hover": 263,
+          "help_lines": [
+            "This creature is a",
+            "scholar."
+          ],
+          "role": 2,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-mercenary",
+          "hover": 265,
+          "help_lines": [
+            "This creature is a",
+            "mercenary."
+          ],
+          "role": 3,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-monster_slayer",
+          "hover": 266,
+          "help_lines": [
+            "This creature is a",
+            "monster slayer."
+          ],
+          "role": 4,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-scribe",
+          "hover": 264,
+          "help_lines": [
+            "This creature is a",
+            "scribe."
+          ],
+          "role": 5,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-doctor",
+          "hover": 267,
+          "help_lines": [
+            "This creature is a",
+            "doctor."
+          ],
+          "role": 7,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-diagnostician",
+          "hover": 267,
+          "help_lines": [
+            "This creature is a",
+            "doctor."
+          ],
+          "role": 8,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-surgeon",
+          "hover": 267,
+          "help_lines": [
+            "This creature is a",
+            "doctor."
+          ],
+          "role": 9,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-bone_doctor",
+          "hover": 267,
+          "help_lines": [
+            "This creature is a",
+            "doctor."
+          ],
+          "role": 10,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-workshop_any-icon",
+          "hover": -1,
+          "help_lines": []
+        },
+        {
+          "name": "TEMPLE-staff-help-workshop_any-portrait",
+          "hover": 268,
+          "help_lines": [
+            "This creature is",
+            "assigned to a specific",
+            "workshop."
+          ],
+          "building_type": 13,
+          "subtype": 2,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        },
+        {
+          "name": "TEMPLE-staff-help-furnace_any-icon",
+          "hover": -1,
+          "help_lines": []
+        },
+        {
+          "name": "TEMPLE-staff-help-furnace_any-portrait",
+          "hover": 268,
+          "help_lines": [
+            "This creature is",
+            "assigned to a specific",
+            "workshop."
+          ],
+          "building_type": 5,
+          "subtype": 0,
+          "text_style": {
+            "fg": 7,
+            "bg": 0,
+            "bold": true
+          }
+        }
+      ],
+      "owned_exit_unsaved": true,
+      "limitations": "Diagnostic occupation substitution and one workshop/furnace membership; text cells captured before OS screenshot clears hover."
+    },
     "render_reference": {
       "native_run": "build/stockpile-storage-native-location-recognition-staffindicators-20261027-091520",
       "viewer_run": "build/qa/location-staff-indicators-render",
@@ -15531,9 +15721,9 @@
       "Only native existing priest/performer and one workshop/furnace/detail fixture observed; other roles/subtypes and overflow remain unverified."
     ],
     "bugs": {
-      "portrait_hitbox": "Confirmed for occupation and work-detail indicators; visible icons do not activate help. Workshop/furnace renderer also tests the portrait X coordinate but needs targeted capture.",
+      "portrait_hitbox": "Confirmed for occupation and work-detail indicators; visible icons do not activate help. Workshop/furnace visible-icon misses and portrait activation also confirmed by staffindicatorhelp102205.",
       "occupation_art": "Hovering performer portrait changes first indicator tile from136347 to132199 because hover instruction262 overwrites graphic enum388.",
-      "correction_status": "Approved2026-10-27: visible performer/work-detail help and stable occupation artwork implemented; exact render crops and live101533 verified. Other role/building help and broader art/lifecycle coverage remain pending."
+      "correction_status": "Approved2026-10-27: visible-icon help for all occupations/buildings/work details and stable occupation artwork implemented; native102205 messages, all-role GPU hover checks and baseline live101533 verified. Broader art/overflow/lifecycle coverage remains pending."
     },
     "semantic_reference": {
       "run": "build/stockpile-storage-native-location-recognition-actionstaffindicators-20261027-092335",

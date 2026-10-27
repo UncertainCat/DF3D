@@ -35,15 +35,26 @@ func run() -> void:
 			var text: String=sample.lines[y]
 			for x in text.length():cells.append({"x":126+x,"y":y,"ch":text.unicode_at(x),"fg":7,"bg":0,"bold":true})
 		data.panels.append({"key":key,"lines":sample.lines,"text_cells":cells,"frame_cells":owner.recenter.frame_cells,"specialization":value})
+	var staff: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_details.json")).staff_indicator_reference.help_reference
+	var help_keys={261:"tavern_keeper",262:"performer",263:"scholar",264:"scribe",265:"mercenary",266:"monster_slayer",267:"doctor",268:"workshop"}
+	for sample in staff.cases:
+		if int(sample.hover)<0:continue
+		var key: String="STAFF_"+sample.name
+		modes.append(key)
+		var cells: Array=[]
+		for y in sample.help_lines.size():
+			var text: String=sample.help_lines[y]
+			for x in text.length():cells.append({"x":126+x,"y":y,"ch":text.unicode_at(x),"fg":sample.text_style.fg,"bg":sample.text_style.bg,"bold":sample.text_style.bold})
+		data.panels.append({"key":key,"lines":sample.help_lines,"text_cells":cells,"frame_cells":owner.recenter.frame_cells,"staff":help_keys[int(sample.hover)]})
 	DirAccess.make_dir_recursive_absolute(directory)
 	for panel in data.panels:
 		var mode:=modes.find(str(panel.key))
-		var expected_lines: Array=View.SPECIALIZATION_HELP[int(panel.specialization)] if panel.has("specialization") else View.CONTAINMENT_HELP[int(panel.relation)-1] if panel.has("relation") else (View.OWNER_RECENTER_HELP if mode==4 else View.ACCESS_HELP[mode])
+		var expected_lines: Array=View.STAFF_HELP[panel.staff] if panel.has("staff") else View.SPECIALIZATION_HELP[int(panel.specialization)] if panel.has("specialization") else View.CONTAINMENT_HELP[int(panel.relation)-1] if panel.has("relation") else (View.OWNER_RECENTER_HELP if mode==4 else View.ACCESS_HELP[mode])
 		if mode<0 or expected_lines!=panel.lines:push_error("Native help wording/wrapping differs");quit(1);return
 		var letters: Dictionary={}
 		for cell in panel.text_cells:
 			letters[Vector2i(int(cell.x),int(cell.y))]=cell
-		var hover_key: String="specialization_"+str(panel.specialization) if panel.has("specialization") else "containment_"+str(panel.relation) if panel.has("relation") else ("owner_recenter" if mode==4 else str(mode))
+		var hover_key: String="staff_"+panel.staff if panel.has("staff") else "specialization_"+str(panel.specialization) if panel.has("specialization") else "containment_"+str(panel.relation) if panel.has("relation") else ("owner_recenter" if mode==4 else str(mode))
 		view.state.enter(1,hover_key,Time.get_ticks_msec()-500);view._process(0)
 		for i in 3: await process_frame;await RenderingServer.frame_post_draw
 		var image:=root.get_texture().get_image()

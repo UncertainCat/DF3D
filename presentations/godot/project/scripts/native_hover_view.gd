@@ -9,8 +9,17 @@ const ACCESS_HELP = [
 	["This option indicates","that the location is","only open to members."]]
 const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature."]
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
-# Native staffindicators091520 text-cell captures; remaining roles need captures.
-const STAFF_HELP={"performer":["This creature is a","performer."],"work_detail":["This creature is","assigned to a work","detail."]}
+# Native staffindicatorhelp102205 and staffindicators091520 text-cell captures.
+const STAFF_HELP={
+	"tavern_keeper":["This creature is a","tavern keeper."],
+	"performer":["This creature is a","performer."],
+	"scholar":["This creature is a","scholar."],
+	"scribe":["This creature is a","scribe."],
+	"mercenary":["This creature is a","mercenary."],
+	"monster_slayer":["This creature is a","monster slayer."],
+	"doctor":["This creature is a","doctor."],
+	"workshop":["This creature is","assigned to a specific","workshop."],
+	"work_detail":["This creature is","assigned to a work","detail."]}
 # Native specializationhover085117, hover259/260, exact24-cell wrapping.
 const SPECIALIZATION_HELP = [
 	["This worker is not","specialized and will do","any free tasks that","become available.","Click to toggle."],

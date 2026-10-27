@@ -17,10 +17,11 @@ static func slots(entries: Array, columns: int) -> Array:
 		if entry.kind==0:
 			if not OCCUPATIONS.has(entry.type):continue
 			token="LOCATION_OCCUPATION_"+OCCUPATIONS[entry.type]
-			if entry.type==1:help="performer"
+			help=OCCUPATIONS[entry.type].to_lower()
 		elif building:
 			var table: Dictionary=WORKSHOPS if entry.kind==1 else FURNACES
 			token=table.get(str(entry.subtype),"")
+			if not token.is_empty():help="workshop"
 			if (entry.kind==1 and entry.subtype==23) or (entry.kind==2 and entry.subtype==7):
 				fallback=token;token="CUSTOM_WORKSHOP_LIST_ICON:"+entry.custom_code
 		elif entry.kind==3 and entry.type>=0 and entry.type<WORK_DETAILS.size():

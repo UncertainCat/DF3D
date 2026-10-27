@@ -1,7 +1,7 @@
 {
   "provenance": {
-    "run": "build/stockpile-storage-native-location-names-20261026-214704",
-    "result_sha256": "4e025daf590df619476930ebe90ac159332e08d906ca90b0009b54875f575ec3",
+    "run": "build/stockpile-storage-native-location-names-20261026-215017",
+    "result_sha256": "6f953eb9d09c299d6cb772f7139c2e16b17d0f5cd09c8d81514f43a0a518471d",
     "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
     "bridge_sha256": "1e3ed54a9f0c1f74e7a6f13f143c7271c3883abbe876ba3f76112a83ab2b5588",
     "source_save_unchanged": true,
@@ -821,6 +821,28 @@
     },
     {
       "bridge_edit": {
+        "invalid_cases_rejected_without_effect": [
+          "negative-site",
+          "other-site",
+          "negative-location",
+          "missing-location",
+          "negative-target",
+          "large-target",
+          "negative-displayed",
+          "large-displayed",
+          "zero-revision",
+          "oversized-revision",
+          "clear-with-word",
+          "clear-with-part",
+          "select-wrong-component",
+          "select-missing-word",
+          "select-negative-part",
+          "select-large-part",
+          "select-filtered-out",
+          "random-empty-pool",
+          "whole-with-target",
+          "whole-with-query"
+        ],
         "name_identical": true,
         "rng_identical": true,
         "stale_rejected_without_effect": true,
@@ -847,7 +869,7 @@
       "name_place": 0,
       "name_type": 21,
       "name_value": {
-        "first_name": "Glaymis",
+        "first_name": "Preegis",
         "has_name": true,
         "language": -1,
         "nickname": "",
@@ -910,21 +932,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          1
+          0
         ],
         "type": 21,
         "words": [
           -1,
           -1,
+          825,
           -1,
           -1,
-          -1,
-          0,
-          88
+          1551,
+          -1
         ]
       },
       "namer_id": 245,
@@ -953,21 +975,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          1
+          0
         ],
         "type": 21,
         "words": [
           -1,
           -1,
+          825,
           -1,
           -1,
-          -1,
-          0,
-          88
+          1551,
+          -1
         ]
       },
       "namer_id": 245,
@@ -996,21 +1018,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          1
+          0
         ],
         "type": 21,
         "words": [
           -1,
           -1,
+          825,
           -1,
           -1,
-          -1,
-          0,
-          88
+          1551,
+          -1
         ]
       },
       "namer_id": 245,
@@ -1171,14 +1193,14 @@
         "ui_unchanged": true
       },
       "bridge_random": {
-        "cursor_after": 56,
-        "cursor_before": 52,
+        "cursor_after": 60,
+        "cursor_before": 56,
         "displayed_component": 0,
         "part": 0,
         "rng_identical": true,
         "target": 0,
         "ui_and_name_unchanged": true,
-        "word": 951
+        "word": 521
       },
       "context": 3,
       "creator_open": true,
@@ -1208,7 +1230,7 @@
         ],
         "type": 28,
         "words": [
-          951,
+          521,
           -1,
           1612,
           -1,
@@ -1224,7 +1246,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "209330897252277201",
+      "bridge_name_revision": "1135357218088789288",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 5301,
       "context": 3,
@@ -1255,7 +1277,7 @@
         ],
         "type": 28,
         "words": [
-          951,
+          521,
           -1,
           1612,
           -1,
@@ -1304,7 +1326,7 @@
         ],
         "type": 28,
         "words": [
-          951,
+          521,
           -1,
           1612,
           -1,
@@ -1353,7 +1375,7 @@
         ],
         "type": 28,
         "words": [
-          951,
+          521,
           0,
           1612,
           -1,
@@ -1375,14 +1397,14 @@
         "ui_unchanged": true
       },
       "bridge_random": {
-        "cursor_after": 60,
-        "cursor_before": 56,
+        "cursor_after": 64,
+        "cursor_before": 60,
         "displayed_component": 1,
-        "part": 0,
+        "part": 5,
         "rng_identical": true,
         "target": 1,
         "ui_and_name_unchanged": true,
-        "word": 741
+        "word": 231
       },
       "context": 3,
       "creator_open": true,
@@ -1403,7 +1425,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           0,
           0,
@@ -1412,8 +1434,8 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
+          521,
+          231,
           1612,
           -1,
           -1,
@@ -1428,7 +1450,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "3626988271641693702",
+      "bridge_name_revision": "6451586252166378958",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 849,
       "context": 3,
@@ -1450,7 +1472,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           0,
           0,
@@ -1459,8 +1481,8 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
+          521,
+          231,
           1612,
           -1,
           -1,
@@ -1499,7 +1521,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           0,
           0,
           0,
@@ -1508,8 +1530,8 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
+          521,
+          231,
           -1,
           -1,
           -1,
@@ -1548,7 +1570,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           0,
           0,
@@ -1557,8 +1579,8 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
+          521,
+          231,
           1,
           -1,
           -1,
@@ -1579,14 +1601,14 @@
         "ui_unchanged": true
       },
       "bridge_random": {
-        "cursor_after": 64,
-        "cursor_before": 60,
+        "cursor_after": 68,
+        "cursor_before": 64,
         "displayed_component": 2,
         "part": 2,
         "rng_identical": true,
         "target": 2,
         "ui_and_name_unchanged": true,
-        "word": 986
+        "word": 1854
       },
       "context": 3,
       "creator_open": true,
@@ -1607,7 +1629,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           0,
           0,
@@ -1616,9 +1638,9 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
+          521,
+          231,
+          1854,
           -1,
           -1,
           515,
@@ -1632,7 +1654,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "2536632610998463663",
+      "bridge_name_revision": "2534637050149213587",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 849,
       "context": 3,
@@ -1654,7 +1676,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           0,
           0,
@@ -1663,9 +1685,9 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
+          521,
+          231,
+          1854,
           -1,
           -1,
           515,
@@ -1703,7 +1725,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           0,
           0,
@@ -1712,9 +1734,9 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
+          521,
+          231,
+          1854,
           -1,
           -1,
           515,
@@ -1752,7 +1774,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -1761,9 +1783,9 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
+          521,
+          231,
+          1854,
           1,
           -1,
           515,
@@ -1783,14 +1805,14 @@
         "ui_unchanged": true
       },
       "bridge_random": {
-        "cursor_after": 68,
-        "cursor_before": 64,
+        "cursor_after": 72,
+        "cursor_before": 68,
         "displayed_component": 3,
         "part": 2,
         "rng_identical": true,
         "target": 3,
         "ui_and_name_unchanged": true,
-        "word": 584
+        "word": 1976
       },
       "context": 3,
       "creator_open": true,
@@ -1811,7 +1833,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -1820,10 +1842,10 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
+          521,
+          231,
+          1854,
+          1976,
           -1,
           515,
           -1
@@ -1836,7 +1858,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "3549534745038002707",
+      "bridge_name_revision": "6377968808604745172",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 1228,
       "context": 3,
@@ -1858,7 +1880,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -1867,10 +1889,10 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
+          521,
+          231,
+          1854,
+          1976,
           -1,
           515,
           -1
@@ -1907,7 +1929,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -1916,10 +1938,10 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
+          521,
+          231,
+          1854,
+          1976,
           -1,
           515,
           -1
@@ -1956,7 +1978,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           2,
@@ -1965,10 +1987,10 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
+          521,
+          231,
+          1854,
+          1976,
           1,
           515,
           -1
@@ -1987,14 +2009,14 @@
         "ui_unchanged": true
       },
       "bridge_random": {
-        "cursor_after": 72,
-        "cursor_before": 68,
+        "cursor_after": 76,
+        "cursor_before": 72,
         "displayed_component": 4,
         "part": 0,
         "rng_identical": true,
         "target": 4,
         "ui_and_name_unchanged": true,
-        "word": 1100
+        "word": 1115
       },
       "context": 3,
       "creator_open": true,
@@ -2015,7 +2037,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2024,11 +2046,11 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
           515,
           -1
         ]
@@ -2040,7 +2062,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "438322130925781327",
+      "bridge_name_revision": "7391352773434112947",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 2442,
       "context": 3,
@@ -2062,7 +2084,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2071,11 +2093,11 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
           515,
           -1
         ]
@@ -2111,7 +2133,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2120,11 +2142,11 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
           -1,
           -1
         ]
@@ -2160,7 +2182,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2169,11 +2191,11 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
           0,
           -1
         ]
@@ -2191,14 +2213,14 @@
         "ui_unchanged": true
       },
       "bridge_random": {
-        "cursor_after": 76,
-        "cursor_before": 72,
+        "cursor_after": 80,
+        "cursor_before": 76,
         "displayed_component": 5,
         "part": 0,
         "rng_identical": true,
         "target": 5,
         "ui_and_name_unchanged": true,
-        "word": 92
+        "word": 237
       },
       "context": 3,
       "creator_open": true,
@@ -2219,7 +2241,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2228,12 +2250,12 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           -1
         ]
       },
@@ -2244,7 +2266,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "477680512135324518",
+      "bridge_name_revision": "479125728012684575",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 2658,
       "context": 3,
@@ -2266,7 +2288,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2275,12 +2297,12 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           -1
         ]
       },
@@ -2315,7 +2337,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2324,12 +2346,12 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           -1
         ]
       },
@@ -2364,7 +2386,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2373,12 +2395,12 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2395,14 +2417,14 @@
         "ui_unchanged": true
       },
       "bridge_random": {
-        "cursor_after": 80,
-        "cursor_before": 76,
+        "cursor_after": 84,
+        "cursor_before": 80,
         "displayed_component": 6,
-        "part": 8,
+        "part": 1,
         "rng_identical": true,
         "target": 6,
         "ui_and_name_unchanged": true,
-        "word": 1587
+        "word": 56
       },
       "context": 3,
       "creator_open": true,
@@ -2423,22 +2445,22 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
           0,
-          8
+          1
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
-          1587
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
+          56
         ]
       },
       "namer_id": 245,
@@ -2457,11 +2479,11 @@
         "cursor_after": 4,
         "cursor_before": 2496,
         "displayed_component": 6,
-        "part": 0,
+        "part": 8,
         "rng_identical": true,
         "target": 6,
         "ui_and_name_unchanged": true,
-        "word": 766
+        "word": 1780
       },
       "context": 3,
       "creator_open": true,
@@ -2482,22 +2504,22 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
           0,
-          0
+          8
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
-          766
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
+          1780
         ]
       },
       "namer_id": 245,
@@ -2507,7 +2529,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "3797108494171340726",
+      "bridge_name_revision": "1599996592167652025",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 1,
       "context": 3,
@@ -2529,22 +2551,22 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
           0,
-          0
+          8
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
-          766
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
+          1780
         ]
       },
       "namer_id": 245,
@@ -2560,8 +2582,8 @@
         "ui_unchanged": true
       },
       "bridge_random": {
-        "cursor_after": 80,
-        "cursor_before": 80,
+        "cursor_after": 84,
+        "cursor_before": 84,
         "displayed_component": 6,
         "part": 1,
         "rng_identical": true,
@@ -2588,7 +2610,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2597,12 +2619,12 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2631,7 +2653,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2640,12 +2662,12 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2656,7 +2678,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "8950742565033952003",
+      "bridge_name_revision": "1657038280589312050",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 8,
       "context": 3,
@@ -2678,7 +2700,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2687,12 +2709,12 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2703,7 +2725,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "8950742565033952003",
+      "bridge_name_revision": "1657038280589312050",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 121,
       "context": 3,
@@ -2725,7 +2747,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2734,12 +2756,12 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2768,7 +2790,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2777,12 +2799,12 @@
         ],
         "type": 28,
         "words": [
-          951,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          521,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2799,14 +2821,14 @@
         "ui_unchanged": true
       },
       "bridge_random": {
-        "cursor_after": 84,
-        "cursor_before": 80,
+        "cursor_after": 88,
+        "cursor_before": 84,
         "displayed_component": 6,
         "part": 0,
         "rng_identical": true,
         "target": 0,
         "ui_and_name_unchanged": true,
-        "word": 1394
+        "word": 1838
       },
       "context": 3,
       "creator_open": true,
@@ -2827,7 +2849,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2836,12 +2858,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2852,7 +2874,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 139,
       "context": 3,
@@ -2874,7 +2896,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2883,12 +2905,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2899,7 +2921,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 211,
       "context": 3,
@@ -2921,7 +2943,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2930,12 +2952,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2946,7 +2968,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 81,
       "context": 3,
@@ -2968,7 +2990,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -2977,12 +2999,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -2993,7 +3015,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 81,
       "context": 3,
@@ -3015,7 +3037,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3024,12 +3046,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3040,7 +3062,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 40,
       "context": 3,
@@ -3062,7 +3084,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3071,12 +3093,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3087,7 +3109,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 112,
       "context": 3,
@@ -3109,7 +3131,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3118,12 +3140,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3134,7 +3156,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 121,
       "context": 3,
@@ -3156,7 +3178,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3165,12 +3187,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3181,7 +3203,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 0,
       "context": 3,
@@ -3203,7 +3225,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3212,12 +3234,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3228,7 +3250,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 0,
       "context": 3,
@@ -3250,7 +3272,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3259,12 +3281,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3275,7 +3297,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 0,
       "context": 3,
@@ -3297,7 +3319,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3306,12 +3328,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3322,7 +3344,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 0,
       "context": 3,
@@ -3344,7 +3366,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3353,12 +3375,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3369,7 +3391,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 0,
       "context": 3,
@@ -3391,7 +3413,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3400,12 +3422,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3416,7 +3438,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 0,
       "context": 3,
@@ -3438,7 +3460,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3447,12 +3469,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3463,7 +3485,7 @@
     },
     {
       "bridge_forms_verified": true,
-      "bridge_name_revision": "1392078623331146296",
+      "bridge_name_revision": "2413424155403145038",
       "bridge_ui_unchanged": true,
       "bridge_word_count": 0,
       "context": 3,
@@ -3485,7 +3507,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3494,12 +3516,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3528,7 +3550,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3537,12 +3559,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3571,7 +3593,7 @@
         "nickname": "",
         "parts_of_speech": [
           0,
-          0,
+          5,
           2,
           2,
           0,
@@ -3580,12 +3602,12 @@
         ],
         "type": 28,
         "words": [
-          1394,
-          741,
-          986,
-          584,
-          1100,
-          92,
+          1838,
+          231,
+          1854,
+          1976,
+          1115,
+          237,
           0
         ]
       },
@@ -3631,17 +3653,17 @@
           2,
           0,
           0,
-          1,
+          0,
           0
         ],
         "type": 28,
         "words": [
           -1,
           -1,
-          1127,
+          1908,
           -1,
           -1,
-          429,
+          1290,
           -1
         ]
       },
@@ -3674,17 +3696,17 @@
           2,
           0,
           0,
-          1,
+          0,
           0
         ],
         "type": 28,
         "words": [
           -1,
           -1,
-          1127,
+          1908,
           -1,
           -1,
-          429,
+          1290,
           -1
         ]
       },
@@ -3717,17 +3739,17 @@
           2,
           0,
           0,
-          1,
+          0,
           0
         ],
         "type": 28,
         "words": [
           -1,
           -1,
-          1127,
+          1908,
           -1,
           -1,
-          429,
+          1290,
           -1
         ]
       },
@@ -3770,21 +3792,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          8
+          0
         ],
         "type": 54,
         "words": [
           -1,
           -1,
-          -1,
+          925,
           -1,
           -1,
           1546,
-          1619
+          -1
         ]
       },
       "namer_id": 245,
@@ -3813,21 +3835,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          8
+          0
         ],
         "type": 54,
         "words": [
           -1,
           -1,
-          -1,
+          925,
           -1,
           -1,
           1546,
-          1619
+          -1
         ]
       },
       "namer_id": 245,
@@ -3856,21 +3878,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          8
+          0
         ],
         "type": 54,
         "words": [
           -1,
           -1,
-          -1,
+          925,
           -1,
           -1,
           1546,
-          1619
+          -1
         ]
       },
       "namer_id": 245,
@@ -3912,21 +3934,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          1
+          0
         ],
         "type": 21,
         "words": [
           -1,
           -1,
+          1943,
           -1,
           -1,
-          -1,
-          1550,
-          1453
+          1546,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3955,21 +3977,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          1
+          0
         ],
         "type": 21,
         "words": [
           -1,
           -1,
+          1943,
           -1,
           -1,
-          -1,
-          1550,
-          1453
+          1546,
+          -1
         ]
       },
       "namer_id": 245,
@@ -3998,21 +4020,21 @@
         "parts_of_speech": [
           0,
           0,
+          2,
           0,
           0,
           0,
-          0,
-          1
+          0
         ],
         "type": 21,
         "words": [
           -1,
           -1,
+          1943,
           -1,
           -1,
-          -1,
-          1550,
-          1453
+          1546,
+          -1
         ]
       },
       "namer_id": 245,
@@ -4064,10 +4086,10 @@
         "words": [
           -1,
           -1,
-          1731,
+          1455,
           -1,
           -1,
-          1598,
+          1599,
           -1
         ]
       },
@@ -4107,10 +4129,10 @@
         "words": [
           -1,
           -1,
-          1731,
+          1455,
           -1,
           -1,
-          1598,
+          1599,
           -1
         ]
       },
@@ -4150,10 +4172,10 @@
         "words": [
           -1,
           -1,
-          1731,
+          1455,
           -1,
           -1,
-          1598,
+          1599,
           -1
         ]
       },
@@ -4196,7 +4218,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -4206,11 +4228,11 @@
         "words": [
           -1,
           -1,
+          1775,
           -1,
           -1,
-          -1,
-          1681,
-          917
+          301,
+          -1
         ]
       },
       "namer_id": 245,
@@ -4239,7 +4261,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -4249,11 +4271,11 @@
         "words": [
           -1,
           -1,
+          1775,
           -1,
           -1,
-          -1,
-          1681,
-          917
+          301,
+          -1
         ]
       },
       "namer_id": 245,
@@ -4282,7 +4304,7 @@
         "parts_of_speech": [
           0,
           0,
-          0,
+          2,
           0,
           0,
           0,
@@ -4292,11 +4314,11 @@
         "words": [
           -1,
           -1,
+          1775,
           -1,
           -1,
-          -1,
-          1681,
-          917
+          301,
+          -1
         ]
       },
       "namer_id": 245,
@@ -4306,95 +4328,95 @@
     }
   ],
   "screenshots": {
-    "GUILDHALL-5-before.png": "192235a263957c141331d8063fe14f48454a4274a79b38899e749f38c9769dfe",
-    "GUILDHALL-5-done.png": "01f8147626db047f25985a9023bd70b622d4fd2e9896f53d221db36371329fe0",
-    "GUILDHALL-5-name-back.png": "192235a263957c141331d8063fe14f48454a4274a79b38899e749f38c9769dfe",
-    "GUILDHALL-5-name-open.png": "85cb8fb5fef05d9a82ca78caf2dfef830e3430fca723a16e30de0dc6d94c88ef",
-    "GUILDHALL-5-random-reopen.png": "c49e29a70b17d0f3e8535147a90a9279b9235485731c7f6867e81f9f43d636ba",
-    "GUILDHALL-5-whole-random.png": "7dd6d9d7f3c73aa7bad25adc1d0c2c89296284549fab737e42c9f8b0c73f335d",
+    "GUILDHALL-5-before.png": "cfd7fff11433b1b91aa0ad8e5b4ce04006463668c5e1a852be8883c69ab6b376",
+    "GUILDHALL-5-done.png": "f32a536a2975300a68b11aa43231db0d755c591987a18f821394f24a8de55ff8",
+    "GUILDHALL-5-name-back.png": "cfd7fff11433b1b91aa0ad8e5b4ce04006463668c5e1a852be8883c69ab6b376",
+    "GUILDHALL-5-name-open.png": "590e13c7f2872e32c5c9049518f94b12cfa0bc23cc17799a56f87fa2a4ce73db",
+    "GUILDHALL-5-random-reopen.png": "207e89b4a0a649f42655acee6597e321bcd449ed2207436db2e8dcfc370dc04a",
+    "GUILDHALL-5-whole-random.png": "207e89b4a0a649f42655acee6597e321bcd449ed2207436db2e8dcfc370dc04a",
     "HOSPITAL-2-before.png": "0fc4327bd6896ac396bf2fde4fb64cc506288a26c47fc4ca383eba07a0991f6d",
-    "HOSPITAL-2-done.png": "17d3ae1f1f451b6263443f37ca711eb15aa48ae9b9ed2e1c63cb41515e5f1241",
-    "HOSPITAL-2-name-back.png": "0fc4327bd6896ac396bf2fde4fb64cc506288a26c47fc4ca383eba07a0991f6d",
+    "HOSPITAL-2-done.png": "4f837a7802709e6e265db7535e2e1a70ea6cb8645682ceb561ffbe515e987145",
+    "HOSPITAL-2-name-back.png": "1fe2a5d1edad1bde139e396a6d73cbff127c74317dd999c7636b8b6fc5cc1383",
     "HOSPITAL-2-name-open.png": "67b54ad24d834635f2c18be8afd20daa076e8400ecfbedb9508f01730c68a25d",
-    "HOSPITAL-2-random-reopen.png": "804bac56fcf5d2e049649fa1ee53c7e4b38e25391612b9e5460338763972a432",
-    "HOSPITAL-2-whole-random.png": "804bac56fcf5d2e049649fa1ee53c7e4b38e25391612b9e5460338763972a432",
+    "HOSPITAL-2-random-reopen.png": "a2a989caa5328c253c573857e8d5798910405e3046294d77d10c79a5f6c73210",
+    "HOSPITAL-2-whole-random.png": "da01fd30930bd62e1d7f970c7dc9eb724cfcf915f51c6ab365f33d1dc4536684",
     "INN_TAVERN-1-before.png": "3202b6048d83a069440f283f79858c4657defecc16acec834765f4bed7263476",
-    "INN_TAVERN-1-done.png": "67e1aac88af4fd8fef17f8f4cccf34928a1b08a5e22e7fe502a444d8edba602c",
-    "INN_TAVERN-1-edited-back.png": "c3dce16e49ac932bde42f9190fc3dbe4cd51305c11c34de110b494ce6c8b0344",
-    "INN_TAVERN-1-edited-reopen.png": "0875f08397f2c2b843f1409441f2dc9c624cdced71c58d8ead7a4b3e49872293",
-    "INN_TAVERN-1-filter-al.png": "054a041af80fa2fe9ec368004ed086cea9523961fc013ccace60f01a39f7c659",
-    "INN_TAVERN-1-filter-ale.png": "0ef6999d4e7414e5ff04958ce6df2a1c53f58e4a0107be452cc504119a9551e4",
-    "INN_TAVERN-1-filter-enter.png": "4bb52f2f1060082f474f4f1721fecc9747b043434341591e50348ccaa7042a7d",
-    "INN_TAVERN-1-filter-focus.png": "5b6882870aa67eab71d0147c01880f734d2a9463cb6fce35f41bb1c947e26440",
-    "INN_TAVERN-1-filtered-other-component-random.png": "14238c44870a0a373bcfaf7ab055b3e31ef9190fa3478cac2515635a041f20e4",
-    "INN_TAVERN-1-matrix-al-0.png": "f63b0bb7dfc9724e99719a8de169cbae3bb41a97ce454ba7320cf682c5fef779",
-    "INN_TAVERN-1-matrix-al-1.png": "fce9d0ebfb556b5648bde75f52cae51c1ecb1feac1257f3ed34823d74eddd25d",
-    "INN_TAVERN-1-matrix-al-2.png": "985d6bdef139388fe716d17063b3c70d94168670b24d7c1974a3a07efaaf141a",
-    "INN_TAVERN-1-matrix-al-3.png": "bb7b9a96cf986ef923d055611604443dd9f533d1a5291c0d4aacb16479ac852d",
-    "INN_TAVERN-1-matrix-al-4.png": "80c036efa390e70e572c925f2caf871dadde6da61b607b4343f8cf49135c9220",
-    "INN_TAVERN-1-matrix-al-5.png": "d6b5634c38703603fe3672586f89d19b00b07bd6a578d9bb010fba1dd27e0cbd",
-    "INN_TAVERN-1-matrix-al-6.png": "a0a1387b1fe881415ec0c41692cab88f025b33f5580e3e38de8999d95d6b058f",
-    "INN_TAVERN-1-matrix-no-match-0.png": "d3681c5580882bc443d75a158a042351742fc01043e51210f2288a984a5ded47",
-    "INN_TAVERN-1-matrix-no-match-1.png": "0cb6f7c52e8d86ed34a84ba9c7919b0455324beae35ddd6ad920e332ba0a8ec4",
-    "INN_TAVERN-1-matrix-no-match-2.png": "c043e79642e6fbdcc56ae9c966eaa499b67bfab38586d0a5856d8aa7cc6ef291",
-    "INN_TAVERN-1-matrix-no-match-3.png": "a1c3de2eea4468a3284a62ca8a8969230ee8ab836c392d861111e5286413fb39",
-    "INN_TAVERN-1-matrix-no-match-4.png": "f508179a577584d2cf544afacd8940294b479500f1075de919b267beebcc9a68",
-    "INN_TAVERN-1-matrix-no-match-5.png": "69df6703fded6802965986f9fc8b85f0468614c6d9fdb8fe403b17094476e13f",
-    "INN_TAVERN-1-matrix-no-match-6.png": "5aa72ef6f86ddc6d4423c7f399d699a404d6297c2c8e923373f7fde10135e088",
+    "INN_TAVERN-1-done.png": "1fa41e5ab1216f49a0695a4076b64bbc3f6b8d90ada29ef7208eb07d9501f954",
+    "INN_TAVERN-1-edited-back.png": "e780f3f2b506994200e9abda177722e3a139ab70c9d95fb68f4f91c89d004835",
+    "INN_TAVERN-1-edited-reopen.png": "a8174cd454eb75023858ba01b82c48e39a8bf23506963dfc4ef172726df9de24",
+    "INN_TAVERN-1-filter-al.png": "3027688c561a7eec7839ba1abc35c843c0da5290007bf1fd24ab8d94d1edc7dd",
+    "INN_TAVERN-1-filter-ale.png": "328acb7f029af36f30c0c7147f9f2a5143994b68e99e483d4af4c094f16b6741",
+    "INN_TAVERN-1-filter-enter.png": "3027688c561a7eec7839ba1abc35c843c0da5290007bf1fd24ab8d94d1edc7dd",
+    "INN_TAVERN-1-filter-focus.png": "6c71dc8a2096cc6c55e3af4378fa6da5ea69129b46c31dee2926a974d7dc569a",
+    "INN_TAVERN-1-filtered-other-component-random.png": "b1e42bf6da34d291cf581d7ab1c0104f726f30049fb97619d15566198cb0dac5",
+    "INN_TAVERN-1-matrix-al-0.png": "60adf5af8890fdb661661279677c58b7e3bc12ed9d4d8d16b31b836c2b05bd82",
+    "INN_TAVERN-1-matrix-al-1.png": "002fff36e4584b55042b7fb456ec19e49047925ce69461523f2bf11a2503bc86",
+    "INN_TAVERN-1-matrix-al-2.png": "41742ac11bd5a42e36db04662efb5435d3218bf06e14ad79e472c6e257d3772f",
+    "INN_TAVERN-1-matrix-al-3.png": "9a1fb03fbce85905211c78318cd1ba7296f6dc155162c4ff2552edcb9bb18a58",
+    "INN_TAVERN-1-matrix-al-4.png": "248a9efddeb07698db962f9784fbf6dd8a20281d0a0ff29efb12924707a20025",
+    "INN_TAVERN-1-matrix-al-5.png": "5f190fdc8bcd6e1391df6f3fa4156a35297e512fe4b8cbb08256d9498d9415e6",
+    "INN_TAVERN-1-matrix-al-6.png": "1050b21c7a882bd2b91be5219dd2d988aebf7a5e38c695d059fca08d83c8bc5f",
+    "INN_TAVERN-1-matrix-no-match-0.png": "b650b47dc548ed0b046b34f71a4b79b6dc9dffa40251eb2ac9b9aff4cdaf35f0",
+    "INN_TAVERN-1-matrix-no-match-1.png": "3be7c6351669966c3be9a7901d165b076e3f943c95c15bcc4c7b12513f697605",
+    "INN_TAVERN-1-matrix-no-match-2.png": "848c68dd702ec8d01f8dcb05585950363a34273c6bc89e26a19b1a52294428e7",
+    "INN_TAVERN-1-matrix-no-match-3.png": "afb203535ba3a4bf7cc967e97062f1acdd1f5ffc0472f31010b9b714ea48a734",
+    "INN_TAVERN-1-matrix-no-match-4.png": "6c7ec3ba213253eaf8a2d0d00dc5042ff22a9bf3db30a5b345b7a9434faf4c71",
+    "INN_TAVERN-1-matrix-no-match-5.png": "05fc06a817be24c4926dc00344c5744eef374e9e9e98fa217362b5ed8e0270e2",
+    "INN_TAVERN-1-matrix-no-match-6.png": "1cb203a638548e52d9b93ae1202014391c5c6e163acabd3b674e87b7e49eacad",
     "INN_TAVERN-1-name-back.png": "3202b6048d83a069440f283f79858c4657defecc16acec834765f4bed7263476",
     "INN_TAVERN-1-name-open.png": "97688e98ab145e73b588349c82c75aa512671c6a03ea34999f06de4be938f494",
-    "INN_TAVERN-1-part-0-clear.png": "ce030c0f9113a0efdd5797694deaf8e56dd353bf5e902c16675385593d7af3bc",
-    "INN_TAVERN-1-part-0-first-word.png": "b46b66c6a5b0ab72e3f305de2135025b520ca6975303d5b62c236a19aca4d97f",
-    "INN_TAVERN-1-part-0-random.png": "2d9109f318414fef8f1c2fdac9e88f20d5190fc787713056db62ad89e3691c42",
+    "INN_TAVERN-1-part-0-clear.png": "58473e2fb62134f8fc926d4e7bdd2e3bfd556df9100ccc9f4ead04b2adc8ec5d",
+    "INN_TAVERN-1-part-0-first-word.png": "6c4e65eff9eb2662292dda592e46afe0bea3aeb094955fa3a9b4204f0d62af33",
+    "INN_TAVERN-1-part-0-random.png": "fe868699abf73f451ea48afd2a6ea0bb5c05afcf0e4cec647f351d3352328f00",
     "INN_TAVERN-1-part-0-selected.png": "58473e2fb62134f8fc926d4e7bdd2e3bfd556df9100ccc9f4ead04b2adc8ec5d",
-    "INN_TAVERN-1-part-1-clear.png": "cd78059f26b7ac27d1d69b57b3471532f7ab74baf0e074edd6974931167f3e42",
-    "INN_TAVERN-1-part-1-first-word.png": "63d36026cb6b1cb3efe8a3c6a4006241ad24ceeeea8020109019037b61571447",
-    "INN_TAVERN-1-part-1-random.png": "c49f19955d43ef23ebbc6a12d720e5ec0c3093a742edbf4a6d3945c8f736bb55",
-    "INN_TAVERN-1-part-1-selected.png": "cd78059f26b7ac27d1d69b57b3471532f7ab74baf0e074edd6974931167f3e42",
-    "INN_TAVERN-1-part-2-clear.png": "75cda72623ad3544996e5df05174040e92c02e5842dbc9f44cbcb16d3d41f05a",
-    "INN_TAVERN-1-part-2-first-word.png": "7a1809e8fb36c9238bbc6835cc91d86ba15c1ec29c5f3260bbc3de90abff5aa1",
-    "INN_TAVERN-1-part-2-random.png": "36645eb5d417ac79d614fff1595464c34fb4fda4d9b5a2a6f2552d89dc9c5add",
-    "INN_TAVERN-1-part-2-selected.png": "b3bcbb811d11b3c99a058d49b3ea9a9095a0b76e293e6601aff26be02190c067",
-    "INN_TAVERN-1-part-3-clear.png": "53119417771c7d271efd6b65a04a8887c8fdb84fdc053f02c45941a459c38820",
-    "INN_TAVERN-1-part-3-first-word.png": "1d03f0f86eefcfc6d6fa0cde0d65b088c1cc0ecb1aa9c2f56195e6b582df6b97",
-    "INN_TAVERN-1-part-3-random.png": "f33e0c20d9208f6598802864ac64c777cb08ffd768940e45fb38728bf6282d3a",
-    "INN_TAVERN-1-part-3-selected.png": "53119417771c7d271efd6b65a04a8887c8fdb84fdc053f02c45941a459c38820",
-    "INN_TAVERN-1-part-4-clear.png": "ab71ee87d0a53c184f59845206d255d5e2ed9d0c72ac776a084e798f95fdbd38",
-    "INN_TAVERN-1-part-4-first-word.png": "860d3637913170095208be93aa7feea39117bea01a579681efc4e6f2b99bedfe",
-    "INN_TAVERN-1-part-4-random.png": "8344910d90eb708b86354504f480e831b794a84c97fd4e754d3046625e9afdd1",
-    "INN_TAVERN-1-part-4-selected.png": "ab71ee87d0a53c184f59845206d255d5e2ed9d0c72ac776a084e798f95fdbd38",
-    "INN_TAVERN-1-part-5-clear.png": "5e5f4f09ef8b03e6ec4c20406f7a72b2ffcedcb5c2cd7965b793c83a8fe2047a",
-    "INN_TAVERN-1-part-5-first-word.png": "02faff0a0f197fb47aed8eeec794dfc90b08170f59a8808379ad0fa6a549632a",
-    "INN_TAVERN-1-part-5-random.png": "077000230a1282b115cc08d093abc338db29cf3371648851bc51dc3ee9b5d09e",
-    "INN_TAVERN-1-part-5-selected.png": "09d30940a593107677f44a41525b3401a74cdd141b117af3bbbf0cfe7cb32196",
-    "INN_TAVERN-1-part-6-clear.png": "7782bc0cf3981285d83697901e69b6b4048d5297e1c9b83f8354e32bc3c90a4a",
-    "INN_TAVERN-1-part-6-first-word.png": "f9096d1da45510eeda01919163123c57c1ebf8123a9fc9bb8025f3f826194e96",
-    "INN_TAVERN-1-part-6-random.png": "2ef3332d246dae411ef917eac4e6001f6eb9a34aa2314c9cfba08db47661c8f8",
-    "INN_TAVERN-1-part-6-selected.png": "7782bc0cf3981285d83697901e69b6b4048d5297e1c9b83f8354e32bc3c90a4a",
-    "INN_TAVERN-1-random-refill.png": "c961a5cb82c6bc0f122f895beb5b39c0e73077b1adf1bc6a75db83ef94239f1f",
-    "INN_TAVERN-1-random-reopen.png": "81177d4dc6a3a53a927505ebce49d3bd06a5dea4d833d2f2585796def6dc11e7",
-    "INN_TAVERN-1-singleton-random.png": "5d2d1679916bc22701f56c1c75c6f4ceeb2cf7d9de27302124968f1e2e6fd935",
-    "INN_TAVERN-1-singleton-selected.png": "2a68b4ff09b41e1e582a7579c5bf2baf00315b77c92627642a31e6be4efaf203",
-    "INN_TAVERN-1-whole-random.png": "f99ae07a9e78a7d900ce10528f1ddbb7438173de64c28bbd65169a589ef36055",
-    "LIBRARY-4-before.png": "d98b12f9d823f7c070f508227e20cfc619f77dc2c868aadcb7faf307c3a4dfbe",
-    "LIBRARY-4-done.png": "9c91ebe7ef55165beee96d363e7496c069ab76a71292d41a749a8dd211b12edd",
-    "LIBRARY-4-name-back.png": "21ec6fc0acd1eac290a13bd3d86e52a0bb4c61f01e96cc9fb9182ec62f1ae324",
-    "LIBRARY-4-name-open.png": "bba19dd16f0de0380d2c75bd5920299b5bf2cf6b4bd8b7950df5ad1db4363b76",
-    "LIBRARY-4-random-reopen.png": "151d07507c31fa614ed1ac18d736db90371a20b4b4dfaffe084ff040136ac310",
-    "LIBRARY-4-whole-random.png": "151d07507c31fa614ed1ac18d736db90371a20b4b4dfaffe084ff040136ac310",
+    "INN_TAVERN-1-part-1-clear.png": "9ac0f158f7b3b63e2405f4ce13990829d623d73f5d50a729204a07e895f249b2",
+    "INN_TAVERN-1-part-1-first-word.png": "77d8c5dbdc806ae97e17d96b6e421e962501a8b62c3ae3982aa34fb0c76d27b0",
+    "INN_TAVERN-1-part-1-random.png": "803fd97343c3261b53c9d84b40b65e5bbd8101184d3d2c4fd0abfafdc860b5e4",
+    "INN_TAVERN-1-part-1-selected.png": "6f38f043de77f9b61a462b9b1003fc6cf9c36a5112138364708335ce1e0d2b93",
+    "INN_TAVERN-1-part-2-clear.png": "fc1b9498d7bc089df8e8deeeef9653349089461c396597301c86184262853208",
+    "INN_TAVERN-1-part-2-first-word.png": "714b8d2ad454184a15a70323859d1ccdcc64bd296cefa51255435b4c07d5ceeb",
+    "INN_TAVERN-1-part-2-random.png": "24a7d0cbe49ae61e2de0a01cd7c39f0ce4f985088348d890a7b3e554cf3fd6e9",
+    "INN_TAVERN-1-part-2-selected.png": "a76444360ed774c92ecd45e8667c764140770b9f2426212357aad759b9c1e9eb",
+    "INN_TAVERN-1-part-3-clear.png": "fbb65d5957976376618db43d016b62dfdccc52d979463239d3c1fec7fa92ec8b",
+    "INN_TAVERN-1-part-3-first-word.png": "01fdd5f0205224e4242d0c06dcbbf8d8748e32871006e34ee1b53e08913748cd",
+    "INN_TAVERN-1-part-3-random.png": "30b41f4bed5417cd55b4c9eb4bf29de89f87ad28059bd9e053b4c33c31d26e3d",
+    "INN_TAVERN-1-part-3-selected.png": "fbb65d5957976376618db43d016b62dfdccc52d979463239d3c1fec7fa92ec8b",
+    "INN_TAVERN-1-part-4-clear.png": "e368bc1d084c07f8351758efdb957288ebc046de8cc5a6304543d4a499bf807b",
+    "INN_TAVERN-1-part-4-first-word.png": "6db67d2480aed4993706f1ee38a588c8119e057f2ff0196da96b392f03424ee4",
+    "INN_TAVERN-1-part-4-random.png": "82e59faa07b727cde4fc59808991fd0580e17ade66101d4b19b19eee912ce852",
+    "INN_TAVERN-1-part-4-selected.png": "e368bc1d084c07f8351758efdb957288ebc046de8cc5a6304543d4a499bf807b",
+    "INN_TAVERN-1-part-5-clear.png": "707cbf37c51645b204d0b9ba7018447695545d1dfb3c565cba7c91528bcc9b50",
+    "INN_TAVERN-1-part-5-first-word.png": "bccdb78b63f3c2593f2ed834821dc020891bd2cc03ac3f261ebac3a185ee0df1",
+    "INN_TAVERN-1-part-5-random.png": "f17f4a042509acccbb4da699bfda7ed0730920a979a536d289e11554632987b8",
+    "INN_TAVERN-1-part-5-selected.png": "2bdbe8eb1367df660e3835b378e85708ca5f7946080aa2c58042a54050ae209d",
+    "INN_TAVERN-1-part-6-clear.png": "ade5f15ce4da3828968f9e6fa254acd67aad10702ab3b09b2887d0b64b63c9a0",
+    "INN_TAVERN-1-part-6-first-word.png": "83b0929286f7713d9bd5fc22be47cc2d9488be92e82509c3188bcb3f799c0364",
+    "INN_TAVERN-1-part-6-random.png": "a60bc3ac9d1b5bae5128175a57a8d1e29aabb21ffea98bd426a53d882ea6928e",
+    "INN_TAVERN-1-part-6-selected.png": "ade5f15ce4da3828968f9e6fa254acd67aad10702ab3b09b2887d0b64b63c9a0",
+    "INN_TAVERN-1-random-refill.png": "8e75dece92cbd7537b83c6641ccb0764830ae21bb5ab83b88268301797bca90d",
+    "INN_TAVERN-1-random-reopen.png": "446c21cdf5cf637b62cb2757748fd69cce12043822ac8f05f3da739cc866a389",
+    "INN_TAVERN-1-singleton-random.png": "4bfb18d008fbe4c52af192abbeff2ae7c28b55e7a45caa10d1e6c85caa45f975",
+    "INN_TAVERN-1-singleton-selected.png": "53c8aa52d37adab08667298cb02fc495145b3946f7ba9de332960075ed575404",
+    "INN_TAVERN-1-whole-random.png": "446c21cdf5cf637b62cb2757748fd69cce12043822ac8f05f3da739cc866a389",
+    "LIBRARY-4-before.png": "18168dac43b1dfcb6586c69c2370e54e39ef857374ebf8342be8d5a45d71ce3c",
+    "LIBRARY-4-done.png": "f2f3e3f9ac13477b25dc65189fe103639fd3f8f0e6bc4849400dff999ea9cb36",
+    "LIBRARY-4-name-back.png": "ab19d6fc6a1e7a12c4f63be0313f755663c6bc05bd39ed1485fdec3a231bbed3",
+    "LIBRARY-4-name-open.png": "4c76903c4fb0f31db7ef56c11dc35c0296a47c900587e8d3eb584a47f64306f7",
+    "LIBRARY-4-random-reopen.png": "0f8e8b5d6d05b80198e54dd9310c275a93f230f47b6b90741355aa03b7ab3928",
+    "LIBRARY-4-whole-random.png": "0f8e8b5d6d05b80198e54dd9310c275a93f230f47b6b90741355aa03b7ab3928",
     "TEMPLE-0-before.png": "e2c5e36b44fca761d9494da3e8254881ea57da309288d1819c088862d9a06f12",
-    "TEMPLE-0-done.png": "c152bba8ee76426948574ffaafac3de7b5d88c85d0b81fc4a5f4629f120e63db",
-    "TEMPLE-0-name-back.png": "13fae88a8274a79e9ee9daac4988ad3c6fa44132c68d04abc5639675c950edb0",
-    "TEMPLE-0-name-open.png": "e673656829ed859e2ad720b683dcc910e9c03ecaa4b840a0c7d3cee667ba72ed",
-    "TEMPLE-0-random-reopen.png": "df6f9cc2f3530d10f1fc836e7b8c3f3e7bf355bb6ce1386e1a8df2f5f6e5148b",
-    "TEMPLE-0-utterance-random.png": "3fe2b72a59a733753c6069ec922971ec1b1065cff78cdbf4c0a64f99f9a51a67",
-    "TEMPLE-0-whole-random.png": "df6f9cc2f3530d10f1fc836e7b8c3f3e7bf355bb6ce1386e1a8df2f5f6e5148b",
-    "TEMPLE-3-before.png": "ed37fd99c999f28effd5e0af463e739fdeae74dffdcbff85a62c322e3400666d",
-    "TEMPLE-3-done.png": "e96b27857b575e67142b080c4a0e4c637079113be0e1afbad7460506641edfa5",
-    "TEMPLE-3-name-back.png": "ed37fd99c999f28effd5e0af463e739fdeae74dffdcbff85a62c322e3400666d",
-    "TEMPLE-3-name-open.png": "216b3a7a013cdd2735eef1aae932a296d26a74d064bb2bbdc19503e96fe25bff",
-    "TEMPLE-3-random-reopen.png": "f2542483cb9928076f809b8bc4558ed6dd5a3057a558044cfa8a85d353f865ce",
-    "TEMPLE-3-whole-random.png": "3851fbdf1b983ef4f47691281b23f9381b26aab26d718ecb3e7f8d178c291ca0"
+    "TEMPLE-0-done.png": "c2932a344d8db77a2c4882131fd95a26aee779c5220f16ce89df7c4dbc97a790",
+    "TEMPLE-0-name-back.png": "a05ac262b72f5696f1244c7a5aaa684db5298c8113ebf0de7516f186b886fd07",
+    "TEMPLE-0-name-open.png": "78e5bcbb6d6a5bd79c32a605e45e0a11fd77979a134cf04bb18a027a62635485",
+    "TEMPLE-0-random-reopen.png": "af53d7fd6d70b51e41dd637c85be82443c33432e10e9beee393fcf260aae9c4f",
+    "TEMPLE-0-utterance-random.png": "a51155fd9e94b0d9d19ff6158931bd2f36b9d9ce4acdbf8353b46aa53ed09098",
+    "TEMPLE-0-whole-random.png": "af53d7fd6d70b51e41dd637c85be82443c33432e10e9beee393fcf260aae9c4f",
+    "TEMPLE-3-before.png": "075117e9c344fd5de57c64737fdb29fb53c8a3a8e60035a792dec2cfbb9bcd8b",
+    "TEMPLE-3-done.png": "728f0c2a3344690e912b9a1ce0b3affefa86f7f4baf06177717e20f70388f3ca",
+    "TEMPLE-3-name-back.png": "075117e9c344fd5de57c64737fdb29fb53c8a3a8e60035a792dec2cfbb9bcd8b",
+    "TEMPLE-3-name-open.png": "4dc0c937474de84e7a09873353734200db7d657c0eacb15ffb7defe517649387",
+    "TEMPLE-3-random-reopen.png": "6f37003e90b0fb9f1b4833fa154739ccc634163ef764b7bde764add0cb16773c",
+    "TEMPLE-3-whole-random.png": "6f37003e90b0fb9f1b4833fa154739ccc634163ef764b7bde764add0cb16773c"
   },
   "layout": {
     "viewport": [
@@ -4463,7 +4485,7 @@
     "word_row_pitch": 36
   },
   "remaining": [
-    "Complete mutation invalid-parameter/eligibility coverage and typed name transport.",
+    "Add typed name transport and session/epoch lifecycle coverage.",
     "Observe scrolling, empty-list Random, keyboard/physical Escape behavior and native language display columns.",
     "Integrate revision-guarded semantic name editing with typed session/epoch ownership.",
     "Build native editor and verify rendered effects and lifecycle before exposure."
@@ -6771,96 +6793,96 @@
     "comparisons": [
       {
         "name": "INN_TAVERN-1-part-0-random",
-        "cursor_after": 56,
-        "cursor_before": 52,
+        "cursor_after": 60,
+        "cursor_before": 56,
         "displayed_component": 0,
         "part": 0,
         "rng_identical": true,
         "target": 0,
         "ui_and_name_unchanged": true,
-        "word": 951
+        "word": 521
       },
       {
         "name": "INN_TAVERN-1-part-1-random",
-        "cursor_after": 60,
-        "cursor_before": 56,
+        "cursor_after": 64,
+        "cursor_before": 60,
         "displayed_component": 1,
-        "part": 0,
+        "part": 5,
         "rng_identical": true,
         "target": 1,
         "ui_and_name_unchanged": true,
-        "word": 741
+        "word": 231
       },
       {
         "name": "INN_TAVERN-1-part-2-random",
-        "cursor_after": 64,
-        "cursor_before": 60,
+        "cursor_after": 68,
+        "cursor_before": 64,
         "displayed_component": 2,
         "part": 2,
         "rng_identical": true,
         "target": 2,
         "ui_and_name_unchanged": true,
-        "word": 986
+        "word": 1854
       },
       {
         "name": "INN_TAVERN-1-part-3-random",
-        "cursor_after": 68,
-        "cursor_before": 64,
+        "cursor_after": 72,
+        "cursor_before": 68,
         "displayed_component": 3,
         "part": 2,
         "rng_identical": true,
         "target": 3,
         "ui_and_name_unchanged": true,
-        "word": 584
+        "word": 1976
       },
       {
         "name": "INN_TAVERN-1-part-4-random",
-        "cursor_after": 72,
-        "cursor_before": 68,
+        "cursor_after": 76,
+        "cursor_before": 72,
         "displayed_component": 4,
         "part": 0,
         "rng_identical": true,
         "target": 4,
         "ui_and_name_unchanged": true,
-        "word": 1100
+        "word": 1115
       },
       {
         "name": "INN_TAVERN-1-part-5-random",
-        "cursor_after": 76,
-        "cursor_before": 72,
+        "cursor_after": 80,
+        "cursor_before": 76,
         "displayed_component": 5,
         "part": 0,
         "rng_identical": true,
         "target": 5,
         "ui_and_name_unchanged": true,
-        "word": 92
+        "word": 237
       },
       {
         "name": "INN_TAVERN-1-part-6-random",
-        "cursor_after": 80,
-        "cursor_before": 76,
+        "cursor_after": 84,
+        "cursor_before": 80,
         "displayed_component": 6,
-        "part": 8,
+        "part": 1,
         "rng_identical": true,
         "target": 6,
         "ui_and_name_unchanged": true,
-        "word": 1587
+        "word": 56
       },
       {
         "name": "INN_TAVERN-1-random-refill",
         "cursor_after": 4,
         "cursor_before": 2496,
         "displayed_component": 6,
-        "part": 0,
+        "part": 8,
         "rng_identical": true,
         "target": 6,
         "ui_and_name_unchanged": true,
-        "word": 766
+        "word": 1780
       },
       {
         "name": "INN_TAVERN-1-singleton-random",
-        "cursor_after": 80,
-        "cursor_before": 80,
+        "cursor_after": 84,
+        "cursor_before": 84,
         "displayed_component": 6,
         "part": 1,
         "rng_identical": true,
@@ -6870,14 +6892,14 @@
       },
       {
         "name": "INN_TAVERN-1-filtered-other-component-random",
-        "cursor_after": 84,
-        "cursor_before": 80,
+        "cursor_after": 88,
+        "cursor_before": 84,
         "displayed_component": 6,
         "part": 0,
         "rng_identical": true,
         "target": 0,
         "ui_and_name_unchanged": true,
-        "word": 1394
+        "word": 1838
       }
     ],
     "diagnostic": "Snapshot active RNG state, call protected location-name-pick, verify UI/GPS/name bytes unchanged, restore test RNG snapshot, click native Random, compare selected word/part and all624 RNG words plus context/cursor. Runtime never snapshots/restores RNG.",
@@ -7017,95 +7039,95 @@
       },
       {
         "name": "INN_TAVERN-1-part-1-selected",
-        "revision": "209330897252277201"
+        "revision": "1135357218088789288"
       },
       {
         "name": "INN_TAVERN-1-part-2-selected",
-        "revision": "3626988271641693702"
+        "revision": "6451586252166378958"
       },
       {
         "name": "INN_TAVERN-1-part-3-selected",
-        "revision": "2536632610998463663"
+        "revision": "2534637050149213587"
       },
       {
         "name": "INN_TAVERN-1-part-4-selected",
-        "revision": "3549534745038002707"
+        "revision": "6377968808604745172"
       },
       {
         "name": "INN_TAVERN-1-part-5-selected",
-        "revision": "438322130925781327"
+        "revision": "7391352773434112947"
       },
       {
         "name": "INN_TAVERN-1-part-6-selected",
-        "revision": "477680512135324518"
+        "revision": "479125728012684575"
       },
       {
         "name": "INN_TAVERN-1-singleton-selected",
-        "revision": "3797108494171340726"
+        "revision": "1599996592167652025"
       },
       {
         "name": "INN_TAVERN-1-filter-ale",
-        "revision": "8950742565033952003"
+        "revision": "1657038280589312050"
       },
       {
         "name": "INN_TAVERN-1-filter-al",
-        "revision": "8950742565033952003"
+        "revision": "1657038280589312050"
       },
       {
         "name": "INN_TAVERN-1-matrix-al-0",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-al-1",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-al-2",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-al-3",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-al-4",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-al-5",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-al-6",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-no-match-0",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-no-match-1",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-no-match-2",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-no-match-3",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-no-match-4",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-no-match-5",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       },
       {
         "name": "INN_TAVERN-1-matrix-no-match-6",
-        "revision": "1392078623331146296"
+        "revision": "2413424155403145038"
       }
     ],
     "invisible_change": "TEMPLE-0 has no Front Compound word; changing only that unused component part to NounPlural invalidates the receipt. Restoring the part restores the receipt.",
@@ -7123,6 +7145,28 @@
     "comparisons": [
       {
         "name": "TEMPLE-0-utterance-random",
+        "invalid_cases_rejected_without_effect": [
+          "negative-site",
+          "other-site",
+          "negative-location",
+          "missing-location",
+          "negative-target",
+          "large-target",
+          "negative-displayed",
+          "large-displayed",
+          "zero-revision",
+          "oversized-revision",
+          "clear-with-word",
+          "clear-with-part",
+          "select-wrong-component",
+          "select-missing-word",
+          "select-negative-part",
+          "select-large-part",
+          "select-filtered-out",
+          "random-empty-pool",
+          "whole-with-target",
+          "whole-with-query"
+        ],
         "name_identical": true,
         "rng_identical": true,
         "stale_rejected_without_effect": true,
@@ -7339,6 +7383,6 @@
         "ui_unchanged": true
       }
     ],
-    "scope": "31 mutations and31 stale-revision rejections verified against native name fields and RNG. UI/GPS unchanged. Diagnostic restores controlled name/RNG only to compare native button effect. Invalid parameter/eligibility and typed transport/lifecycle coverage remain."
+    "scope": "31 mutations and31 stale-revision rejections verified against native name fields and RNG.20 invalid parameter/identity/eligibility cases reject without name/RNG effects. UI/GPS unchanged. Diagnostic restores controlled name/RNG only to compare native button effect. Typed transport/lifecycle coverage remains."
   }
 }

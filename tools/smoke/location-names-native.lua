@@ -107,6 +107,7 @@ local function capture(label,location)
  while true do local ack=io.open(out..'/ack-'..label);if ack then ack:close();break end;assert(dfhack.getTickCount()<limit,'capture timeout');script.sleep(1,'frames')end
  return row
 end
+local invalid_edits_checked=false
 local function prepare_edit(location,mode,target,displayed,word,part,query)
  local json=require('json');local name=location:getName();local original=name_value(name);local rng=rng_snapshot()
  local text,code=dfhack.run_command_silent('df3d','location-name-read',tostring(df.global.plotinfo.site_id),tostring(location.id))
@@ -121,11 +122,40 @@ local function prepare_edit(location,mode,target,displayed,word,part,query)
    tostring(mode),tostring(target),tostring(displayed),tostring(word),tostring(part),receipt,dfhack.df2utf(query))
   assert(result==0,output);return json.decode(output).outcome
  end
+ local invalid_cases={}
+ if not invalid_edits_checked then
+  local cases={
+   {'negative-site',{[1]='-1'}},{'other-site',{[1]=tostring(df.global.plotinfo.site_id+1)}},
+   {'negative-location',{[2]='-1'}},{'missing-location',{[2]='2147483647'}},
+   {'negative-target',{[4]='-1'}},{'large-target',{[4]='7'}},
+   {'negative-displayed',{[5]='-1'}},{'large-displayed',{[5]='7'}},
+   {'zero-revision',{[8]='0'}},{'oversized-revision',{[8]='9223372036854775808'}},
+   {'clear-with-word',{[6]='0'}},{'clear-with-part',{[7]='0'}},
+   {'select-wrong-component',{[3]='1',[5]='1',[6]='0',[7]='0'}},
+   {'select-missing-word',{[3]='1',[6]='2147483647',[7]='0'}},
+   {'select-negative-part',{[3]='1',[6]='0',[7]='-1'}},
+   {'select-large-part',{[3]='1',[6]='0',[7]='9'}},
+   {'select-filtered-out',{[3]='1',[6]='0',[7]='0',[9]='ZZZZ'}},
+   {'random-empty-pool',{[3]='2',[9]='ZZZZ'}},
+   {'whole-with-target',{[3]='3',[5]='-1'}},
+   {'whole-with-query',{[3]='3',[4]='-1',[5]='-1',[9]='x'}},
+  }
+  for _,case in ipairs(cases)do
+   local args={tostring(df.global.plotinfo.site_id),tostring(location.id),'0','0','0','-1','-1',observed.revision,''}
+   for index,value in pairs(case[2])do args[index]=value end
+   local output,result=dfhack.run_command_silent('df3d','location-name-edit',table.unpack(args))
+   assert(result==0 and json.decode(output).outcome==0,'invalid edit accepted: '..case[1])
+   assert(json.encode(name_value(name))==json.encode(original),'invalid edit changed name: '..case[1])
+   assert(json.encode(rng_snapshot())==json.encode(rng),'invalid edit consumed RNG: '..case[1])
+   invalid_cases[#invalid_cases+1]=case[1]
+  end
+  invalid_edits_checked=true
+ end
  assert(edit(observed.revision=='1' and '2' or '1')==2,'stale name edit accepted')
  assert(json.encode(name_value(name))==json.encode(original),'stale edit changed name')
  assert(json.encode(rng_snapshot())==json.encode(rng),'stale edit consumed RNG')
  assert(edit(observed.revision)==1,'valid name edit rejected')
- local expected={name=name_value(name),rng=rng_snapshot()}
+ local expected={name=name_value(name),rng=rng_snapshot(),invalid_cases=invalid_cases}
  for _,guard in ipairs(guards)do
   assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'semantic name edit changed UI/GPS')
   df.delete(guard.bytes)
@@ -142,6 +172,7 @@ local function check_edit(row,location,expected)
  assert(json.encode(name_value(location:getName()))==json.encode(expected.name),'semantic/native name mutation differs')
  assert(json.encode(rng_snapshot())==json.encode(expected.rng),'semantic/native edit RNG differs')
  row.bridge_edit={name_identical=true,rng_identical=true,stale_rejected_without_effect=true,ui_unchanged=true}
+ if #expected.invalid_cases>0 then row.bridge_edit.invalid_cases_rejected_without_effect=expected.invalid_cases end
 end
 local function simple_edit(label,location,mode,target)
  local word,part=-1,-1

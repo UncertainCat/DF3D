@@ -8697,8 +8697,38 @@
     ],
     "save_preservation": "Owned source unchanged",
     "limitations": [
-      "Geometry and initial top-page capacity only; resize scroll clamping, held dragging and filter input are not yet covered.",
+      "Resize scroll clamping and held dragging are not yet covered.",
       "No runtime layout correction is established by this native reference."
-    ]
+    ],
+    "input_reference": {
+      "evidence": "build/stockpile-storage-native-zone-owner-20261027-153023",
+      "observations": [
+        {
+          "enter_releases_focus": true,
+          "filter_focus": true,
+          "focused_navigation_inert": true,
+          "name": "owner-resize-input",
+          "page_cursor": 11,
+          "size": "small"
+        },
+        {
+          "enter_releases_focus": true,
+          "filter_focus": true,
+          "focused_navigation_inert": true,
+          "name": "owner-resize-input",
+          "page_cursor": 19,
+          "size": "wide"
+        },
+        {
+          "enter_releases_focus": true,
+          "filter_focus": true,
+          "focused_navigation_inert": true,
+          "name": "owner-resize-input",
+          "page_cursor": 16,
+          "size": "default"
+        }
+      ],
+      "save_preservation": "Owned source unchanged"
+    }
   }
 }

@@ -40,9 +40,15 @@ Core passes in `build/qa/native-picker-resize`.
 This identifies a runtime gap: `area_candidates_view` fixes owner/animal page
 capacity at16, body height684 and filter position648, while `areas.gd` fixes
 the outer panel size. Implement native height/width propagation together with
-scroll/input geometry and visible recipe demand. These native captures establish
-initial top-page geometry only; scroll clamping, held dragging and actual filter
-input across resize still need comparison. Zones remains gated.
+scroll/input geometry and visible recipe demand. `area_owner_refresh` also fixes
+candidate_limit at18; a19-row page needs its complete visible range refreshed.
+Native owner153023 and animal153102 verify Page Down moves11/19/16 entries at
+the three sizes, Page Up restores selection0, and clicking the moved filter
+focuses it. A real window Down leaves selection unchanged while focused; Enter
+releases focus without assigning. Both protected runs pass cleanly, preserve
+the source manifest and close owned DF179528/174920 unsaved. The fixtures retain
+these input observations; core passes in `build/qa/native-picker-resize-input`.
+Resize scroll clamping and held dragging still need comparison. Zones remains gated.
 
 Protected `areas-acceptance-20261027-133446 -LocationScene` passes the full
 existing main-scene Locations suite with the live petition tracker enabled.

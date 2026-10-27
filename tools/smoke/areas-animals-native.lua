@@ -793,6 +793,17 @@ for _,probe in ipairs(resize_only and {{'Pond',60,438}} or {{'Pen',60,402},{'Pon
     scroll_rect={scroll.rect.x1,scroll.rect.y1,scroll.rect.x2,scroll.rect.y2},
     filter_rect={filter.rect.x1,filter.rect.y1,filter.rect.x2,filter.rect.y2}}
    capture('animal-resize-'..size)
+   gui.simulateInput(view,'STANDARDSCROLL_PAGEDOWN');view:render(dfhack.getTickCount())
+   local page_cursor=list.cursor_idx
+   assert(page_cursor==scroll.num_visible,'resized animal page navigation differs')
+   gui.simulateInput(view,'STANDARDSCROLL_PAGEUP');view:render(dfhack.getTickCount())
+   assert(list.cursor_idx==0,'resized animal page up did not restore selection')
+   pixel((filter.rect.x1+2)*8,(filter.rect.y1+1)*12+g.screen_pixel_y%12//2)
+   animal_window_input('down')
+   assert(df.global.gview.cur_textbox==filter and list.cursor_idx==0,'resized animal filter did not retain focus')
+   animal_window_input('enter')
+   assert(df.global.gview.cur_textbox~=filter and list.cursor_idx==0,'resized animal Enter did not release focus')
+   records[#records+1]={name='animal-resize-input',size=size,page_cursor=page_cursor,filter_focus=true,focused_navigation_inert=true,enter_releases_focus=true}
    assert(#zone.assigned_units==0,'resize changed animal assignments')
   end
   return

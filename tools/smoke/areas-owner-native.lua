@@ -446,6 +446,17 @@ if resize_marker then
    scroll_rect={scroll.rect.x1,scroll.rect.y1,scroll.rect.x2,scroll.rect.y2},
    filter_rect={filter.rect.x1,filter.rect.y1,filter.rect.x2,filter.rect.y2}}
   capture('owner-resize-'..size)
+  gui.simulateInput(view,'STANDARDSCROLL_PAGEDOWN');view:render(dfhack.getTickCount())
+  local page_cursor=list.cursor_idx
+  assert(page_cursor==scroll.num_visible,'resized owner page navigation differs')
+  gui.simulateInput(view,'STANDARDSCROLL_PAGEUP');view:render(dfhack.getTickCount())
+  assert(list.cursor_idx==0,'resized owner page up did not restore selection')
+  pixel((filter.rect.x1+2)*8,(filter.rect.y1+1)*12+g.screen_pixel_y%12//2)
+  window_input('resize-down','down',false)
+  assert(df.global.gview.cur_textbox==filter and list.cursor_idx==0,'resized filter did not retain navigation focus')
+  window_input('resize-enter','enter',false)
+  assert(df.global.gview.cur_textbox~=filter and list.cursor_idx==0,'resized filter Enter did not release focus')
+  records[#records+1]={name='owner-resize-input',size=size,page_cursor=page_cursor,filter_focus=true,focused_navigation_inert=true,enter_releases_focus=true}
   assert(zone.assigned_unit_id==-1,'resize changed owner')
  end
  return

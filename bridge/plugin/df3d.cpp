@@ -2001,8 +2001,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
-      if (parameters[0] == "location-recognize") {
-        if(parameters.size()!=3)return CR_WRONG_USAGE;
+      if (parameters[0] == "location-recognize" || parameters[0] == "location-recognition-receipt") {
+        const bool reading=parameters[0]=="location-recognition-receipt";
+        if(parameters.size()!=(reading?3:4))return CR_WRONG_USAGE;
         int32_t ids[2]{};
         for(size_t i=0;i<2;++i) {
           const auto& text=parameters[i+1];
@@ -2010,7 +2011,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
         }
         Json::Value value(Json::objectValue);
-        value["outcome"]=int(df3d_area::recognizeNativeLocation(ids[0],ids[1]));
+        if(reading) {
+          const auto receipt=df3d_area::observeNativeLocationRecognitionReceipt(ids[0],ids[1]);
+          value["valid"]=receipt.has_value();
+          if(receipt)value["revision"]=std::to_string(receipt->revision);
+        } else {
+          uint64_t revision=0;const auto& text=parameters[3];
+          const auto parsed=std::from_chars(text.data(),text.data()+text.size(),revision);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+          value["outcome"]=int(df3d_area::recognizeNativeLocation(ids[0],ids[1],revision));
+        }
         out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
       if (parameters[0] == "location-recognition-position") {

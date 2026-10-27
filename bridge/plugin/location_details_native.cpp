@@ -13,6 +13,7 @@
 #include "modules/Units.h"
 #include "df/historical_entity.h"
 #include "df/historical_figure.h"
+#include "df/histfig_entity_link.h"
 #include "df/historical_figure_info.h"
 #include "df/metaphysical_profilest.h"
 #include "df/language_word.h"
@@ -173,11 +174,8 @@ static std::optional<std::vector<int32_t>> concludeNativeLocationRecognitionAgre
   }
   return ids;
 }
-static std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughtsImpl(const LocationRecognitionFacts& observed) {
+static std::optional<std::vector<df::unit*>> collectNativeLocationRecognitionUnits(const LocationRecognitionFacts& observed) {
   const auto* facts=&observed;
-  const auto state=locationRecognitionState(*facts);
-  if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)
-    return std::nullopt;
   static const bool compatible=[] {
     if(!locationRefreshFunction())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -197,6 +195,20 @@ static std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThought
   const auto eligible=reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20);
   const auto figure=reinterpret_cast<df::historical_figure* (*)(df::unit*)>(base+0x13b3090);
   const auto strength=reinterpret_cast<int16_t (*)(df::historical_figure*,int16_t,int32_t)>(base+0xb973c0);
+  std::vector<df::unit*> units;
+  for(auto* unit:df::global::world->units.active) {
+    if(!unit || (unit->flags1.bits.inactive && !unit->flags1.bits.incoming) || !eligible(unit))continue;
+    auto* hf=figure(unit);
+    if(hf && strength(hf,0,facts->religionId)!=0)units.push_back(unit);
+  }
+  return units;
+}
+static std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughtsImpl(const LocationRecognitionFacts& observed) {
+  const auto* facts=&observed;
+  const auto state=locationRecognitionState(*facts);
+  if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)return std::nullopt;
+  const auto units=collectNativeLocationRecognitionUnits(observed);if(!units)return std::nullopt;
+  const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
   // Native72510 initializes this 0x30-byte semantic thought input. Recognition
   // writes circumstance253, religion ID and strength100 at offsets0,4,12.
   // It contains no retained pointers or menu state; zero unused padding too.
@@ -204,17 +216,9 @@ static std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThought
   static_assert(sizeof(Thought)==0x30);
   const auto initialize=reinterpret_cast<Thought* (*)(Thought*)>(base+0x72510);
   const auto apply=reinterpret_cast<void (*)(df::unit*,Thought*)>(base+0x13eff80);
-  // Collect before any thought writes so vector allocation failure cannot leave
-  // only part of this primitive applied. All pointers stay within this safe point.
-  std::vector<df::unit*> units;
-  for(auto* unit:df::global::world->units.active) {
-    if(!unit || (unit->flags1.bits.inactive && !unit->flags1.bits.incoming) || !eligible(unit))continue;
-    auto* hf=figure(unit);
-    if(hf && strength(hf,0,facts->religionId)!=0)units.push_back(unit);
-  }
-  std::vector<int32_t> ids;ids.reserve(units.size());
-  for(auto* unit:units)ids.push_back(unit->id);
-  for(auto* unit:units) {
+  std::vector<int32_t> ids;ids.reserve(units->size());
+  for(auto* unit:*units)ids.push_back(unit->id);
+  for(auto* unit:*units) {
     Thought thought;initialize(&thought);
     thought.fields[0]=253;thought.fields[1]=facts->religionId;thought.fields[3]=100;
     apply(unit,&thought);
@@ -236,9 +240,12 @@ std::optional<std::vector<int32_t>> applyNativeLocationRecognitionThoughts(int32
   if(!facts)return std::nullopt;
   return applyNativeLocationRecognitionThoughtsImpl(*facts);
 }
-LocationRecognitionOutcome recognizeNativeLocation(int32_t siteId,int32_t locationId) {
-  const auto facts=observeNativeLocationRecognition(siteId,locationId);
-  if(!facts)return LocationRecognitionOutcome::Rejected;
+LocationRecognitionOutcome recognizeNativeLocation(int32_t siteId,int32_t locationId,uint64_t expectedRevision) {
+  if(!expectedRevision || expectedRevision>uint64_t(INT64_MAX))return LocationRecognitionOutcome::Rejected;
+  const auto receipt=observeNativeLocationRecognitionReceipt(siteId,locationId);
+  if(!receipt)return LocationRecognitionOutcome::Rejected;
+  if(receipt->revision!=expectedRevision)return LocationRecognitionOutcome::Stale;
+  const auto* facts=&receipt->facts;
   const auto state=locationRecognitionState(*facts);
   if(state!=LocationRecognitionState::RecognizePriesthood && state!=LocationRecognitionState::RecognizeHighPriest)
     return LocationRecognitionOutcome::Rejected;
@@ -388,6 +395,89 @@ std::optional<LocationRecognitionFacts> observeNativeLocationRecognition(int32_t
     if(*matches)result.continuingAgreements.push_back(id);
   }
   return result;
+}
+std::optional<LocationRecognitionReceipt> observeNativeLocationRecognitionReceipt(int32_t siteId,int32_t locationId) {
+  auto facts=observeNativeLocationRecognition(siteId,locationId);if(!facts)return std::nullopt;
+  auto* religion=df::historical_entity::find(facts->religionId);if(!religion)return std::nullopt;
+  uint64_t hash=UINT64_C(14695981039346656037);
+  const auto number=[&](uint64_t value) {
+    for(unsigned i=0;i<8;++i){hash^=value&255;hash*=UINT64_C(1099511628211);value>>=8;}
+  };
+  const auto text=[&](const std::string& value) {
+    number(value.size());for(unsigned char ch:value){hash^=ch;hash*=UINT64_C(1099511628211);}
+  };
+  const auto numbers=[&](const auto& values){number(values.size());for(auto value:values)number(uint64_t(value));};
+  number(siteId);number(locationId);number(facts->religionId);number(facts->tier);number(facts->rank);
+  number(facts->worshippers);number(facts->priestThreshold);number(facts->highPriestThreshold);
+  number(religion->positions.next_position_id);number(religion->positions.next_assignment_id);
+  // Hash semantic fields, never padding, addresses or lookup-cache indices.
+  number(religion->positions.own.size());
+  for(const auto* p:religion->positions.own) {
+    if(!p)return std::nullopt;
+    number(p->id);text(p->code);
+    for(int i=0;i<=int(df::enum_traits<df::entity_position_flags>::last_item_value);++i)
+      number(p->flags.is_set(static_cast<df::entity_position_flags>(i)));
+    for(const auto* forms:{&p->name,&p->name_female,&p->name_male,&p->spouse,&p->spouse_female,&p->spouse_male,&p->squad})
+      for(const auto& name:*forms)text(name);
+    text(p->land_name);text(p->description);
+    numbers(p->allowed_creature);numbers(p->rejected_creature);numbers(p->commander_id);numbers(p->commander_civ);
+    numbers(p->commander_types);numbers(p->appointed_by);numbers(p->appointed_by_civ);numbers(p->succession_by_position);
+    numbers(p->responsibilities);numbers(p->color);
+    for(const auto* classes:{&p->allowed_class,&p->rejected_class}) {
+      number(classes->size());for(const auto* value:*classes){if(!value)return std::nullopt;text(*value);}
+    }
+    for(int value:{int(p->squad_size),int(p->land_holder),int(p->requires_population),int(p->execution_skill),p->precedence,
+        p->replaced_by,int(p->number),p->required_boxes,p->required_cabinets,p->required_racks,p->required_stands,
+        p->required_office,p->required_bedroom,p->required_dining,p->required_tomb,p->mandate_max,p->demand_max,p->best_appointment_precedence})number(value);
+  }
+  number(religion->positions.assignments.size());
+  for(const auto* a:religion->positions.assignments) {
+    if(!a)return std::nullopt;
+    for(int value:{a->id,a->position_id,a->histfig,a->histfig2,a->st_id,a->ab_id,a->squad_id,a->vassal_of_entity_id,a->vassal_of_position_profile_id})number(value);
+    for(int i=0;i<=int(df::enum_traits<df::entity_position_profile_flags>::last_item_value);++i)
+      number(a->flags.is_set(static_cast<df::entity_position_profile_flags>(i)));
+    auto* holder=a->histfig>=0?df::historical_figure::find(a->histfig):nullptr;number(holder!=nullptr);
+    if(holder) {
+      number(holder->entity_links.size());
+      for(const auto* link:holder->entity_links) {
+        if(!link)return std::nullopt;
+        number(link->entity_id);number(link->link_strength);
+        // These virtual semantic getters do not populate UI or lookup caches.
+        auto* current=const_cast<df::histfig_entity_link*>(link);
+        number(int(current->getType()));number(current->getPosition());
+        number(current->getPositionStartYear());number(current->getPositionEndYear());
+      }
+    }
+  }
+  // Include list order and each predicate result, even currently nonmatching
+  // entries: edits can change which agreement the native first-match scan uses.
+  for(const auto* list:{&df::global::plotinfo->petitions,&df::global::plotinfo->continuing_agreement_id}) {
+    number(list->size());for(auto id:*list) {
+      number(id);auto* agreement=df::agreement::find(id);number(agreement!=nullptr);
+      const auto matches=recognitionAgreementMatches(agreement,religion->id);if(!matches)return std::nullopt;
+      number(*matches);if(agreement)number(agreement->flags.whole);
+    }
+  }
+  const auto recipients=collectNativeLocationRecognitionUnits(*facts);if(!recipients)return std::nullopt;
+  number(recipients->size());
+  for(const auto* unit:*recipients){number(unit->id);number(unit->hist_figure_id);}
+  numbers(religion->relations.deities);
+  for(auto id:religion->relations.deities) {
+    const auto* deity=df::historical_figure::find(id);number(deity!=nullptr);
+    const auto* metaphysical=deity && deity->info?deity->info->metaphysical:nullptr;
+    number(metaphysical!=nullptr);if(metaphysical)numbers(metaphysical->spheres);
+  }
+  number(religion->site_links.size());
+  for(const auto* link:religion->site_links) {
+    if(!link)return std::nullopt;
+    number(link->target);number(link->entity_id);number(int(link->type));number(link->flags.whole);number(link->former_flag.whole);
+    number(link->ab_profile.size());for(const auto* profile:link->ab_profile) {
+      if(!profile)return std::nullopt;number(profile->id);number(profile->purpose_flag.whole);
+    }
+  }
+  // Time, RNG and personality/emotion state are execution-time native inputs,
+  // not an observed outcome promise. Epoch ownership belongs to the transport.
+  hash&=uint64_t(INT64_MAX);return LocationRecognitionReceipt{std::move(*facts),hash?hash:1};
 }
 std::optional<std::vector<LocationNameWord>> observeNativeLocationNameWords(uint8_t component,const std::string& queryCp437,int32_t language) {
   if(component>6 || !df::global::world || !DFHack::Maps::IsValid())return std::nullopt;

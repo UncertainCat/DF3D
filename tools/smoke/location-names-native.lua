@@ -827,8 +827,13 @@ local ok,err=xpcall(function()
   return
  end
  local expected_action=nil
- local function recognize(site,id)
-  local text,code=dfhack.run_command_silent('df3d','location-recognize',tostring(site or df.global.plotinfo.site_id),tostring(id or temple.id))
+ local function recognition_receipt(site,id)
+  local text,code=dfhack.run_command_silent('df3d','location-recognition-receipt',tostring(site or df.global.plotinfo.site_id),tostring(id or temple.id))
+  assert(code==0,text);return require('json').decode(text)
+ end
+ local function recognize(site,id,revision)
+  if revision==nil then revision=recognition_receipt(site,id).revision or '1' end
+  local text,code=dfhack.run_command_silent('df3d','location-recognize',tostring(site or df.global.plotinfo.site_id),tostring(id or temple.id),revision)
   assert(code==0,text);return require('json').decode(text).outcome
  end
  if semantic_recognition then
@@ -848,6 +853,36 @@ local ok,err=xpcall(function()
   end
   local eligible_tier=contents.location_tier;contents.location_tier=0
   assert(recognize()==0,'ineligible full recognition accepted');contents.location_tier=eligible_tier
+  local receipt=recognition_receipt();assert(receipt.valid and receipt.revision==recognition_receipt().revision,'unstable recognition receipt')
+  assert(recognize(nil,nil,'0')==0 and recognize(nil,nil,'9223372036854775808')==0,'invalid revision accepted')
+  local stale_checks=0
+  local function stale_scalar(object,field,value)
+   local saved=object[field];object[field]=value
+   if field=='incoming' then assert(recognition_state().bridge.worshippers==before.recognition.bridge.worshippers,'recipient probe changed displayed count')end
+   assert(recognize(nil,nil,receipt.revision)==3,'changed '..field..' did not stale recognition')
+   object[field]=saved;stale_checks=stale_checks+1
+   assert(recognition_receipt().revision==receipt.revision,'restored '..field..' changed receipt')
+  end
+  local incoming=assert(df.unit.find(7351));assert(incoming.flags1.inactive and incoming.flags1.incoming,'incoming recipient fixture missing')
+  stale_scalar(incoming.flags1,'incoming',false)
+  stale_scalar(contents,'location_tier',0)
+  stale_scalar(difficulty,'priesthood_unit_count',difficulty.priesthood_unit_count+1)
+  stale_scalar(difficulty,'high_priesthood_unit_count',difficulty.high_priesthood_unit_count+1)
+  stale_scalar(religion.positions,'next_position_id',religion.positions.next_position_id+1)
+  stale_scalar(religion.positions,'next_assignment_id',religion.positions.next_assignment_id+1)
+  stale_scalar(religion.positions.own[0],'code','DF3D_STALE_TEMPLATE')
+  stale_scalar(religion.positions.own[0],'precedence',religion.positions.own[0].precedence+1)
+  stale_scalar(religion.positions.own[0].color,0,(religion.positions.own[0].color[0]+1)%16)
+  stale_scalar(religion.positions.assignments[0],'histfig',-987654)
+  if #religion.relations.deities>0 then stale_scalar(religion.relations.deities,0,-987654)end
+  if #religion.site_links>0 then
+   local flags=religion.site_links[0].flags;stale_scalar(flags,'whole',flags.whole+4)
+  end
+  for _,id in ipairs(fixture_agreements)do
+   local agreement=assert(df.agreement.find(id));stale_scalar(agreement.flags,'whole',agreement.flags.whole+4)
+  end
+  before.recognition.receipt_revision=receipt.revision
+  before.recognition.stale_checks=stale_checks
   local rejected=recognition_state()
   for _,field in ipairs{'positions','assignments','event_count','next_position','next_assignment','site_links','holder_links','temple_emotions','rng','recognized','bridge','petitions','continuing','agreements'}do
    assert(require('json').encode(rejected[field])==require('json').encode(rejection_baseline[field]),'rejected recognition changed '..field)

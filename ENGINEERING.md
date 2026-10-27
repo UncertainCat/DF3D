@@ -724,7 +724,8 @@ wrapper rechecks eligibility. The complete command must validate one current
 receipt before any effects, prepare all required inputs, and execute its internal
 steps without reinterpreting its own intermediate state as a new user intent.
 The staged full semantic action below uses one eligibility snapshot internally.
-Complete dependency receipts, typed transport and viewer exposure remain pending.
+The receipt below binds semantic dependencies; typed transport and viewer exposure
+remain pending.
 
 `prepareNativeLocationRecognitionPosition` creates an independently owned,
 unpublished PRIEST or HIGH_PRIEST template for the staged transaction. It returns
@@ -766,7 +767,7 @@ the full-action evidence below covers those separately. Empty-deity/word fallbac
 variants remain unverified.
 
 `recognizeNativeLocation` implements the staged complete semantic action behind
-`df3d location-recognize <site> <location>`. It observes eligibility once, validates
+`df3d location-recognize <site> <location> <revision>`. It observes eligibility once, validates
 the religion, target template, prior assignment/holder and ID counters, and
 allocates the new assignment before effects. Internal agreement, thought and
 position routines consume that same eligibility snapshot. This preserves native
@@ -783,7 +784,8 @@ preparation. The native3ad8e0 Details row builder is not called. Native UI objec
 are never supplied to the semantic action. Rejected means no semantic effects
 began; any unavailable step or caught exception after effects may begin reports
 Unknown, which must never be automatically replayed. This is diagnostic staging:
-there is no revision-bound management request or viewer control yet.
+the local revision check below is required, but there is no epoch-bound management
+request or viewer control yet.
 
 `recognition_complete_action_reference` retains bounded provenance and effect
 digests for six protected native/bridge pairs on2026-10-27: promotion024305,
@@ -802,8 +804,39 @@ source manifests. Installed DLL SHA256 is
 MSVC build passes; root/core evidence is `build/qa/location-recognition-action`.
 This does not establish existing HIGH_PRIEST-template reuse, empty-deity/word
 fallbacks, every personality field, failure injection after effects begin, or the
-remaining dependency receipt, transport and rendered lifecycle work. Zones and
+remaining transport and rendered lifecycle work. Zones and
 Locations remain staged.
+
+`observeNativeLocationRecognitionReceipt` returns copied facts and a nonzero
+signed-63-bit revision. Diagnostic `df3d location-recognition-receipt <site>
+<location>` exposes that revision as a decimal string. The action now requires
+it, rejects zero/out-of-range revisions, and reports Stale before effects if the
+current revision differs. It binds identity, tier/rank/count/thresholds, position
+counters, template fields, assignment identities/holders/flags, holder semantic
+entity links, ordered agreement IDs/predicate results/flags, deity identities and
+spheres, site links/profiles, and ordered native thought-recipient identities.
+Recipient observation and application share the same guarded native eligibility,
+HF lookup and membership helpers. This catches changed recipients even when the
+displayed worshipper count stays constant. The hash excludes pointers, padding
+and lookup-cache indices. Native time, RNG and personality/emotion state remain
+execution-time inputs, not an observed outcome promise. Raw definitions are
+installation/session inputs; producer generation/fortress epoch binding still
+belongs to the future management transport.
+
+`recognition_receipt_reference` records protected actionpetitions030032,
+actionnew030130 and actionwaiver030157 on2026-10-27 using installed DLL
+`ac65224b7e44701c2b9507bd8eb511b9556969ac93d249fbb868bc5d1330ffab`.
+Each verifies stale refusals for tier, both thresholds, both counters, template
+code/precedence/color, assignment holder and native thought-recipient membership.
+Petitions also changes all six agreement flags; new/waiver additionally changes
+a deity ID and site flags, and confirms the recipient probe preserves the displayed
+count. Zero and out-of-range revisions reject. Restoring each dependency restores
+the original revision; all rejected/stale probes preserve captured effects/RNG.
+Valid actions still match native effects and RNG, UI/gps guards pass, completed
+repeats reject, and owned games exit unsaved with unchanged source manifests.
+MSVC build and root/core `build/qa/location-recognition-receipt` pass. These checks
+do not individually mutate every hashed field or establish transport, disconnect,
+late-reply or rendered acceptance. Protocol remains72 and UI exposure is unchanged.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and

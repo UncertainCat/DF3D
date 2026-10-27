@@ -7856,5 +7856,44 @@
         "invalid_and_ineligible_checks": 6
       }
     }
+  },
+  "recognition_receipt_reference": {
+    "plugin_sha256": "ac65224b7e44701c2b9507bd8eb511b9556969ac93d249fbb868bc5d1330ffab",
+    "scope": "Revision-bound full action with exact captured native effects and RNG comparison, UI/gps unchanged, repeat rejection, invalid targets/revisions and controlled stale dependencies without captured effects. Recipient list uses the same native semantic selectors as application.",
+    "omissions": [
+      "Management transport epoch binding",
+      "Viewer and disconnect/late-reply acceptance",
+      "Every hashed field individually mutated",
+      "Native raw-definition replacement within an epoch"
+    ],
+    "runs": [
+      {
+        "capture": "build/stockpile-storage-native-location-recognition-actionpetitions-20261027-030032",
+        "sha256": "d55d1967accf942dd6428b8a714da127552ad3505d1c83e90024dd981434f4bc",
+        "revision": "6734194241198304354",
+        "stale_checks": 16,
+        "invalid_revision_checks": 2,
+        "invalid_and_ineligible_checks": 6,
+        "same_count_recipient_probe": false
+      },
+      {
+        "capture": "build/stockpile-storage-native-location-recognition-actionnew-20261027-030130",
+        "sha256": "39c083a61334b7b5f1eb8e2fe5b58e936dcc71e2965f4aa14195b75c4a4d6023",
+        "revision": "7804093800292817942",
+        "stale_checks": 12,
+        "invalid_revision_checks": 2,
+        "invalid_and_ineligible_checks": 6,
+        "same_count_recipient_probe": true
+      },
+      {
+        "capture": "build/stockpile-storage-native-location-recognition-actionwaiver-20261027-030157",
+        "sha256": "5cc6755c8b2f91e2ce57f19610cab0f1db2bff7770100c2bc16544916abbb0d5",
+        "revision": "8353238904761825801",
+        "stale_checks": 13,
+        "invalid_revision_checks": 2,
+        "invalid_and_ineligible_checks": 6,
+        "same_count_recipient_probe": true
+      }
+    ]
   }
 }

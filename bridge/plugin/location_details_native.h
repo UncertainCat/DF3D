@@ -51,11 +51,15 @@ std::optional<std::vector<int32_t>> concludeNativeLocationRecognitionAgreements(
 // or an existing template that the full transaction should reuse. Caller owns a
 // safe point and must include df/entity_position.h when destroying this result.
 std::unique_ptr<df::entity_position> prepareNativeLocationRecognitionPosition(int32_t siteId,int32_t locationId);
-enum class LocationRecognitionOutcome : uint8_t { Rejected, Applied, Unknown };
-// Staged complete semantic action, invoked only at a DF safe point. A transport
-// receipt/epoch binding is still required before exposing this to the viewer.
+struct LocationRecognitionReceipt { LocationRecognitionFacts facts; uint64_t revision=0; };
+std::optional<LocationRecognitionReceipt> observeNativeLocationRecognitionReceipt(int32_t siteId,int32_t locationId);
+enum class LocationRecognitionOutcome : uint8_t { Rejected, Applied, Unknown, Stale };
+// Staged complete semantic action, invoked only at a DF safe point. The
+// current revision is required; transport epoch binding remains necessary before
+// exposing this to the viewer. The receipt binds semantic intent dependencies,
+// not execution-time RNG or emotions.
 // Unknown means effects may have begun and must never be automatically replayed.
-LocationRecognitionOutcome recognizeNativeLocation(int32_t siteId,int32_t locationId);
+LocationRecognitionOutcome recognizeNativeLocation(int32_t siteId,int32_t locationId,uint64_t expectedRevision);
 enum class LocationAccess : uint8_t { Visitors, Residents, Citizens, Members };
 struct LocationAccessFlags { bool visitors=false,residents=false,members=false; };
 // Native160005: members overrides visitors, which overrides residents.

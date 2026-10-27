@@ -75,6 +75,44 @@ but the view is not wired to them. Fix viewport-height propagation, scroll clamp
 and visible-reader retirement together; resolve the pending zero-row scrollbar
 exception before claiming minimum-height parity or promoting Zones.
 
+## Building production native-entry audit
+
+The existing `bridge/plugin/production.lua` adapter is not a complete native
+building-management provider. Its Carpenters/Kitchen/WoodFurnace choices come
+from hand-maintained `dfhack.workshops` tables; Still reaction selection and
+recipe-key ordering are local reconstructions. Ordinary requirement descriptions
+combine raw enum/flag names. Native reagent and job helpers do not establish
+native parity for these surrounding choices, ordering or visible text. Locate
+the native Add task provider before extending or exposing this presentation.
+
+Static inspection of the pinned53.16 executable (SHA256
+`205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7`)
+identifies these farm candidates; addresses below are RVAs, not live pointers:
+
+- `0x557770..0x55784d` takes a building pointer and crop ID. It traverses
+  included footprint cells, calls tile suitability `0x14b1460` and crop/tile
+  suitability `0x14b1520`, and returns true at the first qualifying cell.
+  It reads building geometry/extents and world state rather than selected-menu
+  scratch. Its transitive dependencies still need live nonmutation verification.
+- `0xaae1a0..0xaae2cb` fills four caller-owned season bytes from the plant raw's
+  season flags. It has no calls and does not apply growth-duration filtering.
+  The routine spans multiple PE unwind entries; inspecting only the first
+  unwind entry truncates the final two seasons.
+- Query-list builder `0x8b1bf0` calls both routines at `0x8b1dd8` and
+  `0x8b1df5`. It reads the selected building (`0x24e8078`) and rewrites global
+  crop/seed vectors (`0x239a528`, `0x239a540`); it is **not** a permitted runtime
+  entry point. Its list also distinguishes selected crops and available seeds
+  when inserting rows. The renderer at `0x199f61` reads that global list.
+
+These findings expose specific comparison cases for the current adapter's
+uniform-environment rejection and reconstructed growth-duration filter; they
+do not establish which native path the current graphical panel uses. Capture
+the supported native farm panel, then compare ordinary, mixed-footprint,
+season-boundary, selected-crop and seed-availability cases against independently
+owned semantic calls. Verify ordering and lifecycle separately. No runtime
+replacement, building-management acceptance or launcher promotion follows from
+this static audit. Workshop Add task discovery remains unresolved.
+
 ## Native Location supply editing reference
 
 `fixtures/areas/native_location_supply_edit.json` records121 observations from

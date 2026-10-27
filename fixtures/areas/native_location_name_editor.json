@@ -8657,5 +8657,67 @@
       "main-scene header/HUD composition",
       "automatic UI scaling"
     ]
+  },
+  "main_resize_reference": {
+    "run": "build/areas-acceptance-20261027-002330",
+    "result_sha256": "0182a817825b8518dc881ffb9e948cab7ca4b591a0031518f9f26a0ae72e3847",
+    "cases": [
+      {
+        "page": 9.0,
+        "rect": [
+          32.0,
+          48.0,
+          704.0,
+          468.0
+        ],
+        "selected_part": 1,
+        "selected_word": 4,
+        "viewport": [
+          960.0,
+          600.0
+        ]
+      },
+      {
+        "page": 18.0,
+        "rect": [
+          368.0,
+          48.0,
+          1008.0,
+          768.0
+        ],
+        "selected_part": 2,
+        "selected_word": 9,
+        "viewport": [
+          1600.0,
+          900.0
+        ]
+      },
+      {
+        "page": 15.0,
+        "rect": [
+          368.0,
+          52.0,
+          608.0,
+          660.0
+        ],
+        "selected_part": 2,
+        "selected_word": 7,
+        "viewport": [
+          1200.0,
+          800.0
+        ]
+      }
+    ],
+    "native_selection_effects": 3,
+    "compact_parent_hidden": true,
+    "parent_restored_at_wider_sizes": true,
+    "small_panel_rgb_sha256": "540f67954b346b2f396c5026e0b1fa5994f09c35a3a4d66f5250e10d90814230",
+    "source_and_clone_unchanged": true,
+    "owned_exit_without_save": true,
+    "diagnostics": "known separate-thread notice only",
+    "omissions": [
+      "long-header zone icon and right HUD overlaps",
+      "responsive Details and automatic UI scaling"
+    ]
   }
 }

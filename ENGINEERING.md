@@ -493,6 +493,19 @@ that icon over the longest header, and its right HUD covers text from x1000.
 Those two overlaps remain explicit main-scene composition work; this component
 check does not establish their parity. No header rendering change was needed.
 
+Protected `build/areas-acceptance-20261027-002330` verifies naming resize in the
+actual fortress scene at960x600,1600x900 and1200x800. The native frame and page
+geometry match; viewport selection of each last visible word produces the
+expected native name fields, and filter focus/Enter remains routed correctly.
+Compact naming suppresses the parent zone panel's drawing, retaining its owner
+and input lifetime; wider layouts restore it. The entire narrow naming panel
+matches the native RGB reference exactly. The same run passes the six-location
+chooser/assigned routes,34 edits and queued/sent dismissal cases. Both source
+and clone manifests remain unchanged; the owned game exits unsaved, with only
+the known separate-thread diagnostic. The fixture's `main_resize_reference`
+records this evidence. Long-header sprite/HUD overlaps and responsive Details
+remain unverified by this run.
+
 ## Native squad assignment reference
 
 Management69 adds optional `AreaSquadSymbol` to typed squad candidate rows:

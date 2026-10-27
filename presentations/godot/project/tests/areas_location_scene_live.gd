@@ -442,6 +442,9 @@ func naming_routes(locations: Array) -> void:
 		var names=details.name_workflow.names
 		if not await wait_ui(func():return names.phase==names.Phase.Ready,"complete native naming choices"):return
 		if not check(details.name_view.visible and not details.heading.visible and names.snapshot.id==id,"naming target/visibility"):return
+		if id==1:
+			await naming_resize(details,id)
+			if stopped:return
 		await native("name_choices",{"location_id":id,"component":0,"query":"","choices":names.rows})
 		await capture("naming_%d"%id)
 		for mode in [1,0,2,3]:
@@ -475,9 +478,38 @@ func naming_routes(locations: Array) -> void:
 		if stopped:return
 	await naming_assigned_routes(locations)
 	if stopped:return
-	write_json("naming-scene-evidence.json",{"locations":cases,"mutations":cases*5+1,"pending_close_cases":2,"assigned_routes":cases,"scope":"chooser and assigned quill entry, full choices, four edit modes and native readback, Done refresh, reopen/Escape/Back, queued cancellation and sent late receipt after dismissal"})
+	write_json("naming-scene-evidence.json",{"locations":cases,"mutations":cases*5+4,"resize_cases":3,"pending_close_cases":2,"assigned_routes":cases,"scope":"chooser and assigned quill entry, resized selection/focus and compact parent visibility, full choices, four edit modes and native readback, Done refresh, reopen/Escape/Back, queued cancellation and sent late receipt after dismissal"})
 	print("LOCATION_NAMING_SCENE_PASS locations=",cases)
 	editor.close_panel()
+
+func naming_resize(details, id: int) -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_location_name_editor.json")).resize_reference
+	var names=details.name_workflow.names
+	var observations: Array=[]
+	for sample in reference.cases:
+		step="main naming resize "+sample.name
+		root.size=Vector2i(sample.viewport[0],sample.viewport[1]);scene._fortress_hud.apply_ui_scale()
+		for frame in 8:editor._process(0);await process_frame
+		var rect:=screen_rect(details.name_view)
+		var expected:=Rect2(sample.rect[0],sample.rect[1],sample.rect[2],sample.rect[3])
+		if not check(rect==expected and details.name_view.page==int(sample.page),"main naming native resize geometry: "+str(rect)):return
+		if not check(editor.panel.modulate.a==(0.0 if sample.name=="small" else 1.0),"native compact parent visibility"):return
+		await capture("naming_resize_"+sample.name)
+		var target:=int(sample.page)-1
+		var choice: Dictionary=names.rows[target].duplicate(true)
+		await native("name_guard",{"location_id":id})
+		await pointer_click(rect.position+Vector2(380,120+target*36))
+		if not await wait_ui(func():return names.phase==names.Phase.Ready and names.ticket==0,"resized last-row selection"):return
+		var value: Dictionary=names.snapshot.value.duplicate(true)
+		value.first_name_bytes=Array(value.first_name_bytes);value.nickname_bytes=Array(value.nickname_bytes)
+		await native("name_edit_check",{"location_id":id,"mode":1,"target":0,"word":choice.word,"part":choice.part,"value":value})
+		if stopped:return
+		await pointer_click(rect.position+Vector2(rect.size.x-48,90))
+		if not check(details.name_view.entering_filter,"resized filter hitbox"):return
+		await pointer_key(KEY_ENTER)
+		if not check(not details.name_view.entering_filter,"resized filter Enter"):return
+		observations.append({"viewport":sample.viewport,"rect":sample.rect,"page":sample.page,"selected_word":choice.word,"selected_part":choice.part})
+	write_json("naming-resize-evidence.json",{"cases":observations,"native_selection_effects":3,"scope":"actual fortress composition, native frame geometry, resized last-row selection and filter focus; Details and HUD overlap parity remain separate"})
 
 func naming_restart() -> void:
 	step="naming producer restart"

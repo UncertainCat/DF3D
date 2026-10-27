@@ -9356,6 +9356,176 @@
         "Injected post-effect read failure/Unknown outcome",
         "High-priest/absent-unit successful removal and squad/job variants through management transport"
       ]
+    },
+    "scene_reference": {
+      "source": "build/areas-acceptance-20261027-050846",
+      "status": "passed_with_known_issues",
+      "evidence_sha256": "f41e830862bd1fe1b32fba53e46b5ec2f4df50e47f406bdff4daec38f4e38ccc",
+      "evidence": {
+        "after": {
+          "assignments": 3.0,
+          "events": 54232.0,
+          "holder": -1.0,
+          "holder2": 9375.0,
+          "links": [
+            {
+              "end_year": -1.0,
+              "entity": 245.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 383.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": 7.0,
+              "start_year": 104.0,
+              "strength": 100.0,
+              "type": 10.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": 9.0,
+              "start_year": 104.0,
+              "strength": 100.0,
+              "type": 10.0
+            },
+            {
+              "end_year": 106.0,
+              "entity": 383.0,
+              "position": 2.0,
+              "start_year": 103.0,
+              "strength": 100.0,
+              "type": 11.0
+            }
+          ],
+          "next_assignment": 3.0,
+          "next_position": 1.0,
+          "position": 0.0,
+          "positions": 1.0,
+          "squad": -1.0,
+          "unit": {
+            "id": 5813.0,
+            "job": -1.0,
+            "position": 0.0,
+            "profession": 17.0,
+            "profession2": 17.0,
+            "squad": 125.0
+          }
+        },
+        "before": {
+          "assignments": 3.0,
+          "events": 54231.0,
+          "holder": 9375.0,
+          "holder2": 9375.0,
+          "links": [
+            {
+              "end_year": -1.0,
+              "entity": 245.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 383.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 383.0,
+              "position": 2.0,
+              "start_year": 103.0,
+              "strength": 100.0,
+              "type": 10.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": 7.0,
+              "start_year": 104.0,
+              "strength": 100.0,
+              "type": 10.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": 9.0,
+              "start_year": 104.0,
+              "strength": 100.0,
+              "type": 10.0
+            }
+          ],
+          "next_assignment": 3.0,
+          "next_position": 1.0,
+          "position": 0.0,
+          "positions": 1.0,
+          "squad": -1.0,
+          "unit": {
+            "id": 5813.0,
+            "job": -1.0,
+            "position": 0.0,
+            "profession": 17.0,
+            "profession2": 17.0,
+            "squad": 125.0
+          }
+        },
+        "details_closed": true,
+        "details_refreshed": true,
+        "event": {
+          "civ": 383.0,
+          "histfig": 9375.0,
+          "id": 64037.0,
+          "link_type": 10.0,
+          "position_id": 0.0,
+          "seconds": 157249.0,
+          "year": 106.0
+        },
+        "vacant_repeat_unchanged": true,
+        "viewport_click": true
+      },
+      "images_inspected": [
+        "scene_religious_staff_before.png",
+        "scene_religious_staff_after.png"
+      ],
+      "source_and_clone_preserved": true,
+      "owned_unsaved_exit": true,
+      "scope": "Actual rendered fortress scene, viewport-routed native removal icon, independent native effects, refreshed staff/recognition and repeated vacant click then Back.",
+      "omissions": [
+        "Real disconnect/restart/late-response workflows; controlled state tests only",
+        "Religious vacant assignment control remains unfinished",
+        "Responsive and high-priest/historical-holder variants"
+      ]
     }
   }
 }

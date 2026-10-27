@@ -47,6 +47,8 @@ func pointer_areas() -> void:
 		if not check(control.get_node("Name").text==reference.title and control.get_node("Subtitle").text==reference.subtitle,
 			"Location row copy differs from native: %d actual=%s/%s native=%s/%s" % [index,control.get_node("Name").text,control.get_node("Subtitle").text,reference.title,reference.subtitle]): return
 	var observed_locations: Array=editor.locations_state.rows.duplicate(true)
+	if FileAccess.file_exists(directory+"/religious-staff-scene.txt"):
+		await religious_staff_route(observed_locations);return
 	if FileAccess.file_exists(directory+"/recognition-scene.txt"):
 		await recognition_route(observed_locations);return
 	if FileAccess.file_exists(directory+"/naming-scene.txt"):
@@ -1527,3 +1529,37 @@ func recognition_restart() -> void:
 	await capture("recognition_restart_reopened")
 	write_json("recognition-restart-evidence.json",{"old_ticket":ticket,"old_owner_retired":true,"old_applied_rank":2,"fresh_rank":recognition.snapshot.rank})
 	editor.close_panel()
+
+func religious_staff_route(locations: Array) -> void:
+	step="religious staff scene entry"
+	var index:=-1
+	for i in locations.size():
+		if int(locations[i].id)==0:index=i;break
+	if not check(index>=0,"religious temple absent"):return
+	await click_control(editor.locations_view.choices[index].get_node("Details"))
+	var details=editor.details_view
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and details.recognition_workflow.recognition.phase==details.recognition_workflow.recognition.Phase.Ready,"religious Details entry"):return
+	var setup:=await native("religious_setup")
+	if stopped:return
+	var view=details.staff_view
+	var row_index:=-1
+	for i in view.rows.size():
+		if int(view.rows[i].get("source",-1))==1 and int(view.rows[i].assignment_id)==int(setup.assignment_id):row_index=i;break
+	if not check(row_index>=view.first and row_index<view.first+int(view.geometry.visible_count),"religious holder not visible"):return
+	var point: Vector2=view.global_position+Vector2((view.row_columns()-4)*8+16,(int(view.geometry.first_y)-6+(row_index-view.first)*3)*12+18)
+	await capture("religious_staff_before")
+	step="religious staff scene remove"
+	await native("religious_guard")
+	await pointer_click(point)
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and not details.religious_staff_workflow.active and details.recognition_workflow.recognition.phase==details.recognition_workflow.recognition.Phase.Ready and int(details.staff_view.rows[row_index].histfig_id)==-1,"religious removal and Details refresh"):return
+	var effects:=await native("religious_applied")
+	if stopped:return
+	await capture("religious_staff_after")
+	step="religious vacant repeat"
+	await native("religious_guard")
+	await pointer_click(point)
+	await create_timer(0.1).timeout;actions.poll()
+	await native("religious_unchanged")
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"religious Details Back"):return
+	write_json("religious-staff-scene-evidence.json",{"before":setup.before,"after":effects.after,"event":effects.event,"viewport_click":true,"details_refreshed":true,"vacant_repeat_unchanged":true,"details_closed":true})

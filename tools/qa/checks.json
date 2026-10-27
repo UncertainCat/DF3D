@@ -18,6 +18,15 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "location_religious_staff_workflow_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_religious_staff_workflow_test.gd",
+      "completion": "LOCATION_RELIGIOUS_STAFF_WORKFLOW_PASS",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "location_recognition_state_test",
       "lane": "core",
       "kind": "godot",

@@ -1,7 +1,8 @@
 extends Control
 signal assignment_requested(occupation_id: int)
 signal removal_requested(occupation_id: int)
-# Native staff rows and ordinary assignment/removal hit regions. Religious actions,
+signal religious_removal_requested(row: Dictionary)
+# Native staff rows and assignment/removal hit regions. Religious assignment,
 # specialization and remaining input details keep the parent entry routes hidden.
 const Format=preload("res://scripts/location_details_format.gd")
 const ICONS={0:"TAVERN_KEEPER",1:"PERFORMER",2:"SCHOLAR",5:"SCRIBE",7:"DOCTOR",8:"DOCTOR",9:"DOCTOR",10:"DOCTOR"}
@@ -42,12 +43,15 @@ func _gui_input(event: InputEvent) -> void:
 	if not actions_enabled or geometry.is_empty() or not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT:return
 	for index in int(geometry.visible_count):
 		var row: Dictionary=rows[first+index]
-		if int(row.get("source",-1))!=0:continue
+		if int(row.get("source",-1)) not in [0,1]:continue
 		var top: float=(int(geometry.first_y)-6+index*3)*12
 		var occupied:=int(row.get("unit_id",-1))>=0 or int(row.get("histfig_id",-1))>=0
 		var left: float=(row_columns()-4)*8 if occupied else 192
 		if Rect2(left,top,32,36).has_point(event.position):
-			if occupied:removal_requested.emit(int(row.occupation_id))
+			if int(row.get("source",-1))==1:
+				if not occupied:continue
+				religious_removal_requested.emit(row.duplicate(true))
+			elif occupied:removal_requested.emit(int(row.occupation_id))
 			else:assignment_requested.emit(int(row.occupation_id))
 			accept_event();return
 

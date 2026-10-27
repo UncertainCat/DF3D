@@ -168,9 +168,8 @@ Modified-key/clipboard input remains outside this evidence.
 ## Native religious staff removal reference
 
 Religious staff editing remains distinct from recognition and ordinary occupation
-editing. `location_staff_view.gd` renders religious holders/removal artwork, but
-its input path accepts only ordinary occupations. Do not wire religious removal
-to a holder-ID clear: native removal preserves assignment/template identity,
+editing. `location_staff_view.gd` routes occupied religious removal hitboxes through
+`location_religious_staff_workflow.gd`. Native removal preserves assignment/template identity,
 records a former-position link and emits history.
 
 `native_location_details.json.religious_staff_removal_reference` records protected
@@ -219,8 +218,8 @@ occupants/patrol/equipment and current job identity/references. Removal requires
 the observed revision; changed dependencies return Stale before mutation.
 Execution timers, world time, RNG, pointers and lookup caches are excluded.
 The management handler applies shared epoch/save admission before observing or
-mutating. Viewer integration and rendered/lifecycle acceptance remain required
-before exposing this action.
+mutating. The staged Details view integrates removal; broader Locations exposure
+remains gated on complete controls and lifecycle acceptance.
 
 Paused diagnostic `df3d location-religious-remove <site> <location> <religion>
 <assignment> <expected-holder> <revision>` supports protected paired acceptance.
@@ -259,7 +258,7 @@ separate from dependency revision validation. Godot and model codecs preserve
 recordings. The management handler invokes native removal at the admitted safe
 point, reobserves after success and returns Unknown if effects may have occurred
 but the fresh receipt is unavailable. No automatic replay is permitted. Religious
-staff controls and their rendered/lifecycle acceptance remain pending.
+assignment and specialization controls remain incomplete.
 MSVC and viewer builds, core19/19, Godot management round trips and Lua contract
 checks pass in `build/qa/location-religious-contract74-verified`. These are contract
 checks, not native management admission or rendered staff-action acceptance.
@@ -277,6 +276,28 @@ Installed protocol74 bridge SHA256 is
 `f00a502b076201ee65828a78a7167519b4419c55a105d8ccc4d47ea363924228`.
 MSVC and core19/19 pass (`build/qa/location-religious-handler74-final`). This scope
 is semantic transport, not rendered controls or disconnect/restart acceptance.
+
+The Details removal workflow locks editing during its fresh receipt read and
+single mutation. It compares the receipt holder with the clicked row, so a changed
+holder cannot inherit an old gesture. Closed/replaced owners detach queued work
+and ignore late replies; rejected/stale/unknown work cannot replay against the
+same Details revision. Confirmed completion refreshes Details and recognition.
+Headless workflow/hitbox checks cover duplicate gestures, changed holders, queued
+read/removal cancellation, late completion, epoch retirement and refusal outcomes;
+ordinary staff, recognition and Details state checks also pass. Core19/19 passes
+in `build/qa/location-religious-scene-final`.
+
+Protected `areas_acceptance.ps1 -LocationScene -ReligiousStaffScene` run050846
+uses the real fortress scene and pointer-routed removal icon. Independent native
+readback verifies the expected assignment/link/history effects. The refreshed row
+loses its holder/remove icon; recognition text finishes its separate refresh.
+Clicking the previous remove location has no effects; Back closes Details.
+Before/after captures were inspected. The run is passed_with_known_issues for
+only documented Godot diagnostics, preserves both save manifests and exits owned
+DF unsaved. `scene_reference` retains bounded provenance and evidence. This does
+not establish real disconnect/restart/late-reply acceptance. The vacant religious
+assignment icon/action and specialization controls are still unfinished; the
+broader Zones/Locations entry routes remain hidden.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

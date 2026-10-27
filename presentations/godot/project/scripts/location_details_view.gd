@@ -11,6 +11,7 @@ var value_view
 var access_view
 var quantity_view
 var staff_view
+var religious_staff_workflow=preload("res://scripts/location_religious_staff_workflow.gd").new()
 var staff_workflow=preload("res://scripts/location_staff_workflow.gd").new()
 var staff_candidates_view
 var _candidate_revision:=0
@@ -35,6 +36,9 @@ func configure(source, model, help=null) -> void:
 	access_view=preload("res://scripts/location_access_view.gd").new();add_child(access_view);access_view.configure(source,model,help)
 	quantity_view=preload("res://scripts/location_quantity_view.gd").new();add_child(quantity_view);quantity_view.configure(source,model)
 	staff_candidates_view=preload("res://scripts/location_staff_candidates_view.gd").new();add_child(staff_candidates_view);staff_candidates_view.configure(source)
+	religious_staff_workflow.configure(model)
+	religious_staff_workflow.changed.connect(refresh)
+	staff_view.religious_removal_requested.connect(remove_religious_staff)
 	staff_workflow.configure(model)
 	staff_workflow.changed.connect(refresh)
 	staff_workflow.applied.connect(func():staff_view.display(state.snapshot,0))
@@ -58,6 +62,11 @@ func configure(source, model, help=null) -> void:
 	recognition_view.input_allowed=func():return not input_allowed.is_valid() or input_allowed.call()
 	recognition_view.action_requested=recognize
 	state.changed.connect(refresh);refresh()
+
+func remove_religious_staff(row: Dictionary) -> void:
+	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
+	if quantity_view.workflow.pending or not quantity_view.workflow.queue.is_empty():return
+	quantity_view.workflow.finish();religious_staff_workflow.remove(row)
 
 func recognize() -> void:
 	if (input_allowed.is_valid() and not input_allowed.call()) or name_workflow.active or staff_workflow.mode!=staff_workflow.Mode.Closed or state.phase!=state.Phase.Ready:return
@@ -111,6 +120,8 @@ func _exit_tree() -> void:
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)
 	if staff_workflow.changed.is_connected(refresh):staff_workflow.changed.disconnect(refresh)
 	staff_workflow.dispose()
+	if religious_staff_workflow.changed.is_connected(refresh):religious_staff_workflow.changed.disconnect(refresh)
+	religious_staff_workflow.dispose()
 	if name_workflow.changed.is_connected(refresh):name_workflow.changed.disconnect(refresh)
 	name_workflow.dispose()
 	if recognition_workflow.changed.is_connected(refresh):recognition_workflow.changed.disconnect(refresh)

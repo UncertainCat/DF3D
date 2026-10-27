@@ -8178,10 +8178,7 @@
       "completed_control_hidden": true,
       "status": "passed_with_known_issues",
       "save_preservation": "Source and clone manifests unchanged; owned unsaved exit",
-      "omissions": [
-        "First/vacant-priest scene variants",
-        "Producer process restart"
-      ]
+      "omissions": []
     },
     "lifecycle_reference": {
       "cases": [
@@ -8223,14 +8220,93 @@
           },
           "status": "passed_with_known_issues",
           "save_preservation": "Verified unchanged manifests for 2 save directories."
+        },
+        {
+          "mode": "restart",
+          "source": "build/areas-acceptance-20261027-035943",
+          "source_sha256": "e0137a1ae6f32e6b42f54c5ef99685bedc2de13950757b0d0112b04444eff3bd",
+          "observed": {
+            "fresh_rank": 1,
+            "old_applied_rank": 2,
+            "old_owner_retired": true,
+            "old_ticket": 11
+          },
+          "epochs": {
+            "new_epoch": "683363656531969",
+            "new_generation": 2,
+            "old_epoch": "576436150730753",
+            "old_generation": 1,
+            "pid": 159108.0
+          },
+          "new_requests": {
+            "12": {
+              "domain": "construction",
+              "request": {
+                "action": 0
+              }
+            }
+          },
+          "status": "passed_with_known_issues",
+          "save_preservation": "Verified unchanged manifests for 2 save directories."
         }
       ],
       "scope": "Actual viewport input and management transport; held reply after native completion; explicit detach/reattach and late reply after dismissal. Independent native effects/RNG/UI guards and fresh native receipt comparison.",
       "omissions": [
-        "Producer process restart",
         "Disconnect during native mutation rather than after completion",
         "First/vacant-priest variants"
       ]
+    },
+    "variant_scene_reference": {
+      "cases": [
+        {
+          "variant": "first",
+          "source": "build/areas-acceptance-20261027-040302",
+          "source_sha256": "b1233d639658657f1633dabefce6e4c2aad16f6068c67233baecb42962ae9d9c",
+          "viewport_click": true,
+          "details_refreshed": true,
+          "completed_action_absent": true,
+          "positions_added": 0.0,
+          "assignments_added": 1.0,
+          "events_added": 0.0,
+          "thoughts_added": 54.0,
+          "rng_changed": false,
+          "new_assignment": {
+            "histfig": -1.0,
+            "id": 3.0,
+            "position": 0.0,
+            "site": 651.0
+          },
+          "status": "passed_with_known_issues",
+          "save_preservation": "Verified unchanged manifests for 2 save directories."
+        },
+        {
+          "variant": "empty",
+          "source": "build/areas-acceptance-20261027-040359",
+          "source_sha256": "0e97a3b76804452f30079269c81ddcadbe22e888b891dfdc491b15f4dfb9585a",
+          "viewport_click": true,
+          "details_refreshed": true,
+          "completed_action_absent": true,
+          "positions_added": 1.0,
+          "assignments_added": 1.0,
+          "events_added": 0.0,
+          "thoughts_added": 54.0,
+          "rng_changed": true,
+          "new_assignment": {
+            "histfig": -1.0,
+            "id": 3.0,
+            "position": 1.0,
+            "site": 651.0
+          },
+          "status": "passed_with_known_issues",
+          "save_preservation": "Verified unchanged manifests for 2 save directories."
+        }
+      ],
+      "omissions": [
+        "New PRIEST template creation through scene",
+        "Existing HIGH_PRIEST template reuse",
+        "Lifecycle variants for first/vacant branches"
+      ],
+      "note": "Source completed_control_hidden was sampled after Back and is not visibility evidence; use the immediate completed_action_absent assertion and screenshots. Driver now labels the post-Back field details_closed."
     }
   }
 }

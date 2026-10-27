@@ -931,7 +931,7 @@ exit. The run passed with known Godot diagnostics. This does not establish other
 viewport sizes, held-button behavior or first/vacant-priest scene variants.
 Zones remains hidden.
 
-`-RecognitionLifecycle queued|sent|late` adds recognition lifecycle checks to
+`-RecognitionLifecycle queued|sent|late|restart` adds recognition lifecycle checks to
 that protected scene recipe. `recognition_visual_reference.lifecycle_reference`
 records queued035342, sent035445 and late035702 on2026-10-27. An unsent click
 retires as not_sent with no effects or RNG change. After native completion but
@@ -943,8 +943,29 @@ Reopening can show native tier guidance even at rank2 because Details entry
 recomputes tier; absence of an action, rather than absence of all text, is required.
 All three runs pass with known Godot diagnostics, preserve source/clone manifests
 and exit unsaved. Reopened disconnect images were inspected. These tests use the
-actual transport with controlled polling, not a simulated service. Producer
-process replacement and loss during mutation remain unverified for this workflow.
+actual transport with controlled polling, not a simulated service.
+
+Restart035943 stops DF134212 after promotion but before the viewer observes its
+success, then reloads the unsaved clone in DF159108. The new epoch/generation
+retires the old request as unknown; no Location request is automatically sent.
+Explicit reopening reads the original rank1, proving the unsaved promotion was
+neither retained nor replayed. The inspected reopened image shows native tier
+guidance. Save manifests remain unchanged and both owned processes exit unsaved;
+the run passes with known Godot diagnostics. Loss during native mutation is not
+covered by this controlled post-completion interruption.
+
+`-RecognitionVariant first|empty` exercises distinct native branches through the
+same scene control, without lifecycle modes. First040302 reuses PRIEST, adds one
+vacant assignment and54 thoughts, creates no history event, and preserves RNG.
+Empty040359 creates HIGH_PRIEST and a vacant assignment, adds54 thoughts without
+a promotion event, and advances RNG. These expectations match the recorded native
+first024521/empty024612 branches. Both refresh Details, prevent a second action,
+pass with known Godot diagnostics and preserve source/clone saves. The first
+post-action image was inspected. `variant_scene_reference` retains bounded effects
+and provenance. Its source visibility flag was sampled after Back, so it is not
+evidence that first recognition hides tier guidance; the driver now names that
+field details_closed. New PRIEST creation through the scene and existing
+HIGH_PRIEST reuse remain uncovered, as do lifecycle combinations for these branches.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and

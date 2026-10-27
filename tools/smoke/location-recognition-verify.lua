@@ -28,7 +28,23 @@ local function command(name)
  local text,code=dfhack.run_command_silent('df3d',name,tostring(site.id),tostring(temple.id));assert(code==0,text);return json.decode(text)
 end
 if request.op=='recognition_setup' then
- temple:getContents().location_tier=2
+ local variant=request.variant or 'promote'
+ assert(variant=='promote' or variant=='first' or variant=='empty')
+ if not _G.df3d_recognition_variant then
+  _G.df3d_recognition_variant=variant
+  if variant~='promote' then
+   local changed=0
+   for _,a in ipairs(religion.positions.assignments)do
+    if a.st_id==site.id then
+     if variant=='first' then a.st_id=-1 else a.histfig=-1 end
+     changed=changed+1
+    end
+   end
+   assert(changed==1,'unexpected recognition fixture assignments')
+  end
+ end
+ assert(_G.df3d_recognition_variant==variant)
+ temple:getContents().location_tier=variant=='first' and 1 or 2
  result.before=capture()
  assert(#result.before.assignments>0,'priest fixture missing')
  _G.df3d_recognition_transport_before=result.before
@@ -53,12 +69,17 @@ elseif request.op=='recognition_unchanged' or request.op=='recognition_applied' 
  if request.op=='recognition_unchanged' then assert(json.encode(guard.state)==json.encode(capture()),'read/refusal changed native effects or RNG')
  else
   local before=assert(_G.df3d_recognition_transport_before);local after=capture()
-  assert(after.next_position==before.next_position+1 and after.next_assignment==before.next_assignment+1,'recognition allocation mismatch')
-  assert(after.events==before.events+1,'promotion event missing')
+  local variant=_G.df3d_recognition_variant or 'promote'
+  assert(after.next_position==before.next_position+(variant=='first' and 0 or 1) and after.next_assignment==before.next_assignment+1,'recognition allocation mismatch')
+  assert(after.events==before.events+(variant=='promote' and 1 or 0),'recognition event mismatch')
   assert(after.emotions==before.emotions+54,'native thought recipients differ')
-  assert(json.encode(after.rng)~=json.encode(before.rng),'native RNG did not advance')
+  -- Native first024521 reuses PRIEST without RNG; empty024612/promote020539
+  -- allocate a named HIGH_PRIEST template and advance it.
+  assert((json.encode(after.rng)==json.encode(before.rng))==(variant=='first'),'recognition RNG behavior differs from native branch')
   local old=before.assignments[#before.assignments];local added=after.assignments[#after.assignments]
-  assert(old.histfig>=0 and added.histfig==old.histfig and added.site==site.id,'holder promotion mismatch')
+  assert(added.site==site.id,'assignment site mismatch')
+  if variant=='promote' then assert(old.histfig>=0 and added.histfig==old.histfig,'holder promotion mismatch')
+  else assert(added.histfig==-1,'expected vacant assignment')end
   result.after=after
  end
  _G.df3d_recognition_transport_guard=nil

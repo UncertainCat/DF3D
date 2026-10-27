@@ -1373,13 +1373,17 @@ func quantity_restart(ticket: int, evidence_prefix:="quantity") -> void:
 	actions.completed.disconnect(observe)
 	write_json(evidence_prefix+"-restart-new-requests.json",new_requests)
 	for item in new_requests.values():
-		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit],"replacement automatically submitted Location work"):return
+		if not check(item.domain!="areas" or int(item.request.get("operation",-1)) not in [Contract.AreaOperation.LocationQuantity,Contract.AreaOperation.LocationOpen,Contract.AreaOperation.LocationDetails,Contract.AreaOperation.LocationNameRead,Contract.AreaOperation.LocationNameChoices,Contract.AreaOperation.LocationNameEdit,Contract.AreaOperation.LocationRecognitionRead,Contract.AreaOperation.LocationRecognize],"replacement automatically submitted Location work"):return
 	if not check(model.identity.is_empty() and not editor.details_layer.visible,"replacement reopened quantity editor"):return
 	await capture(evidence_prefix+"_restart_retired")
 
 func recognition_route(locations: Array) -> void:
 	step="recognition scene fixture"
-	var setup:=await native("recognition_setup")
+	var variant:=FileAccess.get_file_as_string(directory+"/recognition-variant.txt").strip_edges()
+	var first:=variant=="first"
+	var expected_action: int=Contract.LocationRecognitionState.RecognizePriesthood if first else Contract.LocationRecognitionState.RecognizeHighPriest
+	var expected_rank:=1 if first else 2
+	var setup:=await native("recognition_setup",{"variant":variant})
 	if stopped:return
 	var index:=-1
 	for i in locations.size():
@@ -1392,12 +1396,14 @@ func recognition_route(locations: Array) -> void:
 	write_json("recognition-entry.json",{"details":editor.details_state.snapshot,"recognition":recognition.snapshot})
 	# Native entry refresh recomputes the tier. Seed the controlled recognition
 	# case after entry, then observe it through the ordinary read-only refresh.
-	setup=await native("recognition_setup")
+	setup=await native("recognition_setup",{"variant":variant})
 	editor.details_state.refresh()
-	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and recognition.phase==recognition.Phase.Ready and recognition.snapshot.state==Contract.LocationRecognitionState.RecognizeHighPriest,"controlled recognition tier after entry"):return
-	if not check(details.recognition_view.visible and recognition.snapshot.state==Contract.LocationRecognitionState.RecognizeHighPriest,"recognition action missing"):return
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and recognition.phase==recognition.Phase.Ready and recognition.snapshot.state==expected_action,"controlled recognition tier after entry"):return
+	if not check(details.recognition_view.visible and recognition.snapshot.state==expected_action,"recognition action missing"):return
 	await capture("recognition_before")
 	var disconnect_mode:=FileAccess.get_file_as_string(directory+"/recognition-scene.txt").strip_edges()
+	if disconnect_mode=="restart":
+		await recognition_restart();return
 	if disconnect_mode=="late":
 		await recognition_late();return
 	if disconnect_mode in ["queued","sent"]:
@@ -1405,8 +1411,8 @@ func recognition_route(locations: Array) -> void:
 	step="recognition scene apply"
 	await native("recognition_guard")
 	await pointer_click(details.recognition_view.global_position+Vector2(116,18))
-	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and recognition.phase==recognition.Phase.Ready and recognition.snapshot.rank==2,"recognition applied and Details refreshed"):return
-	if not check(not details.recognition_view.visible and recognition.snapshot.state==Contract.LocationRecognitionState.NoAction,"completed recognition action retained"):return
+	if not await wait_ui(func():return editor.details_state.phase==editor.details_state.Phase.Ready and recognition.phase==recognition.Phase.Ready and recognition.snapshot.rank==expected_rank,"recognition applied and Details refreshed"):return
+	if not check(not details.recognition_view.current.get("action",false) and recognition.snapshot.state==(Contract.LocationRecognitionState.NeedsComplex if first else Contract.LocationRecognitionState.NoAction),"completed recognition action retained"):return
 	await native("recognition_readback",{"snapshot":recognition.snapshot,"revision":str(recognition.snapshot.revision)})
 	var effects:=await native("recognition_applied")
 	if stopped:return
@@ -1418,7 +1424,7 @@ func recognition_route(locations: Array) -> void:
 	await native("recognition_unchanged")
 	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
 	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.details_layer.visible,"recognition Details Back"):return
-	write_json("recognition-scene-evidence.json",{"before":setup.before,"after":effects.after,"viewport_click":true,"details_refreshed":true,"completed_control_hidden":true})
+	write_json("recognition-scene-evidence.json",{"before":setup.before,"after":effects.after,"viewport_click":true,"details_refreshed":true,"details_closed":not editor.details_layer.visible,"completed_action_absent":true,"variant":variant})
 
 func recognition_disconnect(sent: bool) -> void:
 	step="recognition disconnect sent="+str(sent)
@@ -1492,4 +1498,32 @@ func recognition_late() -> void:
 	if not check(recognition.snapshot.rank==2 and not details.recognition_view.current.get("action",false),"fresh recognition did not observe promotion"):return
 	await native("recognition_readback",{"snapshot":recognition.snapshot,"revision":str(recognition.snapshot.revision)})
 	write_json("recognition-late-evidence.json",{"old_ticket":ticket,"other_location":1,"old_owner_retired":true,"fresh_rank":recognition.snapshot.rank})
+	editor.close_panel()
+
+func recognition_restart() -> void:
+	step="recognition producer restart"
+	var details=editor.details_view
+	var recognition=details.recognition_workflow.recognition
+	await native("recognition_guard")
+	await pointer_click(details.recognition_view.global_position+Vector2(116,18))
+	var ticket: int=recognition.ticket
+	if not check(ticket>0,"restart recognition intent missing"):return
+	var reply:=await quantity_unobserved(ticket)
+	if stopped:return
+	if not check(reply.area.location_recognition.rank==2,"restart requires native promotion before replacement"):return
+	await native("recognition_applied")
+	if stopped:return
+	await quantity_restart(ticket,"recognition")
+	if stopped:return
+	if not check(recognition.identity.is_empty() and recognition.snapshot.is_empty() and recognition.ticket==0 and not details.recognition_view.visible,"restart retained recognition authority"):return
+	await quantity_lifecycle_open()
+	if stopped:return
+	await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+	if not await wait_ui(func():return editor.details_origin.is_empty() and not editor.locations_state.busy(),"replacement recognition chooser"):return
+	await quantity_lifecycle_choose(0)
+	if not await wait_ui(func():return recognition.phase==recognition.Phase.Ready,"replacement recognition fresh observation"):return
+	if not check(recognition.snapshot.rank==1,"replacement retained unsaved promotion or replayed it"):return
+	await native("recognition_readback",{"snapshot":recognition.snapshot,"revision":str(recognition.snapshot.revision)})
+	await capture("recognition_restart_reopened")
+	write_json("recognition-restart-evidence.json",{"old_ticket":ticket,"old_owner_retired":true,"old_applied_rank":2,"fresh_rank":recognition.snapshot.rank})
 	editor.close_panel()

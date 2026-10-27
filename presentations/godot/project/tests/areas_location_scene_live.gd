@@ -4,6 +4,7 @@ extends "res://tests/areas_controller_scene_live.gd"
 var candidate_portrait_audited := false
 var details_parent_checked: Dictionary={}
 var details_staff_count:=0
+var quantity_cases:=0
 func pointer_areas() -> void:
 	step = "scene location reference setup"
 	await seed_catalog()
@@ -15,7 +16,7 @@ func pointer_areas() -> void:
 	if stopped: return
 	var zones: Button = scene._fortress_hud.navigation.Zones
 	zones.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size())
-	await click_control(zones)
+	await click_control(zones,true)
 	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"Zones before existing locations"): return
 	editor.use_area(existing)
 	await click_control(editor.zone_menu.controls.location)
@@ -61,7 +62,7 @@ func pointer_areas() -> void:
 		if stopped: return
 		var launcher: Button = scene._fortress_hud.navigation.Zones
 		launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size())
-		await click_control(launcher)
+		await click_control(launcher,true)
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"Zones launcher"): return
 		editor.use_area(area)
 		await click_control(editor.zone_menu.controls.location)
@@ -419,7 +420,7 @@ func details_routes(locations: Array) -> void:
 	editor.close_panel()
 	var zones: Button=scene._fortress_hud.navigation.Zones
 	zones.show();scene._fortress_hud.layout(scene._fortress_hud.logical_view_size())
-	await click_control(zones)
+	await click_control(zones,true)
 	if not await wait_ui(func():return editor.panel.visible and editor.available and settled(),"Zones for Details routes"):return
 	var area:=await inspect(23,1)
 	if stopped:return
@@ -437,13 +438,24 @@ func details_routes(locations: Array) -> void:
 		if stopped:return
 		await staff_route_edits()
 		if stopped:return
+		await quantity_route_edits()
+		if stopped:return
 		await capture("details_route_%d"%int(row.id))
+		var closing_quantity:=await quantity_prepare_close()
 		await pointer_click(Vector2(20,20),MOUSE_BUTTON_RIGHT)
+		if not closing_quantity.is_empty():
+			if not check(editor.details_closing and not editor.details_layer.visible,"pending quantity dismissal must hide without cancelling"):return
+			if not await wait_ui(func():return not editor.details_closing,"quantity drain after dismissal"):return
+			await native("quantity_check",{"location_id":int(row.id),"quantity_id":closing_quantity.quantity,"value":closing_quantity.expected})
+			await native("quantity_seed",{"location_id":int(row.id),"quantity_id":closing_quantity.quantity,"value":closing_quantity.original})
+			if stopped:return
 		if not await wait_ui(func():return editor.details_origin.is_empty() and editor.locations_view.visible,"chooser Details Back"):return
 		if not check(editor.locations_view.native_scroll.first==scroll_before and editor.details_state.snapshot.is_empty(),"Back reset chooser scroll or retained Details"):return
 		var after:=await inspect(23,1)
 		if not check(int(after.location_id)==int(area.location_id) and int(after.location_site_id)==int(area.location_site_id),"Details navigation assigned the zone"):return
 	if not check(details_staff_count==10,"full route ordinary staff matrix incomplete"):return
+	if not check(quantity_cases==13,"full route quantity matrix incomplete"):return
+	print("LOCATION_QUANTITY_SCENE_PASS cases=",quantity_cases)
 	# Exercise the same native ordinary-role matrix through an actually assigned
 	# zone. Assign through the chooser, inspect the resulting membership, then
 	# enter using the assigned zone's Details control, not a direct Details call.
@@ -452,6 +464,8 @@ func details_routes(locations: Array) -> void:
 		for i in editor.locations_state.rows.size():
 			if int(editor.locations_state.rows[i].id)==int(row.id):index=i;break
 		if not check(index>=0,"assigned staff route location absent from chooser"):return
+		await quantity_scroll_location(index)
+		if stopped:return
 		await click_control(editor.locations_view.choices[index])
 		if not await wait_ui(func():return settled() and not editor.locations_view.visible and int(editor.selected.get("location_id",-1))==int(row.id),"assign staff route location"):return
 		var assigned:=await inspect(int(area.id),1)
@@ -469,6 +483,8 @@ func details_routes(locations: Array) -> void:
 		for i in editor.locations_state.rows.size():
 			if int(editor.locations_state.rows[i].id)==int(area.location_id):original_index=i;break
 		if not check(original_index>=0,"original location missing before restoration"):return
+		await quantity_scroll_location(original_index)
+		if stopped:return
 		await click_control(editor.locations_view.choices[original_index])
 	if not await wait_ui(func():return settled() and not editor.locations_view.visible and int(editor.selected.get("location_id",-1))==int(area.location_id),"restore staff route membership"):return
 	var restored:=await inspect(int(area.id),1)
@@ -818,3 +834,53 @@ func entry_failure(intent: Dictionary, outcome: int) -> void:
 			return
 		await create_timer(0.01).timeout
 	incomplete("entry refusal wait cap hit; no replay",true)
+
+func quantity_digit(digit: int) -> void:
+	for pressed in [true,false]:
+		var event:=InputEventKey.new();event.keycode=48+digit;event.physical_keycode=48+digit;event.unicode=48+digit;event.pressed=pressed
+		root.push_input(event,true)
+	await process_frame
+
+func quantity_route_edits() -> void:
+	var model=editor.details_state;var view=editor.details_view.quantity_view
+	for row in view.rows.duplicate(true):
+		quantity_cases+=1;step="quantity viewport %d location %d"%[int(row.quantity),int(model.identity.id)]
+		var quantity:=int(row.quantity)
+		var original: int=model.snapshot.desired_copies if quantity==10 else model.snapshot.supplies[quantity].desired
+		var scale: int={4:15000,5:10000,7:150,9:150}.get(quantity,1)
+		await pointer_click(view.global_position+view.button_rect(row,0).get_center())
+		if not check(view.workflow.editing==quantity and view.workflow.text=="","quantity icon did not start native draft"):return
+		await quantity_digit(1);await quantity_digit(2)
+		if not await wait_ui(func():return model.phase==model.Phase.Ready and not view.workflow.pending,"rapid quantity typing"):return
+		await native("quantity_check",{"location_id":int(model.identity.id),"quantity_id":quantity,"value":12*scale})
+		for action in [1,2]:
+			await pointer_click(view.global_position+view.button_rect(row,action).get_center())
+			if not await wait_ui(func():return model.phase==model.Phase.Ready and not view.workflow.pending,"quantity step"):return
+			if not check(view.workflow.text=="12","step lost numeric draft"):return
+			await native("quantity_check",{"location_id":int(model.identity.id),"quantity_id":quantity,"value":(13 if action==1 else 12)*scale})
+		await pointer_key(KEY_ENTER)
+		if not check(view.workflow.editing==-1,"quantity Enter did not finish"):return
+		await native("quantity_seed",{"location_id":int(model.identity.id),"quantity_id":quantity,"value":original})
+		model.refresh()
+		if not await wait_ui(func():return model.phase==model.Phase.Ready,"restored quantity receipt"):return
+		if stopped:return
+
+func quantity_prepare_close() -> Dictionary:
+	var model=editor.details_state;var view=editor.details_view.quantity_view
+	if view.rows.is_empty():return {}
+	var row: Dictionary=view.rows[0];var quantity:=int(row.quantity)
+	var original: int=model.snapshot.desired_copies if quantity==10 else model.snapshot.supplies[quantity].desired
+	var scale: int={4:15000,5:10000,7:150,9:150}.get(quantity,1)
+	await pointer_click(view.global_position+view.button_rect(row,0).get_center())
+	await quantity_digit(2);await quantity_digit(4)
+	if not check(view.workflow.pending and model.ticket!=0,"dismissal test must hold a queued edit"):return {}
+	return {"quantity":quantity,"original":original,"expected":24*scale}
+
+func quantity_scroll_location(index: int) -> void:
+	var view=editor.locations_view
+	while index<view.native_scroll.first or index>=view.native_scroll.first+view.native_scroll.page:
+		var old: int=view.native_scroll.first
+		await pointer_click(view.scroll.get_global_rect().get_center(),MOUSE_BUTTON_WHEEL_UP if index<old else MOUSE_BUTTON_WHEEL_DOWN)
+		if not check(view.native_scroll.first!=old,"location chooser scroll did not advance"):return
+	for frame in 2:editor._process(0);await process_frame
+	check(view.scroll.get_global_rect().has_point(view.choices[index].get_global_rect().get_center()),"location chooser target outside clip")

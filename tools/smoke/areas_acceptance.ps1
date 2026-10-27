@@ -207,7 +207,7 @@ try {
     }
     Write-Lf "$out/status-$index.json" (@{holding=$holding;bytes=$bytes;builders=$builders} | ConvertTo-Json -Depth 6 -Compress)
    }
-   $verifier=if($QuantityOnly -and $request.op -like 'quantity_*'){'location-quantity-verify.lua'}elseif($StockpileResizeOnly -and $request.op -like 'resize_*'){'stockpile-resize-verify.lua'}elseif(($StaffOnly -or $LocationScene) -and $request.op -like 'staff_edit_*'){'location-staff-edit-verify.lua'}elseif(($PaintCountsOnly -or $LocationScene) -and $request.op -like 'paint_counts_*'){'areas-paint-counts-verify.lua'}elseif($MultiOnly -and $request.op -like 'multi_*'){'areas-multi-verify.lua'}else{'areas-acceptance-verify.lua'}
+   $verifier=if(($QuantityOnly -or $LocationScene) -and $request.op -like 'quantity_*'){'location-quantity-verify.lua'}elseif($StockpileResizeOnly -and $request.op -like 'resize_*'){'stockpile-resize-verify.lua'}elseif(($StaffOnly -or $LocationScene) -and $request.op -like 'staff_edit_*'){'location-staff-edit-verify.lua'}elseif(($PaintCountsOnly -or $LocationScene) -and $request.op -like 'paint_counts_*'){'areas-paint-counts-verify.lua'}elseif($MultiOnly -and $request.op -like 'multi_*'){'areas-multi-verify.lua'}else{'areas-acceptance-verify.lua'}
    $r=Invoke-LuaFile $verifier "[==[$out]==],$index"
    if(($r.Output -join "`n") -notmatch 'SEMANTIC_(PASS|INCOMPLETE)'){throw "Native verification $index failed: $($r.Output)"}
    Write-Ack "$out/ack-$index" 'ok'

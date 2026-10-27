@@ -15,8 +15,8 @@ func configure(source) -> void:
 	mouse_filter=Control.MOUSE_FILTER_IGNORE
 	custom_minimum_size=Vector2(576,588)
 
-func display(details: Dictionary) -> void:
-	rows=content(details);queue_redraw()
+func display(details: Dictionary, excluded_rows: Array = []) -> void:
+	rows=content(details).filter(func(row):return int(row.y) not in excluded_rows);queue_redraw()
 
 func layout(view: Vector2) -> void:
 	# Native 8x12 cell grid is vertically centered in the viewport.

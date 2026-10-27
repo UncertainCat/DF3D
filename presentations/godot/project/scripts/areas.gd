@@ -26,6 +26,7 @@ var portraits = preload("res://scripts/area_portraits.gd").new()
 var portrait_timer := 0.0
 var details_state = preload("res://scripts/location_details_state.gd").new()
 var details_view: Control
+var details_closing:=false
 var details_layer: Control
 var details_parent_shield: Control
 var details_origin := ""
@@ -486,6 +487,7 @@ func native_zone_panel() -> bool:
 	return false
 
 func open_location_details(target: Dictionary, assigned := false) -> void:
+	if details_closing:return
 	if not panel.visible or not ui_host.allows_panel_input(self) or not available or request_ticket!=0 or not details_origin.is_empty():return
 	if selected.is_empty() or int(selected.get("kind",-1))!=1:return
 	if assigned:
@@ -501,6 +503,8 @@ func open_location_details(target: Dictionary, assigned := false) -> void:
 		details_view=preload("res://scripts/location_details_view.gd").new();details_layer.add_child(details_view)
 		details_view.configure(world,details_state,hud.native_help if hud!=null else null)
 		details_view.staff_candidates_view.input_allowed=func():return ui_host.allows_panel_input(self)
+		details_view.quantity_view.input_allowed=func():return ui_host.allows_panel_input(self)
+		details_view.quantity_view.workflow.changed.connect(_finish_details_close)
 		details_view.staff_workflow.applied.connect(_refresh_details_parent)
 		details_view.layout(get_viewport().get_visible_rect().size)
 	details_origin="zone" if assigned else "chooser"
@@ -510,8 +514,22 @@ func open_location_details(target: Dictionary, assigned := false) -> void:
 
 func close_location_details() -> void:
 	details_origin=""
-	details_state.close()
 	if details_layer!=null:details_layer.hide()
+	if details_view!=null:
+		var workflow=details_view.quantity_view.workflow
+		# Typed values are already explicit edits. Hide and retire input now,
+		# retaining this exact owner only until its ordered receipts settle.
+		details_closing=workflow.pending or not workflow.queue.is_empty()
+		workflow.finish()
+		if details_closing:return
+	details_state.close()
+
+func _finish_details_close() -> void:
+	if not details_closing or details_view==null:return
+	var workflow=details_view.quantity_view.workflow
+	if workflow.pending or not workflow.queue.is_empty():return
+	details_closing=false
+	details_state.close()
 
 func _refresh_details_parent() -> void:
 	# A staff edit can change the zone owner's profession. Reobserve the parent

@@ -4221,9 +4221,8 @@
     ]
   },
   "remaining": [
-    "physical keyboard Escape dispatch",
-    "rendered editable controls and live integration",
-    "quantity-specific disconnect and late reply UI lifecycle"
+    "quantity-specific rendered stale/disconnect/late reply cases",
+    "quantity hover behavior and physical Escape comparison"
   ],
   "transport_reference": {
     "run": "build/areas-acceptance-20261026-194640",
@@ -4895,5 +4894,406 @@
       }
     ],
     "scope": "Actual native mouse controls with simulated digit/left-arrow/Enter keys. Repeated number icon clears only draft. Steps retain entry text. Blank panel clicks retain input target. Left arrow then digit appends. No physical Escape evidence."
+  },
+  "rendered_reference": {
+    "component_run": "build/qa/location-quantity-composed",
+    "scene_run": "build/areas-acceptance-20261026-201606",
+    "scene_log_sha256": "e3ff8707c1795cdaec9ec9a73c6d5cd8197f68e3259f5ab7dfcc4ababac5a3c1",
+    "field_cases": 13,
+    "pending_dismissals": 5,
+    "native_readbacks": [
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 5,
+        "value": 120000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 3,
+        "value": 12
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 3,
+        "value": 13
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 3,
+        "value": 12
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 6,
+        "value": 12
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 6,
+        "value": 13
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 6,
+        "value": 12
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 7,
+        "value": 1800
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 7,
+        "value": 1950
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 7,
+        "value": 1800
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 8,
+        "value": 12
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 8,
+        "value": 13
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 8,
+        "value": 12
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 9,
+        "value": 1800
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 9,
+        "value": 1950
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 9,
+        "value": 1800
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 4,
+        "value": 360000
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 12
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 13
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 12
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 24
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 10,
+        "value": 12
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 10,
+        "value": 13
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 10,
+        "value": 12
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 2,
+        "value": 12
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 2,
+        "value": 13
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 2,
+        "value": 12
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_check",
+        "quantity_id": 10,
+        "value": 24
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 12
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 13
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 12
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 24
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 0,
+        "value": 12
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 0,
+        "value": 13
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 0,
+        "value": 12
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 12
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 13
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 1,
+        "value": 12
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_check",
+        "quantity_id": 0,
+        "value": 24
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 4,
+        "value": 180000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 4,
+        "value": 195000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 4,
+        "value": 180000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 5,
+        "value": 120000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_check",
+        "quantity_id": 5,
+        "value": 130000
+      }
+    ],
+    "fixture_restores": [
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 5,
+        "value": 50000
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 3,
+        "value": 5
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 6,
+        "value": 5
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 7,
+        "value": 750
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 8,
+        "value": 2
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 9,
+        "value": 750
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 4,
+        "value": 75000
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_seed",
+        "quantity_id": 1,
+        "value": 5
+      },
+      {
+        "location_id": 3,
+        "op": "quantity_seed",
+        "quantity_id": 1,
+        "value": 5
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_seed",
+        "quantity_id": 10,
+        "value": 2
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_seed",
+        "quantity_id": 2,
+        "value": 10
+      },
+      {
+        "location_id": 4,
+        "op": "quantity_seed",
+        "quantity_id": 10,
+        "value": 2
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_seed",
+        "quantity_id": 1,
+        "value": 5
+      },
+      {
+        "location_id": 0,
+        "op": "quantity_seed",
+        "quantity_id": 1,
+        "value": 5
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_seed",
+        "quantity_id": 0,
+        "value": 10
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_seed",
+        "quantity_id": 1,
+        "value": 5
+      },
+      {
+        "location_id": 1,
+        "op": "quantity_seed",
+        "quantity_id": 0,
+        "value": 10
+      },
+      {
+        "location_id": 2,
+        "op": "quantity_seed",
+        "quantity_id": 4,
+        "value": 75000
+      }
+    ],
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "source_and_clone_unchanged": true,
+    "unsaved_exit": true,
+    "component_scope": "Native glyph positions/colors and installed number/plus/minus pixels; actual pointer/digit/left/backspace/Enter input for all13 cases. Disabled controls cannot submit.",
+    "scene_scope": "Staged Zones entry, chooser Details, rapid12 typing, plus/minus, Enter, independent DF readback; pending2 then24 on right-click dismissal drains to24 without retaining the panel; original quantities restored by diagnostic seeding. Full existing LocationScene also passes.",
+    "omissions": [
+      "quantity-specific rendered stale/disconnect/late reply cases",
+      "quantity hover behavior and physical Escape comparison"
+    ]
   }
 }

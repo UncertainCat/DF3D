@@ -7,6 +7,7 @@ var heading
 var body
 var value_view
 var access_view
+var quantity_view
 var staff_view
 var staff_workflow=preload("res://scripts/location_staff_workflow.gd").new()
 var staff_candidates_view
@@ -20,6 +21,7 @@ func configure(source, model, help=null) -> void:
 	value_view=preload("res://scripts/location_value_view.gd").new();add_child(value_view);value_view.configure(source)
 	staff_view=preload("res://scripts/location_staff_view.gd").new();add_child(staff_view);staff_view.configure(source)
 	access_view=preload("res://scripts/location_access_view.gd").new();add_child(access_view);access_view.configure(source,model,help)
+	quantity_view=preload("res://scripts/location_quantity_view.gd").new();add_child(quantity_view);quantity_view.configure(source,model)
 	staff_candidates_view=preload("res://scripts/location_staff_candidates_view.gd").new();add_child(staff_candidates_view);staff_candidates_view.configure(source)
 	staff_workflow.configure(model)
 	staff_workflow.changed.connect(refresh)
@@ -32,17 +34,18 @@ func configure(source, model, help=null) -> void:
 
 func layout(view: Vector2) -> void:
 	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(608,660)
-	for child in [heading,body,value_view,staff_view]:
+	for child in [heading,body,value_view,staff_view,quantity_view]:
 		child.layout(view);child.position-=position
 	access_view.position=Vector2(16,60);access_view.size=Vector2(576,36)
 	staff_candidates_view.layout(view);staff_candidates_view.position-=position
 
 func refresh() -> void:
 	visible=state.snapshot.get("kind") in [1,2,3,4,5]
-	heading.display(state.snapshot);body.display(state.snapshot);value_view.display(state.snapshot)
+	heading.display(state.snapshot);body.display(state.snapshot,quantity_view.FIELDS.get(int(state.snapshot.get("kind",0)),{}).keys());value_view.display(state.snapshot)
 	staff_view.display(state.snapshot)
 	var selecting: bool=staff_workflow.mode==staff_workflow.Mode.Choosing
-	for child in [heading,body,value_view,staff_view,access_view]:child.visible=not selecting
+	for child in [heading,body,value_view,staff_view,access_view,quantity_view]:child.visible=not selecting
+	quantity_view.actions_enabled=staff_workflow.mode==staff_workflow.Mode.Closed
 	staff_view.actions_enabled=state.phase==state.Phase.Ready and staff_workflow.mode==staff_workflow.Mode.Closed
 	staff_candidates_view.visible=selecting
 	var candidates=staff_workflow.candidates

@@ -69,18 +69,40 @@ refusals and13 partial raw-unit seeds. DF144260 exits unsaved, both source and
 clone manifests remain unchanged, and diagnostics are empty. The fixture's
 `transport_reference` records these facts. This establishes semantic transport,
 not rendered controls or their disconnect/late-reply lifecycle.
-Editable Godot controls remain unfinished; the existing Details supply/copy
-display is still read-only. `location_details_state.gd` now submits quantity
+The staged Details view includes editable quantity rows.
+`location_details_state.gd` submits quantity
 intents using the displayed revision and the existing receipt lifecycle.
 `location_quantity_workflow.gd` owns local text and a queue of explicit input:
 only consecutive unsent Sets for the same field coalesce. Steps and changes of
 field retain order; each next intent requires a confirmed prior response.
 Rejected, stale, unknown, closed or replaced owners discard dependent drafts.
-Ending numeric entry alone preserves already-requested values. The component
-is not yet wired into visible Details controls or panel dismissal.
+Ending numeric entry alone preserves already-requested values. Closing Details
+hides its input immediately but retains the exact quantity owner until its
+ordered requests settle. Reopening is held during that drain; callbacks cannot
+revive the old panel or target a newly selected location. Failure or session
+invalidation discards dependent edits without replay.
 Core19/19 and state/workflow checks pass in
-`build/qa/location-quantity-workflow-final`; these are controlled service tests,
+`build/qa/location-quantity-integration-final`; these are controlled service tests,
 not rendered or real-disconnect acceptance.
+
+`location_quantity_view.gd` reuses native body labels/formatting and installed
+number/plus/minus textures at the captured coordinates, with native dark row
+backgrounds. Input is append/backspace/Enter, preserving numeric focus through
+steps and blank panel clicks. Physical Escape remains with the outer UI router.
+`build/qa/location-quantity-composed` passes all13 field cases' glyph/art and
+pointer/keyboard checks plus composed Details capture, with known Godot
+shutdown diagnostics. The protected full `-LocationScene` run
+`build/areas-acceptance-20261026-201606` passes all13 visible quantity cases and
+five pending dismissals:44 independent native checks and18 fixture restores.
+Both Details routes,20 staff actions and existing creation workflows also pass.
+DF121768 exits unsaved with both manifests unchanged; the only diagnostic is
+the known separate-render-thread notice. `rendered_reference` records this
+evidence. Earlier runs failing disabled staged launcher clicks or a clipped
+chooser row are not overall acceptance; the driver now enables staged test
+clicks and scrolls assigned choices into view. Product availability is unchanged.
+Quantity-specific rendered stale/disconnect/late-reply cases, hover behavior
+and physical Escape comparison remain unverified. Other unfinished Details
+controls keep the overall Zones/Locations surface staged.
 
 The fixture's `entry_focus_reference` records ten additional observations from
 `build/stockpile-storage-native-location-supplies-20261026-195231`.

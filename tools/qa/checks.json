@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "location_staff_assignments_reader_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_staff_assignments_reader_test.gd",
+      "completion": "^LOCATION_STAFF_ASSIGNMENTS_READER_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "location_specialization_reader_test",
       "lane": "core",
       "kind": "godot",

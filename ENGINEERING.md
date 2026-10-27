@@ -822,6 +822,19 @@ MSVC build passes. Installed plugin SHA256 is
 7403D4DA076C457C49E73DF4840EDF7618A0857AC030B49F4902DAF65612CF6B.
 This establishes live transport, not rendered assignment-indicator acceptance.
 
+`location_staff_assignments_reader.gd` stages one serial observation pass for
+the current visible, resolvable staff rows. Its owner binds Details generation,
+identity and revision; refresh, scroll-window replacement, closure and session
+retirement detach pending requests and discard old observations. Repeated draws
+do not retry failures or poll completed passes. Receipts preserve the independent
+integer revision and empty memberships, validate ordered semantic records, and
+return defensive copies. The reader is not yet wired to indicator rendering.
+Core and `location_staff_assignments_reader_test` pass in
+`build/qa/location-staff-assignments-reader`, including late replies, synchronous
+closure during notification, mismatched HF identity, rejection, empty records,
+wide revisions and invalid entry shapes. These controlled lifecycle checks do
+not establish actual rendered or disconnect acceptance for the indicators.
+
 Protected actionspecialization081207 matches native080737 for both priest5813
 and performer6536, including every captured flag/labor entry and exact restoration
 after a fresh reverse request. Invalid identities, zero revision, no-op requests,

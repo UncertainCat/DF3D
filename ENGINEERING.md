@@ -1022,6 +1022,32 @@ panel beneath the minimap, outside the Details frame. That global tracker has no
 implemented presentation route yet. Its scope must be retained in the management
 backlog; adding its text to the recognition row would not reproduce this layout.
 
+## Native continuing-agreement tracker discovery
+
+`fixtures/areas/native_petition_tracker.json` records protected native105129,
+selected with `-LocationNames -RecognitionOnly -RecognitionCase petitiontracker`.
+Seven tracker states plus fixture cleanup cover two temple requests, tier1/2,
+28th Granite to1st Slate, concluded first agreement, missing applicant,
+non-Location first subject and no visible rows. Owned DF135140 exits unsaved
+with the source manifest unchanged. The diagnostic removes all six allocated
+agreements from their owning vectors before deleting their allocations. Native
+text cells retain coordinates and colors; screenshots remain ignored.
+
+Supported renderer3d6950 emits tracker rows at3f9956..3fa396. It enumerates
+plotinfo.continuing_agreement_id in order, skips concluded agreements, reads the
+first Location subject, resolves its applicant party and first entity, and
+handles religion(type5) or guild(type10). The nonmatching first applicant in
+this fixture leaves a blank row block before the two visible requests; zero
+visible text is not evidence that the frame is hidden. Temple heading selects tier1/2;
+English entity name uses the already pinned native formatter a946e0 with
+true,false. Guild profession formatter132e0c0 and month formatter773390 are
+candidate semantic helpers whose ownership remains unaudited. Date arithmetic
+and row selection are inline in the renderer. The whole renderer writes native
+UI/GPS and is not an admissible runtime API. The existing agreement browser's
+English summaries are not native tracker copy. A semantic provider, transport,
+viewer, guild reference and interaction/visibility/scrolling evidence remain
+unfinished; this discovery does not expose the tracker.
+
 ## Native Location name editor discovery
 
 `fixtures/areas/native_location_name_editor.json` retains the native entry/layout

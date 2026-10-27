@@ -1,0 +1,696 @@
+{
+  "provenance": {
+    "capture": "build/stockpile-storage-native-location-recognition-petitiontracker-20261027-105129",
+    "result_sha256": "214df88f2ec519b5718f982c518a4172edef46d9bb718fbd3f17c7cd86a92cdd",
+    "df_build": "53.16 Steam build 24557528",
+    "viewport": [
+      1200,
+      800
+    ],
+    "grid": [
+      150,
+      66
+    ],
+    "status": "passed",
+    "owned_exit": "unsaved",
+    "source_manifest": "unchanged"
+  },
+  "scope": [
+    "Temple and temple complex text",
+    "Native date month boundary",
+    "Concluded, missing applicant and non-Location first subject exclusion",
+    "Two visible rows, one visible row, zero visible rows",
+    "Controlled allocations removed before exit"
+  ],
+  "gaps": [
+    "Guildhall cases",
+    "Hover, click, dismissal and navigation",
+    "Scrolling, sizing and panel visibility arbitration",
+    "Native semantic provider, typed transport and viewer"
+  ],
+  "native_audit": {
+    "renderer": "3d6950",
+    "tracker_rows_range": [
+      "3f9956",
+      "3fa396"
+    ],
+    "range_sha256": "2769a719bd7fcc4ece1282fabc92abdaefbd491506f3dc4348b854445b61e0b5",
+    "inputs": "plotinfo.continuing_agreement_id; world agreements; first Location subject; applicant party first entity",
+    "selectors": "Exclude concluded flag bit 2; require entity type 5 (religion) or 10 (guild). Tier 1/2 selects heading. Enumeration follows continuing list order.",
+    "helpers": {
+      "a946e0": "Existing pinned native English name formatter; caller uses true,false.",
+      "132e0c0": "Native profession formatter candidate; ownership audit pending.",
+      "773390": "Native month-name formatter candidate; ownership audit pending."
+    },
+    "ownership": "Whole renderer writes native UI/GPS and must not be called or borrowed at runtime. Independent facts and formatting helpers require a separate provider."
+  },
+  "cases": [
+    {
+      "name": "tracker-two-complexes",
+      "inputs": [
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-temple-date",
+      "inputs": [
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "tick": 32400,
+          "tier": 1,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "28th Granite, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-complex-next-month",
+      "inputs": [
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "tick": 33600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Slate, 106",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        },
+        {
+          "x": 124,
+          "y": 27,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 28,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 29,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-concluded-first",
+      "inputs": [
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 2,
+          "id": 2147483604,
+          "kind": 12,
+          "tick": 33600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-missing-applicant",
+      "inputs": [
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": -1,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 12,
+          "tick": 33600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-non-location-first",
+      "inputs": [
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483604,
+          "kind": 2,
+          "tick": 33600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483605,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": [
+        {
+          "x": 124,
+          "y": 23,
+          "text": "Build temple complex",
+          "fg": 3,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 24,
+          "text": "The Bejeweled Creed",
+          "fg": 6,
+          "bg": 0,
+          "bold": true
+        },
+        {
+          "x": 124,
+          "y": 25,
+          "text": "1st Granite, 0",
+          "fg": 7,
+          "bg": 0,
+          "bold": false
+        }
+      ]
+    },
+    {
+      "name": "tracker-no-visible-rows",
+      "inputs": [
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483600,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483601,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 1,
+          "id": 2147483602,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 0,
+          "id": 2147483603,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        },
+        {
+          "applicant": 0,
+          "flags": 2,
+          "id": 2147483604,
+          "kind": 12,
+          "tick": 33600,
+          "tier": 2,
+          "year": 106
+        },
+        {
+          "applicant": 0,
+          "flags": 2,
+          "id": 2147483605,
+          "kind": 12,
+          "tick": 0,
+          "tier": 2,
+          "year": 0
+        }
+      ],
+      "text_rows": []
+    },
+    {
+      "name": "tracker-restored",
+      "inputs": [],
+      "text_rows": []
+    }
+  ]
+}

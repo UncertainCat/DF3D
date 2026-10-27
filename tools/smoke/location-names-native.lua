@@ -511,9 +511,9 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='staffindicatorhelp' or recognition_case=='staffindicatorart' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='staffindicatorhelp' or recognition_case=='staffindicatorart' or recognition_case=='petitiontracker' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
-if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
+if recognition_case=='petitiontracker' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
  -- Each list starts with a nonmatching applicant, then two matching entries.
  for list_index,list in ipairs{df.global.plotinfo.petitions,df.global.plotinfo.continuing_agreement_id}do
@@ -560,6 +560,44 @@ if recognition_case=='new' or recognition_case=='positionnew' then
  assert(changed==1,'unexpected priest template fixture count')
 end
 pixel(664,238);assert(details.open and details.selected_ab==temple)
+if recognition_case=='petitiontracker' then
+ local a=assert(df.agreement.find(fixture_agreements[5]));local b=assert(df.agreement.find(fixture_agreements[6]))
+ local subject=a.details[0];local location=subject.data.Location
+ local function shot(label)
+  local row=capture('tracker-'..label,temple);row.tracker_cells={};row.inputs={}
+  for _,id in ipairs(fixture_agreements)do
+   local agreement=assert(df.agreement.find(id));local detail=agreement.details[0]
+   row.inputs[#row.inputs+1]={id=id,flags=agreement.flags.whole,kind=detail.type,year=detail.year,tick=detail.year_tick,
+    applicant=detail.data.Location.applicant,tier=detail.data.Location.tier}
+  end
+  view:render(dfhack.getTickCount())
+  for y=18,45 do for x=123,149 do
+   local pen=dfhack.screen.readTile(x,y)
+   row.tracker_cells[#row.tracker_cells+1]={x=x,y=y,ch=pen.ch,fg=pen.fg,bg=pen.bg,bold=pen.bold,tile=pen.tile}
+  end end
+  return row
+ end
+ shot('two-complexes')
+ location.tier=1;subject.year=106;subject.year_tick=1200*27;shot('temple-date')
+ location.tier=2;subject.year_tick=1200*28;shot('complex-next-month')
+ a.flags.whole=2;shot('concluded-first');a.flags.whole=0
+ location.applicant=-1;shot('missing-applicant');location.applicant=0
+ subject.type=df.agreement_details_type.Residency;shot('non-location-first');subject.type=df.agreement_details_type.Location
+ b.flags.whole=2;a.flags.whole=2;shot('no-visible-rows')
+ -- These diagnostic allocations belong only to this paused unsaved clone.
+ -- Remove each owned pointer before destroying its allocation.
+ for index=#fixture_agreements,1,-1 do
+  local id=fixture_agreements[index];local agreement=assert(df.agreement.find(id))
+  local list=index<=3 and df.global.plotinfo.petitions or df.global.plotinfo.continuing_agreement_id
+  assert(list[#list-1]==id);list:erase(#list-1)
+  local all=df.global.world.agreements.all;assert(all[#all-1]==agreement);all:erase(#all-1)
+  local detail=agreement.details[0];local data=detail.data.Location;local party=agreement.parties[0]
+  agreement.details:resize(0);agreement.parties:resize(0);detail.data.Location=nil
+  df.delete(data);df.delete(detail);df.delete(party);df.delete(agreement)
+ end
+ capture('tracker-restored',temple)
+ return
+end
 if recognition_case=='staffindicatorart' then
  local unit=assert(df.unit.find(6536));local occupation=assert(unit.occupations[0]);assert(occupation.id==87)
  local original_role=occupation.type

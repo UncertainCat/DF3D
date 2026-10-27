@@ -125,11 +125,11 @@ field lookup and is not acceptance.
 Native uses plural names, a fallow row and selected/seed-aware ordering. Summer
 includes sweet pods with red text, while the adapter's mask omits summer;
 native says No seeds while the adapter counts40. Clicking that red row leaves
-the chosen crop unchanged; clicking fallow sets only summer to-1. The cause of
-the red-row refusal still needs isolation. The adapter's numeric seed counts
-are not established as native availability semantics.
+the chosen crop unchanged; clicking fallow sets only summer to-1. The warning
+and seed discrepancy are isolated below. The adapter's numeric seed counts
+are not native availability semantics.
 
-`farm_native.h` now exposes the two semantic readers behind
+`farm_native.h` exposes semantic readers behind
 `df3d farm-eligibility-read <building id> <crop id>`. The command resolves a live
 farm and valid plant ID; the routines receive that semantic building/ID and a
 caller-owned four-byte season output. They receive no selected sheet, season or
@@ -154,6 +154,31 @@ MSVC build/install passes with bridge SHA256
 Core passes cleanly in `build/qa/farm-native-semantics`. The initial build failed
 a Windows `EVENT_MAX` macro collision from the new header's include order;
 the corrected header is included after DFHack's EventManager declarations.
+
+The same diagnostic now returns `current_season_warning` from pinned native
+`0x57c050..0x57c11b`, called by both renderer (`0x199db4`) and sheet input
+(`0x1aff2d`). It reads actual season/time, plant growth data and fortress crop
+restrictions; it does not read the selected tab. The input refuses a new warned
+crop only for the current season. This is distinct from membership in the
+season's crop list and from seed availability.
+
+Protected143300 passes12 observations, including the same seedless sweet-pod
+choice accepted for spring and refused for current summer. All40 sweet-pod
+seed objects have only `in_building` set (flags32); native's availability scan
+rejects that bit in mask `0xe98fb0` at `0x1a5583`. The adapter counted all40.
+Native spring selection still succeeds with No seeds displayed, proving that
+missing seeds alone do not prevent planning that crop. Warning results for157
+raws remain identical before and after panel actions; warning/context matches
+every captured row's red/nonred color. Existing object/range guards pass.
+DF173724 closes unsaved with the source manifest unchanged, and the spring
+selection capture was visually inspected. `warning_reference` retains seed
+objects, native colors, effects and capture/input hashes. It does not yet prove
+season-boundary, mixed-footprint or every seed-flag behavior.
+
+The warning reader's MSVC build/install passes, installed bridge SHA256
+`9924ADC5BF497F441D7307C592EABE58F8BA25C93F7A661CB184AC990350161D`.
+Core passes cleanly in `build/qa/farm-warning-native`. Production behavior and
+protocol80 are unchanged; this is verified native API discovery.
 
 Next extend the reference to mixed footprints, season boundaries and seed
 flags, and locate the remaining native list semantics. Do not replace

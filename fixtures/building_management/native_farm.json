@@ -1735,7 +1735,6 @@
   ],
   "limitations": [
     "One existing underground farm, eight observations at1200x800; not mixed-footprint or modded-raw coverage.",
-    "The red sweet-pod click was inert; this alone does not identify whether seed availability or the red warning caused refusal.",
     "Screen text is ASCII-only and panel-bounded. Artwork remains in ignored captures, not this fixture.",
     "Adapter output is retained to expose differences, not establish expected runtime behavior. Semantic-reader coverage is scoped separately below."
   ],
@@ -3653,6 +3652,1227 @@
       "One existing underground footprint; no mixed-footprint or modded-raw proof.",
       "Validates eligibility membership and season flags, not native ordering, seed availability, display warnings or mutation rules.",
       "Object guards cover object bytes, not all heap allocations reachable from those objects."
+    ]
+  },
+  "warning_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261027-143300",
+    "owned_df_pid": 173724,
+    "owned_exit_unsaved": true,
+    "source_manifest_unchanged": true,
+    "inputs": [
+      {
+        "Algorithm": "SHA256",
+        "Hash": "9924ADC5BF497F441D7307C592EABE58F8BA25C93F7A661CB184AC990350161D",
+        "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "DA789CF08187EBE723E8C5A32478F30C80F6A429EC3929B8AD3AECBB47E49C78",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "8E6A188C08633357053826BA66416582D2F589B4095F8594BF72BBD757C4E529",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-multi-discovery-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "FF18A81D4BBF4292DCB85393EA693E2454E27F04109A6AAB8A9C525004F0E41E",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "68C3304E6220527F42DA85B8CA21A44FB3D203E0DC182FAAE9D60CCE7D7562FF",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\production.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "2395AE36A3E281947C1BB940EEF03EAD5694A1538272768FD9AD9639B442C04F",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-owner-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "9DE5FA5C1002FF21AD9728C9E3DB5C3C463EB76BDE9A3556947A1E9B64C7307E",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.ps1"
+      }
+    ],
+    "reader_sha256": "9721bf32ec604dd8e0071c8ef040cad82fb42b209433b5b58feaba12f7bd6354",
+    "warning_rva": "0x57c050",
+    "renderer_call_rva": "0x199db4",
+    "input_call_rva": "0x1aff2d",
+    "current_season_warning_crop_ids": [
+      176
+    ],
+    "sweet_pod_seed_items": [
+      {
+        "flags": 32,
+        "id": 47484,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47485,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47486,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47491,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47492,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47493,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47494,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47529,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47530,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47531,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47532,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47533,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47534,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47535,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47536,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47537,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47540,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47541,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47542,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47543,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47544,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47545,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47594,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47600,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47611,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47664,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47665,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47680,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47692,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47695,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47696,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47697,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47742,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47748,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47749,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47762,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47763,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47764,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47881,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      },
+      {
+        "flags": 32,
+        "id": 47929,
+        "mat_type": 423,
+        "quantity": 1,
+        "set_flags": [
+          "in_building"
+        ]
+      }
+    ],
+    "native_seed_reject_mask": "0xe98fb0",
+    "native_seed_reject_mask_instruction_rva": "0x1a5583",
+    "cases": [
+      {
+        "name": "farm-selected",
+        "selected_season": 1,
+        "seasons": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": 175,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 174,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 176,
+            "fg": 4
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+      },
+      {
+        "name": "farm-season-0",
+        "selected_season": 0,
+        "seasons": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          173,
+          188,
+          177,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          true,
+          true,
+          true,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 176,
+            "fg": 7
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "e087952fd67b901eef2aa7e05ff1ad30db1bd1ae97ba4491cf51cf905e99bdd1"
+      },
+      {
+        "name": "farm-season-1",
+        "selected_season": 1,
+        "seasons": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": 175,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 174,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 176,
+            "fg": 4
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+      },
+      {
+        "name": "farm-season-2",
+        "selected_season": 2,
+        "seasons": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177
+        ],
+        "native_seed_availability": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": 175,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 174,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "7ecffb1f1b7829d435a739ec0a095bd8c39608b8f1b73a4209e90dc88578741f"
+      },
+      {
+        "name": "farm-season-3",
+        "selected_season": 3,
+        "seasons": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          173,
+          188
+        ],
+        "native_seed_availability": [
+          false,
+          true,
+          true
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "cb7138ed40fbd1cad1d33903169428c19f2f5f1d30e27ad2a2a71a043fa45ee3"
+      },
+      {
+        "name": "farm-summer-before-choice",
+        "selected_season": 1,
+        "seasons": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": 175,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 174,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 176,
+            "fg": 4
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+      },
+      {
+        "name": "farm-summer-red-choice",
+        "selected_season": 1,
+        "seasons": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": 175,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 174,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 176,
+            "fg": 4
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+      },
+      {
+        "name": "farm-summer-fallow",
+        "selected_season": 1,
+        "seasons": [
+          173,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          175,
+          188,
+          174,
+          173,
+          177,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 175,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 174,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 176,
+            "fg": 4
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "ab75bbb1797da22ba86f6f0e273a99cf9f1e4fa2e65e45e39464bde930941295"
+      },
+      {
+        "name": "farm-spring-before-no-seeds-choice",
+        "selected_season": 0,
+        "seasons": [
+          173,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          173,
+          188,
+          177,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          true,
+          true,
+          true,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 176,
+            "fg": 7
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "e087952fd67b901eef2aa7e05ff1ad30db1bd1ae97ba4491cf51cf905e99bdd1"
+      },
+      {
+        "name": "farm-spring-no-seeds-choice",
+        "selected_season": 0,
+        "seasons": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          173,
+          188,
+          177,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          true,
+          true,
+          true,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": 176,
+            "fg": 7
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "aaa91314d0bf06fa4ad292b049dec54e56f9dffebc3650cf4c4649efeb192d47"
+      },
+      {
+        "name": "farm-summer-after-spring-choice",
+        "selected_season": 1,
+        "seasons": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          188,
+          174,
+          173,
+          177,
+          175,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 174,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 175,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 176,
+            "fg": 4
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "f10927c24e6456f6ab61b30e8d67c459eebe235b5b24a293de066fcfdb2b4c8c"
+      },
+      {
+        "name": "farm-summer-red-choice-after-spring",
+        "selected_season": 1,
+        "seasons": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "menu_crops": [
+          -1,
+          188,
+          174,
+          173,
+          177,
+          175,
+          176
+        ],
+        "native_seed_availability": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false
+        ],
+        "name_colors": [
+          {
+            "bg": 0,
+            "bold": true,
+            "crop_id": -1,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 188,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 174,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 173,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 177,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 175,
+            "fg": 7
+          },
+          {
+            "bg": 0,
+            "bold": false,
+            "crop_id": 176,
+            "fg": 4
+          }
+        ],
+        "guards_unchanged": true,
+        "capture_sha256": "f10927c24e6456f6ab61b30e8d67c459eebe235b5b24a293de066fcfdb2b4c8c"
+      }
+    ],
+    "limitations": [
+      "Same underground farm and actual mid-summer date; not season-boundary coverage.",
+      "Seed mask is static/list observation evidence, not a new runtime availability implementation.",
+      "Reader returns current-season warning only. Sheet context still controls its display and whether a new choice is refused."
     ]
   }
 }

@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <windows.h>
 #include "df/building_farmplotst.h"
+#include "df/plotinfost.h"
 
 namespace df3d_production {
 // Semantic readers called by the native farm sheet. No selected building,
@@ -10,9 +11,11 @@ namespace df3d_production {
 struct FarmFunctions {
     using Eligible=bool (*)(df::building_farmplotst*,int32_t);
     using Seasons=void (*)(int16_t,std::array<uint8_t,4>*);
+    using PlantingWarning=bool (*)(df::plotinfost*,int16_t);
     Eligible eligible=nullptr;
     Seasons seasons=nullptr;
-    explicit operator bool() const {return eligible && seasons;}
+    PlantingWarning plantingWarning=nullptr;
+    explicit operator bool() const {return eligible && seasons && plantingWarning;}
 };
 inline const FarmFunctions& farmFunctions() {
     static const auto functions=[]()->FarmFunctions {
@@ -33,9 +36,11 @@ inline const FarmFunctions& farmFunctions() {
         if(hash(0x557770,0xdd)!=UINT64_C(0x20402352c38579ef) ||
            hash(0xaae1a0,0x12b)!=UINT64_C(0x8a101112ecf87493) ||
            hash(0x14b1460,0xb7)!=UINT64_C(0xf10a5339f477c759) ||
-           hash(0x14b1520,0x202)!=UINT64_C(0x93c5ad7f34f5db75))return {};
+           hash(0x14b1520,0x202)!=UINT64_C(0x93c5ad7f34f5db75) ||
+           hash(0x57c050,0xcb)!=UINT64_C(0x243c738f199909d3))return {};
         return {reinterpret_cast<FarmFunctions::Eligible>(base+0x557770),
-                reinterpret_cast<FarmFunctions::Seasons>(base+0xaae1a0)};
+                reinterpret_cast<FarmFunctions::Seasons>(base+0xaae1a0),
+                reinterpret_cast<FarmFunctions::PlantingWarning>(base+0x57c050)};
     }();
     return functions;
 }

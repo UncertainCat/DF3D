@@ -42,6 +42,14 @@ local script=require('gui.script')
    local row={name=name,id=b.id,grid={g.dimx,g.dimy},lines={},crops={},seeds={},seasons={},raws={}}
    row.selected_season=df.global.game.main_interface.view_sheets.active_sub_tab
    row.current_season=df.global.cur_season;row.season_tick=df.global.cur_season_tick
+   if name=='farm-selected' then
+    row.sweet_pod_seed_items={}
+    for _,item in ipairs(df.global.world.items.other.SEEDS)do if item.mat_index==176 then
+     local flags={};for key,value in pairs(item.flags)do if type(key)=='string' and value==true then flags[#flags+1]=key end end
+     table.sort(flags)
+     row.sweet_pod_seed_items[#row.sweet_pod_seed_items+1]={id=item.id,quantity=item:getStackSize(),mat_type=item.mat_type,flags=item.flags.whole,set_flags=flags}
+    end end
+   end
    for y=0,g.dimy-1 do
     local line={};for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y);line[#line+1]=t.ch>=32 and t.ch<127 and string.char(t.ch)or' ' end
     row.lines[#row.lines+1]=dfhack.df2utf(table.concat(line))
@@ -49,6 +57,11 @@ local script=require('gui.script')
    for _,id in ipairs(df.global.plotinfo.selected_farm_crops)do
     row.crops[#row.crops+1]=id
     if id>=0 then local p=df.plant_raw.find(id);row.raws[#row.raws+1]={id=id,name=p.name_plural,growdur=p.growdur,flags={p.flags.SPRING,p.flags.SUMMER,p.flags.AUTUMN,p.flags.WINTER}}end
+   end
+   row.name_colors={}
+   for index,id in ipairs(row.crops)do
+    local pen=dfhack.screen.readTile(61,17+(index-1)*3)
+    row.name_colors[#row.name_colors+1]={crop_id=id,fg=pen.fg,bg=pen.bg,bold=pen.bold}
    end
    for _,value in ipairs(df.global.plotinfo.available_seeds)do row.seeds[#row.seeds+1]=value end
    for i=0,3 do row.seasons[#row.seasons+1]=b.plant_id[i]end
@@ -96,4 +109,10 @@ local script=require('gui.script')
   click(600,124);capture('farm-summer-before-choice')
   click(872,430);capture('farm-summer-red-choice')
   click(872,214);capture('farm-summer-fallow')
+  click(470,124);capture('farm-spring-before-no-seeds-choice')
+  click(872,358);capture('farm-spring-no-seeds-choice')
+  assert(b.plant_id[0]==176,'native future season rejected the seedless crop')
+  click(600,124);capture('farm-summer-after-spring-choice')
+  click(872,430);capture('farm-summer-red-choice-after-spring')
+  assert(b.plant_id[1]==-1,'native warning did not refuse the current-season crop')
   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')

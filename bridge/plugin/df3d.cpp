@@ -1584,7 +1584,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(values[0]<0 || values[1]<0 || values[1]>32767)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(values[0]));
-          if(!farm || !df::plant_raw::find(values[1]))return CR_FAILURE;
+          if(!farm || !df::plant_raw::find(values[1]) || !df::global::plotinfo)return CR_FAILURE;
           const auto& native=df3d_production::farmFunctions();if(!native)return CR_FAILURE;
           std::array<uint8_t,4> seasons{};
           native.seasons(int16_t(values[1]),&seasons);
@@ -1592,6 +1592,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(auto value:seasons)flags.append(value!=0);
           result["building_id"]=values[0];result["crop_id"]=values[1];
           result["seasons"]=std::move(flags);result["eligible"]=native.eligible(farm,values[1]);
+          result["current_season_warning"]=native.plantingWarning(df::global::plotinfo,int16_t(values[1]));
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="stockpile-tile-types-read") {

@@ -218,8 +218,9 @@ position flags/responsibilities, holder links, unit military/uniform state, squa
 occupants/patrol/equipment and current job identity/references. Removal requires
 the observed revision; changed dependencies return Stale before mutation.
 Execution timers, world time, RNG, pointers and lookup caches are excluded.
-Epoch-bound management admission and viewer integration remain required before
-this primitive can be exposed as a UI action.
+The management handler applies shared epoch/save admission before observing or
+mutating. Viewer integration and rendered/lifecycle acceptance remain required
+before exposing this action.
 
 Paused diagnostic `df3d location-religious-remove <site> <location> <religion>
 <assignment> <expected-holder> <revision>` supports protected paired acceptance.
@@ -239,10 +240,10 @@ each dependency restores the original revision; rejected requests preserve state
 Five invalid identities, zero/out-of-range revisions, stale completed receipts and
 fresh vacant receipts are refused. UI/gps byte guards pass, sources are preserved
 and all owned games exit unsaved. `receipt_reference` retains bounded evidence.
-MSVC and core19/19 pass. Installed protocol73 plugin SHA256 is
+MSVC and core19/19 pass. Those diagnostic runs used protocol73 plugin SHA256
 `03e44819d9519537dd424c450535950a71ecd171db0e015442dc01fe972f9585`.
 High-priest/absent-unit variants, patrol/equipment-bit readback, unknown-outcome
-injection, epoch-bound transport and viewer lifecycle remain open.
+injection and viewer lifecycle remain open.
 
 Management74 defines `LocationReligiousStaffRead` and
 `LocationReligiousStaffRemove`. Both target an explicit site/location and religious
@@ -255,11 +256,27 @@ Unknown outcomes carry no authoritative receipt. Transport epoch admission stays
 separate from dependency revision validation. Godot and model codecs preserve
 64-bit revisions exactly. Rebuild bridge and viewer together for
 `Local\\df3d_management_v74`; no migration fabricates receipt authority in older
-recordings. This contract alone does not enable religious staff controls; the
-management handler and rendered/lifecycle acceptance remain pending.
+recordings. The management handler invokes native removal at the admitted safe
+point, reobserves after success and returns Unknown if effects may have occurred
+but the fresh receipt is unavailable. No automatic replay is permitted. Religious
+staff controls and their rendered/lifecycle acceptance remain pending.
 MSVC and viewer builds, core19/19, Godot management round trips and Lua contract
 checks pass in `build/qa/location-religious-contract74-verified`. These are contract
 checks, not native management admission or rendered staff-action acceptance.
+
+Protected `areas_acceptance.ps1 -ReligiousStaffOnly -SaveId <new-df3d-areas-name>`
+run `build/areas-acceptance-20261027-050107` verifies real management74 receipt
+read/removal, five invalid targets, two stale refusals and fresh-vacant refusal.
+Independent world readback confirms assignment9375-to-vacant, the former-position
+link, one matching removal history event and preservation of all unrelated holder
+links, unit profession and squad membership. Exact receipt revisions survive the
+wire. Main-interface bytes remain unchanged; gps changes match a no-request
+control and are not claimed as mutation effects. Both save manifests are unchanged
+and owned DF exits unsaved. `transport_reference` retains bounded evidence.
+Installed protocol74 bridge SHA256 is
+`f00a502b076201ee65828a78a7167519b4419c55a105d8ccc4d47ea363924228`.
+MSVC and core19/19 pass (`build/qa/location-religious-handler74-final`). This scope
+is semantic transport, not rendered controls or disconnect/restart acceptance.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

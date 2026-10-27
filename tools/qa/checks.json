@@ -3515,6 +3515,11 @@
       "reason": "Protected v24 PaintCounts protocol/controller workflow; areas_acceptance.ps1 -PaintCountsOnly on a never-saved region5 clone. Recorded native count references and paused external terrain refresh; headless, not GPU or physical-pointer acceptance."
     },
     {
+      "path": "presentations/godot/project/tests/location_religious_staff_live.gd",
+      "status": "manual",
+      "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -ReligiousStaffOnly verifies religious receipt transport, stale/invalid/repeat refusals and native assignment/link/history effects. No rendered UI or disconnect claim."
+    },
+    {
       "path": "presentations/godot/project/tests/location_recognition_live.gd",
       "status": "manual",
       "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -RecognitionOnly checks typed recognition read/apply, stale and invalid outcomes, and independent native promotion effects. No rendered control or disconnect acceptance claim."

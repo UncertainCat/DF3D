@@ -311,7 +311,16 @@ bool publishableLocationRecognition(const df3d_area::LocationRecognitionReceipt&
   flatbuffers::FlatBufferBuilder b;auto value=buildLocationRecognition(b,r);b.Finish(value);
   return !m::validateLocationRecognition(*flatbuffers::GetRoot<m::LocationRecognition>(b.GetBufferPointer()));
 }
+flatbuffers::Offset<m::LocationReligiousStaff> buildLocationReligiousStaff(flatbuffers::FlatBufferBuilder& b,const df3d_area::LocationReligiousStaffReceipt& r) {
+  return m::CreateLocationReligiousStaff(b,r.siteId,r.locationId,r.entityId,r.assignmentId,r.positionId,r.holderId,r.unitId,r.revision,r.removable);
+}
+bool publishableLocationReligiousStaff(const df3d_area::LocationReligiousStaffReceipt& r) {
+  return r.siteId>=0 && r.locationId>=0 && r.entityId>=0 && r.assignmentId>=0 && r.positionId>=0 &&
+      r.holderId>=-1 && r.unitId>=-1 && r.revision && r.revision<=uint64_t(INT64_MAX) &&
+      (r.holderId!=-1 || (r.unitId==-1 && !r.removable));
+}
 struct NativeAreaPage {
+  std::optional<df3d_area::LocationReligiousStaffReceipt> locationReligiousStaff;
   std::optional<df3d_area::LocationRecognitionReceipt> locationRecognition;
   std::optional<df3d_area::LocationNameSnapshot> locationName;
   std::optional<NativeLocationNamePage> locationNamePage;
@@ -521,6 +530,8 @@ void publish() {
   }
   flatbuffers::Offset<m::LocationRecognition> recognition;
   if(areaPage.locationRecognition)recognition=buildLocationRecognition(b,*areaPage.locationRecognition);
+  flatbuffers::Offset<m::LocationReligiousStaff> religiousStaff;
+  if(areaPage.locationReligiousStaff)religiousStaff=buildLocationReligiousStaff(b,*areaPage.locationReligiousStaff);
   auto areaResult=m::CreateAreaState(b,b.CreateVector(as),b.CreateVector(ac),areaCursor,areaTruncated,
       areaPage.operation,areaPage.id,b.CreateString(areaPage.listKey),areaPage.candidateKind,areaPage.sort,areaPage.sortDescending,
       b.CreateString(areaPage.query),b.CreateVector(settings),b.CreateVector(locations),b.CreateVector(candidates),b.CreateVector(links),
@@ -528,7 +539,7 @@ void publish() {
       areaPage.interactionId,areaPage.undoToken,areaPage.roomOutcome,areaPage.roomsCreated,
       areaPage.roomsInUse,areaPage.roomsUnenclosed,areaPage.roomsRemoved,areaPage.roomsDormitories,
       areaPage.countGeneration,areaPage.paintedCount,areaPage.previewCount,locationCatalog,locationDetails,areaPage.locationEntryOutcome,areaPage.locationEditOutcome,staffCandidates,areaPage.settingsCount,
-      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{},locationName,locationNamePage,recognition);
+      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{},locationName,locationNamePage,recognition,religiousStaff);
   auto reqs=[&](const std::vector<ProductionRequirement>& values){
     std::vector<flatbuffers::Offset<m::ProductionRequirement>> out;
     for(const auto& v:values) out.push_back(m::CreateProductionRequirement(b,b.CreateString(v.description),v.quantity,v.itemType));
@@ -2271,6 +2282,36 @@ void runPaintCounts(const m::AreaRequest& a) {
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->area() && (r->area()->operation()==m::AreaOperation::LocationReligiousStaffRead || r->area()->operation()==m::AreaOperation::LocationReligiousStaffRemove)) {
+    const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;
+    const bool apply=a.operation()==m::AreaOperation::LocationReligiousStaffRemove;
+    if(apply)areaPage.locationEditOutcome=m::LocationEditOutcome::Rejected;
+    const auto observe=[&] {return df3d_area::observeNativeLocationReligiousStaff(a.location_site_id(),a.location_id(),a.religious_entity_id(),a.religious_assignment_id());};
+    auto receipt=observe();
+    if(receipt && !publishableLocationReligiousStaff(*receipt))receipt.reset();
+    if(receipt && apply && receipt->revision!=a.expected_revision()) {
+      receipt.reset();areaPage.locationEditOutcome=m::LocationEditOutcome::Stale;
+    }
+    if(receipt && apply) {
+      mutated=true;areaPage.locationEditOutcome=m::LocationEditOutcome::Unknown;
+      try {
+        const auto result=df3d_area::removeNativeLocationReligiousStaff(a.location_site_id(),a.location_id(),
+            a.religious_entity_id(),a.religious_assignment_id(),a.religious_holder_id(),a.expected_revision());
+        receipt.reset();
+        if(result==df3d_area::LocationStaffEditOutcome::Applied) {
+          receipt=observe();
+          if(receipt && publishableLocationReligiousStaff(*receipt) && !receipt->removable)
+            areaPage.locationEditOutcome=m::LocationEditOutcome::Completed;
+          else receipt.reset();
+        } else if(result!=df3d_area::LocationStaffEditOutcome::Unknown) {
+          mutated=false;areaPage.locationEditOutcome=result==df3d_area::LocationStaffEditOutcome::Stale?
+              m::LocationEditOutcome::Stale:m::LocationEditOutcome::Rejected;
+        }
+      } catch(...) {receipt.reset();}
+    }
+    if(receipt){areaPage.locationReligiousStaff=std::move(receipt);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
   if(r->area() && (r->area()->operation()==m::AreaOperation::LocationRecognitionRead || r->area()->operation()==m::AreaOperation::LocationRecognize)) {
     const auto& a=*r->area();areaPage.operation=a.operation();message.clear();status=m::ManagementStatus::Rejected;
     const bool apply=a.operation()==m::AreaOperation::LocationRecognize;

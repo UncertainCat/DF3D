@@ -9181,6 +9181,181 @@
         "High-priest and absent-unit successful removal variants",
         "Patrol/equipment-update bit readback and unknown-outcome injection"
       ]
+    },
+    "transport_reference": {
+      "source": "build/areas-acceptance-20261027-050107",
+      "sha256": "9b3d0b41e67fa9ca23e27209bedd0f7b7d7766b707cda976f3f11e8adc902fc2",
+      "protocol": 74,
+      "plugin_sha256": "f00a502b076201ee65828a78a7167519b4419c55a105d8ccc4d47ea363924228",
+      "status": "passed",
+      "evidence": {
+        "after": {
+          "assignments": 3.0,
+          "events": 54232.0,
+          "holder": -1.0,
+          "holder2": 9375.0,
+          "links": [
+            {
+              "end_year": -1.0,
+              "entity": 245.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 383.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": 7.0,
+              "start_year": 104.0,
+              "strength": 100.0,
+              "type": 10.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": 9.0,
+              "start_year": 104.0,
+              "strength": 100.0,
+              "type": 10.0
+            },
+            {
+              "end_year": 106.0,
+              "entity": 383.0,
+              "position": 2.0,
+              "start_year": 103.0,
+              "strength": 100.0,
+              "type": 11.0
+            }
+          ],
+          "next_assignment": 3.0,
+          "next_position": 1.0,
+          "position": 0.0,
+          "positions": 1.0,
+          "squad": -1.0,
+          "unit": {
+            "id": 5813.0,
+            "job": -1.0,
+            "position": 0.0,
+            "profession": 17.0,
+            "profession2": 17.0,
+            "squad": 125.0
+          }
+        },
+        "apply_ui_changed": [
+          false,
+          true
+        ],
+        "before": {
+          "assignments": 3.0,
+          "events": 54231.0,
+          "holder": 9375.0,
+          "holder2": 9375.0,
+          "links": [
+            {
+              "end_year": -1.0,
+              "entity": 245.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 383.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": -1.0,
+              "start_year": -1.0,
+              "strength": 100.0,
+              "type": 0.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 383.0,
+              "position": 2.0,
+              "start_year": 103.0,
+              "strength": 100.0,
+              "type": 10.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": 7.0,
+              "start_year": 104.0,
+              "strength": 100.0,
+              "type": 10.0
+            },
+            {
+              "end_year": -1.0,
+              "entity": 865.0,
+              "position": 9.0,
+              "start_year": 104.0,
+              "strength": 100.0,
+              "type": 10.0
+            }
+          ],
+          "next_assignment": 3.0,
+          "next_position": 1.0,
+          "position": 0.0,
+          "positions": 1.0,
+          "squad": -1.0,
+          "unit": {
+            "id": 5813.0,
+            "job": -1.0,
+            "position": 0.0,
+            "profession": 17.0,
+            "profession2": 17.0,
+            "squad": 125.0
+          }
+        },
+        "event": {
+          "civ": 383.0,
+          "histfig": 9375.0,
+          "id": 64037.0,
+          "link_type": 10.0,
+          "position_id": 0.0,
+          "seconds": 157249.0,
+          "year": 106.0
+        },
+        "invalid_targets": 5,
+        "no_request_ui_changed": [
+          false,
+          true
+        ],
+        "stale_checks": 2,
+        "vacant_rejections": 1
+      },
+      "source_and_clone_preserved": true,
+      "owned_unsaved_exit": true,
+      "scope": "Real viewer adapter and epoch-admitted management handler; exact diagnostic receipt comparison and independent native assignment/link/history readback. Native main-interface unchanged; gps changes also occur in no-request control.",
+      "omissions": [
+        "Rendered control and disconnect/restart/late-response lifecycle",
+        "Injected post-effect read failure/Unknown outcome",
+        "High-priest/absent-unit successful removal and squad/job variants through management transport"
+      ]
     }
   }
 }

@@ -15473,7 +15473,7 @@
     "bugs": {
       "portrait_hitbox": "Confirmed for occupation and work-detail indicators; visible icons do not activate help. Workshop/furnace renderer also tests the portrait X coordinate but needs targeted capture.",
       "occupation_art": "Hovering performer portrait changes first indicator tile from136347 to132199 because hover instruction262 overwrites graphic enum388.",
-      "correction_status": "Awaiting maintainer approval; no runtime correction."
+      "correction_status": "Approved2026-10-27: tooltips on visible staff indicators and stable occupation artwork. Implementation and verification pending."
     },
     "semantic_reference": {
       "run": "build/stockpile-storage-native-location-recognition-actionstaffindicators-20261027-092335",

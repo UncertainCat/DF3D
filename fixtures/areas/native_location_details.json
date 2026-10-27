@@ -9043,6 +9043,144 @@
         "Viewer input and lifecycle",
         "Unknown outcome injection"
       ]
+    },
+    "receipt_reference": {
+      "plugin_sha256": "03e44819d9519537dd424c450535950a71ecd171db0e015442dc01fe972f9585",
+      "protocol": 73,
+      "method": "Paused owned clones; changed semantic dependencies reject old revisions without effects, restoration restores revision, then exact native removal record comparison. Native UI/gps byte guards encompass receipt reads and mutation.",
+      "branches": [
+        {
+          "case": "removepriest",
+          "source": "build/stockpile-storage-native-location-recognition-actionremovepriest-20261027-044042",
+          "result_sha256": "ffd8e65b1927fe5e2e73016efb0a6bc96fceafbdb56b4a9a555ca3fd3915c0a9",
+          "stale_dependencies": [
+            "assignment holder",
+            "assignment squad",
+            "position responsibility",
+            "holder unit",
+            "position link",
+            "unit military position",
+            "uniform pickup flags",
+            "squad occupant"
+          ],
+          "receipt": {
+            "holder_id": 9375,
+            "position_id": 0,
+            "removable": true,
+            "revision": "3603718395278780373",
+            "unit_id": 5813,
+            "valid": true
+          },
+          "invalid_identities_rejected": 5,
+          "invalid_revisions_rejected": 2,
+          "old_completed_receipt_stale": true,
+          "fresh_vacant_receipt_rejected": true,
+          "native_effects_equal": true,
+          "native_ui_gps_unchanged": true,
+          "source_preserved": true,
+          "owned_unsaved_exit": true
+        },
+        {
+          "case": "removesquadpriest",
+          "source": "build/stockpile-storage-native-location-recognition-actionremovesquadpriest-20261027-044124",
+          "result_sha256": "30c64f87d6da5d07df6645f8ef9fe0a5c0e84b24256fada6428eb8dc8e15b36d",
+          "stale_dependencies": [
+            "assignment holder",
+            "assignment squad",
+            "position responsibility",
+            "holder unit",
+            "position link",
+            "unit military position",
+            "uniform pickup flags",
+            "squad occupant"
+          ],
+          "receipt": {
+            "holder_id": 9375,
+            "position_id": 0,
+            "removable": true,
+            "revision": "961211559405198621",
+            "unit_id": 5813,
+            "valid": true
+          },
+          "invalid_identities_rejected": 5,
+          "invalid_revisions_rejected": 2,
+          "old_completed_receipt_stale": true,
+          "fresh_vacant_receipt_rejected": true,
+          "native_effects_equal": true,
+          "native_ui_gps_unchanged": true,
+          "source_preserved": true,
+          "owned_unsaved_exit": true
+        },
+        {
+          "case": "removemanagerpriest",
+          "source": "build/stockpile-storage-native-location-recognition-actionremovemanagerpriest-20261027-044157",
+          "result_sha256": "c94cf2c69d7d622439d0f08cc97d9709a0e32dbee32266cafee079b678f161fc",
+          "stale_dependencies": [
+            "assignment holder",
+            "assignment squad",
+            "position responsibility",
+            "holder unit",
+            "position link",
+            "unit military position",
+            "uniform pickup flags",
+            "squad occupant",
+            "current job order"
+          ],
+          "receipt": {
+            "holder_id": 9375,
+            "position_id": 0,
+            "removable": true,
+            "revision": "4556320489617914044",
+            "unit_id": 5813,
+            "valid": true
+          },
+          "invalid_identities_rejected": 5,
+          "invalid_revisions_rejected": 2,
+          "old_completed_receipt_stale": true,
+          "fresh_vacant_receipt_rejected": true,
+          "native_effects_equal": true,
+          "native_ui_gps_unchanged": true,
+          "source_preserved": true,
+          "owned_unsaved_exit": true
+        },
+        {
+          "case": "removeaccountantpriest",
+          "source": "build/stockpile-storage-native-location-recognition-actionremoveaccountantpriest-20261027-044229",
+          "result_sha256": "b417e52de43df390e1557d6e0520e513b9636bb9ec418e3f7ff7de40f7224584",
+          "stale_dependencies": [
+            "assignment holder",
+            "assignment squad",
+            "position responsibility",
+            "holder unit",
+            "position link",
+            "unit military position",
+            "uniform pickup flags",
+            "squad occupant",
+            "current job order"
+          ],
+          "receipt": {
+            "holder_id": 9375,
+            "position_id": 0,
+            "removable": true,
+            "revision": "1991247263792282455",
+            "unit_id": 5813,
+            "valid": true
+          },
+          "invalid_identities_rejected": 5,
+          "invalid_revisions_rejected": 2,
+          "old_completed_receipt_stale": true,
+          "fresh_vacant_receipt_rejected": true,
+          "native_effects_equal": true,
+          "native_ui_gps_unchanged": true,
+          "source_preserved": true,
+          "owned_unsaved_exit": true
+        }
+      ],
+      "omissions": [
+        "Epoch-bound management transport and rendered viewer workflow",
+        "High-priest and absent-unit successful removal variants",
+        "Patrol/equipment-update bit readback and unknown-outcome injection"
+      ]
     }
   }
 }

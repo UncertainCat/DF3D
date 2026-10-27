@@ -720,9 +720,15 @@ if recognition_case:sub(1,6)=='remove' then
   end
   return result
  end
- local expected
- local function remove_semantic(ids)
-  local text,code=dfhack.run_command_silent('df3d','location-religious-remove',table.unpack(ids or {tostring(df.global.plotinfo.site_id),tostring(temple.id),tostring(religion.id),tostring(assignment.id),tostring(holder.id)}))
+ local expected,removal_revision
+ local function removal_receipt()
+  local text,code=dfhack.run_command_silent('df3d','location-religious-receipt',tostring(df.global.plotinfo.site_id),tostring(temple.id),tostring(religion.id),tostring(assignment.id))
+  assert(code==0,text);local receipt=require('json').decode(text);assert(receipt.valid,'religious receipt unavailable');return receipt
+ end
+ local function remove_semantic(ids,revision)
+  local args=ids or {tostring(df.global.plotinfo.site_id),tostring(temple.id),tostring(religion.id),tostring(assignment.id),tostring(holder.id)}
+  args[6]=revision or removal_revision
+  local text,code=dfhack.run_command_silent('df3d','location-religious-remove',table.unpack(args))
   assert(code==0,text);return require('json').decode(text).outcome
  end
  if semantic_recognition then
@@ -737,6 +743,39 @@ if recognition_case:sub(1,6)=='remove' then
   if semantic_recognition then
    for _,object in ipairs{m,g}do
     local n,at=df.sizeof(object);local bytes=df.new('uint8_t',n);dfhack.internal.memmove(bytes,at,n);guards[#guards+1]={bytes=bytes,address=at,size=n}
+   end
+   local receipt=removal_receipt();assert(receipt.removable and receipt.holder_id==holder.id)
+   removal_revision=receipt.revision
+   assert(require('json').encode(receipt)==require('json').encode(removal_receipt()),'religious receipt unstable')
+   assert(remove_semantic(nil,'0')==1 and remove_semantic(nil,'9223372036854775808')==1,'invalid revision accepted')
+   before.removal_receipt=receipt;before.stale_dependencies={}
+   local function stale(object,key,value,label)
+    local original=object[key];object[key]=value
+    local changed=removal_receipt();assert(changed.revision~=removal_revision,'dependency not bound: '..label)
+    local records=require('json').encode(recognition_state());local held=require('json').encode(holder_state())
+    assert(remove_semantic()==4,'stale removal not refused: '..label)
+    assert(records==require('json').encode(recognition_state()) and held==require('json').encode(holder_state()),'stale removal changed state: '..label)
+    assert(changed.revision==removal_receipt().revision,'stale removal changed receipt: '..label)
+    object[key]=original;assert(removal_receipt().revision==removal_revision,'restored dependency changed revision: '..label)
+    before.stale_dependencies[#before.stale_dependencies+1]=label
+   end
+   stale(assignment,'histfig',-1,'assignment holder')
+   stale(assignment,'squad_id',assignment.squad_id==-1 and 125 or -1,'assignment squad')
+   local position
+   for _,p in ipairs(religion.positions.own)do if p.id==assignment.position_id then position=p end end
+   assert(position)
+   stale(position.responsibilities,df.entity_position_responsibility.MANAGE_PRODUCTION,not position.responsibilities.MANAGE_PRODUCTION,'position responsibility')
+   stale(holder,'unit_id',-1,'holder unit')
+   for _,link in ipairs(holder.entity_links)do
+    if df.histfig_entity_link_positionst:is_instance(link) and link.entity_id==religion.id and link.assignment_id==assignment.id then stale(link,'link_strength',link.link_strength+1,'position link')end
+   end
+   local unit=df.unit.find(holder.unit_id)
+   if unit then
+    stale(unit.military,'squad_position',unit.military.squad_position+1,'unit military position')
+    stale(unit.uniform.pickup_flags,'whole',unit.uniform.pickup_flags.whole==0 and 1 or 0,'uniform pickup flags')
+    local current_squad=df.squad.find(unit.military.squad_id)
+    if current_squad and #current_squad.positions>0 then stale(current_squad.positions[0],'occupant',-1,'squad occupant')end
+    if unit.job.current_job then stale(unit.job.current_job,'order_id',unit.job.current_job.order_id+1,'current job order')end
    end
    for field=1,5 do
     local ids={tostring(df.global.plotinfo.site_id),tostring(temple.id),tostring(religion.id),tostring(assignment.id),tostring(holder.id)}
@@ -768,7 +807,9 @@ if recognition_case:sub(1,6)=='remove' then
    for _,field in ipairs{'recognition','holder','new_events'}do
     assert(require('json').encode(after[field])==require('json').encode(expected[field]),'semantic removal differs from native '..field)
    end
-   assert(remove_semantic()==1,'completed removal not rejected')
+   assert(remove_semantic()==4,'completed removal old receipt not stale')
+   local fresh=removal_receipt();assert(not fresh.removable,'vacated assignment still removable')
+   assert(remove_semantic(nil,fresh.revision)==1,'completed removal not rejected')
   else pixel(944,358)end
   local repeated=capture('TEMPLE-0-priest-remove-repeat',temple);repeated.recognition=recognition_state();repeated.holder=holder_state()
   assert(require('json').encode(after.recognition)==require('json').encode(repeated.recognition),'empty remove changed recognition records')

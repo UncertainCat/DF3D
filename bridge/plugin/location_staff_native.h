@@ -65,15 +65,23 @@ std::optional<LocationStaffSnapshot> observeNativeLocationStaff(int32_t siteId,i
 // Allocate missing empty roles as native Details entry does. Existing records and
 // order are preserved. False means no publication; repeat entry reuses empty slots.
 bool prepareNativeLocationStaff(int32_t siteId,int32_t id);
-enum class LocationStaffEditOutcome : uint8_t { Unavailable, Rejected, Applied, Unknown };
+enum class LocationStaffEditOutcome : uint8_t { Unavailable, Rejected, Applied, Unknown, Stale };
 // Caller validates current receipt/epoch at the same safe point. unitId==-1
 // removes; otherwise native assignment replaces that unit's prior occupations.
 LocationStaffEditOutcome editNativeLocationStaff(int32_t siteId,int32_t locationId,
                                                 int32_t occupationId,int32_t unitId);
 
-// Staged safe-point primitive: current semantic target/holder checks only.
-// A complete revision/epoch receipt is required before exposing this via UI.
+struct LocationReligiousStaffReceipt {
+  int32_t siteId=-1,locationId=-1,entityId=-1,assignmentId=-1,positionId=-1,holderId=-1,unitId=-1;
+  uint64_t revision=0;
+  bool removable=false;
+};
+// Caller owns a safe point. Semantic identity and cleanup dependencies only;
+// epoch ownership is supplied by transport, never native UI state.
+std::optional<LocationReligiousStaffReceipt> observeNativeLocationReligiousStaff(
+    int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId);
+// Requires the exact observed revision at the same safe point as mutation.
 LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
-    int32_t entityId,int32_t assignmentId,int32_t expectedHolderId);
+    int32_t entityId,int32_t assignmentId,int32_t expectedHolderId,uint64_t expectedRevision);
 
 }

@@ -213,12 +213,18 @@ associated squad command; native1325080 releases matching manager/accounting job
 All four complete code bodies are byte-guarded after the supported-build gate.
 Typed patrol fields and equipment-update flags follow the native coordinator.
 No native widget, menu state or row builder is used. Exceptions after effects
-begin return Unknown. This primitive checks the expected holder, but does not yet
-provide a complete dependency revision; it must not be exposed as a UI action
-until that receipt and epoch-bound management admission are implemented.
+begin return Unknown. The pointer-free religious staff receipt binds assignment,
+position flags/responsibilities, holder links, unit military/uniform state, squad
+occupants/patrol/equipment and current job identity/references. Removal requires
+the observed revision; changed dependencies return Stale before mutation.
+Execution timers, world time, RNG, pointers and lookup caches are excluded.
+Epoch-bound management admission and viewer integration remain required before
+this primitive can be exposed as a UI action.
 
 Paused diagnostic `df3d location-religious-remove <site> <location> <religion>
-<assignment> <expected-holder>` supports protected paired acceptance. Native
+<assignment> <expected-holder> <revision>` supports protected paired acceptance.
+`location-religious-receipt <site> <location> <religion> <assignment>` returns the
+current revision as a decimal string plus holder, position, unit and removability. Native
 manager042413/accountant042445 fixtures give the position its matching responsibility
 and a real world job/worker link. Removal releases the worker but preserves the job
 record. Bridge pairs normal043014, squad042933, manager042827 and accountant042900
@@ -226,10 +232,17 @@ match every captured recognition, holder/unit and history-event field exactly.
 Each rejects five invalid identities and completed repetition without effects;
 native main-interface/gps bytes remain unchanged. All runs pass, preserve sources
 and exit unsaved. `religious_staff_removal_reference.semantic_reference` retains
-bounded provenance and effects. MSVC builds; installed protocol73 plugin SHA256 is
-`5d45c716ce7d28ce207b7cc462fd6541c4de9ef6fdfe76afa3baebf42f4e2a90`.
+bounded provenance and effects. The receipt-enabled runs normal044042, squad044124,
+manager044157 and accountant044229 repeat the native comparisons and refuse eight
+changed dependencies per ordinary/squad case, nine per active-job case. Restoring
+each dependency restores the original revision; rejected requests preserve state.
+Five invalid identities, zero/out-of-range revisions, stale completed receipts and
+fresh vacant receipts are refused. UI/gps byte guards pass, sources are preserved
+and all owned games exit unsaved. `receipt_reference` retains bounded evidence.
+MSVC and core19/19 pass. Installed protocol73 plugin SHA256 is
+`03e44819d9519537dd424c450535950a71ecd171db0e015442dc01fe972f9585`.
 High-priest/absent-unit variants, patrol/equipment-bit readback, unknown-outcome
-injection, full revision binding and viewer lifecycle remain open.
+injection, epoch-bound transport and viewer lifecycle remain open.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
 panel beneath the minimap, outside the Details frame. That global tracker has no

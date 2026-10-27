@@ -23,6 +23,9 @@
 #include "df/squad.h"
 #include "df/squad_position.h"
 #include "df/job.h"
+#include "df/general_ref.h"
+#include "df/job_item_ref.h"
+#include "df/item.h"
 #include "df/histfig_entity_link_positionst.h"
 #include <cstddef>
 #include "df/occupation_type.h"
@@ -331,10 +334,93 @@ LocationStaffEditOutcome editNativeLocationStaff(int32_t siteId,int32_t location
   }
 }
 
+std::optional<LocationReligiousStaffReceipt> observeNativeLocationReligiousStaff(
+    int32_t siteId,int32_t locationId,int32_t entityId,int32_t assignmentId) {
+  if(!religiousStaffMutationFunctions())return std::nullopt;
+  auto* place=location(siteId,locationId);
+  if(!place || place->getType()!=df::abstract_building_type::TEMPLE || entityId<0 || assignmentId<0)return std::nullopt;
+  const auto* temple=static_cast<df::abstract_building_templest*>(place);
+  if(temple->deity_type!=df::religious_practice_type::RELIGION_ENID || temple->deity_data.Religion!=entityId)return std::nullopt;
+  auto* entity=df::historical_entity::find(entityId);if(!entity)return std::nullopt;
+  const auto* assignment=binsearch_in_vector(entity->positions.assignments,assignmentId);
+  if(!assignment || assignment->st_id!=siteId)return std::nullopt;
+  const auto* position=binsearch_in_vector(entity->positions.own,assignment->position_id);if(!position)return std::nullopt;
+  auto* holder=df::historical_figure::find(assignment->histfig);
+  auto* unit=holder?df::unit::find(holder->unit_id):nullptr;
+  if(unit && unit->hist_figure_id!=holder->id)return std::nullopt;
+  LocationReligiousStaffReceipt result{siteId,locationId,entityId,assignmentId,position->id,
+      assignment->histfig,unit?unit->id:-1};
+  uint64_t hash=UINT64_C(14695981039346656037);
+  const auto number=[&](uint64_t value) {
+    for(unsigned i=0;i<8;++i){hash^=value&255;hash*=UINT64_C(1099511628211);value>>=8;}
+  };
+  const auto numbers=[&](const auto& values){number(values.size());for(auto value:values)number(uint64_t(value));};
+  for(int value:{siteId,locationId,entityId,assignmentId,position->id,assignment->histfig,assignment->histfig2,
+      assignment->ab_id,assignment->squad_id,assignment->vassal_of_entity_id,assignment->vassal_of_position_profile_id})number(value);
+  for(int i=0;i<=int(df::enum_traits<df::entity_position_profile_flags>::last_item_value);++i)
+    number(assignment->flags.is_set(static_cast<df::entity_position_profile_flags>(i)));
+  for(int i=0;i<=int(df::enum_traits<df::entity_position_flags>::last_item_value);++i)
+    number(position->flags.is_set(static_cast<df::entity_position_flags>(i)));
+  numbers(position->responsibilities);
+  number(holder!=nullptr);
+  if(holder) {
+    number(holder->unit_id);number(holder->entity_links.size());
+    for(auto* link:holder->entity_links) {
+      if(!link)return std::nullopt;
+      number(int(link->getType()));number(link->entity_id);number(link->link_strength);
+      number(link->getPosition());number(link->getPositionStartYear());number(link->getPositionEndYear());
+      number(link->getSquadId());number(link->getSquadPosition());number(link->getOccupation());
+      if(link->getType()==df::histfig_entity_link_type::POSITION && link->entity_id==entityId &&
+         static_cast<df::histfig_entity_link_positionst*>(link)->assignment_id==assignmentId)result.removable=true;
+    }
+  }
+  const auto squadBinding=[&](int32_t id)->bool {
+    number(id);const auto* squad=df::squad::find(id);number(squad!=nullptr);if(!squad)return true;
+    number(squad->entity_id);number(squad->leader_position);number(squad->leader_assignment);
+    number(squad->positions.size());
+    for(const auto* slot:squad->positions) {
+      if(!slot)return false;
+      number(slot->occupant);number(slot->current_patrol_id);number(slot->current_patrol_point_id);
+      numbers(slot->activities);numbers(slot->events);numbers(slot->equipment.assigned_items);
+      number(slot->equipment.quiver);number(slot->equipment.backpack);number(slot->equipment.flask);
+    }
+    return true;
+  };
+  if(!squadBinding(assignment->squad_id))return std::nullopt;
+  number(unit!=nullptr);
+  if(unit) {
+    number(unit->id);number(unit->hist_figure_id);number(unit->military.squad_id);number(unit->military.squad_position);
+    if(!squadBinding(unit->military.squad_id))return std::nullopt;
+    number(int(unit->uniform.cur_uniform));number(unit->uniform.pickup_flags.whole);
+    numbers(unit->uniform.clothing_item_id);numbers(unit->uniform.uniform_pickup);numbers(unit->uniform.uniform_drop);
+    for(const auto& items:unit->uniform.uniforms)numbers(items);
+    const auto* job=unit->job.current_job;number(job!=nullptr);
+    if(job) {
+      number(job->id);number(int(job->job_type));number(job->flags.whole);number(job->posting_index);
+      number(job->pos.x);number(job->pos.y);number(job->pos.z);number(job->order_id);
+      number(job->general_refs.size());
+      for(auto* ref:job->general_refs){if(!ref)return std::nullopt;number(int(ref->getType()));number(ref->getID());}
+      number(job->items.size());
+      for(const auto* ref:job->items) {
+        if(!ref || !ref->item)return std::nullopt;
+        number(ref->item->id);number(int(ref->role));number(ref->flags.whole);number(ref->job_item_idx);
+      }
+    }
+  }
+  // Cleanup runs on current native records. Simulation timers, world time, RNG,
+  // padding, pointer addresses and lookup caches are not receipt dependencies.
+  hash&=uint64_t(INT64_MAX);result.revision=hash?hash:1;return result;
+}
+
 LocationStaffEditOutcome removeNativeLocationReligiousStaff(int32_t siteId,int32_t locationId,
-    int32_t entityId,int32_t assignmentId,int32_t expectedHolderId) {
+    int32_t entityId,int32_t assignmentId,int32_t expectedHolderId,uint64_t expectedRevision) {
   const auto& native=religiousStaffMutationFunctions();
   if(!native)return LocationStaffEditOutcome::Unavailable;
+  if(!expectedRevision || expectedRevision>uint64_t(INT64_MAX))return LocationStaffEditOutcome::Rejected;
+  const auto receipt=observeNativeLocationReligiousStaff(siteId,locationId,entityId,assignmentId);
+  if(!receipt)return LocationStaffEditOutcome::Rejected;
+  if(receipt->revision!=expectedRevision)return LocationStaffEditOutcome::Stale;
+  if(!receipt->removable)return LocationStaffEditOutcome::Rejected;
   auto* place=location(siteId,locationId);
   if(!place || place->getType()!=df::abstract_building_type::TEMPLE || expectedHolderId<0 ||
       entityId<0 || assignmentId<0)return LocationStaffEditOutcome::Rejected;

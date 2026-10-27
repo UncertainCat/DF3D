@@ -14082,5 +14082,40 @@
       "owned_exit_without_save": true,
       "scope": "Controlled ESPIONAGE responsibility; native follow-up effects and plot receipt staleness. Not a new player-facing role."
     }
+  },
+  "religious_staff_absent_unit_reference": {
+    "native": "build/stockpile-storage-native-location-recognition-removeabsentpriest-20261027-075231",
+    "semantic": "build/stockpile-storage-native-location-recognition-actionremoveabsentpriest-20261027-075305",
+    "holder_id": 9375,
+    "receipt": {
+      "holder_id": 9375,
+      "position_id": 0,
+      "removable": true,
+      "revision": "6900560832538442655",
+      "unit_id": -1,
+      "valid": true
+    },
+    "stale_dependencies": [
+      "assignment holder",
+      "assignment squad",
+      "position responsibility",
+      "holder unit",
+      "position link"
+    ],
+    "new_events": [
+      {
+        "civ": 383,
+        "histfig": 9375,
+        "id": 64037,
+        "link_type": 10,
+        "position_id": 0,
+        "seconds": 157249,
+        "type": "REMOVE_HF_ENTITY_LINK",
+        "year": 106
+      }
+    ],
+    "scope": "Paused diagnostic holder unit_id=-1; native nil-unit lookup, not full death/departure simulation or rendered viewer acceptance.",
+    "source_preserved": true,
+    "owned_exit_without_save": true
   }
 }

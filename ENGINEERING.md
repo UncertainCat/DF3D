@@ -618,8 +618,18 @@ Six selected-receipt dependency probes and completed replay refusal also pass.
 All four runs preserve the source and exit owned DF unsaved. The command fixture
 reacquires the native unit-list widget after reopening; retaining an earlier
 widget pointer caused an initial diagnostic cursor assertion, not a product bug.
-Bounded military_assignment_reference records provenance and scope. Absent-unit
-historical branches remain outside this evidence.
+Bounded military_assignment_reference records provenance and scope.
+
+Native removeabsentpriest075231 and semantic actionremoveabsentpriest075305 cover
+removal with the historical holder's unit association set to-1 in a paused clone.
+This isolates native nil-unit lookup without deleting unrelated live unit records;
+it is not a full simulation of departure or death. The semantic receipt remains
+removable with holder9375 and unit-1. Removal matches captured native historical
+links, assignment, recognition and history effects, while restored unit association
+invalidates the old receipt. Invalid identities/revisions, stale dependencies and
+repeat removal remain refused. Both runs pass, preserve the source and exit owned
+DF unsaved. Absent-unit holder replacement and rendered historical-holder rows
+are separate from this semantic removal evidence.
 
 Native assignspypriest074638 and semantic actionassignspypriest075018 exercise
 the follow-up ESPIONAGE responsibility at position offset0x341. The responsibility

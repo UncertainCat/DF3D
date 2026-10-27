@@ -510,7 +510,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -1123,6 +1123,12 @@ if recognition_case:sub(1,6)=='remove' then
  for _,a in ipairs(religion.positions.assignments)do if a.st_id==df.global.plotinfo.site_id then assert(not assignment);assignment=a end end
  assert(assignment and assignment.histfig>=0)
  local holder=assert(df.historical_figure.find(assignment.histfig))
+ local original_holder_unit=holder.unit_id
+ if recognition_case=='removeabsentpriest' then
+  -- Exercise absent historical-figure unit association in the unsaved clone.
+  -- Keep unrelated live unit records intact; native lookup must resolve nil.
+  holder.unit_id=-1;assert(not df.unit.find(holder.unit_id))
+ end
  local squad
  if recognition_case=='removesquadpriest' then
   local unit=assert(df.unit.find(holder.unit_id));squad=assert(df.squad.find(unit.military.squad_id))
@@ -1225,7 +1231,7 @@ if recognition_case:sub(1,6)=='remove' then
    for _,p in ipairs(religion.positions.own)do if p.id==assignment.position_id then position=p end end
    assert(position)
    stale(position.responsibilities,df.entity_position_responsibility.MANAGE_PRODUCTION,not position.responsibilities.MANAGE_PRODUCTION,'position responsibility')
-   stale(holder,'unit_id',-1,'holder unit')
+   stale(holder,'unit_id',holder.unit_id==-1 and original_holder_unit or -1,'holder unit')
    for _,link in ipairs(holder.entity_links)do
     if df.histfig_entity_link_positionst:is_instance(link) and link.entity_id==religion.id and link.assignment_id==assignment.id then stale(link,'link_strength',link.link_strength+1,'position link')end
    end

@@ -22,15 +22,16 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management80 adds tracker popup inspection through AgreementInspect with
-tracker=true and an explicit agreement ID. A successful popup carries exactly
-one native tracker row and required typed location/value/tier facts; list
-results exclude popup facts. Missing/rejected observations are distinct from
-empty list success. History filters remain excluded from both tracker modes.
-Older recordings cannot infer popup selection or requirements. Rebuild and
-install bridge and viewer together; `Local\\df3d_management_v80` isolates older
-peers. Snapshot/grid/session versions are unchanged. Transport acceptance does
-not establish tracker presentation acceptance.
+Management81 adds an optional native farm snapshot with a bounded exact revision,
+building identity, selected/current season, four seasonal crop IDs and ordered
+choices carrying seed availability and current-season warning flags. It is
+separate from legacy crop counts/masks; a reply cannot mix both representations.
+Older recordings cannot infer native availability, warnings or revisions, and
+missing snapshots remain unavailable. Rebuild and install bridge and viewer
+together; `Local\\df3d_management_v81` isolates older peers. Snapshot/grid/session
+versions are unchanged. This contract does not enable the farm UI or new edits;
+native provider publication and revision-checked mutation remain separate work.
+The existing tracker popup contract from management80 remains unchanged.
 
 
 Snapshot schema **11** and resident terrain grid **6** preserve root tissue

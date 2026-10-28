@@ -189,6 +189,41 @@ staff-height gap, not the overall Zones exposure audit.
 
 ## Building production native-entry audit
 
+### Native farm transport contract
+
+Management81 adds optional `ProductionState.farm`, a `FarmSnapshot` containing
+building ID, exact positive signed-range revision, selected/current season,
+four seasonal crop IDs and ordered native choices. Each choice carries its
+plural name, seed availability and current-season warning independently.
+An empty choice list is valid; an absent snapshot is unavailable. The contract
+rejects duplicate/out-of-range IDs, missing/oversized names, invalid seasons,
+zero/overflow revisions, mismatched parent identity, and mixed legacy/native
+farm fields. Legacy `FarmCrop.seeds` counts and masks cannot synthesize these
+facts. No source recording is migrated by inventing native data.
+
+Bridge serialization, engine-independent decoding and Godot dictionaries support
+the new snapshot. Native provider publication, request revision checks and the
+farm UI are not yet connected; existing farm requests still use the old adapter.
+Install bridge and viewer together on `Local\\df3d_management_v81`; see PINS.md.
+Snapshot, grid and session compatibility versions are unchanged.
+
+Core and the Godot transport/production-fixture checks pass cleanly in
+`build/qa/native-farm-contract-final`. The tests preserve revision9007199254740993,
+native order and independent flags, reject malformed receipts/old protocol,
+and keep native snapshots absent for legacy replies. The earlier full run's
+extra request disrupted the fake producer's fixed request sequence; the final
+test uses its existing farm-inspection slot. That failed run is not acceptance.
+MSVC build/install passes; installed bridge SHA256 is
+`6BC950340686FCB11BD8084160978CB08E8732A4DF46EDD415F19B09764A2318`.
+Protected `areas-acceptance-20261028-161059 -ControllerScene -ZonesOnly` verifies
+the matched version81 pair through the existing Zones workflow and native
+readbacks. The mixed-boundary image was inspected. DF166592 exits unsaved and
+both save manifests remain unchanged. The live result is passed_with_known_issues
+with only the known rendering-thread notice. This is protocol/regression
+acceptance, not native farm UI or Zones exposure acceptance.
+
+### Native farm and workshop providers
+
 The existing `bridge/plugin/production.lua` adapter is not a complete native
 building-management provider. Its Carpenters/Kitchen/WoodFurnace choices come
 from hand-maintained `dfhack.workshops` tables; Still reaction selection and

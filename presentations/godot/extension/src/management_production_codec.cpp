@@ -83,6 +83,18 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   prod["selected_building"] = p.selectedBuilding;
   prod["created_job"] = p.createdJob;
   prod["detail"] = String::utf8(p.detail.c_str());
+  if(p.farm) {
+    const auto& f=*p.farm;Dictionary farm;Array choices,selected;
+    farm["building_id"]=f.buildingId;farm["revision"]=int64_t(f.revision);
+    farm["selected_season"]=f.selectedSeason;farm["current_season"]=f.currentSeason;
+    for(auto crop:f.seasonalCrops)selected.push_back(crop);
+    for(const auto& c:f.choices) {
+      Dictionary row;row["id"]=c.id;row["name"]=String::utf8(c.name.c_str());
+      row["seeds_available"]=c.seedsAvailable;row["current_season_warning"]=c.currentSeasonWarning;
+      choices.push_back(row);
+    }
+    farm["seasonal_crops"]=selected;farm["choices"]=choices;prod["farm"]=farm;
+  }
   result["production"] = prod;
 }
 

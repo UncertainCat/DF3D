@@ -71,7 +71,16 @@ struct ProductionBuilding {
   uint16_t queueSize=0;
 };
 struct FarmCrop { int32_t id=-1; std::string name; uint8_t seasons=0; uint32_t seeds=0; };
+struct NativeFarmCrop { int32_t id=-1; std::string name; bool seedsAvailable=false,currentSeasonWarning=false; };
+struct FarmSnapshot {
+  int32_t buildingId=-1;
+  uint64_t revision=0;
+  int8_t selectedSeason=-1,currentSeason=-1;
+  std::vector<int32_t> seasonalCrops;
+  std::vector<NativeFarmCrop> choices;
+};
 struct ProductionState {
+  std::optional<FarmSnapshot> farm;
   std::vector<ProductionBuilding> buildings;
   std::vector<ProductionRecipe> recipes;
   std::vector<ProductionJob> jobs;

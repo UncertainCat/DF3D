@@ -420,6 +420,14 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
 flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBufferBuilder& b,const m::ConstructionRequest& request) {
   using A=m::ManagementAction;
   const auto action=request.action();const auto* q=request.production();
+  if(action==A::ProductionInspect && q->building_id()==3) {
+    std::vector<flatbuffers::Offset<m::NativeFarmCrop>> rows{
+      m::CreateNativeFarmCrop(b,176,b.CreateString("Sweet pods"),false,true),
+      m::CreateNativeFarmCrop(b,175,b.CreateString("Plump helmets"),true,false)};
+    auto farm=m::CreateFarmSnapshot(b,3,9007199254740993ULL,1,1,
+      b.CreateVector(std::vector<int32_t>{175,-1,176,-1}),b.CreateVector(rows));
+    m::ProductionStateBuilder p(b);p.add_selected_building(3);p.add_farm(farm);return p.Finish();
+  }
   const bool list=action==A::ProductionList;
   const bool farm=!list && q->building_id()==3;
   std::vector<flatbuffers::Offset<m::ProductionBuilding>> buildings;

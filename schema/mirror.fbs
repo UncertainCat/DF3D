@@ -1536,12 +1536,24 @@ table ProductionBuilding {
   build_stage:int16; max_stage:int16; queue_size:uint16;
 }
 table FarmCrop { id:int32; name:string; seasons:uint8; seeds:uint32; }
+// Native choices for one locally selected tab. Availability is not a seed count.
+// A missing snapshot means unavailable; legacy FarmCrop fields cannot synthesize it.
+table NativeFarmCrop { id:int32; name:string; seeds_available:bool; current_season_warning:bool; }
+table FarmSnapshot {
+  building_id:int32 = -1;
+  revision:uint64;
+  selected_season:int8 = -1;
+  current_season:int8 = -1;
+  seasonal_crops:[int32];
+  choices:[NativeFarmCrop];
+}
 table ProductionState {
   buildings:[ProductionBuilding]; next_cursor:uint32;
   recipes:[ProductionRecipe]; jobs:[ProductionJob]; crops:[FarmCrop];
   seasonal_crops:[int32]; current_season:int8 = -1;
   selected_building:int32 = -1; created_job:int32 = -1;
   detail:string;
+  farm:FarmSnapshot;
 }
 table WorkOrderRequest {
   id:int32 = -1;
@@ -1828,7 +1840,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 80;
+  schema_version:uint32 = 81;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1874,7 +1886,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 80;
+  schema_version:uint32 = 81;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

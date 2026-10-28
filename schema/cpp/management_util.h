@@ -20,14 +20,25 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 80;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v80";
+inline constexpr uint32_t kManagementVersion = 81;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v81";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
 // v39: Track may select one distinct material group per tile (16,384 total).
 // The maximum encoded request is tested against this bound; older peers use a separate region.
 inline constexpr uint32_t kManagementCommandCapacity = 2 * 1024 * 1024;
+inline const char* validateFarmSnapshot(const FarmSnapshot& f) {
+  if(f.building_id()<0 || !f.revision() || f.revision()>INT64_MAX ||
+     f.selected_season()<0 || f.selected_season()>3 || f.current_season()<0 || f.current_season()>3 ||
+     !f.seasonal_crops() || f.seasonal_crops()->size()!=4 || !f.choices() || f.choices()->size()>256)
+    return "invalid native farm snapshot";
+  for(auto id:*f.seasonal_crops())if(id < -1 || id>32767)return "invalid native farm selection";
+  std::set<int32_t> ids;
+  for(const auto* c:*f.choices())if(!c || c->id()<0 || c->id()>32767 || !ids.insert(c->id()).second ||
+      !c->name() || !c->name()->size() || c->name()->size()>512)return "invalid native farm choice";
+  return nullptr;
+}
 inline bool areaZoneSettingsPresent(const AreaZoneSettings* z) {
   return z && (z->pond_mode() || z->facing() || z->tomb_citizens()!=-1 ||
       z->tomb_pets()!=-1 || z->gather_trees()!=-1 || z->gather_shrubs()!=-1 || z->gather_fallen()!=-1);
@@ -1257,6 +1268,12 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(payload>224*1024) return "area response exceeds bounded payload";
   }
   if (const auto* p=s.production()) {
+    if(const auto* f=p->farm()) {
+      if(auto error=validateFarmSnapshot(*f))return error;
+      if(p->selected_building()!=f->building_id())return "native farm identity mismatch";
+      if((p->crops() && p->crops()->size()) || (p->seasonal_crops() && p->seasonal_crops()->size()) || p->current_season()!=-1)
+        return "mixed legacy and native farm state";
+    }
     if ((p->buildings() && p->buildings()->size()>64) || (p->recipes() && p->recipes()->size()>128) ||
         (p->jobs() && p->jobs()->size()>64) || (p->crops() && p->crops()->size()>256) ||
         (p->seasonal_crops() && p->seasonal_crops()->size()!=0 && p->seasonal_crops()->size()!=4) ||

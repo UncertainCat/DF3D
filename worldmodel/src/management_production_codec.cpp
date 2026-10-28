@@ -21,6 +21,13 @@ ProductionState decodeProduction(const m::ProductionState* p) {
   n.selectedBuilding = p->selected_building();
   n.createdJob = p->created_job();
   n.detail = str(p->detail());
+  if(const auto* f=p->farm()) {
+    auto& farm=n.farm.emplace();farm.buildingId=f->building_id();farm.revision=f->revision();
+    farm.selectedSeason=f->selected_season();farm.currentSeason=f->current_season();
+    if(f->seasonal_crops())farm.seasonalCrops.assign(f->seasonal_crops()->begin(),f->seasonal_crops()->end());
+    if(f->choices())for(const auto* c:*f->choices())
+      farm.choices.push_back({c->id(),str(c->name()),c->seeds_available(),c->current_season_warning()});
+  }
   if (p->buildings())
     for (const auto* v : *p->buildings())
       n.buildings.push_back({v->id(), v->origin()->x(), v->origin()->y(), v->origin()->z(),

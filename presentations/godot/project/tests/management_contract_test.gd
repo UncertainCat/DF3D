@@ -508,6 +508,16 @@ func test_production() -> void:
 		assert_production(state.production, request)
 
 func assert_production(p: Dictionary, request: Dictionary) -> void:
+	if request.action==A.ProductionInspect and request.building_id==3:
+		var native_farm: Dictionary=p.farm
+		assert(native_farm.revision==9007199254740993 and typeof(native_farm.revision)==TYPE_INT)
+		assert(native_farm.building_id==3 and native_farm.selected_season==1 and native_farm.current_season==1)
+		assert(native_farm.seasonal_crops==[175,-1,176,-1])
+		assert(native_farm.choices==[{"id":176,"name":"Sweet pods","seeds_available":false,"current_season_warning":true},
+			{"id":175,"name":"Plump helmets","seeds_available":true,"current_season_warning":false}])
+		assert(p.crops.is_empty() and p.seasonal_crops.is_empty())
+		return
+
 	var building := {"id":1,"name":"Kitchen","kind":"Kitchen","origin":Vector3i(5,6,2),"build_stage":2,"max_stage":3,"queue_size":2}
 	var farm := {"id":3,"name":"Farm","kind":"FarmPlot","origin":Vector3i(5,6,2),"build_stage":2,"max_stage":3,"queue_size":0}
 	# Mutations require complete construction (production.lua:221).

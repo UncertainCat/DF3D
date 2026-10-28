@@ -40,6 +40,13 @@ local script=require('gui.script')
    end
    return rows,choices
   end
+  local scroll_marker=io.open(out..'/farm-scroll')
+  if scroll_marker then
+   scroll_marker:close()
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-native.lua$','farm-scroll-native.lua')
+   assert(loadfile(source))(out,view,records,b)
+   return
+  end
   local cold=semantic_rows()
   local function capture(name)
    g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0

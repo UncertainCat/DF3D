@@ -11,30 +11,37 @@ var icons: Dictionary={}
 var first:=0
 var identity:=Vector2i(-1,-1)
 var input_allowed: Callable
+var scrollbar
 
 func configure(source,model) -> void:
 	world=source;state=model;art.configure(source);picture.configure(source);theme=art.theme
 	colors=art.installed_palette(source.assets_root())
 	size=Vector2(456,300);texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
 	mouse_filter=Control.MOUSE_FILTER_STOP
+	scrollbar=preload("res://scripts/farm_scrollbar.gd").new();add_child(scrollbar);scrollbar.configure(source)
+	scrollbar.position=Vector2(440,0);scrollbar.size=Vector2(16,252);scrollbar.page=PAGE
+	scrollbar.input_allowed=available
+	scrollbar.row_changed.connect(func(value):first=value;queue_redraw())
 	state.changed.connect(refresh);refresh()
 
 func refresh() -> void:
 	rows=[];icons.clear()
 	if state==null:return
 	var next:=Vector2i(state.building_id,state.season)
-	if next!=identity:first=0;identity=next
+	if next!=identity:first=0;identity=next;scrollbar.dragging=false
 	if not state.snapshot.is_empty():
 		rows=[{"id":-1,"name":"Leave fallow"}]
 		rows.append_array(state.choices())
 		for row in rows:
 			icons[row.id]=art.texture("FARMPLOT") if row.id==-1 else world.farm_crop_icon(row.raw_id)
-	first=clampi(first,0,maxi(0,rows.size()-PAGE));queue_redraw()
+	first=clampi(first,0,maxi(0,rows.size()-PAGE));scrollbar.set_rows(rows.size(),first)
+	if not available():scrollbar.dragging=false
+	queue_redraw()
 
 func available() -> bool:
 	return state!=null and state.phase==state.Phase.Ready and state.ticket==0 and (not input_allowed.is_valid() or input_allowed.call())
 
-func checkbox_rect(index: int) -> Rect2:return Rect2(424,index*36,32,36)
+func checkbox_rect(index: int) -> Rect2:return Rect2(408 if rows.size()>PAGE else 424,index*36,32,36)
 func fertilizer_rect(seasonal: bool) -> Rect2:return Rect2(216 if seasonal else 8,264,24,36)
 
 func _gui_input(event: InputEvent) -> void:
@@ -65,7 +72,7 @@ func _draw() -> void:
 	var selected: int=state.snapshot.seasonal_crops[state.season]
 	for index in mini(PAGE,rows.size()-first):
 		var row: Dictionary=rows[first+index];var top:=Vector2(0,index*36)
-		patch(art.texture("BUTTON_RECTANGLE"),top,57)
+		patch(art.texture("BUTTON_RECTANGLE"),top,55 if rows.size()>PAGE else 57)
 		patch(picture.texture(false),top,5)
 		var icon: Texture2D=icons.get(row.id)
 		if icon!=null:draw_texture_rect(icon,Rect2(top+Vector2(2,2),Vector2(32,32)),false)
@@ -75,7 +82,7 @@ func _draw() -> void:
 		if name.length()>=42:name=name.left(38)+"..."
 		label(name,top+Vector2(56,24),color)
 		if row.id>=0 and not row.seeds_available:label("No seeds",top+Vector2(56,36),12)
-		option(row.id==selected,top+Vector2(424,0))
+		option(row.id==selected,checkbox_rect(index).position)
 	var fertilizing: bool=state.snapshot.current_fertilization+state.snapshot.pending_fertilization>=state.snapshot.max_fertilization
 	option(fertilizing,Vector2(8,264))
 	option(state.snapshot.seasonal_fertilization,Vector2(216,264))

@@ -41,8 +41,32 @@ Native renderer17f5f2..17f619 enables the lower divider when bottom minus top
 is at least44 grid rows;15143d..151451 sets those bounds to4 and grid height-4.
 Thus the ordinary sheet draws it from52 viewport rows (624 pixels), not at600.
 
-Header action ownership, rename/removal, crop-list scrolling beyond seven rows,
-main-scene lifecycle integration and live rendered edits remain incomplete.
+Protected `stockpile_storage_native.ps1 -FarmDiscovery -FarmScroll` capture181709
+uses surface designations on the owned unsaved farm footprint to obtain45 rows.
+Native choices and order match the semantic provider. Arrows move one row,
+track clicks move seven, and seven drag destinations produce first rows
+0/0/2/12/32/38/38. Standard/context scroll events over the body, context events
+over the scrollbar and an outside event leave the list unchanged. The capture
+preserves crop selections and the paused frame, restores tile designations,
+exits unsaved and verifies the source manifest. The scrollbar uses the native
+sheet's displayed-items scroll field; initial181516/181612 probes established
+coordinates and that diagnostic field before the final reference.
+
+The body now narrows rows and checkboxes by16 pixels for a scrollbar, keeping
+seven visible rows. `farm_scrollbar.gd` reuses the existing native scrollbar
+renderer and drag arithmetic while ignoring wheel events. Target/season changes
+reset scrolling; pending edits and owner gates block input. The recorded
+`native_farm.json.scroll_reference` contains test setup, provider rows and23
+RGB hashes. GPU `build/qa/farm-scroll-final` matches every456x300 body crop,
+including first/last pages, and verifies actual arrow/track/drag events, ignored
+wheel input, crop identity after dragging, season reset and input gates.
+The existing farm body and twelve sheet comparisons also pass, with only the
+known three Godot diagnostics; core passes cleanly. Early pointer failures were
+test defects: missing wheel release and integer-versus-JSON-float comparison.
+They are not acceptance. The final tail-page capture was visually inspected.
+
+Header action ownership, rename/removal, main-scene lifecycle integration and
+live rendered edits remain incomplete.
 The staged sheet is not exposed as a completed gameplay screen.
 
 ## Locations integration verification

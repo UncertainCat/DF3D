@@ -17533,5 +17533,119 @@
       ],
       "save_preservation": "Owned source unchanged"
     }
+  },
+  "item_disconnect_reference": {
+    "scope": "Critter-item assignment with same-process disconnect and explicit reopening",
+    "cases": [
+      {
+        "evidence": "build/areas-acceptance-20261028-153414",
+        "mode": "queued",
+        "target": "item",
+        "outcome": "not_sent",
+        "status": "passed_with_known_issues (rendering-thread notice)",
+        "save_preservation": "Verified unchanged manifests for 2 save directories.",
+        "native_checks": [
+          {
+            "request": {
+              "assign": false,
+              "id": 1509,
+              "item_id": 5969,
+              "op": "item_assignment"
+            },
+            "response": {
+              "assigned": false,
+              "assigned_count": 0,
+              "item": 5969,
+              "status": "passed"
+            }
+          },
+          {
+            "request": {
+              "assign": false,
+              "id": 1509,
+              "item_id": 5969,
+              "op": "item_assignment"
+            },
+            "response": {
+              "assigned": false,
+              "assigned_count": 0,
+              "item": 5969,
+              "status": "passed"
+            }
+          },
+          {
+            "request": {
+              "assign": false,
+              "id": 1509,
+              "item_id": 5969,
+              "op": "item_assignment"
+            },
+            "response": {
+              "assigned": false,
+              "assigned_count": 0,
+              "item": 5969,
+              "status": "passed"
+            }
+          }
+        ],
+        "capture_sha256": "f3521e291f4fffea3771cf1c03619b8e759084e54d7895a94350b2264323c694"
+      },
+      {
+        "evidence": "build/areas-acceptance-20261028-153605",
+        "mode": "sent",
+        "target": "item",
+        "outcome": "unknown",
+        "status": "passed_with_known_issues (rendering-thread notice)",
+        "save_preservation": "Verified unchanged manifests for 2 save directories.",
+        "native_checks": [
+          {
+            "request": {
+              "assign": true,
+              "id": 1509,
+              "item_id": 5969,
+              "op": "item_assignment"
+            },
+            "response": {
+              "assigned": true,
+              "assigned_count": 1,
+              "item": 5969,
+              "status": "passed"
+            }
+          },
+          {
+            "request": {
+              "assign": true,
+              "id": 1509,
+              "item_id": 5969,
+              "op": "item_assignment"
+            },
+            "response": {
+              "assigned": true,
+              "assigned_count": 1,
+              "item": 5969,
+              "status": "passed"
+            }
+          },
+          {
+            "request": {
+              "assign": true,
+              "id": 1509,
+              "item_id": 5969,
+              "op": "item_assignment"
+            },
+            "response": {
+              "assigned": true,
+              "assigned_count": 1,
+              "item": 5969,
+              "status": "passed"
+            }
+          }
+        ],
+        "capture_sha256": "67d22e036e96e8a4b328fcdcf024fd059d8afed34cbd5847916f053b61cc25c4"
+      }
+    ],
+    "limitations": [
+      "Item assignment across producer replacement is not covered."
+    ]
   }
 }

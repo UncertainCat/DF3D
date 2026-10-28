@@ -3021,8 +3021,24 @@ work, reconnect to the same fortress, and verify no new picker tickets or replay
 These terminal cases clean up through the native verifier; ordinary lanes retain
 UI removal coverage. Both pass with known Godot diagnostics, unchanged source/
 clone manifests and unsaved exits. Core19/19 passes in
-`build/qa/animal-disconnect-core`. Critter-item mutation disconnect remains
-outside these unit-assignment cases.
+`build/qa/animal-disconnect-core`. Critter items have separate coverage below.
+
+`-AnimalTarget item -AnimalDisconnect queued|sent` exercises the critter item
+through keyboard selection and Enter, followed by transport loss and explicit
+launcher/map/picker reopening. Protected20261028-153414 retires the queued
+mutation as not_sent and retains no zone assignment. Sent153605 waits for DF
+completion without consuming its receipt, then retires it as Unknown. Native
+readback before disconnect, after reconnect and after reopening verifies the
+exact item reference count, reciprocal zone membership, absence from other zones
+and cages, and unchanged physical containment. Reconnection issues no area replay;
+fresh checkboxes agree with DF. Both reopened captures were inspected with all
+visible images loaded. `item_disconnect_reference` retains bounded evidence.
+The initial153059 run verified retirement and membership but timed out waiting
+for offscreen portraits; the corrected check waits only for visible demand.
+Both final runs pass with the known rendering-thread notice, preserve both save
+manifests and close owned DF6368/167460 unsaved. Core and candidate-state tests
+pass in `build/qa/animal-item-disconnect`. Runtime behavior is unchanged. Item
+mutation across producer replacement remains outside these same-process cases.
 
 Explicit same-process reopening passes in `areas-acceptance-20261027-151837`
 (sent, DF165384): actual launcher/map selection opens fresh candidates, the

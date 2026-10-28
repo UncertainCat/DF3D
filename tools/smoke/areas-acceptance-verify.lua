@@ -852,7 +852,7 @@ elseif request.op=='item_assignment_before' then
  for _,cage in ipairs(df.global.world.buildings.other.CAGE)do
   if contains(cage.assigned_items,item.id)then cages=cages+1 end
  end
- assert(cages>0,'item fixture needs a cage assignment')
+ assert(cages>0 or request.allow_uncaged==true,'item fixture needs a cage assignment')
  _G.df3d_item_containment={id=item.id,refs=canonical(refs)}
  result.item=item.id;result.cage_assignments=cages
 elseif request.op=='item_assignment' then

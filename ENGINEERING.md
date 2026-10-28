@@ -336,13 +336,26 @@ seven native clicks with the semantic helper, using two unassigned PlantSeeds
 jobs and one FertilizeField job per case. All14 observations agree; five invalid
 requests are rejected. Main-interface/GPS objects and the recorded RNG ranges
 remain unchanged around semantic calls. This is not an all-heap nonmutation
-claim or acceptance for attached workers/items. DF172400 exits unsaved with the
+claim. Attached worker/seed coverage is established below. DF172400 exits unsaved with the
 source manifest unchanged. `native_farm.json.crop_action_reference` retains
 bounded effects and provenance. MSVC build/install passes with bridge SHA256
 `B7F474AF0B7A0D0E19242667FDADABC7CB1FF87124B89B6FFBCF59A232A490BB`.
 Core passes cleanly in `build/qa/farm-crop-native-transaction`.
 The existing Lua production adapter still writes only the crop and must be
 replaced when this provider is integrated into management transport and UI.
+
+Protected `stockpile-storage-native-farm-discovery-20261028-155730` repeats the
+seven native/semantic pairs with a citizen assigned to one planting job and a
+seed reserved through a Hauled job-item reference. Cancellation removes the
+planting jobs from both world and farm, clears the worker's current job and
+releases the seed's in-job flag and specific reference. Same-crop, warned and
+future-season choices preserve that ownership; unrelated jobs and season
+values remain intact. All14 observations pass, including the existing semantic
+UI/GPS/RNG guards and invalid requests. DF165812 exits unsaved with the source
+manifest unchanged. `native_farm.json.crop_job_ownership_reference` retains
+these controlled fixture effects; natural planting completion is not tested.
+No runtime or protocol changes were needed for this extension.
+Core passes cleanly in `build/qa/farm-crop-job-ownership`.
 
 Next extend the reference to mixed footprints, season boundaries and seed
 flags, and locate the remaining native list semantics. Do not replace

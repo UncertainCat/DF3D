@@ -182,6 +182,17 @@ local script=require('gui.script')
    assert(index,'native action row missing: '..case.name)
    local planting={add_job(df.job_type.PlantSeeds),add_job(df.job_type.PlantSeeds)}
    local other=add_job(df.job_type.FertilizeField)
+   local worker,seed
+   for _,unit in ipairs(df.global.world.units.active)do
+    if dfhack.units.isCitizen(unit) and not unit.job.current_job then worker=unit;break end
+   end
+   for _,item in ipairs(df.global.world.items.other.SEEDS)do
+    if not item.flags.in_job and #item.specific_refs==0 then seed=item;break end
+   end
+   assert(worker and seed,'missing free worker/seed fixture')
+   assert(dfhack.job.addWorker(find_job(planting[1]),worker))
+   assert(dfhack.job.attachJobItem(find_job(planting[1]),seed,df.job_role_type.Hauled,-1,-1))
+   assert(worker.job.current_job.id==planting[1] and seed.flags.in_job and #seed.specific_refs==1)
    local before={};for i=0,3 do before[#before+1]=b.plant_id[i]end
    if method=='native' then click(872,214+index*36)
    else
@@ -215,9 +226,13 @@ local script=require('gui.script')
     assert(attached==alive[#alive],'farm/world job membership differs')
    end
    assert(find_job(other),'native removed nonplanting job')
+   local worker_job=worker.job.current_job and worker.job.current_job.id or -1
+   assert(worker_job==(case.cancel and -1 or planting[1]),'worker ownership differs')
+   assert(seed.flags.in_job==not case.cancel and #seed.specific_refs==(case.cancel and 0 or 1),'seed reservation differs')
    records[#records+1]={name='farm-job-action',case=case.name,method=method,season=case.season,crop=case.crop,
     before=before,after=after,planting_job_ids=planting,planting_jobs_alive=alive,
-    other_job_id=other,other_job_alive=true,fixture_jobs_unassigned=true}
+    other_job_id=other,other_job_alive=true,worker_id=worker.id,worker_job=worker_job,
+    seed_id=seed.id,seed_in_job=seed.flags.in_job,seed_specific_refs=#seed.specific_refs}
    for _,id in ipairs{planting[1],planting[2],other}do
     local job=find_job(id);if job then assert(dfhack.job.removeJob(job))end
    end

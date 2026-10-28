@@ -316,6 +316,38 @@ The pointer-free tests cover14 revision inputs and36 fertilizer fault cases,
 alongside the existing32 crop cases. These inject callbacks, not faults inside
 DF. Rendered farm UI and queued/sent/disconnect/replacement remain unverified.
 
+### Native farm presentation controller
+
+`farm_state.gd` owns target/tab selection, receipt authority and display order
+through the shared semantic action service. Initial open reads the current
+native season before exposing a tab. Edits carry the exact displayed revision
+with one outstanding intent and no optimistic effect. Fresh successful snapshots
+retain their provider order and revision unchanged; a separate row-ID list keeps
+native entry positions stable until a tab rebuild. Choices always come from the
+latest native snapshot. No seed or growth eligibility is reconstructed here.
+
+Closing/changing target detaches old tickets: queued writes are canceled;
+sent writes drain through the service without reviving the old observer.
+Rejected, Stale and Unknown clear usable snapshot authority. Explicit recovery
+reads fresh facts and never replays a write. Epoch loss retires the target.
+The shared service now classifies typed FarmEditOutcome.Unknown as detached
+uncertainty, consistent with its existing area/construction handling.
+
+Core, farm-state and shared-service tests pass cleanly in
+`build/qa/farm-state-final`. Protected
+`areas-acceptance-20261028-171905 -FarmControllerOnly` passes current-tab
+initialization, queued/sent tab retirement, stable post-edit row order,
+crop/fertilizer effects, an external native crop change causing a stale refusal,
+fresh-read recovery, and invalid-target retirement. Six observed completions
+and nine native checks preserve paused frame/menu/tab state; both save manifests
+are unchanged and DF176504 exits unsaved. The result is clean and recorded in
+`native_farm.json.controller_reference`. The first171739 attempt omitted the
+new action service's bootstrap Catalog claim and is not acceptance.
+
+This is headless controller acceptance. Native panel rendering, installed
+artwork, actual map-selection integration, and real disconnect/replacement
+tests remain unfinished. The farm screen is not exposed.
+
 ### Native farm fertilization reference
 
 `stockpile_storage_native.ps1 -FarmDiscovery -FarmFertilization` isolates

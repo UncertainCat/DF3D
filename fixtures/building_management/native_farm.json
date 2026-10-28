@@ -7689,5 +7689,32 @@
     "No rendered farm UI or queued/sent disconnect/replacement coverage",
     "Post-effect Unknown tests inject callbacks, not faults inside native DF"
   ]
+},
+  "controller_reference": {
+  "source": "build/areas-acceptance-20261028-171905",
+  "owned_df_pid": 176504,
+  "owned_exit_unsaved": true,
+  "save_manifests_unchanged": 2,
+  "status": "passed",
+  "management_version": 83,
+  "results": {
+    "completed_observers": 6,
+    "display_order_retained": true,
+    "initial_current_tab": true,
+    "native_checks": 9,
+    "queued_tab_change_no_effects": true,
+    "sent_tab_change_effect_without_old_observer": true,
+    "stale_external_change_refused": true
+  },
+  "inputs": {
+    "presentations/godot/project/scripts/farm_state.gd": "6ab288836fb1f08243ef0772392c9fdc97fedba1301e28fbdaa6cc7b8674e6f9",
+    "presentations/godot/project/scripts/semantic_action_service.gd": "86be8c15c86cd884b408e0e4ee8f5264306c87bc822ef68196174ca3802da7a7",
+    "presentations/godot/project/tests/farm_controller_live.gd": "2ac79dd8d29f85c266c9a2551e2610fe7a7a21756063ade962a5f6996e826818",
+    "tools/smoke/farm-edit-verify.lua": "6575a91cbde7350f7b5fc3fe748e99b52442738fdb5d92ff83e9a1cee9f06410"
+  },
+  "limitations": [
+    "Headless controller acceptance, not rendered native panel or main-scene exposure",
+    "Real transport disconnect/replacement not injected; epoch and late-reply faults covered by deterministic service/controller tests"
+  ]
 }
 }

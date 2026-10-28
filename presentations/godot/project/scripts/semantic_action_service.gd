@@ -165,6 +165,7 @@ func poll(delta: float = 0.0) -> void:
 			_active = 0
 			if (int(state.get("area",{}).get("location_entry_outcome",0)) == Contract.LocationEntryOutcome.Unknown
 				or int(state.get("area",{}).get("location_edit_outcome",0)) == Contract.LocationEditOutcome.Unknown
+				or int(state.get("production",{}).get("farm_edit_outcome",0)) == Contract.FarmEditOutcome.Unknown
 				or int(state.get("construction",{}).get("outcome",0)) == Contract.ConstructionOutcome.Unknown):
 				state["outcome"] = "unknown"
 			elif int(state.get("construction",{}).get("outcome",0)) == Contract.ConstructionOutcome.Partial:

@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "farm_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/farm_state_test.gd",
+      "completion": "^FARM_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "continuing_agreements_hud_test",
       "lane": "core",
       "kind": "godot",
@@ -3591,6 +3600,11 @@
       "path": "presentations/godot/project/tests/reload_lane_live.gd",
       "status": "manual",
       "reason": "Protected live restarts through tools/smoke/reload_lane_test.ps1; prepared input DF3D_RELOAD_LANE."
+    },
+    {
+      "path": "presentations/godot/project/tests/farm_controller_live.gd",
+      "status": "manual",
+      "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmControllerOnly -SaveId df3d-areas-* verifies real farm controller, tab retirement, crop/fertilizer effects and stale external changes. No rendered UI or transport disconnect claim."
     },
     {
       "path": "presentations/godot/project/tests/farm_edit_live.gd",

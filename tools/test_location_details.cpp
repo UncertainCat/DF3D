@@ -1,6 +1,41 @@
 #include "doctest.h"
 #include "../bridge/plugin/location_details_native.h"
 
+TEST_CASE("Recognition cannot publish success or retry authority after uncertain effects") {
+  using namespace df3d_area;
+  LocationRecognitionReceipt before;before.revision=19;
+  before.facts.siteId=651;before.facts.locationId=0;before.facts.religionId=383;
+  for(int rank:{0,1})for(int fault=0;fault<11;++fault) {
+    before.facts.rank=rank;
+    int effects=0,reads=0;
+    const auto result=finishLocationRecognition(before,[&] {
+      ++effects;
+      if(fault==1)throw 1;
+      return fault==2?LocationRecognitionOutcome::Unknown:LocationRecognitionOutcome::Applied;
+    },[&]() -> std::optional<LocationRecognitionReceipt> {
+      ++reads;
+      if(fault==3)throw 2;
+      if(fault==4)return std::nullopt;
+      auto receipt=before;receipt.revision=20;receipt.facts.rank=rank+1;
+      if(fault==6)++receipt.facts.siteId;
+      if(fault==7)++receipt.facts.locationId;
+      if(fault==8)++receipt.facts.religionId;
+      if(fault==9)receipt.facts.rank=rank;
+      return receipt;
+    },[&](const auto&) {if(fault==10)throw 3;return fault!=5;});
+    CAPTURE(rank);CAPTURE(fault);CHECK(effects==1);CHECK(reads==((fault==1 || fault==2)?0:1));
+    CHECK(result.mutated);CHECK(result.receipt.has_value()==(fault==0));
+    CHECK(result.outcome==(fault==0?LocationRecognitionOutcome::Applied:LocationRecognitionOutcome::Unknown));
+  }
+  for(auto refusal:{LocationRecognitionOutcome::Rejected,LocationRecognitionOutcome::Stale}) {
+    int calls=0;
+    const auto result=finishLocationRecognition(before,[&] {++calls;return refusal;},
+        [&]() -> std::optional<LocationRecognitionReceipt> {FAIL("Refusal must not refresh");return before;},
+        [](const auto&) {return true;});
+    CHECK(calls==1);CHECK_FALSE(result.mutated);CHECK_FALSE(result.receipt);CHECK(result.outcome==refusal);
+  }
+}
+
 TEST_CASE("Recognition primary row distinguishes native tier guidance and inclusive population boundary") {
   using namespace df3d_area;
   LocationRecognitionFacts facts;facts.rank=1;facts.worshippers=53;

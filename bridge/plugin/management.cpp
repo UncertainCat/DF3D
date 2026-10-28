@@ -2491,19 +2491,15 @@ void run(color_ostream& out) {
       receipt.reset();areaPage.locationEditOutcome=m::LocationEditOutcome::Stale;
     }
     if(receipt && apply) {
-      mutated=true;areaPage.locationEditOutcome=m::LocationEditOutcome::Unknown;
-      try {
-        const auto result=df3d_area::recognizeNativeLocation(a.location_site_id(),a.location_id(),a.expected_revision());
-        receipt.reset();
-        if(result==df3d_area::LocationRecognitionOutcome::Applied) {
-          receipt=df3d_area::observeNativeLocationRecognitionReceipt(a.location_site_id(),a.location_id());
-          if(receipt && publishableLocationRecognition(*receipt))areaPage.locationEditOutcome=m::LocationEditOutcome::Completed;
-          else receipt.reset();
-        } else if(result!=df3d_area::LocationRecognitionOutcome::Unknown) {
-          mutated=false;areaPage.locationEditOutcome=result==df3d_area::LocationRecognitionOutcome::Stale?
-              m::LocationEditOutcome::Stale:m::LocationEditOutcome::Rejected;
-        }
-      } catch(...) {receipt.reset();}
+      auto result=df3d_area::finishLocationRecognition(*receipt,[&] {
+        return df3d_area::recognizeNativeLocation(a.location_site_id(),a.location_id(),a.expected_revision());
+      },[&] {
+        return df3d_area::observeNativeLocationRecognitionReceipt(a.location_site_id(),a.location_id());
+      },publishableLocationRecognition);
+      mutated=result.mutated;receipt=std::move(result.receipt);
+      areaPage.locationEditOutcome=result.outcome==df3d_area::LocationRecognitionOutcome::Applied?m::LocationEditOutcome::Completed:
+          result.outcome==df3d_area::LocationRecognitionOutcome::Unknown?m::LocationEditOutcome::Unknown:
+          result.outcome==df3d_area::LocationRecognitionOutcome::Stale?m::LocationEditOutcome::Stale:m::LocationEditOutcome::Rejected;
     }
     if(receipt){areaPage.locationRecognition=std::move(receipt);status=m::ManagementStatus::Ok;}
     publish();return;

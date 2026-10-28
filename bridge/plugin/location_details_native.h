@@ -70,6 +70,32 @@ std::unique_ptr<df::entity_position> prepareNativeLocationRecognitionPosition(in
 struct LocationRecognitionReceipt { LocationRecognitionFacts facts; uint64_t revision=0; };
 std::optional<LocationRecognitionReceipt> observeNativeLocationRecognitionReceipt(int32_t siteId,int32_t locationId);
 enum class LocationRecognitionOutcome : uint8_t { Rejected, Applied, Unknown, Stale };
+struct LocationRecognitionResult {
+  LocationRecognitionOutcome outcome=LocationRecognitionOutcome::Unknown;
+  std::optional<LocationRecognitionReceipt> receipt;
+  bool mutated=true;
+};
+// The caller validates the current receipt before entry. Once apply begins,
+// failed or inconsistent observation is Unknown, never a safe-to-retry refusal.
+template<class Apply,class Observe,class Valid>
+LocationRecognitionResult finishLocationRecognition(const LocationRecognitionReceipt& before,
+    Apply apply,Observe observe,Valid valid) {
+  LocationRecognitionResult result;
+  try {
+    const auto outcome=apply();
+    if(outcome==LocationRecognitionOutcome::Applied) {
+      auto receipt=observe();
+      if(receipt && valid(*receipt) && receipt->facts.siteId==before.facts.siteId &&
+          receipt->facts.locationId==before.facts.locationId && receipt->facts.religionId==before.facts.religionId &&
+          receipt->facts.rank==before.facts.rank+1) {
+        result.receipt=std::move(receipt);result.outcome=LocationRecognitionOutcome::Applied;
+      }
+    } else if(outcome!=LocationRecognitionOutcome::Unknown) {
+      result.mutated=false;result.outcome=outcome;
+    }
+  } catch(...) {result.receipt.reset();}
+  return result;
+}
 // Staged complete semantic action, invoked only at a DF safe point. The
 // current revision is required; transport epoch binding remains necessary before
 // exposing this to the viewer. The receipt binds semantic intent dependencies,

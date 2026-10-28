@@ -2098,7 +2098,8 @@ The wide screenshot and composition fixture independently establish eight rows.
 
 Temple recognition has a typed semantic action and integrated Details control,
 with scoped native, rendered and lifecycle evidence below. Remaining gaps include
-responsive/held-button reference and post-effect failure injection. Petition
+responsive/held-button reference. Post-effect transport handling has controlled
+fault coverage below; faults inside a live native transaction are not injected. Petition
 progress/warnings belong to the implemented global tracker. Existing HIGH_PRIEST
 reuse is verified separately below. Supported-build native renderer
 RVA3b6c18..3b7483 checks the religion's `PRIEST`/`HIGH_PRIEST` position codes and
@@ -2326,7 +2327,7 @@ source manifests. Installed DLL SHA256 is
 `4724b625143dcb0303d02ede63af451c03079e4b278bbb2039c46021e02bf761`, protocol72.
 MSVC build passes; root/core evidence is `build/qa/location-recognition-action`.
 Existing HIGH_PRIEST-template reuse has separate evidence below. These runs do not
-establish empty-deity/word fallbacks, every personality field, failure injection after effects begin, or the
+establish empty-deity/word fallbacks, every personality field, live native fault injection, or the
 remaining transport and rendered lifecycle work. Zones and
 Locations remain staged.
 
@@ -2412,8 +2413,29 @@ the already rebuilt management73 viewer. MSVC and root/core
 transport, not first/empty-priest transport variants, oversized-agreement or
 post-effect-refresh failure injection, disconnect/restart/late replies or a
 rendered recognition control. Those initial transport limits are addressed by
-the scene/lifecycle evidence below; oversized-agreement and post-effect-refresh
-failure injection remain open. Zones stays hidden.
+the scene/lifecycle and controlled fault evidence below; oversized-agreement
+live coverage remains open. Zones stays hidden.
+
+The transport completion path uses `finishLocationRecognition`. An Applied
+native result is publishable only after a valid fresh receipt identifies the
+same site, temple and religion and shows the next priesthood rank. Exceptions,
+Unknown, missing/unpublishable refresh and inconsistent identity/rank keep
+`mutated=true`, return Unknown and discard the receipt. Rejected/Stale results
+skip refresh and report no mutation. No callback is retried.
+Root tests exercise this same helper for both ranks with injected mutation,
+observation and validation exceptions, absent data and each identity/rank
+mismatch. `location_recognition_state_test` separately verifies that Unknown
+clears authority and cannot replay. These are callback faults, not injected
+failures inside a live DF transaction. Core and state tests pass in
+`build/qa/recognition-post-effect-final`; the first run failed a test macro's
+single-argument syntax and is not acceptance.
+The MSVC bridge build passes. Protected main-scene20261028-152724 verifies the
+normal promotion through the rebuilt transport, native effect readback,
+Details refresh, inert completed click and Back. The post-action image was
+inspected. It passes with only the known rendering-thread notice; both save
+manifests are unchanged and DF177500 exits unsaved. Installed plugin SHA256 is
+`F9EF3AE32E0B58FE810DDCB7B841238DA2AEA22C4F8F16A3E58B18D4BF861119`;
+management remains80.
 
 `location_recognition_state.gd` owns the recognition receipt independently of
 Details. It retains the prior display during apply, accepts one explicit intent,

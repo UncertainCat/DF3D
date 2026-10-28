@@ -65,6 +65,30 @@ known three Godot diagnostics; core passes cleanly. Early pointer failures were
 test defects: missing wheel release and integer-versus-JSON-float comparison.
 They are not acceptance. The final tail-page capture was visually inspected.
 
+Protected `stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader` capture182610
+records rename/removal behavior in `native_farm.json.header_reference`. Typing
+updates the building name immediately. Enter ends editing without closing the
+sheet; Escape and right-click retain the name and close it. Reopening retires
+editing.80 ASCII input tokens stop at30 characters; backspace can clear the name,
+restoring the default title. This establishes ASCII token handling, not Unicode
+or real window-key behavior. Removal creates one DestroyBuilding job and replaces
+the crop controls/header actions with a removal status and Cancel removal.
+Cancellation removes that job and restores the farm controls. Native removal and
+rename screenshots were inspected. The run preserves crop selections and frame,
+restores the original empty name, cancels removal, exits unsaved and verifies the
+source manifest. Initial182336 failed because its script assumed Escape kept the
+sheet open; it is not acceptance.182427 established reopening before the final
+asserted capture182610.
+
+Building rename has no current semantic command. The existing construction
+Inspect/Remove contract supports removal/cancellation but omits the job state
+needed by the native replacement panel. Renderer180c3c..180de1 checks the first
+building job: suspended flags take precedence; otherwise native predicate
+`d02850..d0289b` identifies a worker reference (virtual type0x13), suppressing
+Removal inactive when present. This helper accepts a job pointer and does not
+read UI scratch. It remains a candidate pending bridge exposure and live
+suspended/worker variants; do not infer status from a queued command.
+
 Header action ownership, rename/removal, main-scene lifecycle integration and
 live rendered edits remain incomplete.
 The staged sheet is not exposed as a completed gameplay screen.

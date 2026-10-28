@@ -130,6 +130,13 @@ local script=require('gui.script')
    end
   end if found then break end end
   assert(found,'farm tile not visible');capture('farm-selected')
+  local header_marker=io.open(out..'/farm-header')
+  if header_marker then
+   header_marker:close()
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-native.lua$','farm-header-native.lua')
+   assert(loadfile(source))(out,view,records,b)
+   return
+  end
   local resize_marker=io.open(out..'/farm-resize')
   if resize_marker then
    resize_marker:close()

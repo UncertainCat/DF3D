@@ -86,8 +86,25 @@ needed by the native replacement panel. Renderer180c3c..180de1 checks the first
 building job: suspended flags take precedence; otherwise native predicate
 `d02850..d0289b` identifies a worker reference (virtual type0x13), suppressing
 Removal inactive when present. This helper accepts a job pointer and does not
-read UI scratch. It remains a candidate pending bridge exposure and live
-suspended/worker variants; do not infer status from a queued command.
+read UI scratch. `farmHeader` now calls the native virtual name method and the
+fingerprinted worker predicate with owned output strings. Native formatter
+52d650 then formats an owned caption copy, preserving the raw custom name. The diagnostic
+`df3d farm-header-read <id>` returns names and removal/suspended/worker facts;
+it rejects malformed, missing, nonfarm and hidden targets. There is no transport
+contract or rename write yet, and a queued command is not evidence of status.
+
+Protected header183652 compares this helper during every rename/removal capture,
+including owned suspended, worker-reference and combined variants. All nonediting
+captions match native glyphs, including lower farm becoming Lower farm. Native shows
+Removal suspended. when suspended even with a worker reference; without suspension,
+the reference suppresses Removal inactive. This is controlled reference setup,
+not evidence of actual worker execution. Reads leave the guarded farm/job/ref,
+sheet/plotinfo structures and name/draft strings unchanged. The setup is restored,
+removal cancelled, and the owned process exits unsaved with source manifest
+unchanged. `header_reference.semantic_reference` retains facts and PNG hashes.
+The suspended-worker capture was inspected. MSVC build/install succeeds; core
+passes in `build/qa/farm-header-semantic-final`. Management84 is unchanged. The native
+per-character rename mutation path and its transport/lifecycle remain pending.
 
 Header action ownership, rename/removal, main-scene lifecycle integration and
 live rendered edits remain incomplete.

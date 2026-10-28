@@ -10950,7 +10950,313 @@
       "inactive": "Only if not suspended and first job lacks native worker-ref predicate d02850; Removal inactive., palette14.",
       "worker_predicate_rva": "0xd02850..0xd0289b",
       "worker_predicate_input": "job pointer; scans general_refs for virtual type0x13. No native UI scratch.",
-      "runtime_status": "Candidate only; not yet exposed or live variant-verified."
+      "runtime_status": "Read-only native farmHeader helper and diagnostic CLI verified by semantic_reference. Transport/rename writes and actual worker execution remain unfinished."
+    },
+    "semantic_reference": {
+      "source": "build\\stockpile-storage-native-farm-discovery-20261028-183652",
+      "inputs": [
+        {
+          "Algorithm": "SHA256",
+          "Hash": "711FC605B3FD73E45336EC12031D381A24AF2E6F0BA3886BC46603A212E75B1C",
+          "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "EE4CBD7312C50FF995D15689673B3A8B1F2D69E36F20CCBA23EAEE0670198A9B",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "8E6A188C08633357053826BA66416582D2F589B4095F8594BF72BBD757C4E529",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-multi-discovery-native.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "7B7C36704C1807DDCE63FC1ECD3DEDCFB370DA1F900A859FF002431F6D8591F6",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-native.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "FD97E167EDE5243E28597B65D9E410BA71A2CBA1A170D47E63B692039C61011E",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-scroll-native.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "30C3487043A644855CB0E6971C76255AD6DBA45E2A1F2D4699447CEEF88C9573",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-header-native.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "37D24F451F76F5D9B56ECA72507A5C113E5D72D4C5B1C14EDA03FD9A07A23516",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\production.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "87D3E0E1A8AECA3341B9AC05D2849649DD4E6D1C96D751560DAE2FA3B3582303",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-owner-native.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "989639AA8725A903BC9B791015984A400D64745CFB9F415AD08F329C5B273362",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-animals-native.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "F35A0E403510759D754631C217CA4D69BE7ED0DB3EAB7FB9B1D544F005B127D2",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.ps1"
+        }
+      ],
+      "scope": "Read-only pinned native name/worker routines. Header reads guard farm, jobs, general refs, sheet and plotinfo structures plus name/draft strings. Suspended and worker-reference variants use owned paused test setup; worker reference is not actual AI/job execution. Setup restored before native cancellation. Negative/missing/malformed/nonfarm/hidden targets refuse. Source unchanged; owned unsaved exit. Native formatter52d650 is applied to an owned copy after virtual getName; every nonediting caption matches native glyphs, including lowercase custom name lower farm -> Lower farm. Editing cursor/draft formatting is not a transport claim.",
+      "records": [
+        {
+          "name": "farm-header-rename-empty",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Farm Plot",
+            "native_name": "Farm Plot",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "78aacb01ab5824f156a5e9d48c8affb99a703c5f05eda1df54629cf39662404d"
+        },
+        {
+          "name": "farm-header-rename-draft",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "Farm test",
+            "has_worker": false,
+            "header_name": "Farm test",
+            "native_name": "Farm test",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "aa5a49f1c0883b28346c1fed169ab6f7cd469a7267d744294142865922682313"
+        },
+        {
+          "name": "farm-header-rename-escape",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "Farm test",
+            "has_worker": false,
+            "header_name": "Farm test",
+            "native_name": "Farm test",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "707338f5a83ef7897e9da7f644a418a9e4a490125b5152c23088d640937f8754"
+        },
+        {
+          "name": "farm-header-reopened",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "Farm test",
+            "has_worker": false,
+            "header_name": "Farm test",
+            "native_name": "Farm test",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "387e445b253914054f66a613e0408b36ee3d2791849484d6866b3a236debef0f"
+        },
+        {
+          "name": "farm-header-renamed",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "Farm test",
+            "has_worker": false,
+            "header_name": "Farm test",
+            "native_name": "Farm test",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "387e445b253914054f66a613e0408b36ee3d2791849484d6866b3a236debef0f"
+        },
+        {
+          "name": "farm-header-rename-right",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "Farm test appended",
+            "has_worker": false,
+            "header_name": "Farm test appended",
+            "native_name": "Farm test appended",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "707338f5a83ef7897e9da7f644a418a9e4a490125b5152c23088d640937f8754"
+        },
+        {
+          "name": "farm-header-name-limit",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "has_worker": false,
+            "header_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "native_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "794f18c8d258cfd522e32f2c3ed1d4294030ed3812f33315196eb7ec24af4e96"
+        },
+        {
+          "name": "farm-header-long-name",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "has_worker": false,
+            "header_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "native_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "794f18c8d258cfd522e32f2c3ed1d4294030ed3812f33315196eb7ec24af4e96"
+        },
+        {
+          "name": "farm-header-lower-name",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "lower farm",
+            "has_worker": false,
+            "header_name": "Lower farm",
+            "native_name": "lower farm",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "3e129650e40e4e27fe12ccb201000c038a04bdaea8e405f69738d2cc3fd486c6"
+        },
+        {
+          "name": "farm-header-name-cleared",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Farm Plot",
+            "native_name": "Farm Plot",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+        },
+        {
+          "name": "farm-header-remove",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Farm Plot",
+            "native_name": "Farm Plot",
+            "removing": true,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [
+            "Removal inactive."
+          ],
+          "png_sha256": "3db08f418cbc69e0a0b72d60fdab9055c1397b5dd30d4f6c8c83521cd0529767"
+        },
+        {
+          "name": "farm-header-remove-suspended",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Farm Plot",
+            "native_name": "Farm Plot",
+            "removing": true,
+            "suspended": true
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [
+            "Removal suspended."
+          ],
+          "png_sha256": "8daf8fd37d1a425ae035a389d3511f26f5652890c00dc819f61d9ad6a1f1255f"
+        },
+        {
+          "name": "farm-header-remove-worker",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "",
+            "has_worker": true,
+            "header_name": "Farm Plot",
+            "native_name": "Farm Plot",
+            "removing": true,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "2d0ab51403bebb143ff43f0c098fa5f9e7d1e9c8cf65e9d7070bfe617178a050"
+        },
+        {
+          "name": "farm-header-remove-suspended-worker",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "",
+            "has_worker": true,
+            "header_name": "Farm Plot",
+            "native_name": "Farm Plot",
+            "removing": true,
+            "suspended": true
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [
+            "Removal suspended."
+          ],
+          "png_sha256": "8daf8fd37d1a425ae035a389d3511f26f5652890c00dc819f61d9ad6a1f1255f"
+        },
+        {
+          "name": "farm-header-remove-restored",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Farm Plot",
+            "native_name": "Farm Plot",
+            "removing": true,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [
+            "Removal inactive."
+          ],
+          "png_sha256": "3db08f418cbc69e0a0b72d60fdab9055c1397b5dd30d4f6c8c83521cd0529767"
+        },
+        {
+          "name": "farm-header-cancel-removal",
+          "semantic": {
+            "building_id": 227,
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Farm Plot",
+            "native_name": "Farm Plot",
+            "removing": false,
+            "suspended": false
+          },
+          "guards_unchanged": true,
+          "native_status_lines": [],
+          "png_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9"
+        }
+      ]
     }
   }
 }

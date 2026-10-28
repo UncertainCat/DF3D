@@ -247,6 +247,28 @@ MSVC build/install passes with bridge SHA256
 Core passes cleanly in `build/qa/native-farm-read`. The new entry point is
 classified as a protected manual lane in the QA catalog. Protocol81 is unchanged.
 
+The live observer is now shared as `observeFarmSnapshot`; its content hash lives
+in the pointer-free `farm_transaction.h`. `finishFarmEdit` prepares the next
+transport integration: it validates a fresh receipt and expected revision before
+calling apply once, then verifies a publishable result with matching building,
+season, selected crop and unchanged other seasons. Same-crop and repeated-fallow
+success may retain the same content revision. Callback refusals mean no effects;
+an exception after entry or failed/inconsistent post-effect observation produces
+Unknown with no receipt and no retry. Transport world-epoch checks remain required.
+This helper is not yet connected to a viewer edit request.
+
+Core `build/qa/farm-edit-transaction` passes ten content-revision sensitivity
+cases and32 transaction cases covering apply/read/validation exceptions,
+refusals, stale/zero revisions and mismatched refreshed facts. These are
+controlled callback tests, not faults injected inside native DF.
+MSVC build/install passes with bridge SHA256
+`158738015BFEC42C26936EE33699D2DE38B0E65F87CF1AB7CBCED4F75025FACA`.
+Protected `areas-acceptance-20261028-162615 -FarmReadOnly` passes cleanly;
+all ten-read/two-refusal snapshots and revision-change/restoration results equal
+the prior161936 reference exactly. Both save manifests are unchanged and DF132684
+exits unsaved. `native_farm.json.transaction_observer_reference` retains this
+comparison and source hashes. Management81 and viewer behavior are unchanged.
+
 ### Native farm and workshop providers
 
 The existing `bridge/plugin/production.lua` adapter is not a complete native

@@ -6713,5 +6713,20 @@
       }
     },
     "scope": "Actual Godot-to-bridge seasonal read path, compared to the previously native-verified semantic choice provider. No native farm sheet is opened. Repeated tab order, controlled future-season selection change/restoration, invalid targets, unchanged native menu vectors/tab and paused frame are checked. This does not establish rendered UI or revision-checked edits."
+  },
+  "transaction_observer_reference": {
+    "capture": "build/areas-acceptance-20261028-162615",
+    "owned_df_pid": 132684,
+    "owned_exit_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "bridge_sha256": "158738015BFEC42C26936EE33699D2DE38B0E65F87CF1AB7CBCED4F75025FACA",
+    "prior_reference": "transport_read_reference",
+    "all_snapshots_and_revisions_equal": true,
+    "inputs": {
+      "bridge/plugin/management.cpp": "9c2dfc944c56e268294083a4ad43fb904c61228fcc722397f301dd0ac18ae2b7",
+      "bridge/plugin/farm_transaction.h": "1445e8463cecbad43c717b478dcef74d85bf2e596124f6a437d7ddcabfdf6652",
+      "tools/test_farm_transaction.cpp": "cd7ee73d9fa0877cb6ba2b20d766845f849e1c6508d71ee0de14fc1f02b4c888"
+    },
+    "scope": "Extracted live snapshot observer and revision function preserve all prior ten-read/two-refusal results. Farm edit transaction fault tests are callback tests, not injected faults inside DF. Typed edit transport is not connected yet."
   }
 }

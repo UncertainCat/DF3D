@@ -75,6 +75,7 @@
 #include "area_geometry.h"
 #include "room_mutation_native.h"
 #include "farm_native.h"
+#include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
 // kernel objects) has no POSIX path yet; say so instead of failing on HANDLE.
 #ifndef WIN32_LEAN_AND_MEAN
@@ -2333,39 +2334,34 @@ void runPaintCounts(const m::AreaRequest& a) {
   areaPage.paintedCount=counts.painted;areaPage.previewCount=counts.preview;
   publish();
 }
-void run(color_ostream& out) {
-  areaPaintRetired=nullptr;areaPaintCommitted=false;
-  const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
-  // An explicit season requests the native farm contract. Default-season
-  // workshop/legacy inspection remains separate until its provider is replaced.
-  if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->season()>=0) {
-    message.clear();status=m::ManagementStatus::Rejected;production={};
-    const auto& p=*r->production();
-    auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(p.building_id()));
+std::optional<FarmSnapshot> observeFarmSnapshot(int32_t buildingId,int season) {
+    if(season<0 || season>3)return {};
+    auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(buildingId));
     auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
-    if(!farm || !tile || tile->bits.hidden || !df::global::cur_season || *df::global::cur_season<0 || *df::global::cur_season>3) {publish();return;}
-    const auto choices=df3d_production::farmChoices(farm,p.season());
-    if(!choices || choices->size()>256) {publish();return;}
-    FarmSnapshot snapshot;snapshot.buildingId=farm->id;snapshot.selectedSeason=p.season();
+    if(!farm || !tile || tile->bits.hidden || !df::global::cur_season || *df::global::cur_season<0 || *df::global::cur_season>3) return {};
+    const auto choices=df3d_production::farmChoices(farm,season);
+    if(!choices || choices->size()>256) return {};
+    FarmSnapshot snapshot;snapshot.buildingId=farm->id;snapshot.selectedSeason=season;
     snapshot.currentSeason=*df::global::cur_season;
     for(int i=0;i<4;++i)snapshot.seasonalCrops.push_back(farm->plant_id[i]);
     for(const auto& row:*choices)snapshot.choices.push_back({row.cropId,DF2UTF(row.name),row.seedsAvailable,row.currentSeasonWarning});
-    // Content revision: independent of menu history, pointer values and poll
-    // count. The transport's world epoch supplies producer/session identity.
-    uint64_t hash=UINT64_C(14695981039346656037);
-    const auto byte=[&](uint8_t value){hash^=value;hash*=UINT64_C(1099511628211);};
-    const auto number=[&](uint64_t value){for(int i=0;i<8;++i){byte(uint8_t(value));value>>=8;}};
-    number(snapshot.buildingId);number(snapshot.selectedSeason);number(snapshot.currentSeason);
-    for(auto crop:snapshot.seasonalCrops)number(crop);
-    number(snapshot.choices.size());
-    for(const auto& row:snapshot.choices) {
-      if(row.id<0 || row.id>32767 || row.name.empty() || row.name.size()>512){publish();return;}
-      number(row.id);number(row.name.size());for(unsigned char c:row.name)byte(c);
-      byte(row.seedsAvailable);byte(row.currentSeasonWarning);
+    for(const auto& row:snapshot.choices)
+      if(row.id<0 || row.id>32767 || row.name.empty() || row.name.size()>512)return {};
+    snapshot.revision=df3d_production::farmRevision(snapshot);
+    return snapshot;
+}
+void run(color_ostream& out) {
+  areaPaintRetired=nullptr;areaPaintCommitted=false;
+  const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  // Explicit-season reads use the native contract; the default remains legacy.
+  if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->season()>=0) {
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    auto snapshot=observeFarmSnapshot(r->production()->building_id(),r->production()->season());
+    if(snapshot) {
+      production.selectedBuilding=snapshot->buildingId;production.farm=std::move(snapshot);
+      status=m::ManagementStatus::Ok;
     }
-    snapshot.revision=(hash&INT64_MAX);if(!snapshot.revision)snapshot.revision=1;
-    production.selectedBuilding=farm->id;production.farm=std::move(snapshot);
-    status=m::ManagementStatus::Ok;publish();return;
+    publish();return;
   }
   if(r->action()==m::ManagementAction::AgreementInspect && r->agreement() && r->agreement()->tracker()) {
     message.clear();status=m::ManagementStatus::Rejected;agreements={};

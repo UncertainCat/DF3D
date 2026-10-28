@@ -202,8 +202,10 @@ farm fields. Legacy `FarmCrop.seeds` counts and masks cannot synthesize these
 facts. No source recording is migrated by inventing native data.
 
 Bridge serialization, engine-independent decoding and Godot dictionaries support
-the new snapshot. Native provider publication, request revision checks and the
-farm UI are not yet connected; existing farm requests still use the old adapter.
+the new snapshot. `ProductionInspect` with an explicit season0..3 now publishes
+native farm snapshots directly before Lua dispatch. The default season-1 path
+still uses the legacy adapter; revision-checked edits and the farm UI are not
+yet connected. Do not send legacy edits using a native read as authority.
 Install bridge and viewer together on `Local\\df3d_management_v81`; see PINS.md.
 Snapshot, grid and session compatibility versions are unchanged.
 
@@ -221,6 +223,29 @@ readbacks. The mixed-boundary image was inspected. DF166592 exits unsaved and
 both save manifests remain unchanged. The live result is passed_with_known_issues
 with only the known rendering-thread notice. This is protocol/regression
 acceptance, not native farm UI or Zones exposure acceptance.
+
+`areas_acceptance.ps1 -FarmReadOnly -SaveId df3d-areas-<new name>` verifies the
+real Godot/bridge read path on an owned unsaved clone. Native membership, naming,
+availability and ordering were compared with DF's sheet in the provider evidence
+below; this transport check compares the published facts with that provider
+without opening the sheet. The content revision hashes the building ID, selected
+and current season, all four selected crops, and ordered choice IDs/names/flags.
+It excludes menu history, poll count and pointer values. World epoch remains
+the producer/session identity. Revisions are not yet mutation authorization.
+
+Protected `areas-acceptance-20261028-161936` passes ten reads, all four tabs in
+different orders, a controlled future-season selection change/restoration, and
+nonfarm/missing-target refusals. Repeated content returns the same exact revision;
+changed content changes it, and restoration recovers the original. Native crop
+and seed menu vectors, selected tab and paused frame are unchanged by reads.
+Both save manifests remain unchanged; DF568 exits unsaved. The run passes cleanly
+and is recorded in `native_farm.json.transport_read_reference`, with source hashes.
+Earlier161727 omitted the normal catalog initialization, and161818 compared JSON
+floats with wire integers; those failed test attempts are not acceptance.
+MSVC build/install passes with bridge SHA256
+`C130A7E235BB550FB86CA0E5BADA613D2A5B5A38356419F11AABBF8D3572F997`.
+Core passes cleanly in `build/qa/native-farm-read`. The new entry point is
+classified as a protected manual lane in the QA catalog. Protocol81 is unchanged.
 
 ### Native farm and workshop providers
 

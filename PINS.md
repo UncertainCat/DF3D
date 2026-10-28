@@ -30,7 +30,8 @@ Older recordings cannot infer native availability, warnings or revisions, and
 missing snapshots remain unavailable. Rebuild and install bridge and viewer
 together; `Local\\df3d_management_v81` isolates older peers. Snapshot/grid/session
 versions are unchanged. This contract does not enable the farm UI or new edits;
-native provider publication and revision-checked mutation remain separate work.
+native reads use ProductionInspect with an explicit season, while revision-checked
+mutation and presentation remain separate work.
 The existing tracker popup contract from management80 remains unchanged.
 
 

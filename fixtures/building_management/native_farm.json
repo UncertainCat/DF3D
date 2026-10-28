@@ -6530,5 +6530,188 @@
       }
     ],
     "scope": "Each case provisions two PlantSeeds jobs and one FertilizeField job in the paused owned session. One planting job has a citizen worker and a reserved seed. Native clicks and semantic calls compare world/farm job membership, worker current_job, item in_job and specific-reference count, seasonal selections and retention of the other job. This is controlled fixture coverage, not naturally scheduled farming completion."
+  },
+  "transport_read_reference": {
+    "capture": "build/areas-acceptance-20261028-161936",
+    "owned_df_pid": 568,
+    "owned_exit_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "management_version": 81,
+    "bridge_sha256": "C130A7E235BB550FB86CA0E5BADA613D2A5B5A38356419F11AABBF8D3572F997",
+    "inputs": {
+      "bridge/plugin/management.cpp": "88c1aa10ec2c78a9aaeef52f3565b88e4abf435c39754b3ce2687053cb5c8624",
+      "bridge/plugin/farm_native.h": "a71fea7a6294fbb24b06fe0aaf412e89dc7d77ecb03b280eb92df006ceb1cbea",
+      "tools/smoke/areas_acceptance.ps1": "ef3391203e9134ccfed2e6fff64d46a6dc3fc48a14e3e1c981cb7dad8e854605",
+      "tools/smoke/farm-read-fixture.lua": "2edd3c4a8d7090e3b9a9e230a73ba6624111a20723ca9f18cb7258ec0ec1cae3",
+      "tools/smoke/farm-read-verify.lua": "15049e487acc50cac1766f2029d05db541702497df16a09881091cc95cdd0b13",
+      "presentations/godot/project/tests/farm_read_live.gd": "d3086305b2f7a6f2c98cc7704ddb618e6cfa6086f2977a6220ec324c8a2543bd"
+    },
+    "results": {
+      "changed_revision": 6896195277537981038,
+      "read_count": 10,
+      "rejected_targets": 2,
+      "restored_revision": 7542502012944114343,
+      "snapshots": {
+        "0": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 177,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": true,
+              "id": 176,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "current_season": 1,
+          "revision": 6859061600958154652,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "selected_season": 0
+        },
+        "1": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 175,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 174,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 177,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": true,
+              "id": 176,
+              "name": "Sweet pods",
+              "seeds_available": false
+            }
+          ],
+          "current_season": 1,
+          "revision": 7542502012944114343,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "selected_season": 1
+        },
+        "2": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 175,
+              "name": "Cave wheat",
+              "seeds_available": false
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 174,
+              "name": "Pig tails",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 177,
+              "name": "Quarry bushes",
+              "seeds_available": true
+            }
+          ],
+          "current_season": 1,
+          "revision": 3663792199038723754,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "selected_season": 2
+        },
+        "3": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "seeds_available": true
+            }
+          ],
+          "current_season": 1,
+          "revision": 6156302664972392651,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "selected_season": 3
+        }
+      }
+    },
+    "scope": "Actual Godot-to-bridge seasonal read path, compared to the previously native-verified semantic choice provider. No native farm sheet is opened. Repeated tab order, controlled future-season selection change/restoration, invalid targets, unchanged native menu vectors/tab and paused frame are checked. This does not establish rendered UI or revision-checked edits."
   }
 }

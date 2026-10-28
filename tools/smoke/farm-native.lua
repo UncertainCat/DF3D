@@ -229,6 +229,40 @@ local script=require('gui.script')
      assert(#b.jobs==0)
     end
    end
+   local worker,potash
+   for _,unit in ipairs(df.global.world.units.active)do
+    if dfhack.units.isCitizen(unit) and not unit.job.current_job then worker=unit;break end
+   end
+   assert(worker,'missing free fertilizer worker')
+   for _,item in ipairs(df.global.world.items.other.BAR)do
+    if item:getMaterial()==df.builtin_mats.POTASH and not item.flags.in_job and #item.specific_refs==0 then potash=item;break end
+   end
+   local created_potash=false
+   if not potash then
+    local items=dfhack.items.createItem(worker,df.item_type.BAR,-1,df.builtin_mats.POTASH,-1)
+    assert(#items==1,'failed disposable potash fixture');potash=items[1];created_potash=true
+   end
+   assert(potash:getMaterial()==df.builtin_mats.POTASH and not potash.flags.in_job and #potash.specific_refs==0)
+   local position={x=potash.pos.x,y=potash.pos.y,z=potash.pos.z}
+   for _,method in ipairs{'native','semantic'}do
+    b.current_fertilization=28
+    local fertilizer=add_job(df.job_type.FertilizeField);local removed_id=fertilizer.id
+    local other=add_job(df.job_type.PlantSeeds)
+    assert(dfhack.job.addWorker(fertilizer,worker))
+    assert(dfhack.job.attachJobItem(fertilizer,potash,df.job_role_type.Hauled,-1,-1))
+    assert(worker.job.current_job==fertilizer and potash.flags.in_job and #potash.specific_refs==1)
+    if method=='native' then fertilizer_click(455)else apply('toggle')end
+    assert(#b.jobs==1 and b.jobs[0]==other and dfhack.job.getHolder(other)==b,'fertilizer cleanup changed unrelated job')
+    assert(not worker.job.current_job,'fertilizer cancellation retained worker')
+    assert(not potash.flags.in_job and #potash.specific_refs==0,'fertilizer cancellation retained potash reservation')
+    assert(potash.pos.x==position.x and potash.pos.y==position.y and potash.pos.z==position.z,'cancellation moved potash')
+    local link=df.global.world.jobs.list.next
+    while link do assert(not link.item or link.item.id~=removed_id,'fertilizer world job survived');link=link.next end
+    records[#records+1]={name='farm-fertilizer-ownership',method=method,worker_id=worker.id,potash_id=potash.id,
+     created_fixture_potash=created_potash,worker_released=true,potash_released=true,potash_position_unchanged=true,
+     farm_and_world_job_removed=true,unrelated_job_preserved=true,current=b.current_fertilization,maximum=b.max_fertilization}
+    assert(dfhack.job.removeJob(other))
+   end
    b.current_fertilization=0
    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
    return

@@ -333,8 +333,19 @@ resetting progress; do not model this control as a freely settable progress bit.
 MSVC build/install and core `build/qa/farm-fertilizer-native` pass cleanly.
 Installed bridge SHA256 is
 `6F38068BC4E4BAD451DDE6927E082F8528BDB878446A352A7A51FF18A7D95E99`;
-management82 is unchanged. Assigned-worker/reserved-potash cleanup, fertilizer
-transport/lifecycle and viewer controls remain unverified.
+management82 is unchanged.
+
+Protected165832 adds assigned-worker/reserved-potash cancellation to both
+native and semantic paths. With current28/max29 and one queued fertilizer job,
+both release citizen996 and potash48520, remove the job from farm and world
+lists, preserve potash position, and leave an unrelated planting job intact.
+The fixture creates a real potash BAR through DFHack when no unreserved one
+exists; all changes are confined to the owned unsaved session. DF174676 exits
+unsaved with the source manifest unchanged. The run passes cleanly and retains
+all five prior native/semantic scheduling comparisons.
+`native_farm.json.fertilization_ownership_reference` records the result.
+This proves controlled paused assignment cleanup, not an in-progress hauling
+tick. Fertilizer transport/lifecycle and viewer controls remain unverified.
 
 ### Native farm and workshop providers
 

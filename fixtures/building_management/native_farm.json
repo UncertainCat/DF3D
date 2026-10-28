@@ -7564,5 +7564,50 @@
     "No fertilizer transport contract or rendered viewer controls",
     "One underground footprint; full/partial current and queued counts are controlled unsaved fixtures"
   ]
+},
+  "fertilization_ownership_reference": {
+  "source": "build/stockpile-storage-native-farm-discovery-20261028-165832",
+  "owned_df_pid": 174676,
+  "owned_exit_unsaved": true,
+  "source_manifest_unchanged": true,
+  "status": "passed",
+  "bridge_sha256": "6F38068BC4E4BAD451DDE6927E082F8528BDB878446A352A7A51FF18A7D95E99",
+  "fixture_sha256": "11905f46c21a380f6224738540047267d977b7414b8c0dda9437d543956f03f6",
+  "cases": [
+    {
+      "created_fixture_potash": true,
+      "current": 28,
+      "farm_and_world_job_removed": true,
+      "maximum": 29,
+      "method": "native",
+      "name": "farm-fertilizer-ownership",
+      "potash_id": 48520,
+      "potash_position_unchanged": true,
+      "potash_released": true,
+      "unrelated_job_preserved": true,
+      "worker_id": 996,
+      "worker_released": true
+    },
+    {
+      "created_fixture_potash": true,
+      "current": 28,
+      "farm_and_world_job_removed": true,
+      "maximum": 29,
+      "method": "semantic",
+      "name": "farm-fertilizer-ownership",
+      "potash_id": 48520,
+      "potash_position_unchanged": true,
+      "potash_released": true,
+      "unrelated_job_preserved": true,
+      "worker_id": 996,
+      "worker_released": true
+    }
+  ],
+  "fixture": "One real potash BAR was created through DFHack in the unsaved clone because no unreserved potash was available. It was reserved via Hauled job reference; citizen996 was assigned as the worker.",
+  "also_verified": "Existing five native/semantic scheduling cases still match positions and full active RNG; UI guards and original native captures pass.",
+  "limitations": [
+    "Controlled paused assignment, not an in-progress hauling tick",
+    "Transport and rendered viewer controls remain separate work"
+  ]
 }
 }

@@ -184,6 +184,11 @@ func run() -> void:
 	controller.use_area(bedroom); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if root.get_texture().get_image().save_png(directory.path_join("controller_zone_bedroom.png")) != OK: quit(1); return
+	for viewport_size in [Vector2i(960,600),Vector2i(1600,900),Vector2i(1200,800)]:
+		root.size=viewport_size
+		for frame in 4:controller._process(0);await process_frame
+		await RenderingServer.frame_post_draw
+		if root.get_texture().get_image().save_png(directory.path_join("controller_zone_palette_%d.png"%viewport_size.y))!=OK:quit(1);return
 	controller.begin_paint(); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if root.get_texture().get_image().save_png(directory.path_join("controller_zone_repaint.png")) != OK: quit(1); return

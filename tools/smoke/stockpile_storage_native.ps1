@@ -20,7 +20,7 @@ if($ZoneRename) {
  $Rename=$true
 }
 if($GestureCase -eq 'eligibility-create' -and $EligibilityCase -eq 'all'){throw 'Creation cases require a fresh owned session per EligibilityCase'}
-if($PickerResize -and -not ($ZoneOwner -or $ZoneAnimals)){throw "PickerResize requires ZoneOwner or ZoneAnimals"}
+if($PickerResize -and -not ($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults)){throw "PickerResize requires ZoneOwner, ZoneAnimals or ZoneDefaults"}
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 $env:Path='C:/msys64/mingw64/bin;'+$env:Path
 $dfPath='C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'
@@ -153,7 +153,7 @@ try {
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
-  if(($ZoneOwner -or $ZoneAnimals -or $LocationSupplies -or $LocationNames) -and (Test-Path "$out/owner-input-request")) {
+  if(($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames) -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {

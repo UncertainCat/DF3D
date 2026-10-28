@@ -111,6 +111,25 @@ require('gui.script').start(function()
   capture('pile')
   if test_zone_defaults then
    local ui=df.global.game.main_interface.civzone
+   local resize_marker=io.open(out..'/picker-resize','r')
+   if resize_marker then
+    resize_marker:close()
+    for _,size in ipairs{'small','wide','default'}do
+     local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
+     assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+     local limit=dfhack.getTickCount()+30000
+     while true do
+      local ack=io.open(out..'/owner-input-ack','r');if ack then ack:close();break end
+      assert(dfhack.getTickCount()<limit,'palette resize timeout');require('gui.script').sleep(1,'frames')
+     end
+     assert(os.remove(out..'/owner-input-ack'));require('gui.script').sleep(5,'frames')
+     capture('zone-palette-'..size)
+     records[#records+1]={name='zone-palette-resize',size=size,dimx=g.dimx,dimy=g.dimy,
+      pixel_width=g.screen_pixel_x,pixel_height=g.screen_pixel_y,selected_zone_id=ui.cur_bld and ui.cur_bld.id or -1}
+    end
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'palette resize advanced simulation')
+    return
+   end
    for _,entry in ipairs{{'Pen',7,33,1},{'Pond',7,36,2},{'Tomb',26,42,1},{'PlantGathering',26,45,7},{'ArcheryRange',26,33,1}} do
     click(entry[2],entry[3]);click(map_x,map_y);click(map_x,map_y)
     b=assert(ui.cur_bld,'no created zone');pile_id=b.id

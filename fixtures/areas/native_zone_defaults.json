@@ -92,5 +92,51 @@
       "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
       "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
     }
+  },
+  "palette_resize_reference": {
+    "native_capture": "build/stockpile-storage-native-zone-defaults-20261028-154748",
+    "native_df_pid": 179084,
+    "owned_process_closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "samples": [
+      {
+        "dimx": 120,
+        "dimy": 50,
+        "name": "zone-palette-resize",
+        "pixel_height": 600,
+        "pixel_width": 960,
+        "selected_zone_id": 23,
+        "size": "small",
+        "capture_sha256": "bb9a5c9101dc87b5b4b9ce313e23e443617f509b4b9c99b117937df37a3c9189",
+        "capture": "build/stockpile-storage-native-zone-defaults-20261028-154748/zone-palette-small.png"
+      },
+      {
+        "dimx": 200,
+        "dimy": 75,
+        "name": "zone-palette-resize",
+        "pixel_height": 900,
+        "pixel_width": 1600,
+        "selected_zone_id": 23,
+        "size": "wide",
+        "capture_sha256": "b32cf412a27462bb628f0438cf76debc614502642578070339036d950b5d6f48",
+        "capture": "build/stockpile-storage-native-zone-defaults-20261028-154748/zone-palette-wide.png"
+      },
+      {
+        "dimx": 150,
+        "dimy": 66,
+        "name": "zone-palette-resize",
+        "pixel_height": 800,
+        "pixel_width": 1200,
+        "selected_zone_id": 23,
+        "size": "default",
+        "capture_sha256": "9e5cfc93bfc0fbfeaa5e3a0890e53fd42c9da8d0c5eaca839a6f2983cd051947",
+        "capture": "build/stockpile-storage-native-zone-defaults-20261028-154748/zone-palette-default.png"
+      }
+    ],
+    "observation": "The native palette retains its fixed geometry at all three sizes. At 960x600 its bottom row (Sand and Clay) is partly obscured by the bottom toolbar. This capture establishes appearance, not which overlapping control receives a click.",
+    "viewer_capture": "build/qa/04-U/controller_zone_palette_600.png",
+    "viewer_check": "build/qa/zone-palette-resize-audit",
+    "viewer_status": "passed_with_known_issues",
+    "limitation": "The viewer capture has no HUD; minimum-height main-scene reachability still requires verification. Approval to retain the existing scrolling wrapper is pending."
   }
 }

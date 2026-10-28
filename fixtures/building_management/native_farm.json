@@ -8032,5 +8032,252 @@
         "opaque_rgb_sha256": "e732653d29e6c080fe129d77ba95fe139825b95a26cf718df1a69398a8e7e2af"
       }
     ]
+  },
+  "body_reference": {
+    "scope": "Fixed seven-row body and fertilizer controls at1200x800; no frame, tabs, scrolling or resized layout acceptance. Snapshot revisions are test-only; native image supplies visual authority.",
+    "cases": [
+      {
+        "name": "farm-selected",
+        "source": "build/stockpile-storage-native-farm-discovery-20261028-172751",
+        "native_crop": [
+          432,
+          196,
+          456,
+          300
+        ],
+        "rgb_sha256": "fcdb489929faa9fb19bc7fb5daf53f5ea94f7acf4e228b964e843cee434763ce",
+        "snapshot": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 175,
+              "name": "Cave wheat",
+              "raw_id": "GRASS_WHEAT_CAVE",
+              "seeds_available": false
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "raw_id": "MUSHROOM_CUP_DIMPLE",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 174,
+              "name": "Pig tails",
+              "raw_id": "GRASS_TAIL_PIG",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "raw_id": "MUSHROOM_HELMET_PLUMP",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 177,
+              "name": "Quarry bushes",
+              "raw_id": "BUSH_QUARRY",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": true,
+              "id": 176,
+              "name": "Sweet pods",
+              "raw_id": "POD_SWEET",
+              "seeds_available": false
+            }
+          ],
+          "current_fertilization": 0,
+          "current_season": 1,
+          "max_fertilization": 29,
+          "pending_fertilization": 0,
+          "revision": 6777379782108880700,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "seasonal_fertilization": true,
+          "selected_season": 1
+        }
+      },
+      {
+        "name": "farm-season-0",
+        "source": "build/stockpile-storage-native-farm-discovery-20261027-142250",
+        "native_crop": [
+          432,
+          196,
+          456,
+          300
+        ],
+        "rgb_sha256": "130e915c87c0072a369a09ebafde70a0b348439d34ed884e31e2f992afdd3512",
+        "snapshot": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "raw_id": "MUSHROOM_HELMET_PLUMP",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "raw_id": "MUSHROOM_CUP_DIMPLE",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 177,
+              "name": "Quarry bushes",
+              "raw_id": "BUSH_QUARRY",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": true,
+              "id": 176,
+              "name": "Sweet pods",
+              "raw_id": "POD_SWEET",
+              "seeds_available": false
+            }
+          ],
+          "current_fertilization": 0,
+          "current_season": 1,
+          "max_fertilization": 29,
+          "pending_fertilization": 0,
+          "revision": 7253889694273043055,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "seasonal_fertilization": true,
+          "selected_season": 0
+        }
+      },
+      {
+        "name": "farm-season-3",
+        "source": "build/stockpile-storage-native-farm-discovery-20261027-142250",
+        "native_crop": [
+          432,
+          196,
+          456,
+          300
+        ],
+        "rgb_sha256": "9ec138a42ce41a3812ccda9d0d888e75b6ed3a614bb1e206524af063e6b01d03",
+        "snapshot": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "raw_id": "MUSHROOM_HELMET_PLUMP",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "raw_id": "MUSHROOM_CUP_DIMPLE",
+              "seeds_available": true
+            }
+          ],
+          "current_fertilization": 0,
+          "current_season": 1,
+          "max_fertilization": 29,
+          "pending_fertilization": 0,
+          "revision": 7166626733899998253,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "seasonal_fertilization": true,
+          "selected_season": 3
+        }
+      },
+      {
+        "name": "farm-fertilize-now",
+        "source": "build/stockpile-storage-native-farm-discovery-20261028-165058",
+        "native_crop": [
+          432,
+          196,
+          456,
+          300
+        ],
+        "rgb_sha256": "8bab50b12bf1ee2c5d345a3b286d06e2ff5f24f31c9d5783a241f29f46805b26",
+        "snapshot": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 175,
+              "name": "Cave wheat",
+              "raw_id": "GRASS_WHEAT_CAVE",
+              "seeds_available": false
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "raw_id": "MUSHROOM_CUP_DIMPLE",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 174,
+              "name": "Pig tails",
+              "raw_id": "GRASS_TAIL_PIG",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "raw_id": "MUSHROOM_HELMET_PLUMP",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 177,
+              "name": "Quarry bushes",
+              "raw_id": "BUSH_QUARRY",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": true,
+              "id": 176,
+              "name": "Sweet pods",
+              "raw_id": "POD_SWEET",
+              "seeds_available": false
+            }
+          ],
+          "current_fertilization": 0,
+          "current_season": 1,
+          "max_fertilization": 29,
+          "pending_fertilization": 29,
+          "revision": 6777379782108880700,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "seasonal_fertilization": true,
+          "selected_season": 1
+        }
+      }
+    ]
   }
 }

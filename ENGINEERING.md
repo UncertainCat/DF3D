@@ -398,6 +398,26 @@ only the three documented Godot diagnostics, and its retained
 array hashing method; it was corrected to HashingContext before acceptance.
 This verifies crop icons, not the complete farm panel or generic fallback art.
 
+`farm_body_view.gd` composes the seven visible crop rows and the fixed fertilizer
+controls around FarmState. Native `BUTTON_RECTANGLE`, picture-box and farm-option
+art preserve row colors, selection, current-season warnings and “No seeds”. Only
+the checkbox regions dispatch crop/fertilizer intents; pending requests and the
+parent input gate prevent duplicate or obscured actions. Row order comes from
+the controller, and the view never reconstructs eligibility or mutates snapshots.
+The parent supplies the native panel background and owns target/tab navigation.
+
+`native_farm.json.body_reference` retains whole-body RGB hashes for summer,
+spring, winter and queued fertilizer at1200x800. `farm_body_capture` matches all
+547200 pixels exactly and exercises actual Godot pointer dispatch to crop,
+immediate and seasonal fertilizer actions, label non-actions and pending/owner
+input gates. `build/qa/farm-body-final` passes with only the three documented
+Godot diagnostics; core passes in `build/qa/farm-body`. The initial mismatch was
+the test backdrop being one byte brighter than the native panel; the fixture
+now obtains that color from installed HOVER_RECTANGLE art. Retained body images
+were visually inspected. This remains a staged component: the sheet frame,
+season tabs, lists longer than seven rows, responsive layout and main-scene/live
+pointer lifecycle are not yet accepted or exposed.
+
 ### Native farm fertilization reference
 
 `stockpile_storage_native.ps1 -FarmDiscovery -FarmFertilization` isolates

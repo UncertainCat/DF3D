@@ -29,7 +29,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     farm.pendingFertilization=f->pending_fertilization();farm.seasonalFertilization=f->seasonal_fertilization();
     if(f->seasonal_crops())farm.seasonalCrops.assign(f->seasonal_crops()->begin(),f->seasonal_crops()->end());
     if(f->choices())for(const auto* c:*f->choices())
-      farm.choices.push_back({c->id(),str(c->name()),c->seeds_available(),c->current_season_warning()});
+      farm.choices.push_back({c->id(),str(c->name()),c->seeds_available(),c->current_season_warning(),str(c->raw_id())});
   }
   if (p->buildings())
     for (const auto* v : *p->buildings())

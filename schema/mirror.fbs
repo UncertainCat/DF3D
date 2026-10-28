@@ -1542,7 +1542,7 @@ table ProductionBuilding {
 table FarmCrop { id:int32; name:string; seasons:uint8; seeds:uint32; }
 // Native choices for one locally selected tab. Availability is not a seed count.
 // A missing snapshot means unavailable; legacy FarmCrop fields cannot synthesize it.
-table NativeFarmCrop { id:int32; name:string; seeds_available:bool; current_season_warning:bool; }
+table NativeFarmCrop { id:int32; name:string; seeds_available:bool; current_season_warning:bool; raw_id:string; }
 enum FarmEditOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
 table FarmSnapshot {
   building_id:int32 = -1;
@@ -1850,7 +1850,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 83;
+  schema_version:uint32 = 84;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1896,7 +1896,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 83;
+  schema_version:uint32 = 84;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

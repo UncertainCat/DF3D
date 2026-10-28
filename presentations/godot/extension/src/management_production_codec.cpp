@@ -93,6 +93,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     for(auto crop:f.seasonalCrops)selected.push_back(crop);
     for(const auto& c:f.choices) {
       Dictionary row;row["id"]=c.id;row["name"]=String::utf8(c.name.c_str());
+      row["raw_id"]=String::utf8(c.rawId.c_str());
       row["seeds_available"]=c.seedsAvailable;row["current_season_warning"]=c.currentSeasonWarning;
       choices.push_back(row);
     }

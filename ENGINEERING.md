@@ -191,6 +191,27 @@ staff-height gap, not the overall Zones exposure audit.
 
 ### Native farm transport contract
 
+Management84 adds the required stable plant raw ID to every farm choice. The
+provider copies it from the current plant raw at the safe point; names, menu
+indices and installed-file ordering are not identity substitutes. IDs are bounded
+to128 bytes, travel unchanged through the model/extension, and participate in the
+content revision. Missing/empty/oversized IDs invalidate the receipt. Older
+recordings cannot synthesize this field; rebuild both peers as described in PINS.
+
+`native_farm.json.raw_identity_reference` records clean protected read173733
+and controller173829 runs. All four season lists match independently read raw
+IDs, repeat reads are stable, and changed/restored content changes/restores the
+revision. Controller crop/fertilizer edits, queued/sent tab changes and stale
+external changes pass with the new receipts. Both runs preserve two save
+manifests and close their owned sessions unsaved. Core, Godot contract and
+controller tests pass in `build/qa/farm-raw-identity-final`; MSVC build/install
+passes with bridge SHA256
+`B423CB3F047C415F4351147991DB489227CEEBD4F4539BB210BBFE7AFDDB4E84`.
+The initial controller test failure mixed an intentional epoch change into the
+new invalid-ID cases; moving those cases before epoch replacement fixed the
+test without relaxing runtime behavior. This is transport/controller acceptance;
+the farm view and its rendered lifecycle remain unfinished.
+
 Management81 adds optional `ProductionState.farm`, a `FarmSnapshot` containing
 building ID, exact positive signed-range revision, selected/current season,
 four seasonal crop IDs and ordered native choices. Each choice carries its

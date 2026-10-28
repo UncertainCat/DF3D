@@ -525,8 +525,8 @@ func assert_production(p: Dictionary, request: Dictionary) -> void:
 		assert(native_farm.pending_fertilization==(25 if request.get("farm_operation",0)==1 else 2))
 		assert(native_farm.seasonal_fertilization==(request.seasonal_fertilization!=0 if request.get("farm_operation",0)==2 else true))
 		assert(p.farm_edit_outcome==(1 if request.action==A.FarmEdit else 0))
-		assert(native_farm.choices==[{"id":176,"name":"Sweet pods","seeds_available":false,"current_season_warning":true},
-			{"id":175,"name":"Plump helmets","seeds_available":true,"current_season_warning":false}])
+		assert(native_farm.choices==[{"id":176,"name":"Sweet pods","raw_id":"POD_SWEET","seeds_available":false,"current_season_warning":true},
+			{"id":175,"name":"Plump helmets","raw_id":"MUSHROOM_HELMET_PLUMP","seeds_available":true,"current_season_warning":false}])
 		assert(p.crops.is_empty() and p.seasonal_crops.is_empty())
 		return
 

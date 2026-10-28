@@ -601,7 +601,7 @@ void publish() {
   flatbuffers::Offset<m::FarmSnapshot> farmSnapshot;
   if(production.farm) {
     const auto& f=*production.farm;std::vector<flatbuffers::Offset<m::NativeFarmCrop>> rows;
-    for(const auto& c:f.choices)rows.push_back(m::CreateNativeFarmCrop(b,c.id,b.CreateString(c.name),c.seedsAvailable,c.currentSeasonWarning));
+    for(const auto& c:f.choices)rows.push_back(m::CreateNativeFarmCrop(b,c.id,b.CreateString(c.name),c.seedsAvailable,c.currentSeasonWarning,b.CreateString(c.rawId)));
     farmSnapshot=m::CreateFarmSnapshot(b,f.buildingId,f.revision,f.selectedSeason,f.currentSeason,b.CreateVector(f.seasonalCrops),b.CreateVector(rows),f.currentFertilization,f.maxFertilization,f.pendingFertilization,f.seasonalFertilization);
   }
   auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome);
@@ -2348,7 +2348,11 @@ std::optional<FarmSnapshot> observeFarmSnapshot(int32_t buildingId,int season) {
     if(snapshot.currentFertilization<0 || snapshot.maxFertilization<0 || farm->jobs.size()>size_t(INT32_MAX))return {};
     for(const auto* job:farm->jobs)if(job && job->job_type==df::job_type::FertilizeField)++snapshot.pendingFertilization;
     for(int i=0;i<4;++i)snapshot.seasonalCrops.push_back(farm->plant_id[i]);
-    for(const auto& row:*choices)snapshot.choices.push_back({row.cropId,DF2UTF(row.name),row.seedsAvailable,row.currentSeasonWarning});
+    for(const auto& row:*choices) {
+      const auto* plant=df::plant_raw::find(row.cropId);
+      if(!plant || plant->id.empty() || plant->id.size()>128)return {};
+      snapshot.choices.push_back({row.cropId,DF2UTF(row.name),row.seedsAvailable,row.currentSeasonWarning,plant->id});
+    }
     for(const auto& row:snapshot.choices)
       if(row.id<0 || row.id>32767 || row.name.empty() || row.name.size()>512)return {};
     snapshot.revision=df3d_production::farmRevision(snapshot);

@@ -22,8 +22,8 @@ func check(ok: bool, message: String) -> void:
 func facts(id:=227,season:=1) -> Dictionary:
 	return {"building_id":id,"selected_season":season,"current_season":1,"revision":9007199254740993,
 		"seasonal_crops":[173,175,-1,173],"choices":[
-			{"id":175,"name":"Cave wheat","seeds_available":false,"current_season_warning":false},
-			{"id":173,"name":"Plump helmets","seeds_available":true,"current_season_warning":false}],
+			{"id":175,"name":"Cave wheat","raw_id":"GRASS_WHEAT_CAVE","seeds_available":false,"current_season_warning":false},
+			{"id":173,"name":"Plump helmets","raw_id":"MUSHROOM_HELMET_PLUMP","seeds_available":true,"current_season_warning":false}],
 		"current_fertilization":0,"max_fertilization":29,"pending_fertilization":0,"seasonal_fertilization":true}
 func reply(value: Dictionary, outcome:=0) -> void:
 	var sent: Dictionary=world.calls[-1].request
@@ -73,6 +73,12 @@ func run() -> void:
 	ready();model.toggle_fertilization();service.poll();before=applied.size();model.open(228,3)
 	reply(changed,1);check(model.phase==Model.Phase.Reading and model.snapshot.is_empty() and applied.size()==before,"late sent success cannot revive old farm")
 	reply(facts(228,3));check(model.snapshot.building_id==228,"new farm owns its own receipt")
+	for invalid in [null,"","A".repeat(129),42]:
+		model.open(227,1);service.poll()
+		var malformed:=facts();malformed.choices[0].raw_id=invalid
+		reply(malformed)
+		check(model.phase==Model.Phase.Rejected and model.snapshot.is_empty(),"invalid raw identity cannot grant farm authority")
+	ready()
 	model.toggle_fertilization();service.poll();before=world.calls.size()
 	world.state={"world_epoch":6,"revision":99,"status":0};service.poll()
 	check(model.phase==Model.Phase.Unavailable and model.building_id==-1 and model.snapshot.is_empty(),"epoch retires pending farm")

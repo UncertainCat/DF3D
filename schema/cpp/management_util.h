@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 83;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v83";
+inline constexpr uint32_t kManagementVersion = 84;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v84";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -37,7 +37,8 @@ inline const char* validateFarmSnapshot(const FarmSnapshot& f) {
   for(auto id:*f.seasonal_crops())if(id < -1 || id>32767)return "invalid native farm selection";
   std::set<int32_t> ids;
   for(const auto* c:*f.choices())if(!c || c->id()<0 || c->id()>32767 || !ids.insert(c->id()).second ||
-      !c->name() || !c->name()->size() || c->name()->size()>512)return "invalid native farm choice";
+      !c->name() || !c->name()->size() || c->name()->size()>512 ||
+      !c->raw_id() || !c->raw_id()->size() || c->raw_id()->size()>128)return "invalid native farm choice";
   return nullptr;
 }
 inline bool areaZoneSettingsPresent(const AreaZoneSettings* z) {

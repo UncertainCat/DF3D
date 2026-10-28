@@ -104,6 +104,7 @@ func _valid(farm: Dictionary) -> bool:
 	for row in farm.choices:
 		if typeof(row)!=TYPE_DICTIONARY or typeof(row.get("id"))!=TYPE_INT or row.id<0 or row.id>32767 or ids.has(row.id):return false
 		if typeof(row.get("name"))!=TYPE_STRING or row.name.is_empty():return false
+		if typeof(row.get("raw_id"))!=TYPE_STRING or row.raw_id.is_empty() or row.raw_id.to_utf8_buffer().size()>128:return false
 		if typeof(row.get("seeds_available"))!=TYPE_BOOL or typeof(row.get("current_season_warning"))!=TYPE_BOOL:return false
 		ids[row.id]=true
 	return true

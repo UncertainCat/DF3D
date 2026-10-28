@@ -422,8 +422,8 @@ flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBuffe
   const auto action=request.action();const auto* q=request.production();
   if((action==A::ProductionInspect && q->building_id()==3) || action==A::FarmEdit) {
     std::vector<flatbuffers::Offset<m::NativeFarmCrop>> rows{
-      m::CreateNativeFarmCrop(b,176,b.CreateString("Sweet pods"),false,true),
-      m::CreateNativeFarmCrop(b,175,b.CreateString("Plump helmets"),true,false)};
+      m::CreateNativeFarmCrop(b,176,b.CreateString("Sweet pods"),false,true,b.CreateString("POD_SWEET")),
+      m::CreateNativeFarmCrop(b,175,b.CreateString("Plump helmets"),true,false,b.CreateString("MUSHROOM_HELMET_PLUMP"))};
     std::vector<int32_t> seasons{175,-1,176,-1};
     if(action==A::FarmEdit && q->farm_operation()==m::FarmOperation::Crop)seasons.at(q->season())=q->crop_id();
     auto farm=m::CreateFarmSnapshot(b,3,9007199254740993ULL,action==A::FarmEdit?q->season():1,1,

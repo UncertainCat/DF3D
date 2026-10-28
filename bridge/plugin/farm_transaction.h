@@ -17,6 +17,7 @@ template<class Snapshot> uint64_t farmRevision(const Snapshot& snapshot) {
     for(const auto& row:snapshot.choices) {
         number(row.id);number(row.name.size());for(unsigned char c:row.name)byte(c);
         byte(row.seedsAvailable);byte(row.currentSeasonWarning);
+        number(row.rawId.size());for(unsigned char c:row.rawId)byte(c);
     }
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
 }

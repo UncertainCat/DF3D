@@ -7858,5 +7858,119 @@
     },
     "native_capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9",
     "scope": "Native displayed summer rows match raw texpos[8] and installed PICKED definitions; header/fallow match captured anchored textures. No Godot rendered comparison or generic missing-art fallback acceptance."
+  },
+  "raw_identity_reference": {
+    "protocol": 84,
+    "bridge_sha256": "B423CB3F047C415F4351147991DB489227CEEBD4F4539BB210BBFE7AFDDB4E84",
+    "read_lane": "build/areas-acceptance-20261028-173733",
+    "controller_lane": "build/areas-acceptance-20261028-173829",
+    "owned_df_pids": [
+      171240,
+      168188
+    ],
+    "owned_exit_unsaved": true,
+    "read_count": 10,
+    "rejected_targets": 2,
+    "changed_revision": 513355365022711209,
+    "restored_revision": 6777379782108880700,
+    "season_raw_ids": {
+      "0": [
+        {
+          "id": 173,
+          "raw_id": "MUSHROOM_HELMET_PLUMP"
+        },
+        {
+          "id": 188,
+          "raw_id": "MUSHROOM_CUP_DIMPLE"
+        },
+        {
+          "id": 177,
+          "raw_id": "BUSH_QUARRY"
+        },
+        {
+          "id": 176,
+          "raw_id": "POD_SWEET"
+        }
+      ],
+      "1": [
+        {
+          "id": 175,
+          "raw_id": "GRASS_WHEAT_CAVE"
+        },
+        {
+          "id": 188,
+          "raw_id": "MUSHROOM_CUP_DIMPLE"
+        },
+        {
+          "id": 174,
+          "raw_id": "GRASS_TAIL_PIG"
+        },
+        {
+          "id": 173,
+          "raw_id": "MUSHROOM_HELMET_PLUMP"
+        },
+        {
+          "id": 177,
+          "raw_id": "BUSH_QUARRY"
+        },
+        {
+          "id": 176,
+          "raw_id": "POD_SWEET"
+        }
+      ],
+      "2": [
+        {
+          "id": 175,
+          "raw_id": "GRASS_WHEAT_CAVE"
+        },
+        {
+          "id": 188,
+          "raw_id": "MUSHROOM_CUP_DIMPLE"
+        },
+        {
+          "id": 174,
+          "raw_id": "GRASS_TAIL_PIG"
+        },
+        {
+          "id": 173,
+          "raw_id": "MUSHROOM_HELMET_PLUMP"
+        },
+        {
+          "id": 177,
+          "raw_id": "BUSH_QUARRY"
+        }
+      ],
+      "3": [
+        {
+          "id": 173,
+          "raw_id": "MUSHROOM_HELMET_PLUMP"
+        },
+        {
+          "id": 188,
+          "raw_id": "MUSHROOM_CUP_DIMPLE"
+        }
+      ]
+    },
+    "controller_results": {
+      "completed_observers": 6,
+      "display_order_retained": true,
+      "initial_current_tab": true,
+      "native_checks": 9,
+      "queued_tab_change_no_effects": true,
+      "sent_tab_change_effect_without_old_observer": true,
+      "stale_external_change_refused": true
+    },
+    "save_preservation": [
+      "Verified unchanged manifests for 2 save directories.",
+      "Verified unchanged manifests for 2 save directories."
+    ],
+    "sources": {
+      "schema/mirror.fbs": "863198e19a30172dc9dabf8eefe3baaaefde4d920ff8d469e28201e2fe3847b7",
+      "bridge/plugin/management.cpp": "fe46f8f0325262ce8d8e76c13d2db88f3c60cffcc04ce31a547d91dc7234301e",
+      "bridge/plugin/farm_transaction.h": "646db39d81e950b2d252e39cba318cc1d20028989c53cf19ba9fb2e9d3e77ac9",
+      "tools/smoke/farm-read-fixture.lua": "574988b14616329c69f37e418a5deb4920864c7fc989a3a7cb662e9176eca71a",
+      "presentations/godot/project/tests/farm_read_live.gd": "c2a402ae9dbc071797870e0ccb30e940787f0f319a834c3504f5d2bcabc4d377"
+    },
+    "scope": "Stable raw identities and their revised receipts verified through live read/controller paths. No farm view/rendered acceptance."
   }
 }

@@ -22,7 +22,14 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management83 renames action19 to FarmEdit and adds FarmOperation:
+Management84 requires each native farm choice to carry its stable plant raw ID
+(`raw_id`, nonempty and at most128 bytes). The owned ID participates in the farm
+revision and selects installed artwork independently of translated names and
+native menu state. Older receipts cannot synthesize raw IDs or new revisions;
+rebuild/install bridge and viewer together on `Local\\df3d_management_v84`.
+Snapshot/grid/session versions are unchanged.
+
+Management83 renamed action19 to FarmEdit and added FarmOperation:
 Crop (default), FertilizationToggle, and SeasonalFertilization. All require
 the exact displayed expected_revision and selected season. Crop owns crop_id;
 seasonal intent owns seasonal_fertilization (0/1). Other fields are rejected.
@@ -30,8 +37,7 @@ The farm snapshot adds current/max fertilizer, pending fertilizer jobs and
 the seasonal flag; all four participate in its revision. Older recordings
 cannot synthesize these facts or the new revision. Completed alone carries
 an authoritative fresh snapshot; Unknown must never be replayed automatically.
-Rebuild/install bridge and viewer together on `Local\\df3d_management_v83`.
-Snapshot/grid/session versions are unchanged. Native fertilizer helpers are
+Native fertilizer helpers are
 verified separately; the complete farm presentation remains unfinished.
 The existing tracker popup contract from management80 remains unchanged.
 

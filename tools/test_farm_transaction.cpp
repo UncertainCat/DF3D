@@ -5,20 +5,20 @@
 #include <algorithm>
 
 namespace {
-struct Choice {int32_t id;std::string name;bool seedsAvailable,currentSeasonWarning;};
+struct Choice {int32_t id;std::string name;bool seedsAvailable,currentSeasonWarning;std::string rawId;};
 struct Snapshot {
     int32_t buildingId=227,selectedSeason=1,currentSeason=1;
     uint64_t revision=0;
     int32_t currentFertilization=0,maxFertilization=29,pendingFertilization=0;
     bool seasonalFertilization=true;
     std::vector<int32_t> seasonalCrops{173,175,-1,176};
-    std::vector<Choice> choices{{175,"Pig tails",true,false},{176,"Sweet pods",false,true}};
+    std::vector<Choice> choices{{175,"Pig tails",true,false,"GRASS_TAIL_PIG"},{176,"Sweet pods",false,true,"POD_SWEET"}};
 };
 }
 TEST_CASE("farm content revision tracks semantic fields and preserves identical receipts") {
     Snapshot original;const auto base=df3d_production::farmRevision(original);
     REQUIRE(base>0);CHECK(base<=INT64_MAX);
-    for(int change=0;change<14;++change) {
+    for(int change=0;change<15;++change) {
         auto value=original;
         switch(change) {
         case 0:++value.buildingId;break;
@@ -35,6 +35,7 @@ TEST_CASE("farm content revision tracks semantic fields and preserves identical 
         case 11:++value.maxFertilization;break;
         case 12:++value.pendingFertilization;break;
         case 13:value.seasonalFertilization=false;break;
+        case 14:value.choices[0].rawId="DIFFERENT";break;
         }
         CAPTURE(change);CHECK(df3d_production::farmRevision(value)!=base);
         CHECK(df3d_production::farmRevision(original)==base);

@@ -30,7 +30,7 @@ func exercise() -> void:
 		if not check(farm.seasonal_crops==selected,"seasonal selections differ"):return
 		var expected: Array=[]
 		for row in fixture.choices[season]:
-			expected.append({"id":int(row.crop_id),"name":row.name,"seeds_available":row.seeds_available,"current_season_warning":row.current_season_warning})
+			expected.append({"id":int(row.crop_id),"name":row.name,"raw_id":row.raw_id,"seeds_available":row.seeds_available,"current_season_warning":row.current_season_warning})
 		if not check(farm.choices==expected,"native choice order/name/flags differ"):return
 		if observed.has(season) and not check(farm==observed[season],"farm read depends on tab request history"):return
 		observed[season]=farm

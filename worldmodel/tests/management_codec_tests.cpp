@@ -60,12 +60,13 @@ TEST_CASE("farm outcomes grant snapshot authority only to confirmed completion")
 }
 
 TEST_CASE("native farm receipts preserve order and exact revisions without legacy synthesis") {
-  for(int variant=0;variant<18;++variant) {
+  for(int variant=0;variant<21;++variant) {
     CAPTURE(variant);flatbuffers::FlatBufferBuilder b;
     std::vector<flatbuffers::Offset<wire::NativeFarmCrop>> rows;
     for(int i=0;i<(variant==8?257:2);++i)
       rows.push_back(wire::CreateNativeFarmCrop(b,variant==7?175:175+i,
-        b.CreateString(variant==6?"":i==0?"Plump helmets":"Sweet pods"),i==0,i==1));
+        b.CreateString(variant==6?"":i==0?"Plump helmets":"Sweet pods"),i==0,i==1,
+        variant==18?flatbuffers::Offset<flatbuffers::String>{}:b.CreateString(variant==19?"":variant==20?std::string(129,'A'):i==0?"MUSHROOM_HELMET_PLUMP":"POD_SWEET")));
     std::vector<int32_t> seasons{175,-1,176,-1};
     if(variant==4)seasons.pop_back();if(variant==5)seasons[1]=-2;
     auto f=wire::CreateFarmSnapshot(b,variant==1?-1:227,variant==2?0:variant==3?UINT64_MAX:9007199254740993ULL,
@@ -92,6 +93,8 @@ TEST_CASE("native farm receipts preserve order and exact revisions without legac
         CHECK(decoded.farm->choices[0].id==175);CHECK(decoded.farm->choices[1].id==176);
         CHECK(decoded.farm->choices[0].seedsAvailable);CHECK_FALSE(decoded.farm->choices[0].currentSeasonWarning);
         CHECK_FALSE(decoded.farm->choices[1].seedsAvailable);CHECK(decoded.farm->choices[1].currentSeasonWarning);
+        CHECK(decoded.farm->choices[0].rawId=="MUSHROOM_HELMET_PLUMP");
+        CHECK(decoded.farm->choices[1].rawId=="POD_SWEET");
         CHECK(decoded.farm->seasonalCrops==seasons);
       } else CHECK(decoded.crops[0].seeds==42);
     }

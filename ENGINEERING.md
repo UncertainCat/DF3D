@@ -90,8 +90,9 @@ read UI scratch. `farmHeader` now calls the native virtual name method and the
 fingerprinted worker predicate with owned output strings. Native formatter
 52d650 then formats an owned caption copy, preserving the raw custom name. The diagnostic
 `df3d farm-header-read <id>` returns names and removal/suspended/worker facts;
-it rejects malformed, missing, nonfarm and hidden targets. There is no transport
-contract or rename write yet, and a queued command is not evidence of status.
+it rejects malformed, missing, nonfarm and hidden targets. Management85 carries
+the custom name, formatted caption and removal facts in farm snapshots. There
+is no rename write yet, and a queued command is not evidence of status.
 
 Protected header183652 compares this helper during every rename/removal capture,
 including owned suspended, worker-reference and combined variants. All nonediting
@@ -103,7 +104,8 @@ sheet/plotinfo structures and name/draft strings unchanged. The setup is restore
 removal cancelled, and the owned process exits unsaved with source manifest
 unchanged. `header_reference.semantic_reference` retains facts and PNG hashes.
 The suspended-worker capture was inspected. MSVC build/install succeeds; core
-passes in `build/qa/farm-header-semantic-final`. Management84 is unchanged. The native
+passes in `build/qa/farm-header-semantic-final`. That helper reference used
+management84; the management85 transport checks are described below. The native
 per-character rename mutation path and its transport/lifecycle remain pending.
 
 Header action ownership, rename/removal, main-scene lifecycle integration and
@@ -280,6 +282,28 @@ staff-height gap, not the overall Zones exposure audit.
 ## Building production native-entry audit
 
 ### Native farm transport contract
+
+Management85 adds required custom/header names and removal, suspended and worker
+facts to FarmSnapshot. The safe-point reader obtains them from `farmHeader`;
+world model and Godot receive owned values. All five fields participate in the
+content revision, so name/status changes invalidate earlier edit receipts.
+Wire and controller validators reject absent/oversized names, empty captions and
+removal flags on a farm not marked for removal. Old versions cannot synthesize
+these facts or new revisions; bridge and viewer must migrate together.
+
+Core, controller and management contract tests pass cleanly in
+`build/qa/farm-header-contract-fixed`, including20 revision inputs, required-field
+validation and exact field round trips. The initial contract build failed because
+the schema insertion had not applied; it is not acceptance. MSVC build/install
+passes. Protected read184937 verifies12 real reads, native header equality, name
+change/restoration revision behavior and two target refusals. Protected
+controller185028 preserves six completed observers, nine native checks, unsent
+cancellation, sent observer retirement, stale external-change rejection and the
+existing crop/fertilizer actions. Both pass cleanly, exit unsaved and preserve
+both save manifests. `native_farm.json.header_transport_reference` retains
+binary/source hashes and results. The initial184924 attempt refused a disposable
+save name before launch; the corrected lane uses its required df3d-areas prefix.
+This is transport/controller acceptance, not rendered header or rename acceptance.
 
 Management84 adds the required stable plant raw ID to every farm choice. The
 provider copies it from the current plant raw at the safe point; names, menu

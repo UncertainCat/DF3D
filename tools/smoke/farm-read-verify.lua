@@ -20,7 +20,11 @@ if request.op=='change' or request.op=='restore' then
  local text,code=dfhack.run_command_silent('df3d','farm-crop-set',tostring(state.farm.id),'0',tostring(crop))
  assert(code==0 and json.decode(text).accepted,'controlled seasonal change refused')
  state.expected={table.unpack(state.seasons)};state.expected[1]=crop;result.crop=crop
+elseif request.op=='header-change' or request.op=='header-restore' then
+ state.farm.name=request.op=='header-change' and 'wire farm' or state.name
+ local text,code=dfhack.run_command_silent('df3d','farm-header-read',tostring(state.farm.id));assert(code==0,text);result.header=json.decode(text)
 elseif request.op~='final' then error('unknown farm verification operation')end
+if request.op=='final' then assert(state.farm.name==state.name,'read fixture name not restored')end
 local f=assert(io.open(out..'/response-'..index..'.json','w'))
 f:write(json.encode(result));f:close()
 print('SEMANTIC_PASS '..index..' farm read guards')

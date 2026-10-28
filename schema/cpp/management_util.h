@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 84;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v84";
+inline constexpr uint32_t kManagementVersion = 85;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v85";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -33,6 +33,8 @@ inline const char* validateFarmSnapshot(const FarmSnapshot& f) {
      f.selected_season()<0 || f.selected_season()>3 || f.current_season()<0 || f.current_season()>3 ||
      !f.seasonal_crops() || f.seasonal_crops()->size()!=4 || !f.choices() || f.choices()->size()>256)
     return "invalid native farm snapshot";
+  if(!f.custom_name() || f.custom_name()->size()>1536 || !f.header_name() || !f.header_name()->size() || f.header_name()->size()>1536 ||
+     (!f.removing() && (f.removal_suspended() || f.removal_has_worker())))return "invalid farm header";
   if(f.current_fertilization()<0 || f.max_fertilization()<0 || f.pending_fertilization()<0)return "invalid farm fertilization";
   for(auto id:*f.seasonal_crops())if(id < -1 || id>32767)return "invalid native farm selection";
   std::set<int32_t> ids;

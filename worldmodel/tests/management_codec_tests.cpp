@@ -45,7 +45,7 @@ TEST_CASE("farm outcomes grant snapshot authority only to confirmed completion")
   for(int outcome=0;outcome<6;++outcome)for(bool ok:{false,true})for(bool receipt:{false,true})for(bool edit:{false,true}) {
     CAPTURE(outcome);CAPTURE(ok);CAPTURE(receipt);CAPTURE(edit);
     flatbuffers::FlatBufferBuilder b;
-    auto farm=wire::CreateFarmSnapshot(b,227,17,1,1,b.CreateVector(std::vector<int32_t>{175,-1,176,-1}),b.CreateVector(std::vector<flatbuffers::Offset<wire::NativeFarmCrop>>{}));
+    auto farm=wire::CreateFarmSnapshot(b,227,17,1,1,b.CreateVector(std::vector<int32_t>{175,-1,176,-1}),b.CreateVector(std::vector<flatbuffers::Offset<wire::NativeFarmCrop>>{}),0,0,0,false,b.CreateString(""),b.CreateString("Farm Plot"));
     wire::ProductionStateBuilder p(b);p.add_selected_building(227);
     p.add_farm_edit_outcome(static_cast<wire::FarmEditOutcome>(outcome));if(receipt)p.add_farm(farm);
     auto prod=p.Finish();wire::ManagementStateBuilder state(b);
@@ -60,7 +60,7 @@ TEST_CASE("farm outcomes grant snapshot authority only to confirmed completion")
 }
 
 TEST_CASE("native farm receipts preserve order and exact revisions without legacy synthesis") {
-  for(int variant=0;variant<21;++variant) {
+  for(int variant=0;variant<28;++variant) {
     CAPTURE(variant);flatbuffers::FlatBufferBuilder b;
     std::vector<flatbuffers::Offset<wire::NativeFarmCrop>> rows;
     for(int i=0;i<(variant==8?257:2);++i)
@@ -71,7 +71,10 @@ TEST_CASE("native farm receipts preserve order and exact revisions without legac
     if(variant==4)seasons.pop_back();if(variant==5)seasons[1]=-2;
     auto f=wire::CreateFarmSnapshot(b,variant==1?-1:227,variant==2?0:variant==3?UINT64_MAX:9007199254740993ULL,
       variant==9?4:1,variant==10?-1:1,b.CreateVector(seasons),b.CreateVector(rows),
-      variant==15?-1:4,variant==16?-1:29,variant==17?-1:2,true);
+      variant==15?-1:4,variant==16?-1:29,variant==17?-1:2,true,
+      variant==21?flatbuffers::Offset<flatbuffers::String>{}:b.CreateString(variant==23?std::string(1537,'x'):"test farm"),
+      variant==22?flatbuffers::Offset<flatbuffers::String>{}:b.CreateString(variant==24?std::string(1537,'x'):variant==25?"":"Test farm"),
+      variant!=26 && variant!=27,variant!=27,variant!=26);
     auto legacy=wire::CreateFarmCrop(b,175,b.CreateString("old singular name"),15,42);
     auto legacyRows=b.CreateVector(std::vector{legacy});
     wire::ProductionStateBuilder p(b);p.add_selected_building(variant==11?228:227);
@@ -87,6 +90,8 @@ TEST_CASE("native farm receipts preserve order and exact revisions without legac
       CHECK(decoded.farm.has_value()==(variant==0));
       if(decoded.farm) {
         CHECK(decoded.farm->revision==9007199254740993ULL);
+        CHECK(decoded.farm->customName=="test farm");CHECK(decoded.farm->headerName=="Test farm");
+        CHECK(decoded.farm->removing);CHECK(decoded.farm->removalSuspended);CHECK(decoded.farm->removalHasWorker);
         CHECK(decoded.farm->currentFertilization==4);CHECK(decoded.farm->maxFertilization==29);
         CHECK(decoded.farm->pendingFertilization==2);CHECK(decoded.farm->seasonalFertilization);
         REQUIRE(decoded.farm->choices.size()==2);

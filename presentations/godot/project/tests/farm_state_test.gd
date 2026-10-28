@@ -24,6 +24,7 @@ func facts(id:=227,season:=1) -> Dictionary:
 		"seasonal_crops":[173,175,-1,173],"choices":[
 			{"id":175,"name":"Cave wheat","raw_id":"GRASS_WHEAT_CAVE","seeds_available":false,"current_season_warning":false},
 			{"id":173,"name":"Plump helmets","raw_id":"MUSHROOM_HELMET_PLUMP","seeds_available":true,"current_season_warning":false}],
+		"custom_name":"","header_name":"Farm Plot","removing":false,"removal_suspended":false,"removal_has_worker":false,
 		"current_fertilization":0,"max_fertilization":29,"pending_fertilization":0,"seasonal_fertilization":true}
 func reply(value: Dictionary, outcome:=0) -> void:
 	var sent: Dictionary=world.calls[-1].request
@@ -78,6 +79,14 @@ func run() -> void:
 		var malformed:=facts();malformed.choices[0].raw_id=invalid
 		reply(malformed)
 		check(model.phase==Model.Phase.Rejected and model.snapshot.is_empty(),"invalid raw identity cannot grant farm authority")
+	for field in ["custom_name","header_name","removing","removal_suspended","removal_has_worker"]:
+		model.open(227,1);service.poll()
+		var malformed:=facts();malformed.erase(field);reply(malformed)
+		check(model.phase==Model.Phase.Rejected and model.snapshot.is_empty(),"missing header cannot grant farm authority")
+	for field in ["custom_name","header_name"]:
+		model.open(227,1);service.poll()
+		var malformed:=facts();malformed[field]="X".repeat(1537);reply(malformed)
+		check(model.phase==Model.Phase.Rejected,"oversized header rejected")
 	ready()
 	model.toggle_fertilization();service.poll();before=world.calls.size()
 	world.state={"world_epoch":6,"revision":99,"status":0};service.poll()

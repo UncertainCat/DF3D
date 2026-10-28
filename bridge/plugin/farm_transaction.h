@@ -9,6 +9,8 @@ template<class Snapshot> uint64_t farmRevision(const Snapshot& snapshot) {
     uint64_t hash=UINT64_C(14695981039346656037);
     const auto byte=[&](uint8_t value){hash^=value;hash*=UINT64_C(1099511628211);};
     const auto number=[&](uint64_t value){for(int i=0;i<8;++i){byte(uint8_t(value));value>>=8;}};
+    for(const auto* text:{&snapshot.customName,&snapshot.headerName}) {number(text->size());for(unsigned char c:*text)byte(c);}
+    byte(snapshot.removing);byte(snapshot.removalSuspended);byte(snapshot.removalHasWorker);
     number(snapshot.buildingId);number(snapshot.selectedSeason);number(snapshot.currentSeason);
     number(snapshot.currentFertilization);number(snapshot.maxFertilization);
     number(snapshot.pendingFertilization);byte(snapshot.seasonalFertilization);

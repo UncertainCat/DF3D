@@ -95,6 +95,12 @@ func _valid(farm: Dictionary) -> bool:
 	for key in ["building_id","selected_season","current_season","revision","current_fertilization","max_fertilization","pending_fertilization"]:
 		if typeof(farm.get(key))!=TYPE_INT:return false
 	if farm.building_id!=building_id or farm.selected_season!=season or farm.revision<=0 or farm.current_season<0 or farm.current_season>3:return false
+	for key in ["custom_name","header_name"]:
+		if typeof(farm.get(key))!=TYPE_STRING or farm[key].to_utf8_buffer().size()>1536:return false
+	if farm.header_name.is_empty():return false
+	for key in ["removing","removal_suspended","removal_has_worker"]:
+		if typeof(farm.get(key))!=TYPE_BOOL:return false
+	if not farm.removing and (farm.removal_suspended or farm.removal_has_worker):return false
 	if farm.current_fertilization<0 or farm.max_fertilization<0 or farm.pending_fertilization<0:return false
 	if typeof(farm.get("seasonal_fertilization"))!=TYPE_BOOL or typeof(farm.get("seasonal_crops"))!=TYPE_ARRAY or farm.seasonal_crops.size()!=4:return false
 	for crop in farm.seasonal_crops:

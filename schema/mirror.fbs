@@ -1555,6 +1555,11 @@ table FarmSnapshot {
   max_fertilization:int32;
   pending_fertilization:int32;
   seasonal_fertilization:bool;
+  custom_name:string;
+  header_name:string;
+  removing:bool;
+  removal_suspended:bool;
+  removal_has_worker:bool;
 }
 table ProductionState {
   buildings:[ProductionBuilding]; next_cursor:uint32;
@@ -1850,7 +1855,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 84;
+  schema_version:uint32 = 85;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1896,7 +1901,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 84;
+  schema_version:uint32 = 85;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

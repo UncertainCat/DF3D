@@ -602,7 +602,7 @@ void publish() {
   if(production.farm) {
     const auto& f=*production.farm;std::vector<flatbuffers::Offset<m::NativeFarmCrop>> rows;
     for(const auto& c:f.choices)rows.push_back(m::CreateNativeFarmCrop(b,c.id,b.CreateString(c.name),c.seedsAvailable,c.currentSeasonWarning,b.CreateString(c.rawId)));
-    farmSnapshot=m::CreateFarmSnapshot(b,f.buildingId,f.revision,f.selectedSeason,f.currentSeason,b.CreateVector(f.seasonalCrops),b.CreateVector(rows),f.currentFertilization,f.maxFertilization,f.pendingFertilization,f.seasonalFertilization);
+    farmSnapshot=m::CreateFarmSnapshot(b,f.buildingId,f.revision,f.selectedSeason,f.currentSeason,b.CreateVector(f.seasonalCrops),b.CreateVector(rows),f.currentFertilization,f.maxFertilization,f.pendingFertilization,f.seasonalFertilization,b.CreateString(f.customName),b.CreateString(f.headerName),f.removing,f.removalSuspended,f.removalHasWorker);
   }
   auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
@@ -2341,7 +2341,10 @@ std::optional<FarmSnapshot> observeFarmSnapshot(int32_t buildingId,int season) {
     if(!farm || !tile || tile->bits.hidden || !df::global::cur_season || *df::global::cur_season<0 || *df::global::cur_season>3) return {};
     const auto choices=df3d_production::farmChoices(farm,season);
     if(!choices || choices->size()>256) return {};
+    const auto header=df3d_production::farmHeader(farm);if(!header)return {};
     FarmSnapshot snapshot;snapshot.buildingId=farm->id;snapshot.selectedSeason=season;
+    snapshot.customName=DF2UTF(header->customNameCp437);snapshot.headerName=DF2UTF(header->headerNameCp437);
+    snapshot.removing=header->removing;snapshot.removalSuspended=header->suspended;snapshot.removalHasWorker=header->hasWorker;
     snapshot.currentSeason=*df::global::cur_season;
     snapshot.currentFertilization=farm->current_fertilization;snapshot.maxFertilization=farm->max_fertilization;
     snapshot.seasonalFertilization=farm->farm_flags.bits.seasonal_fertilize;

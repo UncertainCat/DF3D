@@ -14,7 +14,8 @@ for season=0,3 do
  for _,row in ipairs(rows)do row.raw_id=assert(df.plant_raw.find(row.crop_id)).id end
  state.choices[#state.choices+1]=rows
 end
-_G.df3d_farm_read_fixture={farm=farm,seasons=state.seasons,frame=df.global.world.frame_counter,
+local text,code=dfhack.run_command_silent('df3d','farm-header-read',tostring(farm.id));assert(code==0,text);state.header=json.decode(text)
+_G.df3d_farm_read_fixture={farm=farm,name=farm.name,seasons=state.seasons,frame=df.global.world.frame_counter,
  crops=json.encode(vector(df.global.plotinfo.selected_farm_crops)),seeds=json.encode(vector(df.global.plotinfo.available_seeds)),
  tab=df.global.game.main_interface.view_sheets.active_sub_tab}
 local f=assert(io.open(out..'/fixture.json','w'));f:write(json.encode(state));f:close()

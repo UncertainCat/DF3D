@@ -25,6 +25,8 @@ ProductionState decodeProduction(const m::ProductionState* p) {
   if(const auto* f=p->farm()) {
     auto& farm=n.farm.emplace();farm.buildingId=f->building_id();farm.revision=f->revision();
     farm.selectedSeason=f->selected_season();farm.currentSeason=f->current_season();
+    farm.customName=str(f->custom_name());farm.headerName=str(f->header_name());
+    farm.removing=f->removing();farm.removalSuspended=f->removal_suspended();farm.removalHasWorker=f->removal_has_worker();
     farm.currentFertilization=f->current_fertilization();farm.maxFertilization=f->max_fertilization();
     farm.pendingFertilization=f->pending_fertilization();farm.seasonalFertilization=f->seasonal_fertilization();
     if(f->seasonal_crops())farm.seasonalCrops.assign(f->seasonal_crops()->begin(),f->seasonal_crops()->end());

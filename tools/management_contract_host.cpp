@@ -429,7 +429,7 @@ flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBuffe
     auto farm=m::CreateFarmSnapshot(b,3,9007199254740993ULL,action==A::FarmEdit?q->season():1,1,
       b.CreateVector(seasons),b.CreateVector(rows),4,29,
       q->farm_operation()==m::FarmOperation::FertilizationToggle?25:2,
-      q->farm_operation()==m::FarmOperation::SeasonalFertilization?q->seasonal_fertilization()!=0:true);
+      q->farm_operation()==m::FarmOperation::SeasonalFertilization?q->seasonal_fertilization()!=0:true,b.CreateString("test farm"),b.CreateString("Test farm"),false,false,false);
     m::ProductionStateBuilder p(b);p.add_selected_building(3);p.add_farm(farm);
     if(action==A::FarmEdit)p.add_farm_edit_outcome(m::FarmEditOutcome::Completed);
     return p.Finish();

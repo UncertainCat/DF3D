@@ -516,6 +516,8 @@ func assert_production(p: Dictionary, request: Dictionary) -> void:
 		var native_farm: Dictionary=p.farm
 		assert(native_farm.revision==9007199254740993 and typeof(native_farm.revision)==TYPE_INT)
 		assert(native_farm.building_id==3 and native_farm.current_season==1)
+		assert(native_farm.custom_name=="test farm" and native_farm.header_name=="Test farm")
+		assert(not native_farm.removing and not native_farm.removal_suspended and not native_farm.removal_has_worker)
 		var selected_season: int=request.season if request.action==A.FarmEdit else 1
 		assert(native_farm.selected_season==selected_season)
 		var seasons := [175,-1,176,-1]

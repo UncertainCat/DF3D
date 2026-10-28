@@ -11258,5 +11258,336 @@
         }
       ]
     }
+  },
+  "header_transport_reference": {
+    "management_version": 85,
+    "read_source": "build\\areas-acceptance-20261028-184937",
+    "controller_source": "build\\areas-acceptance-20261028-185028",
+    "scope": "Read-only header transport plus existing farm edit/controller lifecycle. Native helper supplies names/status. Name changed/restored only in owned paused test setup; this is not a rename command or UI acceptance. Source and disposable save manifests preserved; owned unsaved exits.",
+    "inputs": [
+      {
+        "path": "schema/mirror.fbs",
+        "sha256": "b9988abe66594e77b18333de5edb0eb409a7624a5e139adbe76e936bd536d7a1"
+      },
+      {
+        "path": "bridge/plugin/farm_transaction.h",
+        "sha256": "d66c72db71d6cb05a6ee6d9f1638954fe4513d23c73d456cd9f1fc423679789e"
+      },
+      {
+        "path": "bridge/plugin/management.cpp",
+        "sha256": "34a00ed498d614a7473a0fbeea518132b22d87d3f0e077bd5b50152b04e26086"
+      },
+      {
+        "path": "tools/smoke/farm-read-fixture.lua",
+        "sha256": "97c1f4c759a2e649c8016e4c0f120aa2c96eaa25b5e14daa1cb5e3b8dab21565"
+      },
+      {
+        "path": "tools/smoke/farm-read-verify.lua",
+        "sha256": "eca21ba39428af85791213d61538ffb78ae1ea0b1ac86a3b03b2541b71fef41f"
+      },
+      {
+        "path": "presentations/godot/project/tests/farm_read_live.gd",
+        "sha256": "35469ab0375b0333823519b7cccfe26a3b4d9611909cd82f38c79a0830674c83"
+      },
+      {
+        "path": "presentations/godot/project/scripts/farm_state.gd",
+        "sha256": "ef39675fe5683f7ccf66195d6e23f551e66c2b397fbf5dd87fdc1e103ae4331c"
+      }
+    ],
+    "bridge_sha256": "51469526692E5E6BDFA247547EE26826832EB5AEF2AAD4F5665EAA51D3E06CBB",
+    "extension_sha256": "EE3E47E783F07B5771C68BCD5ADD35BFD9CC0FFED92D23D9A881AACBF1425C05",
+    "read_result": {
+      "changed_revision": 2860016066686925609,
+      "read_count": 12,
+      "rejected_targets": 2,
+      "renamed_header": {
+        "building_id": 227,
+        "choices": [
+          {
+            "current_season_warning": false,
+            "id": 175,
+            "name": "Cave wheat",
+            "raw_id": "GRASS_WHEAT_CAVE",
+            "seeds_available": false
+          },
+          {
+            "current_season_warning": false,
+            "id": 188,
+            "name": "Dimple cups",
+            "raw_id": "MUSHROOM_CUP_DIMPLE",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 174,
+            "name": "Pig tails",
+            "raw_id": "GRASS_TAIL_PIG",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 173,
+            "name": "Plump helmets",
+            "raw_id": "MUSHROOM_HELMET_PLUMP",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 177,
+            "name": "Quarry bushes",
+            "raw_id": "BUSH_QUARRY",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": true,
+            "id": 176,
+            "name": "Sweet pods",
+            "raw_id": "POD_SWEET",
+            "seeds_available": false
+          }
+        ],
+        "current_fertilization": 0,
+        "current_season": 1,
+        "custom_name": "wire farm",
+        "header_name": "Wire farm",
+        "max_fertilization": 29,
+        "pending_fertilization": 0,
+        "removal_has_worker": false,
+        "removal_suspended": false,
+        "removing": false,
+        "revision": 4644558695150343406,
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "seasonal_fertilization": true,
+        "selected_season": 1
+      },
+      "restored_revision": 4128950174757031356,
+      "snapshots": {
+        "0": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "raw_id": "MUSHROOM_HELMET_PLUMP",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "raw_id": "MUSHROOM_CUP_DIMPLE",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 177,
+              "name": "Quarry bushes",
+              "raw_id": "BUSH_QUARRY",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": true,
+              "id": 176,
+              "name": "Sweet pods",
+              "raw_id": "POD_SWEET",
+              "seeds_available": false
+            }
+          ],
+          "current_fertilization": 0,
+          "current_season": 1,
+          "custom_name": "",
+          "header_name": "Farm Plot",
+          "max_fertilization": 29,
+          "pending_fertilization": 0,
+          "removal_has_worker": false,
+          "removal_suspended": false,
+          "removing": false,
+          "revision": 577910685200656879,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "seasonal_fertilization": true,
+          "selected_season": 0
+        },
+        "1": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 175,
+              "name": "Cave wheat",
+              "raw_id": "GRASS_WHEAT_CAVE",
+              "seeds_available": false
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "raw_id": "MUSHROOM_CUP_DIMPLE",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 174,
+              "name": "Pig tails",
+              "raw_id": "GRASS_TAIL_PIG",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "raw_id": "MUSHROOM_HELMET_PLUMP",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 177,
+              "name": "Quarry bushes",
+              "raw_id": "BUSH_QUARRY",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": true,
+              "id": 176,
+              "name": "Sweet pods",
+              "raw_id": "POD_SWEET",
+              "seeds_available": false
+            }
+          ],
+          "current_fertilization": 0,
+          "current_season": 1,
+          "custom_name": "",
+          "header_name": "Farm Plot",
+          "max_fertilization": 29,
+          "pending_fertilization": 0,
+          "removal_has_worker": false,
+          "removal_suspended": false,
+          "removing": false,
+          "revision": 4128950174757031356,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "seasonal_fertilization": true,
+          "selected_season": 1
+        },
+        "2": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 175,
+              "name": "Cave wheat",
+              "raw_id": "GRASS_WHEAT_CAVE",
+              "seeds_available": false
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "raw_id": "MUSHROOM_CUP_DIMPLE",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 174,
+              "name": "Pig tails",
+              "raw_id": "GRASS_TAIL_PIG",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "raw_id": "MUSHROOM_HELMET_PLUMP",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 177,
+              "name": "Quarry bushes",
+              "raw_id": "BUSH_QUARRY",
+              "seeds_available": true
+            }
+          ],
+          "current_fertilization": 0,
+          "current_season": 1,
+          "custom_name": "",
+          "header_name": "Farm Plot",
+          "max_fertilization": 29,
+          "pending_fertilization": 0,
+          "removal_has_worker": false,
+          "removal_suspended": false,
+          "removing": false,
+          "revision": 1895345247905227150,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "seasonal_fertilization": true,
+          "selected_season": 2
+        },
+        "3": {
+          "building_id": 227,
+          "choices": [
+            {
+              "current_season_warning": false,
+              "id": 173,
+              "name": "Plump helmets",
+              "raw_id": "MUSHROOM_HELMET_PLUMP",
+              "seeds_available": true
+            },
+            {
+              "current_season_warning": false,
+              "id": 188,
+              "name": "Dimple cups",
+              "raw_id": "MUSHROOM_CUP_DIMPLE",
+              "seeds_available": true
+            }
+          ],
+          "current_fertilization": 0,
+          "current_season": 1,
+          "custom_name": "",
+          "header_name": "Farm Plot",
+          "max_fertilization": 29,
+          "pending_fertilization": 0,
+          "removal_has_worker": false,
+          "removal_suspended": false,
+          "removing": false,
+          "revision": 2688189961881417901,
+          "seasonal_crops": [
+            173,
+            175,
+            175,
+            173
+          ],
+          "seasonal_fertilization": true,
+          "selected_season": 3
+        }
+      }
+    },
+    "controller_result": {
+      "completed_observers": 6,
+      "display_order_retained": true,
+      "initial_current_tab": true,
+      "native_checks": 9,
+      "queued_tab_change_no_effects": true,
+      "sent_tab_change_effect_without_old_observer": true,
+      "stale_external_change_refused": true
+    }
   }
 }

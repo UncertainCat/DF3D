@@ -31,6 +31,7 @@ func exercise() -> void:
 		var expected: Array=[]
 		for row in fixture.choices[season]:
 			expected.append({"id":int(row.crop_id),"name":row.name,"raw_id":row.raw_id,"seeds_available":row.seeds_available,"current_season_warning":row.current_season_warning})
+		if not check(farm.custom_name==fixture.header.custom_name and farm.header_name==fixture.header.header_name and farm.removing==fixture.header.removing and farm.removal_suspended==fixture.header.suspended and farm.removal_has_worker==fixture.header.has_worker,"header facts differ"):return
 		if not check(farm.choices==expected,"native choice order/name/flags differ"):return
 		if observed.has(season) and not check(farm==observed[season],"farm read depends on tab request history"):return
 		observed[season]=farm
@@ -45,10 +46,21 @@ func exercise() -> void:
 	var restored:=await read_farm(int(fixture.id),1)
 	if stopped:return
 	if not check(restored==observed[1],"restored farm content did not recover its revision"):return
+	step="farm header revision"
+	var header_change:=await native("header-change")
+	if stopped:return
+	var renamed:=await read_farm(int(fixture.id),1)
+	if stopped:return
+	if not check(renamed.revision!=restored.revision and renamed.custom_name==header_change.header.custom_name and renamed.header_name==header_change.header.header_name,"name change retained stale revision"):return
+	await native("header-restore")
+	if stopped:return
+	var header_restored:=await read_farm(int(fixture.id),1)
+	if stopped:return
+	if not check(header_restored==restored,"name restoration did not restore receipt"):return
 	step="invalid farm targets"
 	for id in [int(fixture.nonfarm),2147483647]:
 		var absent:=await read_farm(id,0,true)
 		if stopped:return
 		if not check(absent.is_empty(),"rejected target retained farm authority"):return
 	await native("final")
-	write_json("farm-read-results.json",{"snapshots":observed,"read_count":10,"rejected_targets":2,"changed_revision":changed.revision,"restored_revision":restored.revision})
+	write_json("farm-read-results.json",{"snapshots":observed,"read_count":12,"renamed_header":renamed,"rejected_targets":2,"changed_revision":changed.revision,"restored_revision":restored.revision})

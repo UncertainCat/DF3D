@@ -7,6 +7,8 @@
 namespace {
 struct Choice {int32_t id;std::string name;bool seedsAvailable,currentSeasonWarning;std::string rawId;};
 struct Snapshot {
+    std::string customName="",headerName="Farm Plot";
+    bool removing=false,removalSuspended=false,removalHasWorker=false;
     int32_t buildingId=227,selectedSeason=1,currentSeason=1;
     uint64_t revision=0;
     int32_t currentFertilization=0,maxFertilization=29,pendingFertilization=0;
@@ -18,7 +20,7 @@ struct Snapshot {
 TEST_CASE("farm content revision tracks semantic fields and preserves identical receipts") {
     Snapshot original;const auto base=df3d_production::farmRevision(original);
     REQUIRE(base>0);CHECK(base<=INT64_MAX);
-    for(int change=0;change<15;++change) {
+    for(int change=0;change<20;++change) {
         auto value=original;
         switch(change) {
         case 0:++value.buildingId;break;
@@ -36,6 +38,11 @@ TEST_CASE("farm content revision tracks semantic fields and preserves identical 
         case 12:++value.pendingFertilization;break;
         case 13:value.seasonalFertilization=false;break;
         case 14:value.choices[0].rawId="DIFFERENT";break;
+        case 15:value.customName="name";break;
+        case 16:value.headerName="Name";break;
+        case 17:value.removing=true;break;
+        case 18:value.removalSuspended=true;break;
+        case 19:value.removalHasWorker=true;break;
         }
         CAPTURE(change);CHECK(df3d_production::farmRevision(value)!=base);
         CHECK(df3d_production::farmRevision(original)==base);

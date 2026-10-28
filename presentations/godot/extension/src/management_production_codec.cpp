@@ -86,6 +86,8 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   prod["farm_edit_outcome"]=int(p.farmEditOutcome);
   if(p.farm) {
     const auto& f=*p.farm;Dictionary farm;Array choices,selected;
+    farm["custom_name"]=String::utf8(f.customName.c_str());farm["header_name"]=String::utf8(f.headerName.c_str());
+    farm["removing"]=f.removing;farm["removal_suspended"]=f.removalSuspended;farm["removal_has_worker"]=f.removalHasWorker;
     farm["building_id"]=f.buildingId;farm["revision"]=int64_t(f.revision);
     farm["selected_season"]=f.selectedSeason;farm["current_season"]=f.currentSeason;
     farm["current_fertilization"]=f.currentFertilization;farm["max_fertilization"]=f.maxFertilization;

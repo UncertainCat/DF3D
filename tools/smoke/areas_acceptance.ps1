@@ -60,7 +60,7 @@ try {
   Write-Lf "$out/zone-squads-only.json" (@{zone=$SquadZone;disconnect=$SquadDisconnect} | ConvertTo-Json -Compress)
  }
  if($AnimalDisconnect -ne "none" -and (-not $ZoneAnimalsOnly -or -not $ControllerScene)){throw "AnimalDisconnect requires ZoneAnimalsOnly and ControllerScene"}
- if($AnimalTarget -eq "item" -and (-not $ZoneAnimalsOnly -or $AnimalDisconnect -notin @("queued","sent"))){throw "Item disconnect target requires queued or sent ZoneAnimalsOnly"}
+ if($AnimalTarget -eq "item" -and (-not $ZoneAnimalsOnly -or $AnimalDisconnect -notin @("queued","sent","restart"))){throw "Item disconnect target requires queued, sent or restart ZoneAnimalsOnly"}
  if($ZoneAnimalsOnly) {
   if(($Controller -and $ControllerScene) -or $ControllerRestart -or $BoundaryOnly -or $ZoneRenameOnly -or $ZoneGatherOnly -or $ZoneOverlapOnly -or $ZoneDefaultsOnly -or $ZoneOwnerOnly -or $StockpilesOnly -or $StockpilePaintOnly -or $StockpileFitOnly -or $StockpileResizeOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene){throw 'ZoneAnimalsOnly supports one semantic or controller driver without other scopes'}
   Write-Lf "$out/zone-animals-only.json" (@{scope="native animal assignment, transfer, clear and chain job cleanup";disconnect=$AnimalDisconnect;target=$AnimalTarget} | ConvertTo-Json -Compress)

@@ -1134,7 +1134,9 @@ DF156460 exiting unsaved. Core and reader checks pass in
 `build/qa/location-staff-custom-provider78`, and MSVC builds successfully.
 Installed plugin SHA256 is
 92355C63872455A56280A8B20981D5A31E412BDBDDD69910295B0CFE7DBD7486.
-Custom-furnace fixtures and rendered custom-building indicators remain unverified.
+Rendered custom-workshop indicators have the64-case acceptance below. The
+supported installation has no custom furnace raw; custom-furnace art is outside
+that installed-content reference, not an unfinished supported artwork case.
 
 `tools/smoke/inspect_native_staff_indicators.py` pins the executable SHA256 and
 reads the four native renderer jump tables. It resolves workshop/furnace graphic
@@ -1148,8 +1150,8 @@ and furnace branches use the raw LIST_ICON with different fallback tokens.
 Work-detail18 (Siege Operator) selects graphic374, before the custom graphics
 375..382. The bounded native renderer audit additionally shows that unknown
 assigned workshop/furnace/work-detail selectors consume a four-cell slot even
-when no graphic is drawn. These are static dispatch findings; subtype-specific
-rendering, custom-raw lookup and overflow still require viewer/live acceptance.
+when no graphic is drawn. These static dispatch findings are complemented by
+the installed subtype, custom-raw and overflow rendering acceptance below.
 
 `location_staff_assignments_reader.gd` stages one serial observation pass for
 the current visible, resolvable staff rows. Its owner binds Details generation,
@@ -3037,8 +3039,23 @@ The initial153059 run verified retirement and membership but timed out waiting
 for offscreen portraits; the corrected check waits only for visible demand.
 Both final runs pass with the known rendering-thread notice, preserve both save
 manifests and close owned DF6368/167460 unsaved. Core and candidate-state tests
-pass in `build/qa/animal-item-disconnect`. Runtime behavior is unchanged. Item
-mutation across producer replacement remains outside these same-process cases.
+pass in `build/qa/animal-item-disconnect`. Runtime behavior is unchanged.
+
+`-AnimalTarget item -AnimalDisconnect restart` covers producer replacement.
+Protected20261028-154032 replaces DF5660 with164220 after the item mutation has
+completed but before its success is delivered. The old request becomes Unknown,
+picker authority retires and no area request replays. The unsaved old zone is
+absent. A new Pit/Pond is created through viewport input, then the saved critter
+item is selected in fresh candidates. `item_assignment_membership` independently
+checks exact reciprocal zone/item references without incorrectly requiring old
+cage-removal effects to survive reload. Ordinary `item_assignment` retains its
+full containment/cage assertions. The reopened image was inspected with all
+visible images loaded; the fresh zone is removed through the UI. All1,368 restart
+hashes and both final save manifests match; both owned processes exit unsaved.
+The run passes with only the known rendering-thread notice. The existing
+`item_disconnect_reference` retains replacement evidence. Core passes in
+`build/qa/animal-item-restart`. This tests controlled loss after completion;
+it does not inject process termination inside a native call.
 
 Explicit same-process reopening passes in `areas-acceptance-20261027-151837`
 (sent, DF165384): actual launcher/map selection opens fresh candidates, the

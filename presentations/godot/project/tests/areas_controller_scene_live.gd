@@ -378,7 +378,7 @@ func pointer_squad_disconnect(id: int, disconnect_mode: String) -> void:
 	await pointer_click(Vector2(500,150),MOUSE_BUTTON_RIGHT)
 	if not check(not view.visible and settled(),"reopened squad picker did not dismiss"):return
 
-func pointer_candidate_restart(id: int, target_id: int, ticket: int, kind: String) -> void:
+func pointer_candidate_restart(id: int, target_id: int, ticket: int, kind: String, entity:=1) -> void:
 	var old_epoch:int=world.poll_session().get("fortress_epoch",0)
 	var old_generation:int=world.session_generation()
 	handshake+=1
@@ -443,7 +443,7 @@ func pointer_candidate_restart(id: int, target_id: int, ticket: int, kind: Strin
 	var fresh_id:int=editor.selected.id
 	if kind=="animal":
 		await click_control(editor.zone_menu.controls.animals)
-		if not await animal_fresh_assignment(fresh_id,target_id,false,true):return
+		if not await animal_fresh_assignment(fresh_id,target_id,false,true,entity):return
 	elif kind=="owner":
 		if not check(int(editor.selected.owner_id)==-1,"replacement inherited old owner"):return
 		await native("snapshot",{"id":fresh_id,"expected":{"owner_id":-1}})
@@ -507,7 +507,7 @@ func pointer_animal_disconnect(id: int, disconnect_mode: String) -> void:
 	verification.assign=expected_use
 	await native(operation,verification)
 	if disconnect_mode=="restart":
-		await pointer_candidate_restart(id,target_id,ticket,"animal")
+		await pointer_candidate_restart(id,target_id,ticket,"animal",entity)
 		return
 	world.detach_live();actions.poll()
 	var outcome:Dictionary=actions.result(ticket)
@@ -547,7 +547,7 @@ func animal_fresh_assignment(id: int, target_id: int, assigned: bool, replacemen
 		var row:Dictionary=editor.candidates_state.rows[i]
 		if int(row.get("entity",0))==entity and int(row.id)==target_id:index=i;break
 	if not check(index>=0 and bool(editor.candidates_state.rows[index].assigned)==assigned,"fresh animal assignment differs"):return false
-	if entity==2:await native("item_assignment",{"id":id,"item_id":target_id,"assign":assigned})
+	if entity==2:await native("item_assignment_membership" if replacement else "item_assignment",{"id":id,"item_id":target_id,"assign":assigned})
 	else:await native("assignment_membership" if replacement else "assignment",{"id":id,"unit_id":target_id,"assign":assigned})
 	await pointer_key(KEY_PAGEUP)
 	for i in index:await pointer_key(KEY_DOWN)

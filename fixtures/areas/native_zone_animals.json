@@ -17645,7 +17645,38 @@
       }
     ],
     "limitations": [
-      "Item assignment across producer replacement is not covered."
-    ]
+      "Producer loss is controlled after native completion and before receipt delivery; mid-native-call process termination is not injected."
+    ],
+    "replacement": {
+      "evidence": "build/areas-acceptance-20261028-154032",
+      "outcome": "unknown",
+      "session": {
+        "new_epoch": "705319529349121",
+        "new_generation": 2,
+        "old_epoch": "24309514895361",
+        "old_generation": 1,
+        "pid": 164220.0
+      },
+      "native_checks": [
+        {
+          "request": {
+            "assign": false,
+            "id": 1509,
+            "item_id": 5969,
+            "op": "item_assignment_membership"
+          },
+          "response": {
+            "assigned": false,
+            "assigned_count": 0,
+            "item": 5969,
+            "status": "passed"
+          }
+        }
+      ],
+      "capture_sha256": "d9a521d9c1d2cfecf78aa0f2d4574b4425a79175ac0cdc35a2bb2fa10773bab4",
+      "status": "passed_with_known_issues (rendering-thread notice)",
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "restart_hashes": 1368
+    }
   }
 }

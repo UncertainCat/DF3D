@@ -1573,6 +1573,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           return df3d_management::printStockpileLinkTarget(out,values[0],int16_t(values[1]),int16_t(values[2]),int16_t(values[3]),values[4]!=0)?CR_OK:CR_FAILURE;
         }
+        if(parameters[0]=="farm-fertilize") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto& mode=parameters[2];
+          if(mode!="toggle" && mode!="seasonal-on" && mode!="seasonal-off")return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(id));
+          const bool accepted=mode=="toggle"?df3d_production::toggleFarmFertilization(farm):
+            df3d_production::setFarmSeasonalFertilization(farm,mode=="seasonal-on");
+          if(!accepted)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["accepted"]=true;
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="farm-crop-set") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;
           int32_t values[3]{};

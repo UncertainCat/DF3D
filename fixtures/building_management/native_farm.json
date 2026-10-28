@@ -6997,5 +6997,572 @@
     "Native sheet only; semantic entry points not yet exposed or compared",
     "No runtime fertilizer contract or viewer controls yet"
   ]
+},
+  "fertilization_semantic_reference": {
+  "source": "build/stockpile-storage-native-farm-discovery-20261028-165540",
+  "owned_df_pid": 174508,
+  "owned_exit_unsaved": true,
+  "source_manifest_unchanged": true,
+  "status": "passed",
+  "bridge_sha256": "6F38068BC4E4BAD451DDE6927E082F8528BDB878446A352A7A51FF18A7D95E99",
+  "inputs": [
+    {
+      "Algorithm": "SHA256",
+      "Hash": "6F38068BC4E4BAD451DDE6927E082F8528BDB878446A352A7A51FF18A7D95E99",
+      "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "EE4CBD7312C50FF995D15689673B3A8B1F2D69E36F20CCBA23EAEE0670198A9B",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "8E6A188C08633357053826BA66416582D2F589B4095F8594BF72BBD757C4E529",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-multi-discovery-native.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "3853D71563B0C916CD7DD47B251EBB987326A81E422B5F86CC16DE82A04E7928",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-native.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "37D24F451F76F5D9B56ECA72507A5C113E5D72D4C5B1C14EDA03FD9A07A23516",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\production.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "87D3E0E1A8AECA3341B9AC05D2849649DD4E6D1C96D751560DAE2FA3B3582303",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-owner-native.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "989639AA8725A903BC9B791015984A400D64745CFB9F415AD08F329C5B273362",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-animals-native.lua"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "CF1F57B959A098A09100DD14AFF56B130B8D4F5B2EC30C8FB2D0107207ED0480",
+      "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.ps1"
+    }
+  ],
+  "provider_sha256": "205b46a6d0cde02e03da21df2d8b140693f5837bd1019be33ba8113778c5fa43",
+  "cases": [
+    {
+      "case": "empty",
+      "count": 29,
+      "current": 0,
+      "existing": 0,
+      "method": "native",
+      "name": "farm-fertilizer-comparison",
+      "positions": [
+        {
+          "x": 146,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 142,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 141,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 136,
+          "y": 114,
+          "z": 165
+        },
+        {
+          "x": 144,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 130,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 136,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 146,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 132,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 130,
+          "y": 114,
+          "z": 165
+        },
+        {
+          "x": 133,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 143,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 137,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 128,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 131,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 135,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 128,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 128,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 128,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 145,
+          "y": 114,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 129,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 132,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 142,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 132,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 144,
+          "y": 111,
+          "z": 165
+        }
+      ],
+      "rng_cursor": 236,
+      "rng_matches_native": false,
+      "ui_guards": false,
+      "unrelated_job_preserved": true
+    },
+    {
+      "case": "empty",
+      "count": 29,
+      "current": 0,
+      "existing": 0,
+      "method": "semantic",
+      "name": "farm-fertilizer-comparison",
+      "positions": [
+        {
+          "x": 146,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 142,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 141,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 136,
+          "y": 114,
+          "z": 165
+        },
+        {
+          "x": 144,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 130,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 136,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 146,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 132,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 130,
+          "y": 114,
+          "z": 165
+        },
+        {
+          "x": 133,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 143,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 137,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 128,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 131,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 135,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 128,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 128,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 128,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 145,
+          "y": 114,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 113,
+          "z": 165
+        },
+        {
+          "x": 129,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 132,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 142,
+          "y": 109,
+          "z": 165
+        },
+        {
+          "x": 132,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 144,
+          "y": 111,
+          "z": 165
+        }
+      ],
+      "rng_cursor": 236,
+      "rng_matches_native": true,
+      "ui_guards": true,
+      "unrelated_job_preserved": true
+    },
+    {
+      "case": "partial",
+      "count": 4,
+      "current": 25,
+      "existing": 0,
+      "method": "native",
+      "name": "farm-fertilizer-comparison",
+      "positions": [
+        {
+          "x": 143,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 132,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 129,
+          "y": 112,
+          "z": 165
+        }
+      ],
+      "rng_cursor": 252,
+      "rng_matches_native": false,
+      "ui_guards": false,
+      "unrelated_job_preserved": true
+    },
+    {
+      "case": "partial",
+      "count": 4,
+      "current": 25,
+      "existing": 0,
+      "method": "semantic",
+      "name": "farm-fertilizer-comparison",
+      "positions": [
+        {
+          "x": 143,
+          "y": 110,
+          "z": 165
+        },
+        {
+          "x": 140,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 132,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 129,
+          "y": 112,
+          "z": 165
+        }
+      ],
+      "rng_cursor": 252,
+      "rng_matches_native": true,
+      "ui_guards": true,
+      "unrelated_job_preserved": true
+    },
+    {
+      "case": "pending",
+      "count": 4,
+      "current": 25,
+      "existing": 2,
+      "method": "native",
+      "name": "farm-fertilizer-comparison",
+      "positions": [
+        {
+          "x": 144,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 129,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        }
+      ],
+      "rng_cursor": 260,
+      "rng_matches_native": false,
+      "ui_guards": false,
+      "unrelated_job_preserved": true
+    },
+    {
+      "case": "pending",
+      "count": 4,
+      "current": 25,
+      "existing": 2,
+      "method": "semantic",
+      "name": "farm-fertilizer-comparison",
+      "positions": [
+        {
+          "x": 144,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 129,
+          "y": 112,
+          "z": 165
+        },
+        {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        },
+        {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        }
+      ],
+      "rng_cursor": 260,
+      "rng_matches_native": true,
+      "ui_guards": true,
+      "unrelated_job_preserved": true
+    },
+    {
+      "case": "fully-queued",
+      "count": 0,
+      "current": 25,
+      "existing": 4,
+      "method": "native",
+      "name": "farm-fertilizer-comparison",
+      "positions": [],
+      "rng_cursor": 260,
+      "rng_matches_native": false,
+      "ui_guards": false,
+      "unrelated_job_preserved": true
+    },
+    {
+      "case": "fully-queued",
+      "count": 0,
+      "current": 25,
+      "existing": 4,
+      "method": "semantic",
+      "name": "farm-fertilizer-comparison",
+      "positions": [],
+      "rng_cursor": 260,
+      "rng_matches_native": true,
+      "ui_guards": true,
+      "unrelated_job_preserved": true
+    },
+    {
+      "case": "full",
+      "count": 0,
+      "current": 29,
+      "existing": 0,
+      "method": "native",
+      "name": "farm-fertilizer-comparison",
+      "positions": [],
+      "rng_cursor": 260,
+      "rng_matches_native": false,
+      "ui_guards": false,
+      "unrelated_job_preserved": true
+    },
+    {
+      "case": "full",
+      "count": 0,
+      "current": 29,
+      "existing": 0,
+      "method": "semantic",
+      "name": "farm-fertilizer-comparison",
+      "positions": [],
+      "rng_cursor": 260,
+      "rng_matches_native": true,
+      "ui_guards": true,
+      "unrelated_job_preserved": true
+    }
+  ],
+  "rng_comparison": "The protected fixture restores the same starting stream before each native/semantic pair. Positions and full active stream state match; runtime scheduling consumes RNG normally.",
+  "seasonal": "Explicit off, repeated off and on preserve jobs; native seasonal checkbox reference is fertilization_reference.",
+  "invalid_requests_rejected": 3,
+  "limitations": [
+    "No assigned worker or reserved potash cancellation case yet",
+    "No fertilizer transport contract or rendered viewer controls",
+    "One underground footprint; full/partial current and queued counts are controlled unsaved fixtures"
+  ]
 }
 }

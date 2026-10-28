@@ -25,13 +25,15 @@ struct FarmFunctions {
     using Name=bool (*)(std::vector<df::plant_raw*>*,int32_t,std::string*,bool,bool);
     using Compare=int8_t (*)(const std::string*,const std::string*);
     using CancelJob=void (*)(df::building_farmplotst*,int32_t);
+    using Fertilize=void (*)(df::building_farmplotst*);
     Eligible eligible=nullptr;
     Seasons seasons=nullptr;
     PlantingWarning plantingWarning=nullptr;
     Name name=nullptr;
     Compare compare=nullptr;
     CancelJob cancelJob=nullptr;
-    explicit operator bool() const {return eligible && seasons && plantingWarning && name && compare && cancelJob;}
+    Fertilize scheduleFertilization=nullptr,cancelFertilization=nullptr;
+    explicit operator bool() const {return eligible && seasons && plantingWarning && name && compare && cancelJob && scheduleFertilization && cancelFertilization;}
 };
 inline const FarmFunctions& farmFunctions() {
     static const auto functions=[]()->FarmFunctions {
@@ -58,15 +60,37 @@ inline const FarmFunctions& farmFunctions() {
            hash(0xb9d50,0x69)!=UINT64_C(0x979704ba6b6743e5) ||
            hash(0x1a5583,7)!=UINT64_C(0x7d4fd2130cf4907e) ||
            hash(0x54bcd0,0x15)!=UINT64_C(0x23931f03386d1254) ||
+           hash(0x5894a0,0x333)!=UINT64_C(0x994b63e6b42eacdc) ||
+           hash(0x589930,0x5e)!=UINT64_C(0xb07885291e299644) ||
            hash(0xa67820,0xcc)!=UINT64_C(0x506ce8a2c4eefca6))return {};
         return {reinterpret_cast<FarmFunctions::Eligible>(base+0x557770),
                 reinterpret_cast<FarmFunctions::Seasons>(base+0xaae1a0),
                 reinterpret_cast<FarmFunctions::PlantingWarning>(base+0x57c050),
                 reinterpret_cast<FarmFunctions::Name>(base+0x144d90),
                 reinterpret_cast<FarmFunctions::Compare>(base+0xb9d50),
-                reinterpret_cast<FarmFunctions::CancelJob>(base+0x54bcd0)};
+                reinterpret_cast<FarmFunctions::CancelJob>(base+0x54bcd0),
+                reinterpret_cast<FarmFunctions::Fertilize>(base+0x5894a0),
+                reinterpret_cast<FarmFunctions::Fertilize>(base+0x589930)};
     }();
     return functions;
+}
+// The native checkbox dispatch (sheet1afe40) is inline. Both job operations
+// accept only the farm; scheduling owns its local position vectors and consumes
+// simulation RNG. Do not restore RNG or borrow native selected-sheet storage.
+inline bool toggleFarmFertilization(df::building_farmplotst* farm) {
+    const auto& native=farmFunctions();
+    if(!native || !farm || !df::global::world || farm->getBuildStage()!=farm->getMaxBuildStage())return false;
+    int64_t pending=0;
+    for(const auto* job:farm->jobs)if(job && job->job_type==df::job_type::FertilizeField)++pending;
+    if(int64_t(farm->current_fertilization)+pending<farm->max_fertilization)native.scheduleFertilization(farm);
+    else native.cancelFertilization(farm);
+    return true;
+}
+inline bool setFarmSeasonalFertilization(df::building_farmplotst* farm,bool enabled) {
+    if(!farmFunctions() || !farm || !df::global::world || farm->getBuildStage()!=farm->getMaxBuildStage())return false;
+    // Native sheet1b0012 toggles this bit; semantic intent supplies its value.
+    farm->farm_flags.bits.seasonal_fertilize=enabled;
+    return true;
 }
 struct FarmChoice {
     int32_t cropId=-1;

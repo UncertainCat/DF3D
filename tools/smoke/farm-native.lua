@@ -153,6 +153,83 @@ local script=require('gui.script')
    while link do assert(not link.item or not created_set[link.item.id],'fertilization cancellation retained world job');link=link.next end
    assert(b.current_fertilization==0 and b.max_fertilization==29 and b.farm_flags.seasonal_fertilize==original,'fertilizer controls changed progress or seasonal flag')
    for i=0,3 do assert(b.plant_id[i]==before[i+1],'fertilizer controls changed crop selection')end
+   local json=require('json')
+   local function snapshot_rng()
+    local base=dfhack.internal.getImageBase()
+    local context=df.reinterpret_cast('int16_t',base+0x2159084).value
+    assert(context>=0 and context<16)
+    local r={context=context,cursor=df.reinterpret_cast('uint32_t',base+0x2131b30+context*4).value,words={}}
+    for i=0,623 do r.words[#r.words+1]=df.reinterpret_cast('uint32_t',base+0x234e990+context*0x9c0+i*4).value end
+    return r
+   end
+   local function restore_rng(r)
+    -- Diagnostic comparison only. The runtime wrapper never restores RNG.
+    local base=dfhack.internal.getImageBase()
+    assert(df.reinterpret_cast('int16_t',base+0x2159084).value==r.context)
+    df.reinterpret_cast('uint32_t',base+0x2131b30+r.context*4).value=r.cursor
+    for i,v in ipairs(r.words)do df.reinterpret_cast('uint32_t',base+0x234e990+r.context*0x9c0+(i-1)*4).value=v end
+   end
+   local function apply(mode)
+    local guards={}
+    for _,object in ipairs{df.global.game.main_interface,g}do
+     local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+     dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={address=address,size=size,bytes=bytes}
+    end
+    local text,code=dfhack.run_command_silent('df3d','farm-fertilize',tostring(b.id),mode)
+    assert(code==0 and json.decode(text).accepted,text)
+    for _,entry in ipairs(guards)do
+     assert(dfhack.internal.memcmp(entry.bytes,entry.address,entry.size)==0,'fertilizer action changed UI/GPS')
+     df.delete(entry.bytes)
+    end
+   end
+   apply('seasonal-off');assert(not b.farm_flags.seasonal_fertilize and #b.jobs==0)
+   apply('seasonal-off');assert(not b.farm_flags.seasonal_fertilize and #b.jobs==0)
+   apply('seasonal-on');assert(b.farm_flags.seasonal_fertilize and #b.jobs==0)
+   for _,args in ipairs{{'-1','toggle'},{'2147483647','toggle'},{tostring(b.id),'invalid'}}do
+    local _,code=dfhack.run_command_silent('df3d','farm-fertilize',table.unpack(args));assert(code~=0)
+   end
+   local function add_job(kind)
+    local job=df.job:new();job.job_type=kind;job.posting_index=-1
+    job.pos={x=b.centerx,y=b.centery,z=b.z}
+    local ref=df.general_ref_building_holderst:new();ref.building_id=b.id
+    job.general_refs:insert('#',ref);assert(dfhack.job.linkIntoWorld(job,true));b.jobs:insert('#',job)
+    return job
+   end
+   for _,case in ipairs{{name='empty',current=0,existing=0,expected=29},
+       {name='partial',current=25,existing=0,expected=4},
+       {name='pending',current=25,existing=2,expected=4},
+       {name='fully-queued',current=25,existing=4,expected=0},
+       {name='full',current=29,existing=0,expected=0}}do
+    local initial_rng=snapshot_rng()
+    local expected
+    for _,method in ipairs{'native','semantic'}do
+     b.current_fertilization=case.current
+     for i=1,case.existing do add_job(df.job_type.FertilizeField)end
+     local other=add_job(df.job_type.PlantSeeds)
+     restore_rng(initial_rng)
+     if method=='native' then fertilizer_click(455)else apply('toggle')end
+     local positions={}
+     for _,job in ipairs(b.jobs)do
+      if job.job_type==df.job_type.FertilizeField then
+       assert(dfhack.job.getHolder(job)==b)
+       positions[#positions+1]={x=job.pos.x,y=job.pos.y,z=job.pos.z}
+      end
+     end
+     assert(#positions==case.expected,'fertilizer count differs: '..case.name)
+     assert(dfhack.job.getHolder(other)==b,'unrelated job removed')
+     local rng=snapshot_rng()
+     local facts={positions=positions,rng=rng}
+     if method=='native' then expected=facts
+     else assert(json.encode(facts)==json.encode(expected),'native/semantic fertilizer positions or RNG differ: '..case.name)end
+     records[#records+1]={name='farm-fertilizer-comparison',case=case.name,method=method,
+      current=case.current,existing=case.existing,count=#positions,positions=positions,rng_cursor=rng.cursor,
+      rng_matches_native=method=='semantic',unrelated_job_preserved=true,ui_guards=method=='semantic'}
+     -- Independent fixture cleanup; do not count this as product cancellation.
+     for i=#b.jobs-1,0,-1 do assert(dfhack.job.removeJob(b.jobs[i]))end
+     assert(#b.jobs==0)
+    end
+   end
+   b.current_fertilization=0
    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
    return
   end

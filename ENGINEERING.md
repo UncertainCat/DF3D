@@ -312,9 +312,29 @@ the fixture retains their FNV hashes. The seasonal switch is inline XOR1 at
 farm+0x154 (sheet1b0012). Do not borrow sheet/menu state or suppress the native
 scheduling RNG effects in a semantic wrapper.
 
-These are native observations and static entry-point inspection, not acceptance
-of a runtime wrapper. Partial/full fertilizer states, assigned-worker/potash
-cleanup, native-versus-semantic effects, transport and presentation remain open.
+`farm_native.h` now gates and calls these exact scheduling/cancellation
+routines. `toggleFarmFertilization` reproduces only the inline comparison of
+current fertilizer plus queued jobs against maximum; `setFarmSeasonalFertilization`
+sets the native bit from explicit intent. The diagnostic
+`df3d farm-fertilize <id> toggle|seasonal-on|seasonal-off` rejects invalid
+targets/modes and unfinished farms. It is not a management/UI transport API.
+
+Protected165540 compares native and semantic actions for empty, partially
+fertilized, partially queued, fully queued and fully fertilized plots. All ten
+observations pass: resulting job positions and the full active RNG stream
+match from identical diagnostic starting streams; scheduling consumes RNG
+normally. Unrelated planting jobs remain attached, and semantic calls preserve
+guarded main-interface/GPS memory. Explicit seasonal off/repeated-off/on and
+three invalid requests pass. DF174508 exits unsaved with source manifest
+unchanged. Evidence is `native_farm.json.fertilization_semantic_reference`.
+At full current fertilization the native click cancels pending jobs without
+resetting progress; do not model this control as a freely settable progress bit.
+
+MSVC build/install and core `build/qa/farm-fertilizer-native` pass cleanly.
+Installed bridge SHA256 is
+`6F38068BC4E4BAD451DDE6927E082F8528BDB878446A352A7A51FF18A7D95E99`;
+management82 is unchanged. Assigned-worker/reserved-potash cleanup, fertilizer
+transport/lifecycle and viewer controls remain unverified.
 
 ### Native farm and workshop providers
 

@@ -45,6 +45,15 @@ local script=require('gui.script')
    g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0
    for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
    local row={name=name,id=b.id,grid={g.dimx,g.dimy},lines={},crops={},seeds={},seasons={},raws={}}
+   row.fertilization={current=b.current_fertilization,maximum=b.max_fertilization,
+    material_amount=b.material_amount,flags=b.farm_flags.whole,seasonal=b.farm_flags.seasonal_fertilize,jobs={}}
+   for _,job in ipairs(b.jobs)do
+    local refs={}
+    for _,ref in ipairs(job.general_refs)do
+     refs[#refs+1]={type=tostring(ref:getType()),building_id=df.general_ref_building_holderst:is_instance(ref) and ref.building_id or -1}
+    end
+    row.fertilization.jobs[#row.fertilization.jobs+1]={id=job.id,type=tostring(df.job_type[job.job_type]),flags=job.flags.whole,refs=refs}
+   end
    row.selected_season=df.global.game.main_interface.view_sheets.active_sub_tab
    row.current_season=df.global.cur_season;row.season_tick=df.global.cur_season_tick
    if name=='farm-selected' then
@@ -114,6 +123,40 @@ local script=require('gui.script')
    end
   end if found then break end end
   assert(found,'farm tile not visible');capture('farm-selected')
+  local fertilizer_marker=io.open(out..'/farm-fertilization')
+  if fertilizer_marker then
+   fertilizer_marker:close()
+   local function fertilizer_click(x)
+    g.mouse_x=x//8;g.mouse_y=478//12;g.precise_mouse_x=x;g.precise_mouse_y=478
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   end
+   local original=b.farm_flags.seasonal_fertilize
+   local before={};for i=0,3 do before[#before+1]=b.plant_id[i]end
+   local function fertilizer_jobs()
+    local ids={}
+    for _,job in ipairs(b.jobs)do if job.job_type==df.job_type.FertilizeField then ids[#ids+1]=job.id end end
+    return ids
+   end
+   assert(#b.jobs==0 and b.current_fertilization==0 and b.max_fertilization==29,'unexpected fertilizer fixture')
+   fertilizer_click(663);capture('farm-fertilize-seasonal-toggled')
+   assert(b.farm_flags.seasonal_fertilize~=original and #b.jobs==0,'seasonal fertilizer hitbox/effects differ')
+   fertilizer_click(663);capture('farm-fertilize-seasonal-restored')
+   assert(b.farm_flags.seasonal_fertilize==original and #b.jobs==0,'seasonal fertilizer did not restore')
+   fertilizer_click(455);capture('farm-fertilize-now')
+   local created=fertilizer_jobs()
+   assert(#created==29 and #b.jobs==29,'fertilize-now job count differs')
+   for _,job in ipairs(b.jobs)do assert(dfhack.job.getHolder(job)==b,'fertilization job holder differs')end
+   fertilizer_click(455);capture('farm-fertilize-cancel')
+   assert(#b.jobs==0,'fertilization cancellation retained farm jobs')
+   local created_set={};for _,id in ipairs(created)do created_set[id]=true end
+   local link=df.global.world.jobs.list.next
+   while link do assert(not link.item or not created_set[link.item.id],'fertilization cancellation retained world job');link=link.next end
+   assert(b.current_fertilization==0 and b.max_fertilization==29 and b.farm_flags.seasonal_fertilize==original,'fertilizer controls changed progress or seasonal flag')
+   for i=0,3 do assert(b.plant_id[i]==before[i+1],'fertilizer controls changed crop selection')end
+   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+   return
+  end
+
   for season,x in ipairs{470,600,720,840}do
    g.mouse_x=x//8;g.mouse_y=10;g.precise_mouse_x=x;g.precise_mouse_y=124
    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())

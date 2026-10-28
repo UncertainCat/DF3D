@@ -287,6 +287,35 @@ the prior161936 reference exactly. Both save manifests are unchanged and DF13268
 exits unsaved. `native_farm.json.transaction_observer_reference` retains this
 comparison and source hashes. Management81 and viewer behavior are unchanged.
 
+### Native farm fertilization reference
+
+`stockpile_storage_native.ps1 -FarmDiscovery -FarmFertilization` isolates
+native fertilizer controls without repeating the crop-action matrix.
+Protected165058 passes five observations on completed underground farm227.
+The seasonal checkbox toggles only farm_flags bit0 and creates no jobs.
+The immediate checkbox creates29 FertilizeField jobs with correct farm holders;
+a second click removes all29 from both farm and world job lists. Current
+fertilization remains0/29, all four crops stay unchanged, and the paused frame
+does not advance. The full Set to fertilize screenshot was inspected.
+DF162760 exits unsaved with the source manifest unchanged. Bounded observations,
+native text, capture/input hashes and scope are in
+`native_farm.json.fertilization_reference`.
+
+Pinned native sheet1afe40 compares current_fertilization plus existing
+FertilizeField jobs with max_fertilization, then calls schedule5894a0 or
+cancel589930 with the farm pointer. Schedule5894a0..5897d3 subtracts existing
+jobs from the remaining amount, collects qualifying footprint positions in
+local vectors, creates native jobs and consumes simulation RNG via eb68b0 for
+positions. Cancel589930..58998e traverses farm jobs in reverse and delegates
+matching jobs to a67820. Both complete bodies have no PE base relocations;
+the fixture retains their FNV hashes. The seasonal switch is inline XOR1 at
+farm+0x154 (sheet1b0012). Do not borrow sheet/menu state or suppress the native
+scheduling RNG effects in a semantic wrapper.
+
+These are native observations and static entry-point inspection, not acceptance
+of a runtime wrapper. Partial/full fertilizer states, assigned-worker/potash
+cleanup, native-versus-semantic effects, transport and presentation remain open.
+
 ### Native farm and workshop providers
 
 The existing `bridge/plugin/production.lua` adapter is not a complete native

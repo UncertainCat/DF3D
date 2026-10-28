@@ -8279,5 +8279,525 @@
         }
       }
     ]
+  },
+  "sheet_resize_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261028-180047",
+    "owned_df_pid": 169824,
+    "owned_exit_unsaved": true,
+    "source_preservation": "Owned source unchanged",
+    "inputs": [
+      {
+        "Algorithm": "SHA256",
+        "Hash": "B423CB3F047C415F4351147991DB489227CEEBD4F4539BB210BBFE7AFDDB4E84",
+        "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "EE4CBD7312C50FF995D15689673B3A8B1F2D69E36F20CCBA23EAEE0670198A9B",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "8E6A188C08633357053826BA66416582D2F589B4095F8594BF72BBD757C4E529",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-multi-discovery-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "CE969C8979EAED7F2F0ED652B194C7067358D1A45A0B8FF6819CBF4053516AC3",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "37D24F451F76F5D9B56ECA72507A5C113E5D72D4C5B1C14EDA03FD9A07A23516",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\production.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "87D3E0E1A8AECA3341B9AC05D2849649DD4E6D1C96D751560DAE2FA3B3582303",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-owner-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "989639AA8725A903BC9B791015984A400D64745CFB9F415AD08F329C5B273362",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-animals-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "FDCC9DBBBEBF0F378E9DEED5DDA84D3308851A19F7E10886FFC7EF83F95D62E0",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.ps1"
+      }
+    ],
+    "scope": "Four tab clicks at each of three sizes, target/crops/pause/frame unchanged. Pixel crops exclude the outer four-pixel rim and another two rightmost pixels where the external sheet selector joins the frame. Header actions and scrolling not exercised.",
+    "snapshots": {
+      "0": {
+        "building_id": 227,
+        "choices": [
+          {
+            "current_season_warning": false,
+            "id": 173,
+            "name": "Plump helmets",
+            "raw_id": "MUSHROOM_HELMET_PLUMP",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 188,
+            "name": "Dimple cups",
+            "raw_id": "MUSHROOM_CUP_DIMPLE",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 177,
+            "name": "Quarry bushes",
+            "raw_id": "BUSH_QUARRY",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": true,
+            "id": 176,
+            "name": "Sweet pods",
+            "raw_id": "POD_SWEET",
+            "seeds_available": false
+          }
+        ],
+        "current_fertilization": 0,
+        "current_season": 1,
+        "max_fertilization": 29,
+        "pending_fertilization": 0,
+        "revision": 7253889694273043055,
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "seasonal_fertilization": true,
+        "selected_season": 0
+      },
+      "1": {
+        "building_id": 227,
+        "choices": [
+          {
+            "current_season_warning": false,
+            "id": 175,
+            "name": "Cave wheat",
+            "raw_id": "GRASS_WHEAT_CAVE",
+            "seeds_available": false
+          },
+          {
+            "current_season_warning": false,
+            "id": 188,
+            "name": "Dimple cups",
+            "raw_id": "MUSHROOM_CUP_DIMPLE",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 174,
+            "name": "Pig tails",
+            "raw_id": "GRASS_TAIL_PIG",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 173,
+            "name": "Plump helmets",
+            "raw_id": "MUSHROOM_HELMET_PLUMP",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 177,
+            "name": "Quarry bushes",
+            "raw_id": "BUSH_QUARRY",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": true,
+            "id": 176,
+            "name": "Sweet pods",
+            "raw_id": "POD_SWEET",
+            "seeds_available": false
+          }
+        ],
+        "current_fertilization": 0,
+        "current_season": 1,
+        "max_fertilization": 29,
+        "pending_fertilization": 0,
+        "revision": 6777379782108880700,
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "seasonal_fertilization": true,
+        "selected_season": 1
+      },
+      "2": {
+        "building_id": 227,
+        "choices": [
+          {
+            "current_season_warning": false,
+            "id": 175,
+            "name": "Cave wheat",
+            "raw_id": "GRASS_WHEAT_CAVE",
+            "seeds_available": false
+          },
+          {
+            "current_season_warning": false,
+            "id": 188,
+            "name": "Dimple cups",
+            "raw_id": "MUSHROOM_CUP_DIMPLE",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 174,
+            "name": "Pig tails",
+            "raw_id": "GRASS_TAIL_PIG",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 173,
+            "name": "Plump helmets",
+            "raw_id": "MUSHROOM_HELMET_PLUMP",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 177,
+            "name": "Quarry bushes",
+            "raw_id": "BUSH_QUARRY",
+            "seeds_available": true
+          }
+        ],
+        "current_fertilization": 0,
+        "current_season": 1,
+        "max_fertilization": 29,
+        "pending_fertilization": 0,
+        "revision": 1591027133127916302,
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "seasonal_fertilization": true,
+        "selected_season": 2
+      },
+      "3": {
+        "building_id": 227,
+        "choices": [
+          {
+            "current_season_warning": false,
+            "id": 173,
+            "name": "Plump helmets",
+            "raw_id": "MUSHROOM_HELMET_PLUMP",
+            "seeds_available": true
+          },
+          {
+            "current_season_warning": false,
+            "id": 188,
+            "name": "Dimple cups",
+            "raw_id": "MUSHROOM_CUP_DIMPLE",
+            "seeds_available": true
+          }
+        ],
+        "current_fertilization": 0,
+        "current_season": 1,
+        "max_fertilization": 29,
+        "pending_fertilization": 0,
+        "revision": 7166626733899998253,
+        "seasonal_crops": [
+          173,
+          175,
+          175,
+          173
+        ],
+        "seasonal_fertilization": true,
+        "selected_season": 3
+      }
+    },
+    "cases": [
+      {
+        "name": "farm-resize-small-0",
+        "viewport": [
+          960,
+          600
+        ],
+        "position": [
+          176,
+          48
+        ],
+        "size": [
+          488,
+          516
+        ],
+        "selected_season": 0,
+        "crop": [
+          4,
+          4,
+          478,
+          508
+        ],
+        "rgb_sha256": "81aabda700cc22a583b5b5455b15b9becfe3607acf36e03e1a357fe44a5a5c5c"
+      },
+      {
+        "name": "farm-resize-small-2",
+        "viewport": [
+          960,
+          600
+        ],
+        "position": [
+          176,
+          48
+        ],
+        "size": [
+          488,
+          516
+        ],
+        "selected_season": 2,
+        "crop": [
+          4,
+          4,
+          478,
+          508
+        ],
+        "rgb_sha256": "0bec03cf6901440756cfcf10fa6c7358f4461a046e99e02aa815fa2dcc7c947d"
+      },
+      {
+        "name": "farm-resize-small-3",
+        "viewport": [
+          960,
+          600
+        ],
+        "position": [
+          176,
+          48
+        ],
+        "size": [
+          488,
+          516
+        ],
+        "selected_season": 3,
+        "crop": [
+          4,
+          4,
+          478,
+          508
+        ],
+        "rgb_sha256": "88c2310ada5ff640cda7b1a5996f1238fd3b37c3a1868c5991b2d6902bc21f25"
+      },
+      {
+        "name": "farm-resize-small-1",
+        "viewport": [
+          960,
+          600
+        ],
+        "position": [
+          176,
+          48
+        ],
+        "size": [
+          488,
+          516
+        ],
+        "selected_season": 1,
+        "crop": [
+          4,
+          4,
+          478,
+          508
+        ],
+        "rgb_sha256": "35be4d0701af137d64662e3b2d466b6f8d524f6df60feccd93fc4698b57744cd"
+      },
+      {
+        "name": "farm-resize-wide-0",
+        "viewport": [
+          1600,
+          900
+        ],
+        "position": [
+          816,
+          48
+        ],
+        "size": [
+          488,
+          816
+        ],
+        "selected_season": 0,
+        "crop": [
+          4,
+          4,
+          478,
+          808
+        ],
+        "rgb_sha256": "3e13aff7655784e80f5702d7289b138564c32432b2f46629ce06f1d1e223ed32"
+      },
+      {
+        "name": "farm-resize-wide-2",
+        "viewport": [
+          1600,
+          900
+        ],
+        "position": [
+          816,
+          48
+        ],
+        "size": [
+          488,
+          816
+        ],
+        "selected_season": 2,
+        "crop": [
+          4,
+          4,
+          478,
+          808
+        ],
+        "rgb_sha256": "a7404386975a8b9447507a45d310dda0a406f92495c7310e1b2486960d7b8bf8"
+      },
+      {
+        "name": "farm-resize-wide-3",
+        "viewport": [
+          1600,
+          900
+        ],
+        "position": [
+          816,
+          48
+        ],
+        "size": [
+          488,
+          816
+        ],
+        "selected_season": 3,
+        "crop": [
+          4,
+          4,
+          478,
+          808
+        ],
+        "rgb_sha256": "5e7364b30e36b33f1daea0eff2885853ef647280ecc033796dd01c1f67b9ba8c"
+      },
+      {
+        "name": "farm-resize-wide-1",
+        "viewport": [
+          1600,
+          900
+        ],
+        "position": [
+          816,
+          48
+        ],
+        "size": [
+          488,
+          816
+        ],
+        "selected_season": 1,
+        "crop": [
+          4,
+          4,
+          478,
+          808
+        ],
+        "rgb_sha256": "f2bf23b8bfb863d270ff0cc1e26f74bb02697a135f7ddd575c1e69e96a6d844d"
+      },
+      {
+        "name": "farm-resize-default-0",
+        "viewport": [
+          1200,
+          800
+        ],
+        "position": [
+          416,
+          52
+        ],
+        "size": [
+          488,
+          708
+        ],
+        "selected_season": 0,
+        "crop": [
+          4,
+          4,
+          478,
+          700
+        ],
+        "rgb_sha256": "078f5266d49d700c3dd145c7a4a6f8a553d974253ec61aff03dc0388bbcbfb31"
+      },
+      {
+        "name": "farm-resize-default-2",
+        "viewport": [
+          1200,
+          800
+        ],
+        "position": [
+          416,
+          52
+        ],
+        "size": [
+          488,
+          708
+        ],
+        "selected_season": 2,
+        "crop": [
+          4,
+          4,
+          478,
+          700
+        ],
+        "rgb_sha256": "84c28395f9be3c7ef0b0f79a19412c252732645fdb9832ed58782649ca704bed"
+      },
+      {
+        "name": "farm-resize-default-3",
+        "viewport": [
+          1200,
+          800
+        ],
+        "position": [
+          416,
+          52
+        ],
+        "size": [
+          488,
+          708
+        ],
+        "selected_season": 3,
+        "crop": [
+          4,
+          4,
+          478,
+          700
+        ],
+        "rgb_sha256": "4f16ca2c668bacd3bf402df95e2d7a6be367d05f09e1fa1cf39c4e0883b5a027"
+      },
+      {
+        "name": "farm-resize-default-1",
+        "viewport": [
+          1200,
+          800
+        ],
+        "position": [
+          416,
+          52
+        ],
+        "size": [
+          488,
+          708
+        ],
+        "selected_season": 1,
+        "crop": [
+          4,
+          4,
+          478,
+          700
+        ],
+        "rgb_sha256": "2a5173e22e34cf613d2d22b4d45bcf8edef7565789a30d554eba6031e98b54ab"
+      }
+    ]
   }
 }

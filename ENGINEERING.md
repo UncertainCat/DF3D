@@ -20,6 +20,31 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Farm sheet composition verification
+
+The staged `farm_sheet_view.gd` composes the verified crop/fertilizer body with
+installed header art, original picture framing and native season tabs. Protected
+`stockpile_storage_native.ps1 -FarmDiscovery -FarmResize` capture180047 records
+all four tabs at960x600,1600x900 and1200x800, preserving building227, all four
+crop selections and the paused frame. The owned session exits unsaved with its
+source manifest unchanged. `native_farm.json.sheet_resize_reference` retains
+snapshots, geometry and RGB hashes without shipping installed artwork.
+
+Core passes cleanly in `build/qa/farm-sheet-final`; the GPU check passes with
+the known thread/device-finalize/shutdown-object diagnostics.
+GPU `build/qa/farm-sheet-final` matches all twelve reference interiors and
+checks real pointer routing, tab retirement while pending and the owner input
+gate. Crops exclude the outer four-pixel rim and two additional rightmost
+pixels where the external sheet selector joins the frame. This is interior
+composition evidence, not acceptance of the external selector or whole screen.
+Native renderer17f5f2..17f619 enables the lower divider when bottom minus top
+is at least44 grid rows;15143d..151451 sets those bounds to4 and grid height-4.
+Thus the ordinary sheet draws it from52 viewport rows (624 pixels), not at600.
+
+Header action ownership, rename/removal, crop-list scrolling beyond seven rows,
+main-scene lifecycle integration and live rendered edits remain incomplete.
+The staged sheet is not exposed as a completed gameplay screen.
+
 ## Locations integration verification
 
 ### Zones palette at minimum height

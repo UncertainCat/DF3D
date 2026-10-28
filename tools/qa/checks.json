@@ -2841,6 +2841,15 @@
       ]
     },
     {
+      "id": "farm_sheet_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/farm_sheet_capture.gd",
+      "completion": "FARM_SHEET_CAPTURE_PASS",
+      "timeout": 120,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "farm_body_capture",
       "lane": "gpu",
       "kind": "godot",

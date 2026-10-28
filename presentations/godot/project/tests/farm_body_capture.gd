@@ -11,6 +11,7 @@ class Model:
 	var calls: Array=[]
 	func choices() -> Array:return snapshot.get("choices",[]).duplicate(true)
 	func choose_crop(id: int) -> void:calls.append(["crop",id])
+	func select_season(value: int) -> void:calls.append(["season",value])
 	func toggle_fertilization() -> void:calls.append(["fertilize"])
 	func set_seasonal_fertilization(value: bool) -> void:calls.append(["seasonal",value])
 func _initialize() -> void:call_deferred("run")

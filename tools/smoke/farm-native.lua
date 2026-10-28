@@ -123,6 +123,60 @@ local script=require('gui.script')
    end
   end if found then break end end
   assert(found,'farm tile not visible');capture('farm-selected')
+  local resize_marker=io.open(out..'/farm-resize')
+  if resize_marker then
+   resize_marker:close()
+   local original={};for i=0,3 do original[i+1]=b.plant_id[i]end
+   local sheet=df.global.game.main_interface.view_sheets
+   local function lines()
+    local rows={}
+    for y=0,g.dimy-1 do
+     local row={};for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y);row[#row+1]=t.ch>=32 and t.ch<127 and string.char(t.ch)or' 'end
+     rows[#rows+1]=table.concat(row)
+    end
+    return rows
+   end
+   local function settle()
+    g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0
+    for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+    assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==b.id,'resize/navigation lost farm target')
+    for i=0,3 do assert(b.plant_id[i]==original[i+1],'navigation changed farm selection')end
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'resize advanced simulation')
+   end
+   local function shot(name)
+    settle()
+    records[#records+1]={name=name,grid={g.dimx,g.dimy},pixels={g.screen_pixel_x,g.screen_pixel_y},
+     selected_season=sheet.active_sub_tab,building_id=sheet.active_id,lines=lines(),seasons=original}
+    local f=assert(io.open(out..'/shot','w'));f:write(name);f:close()
+    local limit=dfhack.getTickCount()+30000
+    while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
+     assert(dfhack.getTickCount()<limit,'resize capture timeout');script.sleep(1,'frames')end
+   end
+   for _,size in ipairs{'small','wide','default'}do
+    local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
+    assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+    local limit=dfhack.getTickCount()+30000
+    while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+     assert(dfhack.getTickCount()<limit,'farm resize timeout');script.sleep(1,'frames')end
+    assert(os.remove(out..'/owner-input-ack'));settle()
+    shot('farm-resize-'..size..'-initial')
+    for _,tab in ipairs{{0,'Spring'},{2,'Autumn'},{3,'Winter'},{1,'Summer'}}do
+     local found=false
+     for y,line in ipairs(lines())do
+      local x=line:find('Spring',1,true) and line:find(tab[2],1,true)
+      if x then
+       g.mouse_x=x;g.mouse_y=y-1;g.precise_mouse_x=x*8+4;g.precise_mouse_y=(y-1)*12+6
+       gui.simulateInput(view,'_MOUSE_L');settle()
+       assert(sheet.active_sub_tab==tab[1],'resized farm tab hitbox differs')
+       found=true;break
+      end
+     end
+     assert(found,'resized native farm tab missing')
+     shot('farm-resize-'..size..'-'..tab[1])
+    end
+   end
+   return
+  end
   local artwork_marker=io.open(out..'/farm-artwork')
   if artwork_marker then
    artwork_marker:close()

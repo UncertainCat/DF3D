@@ -420,13 +420,17 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
 flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBufferBuilder& b,const m::ConstructionRequest& request) {
   using A=m::ManagementAction;
   const auto action=request.action();const auto* q=request.production();
-  if(action==A::ProductionInspect && q->building_id()==3) {
+  if((action==A::ProductionInspect && q->building_id()==3) || action==A::FarmSetCrop) {
     std::vector<flatbuffers::Offset<m::NativeFarmCrop>> rows{
       m::CreateNativeFarmCrop(b,176,b.CreateString("Sweet pods"),false,true),
       m::CreateNativeFarmCrop(b,175,b.CreateString("Plump helmets"),true,false)};
-    auto farm=m::CreateFarmSnapshot(b,3,9007199254740993ULL,1,1,
-      b.CreateVector(std::vector<int32_t>{175,-1,176,-1}),b.CreateVector(rows));
-    m::ProductionStateBuilder p(b);p.add_selected_building(3);p.add_farm(farm);return p.Finish();
+    std::vector<int32_t> seasons{175,-1,176,-1};
+    if(action==A::FarmSetCrop)seasons.at(q->season())=q->crop_id();
+    auto farm=m::CreateFarmSnapshot(b,3,9007199254740993ULL,action==A::FarmSetCrop?q->season():1,1,
+      b.CreateVector(seasons),b.CreateVector(rows));
+    m::ProductionStateBuilder p(b);p.add_selected_building(3);p.add_farm(farm);
+    if(action==A::FarmSetCrop)p.add_farm_edit_outcome(m::FarmEditOutcome::Completed);
+    return p.Finish();
   }
   const bool list=action==A::ProductionList;
   const bool farm=!list && q->building_id()==3;
@@ -476,7 +480,6 @@ flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBuffe
     crops.push_back(m::CreateFarmCrop(b,0,b.CreateString("allseason"),15,600));
     crops.push_back(m::CreateFarmCrop(b,1,b.CreateString("spring only"),1,0));
     seasons={0,-1,0,-1};
-    if(action==A::FarmSetCrop)seasons.at(q->season())=q->crop_id();
     detail="Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.";
   }
   auto bs=b.CreateVector(buildings);auto rs=b.CreateVector(recipes);auto js=b.CreateVector(jobs);
@@ -657,7 +660,7 @@ int main(int argc,char** argv) {
             action==18?(variant==4?12:10):-1,rb.CreateString(action==17?"builtin:114:2":""),rb.CreateString(action==15 && variant==1?"#1024":""),action==15 && variant==1?1024:0,
             action==17?variant:action==18 && variant<2?variant:-1,
             action==18 && variant>=2 && variant<4?variant-2:-1,action==18 && variant==4,
-            action==19?variant/2:-1,action==19 && variant%2==0?0:-1);
+            action==19?variant/2:-1,action==19 && variant%2==0?0:-1,action==19?9007199254740993ULL:0);
         m::ConstructionRequestBuilder request(rb);request.add_schema_version(m::kManagementVersion);
         request.add_client_id(1);request.add_seq(1);request.add_world_epoch(epoch);
         request.add_action(static_cast<m::ManagementAction>(action));request.add_production(payload);rb.Finish(request.Finish());
@@ -911,7 +914,7 @@ int main(int argc,char** argv) {
               r->production()->repeat()==int(received)-47,"production queue payload");break;
         case A::FarmSetCrop:
           require(r->production()->building_id()==3 && r->production()->season()==int(received-54)/2 &&
-              r->production()->crop_id()==(received%2==0?0:-1),"farm crop payload");break;
+              r->production()->crop_id()==(received%2==0?0:-1) && r->production()->expected_revision()==9007199254740993ULL,"farm crop payload");break;
         case A::WorkOrderUpdate: {
           auto* v=r->work_order();
           if(received==38){require(v && v->id()==0 && v->expected_revision()==epoch && v->move()==-1 && v->expected_neighbor()==9 && v->expected_list_revision()==INT64_MAX && !v->traits(),"move fields");break;}

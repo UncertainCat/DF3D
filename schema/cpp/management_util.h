@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 81;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v81";
+inline constexpr uint32_t kManagementVersion = 82;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v82";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -413,6 +413,9 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         (p->cancel() && (p->repeat()!=-1 || p->suspend()!=-1)) ||
         (!p->cancel() && p->repeat()==-1 && p->suspend()==-1))) return "invalid job edit";
     if (r.action()==ManagementAction::FarmSetCrop && p->season()<0) return "season required";
+    if(p->expected_revision()>INT64_MAX || (r.action()==ManagementAction::FarmSetCrop?!p->expected_revision():p->expected_revision()!=0))return "invalid farm edit revision";
+    if(r.action()==ManagementAction::FarmSetCrop && (p->job_id()!=-1 || p->cursor() || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() ||
+        (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size())))return "unexpected farm edit fields";
   } else if(r.production()) return "unexpected production payload";
   if(r.action()>=ManagementAction::WorkOrderList && r.action()<=ManagementAction::WorkOrderCatalog) {
     const auto* w=r.work_order();
@@ -1267,7 +1270,16 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     }
     if(payload>224*1024) return "area response exceeds bounded payload";
   }
+  if(s.action()==ManagementAction::FarmSetCrop && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
+    const auto outcome=p->farm_edit_outcome();
+    if(static_cast<uint8_t>(outcome)>4 || (outcome!=FarmEditOutcome::None && s.action()!=ManagementAction::FarmSetCrop))return "invalid farm edit outcome";
+    if(s.action()==ManagementAction::FarmSetCrop) {
+      if(s.status()==ManagementStatus::Ok && outcome!=FarmEditOutcome::Completed)return "missing farm completion";
+      if(outcome==FarmEditOutcome::Completed && (s.status()!=ManagementStatus::Ok || !p->farm()))return "invalid farm completion";
+      if(outcome!=FarmEditOutcome::Completed && p->farm())return "unconfirmed farm authority";
+      if((p->crops() && p->crops()->size()) || (p->seasonal_crops() && p->seasonal_crops()->size()))return "legacy farm edit response";
+    }
     if(const auto* f=p->farm()) {
       if(auto error=validateFarmSnapshot(*f))return error;
       if(p->selected_building()!=f->building_id())return "native farm identity mismatch";

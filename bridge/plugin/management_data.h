@@ -80,6 +80,7 @@ struct FarmSnapshot {
   std::vector<NativeFarmCrop> choices;
 };
 struct ProductionState {
+  df3d::mirror::FarmEditOutcome farmEditOutcome=df3d::mirror::FarmEditOutcome::None;
   std::optional<FarmSnapshot> farm;
   std::vector<ProductionBuilding> buildings;
   std::vector<ProductionRecipe> recipes;

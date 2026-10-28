@@ -204,9 +204,12 @@ facts. No source recording is migrated by inventing native data.
 Bridge serialization, engine-independent decoding and Godot dictionaries support
 the new snapshot. `ProductionInspect` with an explicit season0..3 now publishes
 native farm snapshots directly before Lua dispatch. The default season-1 path
-still uses the legacy adapter; revision-checked edits and the farm UI are not
-yet connected. Do not send legacy edits using a native read as authority.
-Install bridge and viewer together on `Local\\df3d_management_v81`; see PINS.md.
+still uses the legacy adapter. Management82 routes FarmSetCrop exclusively
+through the native transaction with a positive exact expected_revision.
+The Lua crop-write path refuses without effects. Only Completed publishes a
+fresh farm snapshot; Rejected, Stale and Unknown carry no farm authority.
+Unknown must not be replayed. Farm UI and fertilization remain unfinished.
+Install bridge and viewer together on `Local\\df3d_management_v82`; see PINS.md.
 Snapshot, grid and session compatibility versions are unchanged.
 
 Core and the Godot transport/production-fixture checks pass cleanly in
@@ -231,7 +234,7 @@ below; this transport check compares the published facts with that provider
 without opening the sheet. The content revision hashes the building ID, selected
 and current season, all four selected crops, and ordered choice IDs/names/flags.
 It excludes menu history, poll count and pointer values. World epoch remains
-the producer/session identity. Revisions are not yet mutation authorization.
+the producer/session identity. Crop edits compare this revision at the safe point.
 
 Protected `areas-acceptance-20261028-161936` passes ten reads, all four tabs in
 different orders, a controlled future-season selection change/restoration, and
@@ -248,14 +251,29 @@ Core passes cleanly in `build/qa/native-farm-read`. The new entry point is
 classified as a protected manual lane in the QA catalog. Protocol81 is unchanged.
 
 The live observer is now shared as `observeFarmSnapshot`; its content hash lives
-in the pointer-free `farm_transaction.h`. `finishFarmEdit` prepares the next
-transport integration: it validates a fresh receipt and expected revision before
+in the pointer-free `farm_transaction.h`. `finishFarmEdit` handles the crop-edit
+transport transaction: it validates a fresh receipt and expected revision before
 calling apply once, then verifies a publishable result with matching building,
 season, selected crop and unchanged other seasons. Same-crop and repeated-fallow
 success may retain the same content revision. Callback refusals mean no effects;
 an exception after entry or failed/inconsistent post-effect observation produces
 Unknown with no receipt and no retry. Transport world-epoch checks remain required.
-This helper is not yet connected to a viewer edit request.
+Management82 invokes this helper for FarmSetCrop after resolving a visible,
+fully constructed farm. Its enum is explicitly mapped to the wire outcome.
+Protected `areas-acceptance-20261028-164431 -FarmEditOnly` passes the
+management82 real wire path: nine completed future-season changes/same-crop/
+restorations, three stale refusals, three invalid-crop refusals and two invalid
+targets. Thirteen native readbacks match selections and preserve crop/seed menu
+vectors, selected tab and paused frame. Both save manifests remain unchanged;
+DF156464 exits unsaved. The result is a clean pass, recorded in
+`native_farm.json.transport_edit_reference`. This does not establish rendered
+farm UI or transport disconnect/replacement behavior. Current-season cancellation
+retains its separately verified native-helper evidence.
+Core, Godot contract, production fixtures and retired Lua-path tests pass cleanly
+in `build/qa/farm-edit-wire-final`. MSVC build/install passes; installed bridge
+SHA256 is `9783C014D7693DEE65269E2413516A31A8E138831AE89F65E67DD295A02CB54F`.
+The initial farm-edit-wire run failed on a missing empty vector in the new test
+fixture and the missing Godot revision type check; neither is acceptance.
 
 Core `build/qa/farm-edit-transaction` passes ten content-revision sensitivity
 cases and32 transaction cases covering apply/read/validation exceptions,

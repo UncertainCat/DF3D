@@ -7,6 +7,13 @@ enum ConstructionOutcome {
 	Partial = 3,
 	Unknown = 4,
 }
+enum FarmEditOutcome {
+	None = 0,
+	Completed = 1,
+	Rejected = 2,
+	Stale = 3,
+	Unknown = 4,
+}
 enum ManagementAction {
 	Catalog = 0,
 	Preview = 1,

@@ -129,9 +129,10 @@ local kitchen_state=req(16,{building_id=1})
 assert(kitchen_state.ok and #kitchen_state.recipes[1].requirements==2,'all kitchen ingredients retained')
 local crops=req(16,{building_id=3})
 assert(crops.ok and #crops.crops==1 and crops.crops[1].seeds==0,'harvest crosses season; zero-seed crop available')
-assert(req(19,{building_id=3,season=2,crop_id=0}).ok and farm.plant_id[2]==0,'select future eligible season')
+local prior_crop=farm.plant_id[2]
+assert(not req(19,{building_id=3,season=2,crop_id=0}).ok and farm.plant_id[2]==prior_crop,'legacy crop writes retired')
 assert(not req(19,{building_id=3,season=0,crop_id=1}).ok,'late-season invalid crop rejected')
-assert(req(19,{building_id=3,season=2,crop_id=-1}).ok and farm.plant_id[2]==-1,'fallow clears crop')
+assert(not req(19,{building_id=3,season=2,crop_id=-1}).ok and farm.plant_id[2]==prior_crop,'legacy fallow writes retired')
 for n=1,600 do df.global.world.items.other.SEEDS:insert('#',{flags={},mat_index=0,getStackSize=function()return 1 end}) end
 local scan=adapter{action=16,seq=999,production={building_id=3}}
 assert(scan.ok and scan.pending,'seed scan is budgeted over updates')
@@ -251,17 +252,18 @@ for i,need in ipairs(queued.production_jobs[1].requirements)do
  assert(need.description==descriptions[i] and need.quantity==1 and need.item_type==-1)
 end
 assert(req(18,{building_id=1,job_id=queued.created_job,cancel=true}).ok);freed()
--- Zero seeds do not gate any season; fallow works in all four seasons.
+-- All legacy crop writes refuse without changing any seasonal selection.
 df.global.world.items.other.SEEDS=vec()
 refusal(17,{building_id=3,recipe=recipe},'Select seasonal farm crops instead')
-refusal(19,{building_id=0,season=0,crop_id=0},'A farm plot is required')
+refusal(19,{building_id=0,season=0,crop_id=0},'')
 for season=0,3 do
- local selected=req(19,{building_id=3,season=season,crop_id=0})
- assert(selected.ok and selected.seasonal_crops[season+1]==0 and selected.crops[1].seeds==0)
- assert(req(19,{building_id=3,season=season,crop_id=-1}).ok and farm.plant_id[season]==-1)
+ local before=farm.plant_id[season]
+ for _,crop in ipairs{0,-1,99} do
+  refusal(19,{building_id=3,season=season,crop_id=crop},'')
+  assert(farm.plant_id[season]==before)
+ end
 end
-refusal(19,{building_id=3,season=1,crop_id=1},'Crop is not eligible for this farm and growing season')
-refusal(19,{building_id=3,season=0,crop_id=99},'Crop is not eligible for this farm and growing season')
+
 df.global.cur_season_tick=0
 local early=req(16,{building_id=3})
 assert(early.ok and #early.crops==2 and early.crops[1].seasons==15 and early.crops[2].seasons==1)

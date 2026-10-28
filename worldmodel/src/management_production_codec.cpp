@@ -21,6 +21,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
   n.selectedBuilding = p->selected_building();
   n.createdJob = p->created_job();
   n.detail = str(p->detail());
+  n.farmEditOutcome=static_cast<FarmEditOutcome>(p->farm_edit_outcome());
   if(const auto* f=p->farm()) {
     auto& farm=n.farm.emplace();farm.buildingId=f->building_id();farm.revision=f->revision();
     farm.selectedSeason=f->selected_season();farm.currentSeason=f->current_season();
@@ -164,7 +165,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   const auto& p = value;
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
-                                    p.cancel, p.season, p.cropId);
+                                    p.cancel, p.season, p.cropId, p.expectedRevision);
 }
 
 flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBufferBuilder& b,

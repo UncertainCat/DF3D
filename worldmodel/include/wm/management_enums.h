@@ -9,6 +9,13 @@ enum class ConstructionOutcome : uint8_t {
   Partial = 3,
   Unknown = 4,
 };
+enum class FarmEditOutcome : uint8_t {
+  None = 0,
+  Completed = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
+};
 enum class ManagementAction : uint8_t {
   Catalog = 0,
   Preview = 1,

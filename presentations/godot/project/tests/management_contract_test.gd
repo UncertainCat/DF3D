@@ -115,7 +115,7 @@ func run() -> void:
 	assert(Contract.domain_of(-1).is_empty() and Contract.domain_of(256).is_empty())
 	# Bounds and semantic identities must also fail without consuming a sequence.
 	for pair in [["production", {"action":A.ProductionJobEdit,"building_id":1,"job_id":-1,"repeat":1}],
-		["production", {"action":A.FarmSetCrop,"building_id":1,"crop_id":32768,"season":0}],
+		["production", {"action":A.FarmSetCrop,"building_id":1,"crop_id":32768,"season":0,"expected_revision":17}],
 		["citizens", {"action":A.WorkDetailMode,"detail_index":128,"expected_revision":1,"mode":1}],
 		["citizens", {"action":A.WorkDetailMembership,"detail_index":1,"unit_id":1,"expected_revision":0,"member":1}],
 		["agreements", {"action":A.AgreementInspect,"id":1,"pending_only":true}],
@@ -465,13 +465,13 @@ func reject_production(request: Dictionary, error: String) -> void:
 
 func test_production() -> void:
 	for request in [{"action":16,"building_id":1}, {"action":17,"building_id":1,"recipe":"builtin:114:2"},
-		{"action":18,"building_id":1,"job_id":12}, {"action":19,"building_id":3,"season":0,"crop_id":-1}]:
+		{"action":18,"building_id":1,"job_id":12}, {"action":19,"building_id":3,"season":0,"crop_id":-1,"expected_revision":9007199254740993}]:
 		for key in request:
 			if key == "action": continue
 			var missing: Dictionary = request.duplicate()
 			missing.erase(key)
 			reject_production(missing, "Missing management field: " + key)
-	for key in ["building_id","job_id","crop_id","cursor","repeat","suspend","season"]:
+	for key in ["building_id","job_id","crop_id","cursor","repeat","suspend","season","expected_revision"]:
 		for bad in [1.5,"1",true]:
 			var request := {"action":15}
 			request[key] = bad
@@ -481,7 +481,7 @@ func test_production() -> void:
 		request[key] = 1
 		reject_production(request, "Wrong management field type: " + key)
 	var bounds := {"building_id":[-2,2147483648],"job_id":[-2,2147483648],"cursor":[-1,4294967296],
-		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],
+		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],
 		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(129),String.chr(233).repeat(65)]}
 	for key in bounds:
 		for bad in bounds[key]:
@@ -498,7 +498,7 @@ func test_production() -> void:
 		{"action":18,"building_id":1,"job_id":10,"suspend":0}, {"action":18,"building_id":1,"job_id":10,"suspend":1},
 		{"action":18,"building_id":1,"job_id":12,"cancel":true}]
 	for season in 4:
-		for crop in [0,-1]: requests.append({"action":19,"building_id":3,"season":season,"crop_id":crop})
+		for crop in [0,-1]: requests.append({"action":19,"building_id":3,"season":season,"crop_id":crop,"expected_revision":9007199254740993})
 	requests.append({"action":15,"query":"#1024","cursor":1024})
 	for request in requests:
 		var sequence: int = world.management_request("production", request)
@@ -508,11 +508,16 @@ func test_production() -> void:
 		assert_production(state.production, request)
 
 func assert_production(p: Dictionary, request: Dictionary) -> void:
-	if request.action==A.ProductionInspect and request.building_id==3:
+	if (request.action==A.ProductionInspect and request.building_id==3) or request.action==A.FarmSetCrop:
 		var native_farm: Dictionary=p.farm
 		assert(native_farm.revision==9007199254740993 and typeof(native_farm.revision)==TYPE_INT)
-		assert(native_farm.building_id==3 and native_farm.selected_season==1 and native_farm.current_season==1)
-		assert(native_farm.seasonal_crops==[175,-1,176,-1])
+		assert(native_farm.building_id==3 and native_farm.current_season==1)
+		var selected_season: int=request.season if request.action==A.FarmSetCrop else 1
+		assert(native_farm.selected_season==selected_season)
+		var seasons := [175,-1,176,-1]
+		if request.action==A.FarmSetCrop: seasons[selected_season]=request.crop_id
+		assert(native_farm.seasonal_crops==seasons)
+		assert(p.farm_edit_outcome==(1 if request.action==A.FarmSetCrop else 0))
 		assert(native_farm.choices==[{"id":176,"name":"Sweet pods","seeds_available":false,"current_season_warning":true},
 			{"id":175,"name":"Plump helmets","seeds_available":true,"current_season_warning":false}])
 		assert(p.crops.is_empty() and p.seasonal_crops.is_empty())
@@ -525,7 +530,7 @@ func assert_production(p: Dictionary, request: Dictionary) -> void:
 		building.build_stage = 3
 		farm.build_stage = 3
 	var expected := {"buildings":[],"recipes":[],"jobs":[],"crops":[],"seasonal_crops":[],
-		"next_cursor":0,"current_season":-1,"selected_building":request.get("building_id",-1),"created_job":-1,"detail":""}
+		"next_cursor":0,"current_season":-1,"selected_building":request.get("building_id",-1),"created_job":-1,"detail":"","farm_edit_outcome":0}
 	if request.action == 15:
 		var carp: Dictionary = building.duplicate()
 		carp.merge({"id":0,"name":"Carpenters","kind":"Carpenters","queue_size":0},true)

@@ -6728,5 +6728,53 @@
       "tools/test_farm_transaction.cpp": "cd7ee73d9fa0877cb6ba2b20d766845f849e1c6508d71ee0de14fc1f02b4c888"
     },
     "scope": "Extracted live snapshot observer and revision function preserve all prior ten-read/two-refusal results. Farm edit transaction fault tests are callback tests, not injected faults inside DF. Typed edit transport is not connected yet."
-  }
+  },
+  "transport_edit_reference": {
+  "lane": "build/areas-acceptance-20261028-164431",
+  "scope": "FarmEditOnly",
+  "status": "passed",
+  "protocol": 82,
+  "bridge_sha256": "9783C014D7693DEE65269E2413516A31A8E138831AE89F65E67DD295A02CB54F",
+  "df_pid": 156464,
+  "results": {
+    "cases": [
+      {
+        "completed": 3,
+        "rejected": 1,
+        "season": 0,
+        "stale": 1
+      },
+      {
+        "completed": 3,
+        "rejected": 1,
+        "season": 2,
+        "stale": 1
+      },
+      {
+        "completed": 3,
+        "rejected": 1,
+        "season": 3,
+        "stale": 1
+      }
+    ],
+    "invalid_targets": 2,
+    "original_selections_restored": true
+  },
+  "native_checks": 13,
+  "save_manifests_unchanged": 2,
+  "owned_exit": "unsaved",
+  "source_sha256": {
+    "bridge/plugin/management.cpp": "e95ac522f85b4497ec10202f78218dfa382d3be7ee7596e5faa6b00a320f80b6",
+    "bridge/plugin/farm_native.h": "a71fea7a6294fbb24b06fe0aaf412e89dc7d77ecb03b280eb92df006ceb1cbea",
+    "bridge/plugin/farm_transaction.h": "1445e8463cecbad43c717b478dcef74d85bf2e596124f6a437d7ddcabfdf6652",
+    "schema/mirror.fbs": "58c726853c53c45de47b2547c3972f066cf340ecb78a44f9b71ed48569749d96",
+    "presentations/godot/project/tests/farm_edit_live.gd": "fee3fed26a6b3ae01ba2fefc76d491715a3888476f767d80c685d725df9d8901",
+    "tools/smoke/farm-edit-verify.lua": "ff9a8cdfb02c981ad786f0b96e520874c9a03c065aab9b0cbf46cc6f1114df9d"
+  },
+  "limitations": [
+    "No rendered farm UI claim",
+    "No transport disconnect or producer replacement injected",
+    "Future-season edit transport tested; current-season cancellation has separate native helper evidence"
+  ]
+}
 }

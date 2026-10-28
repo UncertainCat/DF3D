@@ -184,6 +184,8 @@ end
 return function(request)
  local p=request.production
  if not p then return fail('Production request required') end
+ -- Crop edits belong exclusively to the revision-checked native transaction.
+ if request.action==19 then return fail('') end
  if request.action==15 then
   local result={ok=true,message='Production buildings',buildings={},next_cursor=0}
   local all=df.global.world.buildings.all
@@ -252,13 +254,6 @@ return function(request)
     if p.suspend==1 then J.removeWorker(job,0) end
    end
   end
- elseif request.action==19 then
-  if kind(b)~='FarmPlot' then return fail('A farm plot is required') end
-  local current=inspect(b,rs);if not current.ok then return current end
-  local valid=p.crop_id==-1
-  for _,c in ipairs(current.crops) do if c.id==p.crop_id and math.floor(c.seasons/2^p.season)%2==1 then valid=true end end
-  if not valid then return fail('Crop is not eligible for this farm and growing season') end
-  b.plant_id[p.season]=p.crop_id
  else return fail('Unsupported production action') end
  local result=inspect(b,rs);result.created_job=created;result.message='Native production change applied';return result
 end

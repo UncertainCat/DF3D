@@ -22,16 +22,16 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management81 adds an optional native farm snapshot with a bounded exact revision,
-building identity, selected/current season, four seasonal crop IDs and ordered
-choices carrying seed availability and current-season warning flags. It is
-separate from legacy crop counts/masks; a reply cannot mix both representations.
-Older recordings cannot infer native availability, warnings or revisions, and
-missing snapshots remain unavailable. Rebuild and install bridge and viewer
-together; `Local\\df3d_management_v81` isolates older peers. Snapshot/grid/session
-versions are unchanged. This contract does not enable the farm UI or new edits;
-native reads use ProductionInspect with an explicit season, while revision-checked
-mutation and presentation remain separate work.
+Management82 requires a positive exact expected_revision for FarmSetCrop, owned
+only by that action. Replies carry a typed Completed/Rejected/Stale/Unknown
+outcome; only Completed carries an authoritative fresh farm snapshot. Unknown
+must never be replayed automatically. The legacy Lua crop-write path is retired.
+Native per-season reads and the management81 snapshot remain unchanged: ordered
+choices carry seed availability and current-season warnings, separately from
+legacy crop counts/masks. Old recordings cannot synthesize revisions or edit
+outcomes. Rebuild and install bridge and viewer together;
+`Local\\df3d_management_v82` isolates older peers. Snapshot/grid/session versions
+are unchanged. Farm presentation and fertilization remain unfinished.
 The existing tracker popup contract from management80 remains unchanged.
 
 

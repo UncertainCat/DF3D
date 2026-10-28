@@ -515,8 +515,8 @@ TEST_CASE("production requests retain job identity sentinels and shared ownershi
   CHECK(r->production()->repeat()==-1);CHECK(r->production()->suspend()==1);CHECK_FALSE(r->production()->cancel());
   p.publish(4,id,seq,7,mm::ManagementAction::ProductionJobEdit);REQUIRE(c->poll());
   wm::ManagementRequest farm;farm.action=wm::ManagementAction::FarmSetCrop;
-  farm.production.buildingId=80;farm.production.season=3;farm.production.cropId=-1;
-  seq=c->send(farm);REQUIRE(seq>0);r=p.pop();CHECK(r->production()->season()==3);CHECK(r->production()->crop_id()==-1);
+  farm.production.buildingId=80;farm.production.season=3;farm.production.cropId=-1;farm.production.expectedRevision=9007199254740993ULL;
+  seq=c->send(farm);REQUIRE(seq>0);r=p.pop();CHECK(r->production()->season()==3);CHECK(r->production()->crop_id()==-1);CHECK(r->production()->expected_revision()==9007199254740993ULL);
   p.publish(5,0,seq,8,mm::ManagementAction::Catalog,mm::ManagementStatus::Idle);REQUIRE(c->poll());
   CHECK(c->send(queue)==0);CHECK(c->send(edit)==0);CHECK(c->send({})>seq);
 }

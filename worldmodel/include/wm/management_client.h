@@ -271,6 +271,7 @@ struct AreaState {
   int32_t paintedCount=-1,previewCount=-1;
 };
 struct ProductionRequest {
+  uint64_t expectedRevision=0;
   int32_t buildingId=-1,jobId=-1,cropId=-1;
   std::string recipe,query;
   uint32_t cursor=0;
@@ -303,6 +304,7 @@ struct FarmSnapshot {
   std::vector<NativeFarmCrop> choices;
 };
 struct ProductionState {
+  FarmEditOutcome farmEditOutcome=FarmEditOutcome::None;
   std::optional<FarmSnapshot> farm;
   std::vector<ProductionBuilding> buildings;
   std::vector<ProductionRecipe> recipes;

@@ -5,6 +5,12 @@ static_assert(static_cast<int>(wm::ConstructionOutcome::Rejected) == static_cast
 static_assert(static_cast<int>(wm::ConstructionOutcome::Partial) == static_cast<int>(df3d::mirror::ConstructionOutcome::Partial));
 static_assert(static_cast<int>(wm::ConstructionOutcome::Unknown) == static_cast<int>(df3d::mirror::ConstructionOutcome::Unknown));
 static_assert(sizeof(df3d::mirror::EnumValuesConstructionOutcome()) / sizeof(df3d::mirror::ConstructionOutcome) == 5);
+static_assert(static_cast<int>(wm::FarmEditOutcome::None) == static_cast<int>(df3d::mirror::FarmEditOutcome::None));
+static_assert(static_cast<int>(wm::FarmEditOutcome::Completed) == static_cast<int>(df3d::mirror::FarmEditOutcome::Completed));
+static_assert(static_cast<int>(wm::FarmEditOutcome::Rejected) == static_cast<int>(df3d::mirror::FarmEditOutcome::Rejected));
+static_assert(static_cast<int>(wm::FarmEditOutcome::Stale) == static_cast<int>(df3d::mirror::FarmEditOutcome::Stale));
+static_assert(static_cast<int>(wm::FarmEditOutcome::Unknown) == static_cast<int>(df3d::mirror::FarmEditOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesFarmEditOutcome()) / sizeof(df3d::mirror::FarmEditOutcome) == 5);
 static_assert(static_cast<int>(wm::ManagementAction::Catalog) == static_cast<int>(df3d::mirror::ManagementAction::Catalog));
 static_assert(static_cast<int>(wm::ManagementAction::Preview) == static_cast<int>(df3d::mirror::ManagementAction::Preview));
 static_assert(static_cast<int>(wm::ManagementAction::Place) == static_cast<int>(df3d::mirror::ManagementAction::Place));

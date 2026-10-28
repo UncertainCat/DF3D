@@ -83,6 +83,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   prod["selected_building"] = p.selectedBuilding;
   prod["created_job"] = p.createdJob;
   prod["detail"] = String::utf8(p.detail.c_str());
+  prod["farm_edit_outcome"]=int(p.farmEditOutcome);
   if(p.farm) {
     const auto& f=*p.farm;Dictionary farm;Array choices,selected;
     farm["building_id"]=f.buildingId;farm["revision"]=int64_t(f.revision);
@@ -289,7 +290,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 }
 
 bool validateProductionShape(const Dictionary& data, String& error) {
-  return managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season"}, error) &&
+  return managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision"}, error) &&
       managementRequiredFields(data, error);
 }
 
@@ -301,8 +302,9 @@ bool validateProductionShape(const Dictionary& data, String& error) {
 // repeat: int -1..1; 17: 1 repeating, otherwise one-time; 18: -1 unchanged, 0 off, 1 on.
 // suspend: int -1..1 (18), -1 unchanged, 0 resume, 1 suspend and release worker.
 // cancel: bool (18), remove job; exclusive with repeat/suspend changes.
+// expected_revision: positive int64 (19), from the displayed native farm snapshot.
 // season: int 0..3 (Spring, Summer, Autumn, Winter), required 19.
-// crop_id: int -1..32767 (19), plant raw id from crops[].id, -1 fallow; required 19.
+// crop_id: int -1..32767 (19), plant raw id from farm.choices[].id, -1 fallow; required 19.
 bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   bool valid = true;
   auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
@@ -315,6 +317,7 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   auto& value = r.production;
   value.buildingId = int32_t(n("building_id", -1, -1, INT32_MAX));
   value.jobId = int32_t(n("job_id", -1, -1, INT32_MAX));
+  value.expectedRevision=uint64_t(n("expected_revision",0,0,INT64_MAX));
   value.cropId = int32_t(n("crop_id", -1, -1, 32767));
   value.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
   value.repeat = int8_t(n("repeat", -1, -1, 1));

@@ -604,7 +604,7 @@ void publish() {
     for(const auto& c:f.choices)rows.push_back(m::CreateNativeFarmCrop(b,c.id,b.CreateString(c.name),c.seedsAvailable,c.currentSeasonWarning));
     farmSnapshot=m::CreateFarmSnapshot(b,f.buildingId,f.revision,f.selectedSeason,f.currentSeason,b.CreateVector(f.seasonalCrops),b.CreateVector(rows));
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot);
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -2353,6 +2353,34 @@ std::optional<FarmSnapshot> observeFarmSnapshot(int32_t buildingId,int season) {
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->action()==m::ManagementAction::FarmSetCrop) {
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    production.farmEditOutcome=m::FarmEditOutcome::Rejected;
+    const auto* q=r->production();
+    if(q) {
+      const auto observe=[&]{return observeFarmSnapshot(q->building_id(),q->season());};
+      auto before=observe();
+      auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(q->building_id()));
+      if(before && farm && farm->getBuildStage()==farm->getMaxBuildStage()) {
+        auto result=df3d_production::finishFarmEdit(*before,q->expected_revision(),q->crop_id(),
+          [&]{return df3d_production::setFarmCrop(farm,q->season(),q->crop_id());},observe,
+          [](const FarmSnapshot& value){return value.revision>0 && value.revision<=INT64_MAX &&
+            value.seasonalCrops.size()==4 && std::all_of(value.seasonalCrops.begin(),value.seasonalCrops.end(),
+              [](int32_t crop){return crop>=-1 && crop<=32767;});});
+        mutated=result.mutated;
+        switch(result.outcome) {
+          case df3d_production::FarmEditOutcome::Completed:
+            production.farmEditOutcome=m::FarmEditOutcome::Completed;
+            production.selectedBuilding=q->building_id();production.farm=std::move(result.receipt);
+            status=m::ManagementStatus::Ok;break;
+          case df3d_production::FarmEditOutcome::Stale:production.farmEditOutcome=m::FarmEditOutcome::Stale;break;
+          case df3d_production::FarmEditOutcome::Unknown:production.farmEditOutcome=m::FarmEditOutcome::Unknown;break;
+          case df3d_production::FarmEditOutcome::Rejected:break;
+        }
+      }
+    }
+    publish();return;
+  }
   // Explicit-season reads use the native contract; the default remains legacy.
   if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->season()>=0) {
     message.clear();status=m::ManagementStatus::Rejected;production={};

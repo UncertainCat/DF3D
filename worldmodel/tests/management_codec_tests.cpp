@@ -9,6 +9,51 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("farm edits require exact revisions owned only by crop requests") {
+  for(int variant=0;variant<11;++variant) {
+    CAPTURE(variant);wm::ManagementRequest r;r.action=wm::ManagementAction::FarmSetCrop;
+    auto& p=r.production;p.buildingId=227;p.season=1;p.cropId=-1;p.expectedRevision=9007199254740993ULL;
+    if(variant==1)p.expectedRevision=0;
+    if(variant==2)p.expectedRevision=UINT64_MAX;
+    if(variant==3)r.action=wm::ManagementAction::ProductionInspect;
+    if(variant==4)p.jobId=1;
+    if(variant==5)p.cursor=1;
+    if(variant==6)p.repeat=1;
+    if(variant==7)p.suspend=0;
+    if(variant==8)p.cancel=true;
+    if(variant==9)p.recipe="unowned";
+    if(variant==10)p.query="unowned";
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(variant!=0));
+    if(!variant)CHECK(value->production()->expected_revision()==9007199254740993ULL);
+  }
+}
+TEST_CASE("successful farm edit cannot omit its production result") {
+  flatbuffers::FlatBufferBuilder b;wire::ManagementStateBuilder s(b);
+  s.add_revision(1);s.add_schema_version(wire::kManagementVersion);
+  s.add_action(wire::ManagementAction::FarmSetCrop);s.add_status(wire::ManagementStatus::Ok);
+  b.Finish(s.Finish());
+  CHECK(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())).has_value());
+}
+TEST_CASE("farm outcomes grant snapshot authority only to confirmed completion") {
+  for(int outcome=0;outcome<6;++outcome)for(bool ok:{false,true})for(bool receipt:{false,true})for(bool edit:{false,true}) {
+    CAPTURE(outcome);CAPTURE(ok);CAPTURE(receipt);CAPTURE(edit);
+    flatbuffers::FlatBufferBuilder b;
+    auto farm=wire::CreateFarmSnapshot(b,227,17,1,1,b.CreateVector(std::vector<int32_t>{175,-1,176,-1}),b.CreateVector(std::vector<flatbuffers::Offset<wire::NativeFarmCrop>>{}));
+    wire::ProductionStateBuilder p(b);p.add_selected_building(227);
+    p.add_farm_edit_outcome(static_cast<wire::FarmEditOutcome>(outcome));if(receipt)p.add_farm(farm);
+    auto prod=p.Finish();wire::ManagementStateBuilder state(b);
+    state.add_revision(1);state.add_schema_version(wire::kManagementVersion);
+    state.add_action(edit?wire::ManagementAction::FarmSetCrop:wire::ManagementAction::ProductionInspect);
+    state.add_status(ok?wire::ManagementStatus::Ok:wire::ManagementStatus::Rejected);state.add_production(prod);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool valid=outcome<5 && (edit?(outcome==1?ok && receipt:!ok && !receipt):outcome==0);
+    CHECK(bool(wire::validateManagementState(*value))==!valid);
+    if(valid)CHECK(int(codec::decodeProduction(value->production()).farmEditOutcome)==outcome);
+  }
+}
+
 TEST_CASE("native farm receipts preserve order and exact revisions without legacy synthesis") {
   for(int variant=0;variant<15;++variant) {
     CAPTURE(variant);flatbuffers::FlatBufferBuilder b;

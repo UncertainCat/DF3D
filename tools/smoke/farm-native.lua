@@ -123,6 +123,45 @@ local script=require('gui.script')
    end
   end if found then break end end
   assert(found,'farm tile not visible');capture('farm-selected')
+  local artwork_marker=io.open(out..'/farm-artwork')
+  if artwork_marker then
+   artwork_marker:close()
+   -- Diagnostic only: map native rendered textures back to installed pages.
+   -- These GPS/raw-cache reads must never become runtime panel inputs.
+   local function source(texture)
+    local result={texture=texture}
+    for _,page in ipairs(df.global.texture.page)do
+     for index,value in ipairs(page.texpos)do
+      if value==texture then result.page=page.token;result.x=index%page.page_dim_x;result.y=index//page.page_dim_x;return result end
+     end
+    end
+    return result
+   end
+   local art={name='farm-artwork',crops={},cells={}}
+   for _,id in ipairs(df.global.plotinfo.selected_farm_crops)do if id>=0 then
+    local plant=assert(df.plant_raw.find(id))
+    local _,address=df.sizeof(plant)
+    local _,textures=df.sizeof(plant:_field('texpos'))
+    local offset=0x1e8-(textures-address)
+    assert(offset>=0 and offset%4==0 and offset//4<18,'crop texture outside raw texpos')
+    local texture=df.reinterpret_cast('int32_t',address+0x1e8).value
+    assert(texture==plant.texpos[offset//4],'crop texture field mismatch')
+    art.crops[#art.crops+1]={id=id,raw_id=plant.id,texpos_index=offset//4,source=source(texture)}
+   end end
+   for y=5,37 do for x=53,60 do
+    local index=x*g.dimy+y
+    local texture=g.screentexpos_anchored[index]
+    if texture>0 then art.cells[#art.cells+1]={x=x,y=y,source=source(texture),offset_x=g.screentexpos_anchored_x[index],offset_y=g.screentexpos_anchored_y[index]}end
+   end end
+   for _,crop in ipairs(art.crops)do
+    local found=false
+    for _,cell in ipairs(art.cells)do if cell.source.texture==crop.source.texture then found=true;break end end
+    assert(found,'crop raw texture absent from native panel')
+   end
+   assert(#art.crops>0 and #art.cells>0,'missing crop artwork')
+   records[#records+1]=art
+   return
+  end
   local fertilizer_marker=io.open(out..'/farm-fertilization')
   if fertilizer_marker then
    fertilizer_marker:close()

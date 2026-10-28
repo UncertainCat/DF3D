@@ -348,6 +348,19 @@ This is headless controller acceptance. Native panel rendering, installed
 artwork, actual map-selection integration, and real disconnect/replacement
 tests remain unfinished. The farm screen is not exposed.
 
+The native farm artwork reference is captured with
+`stockpile_storage_native.ps1 -FarmDiscovery -FarmArtwork`. This exclusive
+artwork scope stops after the initial farm sheet and records crop raw identities,
+texture-field offsets and displayed anchored textures. It is a protected
+diagnostic, never a runtime source of native menu or rendering state.
+`native_farm.json.artwork_reference` records the clean172751 run: all six summer
+crop icons match raw `texpos[8]` and their installed `PICKED` definitions; the
+header is `BUILDING_ICON_FARM_PLOT` and fallow uses `FARMPLOT`. The owned source
+manifest remains unchanged and DF160312 exits unsaved. Core passes in
+`build/qa/farm-artwork-reference`. This establishes native asset selection, not
+Godot rendering parity or the generic missing-art fallback. The farm view still
+needs stable raw identities from its semantic snapshot and rendered acceptance.
+
 ### Native farm fertilization reference
 
 `stockpile_storage_native.ps1 -FarmDiscovery -FarmFertilization` isolates

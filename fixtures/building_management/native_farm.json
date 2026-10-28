@@ -7716,5 +7716,147 @@
     "Headless controller acceptance, not rendered native panel or main-scene exposure",
     "Real transport disconnect/replacement not injected; epoch and late-reply faults covered by deterministic service/controller tests"
   ]
-}
+},
+  "artwork_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261028-172751",
+    "owned_df_pid": 160312,
+    "owned_exit_unsaved": true,
+    "save_preservation": "Owned source unchanged",
+    "inputs": [
+      {
+        "Algorithm": "SHA256",
+        "Hash": "498AF5C02A9CC4581172C5D3B43CF520CA5355F63CB294A81070731F1CF80519",
+        "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "EE4CBD7312C50FF995D15689673B3A8B1F2D69E36F20CCBA23EAEE0670198A9B",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "8E6A188C08633357053826BA66416582D2F589B4095F8594BF72BBD757C4E529",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-multi-discovery-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "45A0761B6FFE9157C18F6AD504E7F260A5786C12D2EBC25B8CB38D2A957F30DA",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\farm-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "37D24F451F76F5D9B56ECA72507A5C113E5D72D4C5B1C14EDA03FD9A07A23516",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\production.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "87D3E0E1A8AECA3341B9AC05D2849649DD4E6D1C96D751560DAE2FA3B3582303",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-owner-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "989639AA8725A903BC9B791015984A400D64745CFB9F415AD08F329C5B273362",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\areas-animals-native.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "1835062120C6DBF3ECFF50EA0FC0D3377AFA59E9236E15298B65813C99B26BFA",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\tools\\smoke\\stockpile_storage_native.ps1"
+      }
+    ],
+    "crops": [
+      {
+        "id": 175,
+        "raw_id": "GRASS_WHEAT_CAVE",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41502,
+          "x": 1,
+          "y": 2
+        },
+        "texpos_index": 8,
+        "definition_file": "graphics_plant_standard_shrubs.txt",
+        "definition_token": "PICKED"
+      },
+      {
+        "id": 188,
+        "raw_id": "MUSHROOM_CUP_DIMPLE",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41671,
+          "x": 1,
+          "y": 15
+        },
+        "texpos_index": 8,
+        "definition_file": "graphics_plant_standard_shrubs.txt",
+        "definition_token": "PICKED"
+      },
+      {
+        "id": 174,
+        "raw_id": "GRASS_TAIL_PIG",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41489,
+          "x": 1,
+          "y": 1
+        },
+        "texpos_index": 8,
+        "definition_file": "graphics_plant_standard_shrubs.txt",
+        "definition_token": "PICKED"
+      },
+      {
+        "id": 173,
+        "raw_id": "MUSHROOM_HELMET_PLUMP",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41476,
+          "x": 1,
+          "y": 0
+        },
+        "texpos_index": 8,
+        "definition_file": "graphics_plant_standard_shrubs.txt",
+        "definition_token": "PICKED"
+      },
+      {
+        "id": 177,
+        "raw_id": "BUSH_QUARRY",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41528,
+          "x": 1,
+          "y": 4
+        },
+        "texpos_index": 8,
+        "definition_file": "graphics_plant_standard_shrubs.txt",
+        "definition_token": "PICKED"
+      },
+      {
+        "id": 176,
+        "raw_id": "POD_SWEET",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41515,
+          "x": 1,
+          "y": 3
+        },
+        "texpos_index": 8,
+        "definition_file": "graphics_plant_standard_shrubs.txt",
+        "definition_token": "PICKED"
+      }
+    ],
+    "header": {
+      "token": "BUILDING_ICON_FARM_PLOT",
+      "page": "BUILDING_ICONS",
+      "x": 5,
+      "y": 3
+    },
+    "fallow": {
+      "token": "FARMPLOT",
+      "page": "FLOORS",
+      "x": 6,
+      "y": 1
+    },
+    "native_capture_sha256": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9",
+    "scope": "Native displayed summer rows match raw texpos[8] and installed PICKED definitions; header/fallow match captured anchored textures. No Godot rendered comparison or generic missing-art fallback acceptance."
+  }
 }

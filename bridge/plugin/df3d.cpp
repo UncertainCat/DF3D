@@ -1573,6 +1573,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           return df3d_management::printStockpileLinkTarget(out,values[0],int16_t(values[1]),int16_t(values[2]),int16_t(values[3]),values[4]!=0)?CR_OK:CR_FAILURE;
         }
+        if(parameters[0]=="farm-crop-set") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t values[3]{};
+          for(size_t i=0;i<3;++i) {
+            const auto& raw=parameters[i+1];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          if(values[0]<0 || values[1]<0 || values[1]>3 || values[2]<-1 || values[2]>32767)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(values[0]));
+          const auto accepted=df3d_production::setFarmCrop(farm,values[1],values[2]);
+          if(!accepted)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["accepted"]=*accepted;
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="farm-choices-read") {
           if(parameters.size()!=3)return CR_WRONG_USAGE;
           int32_t values[2]{};

@@ -12,6 +12,8 @@
 #include "df/global_objects.h"
 #include "df/plant_raw.h"
 #include "df/item_seedsst.h"
+#include "df/job.h"
+#include "df/job_type.h"
 
 namespace df3d_production {
 // Semantic readers called by the native farm sheet. No selected building,
@@ -22,12 +24,14 @@ struct FarmFunctions {
     using PlantingWarning=bool (*)(df::plotinfost*,int16_t);
     using Name=bool (*)(std::vector<df::plant_raw*>*,int32_t,std::string*,bool,bool);
     using Compare=int8_t (*)(const std::string*,const std::string*);
+    using CancelJob=void (*)(df::building_farmplotst*,int32_t);
     Eligible eligible=nullptr;
     Seasons seasons=nullptr;
     PlantingWarning plantingWarning=nullptr;
     Name name=nullptr;
     Compare compare=nullptr;
-    explicit operator bool() const {return eligible && seasons && plantingWarning && name && compare;}
+    CancelJob cancelJob=nullptr;
+    explicit operator bool() const {return eligible && seasons && plantingWarning && name && compare && cancelJob;}
 };
 inline const FarmFunctions& farmFunctions() {
     static const auto functions=[]()->FarmFunctions {
@@ -52,12 +56,15 @@ inline const FarmFunctions& farmFunctions() {
            hash(0x57c050,0xcb)!=UINT64_C(0x243c738f199909d3) ||
            hash(0x144d90,0xba)!=UINT64_C(0x97aed5d23117e68f) ||
            hash(0xb9d50,0x69)!=UINT64_C(0x979704ba6b6743e5) ||
-           hash(0x1a5583,7)!=UINT64_C(0x7d4fd2130cf4907e))return {};
+           hash(0x1a5583,7)!=UINT64_C(0x7d4fd2130cf4907e) ||
+           hash(0x54bcd0,0x15)!=UINT64_C(0x23931f03386d1254) ||
+           hash(0xa67820,0xcc)!=UINT64_C(0x506ce8a2c4eefca6))return {};
         return {reinterpret_cast<FarmFunctions::Eligible>(base+0x557770),
                 reinterpret_cast<FarmFunctions::Seasons>(base+0xaae1a0),
                 reinterpret_cast<FarmFunctions::PlantingWarning>(base+0x57c050),
                 reinterpret_cast<FarmFunctions::Name>(base+0x144d90),
-                reinterpret_cast<FarmFunctions::Compare>(base+0xb9d50)};
+                reinterpret_cast<FarmFunctions::Compare>(base+0xb9d50),
+                reinterpret_cast<FarmFunctions::CancelJob>(base+0x54bcd0)};
     }();
     return functions;
 }
@@ -67,6 +74,33 @@ struct FarmChoice {
     bool seedsAvailable=false,currentSeasonWarning=false;
     int priority=0;
 };
+// Native sheet1afe61..1affc8 keeps the season write/branching inline; its
+// cancellation helper is semantic. Reproduce only that inline transaction,
+// validating membership with the native readers rather than borrowing UI rows.
+// nullopt means unavailable/invalid context, false means an inadmissible choice.
+inline std::optional<bool> setFarmCrop(df::building_farmplotst* farm,int season,int32_t crop) {
+    const auto& native=farmFunctions();
+    if(!native || !farm || !df::global::world || !df::global::plotinfo ||
+       !df::global::cur_season || season<0 || season>3 || crop<-1 || crop>32767 ||
+       farm->jobs.size()>size_t(INT32_MAX))return {};
+    if(crop>=0) {
+        auto& plants=df::global::world->raws.plants.all;
+        if(size_t(crop)>=plants.size() || !plants[size_t(crop)] ||
+           !plants[size_t(crop)]->flags.is_set(df::plant_raw_flags::SEED))return false;
+        std::array<uint8_t,4> seasons{};native.seasons(int16_t(crop),&seasons);
+        if(!seasons[size_t(season)] || !native.eligible(farm,crop))return false;
+        if(farm->plant_id[size_t(season)]==crop)return true;
+        if(season==*df::global::cur_season && native.plantingWarning(df::global::plotinfo,int16_t(crop)))return false;
+    }
+    farm->plant_id[size_t(season)]=int16_t(crop);
+    if(season==*df::global::cur_season) {
+        for(size_t i=farm->jobs.size();i-->0;) {
+            auto* job=farm->jobs[i];
+            if(job && job->job_type==df::job_type::PlantSeeds)native.cancelJob(farm,int32_t(i));
+        }
+    }
+    return true;
+}
 // The native sheet's list builder owns UI globals and cannot be called here.
 // Its inline seed mask and priority/insertion policy are reproduced explicitly;
 // eligibility, seasons, names, text comparison and warning use native routines.

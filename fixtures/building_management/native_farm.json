@@ -5610,5 +5610,440 @@
       "Native retains entry order after changing a crop until tab rebuild; fresh list order is compared only for rebuilt entries.",
       "One underground farm, no duplicate or non-ASCII names and no mixed-footprint proof."
     ]
+  },
+  "crop_action_reference": {
+    "native_reference": "build/stockpile-storage-native-farm-discovery-20261028-155310",
+    "comparison_capture": "build/stockpile-storage-native-farm-discovery-20261028-155517",
+    "owned_df_pid": 172400,
+    "owned_exit_unsaved": true,
+    "source_manifest_unchanged": true,
+    "installed_bridge_sha256": "B7F474AF0B7A0D0E19242667FDADABC7CB1FF87124B89B6FFBCF59A232A490BB",
+    "inline_transaction_rva": "1afe61..1affc8",
+    "native_cancellation_rva": "54bcd0..54bce4 -> a67820",
+    "cases": [
+      {
+        "after": [
+          176,
+          175,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "case": "changed-current",
+        "crop": 175,
+        "fixture_jobs_unassigned": true,
+        "method": "native",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382796,
+        "planting_job_ids": [
+          382794,
+          382795
+        ],
+        "planting_jobs_alive": [
+          false,
+          false
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          175,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "case": "changed-current",
+        "crop": 175,
+        "fixture_jobs_unassigned": true,
+        "method": "semantic",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382799,
+        "planting_job_ids": [
+          382797,
+          382798
+        ],
+        "planting_jobs_alive": [
+          false,
+          false
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          175,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          175,
+          175,
+          173
+        ],
+        "case": "same-current",
+        "crop": 175,
+        "fixture_jobs_unassigned": true,
+        "method": "native",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382802,
+        "planting_job_ids": [
+          382800,
+          382801
+        ],
+        "planting_jobs_alive": [
+          true,
+          true
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          175,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          175,
+          175,
+          173
+        ],
+        "case": "same-current",
+        "crop": 175,
+        "fixture_jobs_unassigned": true,
+        "method": "semantic",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382805,
+        "planting_job_ids": [
+          382803,
+          382804
+        ],
+        "planting_jobs_alive": [
+          true,
+          true
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          175,
+          175,
+          173
+        ],
+        "case": "fallow-current",
+        "crop": -1,
+        "fixture_jobs_unassigned": true,
+        "method": "native",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382808,
+        "planting_job_ids": [
+          382806,
+          382807
+        ],
+        "planting_jobs_alive": [
+          false,
+          false
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          175,
+          175,
+          173
+        ],
+        "case": "fallow-current",
+        "crop": -1,
+        "fixture_jobs_unassigned": true,
+        "method": "semantic",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382811,
+        "planting_job_ids": [
+          382809,
+          382810
+        ],
+        "planting_jobs_alive": [
+          false,
+          false
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "case": "fallow-already",
+        "crop": -1,
+        "fixture_jobs_unassigned": true,
+        "method": "native",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382814,
+        "planting_job_ids": [
+          382812,
+          382813
+        ],
+        "planting_jobs_alive": [
+          false,
+          false
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "case": "fallow-already",
+        "crop": -1,
+        "fixture_jobs_unassigned": true,
+        "method": "semantic",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382817,
+        "planting_job_ids": [
+          382815,
+          382816
+        ],
+        "planting_jobs_alive": [
+          false,
+          false
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "case": "warned-current",
+        "crop": 176,
+        "fixture_jobs_unassigned": true,
+        "method": "native",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382820,
+        "planting_job_ids": [
+          382818,
+          382819
+        ],
+        "planting_jobs_alive": [
+          true,
+          true
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "case": "warned-current",
+        "crop": 176,
+        "fixture_jobs_unassigned": true,
+        "method": "semantic",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382823,
+        "planting_job_ids": [
+          382821,
+          382822
+        ],
+        "planting_jobs_alive": [
+          true,
+          true
+        ],
+        "season": 1
+      },
+      {
+        "after": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          -1,
+          -1,
+          175,
+          173
+        ],
+        "case": "future-choice",
+        "crop": 176,
+        "fixture_jobs_unassigned": true,
+        "method": "native",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382826,
+        "planting_job_ids": [
+          382824,
+          382825
+        ],
+        "planting_jobs_alive": [
+          true,
+          true
+        ],
+        "season": 0
+      },
+      {
+        "after": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          -1,
+          -1,
+          175,
+          173
+        ],
+        "case": "future-choice",
+        "crop": 176,
+        "fixture_jobs_unassigned": true,
+        "method": "semantic",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382829,
+        "planting_job_ids": [
+          382827,
+          382828
+        ],
+        "planting_jobs_alive": [
+          true,
+          true
+        ],
+        "season": 0
+      },
+      {
+        "after": [
+          -1,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "case": "future-fallow",
+        "crop": -1,
+        "fixture_jobs_unassigned": true,
+        "method": "native",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382832,
+        "planting_job_ids": [
+          382830,
+          382831
+        ],
+        "planting_jobs_alive": [
+          true,
+          true
+        ],
+        "season": 0
+      },
+      {
+        "after": [
+          -1,
+          -1,
+          175,
+          173
+        ],
+        "before": [
+          176,
+          -1,
+          175,
+          173
+        ],
+        "case": "future-fallow",
+        "crop": -1,
+        "fixture_jobs_unassigned": true,
+        "method": "semantic",
+        "name": "farm-job-action",
+        "other_job_alive": true,
+        "other_job_id": 382835,
+        "planting_job_ids": [
+          382833,
+          382834
+        ],
+        "planting_jobs_alive": [
+          true,
+          true
+        ],
+        "season": 0
+      }
+    ],
+    "invalid_requests_rejected": 5,
+    "guards": "Main-interface and GPS objects plus existing RNG ranges are byte-identical around each semantic action. This does not guard every reachable heap allocation.",
+    "scope": "Two unassigned PlantSeeds jobs and one FertilizeField job per case. Native clicks and semantic helper compare season values and job existence in world and farm. No attached items or workers are tested. No management/UI integration yet."
   }
 }

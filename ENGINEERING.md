@@ -313,6 +313,37 @@ passes with bridge SHA256
 core passes in `build/qa/farm-choices-native`. The provider is diagnostic-only;
 the management adapter/transport and actual farm UI remain unfinished.
 
+The diagnostic `df3d farm-crop-set <building id> <season> <crop id>` now exposes
+the native crop-selection transaction using caller-owned arguments. Native
+sheet input `0x1afe61..0x1affc8` performs the season write and branch decisions
+inline; those decisions are explicitly reproduced in `setFarmCrop`, with
+membership and warning delegated to the native readers. The current-season
+branch invokes native building-job cancellation `0x54bcd0..0x54bce4`, which
+delegates to `0xa67820`; both complete function bodies are compatibility-gated.
+It does not borrow the sheet, selected season or native crop vectors.
+
+Protected native155310 establishes seven branches: changed/current crop,
+same/current crop, current fallow, already-fallow, warned current crop, future
+crop and future fallow. Changed/current and both current-fallow cases cancel
+planting jobs; the others retain them. In particular, same-crop selection is
+inert but selecting fallow again still cancels planting jobs. Other seasons
+and a nonplanting job remain unchanged. Earlier155218 failed a diagnostic
+`df.job.find` lookup and is not acceptance; the harness now traverses the world
+job list and independently checks farm membership.
+
+Protected `stockpile-storage-native-farm-discovery-20261028-155517` compares all
+seven native clicks with the semantic helper, using two unassigned PlantSeeds
+jobs and one FertilizeField job per case. All14 observations agree; five invalid
+requests are rejected. Main-interface/GPS objects and the recorded RNG ranges
+remain unchanged around semantic calls. This is not an all-heap nonmutation
+claim or acceptance for attached workers/items. DF172400 exits unsaved with the
+source manifest unchanged. `native_farm.json.crop_action_reference` retains
+bounded effects and provenance. MSVC build/install passes with bridge SHA256
+`B7F474AF0B7A0D0E19242667FDADABC7CB1FF87124B89B6FFBCF59A232A490BB`.
+Core passes cleanly in `build/qa/farm-crop-native-transaction`.
+The existing Lua production adapter still writes only the crop and must be
+replaced when this provider is integrated into management transport and UI.
+
 Next extend the reference to mixed footprints, season boundaries and seed
 flags, and locate the remaining native list semantics. Do not replace
 the adapter with another reconstruction of the list builder. Verify ordering,

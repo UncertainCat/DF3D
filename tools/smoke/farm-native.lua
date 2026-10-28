@@ -133,4 +133,94 @@ local script=require('gui.script')
   click(600,124);capture('farm-summer-after-spring-choice')
   click(872,430);capture('farm-summer-red-choice-after-spring')
   assert(b.plant_id[1]==-1,'native warning did not refuse the current-season crop')
+  -- Controlled unsaved job fixtures establish the native input transaction.
+  -- Runtime must not call this sheet handler or read its selected-crop vector.
+  local function add_job(kind)
+   local job=df.job:new();job.job_type=kind;job.posting_index=-1
+   job.pos={x=b.centerx,y=b.centery,z=b.z}
+   local ref=df.general_ref_building_holderst:new();ref.building_id=b.id
+   job.general_refs:insert('#',ref)
+   assert(dfhack.job.linkIntoWorld(job,true));b.jobs:insert('#',job)
+   return job.id
+  end
+  local current=df.global.cur_season
+  for _,args in ipairs{{'-1','0','-1'},{tostring(b.id),'-1','-1'},{tostring(b.id),'4','-1'},{tostring(b.id),'0','-2'},{'2147483647','0','-1'}}do
+   local _,status=dfhack.run_command_silent('df3d','farm-crop-set',table.unpack(args))
+   assert(status~=0,'invalid farm action accepted')
+  end
+  local function find_job(id)
+   local link=df.global.world.jobs.list.next
+   while link do
+    if link.item and link.item.id==id then return link.item end
+    link=link.next
+   end
+  end
+  local text,code=dfhack.run_command_silent('df3d','farm-choices-read',tostring(b.id),tostring(current))
+  assert(code==0,text)
+  local allowed,warned
+  for _,choice in ipairs(require('json').decode(text).rows)do
+   if choice.current_season_warning then warned=choice.crop_id else allowed=choice.crop_id end
+  end
+  assert(allowed and warned,'fixture needs allowed and warned current-season crops')
+  local tabs={470,600,720,840}
+  for _,case in ipairs{
+   {name='changed-current',season=current,before=-1,crop=allowed,cancel=true},
+   {name='same-current',season=current,before=allowed,crop=allowed,cancel=false},
+   {name='fallow-current',season=current,before=allowed,crop=-1,cancel=true},
+   {name='fallow-already',season=current,before=-1,crop=-1,cancel=true},
+   {name='warned-current',season=current,before=-1,crop=warned,cancel=false},
+   {name='future-choice',season=0,before=-1,crop=176,cancel=false},
+   {name='future-fallow',season=0,before=176,crop=-1,cancel=false},
+  }do
+   assert(current~=0,'future-season fixture requires a non-spring current season')
+   for _,method in ipairs{'native','semantic'}do
+   b.plant_id[case.season]=case.before
+   -- Rebuild the tab after fixture setup. The click selects a real native row.
+   click(tabs[(case.season+1)%4+1],124);click(tabs[case.season+1],124)
+   local index
+   for i,id in ipairs(df.global.plotinfo.selected_farm_crops)do if id==case.crop then index=i;break end end
+   assert(index,'native action row missing: '..case.name)
+   local planting={add_job(df.job_type.PlantSeeds),add_job(df.job_type.PlantSeeds)}
+   local other=add_job(df.job_type.FertilizeField)
+   local before={};for i=0,3 do before[#before+1]=b.plant_id[i]end
+   if method=='native' then click(872,214+index*36)
+   else
+    local guards={}
+    for _,object in ipairs{df.global.game.main_interface,g}do
+     local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+     dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={address=address,size=size,bytes=bytes}
+    end
+    local base=dfhack.internal.getImageBase()
+    for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2}}do
+     local bytes=df.new('uint8_t',range[2]);dfhack.internal.memmove(bytes,base+range[1],range[2])
+     guards[#guards+1]={address=base+range[1],size=range[2],bytes=bytes}
+    end
+    local output,status=dfhack.run_command_silent('df3d','farm-crop-set',tostring(b.id),tostring(case.season),tostring(case.crop))
+    assert(status==0,output)
+    assert(require('json').decode(output).accepted==(case.name~='warned-current'),'semantic admission differs')
+    for _,guard in ipairs(guards)do
+     assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'semantic crop action changed UI/GPS/RNG')
+     df.delete(guard.bytes)
+    end
+   end
+   local after={};for i=0,3 do after[#after+1]=b.plant_id[i]end
+   local expected=case.name=='warned-current' and case.before or case.crop
+   assert(after[case.season+1]==expected,'native crop write differs: '..case.name)
+   for i=1,4 do if i~=case.season+1 then assert(before[i]==after[i],'unrelated season changed')end end
+   local alive={}
+   for _,id in ipairs(planting)do
+    alive[#alive+1]=find_job(id)~=nil
+    assert(alive[#alive]==not case.cancel,'native planting cancellation differs: '..case.name)
+    local attached=false;for _,job in ipairs(b.jobs)do if job.id==id then attached=true end end
+    assert(attached==alive[#alive],'farm/world job membership differs')
+   end
+   assert(find_job(other),'native removed nonplanting job')
+   records[#records+1]={name='farm-job-action',case=case.name,method=method,season=case.season,crop=case.crop,
+    before=before,after=after,planting_job_ids=planting,planting_jobs_alive=alive,
+    other_job_id=other,other_job_alive=true,fixture_jobs_unassigned=true}
+   for _,id in ipairs{planting[1],planting[2],other}do
+    local job=find_job(id);if job then assert(dfhack.job.removeJob(job))end
+   end
+   end
+  end
   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')

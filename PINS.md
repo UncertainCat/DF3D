@@ -22,16 +22,17 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management82 requires a positive exact expected_revision for FarmSetCrop, owned
-only by that action. Replies carry a typed Completed/Rejected/Stale/Unknown
-outcome; only Completed carries an authoritative fresh farm snapshot. Unknown
-must never be replayed automatically. The legacy Lua crop-write path is retired.
-Native per-season reads and the management81 snapshot remain unchanged: ordered
-choices carry seed availability and current-season warnings, separately from
-legacy crop counts/masks. Old recordings cannot synthesize revisions or edit
-outcomes. Rebuild and install bridge and viewer together;
-`Local\\df3d_management_v82` isolates older peers. Snapshot/grid/session versions
-are unchanged. Farm presentation and fertilization remain unfinished.
+Management83 renames action19 to FarmEdit and adds FarmOperation:
+Crop (default), FertilizationToggle, and SeasonalFertilization. All require
+the exact displayed expected_revision and selected season. Crop owns crop_id;
+seasonal intent owns seasonal_fertilization (0/1). Other fields are rejected.
+The farm snapshot adds current/max fertilizer, pending fertilizer jobs and
+the seasonal flag; all four participate in its revision. Older recordings
+cannot synthesize these facts or the new revision. Completed alone carries
+an authoritative fresh snapshot; Unknown must never be replayed automatically.
+Rebuild/install bridge and viewer together on `Local\\df3d_management_v83`.
+Snapshot/grid/session versions are unchanged. Native fertilizer helpers are
+verified separately; the complete farm presentation remains unfinished.
 The existing tracker popup contract from management80 remains unchanged.
 
 

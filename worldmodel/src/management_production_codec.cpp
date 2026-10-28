@@ -25,6 +25,8 @@ ProductionState decodeProduction(const m::ProductionState* p) {
   if(const auto* f=p->farm()) {
     auto& farm=n.farm.emplace();farm.buildingId=f->building_id();farm.revision=f->revision();
     farm.selectedSeason=f->selected_season();farm.currentSeason=f->current_season();
+    farm.currentFertilization=f->current_fertilization();farm.maxFertilization=f->max_fertilization();
+    farm.pendingFertilization=f->pending_fertilization();farm.seasonalFertilization=f->seasonal_fertilization();
     if(f->seasonal_crops())farm.seasonalCrops.assign(f->seasonal_crops()->begin(),f->seasonal_crops()->end());
     if(f->choices())for(const auto* c:*f->choices())
       farm.choices.push_back({c->id(),str(c->name()),c->seeds_available(),c->current_season_warning()});
@@ -165,7 +167,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   const auto& p = value;
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
-                                    p.cancel, p.season, p.cropId, p.expectedRevision);
+                                    p.cancel, p.season, p.cropId, p.expectedRevision,static_cast<m::FarmOperation>(p.farmOperation),p.seasonalFertilization);
 }
 
 flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBufferBuilder& b,

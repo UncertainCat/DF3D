@@ -7609,5 +7609,85 @@
     "Controlled paused assignment, not an in-progress hauling tick",
     "Transport and rendered viewer controls remain separate work"
   ]
+},
+  "fertilization_transport_reference": {
+  "source": "build/areas-acceptance-20261028-171127",
+  "owned_df_pid": 143040,
+  "owned_exit_unsaved": true,
+  "save_manifests_unchanged": 2,
+  "status": "passed",
+  "management_version": 83,
+  "bridge_sha256": "498AF5C02A9CC4581172C5D3B43CF520CA5355F63CB294A81070731F1CF80519",
+  "results": {
+    "cases": [
+      {
+        "completed": 3,
+        "rejected": 1,
+        "season": 0,
+        "stale": 1
+      },
+      {
+        "completed": 3,
+        "rejected": 1,
+        "season": 2,
+        "stale": 1
+      },
+      {
+        "completed": 3,
+        "rejected": 1,
+        "season": 3,
+        "stale": 1
+      }
+    ],
+    "fertilizer_completed": 5,
+    "fertilizer_original_restored": true,
+    "fertilizer_stale": 2,
+    "invalid_targets": 2,
+    "original_selections_restored": true
+  },
+  "native_checks": 18,
+  "fertilization_readbacks": [
+    {
+      "current": 0,
+      "maximum": 29,
+      "pending": 0,
+      "seasonal": false
+    },
+    {
+      "current": 0,
+      "maximum": 29,
+      "pending": 0,
+      "seasonal": false
+    },
+    {
+      "current": 0,
+      "maximum": 29,
+      "pending": 29,
+      "seasonal": true
+    },
+    {
+      "current": 0,
+      "maximum": 29,
+      "pending": 29,
+      "seasonal": true
+    },
+    {
+      "current": 0,
+      "maximum": 29,
+      "pending": 0,
+      "seasonal": true
+    }
+  ],
+  "inputs": {
+    "schema/mirror.fbs": "8cbf1e054352abb219d06565baf71e09237d45a58669d2b835bf5d77850b1c85",
+    "bridge/plugin/management.cpp": "255a76d4a1bdf1cae90535d030c2761392d486ba14a05e9750281c092607dce6",
+    "bridge/plugin/farm_transaction.h": "b52b62dee0f5f27245b3c478bda52b8b2c7809cb338a46f054ef4bf62b22f4a0",
+    "presentations/godot/project/tests/farm_edit_live.gd": "d8781206ec4e66c6a5da01a42deb0455d92e8265bf040c93419343d42de74ec9",
+    "tools/smoke/farm-edit-verify.lua": "12c717d923098d4e4baf2012fdb83f37498dab0b9f802aae0d17d3ced70ee73e"
+  },
+  "limitations": [
+    "No rendered farm UI or queued/sent disconnect/replacement coverage",
+    "Post-effect Unknown tests inject callbacks, not faults inside native DF"
+  ]
 }
 }

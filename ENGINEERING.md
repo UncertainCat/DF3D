@@ -204,12 +204,13 @@ facts. No source recording is migrated by inventing native data.
 Bridge serialization, engine-independent decoding and Godot dictionaries support
 the new snapshot. `ProductionInspect` with an explicit season0..3 now publishes
 native farm snapshots directly before Lua dispatch. The default season-1 path
-still uses the legacy adapter. Management82 routes FarmSetCrop exclusively
-through the native transaction with a positive exact expected_revision.
+still uses the legacy adapter. Management83 routes FarmEdit through native crop and fertilizer transactions
+with a positive exact expected_revision. FarmOperation selects Crop,
+FertilizationToggle or SeasonalFertilization with strict field ownership.
 The Lua crop-write path refuses without effects. Only Completed publishes a
 fresh farm snapshot; Rejected, Stale and Unknown carry no farm authority.
-Unknown must not be replayed. Farm UI and fertilization remain unfinished.
-Install bridge and viewer together on `Local\\df3d_management_v82`; see PINS.md.
+Unknown must not be replayed. Farm UI remains unfinished.
+Install bridge and viewer together on `Local\\df3d_management_v83`; see PINS.md.
 Snapshot, grid and session compatibility versions are unchanged.
 
 Core and the Godot transport/production-fixture checks pass cleanly in
@@ -258,7 +259,7 @@ season, selected crop and unchanged other seasons. Same-crop and repeated-fallow
 success may retain the same content revision. Callback refusals mean no effects;
 an exception after entry or failed/inconsistent post-effect observation produces
 Unknown with no receipt and no retry. Transport world-epoch checks remain required.
-Management82 invokes this helper for FarmSetCrop after resolving a visible,
+Management83 invokes this helper for crop FarmEdit after resolving a visible,
 fully constructed farm. Its enum is explicitly mapped to the wire outcome.
 Protected `areas-acceptance-20261028-164431 -FarmEditOnly` passes the
 management82 real wire path: nine completed future-season changes/same-crop/
@@ -286,6 +287,34 @@ all ten-read/two-refusal snapshots and revision-change/restoration results equal
 the prior161936 reference exactly. Both save manifests are unchanged and DF132684
 exits unsaved. `native_farm.json.transaction_observer_reference` retains this
 comparison and source hashes. Management81 and viewer behavior are unchanged.
+
+Management83 extends FarmSnapshot with current/max fertilization, queued
+FertilizeField count and the seasonal flag. These are native facts and all
+participate in the content revision. Immediate fertilizer edits invoke the
+native toggle; seasonal edits carry an explicit0/1 intent. The selected season
+still identifies the displayed snapshot. Both preserve crop selections and
+verify fresh post-effect identity/progress before publishing Completed.
+Post-effect exceptions or inconsistent observations return Unknown without
+authority or retry. Native scheduling can legitimately create no jobs when
+no footprint position qualifies; the receipt reports the resulting facts.
+Protected `areas-acceptance-20261028-171127 -FarmEditOnly` passes the real
+management83 Godot/bridge path: five completed fertilizer edits (off, repeated
+off, on, queue, cancel) and two stale refusals. Native readbacks confirm seasonal
+intent, progress and job counts/holders. Restoring the initial state recovers
+the original exact revision. All prior crop edit/refusal cases still pass.
+Eighteen native checks preserve menu vectors, tab and paused frame; both save
+manifests are unchanged and DF143040 exits unsaved. The run passes cleanly,
+recorded in `native_farm.json.fertilization_transport_reference`.
+
+MSVC build/install and offline core, Godot contract, production-fixture and Lua
+adapter checks pass cleanly in `build/qa/farm-fertilizer-contract-final`.
+The initial run failed because fertilizer bounds were accidentally added to the
+unrelated Work Orders test, disrupting its fake-host sequence; it is not
+acceptance. Installed bridge SHA256 is
+`498AF5C02A9CC4581172C5D3B43CF520CA5355F63CB294A81070731F1CF80519`.
+The pointer-free tests cover14 revision inputs and36 fertilizer fault cases,
+alongside the existing32 crop cases. These inject callbacks, not faults inside
+DF. Rendered farm UI and queued/sent/disconnect/replacement remain unverified.
 
 ### Native farm fertilization reference
 
@@ -345,7 +374,7 @@ unsaved with the source manifest unchanged. The run passes cleanly and retains
 all five prior native/semantic scheduling comparisons.
 `native_farm.json.fertilization_ownership_reference` records the result.
 This proves controlled paused assignment cleanup, not an in-progress hauling
-tick. Fertilizer transport/lifecycle and viewer controls remain unverified.
+tick. Fertilizer transport is verified above; lifecycle faults and viewer controls remain unverified.
 
 ### Native farm and workshop providers
 

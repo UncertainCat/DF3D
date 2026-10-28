@@ -212,7 +212,7 @@ TEST_CASE("real helper ownership includes endpoints and excludes adjacent domain
     using A=df3d::mirror::ManagementAction;
     const std::array<std::pair<A,A>,9> ranges{{
         {A::Catalog,A::RemoveConstruction}, {A::AreaCatalog,A::AreaCandidates},
-        {A::ProductionList,A::FarmSetCrop}, {A::WorkOrderList,A::WorkOrderCatalog},
+        {A::ProductionList,A::FarmEdit}, {A::WorkOrderList,A::WorkOrderCatalog},
         {A::CitizenList,A::WorkDetailMode}, {A::ReportList,A::ReportInspect},
         {A::AgreementList,A::AgreementInspect}, {A::TradeList,A::TradeBring},
         {A::CreatureInspect,A::CreatureInspect}

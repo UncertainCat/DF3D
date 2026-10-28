@@ -271,6 +271,8 @@ struct AreaState {
   int32_t paintedCount=-1,previewCount=-1;
 };
 struct ProductionRequest {
+  FarmOperation farmOperation=FarmOperation::Crop;
+  int8_t seasonalFertilization=-1;
   uint64_t expectedRevision=0;
   int32_t buildingId=-1,jobId=-1,cropId=-1;
   std::string recipe,query;
@@ -297,6 +299,8 @@ struct ProductionBuilding {
 struct FarmCrop { int32_t id=-1; std::string name; uint8_t seasons=0; uint32_t seeds=0; };
 struct NativeFarmCrop { int32_t id=-1; std::string name; bool seedsAvailable=false,currentSeasonWarning=false; };
 struct FarmSnapshot {
+  int32_t currentFertilization=0,maxFertilization=0,pendingFertilization=0;
+  bool seasonalFertilization=false;
   int32_t buildingId=-1;
   uint64_t revision=0;
   int8_t selectedSeason=-1,currentSeason=-1;

@@ -10,8 +10,8 @@ namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
 TEST_CASE("farm edits require exact revisions owned only by crop requests") {
-  for(int variant=0;variant<11;++variant) {
-    CAPTURE(variant);wm::ManagementRequest r;r.action=wm::ManagementAction::FarmSetCrop;
+  for(int variant=0;variant<16;++variant) {
+    CAPTURE(variant);wm::ManagementRequest r;r.action=wm::ManagementAction::FarmEdit;
     auto& p=r.production;p.buildingId=227;p.season=1;p.cropId=-1;p.expectedRevision=9007199254740993ULL;
     if(variant==1)p.expectedRevision=0;
     if(variant==2)p.expectedRevision=UINT64_MAX;
@@ -23,6 +23,11 @@ TEST_CASE("farm edits require exact revisions owned only by crop requests") {
     if(variant==8)p.cancel=true;
     if(variant==9)p.recipe="unowned";
     if(variant==10)p.query="unowned";
+    if(variant==11)p.farmOperation=wm::FarmOperation(3);
+    if(variant==12)p.seasonalFertilization=0;
+    if(variant==13)p.farmOperation=wm::FarmOperation::SeasonalFertilization;
+    if(variant==14){p.farmOperation=wm::FarmOperation::FertilizationToggle;p.cropId=175;}
+    if(variant==15){p.farmOperation=wm::FarmOperation::FertilizationToggle;r.action=wm::ManagementAction::ProductionInspect;p.expectedRevision=0;}
     flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
     const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
     CHECK(bool(wire::validateConstructionRequest(*value))==(variant!=0));
@@ -32,7 +37,7 @@ TEST_CASE("farm edits require exact revisions owned only by crop requests") {
 TEST_CASE("successful farm edit cannot omit its production result") {
   flatbuffers::FlatBufferBuilder b;wire::ManagementStateBuilder s(b);
   s.add_revision(1);s.add_schema_version(wire::kManagementVersion);
-  s.add_action(wire::ManagementAction::FarmSetCrop);s.add_status(wire::ManagementStatus::Ok);
+  s.add_action(wire::ManagementAction::FarmEdit);s.add_status(wire::ManagementStatus::Ok);
   b.Finish(s.Finish());
   CHECK(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())).has_value());
 }
@@ -45,7 +50,7 @@ TEST_CASE("farm outcomes grant snapshot authority only to confirmed completion")
     p.add_farm_edit_outcome(static_cast<wire::FarmEditOutcome>(outcome));if(receipt)p.add_farm(farm);
     auto prod=p.Finish();wire::ManagementStateBuilder state(b);
     state.add_revision(1);state.add_schema_version(wire::kManagementVersion);
-    state.add_action(edit?wire::ManagementAction::FarmSetCrop:wire::ManagementAction::ProductionInspect);
+    state.add_action(edit?wire::ManagementAction::FarmEdit:wire::ManagementAction::ProductionInspect);
     state.add_status(ok?wire::ManagementStatus::Ok:wire::ManagementStatus::Rejected);state.add_production(prod);
     b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
     const bool valid=outcome<5 && (edit?(outcome==1?ok && receipt:!ok && !receipt):outcome==0);
@@ -55,7 +60,7 @@ TEST_CASE("farm outcomes grant snapshot authority only to confirmed completion")
 }
 
 TEST_CASE("native farm receipts preserve order and exact revisions without legacy synthesis") {
-  for(int variant=0;variant<15;++variant) {
+  for(int variant=0;variant<18;++variant) {
     CAPTURE(variant);flatbuffers::FlatBufferBuilder b;
     std::vector<flatbuffers::Offset<wire::NativeFarmCrop>> rows;
     for(int i=0;i<(variant==8?257:2);++i)
@@ -64,7 +69,8 @@ TEST_CASE("native farm receipts preserve order and exact revisions without legac
     std::vector<int32_t> seasons{175,-1,176,-1};
     if(variant==4)seasons.pop_back();if(variant==5)seasons[1]=-2;
     auto f=wire::CreateFarmSnapshot(b,variant==1?-1:227,variant==2?0:variant==3?UINT64_MAX:9007199254740993ULL,
-      variant==9?4:1,variant==10?-1:1,b.CreateVector(seasons),b.CreateVector(rows));
+      variant==9?4:1,variant==10?-1:1,b.CreateVector(seasons),b.CreateVector(rows),
+      variant==15?-1:4,variant==16?-1:29,variant==17?-1:2,true);
     auto legacy=wire::CreateFarmCrop(b,175,b.CreateString("old singular name"),15,42);
     auto legacyRows=b.CreateVector(std::vector{legacy});
     wire::ProductionStateBuilder p(b);p.add_selected_building(variant==11?228:227);
@@ -74,12 +80,14 @@ TEST_CASE("native farm receipts preserve order and exact revisions without legac
     state.add_schema_version(wire::kManagementVersion-(variant==13?1:0));state.add_revision(1);
     state.add_action(wire::ManagementAction::ProductionInspect);state.add_production(production);
     b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
-    CHECK(bool(wire::validateManagementState(*value))==(variant>0 && variant<14));
+    CHECK(bool(wire::validateManagementState(*value))==(variant>0 && variant!=14));
     if(variant==0 || variant==14) {
       auto decoded=codec::decodeProduction(value->production());
       CHECK(decoded.farm.has_value()==(variant==0));
       if(decoded.farm) {
         CHECK(decoded.farm->revision==9007199254740993ULL);
+        CHECK(decoded.farm->currentFertilization==4);CHECK(decoded.farm->maxFertilization==29);
+        CHECK(decoded.farm->pendingFertilization==2);CHECK(decoded.farm->seasonalFertilization);
         REQUIRE(decoded.farm->choices.size()==2);
         CHECK(decoded.farm->choices[0].id==175);CHECK(decoded.farm->choices[1].id==176);
         CHECK(decoded.farm->choices[0].seedsAvailable);CHECK_FALSE(decoded.farm->choices[0].currentSeasonWarning);

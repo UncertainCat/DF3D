@@ -602,7 +602,7 @@ void publish() {
   if(production.farm) {
     const auto& f=*production.farm;std::vector<flatbuffers::Offset<m::NativeFarmCrop>> rows;
     for(const auto& c:f.choices)rows.push_back(m::CreateNativeFarmCrop(b,c.id,b.CreateString(c.name),c.seedsAvailable,c.currentSeasonWarning));
-    farmSnapshot=m::CreateFarmSnapshot(b,f.buildingId,f.revision,f.selectedSeason,f.currentSeason,b.CreateVector(f.seasonalCrops),b.CreateVector(rows));
+    farmSnapshot=m::CreateFarmSnapshot(b,f.buildingId,f.revision,f.selectedSeason,f.currentSeason,b.CreateVector(f.seasonalCrops),b.CreateVector(rows),f.currentFertilization,f.maxFertilization,f.pendingFertilization,f.seasonalFertilization);
   }
   auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
@@ -2343,6 +2343,10 @@ std::optional<FarmSnapshot> observeFarmSnapshot(int32_t buildingId,int season) {
     if(!choices || choices->size()>256) return {};
     FarmSnapshot snapshot;snapshot.buildingId=farm->id;snapshot.selectedSeason=season;
     snapshot.currentSeason=*df::global::cur_season;
+    snapshot.currentFertilization=farm->current_fertilization;snapshot.maxFertilization=farm->max_fertilization;
+    snapshot.seasonalFertilization=farm->farm_flags.bits.seasonal_fertilize;
+    if(snapshot.currentFertilization<0 || snapshot.maxFertilization<0 || farm->jobs.size()>size_t(INT32_MAX))return {};
+    for(const auto* job:farm->jobs)if(job && job->job_type==df::job_type::FertilizeField)++snapshot.pendingFertilization;
     for(int i=0;i<4;++i)snapshot.seasonalCrops.push_back(farm->plant_id[i]);
     for(const auto& row:*choices)snapshot.choices.push_back({row.cropId,DF2UTF(row.name),row.seedsAvailable,row.currentSeasonWarning});
     for(const auto& row:snapshot.choices)
@@ -2353,7 +2357,7 @@ std::optional<FarmSnapshot> observeFarmSnapshot(int32_t buildingId,int season) {
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
-  if(r->action()==m::ManagementAction::FarmSetCrop) {
+  if(r->action()==m::ManagementAction::FarmEdit) {
     message.clear();status=m::ManagementStatus::Rejected;production={};
     production.farmEditOutcome=m::FarmEditOutcome::Rejected;
     const auto* q=r->production();
@@ -2362,11 +2366,17 @@ void run(color_ostream& out) {
       auto before=observe();
       auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(q->building_id()));
       if(before && farm && farm->getBuildStage()==farm->getMaxBuildStage()) {
-        auto result=df3d_production::finishFarmEdit(*before,q->expected_revision(),q->crop_id(),
-          [&]{return df3d_production::setFarmCrop(farm,q->season(),q->crop_id());},observe,
-          [](const FarmSnapshot& value){return value.revision>0 && value.revision<=INT64_MAX &&
+        const auto valid=[](const FarmSnapshot& value){return value.revision>0 && value.revision<=INT64_MAX &&
+            value.currentFertilization>=0 && value.maxFertilization>=0 && value.pendingFertilization>=0 &&
             value.seasonalCrops.size()==4 && std::all_of(value.seasonalCrops.begin(),value.seasonalCrops.end(),
-              [](int32_t crop){return crop>=-1 && crop<=32767;});});
+              [](int32_t crop){return crop>=-1 && crop<=32767;});};
+        auto result=q->farm_operation()==m::FarmOperation::Crop?
+          df3d_production::finishFarmEdit(*before,q->expected_revision(),q->crop_id(),
+            [&]{return df3d_production::setFarmCrop(farm,q->season(),q->crop_id());},observe,valid):
+          df3d_production::finishFarmFertilization(*before,q->expected_revision(),q->seasonal_fertilization(),
+            [&]{return q->farm_operation()==m::FarmOperation::FertilizationToggle?
+              df3d_production::toggleFarmFertilization(farm):
+              df3d_production::setFarmSeasonalFertilization(farm,q->seasonal_fertilization()!=0);},observe,valid);
         mutated=result.mutated;
         switch(result.outcome) {
           case df3d_production::FarmEditOutcome::Completed:
@@ -3052,7 +3062,7 @@ void run(color_ostream& out) {
   required = uint16_t(number(L, "required"));
   if (ok && !productionPending && (action == m::ManagementAction::Place || action == m::ManagementAction::Remove ||
              action == m::ManagementAction::RemoveConstruction || action==m::ManagementAction::AreaCreate ||
-             action==m::ManagementAction::AreaUpdate || action==m::ManagementAction::AreaDelete || action==m::ManagementAction::AreaLink || action==m::ManagementAction::ProductionQueue || action==m::ManagementAction::ProductionJobEdit || action==m::ManagementAction::FarmSetCrop))
+             action==m::ManagementAction::AreaUpdate || action==m::ManagementAction::AreaDelete || action==m::ManagementAction::AreaLink || action==m::ManagementAction::ProductionQueue || action==m::ManagementAction::ProductionJobEdit || action==m::ManagementAction::FarmEdit))
     mutated = true;
   terrainConstructed = boolean(L, "terrain_construction");
   if (ok && (action==m::ManagementAction::AreaCreate || action==m::ManagementAction::AreaDelete)) {
@@ -3311,7 +3321,7 @@ void run(color_ostream& out) {
     each("choices",128,[&](){workOrders.choices.push_back({int32_t(number(L,"id",-1)),text(L,"name")});});
     each("managers",32,[&](){ManagerRole v;v.unitId=int32_t(number(L,"unit_id",-1));v.name=text(L,"name");v.position=text(L,"position");v.job=text(L,"job");each("offices",64,[&](){v.offices.push_back(int32_t(lua_tointeger(L,-1)));});workOrders.managers.push_back(std::move(v));});
   }
-  if(action>=m::ManagementAction::ProductionList && action<=m::ManagementAction::FarmSetCrop) {
+  if(action>=m::ManagementAction::ProductionList && action<=m::ManagementAction::FarmEdit) {
     production.nextCursor=uint32_t(number(L,"next_cursor"));production.selectedBuilding=int32_t(number(L,"selected_building",-1));production.createdJob=int32_t(number(L,"created_job",-1));production.currentSeason=int8_t(number(L,"current_season",-1));production.detail=text(L,"detail");
     auto each=[&](const char* key,size_t cap,auto fn){lua_getfield(L,-1,key);if(lua_istable(L,-1)) for(size_t i=1;i<=lua_rawlen(L,-1)&&i<=cap;++i){lua_rawgeti(L,-1,i);fn();lua_pop(L,1);}lua_pop(L,1);};
     auto reqs=[&](){std::vector<ProductionRequirement> out;each("requirements",16,[&](){out.push_back({text(L,"description"),int32_t(number(L,"quantity")),int16_t(number(L,"item_type",-1))});});return out;};

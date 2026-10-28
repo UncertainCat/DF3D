@@ -420,16 +420,18 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
 flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBufferBuilder& b,const m::ConstructionRequest& request) {
   using A=m::ManagementAction;
   const auto action=request.action();const auto* q=request.production();
-  if((action==A::ProductionInspect && q->building_id()==3) || action==A::FarmSetCrop) {
+  if((action==A::ProductionInspect && q->building_id()==3) || action==A::FarmEdit) {
     std::vector<flatbuffers::Offset<m::NativeFarmCrop>> rows{
       m::CreateNativeFarmCrop(b,176,b.CreateString("Sweet pods"),false,true),
       m::CreateNativeFarmCrop(b,175,b.CreateString("Plump helmets"),true,false)};
     std::vector<int32_t> seasons{175,-1,176,-1};
-    if(action==A::FarmSetCrop)seasons.at(q->season())=q->crop_id();
-    auto farm=m::CreateFarmSnapshot(b,3,9007199254740993ULL,action==A::FarmSetCrop?q->season():1,1,
-      b.CreateVector(seasons),b.CreateVector(rows));
+    if(action==A::FarmEdit && q->farm_operation()==m::FarmOperation::Crop)seasons.at(q->season())=q->crop_id();
+    auto farm=m::CreateFarmSnapshot(b,3,9007199254740993ULL,action==A::FarmEdit?q->season():1,1,
+      b.CreateVector(seasons),b.CreateVector(rows),4,29,
+      q->farm_operation()==m::FarmOperation::FertilizationToggle?25:2,
+      q->farm_operation()==m::FarmOperation::SeasonalFertilization?q->seasonal_fertilization()!=0:true);
     m::ProductionStateBuilder p(b);p.add_selected_building(3);p.add_farm(farm);
-    if(action==A::FarmSetCrop)p.add_farm_edit_outcome(m::FarmEditOutcome::Completed);
+    if(action==A::FarmEdit)p.add_farm_edit_outcome(m::FarmEditOutcome::Completed);
     return p.Finish();
   }
   const bool list=action==A::ProductionList;
@@ -660,7 +662,9 @@ int main(int argc,char** argv) {
             action==18?(variant==4?12:10):-1,rb.CreateString(action==17?"builtin:114:2":""),rb.CreateString(action==15 && variant==1?"#1024":""),action==15 && variant==1?1024:0,
             action==17?variant:action==18 && variant<2?variant:-1,
             action==18 && variant>=2 && variant<4?variant-2:-1,action==18 && variant==4,
-            action==19?variant/2:-1,action==19 && variant%2==0?0:-1,action==19?9007199254740993ULL:0);
+            action==19?variant/2:-1,action==19 && variant<4 && variant%2==0?0:-1,action==19?9007199254740993ULL:0,
+            action==19 && variant>=4?(variant==4 || variant==7?m::FarmOperation::FertilizationToggle:m::FarmOperation::SeasonalFertilization):m::FarmOperation::Crop,
+            action==19 && (variant==5 || variant==6)?variant-5:-1);
         m::ConstructionRequestBuilder request(rb);request.add_schema_version(m::kManagementVersion);
         request.add_client_id(1);request.add_seq(1);request.add_world_epoch(epoch);
         request.add_action(static_cast<m::ManagementAction>(action));request.add_production(payload);rb.Finish(request.Finish());
@@ -783,7 +787,7 @@ int main(int argc,char** argv) {
           (request->action()>=m::ManagementAction::WorkDetailCreate && request->action()<=m::ManagementAction::CitizenWorkScope)))citizens=citizenFixture(b,*request);
       flatbuffers::Offset<m::ProductionState> production;
       if(request && request->action()>=m::ManagementAction::ProductionList &&
-          request->action()<=m::ManagementAction::FarmSetCrop)production=productionFixture(b,*request);
+          request->action()<=m::ManagementAction::FarmEdit)production=productionFixture(b,*request);
 
       flatbuffers::Offset<m::AgreementState> agreements;
       if(request && (request->action()==m::ManagementAction::AgreementList || request->action()==m::ManagementAction::AgreementInspect)) {
@@ -832,7 +836,7 @@ int main(int argc,char** argv) {
         A::ConstructionMaterials,A::Preview,A::Preview,
         A::ProductionList,A::ProductionInspect,A::ProductionInspect,A::ProductionQueue,A::ProductionQueue,
         A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,
-        A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::ProductionList,
+        A::FarmEdit,A::FarmEdit,A::FarmEdit,A::FarmEdit,A::FarmEdit,A::FarmEdit,A::FarmEdit,A::FarmEdit,A::ProductionList,
         A::ReportList,A::ReportList,A::ReportList,A::ReportList,A::ReportList,A::ReportList,
         A::ReportInspect,A::ReportInspect,A::ReportInspect,A::ReportInspect,
         A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,
@@ -912,9 +916,11 @@ int main(int argc,char** argv) {
         case A::ProductionQueue:
           require(r->production()->building_id()==1 && r->production()->recipe()->str()=="builtin:114:2" &&
               r->production()->repeat()==int(received)-47,"production queue payload");break;
-        case A::FarmSetCrop:
+        case A::FarmEdit:
           require(r->production()->building_id()==3 && r->production()->season()==int(received-54)/2 &&
-              r->production()->crop_id()==(received%2==0?0:-1) && r->production()->expected_revision()==9007199254740993ULL,"farm crop payload");break;
+              r->production()->crop_id()==(received<58 && received%2==0?0:-1) && r->production()->expected_revision()==9007199254740993ULL &&
+              int(r->production()->farm_operation())==(received<58?0:received==58 || received==61?1:2) &&
+              r->production()->seasonal_fertilization()==(received==59?0:received==60?1:-1),"farm edit payload");break;
         case A::WorkOrderUpdate: {
           auto* v=r->work_order();
           if(received==38){require(v && v->id()==0 && v->expected_revision()==epoch && v->move()==-1 && v->expected_neighbor()==9 && v->expected_list_revision()==INT64_MAX && !v->traits(),"move fields");break;}

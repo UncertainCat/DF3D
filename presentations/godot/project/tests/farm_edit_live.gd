@@ -1,8 +1,11 @@
 extends "res://tests/farm_read_live.gd"
 
-func edit_crop(id: int, season: int, crop: int, revision: int, outcome: int) -> Dictionary:
+func edit_crop(id: int, season: int, crop: int, revision: int, outcome: int, operation := 0, seasonal := -1) -> Dictionary:
 	world.poll()
-	var seq: int=world.management_request("production",{"action":Contract.ManagementAction.FarmSetCrop,"building_id":id,"season":season,"crop_id":crop,"expected_revision":revision})
+	var request: Dictionary={"action":Contract.ManagementAction.FarmEdit,"building_id":id,"season":season,"expected_revision":revision,"farm_operation":operation}
+	if operation==0:request.crop_id=crop
+	if operation==2:request.seasonal_fertilization=seasonal
+	var seq: int=world.management_request("production",request)
 	if not check(seq>0,"farm edit not sent: "+world.last_error()):return {}
 	var deadline:=Time.get_ticks_msec()+30000
 	while Time.get_ticks_msec()<deadline:
@@ -59,9 +62,42 @@ func exercise() -> void:
 		await native("verify",{"seasons":seasons})
 		if stopped:return
 		results.append({"season":season,"completed":3,"stale":1,"rejected":1})
+	step="native fertilizer wire edits"
+	var initial:=await read_farm(id,1)
+	if stopped:return
+	if not check(initial.pending_fertilization==0 and initial.current_fertilization==0 and initial.max_fertilization==29 and initial.seasonal_fertilization,"unexpected fertilizer fixture"):return
+	var off:=await edit_crop(id,1,-1,initial.revision,1,2,0)
+	if stopped:return
+	if not check(not off.seasonal_fertilization and off.revision!=initial.revision,"seasonal edit retained old facts"):return
+	await native("verify",{"seasons":seasons,"fertilization":off})
+	if stopped:return
+	await edit_crop(id,1,-1,initial.revision,3,2,1)
+	if stopped:return
+	await native("verify",{"seasons":seasons,"fertilization":off})
+	if stopped:return
+	var same_off:=await edit_crop(id,1,-1,off.revision,1,2,0)
+	if stopped:return
+	if not check(same_off==off,"same seasonal intent changed receipt"):return
+	var restored_on:=await edit_crop(id,1,-1,off.revision,1,2,1)
+	if stopped:return
+	if not check(restored_on==initial,"seasonal restoration differs"):return
+	var queued:=await edit_crop(id,1,-1,initial.revision,1,1)
+	if stopped:return
+	if not check(queued.pending_fertilization==29 and queued.revision!=initial.revision,"fertilizer toggle did not queue native jobs"):return
+	await native("verify",{"seasons":seasons,"fertilization":queued})
+	if stopped:return
+	await edit_crop(id,1,-1,initial.revision,3,1)
+	if stopped:return
+	await native("verify",{"seasons":seasons,"fertilization":queued})
+	if stopped:return
+	var canceled:=await edit_crop(id,1,-1,queued.revision,1,1)
+	if stopped:return
+	if not check(canceled==initial,"fertilizer cancellation did not restore receipt"):return
+	await native("verify",{"seasons":seasons,"fertilization":canceled})
+	if stopped:return
 	for invalid in [int(fixture.nonfarm),2147483647]:
 		await edit_crop(invalid,0,-1,17,2)
 		if stopped:return
 	await native("verify",{"seasons":seasons})
 	if stopped:return
-	write_json("farm-edit-results.json",{"cases":results,"invalid_targets":2,"original_selections_restored":true})
+	write_json("farm-edit-results.json",{"cases":results,"invalid_targets":2,"original_selections_restored":true,"fertilizer_completed":5,"fertilizer_stale":2,"fertilizer_original_restored":true})

@@ -49,7 +49,7 @@ using A=df3d::mirror::ManagementAction;
 static_assert(int(A::ConstructionMaterials)==63, "construction materials action number");
 static_assert(int(A::Catalog)==0 && int(A::Place)==2 && int(A::Inspect)==3 && int(A::Remove)==4 && int(A::InspectAtTile)==5 && int(A::RemoveConstruction)==6, "construction.lua action numbers");
 static_assert(int(A::AreaCatalog)==7 && int(A::AreaInspectAtTile)==8 && int(A::AreaInspect)==9 && int(A::AreaCreate)==10 && int(A::AreaUpdate)==11 && int(A::AreaDelete)==12 && int(A::AreaLink)==13 && int(A::AreaCandidates)==14, "areas.lua action numbers");
-static_assert(int(A::ProductionList)==15 && int(A::ProductionInspect)==16 && int(A::ProductionQueue)==17 && int(A::ProductionJobEdit)==18 && int(A::FarmSetCrop)==19, "production.lua action numbers");
+static_assert(int(A::ProductionList)==15 && int(A::ProductionInspect)==16 && int(A::ProductionQueue)==17 && int(A::ProductionJobEdit)==18 && int(A::FarmEdit)==19, "production.lua action numbers");
 static_assert(int(A::WorkOrderList)==20 && int(A::WorkOrderInspect)==21 && int(A::WorkOrderCreate)==22 && int(A::WorkOrderUpdate)==23 && int(A::WorkOrderDelete)==24 && int(A::WorkOrderCondition)==25 && int(A::WorkOrderCandidates)==26 && int(A::WorkOrderCatalog)==27, "work_orders.lua action numbers");
 static_assert(int(A::CitizenList)==28 && int(A::CitizenInspect)==29 && int(A::WorkDetailList)==30 && int(A::WorkDetailInspect)==31 && int(A::WorkDetailMembership)==32 && int(A::WorkDetailMode)==33, "citizens.lua action numbers");
 static_assert(int(A::WorkDetailCreate)==64 && int(A::WorkDetailDelete)==65 && int(A::WorkDetailEdit)==66 && int(A::CitizenWorkScope)==67, "citizens.lua appended action numbers");

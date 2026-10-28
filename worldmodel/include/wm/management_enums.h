@@ -16,6 +16,11 @@ enum class FarmEditOutcome : uint8_t {
   Stale = 3,
   Unknown = 4,
 };
+enum class FarmOperation : uint8_t {
+  Crop = 0,
+  FertilizationToggle = 1,
+  SeasonalFertilization = 2,
+};
 enum class ManagementAction : uint8_t {
   Catalog = 0,
   Preview = 1,
@@ -36,7 +41,7 @@ enum class ManagementAction : uint8_t {
   ProductionInspect = 16,
   ProductionQueue = 17,
   ProductionJobEdit = 18,
-  FarmSetCrop = 19,
+  FarmEdit = 19,
   WorkOrderList = 20,
   WorkOrderInspect = 21,
   WorkOrderCreate = 22,
@@ -336,7 +341,7 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::ProductionInspect: return true;
   case ManagementAction::ProductionQueue: return true;
   case ManagementAction::ProductionJobEdit: return true;
-  case ManagementAction::FarmSetCrop: return true;
+  case ManagementAction::FarmEdit: return true;
   case ManagementAction::WorkOrderList: return true;
   case ManagementAction::WorkOrderInspect: return true;
   case ManagementAction::WorkOrderCreate: return true;
@@ -395,7 +400,7 @@ constexpr const char* managementDomain(ManagementAction action) {
   case ManagementAction::ProductionInspect: return "production";
   case ManagementAction::ProductionQueue: return "production";
   case ManagementAction::ProductionJobEdit: return "production";
-  case ManagementAction::FarmSetCrop: return "production";
+  case ManagementAction::FarmEdit: return "production";
   case ManagementAction::WorkOrderList: return "work_orders";
   case ManagementAction::WorkOrderInspect: return "work_orders";
   case ManagementAction::WorkOrderCreate: return "work_orders";

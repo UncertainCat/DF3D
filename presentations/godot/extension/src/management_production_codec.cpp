@@ -88,6 +88,8 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     const auto& f=*p.farm;Dictionary farm;Array choices,selected;
     farm["building_id"]=f.buildingId;farm["revision"]=int64_t(f.revision);
     farm["selected_season"]=f.selectedSeason;farm["current_season"]=f.currentSeason;
+    farm["current_fertilization"]=f.currentFertilization;farm["max_fertilization"]=f.maxFertilization;
+    farm["pending_fertilization"]=f.pendingFertilization;farm["seasonal_fertilization"]=f.seasonalFertilization;
     for(auto crop:f.seasonalCrops)selected.push_back(crop);
     for(const auto& c:f.choices) {
       Dictionary row;row["id"]=c.id;row["name"]=String::utf8(c.name.c_str());
@@ -290,11 +292,11 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 }
 
 bool validateProductionShape(const Dictionary& data, String& error) {
-  return managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision"}, error) &&
+  return managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization"}, error) &&
       managementRequiredFields(data, error);
 }
 
-// production payload (actions 15 List, 16 Inspect, 17 Queue, 18 JobEdit, 19 FarmSetCrop):
+// production payload (actions 15 List, 16 Inspect, 17 Queue, 18 JobEdit, 19 FarmEdit):
 // building_id: int, -1 none; required 16-19, ignored by 15.
 // job_id: int, -1 none; required 18, from Inspect jobs[].id.
 // recipe: String <=128 UTF-8 bytes; required 17, from Inspect recipes[].key.
@@ -313,11 +315,13 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
     return value;
   };
   r.action = wm::ManagementAction(n("action", 0, static_cast<int>(wm::ManagementAction::ProductionList),
-      static_cast<int>(wm::ManagementAction::FarmSetCrop)));
+      static_cast<int>(wm::ManagementAction::FarmEdit)));
   auto& value = r.production;
   value.buildingId = int32_t(n("building_id", -1, -1, INT32_MAX));
   value.jobId = int32_t(n("job_id", -1, -1, INT32_MAX));
   value.expectedRevision=uint64_t(n("expected_revision",0,0,INT64_MAX));
+  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,2));
+  value.seasonalFertilization=int8_t(n("seasonal_fertilization",-1,-1,1));
   value.cropId = int32_t(n("crop_id", -1, -1, 32767));
   value.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
   value.repeat = int8_t(n("repeat", -1, -1, 1));

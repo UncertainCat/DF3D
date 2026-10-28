@@ -42,7 +42,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
     area = encodeArea(b, r.area);
   }
   flatbuffers::Offset<m::ProductionRequest> production;
-  if (r.action >= ManagementAction::ProductionList && r.action <= ManagementAction::FarmSetCrop) {
+  if (r.action >= ManagementAction::ProductionList && r.action <= ManagementAction::FarmEdit) {
     production = encodeProduction(b, r.production);
   }
   flatbuffers::Offset<m::WorkOrderRequest> workOrder;

@@ -14,6 +14,11 @@ enum FarmEditOutcome {
 	Stale = 3,
 	Unknown = 4,
 }
+enum FarmOperation {
+	Crop = 0,
+	FertilizationToggle = 1,
+	SeasonalFertilization = 2,
+}
 enum ManagementAction {
 	Catalog = 0,
 	Preview = 1,
@@ -34,7 +39,7 @@ enum ManagementAction {
 	ProductionInspect = 16,
 	ProductionQueue = 17,
 	ProductionJobEdit = 18,
-	FarmSetCrop = 19,
+	FarmEdit = 19,
 	WorkOrderList = 20,
 	WorkOrderInspect = 21,
 	WorkOrderCreate = 22,
@@ -319,7 +324,7 @@ static func domain_of(action: int) -> String:
 		ManagementAction.WorldHover: return "hover"
 		ManagementAction.Catalog, ManagementAction.Preview, ManagementAction.Place, ManagementAction.Inspect, ManagementAction.Remove, ManagementAction.InspectAtTile, ManagementAction.RemoveConstruction, ManagementAction.ConstructionMaterials: return "construction"
 		ManagementAction.AreaCatalog, ManagementAction.AreaInspectAtTile, ManagementAction.AreaInspect, ManagementAction.AreaCreate, ManagementAction.AreaUpdate, ManagementAction.AreaDelete, ManagementAction.AreaLink, ManagementAction.AreaCandidates: return "areas"
-		ManagementAction.ProductionList, ManagementAction.ProductionInspect, ManagementAction.ProductionQueue, ManagementAction.ProductionJobEdit, ManagementAction.FarmSetCrop: return "production"
+		ManagementAction.ProductionList, ManagementAction.ProductionInspect, ManagementAction.ProductionQueue, ManagementAction.ProductionJobEdit, ManagementAction.FarmEdit: return "production"
 		ManagementAction.WorkOrderList, ManagementAction.WorkOrderInspect, ManagementAction.WorkOrderCreate, ManagementAction.WorkOrderUpdate, ManagementAction.WorkOrderDelete, ManagementAction.WorkOrderCondition, ManagementAction.WorkOrderCandidates, ManagementAction.WorkOrderCatalog: return "work_orders"
 		ManagementAction.CitizenList, ManagementAction.CitizenInspect, ManagementAction.WorkDetailList, ManagementAction.WorkDetailInspect, ManagementAction.WorkDetailMembership, ManagementAction.WorkDetailMode, ManagementAction.WorkDetailCreate, ManagementAction.WorkDetailDelete, ManagementAction.WorkDetailEdit, ManagementAction.CitizenWorkScope: return "citizens"
 		ManagementAction.ReportList, ManagementAction.ReportInspect, ManagementAction.PrepareAlertDismissal, ManagementAction.DismissAlert: return "reports"
@@ -328,7 +333,7 @@ static func domain_of(action: int) -> String:
 	return ""
 
 static func is_runtime(action: int) -> bool:
-	return action in [ManagementAction.Catalog, ManagementAction.Preview, ManagementAction.Place, ManagementAction.Inspect, ManagementAction.Remove, ManagementAction.InspectAtTile, ManagementAction.RemoveConstruction, ManagementAction.AreaCatalog, ManagementAction.AreaInspectAtTile, ManagementAction.AreaInspect, ManagementAction.AreaCreate, ManagementAction.AreaUpdate, ManagementAction.AreaDelete, ManagementAction.AreaLink, ManagementAction.AreaCandidates, ManagementAction.ProductionList, ManagementAction.ProductionInspect, ManagementAction.ProductionQueue, ManagementAction.ProductionJobEdit, ManagementAction.FarmSetCrop, ManagementAction.WorkOrderList, ManagementAction.WorkOrderInspect, ManagementAction.WorkOrderCreate, ManagementAction.WorkOrderUpdate, ManagementAction.WorkOrderDelete, ManagementAction.WorkOrderCondition, ManagementAction.WorkOrderCandidates, ManagementAction.WorkOrderCatalog, ManagementAction.CitizenList, ManagementAction.CitizenInspect, ManagementAction.WorkDetailList, ManagementAction.WorkDetailInspect, ManagementAction.WorkDetailMembership, ManagementAction.WorkDetailMode, ManagementAction.ReportList, ManagementAction.ReportInspect, ManagementAction.AgreementList, ManagementAction.AgreementInspect, ManagementAction.TradeList, ManagementAction.TradeInspect, ManagementAction.TradeUpdate, ManagementAction.TradeGoods, ManagementAction.TradeBring, ManagementAction.CreatureInspect, ManagementAction.ConstructionMaterials, ManagementAction.WorkDetailCreate, ManagementAction.WorkDetailDelete, ManagementAction.WorkDetailEdit, ManagementAction.CitizenWorkScope, ManagementAction.PrepareAlertDismissal, ManagementAction.DismissAlert, ManagementAction.WorldHover]
+	return action in [ManagementAction.Catalog, ManagementAction.Preview, ManagementAction.Place, ManagementAction.Inspect, ManagementAction.Remove, ManagementAction.InspectAtTile, ManagementAction.RemoveConstruction, ManagementAction.AreaCatalog, ManagementAction.AreaInspectAtTile, ManagementAction.AreaInspect, ManagementAction.AreaCreate, ManagementAction.AreaUpdate, ManagementAction.AreaDelete, ManagementAction.AreaLink, ManagementAction.AreaCandidates, ManagementAction.ProductionList, ManagementAction.ProductionInspect, ManagementAction.ProductionQueue, ManagementAction.ProductionJobEdit, ManagementAction.FarmEdit, ManagementAction.WorkOrderList, ManagementAction.WorkOrderInspect, ManagementAction.WorkOrderCreate, ManagementAction.WorkOrderUpdate, ManagementAction.WorkOrderDelete, ManagementAction.WorkOrderCondition, ManagementAction.WorkOrderCandidates, ManagementAction.WorkOrderCatalog, ManagementAction.CitizenList, ManagementAction.CitizenInspect, ManagementAction.WorkDetailList, ManagementAction.WorkDetailInspect, ManagementAction.WorkDetailMembership, ManagementAction.WorkDetailMode, ManagementAction.ReportList, ManagementAction.ReportInspect, ManagementAction.AgreementList, ManagementAction.AgreementInspect, ManagementAction.TradeList, ManagementAction.TradeInspect, ManagementAction.TradeUpdate, ManagementAction.TradeGoods, ManagementAction.TradeBring, ManagementAction.CreatureInspect, ManagementAction.ConstructionMaterials, ManagementAction.WorkDetailCreate, ManagementAction.WorkDetailDelete, ManagementAction.WorkDetailEdit, ManagementAction.CitizenWorkScope, ManagementAction.PrepareAlertDismissal, ManagementAction.DismissAlert, ManagementAction.WorldHover]
 
 static func is_mutation(action: int) -> bool:
-	return action in [ManagementAction.Place, ManagementAction.Remove, ManagementAction.RemoveConstruction, ManagementAction.AreaCreate, ManagementAction.AreaUpdate, ManagementAction.AreaDelete, ManagementAction.AreaLink, ManagementAction.ProductionQueue, ManagementAction.ProductionJobEdit, ManagementAction.FarmSetCrop, ManagementAction.WorkOrderCreate, ManagementAction.WorkOrderUpdate, ManagementAction.WorkOrderDelete, ManagementAction.WorkOrderCondition, ManagementAction.WorkDetailMembership, ManagementAction.WorkDetailMode, ManagementAction.WorkDetailCreate, ManagementAction.WorkDetailDelete, ManagementAction.WorkDetailEdit, ManagementAction.CitizenWorkScope, ManagementAction.DismissAlert, ManagementAction.TradeUpdate, ManagementAction.TradeBring]
+	return action in [ManagementAction.Place, ManagementAction.Remove, ManagementAction.RemoveConstruction, ManagementAction.AreaCreate, ManagementAction.AreaUpdate, ManagementAction.AreaDelete, ManagementAction.AreaLink, ManagementAction.ProductionQueue, ManagementAction.ProductionJobEdit, ManagementAction.FarmEdit, ManagementAction.WorkOrderCreate, ManagementAction.WorkOrderUpdate, ManagementAction.WorkOrderDelete, ManagementAction.WorkOrderCondition, ManagementAction.WorkDetailMembership, ManagementAction.WorkDetailMode, ManagementAction.WorkDetailCreate, ManagementAction.WorkDetailDelete, ManagementAction.WorkDetailEdit, ManagementAction.CitizenWorkScope, ManagementAction.DismissAlert, ManagementAction.TradeUpdate, ManagementAction.TradeBring]

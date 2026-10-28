@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 82;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v82";
+inline constexpr uint32_t kManagementVersion = 83;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v83";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -33,6 +33,7 @@ inline const char* validateFarmSnapshot(const FarmSnapshot& f) {
      f.selected_season()<0 || f.selected_season()>3 || f.current_season()<0 || f.current_season()>3 ||
      !f.seasonal_crops() || f.seasonal_crops()->size()!=4 || !f.choices() || f.choices()->size()>256)
     return "invalid native farm snapshot";
+  if(f.current_fertilization()<0 || f.max_fertilization()<0 || f.pending_fertilization()<0)return "invalid farm fertilization";
   for(auto id:*f.seasonal_crops())if(id < -1 || id>32767)return "invalid native farm selection";
   std::set<int32_t> ids;
   for(const auto* c:*f.choices())if(!c || c->id()<0 || c->id()>32767 || !ids.insert(c->id()).second ||
@@ -401,7 +402,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if (!a) return "invalid area request";
     if(auto error=validateAreaOperation(r.action(),*a)) return error;
   } else if (r.area()) return "unexpected area payload";
-  if (r.action() >= ManagementAction::ProductionList && r.action() <= ManagementAction::FarmSetCrop) {
+  if (r.action() >= ManagementAction::ProductionList && r.action() <= ManagementAction::FarmEdit) {
     const auto* p=r.production();
     if (!p || p->building_id() < -1 || p->job_id() < -1 || p->crop_id() < -1 || p->crop_id()>32767 ||
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
@@ -412,9 +413,15 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if (r.action()==ManagementAction::ProductionJobEdit && (p->job_id()<0 ||
         (p->cancel() && (p->repeat()!=-1 || p->suspend()!=-1)) ||
         (!p->cancel() && p->repeat()==-1 && p->suspend()==-1))) return "invalid job edit";
-    if (r.action()==ManagementAction::FarmSetCrop && p->season()<0) return "season required";
-    if(p->expected_revision()>INT64_MAX || (r.action()==ManagementAction::FarmSetCrop?!p->expected_revision():p->expected_revision()!=0))return "invalid farm edit revision";
-    if(r.action()==ManagementAction::FarmSetCrop && (p->job_id()!=-1 || p->cursor() || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() ||
+    if(static_cast<uint8_t>(p->farm_operation())>2 || p->seasonal_fertilization() < -1 || p->seasonal_fertilization()>1)return "invalid farm operation";
+    if(r.action()!=ManagementAction::FarmEdit && (p->farm_operation()!=FarmOperation::Crop || p->seasonal_fertilization()!=-1))return "unexpected farm operation";
+    if(r.action()==ManagementAction::FarmEdit) {
+      if(p->season()<0)return "season required";
+      if(p->farm_operation()!=FarmOperation::Crop && p->crop_id()!=-1)return "unexpected farm crop";
+      if(p->farm_operation()==FarmOperation::SeasonalFertilization ? p->seasonal_fertilization()<0 : p->seasonal_fertilization()!=-1)return "invalid seasonal fertilization intent";
+    }
+    if(p->expected_revision()>INT64_MAX || (r.action()==ManagementAction::FarmEdit?!p->expected_revision():p->expected_revision()!=0))return "invalid farm edit revision";
+    if(r.action()==ManagementAction::FarmEdit && (p->job_id()!=-1 || p->cursor() || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() ||
         (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size())))return "unexpected farm edit fields";
   } else if(r.production()) return "unexpected production payload";
   if(r.action()>=ManagementAction::WorkOrderList && r.action()<=ManagementAction::WorkOrderCatalog) {
@@ -1270,11 +1277,11 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     }
     if(payload>224*1024) return "area response exceeds bounded payload";
   }
-  if(s.action()==ManagementAction::FarmSetCrop && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
+  if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
     const auto outcome=p->farm_edit_outcome();
-    if(static_cast<uint8_t>(outcome)>4 || (outcome!=FarmEditOutcome::None && s.action()!=ManagementAction::FarmSetCrop))return "invalid farm edit outcome";
-    if(s.action()==ManagementAction::FarmSetCrop) {
+    if(static_cast<uint8_t>(outcome)>4 || (outcome!=FarmEditOutcome::None && s.action()!=ManagementAction::FarmEdit))return "invalid farm edit outcome";
+    if(s.action()==ManagementAction::FarmEdit) {
       if(s.status()==ManagementStatus::Ok && outcome!=FarmEditOutcome::Completed)return "missing farm completion";
       if(outcome==FarmEditOutcome::Completed && (s.status()!=ManagementStatus::Ok || !p->farm()))return "invalid farm completion";
       if(outcome!=FarmEditOutcome::Completed && p->farm())return "unconfirmed farm authority";

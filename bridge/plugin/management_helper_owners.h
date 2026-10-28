@@ -12,7 +12,7 @@ protected:
     inline static constexpr std::array<Range,10> ranges_{{
         {Action::Catalog,Action::RemoveConstruction},
         {Action::AreaCatalog,Action::AreaCandidates},
-        {Action::ProductionList,Action::FarmSetCrop},
+        {Action::ProductionList,Action::FarmEdit},
         {Action::WorkOrderList,Action::WorkOrderCatalog},
         {Action::CitizenList,Action::WorkDetailMode},
         {Action::ReportList,Action::ReportInspect},

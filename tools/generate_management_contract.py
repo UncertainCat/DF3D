@@ -6,14 +6,14 @@ import argparse
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-ENUMS = ("ConstructionOutcome", "FarmEditOutcome", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
+ENUMS = ("ConstructionOutcome", "FarmEditOutcome", "FarmOperation", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
     "hover": ("WorldHover", "WorldHover"),
     "construction": ("Catalog", "RemoveConstruction"),
     "areas": ("AreaCatalog", "AreaCandidates"),
-    "production": ("ProductionList", "FarmSetCrop"),
+    "production": ("ProductionList", "FarmEdit"),
     "work_orders": ("WorkOrderList", "WorkOrderCatalog"),
     "citizens": ("CitizenList", "WorkDetailMode"),
     "reports": ("ReportList", "ReportInspect"),
@@ -51,7 +51,7 @@ def outputs():
         checks += f"static_assert(sizeof(df3d::mirror::EnumValues{name}()) / sizeof(df3d::mirror::{name}) == {len(rows)});\n"
     # Semantic mutation policy is centralized here and emitted with named values.
     mutations=("Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
-        "ProductionQueue","ProductionJobEdit","FarmSetCrop","WorkOrderCreate","WorkOrderUpdate",
+        "ProductionQueue","ProductionJobEdit","FarmEdit","WorkOrderCreate","WorkOrderUpdate",
         "WorkOrderDelete","WorkOrderCondition","WorkDetailMembership","WorkDetailMode","WorkDetailCreate","WorkDetailDelete",
         "WorkDetailEdit","CitizenWorkScope","DismissAlert","TradeUpdate","TradeBring")
     if not set(mutations) <= {n for n,v in values["ManagementAction"]}:

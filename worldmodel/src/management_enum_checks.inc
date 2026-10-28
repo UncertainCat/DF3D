@@ -11,6 +11,10 @@ static_assert(static_cast<int>(wm::FarmEditOutcome::Rejected) == static_cast<int
 static_assert(static_cast<int>(wm::FarmEditOutcome::Stale) == static_cast<int>(df3d::mirror::FarmEditOutcome::Stale));
 static_assert(static_cast<int>(wm::FarmEditOutcome::Unknown) == static_cast<int>(df3d::mirror::FarmEditOutcome::Unknown));
 static_assert(sizeof(df3d::mirror::EnumValuesFarmEditOutcome()) / sizeof(df3d::mirror::FarmEditOutcome) == 5);
+static_assert(static_cast<int>(wm::FarmOperation::Crop) == static_cast<int>(df3d::mirror::FarmOperation::Crop));
+static_assert(static_cast<int>(wm::FarmOperation::FertilizationToggle) == static_cast<int>(df3d::mirror::FarmOperation::FertilizationToggle));
+static_assert(static_cast<int>(wm::FarmOperation::SeasonalFertilization) == static_cast<int>(df3d::mirror::FarmOperation::SeasonalFertilization));
+static_assert(sizeof(df3d::mirror::EnumValuesFarmOperation()) / sizeof(df3d::mirror::FarmOperation) == 3);
 static_assert(static_cast<int>(wm::ManagementAction::Catalog) == static_cast<int>(df3d::mirror::ManagementAction::Catalog));
 static_assert(static_cast<int>(wm::ManagementAction::Preview) == static_cast<int>(df3d::mirror::ManagementAction::Preview));
 static_assert(static_cast<int>(wm::ManagementAction::Place) == static_cast<int>(df3d::mirror::ManagementAction::Place));
@@ -30,7 +34,7 @@ static_assert(static_cast<int>(wm::ManagementAction::ProductionList) == static_c
 static_assert(static_cast<int>(wm::ManagementAction::ProductionInspect) == static_cast<int>(df3d::mirror::ManagementAction::ProductionInspect));
 static_assert(static_cast<int>(wm::ManagementAction::ProductionQueue) == static_cast<int>(df3d::mirror::ManagementAction::ProductionQueue));
 static_assert(static_cast<int>(wm::ManagementAction::ProductionJobEdit) == static_cast<int>(df3d::mirror::ManagementAction::ProductionJobEdit));
-static_assert(static_cast<int>(wm::ManagementAction::FarmSetCrop) == static_cast<int>(df3d::mirror::ManagementAction::FarmSetCrop));
+static_assert(static_cast<int>(wm::ManagementAction::FarmEdit) == static_cast<int>(df3d::mirror::ManagementAction::FarmEdit));
 static_assert(static_cast<int>(wm::ManagementAction::WorkOrderList) == static_cast<int>(df3d::mirror::ManagementAction::WorkOrderList));
 static_assert(static_cast<int>(wm::ManagementAction::WorkOrderInspect) == static_cast<int>(df3d::mirror::ManagementAction::WorkOrderInspect));
 static_assert(static_cast<int>(wm::ManagementAction::WorkOrderCreate) == static_cast<int>(df3d::mirror::ManagementAction::WorkOrderCreate));
@@ -308,7 +312,7 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::ProductionList) == df3d:
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ProductionInspect) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ProductionInspect));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ProductionQueue) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ProductionQueue));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ProductionJobEdit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ProductionJobEdit));
-static_assert(wm::isRuntimeAction(wm::ManagementAction::FarmSetCrop) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::FarmSetCrop));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::FarmEdit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::FarmEdit));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkOrderList) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkOrderList));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkOrderInspect) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkOrderInspect));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkOrderCreate) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkOrderCreate));

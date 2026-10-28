@@ -514,7 +514,7 @@ TEST_CASE("production requests retain job identity sentinels and shared ownershi
   seq=c->send(edit);REQUIRE(seq>0);r=p.pop();CHECK(r->production()->job_id()==504);
   CHECK(r->production()->repeat()==-1);CHECK(r->production()->suspend()==1);CHECK_FALSE(r->production()->cancel());
   p.publish(4,id,seq,7,mm::ManagementAction::ProductionJobEdit);REQUIRE(c->poll());
-  wm::ManagementRequest farm;farm.action=wm::ManagementAction::FarmSetCrop;
+  wm::ManagementRequest farm;farm.action=wm::ManagementAction::FarmEdit;
   farm.production.buildingId=80;farm.production.season=3;farm.production.cropId=-1;farm.production.expectedRevision=9007199254740993ULL;
   seq=c->send(farm);REQUIRE(seq>0);r=p.pop();CHECK(r->production()->season()==3);CHECK(r->production()->crop_id()==-1);CHECK(r->production()->expected_revision()==9007199254740993ULL);
   p.publish(5,0,seq,8,mm::ManagementAction::Catalog,mm::ManagementStatus::Idle);REQUIRE(c->poll());
@@ -531,8 +531,8 @@ TEST_CASE("production validation rejects ambiguous job edits and invalid crop na
     if(which==2)r.production.repeat=1;
     if(which==3){r.production.cancel=false;r.production.suspend=2;}
     if(which==4){r.action=wm::ManagementAction::ProductionQueue;r.production.recipe="";}
-    if(which==5){r.action=wm::ManagementAction::FarmSetCrop;r.production.season=-1;}
-    if(which==6){r.action=wm::ManagementAction::FarmSetCrop;r.production.season=0;r.production.cropId=32768;}
+    if(which==5){r.action=wm::ManagementAction::FarmEdit;r.production.season=-1;}
+    if(which==6){r.action=wm::ManagementAction::FarmEdit;r.production.season=0;r.production.cropId=32768;}
     if(which==7)r.production.query=std::string(129,'x');
     CHECK(c->send(r)==0);CHECK_FALSE(c->lastError().empty());
   }

@@ -7972,5 +7972,65 @@
       "presentations/godot/project/tests/farm_read_live.gd": "c2a402ae9dbc071797870e0ccb30e940787f0f319a834c3504f5d2bcabc4d377"
     },
     "scope": "Stable raw identities and their revised receipts verified through live read/controller paths. No farm view/rendered acceptance."
+  },
+  "artwork_pixel_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261028-172751",
+    "scope": "Native opaque crop pixels selected by installed PICKED alpha; no extracted artwork shipped. Translucent pixel composition is verified separately against installed source.",
+    "crops": [
+      {
+        "raw_id": "GRASS_WHEAT_CAVE",
+        "native_origin": [
+          434,
+          234
+        ],
+        "opaque_pixel_count": 174,
+        "opaque_rgb_sha256": "593b52c660e69aecfec8e499777538a56b1d73084a4a3c2d8c4432bfc77848fd"
+      },
+      {
+        "raw_id": "MUSHROOM_CUP_DIMPLE",
+        "native_origin": [
+          434,
+          270
+        ],
+        "opaque_pixel_count": 87,
+        "opaque_rgb_sha256": "0c768ff57babf423f004973ae2e0484d6d9db68113f606fc13b2c24fbbcd31e9"
+      },
+      {
+        "raw_id": "GRASS_TAIL_PIG",
+        "native_origin": [
+          434,
+          306
+        ],
+        "opaque_pixel_count": 84,
+        "opaque_rgb_sha256": "81d460807f8b861d1639811a43e740aa3cb9e0cf23f60398448b12f8bdd95e30"
+      },
+      {
+        "raw_id": "MUSHROOM_HELMET_PLUMP",
+        "native_origin": [
+          434,
+          342
+        ],
+        "opaque_pixel_count": 60,
+        "opaque_rgb_sha256": "18414de198b21b34f7620148ebc0f1b283d54095585fa693c8f74ff11a13c33f"
+      },
+      {
+        "raw_id": "BUSH_QUARRY",
+        "native_origin": [
+          434,
+          378
+        ],
+        "opaque_pixel_count": 375,
+        "opaque_rgb_sha256": "02c6c47a40542efc106b9dd36236ba6f3bb94c593781983c4fec7fa9bd96da9b"
+      },
+      {
+        "raw_id": "POD_SWEET",
+        "native_origin": [
+          434,
+          414
+        ],
+        "opaque_pixel_count": 87,
+        "opaque_rgb_sha256": "e732653d29e6c080fe129d77ba95fe139825b95a26cf718df1a69398a8e7e2af"
+      }
+    ]
   }
 }

@@ -138,6 +138,24 @@ Ref<Texture2D> Df3dWorld::construction_item_icon(int itemType,const Dictionary& 
     icon->set_region(Rect2(pixels.px,pixels.py,pixels.pw,pixels.ph));return icon;
 }
 
+Ref<Texture2D> Df3dWorld::farm_crop_icon(const String& rawId) {
+    const auto raw=rawId.utf8();
+    if(!assets_ || !raw.length() || raw.length()>128)return {};
+    // Native farm renderer199cbc selects PLANT/PICKED via c83890, without
+    // the material palette used by map items. The snapshot owns the raw ID.
+    // Reuse installed selection rules, but retain the original page colors.
+    df3d::assets::ItemQuery query;query.kind=wm::ItemKind::Plant;
+    query.material="PLANT:"+std::string(raw.get_data(),raw.length())+":STRUCTURAL";
+    const auto resolved=df3d::assets::resolveItem(assets_->index,query);
+    if(!resolved.found)return {};
+    const int slot=slotFor(resolved.sprite.page,-1,false);
+    const TextureSlot* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
+    if(!texture || texture->texture.is_null())return {};
+    const auto pixels=assets_->index.pixels(resolved.sprite);
+    Ref<AtlasTexture> icon;icon.instantiate();icon->set_atlas(texture->texture);
+    icon->set_region(Rect2(pixels.px,pixels.py,pixels.pw,pixels.ph));return icon;
+}
+
 Ref<Texture2D> Df3dWorld::candidate_icon(const Dictionary& recipe) {
     // Only caller-owned original-asset references; no live/map identity lookup.
     wm::SelectionAppearance source;

@@ -5,6 +5,7 @@ using namespace godot;
 void Df3dWorld::_bind_methods() {
     using godot::ClassDB;
     ClassDB::bind_method(D_METHOD("construction_item_icon", "item_type", "appearance", "generic_group", "item_id"), &Df3dWorld::construction_item_icon, DEFVAL(false), DEFVAL(-1));
+    ClassDB::bind_method(D_METHOD("farm_crop_icon", "raw_id"), &Df3dWorld::farm_crop_icon);
     ClassDB::bind_method(D_METHOD("spatter_revision"), &Df3dWorld::spatter_revision);
     ClassDB::bind_method(D_METHOD("tile_spatters", "tile"), &Df3dWorld::tile_spatters);
     ClassDB::bind_method(D_METHOD("set_mesh_batching_enabled", "enabled"), &Df3dWorld::set_mesh_batching_enabled);

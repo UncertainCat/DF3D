@@ -2841,6 +2841,15 @@
       ]
     },
     {
+      "id": "farm_art_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/farm_art_capture.gd",
+      "completion": "FARM_ART_CAPTURE_PASS",
+      "timeout": 120,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "location_staff_scroll_capture",
       "lane": "gpu",
       "kind": "godot",

@@ -379,8 +379,24 @@ crop icons match raw `texpos[8]` and their installed `PICKED` definitions; the
 header is `BUILDING_ICON_FARM_PLOT` and fallow uses `FARMPLOT`. The owned source
 manifest remains unchanged and DF160312 exits unsaved. Core passes in
 `build/qa/farm-artwork-reference`. This establishes native asset selection, not
-Godot rendering parity or the generic missing-art fallback. The farm view still
-needs stable raw identities from its semantic snapshot and rendered acceptance.
+Godot rendering parity or the generic missing-art fallback. Management84 now
+supplies stable raw identities; the complete farm view still needs acceptance.
+
+The extension's `farm_crop_icon(raw_id)` resolves installed plant `PICKED` art
+with the existing item selector but deliberately omits its material palette,
+matching the native farm selector. It consumes the owned management84 raw ID;
+no native rendering cache or live item is needed. The shared slot manager owns
+page resources for the asset lifetime. Fallow/header retain ordinary `ui_texture`
+selectors. `farm_art_capture` checks all6144 pixels of the six native-reference
+crop textures against the installed source, their rendered alpha composition
+within one byte, and867 opaque RGB pixels against native capture hashes.
+The hashes and native origins are in `native_farm.json.artwork_pixel_reference`;
+no extracted sprites are shipped. `build/qa/farm-art-icons-recorded` passes with
+only the three documented Godot diagnostics, and its retained
+`build/farm-art-icons.png` was visually inspected. Core passes in
+`build/qa/farm-art-icons`. The initial capture script used an unavailable byte
+array hashing method; it was corrected to HashingContext before acceptance.
+This verifies crop icons, not the complete farm panel or generic fallback art.
 
 ### Native farm fertilization reference
 

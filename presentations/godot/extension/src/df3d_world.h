@@ -107,6 +107,7 @@ public:
     // Original interface art, resolved only through the verified parsed index.
     godot::Ref<godot::Texture2D> ui_texture(const godot::String& name, int variant = -1);
     godot::Ref<godot::Texture2D> construction_item_icon(int item_type, const godot::Dictionary& appearance, bool generic_group=false, int64_t item_id=-1);
+    godot::Ref<godot::Texture2D> farm_crop_icon(const godot::String& raw_id);
     godot::Dictionary elevation_overview(int x, int y) const;
     godot::String ui_font_path() const;
     godot::Vector3i item_tile(int64_t id) const;

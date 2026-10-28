@@ -15900,5 +15900,88 @@
       "owned_exit_without_save": true,
       "scope": "Diagnostic provider only; transport and viewer indicator acceptance remain unfinished."
     }
+  },
+  "recognition_reuse_reference": {
+    "fixture": "Existing HIGH_PRIEST definition copied from PRIEST, with a new unique position ID and no local assignment; world-owned, unsaved diagnostics only.",
+    "native_and_semantic": [
+      {
+        "source": "build/stockpile-storage-native-location-recognition-reusehigh-20261028-151830/result.json",
+        "sha256": "0837507e08fc9657e1ab47742b49168da5c2177afe1d0d37ffc9196dea11ae06",
+        "passed": true,
+        "position_delta": 0,
+        "assignment_delta": 1,
+        "event_delta": 1,
+        "new_thoughts": 54,
+        "rng_unchanged": true,
+        "positions_unchanged": false,
+        "added_assignment": {
+          "claim_count": 0,
+          "flags": [
+            "active"
+          ],
+          "histfig": 9375,
+          "histfig2": 9375,
+          "id": 3,
+          "location": -1,
+          "position_id": 1,
+          "position_vector_idx": 1,
+          "site": 651,
+          "squad_id": -1,
+          "vassal_of_entity_id": -1,
+          "vassal_of_position_profile_id": -1
+        }
+      },
+      {
+        "source": "build/stockpile-storage-native-location-recognition-actionreusehigh-20261028-152006/result.json",
+        "sha256": "96805a1ac3d759ca43bd583e3f7d948686caa90159fec2e6e18df4d09528c385",
+        "passed": true,
+        "position_delta": 0,
+        "assignment_delta": 1,
+        "event_delta": 1,
+        "new_thoughts": 54,
+        "rng_unchanged": false,
+        "positions_unchanged": false,
+        "added_assignment": {
+          "claim_count": 0,
+          "flags": [
+            "active"
+          ],
+          "histfig": 9375,
+          "histfig2": 9375,
+          "id": 3,
+          "location": -1,
+          "position_id": 1,
+          "position_vector_idx": 1,
+          "site": 651,
+          "squad_id": -1,
+          "vassal_of_entity_id": -1,
+          "vassal_of_position_profile_id": -1
+        }
+      }
+    ],
+    "scene": {
+      "source": "build/areas-acceptance-20261028-152053/recognition-scene-evidence.json",
+      "sha256": "9b0744d25f7c377495e518f8427c39735ff5a2141f48cf8dc03f56ddcc3acd67",
+      "viewport_click": true,
+      "details_refreshed": true,
+      "completed_action_absent": true,
+      "added_assignment": {
+        "histfig": 9375.0,
+        "id": 3.0,
+        "position": 1.0,
+        "site": 651.0
+      },
+      "position_delta": 0.0,
+      "assignment_delta": 1.0,
+      "event_delta": 1.0,
+      "new_thoughts": 54.0,
+      "rng_unchanged": true,
+      "save_preservation": "Both manifests unchanged; owned unsaved exit",
+      "status": "passed_with_known_issues (rendering-thread notice)"
+    },
+    "limitations": [
+      "No lifecycle combinations specific to this branch.",
+      "Does not establish arbitrary position definitions or missing name/word data."
+    ]
   }
 }

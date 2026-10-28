@@ -100,7 +100,11 @@ Owner155440 also passed geometry/effects, but its early tail capture did not
 wait for portraits and is not portrait acceptance.
 Held dragging across resize still needs real window-input comparison. A
 synthetic held-input attempt in native155327 lost its scrolling state before
-resize and does not establish held-drag behavior. Zones remains gated.
+resize and does not establish held-drag behavior. Window messages in native
+20261028-151534 retained the held button, but hidden-desktop pointer polling
+reset coordinates to0,0 and the positive-control drag never began. That run
+also does not establish drag behavior; its experimental input code was removed.
+Zones remains gated.
 
 Protected `areas-acceptance-20261027-133446 -LocationScene` passes the full
 existing main-scene Locations suite with the live petition tracker enabled.
@@ -1296,9 +1300,11 @@ MSVC rebuild passes; installed management75 plugin SHA256 is
 7A446431629448412B32FC6D81A518419EA4A71DDFCD5CDB8342D25D9CD63461.
 
 The petition capture021231 shows its continuing-agreement tracker in a separate
-panel beneath the minimap, outside the Details frame. That global tracker has no
-implemented presentation route yet. Its scope must be retained in the management
-backlog; adding its text to the recognition row would not reproduce this layout.
+panel beneath the minimap, outside the Details frame. The tracker implementation
+and acceptance below cover that surface. These are not missing secondary rows
+in the recognition control; adding their text there would duplicate the tracker
+and contradict native layout. The original eligibility-waiver capture014329
+independently shows the same separation.
 
 ## Native continuing-agreement tracker discovery
 
@@ -2092,8 +2098,9 @@ The wide screenshot and composition fixture independently establish eight rows.
 
 Temple recognition has a typed semantic action and integrated Details control,
 with scoped native, rendered and lifecycle evidence below. Remaining gaps include
-secondary petition progress/warning rows, responsive/held-button reference,
-existing HIGH_PRIEST reuse and post-effect failure injection. Supported-build native renderer
+responsive/held-button reference and post-effect failure injection. Petition
+progress/warnings belong to the implemented global tracker. Existing HIGH_PRIEST
+reuse is verified separately below. Supported-build native renderer
 RVA3b6c18..3b7483 checks the religion's `PRIEST`/`HIGH_PRIEST` position codes and
 assignments at the current site, then tier, petition and worshipper conditions.
 The current receipt's tier and `recognized` flag alone do not establish the
@@ -2318,8 +2325,8 @@ without captured effects or RNG changes. All owned runs exit unsaved and preserv
 source manifests. Installed DLL SHA256 is
 `4724b625143dcb0303d02ede63af451c03079e4b278bbb2039c46021e02bf761`, protocol72.
 MSVC build passes; root/core evidence is `build/qa/location-recognition-action`.
-This does not establish existing HIGH_PRIEST-template reuse, empty-deity/word
-fallbacks, every personality field, failure injection after effects begin, or the
+Existing HIGH_PRIEST-template reuse has separate evidence below. These runs do not
+establish empty-deity/word fallbacks, every personality field, failure injection after effects begin, or the
 remaining transport and rendered lifecycle work. Zones and
 Locations remain staged.
 
@@ -2485,8 +2492,29 @@ evidence that first recognition hides tier guidance; the driver now names that
 field details_closed. New040652 additionally verifies creation of a PRIEST
 template through the scene: one position and vacant assignment,54 thoughts, no
 history event, and advanced RNG. It passes with known Godot diagnostics and
-unchanged source/clone manifests. Existing HIGH_PRIEST reuse remains uncovered,
-as do lifecycle combinations for these branches.
+unchanged source/clone manifests. Lifecycle combinations for these branches remain
+uncovered; existing HIGH_PRIEST reuse has the focused evidence below.
+
+`-RecognitionCase reusehigh|actionreusehigh` and the main-scene
+`-RecognitionVariant reusehigh` cover an existing HIGH_PRIEST definition without
+a current-site assignment. The owned fixture copies the existing PRIEST
+definition, gives it a unique ID and HIGH_PRIEST code, and retains it as a
+world-owned allocation until unsaved exit. Native20261028-151830 reuses it:
+zero new positions, one new assignment, one promotion event,54 new temple
+thoughts, and unchanged RNG. Semantic152006 matches native positions,
+assignments, history, holder/site links, emotions, agreements and RNG; invalid
+targets and completed replay reject without effects, and UI/gps guards pass.
+An earlier151916 semantic attempt failed because the runner omitted its
+reference marker; it is not acceptance.
+Main-scene152053 activates the actual control, checks the reused position ID
+and promoted holder, refreshes Details, rejects a repeated completed click and
+closes Details. The post-action screenshot was inspected. It passes with only
+the known rendering-thread notice; both save manifests are unchanged and
+DF34296 exits unsaved. The two native/semantic runs pass cleanly and preserve
+the source; DF117372/171828 exit unsaved. `recognition_reuse_reference` retains
+bounded effects and provenance. Core passes in `build/qa/recognition-reusehigh`.
+This covers the existing-definition branch, not arbitrary malformed definitions
+or branch-specific disconnect combinations. Product code is unchanged.
 
 The bridge now provides diagnostic `df3d location-recognition-read <site> <location>`
 through `observeNativeLocationRecognition`. It validates the current site and
@@ -2527,9 +2555,10 @@ priesthood action also match native text and bridge state. Native UI/gps and RNG
 remain unchanged by reads. The tier and threshold are restored, source manifests
 are preserved, and both games exit unsaved. MSVC build and core19/19 pass;
 `build/qa/location-recognition-eligibility` includes the native-derived state tests.
-This covers the primary row, not secondary petition progress/warning rows.
+This covers the primary recognition row. The petition progress/warning content
+in these captures belongs to the separate global tracker documented above.
 Typed transport, dependency/receipt binding and mutation use the separate
-providers and evidence above; secondary petition rows remain unfinished.
+providers and evidence above.
 
 ## Native squad assignment reference
 

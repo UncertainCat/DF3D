@@ -518,7 +518,7 @@ local mode_file=io.open(out..'/recognition-case');local recognition_case='promot
 if mode_file then recognition_case=mode_file:read('*a'):match('%a+');mode_file:close()end
 local semantic_recognition=recognition_case:sub(1,6)=='action'
 if semantic_recognition then recognition_case=recognition_case:sub(7)end
-assert(recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='staffindicatorhelp' or recognition_case=='staffindicatorart' or (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpanels') or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
+assert(recognition_case=='reusehigh' or recognition_case=='promote' or recognition_case=='empty' or recognition_case=='first' or recognition_case=='new' or recognition_case=='eligibility' or recognition_case=='thoughts' or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='positionhigh' or recognition_case=='positionnew' or recognition_case=='waiver' or recognition_case=='firstguidance' or recognition_case=='specialization' or recognition_case=='specializationhover' or recognition_case=='staffindicators' or recognition_case=='staffindicatorhelp' or recognition_case=='staffindicatorart' or (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpanels') or recognition_case=='assignpriest' or recognition_case=='assignspypriest' or (recognition_case=='assignmilitarypriest' or recognition_case=='assigncommandpriest') or recognition_case=='assignhighpriest' or recognition_case:sub(1,7)=='replace' or recognition_case=='removepriest' or recognition_case=='removeabsentpriest' or recognition_case=='removesquadpriest' or recognition_case=='removemanagerpriest' or recognition_case=='removeaccountantpriest')
 local fixture_agreements={}
 if (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpanels') or recognition_case=='petitions' or recognition_case=='agreements' or recognition_case=='waiver' then
  -- World-owned fixtures on the disposable clone, discarded by unsaved exit.
@@ -565,6 +565,19 @@ if recognition_case=='new' or recognition_case=='positionnew' then
   if position.code=='PRIEST' then position.code='DF3D_FIXTURE_OLD_PRIEST';changed=changed+1 end
  end
  assert(changed==1,'unexpected priest template fixture count')
+end
+if recognition_case=='reusehigh' then
+ -- A world-owned existing definition with no assignment at this site. Native
+ -- must reuse it instead of generating a second HIGH_PRIEST template.
+ local priest
+ for _,position in ipairs(religion.positions.own)do
+  assert(position.code~='HIGH_PRIEST','high priest definition already present')
+  if position.code=='PRIEST' then priest=position end
+ end
+ assert(priest,'missing source priest definition')
+ local high=df.entity_position:new();high:assign(priest)
+ high.id=religion.positions.next_position_id;religion.positions.next_position_id=high.id+1
+ high.code='HIGH_PRIEST';religion.positions.own:insert('#',high)
 end
 pixel(664,238);assert(details.open and details.selected_ab==temple)
 if (recognition_case=='petitiontracker' or recognition_case=='petitiontrackerpanels') then
@@ -2243,7 +2256,7 @@ local ok,err=xpcall(function()
   end
  end
  assert(#after.recognition.new_temple_emotions==54,'unexpected native recognition thought recipients')
- local creates_position=recognition_case~='first' and recognition_case~='firstguidance'
+ local creates_position=recognition_case~='reusehigh' and recognition_case~='first' and recognition_case~='firstguidance'
  assert(after.recognition.next_position-before.recognition.next_position==(creates_position and 1 or 0),'unexpected native position allocation')
  assert(after.recognition.next_assignment-before.recognition.next_assignment==1,'unexpected native assignment allocation')
  if recognition_case=='petitions' then

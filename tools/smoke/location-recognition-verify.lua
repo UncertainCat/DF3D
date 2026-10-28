@@ -29,10 +29,21 @@ local function command(name)
 end
 if request.op=='recognition_setup' then
  local variant=request.variant or 'promote'
- assert(variant=='promote' or variant=='first' or variant=='empty' or variant=='new')
+ assert(variant=='reusehigh' or variant=='promote' or variant=='first' or variant=='empty' or variant=='new')
  if not _G.df3d_recognition_variant then
   _G.df3d_recognition_variant=variant
-  if variant~='promote' then
+  if variant=='reusehigh' then
+   local priest
+   for _,p in ipairs(religion.positions.own)do
+    assert(p.code~='HIGH_PRIEST','high priest fixture already present')
+    if p.code=='PRIEST' then priest=p end
+   end
+   assert(priest,'priest template absent')
+   local high=df.entity_position:new();high:assign(priest)
+   high.id=religion.positions.next_position_id;religion.positions.next_position_id=high.id+1
+   high.code='HIGH_PRIEST';religion.positions.own:insert('#',high)
+  end
+  if variant~='promote' and variant~='reusehigh' then
    local changed=0
    for _,a in ipairs(religion.positions.assignments)do
     if a.st_id==site.id then
@@ -77,15 +88,19 @@ elseif request.op=='recognition_unchanged' or request.op=='recognition_applied' 
  else
   local before=assert(_G.df3d_recognition_transport_before);local after=capture()
   local variant=_G.df3d_recognition_variant or 'promote'
-  assert(after.next_position==before.next_position+(variant=='first' and 0 or 1) and after.next_assignment==before.next_assignment+1,'recognition allocation mismatch')
-  assert(after.events==before.events+(variant=='promote' and 1 or 0),'recognition event mismatch')
+  assert(after.next_position==before.next_position+((variant=='first' or variant=='reusehigh') and 0 or 1) and after.next_assignment==before.next_assignment+1,'recognition allocation mismatch')
+  assert(after.events==before.events+((variant=='promote' or variant=='reusehigh') and 1 or 0),'recognition event mismatch')
   assert(after.emotions==before.emotions+54,'native thought recipients differ')
   -- Native first024521 reuses PRIEST without RNG; empty024612/promote020539
   -- allocate a named HIGH_PRIEST template and advance it.
-  assert((json.encode(after.rng)==json.encode(before.rng))==(variant=='first'),'recognition RNG behavior differs from native branch')
+  assert((json.encode(after.rng)==json.encode(before.rng))==(variant=='first' or variant=='reusehigh'),'recognition RNG behavior differs from native branch')
   local old=before.assignments[#before.assignments];local added=after.assignments[#after.assignments]
   assert(added.site==site.id,'assignment site mismatch')
-  if variant=='promote' then assert(old.histfig>=0 and added.histfig==old.histfig,'holder promotion mismatch')
+  if variant=='reusehigh' then
+   assert(json.encode(before.positions)==json.encode(after.positions),'existing position definitions changed')
+   assert(added.position==before.positions[#before.positions].id and before.positions[#before.positions].code=='HIGH_PRIEST','existing high priest definition was not reused')
+  end
+  if variant=='promote' or variant=='reusehigh' then assert(old.histfig>=0 and added.histfig==old.histfig,'holder promotion mismatch')
   else assert(added.histfig==-1,'expected vacant assignment')end
   result.after=after
  end

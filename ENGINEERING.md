@@ -124,6 +124,25 @@ cancellation remain separate coverage gaps.
 
 ## Farm name entry presentation
 
+The staged farm header uses shared native hover help for Rename and Remove.
+Protected native capture214817 on2026-10-28 observes instructions301/302:
+“Name this building.” and “Remove this building.” Title and season-tab probes
+produce no instruction. The oracle restores the pointer after frame yields;
+earlier captures with a reset(-1,-1) pointer were not tooltip evidence.
+`native_farm.json.header_hover_reference` retains exact text cells and styles;
+both native frames match the existing owner-recenter frame tile-for-tile.
+The shared HUD provides its verified500ms cold/1000ms warm timer, minimap
+replacement and native art. Farm hover retires on pointer exit, hidden sheet,
+blocked input, absent snapshot or removal state. No native UI scratch is read
+at runtime. Actual main-scene214559 verifies both pointer targets, negative
+title/tab targets and closure, then passes the existing edit/lifecycle matrix
+with only the known rendering-thread notice and unchanged saves. The rendered
+Rename capture was inspected. `build/qa/farm-header-hover` passes core and hover
+timing, plus exact GPU glyph/color/frame comparisons for both new tooltips and
+existing shared help; GPU reports only the three documented engine diagnostics.
+Header boundary edges, typing-state hover and minimum-window tooltip layout
+remain separate probes; this does not expose the staged farm route.
+
 The staged farm sheet exposes begin/finish/key-input methods and edited/submitted
 signals for its local name draft. `farm_name_entry.gd` reuses the existing byte
 append/backspace entry with a30-byte limit; stockpile and zone entries retain20.

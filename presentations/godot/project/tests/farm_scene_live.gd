@@ -38,6 +38,17 @@ func rename_click() -> void:
 func exercise_scene() -> void:
 	var id:=int(fixture.id);var seasons: Array=[]
 	for crop in fixture.seasons:seasons.append(int(crop))
+	owner.open_target(id,1)
+	if not await settled(Farm.Phase.Ready):return
+	for probe in [["rename",Vector2(384,30)],["remove",Vector2(416,30)],["",Vector2(184,30)],["",Vector2(64,72)]]:
+		step="farm header hover "+probe[0]
+		var motion:=InputEventMouseMotion.new();motion.position=owner.panel.get_global_transform_with_canvas()*probe[1];root.push_input(motion,true)
+		await create_timer(0.6).timeout
+		var expected: String="building_"+probe[0] if probe[0]!="" else ""
+		if not check(scene._fortress_hud.native_help.displayed==expected,"farm header help differs"):return
+		if probe[0]!="":await capture("hover_"+probe[0])
+	owner.close_panel();await process_frame
+	if not check(not scene._fortress_hud.native_help.visible,"closed farm retained help"):return
 	for ending in ["enter","escape","right","tab","reset"]:
 		step="main farm typing "+ending
 		owner.open_target(id,1)

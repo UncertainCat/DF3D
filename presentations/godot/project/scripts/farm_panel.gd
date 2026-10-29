@@ -12,10 +12,10 @@ var opening:=false
 var right_down:=false
 var right_travel:=0.0
 
-func configure(world,service,host) -> void:
+func configure(world,service,host,help=null) -> void:
 	ui_host=host;state.configure(service)
 	canvas=CanvasLayer.new();canvas.layer=5;add_child(canvas)
-	panel=preload("res://scripts/farm_sheet_view.gd").new();canvas.add_child(panel);panel.configure(world,state)
+	panel=preload("res://scripts/farm_sheet_view.gd").new();canvas.add_child(panel);panel.configure(world,state,help)
 	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self)
 	state.changed.connect(_state_changed)
 	ui_host.register(self);_process(0)

@@ -15,9 +15,13 @@ var current_season: int=-1
 var target: int=-1
 var input_allowed: Callable
 var name_entry
+var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
 
-func configure(source,model) -> void:
-	state=model;art.configure(source);theme=art.theme
+func configure(source,model,help=null) -> void:
+	state=model;hover_help=help;art.configure(source);theme=art.theme
+	mouse_exited.connect(_leave_hover)
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	body=preload("res://scripts/farm_body_view.gd").new();add_child(body);body.configure(source,model)
 	body.position=Vector2(16,144);body.input_allowed=body_allowed
@@ -73,7 +77,19 @@ func _finish_owned_rename() -> void:
 func tab_rect(season: int) -> Rect2:return Rect2(8+season*120,60,112 if season==3 else 120,24)
 func cancel_rect() -> Rect2:return Rect2(16,132,192,36)
 
+func _leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+
+func _process(_delta: float) -> void:
+	if not is_instance_valid(hover_help):return
+	if pointer_known and is_visible_in_tree() and allowed() and not removing and not state.snapshot.is_empty():
+		for entry in [["rename",Rect2(368,12,32,36)],["remove",Rect2(400,12,32,36)]]:
+			if entry[1].has_point(pointer_position):hover_help.enter_building(get_instance_id(),entry[0]);return
+	hover_help.leave(get_instance_id())
+
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:pointer_known=true;pointer_position=event.position;_process(0)
 	if not allowed() or not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT:return
 	if removing:
 		if state.phase==state.Phase.Ready and state.ticket==0 and cancel_rect().has_point(event.position):cancel_removal_requested.emit();accept_event()
@@ -135,5 +151,6 @@ func draw_removal() -> void:
 	font.draw_string(get_canvas_item(),Vector2(32,156),"Cancel removal",HORIZONTAL_ALIGNMENT_LEFT,-1,12,body.colors[12])
 
 func _exit_tree() -> void:
+	_leave_hover()
 	if state!=null and state.has_method("finish_name_entry"):state.finish_name_entry()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

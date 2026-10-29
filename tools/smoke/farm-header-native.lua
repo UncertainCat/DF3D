@@ -16,8 +16,19 @@ local function lines()
   rows[#rows+1]=table.concat(row)
  end return rows
 end
-local function shot(name)
- pointer(0,4);for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+local function shot(name,keep_pointer)
+ if not keep_pointer then pointer(0,4)end
+ local mouse={g.precise_mouse_x,g.precise_mouse_y}
+ local function restore_pointer()
+  if not keep_pointer then return end
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  pointer(mouse[1],mouse[2]);gui.simulateInput(view,{})
+ end
+ for i=1,5 do
+  restore_pointer()
+  view:render(dfhack.getTickCount());script.sleep(1,'frames')
+ end
+ if keep_pointer then restore_pointer();view:render(dfhack.getTickCount())end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
  local live=df.building.find(id);local jobs={}
  if live then
@@ -48,10 +59,21 @@ local function shot(name)
  records[#records+1]={name=name,building_id=id,present=live~=nil,custom_name=live and live.name or '',
   native_name=live and dfhack.buildings.getName(live)or'',editing=sheet.building_entering_nickname,
   draft=sheet.building_entering_str,sheet_open=sheet.open,active_id=sheet.active_id,
-  semantic=semantic,guards_unchanged=true,removing=live and dfhack.buildings.markedForRemoval(live)or false,jobs=jobs,lines=lines()}
+  semantic=semantic,guards_unchanged=true,removing=live and dfhack.buildings.markedForRemoval(live)or false,jobs=jobs,lines=lines(),
+  hover=df.global.game.main_interface.current_hover,hover_enabled=df.global.game.main_interface.hover_instructions_on,
+  mouse={g.precise_mouse_x,g.precise_mouse_y}}
+ if keep_pointer then
+  local row=records[#records];row.help_cells={};row.help_frame={}
+  for y=0,17 do for x=g.dimx-25,g.dimx-1 do
+   local pen=dfhack.screen.readTile(x,y)
+   row.help_frame[#row.help_frame+1]={x=x,y=y,tile=pen.tile}
+   if pen.ch>=33 and pen.ch<=255 then row.help_cells[#row.help_cells+1]={x=x,y=y,ch=pen.ch,fg=pen.fg,bg=pen.bg,bold=pen.bold}end
+  end end
+ end
  local f=assert(io.open(out..'/shot','w'));f:write(name);f:close()
  local limit=dfhack.getTickCount()+30000
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
+  if keep_pointer then restore_pointer();view:render(dfhack.getTickCount())end
   assert(dfhack.getTickCount()<limit,'header capture timeout');script.sleep(1,'frames')end
 end
 local function reopen()
@@ -62,6 +84,17 @@ local function reopen()
   if p and p.x==b.centerx and p.y==b.centery and p.z==b.z then click(x*8+4,y*12+10);return end
  end end
  error('farm not visible after sheet closed')
+end
+for _,probe in ipairs{{'rename',800,82},{'remove',832,82},{'title',600,82},{'spring',480,124}}do
+ local deadline=dfhack.getTickCount()+900
+ repeat
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  pointer(probe[2],probe[3]);gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+ until dfhack.getTickCount()>=deadline
+ pointer(probe[2],probe[3])
+ shot('farm-header-hover-'..probe[1],true)
+ local observed=records[#records];local expected=({rename=301,remove=302})[probe[1]] or -1
+ assert(observed.hover==expected and (expected==-1 or observed.hover_enabled),'farm hover probe differs')
 end
 click(800,82);shot('farm-header-rename-empty')
 text('Farm test');assert(b.name=='Farm test','rename did not apply while typing');shot('farm-header-rename-draft')

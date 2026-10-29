@@ -113,7 +113,7 @@ func controller(id: String):
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
 	if id=="farm":
-		add_child(panel);panel.configure(world,actions,host);controllers[id]=panel;return panel
+		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help);controllers[id]=panel;return panel
 	if id in ["reports", "alerts"]:
 		add_child(panel)
 		panel.configure(world,actions,host)

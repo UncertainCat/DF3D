@@ -24924,5 +24924,213 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     },
     "scope": "Native item hidden permits following; hidden terrain stops it, reveal does not resume, explicit follow recovers. Production wire rejects hidden terrain without authority; real follow controller retires identity and coordinates without automatic retry. Forty native position comparisons and seed inspection/edit/controller regressions pass; owned unsaved exits and save preservation. Natural hauling and minimum-window framing remain unfinished."
+  },
+  "item_follow_minimum_reference": {
+    "date": "2026-10-29",
+    "native_run": "build/stockpile-storage-native-farm-discovery-20261029-160431",
+    "native_status": "passed",
+    "minimum_request": [
+      640,
+      480
+    ],
+    "native_records": [
+      {
+        "name": "farm-item-camera-resize-open-minimum",
+        "window": {
+          "x": 127,
+          "y": 110,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 12,
+          "width": 19
+        },
+        "ui_grid": {
+          "height": 46,
+          "width": 114
+        },
+        "sheet_open": true,
+        "follow_item": 47492,
+        "client_size": [
+          912,
+          552
+        ],
+        "image_sha256": "1abfb437620b14717cfa3e1b69a8019dd568751320ed5afd1cd48dbdb80a1325"
+      },
+      {
+        "name": "farm-item-camera-resize-open-small",
+        "window": {
+          "x": 126,
+          "y": 110,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 13,
+          "width": 20
+        },
+        "ui_grid": {
+          "height": 50,
+          "width": 120
+        },
+        "sheet_open": true,
+        "follow_item": 47492,
+        "client_size": [
+          960,
+          600
+        ],
+        "image_sha256": "e4156b65f0d0a919e0b1cbb76f3a2d006f4099b7f6ce113d0130e2b25304e2b7"
+      },
+      {
+        "name": "farm-item-camera-resize-open-wide",
+        "window": {
+          "x": 119,
+          "y": 107,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 19,
+          "width": 34
+        },
+        "ui_grid": {
+          "height": 75,
+          "width": 200
+        },
+        "sheet_open": true,
+        "follow_item": 47492,
+        "client_size": [
+          1600,
+          900
+        ],
+        "image_sha256": "f7cc6addbbe64208e435d1c7c50c6e29d0da874d512b1cc7a27443507d37e131"
+      },
+      {
+        "name": "farm-item-camera-resize-open-default",
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        },
+        "ui_grid": {
+          "height": 66,
+          "width": 150
+        },
+        "sheet_open": true,
+        "follow_item": 47492,
+        "client_size": [
+          1200,
+          800
+        ],
+        "image_sha256": "f9489ccbd8d7af1562bffb1a074e6fc290e4e0bdbd4de058bf894dffa7ec6915"
+      },
+      {
+        "name": "farm-item-camera-resize-closed-minimum",
+        "window": {
+          "x": 127,
+          "y": 110,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 12,
+          "width": 19
+        },
+        "ui_grid": {
+          "height": 46,
+          "width": 114
+        },
+        "sheet_open": false,
+        "follow_item": 47492,
+        "client_size": [
+          912,
+          552
+        ],
+        "image_sha256": "10f9d458d035edac21842bb1676ada04968716fcb915668a621fc0334edccd54"
+      },
+      {
+        "name": "farm-item-camera-resize-closed-default",
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        },
+        "ui_grid": {
+          "height": 66,
+          "width": 150
+        },
+        "sheet_open": false,
+        "follow_item": 47492,
+        "client_size": [
+          1200,
+          800
+        ],
+        "image_sha256": "24a7b1c44cc38d42b1af09c34da4d069d14f97a443a373372cbc1a0d44d4c412"
+      }
+    ],
+    "live_run": "build/areas-acceptance-20261029-160636",
+    "live_status": "passed_with_known_issues",
+    "live_result": {
+      "native_checks": 80,
+      "reasons": [],
+      "status": "passed",
+      "surface": "staged farm owner in actual main scene; viewport keyboard and mouse input"
+    },
+    "viewer_minimum_test": [
+      912,
+      552
+    ],
+    "native_artifacts": {
+      "result.json": "e77e62322d21eaecf9885b451af91844a79f4323e3fb01ad7b2d97bd424a498e",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "live_artifacts": {
+      "item-follow-results.json": "f01a85e21d37b93a6760dffdecb620e38d9fc9bb726c774df1ebd379d4a07b5b",
+      "item-follow-lifecycle-results.json": "5b6272cb38fdf415847f436b50e9aa0845f2083ac355a696e5cb0eb0a30fa151",
+      "result.json": "9ee39b657bdec2781fb8cf34ff0c57c5f01c48b34fddd7f826bd734be5a131c6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    "scope": "Native clamps requested640x480 to912x552; target remains beside sheet at native minimum, open and closed, and wide/default references match. Actual viewer resize includes912x552 and existing follow lifecycle matrix. Native minimum image inspected. DF3D-only sizes below native minimum, natural hauling and general items remain unfinished."
   }
 }

@@ -687,9 +687,20 @@ a fresh explicit camera click recovers. Existing farm/contents/item edit and
 restart checks also pass (80 native checks). All five owned DF processes exit
 unsaved; both save manifests remain unchanged. Only the known rendering-thread
 notice remains. Root, follow and camera checks pass cleanly.
-`item_follow_framing_reference` retains native and viewer provenance. Natural
-hauling, minimum-window framing and general item types remain unaccepted; this
-staged route stays hidden.
+`item_follow_framing_reference` retains native and viewer provenance.
+Protected160431 establishes DF's actual minimum client size: a640x480 resize
+request is clamped to912x552 (114x46 UI cells). At48px map zoom, follow remains
+at120,312 with the item sheet either open or closed. The sheet starts at128px,
+so the target center stays in the exposed map. Native960x600,1600x900 and restored
+1200x800 cases also match the formula. The minimum native image was inspected;
+this is not evidence of an off-screen native follow bug.
+Protected160636 exercises912x552 in the actual viewer resize loop, alongside
+existing framing/movement and active-follow lifecycle checks. All80 native checks
+pass with only the known rendering-thread notice; five owned processes exit
+unsaved and two save manifests remain unchanged. Offline core and camera tests
+pass. `item_follow_minimum_reference` retains both runs. DF3D settings permit
+sizes below native's minimum; those layouts, natural hauling and general item
+types remain unaccepted, and this staged route stays hidden.
 
 ## Native item-sheet semantic discovery
 

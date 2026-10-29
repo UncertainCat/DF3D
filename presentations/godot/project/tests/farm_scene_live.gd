@@ -423,7 +423,7 @@ func item_camera_scene() -> void:
 	await capture("item_follow_active")
 	var point:=Vector3(original.x+0.5,original.z+1.0,original.y+0.5)
 	var projection=rig.get_node("Camera3D")
-	for extent in [Vector2i(1280,720),Vector2i(960,640),Vector2i(1200,800)]:
+	for extent in [Vector2i(912,552),Vector2i(1280,720),Vector2i(960,640),Vector2i(1200,800)]:
 		root.size=extent;await process_frame;await process_frame;await process_frame
 		var anchor: Vector2=rig.native_follow_anchor(Vector2(extent),Vector2.ONE,32)
 		if not check(projection.unproject_position(point).distance_to(anchor)<0.1 and anchor.x<sheet.get_global_transform_with_canvas().origin.x,"resize left followed target behind sheet"):return

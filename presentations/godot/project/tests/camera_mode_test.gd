@@ -65,6 +65,8 @@ func run() -> void:
 	check(Rig.native_follow_anchor(Vector2(1200,800),Vector2.ONE,48)==Vector2(264,408),"recorded native 48px follow framing")
 	check(Rig.native_follow_anchor(Vector2(1200,800),Vector2.ONE,32)==Vector2(272,400),"recorded native 32px follow includes partial edge tile")
 	check(Rig.native_follow_anchor(Vector2(1200,800),Vector2.ONE,40)==Vector2(260,420),"recorded native 40px follow framing")
+	check(Rig.native_follow_anchor(Vector2(912,552),Vector2.ONE,48)==Vector2(120,312),"recorded native minimum window follow framing")
+	check(Rig.native_follow_anchor(Vector2(1600,900),Vector2.ONE,48)==Vector2(504,456),"recorded native wide window follow framing")
 	var target:=Vector3(15.5,7,20.5)
 	rig.follow_on(target,6.0,Vector2.ONE)
 	var anchor:=Rig.native_follow_anchor(Vector2(root.size),Vector2.ONE,rig._df_pixels_per_tile)

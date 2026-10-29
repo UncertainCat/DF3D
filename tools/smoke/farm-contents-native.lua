@@ -34,6 +34,14 @@ local function items()
  return rows
 end
 local function camera_reference(item)
+ local function resize(size)
+  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
+  assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local limit=dfhack.getTickCount()+30000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+   assert(dfhack.getTickCount()<limit,'camera resize timeout');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));script.sleep(2,'frames');move(30,400)
+ end
  local plot=df.global.plotinfo
  local saved={unit=plot.follow_unit,item=plot.follow_item,x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
  local position={x=item.pos.x,y=item.pos.y,z=item.pos.z}
@@ -50,6 +58,7 @@ local function camera_reference(item)
   row.window={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
   row.position={x=item.pos.x,y=item.pos.y,z=item.pos.z}
   row.viewport={factor=g.viewport_zoom_factor,width=g.main_viewport.dim_x,height=g.main_viewport.dim_y}
+  row.ui_grid={width=g.dimx,height=g.dimy}
   row.item_hidden=item.flags.hidden;row.terrain_hidden=designation.hidden
   return row
  end
@@ -79,6 +88,10 @@ local function camera_reference(item)
   end
   move(856,106);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
   script.sleep(2,'frames');move(400,400);state('enabled-before-close')
+  for _,size in ipairs{'minimum','small','wide','default'}do
+   resize(size);state('resize-open-'..size)
+   assert(plot.follow_item==item.id and main.view_sheets.open,'resize lost follow or sheet')
+  end
   gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
   script.sleep(2,'frames');state('closed')
   assert(not main.view_sheets.open and plot.follow_item==item.id,'closing item sheet did not preserve follow')
@@ -93,12 +106,17 @@ local function camera_reference(item)
    assert(g.viewport_zoom_factor~=previous,'camera zoom probe did not change zoom')
   end
   assert(g.viewport_zoom_factor==zoom,'camera zoom probe did not restore zoom')
+  for _,size in ipairs{'minimum','default'}do
+   resize(size);state('resize-closed-'..size)
+   assert(plot.follow_item==item.id and not main.view_sheets.open,'resize changed closed-sheet following')
+  end
   gui.simulateInput(view,'CURSOR_LEFT');view:render(dfhack.getTickCount())
   script.sleep(2,'frames');state('manual-pan')
   assert(plot.follow_item==-1,'manual pan did not cancel follow')
   assert(require('json').encode(items())==before,'camera action changed item facts')
  end,debug.traceback)
  item.pos.x=position.x;item.pos.y=position.y;item.pos.z=position.z
+ resize('default')
  item.flags.whole=original_flags;designation.whole=original_designation
  g.viewport_zoom_factor=zoom;df.global.enabler.renderer:set_viewport_zoom_factor(zoom)
  plot.follow_unit=saved.unit;plot.follow_item=saved.item

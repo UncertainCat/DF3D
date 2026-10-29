@@ -180,6 +180,7 @@ try {
     'ascii' {[Shot]::Text($window,'a')}
     'name-filter-mixed' {[Shot]::Text($window,'a Z09-_.')}
     'name-resize-small' {[Shot]::Resize($window,960,600)}
+    'name-resize-minimum' {[Shot]::Resize($window,640,480)}
     'name-resize-wide' {[Shot]::Resize($window,1600,900)}
     'name-resize-default' {[Shot]::Resize($window,1200,800)}
     default {throw "Unknown owner input action: $action"}

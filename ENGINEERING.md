@@ -490,7 +490,7 @@ inspected. It checks item/holder identity signals, ineligible Melt and pending,
 owner-input and retired-snapshot click suppression. Core `item-sheet-baseline`
 passes; GPU passes with only the three documented engine diagnostics.
 `item_sheet_render_reference` records the crop/hash and snapshot. Its holder
-ID227 is explicitly synthetic for routing, not a claim about native membership.
+ID968 is verified by the native semantic reads and link round trips below.
 
 Protected native122502 captures all five item-sheet instructions207..210/285,
 including Melt on an eligible weapon. Item-sheet Forbid text differs from the
@@ -513,6 +513,27 @@ This accepts the captured seed rendering, hover and local signal routing.
 No item-sheet transport, main-scene owner, live DF3D holder/camera/action effects,
 long/multiline description layout, resize or nonseed artwork is accepted.
 The public farm route remains staged until the full workflow is complete.
+
+## Native item holder provider
+
+The diagnostic header and description readers return an optional holder object
+with building ID, type and owned native name. The item-sheet renderer calls
+cb16b0(item,0x24) at153bec to resolve BUILDING_HOLDER from semantic general_refs.
+The pinned complete63-byte lookup has FNVaf4453f988ab95f7 and no PE base
+relocations or direct global reads. It scans reference types and tail-calls the
+matching reference's getBuilding virtual. Holder naming at1567ed uses the
+building getName virtual into independently owned storage. The renderer prefixes
+"On " for Table and "In " for other buildings; this is not a reason to read its
+viewscreen scratch. Container/unit holder branches remain separate work.
+
+Protected123322 verifies twelve warm/cold reads across six seeds, native holder
+captions and six actual holder-View/contents-View round trips. Each resolves
+farm968, type4, native name "Farm Plot". Full item/building/view_sheets/plotinfo
+bytes remain unchanged around the semantic reads. Owned paused DF169524 exits
+unsaved; source preservation passes. `item_holder_reference` records the pin,
+results and hashes. MSVC passes. This remains a diagnostic provider, not item
+inspection transport. Absent/multiple/dangling refs, renamed holders and nonfarm
+building/container/unit cases still need acceptance.
 
 ## Native item-sheet semantic discovery
 

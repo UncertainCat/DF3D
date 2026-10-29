@@ -26,6 +26,31 @@ inline std::optional<std::string> buildingItemCaption(df::item* item) {
     if(!caption||!item)return std::nullopt;
     std::string result;caption(item,&result,false,-1);return result;
 }
+struct ItemBuildingHolder {
+    int32_t id=-1,type=-1;
+    std::string name;
+};
+// Native item sheet153bec resolves BUILDING_HOLDER through the semantic general
+// reference lookup. Renderer1567ed calls holder->getName into owned text storage.
+inline std::optional<ItemBuildingHolder> itemBuildingHolder(df::item* item) {
+    using Find=df::building* (*)(df::item*,int32_t);
+    static const auto find=[]()->Find {
+        if(!farmFunctions())return nullptr;
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x63;++i){hash^=base[0xcb16b0+i];hash*=UINT64_C(1099511628211);}
+        if(hash!=UINT64_C(0xaf4453f988ab95f7))return nullptr;
+        return reinterpret_cast<Find>(base+0xcb16b0);
+    }();
+    if(!find||!item)return std::nullopt;
+    ItemBuildingHolder result;
+    if(auto* building=find(item,0x24)) {
+        result.id=building->id;result.type=static_cast<int32_t>(building->getType());
+        building->getName(&result.name);
+        if(result.name.size()>512)return std::nullopt;
+    }
+    return result;
+}
 // Item-sheet renderer154c84 calls this owned-string weight formatter. Native
 // lazy computation may populate weight caches on this item and its contents.
 inline std::optional<std::string> itemWeightCaption(df::item* item) {

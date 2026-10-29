@@ -115,7 +115,7 @@ for index=0,5 do
  assert(row.active_sheet=='ITEM' and row.active_id==baseline.contents[index+1].id,'contents eye row identity/order differs')
  row.contents=items()
  local item=assert(df.item.find(row.active_id));local guards={}
- for _,object in ipairs{main.view_sheets,df.global.plotinfo,item}do
+ for _,object in ipairs{main.view_sheets,df.global.plotinfo,item,b}do
   local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
   dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
  end
@@ -136,6 +136,9 @@ for index=0,5 do
    local text,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(b.id),tostring(item.id));assert(code==0,text)
    local header=require('json').decode(text);assert(header.item_id==item.id and header.weight==weight_line,'semantic item weight differs from native')
    assert(header.description==native_description,'owned seed description differs from native sheet')
+   assert(header.holder and header.holder.building_id==b.id and header.holder.building_type==b:getType(),'semantic item holder identity differs')
+   local holder_found=false;for _,line in ipairs(row.lines)do if line:find('In '..header.holder.name,1,true)then holder_found=true end end
+   assert(holder_found,'semantic holder name differs from native item sheet')
    local title_found=false;for _,line in ipairs(row.lines)do if line:find(header.caption,1,true)then title_found=true end end
    assert(title_found,'semantic item title differs from native')
    for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'item header changed UI or differed from native weight state')end
@@ -145,6 +148,12 @@ for index=0,5 do
  item.flags.whole=original_flags;item.weight.whole=original_whole;item.weight.fraction=original_fraction
  for _,guard in ipairs(guards)do df.delete(guard.bytes)end
  assert(header_ok,header_error)
+ -- Exercise the real native holder link, then return via the same row's View.
+ move(816,250);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ assert(main.view_sheets.active_sheet==df.view_sheet_type.BUILDING and main.view_sheets.active_id==b.id,'native holder link selected a different building')
+ records[#records+1]={name='farm-item-holder-link',item_id=item.id,building_id=b.id,native_equal=true}
+ move(756,526+index*36);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ assert(main.view_sheets.active_sheet==df.view_sheet_type.ITEM and main.view_sheets.active_id==item.id,'holder round trip changed selected item')
  if index==0 then
   -- Native item-sheet controls use the short header buttons, not contents rows.
   for _,probe in ipairs{{'forbid',804,76},{'dump',828,76},{'melt',852,76},{'visibility',876,76},{'camera',856,106},{'holder',816,250}}do

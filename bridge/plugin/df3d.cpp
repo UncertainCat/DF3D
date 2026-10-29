@@ -1646,6 +1646,13 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!caption||!weight)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["item_id"]=ids[1];
           result["caption"]=DF2UTF(*caption);result["weight"]=DF2UTF(*weight);
+          const auto holder=df3d_production::itemBuildingHolder(item);if(!holder)return CR_FAILURE;
+          result["holder"]=Json::Value(Json::nullValue);
+          if(holder->id>=0) {
+            Json::Value link(Json::objectValue);link["building_id"]=holder->id;
+            link["building_type"]=holder->type;link["name"]=DF2UTF(holder->name);
+            result["holder"]=std::move(link);
+          }
           if(parameters[0]=="farm-item-description-probe") {
             const auto description=df3d_production::probeSeedDescription(item);
             if(!description)return CR_FAILURE;

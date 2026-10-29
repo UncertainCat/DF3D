@@ -19363,11 +19363,11 @@
       "subtype_raw": "",
       "weight": "<1\u0393",
       "description": "These are sweet pod seeds.  ",
-      "holder_id": 227,
+      "holder_id": 968,
       "holder_name": "In Farm Plot",
       "holder_art": "BUILDING_ICON_FARM_PLOT"
     },
-    "scope": "Baseline seed sheet rendering only. Holder ID227 is a synthetic routing value, not native semantic evidence. Native holder caption/icon/View and Weight label are visible in this capture. Caption/weight/description come from owned-native diagnostic reference.",
+    "scope": "Baseline seed sheet rendering only. Holder ID968 is verified by item_holder_reference native reads and link round trips. Native holder caption/icon/View and Weight label are visible in this capture. Caption/weight/description come from owned-native diagnostic reference.",
     "limitations": "Staged renderer only; no management wire/owner, hover, camera/holder effects, generic item art, multiline/long text or resize acceptance."
   },
   "item_sheet_controls_reference": {
@@ -21889,7 +21889,7 @@
           "subtype_raw": "",
           "weight": "<1\u0393",
           "description": "These are sweet pod seeds.  ",
-          "holder_id": 227,
+          "holder_id": 968,
           "holder_name": "In Farm Plot",
           "holder_art": "BUILDING_ICON_FARM_PLOT"
         },
@@ -21915,7 +21915,7 @@
           "subtype_raw": "",
           "weight": "<1\u0393",
           "description": "These are sweet pod seeds.  ",
-          "holder_id": 227,
+          "holder_id": 968,
           "holder_name": "In Farm Plot",
           "holder_art": "BUILDING_ICON_FARM_PLOT"
         },
@@ -21941,7 +21941,7 @@
           "subtype_raw": "",
           "weight": "<1\u0393",
           "description": "These are sweet pod seeds.  ",
-          "holder_id": 227,
+          "holder_id": 968,
           "holder_name": "In Farm Plot",
           "holder_art": "BUILDING_ICON_FARM_PLOT"
         },
@@ -21967,7 +21967,7 @@
           "subtype_raw": "",
           "weight": "<1\u0393",
           "description": "These are sweet pod seeds.  ",
-          "holder_id": 227,
+          "holder_id": 968,
           "holder_name": "In Farm Plot",
           "holder_art": "BUILDING_ICON_FARM_PLOT"
         },
@@ -21993,7 +21993,7 @@
           "subtype_raw": "",
           "weight": "<1\u0393",
           "description": "These are sweet pod seeds.  ",
-          "holder_id": 227,
+          "holder_id": 968,
           "holder_name": "In Farm Plot",
           "holder_art": "BUILDING_ICON_FARM_PLOT"
         },
@@ -22019,7 +22019,7 @@
           "subtype_raw": "",
           "weight": "<1\u0393",
           "description": "These are sweet pod seeds.  ",
-          "holder_id": 227,
+          "holder_id": 968,
           "holder_name": "In Farm Plot",
           "holder_art": "BUILDING_ICON_FARM_PLOT"
         },
@@ -22029,5 +22029,193 @@
     ],
     "scope": "Native item-sheet hover207/208/209/210/285, six real seed flag-toggle states restored, and eligible weapon Melt hover only. Owned DF183960 exits unsaved with source save preserved. Holder has no instruction.",
     "limitations": "No camera/holder activation, Melt effects or DF3D main-scene item-sheet workflow acceptance."
+  },
+  "item_holder_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261029-123322",
+    "lookup": {
+      "rva": "cb16b0",
+      "length": 99,
+      "fnv64": "af4453f988ab95f7",
+      "base_relocations": 0,
+      "native_call": "153bec(item,BUILDING_HOLDER=0x24)",
+      "name_call": "1567ed holder virtual getName slot0x188",
+      "ownership": "Semantic general_refs traversal, getType/getBuilding virtuals, then native building getName into caller-owned string; no menu or renderer inputs."
+    },
+    "cases": [
+      {
+        "item_id": 47492,
+        "cold": false,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47492,
+        "cold": true,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47486,
+        "cold": false,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47486,
+        "cold": true,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47494,
+        "cold": false,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47494,
+        "cold": true,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47485,
+        "cold": false,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47485,
+        "cold": true,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47484,
+        "cold": false,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47484,
+        "cold": true,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47493,
+        "cold": false,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      },
+      {
+        "item_id": 47493,
+        "cold": true,
+        "holder": {
+          "building_id": 968,
+          "building_type": 4,
+          "name": "Farm Plot"
+        },
+        "native_equal": true,
+        "ui_unchanged": true
+      }
+    ],
+    "native_links": [
+      {
+        "building_id": 968,
+        "item_id": 47492,
+        "name": "farm-item-holder-link",
+        "native_equal": true
+      },
+      {
+        "building_id": 968,
+        "item_id": 47486,
+        "name": "farm-item-holder-link",
+        "native_equal": true
+      },
+      {
+        "building_id": 968,
+        "item_id": 47494,
+        "name": "farm-item-holder-link",
+        "native_equal": true
+      },
+      {
+        "building_id": 968,
+        "item_id": 47485,
+        "name": "farm-item-holder-link",
+        "native_equal": true
+      },
+      {
+        "building_id": 968,
+        "item_id": 47484,
+        "name": "farm-item-holder-link",
+        "native_equal": true
+      },
+      {
+        "building_id": 968,
+        "item_id": 47493,
+        "name": "farm-item-holder-link",
+        "native_equal": true
+      }
+    ],
+    "bridge_sha256": "c7d6685b2c6eda1f02fdd2f9f1a264246aca65bb6e90cb1f5e10cc37bef04f27",
+    "result_sha256": "995bbc856b6e16853e8e0f42a25a00505aa6fec1b24f649158c961049c4e6f19",
+    "scope": "Six seed items and warm/cold headers. Native rendered holder captions and actual clicked destination match. Item/building/view_sheets/plotinfo byte guards unchanged after calls; all native link round trips restore item identity. Owned paused DF169524 exits unsaved; source preserved.",
+    "limitations": "Diagnostic only; no management item-sheet wire. Missing/multiple/dangling holder references, renamed holders, nonfarm buildings and container/unit holders remain unverified."
   }
 }

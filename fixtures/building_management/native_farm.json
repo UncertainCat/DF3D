@@ -11589,5 +11589,144 @@
       "sent_tab_change_effect_without_old_observer": true,
       "stale_external_change_refused": true
     }
+  },
+  "header_pixel_reference": {
+    "source": "build\\stockpile-storage-native-farm-discovery-20261028-183652",
+    "scope": "Interior rendering of seven nonediting header states from semantic_reference; excludes outer four-pixel rim and external selector join. Normal crop body uses existing summer snapshot. No rename write or removal effect claim.",
+    "cases": [
+      {
+        "name": "farm-header-lower-name",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "lower farm",
+          "has_worker": false,
+          "header_name": "Lower farm",
+          "native_name": "lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "crop": [
+          420,
+          56,
+          478,
+          700
+        ],
+        "rgb_sha256": "e3cafc9b878e93c8ec80b8108fb2b21010f51911478c3d30e9669beb643f8ffb"
+      },
+      {
+        "name": "farm-header-remove",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Farm Plot",
+          "native_name": "Farm Plot",
+          "removing": true,
+          "suspended": false
+        },
+        "crop": [
+          420,
+          56,
+          478,
+          700
+        ],
+        "rgb_sha256": "93d8d2d98b12684470f8c4a4a0ce42f0d77e7afd14690decb2febe5b81eb99a0"
+      },
+      {
+        "name": "farm-header-remove-suspended",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Farm Plot",
+          "native_name": "Farm Plot",
+          "removing": true,
+          "suspended": true
+        },
+        "crop": [
+          420,
+          56,
+          478,
+          700
+        ],
+        "rgb_sha256": "f4e8f1085d61004173a3c39b68cb470e0cb3d7b2c3bfb21b4f37a1bd1df7b170"
+      },
+      {
+        "name": "farm-header-remove-worker",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "",
+          "has_worker": true,
+          "header_name": "Farm Plot",
+          "native_name": "Farm Plot",
+          "removing": true,
+          "suspended": false
+        },
+        "crop": [
+          420,
+          56,
+          478,
+          700
+        ],
+        "rgb_sha256": "1eafc2a38b129e2e61376dfe135b4e1e78763b24d73a49974b0adc7b2bafeb3f"
+      },
+      {
+        "name": "farm-header-remove-suspended-worker",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "",
+          "has_worker": true,
+          "header_name": "Farm Plot",
+          "native_name": "Farm Plot",
+          "removing": true,
+          "suspended": true
+        },
+        "crop": [
+          420,
+          56,
+          478,
+          700
+        ],
+        "rgb_sha256": "f4e8f1085d61004173a3c39b68cb470e0cb3d7b2c3bfb21b4f37a1bd1df7b170"
+      },
+      {
+        "name": "farm-header-remove-restored",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Farm Plot",
+          "native_name": "Farm Plot",
+          "removing": true,
+          "suspended": false
+        },
+        "crop": [
+          420,
+          56,
+          478,
+          700
+        ],
+        "rgb_sha256": "93d8d2d98b12684470f8c4a4a0ce42f0d77e7afd14690decb2febe5b81eb99a0"
+      },
+      {
+        "name": "farm-header-cancel-removal",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Farm Plot",
+          "native_name": "Farm Plot",
+          "removing": false,
+          "suspended": false
+        },
+        "crop": [
+          420,
+          56,
+          478,
+          700
+        ],
+        "rgb_sha256": "2a5173e22e34cf613d2d22b4d45bcf8edef7565789a30d554eba6031e98b54ab"
+      }
+    ]
   }
 }

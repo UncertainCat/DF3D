@@ -108,8 +108,27 @@ passes in `build/qa/farm-header-semantic-final`. That helper reference used
 management84; the management85 transport checks are described below. The native
 per-character rename mutation path and its transport/lifecycle remain pending.
 
-Header action ownership, rename/removal, main-scene lifecycle integration and
-live rendered edits remain incomplete.
+The staged sheet binds management85's native-formatted header caption and
+removal facts. Removing farms hide the season tabs, crop/fertilizer body and
+rename/remove icons. The replacement pane preserves the native inactive,
+suspended and assigned-worker variants, with suspension taking precedence.
+Cancel removal uses installed `HORIZONTAL_OPTION_ACTIVE` artwork and emits a
+separate owner action; pending requests and owner input gates block that action.
+Hiding the crop body also retires scrollbar dragging.
+
+`native_farm.json.header_pixel_reference` retains seven interior RGB hashes
+derived from the existing183652 native captures, including a formatted custom
+name and restoration after cancellation. GPU `build/qa/farm-header-view-final`
+matches all seven plus the twelve existing season/resize interiors and exercises
+real pointer routing, hidden controls and cancellation gates. Core passes cleanly;
+GPU passes with the three known Godot diagnostics. An initial artwork mismatch
+identified the horizontal-option selector. Subsequent input failures exposed a
+test lambda whose same-line statements unintentionally retained the owner gate;
+the corrected test executes both blocked clicks and gate restoration explicitly.
+
+Header action ownership, rename writes, removal command integration, bridge-side
+crop-edit refusal during removal, main-scene lifecycle integration and live
+rendered edits remain incomplete. These isolated view checks do not verify effects.
 The staged sheet is not exposed as a completed gameplay screen.
 
 ## Locations integration verification

@@ -143,3 +143,33 @@ assert(require('json').encode(items())==changed_state,'stale cross-row revision 
 edit(second.id,original_hidden,changed.revision,'completed')
 assert(require('json').encode(items())==original,'cross-row fixture not restored')
 records[#records+1]={name='farm-contents-cross-row-stale',result=stale,target_flags_unchanged=true,restored=true}
+-- Role names are not a rendering contract: in particular TEMP_PRINTHIDDEN
+-- must be observed in this sheet before the viewer filters any contents rows.
+-- Change only the held-item role in this paused diagnostic clone; retain the
+-- real item and its membership/flags, and restore even if an assertion fails.
+local held=b.contained_items[0]
+local original_role=held.use_mode
+local role_baseline=require('json').encode(items())
+local ok,err=xpcall(function()
+ for _,role in ipairs{0,1,2}do
+  held.use_mode=role
+  move(732,526)
+  local deadline=dfhack.getTickCount()+900
+  repeat move(732,526);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+  move(732,526)
+  local hover=main.current_hover
+  local enabled=main.hover_instructions_on
+  local row=capture('farm-contents-role-'..role)
+  row.role_value=role;row.role_name=df.building_item_role_type[role]
+  row.role_hover=hover;row.role_help_enabled=enabled;row.contents=items()
+  read_contents('role-'..role)
+  move(756,526);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  assert(main.view_sheets.active_sheet==df.view_sheet_type.ITEM and main.view_sheets.active_id==held.item.id,'role changes first visible item identity')
+  row.view_item_id=main.view_sheets.active_id
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(b)
+ end
+end,debug.traceback)
+held.use_mode=original_role
+assert(require('json').encode(items())==role_baseline,'role oracle did not restore item facts')
+assert(ok,err)
+records[#records+1]={name='farm-contents-roles-restored',restored=true}

@@ -159,8 +159,19 @@ or melting. Forbid branches inline at1b06d4: clearing resets those bytes,
 setting calls c634f0(item,3). Visibility toggles bit24 inline. Melt uses native
 cab7c0 eligibility and cabe10/cb2020 cancellation/marking; DFHack's canMelt
 reconstructs rules and is not that native call. `native_farm.json.contents_reference`
-records identities, flags, text, code hashes and scope. Tail scrolling, other
-roles, eligible melt and active-job effects still require verification.
+records identities, flags, text, code hashes and scope. Tail scrolling,
+eligible melt and active-job effects still require verification.
+
+`native_farm.json.contents_role_reference` records protected232318: changing
+the first seed's held-item role through TEMP, TEMP_PRINTHIDDEN and PERM leaves
+all first-six native captions and the first-row View identity unchanged. This
+sheet does not hide TEMP_PRINTHIDDEN rows. Temporary roles show the other-item
+indicator (hover323); PERM shows incorporated (hover317). The temporary-hidden
+capture was visually inspected. The native reader matches all ordered roles
+and facts without changing UI byte guards. Roles/item facts are restored,
+the source manifest is unchanged and owned paused DF182616 exits unsaved.
+These controlled seed roles do not establish natural temporary-item jobs or
+role-specific behavior in other building types.
 
 `building_item_native.h` pins the complete native action/predicate bodies and
 exposes desired-value setters at safe points. Dump spans multiple unwind entries;
@@ -191,7 +202,8 @@ paused DF176324 exits unsaved; the run passes cleanly. Deterministic policy
 tests cover revision fields/order, duplicate identities, ineligible/missing
 targets, stale requests, native refusal, exceptions and post-effect lost or
 invalid receipts. `native_farm.json.contents_transaction_reference` retains live
-evidence. Active jobs, other roles and eligible melting remain separate gaps.
+evidence. Active jobs, natural temporary-item workflows and eligible melting
+remain separate gaps.
 
 MSVC `farm-items-native-msvc.log` builds after adding the missing Buildings
 header. Protected220741 compares both directions of Forbid/Dump/Visibility with

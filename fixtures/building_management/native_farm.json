@@ -15346,5 +15346,42 @@
     },
     "coverage": "Real semantic service/controller reads and edits, bounded viewport recovery after second-row action, latest-scroll ownership, queued close NotSent, sent close independently reconciled and observed on explicit reopen, explicit restoration. Eleven native checks, two save manifests unchanged, owned paused DF167788 exits unsaved.",
     "limitations": "No rendered sheet integration or actual transport-loss/producer-replacement test. Synthetic engine tests cover Unknown outcomes and epoch retirement. Initial231128 failed because harness did not bootstrap its reconnected client; final uses normal Catalog claim."
+  },
+  "contents_role_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261028-232318",
+    "cases": [
+      {
+        "role_value": 0,
+        "role_name": "TEMP",
+        "role_hover": 323,
+        "role_help_enabled": true,
+        "view_item_id": 47492
+      },
+      {
+        "role_value": 1,
+        "role_name": "TEMP_PRINTHIDDEN",
+        "role_hover": 323,
+        "role_help_enabled": true,
+        "view_item_id": 47492
+      },
+      {
+        "role_value": 2,
+        "role_name": "PERM",
+        "role_hover": 317,
+        "role_help_enabled": true,
+        "view_item_id": 47492
+      }
+    ],
+    "hashes": {
+      "result.json": "ca9ab184272d5f51343f07f24ad2c60fb666d9e846d9102a2d608d4d107f26d4",
+      "capture-inputs.json": "34f987365dff41fd438dd85d71de3f237104fd1a8310def1d49be822d35a7aff",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "farm-contents-role-0.png": "d280d894107a32cfafdcb6a7fbfa6d985e92918dbbb172d6245b7b82c4496111",
+      "farm-contents-role-1.png": "d280d894107a32cfafdcb6a7fbfa6d985e92918dbbb172d6245b7b82c4496111",
+      "farm-contents-role-2.png": "e7e9147c5e202489d70d06c212db4a2c08a8ceba811356079dbe7512b7afb475"
+    },
+    "coverage": "Controlled held-item roles TEMP, TEMP_PRINTHIDDEN and PERM on the same real seed item in paused farm968. All remain visible with unchanged first-six captions and first-row View identity47492. Temporary roles use hover323; permanent uses317. Native reader preserves UI byte guards and matches ordered roles/facts. Role and item facts restored; source unchanged; owned DF182616 exits unsaved. TEMP_PRINTHIDDEN screenshot visually inspected.",
+    "limitations": "Controlled roles on seed membership, not naturally occurring temporary-item job workflows. No eligible melting, active job effects, generic building role dispatch or rendered DF3D contents acceptance."
   }
 }

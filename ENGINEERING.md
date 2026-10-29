@@ -492,9 +492,26 @@ passes; GPU passes with only the three documented engine diagnostics.
 `item_sheet_render_reference` records the crop/hash and snapshot. Its holder
 ID227 is explicitly synthetic for routing, not a claim about native membership.
 
-This accepts only the captured baseline seed rendering and local signal routing.
-No item-sheet transport, main-scene owner, live holder/camera/action effects,
-hover, long/multiline description layout, resize or nonseed artwork is accepted.
+Protected native122502 captures all five item-sheet instructions207..210/285,
+including Melt on an eligible weapon. Item-sheet Forbid text differs from the
+contents-row instruction; the camera follows the item, and the holder View link
+has no instruction. Native Forbid/Dump/Visibility toggles are captured in both
+directions with item identity and restoration assertions. Owned paused DF183960
+exits unsaved and source preservation passes. `item_sheet_controls_reference`
+retains native text cells, disabled-hover observations and six full-panel hashes.
+
+The staged sheet uses the shared hover timer with its own exact ITEM_HELP text,
+visible-control hitboxes, eligibility, pending/owner gating and retirement.
+GPU `item-sheet-controls` matches all six flag-state panels (2073024 additional
+pixels), including native decorated captions supplied by the snapshot. The shared
+hover capture matches all five messages and frames; viewport motion tests cover
+routing, ineligible Melt, absent holder help and hidden/pending retirement. Core
+passes cleanly and both GPU checks pass with only the documented three engine
+diagnostics. Native flag-state and rendered camera-help images were inspected.
+
+This accepts the captured seed rendering, hover and local signal routing.
+No item-sheet transport, main-scene owner, live DF3D holder/camera/action effects,
+long/multiline description layout, resize or nonseed artwork is accepted.
 The public farm route remains staged until the full workflow is complete.
 
 ## Native item-sheet semantic discovery

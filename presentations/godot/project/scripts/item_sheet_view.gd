@@ -11,16 +11,21 @@ var source
 var snapshot: Dictionary={}
 var colors: Array[Color]=[]
 var icon: Texture2D
+var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
 var pending:=false
 var input_allowed: Callable
 
-func configure(world) -> void:
+func configure(world,help=null) -> void:
+	hover_help=help;mouse_exited.connect(_leave_hover)
 	source=world;art.configure(world);picture.configure(world);theme=art.theme
 	colors=art.installed_palette(world.assets_root())
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	size=Vector2(488,708)
 
 func present(value: Dictionary) -> void:
+	if snapshot.get("id",-1)!=value.get("id",-1):_leave_hover()
 	snapshot=value.duplicate(true);icon=null
 	if not snapshot.is_empty() and snapshot.get("item_type",-1)==53:
 		var material: PackedStringArray=snapshot.get("material_token","").split(":")
@@ -34,7 +39,27 @@ func holder_rect() -> Rect2:return Rect2(328,180,144,36)
 func eligible(index: int) -> bool:
 	return index!=1 and index!=2 or snapshot.get("can_dump" if index==1 else "can_melt",false)
 
+func _leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+
+func help_at(point: Vector2) -> String:
+	if snapshot.is_empty():return ""
+	for index in 4:
+		if eligible(index) and flag_rect(index).has_point(point):return ["forbid","dump","melt","visibility"][index]
+	return "camera" if camera_rect().has_point(point) else ""
+
+func _process(_delta: float) -> void:
+	if not is_instance_valid(hover_help):return
+	if pointer_known and is_visible_in_tree() and allowed():
+		var kind:=help_at(pointer_position)
+		if not kind.is_empty():hover_help.enter_item(get_instance_id(),kind);return
+	hover_help.leave(get_instance_id())
+
+func _exit_tree() -> void:_leave_hover()
+
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:pointer_known=true;pointer_position=event.position;_process(0)
 	if not allowed() or not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT:return
 	for index in 4:
 		if eligible(index) and flag_rect(index).has_point(event.position):

@@ -4,7 +4,8 @@ func run() -> void:
 	root.size=Vector2i(488,708)
 	var world:=Df3dWorld.new();root.add_child(world)
 	if not world.load_assets(OS.get_environment("DF3D_DF_PATH")):fail("Item assets unavailable");return
-	var view=preload("res://scripts/item_sheet_view.gd").new();root.add_child(view);view.configure(world)
+	var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.configure(world);help.position=Vector2(600,0)
+	var view=preload("res://scripts/item_sheet_view.gd").new();root.add_child(view);view.configure(world,help)
 	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json"))
 	var reference: Dictionary=fixture.item_sheet_render_reference
 	var snapshot: Dictionary=reference.snapshot.duplicate(true)
@@ -15,6 +16,28 @@ func run() -> void:
 	image.save_png(ProjectSettings.globalize_path("res://../../../build/item-sheet-viewer.png"))
 	var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_data())
 	if hash.finish().hex_encode()!=reference.rgb_sha256:fail("Native item sheet pixels differ");return
+	for sample in fixture.item_sheet_controls_reference.states:
+		var state: Dictionary=sample.snapshot.duplicate(true)
+		for key in ["id","item_type","holder_id"]:state[key]=int(state[key])
+		view.present(state)
+		await process_frame;await RenderingServer.frame_post_draw
+		image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		hash.start(HashingContext.HASH_SHA256);hash.update(image.get_data())
+		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native item flag state differs: "+sample.name);return
+	view.present(snapshot)
+	for probe in [[view.flag_rect(0).get_center(),"forbid"],[view.flag_rect(1).get_center(),"dump"],[view.flag_rect(2).get_center(),""],[view.flag_rect(3).get_center(),"visibility"],[view.camera_rect().get_center(),"camera"],[view.holder_rect().get_center(),""]]:
+		var motion:=InputEventMouseMotion.new();motion.position=probe[0];root.push_input(motion,true)
+		if view.help_at(probe[0])!=probe[1] or help.state.key!=("item_"+probe[1] if probe[1]!="" else ""):fail("Item hover route differs");return
+	snapshot.can_melt=true;view.present(snapshot)
+	if view.help_at(view.flag_rect(2).get_center())!="melt":fail("Eligible item Melt help missing");return
+	snapshot.can_melt=false;view.present(snapshot)
+	var motion:=InputEventMouseMotion.new();motion.position=view.camera_rect().get_center();root.push_input(motion,true)
+	view.pending=true;view._process(0)
+	if not help.state.key.is_empty():fail("Pending item retained help");return
+	view.pending=false;view._process(0)
+	view.hide();view._process(0)
+	if not help.state.key.is_empty():fail("Hidden item retained help");return
+	view.present(snapshot)
 	var calls: Array=[]
 	view.flag_requested.connect(func(id,flag,value):calls.append([id,flag,value]))
 	view.holder_requested.connect(func(id):calls.append(["holder",id]))
@@ -26,5 +49,5 @@ func run() -> void:
 	view.pending=false;view.input_allowed=func():return false;click(view.holder_rect().get_center())
 	view.input_allowed=Callable();view.present({});click(view.camera_rect().get_center())
 	if not calls.is_empty() or view.visible or view.icon!=null:fail("Item sheet retained retired input/artwork");return
-	view.queue_free();world.queue_free();await process_frame
+	view.queue_free();help.queue_free();world.queue_free();await process_frame
 	print("ITEM_SHEET_CAPTURE_PASS");quit(0)

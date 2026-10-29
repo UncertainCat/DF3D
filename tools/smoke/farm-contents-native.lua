@@ -145,6 +145,31 @@ for index=0,5 do
  item.flags.whole=original_flags;item.weight.whole=original_whole;item.weight.fraction=original_fraction
  for _,guard in ipairs(guards)do df.delete(guard.bytes)end
  assert(header_ok,header_error)
+ if index==0 then
+  -- Native item-sheet controls use the short header buttons, not contents rows.
+  for _,probe in ipairs{{'forbid',804,76},{'dump',828,76},{'melt',852,76},{'visibility',876,76},{'camera',856,106},{'holder',816,250}}do
+   local before=require('json').encode(items())
+   local deadline=dfhack.getTickCount()+1100
+   repeat move(probe[2],probe[3]);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+   move(probe[2],probe[3])
+   local tooltip=help('item-'..probe[1]);tooltip.item_id=item.id
+   capture('farm-item-hover-'..probe[1])
+   assert(require('json').encode(items())==before,'item hover changed item facts')
+  end
+  for _,probe in ipairs{{'forbid',804},{'dump',828},{'hidden',876}}do
+   local before=require('json').encode(items());local original=item.flags[probe[1]]
+   for toggle=1,2 do
+    move(probe[2],76);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+    local expected=original;if toggle==1 then expected=not original end
+    assert(item.flags[probe[1]]==expected,'item-sheet flag toggle differs')
+    move(400,400)
+    local state=capture('farm-item-'..probe[1]..'-'..toggle)
+    state.item_id=item.id;state.flag=probe[1];state.value=item.flags[probe[1]];state.contents=items()
+    assert(state.active_sheet=='ITEM' and state.active_id==item.id,'item-sheet action changed target')
+   end
+   assert(require('json').encode(items())==before,'item-sheet toggles did not restore original facts')
+  end
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  select_map(b)
  assert(main.view_sheets.active_sheet==df.view_sheet_type.BUILDING and main.view_sheets.active_id==b.id,'contents fixture did not return to farm')
@@ -278,6 +303,16 @@ local probe_ok,probe_err=xpcall(function()
  move(828,526);local melt=help('melt');melt.item_id=metal.id
  assert(melt.hover==327 and melt.enabled,'melt instruction missing')
  assert(metal.flags.whole==flags,'hover changed weapon flags')
+ local whole,fraction=metal.weight.whole,metal.weight.fraction
+ move(756,526);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ assert(main.view_sheets.active_sheet==df.view_sheet_type.ITEM and main.view_sheets.active_id==metal.id,'eligible item View target differs')
+ deadline=dfhack.getTickCount()+1100
+ repeat move(852,76);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+ move(852,76);local item_melt=help('item-melt');item_melt.item_id=metal.id
+ assert(item_melt.hover==209 and item_melt.enabled,'item-sheet melt instruction missing')
+ capture('farm-item-hover-eligible-melt')
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(b)
+ metal.flags.whole=flags;metal.weight.whole=whole;metal.weight.fraction=fraction
 end,debug.traceback)
 held.item=seed;seed.flags.whole=seed_flags
 assert(require('json').encode(items())==role_baseline,'tooltip fixture not restored')

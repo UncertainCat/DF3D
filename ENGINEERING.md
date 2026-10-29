@@ -446,6 +446,20 @@ product scrollbar workaround was retained. The isolated component test also
 checks dragging outside the control followed by normal item-control clicks.
 View still only emits an identity; the item sheet remains unfinished.
 
+Protected main-scene083548 on2026-10-29 verifies actual item edits across
+queued and sent disconnects. Viewport clicks toggle the second row's visibility;
+the sent case waits for DF's completed receipt without delivering it to the
+controller. Native checks compare all rows and preserve UI scratch. Detach
+reports not_sent for queued work and unknown for sent work, retires contents,
+visible controls and input ownership, and reconnect performs no replay or old
+applied callback. A fresh explicit open observes native effects; a fresh click
+restores the original complete contents snapshot. The recovered panel screenshot
+was inspected. All58 native checks pass; both save manifests remain unchanged
+and owned DF92564/173916 exit unsaved. Only the known rendering-thread notice
+appears. `contents_disconnect_scene_reference` retains bounded evidence and
+hashes. This closes visibility-edit disconnect acceptance, not item-edit
+producer replacement: the existing replacement case still targets farm typing.
+
 ## Native item-sheet semantic discovery
 
 `native_farm.json.item_sheet_discovery_reference` records the six seed sheets

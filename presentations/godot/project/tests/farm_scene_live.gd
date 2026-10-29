@@ -99,6 +99,8 @@ func exercise_scene() -> void:
 	if not check(not farm.snapshot.removing and owner.panel.body.visible,"cancel control did not restore farm body"):return
 	await native("verify",{"seasons":seasons,"removing":false})
 	await capture("cancelled")
+	await contents_disconnect_cases()
+	if stopped:return
 	await disconnect_cases(id,seasons)
 	if stopped:return
 	await replacement_case(id,seasons)
@@ -212,3 +214,70 @@ func contents_scene() -> void:
 	owner.close_panel();await process_frame
 	if not check(owner.contents.snapshot.is_empty() and view.rows.is_empty() and not view.scrollbar.dragging,"closed farm retained contents"):return
 	if not check(not scene._fortress_hud.native_help.visible,"closed contents retained hover"):return
+
+# Exercise actual item writes; farm rename/removal lifecycle does not establish
+# the separate contents controller's retirement or its receipt-offset recovery.
+func contents_disconnect_cases() -> void:
+	var evidence: Array=[]
+	var applied: Array=[]
+	owner.contents.applied.connect(func():applied.append(true))
+	for sent in [false,true]:
+		step="contents disconnect sent="+str(sent)
+		await lifecycle_open(int(fixture.contents.building_id))
+		if not await contents_ready():return
+		var initial: Dictionary=owner.contents.snapshot.duplicate(true)
+		var expected: Array=initial.rows.duplicate(true)
+		var observers: int=applied.size()
+		var view=owner.panel.contents
+		await pointer(view.get_global_transform_with_canvas()*view.control_rect(1,5).get_center())
+		var pending: int=owner.contents.ticket
+		if not check(owner.contents.phase==owner.contents.Phase.Applying and pending>0 and actions._requests[pending].sequence==0,"item edit not queued by viewport click"):return
+		if sent:
+			actions.poll()
+			if not check(actions._requests.has(pending) and actions._requests[pending].sequence>0,"item edit not sent"):return
+			var sequence: int=actions._requests[pending].sequence
+			var deadline:=Time.get_ticks_msec()+30000
+			var receipt: Dictionary={}
+			while Time.get_ticks_msec()<deadline:
+				world.poll();var candidate: Dictionary=world.poll_management()
+				if candidate.get("request_seq")==sequence and candidate.get("status")==S.Ok:receipt=candidate;break
+				await create_timer(0.01).timeout
+			if not check(not receipt.is_empty() and actions.result(pending).is_empty(),"missing unobserved item receipt"):return
+			if not check(receipt.production.contents_edit.item_id==initial.rows[1].id and receipt.production.contents.cursor==1,"unobserved item receipt does not identify second row"):return
+			write_json("contents-unobserved-receipt.json",receipt)
+			expected[1].hidden=not expected[1].hidden
+		await native("contents-verify",{"rows":expected,"cursor":0})
+		if stopped:return
+		world.detach_live();actions.poll()
+		var outcome: Dictionary=actions.result(pending)
+		if not check(outcome.get("outcome")==("unknown" if sent else "not_sent"),"item disconnect outcome differs"):return
+		if not check(owner.contents.phase==owner.contents.Phase.Unavailable and owner.contents.building_id==-1 and owner.contents.ticket==0 and owner.contents.snapshot.is_empty(),"item disconnect retained authority"):return
+		if not check(actions._requests.is_empty() and actions._queue.is_empty() and actions._active==0,"item disconnect retained pending intent"):return
+		await lifecycle_retired("contents_disconnect_"+str(sent))
+		if stopped:return
+		if not check(world.attach(),"contents reconnect failed"):return
+		var deadline:=Time.get_ticks_msec()+60000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.02)
+			if world.terrain_loaded() and not actions._transport_lost and actions._epoch>0 and not actions._needs_claim and actions._active==0 and actions._queue.is_empty():break
+			await create_timer(0.02).timeout
+		if not check(not actions._transport_lost and actions._epoch>0 and not actions._needs_claim and actions._active==0,"contents reconnect not ready"):return
+		var next_ticket: int=actions._next_ticket
+		for frame in 30:
+			world.poll();actions.poll();await process_frame
+		if not check(no_farm_requests_since(next_ticket) and applied.size()==observers and owner.contents.snapshot.is_empty(),"reconnect replayed item edit or revived receipt observer"):return
+		await native("contents-verify",{"rows":expected,"cursor":0})
+		if stopped:return
+		await lifecycle_open(int(fixture.contents.building_id))
+		if not await contents_ready():return
+		if not check(owner.contents.rows()==expected and owner.panel.contents.cell_first==0,"fresh contents read differs after disconnect"):return
+		await capture("contents_disconnect_"+str(sent)+"_fresh")
+		if sent:
+			await pointer(view.get_global_transform_with_canvas()*view.control_rect(1,5).get_center())
+			if not await contents_ready():return
+		if not check(owner.contents.snapshot==initial,"fresh item restoration differs"):return
+		await native("contents-verify",{"rows":owner.contents.rows(),"cursor":0})
+		if stopped:return
+		evidence.append({"sent":sent,"item_id":initial.rows[1].id,"outcome":outcome.get("outcome"),"unobserved_receipt_retired":sent,"no_replay":true,"fresh_read_and_restore":true})
+		owner.close_panel()
+	write_json("contents-disconnect-results.json",evidence)

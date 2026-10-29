@@ -19248,5 +19248,52 @@
       "cc83e0": "Uses item.world_data_id at0x50 and world_data_subid at0x54; removes backing via10aab0/10a990/b9e70, sets ID -1, and traverses related refs."
     },
     "limitation": "Static branch evidence only; transitive description calls, other item classes and full item-sheet lifecycle remain unverified."
+  },
+  "contents_disconnect_scene_reference": {
+    "capture": "build/areas-acceptance-20261029-083548",
+    "status": "passed_with_known_issues",
+    "native_checks": 58,
+    "processes": [
+      92564,
+      173916
+    ],
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "cases": [
+      {
+        "fresh_read_and_restore": true,
+        "item_id": 47486,
+        "no_replay": true,
+        "outcome": "not_sent",
+        "sent": false,
+        "unobserved_receipt_retired": false
+      },
+      {
+        "fresh_read_and_restore": true,
+        "item_id": 47486,
+        "no_replay": true,
+        "outcome": "unknown",
+        "sent": true,
+        "unobserved_receipt_retired": true
+      }
+    ],
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "sha256": {
+      "contents-disconnect-results.json": "8d56d0ae09d154a1a96d81e309897e72677b8527c54ac23de5dac3503b85df11",
+      "contents-unobserved-receipt.json": "b450197afd4cb55a0737222f04ed09f82440676647fcc04c7c8db4139d686cf5",
+      "farm_scene_contents_disconnect_true_fresh.png": "b31ef86fa40029c4916efbfd53c7c2762ded3c8b8f705ed7be087586ba9ea69f",
+      "farm_scene_contents_disconnect_false_retired.png": "3711187bb2d74a0e4fdf119cb0f1e90f5eea0e9e31c833908a1bc84741810e53",
+      "result.json": "88da8d022db645d393a54c56e68e9976ac1ba35729c9839e1e61aad5ac159bf3"
+    },
+    "scope": "Actual second-row visibility clicks, queued and sent-before-observation detach, native all-row flag/identity and UI-scratch checks, unknown/not_sent outcomes, retired contents and input ownership, no replay or old applied observer, fresh read and restoration. Recovered panel screenshot inspected.",
+    "limitations": "Item writes across actual producer replacement remain unverified; existing replacement case covers farm typing. No item-sheet View integration or generic nonseed/eligible Melt acceptance."
   }
 }

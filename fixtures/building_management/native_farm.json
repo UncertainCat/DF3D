@@ -23603,5 +23603,155 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     },
     "scope": "Actual item-sheet Hide viewport edits: queued/sent disconnect and completed-but-unobserved reply across producer replacement. Explicit reopening reads fresh authority; sent same-process effect restored. Camera, other item types and broader presentation acceptance remain unfinished."
+  },
+  "item_camera_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261029-142242",
+    "status": "passed",
+    "owned_df_pid": 163728,
+    "exit": "unsaved",
+    "records": [
+      {
+        "name": "farm-item-camera-before",
+        "sheet_open": true,
+        "item_id": 47492,
+        "follow_unit": -1,
+        "follow_item": -1,
+        "window": {
+          "x": 129,
+          "y": 109,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "active_sheet": "ITEM",
+        "active_id": 47492
+      },
+      {
+        "name": "farm-item-camera-clicked",
+        "sheet_open": true,
+        "item_id": 47492,
+        "follow_unit": -1,
+        "follow_item": 47492,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "active_sheet": "ITEM",
+        "active_id": 47492
+      },
+      {
+        "name": "farm-item-camera-clicked-again",
+        "sheet_open": true,
+        "item_id": 47492,
+        "follow_unit": -1,
+        "follow_item": -1,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "active_sheet": "ITEM",
+        "active_id": 47492
+      },
+      {
+        "name": "farm-item-camera-enabled-before-close",
+        "sheet_open": true,
+        "item_id": 47492,
+        "follow_unit": -1,
+        "follow_item": 47492,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "active_sheet": "ITEM",
+        "active_id": 47492
+      },
+      {
+        "name": "farm-item-camera-closed",
+        "sheet_open": false,
+        "item_id": 47492,
+        "follow_unit": -1,
+        "follow_item": 47492,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "active_sheet": "ITEM",
+        "active_id": 47492
+      },
+      {
+        "name": "farm-item-camera-manual-pan",
+        "sheet_open": false,
+        "item_id": 47492,
+        "follow_unit": -1,
+        "follow_item": -1,
+        "window": {
+          "x": 114,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "active_sheet": "ITEM",
+        "active_id": 47492
+      },
+      {
+        "name": "farm-item-camera-restored",
+        "item_id": 47492,
+        "restored": true
+      }
+    ],
+    "active_panel_rgb_sha256": "bf3471cc308e9dc077eba6f1ea5f8d79dce2dfb9f266971587db9b0ae8350e11",
+    "native_entry_points": {
+      "toggle": "1b894e..1b896b toggles followed item ID and clears followed unit; no semantic position calculation here",
+      "render": "155494 compares item ID to follow_item and chooses active artwork",
+      "follow_update": "35e7b6 and 8b6b76 call c8baa0 with owned coordinate outputs",
+      "item_position": {
+        "rva": "c8baa0",
+        "length": "11a",
+        "fnv1a64": "2c62fce4a0555c66"
+      },
+      "unit_position": {
+        "rva": "1367430",
+        "length": "c6",
+        "fnv1a64": "c0292be8a6dacf2c"
+      }
+    },
+    "artifacts": {
+      "result.json": "4c8c497392858b48613b249e0511e6fcd5f313aba6038bb1b6b694d259b803df",
+      "farm-item-camera-clicked.png": "f9489ccbd8d7af1562bffb1a074e6fc290e4e0bdbd4de058bf894dffa7ec6915",
+      "farm-item-camera-closed.png": "29f52c2be910113488e336eee31844c941da31f7a0da33e0297bf3fbf4b50bd0",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "scope": "Native stationary seed follow toggle, close persistence and manual-pan cancellation. Static resolver audit is not runtime acceptance; transitive reference dispatch, moving/carried/container targets, invalidation, viewer follow ownership and native position transport remain unfinished."
   }
 }

@@ -25,6 +25,12 @@ func run() -> void:
 		hash.start(HashingContext.HASH_SHA256);hash.update(image.get_data())
 		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native item flag state differs: "+sample.name);return
 	view.present(snapshot)
+	view.set_following(true)
+	await process_frame;await RenderingServer.frame_post_draw
+	image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	hash.start(HashingContext.HASH_SHA256);hash.update(image.get_data())
+	if hash.finish().hex_encode()!=fixture.item_camera_reference.active_panel_rgb_sha256:fail("Native active camera artwork differs");return
+	view.set_following(false)
 	for probe in [[view.flag_rect(0).get_center(),"forbid"],[view.flag_rect(1).get_center(),"dump"],[view.flag_rect(2).get_center(),""],[view.flag_rect(3).get_center(),"visibility"],[view.camera_rect().get_center(),"camera"],[view.holder_rect().get_center(),""]]:
 		var motion:=InputEventMouseMotion.new();motion.position=probe[0];root.push_input(motion,true)
 		if view.help_at(probe[0])!=probe[1] or help.state.key!=("item_"+probe[1] if probe[1]!="" else ""):fail("Item hover route differs");return

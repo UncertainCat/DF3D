@@ -628,6 +628,35 @@ action or long-running camera following.
 
 ## Native item-sheet semantic discovery
 
+`item_camera_reference` records protected142242 stationary-seed camera behavior.
+Clicking the camera toggles follow_item between the item ID and -1, clears
+follow_unit, keeps the sheet open and selects active/inactive artwork. Closing
+the sheet with right-click preserves following; manual cursor panning clears it.
+The oracle records view_sheets.open separately: active_sheet/active_id persist
+after closing and must not be treated as proof that the sheet is visible.
+The owned process exits unsaved and source preservation passes. Earlier141852
+and142050 captures establish intermediate observations;142242 adds explicit
+transition assertions. The active panel was inspected and its full488x708 pixels
+match the staged renderer with viewer-owned following state. Core passes; the
+GPU check has only the three documented Godot diagnostics. This adds artwork,
+not a functioning DF3D follow action.
+
+Static native discovery: input1b894e..1b896b toggles the item ID and clears unit
+following; render155494 compares the selected ID for active artwork. Native
+follow updates35e7b6 and8b6b76 call item position resolverc8baa0 with three owned
+int16 outputs. Its complete0x11a-byte body has FNV1a64 2c62fce4a0555c66 and no
+RIP-relative global inputs. It rejects removed items, traverses inventory item
+and unit holder general references, reads escaped-vermin references, or returns
+item coordinates. Unit resolver1367430 (0xc6 bytes, FNV c0292be8a6dacf2c) reads
+unit coordinates or delegates through a containing-item reference. Both write
+only supplied coordinate outputs in the inspected bodies; indirect reference
+dispatch still needs acceptance. Invalid paths initialize only X, so adapters
+must initialize all outputs and reject the invalid sentinel. Inventory cycles
+and moving/carried/container cases are not established by this stationary oracle.
+DFHack Items::getPosition reconstructs these rules rather than calling DF.
+Runtime transport and viewer follow ownership remain unfinished; they must not
+borrow plotinfo follow fields or native camera state.
+
 `native_farm.json.item_sheet_discovery_reference` records the six seed sheets
 opened by native View in protected002651 and a pinned executable call-site audit.
 The first screenshot was inspected: native title, weight, full description, item

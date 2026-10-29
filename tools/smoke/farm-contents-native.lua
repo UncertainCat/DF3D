@@ -33,6 +33,45 @@ local function items()
  end
  return rows
 end
+local function camera_reference(item)
+ local plot=df.global.plotinfo
+ local saved={unit=plot.follow_unit,item=plot.follow_item,x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
+ local before=require('json').encode(items())
+ local function state(label)
+  local row=capture('farm-item-camera-'..label)
+  row.item_id=item.id;row.follow_unit=plot.follow_unit;row.follow_item=plot.follow_item
+  row.sheet_open=main.view_sheets.open
+  row.window={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
+  row.position={x=item.pos.x,y=item.pos.y,z=item.pos.z}
+  return row
+ end
+ local ok,err=xpcall(function()
+  state('before')
+  move(856,106);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  script.sleep(2,'frames');move(400,400);state('clicked')
+  assert(plot.follow_item==item.id and plot.follow_unit==-1 and main.view_sheets.open,'camera click did not enable item follow')
+  if main.view_sheets.active_sheet==df.view_sheet_type.ITEM then
+   move(856,106);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   script.sleep(2,'frames');move(400,400);state('clicked-again')
+   assert(plot.follow_item==-1 and main.view_sheets.open,'camera second click did not disable follow')
+  end
+  move(856,106);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  script.sleep(2,'frames');move(400,400);state('enabled-before-close')
+  gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
+  script.sleep(2,'frames');state('closed')
+  assert(not main.view_sheets.open and plot.follow_item==item.id,'closing item sheet did not preserve follow')
+  gui.simulateInput(view,'CURSOR_LEFT');view:render(dfhack.getTickCount())
+  script.sleep(2,'frames');state('manual-pan')
+  assert(plot.follow_item==-1,'manual pan did not cancel follow')
+  assert(require('json').encode(items())==before,'camera action changed item facts')
+ end,debug.traceback)
+ plot.follow_unit=saved.unit;plot.follow_item=saved.item
+ df.global.window_x=saved.x;df.global.window_y=saved.y;df.global.window_z=saved.z
+ select_map(b);move(756,526);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ assert(ok,err)
+ assert(main.view_sheets.active_sheet==df.view_sheet_type.ITEM and main.view_sheets.active_id==item.id,'camera oracle did not restore sheet')
+ records[#records+1]={name='farm-item-camera-restored',restored=true,item_id=item.id}
+end
 local baseline=capture('farm-contents-baseline');baseline.contents=items()
 -- Diagnostic graphics provenance, never a runtime cache source. Native
 -- c8745b..c87484 selects seed art via plant raw+0x208, without material tint.
@@ -304,6 +343,7 @@ for index=0,5 do
    end
    assert(require('json').encode(items())==before,'item-sheet toggles did not restore original facts')
   end
+  camera_reference(item)
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  select_map(b)

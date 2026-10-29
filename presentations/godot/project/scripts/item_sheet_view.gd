@@ -15,6 +15,7 @@ var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
 var pending:=false
+var following:=false
 var input_allowed: Callable
 
 func configure(world,help=null) -> void:
@@ -31,6 +32,9 @@ func present(value: Dictionary) -> void:
 		var material: PackedStringArray=snapshot.get("material_token","").split(":")
 		if material.size()==3 and material[0]=="PLANT":icon=source.farm_seed_icon(material[1])
 	visible=not snapshot.is_empty();queue_redraw()
+
+func set_following(value: bool) -> void:
+	following=value;queue_redraw()
 
 func allowed() -> bool:return not pending and not snapshot.is_empty() and (not input_allowed.is_valid() or input_allowed.call())
 func flag_rect(index: int) -> Rect2:return Rect2(376+index*24,12,24,24)
@@ -90,7 +94,7 @@ func _draw() -> void:
 		if not eligible(index):continue
 		var texture: Texture2D=art.texture(BUTTONS[index]+("_ACTIVE" if snapshot.get(FLAGS[index],false) else ""))
 		if texture!=null:draw_texture_rect(texture,flag_rect(index),false)
-	var camera: Texture2D=art.texture("UNIT_SHEET_CAMERA_INACTIVE")
+	var camera: Texture2D=art.texture("UNIT_SHEET_CAMERA_ACTIVE" if following else "UNIT_SHEET_CAMERA_INACTIVE")
 	if camera!=null:draw_texture_rect(camera,camera_rect(),false)
 	if snapshot.get("holder_id",-1)>=0:
 		var holder: Texture2D=art.texture(snapshot.get("holder_art",""))

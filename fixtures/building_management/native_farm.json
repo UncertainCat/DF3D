@@ -25132,5 +25132,536 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     },
     "scope": "Native clamps requested640x480 to912x552; target remains beside sheet at native minimum, open and closed, and wide/default references match. Actual viewer resize includes912x552 and existing follow lifecycle matrix. Native minimum image inspected. DF3D-only sizes below native minimum, natural hauling and general items remain unfinished."
+  },
+  "item_natural_hauling_reference": {
+    "date": "2026-10-29",
+    "run": "build/areas-acceptance-20261029-162046",
+    "status": "passed",
+    "owned_df_pid": 25908,
+    "exit": "unsaved",
+    "results": {
+      "after_delivery_samples": 3,
+      "candidate": {
+        "carried_by_selected_unit": true,
+        "destination": {
+          "x": 119.0,
+          "y": 54.0,
+          "z": 165.0
+        },
+        "frame": 0.0,
+        "in_inventory": true,
+        "item_id": 17142.0,
+        "item_type": "BARREL",
+        "job_id": 382788.0,
+        "job_type": "StoreItemInStockpile",
+        "on_ground": false,
+        "position": {
+          "item_id": 17142.0,
+          "valid": true,
+          "x": 134.0,
+          "y": 102.0,
+          "z": 165.0
+        },
+        "stored_position": {
+          "x": 155.0,
+          "y": 113.0,
+          "z": 165.0
+        },
+        "unit_id": 5985.0,
+        "unit_position": {
+          "x": 134.0,
+          "y": 102.0,
+          "z": 165.0
+        }
+      },
+      "delivered": true,
+      "distinct_positions": 14,
+      "moved_carried": true,
+      "samples": [
+        {
+          "carried_by_selected_unit": true,
+          "frame": 0.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 134.0,
+            "y": 102.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 134.0,
+            "y": 102.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 34.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 134.0,
+            "y": 99.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 134.0,
+            "y": 99.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 88.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 134.0,
+            "y": 93.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 134.0,
+            "y": 93.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 139.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 134.0,
+            "y": 87.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 134.0,
+            "y": 87.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 179.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 134.0,
+            "y": 83.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 134.0,
+            "y": 83.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 225.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 134.0,
+            "y": 78.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 134.0,
+            "y": 78.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 272.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 134.0,
+            "y": 73.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 134.0,
+            "y": 73.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 324.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 133.0,
+            "y": 68.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 133.0,
+            "y": 68.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 372.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 130.0,
+            "y": 63.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 130.0,
+            "y": 63.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 424.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 131.0,
+            "y": 58.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 131.0,
+            "y": 58.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 471.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 129.0,
+            "y": 56.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 129.0,
+            "y": 56.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 509.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 126.0,
+            "y": 56.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 126.0,
+            "y": 56.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 549.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 122.0,
+            "y": 56.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 122.0,
+            "y": 56.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": true,
+          "frame": 583.0,
+          "in_inventory": true,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": 382788.0,
+          "job_type": "StoreItemInStockpile",
+          "on_ground": false,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 155.0,
+            "y": 113.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": false,
+          "frame": 633.0,
+          "in_inventory": false,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": -1.0,
+          "job_type": "",
+          "on_ground": true,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": false,
+          "frame": 680.0,
+          "in_inventory": false,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": -1.0,
+          "job_type": "",
+          "on_ground": true,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          }
+        },
+        {
+          "carried_by_selected_unit": false,
+          "frame": 725.0,
+          "in_inventory": false,
+          "item_id": 17142.0,
+          "item_type": "BARREL",
+          "job_id": -1.0,
+          "job_type": "",
+          "on_ground": true,
+          "position": {
+            "item_id": 17142.0,
+            "valid": true,
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          },
+          "stored_position": {
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          },
+          "unit_id": 5985.0,
+          "unit_position": {
+            "x": 119.0,
+            "y": 54.0,
+            "z": 165.0
+          }
+        }
+      ]
+    },
+    "artifacts": {
+      "fixture.json": "8e362565cb9be4a807efb619ab36d32bde61579eb98ffa87ede35fc65b34fad6",
+      "item-hauling-results.json": "3ad9cb31188acd50111b176e8ac021b090c6d354cd99dce7ed319e363ffd8d23",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    "scope": "Existing stockpile-hauling job advances naturally through viewer pause commands; production follow controller compared at paused identical frames with native resolver and camera/sheet guards. Delivery requires original job retirement, no carrier, on-ground target at recorded destination and three later samples. No artificial item movement or job creation; no new rendered UI or naturally nested-container claim."
   }
 }

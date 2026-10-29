@@ -699,8 +699,31 @@ existing framing/movement and active-follow lifecycle checks. All80 native check
 pass with only the known rendering-thread notice; five owned processes exit
 unsaved and two save manifests remain unchanged. Offline core and camera tests
 pass. `item_follow_minimum_reference` retains both runs. DF3D settings permit
-sizes below native's minimum; those layouts, natural hauling and general item
+sizes below native's minimum; those layouts and general item
 types remain unaccepted, and this staged route stays hidden.
+
+`areas_acceptance.ps1 -ItemHaulingOnly -SaveId df3d-areas-<new-id>` is a separate
+owned simulation scope. It selects an already-carried item from an existing
+StoreItemInStockpile job, without creating a job or moving an item manually.
+The viewer advances DF through acknowledged pause commands in bounded bursts.
+Each comparison pauses DF, snapshots native camera/sheet identity, reads through
+the production follow controller and verifies the native effective position at
+the same simulation frame. Movement must span at least four observed positions;
+delivery requires leaving the carrier, retiring the original job and reaching
+its recorded destination on the ground, followed by three more samples. Missing
+candidates or failure to finish within the bound report incomplete.
+
+Protected162046 on2026-10-29 passes with barrel17142, dwarf5985 and job382788.
+Seventeen samples cover fourteen positions over725 ticks, ending at119,54,165.
+While carried, the barrel's stored coordinate remains155,113,165; native effective
+positions track the dwarf from134,102,165 to delivery. All follow observations
+match, and native camera/sheet state is unchanged during each paused comparison.
+DF25908 exits unsaved and both save manifests remain unchanged. Offline core and
+follow checks pass. `item_natural_hauling_reference` retains the candidate,
+destination and samples. This headless acceptance establishes natural carried
+item follow and the ground transition; rendered camera behavior is covered by
+the separate main-scene movement/framing tests. It does not complete generic
+item-sheet inspection or establish naturally nested-container movement.
 
 ## Native item-sheet semantic discovery
 

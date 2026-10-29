@@ -84,6 +84,8 @@
 #ifdef _WIN32
 #include <windows.h>
 #include "farm_native.h"
+#include "building_item_native.h"
+#include "modules/Buildings.h"
 #endif
 
 // DF3D mirror layer (generated header comes from schema/mirror.fbs via flatc;
@@ -1623,6 +1625,38 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             rows.append(std::move(row));
           }
           result["building_id"]=values[0];result["season"]=values[1];result["rows"]=std::move(rows);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="farm-item-set") {
+          if(parameters.size()!=6)return CR_WRONG_USAGE;
+          auto parse=[](const std::string& raw,auto& value) {
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
+            return parsed.ec==std::errc{}&&parsed.ptr==raw.data()+raw.size();
+          };
+          int32_t building=-1,itemId=-1,want=-1;uint32_t expected=0;
+          if(!parse(parameters[1],building)||!parse(parameters[2],itemId)||
+             !parse(parameters[4],want)||!parse(parameters[5],expected)||building<0||itemId<0||want<0||want>1)return CR_WRONG_USAGE;
+          using A=df3d_production::BuildingItemAction;A action;
+          if(parameters[3]=="forbid")action=A::Forbid;else if(parameters[3]=="dump")action=A::Dump;
+          else if(parameters[3]=="melt")action=A::Melt;else if(parameters[3]=="hidden")action=A::Hidden;else return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(building));
+          auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
+          if(!tile||tile->bits.hidden||farm->getBuildStage()!=farm->getMaxBuildStage()||Buildings::markedForRemoval(farm))return CR_FAILURE;
+          df::item* item=nullptr;
+          for(auto* held:farm->contained_items)if(held&&held->item&&held->item->id==itemId){item=held->item;break;}
+          if(!item)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["item_id"]=itemId;
+          result["before_flags"]=Json::UInt(item->flags.whole);
+          std::string outcome="stale";
+          if(item->flags.whole==expected) {
+            outcome="unknown";
+            try {
+              if(!df3d_production::setBuildingItemFlag(item,action,want!=0))outcome="rejected";
+              else if(df3d_production::buildingItemValue(item,action)==(want!=0))outcome="completed";
+            }catch(...){outcome="unknown";}
+          }
+          result["outcome"]=outcome;result["after_flags"]=Json::UInt(item->flags.whole);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="farm-cancel-removal") {

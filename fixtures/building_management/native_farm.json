@@ -14004,5 +14004,158 @@
       "farm-contents-visibility-1.png": "6d137525c15f717579cc420c99371d32de388b6e6ddc6562447af197f95567a4"
     },
     "limitations": "First six rows of 40 permanent seeds. No scroll tail, other item roles, eligible melting, active jobs, or runtime bridge adapter validated. Item-sheet viewing computes weight flag bit29; toggle restoration is compared after those reads."
+  },
+  "contents_adapter_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261028-220741",
+    "status": "passed",
+    "bridge_sha256": "3ee986485a870a559e5d9f79a2402213a158a6b3b9fc1b291d26b07b27ebf041",
+    "management_version": 87,
+    "cases": [
+      {
+        "identical": {
+          "after_flags": 537395232,
+          "before_flags": 537395232,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "name": "farm-contents-adapter-forbid-1",
+        "native_equal": true,
+        "result": {
+          "after_flags": 537395232,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "stale": {
+          "after_flags": 536870944,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 536870944,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "name": "farm-contents-adapter-forbid-2",
+        "native_equal": true,
+        "result": {
+          "after_flags": 536870944,
+          "before_flags": 537395232,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "stale": {
+          "after_flags": 536870944,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 538968096,
+          "before_flags": 538968096,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "name": "farm-contents-adapter-dump-1",
+        "native_equal": true,
+        "result": {
+          "after_flags": 538968096,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "stale": {
+          "after_flags": 536870944,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 536870944,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "name": "farm-contents-adapter-dump-2",
+        "native_equal": true,
+        "result": {
+          "after_flags": 536870944,
+          "before_flags": 538968096,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "stale": {
+          "after_flags": 536870944,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 553648160,
+          "before_flags": 553648160,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "name": "farm-contents-adapter-hidden-1",
+        "native_equal": true,
+        "result": {
+          "after_flags": 553648160,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "stale": {
+          "after_flags": 536870944,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 536870944,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "name": "farm-contents-adapter-hidden-2",
+        "native_equal": true,
+        "result": {
+          "after_flags": 536870944,
+          "before_flags": 553648160,
+          "item_id": 47492,
+          "outcome": "completed"
+        },
+        "stale": {
+          "after_flags": 536870944,
+          "before_flags": 536870944,
+          "item_id": 47492,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      }
+    ],
+    "hashes": {
+      "result.json": "0f50d4304f2a2918f594bb59a62737dea3fd8ab3ee3da937bad0d59135cc6d35",
+      "capture-inputs.json": "30ce342622d8d795ccbc3e1d83eec6707b5c89caf4a5cccb4a17937839a1a212",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "coverage": "Exact native-click versus diagnostic-adapter item flags, countdown/delay and building flags for both directions of Forbid/Dump/Visibility. Stale no-effect, identical desired value no-effect, ineligible seed melting, invalid target refusal, byte-for-byte native UI scratch preservation. Owned paused clone exits unsaved.",
+    "limitations": "Diagnostic command only, no typed management wire or Godot controls. Permanent seed fixture with no active item jobs; native eligible melting and active-job cleanup still require live coverage."
   }
 }

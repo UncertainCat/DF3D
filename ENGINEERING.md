@@ -67,9 +67,30 @@ or melting. Forbid branches inline at1b06d4: clearing resets those bytes,
 setting calls c634f0(item,3). Visibility toggles bit24 inline. Melt uses native
 cab7c0 eligibility and cabe10/cb2020 cancellation/marking; DFHack's canMelt
 reconstructs rules and is not that native call. `native_farm.json.contents_reference`
-records identities, flags, text, code hashes and scope. Native adapters are not
-yet exposed; tail scrolling, other roles, eligible melt and active-job effects
-still require verification. Do not implement these as independent Godot flags.
+records identities, flags, text, code hashes and scope. Tail scrolling, other
+roles, eligible melt and active-job effects still require verification.
+
+`building_item_native.h` pins the complete native action/predicate bodies and
+exposes desired-value setters at safe points. Dump spans multiple unwind entries;
+Forbid's fingerprint includes local jump tables. All ranges are relocation-free
+on the supported executable. Inline native Forbid-clear and Visibility writes
+are reproduced; setting Forbid calls c634f0(item,3), Dump calls cb2060, and Melt
+uses the native eligibility/mark/cancel routines. The diagnostic command
+`df3d farm-item-set <farm> <item> <forbid|dump|melt|hidden> <0|1> <expected-flags>`
+requires a visible completed, non-removing farm and current contained-item
+membership. Stale flags refuse, repeated desired values do not toggle, and
+exceptions after native entry report Unknown without replay. This diagnostic
+is not the typed management transaction or a public UI route.
+
+MSVC `farm-items-native-msvc.log` builds after adding the missing Buildings
+header. Protected220741 compares both directions of Forbid/Dump/Visibility with
+native clicks: all contained-item flags, countdown/delay and building flags
+match. Stale and identical intents preserve facts; seed melting and invalid
+targets refuse. Full view-sheet and plotinfo byte guards remain unchanged.
+Owned DF185836 exits unsaved with source-save preservation. The run passes
+cleanly; `contents_adapter_reference` records six comparisons and the installed
+management87 bridge hash. Eligible melting and active-job effects remain
+unverified; the farm contents wire, model and controls are still unfinished.
 
 DF53.16 sheet dispatch1b0211 checks build stage and calls virtual
 `queueDestroy` (slot45, call1b0237) for a built farm. The existing DFHack

@@ -11918,5 +11918,54 @@
         "sha256": "1a40843921e9bfe2310d1a425b8bf708d7167590e3b93f3df001eaac156ace9d"
       }
     ]
+  },
+  "rename_session_reference": {
+    "source": "build\\areas-acceptance-20261028-192856",
+    "management_version": 86,
+    "scope": "Service-owned text intent continuation after finish and farm-controller closure; subsequent queued read sees final ABC, then original empty name restored. No actual keyboard/window-event, editing-caption render or main-scene claim.",
+    "results": {
+      "completed_observers": 10,
+      "display_order_retained": true,
+      "finished_typing_drains_before_read": true,
+      "initial_current_tab": true,
+      "native_checks": 15,
+      "queued_rename_retired": true,
+      "queued_tab_change_no_effects": true,
+      "rename_and_clear": true,
+      "sent_rename_effect_without_old_observer": true,
+      "sent_tab_change_effect_without_old_observer": true,
+      "stale_external_change_refused": true
+    },
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "inputs": [
+      {
+        "path": "presentations/godot/project/scripts/farm_rename_session.gd",
+        "sha256": "666277e20dbb8d00ee33353673be15dfcf3a79a369dab8e8fd2f087e61d3f34c"
+      },
+      {
+        "path": "presentations/godot/project/scripts/farm_state.gd",
+        "sha256": "ec7fc19a6cc3253334a4f74f546b426b9d0c09bfc84ff3c1b6f624004d8e581d"
+      },
+      {
+        "path": "presentations/godot/project/scripts/semantic_action_service.gd",
+        "sha256": "86be8c15c86cd884b408e0e4ee8f5264306c87bc822ef68196174ca3802da7a7"
+      },
+      {
+        "path": "presentations/godot/project/tests/farm_rename_session_test.gd",
+        "sha256": "74223f249ffd785703aab0661c77f738f1a88dc3f161c439c9d9648a589d3fa1"
+      },
+      {
+        "path": "presentations/godot/project/tests/farm_controller_live.gd",
+        "sha256": "6f553b508de039a153e776000bf5776a079eaf8da27c6e72939cbb642edc7d53"
+      },
+      {
+        "path": "tools/smoke/farm-read-fixture.lua",
+        "sha256": "3d888f4551c7141c83193192a4fd2bcdd8b6e80db43512c59d0c049998f8358f"
+      },
+      {
+        "path": "tools/smoke/farm-edit-verify.lua",
+        "sha256": "7e0858027d9d69215884790ff89c66c52d836143e764271916e98d7ff1058c17"
+      }
+    ]
   }
 }

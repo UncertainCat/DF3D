@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "farm_rename_session_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/farm_rename_session_test.gd",
+      "completion": "^FARM_RENAME_SESSION_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "farm_state_test",
       "lane": "core",
       "kind": "godot",

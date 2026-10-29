@@ -105,10 +105,28 @@ func exercise() -> void:
 	if not await settled(Farm.Phase.Ready):return
 	await native("verify",{"seasons":seasons,"name":""})
 	if stopped:return
+	# The service-owned typing session drains explicit edits after its view ends,
+	# before a later queued read can observe a partially entered name.
+	var rename_session=preload("res://scripts/farm_rename_session.gd").new()
+	actions.add_child(rename_session);rename_session.configure(actions,farm.snapshot)
+	var rename_events: Array=[]
+	rename_session.finished.connect(func():rename_events.append("finished"))
+	rename_session.failed.connect(func(_result):rename_events.append("failed"))
+	rename_session.edit("A");actions.poll();rename_session.edit("AB");rename_session.edit("ABC");rename_session.finish()
+	farm.close();farm.open(id,1)
+	if not await settled(Farm.Phase.Ready):return
+	if not check(rename_events==["finished"] and farm.snapshot.custom_name=="ABC","ended typing session lost final text or read before continuation"):return
+	await native("verify",{"seasons":seasons,"name":"ABC"})
+	if stopped:return
+	farm.rename("")
+	if not await settled(Farm.Phase.Ready):return
+	await native("verify",{"seasons":seasons,"name":""})
+	if stopped:return
 	farm.open(int(fixture.nonfarm),0)
 	if not await settled(Farm.Phase.Rejected):return
 	farm.dispose();actions.free()
 	write_json("farm-controller-results.json",{"initial_current_tab":true,"queued_tab_change_no_effects":true,
 		"sent_tab_change_effect_without_old_observer":true,"display_order_retained":true,
 		"stale_external_change_refused":true,"rename_and_clear":true,"queued_rename_retired":true,
-		"sent_rename_effect_without_old_observer":true,"native_checks":handshake,"completed_observers":applied_count})
+		"sent_rename_effect_without_old_observer":true,"finished_typing_drains_before_read":true,
+		"native_checks":handshake,"completed_observers":applied_count})

@@ -202,11 +202,28 @@ and stale-revision flows also pass (13 native checks,9 completed observers).
 Both save manifests remain unchanged and the owned game exits unsaved.
 `rename_controller_reference` retains the source hashes and results.
 
-This controller owns single intents. The typing session must separately drain
-explicit text typed during an in-flight write when Enter/Escape/right-click
-ends editing; calling the controller's ordinary `close` would discard an unsent
-intent. `area_rename_session.gd` already demonstrates service-owned continuation
-for area edits, but farm typing has not adopted or verified that lifecycle yet.
+The controller owns single intents; `farm_rename_session.gd` owns a stream of
+explicit text edits as a child of the action service. Finishing retains the
+latest desired name until confirmed. Each successful receipt permits one
+same-domain continuation before later queued interactions, using its new
+revision. Rejection, stale/unknown outcomes, malformed receipts and epoch changes
+retire the draft without replay. Changed observers receive isolated snapshots;
+synchronous observer edits/finish preserve continuation ordering without duplicate
+submission. A closing sheet must finish this session and retire its own observer,
+not cancel the session through ordinary farm-controller `close` semantics.
+
+Core and `farm_rename_session_test` pass cleanly in `build/qa/farm-rename-session`.
+Checks exercise finish before sending, text buffered behind a sent write,
+continuation priority over a queued read, backspace to the original empty name,
+unchanged finish, failures, malformed receipts, queued/sent epoch retirement and
+reentrant observers. Protected `areas-acceptance-20261028-192856 -FarmControllerOnly`
+verifies a service-owned A→ABC continuation after finish and controller closure:
+the later read observes ABC, and clearing restores the original name. Existing
+controller checks also pass (15 native checks,10 completed controller observers).
+Both save manifests remain unchanged and the owned session exits unsaved.
+`rename_session_reference` retains results and source hashes. Keyboard routing,
+native editing-caption pixels and main-scene connection remain unverified; this
+is session-lifecycle acceptance, not a completed typing UI.
 
 ## Locations integration verification
 

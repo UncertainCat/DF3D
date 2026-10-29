@@ -38,8 +38,9 @@ item facts and byte-for-byte view_sheets/plotinfo state. The owned paused
 DF180196 exits unsaved and the source-save manifest is unchanged. Evidence is
 retained in `native_farm.json.contents_reader_reference`. Other item types,
 quality/wear/artifact captions, tail scrolling and active jobs remain unverified.
-This is diagnostic evidence; the typed contents revision, transaction and Godot
-controls remain unfinished. No public route or schema change accompanies it.
+This is diagnostic evidence; management-wire transport and Godot controls remain
+unfinished. The bridge revision transaction is described below. No public route
+or schema change accompanies it.
 
 Native farm selection capture215347 on2026-10-28 records farm227 and its
 co-located crop item48436 as BUILDING then ITEM alternatives. Clicking the item
@@ -95,11 +96,29 @@ Forbid's fingerprint includes local jump tables. All ranges are relocation-free
 on the supported executable. Inline native Forbid-clear and Visibility writes
 are reproduced; setting Forbid calls c634f0(item,3), Dump calls cb2060, and Melt
 uses the native eligibility/mark/cancel routines. The diagnostic command
-`df3d farm-item-set <farm> <item> <forbid|dump|melt|hidden> <0|1> <expected-flags>`
+`df3d farm-item-edit <farm> <item> <forbid|dump|melt|hidden> <0|1> <contents-revision>`
 requires a visible completed, non-removing farm and current contained-item
-membership. Stale flags refuse, repeated desired values do not toggle, and
-exceptions after native entry report Unknown without replay. This diagnostic
-is not the typed management transaction or a public UI route.
+membership. It replaces the earlier flags-only diagnostic. The owned contents
+snapshot hashes ordered IDs/roles, native captions, raw and semantic flags,
+eligibility, stockpile countdown/delay and attached job IDs/types/flags. The
+diagnostic read returns the revision as a decimal string to avoid Lua number
+rounding. A change to another row invalidates the request even when the target
+flags are unchanged. Repeated desired values return a receipt without native
+entry. After entry the transaction re-finds the building and observes fresh
+contents; missing targets, failed observations or exceptions report Unknown
+without replay. Native cleanup may alter other flags/jobs; completion requires
+the desired value in the fresh valid receipt, not an invented one-bit-only rule.
+This bridge transaction is not yet connected to the management wire or public UI.
+
+Protected222438 repeats all six native-click comparisons through this revision
+transaction, verifies no-entry repeated values and a real stale revision after
+changing another contained item, then restores that fixture. UI byte guards,
+item facts and the source-save manifest are preserved as applicable. Owned
+paused DF176324 exits unsaved; the run passes cleanly. Deterministic policy
+tests cover revision fields/order, duplicate identities, ineligible/missing
+targets, stale requests, native refusal, exceptions and post-effect lost or
+invalid receipts. `native_farm.json.contents_transaction_reference` retains live
+evidence. Active jobs, other roles and eligible melting remain separate gaps.
 
 MSVC `farm-items-native-msvc.log` builds after adding the missing Buildings
 header. Protected220741 compares both directions of Forbid/Dump/Visibility with

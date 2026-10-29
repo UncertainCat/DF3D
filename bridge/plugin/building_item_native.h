@@ -1,7 +1,11 @@
 #pragma once
 #include "farm_native.h"
+#include "building_item_transaction.h"
 #include "df/buildingitemst.h"
 #include "df/item.h"
+#include "df/job.h"
+#include "df/specific_ref.h"
+#include "modules/Buildings.h"
 
 namespace df3d_production {
 // Common building-sheet caption at 19d4ae calls this semantic formatter with
@@ -56,7 +60,6 @@ inline const BuildingItemFunctions& buildingItemFunctions() {
             reinterpret_cast<BuildingItemFunctions::Forbid>(base+0xc634f0)};
     }();return functions;
 }
-enum class BuildingItemAction { Forbid, Dump, Melt, Hidden };
 inline bool buildingItemValue(df::item* item,BuildingItemAction action) {
     switch(action) {
     case BuildingItemAction::Forbid:return item->flags.bits.forbid;
@@ -64,6 +67,33 @@ inline bool buildingItemValue(df::item* item,BuildingItemAction action) {
     case BuildingItemAction::Melt:return item->flags.bits.melt;
     case BuildingItemAction::Hidden:return item->flags.bits.hidden;
     }return false;
+}
+inline std::optional<BuildingContentsSnapshot> buildingContents(df::building_actual* building) {
+    const auto& native=buildingItemFunctions();if(!native||!building)return std::nullopt;
+    BuildingContentsSnapshot snapshot;snapshot.buildingId=building->id;
+    snapshot.completed=building->getBuildStage()==building->getMaxBuildStage();
+    snapshot.removing=DFHack::Buildings::markedForRemoval(building);
+    snapshot.rows.reserve(building->contained_items.size());
+    for(auto* held:building->contained_items) {
+        if(!held||!held->item)return std::nullopt;
+        auto* item=held->item;auto caption=buildingItemCaption(item);if(!caption)return std::nullopt;
+        BuildingContentsRow row;row.id=item->id;row.role=static_cast<int32_t>(held->use_mode);
+        row.caption=std::move(*caption);row.flags=item->flags.whole;
+        row.countdown=item->stockpile_countdown;row.delay=item->stockpile_delay;
+        row.forbid=item->flags.bits.forbid;row.dump=item->flags.bits.dump;
+        row.melt=item->flags.bits.melt;row.hidden=item->flags.bits.hidden;
+        row.canDump=native.canDump(item);row.canMelt=native.canMelt(item);
+        for(auto* ref:item->specific_refs) {
+            if(!ref)return std::nullopt;
+            if(ref->type!=df::specific_ref_type::JOB)continue;
+            auto* job=ref->data.job;if(!job)return std::nullopt;
+            row.jobs.push_back({job->id,static_cast<int32_t>(job->job_type),job->flags.whole});
+        }
+        snapshot.rows.push_back(std::move(row));
+    }
+    snapshot.revision=buildingContentsRevision(snapshot);
+    if(!validBuildingContents(snapshot))return std::nullopt;
+    return snapshot;
 }
 // false promises no entry/effect. Caller must treat exceptions after entry as
 // Unknown, observe a fresh receipt, and never retry an uncertain operation.

@@ -1,5 +1,6 @@
 #include "doctest.h"
 #include "../bridge/plugin/farm_transaction.h"
+#include "../bridge/plugin/building_item_transaction.h"
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -251,5 +252,71 @@ TEST_CASE("farm rename accepts clearing and lossless byte limits and skips ident
         CHECK(result.receipt->customName==requested);
         CHECK(result.mutated==(requested!="old"));
         CHECK(applies==(requested=="old"?0:1));CHECK(reads==applies);
+    }
+}
+
+TEST_CASE("building contents revision detects changed membership and action context") {
+    using namespace df3d_production;
+    BuildingContentsSnapshot base;base.buildingId=968;base.completed=true;
+    BuildingContentsRow row;row.id=47492;row.role=0;row.caption="seed";row.canDump=true;
+    row.jobs.push_back({123,1,0});base.rows={row};base.revision=buildingContentsRevision(base);
+    CHECK(validBuildingContents(base));
+    for(int change=0;change<17;++change) {
+        auto next=base;
+        switch(change) {
+        case 0:++next.buildingId;break;case 1:next.completed=false;break;
+        case 2:next.removing=true;break;case 3:next.rows.clear();break;
+        case 4:++next.rows[0].id;break;case 5:++next.rows[0].role;break;
+        case 6:next.rows[0].caption="other";break;case 7:++next.rows[0].flags;break;
+        case 8:++next.rows[0].countdown;break;case 9:--next.rows[0].delay;break;
+        case 10:next.rows[0].canDump=false;break;case 11:next.rows[0].canMelt=true;break;
+        case 12:++next.rows[0].jobs[0].id;break;case 13:++next.rows[0].jobs[0].type;break;
+        case 14:++next.rows[0].jobs[0].flags;break;case 15:next.rows[0].jobs.clear();break;
+        case 16:next.rows[0].hidden=true;break;
+        }
+        CAPTURE(change);CHECK(buildingContentsRevision(next)!=base.revision);CHECK_FALSE(validBuildingContents(next));
+    }
+    auto duplicate=base;duplicate.rows.push_back(row);duplicate.revision=buildingContentsRevision(duplicate);
+    CHECK_FALSE(validBuildingContents(duplicate));
+    auto ordered=base;row.id=47486;ordered.rows.push_back(row);
+    const auto orderedRevision=buildingContentsRevision(ordered);
+    std::swap(ordered.rows[0],ordered.rows[1]);
+    CHECK(buildingContentsRevision(ordered)!=orderedRevision);
+}
+TEST_CASE("contained item edits distinguish refusal completion and uncertain native effects") {
+    using namespace df3d_production;
+    for(int fault=0;fault<17;++fault) {
+        CAPTURE(fault);
+        BuildingContentsSnapshot before;before.buildingId=968;before.completed=true;
+        BuildingContentsRow row;row.id=47492;row.role=0;row.canDump=true;before.rows={row};
+        if(fault==2)before.removing=true;
+        if(fault==3)before.completed=false;
+        if(fault==4)before.rows[0].canDump=false;
+        if(fault==5)before.rows[0].dump=true;
+        before.revision=buildingContentsRevision(before);
+        int applies=0,reads=0;
+        auto action=fault==16?static_cast<BuildingItemAction>(99):BuildingItemAction::Dump;
+        const auto result=finishBuildingItemEdit(before,fault==1?1:before.revision,fault==6?0:47492,action,true,[&] {
+            ++applies;if(fault==8)throw 1;return fault!=7;
+        },[&]()->std::optional<BuildingContentsSnapshot> {
+            ++reads;if(fault==9)throw 1;if(fault==10)return {};
+            auto after=before;after.rows[0].dump=true;
+            // Native may retire jobs/clear other flags; these are accepted facts.
+            after.rows[0].flags=123;after.rows[0].jobs.clear();
+            if(fault==11)after.rows.clear();
+            if(fault==12)++after.buildingId;
+            if(fault==13)after.rows[0].dump=false;
+            if(fault==14)after.removing=true;
+            after.revision=buildingContentsRevision(after);
+            if(fault==15)++after.revision;
+            return after;
+        });
+        if(fault==0||fault==5) {
+            CHECK(result.outcome==FarmEditOutcome::Completed);REQUIRE(result.receipt);
+            CHECK(result.receipt->rows[0].dump);CHECK(applies==(fault==0?1:0));CHECK(reads==(fault==0?1:0));
+        } else if(fault==1) {CHECK(result.outcome==FarmEditOutcome::Stale);CHECK(applies==0);}
+        else if(fault<=7||fault==16) {CHECK(result.outcome==FarmEditOutcome::Rejected);CHECK_FALSE(result.mutated);}
+        else {CHECK(result.outcome==FarmEditOutcome::Unknown);CHECK(result.mutated);CHECK_FALSE(result.receipt);CHECK(applies==1);}
+        CHECK(applies<=1);CHECK(reads<=1);
     }
 }

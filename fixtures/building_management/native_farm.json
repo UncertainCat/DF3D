@@ -14888,5 +14888,172 @@
     },
     "coverage": "Native vector order, roles, flags and dump/melt eligibility for 40 permanent seeds. First six captions found verbatim in native rendered screen cells at baseline and both directions of forbid/dump/visibility. All item facts and native view_sheets/plotinfo bytes unchanged by reads. Owned paused DF180196 exits unsaved; source preserved.",
     "limitations": "Diagnostic reader only; no typed contents revision or public sheet. Other item types, quality/wear/artifact naming, eligible melting, tail scrolling and active jobs remain unverified."
+  },
+  "contents_transaction_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261028-222438",
+    "bridge_sha256": "a1d03d9e47274b0acebbb67c482b80c4b820d50b561d32c267e57ddda99607e8",
+    "records": [
+      {
+        "identical": {
+          "after_flags": 537395232,
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "completed",
+          "revision": "9100269613607296960"
+        },
+        "name": "farm-contents-adapter-forbid-1",
+        "native_equal": true,
+        "result": {
+          "after_flags": 537395232,
+          "item_id": 47492,
+          "mutated": true,
+          "outcome": "completed",
+          "revision": "9100269613607296960"
+        },
+        "stale": {
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 536870944,
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "completed",
+          "revision": "5696190218482258581"
+        },
+        "name": "farm-contents-adapter-forbid-2",
+        "native_equal": true,
+        "result": {
+          "after_flags": 536870944,
+          "item_id": 47492,
+          "mutated": true,
+          "outcome": "completed",
+          "revision": "5696190218482258581"
+        },
+        "stale": {
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 538968096,
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "completed",
+          "revision": "6870743886774844088"
+        },
+        "name": "farm-contents-adapter-dump-1",
+        "native_equal": true,
+        "result": {
+          "after_flags": 538968096,
+          "item_id": 47492,
+          "mutated": true,
+          "outcome": "completed",
+          "revision": "6870743886774844088"
+        },
+        "stale": {
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 536870944,
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "completed",
+          "revision": "5696190218482258581"
+        },
+        "name": "farm-contents-adapter-dump-2",
+        "native_equal": true,
+        "result": {
+          "after_flags": 536870944,
+          "item_id": 47492,
+          "mutated": true,
+          "outcome": "completed",
+          "revision": "5696190218482258581"
+        },
+        "stale": {
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 553648160,
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "completed",
+          "revision": "9028797659317028701"
+        },
+        "name": "farm-contents-adapter-hidden-1",
+        "native_equal": true,
+        "result": {
+          "after_flags": 553648160,
+          "item_id": 47492,
+          "mutated": true,
+          "outcome": "completed",
+          "revision": "9028797659317028701"
+        },
+        "stale": {
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "identical": {
+          "after_flags": 536870944,
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "completed",
+          "revision": "5696190218482258581"
+        },
+        "name": "farm-contents-adapter-hidden-2",
+        "native_equal": true,
+        "result": {
+          "after_flags": 536870944,
+          "item_id": 47492,
+          "mutated": true,
+          "outcome": "completed",
+          "revision": "5696190218482258581"
+        },
+        "stale": {
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "stale"
+        },
+        "ui_scratch_unchanged": true
+      },
+      {
+        "name": "farm-contents-cross-row-stale",
+        "restored": true,
+        "result": {
+          "item_id": 47492,
+          "mutated": false,
+          "outcome": "stale"
+        },
+        "target_flags_unchanged": true
+      }
+    ],
+    "hashes": {
+      "result.json": "af81fc4678b4da6af94417bfb8840ffdc7bfe6f0c3e8e0d9b969b05abc70d7b0",
+      "capture-inputs.json": "73e48dc35641fe97158fcd4f61f6b9bf10058400ccb73c8296ce3f5bcfaca559",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "coverage": "Revision-checked desired-value transaction for native Forbid/Dump/Visibility, both directions. No-entry identical values, native eligibility refusal, invalid targets, and stale request after a different row changes. Fresh post-native receipt; byte-for-byte UI guards; source preserved; owned paused session exits unsaved.",
+    "limitations": "Diagnostic bridge command; management schema87 unchanged. No wire/controller/UI integration. Permanent seeds only, no active job or eligible melt evidence."
   }
 }

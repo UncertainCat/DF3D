@@ -1635,29 +1635,27 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
           auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(id));
           auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
-          const auto& native=df3d_production::buildingItemFunctions();
-          if(!tile||tile->bits.hidden||!native)return CR_FAILURE;
+          if(!tile||tile->bits.hidden)return CR_FAILURE;
+          const auto snapshot=df3d_production::buildingContents(farm);if(!snapshot)return CR_FAILURE;
           Json::Value result(Json::objectValue),rows(Json::arrayValue);
-          for(auto* held:farm->contained_items) {
-            if(!held||!held->item)return CR_FAILURE;
-            auto* item=held->item;const auto caption=df3d_production::buildingItemCaption(item);
-            if(!caption)return CR_FAILURE;
-            Json::Value row(Json::objectValue);row["id"]=item->id;
-            row["role_value"]=static_cast<int>(held->use_mode);row["name"]=DF2UTF(*caption);
-            row["flags"]=Json::UInt(item->flags.whole);
-            row["can_dump"]=native.canDump(item);row["can_melt"]=native.canMelt(item);
+          for(const auto& item:snapshot->rows) {
+            Json::Value row(Json::objectValue);row["id"]=item.id;
+            row["role_value"]=item.role;row["name"]=DF2UTF(item.caption);
+            row["flags"]=Json::UInt(item.flags);row["countdown"]=int(item.countdown);row["delay"]=int(item.delay);
+            row["can_dump"]=item.canDump;row["can_melt"]=item.canMelt;
             rows.append(std::move(row));
           }
-          result["building_id"]=id;result["rows"]=std::move(rows);
+          result["building_id"]=id;result["revision"]=std::to_string(snapshot->revision);
+          result["rows"]=std::move(rows);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
-        if(parameters[0]=="farm-item-set") {
+        if(parameters[0]=="farm-item-edit") {
           if(parameters.size()!=6)return CR_WRONG_USAGE;
           auto parse=[](const std::string& raw,auto& value) {
             const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
             return parsed.ec==std::errc{}&&parsed.ptr==raw.data()+raw.size();
           };
-          int32_t building=-1,itemId=-1,want=-1;uint32_t expected=0;
+          int32_t building=-1,itemId=-1,want=-1;uint64_t expected=0;
           if(!parse(parameters[1],building)||!parse(parameters[2],itemId)||
              !parse(parameters[4],want)||!parse(parameters[5],expected)||building<0||itemId<0||want<0||want>1)return CR_WRONG_USAGE;
           using A=df3d_production::BuildingItemAction;A action;
@@ -1667,20 +1665,28 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(building));
           auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
           if(!tile||tile->bits.hidden||farm->getBuildStage()!=farm->getMaxBuildStage()||Buildings::markedForRemoval(farm))return CR_FAILURE;
-          df::item* item=nullptr;
-          for(auto* held:farm->contained_items)if(held&&held->item&&held->item->id==itemId){item=held->item;break;}
-          if(!item)return CR_FAILURE;
+          const auto observe=[&]()->std::optional<df3d_production::BuildingContentsSnapshot> {
+            auto* current=virtual_cast<df::building_farmplotst>(df::building::find(building));
+            auto* designation=current?Maps::getTileDesignation(current->centerx,current->centery,current->z):nullptr;
+            if(!designation||designation->bits.hidden)return std::nullopt;
+            return df3d_production::buildingContents(current);
+          };
+          const auto before=observe();if(!before)return CR_FAILURE;
+          const auto edit=df3d_production::finishBuildingItemEdit(*before,expected,itemId,action,want!=0,[&] {
+            auto* current=virtual_cast<df::building_farmplotst>(df::building::find(building));
+            if(!current)return false;
+            for(auto* held:current->contained_items)if(held&&held->item&&held->item->id==itemId)
+              return df3d_production::setBuildingItemFlag(held->item,action,want!=0);
+            return false;
+          },observe);
           Json::Value result(Json::objectValue);result["item_id"]=itemId;
-          result["before_flags"]=Json::UInt(item->flags.whole);
-          std::string outcome="stale";
-          if(item->flags.whole==expected) {
-            outcome="unknown";
-            try {
-              if(!df3d_production::setBuildingItemFlag(item,action,want!=0))outcome="rejected";
-              else if(df3d_production::buildingItemValue(item,action)==(want!=0))outcome="completed";
-            }catch(...){outcome="unknown";}
+          using O=df3d_production::FarmEditOutcome;
+          result["outcome"]=edit.outcome==O::Completed?"completed":edit.outcome==O::Stale?"stale":edit.outcome==O::Unknown?"unknown":"rejected";
+          result["mutated"]=edit.mutated;
+          if(edit.receipt) {
+            result["revision"]=std::to_string(edit.receipt->revision);
+            for(const auto& row:edit.receipt->rows)if(row.id==itemId)result["after_flags"]=Json::UInt(row.flags);
           }
-          result["outcome"]=outcome;result["after_flags"]=Json::UInt(item->flags.whole);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="farm-cancel-removal") {

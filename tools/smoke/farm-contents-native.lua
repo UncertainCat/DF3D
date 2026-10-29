@@ -87,13 +87,17 @@ for _,probe in ipairs{{'forbid',780},{'dump',804},{'visibility',852}}do
  assert(require('json').encode(items())==original and b.flags.whole==flags,'contents toggle did not restore original facts')
  local action=probe[1]=='visibility' and 'hidden' or probe[1]
  local item=assert(b.contained_items[0].item)
+ local function revision()
+  local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(b.id));assert(code==0,text)
+  local value=require('json').decode(text).revision;assert(type(value)=='string');return value
+ end
  local function command(want,expected,outcome)
   local guards={}
   for _,object in ipairs{main.view_sheets,df.global.plotinfo}do
    local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
    dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
   end
-  local text,code=dfhack.run_command_silent('df3d','farm-item-set',tostring(b.id),tostring(item.id),action,tostring(want),tostring(expected))
+  local text,code=dfhack.run_command_silent('df3d','farm-item-edit',tostring(b.id),tostring(item.id),action,tostring(want),tostring(expected))
   assert(code==0,text);local result=require('json').decode(text)
   assert(result.outcome==outcome,'native adapter outcome differs: '..text)
   for _,guard in ipairs(guards)do
@@ -102,21 +106,40 @@ for _,probe in ipairs{{'forbid',780},{'dump',804},{'visibility',852}}do
   end
   return result
  end
- local stale=command(1,item.flags.whole+1,'stale')
+ local stale=command(1,'1','stale')
  assert(require('json').encode(items())==original,'stale adapter changed item facts')
  for toggle=1,2 do
-  local result=command(toggle==1 and 1 or 0,item.flags.whole,'completed')
+  local result=command(toggle==1 and 1 or 0,revision(),'completed')
   local actual={contents=items(),building_flags=b.flags.whole}
   assert(require('json').encode(actual)==require('json').encode(native_states[toggle]),'adapter differs from native item click')
-  local identical=command(toggle==1 and 1 or 0,item.flags.whole,'completed')
+  local identical=command(toggle==1 and 1 or 0,revision(),'completed')
+  assert(result.mutated and not identical.mutated,'desired-value transaction entry count differs')
   assert(require('json').encode(actual)==require('json').encode({contents=items(),building_flags=b.flags.whole}),'identical intent changed item facts')
   records[#records+1]={name='farm-contents-adapter-'..action..'-'..toggle,result=result,identical=identical,stale=stale,native_equal=true,ui_scratch_unchanged=true}
  end
 end
 local item=b.contained_items[0].item
-local text,code=dfhack.run_command_silent('df3d','farm-item-set',tostring(b.id),tostring(item.id),'melt','1',tostring(item.flags.whole))
+local read,readcode=dfhack.run_command_silent('df3d','farm-contents-read',tostring(b.id));assert(readcode==0,read)
+local expected=require('json').decode(read).revision
+local text,code=dfhack.run_command_silent('df3d','farm-item-edit',tostring(b.id),tostring(item.id),'melt','1',expected)
 assert(code==0 and require('json').decode(text).outcome=='rejected','ineligible seed melting accepted')
 for _,args in ipairs{{'-1',tostring(item.id)},{tostring(b.id),'2147483647'}}do
- local _,bad=dfhack.run_command_silent('df3d','farm-item-set',args[1],args[2],'dump','1',tostring(item.flags.whole))
- assert(bad~=0,'invalid contained-item target accepted')
+ local badtext,bad=dfhack.run_command_silent('df3d','farm-item-edit',args[1],args[2],'dump','1',expected)
+ assert(bad~=0 or require('json').decode(badtext).outcome=='rejected','invalid contained-item target accepted')
 end
+-- A different row changes the contents revision even while the target's flags
+-- stay identical. Preserve/restore the fixture via explicit native intents.
+local second=b.contained_items[1].item
+local original_hidden=second.flags.hidden and 1 or 0
+local original=require('json').encode(items())
+local function edit(id,want,revision,outcome)
+ local text,code=dfhack.run_command_silent('df3d','farm-item-edit',tostring(b.id),tostring(id),'hidden',tostring(want),revision)
+ assert(code==0,text);local result=require('json').decode(text);assert(result.outcome==outcome,text);return result
+end
+local changed=edit(second.id,1-original_hidden,expected,'completed')
+local changed_state=require('json').encode(items())
+local stale=edit(item.id,1,expected,'stale')
+assert(require('json').encode(items())==changed_state,'stale cross-row revision mutated contents')
+edit(second.id,original_hidden,changed.revision,'completed')
+assert(require('json').encode(items())==original,'cross-row fixture not restored')
+records[#records+1]={name='farm-contents-cross-row-stale',result=stale,target_flags_unchanged=true,restored=true}

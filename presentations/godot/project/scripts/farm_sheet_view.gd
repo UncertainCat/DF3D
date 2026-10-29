@@ -9,6 +9,7 @@ const SEASONS=["Spring","Summer","Autumn","Winter"]
 var art=preload("res://scripts/original_ui.gd").new()
 var state
 var body
+var contents
 var title: String=""
 var removing:=false
 var current_season: int=-1
@@ -19,12 +20,15 @@ var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
 
-func configure(source,model,help=null) -> void:
+func configure(source,model,help=null,contents_model=null) -> void:
 	state=model;hover_help=help;art.configure(source);theme=art.theme
 	mouse_exited.connect(_leave_hover)
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	body=preload("res://scripts/farm_body_view.gd").new();add_child(body);body.configure(source,model)
 	body.position=Vector2(16,144);body.input_allowed=body_allowed
+	if contents_model!=null:
+		contents=preload("res://scripts/farm_contents_view.gd").new();add_child(contents);contents.configure(source,contents_model)
+		contents.position=Vector2(8,456);contents.input_allowed=contents_allowed
 	name_entry=preload("res://scripts/farm_name_entry.gd").new();add_child(name_entry);name_entry.hide()
 	name_entry.edited.connect(func(value):name_edited.emit(value))
 	name_entry.submitted.connect(func():name_submitted.emit())
@@ -38,10 +42,15 @@ func configure(source,model,help=null) -> void:
 	state.changed.connect(refresh);refresh()
 
 func allowed() -> bool:return not input_allowed.is_valid() or input_allowed.call()
-func body_allowed() -> bool:return allowed() and not removing
+func body_allowed() -> bool:return allowed() and not removing and (contents==null or contents.state.phase!=contents.state.Phase.Applying)
+func contents_allowed() -> bool:return allowed() and not removing and state.phase==state.Phase.Ready and state.ticket==0
 func layout(view: Vector2) -> void:
 	position=Vector2((floori(view.x/8)-98)*8,48+fposmod(view.y,12)*0.5)
-	size=Vector2(488,floori(view.y/12)*12-84);queue_redraw()
+	size=Vector2(488,floori(view.y/12)*12-84)
+	if contents!=null:
+		contents.set_capacity(maxi(0,floori((size.y-480)/36)) if int(size.y/12)>=45 else 0)
+		contents.visible=contents.page>0 and not removing
+	queue_redraw()
 
 func refresh() -> void:
 	if target!=state.building_id:
@@ -50,6 +59,9 @@ func refresh() -> void:
 	title=state.snapshot.get("header_name","")
 	removing=state.snapshot.get("removing",false)
 	body.visible=not removing
+	if contents!=null:
+		contents.visible=contents.page>0 and not removing
+		if not contents_allowed():contents.scrollbar.dragging=false
 	if removing:body.scrollbar.dragging=false;finish_rename()
 	if state.snapshot.is_empty():finish_rename()
 	if not state.snapshot.is_empty():current_season=int(state.snapshot.current_season)

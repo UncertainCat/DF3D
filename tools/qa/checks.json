@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "farm_contents_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/farm_contents_capture.gd",
+      "completion": "FARM_CONTENTS_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "building_contents_state_test",
       "lane": "core",
       "kind": "godot",
@@ -3685,7 +3694,7 @@
     {
       "path": "presentations/godot/project/tests/farm_scene_live.gd",
       "status": "manual",
-      "reason": "Protected main-scene farm owner and viewport-input acceptance through tools/smoke/areas_acceptance.ps1 -FarmSceneOnly on an owned unsaved clone, including queued/sent removal and typing disconnects, producer replacement, visible/input retirement and fresh reopening."
+      "reason": "Protected main-scene farm owner and viewport-input acceptance through tools/smoke/areas_acceptance.ps1 -FarmSceneOnly on an owned unsaved clone, including contents item controls and scrolling with native effects, queued/sent removal and typing disconnects, producer replacement, contents/visible/input retirement and fresh reopening."
     },
     {
       "path": "presentations/godot/project/tests/farm_controller_live.gd",

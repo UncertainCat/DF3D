@@ -36,6 +36,8 @@ func rename_click() -> void:
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(384,30))
 	check(owner.panel.name_entry.editing and farm.name_session!=null,"rename click did not begin owned typing")
 func exercise_scene() -> void:
+	await contents_scene()
+	if stopped:return
 	var id:=int(fixture.id);var seasons: Array=[]
 	for crop in fixture.seasons:seasons.append(int(crop))
 	owner.open_target(id,1)
@@ -124,5 +126,43 @@ func lifecycle_retired(label: String) -> void:
 	var next_ticket: int=actions._next_ticket
 	key(0,90);key(KEY_ENTER)
 	await process_frame
-	if not check(no_farm_requests_since(next_ticket) and farm.name_session==null and farm.snapshot.is_empty(),"retired farm accepted keyboard input"):return
+	if not check(no_farm_requests_since(next_ticket) and farm.name_session==null and farm.snapshot.is_empty() and owner.contents.snapshot.is_empty() and owner.panel.contents.rows.is_empty() and not owner.panel.contents.scrollbar.dragging,"retired farm retained input or contents authority"):return
 	await capture(label+"_retired")
+
+func contents_ready() -> bool:
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll()
+		if owner.contents.phase==owner.contents.Phase.Ready and farm.phase==Farm.Phase.Ready:return true
+		if owner.contents.phase in [owner.contents.Phase.Rejected,owner.contents.Phase.Stale,owner.contents.Phase.Unknown]:
+			return check(false,"rendered contents lost authority: "+str(owner.contents.phase))
+		await create_timer(0.01).timeout
+	incomplete("rendered contents did not settle",true);return false
+
+func contents_scene() -> void:
+	step="main farm contents"
+	owner.open_target(int(fixture.contents.building_id),1)
+	if not await contents_ready():return
+	var initial: Dictionary=owner.contents.snapshot.duplicate(true)
+	var view=owner.panel.contents
+	if not check(view.visible and view.rows.size()==40 and view.page==6,"contents not connected to staged sheet"):return
+	await capture("contents_baseline")
+	for control in [2,3,5]:
+		for toggle in 2:
+			# The second row forces receipt-offset recovery to the same viewport.
+			await pointer(view.get_global_transform_with_canvas()*view.control_rect(1,control).get_center())
+			if not await contents_ready():return
+			if not check(owner.contents.snapshot.cursor==0,"contents edit moved viewport"):return
+			await native("contents-verify",{"rows":owner.contents.rows()})
+			if stopped:return
+			await capture("contents_"+str(control)+"_"+str(toggle))
+	if not check(owner.contents.snapshot==initial,"rendered item controls did not restore contents"):return
+	await pointer(view.get_global_transform_with_canvas()*Vector2(464,210))
+	if not await contents_ready():return
+	if not check(owner.contents.snapshot.cursor==1 and view.rows[0].id==initial.rows[1].id,"contents down arrow did not page native order"):return
+	await capture("contents_scrolled")
+	await pointer(view.get_global_transform_with_canvas()*Vector2(464,6))
+	if not await contents_ready():return
+	if not check(owner.contents.snapshot==initial,"contents up arrow did not restore viewport"):return
+	owner.close_panel();await process_frame
+	if not check(owner.contents.snapshot.is_empty() and view.rows.is_empty() and not view.scrollbar.dragging,"closed farm retained contents"):return

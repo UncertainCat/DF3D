@@ -335,6 +335,40 @@ was needed. `native_farm.json.scene_lifecycle_reference` records this evidence.
 Other farm operations across transport loss and AI-progress destruction
 cancellation remain separate coverage gaps.
 
+## Staged farm contents presentation
+
+The farm owner now opens and retires a separate bounded contents controller.
+Confirmed farm/item edits refresh the other snapshot through reads; no optimistic
+item flags are drawn. Removal hides and retires contents, while closing the
+sheet or losing the session clears rows and drag state. The native row component
+uses installed seed artwork, picture/background cells and Stocks item controls.
+Forbid, Dump and Visibility submit explicit desired values with current identity
+and revision; native eligibility governs the Melt/Dump controls. The View icon
+currently emits an item identity only: its item sheet remains unfinished.
+
+`farm_contents_capture` compares all101952 pixels against native232835 for six
+states: baseline, Forbid/Dump/Visibility enabled, TEMP and TEMP_PRINTHIDDEN. It
+also verifies explicit action/eligibility routing, owner/pending gates and empty
+snapshot retirement. `build/qa/contents-rows-connected` passes core/controller
+checks cleanly and both contents/sheet GPU checks with the three known Godot
+diagnostics. The initial component run passed pixels but failed an unnormalized
+JSON number in its signal expectation; the corrected fixture passes.
+
+`native_farm.json.contents_scene_reference` records protected235122, using the
+actual staged owner: second-row controls each direction match independent native
+readback, recover the original viewport and restore the complete receipt. Scroll
+arrows follow native order. The main-scene baseline region exactly matches all
+101952 native pixels. Existing rename/removal disconnects and a real process
+replacement assert empty contents snapshots/rows and retired dragging. Both save
+manifests remain unchanged; owned processes exit unsaved. Only the known rendering
+thread notice appears. Earlier234830 passed the same effects without the explicit
+contents-retirement assertions. Main-scene contents imagery was inspected.
+
+This is partial building UI acceptance. Contents tooltips, View item-sheet routing,
+short-list and resized geometry, tail scrolling, non-seed artwork and actual
+item-write transport-loss/replacement still need verification. The public farm
+route remains hidden; other management screens and release work remain pending.
+
 ## Contents item identity transport
 
 Management90 adds item type, material token and subtype raw identity to each

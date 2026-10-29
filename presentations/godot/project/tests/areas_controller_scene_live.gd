@@ -126,6 +126,8 @@ func pointer_areas() -> void:
 		await click_control(launcher,destination == "Zones")
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"pointer launcher"): return
 		if destination == "Zones":
+			await pointer_zone_palette()
+			if stopped:return
 			await click_control(editor.zone_menu.buttons[squad_zone] if zone_squads_only else (editor.zone_menu.buttons.Pond if zone_animals_only else (editor.zone_menu.buttons.PlantGathering if zone_gather_only else editor.zone_menu.buttons.Bedroom)))
 			if not check(editor.mode == "paint","zone button did not start painting"): return
 		var target := Vector3(origin.x+0.5,origin.z+float(world.floor_height()),origin.y+0.5)
@@ -558,6 +560,31 @@ func animal_fresh_assignment(id: int, target_id: int, assigned: bool, replacemen
 			visible+=1
 			if slot.view.texture==null:return false
 		return visible>0,"reopened animal portraits")
+
+func pointer_zone_palette() -> void:
+	root.size=Vector2i(960,600)
+	for key in ["SandCollection","ClayCollection"]:
+		await capture("palette_600_before_"+key)
+		var scroll: ScrollContainer=editor.content.get_parent()
+		var toolbar: Rect2=scene._fortress_hud.actions.get_global_transform_with_canvas()*Rect2(Vector2.ZERO,scene._fortress_hud.actions.size)
+		var panel_rect: Rect2=editor.panel.get_global_transform_with_canvas()*Rect2(Vector2.ZERO,editor.panel.size)
+		if not check(panel_rect.end.y<=toolbar.position.y,"zone palette overlaps toolbar"):return
+		for tick in 12:
+			await pointer_click(scroll.get_global_transform_with_canvas()*(scroll.size/2),MOUSE_BUTTON_WHEEL_DOWN)
+		var button: Button=editor.zone_menu.buttons[key]
+		if not check(scroll.scroll_vertical>0 and scroll.get_global_rect().encloses(button.get_global_rect()),"zone tail button not reachable: "+key):return
+		await capture("palette_600_scrolled_"+key)
+		await click_control(button)
+		if not check(editor.mode=="paint" and str(editor.zone_draft.get("name",""))==key,"zone tail click selected wrong type: "+key):return
+		await capture("palette_600_selected_"+key)
+		await pointer_click(Vector2(500,200),MOUSE_BUTTON_RIGHT)
+		if not check(not editor.panel.visible,"zone draft cancellation did not close palette"):return
+		var launcher: Button=scene._fortress_hud.navigation.Zones
+		launcher.show()
+		await click_control(launcher,true)
+		if not await wait_ui(func():return editor.panel.visible and editor.available and settled(),"palette reopen"):return
+	root.size=Vector2i(1200,800)
+	await capture("palette_restored")
 
 func pointer_zone_gathering(id: int) -> void:
 	step = "viewport native gathering flags"
@@ -1326,7 +1353,11 @@ func pointer_repaint(origin: Vector3i, id: int, destination: String) -> void:
 			var before := area_receipts().size()
 			await click_control(editor.paint_view.accept_button)
 			if not await wait_ui(func(): return settled() and editor.mode == "inspect","pointer repaint Accept"): return
-			if not check(area_receipts().size()==before,"zone Accept replayed committed paint"):return
+			# Pointer movement can finish an outstanding preview-count read.
+			# Accept must not replay a mutation; it need not suppress that read.
+			for receipt in area_receipts().slice(before):
+				var intent: Dictionary=receipt.get("_intent",{})
+				if not check(int(intent.get("action",-1))==Contract.ManagementAction.AreaInspect and int(intent.get("operation",-1))==Contract.AreaOperation.PaintCounts,"zone Accept sent unexpected request: "+str(intent)):return
 			await native("guard_after")
 			await native("snapshot",{"id":id,"expected":{"tile_count":2,"extents":[0,1,1]}})
 

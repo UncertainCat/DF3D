@@ -147,6 +147,10 @@ copy, fabricated progress percentages or broader native-UI departures.
   the soap controls or let it scroll an invisible list. This display/input
   exception is limited to the unusable zero-row scrollbar; record it in the
   native bug register.
+- Maintainer decision, 2026-10-28: keep the Zones palette scrollable at minimum
+  window height so Sand and Clay remain reachable above the bottom toolbar.
+  This exception covers palette overflow only; preserve native choices and
+  placement semantics. Record the correction in the native bug register.
 - Before extending an incomplete gameplay UI, locate the DF routine or existing
   semantic API that supplies its choices, eligibility, ordering and actions.
   Prefer exposing that behavior over reconstructing it in Godot or the bridge.

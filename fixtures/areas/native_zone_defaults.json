@@ -137,6 +137,29 @@
     "viewer_capture": "build/qa/04-U/controller_zone_palette_600.png",
     "viewer_check": "build/qa/zone-palette-resize-audit",
     "viewer_status": "passed_with_known_issues",
-    "limitation": "The viewer capture has no HUD; minimum-height main-scene reachability still requires verification. Approval to retain the existing scrolling wrapper is pending."
+    "limitation": "The isolated viewer capture has no HUD; the separate main_scene evidence verifies reachability under the approved overflow correction.",
+    "main_scene": {
+      "capture": "build/areas-acceptance-20261028-195546",
+      "status": "passed_with_known_issues",
+      "owned_df_pid": 163668,
+      "closed_unsaved": true,
+      "save_manifests_unchanged": 2,
+      "approval": "2026-10-28: keep the palette scrollable",
+      "coverage": "Actual main-scene wheel scrolling at960x600, fully visible Sand/Clay buttons, matching paint type on click, right-click cancellation, reopening and viewport restoration; subsequent Zones workflow passes. No placement effect claimed for the two palette clicks.",
+      "evidence_sha256": {
+        "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+        "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+        "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+        "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+        "scene_palette_600_before_ClayCollection.png": "2a0fda270ccdf34b48a5e1b44696944a3cd3bfbb41eabbaafdcc7f164cad1bd0",
+        "scene_palette_600_before_SandCollection.png": "eec9e65969e424c13f4514e8750e9ffeefc06d12cfc9c1ee5b2244ec15ff383f",
+        "scene_palette_600_scrolled_ClayCollection.png": "bca6a4e8f92e2f838058c2f89fd84baa6818d83b13c7e05663d3e53ce097baad",
+        "scene_palette_600_scrolled_SandCollection.png": "e24a3594e7726c5de85eba467657f7c7f83dcf45df3a16e4792d87edb2f57494",
+        "scene_palette_600_selected_ClayCollection.png": "0f32c336f0419108d46aca7ecd2d70c81707ab10d51bebc96b525e8a27115699",
+        "scene_palette_600_selected_SandCollection.png": "481912409605ef0dd1f240d2b3324c6352c05934031965d97535388e26c2ef30",
+        "scene_palette_restored.png": "e44bd0bd1dea92ba6d9f0e6fc0279d5c0523dc6993186379d85480c96e18abf3"
+      }
+    }
   }
 }

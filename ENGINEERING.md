@@ -16,7 +16,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Animal picker remains active after selecting another zone or empty terrain, so Enter assigns to an old, no-longer-shown zone. | Close the picker and retire its assignment target when map selection changes. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_outside_panel_selection`, native `build/stockpile-storage-native-zone-animals-20261026-153041`, rendered `build/areas-acceptance-20261026-153847`. |
 | Fresh historical personality profiles leave current_focus and undistracted_focus uninitialized at offsets0x184/0x188. | No runtime correction; DF3D calls the same native initializer. | Discovered, not corrected. Native constructor5c02a0 and assignment accountant captures060438/060526/060814; fixture `assignment_cleanup_reference`. The oracle retains raw values and excludes only these newly allocated counters from comparison. |
 | Minimum-height hospital Details has no staff rows, but draws a malformed staff scrollbar over soap controls and scrolls an invisible list. | Hide the scrollbar and cancel scrolling when no staff row fits. | Implemented under approval2026-10-27. `native_location_details.json.staff_height_reference`, native010412, GPU `build/qa/location-staff-resize` and live `areas-acceptance-20261027-144319`; capacities0/8/5 at600/900/800 pixels. |
-| Minimum-height Zones palette extends behind the bottom toolbar, partly obscuring Sand and Clay. | Proposed: retain the viewer's scrolling palette wrapper. | Native overlap confirmed; approval pending, main-scene reachability unverified. `native_zone_defaults.json.palette_resize_reference`, native154748. |
+| Minimum-height Zones palette extends behind the bottom toolbar, partly obscuring Sand and Clay. | Retain the scrolling palette wrapper within the space above the toolbar. | Implemented under approval2026-10-28; protected main-scene195546 verifies wheel scrolling, both type selections and cancellation at960x600. `native_zone_defaults.json.palette_resize_reference`, native154748. |
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
@@ -242,8 +242,21 @@ GPU `build/qa/zone-palette-resize-audit` captures the same three viewport sizes.
 The current viewer retains a scrolling outer wrapper at600 pixels. The isolated
 capture has no HUD, so it does not prove main-scene reachability. Core passes
 cleanly; GPU passes with the known thread/device-finalize/shutdown-object
-diagnostics. Approval to retain this scrolling departure is pending, followed
-by main-scene input verification; this is not Zones exposure acceptance.
+diagnostics. The maintainer approved scrolling on2026-10-28. The palette now
+uses the HUD's actual top and bottom insets to limit its height, keeping the
+scrolling region above the toolbar. Protected main-scene
+`areas-acceptance-20261028-195546 -ControllerScene -ZonesOnly` verifies wheel
+scrolling until both Sand and Clay fit fully inside the viewport, clicks each
+visible button to open the matching paint tool, cancels without placement and
+reopens the palette. Captures were visually inspected. The subsequent Zones
+workflow also passes, with only the known Godot separate-thread notice; both
+save manifests remain unchanged and owned DF163668 exits unsaved.
+The first run195332 passed palette checks but failed a repaint test assertion
+that counted preview-count reads as replayed edits. The corrected assertion
+permits only those reads and still rejects extra mutations; native before/after
+guards remain in place. This verifies the approved palette correction, not full
+Zones exposure acceptance. Fixture `palette_resize_reference.main_scene` retains
+evidence hashes.
 
 ### Assignment-picker resizing
 

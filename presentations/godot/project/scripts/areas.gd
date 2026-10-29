@@ -1366,7 +1366,8 @@ func _process(delta: float) -> void:
 			panel.size = Vector2(324,(68 if kind_picker.selected == 0 else 188) + (36 if message.visible else 0))
 		if zone_menu.visible:
 			panel.custom_minimum_size.x = 324
-			panel.size = Vector2(324,minf(584+(36 if message.visible else 0),view.y-64))
+			# Approved native overflow correction: scrolling stays above the HUD.
+			panel.size = Vector2(324,minf(584+(36 if message.visible else 0),view.y-insets.y-insets.z))
 		if kind_picker.selected == 0: paint_view.tools.position = Vector2(minf(view.x/2,view.x-136),view.y-76)
 		if kind_picker.selected == 0:
 			# Fractional canvas placement can make the outer ScrollContainer

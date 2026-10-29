@@ -3681,7 +3681,7 @@
     {
       "path": "presentations/godot/project/tests/farm_controller_live.gd",
       "status": "manual",
-      "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmControllerOnly -SaveId df3d-areas-* verifies real farm controller, tab retirement, crop/fertilizer effects and stale external changes. No rendered UI or transport disconnect claim."
+      "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmControllerOnly -SaveId df3d-areas-* verifies farm effects, tab retirement, stale edits, queued/sent removal and typing detach/reconnect, and sent typing across producer replacement. No rendered UI claim."
     },
     {
       "path": "presentations/godot/project/tests/farm_edit_live.gd",

@@ -90,8 +90,24 @@ unchanged and owned DF exits unsaved. The first native attempt205246 failed on a
 obsolete test-only dead flag; the fixture now uses the supported isDead helper.
 `native_farm.json.worker_cancellation_reference` records hashes and scope.
 This controlled association does not establish AI-driven partial-destruction
-cancellation. That and real disconnect/replacement coverage remain open; the farm
-sheet stays staged. See PINS.md for the required87 compatibility boundary.
+cancellation. The farm sheet stays staged. See PINS.md for the required87
+compatibility boundary.
+
+Protected controller acceptance213031 on2026-10-28 verifies real transport
+detach/reconnect for queued and sent removal and buffered name entry. Sent cases
+first confirm an unobserved native receipt: disconnect reports Unknown while
+preserving the native effect; unsent drafts report NotSent without effects.
+Both retire target identity, snapshot, ticket and typing session. Reconnection
+does not resume buffered text or notify old observers; explicit reopening reads
+the actual effect and allows its deliberate restoration. The same run replaces
+owned DF169632 with164580 while a name edit is sent and its observer unpolled.
+The old ticket becomes Unknown, no continuation crosses the epoch boundary, and
+a fresh farm read/rename/clear succeeds. The restart recreates the selected farm
+fixture, rather than the generic Areas fixture. Both save manifests remain
+unchanged and the owned replacement exits unsaved. The run is a clean pass.
+`native_farm.json.lifecycle_reference` records evidence. These are controller and
+service checks; rendered panel retirement, other farm operations across transport
+loss, and AI-progress destruction cancellation remain separate coverage gaps.
 
 ## Farm name entry presentation
 

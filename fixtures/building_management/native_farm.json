@@ -12371,5 +12371,60 @@
       "build/areas-acceptance-20261028-205731/clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
     },
     "limitations": "Controlled paused worker association, not naturally assigned AI execution or partial destruction. Real disconnect/replacement and public farm exposure remain open."
+  },
+  "lifecycle_reference": {
+    "run": "build/areas-acceptance-20261028-213031",
+    "status": "passed",
+    "disconnect_cases": [
+      {
+        "fresh_read": true,
+        "no_replay": true,
+        "operation": "remove",
+        "outcome": "not_sent",
+        "sent": false
+      },
+      {
+        "fresh_read": true,
+        "no_replay": true,
+        "operation": "remove",
+        "outcome": "unknown",
+        "sent": true
+      },
+      {
+        "fresh_read": true,
+        "no_replay": true,
+        "operation": "typing",
+        "outcome": "not_sent",
+        "sent": false
+      },
+      {
+        "fresh_read": true,
+        "no_replay": true,
+        "operation": "typing",
+        "outcome": "unknown",
+        "sent": true
+      }
+    ],
+    "replacement": {
+      "fresh_edit_verified": true,
+      "new_epoch": "706865717575681",
+      "no_continuation_replay": true,
+      "old_epoch": "728563892355073",
+      "old_outcome": "unknown",
+      "pid": 164580.0
+    },
+    "hashes": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "farm-disconnect-results.json": "ac5c750fa95ebda8a4ee59a62c5a7e3d2da28ecf33d878d27b10c68a98364b88",
+      "farm-replacement-results.json": "750c075cef3feaa54748ca01a001588b3348ff27b2caf6ef3b0e3a9d53d32c15",
+      "farm-controller-results.json": "35569f1b84a3c6f5c66be0e4a738727bf777fe25d2c592e588a792428f79fa87",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "restart-34/restart.json": "b6a52038cd5659e843fbb2347dc00ee5f086e59a64630ba3d3790dcb71936816",
+      "restart-34/manifest.json": "df0db040c06d0c1626106009e54431376feee57d967d56ab86f6c24fab03321b"
+    },
+    "coverage": "Real WorldModel detach/attach, native effect verification before and after reconnect, old observer retirement, no buffered-name continuation replay across process epoch, fresh explicit read/edit. Both save directories unchanged; owned processes exited unsaved.",
+    "limitations": "Controller/service only. Rendered retirement and disconnect coverage of other operations remain unverified."
   }
 }

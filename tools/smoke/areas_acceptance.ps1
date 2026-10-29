@@ -206,7 +206,7 @@ try {
      if($restart.Status -eq 'ready') {
       $fixtureProcess=Get-Process -Id $restart.Pid
       $loaded=$true
-      $r=Invoke-LuaFile 'areas-acceptance-fixture.lua' $fixtureArgs
+      $r=Invoke-LuaFile $fixtureScript $fixtureArgs
       $fixtureText=$r.Output -join "`n"
       if($fixtureText -notmatch 'FIXTURE_READY') {
        Write-Ack "$out/failed-$index" (@{reason='Fixture failed after reload'} | ConvertTo-Json -Compress)

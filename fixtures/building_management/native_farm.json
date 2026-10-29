@@ -11728,5 +11728,39 @@
         "rgb_sha256": "2a5173e22e34cf613d2d22b4d45bcf8edef7565789a30d554eba6031e98b54ab"
       }
     ]
+  },
+  "rename_input_reference": {
+    "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "evidence": "Static disassembly of the pinned executable, cross-referenced with header_reference native typing captures. Not a runtime helper or completed rename-write verification.",
+    "ranges": [
+      {
+        "name": "building rename input branch",
+        "rva": "0x8bb3eb",
+        "length": 196,
+        "sha256": "2c70261b730d66e53fc28690f4c7e4f602712582444f56a00cf5b39fac385804"
+      },
+      {
+        "name": "global text wrapper",
+        "rva": "0xc396d0",
+        "length": 47,
+        "sha256": "cb720b7270b0484cabc1b5d0f1a9907dad4c14ac6f4c7e650114c65f612673ac"
+      },
+      {
+        "name": "text editor worker",
+        "rva": "0xc39700",
+        "length": 659,
+        "sha256": "7b60fc998bf8d31aa4fbec5fd92418e89f257ef539109f6103c80d9a41c2f11f"
+      }
+    ],
+    "native_call": {
+      "limit_bytes": 30,
+      "flags": 23,
+      "draft_rva": "0x18a6090",
+      "editing_rva": "0x18a6089",
+      "building_name_offset": "0xd0",
+      "assignment_rva": "0x6f5a0"
+    },
+    "ownership": "c396d0 clears native global text bytes. c39700 calls imported SDL_StartTextInput, writes text-input-active at0x239063d and reads right-click state0x23905cd. Owned string/key inputs do not make these helpers safe for runtime use. No native input scratch access or restoration is authorized.",
+    "implementation_boundary": "Viewer-owned local editing; validated revision-checked assignment to the building name. Native branch has no separate simulation rename call. Unicode/window events and semantic write lifecycle remain unverified."
   }
 }

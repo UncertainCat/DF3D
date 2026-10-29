@@ -131,6 +131,25 @@ crop-edit refusal during removal, main-scene lifecycle integration and live
 rendered edits remain incomplete. These isolated view checks do not verify effects.
 The staged sheet is not exposed as a completed gameplay screen.
 
+The native building rename input path is now located in the pinned53.16 image:
+`8bb3eb..8bb4ae` tests the editing flag, copies the draft, calls `c396d0` with
+limit30 and flags0x17, compares the resulting draft and assigns changed text to
+the selected building's name at+0xd0 via the ordinary string assignment routine
+`6f5a0`. No separate simulation rename routine is called on that path. The
+editing flag/draft are global sheet fields at RVAs18a6089/18a6090; these are
+diagnostic evidence, never runtime inputs. The wrapper `c396d0` consumes and
+clears global text bytes; its worker `c39700` also calls `SDL_StartTextInput`,
+writes the global text-input-active flag and reads global right-click state.
+Even supplying owned strings and an owned key set would not isolate those
+side effects. Do not call either helper or borrow/restore native input scratch.
+`native_farm.json.rename_input_reference` retains code-range hashes and this
+ownership finding. The implementation boundary is local viewer text editing
+and a validated semantic name assignment; character conversion/window input,
+pending edits, stale revisions and unknown outcomes still need implementation
+and live verification. Existing native captures establish immediate typing,
+backspace,30 ASCII characters and Enter/Escape/right-click behavior, not full
+Unicode or actual window-event coverage.
+
 ## Locations integration verification
 
 ### Zones palette at minimum height

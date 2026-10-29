@@ -70,11 +70,48 @@ inline std::optional<std::string> itemWeightCaption(df::item* item) {
     if(!format||!item)return std::nullopt;
     std::string result;format(item,&result);return result;
 }
+// Seed-specific virtual targets used by c75000. Pin both dispatch and complete
+// leaf bodies before relying on type/quality/construction/image exclusions.
+inline bool seedDescriptionDispatch(df::item* item) {
+    if(!item||!farmFunctions())return false;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    if(*reinterpret_cast<const void* const*>(item)!=base+0x16d06e0)return false;
+    static const bool pinned=[base]() {
+        struct Pin {size_t slot,target,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x0,0x103de0,6,UINT64_C(0x5fc4dbfcbf4a7f23)}, // getType
+            {0x10,0xfca10,8,UINT64_C(0xfc97df6278270fbf)}, // getMaterial
+            {0x18,0xfca20,7,UINT64_C(0x5ca530bad2557b5a)}, // getMaterialIndex
+            {0x38,0xfca10,8,UINT64_C(0xfc97df6278270fbf)}, // getActualMaterial
+            {0x40,0xfca20,7,UINT64_C(0x5ca530bad2557b5a)}, // getActualMaterialIndex
+            {0x1d8,0xfc240,8,UINT64_C(0xfa411eb4425a85fb)}, // getWear
+            {0x1e8,0x66e60,6,UINT64_C(0x62d2efd24138f070)}, // getMaker
+            {0x230,0x75f60,9,UINT64_C(0x6aa4478617a62f2e)}, // getImageRef
+            {0x448,0x67040,3,UINT64_C(0xa3703b1a918cfbeb)}, // isActual
+            {0x478,0xfc190,7,UINT64_C(0xf985d8151da86506)}, // getStackSize
+            {0x508,0x66e90,3,UINT64_C(0x58389c18233078ff)}, // getQuality
+            {0x590,0x66e60,6,UINT64_C(0x62d2efd24138f070)}, // getMakerRace
+            {0x5a8,0x67050,3,UINT64_C(0x62941518298855c4)}, // isConstructed
+            {0x5e0,0xfc1c0,8,UINT64_C(0x2d52a42a21f4c0e4)}, // getMagic
+            {0x6b0,0x66e60,6,UINT64_C(0x62d2efd24138f070)}, // getColorWhetherDyedOrNot
+            {0x6c0,0x67050,3,UINT64_C(0x62941518298855c4)}, // isCritter
+            {0x750,0x66e60,6,UINT64_C(0x62d2efd24138f070)}, // getFaceUp
+        };
+        for(const auto& pin:pins) {
+            if(*reinterpret_cast<const void* const*>(base+0x16d06e0+pin.slot)!=base+pin.target)return false;
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.target+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    return pinned;
+}
 // Diagnostic seed probe only. General description branches can initialize
 // art-image state; this is not approved as a generic management observer.
 inline std::optional<std::string> probeSeedDescription(df::item* item) {
     using Describe=void (*)(df::item*,std::string*,bool,bool,bool,int32_t);
-    if(!item||int(item->getType())!=53||!farmFunctions())return std::nullopt;
+    if(!seedDescriptionDispatch(item))return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool pinned=[base]() {
         uint64_t value=UINT64_C(14695981039346656037);

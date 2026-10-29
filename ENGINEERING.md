@@ -637,6 +637,27 @@ read-only proof. `item_description_image_branch_audit` retains the exact target,
 bytes and executable identity. Its transitive dependencies and rare item
 variants still need audit. The UI-owning 1a8df0 wrapper remains excluded, and no normal management request calls this probe.
 
+The probe also pins the exact seed vtable and seventeen item virtual dispatch
+entries with complete leaf bodies. These establish type53, zero quality,
+nonconstructed/noncritter status and null image references before calling the
+formatter. They also pin the material, stack, wear and magic-pointer getters.
+Calls at slot0x28 inside the constructed-item loop belong to improvement objects,
+not the seed item; treating them as item::setMaterial would misclassify the code.
+
+A second general semantic side effect is the Slab87 branch at c78e1d..c79136.
+For adventure mode and a DemonIdentity26 engraving, it can allocate the current
+unit's historical-figure info and knowledge profile (stores c790c1/c790ed), then
+insert the matched identity through b9e70 at c79102. This is static evidence of
+knowledge mutation, not a live bug finding or permission to suppress native
+behavior. The pinned type53 seed getter excludes this branch. Wear, contaminants,
+magic and unusual flags still require transitive helper/variant acceptance;
+first-level exclusions alone do not finish the runtime audit.
+
+`item_description_dispatch_audit` retains the targets, bytes, branch evidence and
+protected130534 result. All twelve warm/cold seed descriptions still match native,
+full item/building/UI guards pass, and the nonseed probe remains refused. Owned
+DF186000 exits unsaved and the source manifest stays unchanged. MSVC passes.
+
 Protected082504 on2026-10-29 verifies six real seeds with warm and cold header
 caches. All twelve full descriptions exactly match the native sheet's raw
 description. Original item bytes and view_sheets/plotinfo bytes match after each

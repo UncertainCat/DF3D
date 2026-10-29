@@ -609,8 +609,22 @@ The run has only the known rendering-thread notice, and all three owned DF
 processes exit unsaved with two save manifests unchanged. `item_scene_reference`
 retains hashes and scope. Offline root/controller checks pass; component rendering
 passes with the three documented Godot diagnostics. Camera following, general
-item/holder types, item-owner live disconnect/replacement, long descriptions and
-resize acceptance remain unfinished.
+item/holder types, long descriptions and resize acceptance remain unfinished.
+
+Protected141340 adds item-owner-specific lifecycle checks through actual viewport
+clicks. Queued Hide edits retire as not_sent on disconnect. A sent edit is allowed
+to complete in DF while its reply is withheld from the action service; disconnect
+then retires it as unknown, closes the sheet and clears input ownership. Reconnect
+does not replay the edit or the completion's follow-up inspection. Explicit View
+reads the changed flag and a fresh click restores it. A third case replaces DF
+after the same withheld completion: the new epoch reuses item47486, but no old
+observer or intent survives, and explicit View reads the saved flag. Native
+readback verifies the restored snapshot and UI guards. All76 native checks pass,
+including the existing farm/contents cases; only the known rendering-thread
+notice remains. Four owned DF processes exit unsaved, and two save manifests are
+unchanged. The fresh post-restart sheet was inspected. `item_lifecycle_reference`
+records outcomes and hashes. This covers Hide edit retirement, not every item
+action or long-running camera following.
 
 ## Native item-sheet semantic discovery
 

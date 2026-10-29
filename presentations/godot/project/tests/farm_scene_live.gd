@@ -106,6 +106,8 @@ func exercise_scene() -> void:
 	await replacement_case(id,seasons)
 	if stopped:return
 	await contents_replacement_case()
+	if stopped:return
+	await item_lifecycle_cases()
 
 func lifecycle_open(id: int) -> void:
 	var deadline:=Time.get_ticks_msec()+120000
@@ -224,6 +226,76 @@ func item_ready() -> bool:
 		if model.phase not in [model.Phase.Reading,model.Phase.Applying]:return check(false,"item sheet failed: "+str(model.phase))
 		await create_timer(0.01).timeout
 	incomplete("item sheet did not settle",true);return false
+
+func item_lifecycle_cases() -> void:
+	var evidence: Array=[]
+	var item_owner=owner.item_owner;var model=item_owner.state;var sheet=item_owner.panel
+	var observed: Array=[];model.applied.connect(func():observed.append(true))
+	for mode in ["queued","sent","restart"]:
+		step="item sheet lifecycle "+mode
+		await lifecycle_open(int(fixture.contents.building_id))
+		if not await contents_ready():return
+		var view=owner.panel.contents
+		await pointer(view.get_global_transform_with_canvas()*view.control_rect(1,1).get_center())
+		if not await item_ready():return
+		var baseline: Dictionary=model.view_snapshot()
+		var original_epoch: int=actions._epoch
+		var generation: int=model.generation
+		var observations:=observed.size()
+		await pointer(sheet.get_global_transform_with_canvas()*sheet.flag_rect(3).get_center())
+		var pending: int=model.ticket
+		if not check(model.phase==model.Phase.Applying and pending>0 and actions._requests[pending].sequence==0,"item lifecycle edit not queued by viewport"):return
+		if mode!="queued":
+			actions.poll()
+			if not check(actions._requests.has(pending) and actions._requests[pending].sequence>0,"item lifecycle edit not sent"):return
+			var sequence: int=actions._requests[pending].sequence
+			var deadline:=Time.get_ticks_msec()+30000
+			var receipt: Dictionary={}
+			while Time.get_ticks_msec()<deadline:
+				world.poll();var candidate: Dictionary=world.poll_management()
+				if candidate.get("request_seq")==sequence and candidate.get("status")==S.Ok:receipt=candidate;break
+				await create_timer(0.01).timeout
+			if not check(not receipt.is_empty() and actions.result(pending).is_empty() and observed.size()==observations,"item lifecycle receipt missing or delivered early"):return
+			if not check(receipt.production.contents_edit.item_id==baseline.id and receipt.production.contents.rows[0].hidden!=baseline.hidden,"item lifecycle effect target differs"):return
+			await native("contents-verify",{"rows":receipt.production.contents.rows,"cursor":receipt.production.contents.cursor})
+			if stopped:return
+			write_json("item-"+mode+"-unobserved.json",receipt)
+		if mode=="restart":
+			var ack: Dictionary=await replace_producer(original_epoch)
+			if stopped or ack.is_empty():return
+		else:
+			world.detach_live();actions.poll()
+		var outcome: Dictionary=actions.result(pending)
+		if not check(outcome.get("outcome")==("not_sent" if mode=="queued" else "unknown"),"item lifecycle outcome differs"):return
+		if not check(model.generation>generation and model.item_id==-1 and model.ticket==0 and model.snapshot.is_empty() and not sheet.visible and scene._ui.host.active==null,"item lifecycle retained sheet authority/input"):return
+		if not check(actions._requests.is_empty() and actions._queue.is_empty() and actions._active==0,"item lifecycle retained pending intent"):return
+		if mode!="restart":
+			if not check(world.attach(),"item reconnect failed"):return
+			var deadline:=Time.get_ticks_msec()+60000
+			while Time.get_ticks_msec()<deadline:
+				world.poll();actions.poll(0.02)
+				if world.terrain_loaded() and not actions._transport_lost and actions._epoch>0 and not actions._needs_claim and actions._active==0 and actions._queue.is_empty():break
+				await create_timer(0.02).timeout
+			if not check(not actions._transport_lost and actions._epoch>0 and not actions._needs_claim and actions._active==0,"item reconnect not ready"):return
+		var next_ticket: int=actions._next_ticket
+		for frame in 30:
+			world.poll();actions.poll();await process_frame
+		if not check(no_farm_requests_since(next_ticket) and observed.size()==observations and model.snapshot.is_empty() and not sheet.visible,"item reconnect replayed edit/read or revived old observer"):return
+		await lifecycle_open(baseline.building_id)
+		if not await contents_ready():return
+		await pointer(view.get_global_transform_with_canvas()*view.control_rect(1,1).get_center())
+		if not await item_ready():return
+		if not check(model.item_id==baseline.id and model.snapshot.hidden==(not baseline.hidden if mode=="sent" else baseline.hidden),"fresh item observation after lifecycle differs"):return
+		await capture("item_"+mode+"_fresh")
+		if mode=="sent":
+			await pointer(sheet.get_global_transform_with_canvas()*sheet.flag_rect(3).get_center())
+			if not await item_ready():return
+		if not check(model.snapshot.hidden==baseline.hidden,"item lifecycle restoration differs"):return
+		await native("item-inspect",{"item":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
+		if stopped:return
+		evidence.append({"mode":mode,"item_id":baseline.id,"outcome":outcome.get("outcome"),"old_epoch":str(original_epoch),"fresh_epoch":str(actions._epoch),"no_replay":true,"fresh_read_and_restore":true})
+		item_owner.close_panel()
+	write_json("item-lifecycle-results.json",evidence)
 
 func item_sheet_scene(initial: Dictionary) -> void:
 	step="main item sheet navigation and edits"

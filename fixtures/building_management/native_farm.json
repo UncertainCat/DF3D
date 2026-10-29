@@ -23549,5 +23549,59 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     },
     "scope": "Staged actual main-scene seed sheet and holder roundtrip. Camera follow, item-specific live disconnect/replacement, broader holder types, long descriptions and resize remain incomplete. Public route remains hidden."
+  },
+  "item_lifecycle_reference": {
+    "run": "build/areas-acceptance-20261029-141340",
+    "status": "passed_with_known_issues",
+    "known_issues": [
+      "godot-separate-thread-notice"
+    ],
+    "native_checks": 76,
+    "owned_df_pids": [
+      186940,
+      183104,
+      180392,
+      175356
+    ],
+    "exit": "unsaved",
+    "unchanged_save_manifests": 2,
+    "cases": [
+      {
+        "fresh_epoch": "774777740460033",
+        "fresh_read_and_restore": true,
+        "item_id": 47486,
+        "mode": "queued",
+        "no_replay": true,
+        "old_epoch": "774777740460033",
+        "outcome": "not_sent"
+      },
+      {
+        "fresh_epoch": "774777740460033",
+        "fresh_read_and_restore": true,
+        "item_id": 47486,
+        "mode": "sent",
+        "no_replay": true,
+        "old_epoch": "774777740460033",
+        "outcome": "unknown"
+      },
+      {
+        "fresh_epoch": "753148285157377",
+        "fresh_read_and_restore": true,
+        "item_id": 47486,
+        "mode": "restart",
+        "no_replay": true,
+        "old_epoch": "774777740460033",
+        "outcome": "unknown"
+      }
+    ],
+    "artifacts": {
+      "item-lifecycle-results.json": "b0f9c43d2677401bd71517d15fb8973c50a73b9caf6c379608d3431ad75d9304",
+      "item-sent-unobserved.json": "3ab6045d7388f9b134c909c7c8e914eb968b8cfb69ff71033208c73c5261bf0e",
+      "item-restart-unobserved.json": "0f64807b48f765d1e3ad818c6dc2cd135a32a0224e96bdcdbfa5ce2fab75b6f7",
+      "farm_scene_item_restart_fresh.png": "bedb09af4a88cca31ce108e68de8fd60b8b96724639369eb41d0a0c9caa1107c",
+      "result.json": "84f6326ec597d0f1ce532ff4feb59d47257d54c99b9481395e4500ecc65df9e4",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    "scope": "Actual item-sheet Hide viewport edits: queued/sent disconnect and completed-but-unobserved reply across producer replacement. Explicit reopening reads fresh authority; sent same-process effect restored. Camera, other item types and broader presentation acceptance remain unfinished."
   }
 }

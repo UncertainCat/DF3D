@@ -81,9 +81,34 @@ func exercise() -> void:
 	seasons[0]=int(fixture.seasons[0])
 	await verify_farm(seasons)
 	if stopped:return
+	var before_rename: Dictionary=farm.snapshot.duplicate(true)
+	farm.rename("controller farm")
+	if not await settled(Farm.Phase.Ready):return
+	if not check(farm.snapshot.custom_name=="controller farm" and farm.snapshot.header_name=="Controller farm","controller rename receipt differs"):return
+	await native("verify",{"seasons":seasons,"name":"controller farm"})
+	if stopped:return
+	farm.rename("")
+	if not await settled(Farm.Phase.Ready):return
+	if not check(farm.snapshot==before_rename,"controller clear did not restore original receipt"):return
+	var before_observers:=applied_count
+	farm.rename("queued name");farm.close();actions.poll();farm.open(id,1)
+	if not await settled(Farm.Phase.Ready):return
+	await native("verify",{"seasons":seasons,"name":""})
+	if stopped:return
+	if not check(applied_count==before_observers,"queued retired rename completed"):return
+	farm.rename("sent name");actions.poll();farm.close();farm.open(id,1)
+	if not await settled(Farm.Phase.Ready):return
+	await native("verify",{"seasons":seasons,"name":"sent name"})
+	if stopped:return
+	if not check(applied_count==before_observers and farm.snapshot.custom_name=="sent name","sent rename revived retired observer or lost effect"):return
+	farm.rename("")
+	if not await settled(Farm.Phase.Ready):return
+	await native("verify",{"seasons":seasons,"name":""})
+	if stopped:return
 	farm.open(int(fixture.nonfarm),0)
 	if not await settled(Farm.Phase.Rejected):return
 	farm.dispose();actions.free()
 	write_json("farm-controller-results.json",{"initial_current_tab":true,"queued_tab_change_no_effects":true,
 		"sent_tab_change_effect_without_old_observer":true,"display_order_retained":true,
-		"stale_external_change_refused":true,"native_checks":handshake,"completed_observers":applied_count})
+		"stale_external_change_refused":true,"rename_and_clear":true,"queued_rename_retired":true,
+		"sent_rename_effect_without_old_observer":true,"native_checks":handshake,"completed_observers":applied_count})

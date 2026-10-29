@@ -11874,5 +11874,49 @@
         "sha256": "1d07f338916585e890441be7c3743eb8970f49e1bbe7f647ed59bffe154e4909"
       }
     ]
+  },
+  "rename_controller_reference": {
+    "source": "build\\areas-acceptance-20261028-192428",
+    "management_version": 86,
+    "scope": "Real farm controller semantic requests. Rename/clear, retirement of an unsent intent, and sent effects without reviving the old observer. Does not establish text-session draining, actual key input, or rendered typing.",
+    "results": {
+      "completed_observers": 9,
+      "display_order_retained": true,
+      "initial_current_tab": true,
+      "native_checks": 13,
+      "queued_rename_retired": true,
+      "queued_tab_change_no_effects": true,
+      "rename_and_clear": true,
+      "sent_rename_effect_without_old_observer": true,
+      "sent_tab_change_effect_without_old_observer": true,
+      "stale_external_change_refused": true
+    },
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "inputs": [
+      {
+        "path": "presentations/godot/project/scripts/farm_state.gd",
+        "sha256": "ec7fc19a6cc3253334a4f74f546b426b9d0c09bfc84ff3c1b6f624004d8e581d"
+      },
+      {
+        "path": "presentations/godot/project/tests/farm_state_test.gd",
+        "sha256": "8e60dc8b31b26ce1cee157d6d81115473c14e93ec8dead642926e5ff7974fbc8"
+      },
+      {
+        "path": "presentations/godot/project/tests/farm_controller_live.gd",
+        "sha256": "4a0957eee91537a4fa287e69acec0e8a450eac81eea565dff1d534e9df2da832"
+      },
+      {
+        "path": "tools/smoke/farm-read-fixture.lua",
+        "sha256": "3d888f4551c7141c83193192a4fd2bcdd8b6e80db43512c59d0c049998f8358f"
+      },
+      {
+        "path": "tools/smoke/farm-edit-verify.lua",
+        "sha256": "7e0858027d9d69215884790ff89c66c52d836143e764271916e98d7ff1058c17"
+      },
+      {
+        "path": "tools/smoke/areas_acceptance.ps1",
+        "sha256": "1a40843921e9bfe2310d1a425b8bf708d7167590e3b93f3df001eaac156ace9d"
+      }
+    ]
   }
 }

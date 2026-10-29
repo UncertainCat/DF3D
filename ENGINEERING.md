@@ -187,6 +187,27 @@ unsaved. `native_farm.json.rename_transport_reference` retains results and
 source/binary hashes. This is semantic wire acceptance, not typing UI or
 actual worker/removal execution acceptance.
 
+The farm controller exposes an explicit `rename` intent using its displayed
+revision, without optimistic name changes. Pending requests exclude other edits;
+removing snapshots exclude every farm edit. A completed rename with a different
+custom name cannot grant authority. Core and `farm_state_test` pass cleanly in
+`build/qa/farm-rename-controller`, covering rename/clear fields, pending exclusion,
+refusal/Stale/Unknown recovery without replay, wrong-name completion, queued
+retirement, late replies after target changes and removal locks.
+Protected `areas-acceptance-20261028-192428 -FarmControllerOnly` verifies rename
+and clear, retirement before sending, and a sent rename's effect after the old
+observer closes. The new read sees the changed name without reviving the old
+observer; a final clear restores the original name. Existing crop/fertilizer
+and stale-revision flows also pass (13 native checks,9 completed observers).
+Both save manifests remain unchanged and the owned game exits unsaved.
+`rename_controller_reference` retains the source hashes and results.
+
+This controller owns single intents. The typing session must separately drain
+explicit text typed during an in-flight write when Enter/Escape/right-click
+ends editing; calling the controller's ordinary `close` would discard an unsent
+intent. `area_rename_session.gd` already demonstrates service-owned continuation
+for area edits, but farm typing has not adopted or verified that lifecycle yet.
+
 ## Locations integration verification
 
 ### Zones palette at minimum height

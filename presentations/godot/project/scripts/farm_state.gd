@@ -75,8 +75,15 @@ func toggle_fertilization() -> void:
 func set_seasonal_fertilization(enabled: bool) -> void:
 	_edit(C.FarmOperation.SeasonalFertilization,{"seasonal_fertilization":int(enabled)})
 
+func rename(name: String) -> void:
+	# Encoding eligibility and the native byte limit are revalidated by DF's
+	# bridge adapter. This controller owns one explicit intent, not a text draft.
+	var bytes:=name.to_utf8_buffer()
+	if bytes.size()>90 or bytes.has(0):return
+	_edit(C.FarmOperation.Rename,{"farm_name":name})
+
 func _edit(operation: int, fields: Dictionary) -> void:
-	if phase!=Phase.Ready or ticket!=0:return
+	if phase!=Phase.Ready or ticket!=0 or snapshot.get("removing",true):return
 	var intent: Dictionary={"action":C.ManagementAction.FarmEdit,"building_id":building_id,
 		"season":season,"expected_revision":snapshot.revision,"farm_operation":operation}
 	intent.merge(fields);phase=Phase.Applying;_send(intent)
@@ -127,6 +134,8 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	var observed: Dictionary=production.get("farm",{})
 	if result.get("action",-1)!=sent.action or not _valid(observed) or (editing and outcome!=C.FarmEditOutcome.Completed):
 		_fail(Phase.Unknown if editing else Phase.Rejected);return
+	if editing and sent.get("farm_operation",C.FarmOperation.Crop)==C.FarmOperation.Rename and observed.custom_name!=sent.farm_name:
+		_fail(Phase.Unknown);return
 	if _initial_current:
 		_initial_current=false
 		if observed.current_season!=season:

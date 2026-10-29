@@ -531,8 +531,8 @@ captions and six actual holder-View/contents-View round trips. Each resolves
 farm968, type4, native name "Farm Plot". Full item/building/view_sheets/plotinfo
 bytes remain unchanged around the semantic reads. Owned paused DF169524 exits
 unsaved; source preservation passes. `item_holder_reference` records the pin,
-results and hashes. MSVC passes. This remains a diagnostic provider, not item
-inspection transport. Absent/multiple/dangling refs, renamed holders and nonfarm
+results and hashes. MSVC passes. Seed inspection now uses this holder provider
+through the management transport below. Absent/multiple/dangling refs, renamed holders and nonfarm
 building/container/unit cases still need acceptance.
 
 The diagnostic inspection also returns contents revision and row identity, flags
@@ -543,10 +543,9 @@ verifies six warm reads retain their revision and six cold reads change it, with
 all returned revisions and facts matching a fresh contents read. Existing full
 item/building/UI guards pass; owned DF184956 exits unsaved and the source stays
 unchanged. `item_inspection_revision_reference` retains the bounded evidence.
-The separate staged transport contract below carries these facts; the diagnostic
-provider is not yet enabled for runtime inspection.
+The seed inspection provider below carries these facts through management91.
 
-## Staged item inspection transport
+## Seed item inspection transport
 
 Management91 uses ProductionInspect with building_id and item_id for an item
 inspection. It excludes contents paging, revision preconditions and edit fields.
@@ -557,18 +556,24 @@ string, require identity and reject mixed or unsuccessful authority. PINS.md
 records the breaking migration; both bridge and viewer must be rebuilt together.
 
 Bridge encoding, neutral decoding and Godot dictionary conversion are implemented.
-The runtime request explicitly rejects until the native description provider is
-accepted, rather than falling through to the legacy building inspector. This
-contract does not enable public item inspection or imply general description safety.
+The runtime provider validates visible farm membership and exact seed dispatch
+before native entry. It returns native description, weight, holder identity and
+contents facts observed after formatting. Missing targets and other item types
+are rejected without falling through to the legacy building inspector. Native
+weight calculation and the semantic historical-figure-to-creature cache may be
+initialized; native menu/viewscreen state is not used. This does not enable the
+public item sheet or authorize generic item-description calls.
 
 Core and the synthetic host-to-Godot contract test pass, including revisions above
 2^53, absent holders, malformed requests and bounded snapshots. MSVC passes.
-Protected125847 verifies the matched version91 pair rejects staged inspection
-without contents changes or item authority, then passes the existing contents
-edit/controller workflow. Owned DF164908 exits unsaved; two save manifests stay
-unchanged. `item_inspection_wire_reference` records hashes and scope. Native
-provider integration, item-sheet ownership, holder/camera actions and their full
-lifecycle remain outstanding.
+Protected132506 verifies eighty warm/cold inspections across forty contained
+seeds against native diagnostic readback, including exact text, holder and row
+facts, coherent post-format revisions, missing-target rejection and unchanged
+native UI guards. The existing contents edit/controller workflow passes. Owned
+DF174204 exits unsaved; two save manifests stay unchanged. The diagnostic primitive
+has independent native-sheet comparison evidence below. `seed_item_provider_reference`
+records hashes and scope. Main-scene item-sheet ownership, holder/camera actions,
+full lifecycle and general item types remain outstanding.
 
 ## Native item-sheet semantic discovery
 
@@ -584,17 +589,17 @@ Weight text at154c84 calls14d8e0(item,string). That small formatter tests flag
 0x20000000, invokes c65f10 when missing, reads weight at item+0x74 and appends the
 native weight symbol. c65f10 computes item and contained item/unit weights, then
 sets weight_computed. The observed last-seed View flag change is this cache fill;
-future acceptance must distinguish it from unrelated simulation mutation. The diagnostic adapter and its seed acceptance are described below.
+seed acceptance distinguishes it from unrelated mutation and observes the revision
+after formatting. The diagnostic adapter and acceptance are described below.
 
 The item-sheet initializer1a8df0 calls c75000(item,string,true,true,false,0) at
 1a8eab for full description text. The string destination in that caller is native
 view_sheets+0x1e10. Do not invoke1a8df0: it clears/rebuilds native description/use
-caches and timing state. A future adapter must instead audit c75000's complete
-body and transitive dependencies, then call it with its own output storage. The
-recorded0x46aa observed range/hash is discovery provenance, not an approved runtime
-pin: unwind coverage, relocations and global dependencies still need verification.
-Holder links, recenter/follow, item actions and the complete item-sheet lifecycle
-remain unfinished. No item-sheet management contract or public route is exposed.
+caches and timing state. The seed adapter calls c75000 with owned output storage,
+complete-body pins and the seed-specific dispatch/dependency acceptance below.
+General item types retain unaccepted side-effect branches. Holder/camera actions,
+main-scene ownership and the complete item-sheet lifecycle remain unfinished;
+the management91 seed provider does not expose a public item-sheet route.
 
 The diagnostic `df3d farm-item-header-read <farm-id> <item-id>` validates visible
 farm membership and returns native caption and weight text in independently owned
@@ -610,11 +615,11 @@ matches its original native-computed bytes. Native view_sheets and plotinfo rema
 byte-identical. Controlled fields are restored even on test failure. The source
 manifest remains unchanged and owned paused DF186112 exits unsaved. See
 `item_header_reader_reference` for cases, hashes and bridge identity. MSVC builds
-successfully; core `item-header-reader` passes. This is a diagnostic header provider,
-not an item-sheet wire or UI. Full descriptions, nonseed/container/unit weight
-branches and item-sheet lifecycle remain unverified.
+successfully; core `item-header-reader` passes. The seed management provider now
+shares these helpers. Nonseed/container/unit weight branches and item-sheet
+lifecycle remain unverified.
 
-The diagnostic-only seed command
+The diagnostic seed command
 `df3d farm-item-description-probe <farm-id> <item-id>` calls c75000 with an
 independently owned string and native sheet options true,true,false,0. It uses
 the same visible farm-membership checks as the header reader and rejects nonseed
@@ -634,8 +639,9 @@ The supported seed vtable16d06e0 slot0x230 points to75f60, whose nine bytes
 Thus seed objects skip this initialization branch at c75765 regardless of
 seed material or flags. This is static branch evidence, not a complete
 read-only proof. `item_description_image_branch_audit` retains the exact target,
-bytes and executable identity. Its transitive dependencies and rare item
-variants still need audit. The UI-owning 1a8df0 wrapper remains excluded, and no normal management request calls this probe.
+bytes and executable identity. The seed-specific dependencies and controlled variants are covered below; this
+is not approval for nonseed types. The UI-owning1a8df0 wrapper remains excluded.
+Normal seed inspection and this diagnostic share seedItemDescription.
 
 The probe also pins the exact seed vtable and seventeen item virtual dispatch
 entries with complete leaf bodies. These establish type53, zero quality,
@@ -649,9 +655,9 @@ For adventure mode and a DemonIdentity26 engraving, it can allocate the current
 unit's historical-figure info and knowledge profile (stores c790c1/c790ed), then
 insert the matched identity through b9e70 at c79102. This is static evidence of
 knowledge mutation, not a live bug finding or permission to suppress native
-behavior. The pinned type53 seed getter excludes this branch. Wear, contaminants,
-magic and unusual flags still require transitive helper/variant acceptance;
-first-level exclusions alone do not finish the runtime audit.
+behavior. The pinned type53 seed getter excludes this branch. The controlled
+wear, contaminant, magic and flag acceptance below complements these exclusions;
+first-level exclusions alone do not establish generic item-description safety.
 
 `item_description_dispatch_audit` retains the targets, bytes, branch evidence and
 protected130534 result. All twelve warm/cold seed descriptions still match native,
@@ -671,7 +677,20 @@ source manifest stays unchanged. `item_description_variants_reference` records
 native strings and coverage. No ITEM_POWER raw source exists in this fortress;
 populated magic remains explicitly unverified. Water results do not establish
 creature/historical-material safety: native14d1920 has a separate historical
-lookup branch for material types219..418. The management provider stays staged.
+lookup branch for material types219..418. The subsequent provider acceptance below covers these branches for seeds.
+
+Protected131946 additionally verifies creature blood, named historical-figure
+blood (HF10562) and a populated test-owned ITEM_POWER source. All three descriptions
+match freshly reopened native sheets, with item/building/UI and referenced-object
+guards unchanged. The temporary raw source and item allocations are detached and
+freed; its synthetic sentence is not product copy or installed-raw provenance.
+Native14d1920 uses semantic figure/identity lookups72570 and c3a4f0, then the
+already-audited owned English name formatter a946e0. Material resolver14add70 can
+call701e70, which populates creature_handler.hist_fig_to_creature_map on a miss.
+That semantic cache is distinct from prohibited menu scratch. These helpers,
+the name formatter dependencies and seed dispatch have complete-body pins.
+Seed runtime inspection is enabled on this evidence; general item branches retain
+the art-image/Slab side effects described above and remain unexposed.
 
 Protected082504 on2026-10-29 verifies six real seeds with warm and cold header
 caches. All twelve full descriptions exactly match the native sheet's raw

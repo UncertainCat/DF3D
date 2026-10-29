@@ -2406,6 +2406,34 @@ std::optional<BuildingContentsPage> contentsPage(const df3d_production::Building
   }
   return page;
 }
+std::optional<BuildingItemSnapshot> observeFarmSeedItem(int32_t buildingId,int32_t itemId) {
+  auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(buildingId));
+  auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
+  if(!tile||tile->bits.hidden)return std::nullopt;
+  df::item* item=nullptr;
+  for(auto* held:farm->contained_items)if(held&&held->item&&held->item->id==itemId)item=held->item;
+  if(!df3d_production::seedDescriptionDispatch(item))return std::nullopt;
+  const auto description=df3d_production::seedItemDescription(item);
+  const auto weight=df3d_production::itemWeightCaption(item);
+  const auto holder=df3d_production::itemBuildingHolder(item);
+  if(!description||!weight||!holder)return std::nullopt;
+  // Observe revision after native lazy cache updates, exactly as the diagnostic.
+  const auto contents=df3d_production::buildingContents(farm);if(!contents)return std::nullopt;
+  for(size_t index=0;index<contents->rows.size();++index)if(contents->rows[index].id==itemId) {
+    auto page=contentsPage(*contents,uint32_t(index),contents->revision);
+    if(!page||page->rows.empty())return std::nullopt;
+    BuildingItemSnapshot value;value.buildingId=buildingId;value.revision=contents->revision;
+    value.completed=contents->completed;value.removing=contents->removing;value.item=std::move(page->rows.front());
+    value.weight=DF2UTF(*weight);value.description=DF2UTF(*description);
+    if(value.weight.size()>128||value.description.size()>32*1024)return std::nullopt;
+    if(holder->id>=0) {
+      value.holder=ItemBuildingHolder{holder->id,holder->type,DF2UTF(holder->name)};
+      if(value.holder->name.size()>512)return std::nullopt;
+    }
+    return value;
+  }
+  return std::nullopt;
+}
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
@@ -2516,9 +2544,12 @@ void run(color_ostream& out) {
     publish();return;
   }
   if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->item_id()>=0) {
-    // The inspection contract is staged until the native description provider is
-    // accepted. Never route item intent to the legacy building inspector.
-    message.clear();status=m::ManagementStatus::Rejected;production={};publish();return;
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    const auto* q=r->production();auto snapshot=observeFarmSeedItem(q->building_id(),q->item_id());
+    if(snapshot) {
+      production.selectedBuilding=snapshot->buildingId;production.item=std::move(snapshot);status=m::ManagementStatus::Ok;
+    }
+    publish();return;
   }
   // Explicit-season reads use the native contract; the default remains legacy.
   if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->season()>=0) {

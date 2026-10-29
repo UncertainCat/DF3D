@@ -22994,5 +22994,460 @@
     "magic_source_available": false,
     "scope": "Sixteen exact raw native descriptions and unchanged item/building/view_sheets/plotinfo plus allocated-object byte guards. Existing six-seed warm/cold matrix and native controls still pass. DF181916 exited unsaved; source unchanged.",
     "limitations": "No populated ITEM_POWER source exists in this fixture. Water contamination only; creature/historical-figure material descriptions and populated magic remain unverified. No new runtime provider/UI exposure."
+  },
+  "seed_item_provider_reference": {
+    "management_version": 91,
+    "native_run": "build/stockpile-storage-native-farm-discovery-20261029-131946",
+    "wire_run": "build/areas-acceptance-20261029-132506",
+    "native_result_sha256": "c4333bd8eeb5a6baab03e104236b806b28dc7b670becf76c1660b4f45ff4132a",
+    "wire_result_sha256": "be56ae638021041ab80c8570c9c8546191997a670ccf304d88121e6523772061",
+    "bridge_sha256": "060f6c5813ccae3c68fc8b8d2c4799c5eb1da0ada01c020d35f9a3296bcac8ba",
+    "extension_sha256": "0062fa8511fc69971f9606ca592512dfc491355f50f66a57a7c43f4f9716f358",
+    "variant_cases": [
+      {
+        "variant": "creature-blood",
+        "native_description": "These are sweet pod seeds.  It is spattered with dwarf blood.  ",
+        "material_type": 44,
+        "material_index": 572,
+        "historical_figure_id": null,
+        "synthetic_power": false,
+        "native_equal": true,
+        "guards_unchanged": true
+      },
+      {
+        "variant": "historical-blood",
+        "native_description": "These are sweet pod seeds.  It is coated with Fikod Clearspear's dwarf blood.  ",
+        "material_type": 244,
+        "material_index": 10562,
+        "historical_figure_id": 10562,
+        "synthetic_power": false,
+        "native_equal": true,
+        "guards_unchanged": true
+      },
+      {
+        "variant": "magic-controlled-source",
+        "native_description": "These are sweet pod seeds.  Synthetic item power description.  ",
+        "material_type": null,
+        "material_index": null,
+        "historical_figure_id": null,
+        "synthetic_power": true,
+        "native_equal": true,
+        "guards_unchanged": true
+      }
+    ],
+    "wire_cases": [
+      {
+        "item_id": 47492,
+        "cold": false,
+        "revision": "4799538845427415069"
+      },
+      {
+        "item_id": 47492,
+        "cold": true,
+        "revision": "4799538845427415069"
+      },
+      {
+        "item_id": 47486,
+        "cold": false,
+        "revision": "8065872916078276605"
+      },
+      {
+        "item_id": 47486,
+        "cold": true,
+        "revision": "8065872916078276605"
+      },
+      {
+        "item_id": 47494,
+        "cold": false,
+        "revision": "7408426961476798365"
+      },
+      {
+        "item_id": 47494,
+        "cold": true,
+        "revision": "7408426961476798365"
+      },
+      {
+        "item_id": 47485,
+        "cold": false,
+        "revision": "6161481710723042045"
+      },
+      {
+        "item_id": 47485,
+        "cold": true,
+        "revision": "6161481710723042045"
+      },
+      {
+        "item_id": 47484,
+        "cold": false,
+        "revision": "7137473091732029597"
+      },
+      {
+        "item_id": 47484,
+        "cold": true,
+        "revision": "7137473091732029597"
+      },
+      {
+        "item_id": 47493,
+        "cold": false,
+        "revision": "3217400558746217981"
+      },
+      {
+        "item_id": 47493,
+        "cold": true,
+        "revision": "3217400558746217981"
+      },
+      {
+        "item_id": 47491,
+        "cold": false,
+        "revision": "3932087401931814109"
+      },
+      {
+        "item_id": 47491,
+        "cold": true,
+        "revision": "3932087401931814109"
+      },
+      {
+        "item_id": 47545,
+        "cold": false,
+        "revision": "2396111404685058749"
+      },
+      {
+        "item_id": 47545,
+        "cold": true,
+        "revision": "2396111404685058749"
+      },
+      {
+        "item_id": 47540,
+        "cold": false,
+        "revision": "4055879022208316189"
+      },
+      {
+        "item_id": 47540,
+        "cold": true,
+        "revision": "4055879022208316189"
+      },
+      {
+        "item_id": 47541,
+        "cold": false,
+        "revision": "4326076309266322749"
+      },
+      {
+        "item_id": 47541,
+        "cold": true,
+        "revision": "4326076309266322749"
+      },
+      {
+        "item_id": 47544,
+        "cold": false,
+        "revision": "6004913761540294493"
+      },
+      {
+        "item_id": 47544,
+        "cold": true,
+        "revision": "6004913761540294493"
+      },
+      {
+        "item_id": 47536,
+        "cold": false,
+        "revision": "2167931913905182141"
+      },
+      {
+        "item_id": 47536,
+        "cold": true,
+        "revision": "2167931913905182141"
+      },
+      {
+        "item_id": 47534,
+        "cold": false,
+        "revision": "7684430577858875421"
+      },
+      {
+        "item_id": 47534,
+        "cold": true,
+        "revision": "7684430577858875421"
+      },
+      {
+        "item_id": 47537,
+        "cold": false,
+        "revision": "8753588305927525949"
+      },
+      {
+        "item_id": 47537,
+        "cold": true,
+        "revision": "8753588305927525949"
+      },
+      {
+        "item_id": 47532,
+        "cold": false,
+        "revision": "262669438033672669"
+      },
+      {
+        "item_id": 47532,
+        "cold": true,
+        "revision": "262669438033672669"
+      },
+      {
+        "item_id": 47543,
+        "cold": false,
+        "revision": "4171003397349943293"
+      },
+      {
+        "item_id": 47543,
+        "cold": true,
+        "revision": "4171003397349943293"
+      },
+      {
+        "item_id": 47542,
+        "cold": false,
+        "revision": "2550270429808127069"
+      },
+      {
+        "item_id": 47542,
+        "cold": true,
+        "revision": "2550270429808127069"
+      },
+      {
+        "item_id": 47533,
+        "cold": false,
+        "revision": "759224187355815805"
+      },
+      {
+        "item_id": 47533,
+        "cold": true,
+        "revision": "759224187355815805"
+      },
+      {
+        "item_id": 47530,
+        "cold": false,
+        "revision": "5891380280687733917"
+      },
+      {
+        "item_id": 47530,
+        "cold": true,
+        "revision": "5891380280687733917"
+      },
+      {
+        "item_id": 47531,
+        "cold": false,
+        "revision": "1142613713055323837"
+      },
+      {
+        "item_id": 47531,
+        "cold": true,
+        "revision": "1142613713055323837"
+      },
+      {
+        "item_id": 47535,
+        "cold": false,
+        "revision": "8003196596116938781"
+      },
+      {
+        "item_id": 47535,
+        "cold": true,
+        "revision": "8003196596116938781"
+      },
+      {
+        "item_id": 47529,
+        "cold": false,
+        "revision": "7233913151387236093"
+      },
+      {
+        "item_id": 47529,
+        "cold": true,
+        "revision": "7233913151387236093"
+      },
+      {
+        "item_id": 47600,
+        "cold": false,
+        "revision": "1784142703147771741"
+      },
+      {
+        "item_id": 47600,
+        "cold": true,
+        "revision": "1784142703147771741"
+      },
+      {
+        "item_id": 47611,
+        "cold": false,
+        "revision": "7345807151747238845"
+      },
+      {
+        "item_id": 47611,
+        "cold": true,
+        "revision": "7345807151747238845"
+      },
+      {
+        "item_id": 47594,
+        "cold": false,
+        "revision": "889666669020207453"
+      },
+      {
+        "item_id": 47594,
+        "cold": true,
+        "revision": "889666669020207453"
+      },
+      {
+        "item_id": 47665,
+        "cold": false,
+        "revision": "6389143650020896061"
+      },
+      {
+        "item_id": 47665,
+        "cold": true,
+        "revision": "6389143650020896061"
+      },
+      {
+        "item_id": 47695,
+        "cold": false,
+        "revision": "8025112364665536797"
+      },
+      {
+        "item_id": 47695,
+        "cold": true,
+        "revision": "8025112364665536797"
+      },
+      {
+        "item_id": 47696,
+        "cold": false,
+        "revision": "2117835984321527677"
+      },
+      {
+        "item_id": 47696,
+        "cold": true,
+        "revision": "2117835984321527677"
+      },
+      {
+        "item_id": 47697,
+        "cold": false,
+        "revision": "351942011235759581"
+      },
+      {
+        "item_id": 47697,
+        "cold": true,
+        "revision": "351942011235759581"
+      },
+      {
+        "item_id": 47664,
+        "cold": false,
+        "revision": "1682942711340476349"
+      },
+      {
+        "item_id": 47664,
+        "cold": true,
+        "revision": "1682942711340476349"
+      },
+      {
+        "item_id": 47680,
+        "cold": false,
+        "revision": "8729234005778476125"
+      },
+      {
+        "item_id": 47680,
+        "cold": true,
+        "revision": "8729234005778476125"
+      },
+      {
+        "item_id": 47692,
+        "cold": false,
+        "revision": "13753723001679741"
+      },
+      {
+        "item_id": 47692,
+        "cold": true,
+        "revision": "13753723001679741"
+      },
+      {
+        "item_id": 47749,
+        "cold": false,
+        "revision": "885676507033321373"
+      },
+      {
+        "item_id": 47749,
+        "cold": true,
+        "revision": "885676507033321373"
+      },
+      {
+        "item_id": 47764,
+        "cold": false,
+        "revision": "8542505366846604989"
+      },
+      {
+        "item_id": 47764,
+        "cold": true,
+        "revision": "8542505366846604989"
+      },
+      {
+        "item_id": 47763,
+        "cold": false,
+        "revision": "3026256112572841437"
+      },
+      {
+        "item_id": 47763,
+        "cold": true,
+        "revision": "3026256112572841437"
+      },
+      {
+        "item_id": 47762,
+        "cold": false,
+        "revision": "2649440425113741501"
+      },
+      {
+        "item_id": 47762,
+        "cold": true,
+        "revision": "2649440425113741501"
+      },
+      {
+        "item_id": 47742,
+        "cold": false,
+        "revision": "2758010400755251165"
+      },
+      {
+        "item_id": 47742,
+        "cold": true,
+        "revision": "2758010400755251165"
+      },
+      {
+        "item_id": 47748,
+        "cold": false,
+        "revision": "6501136498326107005"
+      },
+      {
+        "item_id": 47748,
+        "cold": true,
+        "revision": "6501136498326107005"
+      },
+      {
+        "item_id": 47881,
+        "cold": false,
+        "revision": "7739528704990051805"
+      },
+      {
+        "item_id": 47881,
+        "cold": true,
+        "revision": "7739528704990051805"
+      },
+      {
+        "item_id": 47929,
+        "cold": false,
+        "revision": "2307836712901304381"
+      },
+      {
+        "item_id": 47929,
+        "cold": true,
+        "revision": "2307836712901304381"
+      }
+    ],
+    "missing_item_rejected": true,
+    "missing_building_rejected": true,
+    "material_audit": {
+      "formatter": "14d1920/459",
+      "identity_lookup": "72570/98",
+      "identity_name": "c3a4f0/98",
+      "english_name": "a946e0/7c2",
+      "material_lookup": "14add70/12f -> 701e70/20e",
+      "semantic_cache": "701e70 can populate world.raws.creatures.hist_fig_to_creature_map through725c70. No native menu/viewscreen cache is used. Lookup/name helpers read figure/identity/language data; string changes target owned output."
+    },
+    "scope": "Native variant guard pass including HF10562 blood and a synthetic test-owned ITEM_POWER raw source. Synthetic text is safety/transport evidence only, never product copy. Wire80 reads across40seeds agree with diagnostic primitive; cold caches produce coherent post-format revisions; existing item edits/controller workflow passes. Owned DF156284 and DF174204 exit unsaved; source and two live-save manifests unchanged.",
+    "limitations": "Only contained seeds in visible farms. General item types, main-scene sheet/controller, holder/camera actions and item-sheet lifecycle remain incomplete. No public route enabled."
   }
 }

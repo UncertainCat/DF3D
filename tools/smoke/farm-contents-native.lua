@@ -113,8 +113,13 @@ local function seed_description_variants(item)
  local original={flags=item.flags.whole,wear=item.wear,stack=item.stack_size,
   whole=item.weight.whole,fraction=item.weight.fraction,magic=item.magic,contaminants=item.contaminants}
  local allocations={}
+ local inserted_interaction
  local function restore()
   item.magic=original.magic;item.contaminants=original.contaminants
+  if inserted_interaction then
+   local all=df.global.world.raws.interactions.all
+   assert(all[#all-1]==inserted_interaction,'temporary raw source order changed');all:erase(#all-1);inserted_interaction=nil
+  end
   for i=#allocations,1,-1 do df.delete(allocations[i])end;allocations={}
   item.flags.whole=original.flags;item.wear=original.wear;item.stack_size=original.stack
   item.weight.whole=original.whole;item.weight.fraction=original.fraction
@@ -127,6 +132,20 @@ local function seed_description_variants(item)
  local cases={{name='wear-1',wear=1},{name='wear-2',wear=2},{name='wear-3',wear=3},{name='stack-3',stack=3}}
  for _,flag in ipairs{'rotten','foreign','trader','forbid','dump','hidden','from_worldgen','artifact_mood'}do cases[#cases+1]={name=flag,flag=flag}end
  for _,size in ipairs{1,100}do cases[#cases+1]={name='water-contaminant-'..size,contaminant=size}end
+ local historical_case
+ for i=#df.global.world.history.figures-1,0,-1 do
+  local figure=df.global.world.history.figures[i]
+  if figure.name.has_name and figure.race>=0 and figure.race<#df.global.world.raws.creatures.all then
+   local raw=df.global.world.raws.creatures.all[figure.race]
+   for j,material in ipairs(raw.material)do
+    if material.id=='BLOOD' then historical_case={name='historical-blood',contaminant=100,mat_type=219+j,mat_index=figure.id,figure=figure};break end
+   end
+  end
+  if historical_case then break end
+ end
+ assert(historical_case,'named historical blood fixture missing')
+ cases[#cases+1]={name='creature-blood',contaminant=1,mat_type=historical_case.mat_type-200,mat_index=historical_case.figure.race}
+ cases[#cases+1]=historical_case
  cases[#cases+1]={name='magic-empty',magic=true}
  cases[#cases+1]={name='magic-negative-index',magic=true,power=-1}
  local source_case
@@ -137,6 +156,7 @@ local function seed_description_variants(item)
   if source_case then break end
  end
  if source_case then cases[#cases+1]=source_case else records[#records+1]={name='farm-seed-magic-source-unavailable'}end
+ cases[#cases+1]={name='magic-controlled-source',magic=true,synthetic_power=true}
  local ok,err=xpcall(function()
   for _,case in ipairs(cases)do
    restore()
@@ -147,8 +167,15 @@ local function seed_description_variants(item)
     local water=assert(dfhack.matinfo.find('WATER'),'water material missing')
     item.contaminants=nil;item.contaminants={new=true};allocations[#allocations+1]=item.contaminants
     local spatter=df.spatter:new();allocations[#allocations+1]=spatter
-    spatter.base.mat_type=water.type;spatter.base.mat_index=water.index;spatter.base.mat_state=df.matter_state.Liquid;spatter.base.size=case.contaminant
+    spatter.base.mat_type=case.mat_type or water.type;spatter.base.mat_index=case.mat_index or water.index;spatter.base.mat_state=df.matter_state.Liquid;spatter.base.size=case.contaminant
     item.contaminants:insert('#',spatter)
+   end
+   if case.synthetic_power then
+    local interaction=df.interaction:new();allocations[#allocations+1]=interaction
+    local source=df.interaction_source_item_powerst:new();allocations[#allocations+1]=source
+    source.item_description='Synthetic item power description.';interaction.sources:insert('#',source)
+    case.power=#df.global.world.raws.interactions.all;case.source_index=0
+    df.global.world.raws.interactions.all:insert('#',interaction);inserted_interaction=interaction
    end
    if case.magic then
     item.magic=nil;item.magic={new=true};allocations[#allocations+1]=item.magic
@@ -161,9 +188,20 @@ local function seed_description_variants(item)
    reopen()
    local expected=dfhack.df2utf(main.view_sheets.raw_description)
    local guards={}
-   local objects={item,b,main.view_sheets,df.global.plotinfo}
+   local objects={item,b,main.view_sheets,df.global.plotinfo,df.global.world.raws.interactions.all}
    for _,object in ipairs(allocations)do objects[#objects+1]=object end
    if case.source then objects[#objects+1]=case.source;objects[#objects+1]=case.interaction end
+   if case.figure then
+    objects[#objects+1]=case.figure
+    if case.figure.info then
+     objects[#objects+1]=case.figure.info
+     if case.figure.info.reputation then
+      objects[#objects+1]=case.figure.info.reputation
+      local identity=df.identity.find(case.figure.info.reputation.cur_identity)
+      if identity then objects[#objects+1]=identity end
+     end
+    end
+   end
    for _,object in ipairs(objects)do
     local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
     dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
@@ -174,7 +212,8 @@ local function seed_description_variants(item)
     assert(result.description==expected,'seed description variant differs: '..case.name)
     for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'seed variant changed item/building/UI: '..case.name)end
     records[#records+1]={name='farm-seed-description-variant',variant=case.name,item_id=item.id,
-     native_description=expected,header=result,native_equal=true,item_building_ui_unchanged=true}
+     native_description=expected,header=result,native_equal=true,item_building_ui_unchanged=true,
+     material_type=case.mat_type,material_index=case.mat_index,historical_figure_id=case.figure and case.figure.id or nil,synthetic_power=case.synthetic_power or false}
    end,debug.traceback)
    for _,guard in ipairs(guards)do df.delete(guard.bytes)end
    assert(check_ok,check_error)

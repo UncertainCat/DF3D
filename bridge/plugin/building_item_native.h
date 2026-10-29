@@ -103,13 +103,34 @@ inline bool seedDescriptionDispatch(df::item* item) {
             for(size_t i=0;i<pin.length;++i){hash^=base[pin.target+i];hash*=UINT64_C(1099511628211);}
             if(hash!=pin.hash)return false;
         }
+        // Semantic material/name dependencies. Historical material resolution
+        // may populate creature_handler::hist_fig_to_creature_map; no UI cache.
+        struct Helper {size_t rva,length;uint64_t hash;};
+        constexpr Helper helpers[]={
+            {0x14d1920,0x459,UINT64_C(0xf48e28715360ed9a)},
+            {0x14add70,0x12f,UINT64_C(0x01f897b15772d540)},
+            {0x701e70,0x20e,UINT64_C(0xead0193006374e44)},
+            {0x725c70,0x2b9,UINT64_C(0xec840d94b839c6b5)},
+            {0xc3a4f0,0x98,UINT64_C(0x90965a9fe84783f6)},
+            {0x72570,0x98,UINT64_C(0xa69932c0f279084a)},
+            {0xa946e0,0x7c2,UINT64_C(0xdbc3db5f052419ee)},
+            {0x52d3c0,0x288,UINT64_C(0x6e1fbc2416fba9fc)},
+            {0xd2cb50,0xf0,UINT64_C(0xf7ab8eceaadda09f)},
+            {0x1bb2e0,0x45,UINT64_C(0xc7976f8e247d7d17)},
+            {0x1bb330,0xcc,UINT64_C(0x22cd601a57c49cb0)},
+        };
+        for(const auto& helper:helpers) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<helper.length;++i){hash^=base[helper.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=helper.hash)return false;
+        }
         return true;
     }();
     return pinned;
 }
-// Diagnostic seed probe only. General description branches can initialize
-// art-image state; this is not approved as a generic management observer.
-inline std::optional<std::string> probeSeedDescription(df::item* item) {
+// Seed-specific owned description. General item branches can initialize art
+// or grant adventure knowledge and must not use this seed-only entry point.
+inline std::optional<std::string> seedItemDescription(df::item* item) {
     using Describe=void (*)(df::item*,std::string*,bool,bool,bool,int32_t);
     if(!seedDescriptionDispatch(item))return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));

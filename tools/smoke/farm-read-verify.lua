@@ -23,6 +23,20 @@ if request.op=='change' or request.op=='restore' then
 elseif request.op=='header-change' or request.op=='header-restore' then
  state.farm.name=request.op=='header-change' and 'wire farm' or state.name
  local text,code=dfhack.run_command_silent('df3d','farm-header-read',tostring(state.farm.id));assert(code==0,text);result.header=json.decode(text)
+elseif request.op=='item-cold' then
+ local item=assert(df.item.find(request.item_id));assert(item:getType()==df.item_type.SEEDS)
+ item.flags.weight_computed=false;item.weight.whole=0;item.weight.fraction=0
+elseif request.op=='item-inspect' then
+ local observed=request.item
+ local text,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(assert(_G.df3d_contents_fixture).farm.id),string.format('%d',observed.id));assert(code==0,text)
+ local native=json.decode(text)
+ assert(native.contents_revision==request.revision_text,'item inspection revision differs')
+ assert(native.caption==observed.name and native.weight==observed.weight and native.description==observed.description,'item inspection native text differs')
+ assert(native.building_id==observed.building_id and native.completed==observed.completed and native.removing==observed.removing,'item inspection building facts differ')
+ for _,key in ipairs{'item_type','material_token','subtype_raw','forbid','dump','melt','hidden','can_dump','can_melt'}do assert(native.facts[key]==observed[key],'item inspection facts differ: '..key)end
+ if native.holder then assert(observed.holder and observed.holder.id==native.holder.building_id and observed.holder.type==native.holder.building_type and observed.holder.name==native.holder.name,'item inspection holder differs')else assert(not observed.holder,'invented item holder')end
+ for _,guard in ipairs(_G.df3d_contents_guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'inspection changed UI scratch')end
+ result.item_inspection_equal=true;result.ui_scratch_unchanged=true
 elseif request.op=='contents-verify' then
  local c=assert(_G.df3d_contents_fixture)
  local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(c.farm.id));assert(code==0,text)

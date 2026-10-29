@@ -1654,7 +1654,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result["holder"]=std::move(link);
           }
           if(parameters[0]=="farm-item-description-probe") {
-            const auto description=df3d_production::probeSeedDescription(item);
+            const auto description=df3d_production::seedItemDescription(item);
             if(!description)return CR_FAILURE;
             result["description"]=DF2UTF(*description);
           }

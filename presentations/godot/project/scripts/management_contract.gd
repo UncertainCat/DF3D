@@ -18,6 +18,7 @@ enum FarmOperation {
 	Crop = 0,
 	FertilizationToggle = 1,
 	SeasonalFertilization = 2,
+	Rename = 3,
 }
 enum ManagementAction {
 	Catalog = 0,

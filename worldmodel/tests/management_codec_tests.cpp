@@ -23,7 +23,7 @@ TEST_CASE("farm edits require exact revisions owned only by crop requests") {
     if(variant==8)p.cancel=true;
     if(variant==9)p.recipe="unowned";
     if(variant==10)p.query="unowned";
-    if(variant==11)p.farmOperation=wm::FarmOperation(3);
+    if(variant==11)p.farmOperation=wm::FarmOperation(4);
     if(variant==12)p.seasonalFertilization=0;
     if(variant==13)p.farmOperation=wm::FarmOperation::SeasonalFertilization;
     if(variant==14){p.farmOperation=wm::FarmOperation::FertilizationToggle;p.cropId=175;}
@@ -40,6 +40,33 @@ TEST_CASE("successful farm edit cannot omit its production result") {
   s.add_action(wire::ManagementAction::FarmEdit);s.add_status(wire::ManagementStatus::Ok);
   b.Finish(s.Finish());
   CHECK(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())).has_value());
+}
+TEST_CASE("farm rename owns a present bounded name and preserves exact UTF8 bytes") {
+  for(int variant=0;variant<10;++variant) {
+    CAPTURE(variant);wm::ManagementRequest r;r.action=wm::ManagementAction::FarmEdit;
+    auto& p=r.production;p.buildingId=227;p.season=1;p.expectedRevision=9007199254740993ULL;
+    p.farmOperation=wm::FarmOperation::Rename;p.farmName="\xc3\xa9 farm";
+    if(variant==1)p.farmName.clear();
+    if(variant==2)p.farmName=std::string(90,'x');
+    if(variant==3)p.farmName=std::string(91,'x');
+    if(variant==4)p.farmName=std::string("a\0b",3);
+    if(variant==5)p.farmOperation=wm::FarmOperation::Crop;
+    if(variant==6)p.cropId=175;
+    if(variant==7)p.seasonalFertilization=0;
+    if(variant==8){r.action=wm::ManagementAction::ProductionInspect;p.expectedRevision=0;}
+    if(variant==9)p.expectedRevision=0;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(variant>=3));
+    REQUIRE(value->production()->farm_name());CHECK(value->production()->farm_name()->str()==p.farmName);
+  }
+  flatbuffers::FlatBufferBuilder b;
+  wire::ProductionRequestBuilder p(b);p.add_building_id(227);p.add_season(1);p.add_expected_revision(1);p.add_farm_operation(wire::FarmOperation::Rename);
+  auto prod=p.Finish();wire::ConstructionRequestBuilder r(b);r.add_schema_version(wire::kManagementVersion);
+  r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);
+  r.add_action(wire::ManagementAction::FarmEdit);r.add_production(prod);b.Finish(r.Finish());
+  const auto* request=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+  CHECK(wire::validateConstructionRequest(*request)==std::optional<std::string>("invalid farm name"));
 }
 TEST_CASE("farm outcomes grant snapshot authority only to confirmed completion") {
   for(int outcome=0;outcome<6;++outcome)for(bool ok:{false,true})for(bool receipt:{false,true})for(bool edit:{false,true}) {

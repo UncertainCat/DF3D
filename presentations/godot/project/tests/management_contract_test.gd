@@ -476,12 +476,12 @@ func test_production() -> void:
 			var request := {"action":15}
 			request[key] = bad
 			reject_production(request, "Wrong management field type: " + key)
-	for key in ["recipe","query","cancel"]:
+	for key in ["recipe","query","cancel","farm_name"]:
 		var request := {"action":15}
 		request[key] = 1
 		reject_production(request, "Wrong management field type: " + key)
 	var bounds := {"building_id":[-2,2147483648],"job_id":[-2,2147483648],"cursor":[-1,4294967296],
-		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[3],"seasonal_fertilization":[2],
+		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[4],"seasonal_fertilization":[2],
 		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(129),String.chr(233).repeat(65)]}
 	for key in bounds:
 		for bad in bounds[key]:
@@ -491,6 +491,9 @@ func test_production() -> void:
 	for request in [{"action":18,"building_id":1,"job_id":12,"cancel":true,"repeat":1},
 		{"action":18,"building_id":1,"job_id":12}]:
 		reject_production(request, "invalid job edit")
+	reject_production({"action":19,"building_id":3,"season":1,"farm_operation":3,"expected_revision":1},"Missing management field: farm_name")
+	reject_production({"action":19,"building_id":3,"season":1,"farm_operation":3,"farm_name":"x".repeat(91),"expected_revision":1},"Invalid bounded production request")
+	reject_production({"action":15,"farm_name":""},"unexpected farm name")
 	var requests := [{"action":15,"query":"","cursor":0}, {"action":16,"building_id":1},
 		{"action":16,"building_id":3}, {"action":17,"building_id":1,"recipe":"builtin:114:2","repeat":0},
 		{"action":17,"building_id":1,"recipe":"builtin:114:2","repeat":1},
@@ -500,7 +503,7 @@ func test_production() -> void:
 	for season in 2:
 		for crop in [0,-1]: requests.append({"action":19,"building_id":3,"season":season,"crop_id":crop,"expected_revision":9007199254740993})
 	for operation in [{"season":2,"farm_operation":1},{"season":2,"farm_operation":2,"seasonal_fertilization":0},
-		{"season":3,"farm_operation":2,"seasonal_fertilization":1},{"season":3,"farm_operation":1}]:
+		{"season":3,"farm_operation":2,"seasonal_fertilization":1},{"season":3,"farm_operation":3,"farm_name":"new farm"}]:
 		operation.merge({"action":19,"building_id":3,"expected_revision":9007199254740993})
 		requests.append(operation)
 	requests.append({"action":15,"query":"#1024","cursor":1024})
@@ -516,7 +519,7 @@ func assert_production(p: Dictionary, request: Dictionary) -> void:
 		var native_farm: Dictionary=p.farm
 		assert(native_farm.revision==9007199254740993 and typeof(native_farm.revision)==TYPE_INT)
 		assert(native_farm.building_id==3 and native_farm.current_season==1)
-		assert(native_farm.custom_name=="test farm" and native_farm.header_name=="Test farm")
+		assert(native_farm.custom_name==("new farm" if request.get("farm_operation",0)==3 else "test farm") and native_farm.header_name=="Test farm")
 		assert(not native_farm.removing and not native_farm.removal_suspended and not native_farm.removal_has_worker)
 		var selected_season: int=request.season if request.action==A.FarmEdit else 1
 		assert(native_farm.selected_season==selected_season)

@@ -22,18 +22,25 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management86 adds FarmOperation.Rename and its required farm_name string.
+The name is UTF-8 (at most90 bytes), losslessly converted to at most30 native
+CP437 bytes at the safe point. Empty names clear the custom name; missing names
+are invalid. Other operations cannot carry farm_name. Rebuild/install bridge
+and viewer together on `Local\\df3d_management_v86`; management85 is incompatible.
+Snapshot/grid/session versions are unchanged.
+
 Management85 adds required custom/header names and removal/suspended/worker
 facts to native farm snapshots. All participate in the exact content revision.
 Names are UTF-8 from native CP437, bounded to1536 bytes for the reader's512-byte
 source limit. Missing fields in old receipts cannot synthesize these facts or
-new revisions. Rebuild/install bridge and viewer together on
-`Local\\df3d_management_v85`; snapshot/grid/session versions are unchanged.
+new revisions. This snapshot contract remains required in management86;
+snapshot/grid/session versions are unchanged.
 
 Management84 introduced the stable plant raw ID carried by each native farm choice
 (`raw_id`, nonempty and at most128 bytes). The owned ID participates in the farm
 revision and selects installed artwork independently of translated names and
 native menu state. Older receipts cannot synthesize raw IDs or new revisions;
-use the management85 region above for the current bridge and viewer.
+use the management86 region above for the current bridge and viewer.
 Snapshot/grid/session versions are unchanged.
 
 Management83 renamed action19 to FarmEdit and added FarmOperation:

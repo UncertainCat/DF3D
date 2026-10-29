@@ -20,6 +20,7 @@ enum class FarmOperation : uint8_t {
   Crop = 0,
   FertilizationToggle = 1,
   SeasonalFertilization = 2,
+  Rename = 3,
 };
 enum class ManagementAction : uint8_t {
   Catalog = 0,

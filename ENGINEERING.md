@@ -80,7 +80,7 @@ source manifest. Initial182336 failed because its script assumed Escape kept the
 sheet open; it is not acceptance.182427 established reopening before the final
 asserted capture182610.
 
-Building rename has no current semantic command. The existing construction
+Farm rename uses the management86 semantic command described below. The existing construction
 Inspect/Remove contract supports removal/cancellation but omits the job state
 needed by the native replacement panel. Renderer180c3c..180de1 checks the first
 building job: suspended flags take precedence; otherwise native predicate
@@ -92,7 +92,7 @@ fingerprinted worker predicate with owned output strings. Native formatter
 `df3d farm-header-read <id>` returns names and removal/suspended/worker facts;
 it rejects malformed, missing, nonfarm and hidden targets. Management85 carries
 the custom name, formatted caption and removal facts in farm snapshots. There
-is no rename write yet, and a queued command is not evidence of status.
+is a separate management86 rename write; a queued command is not evidence of status.
 
 Protected header183652 compares this helper during every rename/removal capture,
 including owned suspended, worker-reference and combined variants. All nonediting
@@ -126,9 +126,9 @@ identified the horizontal-option selector. Subsequent input failures exposed a
 test lambda whose same-line statements unintentionally retained the owner gate;
 the corrected test executes both blocked clicks and gate restoration explicitly.
 
-Header action ownership, rename writes, removal command integration, bridge-side
-crop-edit refusal during removal, main-scene lifecycle integration and live
-rendered edits remain incomplete. These isolated view checks do not verify effects.
+Header action ownership, viewer typing, removal command integration, main-scene
+lifecycle integration and live rendered edits remain incomplete. These isolated
+view checks do not verify effects.
 The staged sheet is not exposed as a completed gameplay screen.
 
 The native building rename input path is now located in the pinned53.16 image:
@@ -144,13 +144,12 @@ Even supplying owned strings and an owned key set would not isolate those
 side effects. Do not call either helper or borrow/restore native input scratch.
 `native_farm.json.rename_input_reference` retains code-range hashes and this
 ownership finding. The implementation boundary is local viewer text editing
-and a validated semantic name assignment; character conversion/window input,
-pending edits, stale revisions and unknown outcomes still need implementation
-and live verification. Existing native captures establish immediate typing,
+and a validated semantic name assignment. Viewer window input and pending-edit
+lifecycle still need implementation and live verification. Existing native captures establish immediate typing,
 backspace,30 ASCII characters and Enter/Escape/right-click behavior, not full
 Unicode or actual window-event coverage.
 
-`finishFarmRename` defines the pending semantic write transaction independently
+`finishFarmRename` defines the semantic write transaction independently
 of native input state. It requires a valid current receipt and exact revision,
 rejects removing farms, requires an injected lossless CP437 conversion and enforces
 the native30-byte limit (with a90-byte UTF-8 transport ceiling and no embedded
@@ -160,9 +159,33 @@ name, a nonempty native-formatted caption and all non-name semantic facts
 unchanged. Exceptions or unverifiable post-effect receipts yield Unknown with
 no completion authority; false from the apply callback must mean no effects.
 Core `build/qa/farm-rename-transaction` covers26 refusal/fault paths plus clearing,
-30-byte names, an injected CP437 encoding and identical-name no-ops. This helper
-is not yet wired to a transport command. Its injected converter tests do not
-establish actual DF conversion or live rename effects.
+30-byte names, an injected CP437 encoding and identical-name no-ops. Injected
+converter tests alone do not establish actual DF conversion or live effects.
+
+Management86 wires `FarmOperation.Rename` and its required `farm_name` through
+the model, Godot and safe-point bridge. The bridge verifies the actual
+`DF2UTF(UTF2DF(name))` roundtrip before assigning owned bytes to the current
+visible completed farm. All four farm edit operations refuse while removal is
+pending. No native input/menu scratch is read or borrowed. PINS.md records the
+joint bridge/viewer migration. Missing name, embedded NUL, overlong payload and
+cross-operation field ownership are checked by the wire contract; empty names
+remain explicit valid requests.
+
+Core and Godot contract checks pass cleanly in `build/qa/farm-rename-contract-final`.
+The first run's checks passed but its gate was incomplete because the live-test
+harness changed during the run; only the fixed-source rerun is acceptance.
+Protected `areas-acceptance-20261028-192025 -FarmEditOnly` verifies ordinary and
+30-byte names, actual CP437 Café conversion, clearing to the native default
+caption, identical-name receipts, four stale refusals and two invalid-name
+refusals (31 bytes and an unrepresentable character). Four additional refusals
+cover crop, immediate fertilizer, seasonal fertilizer and rename while a
+controlled removal job exists. Clearing that fixture restores the original
+receipt. Existing crop/fertilizer effects also pass. Native names/captions,
+crop selections, fertilizer facts, paused frame and native menu/rename scratch
+are checked; two save manifests remain unchanged and the owned game exits
+unsaved. `native_farm.json.rename_transport_reference` retains results and
+source/binary hashes. This is semantic wire acceptance, not typing UI or
+actual worker/removal execution acceptance.
 
 ## Locations integration verification
 

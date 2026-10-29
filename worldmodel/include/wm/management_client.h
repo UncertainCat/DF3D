@@ -273,6 +273,7 @@ struct AreaState {
 struct ProductionRequest {
   FarmOperation farmOperation=FarmOperation::Crop;
   int8_t seasonalFertilization=-1;
+  std::string farmName;
   uint64_t expectedRevision=0;
   int32_t buildingId=-1,jobId=-1,cropId=-1;
   std::string recipe,query;

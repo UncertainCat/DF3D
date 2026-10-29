@@ -429,7 +429,7 @@ flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBuffe
     auto farm=m::CreateFarmSnapshot(b,3,9007199254740993ULL,action==A::FarmEdit?q->season():1,1,
       b.CreateVector(seasons),b.CreateVector(rows),4,29,
       q->farm_operation()==m::FarmOperation::FertilizationToggle?25:2,
-      q->farm_operation()==m::FarmOperation::SeasonalFertilization?q->seasonal_fertilization()!=0:true,b.CreateString("test farm"),b.CreateString("Test farm"),false,false,false);
+      q->farm_operation()==m::FarmOperation::SeasonalFertilization?q->seasonal_fertilization()!=0:true,b.CreateString(q->farm_operation()==m::FarmOperation::Rename?q->farm_name()->str():"test farm"),b.CreateString("Test farm"),false,false,false);
     m::ProductionStateBuilder p(b);p.add_selected_building(3);p.add_farm(farm);
     if(action==A::FarmEdit)p.add_farm_edit_outcome(m::FarmEditOutcome::Completed);
     return p.Finish();
@@ -919,7 +919,8 @@ int main(int argc,char** argv) {
         case A::FarmEdit:
           require(r->production()->building_id()==3 && r->production()->season()==int(received-54)/2 &&
               r->production()->crop_id()==(received<58 && received%2==0?0:-1) && r->production()->expected_revision()==9007199254740993ULL &&
-              int(r->production()->farm_operation())==(received<58?0:received==58 || received==61?1:2) &&
+              int(r->production()->farm_operation())==(received<58?0:received==58?1:received==61?3:2) &&
+              (received!=61 || (r->production()->farm_name() && r->production()->farm_name()->str()=="new farm")) &&
               r->production()->seasonal_fertilization()==(received==59?0:received==60?1:-1),"farm edit payload");break;
         case A::WorkOrderUpdate: {
           auto* v=r->work_order();

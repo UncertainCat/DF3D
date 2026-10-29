@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 85;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v85";
+inline constexpr uint32_t kManagementVersion = 86;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v86";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -416,7 +416,10 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if (r.action()==ManagementAction::ProductionJobEdit && (p->job_id()<0 ||
         (p->cancel() && (p->repeat()!=-1 || p->suspend()!=-1)) ||
         (!p->cancel() && p->repeat()==-1 && p->suspend()==-1))) return "invalid job edit";
-    if(static_cast<uint8_t>(p->farm_operation())>2 || p->seasonal_fertilization() < -1 || p->seasonal_fertilization()>1)return "invalid farm operation";
+    if(static_cast<uint8_t>(p->farm_operation())>3 || p->seasonal_fertilization() < -1 || p->seasonal_fertilization()>1)return "invalid farm operation";
+    if(p->farm_operation()==FarmOperation::Rename) {
+      if(!p->farm_name() || p->farm_name()->size()>90 || p->farm_name()->str().find('\0')!=std::string::npos)return "invalid farm name";
+    } else if(p->farm_name())return "unexpected farm name";
     if(r.action()!=ManagementAction::FarmEdit && (p->farm_operation()!=FarmOperation::Crop || p->seasonal_fertilization()!=-1))return "unexpected farm operation";
     if(r.action()==ManagementAction::FarmEdit) {
       if(p->season()<0)return "season required";

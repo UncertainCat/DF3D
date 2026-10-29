@@ -11762,5 +11762,117 @@
     },
     "ownership": "c396d0 clears native global text bytes. c39700 calls imported SDL_StartTextInput, writes text-input-active at0x239063d and reads right-click state0x23905cd. Owned string/key inputs do not make these helpers safe for runtime use. No native input scratch access or restoration is authorized.",
     "implementation_boundary": "Viewer-owned local editing; validated revision-checked assignment to the building name. Native branch has no separate simulation rename call. Unicode/window events and semantic write lifecycle remain unverified."
+  },
+  "rename_transport_reference": {
+    "source": "build\\areas-acceptance-20261028-192025",
+    "management_version": 86,
+    "scope": "Real semantic wire requests in an owned paused unsaved session. Actual CP437 conversion, names/captions, unchanged native menu and rename scratch, invalid/stale refusals, and removal-context refusals. Controlled removal job setup/cleanup is not worker execution or viewer removal-action acceptance. No rendered typing/lifecycle claim.",
+    "results": {
+      "cases": [
+        {
+          "completed": 3,
+          "rejected": 1,
+          "season": 0,
+          "stale": 1
+        },
+        {
+          "completed": 3,
+          "rejected": 1,
+          "season": 2,
+          "stale": 1
+        },
+        {
+          "completed": 3,
+          "rejected": 1,
+          "season": 3,
+          "stale": 1
+        }
+      ],
+      "fertilizer_completed": 5,
+      "fertilizer_original_restored": true,
+      "fertilizer_stale": 2,
+      "invalid_targets": 2,
+      "original_selections_restored": true,
+      "removal_refusals": 4,
+      "rename_cases": [
+        {
+          "header_name": "Lower farm",
+          "identical_unchanged": true,
+          "name": "lower farm",
+          "stale_refused": true
+        },
+        {
+          "header_name": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "identical_unchanged": true,
+          "name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "stale_refused": true
+        },
+        {
+          "header_name": "CafÃ©",
+          "identical_unchanged": true,
+          "name": "CafÃ©",
+          "stale_refused": true
+        },
+        {
+          "header_name": "Farm Plot",
+          "identical_unchanged": true,
+          "name": "",
+          "stale_refused": true
+        }
+      ],
+      "rename_invalid": 2,
+      "rename_original_restored": true
+    },
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "inputs": [
+      {
+        "path": "bridge/plugin/management.cpp",
+        "sha256": "54a55ab33cac9c1d42e1cdc198d6af75a4780f38eef617d1512ddb9c8b48b6ce"
+      },
+      {
+        "path": "bridge/plugin/farm_transaction.h",
+        "sha256": "e3b36d4c1b9fad37c5c4969ecbf4e79680837c04b475577791d25f4f7c2c921d"
+      },
+      {
+        "path": "schema/mirror.fbs",
+        "sha256": "76ed91363036577047805bc18ff3403af6e30256be961a118eedf2bca85e5498"
+      },
+      {
+        "path": "schema/cpp/management_util.h",
+        "sha256": "85aebb9819656f15799411acf77d1aad0d6ee8fe7cc3b6807e6548f40dd76896"
+      },
+      {
+        "path": "worldmodel/src/management_production_codec.cpp",
+        "sha256": "12e59fa338512f6e3d1b8890012418146f09322b33ca6f68b96dd5e39d40e9f7"
+      },
+      {
+        "path": "presentations/godot/extension/src/management_production_codec.cpp",
+        "sha256": "ef876846f93b5bdabca7b0335a158a2b59563a612d93e40c1705117299d848bf"
+      },
+      {
+        "path": "presentations/godot/project/tests/farm_edit_live.gd",
+        "sha256": "8bc2cd01f1279b531f418cf7162cce9192fce2b1178284897eed049eaae41d10"
+      },
+      {
+        "path": "tools/smoke/farm-read-fixture.lua",
+        "sha256": "3d888f4551c7141c83193192a4fd2bcdd8b6e80db43512c59d0c049998f8358f"
+      },
+      {
+        "path": "tools/smoke/farm-edit-verify.lua",
+        "sha256": "7e0858027d9d69215884790ff89c66c52d836143e764271916e98d7ff1058c17"
+      },
+      {
+        "path": "tools/smoke/areas_acceptance.ps1",
+        "sha256": "1a40843921e9bfe2310d1a425b8bf708d7167590e3b93f3df001eaac156ace9d"
+      },
+      {
+        "path": "C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress/hack/plugins/df3d.plug.dll",
+        "sha256": "9b85e738cf95f1289cd5ef779d78c2024c7bc4fc507192a90ffa94582ae2de2f"
+      },
+      {
+        "path": "presentations\\godot\\project\\bin\\df3d_godot.dll",
+        "sha256": "1d07f338916585e890441be7c3743eb8970f49e1bbe7f647ed59bffe154e4909"
+      }
+    ]
   }
 }

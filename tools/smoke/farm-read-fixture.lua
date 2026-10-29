@@ -17,6 +17,8 @@ end
 local text,code=dfhack.run_command_silent('df3d','farm-header-read',tostring(farm.id));assert(code==0,text);state.header=json.decode(text)
 _G.df3d_farm_read_fixture={farm=farm,name=farm.name,seasons=state.seasons,frame=df.global.world.frame_counter,
  crops=json.encode(vector(df.global.plotinfo.selected_farm_crops)),seeds=json.encode(vector(df.global.plotinfo.available_seeds)),
- tab=df.global.game.main_interface.view_sheets.active_sub_tab}
+ tab=df.global.game.main_interface.view_sheets.active_sub_tab,
+ editing=df.global.game.main_interface.view_sheets.building_entering_nickname,
+ draft=df.global.game.main_interface.view_sheets.building_entering_str}
 local f=assert(io.open(out..'/fixture.json','w'));f:write(json.encode(state));f:close()
 print('FIXTURE_READY')

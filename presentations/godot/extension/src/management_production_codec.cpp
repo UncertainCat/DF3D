@@ -295,8 +295,10 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 }
 
 bool validateProductionShape(const Dictionary& data, String& error) {
-  return managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization"}, error) &&
-      managementRequiredFields(data, error);
+  if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization"}, error))return false;
+  if(data.has("farm_name") && data["farm_name"].get_type()!=Variant::STRING) {error="Wrong management field type: farm_name";return false;}
+  if(int64_t(data.get("farm_operation",0))==3 && !data.has("farm_name")) {error="Missing management field: farm_name";return false;}
+  return managementRequiredFields(data, error);
 }
 
 // production payload (actions 15 List, 16 Inspect, 17 Queue, 18 JobEdit, 19 FarmEdit):
@@ -323,7 +325,11 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.buildingId = int32_t(n("building_id", -1, -1, INT32_MAX));
   value.jobId = int32_t(n("job_id", -1, -1, INT32_MAX));
   value.expectedRevision=uint64_t(n("expected_revision",0,0,INT64_MAX));
-  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,2));
+  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,3));
+  String farmName=data.get("farm_name",String());
+  const auto nameBytes=farmName.utf8();value.farmName.assign(nameBytes.get_data(),nameBytes.length());
+  if(value.farmName.size()>90)valid=false;
+  if(data.has("farm_name") && value.farmOperation!=wm::FarmOperation::Rename) {error="unexpected farm name";return false;}
   value.seasonalFertilization=int8_t(n("seasonal_fertilization",-1,-1,1));
   value.cropId = int32_t(n("crop_id", -1, -1, 32767));
   value.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));

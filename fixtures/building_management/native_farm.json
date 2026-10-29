@@ -24434,5 +24434,27 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     },
     "scope": "Position-only semantic transport independent of building identity; forty native comparisons, missing/removed refusal, controlled changed coordinates and restoration. Existing seed inspection/edit/controller regressions pass. Camera ownership and natural hauling/movement remain unfinished."
+  },
+  "item_follow_reference": {
+    "date": "2026-10-29",
+    "run": "build/areas-acceptance-20261029-145720",
+    "status": "passed_with_known_issues",
+    "native_checks": 79,
+    "results": {
+      "controlled_move": true,
+      "item_id": 47929,
+      "manual_pan_stops": true,
+      "restored": true,
+      "survives_close": true,
+      "toggle": true
+    },
+    "artifacts": {
+      "item-follow-results.json": "858794d14ce8faf06575d3dbf69af2d8b6af81c8e80f5de7621dd73acd004bef",
+      "farm_scene_item_follow_active.png": "9cb8cba29c2f9beca2437a58e94870bcee04b55004b5604cbb9203176f9377c3",
+      "farm_scene_item_follow_moved_closed.png": "fe137b90ba9cde976574e1c84bd83ea6266f390307866000ffa12112c9eb2697",
+      "result.json": "4dc66f71d254a506708a9630e25b94cbe2f31be263426c52f48b7cf29b3d1e96",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    "scope": "Staged viewport camera toggle, persistence after sheet closure, controlled native item motion/restoration, camera coordinates and manual drag cancellation. Existing edit/restart regressions pass. Open-sheet target remains occluded; framing, natural hauling, live follow lifecycle and general item types remain unfinished."
   }
 }

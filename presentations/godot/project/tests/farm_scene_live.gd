@@ -316,6 +316,8 @@ func item_sheet_scene(initial: Dictionary) -> void:
 			if stopped:return
 			await capture("item_flag_"+str(index)+"_"+str(toggle))
 	if not check(model.snapshot==baseline,"item sheet flags not restored"):return
+	await item_camera_scene()
+	if stopped:return
 	scene._fortress_hud.toggle_game_menu();await process_frame
 	var next_ticket: int=actions._next_ticket
 	await pointer(sheet.get_global_transform_with_canvas()*sheet.flag_rect(0).get_center())
@@ -334,6 +336,48 @@ func item_sheet_scene(initial: Dictionary) -> void:
 		owner.open_target(initial.building_id)
 		if not await contents_ready():return
 	write_json("item-scene-results.json",{"target":baseline.id,"flags_restored":true,"holder_roundtrip":true,"overlay_blocks_edit":true,"close":["escape","right","reset"]})
+
+func follow_ready(expected: Variant=null) -> bool:
+	var follow=scene._ui.item_follow
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		actions.poll(0.02);await create_timer(0.02).timeout
+		if follow.last_position!=null and (expected==null or follow.last_position==expected):return true
+	return check(false,"item follow did not receive expected position")
+
+func item_camera_scene() -> void:
+	var item_owner=owner.item_owner;var sheet=item_owner.panel
+	var follow=scene._ui.item_follow;var rig=scene.camera_rig
+	var target: int=item_owner.state.item_id
+	var building: int=item_owner.state.building_id
+	await pointer(sheet.get_global_transform_with_canvas()*sheet.camera_rect().get_center())
+	if not await follow_ready():return
+	var original: Vector3i=follow.last_position
+	await native("item-position",{"item_id":target,"x":original.x,"y":original.y,"z":original.z})
+	if stopped:return
+	if not check(sheet.following and follow.item_id==target,"camera click did not activate follow artwork"):return
+	await capture("item_follow_active")
+	await pointer(sheet.get_global_transform_with_canvas()*sheet.camera_rect().get_center())
+	if not check(follow.item_id==-1 and not sheet.following,"second camera click did not stop following"):return
+	await pointer(sheet.get_global_transform_with_canvas()*sheet.camera_rect().get_center())
+	if not await follow_ready():return
+	await pointer(Vector2(400,400),MOUSE_BUTTON_RIGHT)
+	if not check(not sheet.visible and follow.item_id==target,"closing item sheet stopped following"):return
+	await native("item-position-state",{"item_id":target,"state":"moved"})
+	if stopped:return
+	var moved:=original+Vector3i(1,-1,0)
+	if not await follow_ready(moved):return
+	if not check(rig.position.is_equal_approx(Vector3(moved.x+0.5,moved.z+1.0,moved.y+0.5)),"camera did not follow fresh native coordinates"):return
+	await capture("item_follow_moved_closed")
+	await native("item-position-state",{"item_id":target,"state":"restored"})
+	if stopped or not await follow_ready(original):return
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(300,300);motion.relative=Vector2(32,0);motion.button_mask=MOUSE_BUTTON_MASK_MIDDLE
+	root.push_input(motion,true);await process_frame
+	if not check(follow.item_id==-1,"manual viewport pan retained follow identity"):return
+	item_owner.open_target(building,target)
+	if not await item_ready():return
+	if not check(not sheet.following,"reopened sheet retained active camera artwork"):return
+	write_json("item-follow-results.json",{"item_id":target,"toggle":true,"survives_close":true,"controlled_move":true,"restored":true,"manual_pan_stops":true})
 
 # Exercise actual item writes; farm rename/removal lifecycle does not establish
 # the separate contents controller's retirement or its receipt-offset recovery.

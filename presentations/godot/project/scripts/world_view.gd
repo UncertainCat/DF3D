@@ -1028,6 +1028,7 @@ func _step_top_z(dz: int) -> void:
 	world.set_top_z(before + dz)
 	var after := world.get_top_z()
 	if after != before:
+		camera_rig.navigation_requested.emit()
 		if camera_rig.get_mode() != "free": camera_rig.follow_level(after)
 		else:
 			camera_rig.position.y += float(after - before)

@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "item_follow_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/item_follow_test.gd",
+      "completion": "^ITEM_FOLLOW_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "item_sheet_state_test",
       "lane": "core",
       "kind": "godot",

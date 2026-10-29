@@ -13,6 +13,7 @@ var native_options
 var native_options_session
 var agreement_tracker
 var tile_hover
+var item_follow
 
 func setup(owner, audio_panel, original_ui) -> void:
 	view = owner
@@ -113,7 +114,15 @@ func controller(id: String):
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
 	if id=="farm":
-		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help);controllers[id]=panel;return panel
+		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
+		if item_follow==null:
+			item_follow=preload("res://scripts/item_follow.gd").new();add_child(item_follow);item_follow.configure(actions)
+			item_follow.position_changed.connect(func(tile):_focus_tile(tile,true))
+			view.camera_rig.navigation_requested.connect(item_follow.stop)
+			view.camera_rig.mode_changed.connect(func():
+				if view.camera_rig.is_walk_mode():item_follow.stop())
+		panel.item_owner.configure_follow(item_follow)
+		controllers[id]=panel;return panel
 	if id in ["reports", "alerts"]:
 		add_child(panel)
 		panel.configure(world,actions,host)
@@ -184,12 +193,15 @@ func is_open() -> bool:
 	return controllers.has("inspector") and controllers.inspector.is_open()
 
 func focus_tile(tile: Vector3i) -> void:
+	_focus_tile(tile,false)
+
+func _focus_tile(tile: Vector3i, automatic: bool) -> void:
 	# Leave gravity controls before selecting the report/entity destination,
 	# then synchronize the rig before it clamps focus.
 	view.camera_rig.exit_walk()
 	world.set_top_z(tile.z)
 	view.camera_rig.follow_level(world.get_top_z())
-	view.camera_rig.focus_on(Vector3(tile.x+0.5,tile.z+1.0,tile.y+0.5),view.camera_rig.current_distance())
+	view.camera_rig.focus_on(Vector3(tile.x+0.5,tile.z+1.0,tile.y+0.5),view.camera_rig.current_distance(),automatic)
 
 # Session UI is global. Rendering only needs the resulting attachment/input gates.
 func update_session(delta: float) -> bool:

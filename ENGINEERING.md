@@ -645,9 +645,27 @@ position comparisons, missing-ID rejection, fresh coordinates after a controlled
 move, removed-item rejection and exact restoration, alongside existing item
 inspection/edit/controller regressions. Native UI guards and both save manifests
 remain unchanged; DF181580 exits unsaved. `item_position_wire_reference` retains
-provenance. This transport does not implement viewer following or establish
-natural hauling/camera movement. Follow ownership must survive sheet closure,
-retire on session loss and cancel on manual pan as the native oracle establishes.
+provenance. This transport does not establish natural hauling. Viewer following
+uses the owned controller below, without native camera or menu state.
+
+The staged `item_follow.gd` controller owns an item independently of its sheet.
+It serializes position reads with a 100ms delay after each receipt, emits only
+changed positions, and fences late replies by ticket and generation. Closing the
+sheet preserves following; a repeated camera click, manual pan, explicit focus,
+elevation navigation or entering Walk stops it. Session invalidation and rejected
+positions retire the target without retry. The item owner reflects this identity
+using the installed active/inactive camera artwork.
+
+Protected145720 on2026-10-29 verifies actual viewport toggles, following after
+right-click closure, a controlled item move and restoration, camera coordinates,
+and cancellation by map drag. Existing farm, contents and item edit/lifecycle
+checks pass through three producer replacements. Four owned processes exit
+unsaved and both save manifests remain unchanged. The run passes with only the
+known rendering-thread notice; offline core, follow and camera checks pass.
+`item_follow_reference` retains the evidence. Captures were inspected: the open
+sheet still occludes the centered target, so exposed-map framing remains required.
+Natural hauling, live follow disconnect/replacement, resize and general item
+types remain unaccepted; this staged route stays hidden.
 
 ## Native item-sheet semantic discovery
 

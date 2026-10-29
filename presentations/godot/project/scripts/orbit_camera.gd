@@ -1,6 +1,7 @@
 # Layer-4 camera modes: DF is north-up orthographic; Free retains orbit/fly.
 extends Node3D
 signal mode_changed
+signal navigation_requested
 
 @export var move_speed := 20.0
 @export var orbit_sensitivity := 0.006
@@ -215,6 +216,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_pitch = clampf(_pitch - motion.relative.y * orbit_sensitivity, -PI / 2.0, PI / 2.0)
 			_update_transform()
 		elif motion.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
+			if motion.relative!=Vector2.ZERO:navigation_requested.emit()
 			var right := _camera.global_transform.basis.x
 			var forward := _horizontal_forward()
 			var scale := _df_size / maxf(1.0, get_viewport().get_visible_rect().size.y) if _df_mode else pan_sensitivity * (_distance / 60.0)
@@ -264,6 +266,7 @@ func _process(delta: float) -> void:
 		_update_transform()
 		return
 	if dir != Vector3.ZERO:
+		navigation_requested.emit()
 		var speed := move_speed * (4.0 if Input.is_key_pressed(KEY_SHIFT) else 1.0)
 		position += dir.normalized() * speed * delta
 		_update_transform()
@@ -271,7 +274,8 @@ func _process(delta: float) -> void:
 func current_distance() -> float:
 	return _distance
 
-func focus_on(point: Vector3, distance: float) -> void:
+func focus_on(point: Vector3, distance: float, automatic:=false) -> void:
+	if not automatic:navigation_requested.emit()
 	# Explicit map/entity navigation returns to the normal viewing camera.
 	exit_walk()
 	position = point

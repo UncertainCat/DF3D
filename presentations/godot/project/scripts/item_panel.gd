@@ -1,5 +1,5 @@
 extends Node
-# Staged item owner. Camera following and general item types remain unfinished.
+# Staged item owner. Follow framing and general item types remain unfinished.
 signal holder_requested(building_id: int)
 const Preferences=preload("res://scripts/presentation_settings.gd")
 const C=preload("res://scripts/management_contract.gd")
@@ -7,6 +7,7 @@ const OPERATIONS={"forbid":C.FarmOperation.ItemForbid,"dump":C.FarmOperation.Ite
 var state=preload("res://scripts/item_sheet_state.gd").new()
 var ui_host
 var panel
+var follow
 var canvas: CanvasLayer
 var play_enabled:=true
 var modal_input:=false
@@ -29,6 +30,15 @@ func open_target(building: int,item: int) -> void:
 	if not play_enabled or not ui_host.activate(self):return
 	state.open(building,item)
 
+func configure_follow(source) -> void:
+	follow=source;follow.changed.connect(_follow_changed)
+	panel.camera_requested.connect(func(id):
+		if state.phase==state.Phase.Ready and id==state.item_id:follow.toggle(id))
+	_follow_changed()
+
+func _follow_changed() -> void:
+	panel.set_following(is_instance_valid(follow) and state.item_id>=0 and follow.item_id==state.item_id)
+
 func _state_changed() -> void:
 	var value: Dictionary=state.view_snapshot()
 	if value.has("holder"):
@@ -37,6 +47,7 @@ func _state_changed() -> void:
 		if value.holder.type==4:value.holder_art="BUILDING_ICON_FARM_PLOT"
 	panel.pending=state.phase!=state.Phase.Ready
 	panel.present(value)
+	_follow_changed()
 	if state.item_id<0:_release_if_closed.call_deferred()
 
 func _release_if_closed() -> void:

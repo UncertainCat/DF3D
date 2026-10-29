@@ -16,9 +16,14 @@ func run() -> void:
 	rig.add_child(camera)
 	root.add_child(rig)
 	rig.set_process(false)
+	var navigations: Array=[]
+	rig.navigation_requested.connect(func():navigations.append(true))
+	rig.focus_on(Vector3.ZERO,6.0,true)
+	check(navigations.is_empty(),"automatic follow focus preserves follow ownership")
 	rig._yaw = 0.65
 	rig._pitch = -0.55
 	rig.focus_on(Vector3(6.5, 7.0, 40.5), 6.0)
+	check(navigations.size()==1,"explicit focus requests manual navigation")
 	rig.follow_level(6)
 	var free_basis := camera.basis
 	var free_offset := camera.position
@@ -49,12 +54,14 @@ func run() -> void:
 	motion.button_mask = MOUSE_BUTTON_MASK_MIDDLE
 	rig._unhandled_input(motion)
 	check(rig.position.x < start.x and rig.position.z < start.z and is_equal_approx(rig.position.y, start.y), "DF drag follows screen plane")
+	check(navigations.size()==2,"map drag requests follow cancellation")
 	var wheel := InputEventMouseButton.new()
 	wheel.pressed = true
 	wheel.button_index = MOUSE_BUTTON_WHEEL_UP
 	var size := camera.size
 	rig._unhandled_input(wheel)
 	check(camera.size < size and is_equal_approx(rig.current_distance(), 6.0), "DF zoom changes framing, preserves Free dolly")
+	check(navigations.size()==2,"zoom does not cancel following")
 	rig.follow_level(9)
 	check(is_equal_approx(rig.position.y, 10.0), "DF follows current level exactly")
 	rig.level_focus_offset = -4.0

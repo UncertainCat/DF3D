@@ -315,6 +315,7 @@ struct FarmSnapshot {
 struct BuildingContentsItem {
   int32_t id=-1,role=-1;std::string name;
   bool forbid=false,dump=false,melt=false,hidden=false,canDump=false,canMelt=false,inJob=false,inBuilding=false;
+  int32_t itemType=-1;std::string materialToken,subtypeRaw;
 };
 struct BuildingContentsPage {
   int32_t buildingId=-1;uint64_t revision=0;

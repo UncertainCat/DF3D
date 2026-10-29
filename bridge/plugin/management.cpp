@@ -609,7 +609,7 @@ void publish() {
   if(production.contents) {
     const auto& page=*production.contents;std::vector<flatbuffers::Offset<m::BuildingContentsItem>> rows;
     for(const auto& row:page.rows)rows.push_back(m::CreateBuildingContentsItem(b,row.id,row.role,b.CreateString(row.name),
-      row.forbid,row.dump,row.melt,row.hidden,row.canDump,row.canMelt,row.inJob,row.inBuilding));
+      row.forbid,row.dump,row.melt,row.hidden,row.canDump,row.canMelt,row.inJob,row.inBuilding,row.itemType,b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw)));
     contentsPage=m::CreateBuildingContentsPage(b,page.buildingId,page.revision,page.cursor,page.nextCursor,page.total,
       page.completed,page.removing,b.CreateVector(rows));
   }
@@ -2389,8 +2389,10 @@ std::optional<BuildingContentsPage> contentsPage(const df3d_production::Building
   page.cursor=slice->cursor;page.total=slice->total;page.nextCursor=slice->nextCursor;
   for(auto& row:slice->rows) {
     df::item_flags flags;flags.whole=row.flags;
+    const auto material=DF2UTF(row.materialToken),subtype=DF2UTF(row.subtypeRaw);
+    if(material.size()>256 || subtype.size()>128)return std::nullopt;
     page.rows.push_back({row.id,row.role,std::move(row.caption),row.forbid,row.dump,row.melt,row.hidden,
-      row.canDump,row.canMelt,bool(flags.bits.in_job),bool(flags.bits.in_building)});
+      row.canDump,row.canMelt,bool(flags.bits.in_job),bool(flags.bits.in_building),row.itemType,material,subtype});
   }
   return page;
 }

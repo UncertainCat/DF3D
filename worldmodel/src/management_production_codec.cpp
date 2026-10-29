@@ -27,7 +27,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     value.cursor=page->cursor();value.nextCursor=page->next_cursor();value.total=page->total();
     value.completed=page->completed();value.removing=page->removing();
     if(page->rows())for(const auto* row:*page->rows())value.rows.push_back({row->id(),row->role(),str(row->name()),
-      row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building()});
+      row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building(),row->item_type(),str(row->material_token()),str(row->subtype_raw())});
   }
   n.farmEditOutcome=static_cast<FarmEditOutcome>(p->farm_edit_outcome());
   if(const auto* f=p->farm()) {

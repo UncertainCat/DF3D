@@ -22,6 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management90 adds item_type, material_token and subtype_raw to every contents
+row. These owned semantic identities participate in the full-vector revision;
+no texture handles, native cache or resident map item is required. Missing
+material/subtype information is an empty token, never an invented default.
+Item types are0..92 and UTF-8 tokens are bounded to256/128 bytes. Rebuild/install
+bridge and viewer together on `Local\\df3d_management_v90`; management89 is
+incompatible. Historical rows without these facts cannot supply artwork.
+Other wire versions are unchanged.
+
 Management89 adds FarmOperation.ItemForbid/ItemDump/ItemMelt/ItemHidden with
 required item_id, explicit item_value and the displayed contents revision.
 These intents carry no season/crop/fertilizer/name fields. Only Completed grants

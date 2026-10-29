@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 89;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v89";
+inline constexpr uint32_t kManagementVersion = 90;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v90";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1306,6 +1306,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       std::set<int32_t> contentIds;size_t names=0;
       for(const auto* row:*page->rows()) {
         if(!row || row->id()<0 || row->role()<0 || !contentIds.insert(row->id()).second || !row->name())return "invalid contents row";
+        if(row->item_type()<0 || row->item_type()>92 || !row->material_token() || !row->subtype_raw() ||
+           row->material_token()->size()>256 || row->subtype_raw()->size()>128)return "invalid contents item identity";
         names+=row->name()->size();if(names>128*1024)return "contents names exceed payload budget";
       }
       if(p->farm() || (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||

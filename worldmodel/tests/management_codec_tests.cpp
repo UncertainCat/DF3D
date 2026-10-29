@@ -3414,11 +3414,12 @@ TEST_CASE("contents reads carry exact independent revisions and reject mixed int
   }
 }
 TEST_CASE("contents pages preserve native order and reject incomplete or ambiguous boundaries") {
-  for(int fault=0;fault<12;++fault) {
+  for(int fault=0;fault<17;++fault) {
     CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
     std::vector<flatbuffers::Offset<wire::BuildingContentsItem>> rows;
     for(int i=0;i<(fault==8?65:2);++i)rows.push_back(wire::CreateBuildingContentsItem(b,fault==7?1:5-i,fault==9?-1:0,
-      b.CreateString(fault==10?std::string(65537,'x'):"native caption"),true,false,false,true,true,false,true,true));
+      b.CreateString(fault==10?std::string(65537,'x'):"native caption"),true,false,false,true,true,false,true,true,fault==12?-1:fault==13?93:53,
+      fault==14?0:b.CreateString(fault==15?std::string(257,'x'):"PLANT:POD_SWEET:SEED"),b.CreateString(fault==16?std::string(129,'x'):"")));
     auto page=wire::CreateBuildingContentsPage(b,968,fault==1?0:9007199254740993ULL,
       fault==2?4:0,fault==3?1:2,fault==4?1:3,true,false,b.CreateVector(rows));
     wire::ProductionStateBuilder p(b);p.add_selected_building(fault==5?969:968);p.add_contents(page);
@@ -3432,6 +3433,7 @@ TEST_CASE("contents pages preserve native order and reject incomplete or ambiguo
       CHECK(result.contents->revision==9007199254740993ULL);CHECK(result.contents->nextCursor==2);
       REQUIRE(result.contents->rows.size()==2);CHECK(result.contents->rows[0].id==5);CHECK(result.contents->rows[1].id==4);
       CHECK(result.contents->rows[0].forbid);CHECK(result.contents->rows[0].inBuilding);
+      CHECK(result.contents->rows[0].itemType==53);CHECK(result.contents->rows[0].materialToken=="PLANT:POD_SWEET:SEED");CHECK(result.contents->rows[0].subtypeRaw.empty());
     }
   }
   flatbuffers::FlatBufferBuilder b;auto p=wire::CreateProductionState(b);b.Finish(p);
@@ -3457,7 +3459,7 @@ TEST_CASE("contained item wire intents require explicit values and independent r
 TEST_CASE("contained item completion grants authority only for the observed target and value") {
   for(int fault=0;fault<12;++fault) {
     CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
-    auto row=wire::CreateBuildingContentsItem(b,47492,2,b.CreateString("native name"),fault!=1,false,false,false,true,false,false,true);
+    auto row=wire::CreateBuildingContentsItem(b,47492,2,b.CreateString("native name"),fault!=1,false,false,false,true,false,false,true,53,b.CreateString("PLANT:POD_SWEET:SEED"),b.CreateString(""));
     auto page=wire::CreateBuildingContentsPage(b,968,17,0,0,1,fault!=10,fault==11,b.CreateVector(std::vector{row}));
     auto edit=wire::CreateBuildingItemReceipt(b,fault==2?47493:47492,
       fault==3?wire::FarmOperation::Crop:wire::FarmOperation::ItemForbid,fault==4?-1:1);

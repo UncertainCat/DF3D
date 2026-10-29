@@ -99,6 +99,9 @@ func _valid(page: Dictionary) -> bool:
 		for key in ["id","role"]:
 			if typeof(row.get(key))!=TYPE_INT or row[key]<0 or row[key]>2147483647:return false
 		if ids.has(row.id) or typeof(row.get("name"))!=TYPE_STRING:return false
+		if typeof(row.get("item_type"))!=TYPE_INT or row.item_type<0 or row.item_type>92:return false
+		for key in ["material_token","subtype_raw"]:
+			if typeof(row.get(key))!=TYPE_STRING or row[key].to_utf8_buffer().size()>(256 if key=="material_token" else 128):return false
 		ids[row.id]=true;bytes+=row.name.to_utf8_buffer().size()
 		if bytes>128*1024:return false
 		for key in ["forbid","dump","melt","hidden","can_dump","can_melt","in_job","in_building"]:

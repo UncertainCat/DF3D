@@ -32,6 +32,9 @@ elseif request.op=='contents-verify' then
   assert(row.id==live.id and row.role==live.role_value and row.name==live.name,'contents receipt identity/name differs')
   for _,key in ipairs{'forbid','dump','melt','hidden','in_job','in_building'}do assert(row[key]==item.flags[key],'contents receipt flag differs: '..key)end
   assert(row.can_dump==live.can_dump and row.can_melt==live.can_melt,'contents eligibility differs')
+  local material=dfhack.matinfo.decode(item:getMaterial(),item:getMaterialIndex())
+  local subtype=dfhack.items.getSubtypeDef(item:getType(),item:getSubtype())
+  assert(row.item_type==item:getType() and row.material_token==(material and dfhack.df2utf(material:getToken()) or '') and row.subtype_raw==(subtype and dfhack.df2utf(subtype.id) or ''),'contents semantic item identity differs')
  end
  for _,guard in ipairs(_G.df3d_contents_guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'contents edit changed UI scratch')end
  result.native_contents_equal=true;result.ui_scratch_unchanged=true

@@ -189,9 +189,9 @@ The source is preserved and owned paused DF185720 exits unsaved. GPU
 for the six crop icons plus the seed icon (7168 pixels), and compares opaque
 pixels with native captures. The image was inspected; GPU passes with only
 the three documented Godot diagnostics, and core passes cleanly. This verifies
-the seed art provider, not completed contents UI. Contents transport does not
-yet carry seed raw identity; other item kinds and generic seed fallback remain
-outside this live evidence.
+the seed art provider, not completed contents UI. Management90 now carries item type/material/subtype identities independently
+of resident map items. Other item kinds and generic seed fallback remain
+outside this live artwork evidence.
 
 `building_item_native.h` pins the complete native action/predicate bodies and
 exposes desired-value setters at safe points. Dump spans multiple unwind entries;
@@ -211,7 +211,7 @@ entry. After entry the transaction re-finds the building and observes fresh
 contents; missing targets, failed observations or exceptions report Unknown
 without replay. Native cleanup may alter other flags/jobs; completion requires
 the desired value in the fresh valid receipt, not an invented one-bit-only rule.
-This transaction backs management89 item writes; public contents UI remains
+This transaction backs management90 item writes; public contents UI remains
 unfinished.
 
 Protected222438 repeats all six native-click comparisons through this revision
@@ -334,6 +334,27 @@ check now inspects farm requests and receipts specifically. No runtime change
 was needed. `native_farm.json.scene_lifecycle_reference` records this evidence.
 Other farm operations across transport loss and AI-progress destruction
 cancellation remain separate coverage gaps.
+
+## Contents item identity transport
+
+Management90 adds item type, material token and subtype raw identity to each
+contents row. Native item virtuals supply type/material/subtype indices; the
+bridge resolves tokens from the corresponding semantic raw records. These
+owned identities join the complete-vector revision. Missing material or subtype
+information stays empty. No graphics-cache data, texture identifiers or pointers
+cross the wire. Existing row/caption limits remain; each row additionally allows
+at most256/128 UTF-8 bytes for material/subtype tokens. The producer, wire validator
+and controller refuse out-of-range types and oversized identities.
+
+`native_farm.json.contents_identity_reference` records protected234107 with
+matched bridge/viewer90 binaries: all40 seed rows match native item identities,
+while edits, stale refusals, viewport recovery, observer retirement and restoration
+retain their checks. UI byte guards and both save manifests remain unchanged;
+owned paused DF180680 exits unsaved. Core and controller checks pass cleanly in
+`build/qa/contents-identity-validated`, including identity revision changes and
+malformed/missing/oversized fields. The initial build failed on a validator helper
+outside its scope; the corrected build and live run pass. Other item kinds and
+rendered contents integration remain unverified; the public farm route stays staged.
 
 ## Farm name entry presentation
 

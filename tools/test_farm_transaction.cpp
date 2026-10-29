@@ -258,10 +258,10 @@ TEST_CASE("farm rename accepts clearing and lossless byte limits and skips ident
 TEST_CASE("building contents revision detects changed membership and action context") {
     using namespace df3d_production;
     BuildingContentsSnapshot base;base.buildingId=968;base.completed=true;
-    BuildingContentsRow row;row.id=47492;row.role=0;row.caption="seed";row.canDump=true;
+    BuildingContentsRow row;row.itemType=53;row.id=47492;row.role=0;row.caption="seed";row.canDump=true;
     row.jobs.push_back({123,1,0});base.rows={row};base.revision=buildingContentsRevision(base);
     CHECK(validBuildingContents(base));
-    for(int change=0;change<17;++change) {
+    for(int change=0;change<20;++change) {
         auto next=base;
         switch(change) {
         case 0:++next.buildingId;break;case 1:next.completed=false;break;
@@ -273,6 +273,9 @@ TEST_CASE("building contents revision detects changed membership and action cont
         case 12:++next.rows[0].jobs[0].id;break;case 13:++next.rows[0].jobs[0].type;break;
         case 14:++next.rows[0].jobs[0].flags;break;case 15:next.rows[0].jobs.clear();break;
         case 16:next.rows[0].hidden=true;break;
+        case 17:next.rows[0].itemType=54;break;
+        case 18:next.rows[0].materialToken="PLANT:POD_SWEET:SEED";break;
+        case 19:next.rows[0].subtypeRaw="FIXTURE";break;
         }
         CAPTURE(change);CHECK(buildingContentsRevision(next)!=base.revision);CHECK_FALSE(validBuildingContents(next));
     }
@@ -288,7 +291,7 @@ TEST_CASE("contained item edits distinguish refusal completion and uncertain nat
     for(int fault=0;fault<17;++fault) {
         CAPTURE(fault);
         BuildingContentsSnapshot before;before.buildingId=968;before.completed=true;
-        BuildingContentsRow row;row.id=47492;row.role=0;row.canDump=true;before.rows={row};
+        BuildingContentsRow row;row.itemType=53;row.id=47492;row.role=0;row.canDump=true;before.rows={row};
         if(fault==2)before.removing=true;
         if(fault==3)before.completed=false;
         if(fault==4)before.rows[0].canDump=false;
@@ -324,7 +327,7 @@ TEST_CASE("contained item edits distinguish refusal completion and uncertain nat
 TEST_CASE("contents paging has complete boundaries and measures encoded captions") {
     using namespace df3d_production;
     BuildingContentsSnapshot snapshot;snapshot.buildingId=968;snapshot.completed=true;
-    for(int i=0;i<70;++i){BuildingContentsRow row;row.id=1000-i;row.role=0;row.caption="seed";snapshot.rows.push_back(row);}
+    for(int i=0;i<70;++i){BuildingContentsRow row;row.itemType=53;row.id=1000-i;row.role=0;row.caption="seed";snapshot.rows.push_back(row);}
     snapshot.revision=buildingContentsRevision(snapshot);
     const auto unchanged=[](const std::string& value){return value;};
     auto first=pageBuildingContents(snapshot,0,0,unchanged);REQUIRE(first);

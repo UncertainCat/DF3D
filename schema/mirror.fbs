@@ -1570,6 +1570,7 @@ table BuildingContentsItem {
   id:int32 = -1; role:int32 = -1; name:string;
   forbid:bool; dump:bool; melt:bool; hidden:bool;
   can_dump:bool; can_melt:bool; in_job:bool; in_building:bool;
+  item_type:int32 = -1; material_token:string; subtype_raw:string;
 }
 table BuildingContentsPage {
   building_id:int32 = -1; revision:uint64;
@@ -1873,7 +1874,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 89;
+  schema_version:uint32 = 90;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1919,7 +1920,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 89;
+  schema_version:uint32 = 90;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

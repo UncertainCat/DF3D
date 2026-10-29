@@ -6,6 +6,9 @@
 #include "df/job.h"
 #include "df/specific_ref.h"
 #include "modules/Buildings.h"
+#include "modules/Materials.h"
+#include "modules/Items.h"
+#include "df/itemdef.h"
 
 namespace df3d_production {
 // Common building-sheet caption at 19d4ae calls this semantic formatter with
@@ -79,6 +82,10 @@ inline std::optional<BuildingContentsSnapshot> buildingContents(df::building_act
         auto* item=held->item;auto caption=buildingItemCaption(item);if(!caption)return std::nullopt;
         BuildingContentsRow row;row.id=item->id;row.role=static_cast<int32_t>(held->use_mode);
         row.caption=std::move(*caption);row.flags=item->flags.whole;
+        row.itemType=static_cast<int32_t>(item->getType());
+        DFHack::MaterialInfo material(item->getMaterial(),item->getMaterialIndex());
+        if(material.isValid())row.materialToken=material.getToken();
+        if(auto* subtype=DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype()))row.subtypeRaw=subtype->id;
         row.countdown=item->stockpile_countdown;row.delay=item->stockpile_delay;
         row.forbid=item->flags.bits.forbid;row.dump=item->flags.bits.dump;
         row.melt=item->flags.bits.melt;row.hidden=item->flags.bits.hidden;

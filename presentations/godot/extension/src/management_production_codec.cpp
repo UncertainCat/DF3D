@@ -96,6 +96,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
       Dictionary row;row["id"]=item.id;row["role"]=item.role;row["name"]=String::utf8(item.name.c_str());
       row["forbid"]=item.forbid;row["dump"]=item.dump;row["melt"]=item.melt;row["hidden"]=item.hidden;
       row["can_dump"]=item.canDump;row["can_melt"]=item.canMelt;row["in_job"]=item.inJob;row["in_building"]=item.inBuilding;
+      row["item_type"]=item.itemType;row["material_token"]=String::utf8(item.materialToken.c_str());row["subtype_raw"]=String::utf8(item.subtypeRaw.c_str());
       rows.push_back(row);
     }
     value["rows"]=rows;prod["contents"]=value;

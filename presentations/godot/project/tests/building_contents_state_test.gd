@@ -27,7 +27,7 @@ func setup() -> void:
 func page(cursor:=0,revision:=9007199254740993,id:=968,total:=70) -> Dictionary:
 	var rows: Array=[]
 	for index in range(cursor,mini(cursor+64,total)):
-		rows.append({"id":1000+index,"role":2,"name":"native caption","forbid":false,"dump":false,"melt":false,"hidden":false,"can_dump":true,"can_melt":false,"in_job":false,"in_building":true})
+		rows.append({"id":1000+index,"role":2,"name":"native caption","forbid":false,"dump":false,"melt":false,"hidden":false,"can_dump":true,"can_melt":false,"in_job":false,"in_building":true,"item_type":53,"material_token":"PLANT:POD_SWEET:SEED","subtype_raw":""})
 	return {"building_id":id,"revision":revision,"cursor":cursor,"next_cursor":cursor+rows.size() if cursor+rows.size()<total else 0,"total":total,"completed":true,"removing":false,"rows":rows}
 func reply(value: Dictionary,outcome:=0,receipt: Dictionary={}) -> void:
 	var sent: Dictionary=world.calls[-1].request
@@ -55,7 +55,7 @@ func run() -> void:
 	model.seek(0);service.poll();reply(page(0,9007199254740994))
 	check(model.phase==Model.Phase.Rejected and model.snapshot.is_empty(),"pages from another revision cannot mix")
 	model.refresh();service.poll();reply(page());check(model.phase==Model.Phase.Ready,"explicit refresh starts a new revision")
-	for fault in 8:
+	for fault in 13:
 		setup();model.open(968);service.poll();var malformed:=page()
 		match fault:
 			0:malformed.rows[1].id=malformed.rows[0].id
@@ -66,6 +66,11 @@ func run() -> void:
 			5:malformed.revision=0
 			6:malformed.cursor=1
 			7:malformed.building_id=969
+			8:malformed.rows[0].erase("item_type")
+			9:malformed.rows[0].item_type=93
+			10:malformed.rows[0].material_token="x".repeat(257)
+			11:malformed.rows[0].subtype_raw="x".repeat(129)
+			12:malformed.rows[0].material_token=123
 		reply(malformed);check(model.phase==Model.Phase.Rejected and model.snapshot.is_empty(),"malformed page has no authority: "+str(fault))
 	ready();var count: int=world.calls.size()
 	model.set_flag(1000,C.FarmOperation.ItemMelt,true);model.set_flag(999,C.FarmOperation.ItemHidden,true);service.poll()

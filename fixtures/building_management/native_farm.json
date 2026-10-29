@@ -15481,5 +15481,30 @@
     },
     "coverage": "Six visible sweet-pod seed rows use plant raw+0x208 artwork PLANT_STANDARD2,3, anchored at2,2. First seed opaque native screenshot pixels exactly equal original installed sprite colors. Source unchanged; paused owned DF185720 exits unsaved. No runtime graphics-cache access.",
     "limitations": "Sweet-pod seeds only; other contents kinds and missing plant-art fallback not live verified. Seed raw identity is not yet carried by the contents protocol."
+  },
+  "contents_identity_reference": {
+    "capture": "build/areas-acceptance-20261028-234107",
+    "management_version": 90,
+    "row_count": 40,
+    "first_item": {
+      "id": 47492,
+      "item_type": 53,
+      "material_token": "PLANT:POD_SWEET:SEED",
+      "subtype_raw": ""
+    },
+    "hashes": {
+      "contents-edit-results.json": "f670b7c69e56bf81b07be4e36cd9a68c7024124940794f60424576cd2b38b037",
+      "contents-controller-results.json": "087c13ba5daa4cca6e36d62424c49946a16c7c1156ea0a94d6983cc85ea25724",
+      "fixture.json": "175507f652f17f29156b9995f05303c2483a252b4076712c6e4c73a87221cd12",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "summary.txt": "2700165975f68815c97d605c56eca8e90d497ade1264b6282401d13fee99ac27"
+    },
+    "binaries": {
+      "df3d.plug.dll": "0665e493e2d3327c35b970a11a063bdaffafb4ecb7882f565bdabfe310b87cfe",
+      "df3d_godot.dll": "2b41dd4cf5a583f317a57cc8e20e9ef61d1c886a084f2e16d1f48b169e9c3059"
+    },
+    "coverage": "All40 contents row type/material/subtype identities match live native item virtuals and raw records. Existing Forbid/Dump/Hidden edits, stale refusals, later-row receipt recovery, close/late-reply controller tests and restoration pass. UI byte guards and both save manifests unchanged; paused owned DF180680 exits unsaved.",
+    "limitations": "Seed identity only; other contents item kinds, full artwork/controls/View sheet and rendered contents lifecycle remain unfinished."
   }
 }

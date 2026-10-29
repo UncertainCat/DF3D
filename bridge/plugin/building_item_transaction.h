@@ -13,6 +13,7 @@ struct BuildingContentsRow {
     int8_t countdown=0,delay=0;
     bool forbid=false,dump=false,melt=false,hidden=false,canDump=false,canMelt=false;
     std::vector<BuildingItemJob> jobs;
+    int32_t itemType=-1;std::string materialToken,subtypeRaw;
 };
 struct BuildingContentsSnapshot {
     int32_t buildingId=-1;
@@ -38,6 +39,8 @@ inline uint64_t buildingContentsRevision(const BuildingContentsSnapshot& value) 
     for(const auto& row:value.rows) {
         number(row.id);number(row.role);number(row.caption.size());for(unsigned char c:row.caption)byte(c);
         number(row.flags);byte(row.countdown);byte(row.delay);
+        number(row.itemType);
+        for(const auto* text:{&row.materialToken,&row.subtypeRaw}){number(text->size());for(unsigned char c:*text)byte(c);}
         byte(row.forbid);byte(row.dump);byte(row.melt);byte(row.hidden);byte(row.canDump);byte(row.canMelt);
         number(row.jobs.size());for(const auto& job:row.jobs){number(job.id);number(job.type);number(job.flags);}
     }
@@ -47,7 +50,8 @@ inline bool validBuildingContents(const BuildingContentsSnapshot& value) {
     if(value.buildingId<0||!value.revision||value.revision!=buildingContentsRevision(value))return false;
     std::unordered_set<int32_t> ids;
     for(const auto& row:value.rows) {
-        if(row.id<0||row.role<0||!ids.insert(row.id).second)return false;
+        if(row.id<0||row.role<0||!ids.insert(row.id).second || row.itemType<0 || row.itemType>92 ||
+           row.materialToken.size()>256 || row.subtypeRaw.size()>128)return false;
         for(const auto& job:row.jobs)if(job.id<0||job.type<0)return false;
     }
     return true;

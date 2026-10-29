@@ -1641,6 +1641,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto& item:snapshot->rows) {
             Json::Value row(Json::objectValue);row["id"]=item.id;
             row["role_value"]=item.role;row["name"]=DF2UTF(item.caption);
+            row["item_type"]=item.itemType;row["material_token"]=DF2UTF(item.materialToken);row["subtype_raw"]=DF2UTF(item.subtypeRaw);
             row["flags"]=Json::UInt(item.flags);row["countdown"]=int(item.countdown);row["delay"]=int(item.delay);
             row["can_dump"]=item.canDump;row["can_melt"]=item.canMelt;
             rows.append(std::move(row));

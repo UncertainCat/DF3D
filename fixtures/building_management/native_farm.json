@@ -12348,5 +12348,28 @@
     ],
     "coverage": "Explicit Remove/CancelRemoval with exact revision, with and without pending fertilizer jobs, stale and same-state cancellation refusal, actual main-scene buttons and native job-holder/count readback. Original receipts restored.",
     "limitations": "Inactive destruction job. Active-worker cancellation and real disconnect/replacement acceptance remain open; farm remains staged."
+  },
+  "worker_cancellation_reference": {
+    "setup": "Paused fixture uses addWorker and working=true; no AI ticks advanced.",
+    "native_run": "build/stockpile-storage-native-farm-discovery-20261028-205642",
+    "wire_run": "build/areas-acceptance-20261028-205731",
+    "status": "passed",
+    "native_wire_after_equal": true,
+    "worker_id": 996,
+    "current_job_after": -1,
+    "building_jobs_after": [],
+    "footprint_cells": 114,
+    "stale_worker_revision_refused": true,
+    "evidence": {
+      "build/stockpile-storage-native-farm-discovery-20261028-205642/result.json": "d2c56335bc786878a4b94a56e3c0ff589e89b7044979aa8863f2ccb908ba439b",
+      "build/stockpile-storage-native-farm-discovery-20261028-205642/capture-inputs.json": "698a44d473bd4aa6fbc2a7c1464d338792086d20670b156f438d6609bcf16d2c",
+      "build/stockpile-storage-native-farm-discovery-20261028-205642/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "build/areas-acceptance-20261028-205731/result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "build/areas-acceptance-20261028-205731/farm-edit-results.json": "d8b9af3f1bf45ec60188ee3cf31299db69f3b8bd8fe3a9a970315a96d4b27e3a",
+      "build/areas-acceptance-20261028-205731/save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "build/areas-acceptance-20261028-205731/source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "build/areas-acceptance-20261028-205731/clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
+    },
+    "limitations": "Controlled paused worker association, not naturally assigned AI execution or partial destruction. Real disconnect/replacement and public farm exposure remain open."
   }
 }

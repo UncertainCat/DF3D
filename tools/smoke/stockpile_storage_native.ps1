@@ -149,7 +149,7 @@ public static class Shot {
 $entered=$false;$summary='failed'
 try {
  Enter-Df3dLane -DfPath $dfPath -Port 5010;$entered=$true
- Get-FileHash "$dfPath/hack/plugins/df3d.plug.dll","$repo/tools/smoke/stockpile_storage_native.lua","$repo/tools/smoke/areas-multi-discovery-native.lua","$repo/tools/smoke/farm-native.lua","$repo/tools/smoke/farm-scroll-native.lua","$repo/tools/smoke/farm-header-native.lua","$repo/bridge/plugin/production.lua","$repo/tools/smoke/areas-owner-native.lua","$repo/tools/smoke/areas-animals-native.lua",$PSCommandPath | ConvertTo-Json | Set-Content "$out/capture-inputs.json"
+ Get-FileHash "$dfPath/hack/plugins/df3d.plug.dll","$repo/tools/smoke/stockpile_storage_native.lua","$repo/tools/smoke/areas-multi-discovery-native.lua","$repo/tools/smoke/farm-native.lua","$repo/tools/smoke/farm-scroll-native.lua","$repo/tools/smoke/farm-header-native.lua","$repo/tools/smoke/farm-worker-fixture.lua","$repo/bridge/plugin/production.lua","$repo/tools/smoke/areas-owner-native.lua","$repo/tools/smoke/areas-animals-native.lua",$PSCommandPath | ConvertTo-Json | Set-Content "$out/capture-inputs.json"
  Set-DfPrefs;Install-DfMenuStartup -DfPath $dfPath
  $owned=Start-Df3d -DfPath $dfPath
  & "$repo/build/tools/session_client.exe" load $clone *> "$out/load.log"

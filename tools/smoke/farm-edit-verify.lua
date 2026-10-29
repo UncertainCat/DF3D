@@ -2,7 +2,7 @@
 local out,index=...
 local json=require('json');local state=assert(_G.df3d_farm_read_fixture)
 local f=assert(io.open(out..'/request-'..index..'.json'));local request=json.decode(f:read('*a'));f:close()
-assert(request.op=='verify' or request.op=='external_change' or request.op=='mark_removal' or request.op=='clear_removal','unexpected edit verification')
+assert(request.op=='verify' or request.op=='external_change' or request.op=='mark_removal' or request.op=='clear_removal' or request.op=='attach_worker','unexpected edit verification')
 assert(df.global.pause_state and df.global.world.frame_counter==state.frame,'edit advanced simulation')
 assert(#request.seasons==4)
 for season=0,3 do assert(state.farm.plant_id[season]==request.seasons[season+1],'wire edit/native selection mismatch')end
@@ -46,6 +46,22 @@ if request.fertilization then
  fertilizer={current=farm.current_fertilization,maximum=farm.max_fertilization,pending=pending,seasonal=farm.farm_flags.seasonal_fertilize}
 end
 local header
+local worker
+if request.op=='attach_worker' or request.worker_cleared~=nil then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-edit%-verify.lua$','farm-worker-fixture.lua')
+ local fixture=assert(loadfile(source))()
+ if request.op=='attach_worker' then
+  state.worker_occupancy=fixture.occupancy(state.farm)
+  state.worker_identity=fixture.attach(state.farm)
+ end
+ worker=fixture.observe(state.farm,assert(state.worker_identity))
+ if request.worker_cleared then
+  assert(worker.current_job==-1 and #worker.jobs==0,'wire cancellation retained worker/job links')
+  assert(json.encode(worker.occupancy)==json.encode(state.worker_occupancy),'wire cancellation changed occupancy')
+ elseif request.worker_cleared==false then
+  assert(worker.current_job==state.worker_identity.job_id and #worker.jobs==1,'refused cancellation changed assigned worker')
+ end
+end
 if request.removing~=nil then
  assert(dfhack.buildings.markedForRemoval(state.farm)==request.removing,'wire removal state differs')
  local count=0
@@ -60,6 +76,6 @@ if request.name~=nil then
  assert(code==0,text);header=json.decode(text)
  assert(header.custom_name==request.name,'header custom name differs')
 end
-local result={status='passed',selections=vector(state.farm.plant_id),native_menu_unchanged=true,fertilization=fertilizer,header=header}
+local result={status='passed',selections=vector(state.farm.plant_id),native_menu_unchanged=true,fertilization=fertilizer,header=header,worker=worker}
 f=assert(io.open(out..'/response-'..index..'.json','w'));f:write(json.encode(result));f:close()
 print('SEMANTIC_PASS '..index..' farm edit effects and menu guards')

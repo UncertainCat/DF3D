@@ -79,8 +79,19 @@ native effects, while retaining all five rename/closure cases (12 native checks)
 The removal screenshot was inspected. Wire acceptance is clean; the rendered run
 has only the known separate-thread notice. Both runs preserve both save manifests
 and exit their owned processes unsaved. `removal_wire_reference` records the evidence.
-Active-worker cancellation and real disconnect/replacement coverage remain open;
-the farm sheet stays staged. See PINS.md for the required87 compatibility boundary.
+Assigned-worker cleanup is verified by native capture205642 and semantic-wire
+acceptance205731 on2026-10-28. Both use a paused clone with a real citizen linked
+through addWorker and the destruction job marked working. Native Cancel removal
+and the wire command clear the worker's current job and all farm jobs, preserve
+footprint occupancy and produce identical observed worker state. A stale receipt
+from before worker attachment refuses without changing that association; a fresh
+receipt cancels and restores the original farm snapshot. Both save manifests stay
+unchanged and owned DF exits unsaved. The first native attempt205246 failed on an
+obsolete test-only dead flag; the fixture now uses the supported isDead helper.
+`native_farm.json.worker_cancellation_reference` records hashes and scope.
+This controlled association does not establish AI-driven partial-destruction
+cancellation. That and real disconnect/replacement coverage remain open; the farm
+sheet stays staged. See PINS.md for the required87 compatibility boundary.
 
 ## Farm name entry presentation
 

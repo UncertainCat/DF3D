@@ -159,4 +159,21 @@ func exercise() -> void:
 		if stopped:return
 	await native("verify",{"seasons":seasons})
 	if stopped:return
-	write_json("farm-edit-results.json",{"cases":results,"invalid_targets":2,"original_selections_restored":true,"fertilizer_completed":5,"fertilizer_stale":2,"fertilizer_original_restored":true,"rename_cases":rename_cases,"rename_invalid":2,"rename_original_restored":true,"removal_refusals":4})
+	step="assigned destruction worker cancellation"
+	var unassigned:=await edit_crop(id,1,-1,final_receipt.revision,1,4)
+	if stopped:return
+	var worker_before:=await native("attach_worker",{"seasons":seasons,"removing":true,"worker_cleared":false})
+	if stopped:return
+	var assigned:=await read_farm(id,1)
+	if stopped:return
+	if not check(assigned.removal_has_worker and assigned.revision!=unassigned.revision,"worker did not invalidate removal receipt"):return
+	await edit_crop(id,1,-1,unassigned.revision,3,5)
+	if stopped:return
+	await native("verify",{"seasons":seasons,"removing":true,"worker_cleared":false})
+	if stopped:return
+	final_receipt=await edit_crop(id,1,-1,assigned.revision,1,5)
+	if stopped:return
+	if not check(final_receipt==initial,"worker cancellation did not restore farm receipt"):return
+	var worker_after:=await native("verify",{"seasons":seasons,"removing":false,"worker_cleared":true})
+	if stopped:return
+	write_json("farm-edit-results.json",{"cases":results,"invalid_targets":2,"original_selections_restored":true,"fertilizer_completed":5,"fertilizer_stale":2,"fertilizer_original_restored":true,"rename_cases":rename_cases,"rename_invalid":2,"rename_original_restored":true,"removal_refusals":4,"worker_cancellation":{"before":worker_before.worker,"after":worker_after.worker,"stale_refused":true}})

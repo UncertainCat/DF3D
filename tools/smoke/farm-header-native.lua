@@ -107,6 +107,26 @@ end
 assert(found,'native cancellation control missing');shot('farm-header-cancel-removal')
 assert(not dfhack.buildings.markedForRemoval(b),'native removal cancellation failed')
 
+local worker_source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-header%-native.lua$','farm-worker-fixture.lua')
+local worker_fixture=assert(loadfile(worker_source))()
+local original_occupancy=worker_fixture.occupancy(b)
+click(832,82)
+local worker_identity=worker_fixture.attach(b)
+local worker_before=worker_fixture.observe(b,worker_identity)
+shot('farm-header-assigned-worker')
+assert(records[#records].semantic.has_worker,'assigned worker absent from native header')
+local cancelled=false
+for y,line in ipairs(lines())do
+ local x=line:find('Cancel removal',1,true)
+ if x then click((x+2)*8,(y-1)*12+10);cancelled=true;break end
+end
+assert(cancelled,'worker cancellation button missing')
+local worker_after=worker_fixture.observe(b,worker_identity)
+assert(worker_after.current_job==-1 and #worker_after.jobs==0,'native cancellation retained worker/job links')
+assert(require('json').encode(worker_after.occupancy)==require('json').encode(original_occupancy),'native cancellation changed footprint occupancy')
+shot('farm-header-assigned-worker-cancelled')
+records[#records].worker_cancellation={identity=worker_identity,before=worker_before,after=worker_after}
+
 for _,bad in ipairs{'-1','2147483647','not-an-id'}do
  local _,code=dfhack.run_command_silent('df3d','farm-header-read',bad);assert(code~=0,'invalid header target accepted')
 end

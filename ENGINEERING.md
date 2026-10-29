@@ -22,6 +22,25 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Farm removal native entry points
 
+The diagnostic `df3d farm-contents-read <farm>` returns contained items in native
+vector order, with IDs, roles, flags, native Dump/Melt eligibility and captions.
+Captions call the common building-sheet formatter c65450(item, owned string,
+false, -1), as renderer19d4ae does. Its complete relocation-free body spans two
+unwind entries through c65f0a (length0xaba, FNV47fa672b7bbcd332); checking only
+the first entry misses the decoration logic. Direct global reads concern game
+mode, installed display settings and world records, not native menu scratch.
+DFHack's decorated getDescription reconstructs formatting and is not this call.
+
+Protected native221721 on2026-10-28 verifies40 permanent seed rows and matches
+the first six captions verbatim against native screen cells at baseline and
+after both directions of Forbid/Dump/Visibility. Reads preserve all observed
+item facts and byte-for-byte view_sheets/plotinfo state. The owned paused
+DF180196 exits unsaved and the source-save manifest is unchanged. Evidence is
+retained in `native_farm.json.contents_reader_reference`. Other item types,
+quality/wear/artifact captions, tail scrolling and active jobs remain unverified.
+This is diagnostic evidence; the typed contents revision, transaction and Godot
+controls remain unfinished. No public route or schema change accompanies it.
+
 Native farm selection capture215347 on2026-10-28 records farm227 and its
 co-located crop item48436 as BUILDING then ITEM alternatives. Clicking the item
 and returning to the farm resets the farm tab to the current season, even after

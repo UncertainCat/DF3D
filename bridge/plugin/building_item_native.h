@@ -4,6 +4,21 @@
 #include "df/item.h"
 
 namespace df3d_production {
+// Common building-sheet caption at 19d4ae calls this semantic formatter with
+// independently owned string storage. The body spans two unwind entries.
+inline std::optional<std::string> buildingItemCaption(df::item* item) {
+    using Caption=void (*)(df::item*,std::string*,bool,int32_t);
+    static const auto caption=[]()->Caption {
+        if(!farmFunctions())return nullptr;
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0xaba;++i){hash^=base[0xc65450+i];hash*=UINT64_C(1099511628211);}
+        if(hash!=UINT64_C(0x47fa672b7bbcd332))return nullptr;
+        return reinterpret_cast<Caption>(base+0xc65450);
+    }();
+    if(!caption||!item)return std::nullopt;
+    std::string result;caption(item,&result,false,-1);return result;
+}
 // Native common building-sheet item actions. Call at a safe point, with a
 // freshly validated contained item. No selector, input or viewscreen scratch.
 struct BuildingItemFunctions {

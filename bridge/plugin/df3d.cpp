@@ -1627,6 +1627,30 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["building_id"]=values[0];result["season"]=values[1];result["rows"]=std::move(rows);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="farm-contents-read") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(id));
+          auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
+          const auto& native=df3d_production::buildingItemFunctions();
+          if(!tile||tile->bits.hidden||!native)return CR_FAILURE;
+          Json::Value result(Json::objectValue),rows(Json::arrayValue);
+          for(auto* held:farm->contained_items) {
+            if(!held||!held->item)return CR_FAILURE;
+            auto* item=held->item;const auto caption=df3d_production::buildingItemCaption(item);
+            if(!caption)return CR_FAILURE;
+            Json::Value row(Json::objectValue);row["id"]=item->id;
+            row["role_value"]=static_cast<int>(held->use_mode);row["name"]=DF2UTF(*caption);
+            row["flags"]=Json::UInt(item->flags.whole);
+            row["can_dump"]=native.canDump(item);row["can_melt"]=native.canMelt(item);
+            rows.append(std::move(row));
+          }
+          result["building_id"]=id;result["rows"]=std::move(rows);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="farm-item-set") {
           if(parameters.size()!=6)return CR_WRONG_USAGE;
           auto parse=[](const std::string& raw,auto& value) {

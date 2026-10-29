@@ -19,6 +19,36 @@ local function items()
  return rows
 end
 local baseline=capture('farm-contents-baseline');baseline.contents=items()
+local function read_contents(label)
+ local before=require('json').encode(items());local guards={}
+ for _,object in ipairs{main.view_sheets,df.global.plotinfo}do
+  local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+  dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
+ end
+ local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(b.id))
+ assert(code==0,text);local result=require('json').decode(text)
+ assert(result.building_id==b.id and #result.rows==#b.contained_items,'contents reader identity/count')
+ for index,row in ipairs(result.rows)do
+  local held=b.contained_items[index-1]
+  assert(row.id==held.item.id and row.role_value==held.use_mode and row.flags==held.item.flags.whole,'contents reader order/facts')
+  assert(row.can_dump==true and row.can_melt==false,'seed eligibility differs')
+ end
+ local lines={}
+ for y=0,g.dimy-1 do
+  local chars={};for x=0,g.dimx-1 do chars[#chars+1]=string.char(dfhack.screen.readTile(x,y).ch%256)end
+  lines[#lines+1]=dfhack.df2utf(table.concat(chars))
+ end
+ for index=1,6 do
+  local found=false;for _,line in ipairs(lines)do if line:find(result.rows[index].name,1,true)then found=true;break end end
+  assert(found,'native rendered caption differs: '..result.rows[index].name)
+ end
+ for _,guard in ipairs(guards)do
+  assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'contents reader changed UI scratch');df.delete(guard.bytes)
+ end
+ assert(require('json').encode(items())==before,'contents reader changed item facts')
+ records[#records+1]={name='farm-contents-reader-'..label,result=result,visible_names_equal=true,ui_scratch_unchanged=true}
+end
+read_contents('baseline')
 local _,address=df.sizeof(b);local _,field=df.sizeof(b:_field('contained_items'))
 baseline.contained_items_offset=field-address
 assert(#baseline.contents>0,'farm contents fixture empty')
@@ -49,6 +79,7 @@ for _,probe in ipairs{{'forbid',780},{'dump',804},{'visibility',852}}do
   move(probe[2],526);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
   local row=capture('farm-contents-'..probe[1]..'-'..toggle)
   row.contents=items();row.building_flags=b.flags.whole
+  read_contents(probe[1]..'-'..toggle)
   native_states[toggle]={contents=row.contents,building_flags=row.building_flags}
   assert(row.active_sheet=='BUILDING' and row.active_id==b.id,'contents action lost farm target')
   if toggle==1 then assert(require('json').encode(row.contents)~=original or b.flags.whole~=flags,'contents control had no effect')end

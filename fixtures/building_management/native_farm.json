@@ -14157,5 +14157,736 @@
     },
     "coverage": "Exact native-click versus diagnostic-adapter item flags, countdown/delay and building flags for both directions of Forbid/Dump/Visibility. Stale no-effect, identical desired value no-effect, ineligible seed melting, invalid target refusal, byte-for-byte native UI scratch preservation. Owned paused clone exits unsaved.",
     "limitations": "Diagnostic command only, no typed management wire or Godot controls. Permanent seed fixture with no active item jobs; native eligible melting and active-job cleanup still require live coverage."
+  },
+  "contents_reader_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261028-221721",
+    "native_caption": {
+      "rva": "0xc65450",
+      "length": "0xaba",
+      "fnv1a64": "47fa672b7bbcd332",
+      "arguments": "item, owned std::string*, false, -1",
+      "renderer_call": "0x19d4ae",
+      "unwind_ranges": [
+        "0xc65450..0xc6571d",
+        "0xc6571d..0xc65f0a"
+      ],
+      "base_relocations": 0
+    },
+    "ordered_rows": [
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47492,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47486,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47494,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47485,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47484,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47493,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47491,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47545,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47540,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47541,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47544,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47536,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47534,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47537,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47532,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47543,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47542,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47533,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47530,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47531,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47535,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47529,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47600,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47611,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47594,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47665,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47695,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47696,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47697,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47664,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47680,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47692,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47749,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47764,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47763,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47762,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47742,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47748,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47881,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      },
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "flags": 32,
+        "id": 47929,
+        "name": "sweet pod seeds",
+        "role_value": 2
+      }
+    ],
+    "samples": [
+      {
+        "name": "farm-contents-reader-baseline",
+        "visible_rows": [
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 32,
+            "id": 47492,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 32,
+            "id": 47486,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 32,
+            "id": 47494,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 32,
+            "id": 47485,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 32,
+            "id": 47484,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 32,
+            "id": 47493,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          }
+        ],
+        "visible_names_equal": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "name": "farm-contents-reader-forbid-1",
+        "visible_rows": [
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 537395232,
+            "id": 47492,
+            "name": "{sweet pod seeds}",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47486,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47494,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47485,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47484,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47493,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          }
+        ],
+        "visible_names_equal": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "name": "farm-contents-reader-forbid-2",
+        "visible_rows": [
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47492,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47486,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47494,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47485,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47484,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47493,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          }
+        ],
+        "visible_names_equal": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "name": "farm-contents-reader-dump-1",
+        "visible_rows": [
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 538968096,
+            "id": 47492,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47486,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47494,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47485,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47484,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47493,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          }
+        ],
+        "visible_names_equal": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "name": "farm-contents-reader-dump-2",
+        "visible_rows": [
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47492,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47486,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47494,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47485,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47484,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47493,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          }
+        ],
+        "visible_names_equal": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "name": "farm-contents-reader-visibility-1",
+        "visible_rows": [
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 553648160,
+            "id": 47492,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47486,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47494,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47485,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47484,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47493,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          }
+        ],
+        "visible_names_equal": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "name": "farm-contents-reader-visibility-2",
+        "visible_rows": [
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47492,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47486,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47494,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47485,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47484,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "flags": 536870944,
+            "id": 47493,
+            "name": "sweet pod seeds",
+            "role_value": 2
+          }
+        ],
+        "visible_names_equal": true,
+        "ui_scratch_unchanged": true
+      }
+    ],
+    "hashes": {
+      "result.json": "a43c01794d3e741e03a9f448367dacb280359e7425b8beb03315ab9c58a535b6",
+      "capture-inputs.json": "be8b03f53fa7d869db522bf7c781929edd27aa79a2f207f30968d314d9e1577c",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "coverage": "Native vector order, roles, flags and dump/melt eligibility for 40 permanent seeds. First six captions found verbatim in native rendered screen cells at baseline and both directions of forbid/dump/visibility. All item facts and native view_sheets/plotinfo bytes unchanged by reads. Owned paused DF180196 exits unsaved; source preserved.",
+    "limitations": "Diagnostic reader only; no typed contents revision or public sheet. Other item types, quality/wear/artifact naming, eligible melting, tail scrolling and active jobs remain unverified."
   }
 }

@@ -354,6 +354,20 @@ func run() -> void:
 	state=await receipt(sequence)
 	assert(state.report.list_revision==9007199254740993 and state.report.total==4)
 
+	for item_id in [47492,47493]:
+		var request: Dictionary={"action":A.ProductionInspect,"building_id":968,"item_id":item_id}
+		for field in ["item_id","building_id"]:
+			var invalid:=request.duplicate();invalid[field]=float(request[field]);assert(world.management_request("production",invalid)==0)
+		for fields in [{"contents":true},{"expected_revision":17},{"item_value":0},{"season":0},{"cursor":1}]:
+			var invalid:=request.duplicate();invalid.merge(fields,true);assert(world.management_request("production",invalid)==0)
+		sequence=world.management_request("production",request);assert(sequence>0);state=await receipt(sequence)
+		var item: Dictionary=state.production.item
+		assert(item.id==item_id and item.building_id==968 and item.revision==9007199254740993)
+		assert(item.item_type==53 and item.material_token=="PLANT:POD_SWEET:SEED" and item.subtype_raw=="")
+		assert(item.name=="Synthetic item" and item.weight=="<1" and item.description=="Synthetic description")
+		assert(item.forbid and item.hidden and item.can_dump and not item.can_melt and item.completed and not item.removing)
+		assert(item.has("holder")==bool(item_id==47492))
+		if item.has("holder"):assert(item.holder=={"id":968,"type":4,"name":"Synthetic holder"})
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -481,7 +495,7 @@ func test_production() -> void:
 		request[key] = 1
 		reject_production(request, "Wrong management field type: " + key)
 	var bounds := {"building_id":[-2,2147483648],"job_id":[-2,2147483648],"cursor":[-1,4294967296],
-		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[6],"seasonal_fertilization":[2],
+		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[10],"seasonal_fertilization":[2],
 		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(129),String.chr(233).repeat(65)]}
 	for key in bounds:
 		for bad in bounds[key]:

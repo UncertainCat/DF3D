@@ -22,6 +22,17 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management91 adds optional BuildingItemSnapshot and ItemBuildingHolder. A
+ProductionInspect request with item_id selects one contained item; it cannot mix
+contents paging, seasonal controls or edit fields. Inspection starts without a
+revision precondition because native formatting can initialize weight caches;
+the response carries the post-format contents revision for later edits. Text is
+owned and bounded (128KiB name, 32KiB description, 128-byte weight, 512-byte
+holder name). Absent historical snapshots or holders remain absent; never
+synthesize them from contents or map records. Rebuild/install bridge and viewer
+together on `Local\\df3d_management_v91`; management90 is incompatible. Other
+wire versions are unchanged. This contract alone does not expose the item sheet.
+
 Management90 adds item_type, material_token and subtype_raw to every contents
 row. These owned semantic identities participate in the full-vector revision;
 no texture handles, native cache or resident map item is required. Missing

@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 90;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v90";
+inline constexpr uint32_t kManagementVersion = 91;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v91";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -422,10 +422,14 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     } else if(p->farm_name())return "unexpected farm name";
     if(r.action()!=ManagementAction::FarmEdit && (p->farm_operation()!=FarmOperation::Crop || p->seasonal_fertilization()!=-1))return "unexpected farm operation";
     const bool itemEdit=p->farm_operation()>=FarmOperation::ItemForbid && p->farm_operation()<=FarmOperation::ItemHidden;
+    const bool itemInspect=r.action()==ManagementAction::ProductionInspect && p->item_id()>=0;
+    if(itemInspect && (p->item_value()!=-1 || p->contents() || p->season()!=-1 || p->cursor() ||
+        p->job_id()!=-1 || p->crop_id()!=-1 || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() ||
+        (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size())))return "invalid item inspection";
     if(itemEdit) {
       if(r.action()!=ManagementAction::FarmEdit || p->item_id()<0 || p->item_value()<0 || p->item_value()>1 ||
          p->season()!=-1 || p->contents())return "invalid contained item intent";
-    } else if(p->item_id()!=-1 || p->item_value()!=-1)return "unexpected contained item intent";
+    } else if(!itemInspect && (p->item_id()!=-1 || p->item_value()!=-1))return "unexpected contained item intent";
     if(r.action()==ManagementAction::FarmEdit) {
       if(!itemEdit && p->season()<0)return "season required";
       if(p->farm_operation()!=FarmOperation::Crop && p->crop_id()!=-1)return "unexpected farm crop";
@@ -1294,6 +1298,24 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
+    if(const auto* item=p->item()) {
+      const auto* row=item->item();
+      if(s.action()!=ManagementAction::ProductionInspect || s.status()!=ManagementStatus::Ok ||
+         item->building_id()<0 || item->building_id()!=p->selected_building() ||
+         !item->revision() || item->revision()>INT64_MAX || !row || row->id()<0 || row->role()<0 ||
+         !row->name() || row->name()->size()>128*1024 || row->item_type()<0 || row->item_type()>92 ||
+         !row->material_token() || row->material_token()->size()>256 || !row->subtype_raw() || row->subtype_raw()->size()>128 ||
+         !item->weight() || item->weight()->size()>128 || !item->description() || item->description()->size()>32*1024)
+        return "invalid item inspection snapshot";
+      if(const auto* holder=item->holder()) {
+        if(holder->id()<0 || holder->type()<0 || !holder->name() || holder->name()->size()>512)return "invalid item building holder";
+      }
+      if(p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
+         (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||
+         (p->jobs() && p->jobs()->size()) || (p->crops() && p->crops()->size()) ||
+         (p->seasonal_crops() && p->seasonal_crops()->size()) || p->current_season()!=-1 || p->created_job()!=-1)
+        return "mixed item inspection response";
+    }
     if(const auto* page=p->contents()) {
       if((s.action()!=ManagementAction::ProductionInspect && s.action()!=ManagementAction::FarmEdit) || s.status()!=ManagementStatus::Ok ||
          page->building_id()<0 || page->building_id()!=p->selected_building() ||

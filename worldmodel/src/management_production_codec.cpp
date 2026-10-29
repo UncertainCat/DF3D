@@ -29,6 +29,14 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     if(page->rows())for(const auto* row:*page->rows())value.rows.push_back({row->id(),row->role(),str(row->name()),
       row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building(),row->item_type(),str(row->material_token()),str(row->subtype_raw())});
   }
+  if(const auto* source=p->item()) {
+    auto& value=n.item.emplace();value.buildingId=source->building_id();value.revision=source->revision();
+    value.completed=source->completed();value.removing=source->removing();
+    value.weight=str(source->weight());value.description=str(source->description());
+    const auto* row=source->item();value.item={row->id(),row->role(),str(row->name()),
+      row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building(),row->item_type(),str(row->material_token()),str(row->subtype_raw())};
+    if(const auto* holder=source->holder())value.holder=ItemBuildingHolder{holder->id(),holder->type(),str(holder->name())};
+  }
   n.farmEditOutcome=static_cast<FarmEditOutcome>(p->farm_edit_outcome());
   if(const auto* f=p->farm()) {
     auto& farm=n.farm.emplace();farm.buildingId=f->building_id();farm.revision=f->revision();

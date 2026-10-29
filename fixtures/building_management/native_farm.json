@@ -22634,5 +22634,24 @@
     ],
     "scope": "Diagnostic seed inspection observes contents revision and row facts after native formatters. Six warm and six cold weight-cache reads match a subsequent native contents read; cold reads alone change revision. Full existing item/building/UI guards pass. Owned DF184956 exits unsaved; source unchanged.",
     "limitations": "No management wire or main-scene item-sheet integration. General description dependencies and nonseed inspection remain unaccepted."
+  },
+  "item_inspection_wire_reference": {
+    "management_version": 91,
+    "run": "build/areas-acceptance-20261029-125847",
+    "result": {
+      "reasons": [],
+      "status": "passed"
+    },
+    "staged_inspection": {
+      "contents_unchanged": true,
+      "no_authority": true,
+      "rejected": true
+    },
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "bridge_sha256": "0a63522c84409e47d7e19567d3c1d909bbc06ab4b671e008bc75bc85250ce98f",
+    "extension_sha256": "0062fa8511fc69971f9606ca592512dfc491355f50f66a57a7c43f4f9716f358",
+    "offline": "build/qa/item-inspection-wire-verified: core and management_contract_test clean PASS; MSVC build PASS",
+    "scope": "Owned DF164908 exited unsaved. Two save manifests unchanged. Staged inspection rejects without authority and leaves native contents unchanged. Existing item edits and contents controller regression pass on matched version91. Synthetic host verifies full dictionary, absent holder and exact64-bit revision.",
+    "limitations": "Contract and codecs only. Runtime inspection provider, main-scene owner and actual item-sheet actions remain unfinished."
   }
 }

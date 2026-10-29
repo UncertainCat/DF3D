@@ -510,7 +510,7 @@ passes cleanly and both GPU checks pass with only the documented three engine
 diagnostics. Native flag-state and rendered camera-help images were inspected.
 
 This accepts the captured seed rendering, hover and local signal routing.
-No item-sheet transport, main-scene owner, live DF3D holder/camera/action effects,
+No main-scene item-sheet owner, live DF3D holder/camera/action effects,
 long/multiline description layout, resize or nonseed artwork is accepted.
 The public farm route remains staged until the full workflow is complete.
 
@@ -543,7 +543,32 @@ verifies six warm reads retain their revision and six cold reads change it, with
 all returned revisions and facts matching a fresh contents read. Existing full
 item/building/UI guards pass; owned DF184956 exits unsaved and the source stays
 unchanged. `item_inspection_revision_reference` retains the bounded evidence.
-This does not yet add item inspection to the management transport.
+The separate staged transport contract below carries these facts; the diagnostic
+provider is not yet enabled for runtime inspection.
+
+## Staged item inspection transport
+
+Management91 uses ProductionInspect with building_id and item_id for an item
+inspection. It excludes contents paging, revision preconditions and edit fields.
+BuildingItemSnapshot contains the post-format contents revision, building state,
+owned item facts, weight, description and optional ItemBuildingHolder. Missing
+historical snapshots and absent holders remain absent. Validators bound every
+string, require identity and reject mixed or unsuccessful authority. PINS.md
+records the breaking migration; both bridge and viewer must be rebuilt together.
+
+Bridge encoding, neutral decoding and Godot dictionary conversion are implemented.
+The runtime request explicitly rejects until the native description provider is
+accepted, rather than falling through to the legacy building inspector. This
+contract does not enable public item inspection or imply general description safety.
+
+Core and the synthetic host-to-Godot contract test pass, including revisions above
+2^53, absent holders, malformed requests and bounded snapshots. MSVC passes.
+Protected125847 verifies the matched version91 pair rejects staged inspection
+without contents changes or item authority, then passes the existing contents
+edit/controller workflow. Owned DF164908 exits unsaved; two save manifests stay
+unchanged. `item_inspection_wire_reference` records hashes and scope. Native
+provider integration, item-sheet ownership, holder/camera actions and their full
+lifecycle remain outstanding.
 
 ## Native item-sheet semantic discovery
 

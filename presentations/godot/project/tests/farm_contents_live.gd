@@ -70,6 +70,26 @@ func exercise_controller(id: int, initial: Dictionary) -> void:
 	write_json("contents-controller-results.json",{"later_row_viewport":true,"latest_scroll":true,"queued_close":"not_sent","sent_close":"detached_completed","restored":true})
 	model.dispose();actions.free()
 
+func verify_staged_inspection(id: int, item: int, initial: Dictionary) -> void:
+	world.poll()
+	var seq: int=world.management_request("production",{"action":Contract.ManagementAction.ProductionInspect,"building_id":id,"item_id":item})
+	if not check(seq>0,"item inspection contract rejected locally"):return
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		var response: Dictionary=world.poll_management()
+		if int(response.get("request_seq",0))==seq and response.get("status",S.Idle) not in [S.Idle,S.Pending]:
+			var production: Dictionary=response.get("production",{})
+			if not check(response.status==S.Rejected and not production.has("item") and not production.has("contents") and not production.has("farm"),"staged item inspection granted authority"):return
+			var observed:=await read_contents(id)
+			if stopped:return
+			if not check(observed==initial,"staged inspection changed contents"):return
+			await native("contents-verify",{"rows":observed.rows})
+			write_json("item-inspection-staged.json",{"rejected":true,"no_authority":true,"contents_unchanged":true})
+			return
+		await create_timer(0.01).timeout
+	incomplete("staged inspection timed out",true)
+
 func exercise() -> void:
 	await seed_catalog()
 	if stopped:return
@@ -79,6 +99,8 @@ func exercise() -> void:
 	if stopped:return
 	if not check(initial.next_cursor==0 and initial.rows.size()>1,"contents edit fixture requires one complete page"):return
 	var item:=int(initial.rows[0].id)
+	await verify_staged_inspection(id,item,initial)
+	if stopped:return
 	var cases: Array=[]
 	for probe in [[Contract.FarmOperation.ItemForbid,"forbid"],[Contract.FarmOperation.ItemDump,"dump"],[Contract.FarmOperation.ItemHidden,"hidden"]]:
 		step="native contents wire edit "+str(probe[1])

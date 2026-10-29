@@ -3474,3 +3474,57 @@ TEST_CASE("contained item completion grants authority only for the observed targ
     if(fault==0){const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.contentsEdit);CHECK(decoded.contentsEdit->itemId==47492);CHECK(decoded.contentsEdit->value==1);}
   }
 }
+
+TEST_CASE("item inspection intent is independent of contents paging and edits") {
+  for(int fault=0;fault<13;++fault) {
+    CAPTURE(fault);wm::ManagementRequest request;request.action=wm::ManagementAction::ProductionInspect;
+    auto& p=request.production;p.buildingId=968;p.itemId=47492;
+    if(fault==1)p.itemId=-2;
+    if(fault==2)p.itemValue=0;
+    if(fault==3)p.contents=true;
+    if(fault==4)p.season=0;
+    if(fault==5)p.cursor=1;
+    if(fault==6)p.expectedRevision=17;
+    if(fault==7)p.cropId=2;
+    if(fault==8)p.query="mixed";
+    if(fault==9)p.cancel=true;
+    if(fault==10)request.action=wm::ManagementAction::ProductionList;
+    if(fault==11)p.farmOperation=wm::FarmOperation::ItemForbid;
+    if(fault==12)p.buildingId=-1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault)CHECK(value->production()->item_id()==47492);
+  }
+}
+TEST_CASE("item inspection preserves native facts and rejects ambiguous authority") {
+  for(int fault=0;fault<24;++fault) {
+    CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    auto row=wire::CreateBuildingContentsItem(b,fault==5?-1:47492,fault==6?-1:2,
+      fault==7?0:b.CreateString(fault==8?std::string(131073,'x'):"native caption"),true,false,false,true,true,false,false,true,
+      fault==9?93:53,fault==10?0:b.CreateString("PLANT:POD_SWEET:SEED"),b.CreateString(fault==11?std::string(129,'x'):""));
+    auto holder=wire::CreateItemBuildingHolder(b,fault==16?-1:968,fault==17?-1:4,
+      fault==18?0:b.CreateString(fault==19?std::string(513,'x'):"Farm Plot"));
+    auto item=wire::CreateBuildingItemSnapshot(b,968,fault==1?0:fault==2?UINT64_MAX:9007199254740993ULL,
+      true,false,fault==4?0:row,fault==12?0:b.CreateString(fault==13?std::string(129,'x'):"<1"),
+      fault==14?0:b.CreateString(fault==15?std::string(32769,'x'):"native description"),fault==23?0:holder);
+    auto page=wire::CreateBuildingContentsPage(b,968,17,0,0,1,true,false,b.CreateVector(std::vector{row}));
+    wire::ProductionStateBuilder p(b);p.add_selected_building(fault==3?969:968);p.add_item(item);
+    if(fault==20)p.add_contents(page);
+    auto prod=p.Finish();wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(fault==21?wire::ManagementAction::ProductionList:wire::ManagementAction::ProductionInspect);
+    state.add_status(fault==22?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);state.add_production(prod);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0 && fault!=23));
+    if(fault==0 || fault==23) {
+      auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.item);
+      CHECK(decoded.item->revision==9007199254740993ULL);CHECK(decoded.item->item.id==47492);
+      CHECK(decoded.item->item.forbid);CHECK(decoded.item->item.materialToken=="PLANT:POD_SWEET:SEED");
+      CHECK(decoded.item->description=="native description");CHECK(decoded.item->weight=="<1");
+      CHECK(bool(decoded.item->holder)==(fault==0));
+      if(decoded.item->holder){CHECK(decoded.item->holder->id==968);CHECK(decoded.item->holder->name=="Farm Plot");}
+    }
+  }
+  flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateProductionState(b));
+  CHECK_FALSE(codec::decodeProduction(flatbuffers::GetRoot<wire::ProductionState>(b.GetBufferPointer())).item);
+}

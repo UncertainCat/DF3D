@@ -101,6 +101,21 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     }
     value["rows"]=rows;prod["contents"]=value;
   }
+  if(p.item) {
+    const auto& source=*p.item;const auto& row=source.item;Dictionary value;
+    value["building_id"]=source.buildingId;value["revision"]=int64_t(source.revision);
+    value["completed"]=source.completed;value["removing"]=source.removing;
+    value["id"]=row.id;value["role"]=row.role;value["name"]=String::utf8(row.name.c_str());
+    value["item_type"]=row.itemType;value["material_token"]=String::utf8(row.materialToken.c_str());value["subtype_raw"]=String::utf8(row.subtypeRaw.c_str());
+    value["forbid"]=row.forbid;value["dump"]=row.dump;value["melt"]=row.melt;value["hidden"]=row.hidden;
+    value["can_dump"]=row.canDump;value["can_melt"]=row.canMelt;value["in_job"]=row.inJob;value["in_building"]=row.inBuilding;
+    value["weight"]=String::utf8(source.weight.c_str());value["description"]=String::utf8(source.description.c_str());
+    if(source.holder) {
+      Dictionary holder;holder["id"]=source.holder->id;holder["type"]=source.holder->type;holder["name"]=String::utf8(source.holder->name.c_str());
+      value["holder"]=holder;
+    }
+    prod["item"]=value;
+  }
   prod["farm_edit_outcome"]=int(p.farmEditOutcome);
   if(p.farm) {
     const auto& f=*p.farm;Dictionary farm;Array choices,selected;

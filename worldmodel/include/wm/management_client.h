@@ -324,7 +324,16 @@ struct BuildingContentsPage {
   std::vector<BuildingContentsItem> rows;
 };
 struct BuildingItemReceipt { int32_t itemId=-1;FarmOperation operation=FarmOperation::Crop;int8_t value=-1; };
+struct ItemBuildingHolder { int32_t id=-1,type=-1;std::string name; };
+struct BuildingItemSnapshot {
+  int32_t buildingId=-1;uint64_t revision=0;
+  bool completed=false,removing=false;
+  BuildingContentsItem item;
+  std::string weight,description;
+  std::optional<ItemBuildingHolder> holder;
+};
 struct ProductionState {
+  std::optional<BuildingItemSnapshot> item;
   std::optional<BuildingItemReceipt> contentsEdit;
   std::optional<BuildingContentsPage> contents;
   FarmEditOutcome farmEditOutcome=FarmEditOutcome::None;

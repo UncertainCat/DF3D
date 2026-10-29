@@ -617,7 +617,17 @@ void publish() {
   if(production.contentsEdit) {
     const auto& edit=*production.contentsEdit;contentsEdit=m::CreateBuildingItemReceipt(b,edit.itemId,edit.operation,edit.value);
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit);
+  flatbuffers::Offset<m::BuildingItemSnapshot> itemSnapshot;
+  if(production.item) {
+    const auto& value=*production.item;const auto& row=value.item;
+    auto item=m::CreateBuildingContentsItem(b,row.id,row.role,b.CreateString(row.name),
+      row.forbid,row.dump,row.melt,row.hidden,row.canDump,row.canMelt,row.inJob,row.inBuilding,row.itemType,b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw));
+    flatbuffers::Offset<m::ItemBuildingHolder> holder;
+    if(value.holder)holder=m::CreateItemBuildingHolder(b,value.holder->id,value.holder->type,b.CreateString(value.holder->name));
+    itemSnapshot=m::CreateBuildingItemSnapshot(b,value.buildingId,value.revision,value.completed,value.removing,item,
+      b.CreateString(value.weight),b.CreateString(value.description),holder);
+  }
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -2504,6 +2514,11 @@ void run(color_ostream& out) {
       production.selectedBuilding=page->buildingId;production.contents=std::move(page);status=m::ManagementStatus::Ok;
     }
     publish();return;
+  }
+  if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->item_id()>=0) {
+    // The inspection contract is staged until the native description provider is
+    // accepted. Never route item intent to the legacy building inspector.
+    message.clear();status=m::ManagementStatus::Rejected;production={};publish();return;
   }
   // Explicit-season reads use the native contract; the default remains legacy.
   if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->season()>=0) {

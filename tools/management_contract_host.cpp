@@ -420,6 +420,13 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
 flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBufferBuilder& b,const m::ConstructionRequest& request) {
   using A=m::ManagementAction;
   const auto action=request.action();const auto* q=request.production();
+  if(action==A::ProductionInspect && q->item_id()>=0) {
+    auto row=m::CreateBuildingContentsItem(b,q->item_id(),2,b.CreateString("Synthetic item"),true,false,false,true,true,false,false,true,53,b.CreateString("PLANT:POD_SWEET:SEED"),b.CreateString(""));
+    flatbuffers::Offset<m::ItemBuildingHolder> holder;
+    if(q->item_id()==47492)holder=m::CreateItemBuildingHolder(b,968,4,b.CreateString("Synthetic holder"));
+    auto item=m::CreateBuildingItemSnapshot(b,968,9007199254740993ULL,true,false,row,b.CreateString("<1"),b.CreateString("Synthetic description"),holder);
+    m::ProductionStateBuilder p(b);p.add_selected_building(968);p.add_item(item);return p.Finish();
+  }
   if((action==A::ProductionInspect && q->building_id()==3) || action==A::FarmEdit) {
     std::vector<flatbuffers::Offset<m::NativeFarmCrop>> rows{
       m::CreateNativeFarmCrop(b,176,b.CreateString("Sweet pods"),false,true,b.CreateString("POD_SWEET")),
@@ -846,7 +853,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -912,6 +919,9 @@ int main(int argc,char** argv) {
         case A::ProductionList:
           require(r->production()->query()->str()==(received==62?"#1024":"") && r->production()->cursor()==(received==62?1024:0),"production list payload");break;
         case A::ProductionInspect:
+          if(r->production()->item_id()>=0) {
+            require(r->production()->building_id()==968 && (r->production()->item_id()==47492 || r->production()->item_id()==47493),"item inspection payload");break;
+          }
           require(r->production()->building_id()==(received==45?1:3),"production inspect payload");break;
         case A::ProductionQueue:
           require(r->production()->building_id()==1 && r->production()->recipe()->str()=="builtin:114:2" &&

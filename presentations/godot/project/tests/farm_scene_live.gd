@@ -147,6 +147,14 @@ func contents_scene() -> void:
 	var view=owner.panel.contents
 	if not check(view.visible and view.rows.size()==40 and view.page==6,"contents not connected to staged sheet"):return
 	await capture("contents_baseline")
+	for probe in [[0,"permanent"],[1,"view"],[2,"forbid"],[3,"dump"],[4,""],[5,"visibility"]]:
+		var motion:=InputEventMouseMotion.new()
+		motion.position=view.get_global_transform_with_canvas()*view.control_rect(0,probe[0]).get_center();root.push_input(motion,true)
+		await create_timer(0.6).timeout
+		var expected: String="contents_"+probe[1] if probe[1]!="" else ""
+		if not check(scene._fortress_hud.native_help.displayed==expected,"contents hover differs: "+probe[1]):return
+		if probe[1]!="":await capture("contents_hover_"+probe[1])
+
 	for control in [2,3,5]:
 		for toggle in 2:
 			# The second row forces receipt-offset recovery to the same viewport.
@@ -166,3 +174,4 @@ func contents_scene() -> void:
 	if not check(owner.contents.snapshot==initial,"contents up arrow did not restore viewport"):return
 	owner.close_panel();await process_frame
 	if not check(owner.contents.snapshot.is_empty() and view.rows.is_empty() and not view.scrollbar.dragging,"closed farm retained contents"):return
+	if not check(not scene._fortress_hud.native_help.visible,"closed contents retained hover"):return

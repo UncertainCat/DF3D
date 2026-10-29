@@ -35,6 +35,16 @@ func run() -> void:
 	for row in model.snapshot.rows:
 		for key in ["id","role","item_type"]:row[key]=int(row[key])
 	model.changed.emit();model.calls.clear()
+	for entry in [[0,"permanent"],[1,"view"],[2,"forbid"],[3,"dump"],[4,""],[5,"visibility"]]:
+		if view.help_at(view.control_rect(0,entry[0]).get_center())!=entry[1]:fail("Contents help hitbox differs");return
+	model.snapshot.rows[0].role=0;model.changed.emit()
+	if view.help_at(view.control_rect(0,0).get_center())!="other":fail("Temporary role help differs");return
+	model.snapshot.rows[0].in_job=true;model.changed.emit()
+	if view.help_at(view.control_rect(0,0).get_center())!="task":fail("Task role help precedence differs");return
+	model.snapshot.rows[0].in_job=false;model.snapshot.rows[0].role=2
+	model.snapshot.rows[0].can_melt=true;model.changed.emit()
+	if view.help_at(view.control_rect(0,4).get_center())!="melt":fail("Eligible melt help missing");return
+	model.snapshot.rows[0].can_melt=false;model.changed.emit()
 	view.view_requested.connect(func(id):model.calls.append(["view",id]))
 	for control in range(1,6):click(view.control_rect(0,control).get_center())
 	if model.calls!=[["view",47492],[47492,6,true],[47492,7,true],[47492,9,true]]:fail("Contents explicit intents/eligibility differ: "+str(model.calls));return

@@ -27,7 +27,7 @@ func configure(source,model,help=null,contents_model=null) -> void:
 	body=preload("res://scripts/farm_body_view.gd").new();add_child(body);body.configure(source,model)
 	body.position=Vector2(16,144);body.input_allowed=body_allowed
 	if contents_model!=null:
-		contents=preload("res://scripts/farm_contents_view.gd").new();add_child(contents);contents.configure(source,contents_model)
+		contents=preload("res://scripts/farm_contents_view.gd").new();add_child(contents);contents.configure(source,contents_model,help)
 		contents.position=Vector2(8,456);contents.input_allowed=contents_allowed
 	name_entry=preload("res://scripts/farm_name_entry.gd").new();add_child(name_entry);name_entry.hide()
 	name_entry.edited.connect(func(value):name_edited.emit(value))

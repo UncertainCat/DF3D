@@ -11,6 +11,62 @@ const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature.
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
 # Native farm-header214429, instructions301/302, exact24-cell text.
 const BUILDING_HELP={"rename":["Name this building."],"remove":["Remove this building."]}
+# Native contents235536 text cells, instructions286/317/323..328.
+const CONTENTS_HELP={
+  "permanent": [
+    "This item is a",
+    "permanent part of the",
+    "building.  Forbid and",
+    "visibility tags set",
+    "here affect the whole",
+    "building."
+  ],
+  "view": [
+    "View this item's sheet."
+  ],
+  "forbid": [
+    "Toggle the forbidden",
+    "status of the item.",
+    "Citizens will not use",
+    "forbidden items or",
+    "buildings.  If a",
+    "permanent building item",
+    "is forbidden, citizens",
+    "will not perform tasks",
+    "there!"
+  ],
+  "dump": [
+    "Toggle the dump status",
+    "of the item.  Items are",
+    "dumped in dumping zones."
+  ],
+  "visibility": [
+    "Toggle the visibility",
+    "of the item.  Hidden",
+    "items cannot be seen",
+    "but citizens will still",
+    "use them.  If a",
+    "permanent building item",
+    "is invisible, the",
+    "building will be too!"
+  ],
+  "other": [
+    "This item is a",
+    "semi-permanent part of",
+    "the building, like an",
+    "item on display."
+  ],
+  "task": [
+    "This item is tagged by",
+    "a task and will not be",
+    "used by other tasks."
+  ],
+  "melt": [
+    "Toggle the melt status",
+    "of the item.  Items are",
+    "melted at any smelter."
+  ]
+}
 # Native staffindicatorhelp102205 and staffindicators091520 text-cell captures.
 const STAFF_HELP={
 	"tavern_keeper":["This creature is a","tavern keeper."],
@@ -54,6 +110,9 @@ func configure(source) -> void:
 func enter_access(owner: int, mode: int) -> void:
 	if mode in [0,1,2,3]: state.enter(owner,str(mode),Time.get_ticks_msec())
 	_process(0)
+
+func enter_contents(owner: int, kind: String) -> void:
+	if CONTENTS_HELP.has(kind):state.enter(owner,"contents_"+kind,Time.get_ticks_msec());_process(0)
 
 func enter_building(owner: int, kind: String) -> void:
 	if BUILDING_HELP.has(kind):state.enter(owner,"building_"+kind,Time.get_ticks_msec());_process(0)
@@ -107,7 +166,8 @@ func _draw() -> void:
 			var frame_y := 0 if displayed=="owner_filter" and y==0 else (24 if y==17 else 12)
 			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2(0 if x==0 else 8,frame_y,8,12))
 	var lines: Array
-	if displayed.begins_with("building_"): lines=BUILDING_HELP[displayed.trim_prefix("building_")]
+	if displayed.begins_with("contents_"): lines=CONTENTS_HELP[displayed.trim_prefix("contents_")]
+	elif displayed.begins_with("building_"): lines=BUILDING_HELP[displayed.trim_prefix("building_")]
 	elif displayed.begins_with("specialization_"): lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("specialization_"))]
 	elif displayed.begins_with("staff_"): lines=STAFF_HELP[displayed.trim_prefix("staff_")]
 	elif displayed.begins_with("squad_"): lines=SQUAD_HELP[int(displayed.trim_prefix("squad_"))]

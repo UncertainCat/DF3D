@@ -16164,5 +16164,160 @@
     },
     "coverage": "Actual staged farm sheet: six visible rows; second-row Forbid/Dump/Visibility pointer actions both directions with independent native checks, viewport recovery, up/down scrollbar arrows, full restoration and close cleanup. Existing farm name/removal disconnects and real producer replacement additionally assert empty contents snapshot/rows and retired drag state. Main contents baseline region exactly equals native232835. Two save manifests unchanged; owned DF170280 and replacement131736 exit unsaved; known rendering-thread notice only.",
     "limitations": "View emits item identity but no item sheet is connected. Contents tooltips, native tail scrolling/short lists/resize, other item artwork and item-write disconnect/replacement remain incomplete; public farm route remains hidden."
+  },
+  "contents_hover_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261028-235536",
+    "cases": [
+      {
+        "kind": "permanent",
+        "instruction": 317,
+        "lines": [
+          "This item is a",
+          "permanent part of the",
+          "building.  Forbid and",
+          "visibility tags set",
+          "here affect the whole",
+          "building."
+        ],
+        "text_style": {
+          "fg": 7,
+          "bg": 0,
+          "bold": true
+        }
+      },
+      {
+        "kind": "view",
+        "instruction": 324,
+        "lines": [
+          "View this item's sheet."
+        ],
+        "text_style": {
+          "fg": 7,
+          "bg": 0,
+          "bold": true
+        }
+      },
+      {
+        "kind": "forbid",
+        "instruction": 325,
+        "lines": [
+          "Toggle the forbidden",
+          "status of the item.",
+          "Citizens will not use",
+          "forbidden items or",
+          "buildings.  If a",
+          "permanent building item",
+          "is forbidden, citizens",
+          "will not perform tasks",
+          "there!"
+        ],
+        "text_style": {
+          "fg": 7,
+          "bg": 0,
+          "bold": true
+        }
+      },
+      {
+        "kind": "dump",
+        "instruction": 326,
+        "lines": [
+          "Toggle the dump status",
+          "of the item.  Items are",
+          "dumped in dumping zones."
+        ],
+        "text_style": {
+          "fg": 7,
+          "bg": 0,
+          "bold": true
+        }
+      },
+      {
+        "kind": "visibility",
+        "instruction": 328,
+        "lines": [
+          "Toggle the visibility",
+          "of the item.  Hidden",
+          "items cannot be seen",
+          "but citizens will still",
+          "use them.  If a",
+          "permanent building item",
+          "is invisible, the",
+          "building will be too!"
+        ],
+        "text_style": {
+          "fg": 7,
+          "bg": 0,
+          "bold": true
+        }
+      },
+      {
+        "kind": "other",
+        "instruction": 323,
+        "lines": [
+          "This item is a",
+          "semi-permanent part of",
+          "the building, like an",
+          "item on display."
+        ],
+        "text_style": {
+          "fg": 7,
+          "bg": 0,
+          "bold": true
+        }
+      },
+      {
+        "kind": "task",
+        "instruction": 286,
+        "lines": [
+          "This item is tagged by",
+          "a task and will not be",
+          "used by other tasks."
+        ],
+        "text_style": {
+          "fg": 7,
+          "bg": 0,
+          "bold": true
+        }
+      },
+      {
+        "kind": "melt",
+        "instruction": 327,
+        "lines": [
+          "Toggle the melt status",
+          "of the item.  Items are",
+          "melted at any smelter."
+        ],
+        "text_style": {
+          "fg": 7,
+          "bg": 0,
+          "bold": true
+        }
+      }
+    ],
+    "frame_reference": "native_zone_assignment.json.owner_tooltips.recenter.frame_cells; all native help frame cells compared equal",
+    "hashes": {
+      "result.json": "2e8e1171402ecaf9e6144376388b6363a42b50491e3cd9f2b81d455cc413ff26",
+      "capture-inputs.json": "6cbb9790f155c0b919f8f0df91291c8c23e1bc9eccfd9421cde2c4b21274b1b4",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "coverage": "Native text-cell styles and wrapping at1200x800 for all eight farm contents instructions. Controlled temporary roles, task flag and real melt-eligible weapon membership only during paused rendering; no item action clicked in those probes. All roles/membership/flags restored; source unchanged; owned DF30116 exits unsaved. Zero glyphs in cleared text cells are normalized to spaces.",
+    "limitations": "Task and melt probes establish hover selection/copy, not job cleanup or melting effects. No other building-specific role tooltip dispatch."
+  },
+  "contents_hover_scene_reference": {
+    "capture": "build/areas-acceptance-20261028-235842",
+    "native_checks": 34,
+    "hashes": {
+      "result.json": "9d7b7fc2b08ee5cbb8dba5a4fc1e10d43d1b70f83ed32b6a9da9df0c983b39a8",
+      "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "farm_scene_contents_hover_permanent.png": "c2b90f32f9b68b5f35393de4b0dadab5812522d1f742a844d9cdf3c2b5700943",
+      "farm_scene_contents_hover_view.png": "12d74b5bb4681994dd6358fd68c3b624ce0f4d20aa2a4627d57352ad4ec0c3b2",
+      "farm_scene_contents_hover_forbid.png": "f2c5efc70287aa289a0bbc84271bc15666984230d441b7c756ad58ff913511ee",
+      "farm_scene_contents_hover_dump.png": "77c942174fef7a638ac06e75ecca1fff5bc56122972a8d8fffe110a6d6af099a",
+      "farm_scene_contents_hover_visibility.png": "dd63691d0e83ae3cbfa4954ab63028bd0653dce4bce9a29586320b11060ac53b"
+    },
+    "coverage": "Actual contents pointer hover with native timing for permanent/View/Forbid/Dump/Visibility, ineligible Melt has no help, close clears help. Existing item effects, native UI guards, farm disconnects and real replacement retain checks. Both save manifests unchanged; owned DF185340 and replacement163328 exit unsaved. Only known rendering-thread notice. Forbid screenshot inspected.",
+    "limitations": "Task, temporary-item and eligible Melt help are covered by native text cells plus component hitboxes/GPU rendering, not naturally occurring main-scene workflows. View route remains unfinished."
   }
 }

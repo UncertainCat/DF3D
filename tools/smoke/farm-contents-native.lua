@@ -7,6 +7,21 @@ local function move(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
 end
+local function help(label)
+ local row={name='farm-contents-help-'..label,hover=main.current_hover,enabled=main.hover_instructions_on,lines={},text_cells={},frame_cells={}}
+ for y=0,17 do
+  local line={}
+  for x=g.dimx-25,g.dimx-1 do
+   local pen=dfhack.screen.readTile(x,y)
+   row.frame_cells[#row.frame_cells+1]={x=x,y=y,tile=pen.tile}
+   if pen.ch>=33 and pen.ch<=255 then row.text_cells[#row.text_cells+1]={x=x,y=y,ch=pen.ch,fg=pen.fg,bg=pen.bg,bold=pen.bold}end
+   if x>g.dimx-25 then line[#line+1]=(pen.ch>=32 and string.char(pen.ch%256) or ' ')end
+  end
+  row.lines[#row.lines+1]=dfhack.df2utf(table.concat(line)):gsub('%s+$','')
+ end
+ while #row.lines>0 and row.lines[#row.lines]==''do table.remove(row.lines)end
+ records[#records+1]=row;return row
+end
 local function items()
  local rows={}
  for _,held in ipairs(b.contained_items)do
@@ -86,6 +101,7 @@ for _,probe in ipairs{{'role',732,526},{'view',756,526},{'forbid',780,526},{'dum
  local deadline=dfhack.getTickCount()+900
  repeat move(probe[2],probe[3]);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
  move(probe[2],probe[3])
+ if main.hover_instructions_on then help(probe[1])end
  local lines={};for y=0,17 do local text={};for x=g.dimx-24,g.dimx-1 do
   local ch=dfhack.screen.readTile(x,y).ch;text[#text+1]=ch>=32 and ch<127 and string.char(ch)or' '
  end;lines[#lines+1]=table.concat(text):gsub('%s+$','')end
@@ -187,6 +203,7 @@ local ok,err=xpcall(function()
   local deadline=dfhack.getTickCount()+900
   repeat move(732,526);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
   move(732,526)
+  help('role-'..role)
   local hover=main.current_hover
   local enabled=main.hover_instructions_on
   local row=capture('farm-contents-role-'..role)
@@ -203,3 +220,32 @@ held.use_mode=original_role
 assert(require('json').encode(items())==role_baseline,'role oracle did not restore item facts')
 assert(ok,err)
 records[#records+1]={name='farm-contents-roles-restored',restored=true}
+
+-- Read-only rendering fixtures for task and melt instructions. No action is
+-- clicked and simulation remains paused. These do not prove active job cleanup.
+local seed=held.item
+local seed_flags=seed.flags.whole
+local probe_ok,probe_err=xpcall(function()
+ seed.flags.in_job=true
+ local deadline=dfhack.getTickCount()+900
+ repeat move(732,526);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+ move(732,526);local task=help('task');assert(task.hover==286 and task.enabled,'task instruction missing')
+ seed.flags.whole=seed_flags
+ local metal
+ for _,candidate in ipairs(df.global.world.items.other.WEAPON)do
+  held.item=candidate
+  local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(b.id))
+  if code==0 and require('json').decode(text).rows[1].can_melt then metal=candidate;break end
+ end
+ assert(metal,'no native melt-eligible weapon fixture')
+ local flags=metal.flags.whole
+ deadline=dfhack.getTickCount()+900
+ repeat move(828,526);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+ move(828,526);local melt=help('melt');melt.item_id=metal.id
+ assert(melt.hover==327 and melt.enabled,'melt instruction missing')
+ assert(metal.flags.whole==flags,'hover changed weapon flags')
+end,debug.traceback)
+held.item=seed;seed.flags.whole=seed_flags
+assert(require('json').encode(items())==role_baseline,'tooltip fixture not restored')
+assert(probe_ok,probe_err)
+records[#records+1]={name='farm-contents-help-restored',restored=true}

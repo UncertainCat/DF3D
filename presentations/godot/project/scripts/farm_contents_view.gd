@@ -12,10 +12,16 @@ var world
 var scrollbar
 var rows: Array=[]
 var icons: Dictionary={}
+var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
 var page:=6
 var input_allowed: Callable
 
-func configure(source,model) -> void:
+func configure(source,model,help=null) -> void:
+	hover_help=help
+	mouse_exited.connect(_leave_hover)
+	visibility_changed.connect(func():if not is_visible_in_tree():_leave_hover())
 	world=source;state=model;art.configure(source);picture.configure(source);theme=art.theme
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	clip_contents=true
@@ -54,7 +60,32 @@ func control_rect(index: int,control: int) -> Rect2:return Rect2(296+control*24,
 func eligible(row: Dictionary,control: int) -> bool:
 	return (control!=3 or row.can_dump) and (control!=4 or row.can_melt)
 
+func _leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+
+func help_at(point: Vector2) -> String:
+	var index:=floori(point.y/36)
+	if index<0 or index>=mini(page,rows.size()):return ""
+	var row: Dictionary=rows[index]
+	for control in 6:
+		if not control_rect(index,control).has_point(point) or not eligible(row,control):continue
+		if control==0:
+			if row.in_job:return "task"
+			if row.in_building:return "permanent" if row.role==2 else "other"
+			return ""
+		return ["view","forbid","dump","melt","visibility"][control-1]
+	return ""
+
+func _process(_delta: float) -> void:
+	if not is_instance_valid(hover_help):return
+	if pointer_known and is_visible_in_tree() and available():
+		var kind:=help_at(pointer_position)
+		if not kind.is_empty():hover_help.enter_contents(get_instance_id(),kind);return
+	hover_help.leave(get_instance_id())
+
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:pointer_known=true;pointer_position=event.position;_process(0)
 	if not available() or not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT:return
 	var index:=floori(event.position.y/36)
 	if index<0 or index>=mini(page,rows.size()):return
@@ -92,4 +123,5 @@ func _draw() -> void:
 			if texture!=null:draw_texture_rect(texture,control_rect(index,control),false)
 
 func _exit_tree() -> void:
+	_leave_hover()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

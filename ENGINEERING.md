@@ -364,10 +364,38 @@ manifests remain unchanged; owned processes exit unsaved. Only the known renderi
 thread notice appears. Earlier234830 passed the same effects without the explicit
 contents-retirement assertions. Main-scene contents imagery was inspected.
 
-This is partial building UI acceptance. Contents tooltips, View item-sheet routing,
+This is partial building UI acceptance. View item-sheet routing,
 short-list and resized geometry, tail scrolling, non-seed artwork and actual
 item-write transport-loss/replacement still need verification. The public farm
 route remains hidden; other management screens and release work remain pending.
+
+## Farm contents native hover
+
+The contents component uses the shared500ms/1000ms native instruction timer and
+minimap help frame. Role help follows native precedence: task flag first, then
+permanent or semi-permanent membership. View/Forbid/Dump/Melt/Visibility help uses
+the native text; ineligible controls have no tooltip. Pending, hidden, retired
+or input-blocked rows cannot publish help, and closing clears the component's
+hover ownership. This does not complete the View action's item sheet.
+
+`native_farm.json.contents_hover_reference` records protected235536: all eight
+instructions have captured text cells/styles and the exact existing help frame.
+The task flag, temporary roles and an eligible weapon membership were controlled
+only for paused rendering, restored afterward, and no corresponding action was
+clicked. Cleared zero glyphs are normalized to blank cells in the bounded fixture.
+The source manifest is unchanged and owned DF30116 exits unsaved. This establishes
+hover selection and copy, not active-job cleanup or melting effects.
+
+Core, the contents component and shared hover GPU comparisons pass in
+`build/qa/contents-hover`; GPU reports only the three known Godot diagnostics.
+The shared test compares all eight against native text-cell evidence. Component
+hitboxes cover role precedence and Melt eligibility. Protected main-scene235842
+checks five visible seed-row controls, ineligible Melt and help cleanup, retaining
+34 native effect checks and real producer replacement. Both save manifests remain
+unchanged; owned DF185340 and163328 exit unsaved. Only the known rendering-thread
+notice appears. The Forbid screenshot was inspected. See `contents_hover_scene_reference`
+for capture hashes and the distinction between natural main-scene and controlled
+component coverage.
 
 ## Contents item identity transport
 

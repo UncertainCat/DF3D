@@ -108,6 +108,8 @@ func exercise_scene() -> void:
 	await contents_replacement_case()
 	if stopped:return
 	await item_lifecycle_cases()
+	if stopped:return
+	await follow_lifecycle_cases()
 
 func lifecycle_open(id: int) -> void:
 	var deadline:=Time.get_ticks_msec()+120000
@@ -345,6 +347,68 @@ func follow_ready(expected: Variant=null) -> bool:
 		if follow.last_position!=null and (expected==null or follow.last_position==expected):return true
 	return check(false,"item follow did not receive expected position")
 
+func follow_lifecycle_cases() -> void:
+	var evidence: Array=[];var observed: Array=[]
+	var follow=scene._ui.item_follow;var item_owner=owner.item_owner;var sheet=item_owner.panel
+	follow.position_changed.connect(func(tile):observed.append(tile))
+	follow.set_process(false)
+	for mode in ["queued","sent","restart"]:
+		step="item follow lifecycle "+mode
+		await lifecycle_open(int(fixture.contents.building_id))
+		if not await contents_ready():return
+		var contents=owner.panel.contents
+		await pointer(contents.get_global_transform_with_canvas()*contents.control_rect(1,1).get_center())
+		if not await item_ready():return
+		var target: int=item_owner.state.item_id;var original_epoch: int=actions._epoch
+		await pointer(sheet.get_global_transform_with_canvas()*sheet.camera_rect().get_center())
+		if not await follow_ready():return
+		var count:=observed.size();var generation: int=follow.generation
+		follow._process(1)
+		var pending: int=follow.ticket
+		if not check(pending>0 and actions._requests[pending].sequence==0,"follow lifecycle read not queued"):return
+		if mode!="queued":
+			await pointer(Vector2(400,400),MOUSE_BUTTON_RIGHT)
+			if not check(not sheet.visible and follow.item_id==target and follow.last_position!=null,"follow did not survive sheet closure before lifecycle"):return
+		if mode!="queued":
+			actions.poll()
+			var sequence: int=actions._requests[pending].sequence
+			var receipt: Dictionary={};var deadline:=Time.get_ticks_msec()+30000
+			while Time.get_ticks_msec()<deadline:
+				world.poll();var candidate: Dictionary=world.poll_management()
+				if candidate.get("request_seq")==sequence and candidate.get("status")==S.Ok:receipt=candidate;break
+				await create_timer(0.01).timeout
+			if not check(not receipt.is_empty() and receipt.production.item_position.id==target and observed.size()==count,"follow late receipt missing or delivered early"):return
+			write_json("follow-"+mode+"-unobserved.json",receipt)
+		if mode=="restart":
+			var ack: Dictionary=await replace_producer(original_epoch)
+			if stopped or ack.is_empty():return
+		else:world.detach_live();actions.poll()
+		var outcome: Dictionary=actions.result(pending)
+		if not check(outcome.get("outcome")==("not_sent" if mode=="queued" else "unknown") and follow.generation>generation and follow.item_id==-1 and follow.ticket==0 and follow.last_position==null and not sheet.following,"follow lifecycle retained old identity/artwork"):return
+		if mode!="restart":
+			if not check(world.attach(),"follow reconnect failed"):return
+			var deadline:=Time.get_ticks_msec()+60000
+			while Time.get_ticks_msec()<deadline:
+				world.poll();actions.poll(0.02)
+				if world.terrain_loaded() and not actions._transport_lost and actions._epoch>0 and not actions._needs_claim and actions._active==0 and actions._queue.is_empty():break
+				await create_timer(0.02).timeout
+			if not check(not actions._transport_lost and not actions._needs_claim and actions._active==0,"follow reconnect not ready"):return
+		var next_ticket: int=actions._next_ticket
+		for frame in 30:
+			world.poll();actions.poll();follow._process(1);await process_frame
+		if not check(no_farm_requests_since(next_ticket) and observed.size()==count and follow.item_id==-1,"follow lifecycle replayed or focused a late position"):return
+		await lifecycle_open(int(fixture.contents.building_id))
+		if not await contents_ready():return
+		await pointer(contents.get_global_transform_with_canvas()*contents.control_rect(1,1).get_center())
+		if not await item_ready():return
+		await pointer(sheet.get_global_transform_with_canvas()*sheet.camera_rect().get_center())
+		if not await follow_ready():return
+		if not check(follow.item_id==target and sheet.following and observed.size()==count+1,"fresh explicit follow did not recover"):return
+		evidence.append({"mode":mode,"item_id":target,"outcome":outcome.outcome,"old_epoch":str(original_epoch),"fresh_epoch":str(actions._epoch),"late_focus_suppressed":true,"explicit_recovery":true})
+		follow.stop();item_owner.close_panel()
+	follow.set_process(true)
+	write_json("item-follow-lifecycle-results.json",evidence)
+
 func item_camera_scene() -> void:
 	var item_owner=owner.item_owner;var sheet=item_owner.panel
 	var follow=scene._ui.item_follow;var rig=scene.camera_rig
@@ -357,6 +421,21 @@ func item_camera_scene() -> void:
 	if stopped:return
 	if not check(sheet.following and follow.item_id==target,"camera click did not activate follow artwork"):return
 	await capture("item_follow_active")
+	var point:=Vector3(original.x+0.5,original.z+1.0,original.y+0.5)
+	var projection=rig.get_node("Camera3D")
+	for extent in [Vector2i(1280,720),Vector2i(960,640),Vector2i(1200,800)]:
+		root.size=extent;await process_frame;await process_frame;await process_frame
+		var anchor: Vector2=rig.native_follow_anchor(Vector2(extent),Vector2.ONE,32)
+		if not check(projection.unproject_position(point).distance_to(anchor)<0.1 and anchor.x<sheet.get_global_transform_with_canvas().origin.x,"resize left followed target behind sheet"):return
+	for button in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		await pointer(Vector2(200,400),button);await process_frame;await process_frame
+		var anchor: Vector2=rig.native_follow_anchor(Vector2(root.size),Vector2.ONE,rig._df_pixels_per_tile)
+		if not check(follow.item_id==target and projection.unproject_position(point).distance_to(anchor)<0.1,"zoom lost native follow framing"):return
+	for mode in ["isometric","free"]:
+		rig.set_mode(mode);await process_frame;await process_frame
+		if not check(follow.item_id==target and projection.unproject_position(point).distance_to(Vector2(232,400))<0.1,"3D camera lost follow screen anchor"):return
+		await capture("item_follow_"+mode)
+	rig.set_mode("df");await process_frame;await process_frame
 	await pointer(sheet.get_global_transform_with_canvas()*sheet.camera_rect().get_center())
 	if not check(follow.item_id==-1 and not sheet.following,"second camera click did not stop following"):return
 	await pointer(sheet.get_global_transform_with_canvas()*sheet.camera_rect().get_center())
@@ -367,7 +446,9 @@ func item_camera_scene() -> void:
 	if stopped:return
 	var moved:=original+Vector3i(1,-1,0)
 	if not await follow_ready(moved):return
-	if not check(rig.position.is_equal_approx(Vector3(moved.x+0.5,moved.z+1.0,moved.y+0.5)),"camera did not follow fresh native coordinates"):return
+	var camera=rig.get_node("Camera3D")
+	var projected: Vector2=camera.unproject_position(Vector3(moved.x+0.5,moved.z+1.0,moved.y+0.5))
+	if not check(projected.distance_to(Vector2(272,400))<0.1,"camera did not frame native coordinates beside sheet"):return
 	await capture("item_follow_moved_closed")
 	await native("item-position-state",{"item_id":target,"state":"restored"})
 	if stopped or not await follow_ready(original):return
@@ -377,7 +458,7 @@ func item_camera_scene() -> void:
 	item_owner.open_target(building,target)
 	if not await item_ready():return
 	if not check(not sheet.following,"reopened sheet retained active camera artwork"):return
-	write_json("item-follow-results.json",{"item_id":target,"toggle":true,"survives_close":true,"controlled_move":true,"restored":true,"manual_pan_stops":true})
+	write_json("item-follow-results.json",{"item_id":target,"toggle":true,"survives_close":true,"controlled_move":true,"restored":true,"manual_pan_stops":true,"native_anchor":true,"resize_zoom":true,"three_projections":true})
 
 # Exercise actual item writes; farm rename/removal lifecycle does not establish
 # the separate contents controller's retirement or its receipt-offset recovery.

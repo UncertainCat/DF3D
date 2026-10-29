@@ -36,6 +36,8 @@ end
 local function camera_reference(item)
  local plot=df.global.plotinfo
  local saved={unit=plot.follow_unit,item=plot.follow_item,x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
+ local position={x=item.pos.x,y=item.pos.y,z=item.pos.z}
+ local zoom=g.viewport_zoom_factor
  local before=require('json').encode(items())
  local function state(label)
   local row=capture('farm-item-camera-'..label)
@@ -43,6 +45,7 @@ local function camera_reference(item)
   row.sheet_open=main.view_sheets.open
   row.window={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
   row.position={x=item.pos.x,y=item.pos.y,z=item.pos.z}
+  row.viewport={factor=g.viewport_zoom_factor,width=g.main_viewport.dim_x,height=g.main_viewport.dim_y}
   return row
  end
  local ok,err=xpcall(function()
@@ -50,6 +53,10 @@ local function camera_reference(item)
   move(856,106);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
   script.sleep(2,'frames');move(400,400);state('clicked')
   assert(plot.follow_item==item.id and plot.follow_unit==-1 and main.view_sheets.open,'camera click did not enable item follow')
+  item.pos.x=position.x+1;item.pos.y=position.y-1
+  move(400,400);script.sleep(2,'frames');state('moved-open')
+  item.pos.x=position.x;item.pos.y=position.y
+  move(400,400);script.sleep(2,'frames');state('restored-open')
   if main.view_sheets.active_sheet==df.view_sheet_type.ITEM then
    move(856,106);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
    script.sleep(2,'frames');move(400,400);state('clicked-again')
@@ -60,11 +67,24 @@ local function camera_reference(item)
   gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
   script.sleep(2,'frames');state('closed')
   assert(not main.view_sheets.open and plot.follow_item==item.id,'closing item sheet did not preserve follow')
+  item.pos.x=position.x+1;item.pos.y=position.y-1
+  move(400,400);script.sleep(2,'frames');state('moved-closed')
+  item.pos.x=position.x;item.pos.y=position.y
+  move(400,400);script.sleep(2,'frames');state('restored-closed')
+  for _,probe in ipairs{{'out-1',168},{'out-2',168},{'in-1',144},{'in-2',144}}do
+   local previous=g.viewport_zoom_factor
+   move(976,probe[2]);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   script.sleep(2,'frames');move(400,400);state('zoom-'..probe[1])
+   assert(g.viewport_zoom_factor~=previous,'camera zoom probe did not change zoom')
+  end
+  assert(g.viewport_zoom_factor==zoom,'camera zoom probe did not restore zoom')
   gui.simulateInput(view,'CURSOR_LEFT');view:render(dfhack.getTickCount())
   script.sleep(2,'frames');state('manual-pan')
   assert(plot.follow_item==-1,'manual pan did not cancel follow')
   assert(require('json').encode(items())==before,'camera action changed item facts')
  end,debug.traceback)
+ item.pos.x=position.x;item.pos.y=position.y;item.pos.z=position.z
+ g.viewport_zoom_factor=zoom;df.global.enabler.renderer:set_viewport_zoom_factor(zoom)
  plot.follow_unit=saved.unit;plot.follow_item=saved.item
  df.global.window_x=saved.x;df.global.window_y=saved.y;df.global.window_z=saved.z
  select_map(b);move(756,526);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())

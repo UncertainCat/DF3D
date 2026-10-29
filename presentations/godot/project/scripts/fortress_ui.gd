@@ -14,6 +14,7 @@ var native_options_session
 var agreement_tracker
 var tile_hover
 var item_follow
+var follow_frame: Array=[]
 
 func setup(owner, audio_panel, original_ui) -> void:
 	view = owner
@@ -117,7 +118,7 @@ func controller(id: String):
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		if item_follow==null:
 			item_follow=preload("res://scripts/item_follow.gd").new();add_child(item_follow);item_follow.configure(actions)
-			item_follow.position_changed.connect(func(tile):_focus_tile(tile,true))
+			item_follow.position_changed.connect(_follow_tile)
 			view.camera_rig.navigation_requested.connect(item_follow.stop)
 			view.camera_rig.mode_changed.connect(func():
 				if view.camera_rig.is_walk_mode():item_follow.stop())
@@ -194,6 +195,23 @@ func is_open() -> bool:
 
 func focus_tile(tile: Vector3i) -> void:
 	_focus_tile(tile,false)
+
+func _follow_tile(tile: Vector3i) -> void:
+	world.set_top_z(tile.z)
+	var rig=view.camera_rig
+	rig.follow_level(world.get_top_z())
+	rig.follow_on(Vector3(tile.x+0.5,tile.z+1.0,tile.y+0.5),rig.current_distance(),preload("res://scripts/presentation_settings.gd").effective_scale_vector(get_viewport().get_visible_rect().size))
+	follow_frame=_follow_frame()
+
+func _follow_frame() -> Array:
+	var rig=view.camera_rig;var camera=rig.get_node("Camera3D")
+	var extent:=get_viewport().get_visible_rect().size
+	return [extent,preload("res://scripts/presentation_settings.gd").effective_scale_vector(extent),camera.projection,camera.size,camera.fov,camera.basis,rig.current_distance()]
+
+func _process(_delta: float) -> void:
+	if item_follow==null or item_follow.last_position==null:return
+	# Resizing, zooming and rotating do not change DF's item coordinate.
+	if _follow_frame()!=follow_frame:_follow_tile(item_follow.last_position)
 
 func _focus_tile(tile: Vector3i, automatic: bool) -> void:
 	# Leave gravity controls before selecting the report/entity destination,

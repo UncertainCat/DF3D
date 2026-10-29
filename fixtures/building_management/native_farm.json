@@ -24456,5 +24456,371 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     },
     "scope": "Staged viewport camera toggle, persistence after sheet closure, controlled native item motion/restoration, camera coordinates and manual drag cancellation. Existing edit/restart regressions pass. Open-sheet target remains occluded; framing, natural hauling, live follow lifecycle and general item types remain unfinished."
+  },
+  "item_follow_framing_reference": {
+    "date": "2026-10-29",
+    "native_run": "build/stockpile-storage-native-farm-discovery-20261029-154756",
+    "native_status": "passed",
+    "native_records": [
+      {
+        "name": "farm-item-camera-before",
+        "item_id": 47492,
+        "follow_item": -1,
+        "sheet_open": true,
+        "window": {
+          "x": 129,
+          "y": 109,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-clicked",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": true,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-moved-open",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": true,
+        "window": {
+          "x": 125,
+          "y": 107,
+          "z": 165
+        },
+        "position": {
+          "x": 130,
+          "y": 115,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-restored-open",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": true,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-clicked-again",
+        "item_id": 47492,
+        "follow_item": -1,
+        "sheet_open": true,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-enabled-before-close",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": true,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-closed",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": false,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-moved-closed",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": false,
+        "window": {
+          "x": 125,
+          "y": 107,
+          "z": 165
+        },
+        "position": {
+          "x": 130,
+          "y": 115,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-restored-closed",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": false,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-zoom-out-1",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": false,
+        "window": {
+          "x": 123,
+          "y": 106,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 160,
+          "height": 20,
+          "width": 30
+        }
+      },
+      {
+        "name": "farm-item-camera-zoom-out-2",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": false,
+        "window": {
+          "x": 121,
+          "y": 104,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 128,
+          "height": 25,
+          "width": 38
+        }
+      },
+      {
+        "name": "farm-item-camera-zoom-in-1",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": false,
+        "window": {
+          "x": 123,
+          "y": 106,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 160,
+          "height": 20,
+          "width": 30
+        }
+      },
+      {
+        "name": "farm-item-camera-zoom-in-2",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "sheet_open": false,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-manual-pan",
+        "item_id": 47492,
+        "follow_item": -1,
+        "sheet_open": false,
+        "window": {
+          "x": 114,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "viewport": {
+          "factor": 192,
+          "height": 17,
+          "width": 25
+        }
+      },
+      {
+        "name": "farm-item-camera-restored",
+        "item_id": 47492
+      }
+    ],
+    "viewer_run": "build/areas-acceptance-20261029-154950",
+    "viewer_status": "passed_with_known_issues",
+    "viewer_results": {
+      "controlled_move": true,
+      "item_id": 47929,
+      "manual_pan_stops": true,
+      "native_anchor": true,
+      "resize_zoom": true,
+      "restored": true,
+      "survives_close": true,
+      "three_projections": true,
+      "toggle": true
+    },
+    "lifecycle_results": [
+      {
+        "explicit_recovery": true,
+        "fresh_epoch": "769194282975233",
+        "item_id": 47486,
+        "late_focus_suppressed": true,
+        "mode": "queued",
+        "old_epoch": "769194282975233",
+        "outcome": "not_sent"
+      },
+      {
+        "explicit_recovery": true,
+        "fresh_epoch": "769194282975233",
+        "item_id": 47486,
+        "late_focus_suppressed": true,
+        "mode": "sent",
+        "old_epoch": "769194282975233",
+        "outcome": "unknown"
+      },
+      {
+        "explicit_recovery": true,
+        "fresh_epoch": "725815113285633",
+        "item_id": 47486,
+        "late_focus_suppressed": true,
+        "mode": "restart",
+        "old_epoch": "769194282975233",
+        "outcome": "unknown"
+      }
+    ],
+    "native_checks": 80,
+    "native_panel_pixels": 345504,
+    "active_panel_rgb_sha256": "bf3471cc308e9dc077eba6f1ea5f8d79dce2dfb9f266971587db9b0ae8350e11",
+    "native_artifacts": {
+      "result.json": "c3d74410d88e9e5373906a574122a570fb7dd92f37eb3a2be0f656bbad428da2",
+      "farm-item-camera-clicked.png": "f9489ccbd8d7af1562bffb1a074e6fc290e4e0bdbd4de058bf894dffa7ec6915",
+      "farm-item-camera-zoom-out-2.png": "3e00bbf577f5f12fd735dfe8c6f5a58f3fa22035c597bc4737f73e55e5aa838d",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "viewer_artifacts": {
+      "item-follow-results.json": "f01a85e21d37b93a6760dffdecb620e38d9fc9bb726c774df1ebd379d4a07b5b",
+      "item-follow-lifecycle-results.json": "a322bdafc96b0ed08fa8771991f5d25714cbbd6b8077c0d5041916513f5fab92",
+      "farm_scene_item_follow_active.png": "e0676f7111cebafb65c8a876b5dc498af2f8f4358d9f6ab283fcff62b9c90a6d",
+      "farm_scene_item_follow_isometric.png": "aabc9bca14078ee9189c7e5a3a1df46ad0f688fd3f227e931780b224d615623f",
+      "farm_scene_item_follow_free.png": "788ee3e8a345a5a48c9eab50e179396970ef5d29fbaf2971854d1e9b1ae6bdc9",
+      "result.json": "9ee39b657bdec2781fb8cf34ff0c57c5f01c48b34fddd7f826bd734be5a131c6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    "scope": "Native 46-column offset and ceiling viewport dimensions, controlled move open/closed, 32/40/48px zoom oracle. Actual viewer resize/zoom/three projections, established follow refresh queued/sent/replacement retirement, closed-sheet late replies and explicit recovery. Five DF processes exit unsaved; two save manifests unchanged. Natural hauling, minimum-window framing, native follow visibility eligibility and general items remain unfinished."
   }
 }

@@ -1,5 +1,5 @@
 extends Node
-# Staged item owner. Follow framing and general item types remain unfinished.
+# Staged seed item owner. General item types remain unfinished.
 signal holder_requested(building_id: int)
 const Preferences=preload("res://scripts/presentation_settings.gd")
 const C=preload("res://scripts/management_contract.gd")

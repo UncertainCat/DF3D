@@ -283,6 +283,23 @@ func focus_on(point: Vector3, distance: float, automatic:=false) -> void:
 	if _df_mode and _top_z >= 0: position.y = float(_top_z) + 1.0 + level_focus_offset
 	_update_transform()
 
+# DF53.16 follow loops offset the map center by 46 UI columns, even with the
+# sheet closed. Preserve native whole-tile framing in DF mode; 3D projections
+# use the same pixel offset on the target plane without a native tile grid.
+static func native_follow_anchor(view: Vector2, ui_scale: Vector2, tile_pixels: float) -> Vector2:
+	var cells:=Vector2i(ceili(view.x/tile_pixels),ceili(view.y/tile_pixels))
+	return Vector2(cells.x/2-floori(46.0*8.0*ui_scale.x/tile_pixels)+0.5,cells.y/2+0.5)*tile_pixels
+
+func follow_on(point: Vector3, distance: float, ui_scale: Vector2) -> void:
+	focus_on(point,distance,true)
+	var view:=get_viewport().get_visible_rect().size
+	var anchor:=native_follow_anchor(view,ui_scale,_df_pixels_per_tile) if _df_mode else view*0.5-Vector2(46.0*8.0*ui_scale.x,0)
+	var plane:=Plane(Vector3.UP,point.y)
+	var projected: Variant=plane.intersects_ray(_camera.project_ray_origin(anchor),_camera.project_ray_normal(anchor))
+	if projected!=null:
+		position+=point-projected
+		_update_transform()
+
 # Deterministic presentation-only path used by repeatable encounter captures.
 func set_orbit_pose(yaw: float, pitch: float, distance: float = -1.0) -> void:
 	_yaw = yaw

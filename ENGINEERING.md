@@ -662,10 +662,32 @@ and cancellation by map drag. Existing farm, contents and item edit/lifecycle
 checks pass through three producer replacements. Four owned processes exit
 unsaved and both save manifests remain unchanged. The run passes with only the
 known rendering-thread notice; offline core, follow and camera checks pass.
-`item_follow_reference` retains the evidence. Captures were inspected: the open
-sheet still occludes the centered target, so exposed-map framing remains required.
-Natural hauling, live follow disconnect/replacement, resize and general item
-types remain unaccepted; this staged route stays hidden.
+`item_follow_reference` retains that initial ownership evidence. Follow framing
+now uses DF's 46-interface-column horizontal offset even with the sheet closed.
+DF mode counts partial edge tiles in its viewport dimensions, halves the integer
+tile count, and subtracts the whole-tile UI offset. Protected154756 captures
+native 32/40/48px zooms: at1200x800 the target centers are272,400;260,420;264,408.
+Controlled movement and restoration preserve the offset with the sheet open and
+closed. Native follow loops35e8b2 and8b6c14 establish the arithmetic; this is local
+presentation framing, with no native camera/menu scratch used at runtime.
+Isometric and Free use the same UI pixel offset on the target plane. Composition
+reframes after viewport, UI scale, projection, orientation or zoom changes even
+when the last observed item coordinate is unchanged.
+
+Protected154950 verifies real viewport toggles, controlled movement/restoration,
+map-drag cancellation, stationary zoom/resize at960x640,1200x800 and1280x720, and
+all three viewing projections. The inspected active sheet matches all345,504
+native panel pixels. Follow lifecycle cases first establish a position, then
+retire a queued refresh or withhold a completed refresh across disconnect and
+producer replacement. Sent/replacement cases close the sheet before retirement.
+Targets, positions and artwork clear; no late focus or automatic request survives;
+a fresh explicit camera click recovers. Existing farm/contents/item edit and
+restart checks also pass (80 native checks). All five owned DF processes exit
+unsaved; both save manifests remain unchanged. Only the known rendering-thread
+notice remains. Root, follow and camera checks pass cleanly.
+`item_follow_framing_reference` retains native and viewer provenance. Natural
+hauling, minimum-window framing, native follow visibility eligibility and general
+item types remain unaccepted; this staged route stays hidden.
 
 ## Native item-sheet semantic discovery
 
@@ -679,8 +701,8 @@ The owned process exits unsaved and source preservation passes. Earlier141852
 and142050 captures establish intermediate observations;142242 adds explicit
 transition assertions. The active panel was inspected and its full488x708 pixels
 match the staged renderer with viewer-owned following state. Core passes; the
-GPU check has only the three documented Godot diagnostics. This adds artwork,
-not a functioning DF3D follow action.
+GPU check has only the three documented Godot diagnostics. Main-scene follow
+acceptance is recorded above separately from this component artwork evidence.
 
 Static native discovery: input1b894e..1b896b toggles the item ID and clears unit
 following; render155494 compares the selected ID for active artwork. Native
@@ -695,8 +717,11 @@ dispatch still needs acceptance. Invalid paths initialize only X, so adapters
 must initialize all outputs and reject the invalid sentinel. Inventory cycles
 and moving/carried/container cases are not established by this stationary oracle.
 DFHack Items::getPosition reconstructs these rules rather than calling DF.
-The transport above uses this resolver; viewer follow ownership remains unfinished
-and must not borrow plotinfo follow fields or native camera state.
+The transport above uses this resolver; the viewer owns following independently
+and does not borrow plotinfo follow fields or native camera state. The native
+follow loops also reject map flag0x200 via7dc40 after resolving the position.
+That visibility eligibility branch still needs semantic-adapter acceptance;
+the position-only adapter currently checks identity and coordinate validity.
 
 Diagnostic command `item-position-probe <item-id>` now calls the two pinned
 resolver bodies through `itemPosition`, initializing all three outputs to

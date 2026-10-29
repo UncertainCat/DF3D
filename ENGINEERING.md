@@ -500,11 +500,18 @@ FNVd5969f2286ee8a96. The next function begins c796b0. This pin validates the
 diagnostic call target; it is not blanket runtime approval for every branch.
 
 Static inspection found semantic side effects in the general routine: the branch
-at c7576b can call cc84d0/cc83e0 to initialize artifact-related state and clear
-from_worldgen. Direct global references include world/material/raw data and
-display settings; the c75000 body does not directly reference the native sheet.
-Its transitive dependencies and rare item variants still need audit. The UI-owning
-1a8df0 wrapper remains excluded, and no normal management request calls this probe.
+at c7576b can call cc84d0 to initialize art-image state, cc83e0 to retire
+world-data backing, and clear from_worldgen. Slot0x230 is getImageRef, not an
+artifact-reference getter. cc83e0 reads world_data_id/subid at item offsets
+0x50/0x54, removes the backing entry and sets world_data_id to -1. Direct global
+references include world/material/raw data and display settings; the c75000 body does not directly reference the native sheet.
+The supported seed vtable16d06e0 slot0x230 points to75f60, whose nine bytes
+33c0488902498900c3 write null to both caller-owned image-reference outputs.
+Thus seed objects skip this initialization branch at c75765 regardless of
+seed material or flags. This is static branch evidence, not a complete
+read-only proof. `item_description_image_branch_audit` retains the exact target,
+bytes and executable identity. Its transitive dependencies and rare item
+variants still need audit. The UI-owning 1a8df0 wrapper remains excluded, and no normal management request calls this probe.
 
 Protected082504 on2026-10-29 verifies six real seeds with warm and cold header
 caches. All twelve full descriptions exactly match the native sheet's raw

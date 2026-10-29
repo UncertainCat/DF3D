@@ -46,7 +46,7 @@ inline std::optional<std::string> itemWeightCaption(df::item* item) {
     std::string result;format(item,&result);return result;
 }
 // Diagnostic seed probe only. General description branches can initialize
-// artifact state; this is not approved as a generic management observer.
+// art-image state; this is not approved as a generic management observer.
 inline std::optional<std::string> probeSeedDescription(df::item* item) {
     using Describe=void (*)(df::item*,std::string*,bool,bool,bool,int32_t);
     if(!item||int(item->getType())!=53||!farmFunctions())return std::nullopt;

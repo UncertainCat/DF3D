@@ -19232,6 +19232,21 @@
     },
     "bridge_sha256": "0af3ab624e0045c88b01d4e2089bbfa1358c2f0889b70abc07ff664d5d018ee0",
     "coverage": "Twelve owned-string native seed descriptions exactly equal native sheet raw_description, with original full item bytes and UI view_sheets/plotinfo guards unchanged after warm/cold header computation. Nonseed weapon rejected before weight formatting. Paused owned DF177192 exited unsaved, source preserved.",
-    "limitations": "Diagnostic seed probe only. General description branches can initialize artifact state; transitive audit and nonseed/rare seed branches remain incomplete. No management-wire description or item-sheet UI."
+    "limitations": "Diagnostic seed probe only. General description branches can initialize art-image state and retire world-data backing; transitive audit and nonseed/rare seed branches remain incomplete. No management-wire description or item-sheet UI."
+  },
+  "item_description_image_branch_audit": {
+    "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "seed_vtable_rva": "0x16d06e0",
+    "image_reference_slot": "0x230 (df::item::getImageRef, slot70)",
+    "seed_target_rva": "0x75f60",
+    "seed_target_bytes": "33c0488902498900c3",
+    "seed_target_sha256": "99b2d7a405a14b02c38b1947af2cd7433a470a1911e1d2d6747302f05ff59186",
+    "seed_effect": "Writes null to both caller-owned output pointers, then returns. All supported item_seedsst objects skip c7576b image initialization through the null check at c75765.",
+    "general_branch": "c75758 calls getImageRef, not an artifact-reference getter. If an image pointer exists with ID -1, cc84d0 initializes image data; cc83e0 retires world_data_id backing when present, and c75790 clears from_worldgen.",
+    "general_dependencies": {
+      "cc84d0": "Calls getImageRef/getImageCivSite, world1453130 and image-generation144dcd0; writes image fields and can update graphics selectors.",
+      "cc83e0": "Uses item.world_data_id at0x50 and world_data_subid at0x54; removes backing via10aab0/10a990/b9e70, sets ID -1, and traverses related refs."
+    },
+    "limitation": "Static branch evidence only; transitive description calls, other item classes and full item-sheet lifecycle remain unverified."
   }
 }

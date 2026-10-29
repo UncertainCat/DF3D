@@ -23449,5 +23449,38 @@
     },
     "scope": "Native variant guard pass including HF10562 blood and a synthetic test-owned ITEM_POWER raw source. Synthetic text is safety/transport evidence only, never product copy. Wire80 reads across40seeds agree with diagnostic primitive; cold caches produce coherent post-format revisions; existing item edits/controller workflow passes. Owned DF156284 and DF174204 exit unsaved; source and two live-save manifests unchanged.",
     "limitations": "Only contained seeds in visible farms. General item types, main-scene sheet/controller, holder/camera actions and item-sheet lifecycle remain incomplete. No public route enabled."
+  },
+  "item_controller_reference": {
+    "native_version": "53.16",
+    "run": "build/areas-acceptance-20261029-140454",
+    "status": "passed",
+    "owned_df_pid": 171320,
+    "exit": "unsaved",
+    "building_id": 968,
+    "item_id": 47486,
+    "confirmed_edits": 7,
+    "flags": [
+      "forbid",
+      "dump",
+      "hidden"
+    ],
+    "queued_close": "not_sent",
+    "sent_close": "detached_completed",
+    "restored": true,
+    "native_readback": [
+      "description",
+      "weight",
+      "holder",
+      "flags",
+      "eligibility",
+      "revision",
+      "ui_scratch_unchanged"
+    ],
+    "artifacts": {
+      "item-controller-results.json": "1eac41e2493c2d905d39f2e0bcd5d06bce7a79aba0c403cddadc5d26efdbf239",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "native.log": "5357a1becf853cd85403ab855e1d5b819517a457bdf5cdf62d6a3557328e5406"
+    },
+    "scope": "Seed controller lifecycle and actual effects; main-scene composition, holder navigation and camera actions remain unfinished."
   }
 }

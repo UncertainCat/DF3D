@@ -70,6 +70,53 @@ func exercise_controller(id: int, initial: Dictionary) -> void:
 	write_json("contents-controller-results.json",{"later_row_viewport":true,"latest_scroll":true,"queued_close":"not_sent","sent_close":"detached_completed","restored":true})
 	model.dispose();actions.free()
 
+func exercise_item_controller(id: int, initial: Dictionary) -> void:
+	var actions=load("res://scripts/semantic_action_service.gd").new()
+	root.add_child(actions);actions.set_process(false);actions.configure(world,true)
+	var model=load("res://scripts/item_sheet_state.gd").new();model.configure(actions)
+	await item_controller_cases(model,actions,id,initial)
+	model.dispose();actions.free()
+
+func item_controller_cases(model, actions, id: int, initial: Dictionary) -> void:
+	var target:=int(initial.rows[1].id)
+	var applied: Array=[];model.applied.connect(func():applied.append(true))
+	model.open(id,target)
+	if not await wait_contents_model(model,actions):return
+	var baseline: Dictionary=model.view_snapshot()
+	await native("item-inspect",{"item":baseline,"revision_text":str(baseline.revision)})
+	if stopped:return
+	for pair in [[Contract.FarmOperation.ItemForbid,"forbid"],[Contract.FarmOperation.ItemDump,"dump"],[Contract.FarmOperation.ItemHidden,"hidden"]]:
+		var original: bool=baseline[pair[1]]
+		for desired in [not original,original]:
+			model.set_flag(pair[0],desired)
+			if not await wait_contents_model(model,actions):return
+			if not check(model.snapshot[pair[1]]==desired,"item controller flag effect missing"):return
+			await native("item-inspect",{"item":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
+			if stopped:return
+		if not check(model.snapshot==baseline,"item controller restoration differs"):return
+	if not check(applied.size()==6,"item controller confirmation count differs"):return
+	model.set_flag(Contract.FarmOperation.ItemHidden,not baseline.hidden)
+	var queued: int=model.ticket;model.close();actions.poll()
+	if not check(actions.result(queued).get("outcome")=="not_sent","closed item queued edit survived"):return
+	model.open(id,target)
+	if not await wait_contents_model(model,actions):return
+	if not check(model.snapshot==baseline,"closed queued item edit changed state"):return
+	model.set_flag(Contract.FarmOperation.ItemHidden,not baseline.hidden);actions.poll()
+	var sent: int=model.ticket;model.close()
+	var deadline:=Time.get_ticks_msec()+30000
+	while actions.result(sent).is_empty() and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();await create_timer(0.01).timeout
+	if not check(actions.result(sent).get("status")==S.Ok and model.snapshot.is_empty() and applied.size()==6,"sent item edit revived closed owner"):return
+	model.open(id,target)
+	if not await wait_contents_model(model,actions):return
+	if not check(model.snapshot.hidden!=baseline.hidden,"detached item edit absent on reopen"):return
+	model.set_flag(Contract.FarmOperation.ItemHidden,baseline.hidden)
+	if not await wait_contents_model(model,actions):return
+	if not check(model.snapshot==baseline and applied.size()==7,"detached item edit restoration differs"):return
+	await native("item-inspect",{"item":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
+	if stopped:return
+	write_json("item-controller-results.json",{"target":target,"confirmed_edits":7,"flags_restored":true,"queued_close":"not_sent","sent_close":"detached_completed","snapshot":baseline})
+
 func read_item(id: int, item: int, rejected := false) -> Dictionary:
 	world.poll()
 	var seq: int=world.management_request("production",{"action":Contract.ManagementAction.ProductionInspect,"building_id":id,"item_id":item})
@@ -171,6 +218,8 @@ func exercise() -> void:
 	await native("contents-verify",{"rows":final_page.rows})
 	if stopped:return
 	await exercise_controller(id,initial)
+	if stopped:return
+	await exercise_item_controller(id,initial)
 	if stopped:return
 	await native("final")
 	write_json("contents-edit-results.json",{"cases":cases,"rejected":4,"restored":true,"later_row_receipt":tail,"initial":initial,"final":final_page})

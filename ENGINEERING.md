@@ -575,6 +575,24 @@ has independent native-sheet comparison evidence below. `seed_item_provider_refe
 records hashes and scope. Main-scene item-sheet ownership, holder/camera actions,
 full lifecycle and general item types remain outstanding.
 
+`item_sheet_state.gd` owns one inspection target and snapshot through the shared
+semantic action service. Flag edits use the exact inspected revision and native
+eligibility. A validated completion starts a fresh inspection for coherent text,
+holder and flags; it never splices changed flags into old descriptive data.
+Closing cancels queued requests and detaches sent observers. Stale, rejected and
+unknown edits discard authority and require explicit refresh; no edit is replayed.
+The contents page validator is shared with the contents controller.
+
+`item_sheet_state_test` verifies exact 64-bit revisions, owned nested holders,
+absent holders, malformed snapshots, eligibility, completion readback, close,
+target replacement, epoch changes and retirement during notification. It and
+the existing contents controller and root CTest pass in `item-sheet-controller`.
+Protected140454 verifies seven confirmed controller edits on seed47486, native
+description/holder/flag readback, queued cancellation, sent completion after close,
+explicit reopen and restoration. DF171320 exits unsaved and both save manifests
+remain unchanged. `item_controller_reference` records provenance. This controller
+acceptance does not establish main-scene composition or camera/holder navigation.
+
 ## Native item-sheet semantic discovery
 
 `native_farm.json.item_sheet_discovery_reference` records the six seed sheets

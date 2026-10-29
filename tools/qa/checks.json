@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "item_sheet_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/item_sheet_state_test.gd",
+      "completion": "^ITEM_SHEET_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "item_sheet_capture",
       "lane": "gpu",
       "kind": "godot",

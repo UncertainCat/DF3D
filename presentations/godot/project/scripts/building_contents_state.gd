@@ -82,10 +82,10 @@ func _send(intent: Dictionary) -> void:
 func _fail(next: Phase) -> void:
 	phase=next;snapshot={};changed.emit()
 
-func _valid(page: Dictionary) -> bool:
+static func valid_page(page: Dictionary, expected_building: int) -> bool:
 	for key in ["building_id","revision","cursor","next_cursor","total"]:
 		if typeof(page.get(key))!=TYPE_INT:return false
-	if page.building_id!=building_id or page.revision<=0 or page.total<0 or page.total>4294967295 or page.cursor<0 or page.cursor>page.total:return false
+	if page.building_id!=expected_building or page.revision<=0 or page.total<0 or page.total>4294967295 or page.cursor<0 or page.cursor>page.total:return false
 	if typeof(page.get("completed"))!=TYPE_BOOL or typeof(page.get("removing"))!=TYPE_BOOL or typeof(page.get("rows"))!=TYPE_ARRAY:return false
 	if page.rows.size()>64 or page.rows.size()>page.total-page.cursor:return false
 	var end: int=page.cursor+page.rows.size()
@@ -118,7 +118,7 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if result.get("status",C.ManagementStatus.Rejected)!=C.ManagementStatus.Ok:
 		_fail(Phase.Stale if editing and outcome==C.FarmEditOutcome.Stale else Phase.Rejected);return
 	var page: Dictionary=production.get("contents",{})
-	if result.get("action",-1)!=sent.action or production.has("farm") or not _valid(page):
+	if result.get("action",-1)!=sent.action or production.has("farm") or not valid_page(page,building_id):
 		_fail(Phase.Unknown if editing else Phase.Rejected);return
 	if not editing:
 		if outcome!=C.FarmEditOutcome.None or production.has("contents_edit") or page.cursor!=sent.cursor or (sent.expected_revision>0 and page.revision!=sent.expected_revision):_fail(Phase.Rejected);return

@@ -13056,5 +13056,953 @@
       "Farm968 shows contained seed items, per-item controls and a scrollbar below the farm controls. DF3D staged farm sheet lacks this section."
     ],
     "limitations": "Two existing farms and one crop item. Does not establish unit/grouped-item ordering, all filtering, overflow, or native semantic selection entry points. Diagnostic UI fields are not runtime inputs."
+  },
+  "contents_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261028-220127",
+    "status": "passed",
+    "building_id": 968,
+    "contained_items_offset": 296,
+    "items": [
+      {
+        "flags": 32,
+        "id": 47492,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47486,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 128,
+          "y": 119,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47494,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 128,
+          "y": 120,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47485,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 128,
+          "y": 117,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47484,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 128,
+          "y": 116,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47493,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 128,
+          "y": 118,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47491,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 128,
+          "y": 115,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47545,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 135,
+          "y": 117,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47540,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 128,
+          "y": 123,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47541,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 118,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47544,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 135,
+          "y": 119,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47536,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 135,
+          "y": 115,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47534,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 134,
+          "y": 121,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47537,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 135,
+          "y": 116,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47532,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 134,
+          "y": 120,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47543,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 135,
+          "y": 118,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47542,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 134,
+          "y": 122,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47533,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 115,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47530,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 128,
+          "y": 121,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47531,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 128,
+          "y": 122,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47535,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 134,
+          "y": 123,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47529,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 117,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47600,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 135,
+          "y": 120,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47611,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 120,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47594,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 119,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47665,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 123,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47695,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 135,
+          "y": 123,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47696,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 135,
+          "y": 122,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47697,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 135,
+          "y": 121,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47664,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 123,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47680,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 136,
+          "y": 115,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47692,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 122,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47749,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 129,
+          "y": 121,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47764,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 130,
+          "y": 117,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47763,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 130,
+          "y": 119,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47762,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 130,
+          "y": 116,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47742,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 130,
+          "y": 115,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47748,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 130,
+          "y": 118,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47881,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 130,
+          "y": 120,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      },
+      {
+        "flags": 32,
+        "id": 47929,
+        "name": "sweet pod seeds",
+        "position": {
+          "x": 130,
+          "y": 121,
+          "z": 165
+        },
+        "role": "PERM",
+        "role_value": 2,
+        "type": "SEEDS"
+      }
+    ],
+    "viewed_rows": [
+      {
+        "name": "farm-contents-view-0",
+        "id": 47492
+      },
+      {
+        "name": "farm-contents-view-1",
+        "id": 47486
+      },
+      {
+        "name": "farm-contents-view-2",
+        "id": 47494
+      },
+      {
+        "name": "farm-contents-view-3",
+        "id": 47485
+      },
+      {
+        "name": "farm-contents-view-4",
+        "id": 47484
+      },
+      {
+        "name": "farm-contents-view-5",
+        "id": 47493
+      }
+    ],
+    "hover": [
+      {
+        "name": "farm-contents-hover-role",
+        "hover": 317,
+        "enabled": true,
+        "mouse": [
+          732,
+          526
+        ],
+        "lines": [
+          "This item is a",
+          "permanent part of the",
+          "building.  Forbid and",
+          "visibility tags set",
+          "here affect the whole",
+          "building."
+        ]
+      },
+      {
+        "name": "farm-contents-hover-view",
+        "hover": 324,
+        "enabled": true,
+        "mouse": [
+          756,
+          526
+        ],
+        "lines": [
+          "View this item's sheet."
+        ]
+      },
+      {
+        "name": "farm-contents-hover-forbid",
+        "hover": 325,
+        "enabled": true,
+        "mouse": [
+          780,
+          526
+        ],
+        "lines": [
+          "Toggle the forbidden",
+          "status of the item.",
+          "Citizens will not use",
+          "forbidden items or",
+          "buildings.  If a",
+          "permanent building item",
+          "is forbidden, citizens",
+          "will not perform tasks",
+          "there!"
+        ]
+      },
+      {
+        "name": "farm-contents-hover-dump",
+        "hover": 326,
+        "enabled": true,
+        "mouse": [
+          804,
+          526
+        ],
+        "lines": [
+          "Toggle the dump status",
+          "of the item.  Items are",
+          "dumped in dumping zones."
+        ]
+      },
+      {
+        "name": "farm-contents-hover-melt",
+        "hover": -1,
+        "enabled": true,
+        "mouse": [
+          828,
+          526
+        ],
+        "lines": [
+          "      Elevation 36"
+        ]
+      },
+      {
+        "name": "farm-contents-hover-visibility",
+        "hover": 328,
+        "enabled": true,
+        "mouse": [
+          852,
+          526
+        ],
+        "lines": [
+          "Toggle the visibility",
+          "of the item.  Hidden",
+          "items cannot be seen",
+          "but citizens will still",
+          "use them.  If a",
+          "permanent building item",
+          "is invisible, the",
+          "building will be too!"
+        ]
+      }
+    ],
+    "effects": [
+      {
+        "name": "farm-contents-forbid-1",
+        "building_flags": 1,
+        "first_item_flags": 537395232,
+        "other_items_flags": [
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ]
+      },
+      {
+        "name": "farm-contents-forbid-2",
+        "building_flags": 1,
+        "first_item_flags": 536870944,
+        "other_items_flags": [
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ]
+      },
+      {
+        "name": "farm-contents-dump-1",
+        "building_flags": 1,
+        "first_item_flags": 538968096,
+        "other_items_flags": [
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ]
+      },
+      {
+        "name": "farm-contents-dump-2",
+        "building_flags": 1,
+        "first_item_flags": 536870944,
+        "other_items_flags": [
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ]
+      },
+      {
+        "name": "farm-contents-visibility-1",
+        "building_flags": 1,
+        "first_item_flags": 553648160,
+        "other_items_flags": [
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ]
+      },
+      {
+        "name": "farm-contents-visibility-2",
+        "building_flags": 1,
+        "first_item_flags": 536870944,
+        "other_items_flags": [
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          536870944,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ]
+      }
+    ],
+    "native_trace": {
+      "sheet_contents_dispatch": "1b054d..1b07ab iterates building+0x128 and dispatches per-item controls; UI-coupled, do not call at runtime",
+      "dump_eligibility": "fc270 tests item artifact flag bit18",
+      "dump_toggle": "cb2060 toggles dump, clears item bytes58/59, cancels related jobs or melting via native routines",
+      "forbid": "1b06d4 inline bit19 branch; clearing zeroes bytes58/59, setting calls c634f0(item,3)",
+      "visibility": "1b0675 inline bit24 toggle",
+      "melt": "cab7c0 eligibility, cabe10 cancel, cb2020 mark. DFHack canMelt reconstructs rules and is not this native call.",
+      "contents_dispatch_sha256": "efef049367fdc511cd969fa737833d6d96c5a911ac04b103d4f111cdde3e63b0",
+      "dump_toggle_sha256": "a05e5b4065200b7fce336114c0a47e4f4ccec5b18129f29859e1e922106f75bd"
+    },
+    "hashes": {
+      "result.json": "7b0be7e25b004c1f4d6902cdbe35ad3264ca95f84757ba66fcdc89ce4bf53bc7",
+      "capture-inputs.json": "f9feda569ed87080b13ddb397e988dd1a020ade8dba4d955ab1dd75e63d8421b",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "farm-contents-baseline.png": "e7e9147c5e202489d70d06c212db4a2c08a8ceba811356079dbe7512b7afb475",
+      "farm-contents-forbid-1.png": "71efb58e864bd4c1afa6540567bfd0a6c3608094afe4b657ace9b82c53b8b0bc",
+      "farm-contents-dump-1.png": "798f798d249e0bbcfd98695a1005d6013247086636929750144981cf82f22a1f",
+      "farm-contents-visibility-1.png": "6d137525c15f717579cc420c99371d32de388b6e6ddc6562447af197f95567a4"
+    },
+    "limitations": "First six rows of 40 permanent seeds. No scroll tail, other item roles, eligible melting, active jobs, or runtime bridge adapter validated. Item-sheet viewing computes weight flag bit29; toggle restoration is compared after those reads."
   }
 }

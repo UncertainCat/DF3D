@@ -44,6 +44,33 @@ use WorldModel unit/building/item enumeration; that is not proof of native
 selection parity. Selection integration, grouped alternatives and contained-item
 controls remain unfinished, and the farm route remains staged.
 
+Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
+farm968. The six visible View controls open the first six `contained_items`
+IDs in vector order. After closing the item sheet and reselecting the farm,
+Forbid, Dump and Visibility change only the first seed's corresponding flag;
+the second click restores the observed item/building facts. Building flags
+remain1. Native help317 describes the permanent-item role; controls324/325/326/
+328 describe View/Forbid/Dump/Visibility. Melt has no instruction or active
+control for these seeds. Viewing an item sets its weight-computed bit29, which
+is retained rather than mistaken for a failed toggle restoration. The oracle
+verifies actual row identity, farm reselection and a nonzero first-toggle effect.
+Earlier220004 kept the item sheet open and was not action acceptance despite
+its weak checks reporting success; those checks were corrected. Run215830
+also used the wrong View coordinate. Final220127 passes, preserves the paused
+frame/crops/source save and exits owned DF169232 unsaved.
+
+Static DF53.16 dispatch1b054d..1b07ab iterates the building's contained-items
+vector at offset0x128. This handler owns UI state and must not be called by
+runtime. Its Dump path checks artifact eligibility atfc270 and calls native
+cb2060, which toggles dump, clears item bytes0x58/0x59 and retires related jobs
+or melting. Forbid branches inline at1b06d4: clearing resets those bytes,
+setting calls c634f0(item,3). Visibility toggles bit24 inline. Melt uses native
+cab7c0 eligibility and cabe10/cb2020 cancellation/marking; DFHack's canMelt
+reconstructs rules and is not that native call. `native_farm.json.contents_reference`
+records identities, flags, text, code hashes and scope. Native adapters are not
+yet exposed; tail scrolling, other roles, eligible melt and active-job effects
+still require verification. Do not implement these as independent Godot flags.
+
 DF53.16 sheet dispatch1b0211 checks build stage and calls virtual
 `queueDestroy` (slot45, call1b0237) for a built farm. The existing DFHack
 `Buildings::deconstruct` reaches that same virtual call for actual built

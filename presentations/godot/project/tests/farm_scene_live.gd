@@ -178,6 +178,7 @@ func contents_scene() -> void:
 		for cell in [1,2,3,2,1,0]:
 			var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN if cell>view.cell_first else MOUSE_BUTTON_WHEEL_UP;wheel.pressed=true
 			wheel.position=view.get_global_transform_with_canvas()*Vector2(x,54);root.push_input(wheel,true)
+			var wheel_release=wheel.duplicate();wheel_release.pressed=false;root.push_input(wheel_release,true)
 			if not await contents_ready():return
 			var cursor:=floori(cell/3.0)
 			if not check(view.cell_first==cell and owner.contents.snapshot.cursor==cursor and view.rows[0].id==initial.rows[cursor].id,"contents cell wheel order differs"):return
@@ -185,6 +186,29 @@ func contents_scene() -> void:
 			if stopped:return
 			await capture("contents_cell_"+str(x)+"_"+str(cell))
 	if not check(owner.contents.snapshot==initial and view.cell_first==0,"contents wheel did not restore viewport"):return
+	for probe in [[-8,0],[12,0],[42,12],[92,38],[192,102],[232,102]]:
+		var grip: Vector2i=view.scrollbar.thumb()
+		var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;press.button_mask=MOUSE_BUTTON_MASK_LEFT
+		press.position=view.get_global_transform_with_canvas()*Vector2(464,(grip.x+0.5)*12);press.global_position=press.position;root.push_input(press,true)
+		var motion:=InputEventMouseMotion.new();motion.button_mask=MOUSE_BUTTON_MASK_LEFT
+		motion.position=view.get_global_transform_with_canvas()*Vector2(464,probe[0]);root.push_input(motion,true)
+		var release:=InputEventMouseButton.new();release.button_index=MOUSE_BUTTON_LEFT;release.pressed=false;release.position=motion.position;release.global_position=release.position;root.push_input(release,true)
+		if not await contents_ready():return
+		var cursor:=floori(float(probe[1])/3)
+		if not check(view.cell_first==probe[1] and not view.scrollbar.dragging and owner.contents.snapshot.cursor==cursor and view.rows[0].id==initial.rows[cursor].id,"contents live drag mapping differs"):return
+		await native("contents-verify",{"rows":owner.contents.rows(),"cursor":cursor})
+		if stopped:return
+		await capture("contents_drag_"+str(probe[0]))
+	var viewed: Array=[]
+	view.view_requested.connect(func(id):viewed.append(id))
+	await pointer(view.get_global_transform_with_canvas()*view.control_rect(5,1).get_center())
+	if not check(viewed==[initial.rows[39].id],"contents endpoint View identity differs: "+str(viewed)):return
+	for size_case in [[1600,900,9],[960,600,0],[1200,800,6]]:
+		root.size=Vector2i(size_case[0],size_case[1])
+		for frame in 5:await process_frame
+		if not await contents_ready():return
+		if not check(view.cell_first==102 and owner.contents.snapshot.cursor==34 and view.page==size_case[2] and view.visible==(size_case[2]>0),"resizing contents changed retained endpoint"):return
+		await capture("contents_endpoint_resize_"+str(size_case[0]))
 	owner.close_panel();await process_frame
 	if not check(owner.contents.snapshot.is_empty() and view.rows.is_empty() and not view.scrollbar.dragging,"closed farm retained contents"):return
 	if not check(not scene._fortress_hud.native_help.visible,"closed contents retained hover"):return

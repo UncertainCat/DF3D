@@ -426,8 +426,25 @@ clamp the local contents position merely because the scrollbar's range changes.
 GPU `contents-navigation` compares full contents regions for the endpoint, drags,
 page/track and wide/restored snapshots and checks drag mapping. All pass with the
 three known diagnostics; core passes cleanly. The native wide screenshot was
-inspected. This is native plus component evidence, not live viewer drag/resize
-acceptance. Physical shift-wheel mapping remains unverified.
+inspected. Live viewer drag/resize acceptance follows below. Physical shift-wheel mapping remains unverified.
+
+Protected main-scene004042 on2026-10-29 closes the live contents drag/resize
+navigation gap: six viewport drags match native offsets and ordered item facts,
+endpoint View emits47929, and1600x900/960x600/1200x800 retains cell102 and item
+cursor34 with capacities9/0/6. All52 native checks pass, including prior effects
+and process replacement. Both save manifests remain unchanged; owned DF153952
+and162388 exit unsaved. Only the documented rendering-thread notice appears.
+The wide screenshot was inspected. Wide/default contents crops differ from
+native002651 only in the6x6 scrollbar hover marker; pointer states differ, so
+this is geometry acceptance rather than a complete pixel equality claim.
+`contents_navigation_scene_reference` retains the evidence and limitations.
+
+The live input harness pairs synthetic wheel press/release events. Omitting the
+release retained GUI mouse-button state and swallowed later endpoint clicks;
+several diagnostic runs failed that assertion before this was corrected. No
+product scrollbar workaround was retained. The isolated component test also
+checks dragging outside the control followed by normal item-control clicks.
+View still only emits an identity; the item sheet remains unfinished.
 
 ## Farm contents native hover
 

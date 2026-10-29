@@ -62,6 +62,11 @@ func run() -> void:
 	view._gui_input(wheel)
 	if model.calls!=[["seek",1]]:fail("Contents third cell must seek next item");return
 	model.calls.clear();view.cell_first=0;model.changed.emit()
+	var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;press.position=Vector2(464,30);root.push_input(press,true)
+	var motion:=InputEventMouseMotion.new();motion.button_mask=MOUSE_BUTTON_MASK_LEFT;motion.position=Vector2(464,232);root.push_input(motion,true)
+	var release:=InputEventMouseButton.new();release.button_index=MOUSE_BUTTON_LEFT;release.position=motion.position;root.push_input(release,true)
+	await process_frame
+	view.cell_first=0;model.changed.emit();model.calls.clear()
 	view.view_requested.connect(func(id):model.calls.append(["view",id]))
 	for control in range(1,6):click(view.control_rect(0,control).get_center())
 	if model.calls!=[["view",47492],[47492,6,true],[47492,7,true],[47492,9,true]]:fail("Contents explicit intents/eligibility differ: "+str(model.calls));return

@@ -18631,5 +18631,20 @@
     },
     "coverage": "Native endpoint102 selects final item47929. Resize wide/small/default retains cell102. Drag and page/track probes; native View sets weight_computed bit29 on last item (32 to536870944), then resize/input preserves facts. Paused owned DF186836 exits unsaved, source preserved.",
     "limitations": "Native CONTEXT_SCROLL_PAGEDOWN verified, not physical shift-wheel mapping. Viewer live drag/resize not yet verified."
+  },
+  "contents_navigation_scene_reference": {
+    "capture": "build/areas-acceptance-20261029-004042",
+    "native_checks": 52,
+    "hashes": {
+      "result.json": "588542a3de5c0236355768c94f23105ee41d08af953694d29542dd1ac5e4b0dc",
+      "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "farm_scene_contents_endpoint_resize_1600.png": "53fcea53cd884eaeb54424527187bf1e3d4c520737e86f94d46e0af4335fd77b",
+      "farm_scene_contents_endpoint_resize_960.png": "d798dbd5a76f8e57574cf21caa6ea4168cc91078dd9cc194b012e34e5b39eb96",
+      "farm_scene_contents_endpoint_resize_1200.png": "0a2cb632c85dc87739dec708cd93b5a2fb09d8d97847fdc73a4435fa5798d1f3"
+    },
+    "coverage": "Viewport drag at six native destinations, native item order at returned offsets, endpoint View emits47929, resize wide/minimum/default retains cell102 and item cursor34 with capacities9/0/6. Prior item effects, hover, disconnect and replacement remain checked. Both save manifests unchanged, DF153952/162388 exited unsaved; only known rendering-thread notice.",
+    "rendering": "Wide image inspected. Wide/default contents crops differ from native002651 only in the6x6 scrollbar hover marker; pointer states were not aligned. Full neutral-pointer component comparisons remain in contents_navigation_reference.",
+    "limitations": "View identity signal only; no item sheet opened in DF3D. Physical shift-wheel mapping not covered."
   }
 }

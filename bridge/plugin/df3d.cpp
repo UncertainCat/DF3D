@@ -1658,6 +1658,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(!description)return CR_FAILURE;
             result["description"]=DF2UTF(*description);
           }
+          // Native lazy weight formatting can change contents revision. Observe
+          // authoritative row facts only after all semantic formatting completes.
+          const auto contents=df3d_production::buildingContents(farm);if(!contents)return CR_FAILURE;
+          const df3d_production::BuildingContentsRow* observed=nullptr;
+          for(const auto& row:contents->rows)if(row.id==ids[1]){observed=&row;break;}
+          if(!observed)return CR_FAILURE;
+          result["contents_revision"]=std::to_string(contents->revision);
+          result["building_id"]=contents->buildingId;result["completed"]=contents->completed;
+          result["removing"]=contents->removing;
+          Json::Value facts(Json::objectValue);facts["item_type"]=observed->itemType;
+          facts["material_token"]=DF2UTF(observed->materialToken);facts["subtype_raw"]=DF2UTF(observed->subtypeRaw);
+          facts["forbid"]=observed->forbid;facts["dump"]=observed->dump;
+          facts["melt"]=observed->melt;facts["hidden"]=observed->hidden;
+          facts["can_dump"]=observed->canDump;facts["can_melt"]=observed->canMelt;
+          result["facts"]=std::move(facts);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="farm-contents-read") {

@@ -22217,5 +22217,422 @@
     "result_sha256": "995bbc856b6e16853e8e0f42a25a00505aa6fec1b24f649158c961049c4e6f19",
     "scope": "Six seed items and warm/cold headers. Native rendered holder captions and actual clicked destination match. Item/building/view_sheets/plotinfo byte guards unchanged after calls; all native link round trips restore item identity. Owned paused DF169524 exits unsaved; source preserved.",
     "limitations": "Diagnostic only; no management item-sheet wire. Missing/multiple/dangling holder references, renamed holders, nonfarm buildings and container/unit holders remain unverified."
+  },
+  "item_inspection_revision_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261029-123930",
+    "result_sha256": "c64bdc78f52c4cdec5423faaa1ea2048209d32b037a427689a45ccdfe65e3965",
+    "bridge_sha256": "c68f5dcdf6cbaee5780e8c6004d1e6fd74c2d0014386cfbe3fa8b78b00c3ee39",
+    "records": [
+      {
+        "after_revision": "4799538845427415069",
+        "before_revision": "4799538845427415069",
+        "cold": false,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "4799538845427415069",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47492,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47492,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "4799538845427415069",
+        "before_revision": "6720082829687021437",
+        "cold": true,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "4799538845427415069",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47492,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47492,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "8065872916078276605",
+        "before_revision": "8065872916078276605",
+        "cold": false,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "8065872916078276605",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47486,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47486,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "8065872916078276605",
+        "before_revision": "4799538845427415069",
+        "cold": true,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "8065872916078276605",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47486,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47486,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "7408426961476798365",
+        "before_revision": "7408426961476798365",
+        "cold": false,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "7408426961476798365",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47494,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47494,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "7408426961476798365",
+        "before_revision": "8065872916078276605",
+        "cold": true,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "7408426961476798365",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47494,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47494,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "6161481710723042045",
+        "before_revision": "6161481710723042045",
+        "cold": false,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "6161481710723042045",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47485,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47485,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "6161481710723042045",
+        "before_revision": "7408426961476798365",
+        "cold": true,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "6161481710723042045",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47485,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47485,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "7137473091732029597",
+        "before_revision": "7137473091732029597",
+        "cold": false,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "7137473091732029597",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47484,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47484,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "7137473091732029597",
+        "before_revision": "6161481710723042045",
+        "cold": true,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "7137473091732029597",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47484,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47484,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "3217400558746217981",
+        "before_revision": "3217400558746217981",
+        "cold": false,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "3217400558746217981",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47493,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47493,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      },
+      {
+        "after_revision": "3217400558746217981",
+        "before_revision": "7137473091732029597",
+        "cold": true,
+        "header": {
+          "building_id": 968,
+          "caption": "sweet pod seeds",
+          "completed": true,
+          "contents_revision": "3217400558746217981",
+          "description": "These are sweet pod seeds.  ",
+          "facts": {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "subtype_raw": ""
+          },
+          "holder": {
+            "building_id": 968,
+            "building_type": 4,
+            "name": "Farm Plot"
+          },
+          "item_id": 47493,
+          "removing": false,
+          "weight": "<1Γ"
+        },
+        "item_id": 47493,
+        "name": "farm-item-inspection-revision",
+        "native_equal": true
+      }
+    ],
+    "scope": "Diagnostic seed inspection observes contents revision and row facts after native formatters. Six warm and six cold weight-cache reads match a subsequent native contents read; cold reads alone change revision. Full existing item/building/UI guards pass. Owned DF184956 exits unsaved; source unchanged.",
+    "limitations": "No management wire or main-scene item-sheet integration. General description dependencies and nonseed inspection remain unaccepted."
   }
 }

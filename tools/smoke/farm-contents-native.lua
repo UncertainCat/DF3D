@@ -133,12 +133,23 @@ for index=0,5 do
  local header_ok,header_error=xpcall(function()
   for _,cold in ipairs{false,true}do
    if cold then item.flags.weight_computed=false;item.weight.whole=0;item.weight.fraction=0 end
+   local before_text,before_code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(b.id));assert(before_code==0,before_text)
+   local before_revision=require('json').decode(before_text).revision
    local text,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(b.id),tostring(item.id));assert(code==0,text)
    local header=require('json').decode(text);assert(header.item_id==item.id and header.weight==weight_line,'semantic item weight differs from native')
    assert(header.description==native_description,'owned seed description differs from native sheet')
    assert(header.holder and header.holder.building_id==b.id and header.holder.building_type==b:getType(),'semantic item holder identity differs')
    local holder_found=false;for _,line in ipairs(row.lines)do if line:find('In '..header.holder.name,1,true)then holder_found=true end end
    assert(holder_found,'semantic holder name differs from native item sheet')
+   local after_text,after_code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(b.id));assert(after_code==0,after_text)
+   local after=require('json').decode(after_text);local facts
+   for _,candidate in ipairs(after.rows)do if candidate.id==item.id then facts=candidate;break end end
+   assert(facts and header.contents_revision==after.revision and header.building_id==b.id,'inspection revision predates lazy weight computation')
+   assert((before_revision~=after.revision)==cold,'weight-cache revision transition differs')
+   for _,key in ipairs{'item_type','material_token','subtype_raw','can_dump','can_melt'}do assert(header.facts[key]==facts[key],'inspection facts differ: '..key)end
+   for _,key in ipairs{'forbid','dump','melt','hidden'}do assert(header.facts[key]==item.flags[key],'inspection flags differ: '..key)end
+   records[#records+1]={name='farm-item-inspection-revision',item_id=item.id,cold=cold,before_revision=before_revision,after_revision=after.revision,header=header,native_equal=true}
+
    local title_found=false;for _,line in ipairs(row.lines)do if line:find(header.caption,1,true)then title_found=true end end
    assert(title_found,'semantic item title differs from native')
    for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'item header changed UI or differed from native weight state')end

@@ -535,6 +535,16 @@ results and hashes. MSVC passes. This remains a diagnostic provider, not item
 inspection transport. Absent/multiple/dangling refs, renamed holders and nonfarm
 building/container/unit cases still need acceptance.
 
+The diagnostic inspection also returns contents revision and row identity, flags
+and eligibility observed after native title, weight and description formatting.
+Native lazy weight calculation changes the contents revision; using a revision
+from before formatting would immediately stale a subsequent edit. Protected123930
+verifies six warm reads retain their revision and six cold reads change it, with
+all returned revisions and facts matching a fresh contents read. Existing full
+item/building/UI guards pass; owned DF184956 exits unsaved and the source stays
+unchanged. `item_inspection_revision_reference` retains the bounded evidence.
+This does not yet add item inspection to the management transport.
+
 ## Native item-sheet semantic discovery
 
 `native_farm.json.item_sheet_discovery_reference` records the six seed sheets

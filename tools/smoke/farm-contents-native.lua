@@ -128,16 +128,18 @@ for index=0,5 do
   end
  end
  assert(weight_line,'native item weight text missing')
+ local native_description=dfhack.df2utf(main.view_sheets.raw_description)
  local original_flags=item.flags.whole;local original_whole=item.weight.whole;local original_fraction=item.weight.fraction
  local header_ok,header_error=xpcall(function()
   for _,cold in ipairs{false,true}do
    if cold then item.flags.weight_computed=false;item.weight.whole=0;item.weight.fraction=0 end
-   local text,code=dfhack.run_command_silent('df3d','farm-item-header-read',tostring(b.id),tostring(item.id));assert(code==0,text)
+   local text,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(b.id),tostring(item.id));assert(code==0,text)
    local header=require('json').decode(text);assert(header.item_id==item.id and header.weight==weight_line,'semantic item weight differs from native')
+   assert(header.description==native_description,'owned seed description differs from native sheet')
    local title_found=false;for _,line in ipairs(row.lines)do if line:find(header.caption,1,true)then title_found=true end end
    assert(title_found,'semantic item title differs from native')
    for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'item header changed UI or differed from native weight state')end
-   records[#records+1]={name='farm-item-header-reader',item_id=item.id,cold=cold,header=header,native_equal=true,ui_unchanged=true,weight_whole=item.weight.whole,weight_fraction=item.weight.fraction}
+   records[#records+1]={name='farm-item-header-reader',description_equal=true,item_id=item.id,cold=cold,header=header,native_equal=true,ui_unchanged=true,weight_whole=item.weight.whole,weight_fraction=item.weight.fraction}
   end
  end,debug.traceback)
  item.flags.whole=original_flags;item.weight.whole=original_whole;item.weight.fraction=original_fraction
@@ -268,6 +270,9 @@ local probe_ok,probe_err=xpcall(function()
  end
  assert(metal,'no native melt-eligible weapon fixture')
  local flags=metal.flags.whole
+ local rejected,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(b.id),tostring(metal.id))
+ assert(code~=0 and metal.flags.whole==flags,'nonseed description probe accepted or populated weight cache')
+ records[#records+1]={name='farm-item-description-nonseed-rejected',item_id=metal.id,unchanged=true}
  deadline=dfhack.getTickCount()+900
  repeat move(828,526);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
  move(828,526);local melt=help('melt');melt.item_id=metal.id

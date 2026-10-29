@@ -45,6 +45,22 @@ inline std::optional<std::string> itemWeightCaption(df::item* item) {
     if(!format||!item)return std::nullopt;
     std::string result;format(item,&result);return result;
 }
+// Diagnostic seed probe only. General description branches can initialize
+// artifact state; this is not approved as a generic management observer.
+inline std::optional<std::string> probeSeedDescription(df::item* item) {
+    using Describe=void (*)(df::item*,std::string*,bool,bool,bool,int32_t);
+    if(!item||int(item->getType())!=53||!farmFunctions())return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base]() {
+        uint64_t value=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x46aa;++i){value^=base[0xc75000+i];value*=UINT64_C(1099511628211);}
+        return value==UINT64_C(0xd5969f2286ee8a96);
+    }();
+    if(!pinned)return std::nullopt;
+    std::string result;
+    reinterpret_cast<Describe>(base+0xc75000)(item,&result,true,true,false,0);
+    return result;
+}
 // Native common building-sheet item actions. Call at a safe point, with a
 // freshly validated contained item. No selector, input or viewscreen scratch.
 struct BuildingItemFunctions {

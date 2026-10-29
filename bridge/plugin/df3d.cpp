@@ -1627,7 +1627,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["building_id"]=values[0];result["season"]=values[1];result["rows"]=std::move(rows);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
-        if(parameters[0]=="farm-item-header-read") {
+        if(parameters[0]=="farm-item-header-read"||parameters[0]=="farm-item-description-probe") {
           if(parameters.size()!=3)return CR_WRONG_USAGE;
           int32_t ids[2]{};
           for(size_t i=0;i<2;++i) {
@@ -1640,12 +1640,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!tile||tile->bits.hidden)return CR_FAILURE;
           df::item* item=nullptr;
           for(auto* held:farm->contained_items)if(held&&held->item&&held->item->id==ids[1])item=held->item;
-          if(!item)return CR_FAILURE;
+          if(!item||(parameters[0]=="farm-item-description-probe"&&int(item->getType())!=53))return CR_FAILURE;
           const auto caption=df3d_production::buildingItemCaption(item);
           const auto weight=df3d_production::itemWeightCaption(item);
           if(!caption||!weight)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["item_id"]=ids[1];
           result["caption"]=DF2UTF(*caption);result["weight"]=DF2UTF(*weight);
+          if(parameters[0]=="farm-item-description-probe") {
+            const auto description=df3d_production::probeSeedDescription(item);
+            if(!description)return CR_FAILURE;
+            result["description"]=DF2UTF(*description);
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="farm-contents-read") {

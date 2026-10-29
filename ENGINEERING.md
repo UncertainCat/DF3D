@@ -490,6 +490,31 @@ successfully; core `item-header-reader` passes. This is a diagnostic header prov
 not an item-sheet wire or UI. Full descriptions, nonseed/container/unit weight
 branches and item-sheet lifecycle remain unverified.
 
+The diagnostic-only seed command
+`df3d farm-item-description-probe <farm-id> <item-id>` calls c75000 with an
+independently owned string and native sheet options true,true,false,0. It uses
+the same visible farm-membership checks as the header reader and rejects nonseed
+types before weight formatting. Its complete unwind body is c75000..c796aa
+(including the trailing dispatch data), with no base relocations and
+FNVd5969f2286ee8a96. The next function begins c796b0. This pin validates the
+diagnostic call target; it is not blanket runtime approval for every branch.
+
+Static inspection found semantic side effects in the general routine: the branch
+at c7576b can call cc84d0/cc83e0 to initialize artifact-related state and clear
+from_worldgen. Direct global references include world/material/raw data and
+display settings; the c75000 body does not directly reference the native sheet.
+Its transitive dependencies and rare item variants still need audit. The UI-owning
+1a8df0 wrapper remains excluded, and no normal management request calls this probe.
+
+Protected082504 on2026-10-29 verifies six real seeds with warm and cold header
+caches. All twelve full descriptions exactly match the native sheet's raw
+description. Original item bytes and view_sheets/plotinfo bytes match after each
+call. The diagnostic also rejects a real weapon before weight-cache population.
+Source preservation passes and owned paused DF177192 exits unsaved. MSVC and core
+`item-description-probe` pass. `item_description_probe_reference` records
+cases and hashes. This establishes the ordinary seed diagnostic path only; full
+item-sheet transport/UI and broader description semantics remain unfinished.
+
 ## Farm contents native hover
 
 The contents component uses the shared500ms/1000ms native instruction timer and

@@ -474,6 +474,29 @@ manifests are unchanged. Only the known rendering-thread notice appears.
 visibility-edit replacement lifecycle; eligible Melt, active-job cleanup and
 item-sheet View remain separate unfinished workflows.
 
+## Staged native item-sheet renderer
+
+`item_sheet_view.gd` draws an owned semantic snapshot; it is not connected to
+normal navigation or a management observer yet. Baseline seed rendering uses
+the installed seed artwork, original picture frame, SHORT_FORBID/DUMP/MELT/HIDE
+controls, UNIT_SHEET_CAMERA_INACTIVE and HORIZONTAL_OPTION_ACTIVE for the holder
+View button. Native title, weight and description come from the diagnostic
+reference. Weight/View labels and the holder caption are sourced from native
+002651. No description text is synthesized in the renderer.
+
+GPU `item_sheet_capture` matches all345504 pixels of the488x708 native panel
+crop from002651 `farm-contents-view-0.png`; both native and viewer images were
+inspected. It checks item/holder identity signals, ineligible Melt and pending,
+owner-input and retired-snapshot click suppression. Core `item-sheet-baseline`
+passes; GPU passes with only the three documented engine diagnostics.
+`item_sheet_render_reference` records the crop/hash and snapshot. Its holder
+ID227 is explicitly synthetic for routing, not a claim about native membership.
+
+This accepts only the captured baseline seed rendering and local signal routing.
+No item-sheet transport, main-scene owner, live holder/camera/action effects,
+hover, long/multiline description layout, resize or nonseed artwork is accepted.
+The public farm route remains staged until the full workflow is complete.
+
 ## Native item-sheet semantic discovery
 
 `native_farm.json.item_sheet_discovery_reference` records the six seed sheets

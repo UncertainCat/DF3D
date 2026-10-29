@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "item_sheet_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/item_sheet_capture.gd",
+      "completion": "ITEM_SHEET_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "farm_contents_capture",
       "lane": "gpu",
       "kind": "godot",

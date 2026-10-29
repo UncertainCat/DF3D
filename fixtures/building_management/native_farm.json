@@ -19336,5 +19336,38 @@
     },
     "scope": "Actual second-row visibility click completes in old native DF with receipt withheld from controller. Owned unsaved process replacement changes epoch and reuses item ID47486. Old request becomes unknown; contents generation, target, page, input ownership and observer retire; no edit or offset-recovery request replay. Fresh explicit open sees saved flag, and two new viewport clicks are native-verified and restore full snapshot. Fresh screenshot inspected.",
     "limitations": "Visibility-edit replacement acceptance only. Item-sheet View remains unfinished; eligible Melt, active-job cleanup and nonseed artwork remain separate gaps."
+  },
+  "item_sheet_render_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261029-002651/farm-contents-view-0.png",
+    "crop": [
+      416,
+      52,
+      488,
+      708
+    ],
+    "rgb_sha256": "461f4a66651905e4317dbe400884ef49e3612dd0286d540be1d290b414f7cdcd",
+    "snapshot": {
+      "id": 47492,
+      "role": 2,
+      "name": "sweet pod seeds",
+      "forbid": false,
+      "dump": false,
+      "melt": false,
+      "hidden": false,
+      "can_dump": true,
+      "can_melt": false,
+      "in_job": false,
+      "in_building": true,
+      "item_type": 53,
+      "material_token": "PLANT:POD_SWEET:SEED",
+      "subtype_raw": "",
+      "weight": "<1\u0393",
+      "description": "These are sweet pod seeds.  ",
+      "holder_id": 227,
+      "holder_name": "In Farm Plot",
+      "holder_art": "BUILDING_ICON_FARM_PLOT"
+    },
+    "scope": "Baseline seed sheet rendering only. Holder ID227 is a synthetic routing value, not native semantic evidence. Native holder caption/icon/View and Weight label are visible in this capture. Caption/weight/description come from owned-native diagnostic reference.",
+    "limitations": "Staged renderer only; no management wire/owner, hover, camera/holder effects, generic item art, multiline/long text or resize acceptance."
   }
 }

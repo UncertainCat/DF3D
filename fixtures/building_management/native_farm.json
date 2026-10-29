@@ -12807,5 +12807,254 @@
     },
     "coverage": "Native instruction301/302 text, style and frame tiles; negative title/tab probes. Actual main-scene pointer help, clear/closure, shared native timer, existing edit and lifecycle matrix. No gameplay effects from hover.",
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
+  },
+  "selection_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261028-215347",
+    "status": "passed",
+    "cases": [
+      {
+        "active_id": 227,
+        "active_sheet": "BUILDING",
+        "building": 227,
+        "items": [
+          48436
+        ],
+        "name": "farm-selection-initial",
+        "open": true,
+        "season": 1,
+        "tabs": [
+          {
+            "id": 227,
+            "kind": "BUILDING"
+          },
+          {
+            "id": 48436,
+            "kind": "ITEM"
+          }
+        ],
+        "tile": {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        },
+        "units": []
+      },
+      {
+        "active_id": 227,
+        "active_sheet": "BUILDING",
+        "building": 227,
+        "items": [
+          48436
+        ],
+        "name": "farm-selection-alternative-1",
+        "open": true,
+        "season": 1,
+        "tabs": [
+          {
+            "id": 227,
+            "kind": "BUILDING"
+          },
+          {
+            "id": 48436,
+            "kind": "ITEM"
+          }
+        ],
+        "tile": {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        },
+        "units": []
+      },
+      {
+        "active_id": 48436,
+        "active_sheet": "ITEM",
+        "building": 227,
+        "items": [
+          48436
+        ],
+        "name": "farm-selection-alternative-2",
+        "open": true,
+        "season": 1,
+        "tabs": [
+          {
+            "id": 227,
+            "kind": "BUILDING"
+          },
+          {
+            "id": 48436,
+            "kind": "ITEM"
+          }
+        ],
+        "tile": {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        },
+        "units": []
+      },
+      {
+        "active_id": 227,
+        "active_sheet": "BUILDING",
+        "building": 227,
+        "items": [
+          48436
+        ],
+        "name": "farm-selection-spring",
+        "open": true,
+        "season": 0,
+        "tabs": [
+          {
+            "id": 227,
+            "kind": "BUILDING"
+          },
+          {
+            "id": 48436,
+            "kind": "ITEM"
+          }
+        ],
+        "tile": {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        },
+        "units": []
+      },
+      {
+        "active_id": 48436,
+        "active_sheet": "ITEM",
+        "building": 227,
+        "items": [
+          48436
+        ],
+        "name": "farm-selection-spring-away",
+        "open": true,
+        "season": 0,
+        "tabs": [
+          {
+            "id": 227,
+            "kind": "BUILDING"
+          },
+          {
+            "id": 48436,
+            "kind": "ITEM"
+          }
+        ],
+        "tile": {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        },
+        "units": []
+      },
+      {
+        "active_id": 227,
+        "active_sheet": "BUILDING",
+        "building": 227,
+        "items": [
+          48436
+        ],
+        "name": "farm-selection-spring-return",
+        "open": true,
+        "season": 1,
+        "tabs": [
+          {
+            "id": 227,
+            "kind": "BUILDING"
+          },
+          {
+            "id": 48436,
+            "kind": "ITEM"
+          }
+        ],
+        "tile": {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        },
+        "units": []
+      },
+      {
+        "active_id": 968,
+        "active_sheet": "BUILDING",
+        "building": 968,
+        "items": [],
+        "name": "farm-selection-other",
+        "open": true,
+        "season": 1,
+        "tabs": [],
+        "tile": {
+          "x": 137,
+          "y": 119,
+          "z": 165
+        },
+        "units": [],
+        "contents_text_rows": [
+          "",
+          "                                                            sweet pod seeds",
+          "",
+          "",
+          "                                                            sweet pod seeds",
+          "",
+          "",
+          "                                                            sweet pod seeds",
+          "",
+          "",
+          "                                                            sweet pod seeds",
+          "",
+          "",
+          "                                                            sweet pod seeds",
+          "",
+          "",
+          "                                                            sweet pod seeds",
+          "",
+          ""
+        ]
+      },
+      {
+        "active_id": 227,
+        "active_sheet": "BUILDING",
+        "building": 227,
+        "items": [
+          48436
+        ],
+        "name": "farm-selection-return",
+        "open": true,
+        "season": 1,
+        "tabs": [
+          {
+            "id": 227,
+            "kind": "BUILDING"
+          },
+          {
+            "id": 48436,
+            "kind": "ITEM"
+          }
+        ],
+        "tile": {
+          "x": 137,
+          "y": 111,
+          "z": 165
+        },
+        "units": []
+      }
+    ],
+    "hashes": {
+      "result.json": "bb26bb0b29472b6c8468470fe4955da270a95aad4a35378de2837227548e63c3",
+      "capture-inputs.json": "744c8a1a94321267e75d38a537c373e16bb720dd53406b9c48fd4172f37b1eed",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "farm-selection-initial.png": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9",
+      "farm-selection-alternative-2.png": "fe999b6b06de26bd88c2e0df64fd47a4a85b3f2cccf6a516ddbf62f10bef19f8",
+      "farm-selection-spring-return.png": "720b3176847917a65838798c9f145cff1821c4e2ddc8053364edfb89ad9408e9",
+      "farm-selection-other.png": "e7e9147c5e202489d70d06c212db4a2c08a8ceba811356079dbe7512b7afb475",
+      "farm-selection-return.png": "667a6d0387aa93f8a406efa736655b5edf392c89e924922f00da1b7b9fc494e1"
+    },
+    "observations": [
+      "Farm227 plus crop item48436 produces BUILDING then ITEM alternatives.",
+      "Returning from item alternative reinitializes farm season to native current season; Spring is not retained.",
+      "Selecting farm968 produces no alternative tabs for a sole target. Returning to227 rebuilds its alternatives and current-season tab.",
+      "Farm968 shows contained seed items, per-item controls and a scrollbar below the farm controls. DF3D staged farm sheet lacks this section."
+    ],
+    "limitations": "Two existing farms and one crop item. Does not establish unit/grouped-item ordering, all filtering, overflow, or native semantic selection entry points. Diagnostic UI fields are not runtime inputs."
   }
 }

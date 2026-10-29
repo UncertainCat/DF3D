@@ -22,6 +22,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Farm removal native entry points
 
+Native farm selection capture215347 on2026-10-28 records farm227 and its
+co-located crop item48436 as BUILDING then ITEM alternatives. Clicking the item
+and returning to the farm resets the farm tab to the current season, even after
+selecting Spring before leaving. Selecting another farm968 has no alternative
+column for that sole target; returning to227 rebuilds its alternatives and
+current-season tab. `native_farm.json.selection_reference` retains identities,
+tabs, coordinates, screenshots and hashes. This is diagnostic UI observation,
+not a runtime source or proof of all candidate eligibility/order rules. The
+first attempt215227 clicked beneath the open sheet; the accepted probe positions
+targets on exposed map and verifies actual target adoption. Crops and paused
+frame remain unchanged; the source save is preserved and owned DF129716 exits
+unsaved.
+
+The farm968 capture also shows a required missing surface: contained seed-item
+rows with per-item controls and a scrollbar below the crop/fertilizer controls.
+The staged farm sheet currently leaves this section blank. Its native reader,
+ordering and item-action paths must be located and exposed before full farm
+acceptance. Existing `context_inspector` alternatives always render choices and
+use WorldModel unit/building/item enumeration; that is not proof of native
+selection parity. Selection integration, grouped alternatives and contained-item
+controls remain unfinished, and the farm route remains staged.
+
 DF53.16 sheet dispatch1b0211 checks build stage and calls virtual
 `queueDestroy` (slot45, call1b0237) for a built farm. The existing DFHack
 `Buildings::deconstruct` reaches that same virtual call for actual built

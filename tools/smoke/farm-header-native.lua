@@ -174,3 +174,60 @@ local designation=dfhack.maps.getTileBlock(b.centerx,b.centery,b.z).designation[
 local old=designation.whole;designation.hidden=true
 local _,hidden_code=dfhack.run_command_silent('df3d','farm-header-read',tostring(id));designation.whole=old
 assert(hidden_code~=0,'hidden farm header disclosed')
+
+-- Selection is diagnostic UI observation only, never a runtime data source.
+local function selection_shot(name)
+ pointer(0,4);for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+ local tabs={};for index,kind in ipairs(sheet.tab)do tabs[#tabs+1]={kind=df.view_sheet_type[kind],id=sheet.tab_id[index]}end
+ local units={};for _,value in ipairs(sheet.viewing_unid)do units[#units+1]=value end
+ local items={};for _,value in ipairs(sheet.viewing_itid)do items[#items+1]=value end
+ local row={name=name,open=sheet.open,active_sheet=df.view_sheet_type[sheet.active_sheet],active_id=sheet.active_id,
+  season=sheet.active_sub_tab,tabs=tabs,units=units,items=items,building=sheet.viewing_bldid,
+  tile={x=sheet.viewing_x,y=sheet.viewing_y,z=sheet.viewing_z},lines=lines()}
+ records[#records+1]=row
+ local f=assert(io.open(out..'/shot','w'));f:write(name);f:close()
+ local limit=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
+  assert(dfhack.getTickCount()<limit,'selection capture timeout');script.sleep(1,'frames')end
+ assert(df.global.pause_state and df.global.world.frame_counter==frame,'selection advanced simulation')
+ for i=0,3 do assert(b.plant_id[i]==seasons[i+1],'selection changed crops')end
+ return row
+end
+local selected=selection_shot('farm-selection-initial')
+assert(selected.open and selected.active_sheet=='BUILDING' and selected.active_id==b.id)
+local farm_tab
+for index,tab in ipairs(selected.tabs)do if tab.kind=='BUILDING' and tab.id==b.id then farm_tab=index-1 end end
+assert(farm_tab,'farm alternative missing')
+for index,tab in ipairs(selected.tabs)do
+ click(920,70+(index-1)*36)
+ local observed=selection_shot('farm-selection-alternative-'..index)
+ assert(observed.active_sheet==tab.kind and observed.active_id==tab.id,'native alternative click differs')
+end
+click(920,70+farm_tab*36)
+click(448,124) -- Spring is local sheet state before leaving the selected tile.
+local before=selection_shot('farm-selection-spring')
+assert(before.season==0,'spring selection fixture differs')
+for index,tab in ipairs(selected.tabs)do if tab.kind~='BUILDING' then
+ click(920,70+(index-1)*36);selection_shot('farm-selection-spring-away')
+ click(920,70+farm_tab*36);selection_shot('farm-selection-spring-return');break
+end end
+local function select_map(building)
+ dfhack.gui.revealInDwarfmodeMap({x=building.centerx,y=building.centery,z=building.z},true)
+ -- Keep the target on exposed map, not underneath the open sheet.
+ df.global.window_x=math.max(0,building.centerx-8)
+ df.global.window_y=math.max(0,building.centery-10)
+ view:render(dfhack.getTickCount())
+ for y=0,g.dimy-1 do for x=0,g.dimx-1 do
+  pointer(x*8+4,y*12+10);local pos=dfhack.gui.getMousePos(true)
+  if x*8+4<400 and y*12+10>48 and y*12+10<760 and pos and pos.x==building.centerx and pos.y==building.centery and pos.z==building.z then
+   click(x*8+4,y*12+10);return
+  end
+ end end
+ error('selection fixture target not visible')
+end
+local other
+for _,candidate in ipairs(df.global.world.buildings.other.FARM_PLOT)do if candidate.id~=b.id then other=candidate;break end end
+assert(other,'second farm missing')
+select_map(other);local second=selection_shot('farm-selection-other')
+assert(second.open and second.active_sheet=='BUILDING' and second.active_id==other.id,'second farm not selected')
+select_map(b);selection_shot('farm-selection-return')

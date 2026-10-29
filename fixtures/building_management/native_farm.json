@@ -15326,5 +15326,25 @@
     },
     "coverage": "Typed item write transport through Godot/model/native bridge; Forbid/Dump/Visibility each direction, same desired values, stale revisions, invalid targets, seed melting refusal, later-row receipt selection. Nine native effect/guard checks, full restoration, paused owned clone exits unsaved, two save manifests unchanged.",
     "limitations": "Farm-only staged transport. Eligible melting and active jobs remain unverified. No rendered contents UI or item-edit disconnect/epoch lifecycle acceptance."
+  },
+  "contents_controller_reference": {
+    "capture": "build/areas-acceptance-20261028-231322",
+    "management_version": 89,
+    "results": {
+      "later_row_viewport": true,
+      "latest_scroll": true,
+      "queued_close": "not_sent",
+      "restored": true,
+      "sent_close": "detached_completed"
+    },
+    "hashes": {
+      "contents-controller-results.json": "087c13ba5daa4cca6e36d62424c49946a16c7c1156ea0a94d6983cc85ea25724",
+      "contents-edit-results.json": "82a0cda4c39735cc728c17e219591e71b773a215bfb31cac2d1b73080b98dcfd",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "summary.txt": "2700165975f68815c97d605c56eca8e90d497ade1264b6282401d13fee99ac27"
+    },
+    "coverage": "Real semantic service/controller reads and edits, bounded viewport recovery after second-row action, latest-scroll ownership, queued close NotSent, sent close independently reconciled and observed on explicit reopen, explicit restoration. Eleven native checks, two save manifests unchanged, owned paused DF167788 exits unsaved.",
+    "limitations": "No rendered sheet integration or actual transport-loss/producer-replacement test. Synthetic engine tests cover Unknown outcomes and epoch retirement. Initial231128 failed because harness did not bootstrap its reconnected client; final uses normal Catalog claim."
   }
 }

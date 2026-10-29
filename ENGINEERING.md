@@ -90,6 +90,30 @@ including wrong values, missing targets, incomplete/removing buildings and
 unconfirmed authority. Eligible melting, active-job cleanup, rendered controls
 and item-edit disconnect/epoch lifecycle remain unverified.
 
+`building_contents_state.gd` owns one bounded contents page and local request
+generation. It preserves native row order and exact revisions, validates page
+boundaries and semantic fields, and returns isolated rows to views. Seeking
+retires obsolete queued/sent observers; it never combines different revisions.
+Edits send explicit desired values without optimistic flag changes. A confirmed
+receipt replaces old authority; if it begins at the clicked row, a read at the
+new revision recovers the previous page offset. Rejected/Stale/Unknown outcomes
+clear authority and never replay writes. Close cancels queued work and detaches
+sent work; session changes retire identity and tickets. It is not yet connected
+to the rendered farm sheet.
+
+`building_contents_state_test` checks70-row paging, malformed pages, duplicate
+IDs, byte budgets, exact revisions, coalesced/late scroll replies, edit receipt
+validation, explicit recovery and queued/sent epoch retirement through the real
+semantic action service with a synthetic producer. Protected FarmContentsOnly
+231322 additionally verifies real controller reads/edits, later-row page recovery,
+superseded scrolls, queued-close cancellation and sent-close reconciliation with
+explicit reopen/restoration. Eleven native checks pass; two save manifests are
+unchanged and owned paused DF167788 exits unsaved. Run231128 failed because the
+new harness omitted the normal Catalog bootstrap after reconnecting; the final
+harness uses the existing service bootstrap path. It is not earlier controller
+acceptance. `contents_controller_reference` retains final evidence. Actual
+transport-loss/producer-replacement and rendered retirement remain separate gaps.
+
 Native farm selection capture215347 on2026-10-28 records farm227 and its
 co-located crop item48436 as BUILDING then ITEM alternatives. Clicking the item
 and returning to the farm resets the farm tab to the current season, even after

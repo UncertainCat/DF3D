@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "building_contents_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/building_contents_state_test.gd",
+      "completion": "^BUILDING_CONTENTS_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "farm_name_workflow_capture",
       "lane": "gpu",
       "kind": "godot",
@@ -3691,7 +3700,7 @@
     {
       "path": "presentations/godot/project/tests/farm_contents_live.gd",
       "status": "manual",
-      "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmContentsOnly verifies typed contents edits, stale/invalid/eligibility refusal, repeated desired values, fresh native receipts and byte-for-byte UI guards. No rendered UI or disconnect claim."
+      "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmContentsOnly verifies typed contents edits, stale/invalid/eligibility refusal, repeated desired values, fresh native receipts, controller viewport/scroll ownership, queued/sent close and byte-for-byte UI guards. No rendered UI or transport-loss claim."
     },
     {
       "path": "presentations/godot/project/tests/farm_read_live.gd",

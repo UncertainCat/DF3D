@@ -19,6 +19,57 @@ func edit_item(id: int, item: int, operation: int, desired: int, revision: int, 
 		await create_timer(0.01).timeout
 	incomplete("contents edit timed out; no replay",true);return {}
 
+func wait_contents_model(model, actions) -> bool:
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll()
+		if model.phase not in [model.Phase.Reading,model.Phase.Applying]:return check(model.phase==model.Phase.Ready,"contents controller failed: "+str(model.phase))
+		await create_timer(0.01).timeout
+	incomplete("contents controller timed out; no replay",true);return false
+
+func exercise_controller(id: int, initial: Dictionary) -> void:
+	var actions=load("res://scripts/semantic_action_service.gd").new()
+	root.add_child(actions);actions.set_process(false);actions.configure(world,true)
+	var model=load("res://scripts/building_contents_state.gd").new();model.configure(actions)
+	var applied: Array=[];model.applied.connect(func():applied.append(true))
+	model.open(id)
+	if not await wait_contents_model(model,actions):model.dispose();actions.free();return
+	if not check(model.snapshot==initial,"controller initial page differs"):model.dispose();actions.free();return
+	var second:=int(initial.rows[1].id)
+	var hidden:=bool(initial.rows[1].hidden)
+	model.set_flag(second,Contract.FarmOperation.ItemHidden,not hidden)
+	if not await wait_contents_model(model,actions):model.dispose();actions.free();return
+	if not check(model.snapshot.cursor==0 and model.snapshot.rows[1].hidden!=hidden and applied.size()==1,"controller did not recover viewport after later-row edit"):model.dispose();actions.free();return
+	await native("contents-verify",{"rows":model.rows()})
+	model.set_flag(second,Contract.FarmOperation.ItemHidden,hidden)
+	if not await wait_contents_model(model,actions):model.dispose();actions.free();return
+	if not check(model.snapshot==initial,"controller restoration differs"):model.dispose();actions.free();return
+	model.seek(1);actions.poll();model.seek(2)
+	if not await wait_contents_model(model,actions):model.dispose();actions.free();return
+	if not check(model.snapshot.cursor==2 and model.rows()[0].id==initial.rows[2].id,"late scroll reply replaced latest viewport"):model.dispose();actions.free();return
+	model.set_flag(int(model.rows()[0].id),Contract.FarmOperation.ItemHidden,not bool(model.rows()[0].hidden))
+	var queued: int=model.ticket;model.close();actions.poll()
+	if not check(actions.result(queued).get("outcome")=="not_sent","queued controller edit survived close"):model.dispose();actions.free();return
+	model.open(id)
+	if not await wait_contents_model(model,actions):model.dispose();actions.free();return
+	if not check(model.snapshot==initial,"queued closed edit changed native state"):model.dispose();actions.free();return
+	var first:=int(initial.rows[0].id)
+	model.set_flag(first,Contract.FarmOperation.ItemHidden,not bool(initial.rows[0].hidden));actions.poll()
+	var sent: int=model.ticket;var before_applied:=applied.size();model.close()
+	var deadline:=Time.get_ticks_msec()+30000
+	while actions.result(sent).is_empty() and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll();await create_timer(0.01).timeout
+	if not check(actions.result(sent).get("status")==S.Ok and model.snapshot.is_empty() and applied.size()==before_applied,"detached sent edit did not reconcile independently"):model.dispose();actions.free();return
+	model.open(id)
+	if not await wait_contents_model(model,actions):model.dispose();actions.free();return
+	if not check(model.rows()[0].hidden!=initial.rows[0].hidden,"sent detached effect missing on explicit reopen"):model.dispose();actions.free();return
+	model.set_flag(first,Contract.FarmOperation.ItemHidden,bool(initial.rows[0].hidden))
+	if not await wait_contents_model(model,actions):model.dispose();actions.free();return
+	if not check(model.snapshot==initial,"detached effect not explicitly restored"):model.dispose();actions.free();return
+	await native("contents-verify",{"rows":model.rows()})
+	write_json("contents-controller-results.json",{"later_row_viewport":true,"latest_scroll":true,"queued_close":"not_sent","sent_close":"detached_completed","restored":true})
+	model.dispose();actions.free()
+
 func exercise() -> void:
 	await seed_catalog()
 	if stopped:return
@@ -77,6 +128,8 @@ func exercise() -> void:
 	if stopped:return
 	if not check(final_page==initial,"refused item intents changed native contents"):return
 	await native("contents-verify",{"rows":final_page.rows})
+	if stopped:return
+	await exercise_controller(id,initial)
 	if stopped:return
 	await native("final")
 	write_json("contents-edit-results.json",{"cases":cases,"rejected":4,"restored":true,"later_row_receipt":tail,"initial":initial,"final":final_page})

@@ -460,9 +460,7 @@ Weight text at154c84 calls14d8e0(item,string). That small formatter tests flag
 0x20000000, invokes c65f10 when missing, reads weight at item+0x74 and appends the
 native weight symbol. c65f10 computes item and contained item/unit weights, then
 sets weight_computed. The observed last-seed View flag change is this cache fill;
-future acceptance must distinguish it from unrelated simulation mutation. These
-weight routines are discovered candidates, not yet bridge adapters or live-called
-with independently owned strings.
+future acceptance must distinguish it from unrelated simulation mutation. The diagnostic adapter and its seed acceptance are described below.
 
 The item-sheet initializer1a8df0 calls c75000(item,string,true,true,false,0) at
 1a8eab for full description text. The string destination in that caller is native
@@ -473,6 +471,24 @@ recorded0x46aa observed range/hash is discovery provenance, not an approved runt
 pin: unwind coverage, relocations and global dependencies still need verification.
 Holder links, recenter/follow, item actions and the complete item-sheet lifecycle
 remain unfinished. No item-sheet management contract or public route is exposed.
+
+The diagnostic `df3d farm-item-header-read <farm-id> <item-id>` validates visible
+farm membership and returns native caption and weight text in independently owned
+strings. `itemWeightCaption` pins the complete14d8e0 formatter and c65f10 lazy
+computation ranges, both relocation-free. It runs through the existing safe-point
+diagnostic command path, blocks during saves and does not call the sheet initializer.
+Weight cache population is intentional native behavior, not an optimistic UI edit.
+
+Protected081742 on2026-10-29 compares six native seed item sheets, twice each:
+warm-cache and deliberately invalidated cache (flag cleared and weight zeroed).
+Every returned caption/weight matches native text, and each resulting item object
+matches its original native-computed bytes. Native view_sheets and plotinfo remain
+byte-identical. Controlled fields are restored even on test failure. The source
+manifest remains unchanged and owned paused DF186112 exits unsaved. See
+`item_header_reader_reference` for cases, hashes and bridge identity. MSVC builds
+successfully; core `item-header-reader` passes. This is a diagnostic header provider,
+not an item-sheet wire or UI. Full descriptions, nonseed/container/unit weight
+branches and item-sheet lifecycle remain unverified.
 
 ## Farm contents native hover
 

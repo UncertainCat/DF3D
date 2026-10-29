@@ -18840,5 +18840,187 @@
     ],
     "excluded_wrapper": "1a8df0 directly clears/rebuilds view_sheets description/use caches and timer. Do not call it or borrow those native outputs at runtime.",
     "scope": "Native screenshot farm-contents-view-0 inspected. Discovery only: no item-sheet wire/controller/UI exposed. Full descriptions, holder links, recenter/follow and item actions need semantic audit and live acceptance; existing DFHack getDescription decorations reconstruct rules and are not a full-description substitute."
+  },
+  "item_header_reader_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261029-081742",
+    "cases": [
+      {
+        "cold": false,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47492,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47492,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": true,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47492,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47492,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": false,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47486,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47486,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": true,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47486,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47486,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": false,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47494,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47494,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": true,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47494,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47494,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": false,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47485,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47485,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": true,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47485,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47485,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": false,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47484,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47484,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": true,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47484,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47484,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": false,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47493,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47493,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      },
+      {
+        "cold": true,
+        "header": {
+          "caption": "sweet pod seeds",
+          "item_id": 47493,
+          "weight": "<1\u0393"
+        },
+        "item_id": 47493,
+        "name": "farm-item-header-reader",
+        "native_equal": true,
+        "ui_unchanged": true,
+        "weight_fraction": 60000,
+        "weight_whole": 0
+      }
+    ],
+    "hashes": {
+      "result.json": "c9c3c69ca07a1509964099d32685b9ecd4be93ceca1bd3689ebe29ababf0b841",
+      "capture-inputs.json": "c7381e951db785816cbb5582cc66f66c9f76c28ec10089127efce2b82733b608",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "bridge_sha256": "401927bb04fb96f78b11b998d2bd9b97a253a0daf7182fac455dc2ba4028c749",
+    "coverage": "Six real farm seed native sheets; each warm and deliberately cold weight cache. Caption and weight text equal native; item object and native view_sheets/plotinfo bytes equal pre-call native state after each call. Paused owned DF186112 exited unsaved, source manifest unchanged. Formatter and lazy-computation pinned ranges contain no PE base relocations.",
+    "limitations": "Diagnostic header reader only. Full description, item-sheet transport/UI, generic containers/units and nonseed weights remain unverified."
   }
 }

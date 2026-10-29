@@ -26,6 +26,25 @@ inline std::optional<std::string> buildingItemCaption(df::item* item) {
     if(!caption||!item)return std::nullopt;
     std::string result;caption(item,&result,false,-1);return result;
 }
+// Item-sheet renderer154c84 calls this owned-string weight formatter. Native
+// lazy computation may populate weight caches on this item and its contents.
+inline std::optional<std::string> itemWeightCaption(df::item* item) {
+    using Format=void (*)(df::item*,std::string*);
+    static const auto format=[]()->Format {
+        if(!farmFunctions())return nullptr;
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        if(hash(0x14d8e0,0x58)!=UINT64_C(0x739fc70478cf6b3f) ||
+           hash(0xc65f10,0x106)!=UINT64_C(0x440442082189ed12))return nullptr;
+        return reinterpret_cast<Format>(base+0x14d8e0);
+    }();
+    if(!format||!item)return std::nullopt;
+    std::string result;format(item,&result);return result;
+}
 // Native common building-sheet item actions. Call at a safe point, with a
 // freshly validated contained item. No selector, input or viewscreen scratch.
 struct BuildingItemFunctions {

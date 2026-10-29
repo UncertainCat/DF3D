@@ -1627,6 +1627,27 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["building_id"]=values[0];result["season"]=values[1];result["rows"]=std::move(rows);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="farm-item-header-read") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t ids[2]{};
+          for(size_t i=0;i<2;++i) {
+            const auto& raw=parameters[i+1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),ids[i]);
+            if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||ids[i]<0)return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(ids[0]));
+          auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
+          if(!tile||tile->bits.hidden)return CR_FAILURE;
+          df::item* item=nullptr;
+          for(auto* held:farm->contained_items)if(held&&held->item&&held->item->id==ids[1])item=held->item;
+          if(!item)return CR_FAILURE;
+          const auto caption=df3d_production::buildingItemCaption(item);
+          const auto weight=df3d_production::itemWeightCaption(item);
+          if(!caption||!weight)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["item_id"]=ids[1];
+          result["caption"]=DF2UTF(*caption);result["weight"]=DF2UTF(*weight);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="farm-contents-read") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];

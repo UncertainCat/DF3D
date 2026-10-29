@@ -114,6 +114,35 @@ for index=0,5 do
  local row=capture('farm-contents-view-'..index)
  assert(row.active_sheet=='ITEM' and row.active_id==baseline.contents[index+1].id,'contents eye row identity/order differs')
  row.contents=items()
+ local item=assert(df.item.find(row.active_id));local guards={}
+ for _,object in ipairs{main.view_sheets,df.global.plotinfo,item}do
+  local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+  dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
+ end
+ local weight_line
+ for y,line in ipairs(row.lines)do
+  local start=line:find('Weight: ',1,true)
+  if start then
+   local chars={};for x=start+7,g.dimx-1 do local ch=dfhack.screen.readTile(x,y-1).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
+   weight_line=dfhack.df2utf(table.concat(chars):gsub('%s+$',''));break
+  end
+ end
+ assert(weight_line,'native item weight text missing')
+ local original_flags=item.flags.whole;local original_whole=item.weight.whole;local original_fraction=item.weight.fraction
+ local header_ok,header_error=xpcall(function()
+  for _,cold in ipairs{false,true}do
+   if cold then item.flags.weight_computed=false;item.weight.whole=0;item.weight.fraction=0 end
+   local text,code=dfhack.run_command_silent('df3d','farm-item-header-read',tostring(b.id),tostring(item.id));assert(code==0,text)
+   local header=require('json').decode(text);assert(header.item_id==item.id and header.weight==weight_line,'semantic item weight differs from native')
+   local title_found=false;for _,line in ipairs(row.lines)do if line:find(header.caption,1,true)then title_found=true end end
+   assert(title_found,'semantic item title differs from native')
+   for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'item header changed UI or differed from native weight state')end
+   records[#records+1]={name='farm-item-header-reader',item_id=item.id,cold=cold,header=header,native_equal=true,ui_unchanged=true,weight_whole=item.weight.whole,weight_fraction=item.weight.fraction}
+  end
+ end,debug.traceback)
+ item.flags.whole=original_flags;item.weight.whole=original_whole;item.weight.fraction=original_fraction
+ for _,guard in ipairs(guards)do df.delete(guard.bytes)end
+ assert(header_ok,header_error)
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  select_map(b)
  assert(main.view_sheets.active_sheet==df.view_sheet_type.BUILDING and main.view_sheets.active_id==b.id,'contents fixture did not return to farm')

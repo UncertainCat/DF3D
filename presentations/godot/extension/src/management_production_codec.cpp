@@ -83,6 +83,10 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   prod["selected_building"] = p.selectedBuilding;
   prod["created_job"] = p.createdJob;
   prod["detail"] = String::utf8(p.detail.c_str());
+  if(p.itemPosition) {
+    Dictionary value;value["id"]=p.itemPosition->id;value["position"]=Vector3i(p.itemPosition->x,p.itemPosition->y,p.itemPosition->z);
+    prod["item_position"]=value;
+  }
   if(p.contentsEdit) {
     Dictionary edit;edit["item_id"]=p.contentsEdit->itemId;edit["farm_operation"]=int(p.contentsEdit->operation);
     edit["value"]=p.contentsEdit->value;prod["contents_edit"]=edit;
@@ -328,6 +332,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 }
 
 bool validateProductionShape(const Dictionary& data, String& error) {
+  if(data.has("locate_item") && data["locate_item"].get_type()!=Variant::BOOL){error="Wrong management field type: locate_item";return false;}
   if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization", "item_id", "item_value"}, error))return false;
   if(data.has("farm_name") && data["farm_name"].get_type()!=Variant::STRING) {error="Wrong management field type: farm_name";return false;}
   if(int64_t(data.get("farm_operation",0))==3 && !data.has("farm_name")) {error="Missing management field: farm_name";return false;}
@@ -360,6 +365,8 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.expectedRevision=uint64_t(n("expected_revision",0,0,INT64_MAX));
   if(data.has("contents") && data["contents"].get_type()!=Variant::BOOL){error="Wrong management field type: contents";return false;}
   value.contents=data.get("contents",false);
+  if(data.has("locate_item") && data["locate_item"].get_type()!=Variant::BOOL){error="Wrong management field type: locate_item";return false;}
+  value.locateItem=data.get("locate_item",false);
   value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,9));
   value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));value.itemValue=int8_t(n("item_value",-1,-1,1));
   String farmName=data.get("farm_name",String());

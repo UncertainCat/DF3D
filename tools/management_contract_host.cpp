@@ -420,6 +420,10 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
 flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBufferBuilder& b,const m::ConstructionRequest& request) {
   using A=m::ManagementAction;
   const auto action=request.action();const auto* q=request.production();
+  if(action==A::ProductionInspect && q->locate_item()) {
+    const m::TilePos pos(123,456,17);auto target=m::CreateItemPosition(b,q->item_id(),&pos);
+    m::ProductionStateBuilder p(b);p.add_item_position(target);return p.Finish();
+  }
   if(action==A::ProductionInspect && q->item_id()>=0) {
     auto row=m::CreateBuildingContentsItem(b,q->item_id(),2,b.CreateString("Synthetic item"),true,false,false,true,true,false,false,true,53,b.CreateString("PLANT:POD_SWEET:SEED"),b.CreateString(""));
     flatbuffers::Offset<m::ItemBuildingHolder> holder;
@@ -853,7 +857,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -919,6 +923,9 @@ int main(int argc,char** argv) {
         case A::ProductionList:
           require(r->production()->query()->str()==(received==62?"#1024":"") && r->production()->cursor()==(received==62?1024:0),"production list payload");break;
         case A::ProductionInspect:
+          if(r->production()->locate_item()) {
+            require(r->production()->building_id()==-1 && r->production()->item_id()==47492,"item position payload");break;
+          }
           if(r->production()->item_id()>=0) {
             require(r->production()->building_id()==968 && (r->production()->item_id()==47492 || r->production()->item_id()==47493),"item inspection payload");break;
           }

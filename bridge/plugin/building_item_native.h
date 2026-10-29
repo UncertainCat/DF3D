@@ -11,9 +11,9 @@
 #include "df/itemdef.h"
 
 namespace df3d_production {
-// Diagnostic-only; product position transport and follow ownership are not yet
-// connected. Native follow loops35e7b6/8b6b76 use these independently owned outputs.
-inline std::optional<df::coord> probeItemPosition(df::item* item) {
+// Native follow loops35e7b6/8b6b76 use these independently owned outputs.
+// Reference getters may initialize semantic cached indices, never UI state.
+inline std::optional<df::coord> itemPosition(df::item* item) {
     using Resolve=void (*)(df::item*,int16_t*,int16_t*,int16_t*);
     static const auto resolve=[]()->Resolve {
         if(!farmFunctions())return nullptr;

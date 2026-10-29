@@ -272,7 +272,7 @@ struct AreaState {
 };
 struct ProductionRequest {
   int32_t itemId=-1;int8_t itemValue=-1;
-  bool contents=false;
+  bool contents=false,locateItem=false;
   FarmOperation farmOperation=FarmOperation::Crop;
   int8_t seasonalFertilization=-1;
   std::string farmName;
@@ -332,7 +332,9 @@ struct BuildingItemSnapshot {
   std::string weight,description;
   std::optional<ItemBuildingHolder> holder;
 };
+struct ItemPosition { int32_t id=-1,x=0,y=0,z=0; };
 struct ProductionState {
+  std::optional<ItemPosition> itemPosition;
   std::optional<BuildingItemSnapshot> item;
   std::optional<BuildingItemReceipt> contentsEdit;
   std::optional<BuildingContentsPage> contents;

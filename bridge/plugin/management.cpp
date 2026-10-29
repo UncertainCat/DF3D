@@ -627,7 +627,12 @@ void publish() {
     itemSnapshot=m::CreateBuildingItemSnapshot(b,value.buildingId,value.revision,value.completed,value.removing,item,
       b.CreateString(value.weight),b.CreateString(value.description),holder);
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot);
+  flatbuffers::Offset<m::ItemPosition> itemPosition;
+  if(production.itemPosition) {
+    const auto& value=*production.itemPosition;const m::TilePos pos(value.x,value.y,value.z);
+    itemPosition=m::CreateItemPosition(b,value.id,&pos);
+  }
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -2530,6 +2535,15 @@ void run(color_ostream& out) {
           case df3d_production::FarmEditOutcome::Rejected:break;
         }
       }
+    }
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->locate_item()) {
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    const auto id=r->production()->item_id();
+    const auto pos=df3d_production::itemPosition(df::item::find(id));
+    if(pos && pos->isValid() && pos->x>=0 && pos->y>=0 && pos->z>=0) {
+      production.itemPosition=ItemPosition{id,pos->x,pos->y,pos->z};status=m::ManagementStatus::Ok;
     }
     publish();return;
   }

@@ -26,6 +26,21 @@ elseif request.op=='header-change' or request.op=='header-restore' then
 elseif request.op=='item-cold' then
  local item=assert(df.item.find(request.item_id));assert(item:getType()==df.item_type.SEEDS)
  item.flags.weight_computed=false;item.weight.whole=0;item.weight.fraction=0
+elseif request.op=='item-position-state' then
+ local item=assert(df.item.find(request.item_id));local c=assert(_G.df3d_contents_fixture)
+ if not c.position_original then c.position_original={item=item,flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z}end
+ local old=c.position_original;assert(old.item==item,'position fixture target changed')
+ if request.state=='moved' then item.pos.x=old.x+1;item.pos.y=old.y-1
+ elseif request.state=='removed' then item.flags.removed=true
+ elseif request.state=='restored' then
+  item.flags.whole=old.flags;item.pos.x=old.x;item.pos.y=old.y;item.pos.z=old.z;c.position_original=nil
+ else error('unknown position fixture state')end
+elseif request.op=='item-position' then
+ local text,code=dfhack.run_command_silent('df3d','item-position-probe',string.format('%d',request.item_id));assert(code==0,text)
+ local native=json.decode(text)
+ assert(native.valid and native.item_id==request.item_id and native.x==request.x and native.y==request.y and native.z==request.z,'wire item position differs from native resolver')
+ for _,guard in ipairs(_G.df3d_contents_guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'position read changed UI scratch')end
+ result.item_position_equal=true;result.ui_scratch_unchanged=true
 elseif request.op=='item-inspect' then
  local observed=request.item
  local text,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(assert(_G.df3d_contents_fixture).farm.id),string.format('%d',observed.id));assert(code==0,text)
@@ -65,7 +80,7 @@ elseif request.op=='contents-change'  or request.op=='contents-restore' then
  assert(code==0 and json.decode(text).outcome=='completed',text)
  result.contents_revision=json.decode(text).revision
 elseif request.op~='final'  then error('unknown farm verification operation')end
-if request.op=='final' then assert(state.farm.name==state.name,'read fixture name not restored');local c=_G.df3d_contents_fixture;assert(c.item.flags.hidden==c.hidden,'contents not restored')end
+if request.op=='final' then assert(state.farm.name==state.name,'read fixture name not restored');local c=_G.df3d_contents_fixture;assert(c.item.flags.hidden==c.hidden,'contents not restored');assert(not c.position_original,'position fixture not restored')end
 local f=assert(io.open(out..'/response-'..index..'.json','w'))
 f:write(json.encode(result));f:close()
 print('SEMANTIC_PASS '..index..' farm read guards')

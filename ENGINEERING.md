@@ -626,6 +626,29 @@ unchanged. The fresh post-restart sheet was inspected. `item_lifecycle_reference
 records outcomes and hashes. This covers Hide edit retirement, not every item
 action or long-running camera following.
 
+## Effective item position transport
+
+Management92 adds `ProductionInspect` with `locate_item=true` and `item_id`.
+This request excludes building identity, contents, paging, revision preconditions
+and edits. It resolves the item independently of farm membership through DF's
+native `itemPosition` adapter. Missing, removed and invalid-coordinate targets
+reject without position authority. A successful `production.item_position`
+contains only the requested ID and effective map coordinate. Schema validators
+reject mixed authority and out-of-range coordinates; absent historical positions
+stay absent. Neither the request nor the result carries camera or follow state.
+Bridge and viewer must use management92 together, as recorded in PINS.md.
+
+Core request/response validation and the synthetic host-to-Godot transport test
+pass, including boolean/ID types, forbidden mixed fields, absent positions and
+typed Vector3i conversion. MSVC passes. Protected144812 verifies forty native
+position comparisons, missing-ID rejection, fresh coordinates after a controlled
+move, removed-item rejection and exact restoration, alongside existing item
+inspection/edit/controller regressions. Native UI guards and both save manifests
+remain unchanged; DF181580 exits unsaved. `item_position_wire_reference` retains
+provenance. This transport does not implement viewer following or establish
+natural hauling/camera movement. Follow ownership must survive sheet closure,
+retire on session loss and cancel on manual pan as the native oracle establishes.
+
 ## Native item-sheet semantic discovery
 
 `item_camera_reference` records protected142242 stationary-seed camera behavior.
@@ -654,14 +677,14 @@ dispatch still needs acceptance. Invalid paths initialize only X, so adapters
 must initialize all outputs and reject the invalid sentinel. Inventory cycles
 and moving/carried/container cases are not established by this stationary oracle.
 DFHack Items::getPosition reconstructs these rules rather than calling DF.
-Runtime transport and viewer follow ownership remain unfinished; they must not
-borrow plotinfo follow fields or native camera state.
+The transport above uses this resolver; viewer follow ownership remains unfinished
+and must not borrow plotinfo follow fields or native camera state.
 
 Diagnostic command `item-position-probe <item-id>` now calls the two pinned
-resolver bodies through `probeItemPosition`, initializing all three outputs to
+resolver bodies through `itemPosition`, initializing all three outputs to
 -30000. Missing IDs or unavailable native entry points reject; a native invalid
-position remains explicitly invalid. This diagnostic has no management transport
-or product caller. Protected142726 verifies direct, changed-coordinate, removed
+position remains explicitly invalid. The management adapter above rejects those
+invalid positions. Protected142726 verifies direct, changed-coordinate, removed
 and invalid-position cases for seed47492, with byte guards on the item, building,
 view_sheets and plotinfo. Controlled flags/coordinates are restored; DF185064
 exits unsaved and the source save is unchanged. MSVC and root CTest pass.

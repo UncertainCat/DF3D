@@ -103,7 +103,9 @@ struct BuildingItemSnapshot {
   std::string weight,description;
   std::optional<ItemBuildingHolder> holder;
 };
+struct ItemPosition { int32_t id=-1,x=0,y=0,z=0; };
 struct ProductionState {
+  std::optional<ItemPosition> itemPosition;
   std::optional<BuildingItemSnapshot> item;
   std::optional<BuildingItemReceipt> contentsEdit;
   std::optional<BuildingContentsPage> contents;

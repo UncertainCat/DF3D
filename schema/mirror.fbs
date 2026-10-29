@@ -1530,6 +1530,7 @@ table ProductionRequest {
   contents:bool;
   item_id:int32 = -1;
   item_value:int8 = -1;
+  locate_item:bool;
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 table ProductionRecipe { key:string; name:string; requirements:[ProductionRequirement]; }
@@ -1580,6 +1581,7 @@ table BuildingContentsPage {
 table BuildingItemReceipt { item_id:int32 = -1; operation:FarmOperation; value:int8 = -1; }
 // Native item inspection owns its text; revision is observed after lazy formatting.
 table ItemBuildingHolder { id:int32 = -1; type:int32 = -1; name:string; }
+table ItemPosition { id:int32 = -1; position:TilePos (required); }
 table BuildingItemSnapshot {
   building_id:int32 = -1; revision:uint64;
   completed:bool; removing:bool;
@@ -1598,6 +1600,7 @@ table ProductionState {
   contents:BuildingContentsPage;
   contents_edit:BuildingItemReceipt;
   item:BuildingItemSnapshot;
+  item_position:ItemPosition;
 }
 table WorkOrderRequest {
   id:int32 = -1;
@@ -1884,7 +1887,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 91;
+  schema_version:uint32 = 92;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1930,7 +1933,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 91;
+  schema_version:uint32 = 92;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

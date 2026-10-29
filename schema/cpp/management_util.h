@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 91;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v91";
+inline constexpr uint32_t kManagementVersion = 92;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v92";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -411,7 +411,8 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
         p->season() < -1 || p->season()>3 || (p->query() && p->query()->size()>128) ||
         (p->recipe() && p->recipe()->size()>128)) return "invalid production request";
-    if (r.action()!=ManagementAction::ProductionList && p->building_id()<0) return "production building required";
+    if(p->locate_item() && (r.action()!=ManagementAction::ProductionInspect || p->building_id()!=-1 || p->item_id()<0))return "invalid item position intent";
+    if (r.action()!=ManagementAction::ProductionList && !p->locate_item() && p->building_id()<0) return "production building required";
     if (r.action()==ManagementAction::ProductionQueue && (!p->recipe() || !p->recipe()->size())) return "recipe required";
     if (r.action()==ManagementAction::ProductionJobEdit && (p->job_id()<0 ||
         (p->cancel() && (p->repeat()!=-1 || p->suspend()!=-1)) ||
@@ -1298,6 +1299,17 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
+    if(const auto* value=p->item_position()) {
+      const auto* pos=value->position();
+      if(s.action()!=ManagementAction::ProductionInspect || s.status()!=ManagementStatus::Ok || value->id()<0 || !pos ||
+         pos->x()<0 || pos->y()<0 || pos->z()<0 || pos->x()>32767 || pos->y()>32767 || pos->z()>32767)
+        return "invalid item position";
+      if(p->item() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
+         p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor()!=0 ||
+         (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||
+         (p->jobs() && p->jobs()->size()) || (p->crops() && p->crops()->size()) ||
+         (p->seasonal_crops() && p->seasonal_crops()->size()))return "mixed item position response";
+    }
     if(const auto* item=p->item()) {
       const auto* row=item->item();
       if(s.action()!=ManagementAction::ProductionInspect || s.status()!=ManagementStatus::Ok ||

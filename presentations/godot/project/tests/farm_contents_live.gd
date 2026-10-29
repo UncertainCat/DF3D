@@ -132,6 +132,52 @@ func read_item(id: int, item: int, rejected := false) -> Dictionary:
 		await create_timer(0.01).timeout
 	incomplete("item inspection timed out",true);return {}
 
+func read_position(item: int, rejected:=false) -> Dictionary:
+	world.poll()
+	var seq: int=world.management_request("production",{"action":Contract.ManagementAction.ProductionInspect,"locate_item":true,"item_id":item})
+	if not check(seq>0,"item position request not sent"):return {}
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();var response: Dictionary=world.poll_management()
+		if response.get("request_seq",0)==seq and response.get("status",S.Idle) not in [S.Idle,S.Pending]:
+			var p: Dictionary=response.get("production",{})
+			if not check(response.status==(S.Rejected if rejected else S.Ok) and p.has("item_position")==not rejected and not p.has("item") and not p.has("farm") and not p.has("contents"),"item position authority differs"):return {}
+			return p.get("item_position",{})
+		await create_timer(0.01).timeout
+	incomplete("item position timed out",true);return {}
+
+func verify_item_positions(initial: Dictionary) -> void:
+	var cases: Array=[]
+	for row in initial.rows:
+		var value:=await read_position(int(row.id))
+		if stopped:return
+		if not check(value.id==row.id and typeof(value.position)==TYPE_VECTOR3I,"item position identity/type differs"):return
+		await native("item-position",{"item_id":value.id,"x":value.position.x,"y":value.position.y,"z":value.position.z})
+		if stopped:return
+		cases.append({"item_id":value.id,"x":value.position.x,"y":value.position.y,"z":value.position.z})
+	await read_position(2147483647,true)
+	if stopped:return
+	var target:=int(initial.rows[0].id)
+	var original:=await read_position(target)
+	if stopped:return
+	await native("item-position-state",{"item_id":target,"state":"moved"})
+	if stopped:return
+	var moved:=await read_position(target)
+	if stopped:return
+	if not check(moved.position==original.position+Vector3i(1,-1,0),"position read retained old coordinates"):return
+	await native("item-position",{"item_id":target,"x":moved.position.x,"y":moved.position.y,"z":moved.position.z})
+	if stopped:return
+	await native("item-position-state",{"item_id":target,"state":"removed"})
+	if stopped:return
+	await read_position(target,true)
+	if stopped:return
+	await native("item-position-state",{"item_id":target,"state":"restored"})
+	if stopped:return
+	var restored:=await read_position(target)
+	if stopped:return
+	if not check(restored==original,"position target not restored"):return
+	write_json("item-position-results.json",{"cases":cases,"missing_item_rejected":true,"fresh_moved_position":true,"removed_item_rejected":true,"restored":true})
+
 func verify_item_inspection(id: int, initial: Dictionary) -> void:
 	var cases: Array=[]
 	for row in initial.rows:
@@ -164,6 +210,8 @@ func exercise() -> void:
 	if not check(initial.next_cursor==0 and initial.rows.size()>1,"contents edit fixture requires one complete page"):return
 	var item:=int(initial.rows[0].id)
 	await verify_item_inspection(id,initial)
+	if stopped:return
+	await verify_item_positions(initial)
 	if stopped:return
 	initial=await read_contents(id)
 	if stopped:return

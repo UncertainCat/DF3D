@@ -114,7 +114,7 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
              int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationStaffCandidates)))return true;
         return require("id");
     case A::AreaDelete: case A::AreaLink: return require("id");
-    case A::ProductionInspect: return require("building_id");
+    case A::ProductionInspect: return bool(data.get("locate_item",false))?require("item_id"):require("building_id");
     case A::ProductionQueue: return require("building_id") && require("recipe");
     case A::ProductionJobEdit: return require("building_id") && require("job_id");
     case A::FarmEdit:

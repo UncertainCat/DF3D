@@ -24170,5 +24170,269 @@
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     },
     "scope": "15 controlled paused position cases including nested containers, carried/caged holder, missing references and escaped vermin. Only recorded semantic reference cached_index changes allowed; other guarded object/UI bytes unchanged. Test references freed and flags/positions restored. No runtime transport, natural hauling or viewer following acceptance."
+  },
+  "item_position_wire_reference": {
+    "management_version": 92,
+    "run": "build/areas-acceptance-20261029-144812",
+    "status": "passed",
+    "owned_df_pid": 181580,
+    "exit": "unsaved",
+    "unchanged_save_manifests": 2,
+    "results": {
+      "cases": [
+        {
+          "item_id": 47492,
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        {
+          "item_id": 47486,
+          "x": 128,
+          "y": 119,
+          "z": 165
+        },
+        {
+          "item_id": 47494,
+          "x": 128,
+          "y": 120,
+          "z": 165
+        },
+        {
+          "item_id": 47485,
+          "x": 128,
+          "y": 117,
+          "z": 165
+        },
+        {
+          "item_id": 47484,
+          "x": 128,
+          "y": 116,
+          "z": 165
+        },
+        {
+          "item_id": 47493,
+          "x": 128,
+          "y": 118,
+          "z": 165
+        },
+        {
+          "item_id": 47491,
+          "x": 128,
+          "y": 115,
+          "z": 165
+        },
+        {
+          "item_id": 47545,
+          "x": 135,
+          "y": 117,
+          "z": 165
+        },
+        {
+          "item_id": 47540,
+          "x": 128,
+          "y": 123,
+          "z": 165
+        },
+        {
+          "item_id": 47541,
+          "x": 129,
+          "y": 118,
+          "z": 165
+        },
+        {
+          "item_id": 47544,
+          "x": 135,
+          "y": 119,
+          "z": 165
+        },
+        {
+          "item_id": 47536,
+          "x": 135,
+          "y": 115,
+          "z": 165
+        },
+        {
+          "item_id": 47534,
+          "x": 134,
+          "y": 121,
+          "z": 165
+        },
+        {
+          "item_id": 47537,
+          "x": 135,
+          "y": 116,
+          "z": 165
+        },
+        {
+          "item_id": 47532,
+          "x": 134,
+          "y": 120,
+          "z": 165
+        },
+        {
+          "item_id": 47543,
+          "x": 135,
+          "y": 118,
+          "z": 165
+        },
+        {
+          "item_id": 47542,
+          "x": 134,
+          "y": 122,
+          "z": 165
+        },
+        {
+          "item_id": 47533,
+          "x": 129,
+          "y": 115,
+          "z": 165
+        },
+        {
+          "item_id": 47530,
+          "x": 128,
+          "y": 121,
+          "z": 165
+        },
+        {
+          "item_id": 47531,
+          "x": 128,
+          "y": 122,
+          "z": 165
+        },
+        {
+          "item_id": 47535,
+          "x": 134,
+          "y": 123,
+          "z": 165
+        },
+        {
+          "item_id": 47529,
+          "x": 129,
+          "y": 117,
+          "z": 165
+        },
+        {
+          "item_id": 47600,
+          "x": 135,
+          "y": 120,
+          "z": 165
+        },
+        {
+          "item_id": 47611,
+          "x": 129,
+          "y": 120,
+          "z": 165
+        },
+        {
+          "item_id": 47594,
+          "x": 129,
+          "y": 119,
+          "z": 165
+        },
+        {
+          "item_id": 47665,
+          "x": 129,
+          "y": 123,
+          "z": 165
+        },
+        {
+          "item_id": 47695,
+          "x": 135,
+          "y": 123,
+          "z": 165
+        },
+        {
+          "item_id": 47696,
+          "x": 135,
+          "y": 122,
+          "z": 165
+        },
+        {
+          "item_id": 47697,
+          "x": 135,
+          "y": 121,
+          "z": 165
+        },
+        {
+          "item_id": 47664,
+          "x": 129,
+          "y": 123,
+          "z": 165
+        },
+        {
+          "item_id": 47680,
+          "x": 136,
+          "y": 115,
+          "z": 165
+        },
+        {
+          "item_id": 47692,
+          "x": 129,
+          "y": 122,
+          "z": 165
+        },
+        {
+          "item_id": 47749,
+          "x": 129,
+          "y": 121,
+          "z": 165
+        },
+        {
+          "item_id": 47764,
+          "x": 130,
+          "y": 117,
+          "z": 165
+        },
+        {
+          "item_id": 47763,
+          "x": 130,
+          "y": 119,
+          "z": 165
+        },
+        {
+          "item_id": 47762,
+          "x": 130,
+          "y": 116,
+          "z": 165
+        },
+        {
+          "item_id": 47742,
+          "x": 130,
+          "y": 115,
+          "z": 165
+        },
+        {
+          "item_id": 47748,
+          "x": 130,
+          "y": 118,
+          "z": 165
+        },
+        {
+          "item_id": 47881,
+          "x": 130,
+          "y": 120,
+          "z": 165
+        },
+        {
+          "item_id": 47929,
+          "x": 130,
+          "y": 121,
+          "z": 165
+        }
+      ],
+      "fresh_moved_position": true,
+      "missing_item_rejected": true,
+      "removed_item_rejected": true,
+      "restored": true
+    },
+    "bridge_sha256": "1e4f50c4e54dba7fd1a9d8e05d7bbd910d1a53716cc39f76c4b8d714651f4626",
+    "extension_sha256": "0aee25ec50a26018a1191fc56dc1c2167c2c7a98f4e3fdf3b28fcc7891a0af9b",
+    "artifacts": {
+      "item-position-results.json": "7f04d52a18574da06d60832a8759f5f4964e73bb35eea725cce02588fbc23811",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    "scope": "Position-only semantic transport independent of building identity; forty native comparisons, missing/removed refusal, controlled changed coordinates and restoration. Existing seed inspection/edit/controller regressions pass. Camera ownership and natural hauling/movement remain unfinished."
   }
 }

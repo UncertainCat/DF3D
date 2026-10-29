@@ -1633,7 +1633,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
           if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
           if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
-          const auto position=df3d_production::probeItemPosition(df::item::find(id));
+          const auto position=df3d_production::itemPosition(df::item::find(id));
           if(!position)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["item_id"]=id;result["valid"]=position->isValid();
           result["x"]=position->x;result["y"]=position->y;result["z"]=position->z;

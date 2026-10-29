@@ -3528,3 +3528,45 @@ TEST_CASE("item inspection preserves native facts and rejects ambiguous authorit
   flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateProductionState(b));
   CHECK_FALSE(codec::decodeProduction(flatbuffers::GetRoot<wire::ProductionState>(b.GetBufferPointer())).item);
 }
+
+TEST_CASE("item position request excludes building and edit authority") {
+  for(int fault=0;fault<10;++fault) {
+    CAPTURE(fault);wm::ManagementRequest request;request.action=wm::ManagementAction::ProductionInspect;
+    auto& p=request.production;p.locateItem=true;p.itemId=47492;
+    if(fault==1)p.itemId=-1;
+    if(fault==2)p.buildingId=968;
+    if(fault==3)p.contents=true;
+    if(fault==4)p.expectedRevision=1;
+    if(fault==5)p.season=0;
+    if(fault==6)p.itemValue=0;
+    if(fault==7)p.query="mixed";
+    if(fault==8)request.action=wm::ManagementAction::ProductionList;
+    if(fault==9)p.locateItem=false;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault)CHECK(value->production()->locate_item());
+  }
+}
+TEST_CASE("item position response is bounded and has no mixed authority") {
+  for(int fault=0;fault<8;++fault) {
+    CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    const wire::TilePos pos(fault==1?-1:123,fault==2?32768:456,17);
+    auto target=wire::CreateItemPosition(b,fault==3?-1:47492,&pos);
+    wire::ProductionStateBuilder p(b);p.add_item_position(target);
+    if(fault==4)p.add_selected_building(968);
+    if(fault==5)p.add_farm_edit_outcome(wire::FarmEditOutcome::Completed);
+    auto prod=p.Finish();wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(fault==6?wire::ManagementAction::ProductionList:wire::ManagementAction::ProductionInspect);
+    state.add_status(fault==7?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);state.add_production(prod);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault) {
+      auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.itemPosition);
+      CHECK(decoded.itemPosition->id==47492);CHECK(decoded.itemPosition->x==123);
+      CHECK(decoded.itemPosition->y==456);CHECK(decoded.itemPosition->z==17);
+    }
+  }
+  flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateProductionState(b));
+  CHECK_FALSE(codec::decodeProduction(flatbuffers::GetRoot<wire::ProductionState>(b.GetBufferPointer())).itemPosition);
+}

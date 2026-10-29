@@ -368,6 +368,12 @@ func run() -> void:
 		assert(item.forbid and item.hidden and item.can_dump and not item.can_melt and item.completed and not item.removing)
 		assert(item.has("holder")==bool(item_id==47492))
 		if item.has("holder"):assert(item.holder=={"id":968,"type":4,"name":"Synthetic holder"})
+	var locate: Dictionary={"action":A.ProductionInspect,"locate_item":true,"item_id":47492}
+	for fields in [{"locate_item":1},{"item_id":47492.0},{"building_id":968},{"contents":true},{"expected_revision":17},{"season":0},{"item_value":0}]:
+		var invalid:=locate.duplicate();invalid.merge(fields,true);assert(world.management_request("production",invalid)==0)
+	sequence=world.management_request("production",locate);assert(sequence>0);state=await receipt(sequence)
+	assert(state.production.item_position=={"id":47492,"position":Vector3i(123,456,17)})
+	assert(not state.production.has("item") and not state.production.has("contents") and not state.production.has("farm"))
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break

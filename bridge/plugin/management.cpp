@@ -613,7 +613,11 @@ void publish() {
     contentsPage=m::CreateBuildingContentsPage(b,page.buildingId,page.revision,page.cursor,page.nextCursor,page.total,
       page.completed,page.removing,b.CreateVector(rows));
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage);
+  flatbuffers::Offset<m::BuildingItemReceipt> contentsEdit;
+  if(production.contentsEdit) {
+    const auto& edit=*production.contentsEdit;contentsEdit=m::CreateBuildingItemReceipt(b,edit.itemId,edit.operation,edit.value);
+  }
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -2370,9 +2374,78 @@ std::optional<FarmSnapshot> observeFarmSnapshot(int32_t buildingId,int season) {
     snapshot.revision=df3d_production::farmRevision(snapshot);
     return snapshot;
 }
+std::optional<df3d_production::BuildingContentsSnapshot> observeFarmContents(int32_t id) {
+  auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(id));
+  auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
+  return tile&&!tile->bits.hidden?df3d_production::buildingContents(farm):std::nullopt;
+}
+std::optional<BuildingContentsPage> contentsPage(const df3d_production::BuildingContentsSnapshot& snapshot,
+                                               uint32_t cursor,uint64_t expected) {
+  auto slice=df3d_production::pageBuildingContents(snapshot,cursor,expected,
+    [](const std::string& caption){return DF2UTF(caption);});
+  if(!slice)return std::nullopt;
+  BuildingContentsPage page;page.buildingId=snapshot.buildingId;page.revision=snapshot.revision;
+  page.completed=snapshot.completed;page.removing=snapshot.removing;
+  page.cursor=slice->cursor;page.total=slice->total;page.nextCursor=slice->nextCursor;
+  for(auto& row:slice->rows) {
+    df::item_flags flags;flags.whole=row.flags;
+    page.rows.push_back({row.id,row.role,std::move(row.caption),row.forbid,row.dump,row.melt,row.hidden,
+      row.canDump,row.canMelt,bool(flags.bits.in_job),bool(flags.bits.in_building)});
+  }
+  return page;
+}
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->action()==m::ManagementAction::FarmEdit && r->production() &&
+     r->production()->farm_operation()>=m::FarmOperation::ItemForbid) {
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    production.farmEditOutcome=m::FarmEditOutcome::Rejected;
+    const auto* q=r->production();bool entered=false;
+    try {
+      using A=df3d_production::BuildingItemAction;A action;
+      switch(q->farm_operation()) {
+      case m::FarmOperation::ItemForbid:action=A::Forbid;break;
+      case m::FarmOperation::ItemDump:action=A::Dump;break;
+      case m::FarmOperation::ItemMelt:action=A::Melt;break;
+      case m::FarmOperation::ItemHidden:action=A::Hidden;break;
+      default:publish();return;
+      }
+      const auto observe=[&]{return observeFarmContents(q->building_id());};
+      const auto before=observe();
+      if(before) {
+        auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
+          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(q->building_id()));
+          if(!farm)return false;
+          for(auto* held:farm->contained_items)if(held&&held->item&&held->item->id==q->item_id()) {
+            entered=true;return df3d_production::setBuildingItemFlag(held->item,action,q->item_value()!=0);
+          }
+          return false;
+        },observe);
+        mutated=edit.mutated;
+        using O=df3d_production::FarmEditOutcome;
+        if(edit.outcome==O::Completed) {
+          // Conversion/allocation can still fail after native effects. Until
+          // the selected item is in a bounded fresh page, grant no authority.
+          production.farmEditOutcome=m::FarmEditOutcome::Unknown;
+          const auto& receipt=*edit.receipt;
+          const auto item=std::find_if(receipt.rows.begin(),receipt.rows.end(),[&](const auto& row){return row.id==q->item_id();});
+          const auto index=static_cast<size_t>(item-receipt.rows.begin());
+          auto page=index<=UINT32_MAX?contentsPage(receipt,static_cast<uint32_t>(index),receipt.revision):std::nullopt;
+          if(page) {
+            production.contents=std::move(page);production.selectedBuilding=q->building_id();
+            production.contentsEdit=BuildingItemReceipt{q->item_id(),q->farm_operation(),q->item_value()};
+            production.farmEditOutcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
+          }
+        } else if(edit.outcome==O::Stale)production.farmEditOutcome=m::FarmEditOutcome::Stale;
+        else if(edit.outcome==O::Unknown)production.farmEditOutcome=m::FarmEditOutcome::Unknown;
+      }
+    }catch(...) {
+      production.contents.reset();production.contentsEdit.reset();status=m::ManagementStatus::Rejected;
+      if(entered||production.farmEditOutcome==m::FarmEditOutcome::Unknown)production.farmEditOutcome=m::FarmEditOutcome::Unknown;
+    }
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::FarmEdit) {
     message.clear();status=m::ManagementStatus::Rejected;production={};
     production.farmEditOutcome=m::FarmEditOutcome::Rejected;
@@ -2423,21 +2496,10 @@ void run(color_ostream& out) {
   if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->contents()) {
     message.clear();status=m::ManagementStatus::Rejected;production={};
     const auto* q=r->production();
-    auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(q->building_id()));
-    auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
-    auto snapshot=tile&&!tile->bits.hidden?df3d_production::buildingContents(farm):std::nullopt;
-    auto slice=snapshot?df3d_production::pageBuildingContents(*snapshot,q->cursor(),q->expected_revision(),
-      [](const std::string& caption){return DF2UTF(caption);}):std::nullopt;
-    if(slice) {
-      BuildingContentsPage page;page.buildingId=snapshot->buildingId;page.revision=snapshot->revision;
-      page.completed=snapshot->completed;page.removing=snapshot->removing;
-      page.cursor=slice->cursor;page.total=slice->total;page.nextCursor=slice->nextCursor;
-      for(auto& row:slice->rows) {
-        df::item_flags flags;flags.whole=row.flags;
-        page.rows.push_back({row.id,row.role,std::move(row.caption),row.forbid,row.dump,row.melt,row.hidden,
-          row.canDump,row.canMelt,bool(flags.bits.in_job),bool(flags.bits.in_building)});
-      }
-      production.selectedBuilding=page.buildingId;production.contents=std::move(page);status=m::ManagementStatus::Ok;
+    auto snapshot=observeFarmContents(q->building_id());
+    auto page=snapshot?contentsPage(*snapshot,q->cursor(),q->expected_revision()):std::nullopt;
+    if(page) {
+      production.selectedBuilding=page->buildingId;production.contents=std::move(page);status=m::ManagementStatus::Ok;
     }
     publish();return;
   }

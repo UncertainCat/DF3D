@@ -93,7 +93,9 @@ struct BuildingContentsPage {
   bool completed=false,removing=false;
   std::vector<BuildingContentsItem> rows;
 };
+struct BuildingItemReceipt { int32_t itemId=-1;df3d::mirror::FarmOperation operation=df3d::mirror::FarmOperation::Crop;int8_t value=-1; };
 struct ProductionState {
+  std::optional<BuildingItemReceipt> contentsEdit;
   std::optional<BuildingContentsPage> contents;
   df3d::mirror::FarmEditOutcome farmEditOutcome=df3d::mirror::FarmEditOutcome::None;
   std::optional<FarmSnapshot> farm;

@@ -118,6 +118,7 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
     case A::ProductionQueue: return require("building_id") && require("recipe");
     case A::ProductionJobEdit: return require("building_id") && require("job_id");
     case A::FarmEdit:
+        if(int64_t(data.get("farm_operation",0))>=6)return require("building_id") && require("expected_revision") && require("item_id") && require("item_value");
         if(!(require("building_id") && require("season") && require("expected_revision")))return false;
         if(int64_t(data.get("farm_operation",0))==0)return require("crop_id");
         if(int64_t(data.get("farm_operation",0))==2)return require("seasonal_fertilization");

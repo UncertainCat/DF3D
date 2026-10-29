@@ -83,6 +83,10 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   prod["selected_building"] = p.selectedBuilding;
   prod["created_job"] = p.createdJob;
   prod["detail"] = String::utf8(p.detail.c_str());
+  if(p.contentsEdit) {
+    Dictionary edit;edit["item_id"]=p.contentsEdit->itemId;edit["farm_operation"]=int(p.contentsEdit->operation);
+    edit["value"]=p.contentsEdit->value;prod["contents_edit"]=edit;
+  }
   if(p.contents) {
     const auto& page=*p.contents;Dictionary value;Array rows;
     value["building_id"]=page.buildingId;value["revision"]=int64_t(page.revision);
@@ -308,7 +312,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 }
 
 bool validateProductionShape(const Dictionary& data, String& error) {
-  if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization"}, error))return false;
+  if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization", "item_id", "item_value"}, error))return false;
   if(data.has("farm_name") && data["farm_name"].get_type()!=Variant::STRING) {error="Wrong management field type: farm_name";return false;}
   if(int64_t(data.get("farm_operation",0))==3 && !data.has("farm_name")) {error="Missing management field: farm_name";return false;}
   return managementRequiredFields(data, error);
@@ -340,7 +344,8 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.expectedRevision=uint64_t(n("expected_revision",0,0,INT64_MAX));
   if(data.has("contents") && data["contents"].get_type()!=Variant::BOOL){error="Wrong management field type: contents";return false;}
   value.contents=data.get("contents",false);
-  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,5));
+  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,9));
+  value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));value.itemValue=int8_t(n("item_value",-1,-1,1));
   String farmName=data.get("farm_name",String());
   const auto nameBytes=farmName.utf8();value.farmName.assign(nameBytes.get_data(),nameBytes.length());
   if(value.farmName.size()>90)valid=false;

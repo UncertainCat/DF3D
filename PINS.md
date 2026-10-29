@@ -22,6 +22,14 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management89 adds FarmOperation.ItemForbid/ItemDump/ItemMelt/ItemHidden with
+required item_id, explicit item_value and the displayed contents revision.
+These intents carry no season/crop/fertilizer/name fields. Only Completed grants
+a fresh contents page and typed receipt identifying the item, operation and
+observed desired value. Rejected/Stale/Unknown grant no contents authority.
+Rebuild/install bridge and viewer together on `Local\\df3d_management_v89`;
+management88 is incompatible. Other wire versions are unchanged.
+
 Management88 adds an explicit ProductionInspect contents read and optional
 BuildingContentsPage. Pages retain native order, complete-vector revision and
 continuation cursor; continuation requests require the same revision. Missing

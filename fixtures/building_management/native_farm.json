@@ -15198,5 +15198,133 @@
     },
     "coverage": "Protected matched bridge/model/Godot read transport. All40 rows agree with native caption/order/role/semantic flags; exact revision above2^53; offset read, stale continuation after native change, restored receipt. Seven native checks, paused clone, source/save manifests unchanged, owned unsaved exit. Core direct page-builder policy additionally covers70rows and encoded caption budget boundaries.",
     "limitations": "Farm-only read producer. No typed item write protocol or rendered contents controls. Native fixture has40 rows; larger lists and caption-budget extremes use deterministic policy tests, not live native artwork."
+  },
+  "contents_write_wire_reference": {
+    "capture": "build/areas-acceptance-20261028-225842",
+    "management_version": 89,
+    "bridge_sha256": "b882a2f93a0a109649c6eac37baecdc1066299fef659c9dc79bdc59e51dd95d9",
+    "extension_sha256": "e55b5aec5dde9d9ca869680bdd3573f304ea876fdc93908a70208bf882f72e1b",
+    "cases": [
+      {
+        "completed": 3,
+        "operation": 6,
+        "restored": true,
+        "stale": 1
+      },
+      {
+        "completed": 3,
+        "operation": 7,
+        "restored": true,
+        "stale": 1
+      },
+      {
+        "completed": 3,
+        "operation": 9,
+        "restored": true,
+        "stale": 1
+      }
+    ],
+    "rejected": 4,
+    "restored": true,
+    "initial_revision": "5801386183575262549",
+    "later_row_receipt": {
+      "cursor": 1,
+      "total": 40,
+      "revision": "2611765795724355117",
+      "first_row": {
+        "can_dump": true,
+        "can_melt": false,
+        "dump": false,
+        "forbid": false,
+        "hidden": true,
+        "id": 47486,
+        "in_building": true,
+        "in_job": false,
+        "melt": false,
+        "name": "sweet pod seeds",
+        "role": 2
+      }
+    },
+    "native_checks": [
+      {
+        "menu_vectors_unchanged": true,
+        "native_contents_equal": true,
+        "selections_unchanged": true,
+        "status": "passed",
+        "tab_unchanged": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "menu_vectors_unchanged": true,
+        "native_contents_equal": true,
+        "selections_unchanged": true,
+        "status": "passed",
+        "tab_unchanged": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "menu_vectors_unchanged": true,
+        "native_contents_equal": true,
+        "selections_unchanged": true,
+        "status": "passed",
+        "tab_unchanged": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "menu_vectors_unchanged": true,
+        "native_contents_equal": true,
+        "selections_unchanged": true,
+        "status": "passed",
+        "tab_unchanged": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "menu_vectors_unchanged": true,
+        "native_contents_equal": true,
+        "selections_unchanged": true,
+        "status": "passed",
+        "tab_unchanged": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "menu_vectors_unchanged": true,
+        "native_contents_equal": true,
+        "selections_unchanged": true,
+        "status": "passed",
+        "tab_unchanged": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "menu_vectors_unchanged": true,
+        "native_contents_equal": true,
+        "selections_unchanged": true,
+        "status": "passed",
+        "tab_unchanged": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "menu_vectors_unchanged": true,
+        "native_contents_equal": true,
+        "selections_unchanged": true,
+        "status": "passed",
+        "tab_unchanged": true,
+        "ui_scratch_unchanged": true
+      },
+      {
+        "menu_vectors_unchanged": true,
+        "selections_unchanged": true,
+        "status": "passed",
+        "tab_unchanged": true
+      }
+    ],
+    "hashes": {
+      "contents-edit-results.json": "82a0cda4c39735cc728c17e219591e71b773a215bfb31cac2d1b73080b98dcfd",
+      "fixture.json": "0ed1da3319e50d29594243af21ee3268829103982ba72217f31ab748692c090b",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "summary.txt": "2700165975f68815c97d605c56eca8e90d497ade1264b6282401d13fee99ac27"
+    },
+    "coverage": "Typed item write transport through Godot/model/native bridge; Forbid/Dump/Visibility each direction, same desired values, stale revisions, invalid targets, seed melting refusal, later-row receipt selection. Nine native effect/guard checks, full restoration, paused owned clone exits unsaved, two save manifests unchanged.",
+    "limitations": "Farm-only staged transport. Eligible melting and active jobs remain unverified. No rendered contents UI or item-edit disconnect/epoch lifecycle acceptance."
   }
 }

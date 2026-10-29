@@ -271,6 +271,7 @@ struct AreaState {
   int32_t paintedCount=-1,previewCount=-1;
 };
 struct ProductionRequest {
+  int32_t itemId=-1;int8_t itemValue=-1;
   bool contents=false;
   FarmOperation farmOperation=FarmOperation::Crop;
   int8_t seasonalFertilization=-1;
@@ -321,7 +322,9 @@ struct BuildingContentsPage {
   bool completed=false,removing=false;
   std::vector<BuildingContentsItem> rows;
 };
+struct BuildingItemReceipt { int32_t itemId=-1;FarmOperation operation=FarmOperation::Crop;int8_t value=-1; };
 struct ProductionState {
+  std::optional<BuildingItemReceipt> contentsEdit;
   std::optional<BuildingContentsPage> contents;
   FarmEditOutcome farmEditOutcome=FarmEditOutcome::None;
   std::optional<FarmSnapshot> farm;

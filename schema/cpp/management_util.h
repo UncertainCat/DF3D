@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 88;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v88";
+inline constexpr uint32_t kManagementVersion = 89;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v89";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -416,13 +416,18 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if (r.action()==ManagementAction::ProductionJobEdit && (p->job_id()<0 ||
         (p->cancel() && (p->repeat()!=-1 || p->suspend()!=-1)) ||
         (!p->cancel() && p->repeat()==-1 && p->suspend()==-1))) return "invalid job edit";
-    if(static_cast<uint8_t>(p->farm_operation())>5 || p->seasonal_fertilization() < -1 || p->seasonal_fertilization()>1)return "invalid farm operation";
+    if(static_cast<uint8_t>(p->farm_operation())>9 || p->seasonal_fertilization() < -1 || p->seasonal_fertilization()>1)return "invalid farm operation";
     if(p->farm_operation()==FarmOperation::Rename) {
       if(!p->farm_name() || p->farm_name()->size()>90 || p->farm_name()->str().find('\0')!=std::string::npos)return "invalid farm name";
     } else if(p->farm_name())return "unexpected farm name";
     if(r.action()!=ManagementAction::FarmEdit && (p->farm_operation()!=FarmOperation::Crop || p->seasonal_fertilization()!=-1))return "unexpected farm operation";
+    const bool itemEdit=p->farm_operation()>=FarmOperation::ItemForbid && p->farm_operation()<=FarmOperation::ItemHidden;
+    if(itemEdit) {
+      if(r.action()!=ManagementAction::FarmEdit || p->item_id()<0 || p->item_value()<0 || p->item_value()>1 ||
+         p->season()!=-1 || p->contents())return "invalid contained item intent";
+    } else if(p->item_id()!=-1 || p->item_value()!=-1)return "unexpected contained item intent";
     if(r.action()==ManagementAction::FarmEdit) {
-      if(p->season()<0)return "season required";
+      if(!itemEdit && p->season()<0)return "season required";
       if(p->farm_operation()!=FarmOperation::Crop && p->crop_id()!=-1)return "unexpected farm crop";
       if(p->farm_operation()==FarmOperation::SeasonalFertilization ? p->seasonal_fertilization()<0 : p->seasonal_fertilization()!=-1)return "invalid seasonal fertilization intent";
     }
@@ -1290,7 +1295,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
     if(const auto* page=p->contents()) {
-      if(s.action()!=ManagementAction::ProductionInspect || s.status()!=ManagementStatus::Ok ||
+      if((s.action()!=ManagementAction::ProductionInspect && s.action()!=ManagementAction::FarmEdit) || s.status()!=ManagementStatus::Ok ||
          page->building_id()<0 || page->building_id()!=p->selected_building() ||
          !page->revision() || page->revision()>INT64_MAX || !page->rows() || page->rows()->size()>64 ||
          page->cursor()>page->total() || page->rows()->size()>page->total()-page->cursor())return "invalid contents page";
@@ -1306,12 +1311,27 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(p->farm() || (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||
          (p->jobs() && p->jobs()->size()) || (p->crops() && p->crops()->size()))return "mixed contents response";
     }
+    if(const auto* edit=p->contents_edit()) {
+      if(s.action()!=ManagementAction::FarmEdit || s.status()!=ManagementStatus::Ok ||
+         p->farm_edit_outcome()!=FarmEditOutcome::Completed || !p->contents() || p->farm() ||
+         !p->contents()->completed() || p->contents()->removing() ||
+         edit->item_id()<0 || edit->value()<0 || edit->value()>1 ||
+         edit->operation()<FarmOperation::ItemForbid || edit->operation()>FarmOperation::ItemHidden)return "invalid contained item receipt";
+      const BuildingContentsItem* target=nullptr;
+      for(const auto* row:*p->contents()->rows())if(row->id()==edit->item_id())target=row;
+      if(!target)return "missing contained item receipt target";
+      const bool desired=edit->value()!=0;
+      const bool actual=edit->operation()==FarmOperation::ItemForbid?target->forbid():
+        edit->operation()==FarmOperation::ItemDump?target->dump():edit->operation()==FarmOperation::ItemMelt?target->melt():target->hidden();
+      if(actual!=desired)return "unconfirmed contained item value";
+    }
+    if(s.action()==ManagementAction::FarmEdit && p->contents() && !p->contents_edit())return "missing contained item receipt";
     const auto outcome=p->farm_edit_outcome();
     if(static_cast<uint8_t>(outcome)>4 || (outcome!=FarmEditOutcome::None && s.action()!=ManagementAction::FarmEdit))return "invalid farm edit outcome";
     if(s.action()==ManagementAction::FarmEdit) {
       if(s.status()==ManagementStatus::Ok && outcome!=FarmEditOutcome::Completed)return "missing farm completion";
-      if(outcome==FarmEditOutcome::Completed && (s.status()!=ManagementStatus::Ok || !p->farm()))return "invalid farm completion";
-      if(outcome!=FarmEditOutcome::Completed && p->farm())return "unconfirmed farm authority";
+      if(outcome==FarmEditOutcome::Completed && (s.status()!=ManagementStatus::Ok || (!p->farm() && !p->contents_edit())))return "invalid farm completion";
+      if(outcome!=FarmEditOutcome::Completed && (p->farm() || p->contents() || p->contents_edit()))return "unconfirmed farm authority";
       if((p->crops() && p->crops()->size()) || (p->seasonal_crops() && p->seasonal_crops()->size()))return "legacy farm edit response";
     }
     if(const auto* f=p->farm()) {

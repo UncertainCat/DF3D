@@ -3689,6 +3689,11 @@
       "reason": "Protected owned unsaved clone: tools/smoke/areas_acceptance.ps1 -FarmEditOnly verifies crop edits, stale revisions, refusals, native readback and menu guards. Requires a new -SaveId df3d-areas-*; no rendered UI or disconnect claim."
     },
     {
+      "path": "presentations/godot/project/tests/farm_contents_live.gd",
+      "status": "manual",
+      "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmContentsOnly verifies typed contents edits, stale/invalid/eligibility refusal, repeated desired values, fresh native receipts and byte-for-byte UI guards. No rendered UI or disconnect claim."
+    },
+    {
       "path": "presentations/godot/project/tests/farm_read_live.gd",
       "status": "manual",
       "reason": "Protected owned unsaved clone: tools/smoke/areas_acceptance.ps1 -FarmReadOnly verifies native farm snapshot and paged contents transport, exact revisions, offset reads, stale contents continuation, restoration, invalid targets and native menu/selection guards. Requires a new -SaveId df3d-areas-*; no rendered farm UI claim."

@@ -63,7 +63,32 @@ hashes. Core `building-contents-pages` passes; direct page-policy tests cover70
 rows, empty contents, invalid cursors/revisions, encoded byte boundaries and
 oversized caption refusal. Codec tests reject malformed/mixed pages and preserve
 revisions above2^53. This is read transport acceptance, not rendered contents UI
-or typed item-write acceptance. The diagnostic write transaction follows below.
+or typed item-write acceptance. The native item transaction and its separate
+wire acceptance follow below.
+
+Management89 carries ItemForbid/ItemDump/ItemMelt/ItemHidden as explicit
+FarmEdit operations with item ID, desired value and exact contents revision.
+These carry no season/crop/fertilizer/name fields. The native transaction
+re-finds the target and observes fresh contents after execution. Completed
+replies include a bounded page starting at the affected item and a typed receipt
+with matching item/operation/value. Validation requires a completed,
+non-removing building and the observed desired flag in that page. Rejected,
+Stale and Unknown replies grant no contents authority; uncertain effects are
+never replayed. This transport currently targets farm plots and remains staged.
+
+`areas_acceptance.ps1 -FarmContentsOnly` exercises this wire through the actual
+Godot/model client. Protected225842 on2026-10-28 passes both directions of
+Forbid/Dump/Visibility, repeated desired values, stale revisions, missing item/
+building and nonfarm refusal, and ineligible seed melting. A second-row edit
+verifies that its receipt page starts at that row, then a full read verifies
+restoration. Nine native checks compare all rows with actual item flags and
+native captions/eligibility and preserve view_sheets/plotinfo byte-for-byte.
+Both save manifests remain unchanged; owned paused DF146464 exits unsaved.
+`native_farm.json.contents_write_wire_reference` records bounded evidence and
+hashes. Core `building-item-wire-guarded` passes malformed intent/receipt tests,
+including wrong values, missing targets, incomplete/removing buildings and
+unconfirmed authority. Eligible melting, active-job cleanup, rendered controls
+and item-edit disconnect/epoch lifecycle remain unverified.
 
 Native farm selection capture215347 on2026-10-28 records farm227 and its
 co-located crop item48436 as BUILDING then ITEM alternatives. Clicking the item
@@ -131,7 +156,8 @@ entry. After entry the transaction re-finds the building and observes fresh
 contents; missing targets, failed observations or exceptions report Unknown
 without replay. Native cleanup may alter other flags/jobs; completion requires
 the desired value in the fresh valid receipt, not an invented one-bit-only rule.
-This bridge transaction is not yet connected to the management wire or public UI.
+This transaction backs management89 item writes; public contents UI remains
+unfinished.
 
 Protected222438 repeats all six native-click comparisons through this revision
 transaction, verifies no-entry repeated values and a real stale revision after
@@ -151,7 +177,7 @@ targets refuse. Full view-sheet and plotinfo byte guards remain unchanged.
 Owned DF185836 exits unsaved with source-save preservation. The run passes
 cleanly; `contents_adapter_reference` records six comparisons and the installed
 management87 bridge hash. Eligible melting and active-job effects remain
-unverified; the farm contents wire, model and controls are still unfinished.
+unverified; the farm contents controls remain unfinished.
 
 DF53.16 sheet dispatch1b0211 checks build stage and calls virtual
 `queueDestroy` (slot45, call1b0237) for a built farm. The existing DFHack

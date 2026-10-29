@@ -23,7 +23,19 @@ if request.op=='change' or request.op=='restore' then
 elseif request.op=='header-change' or request.op=='header-restore' then
  state.farm.name=request.op=='header-change' and 'wire farm' or state.name
  local text,code=dfhack.run_command_silent('df3d','farm-header-read',tostring(state.farm.id));assert(code==0,text);result.header=json.decode(text)
-elseif request.op=='contents-change' or request.op=='contents-restore' then
+elseif request.op=='contents-verify' then
+ local c=assert(_G.df3d_contents_fixture)
+ local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(c.farm.id));assert(code==0,text)
+ local actual=json.decode(text);assert(#actual.rows==#request.rows,'contents size differs')
+ for index,row in ipairs(request.rows)do
+  local live=actual.rows[index];local item=c.farm.contained_items[index-1].item
+  assert(row.id==live.id and row.role==live.role_value and row.name==live.name,'contents receipt identity/name differs')
+  for _,key in ipairs{'forbid','dump','melt','hidden','in_job','in_building'}do assert(row[key]==item.flags[key],'contents receipt flag differs: '..key)end
+  assert(row.can_dump==live.can_dump and row.can_melt==live.can_melt,'contents eligibility differs')
+ end
+ for _,guard in ipairs(_G.df3d_contents_guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'contents edit changed UI scratch')end
+ result.native_contents_equal=true;result.ui_scratch_unchanged=true
+elseif request.op=='contents-change'  or request.op=='contents-restore' then
  local c=assert(_G.df3d_contents_fixture)
  local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(c.farm.id));assert(code==0,text)
  local revision=json.decode(text).revision

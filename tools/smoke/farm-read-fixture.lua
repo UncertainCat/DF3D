@@ -34,5 +34,10 @@ _G.df3d_farm_read_fixture={farm=farm,name=farm.name,seasons=state.seasons,frame=
  tab=df.global.game.main_interface.view_sheets.active_sub_tab,
  editing=df.global.game.main_interface.view_sheets.building_entering_nickname,
  draft=df.global.game.main_interface.view_sheets.building_entering_str}
+_G.df3d_contents_guards={}
+for _,object in ipairs{df.global.game.main_interface.view_sheets,df.global.plotinfo}do
+ local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+ dfhack.internal.memmove(bytes,address,size);table.insert(_G.df3d_contents_guards,{size=size,address=address,bytes=bytes})
+end
 local f=assert(io.open(out..'/fixture.json','w'));f:write(json.encode(state));f:close()
 print('FIXTURE_READY')

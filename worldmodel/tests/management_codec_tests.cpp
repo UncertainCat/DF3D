@@ -3437,3 +3437,38 @@ TEST_CASE("contents pages preserve native order and reject incomplete or ambiguo
   flatbuffers::FlatBufferBuilder b;auto p=wire::CreateProductionState(b);b.Finish(p);
   CHECK_FALSE(codec::decodeProduction(flatbuffers::GetRoot<wire::ProductionState>(b.GetBufferPointer())).contents);
 }
+
+TEST_CASE("contained item wire intents require explicit values and independent revisions") {
+  for(auto operation:{wm::FarmOperation::ItemForbid,wm::FarmOperation::ItemDump,wm::FarmOperation::ItemMelt,wm::FarmOperation::ItemHidden})
+  for(int fault=0;fault<11;++fault) {
+    CAPTURE(fault);wm::ManagementRequest request;request.action=wm::ManagementAction::FarmEdit;
+    auto& p=request.production;p.buildingId=968;p.farmOperation=operation;p.itemId=47492;p.itemValue=1;p.expectedRevision=9007199254740993ULL;
+    if(fault==1)p.itemId=-1;if(fault==2)p.itemValue=-1;if(fault==3)p.itemValue=2;
+    if(fault==4)p.expectedRevision=0;if(fault==5)p.season=0;if(fault==6)p.cursor=1;
+    if(fault==7)p.contents=true;if(fault==8)p.farmName="mixed";
+    if(fault==9)request.action=wm::ManagementAction::ProductionInspect;
+    if(fault==10)p.farmOperation=wm::FarmOperation::Crop;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){CHECK(value->production()->item_id()==47492);CHECK(value->production()->item_value()==1);}
+  }
+}
+TEST_CASE("contained item completion grants authority only for the observed target and value") {
+  for(int fault=0;fault<12;++fault) {
+    CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    auto row=wire::CreateBuildingContentsItem(b,47492,2,b.CreateString("native name"),fault!=1,false,false,false,true,false,false,true);
+    auto page=wire::CreateBuildingContentsPage(b,968,17,0,0,1,fault!=10,fault==11,b.CreateVector(std::vector{row}));
+    auto edit=wire::CreateBuildingItemReceipt(b,fault==2?47493:47492,
+      fault==3?wire::FarmOperation::Crop:wire::FarmOperation::ItemForbid,fault==4?-1:1);
+    wire::ProductionStateBuilder p(b);p.add_selected_building(968);
+    if(fault!=5)p.add_contents(page);if(fault!=6)p.add_contents_edit(edit);
+    p.add_farm_edit_outcome(fault==7?wire::FarmEditOutcome::Unknown:wire::FarmEditOutcome::Completed);
+    auto prod=p.Finish();wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(fault==8?wire::ManagementAction::ProductionInspect:wire::ManagementAction::FarmEdit);
+    state.add_status(fault==9?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);state.add_production(prod);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(fault==0){const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.contentsEdit);CHECK(decoded.contentsEdit->itemId==47492);CHECK(decoded.contentsEdit->value==1);}
+  }
+}

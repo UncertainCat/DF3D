@@ -23,6 +23,10 @@ enum class FarmOperation : uint8_t {
   Rename = 3,
   Remove = 4,
   CancelRemoval = 5,
+  ItemForbid = 6,
+  ItemDump = 7,
+  ItemMelt = 8,
+  ItemHidden = 9,
 };
 enum class ManagementAction : uint8_t {
   Catalog = 0,

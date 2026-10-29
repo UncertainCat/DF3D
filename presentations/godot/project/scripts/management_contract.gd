@@ -21,6 +21,10 @@ enum FarmOperation {
 	Rename = 3,
 	Remove = 4,
 	CancelRemoval = 5,
+	ItemForbid = 6,
+	ItemDump = 7,
+	ItemMelt = 8,
+	ItemHidden = 9,
 }
 enum ManagementAction {
 	Catalog = 0,

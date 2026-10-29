@@ -16,6 +16,7 @@ var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
 var page:=6
+var cell_first:=0
 var input_allowed: Callable
 
 func configure(source,model,help=null) -> void:
@@ -27,14 +28,23 @@ func configure(source,model,help=null) -> void:
 	clip_contents=true
 	scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();add_child(scrollbar);scrollbar.configure(source)
 	scrollbar.input_allowed=can_scroll
-	scrollbar.row_changed.connect(func(value):state.seek(value))
+	scrollbar.row_changed.connect(_scroll_to_cell)
 	state.changed.connect(refresh);set_capacity(6)
 
 func set_capacity(value: int) -> void:
 	if page==maxi(0,value) and size==Vector2(472,maxi(0,value)*36):return
 	page=maxi(0,value);size=Vector2(472,page*36)
-	scrollbar.position=Vector2(456,0);scrollbar.size=Vector2(16,page*36);scrollbar.page=page
+	scrollbar.position=Vector2(456,0);scrollbar.size=Vector2(16,page*36);scrollbar.page=page*3
 	refresh()
+
+func _scroll_to_cell(value: int) -> void:
+	cell_first=value
+	var cursor:=floori(cell_first/3.0)
+	if cursor!=int(state.snapshot.get("cursor",0)):state.seek(cursor)
+	else:refresh()
+
+func row_offset() -> int:return (cell_first%3)*12
+func visible_count() -> int:return mini(page+(1 if row_offset()>0 else 0),rows.size())
 
 func permitted() -> bool:return not input_allowed.is_valid() or input_allowed.call()
 func available() -> bool:
@@ -46,19 +56,22 @@ func refresh() -> void:
 	rows=[];icons.clear()
 	if state==null:return
 	rows=state.rows()
-	for row in rows.slice(0,page):
+	var cursor:=int(state.snapshot.get("cursor",0))
+	if state.snapshot.is_empty() or (state.phase!=state.Phase.Reading and floori(cell_first/3.0)!=cursor):cell_first=cursor*3
+	if state.phase==state.Phase.Reading and floori(cell_first/3.0)!=cursor:rows=[]
+	for row in rows.slice(0,visible_count()):
 		# This provider is verified for plant seeds; other kinds remain unfinished.
 		var material: PackedStringArray=String(row.material_token).split(":")
 		if row.item_type==53 and material.size()==3 and material[0]=="PLANT" and material[2]=="SEED":
 			icons[row.id]=world.farm_seed_icon(material[1])
-	scrollbar.set_rows(int(state.snapshot.get("total",0)),int(state.snapshot.get("cursor",0)))
+	scrollbar.set_rows(int(state.snapshot.get("total",0))*3,cell_first)
 	scrollbar.visible=page>0 and int(state.snapshot.get("total",0))>page
 	if not can_scroll():scrollbar.dragging=false
 	queue_redraw()
 
 func controls_offset() -> int:return 0 if int(state.snapshot.get("total",0))>page else 16
 
-func control_rect(index: int,control: int) -> Rect2:return Rect2(296+controls_offset()+control*24,index*36,24,36)
+func control_rect(index: int,control: int) -> Rect2:return Rect2(296+controls_offset()+control*24,index*36-row_offset(),24,36)
 func eligible(row: Dictionary,control: int) -> bool:
 	return (control!=3 or row.can_dump) and (control!=4 or row.can_melt)
 
@@ -67,8 +80,8 @@ func _leave_hover() -> void:
 	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 
 func help_at(point: Vector2) -> String:
-	var index:=floori(point.y/36)
-	if index<0 or index>=mini(page,rows.size()):return ""
+	var index:=floori((point.y+row_offset())/36)
+	if index<0 or index>=visible_count():return ""
 	var row: Dictionary=rows[index]
 	for control in 6:
 		if not control_rect(index,control).has_point(point) or not eligible(row,control):continue
@@ -92,8 +105,8 @@ func _gui_input(event: InputEvent) -> void:
 		if can_scroll():scrollbar.move_to(scrollbar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1))
 		accept_event();return
 	if not available() or not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT:return
-	var index:=floori(event.position.y/36)
-	if index<0 or index>=mini(page,rows.size()):return
+	var index:=floori((event.position.y+row_offset())/36)
+	if index<0 or index>=visible_count():return
 	var row: Dictionary=rows[index]
 	for control in range(1,6):
 		if not control_rect(index,control).has_point(event.position) or not eligible(row,control):continue
@@ -109,12 +122,12 @@ func patch(texture: Texture2D,origin: Vector2,columns: int) -> void:
 
 func _draw() -> void:
 	if state==null or state.snapshot.is_empty():return
-	for index in mini(page,rows.size()):
-		var row: Dictionary=rows[index];var top:=Vector2(0,index*36)
+	for index in visible_count():
+		var row: Dictionary=rows[index];var top:=Vector2(0,index*36-row_offset())
 		patch(art.texture("BUTTON_RECTANGLE"),top,57+controls_offset()/8)
 		patch(picture.texture(false),top,5)
 		var icon: Texture2D=icons.get(row.id)
-		if icon!=null:draw_texture_rect(icon,Rect2(top+Vector2(2,2),Vector2(32,32)),false)
+		if icon!=null and top.y>=0 and top.y+36<=size.y:draw_texture_rect(icon,Rect2(top+Vector2(2,2),Vector2(32,32)),false)
 		var reserved:=3 if row.in_job or row.in_building else 0
 		var name: String=row.name
 		if name.length()>=34+controls_offset()/8-reserved:name=name.left(30+controls_offset()/8-reserved)+"..."

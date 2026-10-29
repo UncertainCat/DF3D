@@ -20,17 +20,19 @@ func run() -> void:
 	var model:=Contents.new()
 	var view=preload("res://scripts/farm_contents_view.gd").new();root.add_child(view);view.configure(world,model)
 	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json"))
-	var cases: Array=fixture.contents_rows_reference.cases+fixture.contents_short_reference.cases
+	var cases: Array=fixture.contents_rows_reference.cases+fixture.contents_short_reference.cases+fixture.contents_cell_scroll_reference.cases
 	for sample in cases:
-		model.snapshot={"rows":sample.rows.duplicate(true),"cursor":0,"total":int(sample.total),"completed":true,"removing":false}
+		model.snapshot={"rows":sample.rows.duplicate(true),"cursor":int(sample.get("cursor",0)),"total":int(sample.total),"completed":true,"removing":false}
 		for row in model.snapshot.rows:
 			for key in ["id","role","item_type"]:row[key]=int(row[key])
+		view.cell_first=int(sample.get("cell_first",0))
 		model.changed.emit()
 		await process_frame;await RenderingServer.frame_post_draw
 		var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
 		image.save_png(ProjectSettings.globalize_path("res://../../../build/contents-"+sample.name+"-viewer.png"))
 		var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_region(Rect2i(0,0,int(sample.get("comparison_width",472)),216)).get_data())
 		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native contents pixels differ: "+sample.name);return
+	view.cell_first=0;model.snapshot.cursor=0
 	model.snapshot.total=40
 	model.snapshot.rows=cases[0].rows.duplicate(true)
 	for row in model.snapshot.rows:
@@ -48,10 +50,12 @@ func run() -> void:
 	model.snapshot.rows[0].can_melt=false;model.changed.emit()
 	var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true;wheel.position=Vector2(150,18)
 	view._gui_input(wheel)
-	if model.calls!=[["seek",1]]:fail("Contents row wheel did not seek");return
-	model.calls.clear();view.scrollbar.set_rows(40,0);view.scrollbar._gui_input(wheel)
-	if model.calls!=[["seek",1]]:fail("Contents scrollbar wheel did not seek");return
-	model.calls.clear();model.changed.emit()
+	if not model.calls.is_empty() or view.cell_first!=1:fail("Contents wheel must move one cell locally");return
+	view.scrollbar._gui_input(wheel)
+	if not model.calls.is_empty() or view.cell_first!=2:fail("Contents bar wheel must move one cell locally");return
+	view._gui_input(wheel)
+	if model.calls!=[["seek",1]]:fail("Contents third cell must seek next item");return
+	model.calls.clear();view.cell_first=0;model.changed.emit()
 	view.view_requested.connect(func(id):model.calls.append(["view",id]))
 	for control in range(1,6):click(view.control_rect(0,control).get_center())
 	if model.calls!=[["view",47492],[47492,6,true],[47492,7,true],[47492,9,true]]:fail("Contents explicit intents/eligibility differ: "+str(model.calls));return

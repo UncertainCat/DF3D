@@ -169,21 +169,22 @@ func contents_scene() -> void:
 	if not check(owner.contents.snapshot==initial,"rendered item controls did not restore contents"):return
 	await pointer(view.get_global_transform_with_canvas()*Vector2(464,210))
 	if not await contents_ready():return
-	if not check(owner.contents.snapshot.cursor==1 and view.rows[0].id==initial.rows[1].id,"contents down arrow did not page native order"):return
+	if not check(owner.contents.snapshot.cursor==0 and view.cell_first==1 and view.rows[0].id==initial.rows[0].id,"contents down arrow did not move one cell"):return
 	await capture("contents_scrolled")
 	await pointer(view.get_global_transform_with_canvas()*Vector2(464,6))
 	if not await contents_ready():return
 	if not check(owner.contents.snapshot==initial,"contents up arrow did not restore viewport"):return
 	for x in [150,464]:
-		for button in [MOUSE_BUTTON_WHEEL_DOWN,MOUSE_BUTTON_WHEEL_UP]:
-			var wheel:=InputEventMouseButton.new();wheel.button_index=button;wheel.pressed=true
+		for cell in [1,2,3,2,1,0]:
+			var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN if cell>view.cell_first else MOUSE_BUTTON_WHEEL_UP;wheel.pressed=true
 			wheel.position=view.get_global_transform_with_canvas()*Vector2(x,54);root.push_input(wheel,true)
 			if not await contents_ready():return
-			var cursor:=1 if button==MOUSE_BUTTON_WHEEL_DOWN else 0
-			if not check(owner.contents.snapshot.cursor==cursor and view.rows[0].id==initial.rows[cursor].id,"contents wheel order differs"):return
-			await native("contents-verify",{"rows":owner.contents.rows(),"cursor":owner.contents.snapshot.cursor})
+			var cursor:=floori(cell/3.0)
+			if not check(view.cell_first==cell and owner.contents.snapshot.cursor==cursor and view.rows[0].id==initial.rows[cursor].id,"contents cell wheel order differs"):return
+			await native("contents-verify",{"rows":owner.contents.rows(),"cursor":cursor})
 			if stopped:return
-	if not check(owner.contents.snapshot==initial,"contents wheel did not restore viewport"):return
+			await capture("contents_cell_"+str(x)+"_"+str(cell))
+	if not check(owner.contents.snapshot==initial and view.cell_first==0,"contents wheel did not restore viewport"):return
 	owner.close_panel();await process_frame
 	if not check(owner.contents.snapshot.is_empty() and view.rows.is_empty() and not view.scrollbar.dragging,"closed farm retained contents"):return
 	if not check(not scene._fortress_hud.native_help.visible,"closed contents retained hover"):return

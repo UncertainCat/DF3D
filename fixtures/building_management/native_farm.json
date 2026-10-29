@@ -12215,5 +12215,35 @@
       }
     ],
     "result_sha256": "311800ca532f0901eb9e59dd1dd0aa5153906d14d0f1d57d16e79e32ad6305b1"
+  },
+  "rename_workflow_reference": {
+    "capture": "build/areas-acceptance-20261028-200938",
+    "status": "passed",
+    "owned_df_pid": 117184,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "results": {
+      "completed_observers": 15,
+      "display_order_retained": true,
+      "finished_typing_drains_before_read": true,
+      "initial_current_tab": true,
+      "native_checks": 21,
+      "queued_rename_retired": true,
+      "queued_tab_change_no_effects": true,
+      "rename_and_clear": true,
+      "sent_rename_effect_without_old_observer": true,
+      "sent_tab_change_effect_without_old_observer": true,
+      "stale_external_change_refused": true,
+      "typed_controller_enter_close_tab": true
+    },
+    "evidence_sha256": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "farm-controller-results.json": "4ec01c930b9ce3a77316d5f6a28d5d673091745fa90b7288eeca78600f5cbf18",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
+    },
+    "limitations": "Entry/controller typing lifecycle with native readback, not actual main-scene keyboard or Escape/right-click routing; real window Unicode remains unverified."
   }
 }

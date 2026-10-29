@@ -13,6 +13,7 @@ var row_order: Array[int]=[]
 var ticket:=0
 var generation:=0
 var _initial_current:=false
+var name_session
 
 func configure(source) -> void:
 	dispose();service=source
@@ -25,6 +26,9 @@ func dispose() -> void:
 
 func close() -> void:
 	generation+=1
+	# Typed intent belongs to the service even after this observer retires.
+	var previous_name=name_session;name_session=null
+	if previous_name!=null:previous_name.finish()
 	var previous:=ticket
 	ticket=0;building_id=-1;season=-1;snapshot={};row_order.clear();_initial_current=false;phase=Phase.Closed
 	if service!=null and previous!=0:service.detach(previous)
@@ -46,8 +50,34 @@ func select_season(selected: int) -> void:
 	open(building_id,selected)
 
 func refresh() -> void:
-	if building_id<0 or ticket!=0 or phase in [Phase.Closed,Phase.Unavailable]:return
+	if building_id<0 or ticket!=0 or name_session!=null or phase in [Phase.Closed,Phase.Unavailable]:return
 	_read()
+
+func begin_name_entry() -> bool:
+	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("removing",true):return false
+	var owner:=generation
+	var owned=load("res://scripts/farm_rename_session.gd").new()
+	service.add_child(owned);owned.configure(service,snapshot)
+	if owned.stopped:return false
+	name_session=owned;phase=Phase.Applying
+	owned.changed.connect(func(observed):
+		if owner!=generation or name_session!=owned:return
+		_accept_snapshot(observed);phase=Phase.Applying;changed.emit();applied.emit())
+	owned.finished.connect(func():
+		if owner!=generation or name_session!=owned:return
+		name_session=null;phase=Phase.Ready;changed.emit())
+	owned.failed.connect(func(result):
+		if owner!=generation or name_session!=owned:return
+		name_session=null
+		var outcome: int=result.get("production",{}).get("farm_edit_outcome",C.FarmEditOutcome.None)
+		_fail(Phase.Unknown if result.get("outcome","")=="unknown" or outcome==C.FarmEditOutcome.Unknown else Phase.Stale if outcome==C.FarmEditOutcome.Stale else Phase.Rejected))
+	changed.emit();return true
+
+func edit_name_entry(value: String) -> void:
+	if name_session!=null:name_session.edit(value)
+
+func finish_name_entry() -> void:
+	if name_session!=null:name_session.finish()
 
 func _read() -> void:
 	snapshot={};row_order.clear();phase=Phase.Reading
@@ -140,6 +170,11 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 		_initial_current=false
 		if observed.current_season!=season:
 			season=observed.current_season;_read();return
+	_accept_snapshot(observed);phase=Phase.Ready
+	changed.emit()
+	if editing:applied.emit()
+
+func _accept_snapshot(observed: Dictionary) -> void:
 	# A successful edit may return a freshly sorted provider list. Native keeps
 	# existing entry positions until the tab rebuilds, so presentation order is
 	# separate from the untouched snapshot/revision used by the next edit.
@@ -150,6 +185,4 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 		if present.has(id):retained.append(id)
 	for row in observed.choices:
 		if row.id not in retained:retained.append(row.id)
-	row_order=retained;snapshot=observed.duplicate(true);phase=Phase.Ready
-	changed.emit()
-	if editing:applied.emit()
+	row_order=retained;snapshot=observed.duplicate(true)

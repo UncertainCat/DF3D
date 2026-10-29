@@ -44,9 +44,30 @@ GPU has only the known thread/device-finalize/shutdown-object diagnostics.
 The input test covers append/backspace, both Enter keys,30-byte truncation,
 ignored navigation/released/modified keys, closed-entry input and the unchanged
 20-byte area limit. These captures establish ASCII interface-token behavior,
-not real window Unicode input. The sheet editor still needs its owner connection
-to the service-owned rename session and main-scene lifecycle acceptance before
-exposure; view signals alone do not establish successful rename effects.
+not real window Unicode input.
+
+The real farm model now owns the sheet's rename session reference. Beginning
+entry locks conflicting edits and refreshes; confirmed receipts update names
+and revisions while keeping the lock until finishing drains the final draft.
+Closing or selecting a different tab retires the observer by generation, while
+the service-owned session preserves explicit typed changes ahead of later reads.
+Failure and epoch changes clear authority without replay. The sheet connects
+its rename button, edited and Enter signals to this model; destroying the view
+finishes the session. Local keyboard routing remains an explicit sheet API.
+
+`farm_name_workflow_test` covers these transitions, including queued/sent closure,
+replacement targets, tab changes, failures, epochs and unchanged finish. Core,
+that test and existing farm state/session tests pass in `build/qa/farm-name-workflow`.
+The GPU owner check in `build/qa/farm-name-owner-final` exercises the actual rename button, sheet key-input API,
+Enter while writes drain, replacement-sheet isolation and view retirement.
+Existing sheet pixel comparisons still pass with only the known diagnostics.
+Protected `areas-acceptance-20261028-200938 -FarmControllerOnly` feeds typed input
+through the entry and real controller, finishes/closes/changes tabs with pending
+writes, checks native names/captions and clears the name after each case.
+All21 native checks pass,15 current observers complete, both save manifests stay
+unchanged and owned DF117184 exits unsaved. `rename_workflow_reference` retains
+the evidence. This is controller/isolated-sheet acceptance; main-scene keyboard,
+Escape/right-click routing and real window Unicode remain unfinished.
 
 ## Farm sheet composition verification
 

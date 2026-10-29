@@ -122,6 +122,27 @@ func exercise() -> void:
 	if not await settled(Farm.Phase.Ready):return
 	await native("verify",{"seasons":seasons,"name":""})
 	if stopped:return
+	var entry=preload("res://scripts/farm_name_entry.gd").new();root.add_child(entry)
+	entry.edited.connect(farm.edit_name_entry);entry.submitted.connect(farm.finish_name_entry)
+	for ending in ["enter","close","tab"]:
+		entry.begin(farm.snapshot.custom_name)
+		if not check(farm.begin_name_entry(),"live name workflow could not begin"):return
+		for byte in "typed farm".to_utf8_buffer():
+			var event:=InputEventKey.new();event.pressed=true;event.unicode=byte;entry.feed_key(event)
+			if byte==116:actions.poll()
+		entry.finish()
+		if ending=="enter":farm.finish_name_entry()
+		elif ending=="close":farm.close();farm.open(id,1)
+		else:farm.select_season(2)
+		if not await settled(Farm.Phase.Ready):return
+		if not check(farm.snapshot.custom_name=="typed farm" and farm.snapshot.header_name=="Typed farm","live typed name was lost or misformatted"):return
+		await native("verify",{"seasons":seasons,"name":"typed farm"})
+		if stopped:return
+		farm.rename("")
+		if not await settled(Farm.Phase.Ready):return
+		await native("verify",{"seasons":seasons,"name":""})
+		if stopped:return
+	entry.queue_free()
 	farm.open(int(fixture.nonfarm),0)
 	if not await settled(Farm.Phase.Rejected):return
 	farm.dispose();actions.free()
@@ -129,4 +150,4 @@ func exercise() -> void:
 		"sent_tab_change_effect_without_old_observer":true,"display_order_retained":true,
 		"stale_external_change_refused":true,"rename_and_clear":true,"queued_rename_retired":true,
 		"sent_rename_effect_without_old_observer":true,"finished_typing_drains_before_read":true,
-		"native_checks":handshake,"completed_observers":applied_count})
+		"typed_controller_enter_close_tab":true,"native_checks":handshake,"completed_observers":applied_count})

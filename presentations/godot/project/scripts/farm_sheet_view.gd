@@ -25,6 +25,10 @@ func configure(source,model) -> void:
 	name_entry.edited.connect(func(value):name_edited.emit(value))
 	name_entry.submitted.connect(func():name_submitted.emit())
 	name_entry.caption_changed.connect(queue_redraw)
+	if state.has_method("begin_name_entry"):
+		rename_requested.connect(_begin_owned_rename)
+		name_edited.connect(state.edit_name_entry)
+		name_submitted.connect(_finish_owned_rename)
 	state.changed.connect(refresh);refresh()
 
 func allowed() -> bool:return not input_allowed.is_valid() or input_allowed.call()
@@ -41,6 +45,7 @@ func refresh() -> void:
 	removing=state.snapshot.get("removing",false)
 	body.visible=not removing
 	if removing:body.scrollbar.dragging=false;finish_rename()
+	if state.snapshot.is_empty():finish_rename()
 	if not state.snapshot.is_empty():current_season=int(state.snapshot.current_season)
 	queue_redraw()
 
@@ -56,6 +61,12 @@ func finish_rename() -> void:
 
 func feed_name_key(event: InputEventKey) -> void:
 	if allowed() and not removing:name_entry.feed_key(event)
+
+func _begin_owned_rename() -> void:
+	if begin_rename() and not state.begin_name_entry():finish_rename()
+
+func _finish_owned_rename() -> void:
+	finish_rename();state.finish_name_entry()
 
 func tab_rect(season: int) -> Rect2:return Rect2(8+season*120,60,112 if season==3 else 120,24)
 func cancel_rect() -> Rect2:return Rect2(16,132,192,36)
@@ -122,4 +133,5 @@ func draw_removal() -> void:
 	font.draw_string(get_canvas_item(),Vector2(32,156),"Cancel removal",HORIZONTAL_ALIGNMENT_LEFT,-1,12,body.colors[12])
 
 func _exit_tree() -> void:
+	if state!=null and state.has_method("finish_name_entry"):state.finish_name_entry()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

@@ -9,6 +9,24 @@
   },
   "checks": [
     {
+      "id": "farm_name_workflow_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/farm_name_workflow_capture.gd",
+      "completion": "^FARM_NAME_WORKFLOW_CAPTURE_PASS$",
+      "timeout": 60,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
+      "id": "farm_name_workflow_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/farm_name_workflow_test.gd",
+      "completion": "^FARM_NAME_WORKFLOW_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "farm_name_entry_test",
       "lane": "core",
       "kind": "godot",

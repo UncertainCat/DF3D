@@ -11,14 +11,19 @@ func run() -> void:
 	if not world.load_assets(install):fail("Farm artwork assets unavailable");return
 	if world.farm_crop_icon("")!=null or world.farm_crop_icon("A".repeat(129))!=null:
 		fail("Invalid farm raw identity accepted");return
+	if world.farm_seed_icon("")!=null or world.farm_seed_icon("A".repeat(129))!=null:
+		fail("Invalid seed raw identity accepted");return
 	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json"))
 	var source:=Image.load_from_file(install.path_join("data/vanilla/vanilla_plants_graphics/graphics/images/plant_standard.png"))
 	var background:=Color8(73,56,74)
 	var canvas:=Control.new();root.add_child(canvas)
 	var icons: Array=[]
-	for i in fixture.artwork_reference.crops.size():
-		var row: Dictionary=fixture.artwork_reference.crops[i]
-		var icon: Texture2D=world.farm_crop_icon(row.raw_id)
+	var crops: Array=fixture.artwork_reference.crops
+	var rows: Array=crops+fixture.contents_seed_art_reference.seeds
+	var references: Array=fixture.artwork_pixel_reference.crops+fixture.contents_seed_art_reference.seeds
+	for i in rows.size():
+		var row: Dictionary=rows[i]
+		var icon: Texture2D=world.farm_crop_icon(row.raw_id) if i<crops.size() else world.farm_seed_icon(row.raw_id)
 		if icon==null or icon.get_size()!=Vector2(32,32):fail("Missing native crop icon "+row.raw_id);return
 		icons.append(icon)
 		var base:=ColorRect.new();canvas.add_child(base);base.color=background
@@ -30,8 +35,8 @@ func run() -> void:
 	var rendered:=root.get_texture().get_image()
 	var compared:=0
 	for i in icons.size():
-		var row: Dictionary=fixture.artwork_reference.crops[i]
-		var reference: Dictionary=fixture.artwork_pixel_reference.crops[i]
+		var row: Dictionary=rows[i]
+		var reference: Dictionary=references[i]
 		var texture: Image=icons[i].get_image()
 		var opaque:=PackedByteArray()
 		for y in 32:

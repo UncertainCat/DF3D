@@ -15383,5 +15383,103 @@
     },
     "coverage": "Controlled held-item roles TEMP, TEMP_PRINTHIDDEN and PERM on the same real seed item in paused farm968. All remain visible with unchanged first-six captions and first-row View identity47492. Temporary roles use hover323; permanent uses317. Native reader preserves UI byte guards and matches ordered roles/facts. Role and item facts restored; source unchanged; owned DF182616 exits unsaved. TEMP_PRINTHIDDEN screenshot visually inspected.",
     "limitations": "Controlled roles on seed membership, not naturally occurring temporary-item job workflows. No eligible melting, active job effects, generic building role dispatch or rendered DF3D contents acceptance."
+  },
+  "contents_seed_art_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261028-232835",
+    "items": [
+      {
+        "id": 47492,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "raw_id": "POD_SWEET",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41516,
+          "x": 2,
+          "y": 3
+        },
+        "texture": 41516
+      },
+      {
+        "id": 47486,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "raw_id": "POD_SWEET",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41516,
+          "x": 2,
+          "y": 3
+        },
+        "texture": 41516
+      },
+      {
+        "id": 47494,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "raw_id": "POD_SWEET",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41516,
+          "x": 2,
+          "y": 3
+        },
+        "texture": 41516
+      },
+      {
+        "id": 47485,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "raw_id": "POD_SWEET",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41516,
+          "x": 2,
+          "y": 3
+        },
+        "texture": 41516
+      },
+      {
+        "id": 47484,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "raw_id": "POD_SWEET",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41516,
+          "x": 2,
+          "y": 3
+        },
+        "texture": 41516
+      },
+      {
+        "id": 47493,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "raw_id": "POD_SWEET",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "texture": 41516,
+          "x": 2,
+          "y": 3
+        },
+        "texture": 41516
+      }
+    ],
+    "seeds": [
+      {
+        "raw_id": "POD_SWEET",
+        "source": {
+          "page": "PLANT_STANDARD",
+          "x": 2,
+          "y": 3
+        },
+        "opaque_pixel_count": 45,
+        "opaque_rgb_sha256": "5d83cd0a6c338c880393f06fb8002cdf0fc043cc14a2dd3330fb8022d316c71a"
+      }
+    ],
+    "hashes": {
+      "result.json": "f2601e41702d6eef3402fae9173033bc9cd60990ddc91fea66c5ab85934953f6",
+      "capture-inputs.json": "e677c9848dbc02b30ec7bc5184e12b6abba3ad457c264581acbc7f42695bdf60",
+      "farm-contents-baseline.png": "e7e9147c5e202489d70d06c212db4a2c08a8ceba811356079dbe7512b7afb475",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "coverage": "Six visible sweet-pod seed rows use plant raw+0x208 artwork PLANT_STANDARD2,3, anchored at2,2. First seed opaque native screenshot pixels exactly equal original installed sprite colors. Source unchanged; paused owned DF185720 exits unsaved. No runtime graphics-cache access.",
+    "limitations": "Sweet-pod seeds only; other contents kinds and missing plant-art fallback not live verified. Seed raw identity is not yet carried by the contents protocol."
   }
 }

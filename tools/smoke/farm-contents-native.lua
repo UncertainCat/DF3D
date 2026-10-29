@@ -19,6 +19,36 @@ local function items()
  return rows
 end
 local baseline=capture('farm-contents-baseline');baseline.contents=items()
+-- Diagnostic graphics provenance, never a runtime cache source. Native
+-- c8745b..c87484 selects seed art via plant raw+0x208, without material tint.
+local seed_art={name='farm-contents-seed-art',items={},cells={}}
+local wanted={}
+for index=0,math.min(5,#b.contained_items-1)do
+ local item=b.contained_items[index].item
+ assert(item:getType()==df.item_type.SEEDS,'seed artwork fixture changed')
+ local material=assert(dfhack.matinfo.decode(item:getMaterial(),item:getMaterialIndex()))
+ local plant=assert(material.plant)
+ local _,address=df.sizeof(plant)
+ local texture=df.reinterpret_cast('int32_t',address+0x208).value
+ assert(texture>0,'native seed texture missing')
+ wanted[texture]={texture=texture}
+ seed_art.items[#seed_art.items+1]={id=item.id,raw_id=plant.id,material_token=material:getToken(),texture=texture}
+end
+for _,page in ipairs(df.global.texture.page)do
+ for index,texture in ipairs(page.texpos)do
+  if wanted[texture]then wanted[texture]={texture=texture,page=page.token,x=index%page.page_dim_x,y=index//page.page_dim_x}end
+ end
+end
+for y=42,59 do for x=53,58 do
+ local index=x*g.dimy+y;local texture=g.screentexpos_anchored[index]
+ if texture>0 then seed_art.cells[#seed_art.cells+1]={x=x,y=y,texture=texture,offset_x=g.screentexpos_anchored_x[index],offset_y=g.screentexpos_anchored_y[index]}end
+end end
+for _,item in ipairs(seed_art.items)do
+ item.source=wanted[item.texture];assert(item.source.page,'seed sprite is not an installed page')
+ local found=false;for _,cell in ipairs(seed_art.cells)do if cell.texture==item.texture then found=true;break end end
+ assert(found,'seed raw texture absent from rendered contents')
+end
+records[#records+1]=seed_art
 local function read_contents(label)
  local before=require('json').encode(items());local guards={}
  for _,object in ipairs{main.view_sheets,df.global.plotinfo}do

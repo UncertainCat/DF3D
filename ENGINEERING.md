@@ -173,6 +173,26 @@ the source manifest is unchanged and owned paused DF182616 exits unsaved.
 These controlled seed roles do not establish natural temporary-item jobs or
 role-specific behavior in other building types.
 
+Farm contents seed artwork uses the original installed plant seed sprite,
+without the material tint applied by construction candidate icons. Native
+c7cbc0 dispatches SEEDS53 to c831ff, then c83890 dispatches to c8745b..c87484:
+plant material types419..618 select c5df30's plant raw+0x208 texture, otherwise
+the native generic seed texture is used. These are graphics-cache routines;
+DF3D never calls them. `farm_seed_icon(raw_id)` shares the installed plant-art
+resolver with `farm_crop_icon`, retaining original page colors and alpha.
+
+`native_farm.json.contents_seed_art_reference` records protected232835. Six
+visible sweet-pod seed rows select PLANT_STANDARD2,3 at pixel offset2,2; all45
+opaque pixels in the first native screenshot icon match that installed sprite.
+The source is preserved and owned paused DF185720 exits unsaved. GPU
+`build/qa/farm-seed-art` verifies original colors/alpha and composited pixels
+for the six crop icons plus the seed icon (7168 pixels), and compares opaque
+pixels with native captures. The image was inspected; GPU passes with only
+the three documented Godot diagnostics, and core passes cleanly. This verifies
+the seed art provider, not completed contents UI. Contents transport does not
+yet carry seed raw identity; other item kinds and generic seed fallback remain
+outside this live evidence.
+
 `building_item_native.h` pins the complete native action/predicate bodies and
 exposes desired-value setters at safe points. Dump spans multiple unwind entries;
 Forbid's fingerprint includes local jump tables. All ranges are relocation-free

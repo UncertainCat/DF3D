@@ -139,13 +139,23 @@ Ref<Texture2D> Df3dWorld::construction_item_icon(int itemType,const Dictionary& 
 }
 
 Ref<Texture2D> Df3dWorld::farm_crop_icon(const String& rawId) {
+    return plantItemIcon(rawId,wm::ItemKind::Plant);
+}
+
+Ref<Texture2D> Df3dWorld::farm_seed_icon(const String& rawId) {
+    return plantItemIcon(rawId,wm::ItemKind::Seeds);
+}
+
+Ref<Texture2D> Df3dWorld::plantItemIcon(const String& rawId,wm::ItemKind kind) {
     const auto raw=rawId.utf8();
     if(!assets_ || !raw.length() || raw.length()>128)return {};
-    // Native farm renderer199cbc selects PLANT/PICKED via c83890, without
-    // the material palette used by map items. The snapshot owns the raw ID.
+    // Native farm renderer199cbc selects PLANT/PICKED via c83890. Contents
+    // SEEDS takes c8745b..c87484 through plant seed lookup c5df30. Neither
+    // branch applies the material palette used by map items. Owned raw ID only.
     // Reuse installed selection rules, but retain the original page colors.
-    df3d::assets::ItemQuery query;query.kind=wm::ItemKind::Plant;
-    query.material="PLANT:"+std::string(raw.get_data(),raw.length())+":STRUCTURAL";
+    df3d::assets::ItemQuery query;query.kind=kind;
+    query.material="PLANT:"+std::string(raw.get_data(),raw.length())+
+        (kind==wm::ItemKind::Seeds?":SEED":":STRUCTURAL");
     const auto resolved=df3d::assets::resolveItem(assets_->index,query);
     if(!resolved.found)return {};
     const int slot=slotFor(resolved.sprite.page,-1,false);

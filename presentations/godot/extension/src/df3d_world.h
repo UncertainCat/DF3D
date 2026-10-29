@@ -108,6 +108,7 @@ public:
     godot::Ref<godot::Texture2D> ui_texture(const godot::String& name, int variant = -1);
     godot::Ref<godot::Texture2D> construction_item_icon(int item_type, const godot::Dictionary& appearance, bool generic_group=false, int64_t item_id=-1);
     godot::Ref<godot::Texture2D> farm_crop_icon(const godot::String& raw_id);
+    godot::Ref<godot::Texture2D> farm_seed_icon(const godot::String& raw_id);
     godot::Dictionary elevation_overview(int x, int y) const;
     godot::String ui_font_path() const;
     godot::Vector3i item_tile(int64_t id) const;
@@ -471,6 +472,7 @@ private:
     double nowSeconds() const;
     int slotFor(int page, int paletteRow, bool fill);
     int bedSlot(std::string_view material, const wm::BeddingFacts& bedding);
+    godot::Ref<godot::Texture2D> plantItemIcon(const godot::String& rawId, wm::ItemKind kind);
     int wallTopSlotFor(const df3d::assets::TerrainSprite& wall, uint8_t neighbors);
     int shadowedFloorSlotFor(const df3d::assets::TerrainSprite& floor, uint8_t neighbors);
     godot::Ref<godot::Image> pageImage(int page);

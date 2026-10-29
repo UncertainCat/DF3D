@@ -378,6 +378,34 @@ preserved and owned DF169536 exits unsaved. This supports the current capacity
 calculation; it does not establish short-list geometry, tail scrolling or rendered
 viewer resize acceptance. Core `contents-resize-oracle` passes.
 
+## Farm contents short lists and wheel input
+
+Protected native000849 on2026-10-29 verifies contents wheel input over both rows
+and scrollbar advances the native item scroll position by one. This differs from
+the farm crop picker, which ignores wheel input. Contents now uses the wheel-capable
+scrollbar and routes row wheel input to the same bounded semantic page observer.
+When all items fit, native removes the scrollbar and expands the row and control
+positions by16 pixels; the contents component follows that layout.
+
+`native_farm.json.contents_short_reference` records controlled7/6/1/0-item lists.
+The paused clone retains every membership allocation and restores all original
+pointers/order; source-save preservation passes and DF175292 exits unsaved.
+GPU `contents-short-controls` compares all472x216 pixels for6/1/0 rows and only
+the456-pixel row/control region for7 items. The excluded scrollbar has a confirmed
+viewer defect: its thumb is shorter than native's. This remains unfinished, not
+accepted parity. The existing40-item cases still compare the whole region.
+Long-caption truncation, shift-wheel behavior and tail item identities also remain
+unverified; native scratch cursor47 after repeated down clicks is not proof of a
+semantic row offset. Core passes; GPU has only the three documented diagnostics.
+
+Protected main-scene001411 verifies wheel down/up over rows and scrollbar against
+native items at the requested offset, restoring the original page. All38 native
+checks pass, including existing item effects and lifecycle coverage. Both save
+manifests remain unchanged and owned DF166588/replacement172036 exit unsaved.
+Only the known rendering-thread notice appears. The hover test now waits up to
+two seconds for its expected state rather than assuming scheduling within600ms;
+product timing is unchanged. See `contents_wheel_scene_reference` for provenance.
+
 ## Farm contents native hover
 
 The contents component uses the shared500ms/1000ms native instruction timer and

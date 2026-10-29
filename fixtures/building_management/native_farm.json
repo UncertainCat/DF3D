@@ -16421,5 +16421,287 @@
     },
     "coverage": "Paused native contents at960x600,1600x900,1200x800; item facts unchanged. Minimum and wide screenshots inspected. Owned DF169536 exited unsaved; source save preserved.",
     "limitations": "Initial scroll position only, forty seed items. Short lists, tail scrolling and viewer resize rendering are not established by this native capture."
+  },
+  "contents_short_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261029-000849",
+    "cases": [
+      {
+        "name": "farm-contents-resize-short-7",
+        "total": 7,
+        "rows": [
+          {
+            "id": 47492,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47486,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47494,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47485,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47484,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47493,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          }
+        ],
+        "comparison_width": 456,
+        "rgb_sha256": "8e2442fd87bf0f91569d4e4661242987206bdf1392c01690bb8b474af498a456"
+      },
+      {
+        "name": "farm-contents-resize-short-6",
+        "total": 6,
+        "rows": [
+          {
+            "id": 47492,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47486,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47494,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47485,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47484,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          },
+          {
+            "id": 47493,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          }
+        ],
+        "rgb_sha256": "615321949a13e8d936912b4eb6773cf51a6f758de37f47a502ae98dc0a1478d3"
+      },
+      {
+        "name": "farm-contents-resize-short-1",
+        "total": 1,
+        "rows": [
+          {
+            "id": 47492,
+            "role": 2,
+            "name": "sweet pod seeds",
+            "forbid": false,
+            "dump": false,
+            "melt": false,
+            "hidden": false,
+            "can_dump": true,
+            "can_melt": false,
+            "in_job": false,
+            "in_building": true,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "subtype_raw": ""
+          }
+        ],
+        "rgb_sha256": "77fc49f4cd9ae2f5a4e9581b4c9a13d192675fd1ab161b75c156393731dfe9d3"
+      },
+      {
+        "name": "farm-contents-resize-short-0",
+        "total": 0,
+        "rows": [],
+        "rgb_sha256": "51e602bd91f91fbf5cc4b7730179b42f7190110b40b37e6860dae95b36adb885"
+      }
+    ],
+    "scroll_probes": [
+      {
+        "name": "farm-contents-resize-wheel",
+        "native_scroll_position": 1
+      },
+      {
+        "name": "farm-contents-resize-bar-wheel",
+        "native_scroll_position": 2
+      },
+      {
+        "name": "farm-contents-resize-arrow-down",
+        "native_scroll_position": 3
+      },
+      {
+        "name": "farm-contents-resize-arrow-up",
+        "native_scroll_position": 2
+      },
+      {
+        "name": "farm-contents-resize-tail",
+        "native_scroll_position": 47
+      }
+    ],
+    "hashes": {
+      "result.json": "77c0659fdc5ed79cb935f7b93b29792f124f5dca6399a598535e8cfb79b5c691",
+      "capture-inputs.json": "f9c840859016c4c60f64e25073a449ae8e2654c6511a36abcc9ae3f8b9cfd346",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "coverage": "Paused native wheel over rows and scrollbar, arrow input and controlled list sizes7/6/1/0. Original membership pointers/order restored without deleting item allocations; source preserved; owned DF175292 exited unsaved.",
+    "limitations": "Tail scratch value47 is not a semantic cursor; visible row identities at the end still need a View probe. Long-caption truncation and shift-wheel behavior remain unverified."
+  },
+  "contents_wheel_scene_reference": {
+    "capture": "build/areas-acceptance-20261029-001411",
+    "native_checks": 38,
+    "hashes": {
+      "result.json": "cdd7a4a1e4494b5dba2062fb61d27417b9422b3a9a0400bcf6cc094b26bc9f98",
+      "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    "coverage": "Actual viewport wheel down/up over rows and scrollbar, offset-aware native ordered item verification, original page restored, prior item actions/hover/close/disconnect/replacement preserved. Both save manifests unchanged; owned DF166588 and172036 exited unsaved. Known rendering-thread notice only.",
+    "limitations": "Short-list pixel cases use controlled native membership and component replay; no natural short-list main-scene workflow. Seven-item thumb geometry mismatch remains unresolved."
   }
 }

@@ -150,8 +150,10 @@ func contents_scene() -> void:
 	for probe in [[0,"permanent"],[1,"view"],[2,"forbid"],[3,"dump"],[4,""],[5,"visibility"]]:
 		var motion:=InputEventMouseMotion.new()
 		motion.position=view.get_global_transform_with_canvas()*view.control_rect(0,probe[0]).get_center();root.push_input(motion,true)
-		await create_timer(0.6).timeout
 		var expected: String="contents_"+probe[1] if probe[1]!="" else ""
+		var help_deadline:=Time.get_ticks_msec()+2000
+		await process_frame
+		while scene._fortress_hud.native_help.displayed!=expected and Time.get_ticks_msec()<help_deadline:await process_frame
 		if not check(scene._fortress_hud.native_help.displayed==expected,"contents hover differs: "+probe[1]):return
 		if probe[1]!="":await capture("contents_hover_"+probe[1])
 
@@ -161,7 +163,7 @@ func contents_scene() -> void:
 			await pointer(view.get_global_transform_with_canvas()*view.control_rect(1,control).get_center())
 			if not await contents_ready():return
 			if not check(owner.contents.snapshot.cursor==0,"contents edit moved viewport"):return
-			await native("contents-verify",{"rows":owner.contents.rows()})
+			await native("contents-verify",{"rows":owner.contents.rows(),"cursor":owner.contents.snapshot.cursor})
 			if stopped:return
 			await capture("contents_"+str(control)+"_"+str(toggle))
 	if not check(owner.contents.snapshot==initial,"rendered item controls did not restore contents"):return
@@ -172,6 +174,16 @@ func contents_scene() -> void:
 	await pointer(view.get_global_transform_with_canvas()*Vector2(464,6))
 	if not await contents_ready():return
 	if not check(owner.contents.snapshot==initial,"contents up arrow did not restore viewport"):return
+	for x in [150,464]:
+		for button in [MOUSE_BUTTON_WHEEL_DOWN,MOUSE_BUTTON_WHEEL_UP]:
+			var wheel:=InputEventMouseButton.new();wheel.button_index=button;wheel.pressed=true
+			wheel.position=view.get_global_transform_with_canvas()*Vector2(x,54);root.push_input(wheel,true)
+			if not await contents_ready():return
+			var cursor:=1 if button==MOUSE_BUTTON_WHEEL_DOWN else 0
+			if not check(owner.contents.snapshot.cursor==cursor and view.rows[0].id==initial.rows[cursor].id,"contents wheel order differs"):return
+			await native("contents-verify",{"rows":owner.contents.rows(),"cursor":owner.contents.snapshot.cursor})
+			if stopped:return
+	if not check(owner.contents.snapshot==initial,"contents wheel did not restore viewport"):return
 	owner.close_panel();await process_frame
 	if not check(owner.contents.snapshot.is_empty() and view.rows.is_empty() and not view.scrollbar.dragging,"closed farm retained contents"):return
 	if not check(not scene._fortress_hud.native_help.visible,"closed contents retained hover"):return

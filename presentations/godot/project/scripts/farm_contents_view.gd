@@ -25,7 +25,7 @@ func configure(source,model,help=null) -> void:
 	world=source;state=model;art.configure(source);picture.configure(source);theme=art.theme
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	clip_contents=true
-	scrollbar=preload("res://scripts/farm_scrollbar.gd").new();add_child(scrollbar);scrollbar.configure(source)
+	scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();add_child(scrollbar);scrollbar.configure(source)
 	scrollbar.input_allowed=can_scroll
 	scrollbar.row_changed.connect(func(value):state.seek(value))
 	state.changed.connect(refresh);set_capacity(6)
@@ -56,7 +56,9 @@ func refresh() -> void:
 	if not can_scroll():scrollbar.dragging=false
 	queue_redraw()
 
-func control_rect(index: int,control: int) -> Rect2:return Rect2(296+control*24,index*36,24,36)
+func controls_offset() -> int:return 0 if int(state.snapshot.get("total",0))>page else 16
+
+func control_rect(index: int,control: int) -> Rect2:return Rect2(296+controls_offset()+control*24,index*36,24,36)
 func eligible(row: Dictionary,control: int) -> bool:
 	return (control!=3 or row.can_dump) and (control!=4 or row.can_melt)
 
@@ -86,6 +88,9 @@ func _process(_delta: float) -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:pointer_known=true;pointer_position=event.position;_process(0)
+	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		if can_scroll():scrollbar.move_to(scrollbar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1))
+		accept_event();return
 	if not available() or not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT:return
 	var index:=floori(event.position.y/36)
 	if index<0 or index>=mini(page,rows.size()):return
@@ -106,13 +111,13 @@ func _draw() -> void:
 	if state==null or state.snapshot.is_empty():return
 	for index in mini(page,rows.size()):
 		var row: Dictionary=rows[index];var top:=Vector2(0,index*36)
-		patch(art.texture("BUTTON_RECTANGLE"),top,57)
+		patch(art.texture("BUTTON_RECTANGLE"),top,57+controls_offset()/8)
 		patch(picture.texture(false),top,5)
 		var icon: Texture2D=icons.get(row.id)
 		if icon!=null:draw_texture_rect(icon,Rect2(top+Vector2(2,2),Vector2(32,32)),false)
 		var reserved:=3 if row.in_job or row.in_building else 0
 		var name: String=row.name
-		if name.length()>=34-reserved:name=name.left(30-reserved)+"..."
+		if name.length()>=34+controls_offset()/8-reserved:name=name.left(30+controls_offset()/8-reserved)+"..."
 		if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),top+Vector2(56,24),name,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
 		var role: String="BUILDING_ITEM_TASK" if row.in_job else ("BUILDING_ITEM_INCORPORATED" if row.role==2 else "BUILDING_ITEM_OTHER") if row.in_building else ""
 		for control in 6:

@@ -253,13 +253,14 @@ records[#records+1]={name='farm-contents-help-restored',restored=true}
 -- Resize oracle reads native presentation state only in this protected lane.
 local sheet=main.view_sheets
 local resize_frame=df.global.world.frame_counter
-local function resize_shot(label)
+local function resize_shot(label,expected_items)
  move(0,4)
  for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
  assert(df.global.pause_state and df.global.world.frame_counter==resize_frame,'contents resize advanced simulation')
  assert(sheet.open and sheet.active_id==b.id,'contents resize lost target')
- assert(require('json').encode(items())==role_baseline,'contents resize changed item facts')
- local row={name='farm-contents-resize-'..label,grid={g.dimx,g.dimy},pixels={g.screen_pixel_x,g.screen_pixel_y},lines={},positions={}}
+ assert(require('json').encode(items())==(expected_items or role_baseline),'contents resize changed item facts')
+ local row={name='farm-contents-resize-'..label,grid={g.dimx,g.dimy},pixels={g.screen_pixel_x,g.screen_pixel_y},lines={},positions={},item_ids={}}
+ for _,held_item in ipairs(b.contained_items)do row.item_ids[#row.item_ids+1]=held_item.item.id end
  for key,value in pairs(sheet)do if type(key)=='string' and key:find('scroll_position',1,true)then row.positions[key]=value end end
  for y=0,g.dimy-1 do
   local line={};for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;line[#line+1]=ch>=32 and ch<127 and string.char(ch)or' 'end
@@ -280,3 +281,29 @@ for _,size in ipairs{'small','wide','default'}do
  assert(os.remove(out..'/owner-input-ack'))
  resize_shot(size)
 end
+
+-- Native input probes, including the final page. No simulation writes.
+for _,probe in ipairs{{'wheel','CONTEXT_SCROLL_DOWN',650,526},{'bar-wheel','CONTEXT_SCROLL_DOWN',880,550},{'arrow-down','_MOUSE_L',880,718},{'arrow-up','_MOUSE_L',880,514}}do
+ move(probe[3],probe[4]);gui.simulateInput(view,probe[2]);resize_shot(probe[1])
+end
+for i=1,45 do move(880,718);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())end
+resize_shot('tail')
+-- Owned diagnostic vector surgery: retain every buildingitemst allocation,
+-- temporarily shorten membership while paused, then restore original order.
+local saved={};for _,entry in ipairs(b.contained_items)do saved[#saved+1]=entry end
+local function restore_membership()
+ while #b.contained_items>0 do b.contained_items:erase(#b.contained_items-1)end
+ for _,entry in ipairs(saved)do b.contained_items:insert('#',entry)end
+end
+local short_ok,short_error=xpcall(function()
+ for _,count in ipairs{7,6,1,0}do
+  restore_membership()
+  while #b.contained_items>count do b.contained_items:erase(#b.contained_items-1)end
+  select_map(b)
+  resize_shot('short-'..count,require('json').encode(items()))
+ end
+end,debug.traceback)
+restore_membership();select_map(b)
+assert(require('json').encode(items())==role_baseline,'short-list membership not restored')
+assert(short_ok,short_error)
+records[#records+1]={name='farm-contents-short-restored',restored=true}

@@ -3,6 +3,8 @@ extends Control
 signal rename_requested
 signal removal_requested
 signal cancel_removal_requested
+signal name_edited(value: String)
+signal name_submitted
 const SEASONS=["Spring","Summer","Autumn","Winter"]
 var art=preload("res://scripts/original_ui.gd").new()
 var state
@@ -12,12 +14,17 @@ var removing:=false
 var current_season: int=-1
 var target: int=-1
 var input_allowed: Callable
+var name_entry
 
 func configure(source,model) -> void:
 	state=model;art.configure(source);theme=art.theme
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	body=preload("res://scripts/farm_body_view.gd").new();add_child(body);body.configure(source,model)
 	body.position=Vector2(16,144);body.input_allowed=body_allowed
+	name_entry=preload("res://scripts/farm_name_entry.gd").new();add_child(name_entry);name_entry.hide()
+	name_entry.edited.connect(func(value):name_edited.emit(value))
+	name_entry.submitted.connect(func():name_submitted.emit())
+	name_entry.caption_changed.connect(queue_redraw)
 	state.changed.connect(refresh);refresh()
 
 func allowed() -> bool:return not input_allowed.is_valid() or input_allowed.call()
@@ -27,14 +34,28 @@ func layout(view: Vector2) -> void:
 	size=Vector2(488,floori(view.y/12)*12-84);queue_redraw()
 
 func refresh() -> void:
-	if target!=state.building_id:target=state.building_id;current_season=-1
+	if target!=state.building_id:
+		finish_rename();target=state.building_id;current_season=-1
 	visible=target>=0
 	title=state.snapshot.get("header_name","")
 	removing=state.snapshot.get("removing",false)
 	body.visible=not removing
-	if removing:body.scrollbar.dragging=false
+	if removing:body.scrollbar.dragging=false;finish_rename()
 	if not state.snapshot.is_empty():current_season=int(state.snapshot.current_season)
 	queue_redraw()
+
+func begin_rename() -> bool:
+	if not allowed() or removing or state.phase!=state.Phase.Ready or state.ticket!=0 or state.snapshot.is_empty():return false
+	name_entry.begin(state.snapshot.custom_name)
+	# The sheet draws the caption on its exact native baseline.
+	name_entry.hide();queue_redraw();return true
+
+func finish_rename() -> void:
+	if name_entry!=null:name_entry.finish()
+	queue_redraw()
+
+func feed_name_key(event: InputEventKey) -> void:
+	if allowed() and not removing:name_entry.feed_key(event)
 
 func tab_rect(season: int) -> Rect2:return Rect2(8+season*120,60,112 if season==3 else 120,24)
 func cancel_rect() -> Rect2:return Rect2(16,132,192,36)
@@ -69,7 +90,7 @@ func _draw() -> void:
 		if removing and entry[0]!="BUILDING_ICON_FARM_PLOT":continue
 		var texture: Texture2D=art.texture(entry[0])
 		if texture!=null:draw_texture_rect(texture,Rect2(entry[1],entry[2]),false)
-	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),Vector2(64,36),title,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
+	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),Vector2(64,36),name_entry.text if name_entry.editing else title,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
 	if removing:
 		draw_removal()
 		return

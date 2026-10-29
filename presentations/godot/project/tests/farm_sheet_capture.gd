@@ -56,6 +56,17 @@ func run() -> void:
 			if not model.calls.is_empty():fail("Cancel removal bypassed pending/owner gate");return
 		else:
 			if not view.body.visible or model.calls!=[["rename"],["remove"],["season",0]]:fail("Normal farm header routing differs");return
+	for sample in fixture.rename_caption_reference.cases:
+		model.snapshot=reference.snapshots["1"].duplicate(true);set_header(model,sample.semantic);model.changed.emit()
+		if not view.begin_rename():fail("Ready farm rename did not begin");return
+		view.name_entry.set_process(false);view.name_entry.cursor_visible=sample.cursor_visible;view.name_entry._refresh()
+		if view.name_entry.value!=sample.draft or view.name_entry.text!=sample.caption:fail("Native editing caption differs: "+sample.name);return
+		await process_frame;await RenderingServer.frame_post_draw
+		var crop:=root.get_texture().get_image().get_region(Rect2i(420,56,478,700));crop.convert(Image.FORMAT_RGB8)
+		crop.save_png(ProjectSettings.globalize_path("res://../../../build/"+str(sample.name)+"-viewer.png"))
+		var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
+		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Farm editing pixels differ: "+str(sample.name));return
+		view.finish_rename()
 	view.queue_free();world.queue_free();await process_frame
 	print("FARM_SHEET_CAPTURE_PASS");quit(0)
 

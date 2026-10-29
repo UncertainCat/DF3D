@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "farm_name_entry_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/farm_name_entry_test.gd",
+      "completion": "^FARM_NAME_ENTRY_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "farm_rename_session_test",
       "lane": "core",
       "kind": "godot",

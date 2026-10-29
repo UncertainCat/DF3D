@@ -73,6 +73,15 @@ text(string.rep('X',80));assert(b.name==string.rep('X',30),'native name limit di
 key('SELECT');assert(not sheet.building_entering_nickname and sheet.open,'Enter did not end rename');shot('farm-header-long-name')
 click(800,82);for i=1,100 do key('STRING_A000')end;text('lower farm');key('SELECT');shot('farm-header-lower-name')
 assert(records[#records].semantic.custom_name=='lower farm' and records[#records].semantic.header_name=='Lower farm','native name formatter differs')
+-- Editing renders the draft through the same native caption formatter. Keep
+-- punctuation/bracket cases as evidence for the local presentation editor.
+local captions={'lower farm','two WORDS','[tag]lower farm','  lower farm','"lower farm',"'lower farm",'123 lower farm','-lower farm','[tag] lower farm','[[tag]]lower farm',']lower farm'}
+for index,value in ipairs(captions)do
+ click(800,82);for i=1,100 do key('STRING_A000')end;text(value)
+ assert(b.name==value,'caption input differs')
+ shot('farm-header-caption-'..index)
+ key('SELECT')
+end
 click(800,82);for i=1,100 do key('STRING_A000')end;key('SELECT');shot('farm-header-name-cleared')
 assert(b.name==original,'empty name did not restore fixture')
 click(832,82);shot('farm-header-remove')

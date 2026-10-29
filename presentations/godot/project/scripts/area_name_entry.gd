@@ -7,6 +7,7 @@ const Art = preload("res://scripts/original_ui.gd")
 var value := ""
 var editing := false
 var cursor_visible := true
+var byte_limit := 20
 
 func begin(custom_name: String) -> void:
 	if editing: return
@@ -26,7 +27,7 @@ func feed_key(event: InputEventKey) -> void:
 		# DF's helper flags0x17 accepts text bytes verbatim. SDL supplies UTF-8;
 		# the resulting native string is displayed with DF2UTF's CP437 mapping.
 		for byte in String.chr(event.unicode).to_utf8_buffer():
-			if value.length() >= 20: break
+			if value.length() >= byte_limit: break
 			value += String.chr(byte if byte < 128 else Art.CP437_HIGH[byte-128])
 	_refresh()
 	if value != before: edited.emit(value)

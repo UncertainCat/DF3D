@@ -11967,5 +11967,253 @@
         "sha256": "7e0858027d9d69215884790ff89c66c52d836143e764271916e98d7ff1058c17"
       }
     ]
+  },
+  "rename_caption_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261028-200011",
+    "owned_df_pid": 165724,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "coverage": "Native interface-token ASCII entry, punctuation/bracket caption formatting and captured cursor phases. Does not establish real window Unicode input behavior.",
+    "cases": [
+      {
+        "name": "farm-header-rename-empty",
+        "draft": "",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Farm Plot",
+          "native_name": "Farm Plot",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": false,
+        "caption": "",
+        "rgb_sha256": "68f620c64e6c3eef64d3f3a36bd876a164b681b7647d4d042d7d877944d4c436",
+        "png_sha256": "4ec81eab04f25c6cbe160d522ffd0d3b20ddcb0e65486a0c68866920e5514e35"
+      },
+      {
+        "name": "farm-header-rename-draft",
+        "draft": "Farm test",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "Farm test",
+          "has_worker": false,
+          "header_name": "Farm test",
+          "native_name": "Farm test",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": true,
+        "caption": "Farm test_",
+        "rgb_sha256": "f74acbc3ac794a37f5db422364ae1b47d62a87604cb15f10f45aee291be0dbf4",
+        "png_sha256": "aa5a49f1c0883b28346c1fed169ab6f7cd469a7267d744294142865922682313"
+      },
+      {
+        "name": "farm-header-name-limit",
+        "draft": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "has_worker": false,
+          "header_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "native_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": true,
+        "caption": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX_",
+        "rgb_sha256": "194ec4385303d83a5e2ec57d1bb25f7ab7b8cd32a6302a82688aa8375377eed1",
+        "png_sha256": "2a2874df80b4b157cdacc287d39138ceb54a97c807900206b8929dc12cd17560"
+      },
+      {
+        "name": "farm-header-caption-1",
+        "draft": "lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "lower farm",
+          "has_worker": false,
+          "header_name": "Lower farm",
+          "native_name": "lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": false,
+        "caption": "Lower farm",
+        "rgb_sha256": "e3cafc9b878e93c8ec80b8108fb2b21010f51911478c3d30e9669beb643f8ffb",
+        "png_sha256": "3e129650e40e4e27fe12ccb201000c038a04bdaea8e405f69738d2cc3fd486c6"
+      },
+      {
+        "name": "farm-header-caption-2",
+        "draft": "two WORDS",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "two WORDS",
+          "has_worker": false,
+          "header_name": "Two WORDS",
+          "native_name": "two WORDS",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": false,
+        "caption": "Two WORDS",
+        "rgb_sha256": "f420c9644dbee9b2075018ab6b71461a01b031580b696ead32e1caa1686f95f0",
+        "png_sha256": "6af901af9c237d35bdceaa33de8053006d5769906071aa9af6fc82095371f278"
+      },
+      {
+        "name": "farm-header-caption-3",
+        "draft": "[tag]lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "[tag]lower farm",
+          "has_worker": false,
+          "header_name": "[tag]Lower farm",
+          "native_name": "[tag]lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": false,
+        "caption": "[tag]Lower farm",
+        "rgb_sha256": "e45cf7890e4b3c2e6324decf1fb517b60d9bbc5cb031d935a80fc4407bc87c36",
+        "png_sha256": "88f6136d2aeb92c5e6579c23ce182f756d3bd50f5e7c9af805b9b2fba9d50463"
+      },
+      {
+        "name": "farm-header-caption-4",
+        "draft": "  lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "  lower farm",
+          "has_worker": false,
+          "header_name": "  Lower farm",
+          "native_name": "  lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": true,
+        "caption": "  Lower farm_",
+        "rgb_sha256": "ee48c718fd7d5c397acdc8af1f6e79f4afbd3edfd9885415d52fb33af9420d61",
+        "png_sha256": "c0fbf26aaa1cb0d4d24b26a3c34201bd90bf9c7e9d6a25e9c222a5869aa5934f"
+      },
+      {
+        "name": "farm-header-caption-5",
+        "draft": "\"lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "\"lower farm",
+          "has_worker": false,
+          "header_name": "\"Lower farm",
+          "native_name": "\"lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": true,
+        "caption": "\"Lower farm_",
+        "rgb_sha256": "5b0099da532a76e28849f00fc9f1e3e0343dbc86a384ae3601bafd7b13b7f7ce",
+        "png_sha256": "603f2b905dca9829ab4ddd97ddb9e249d749a5ef14d9b7dd3ff77785fdafcc2f"
+      },
+      {
+        "name": "farm-header-caption-6",
+        "draft": "'lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "'lower farm",
+          "has_worker": false,
+          "header_name": "'lower farm",
+          "native_name": "'lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": true,
+        "caption": "'lower farm_",
+        "rgb_sha256": "1fa41efcf7a37ccec9dfcd1ef61d0d31fa2aacebeee0b4cdca16397727927a2e",
+        "png_sha256": "20c2125f10944f1837584184e463efa5f1dcb8c2ead8b226c81860f706665540"
+      },
+      {
+        "name": "farm-header-caption-7",
+        "draft": "123 lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "123 lower farm",
+          "has_worker": false,
+          "header_name": "123 lower farm",
+          "native_name": "123 lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": false,
+        "caption": "123 lower farm",
+        "rgb_sha256": "60bf15a3a1ca7479fc228bf323c8b6fe2aa4fd11f7b35f8281ffa4dc85406f50",
+        "png_sha256": "729882ba5a38104bd38a537f169c6873f48a61d30c205dbd8166f5463e9af151"
+      },
+      {
+        "name": "farm-header-caption-8",
+        "draft": "-lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "-lower farm",
+          "has_worker": false,
+          "header_name": "-lower farm",
+          "native_name": "-lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": false,
+        "caption": "-lower farm",
+        "rgb_sha256": "2655c73d33b7b51ac09346ecb298246835853f50dbddb2b609bdd3be4517cf5b",
+        "png_sha256": "1234c6e5db2e3bc3313de73119843505a46c4317d07b8cd87cea62fa402c83ec"
+      },
+      {
+        "name": "farm-header-caption-9",
+        "draft": "[tag] lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "[tag] lower farm",
+          "has_worker": false,
+          "header_name": "[tag] Lower farm",
+          "native_name": "[tag] lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": true,
+        "caption": "[tag] Lower farm_",
+        "rgb_sha256": "8e684da36398502764f6c301e11a6d59bbd320e2a041e902e79c5e722c470187",
+        "png_sha256": "acd3dbedd5c71590a6d47d73dd2cc450922ffabfabc44cbd879f4aa9e0985218"
+      },
+      {
+        "name": "farm-header-caption-10",
+        "draft": "[[tag]]lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "[[tag]]lower farm",
+          "has_worker": false,
+          "header_name": "[[tag]]Lower farm",
+          "native_name": "[[tag]]lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": true,
+        "caption": "[[tag]]Lower farm_",
+        "rgb_sha256": "ed6b54b7ca33a7bf8fe8642e3f0b3ce1bfe6577744d429899661372ceea1fcd6",
+        "png_sha256": "a148232ae6f4037e095d38590ec975a8b25e19f9f49bd36b2161a85c28907e51"
+      },
+      {
+        "name": "farm-header-caption-11",
+        "draft": "]lower farm",
+        "semantic": {
+          "building_id": 227,
+          "custom_name": "]lower farm",
+          "has_worker": false,
+          "header_name": "]Lower farm",
+          "native_name": "]lower farm",
+          "removing": false,
+          "suspended": false
+        },
+        "cursor_visible": true,
+        "caption": "]Lower farm_",
+        "rgb_sha256": "c95bce3a4ea4f10152aa462aaa08e85ab5fa2033b6414b9b9565309b34ba14ca",
+        "png_sha256": "8affa0df9c44a1d95faaafb36945c3a7fb2bf6121a60aac301c9ac5c93b19eab"
+      }
+    ],
+    "result_sha256": "311800ca532f0901eb9e59dd1dd0aa5153906d14d0f1d57d16e79e32ad6305b1"
   }
 }

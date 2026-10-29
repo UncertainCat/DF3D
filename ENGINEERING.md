@@ -20,6 +20,34 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Farm name entry presentation
+
+The staged farm sheet exposes begin/finish/key-input methods and edited/submitted
+signals for its local name draft. `farm_name_entry.gd` reuses the existing byte
+append/backspace entry with a30-byte limit; stockpile and zone entries retain20.
+It renders the raw draft plus blinking underscore through DF53.16's observed
+caption transformation, without changing the semantic name. Native renderer1804f1
+uses formatter52d650: skip bracketed text and leading spaces/double quotes,
+capitalize one eligible character, then stop. The eight extended CP437 mappings
+come from the pinned function's jump table. This is local draft presentation;
+the bridge still validates and applies every rename and supplies confirmed names.
+
+Protected `stockpile-storage-native-farm-discovery-20261028-200011 -FarmDiscovery
+-FarmHeader` adds eleven ASCII punctuation/bracket cases to the existing native
+rename oracle. All native guards pass, the source manifest is unchanged and
+owned DF165724 exits unsaved. `native_farm.json.rename_caption_reference` records
+fourteen editing captures, semantic captions, cursor phases and image hashes.
+GPU `build/qa/farm-name-entry` matches all fourteen full sheet interiors, while
+retaining the twelve resize and seven normal/removal comparisons. A rendered
+bracketed-name capture was inspected. Core and the input test pass cleanly;
+GPU has only the known thread/device-finalize/shutdown-object diagnostics.
+The input test covers append/backspace, both Enter keys,30-byte truncation,
+ignored navigation/released/modified keys, closed-entry input and the unchanged
+20-byte area limit. These captures establish ASCII interface-token behavior,
+not real window Unicode input. The sheet editor still needs its owner connection
+to the service-owned rename session and main-scene lifecycle acceptance before
+exposure; view signals alone do not establish successful rename effects.
+
 ## Farm sheet composition verification
 
 The staged `farm_sheet_view.gd` composes the verified crop/fertilizer body with

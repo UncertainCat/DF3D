@@ -12245,5 +12245,36 @@
       "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
     },
     "limitations": "Entry/controller typing lifecycle with native readback, not actual main-scene keyboard or Escape/right-click routing; real window Unicode remains unverified."
+  },
+  "rename_scene_reference": {
+    "capture": "build/areas-acceptance-20261028-201829",
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 169864,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "results": {
+      "native_checks": 10,
+      "reasons": [],
+      "status": "passed",
+      "surface": "staged farm owner in actual main scene; viewport keyboard and mouse input"
+    },
+    "evidence_sha256": {
+      "result.json": "1880fcc89c10b23598426bc156c2a5a3d12155dce03bbcfce9a2863d17484ef3",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "farm_scene_enter_confirmed.png": "073610644992927bf2772ac1c9d28b32722cb0974030ec3f6f51a3906503bed7",
+      "farm_scene_enter_typing.png": "040e41236d42c4900e5ec7ccd3948dc5b5d093e0f24f431c232b97d6638f71e8",
+      "farm_scene_escape_confirmed.png": "5bdcd42c105f40737c6d5a8d17e6f983eaf5c68476abd9f7b2a0b283a627a104",
+      "farm_scene_escape_typing.png": "1892f67f0449d73be35ecd776208d2b99da60ff99a99709034a8110f36139f5d",
+      "farm_scene_reset_confirmed.png": "323e8a467ccefce08baaaae7b0d931d63c048200e2abd5f9212f7f0263af1a43",
+      "farm_scene_reset_typing.png": "f78338b8a19f4ba758be010a699b0680a7b6ddd5f549bf8a996646696d21f9d6",
+      "farm_scene_right_confirmed.png": "5bdcd42c105f40737c6d5a8d17e6f983eaf5c68476abd9f7b2a0b283a627a104",
+      "farm_scene_right_typing.png": "5bdcd42c105f40737c6d5a8d17e6f983eaf5c68476abd9f7b2a0b283a627a104",
+      "farm_scene_tab_confirmed.png": "b2e6eb6abdcff73f8433a1aba6890927536db268b11914b03ee9167aa628ae79",
+      "farm_scene_tab_typing.png": "56c3d53e8cc176ddf8064bd79d136aef77af765cd2bac6e983d8bcd16e2951eb"
+    },
+    "limitations": "Staged controller explicitly opened in actual main scene. Does not establish public building selection, external alternatives, removal or real window Unicode input."
   }
 }

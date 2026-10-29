@@ -66,8 +66,29 @@ through the entry and real controller, finishes/closes/changes tabs with pending
 writes, checks native names/captions and clears the name after each case.
 All21 native checks pass,15 current observers complete, both save manifests stay
 unchanged and owned DF117184 exits unsaved. `rename_workflow_reference` retains
-the evidence. This is controller/isolated-sheet acceptance; main-scene keyboard,
-Escape/right-click routing and real window Unicode remain unfinished.
+the evidence. Real window Unicode remains unfinished.
+
+`farm_panel.gd` owns the staged sheet in the main scene. It uses the shared UI
+host's play/overlay gate, scales its canvas with presentation settings, handles
+name-entry viewport keys and Escape/right-click closure, and leaves F10 to the
+host's reset handler. Transient model closure during tab replacement does not
+release input ownership; a deferred check releases it only if still closed.
+The registry permits explicit staged controller construction, but no public
+launcher or building-selection route exposes the unfinished sheet.
+
+Protected `areas-acceptance-20261028-201829 -FarmSceneOnly` uses the actual main
+scene, clicks the rename icon, types through viewport events and checks Enter,
+Escape, right-click, tab changes and F10 while a write is pending. Each final
+name is verified natively, then cleared through the editor and verified again
+(10 native checks). Opening the real HUD game menu blocks typing. Screenshots
+include typed and confirmed states; the confirmed Autumn sheet was inspected.
+The run passes with only the known separate-thread notice, preserves both save
+manifests and closes owned DF169864 unsaved. `rename_scene_reference` retains
+the evidence. Earlier201452 used a transient test-only overlay flag;201611 found
+the tab ownership release bug;201721 found F10 being consumed by entry. These
+are failed runs, not acceptance. Public selection/alternative selectors,
+removal/cancellation, header hover and remaining lifecycle coverage still gate
+farm exposure.
 
 ## Farm sheet composition verification
 

@@ -3674,6 +3674,11 @@
       "reason": "Protected live restarts through tools/smoke/reload_lane_test.ps1; prepared input DF3D_RELOAD_LANE."
     },
     {
+      "path": "presentations/godot/project/tests/farm_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected main-scene farm owner and viewport-input acceptance through tools/smoke/areas_acceptance.ps1 -FarmSceneOnly on an owned unsaved clone."
+    },
+    {
       "path": "presentations/godot/project/tests/farm_controller_live.gd",
       "status": "manual",
       "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmControllerOnly -SaveId df3d-areas-* verifies real farm controller, tab retirement, crop/fertilizer effects and stale external changes. No rendered UI or transport disconnect claim."

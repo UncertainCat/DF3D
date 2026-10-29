@@ -38,6 +38,10 @@ local function camera_reference(item)
  local saved={unit=plot.follow_unit,item=plot.follow_item,x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
  local position={x=item.pos.x,y=item.pos.y,z=item.pos.z}
  local zoom=g.viewport_zoom_factor
+ local original_flags=item.flags.whole
+ local block=assert(dfhack.maps.getTileBlock(position.x,position.y,position.z))
+ local designation=block.designation[position.x%16][position.y%16]
+ local original_designation=designation.whole
  local before=require('json').encode(items())
  local function state(label)
   local row=capture('farm-item-camera-'..label)
@@ -46,6 +50,7 @@ local function camera_reference(item)
   row.window={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
   row.position={x=item.pos.x,y=item.pos.y,z=item.pos.z}
   row.viewport={factor=g.viewport_zoom_factor,width=g.main_viewport.dim_x,height=g.main_viewport.dim_y}
+  row.item_hidden=item.flags.hidden;row.terrain_hidden=designation.hidden
   return row
  end
  local ok,err=xpcall(function()
@@ -57,6 +62,16 @@ local function camera_reference(item)
   move(400,400);script.sleep(2,'frames');state('moved-open')
   item.pos.x=position.x;item.pos.y=position.y
   move(400,400);script.sleep(2,'frames');state('restored-open')
+  item.flags.hidden=true;move(400,400);state('item-hidden')
+  assert(plot.follow_item==item.id,'item hidden flag unexpectedly stopped follow')
+  item.flags.whole=original_flags
+  designation.hidden=true;move(400,400);state('terrain-hidden')
+  assert(plot.follow_item==-1,'hidden terrain did not stop follow')
+  designation.whole=original_designation;move(400,400);state('terrain-restored')
+  assert(plot.follow_item==-1,'revealing terrain automatically resumed follow')
+  move(856,106);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  script.sleep(2,'frames');move(400,400);state('visibility-reenabled')
+  assert(plot.follow_item==item.id,'explicit follow did not recover after reveal')
   if main.view_sheets.active_sheet==df.view_sheet_type.ITEM then
    move(856,106);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
    script.sleep(2,'frames');move(400,400);state('clicked-again')
@@ -84,6 +99,7 @@ local function camera_reference(item)
   assert(require('json').encode(items())==before,'camera action changed item facts')
  end,debug.traceback)
  item.pos.x=position.x;item.pos.y=position.y;item.pos.z=position.z
+ item.flags.whole=original_flags;designation.whole=original_designation
  g.viewport_zoom_factor=zoom;df.global.enabler.renderer:set_viewport_zoom_factor(zoom)
  plot.follow_unit=saved.unit;plot.follow_item=saved.item
  df.global.window_x=saved.x;df.global.window_y=saved.y;df.global.window_z=saved.z

@@ -38,6 +38,25 @@ inline std::optional<df::coord> itemPosition(df::item* item) {
     resolve(item,&x,&y,&z);
     return df::coord(x,y,z);
 }
+// Follow's visibility guard uses the effective position, including holders.
+// This native designation reader only reads world map data; item.hidden is
+// deliberately not a follow restriction (native interface-invisible flag).
+inline std::optional<df::coord> itemFollowPosition(df::item* item) {
+    using Designation=uint32_t (*)(df::world*,int16_t,int16_t,int16_t);
+    static const auto designation=[]()->Designation {
+        if(!farmFunctions())return nullptr;
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x86;++i){hash^=base[0x7dc40+i];hash*=UINT64_C(1099511628211);}
+        if(hash!=UINT64_C(0x396b58fb95c29f02))return nullptr;
+        return reinterpret_cast<Designation>(base+0x7dc40);
+    }();
+    if(!designation||!df::global::world)return std::nullopt;
+    const auto pos=itemPosition(item);
+    if(!pos||!pos->isValid()||pos->x<0||pos->y<0||pos->z<0)return std::nullopt;
+    if(designation(df::global::world,pos->x,pos->y,pos->z)&0x200)return std::nullopt;
+    return pos;
+}
 // Common building-sheet caption at 19d4ae calls this semantic formatter with
 // independently owned string storage. The body spans two unwind entries.
 inline std::optional<std::string> buildingItemCaption(df::item* item) {

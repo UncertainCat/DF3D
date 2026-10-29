@@ -631,8 +631,10 @@ action or long-running camera following.
 Management92 adds `ProductionInspect` with `locate_item=true` and `item_id`.
 This request excludes building identity, contents, paging, revision preconditions
 and edits. It resolves the item independently of farm membership through DF's
-native `itemPosition` adapter. Missing, removed and invalid-coordinate targets
-reject without position authority. A successful `production.item_position`
+native `itemFollowPosition` adapter. Missing, removed, invalid-coordinate and
+hidden-terrain targets reject without position authority. The adapter resolves
+effective position through `itemPosition`, then calls DF's designation reader
+for the follow visibility guard. A successful `production.item_position`
 contains only the requested ID and effective map coordinate. Schema validators
 reject mixed authority and out-of-range coordinates; absent historical positions
 stay absent. Neither the request nor the result carries camera or follow state.
@@ -686,8 +688,8 @@ restart checks also pass (80 native checks). All five owned DF processes exit
 unsaved; both save manifests remain unchanged. Only the known rendering-thread
 notice remains. Root, follow and camera checks pass cleanly.
 `item_follow_framing_reference` retains native and viewer provenance. Natural
-hauling, minimum-window framing, native follow visibility eligibility and general
-item types remain unaccepted; this staged route stays hidden.
+hauling, minimum-window framing and general item types remain unaccepted; this
+staged route stays hidden.
 
 ## Native item-sheet semantic discovery
 
@@ -718,10 +720,25 @@ must initialize all outputs and reject the invalid sentinel. Inventory cycles
 and moving/carried/container cases are not established by this stationary oracle.
 DFHack Items::getPosition reconstructs these rules rather than calling DF.
 The transport above uses this resolver; the viewer owns following independently
-and does not borrow plotinfo follow fields or native camera state. The native
-follow loops also reject map flag0x200 via7dc40 after resolving the position.
-That visibility eligibility branch still needs semantic-adapter acceptance;
-the position-only adapter currently checks identity and coordinate validity.
+and does not borrow plotinfo follow fields or native camera state. Native follow
+loops also reject hidden-terrain designation bit0x200 via7dc40 after resolving
+the position. `itemFollowPosition` calls that complete0x86-byte read-only body,
+pinned by FNV1a64 396b58fb95c29f02. It has no calls or global/scratch writes and
+reads the supplied world's map; construction already uses this same pinned
+reader. The raw `item-position-probe` diagnostic retains position-only semantics.
+
+Protected155706 on2026-10-29 verifies native item-hidden keeps following,
+terrain-hidden stops it, revealing terrain does not resume, and an explicit
+camera click recovers. Flags and designation bits restore before unsaved exit.
+Protected160111 verifies the production wire and live follow controller against
+the installed bridge: item-hidden permits the read, hidden terrain rejects with
+no position authority, the controller clears identity/last position, restoration
+does not send another request, and explicit follow recovers. Forty position
+comparisons and existing seed inspection/edit/controller checks also pass.
+The run is clean; both save manifests remain unchanged and DF141624 exits
+unsaved. MSVC and offline core/follow checks pass. `item_follow_visibility_reference`
+retains native and viewer results plus binary hashes. This establishes the
+visibility guard, not natural hauling or minimum-window behavior.
 
 Diagnostic command `item-position-probe <item-id>` now calls the two pinned
 resolver bodies through `itemPosition`, initializing all three outputs to

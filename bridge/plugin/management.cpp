@@ -2541,7 +2541,7 @@ void run(color_ostream& out) {
   if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->locate_item()) {
     message.clear();status=m::ManagementStatus::Rejected;production={};
     const auto id=r->production()->item_id();
-    const auto pos=df3d_production::itemPosition(df::item::find(id));
+    const auto pos=df3d_production::itemFollowPosition(df::item::find(id));
     if(pos && pos->isValid() && pos->x>=0 && pos->y>=0 && pos->z>=0) {
       production.itemPosition=ItemPosition{id,pos->x,pos->y,pos->z};status=m::ManagementStatus::Ok;
     }

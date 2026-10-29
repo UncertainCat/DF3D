@@ -176,7 +176,59 @@ func verify_item_positions(initial: Dictionary) -> void:
 	var restored:=await read_position(target)
 	if stopped:return
 	if not check(restored==original,"position target not restored"):return
-	write_json("item-position-results.json",{"cases":cases,"missing_item_rejected":true,"fresh_moved_position":true,"removed_item_rejected":true,"restored":true})
+	await native("item-position-state",{"item_id":target,"state":"item-hidden"})
+	if stopped:return
+	var invisible:=await read_position(target)
+	if stopped or not check(invisible==original,"item hidden flag changed follow eligibility"):return
+	await native("item-position-state",{"item_id":target,"state":"terrain-hidden"})
+	if stopped:return
+	await read_position(target,true)
+	if stopped:return
+	await native("item-position-state",{"item_id":target,"state":"restored"})
+	if stopped:return
+	var revealed:=await read_position(target)
+	if stopped or not check(revealed==original,"explicit read did not recover after revealing terrain"):return
+	write_json("item-position-results.json",{"cases":cases,"missing_item_rejected":true,"fresh_moved_position":true,"removed_item_rejected":true,"item_hidden_allowed":true,"terrain_hidden_rejected":true,"revealed_read_recovers":true,"restored":true})
+
+func wait_follow(model,actions) -> bool:
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll()
+		if model.ticket==0:return true
+		await create_timer(0.01).timeout
+	return check(false,"follow visibility read timed out")
+
+func exercise_follow_visibility(initial: Dictionary) -> void:
+	var actions=load("res://scripts/semantic_action_service.gd").new()
+	root.add_child(actions);actions.set_process(false);actions.configure(world,true)
+	var model=load("res://scripts/item_follow.gd").new();model.configure(actions)
+	await follow_visibility_cases(model,actions,int(initial.rows[0].id))
+	model.dispose();model.free();actions.free()
+
+func follow_visibility_cases(model,actions,target: int) -> void:
+	model.toggle(target)
+	if not await wait_follow(model,actions):return
+	if not check(model.item_id==target and model.last_position!=null,"initial follow position absent"):return
+	var position: Vector3i=model.last_position
+	await native("item-position-state",{"item_id":target,"state":"item-hidden"})
+	if stopped:return
+	model._process(1)
+	if not await wait_follow(model,actions):return
+	if not check(model.item_id==target and model.last_position==position,"hidden item stopped following"):return
+	await native("item-position-state",{"item_id":target,"state":"terrain-hidden"})
+	if stopped:return
+	model._process(1)
+	if not await wait_follow(model,actions):return
+	if not check(model.item_id==-1 and model.last_position==null,"hidden terrain retained follow authority"):return
+	await native("item-position-state",{"item_id":target,"state":"restored"})
+	if stopped:return
+	var next_ticket: int=actions._next_ticket
+	model._process(1);actions.poll()
+	if not check(model.item_id==-1 and actions._next_ticket==next_ticket,"revealed terrain automatically resumed following"):return
+	model.toggle(target)
+	if not await wait_follow(model,actions):return
+	if not check(model.item_id==target and model.last_position==position,"explicit follow did not recover after reveal"):return
+	write_json("item-follow-visibility-results.json",{"item_id":target,"item_hidden_allowed":true,"terrain_hidden_stops":true,"no_auto_resume":true,"explicit_recovery":true})
 
 func verify_item_inspection(id: int, initial: Dictionary) -> void:
 	var cases: Array=[]
@@ -212,6 +264,8 @@ func exercise() -> void:
 	await verify_item_inspection(id,initial)
 	if stopped:return
 	await verify_item_positions(initial)
+	if stopped:return
+	await exercise_follow_visibility(initial)
 	if stopped:return
 	initial=await read_contents(id)
 	if stopped:return

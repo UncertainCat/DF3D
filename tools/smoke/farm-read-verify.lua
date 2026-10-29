@@ -28,12 +28,17 @@ elseif request.op=='item-cold' then
  item.flags.weight_computed=false;item.weight.whole=0;item.weight.fraction=0
 elseif request.op=='item-position-state' then
  local item=assert(df.item.find(request.item_id));local c=assert(_G.df3d_contents_fixture)
- if not c.position_original then c.position_original={item=item,flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z}end
+ if not c.position_original then
+  local block=assert(dfhack.maps.getTileBlock(item.pos));local designation=block.designation[item.pos.x%16][item.pos.y%16]
+  c.position_original={item=item,flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z,designation=designation,bits=designation.whole}
+ end
  local old=c.position_original;assert(old.item==item,'position fixture target changed')
  if request.state=='moved' then item.pos.x=old.x+1;item.pos.y=old.y-1
  elseif request.state=='removed' then item.flags.removed=true
+ elseif request.state=='item-hidden' then item.flags.hidden=true
+ elseif request.state=='terrain-hidden' then old.designation.hidden=true
  elseif request.state=='restored' then
-  item.flags.whole=old.flags;item.pos.x=old.x;item.pos.y=old.y;item.pos.z=old.z;c.position_original=nil
+  item.flags.whole=old.flags;item.pos.x=old.x;item.pos.y=old.y;item.pos.z=old.z;old.designation.whole=old.bits;c.position_original=nil
  else error('unknown position fixture state')end
 elseif request.op=='item-position' then
  local text,code=dfhack.run_command_silent('df3d','item-position-probe',string.format('%d',request.item_id));assert(code==0,text)

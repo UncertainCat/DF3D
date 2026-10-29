@@ -24822,5 +24822,107 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     },
     "scope": "Native 46-column offset and ceiling viewport dimensions, controlled move open/closed, 32/40/48px zoom oracle. Actual viewer resize/zoom/three projections, established follow refresh queued/sent/replacement retirement, closed-sheet late replies and explicit recovery. Five DF processes exit unsaved; two save manifests unchanged. Natural hauling, minimum-window framing, native follow visibility eligibility and general items remain unfinished."
+  },
+  "item_follow_visibility_reference": {
+    "date": "2026-10-29",
+    "native_run": "build/stockpile-storage-native-farm-discovery-20261029-155706",
+    "native_status": "passed",
+    "native_records": [
+      {
+        "name": "farm-item-camera-item-hidden",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "item_hidden": true,
+        "terrain_hidden": false,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        }
+      },
+      {
+        "name": "farm-item-camera-terrain-hidden",
+        "item_id": 47492,
+        "follow_item": -1,
+        "item_hidden": false,
+        "terrain_hidden": true,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        }
+      },
+      {
+        "name": "farm-item-camera-terrain-restored",
+        "item_id": 47492,
+        "follow_item": -1,
+        "item_hidden": false,
+        "terrain_hidden": false,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        }
+      },
+      {
+        "name": "farm-item-camera-visibility-reenabled",
+        "item_id": 47492,
+        "follow_item": 47492,
+        "item_hidden": false,
+        "terrain_hidden": false,
+        "window": {
+          "x": 124,
+          "y": 108,
+          "z": 165
+        },
+        "position": {
+          "x": 129,
+          "y": 116,
+          "z": 165
+        }
+      }
+    ],
+    "live_run": "build/areas-acceptance-20261029-160111",
+    "live_status": "passed",
+    "controller_results": {
+      "explicit_recovery": true,
+      "item_hidden_allowed": true,
+      "item_id": 47492,
+      "no_auto_resume": true,
+      "terrain_hidden_stops": true
+    },
+    "native_reader": {
+      "rva": "7dc40",
+      "length": "86",
+      "fnv1a64": "396b58fb95c29f02",
+      "guard": "designation bit0x200 (hidden), evaluated at effective item position"
+    },
+    "bridge_sha256": "d499270c6f9c7f6e05077ec4aa8fa0ed8c343e1779b8f7c73affe5141bb7c191",
+    "native_artifacts": {
+      "result.json": "d9b0844e4ddbcaa4952f1f639e3d756026172a3f3da3867c390f80103f59dc07",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "live_artifacts": {
+      "item-follow-visibility-results.json": "b89c763dd550831d91dc443c96ced9685105e1369539d8361c585ea9e97b4f0c",
+      "item-position-results.json": "92580c323679375947d8219884c5688c1e95a7a68c5f9b34693b1633351d0305",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    "scope": "Native item hidden permits following; hidden terrain stops it, reveal does not resume, explicit follow recovers. Production wire rejects hidden terrain without authority; real follow controller retires identity and coordinates without automatic retry. Forty native position comparisons and seed inspection/edit/controller regressions pass; owned unsaved exits and save preservation. Natural hauling and minimum-window framing remain unfinished."
   }
 }

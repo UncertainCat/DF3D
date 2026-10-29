@@ -23,8 +23,18 @@ if request.op=='change' or request.op=='restore' then
 elseif request.op=='header-change' or request.op=='header-restore' then
  state.farm.name=request.op=='header-change' and 'wire farm' or state.name
  local text,code=dfhack.run_command_silent('df3d','farm-header-read',tostring(state.farm.id));assert(code==0,text);result.header=json.decode(text)
-elseif request.op~='final' then error('unknown farm verification operation')end
-if request.op=='final' then assert(state.farm.name==state.name,'read fixture name not restored')end
+elseif request.op=='contents-change' or request.op=='contents-restore' then
+ local c=assert(_G.df3d_contents_fixture)
+ local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(c.farm.id));assert(code==0,text)
+ local revision=json.decode(text).revision
+ local desired=request.op=='contents-change' and not c.hidden or c.hidden
+ -- Explicit branch avoids Lua's false-valued ternary pitfall.
+ if request.op=='contents-change' then desired=not c.hidden end
+ text,code=dfhack.run_command_silent('df3d','farm-item-edit',tostring(c.farm.id),tostring(c.item.id),'hidden',desired and '1' or '0',revision)
+ assert(code==0 and json.decode(text).outcome=='completed',text)
+ result.contents_revision=json.decode(text).revision
+elseif request.op~='final'  then error('unknown farm verification operation')end
+if request.op=='final' then assert(state.farm.name==state.name,'read fixture name not restored');local c=_G.df3d_contents_fixture;assert(c.item.flags.hidden==c.hidden,'contents not restored')end
 local f=assert(io.open(out..'/response-'..index..'.json','w'))
 f:write(json.encode(result));f:close()
 print('SEMANTIC_PASS '..index..' farm read guards')

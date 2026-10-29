@@ -3691,7 +3691,7 @@
     {
       "path": "presentations/godot/project/tests/farm_read_live.gd",
       "status": "manual",
-      "reason": "Protected owned unsaved clone: tools/smoke/areas_acceptance.ps1 -FarmReadOnly verifies native farm snapshot transport, stable and changed revisions, invalid targets and native menu/selection guards. Requires a new -SaveId df3d-areas-*; no rendered farm UI claim."
+      "reason": "Protected owned unsaved clone: tools/smoke/areas_acceptance.ps1 -FarmReadOnly verifies native farm snapshot and paged contents transport, exact revisions, offset reads, stale contents continuation, restoration, invalid targets and native menu/selection guards. Requires a new -SaveId df3d-areas-*; no rendered farm UI claim."
     },
     {
       "path": "presentations/godot/project/tests/areas_acceptance_live.gd",

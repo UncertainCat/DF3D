@@ -21,6 +21,13 @@ ProductionState decodeProduction(const m::ProductionState* p) {
   n.selectedBuilding = p->selected_building();
   n.createdJob = p->created_job();
   n.detail = str(p->detail());
+  if(const auto* page=p->contents()) {
+    auto& value=n.contents.emplace();value.buildingId=page->building_id();value.revision=page->revision();
+    value.cursor=page->cursor();value.nextCursor=page->next_cursor();value.total=page->total();
+    value.completed=page->completed();value.removing=page->removing();
+    if(page->rows())for(const auto* row:*page->rows())value.rows.push_back({row->id(),row->role(),str(row->name()),
+      row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building()});
+  }
   n.farmEditOutcome=static_cast<FarmEditOutcome>(p->farm_edit_outcome());
   if(const auto* f=p->farm()) {
     auto& farm=n.farm.emplace();farm.buildingId=f->building_id();farm.revision=f->revision();
@@ -170,7 +177,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
                                     p.cancel, p.season, p.cropId, p.expectedRevision,static_cast<m::FarmOperation>(p.farmOperation),p.seasonalFertilization,
-                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0);
+                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents);
 }
 
 flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBufferBuilder& b,

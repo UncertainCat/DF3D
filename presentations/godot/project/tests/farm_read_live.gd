@@ -14,6 +14,54 @@ func read_farm(id: int, season: int, rejected := false) -> Dictionary:
 		await create_timer(0.01).timeout
 	incomplete("farm read timed out; no replay",true);return {}
 
+func read_contents(id: int, cursor := 0, revision := 0, rejected := false) -> Dictionary:
+	world.poll()
+	var seq: int=world.management_request("production",{"action":Contract.ManagementAction.ProductionInspect,"building_id":id,"contents":true,"cursor":cursor,"expected_revision":revision})
+	if not check(seq>0,"contents read not sent: "+world.last_error()):return {}
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		var response: Dictionary=world.poll_management()
+		if int(response.get("request_seq",0))==seq and response.get("status",S.Idle) not in [S.Idle,S.Pending]:
+			if not check(response.status==(S.Rejected if rejected else S.Ok),"contents read status differs"):return {}
+			return response.get("production",{}).get("contents",{})
+		await create_timer(0.01).timeout
+	incomplete("contents read timed out; no replay",true);return {}
+
+func exercise_contents() -> void:
+	var expected: Dictionary=fixture.contents
+	var page:=await read_contents(int(expected.building_id))
+	if stopped:return
+	if not check(page.revision==int(expected.revision) and page.total==expected.rows.size(),"contents revision/count differs"):return
+	var all_rows: Array=page.rows.duplicate()
+	var next: int=page.next_cursor
+	while next>0:
+		var tail:=await read_contents(int(expected.building_id),next,int(page.revision))
+		if stopped:return
+		if not check(tail.cursor==next and tail.revision==page.revision,"contents continuation identity differs"):return
+		all_rows.append_array(tail.rows);next=tail.next_cursor
+	if not check(all_rows.size()==expected.rows.size(),"contents rows lost"):return
+	for index in all_rows.size():
+		var row: Dictionary=all_rows[index]
+		var original: Dictionary=expected.rows[index]
+		if not check(row.id==int(original.id) and row.role==int(original.role_value) and row.name==original.name,"contents order/caption differs"):return
+		for key in ["forbid","dump","melt","hidden","can_dump","can_melt","in_job","in_building"]:
+			if not check(row[key]==original[key],"contents semantic flag differs: "+key):return
+	var tail:=await read_contents(int(expected.building_id),1,int(page.revision))
+	if stopped:return
+	if not check(tail.cursor==1 and tail.rows[0].id==all_rows[1].id,"contents offset ignored"):return
+	await native("contents-change")
+	if stopped:return
+	var stale:=await read_contents(int(expected.building_id),1,int(page.revision),true)
+	if stopped:return
+	if not check(stale.is_empty(),"stale continuation retained authority"):return
+	await native("contents-restore")
+	if stopped:return
+	var restored:=await read_contents(int(expected.building_id))
+	if stopped:return
+	if not check(restored==page,"restored contents receipt differs"):return
+	write_json("contents-read-results.json",{"page":page,"row_count":all_rows.size(),"stale_rejected":true,"restored":true})
+
 func exercise() -> void:
 	await seed_catalog()
 	if stopped:return
@@ -62,5 +110,7 @@ func exercise() -> void:
 		var absent:=await read_farm(id,0,true)
 		if stopped:return
 		if not check(absent.is_empty(),"rejected target retained farm authority"):return
+	await exercise_contents()
+	if stopped:return
 	await native("final")
 	write_json("farm-read-results.json",{"snapshots":observed,"read_count":12,"renamed_header":renamed,"rejected_targets":2,"changed_revision":changed.revision,"restored_revision":restored.revision})

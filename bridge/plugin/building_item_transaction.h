@@ -52,6 +52,29 @@ inline bool validBuildingContents(const BuildingContentsSnapshot& value) {
     }
     return true;
 }
+struct BuildingContentsSlice {
+    uint32_t cursor=0,nextCursor=0,total=0;
+    // Captions are converted to transport encoding; revision remains that of
+    // the complete native snapshot, not a hash of this presentation page.
+    std::vector<BuildingContentsRow> rows;
+};
+template<class Convert>
+std::optional<BuildingContentsSlice> pageBuildingContents(const BuildingContentsSnapshot& value,
+    uint32_t cursor,uint64_t expected,Convert convert) {
+    if(!validBuildingContents(value)||value.rows.size()>UINT32_MAX ||
+       (cursor && !expected) || (expected && expected!=value.revision) ||
+       (cursor>=value.rows.size() && (cursor || !value.rows.empty())))return std::nullopt;
+    BuildingContentsSlice page;page.cursor=cursor;page.total=static_cast<uint32_t>(value.rows.size());
+    size_t bytes=0;
+    for(size_t i=cursor;i<value.rows.size() && page.rows.size()<64;++i) {
+        auto caption=convert(value.rows[i].caption);
+        if(caption.size()>128*1024-bytes)break;
+        bytes+=caption.size();auto row=value.rows[i];row.caption=std::move(caption);page.rows.push_back(std::move(row));
+    }
+    if(page.rows.empty() && page.total)return std::nullopt;
+    const uint32_t end=cursor+static_cast<uint32_t>(page.rows.size());
+    page.nextCursor=end<page.total?end:0;return page;
+}
 // Apply=false promises no native entry. After entry only a fresh observation
 // can establish completion; exceptions/lost targets are Unknown, never replayed.
 // Native cleanup may legitimately alter other flags/jobs, so do not demand

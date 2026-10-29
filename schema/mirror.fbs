@@ -1527,6 +1527,7 @@ table ProductionRequest {
   farm_operation:FarmOperation;
   seasonal_fertilization:int8 = -1;
   farm_name:string;
+  contents:bool;
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 table ProductionRecipe { key:string; name:string; requirements:[ProductionRequirement]; }
@@ -1562,6 +1563,17 @@ table FarmSnapshot {
   removal_suspended:bool;
   removal_has_worker:bool;
 }
+// A page is tied to the revision of the complete native contents vector.
+table BuildingContentsItem {
+  id:int32 = -1; role:int32 = -1; name:string;
+  forbid:bool; dump:bool; melt:bool; hidden:bool;
+  can_dump:bool; can_melt:bool; in_job:bool; in_building:bool;
+}
+table BuildingContentsPage {
+  building_id:int32 = -1; revision:uint64;
+  cursor:uint32; next_cursor:uint32; total:uint32;
+  completed:bool; removing:bool; rows:[BuildingContentsItem];
+}
 table ProductionState {
   buildings:[ProductionBuilding]; next_cursor:uint32;
   recipes:[ProductionRecipe]; jobs:[ProductionJob]; crops:[FarmCrop];
@@ -1570,6 +1582,7 @@ table ProductionState {
   detail:string;
   farm:FarmSnapshot;
   farm_edit_outcome:FarmEditOutcome;
+  contents:BuildingContentsPage;
 }
 table WorkOrderRequest {
   id:int32 = -1;
@@ -1856,7 +1869,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 87;
+  schema_version:uint32 = 88;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1902,7 +1915,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 87;
+  schema_version:uint32 = 88;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

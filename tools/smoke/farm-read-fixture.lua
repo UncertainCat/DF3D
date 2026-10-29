@@ -15,6 +15,20 @@ for season=0,3 do
  state.choices[#state.choices+1]=rows
 end
 local text,code=dfhack.run_command_silent('df3d','farm-header-read',tostring(farm.id));assert(code==0,text);state.header=json.decode(text)
+local contents_farm
+for _,candidate in ipairs(df.global.world.buildings.other.FARM_PLOT)do
+ if #candidate.contained_items>1 then contents_farm=candidate;break end
+end
+assert(contents_farm,'missing contained-item fixture')
+local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(contents_farm.id));assert(code==0,text)
+state.contents=json.decode(text)
+for index,row in ipairs(state.contents.rows)do
+ local item=contents_farm.contained_items[index-1].item
+ row.forbid=item.flags.forbid;row.dump=item.flags.dump;row.melt=item.flags.melt;row.hidden=item.flags.hidden
+ row.in_job=item.flags.in_job;row.in_building=item.flags.in_building
+end
+_G.df3d_contents_fixture={farm=contents_farm,item=contents_farm.contained_items[1].item,
+ hidden=contents_farm.contained_items[1].item.flags.hidden}
 _G.df3d_farm_read_fixture={farm=farm,name=farm.name,seasons=state.seasons,frame=df.global.world.frame_counter,
  crops=json.encode(vector(df.global.plotinfo.selected_farm_crops)),seeds=json.encode(vector(df.global.plotinfo.available_seeds)),
  tab=df.global.game.main_interface.view_sheets.active_sub_tab,

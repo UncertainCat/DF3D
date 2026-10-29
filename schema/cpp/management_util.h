@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 87;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v87";
+inline constexpr uint32_t kManagementVersion = 88;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v88";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -426,7 +426,11 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       if(p->farm_operation()!=FarmOperation::Crop && p->crop_id()!=-1)return "unexpected farm crop";
       if(p->farm_operation()==FarmOperation::SeasonalFertilization ? p->seasonal_fertilization()<0 : p->seasonal_fertilization()!=-1)return "invalid seasonal fertilization intent";
     }
-    if(p->expected_revision()>INT64_MAX || (r.action()==ManagementAction::FarmEdit?!p->expected_revision():p->expected_revision()!=0))return "invalid farm edit revision";
+    if(p->contents() && (r.action()!=ManagementAction::ProductionInspect || p->season()!=-1 ||
+        p->job_id()!=-1 || p->crop_id()!=-1 || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() ||
+        (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size()) ||
+        (p->cursor()>0 && !p->expected_revision())))return "invalid contents read";
+    if(p->expected_revision()>INT64_MAX || (!p->contents() && (r.action()==ManagementAction::FarmEdit?!p->expected_revision():p->expected_revision()!=0)))return "invalid farm edit revision";
     if(r.action()==ManagementAction::FarmEdit && (p->job_id()!=-1 || p->cursor() || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() ||
         (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size())))return "unexpected farm edit fields";
   } else if(r.production()) return "unexpected production payload";
@@ -1285,6 +1289,23 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
+    if(const auto* page=p->contents()) {
+      if(s.action()!=ManagementAction::ProductionInspect || s.status()!=ManagementStatus::Ok ||
+         page->building_id()<0 || page->building_id()!=p->selected_building() ||
+         !page->revision() || page->revision()>INT64_MAX || !page->rows() || page->rows()->size()>64 ||
+         page->cursor()>page->total() || page->rows()->size()>page->total()-page->cursor())return "invalid contents page";
+      const uint64_t end=uint64_t(page->cursor())+page->rows()->size();
+      if((end<page->total() && (page->rows()->size()==0 || page->next_cursor()!=end)) ||
+         (end==page->total() && page->next_cursor()!=0) ||
+         (page->total()>0 && page->cursor()==page->total()))return "invalid contents continuation";
+      std::set<int32_t> contentIds;size_t names=0;
+      for(const auto* row:*page->rows()) {
+        if(!row || row->id()<0 || row->role()<0 || !contentIds.insert(row->id()).second || !row->name())return "invalid contents row";
+        names+=row->name()->size();if(names>128*1024)return "contents names exceed payload budget";
+      }
+      if(p->farm() || (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||
+         (p->jobs() && p->jobs()->size()) || (p->crops() && p->crops()->size()))return "mixed contents response";
+    }
     const auto outcome=p->farm_edit_outcome();
     if(static_cast<uint8_t>(outcome)>4 || (outcome!=FarmEditOutcome::None && s.action()!=ManagementAction::FarmEdit))return "invalid farm edit outcome";
     if(s.action()==ManagementAction::FarmEdit) {

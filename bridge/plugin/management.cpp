@@ -75,6 +75,7 @@
 #include "area_geometry.h"
 #include "room_mutation_native.h"
 #include "farm_native.h"
+#include "building_item_native.h"
 #include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
 // kernel objects) has no POSIX path yet; say so instead of failing on HANDLE.
@@ -604,7 +605,15 @@ void publish() {
     for(const auto& c:f.choices)rows.push_back(m::CreateNativeFarmCrop(b,c.id,b.CreateString(c.name),c.seedsAvailable,c.currentSeasonWarning,b.CreateString(c.rawId)));
     farmSnapshot=m::CreateFarmSnapshot(b,f.buildingId,f.revision,f.selectedSeason,f.currentSeason,b.CreateVector(f.seasonalCrops),b.CreateVector(rows),f.currentFertilization,f.maxFertilization,f.pendingFertilization,f.seasonalFertilization,b.CreateString(f.customName),b.CreateString(f.headerName),f.removing,f.removalSuspended,f.removalHasWorker);
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome);
+  flatbuffers::Offset<m::BuildingContentsPage> contentsPage;
+  if(production.contents) {
+    const auto& page=*production.contents;std::vector<flatbuffers::Offset<m::BuildingContentsItem>> rows;
+    for(const auto& row:page.rows)rows.push_back(m::CreateBuildingContentsItem(b,row.id,row.role,b.CreateString(row.name),
+      row.forbid,row.dump,row.melt,row.hidden,row.canDump,row.canMelt,row.inJob,row.inBuilding));
+    contentsPage=m::CreateBuildingContentsPage(b,page.buildingId,page.revision,page.cursor,page.nextCursor,page.total,
+      page.completed,page.removing,b.CreateVector(rows));
+  }
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -2408,6 +2417,27 @@ void run(color_ostream& out) {
           case df3d_production::FarmEditOutcome::Rejected:break;
         }
       }
+    }
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->contents()) {
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    const auto* q=r->production();
+    auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(q->building_id()));
+    auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
+    auto snapshot=tile&&!tile->bits.hidden?df3d_production::buildingContents(farm):std::nullopt;
+    auto slice=snapshot?df3d_production::pageBuildingContents(*snapshot,q->cursor(),q->expected_revision(),
+      [](const std::string& caption){return DF2UTF(caption);}):std::nullopt;
+    if(slice) {
+      BuildingContentsPage page;page.buildingId=snapshot->buildingId;page.revision=snapshot->revision;
+      page.completed=snapshot->completed;page.removing=snapshot->removing;
+      page.cursor=slice->cursor;page.total=slice->total;page.nextCursor=slice->nextCursor;
+      for(auto& row:slice->rows) {
+        df::item_flags flags;flags.whole=row.flags;
+        page.rows.push_back({row.id,row.role,std::move(row.caption),row.forbid,row.dump,row.melt,row.hidden,
+          row.canDump,row.canMelt,bool(flags.bits.in_job),bool(flags.bits.in_building)});
+      }
+      production.selectedBuilding=page.buildingId;production.contents=std::move(page);status=m::ManagementStatus::Ok;
     }
     publish();return;
   }

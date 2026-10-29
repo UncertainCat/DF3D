@@ -38,9 +38,32 @@ item facts and byte-for-byte view_sheets/plotinfo state. The owned paused
 DF180196 exits unsaved and the source-save manifest is unchanged. Evidence is
 retained in `native_farm.json.contents_reader_reference`. Other item types,
 quality/wear/artifact captions, tail scrolling and active jobs remain unverified.
-This is diagnostic evidence; management-wire transport and Godot controls remain
-unfinished. The bridge revision transaction is described below. No public route
-or schema change accompanies it.
+This establishes the native reader. Its management-wire transport is described
+below; Godot controls remain unfinished and the farm route stays staged.
+
+Management88 transports explicit `ProductionInspect` reads with `contents=true`.
+The current producer supports visible farm plots; the page contract is reusable
+for other buildings after native acceptance. It returns ordered semantic rows,
+native UTF-8 captions, role, item flags, eligibility and job/building indicators.
+Contents revisions remain independent of farm crop settings. A page contains
+at most64 rows and128KiB of encoded captions. Continuations carry the complete
+contents revision; changed contents reject without an authoritative page. Empty
+contents have an explicit empty page; missing historical data remains unknown.
+The shared page builder measures converted strings, preserves order and rejects
+an individually oversized row rather than truncating it or reporting completion.
+
+Protected FarmReadOnly224225 on2026-10-28 verifies the matched management88
+bridge/model/Godot path against40 native seed rows: exact integer revision,
+IDs/order/names/roles/eight semantic flags, offset read, stale continuation after
+a controlled native item change, and restoration of the original receipt.
+Existing crop/header reads and native-menu guards remain covered. All seven
+native checks pass; both save manifests remain unchanged and owned paused
+DF184904 exits unsaved. `contents_wire_reference` retains bounded evidence and
+hashes. Core `building-contents-pages` passes; direct page-policy tests cover70
+rows, empty contents, invalid cursors/revisions, encoded byte boundaries and
+oversized caption refusal. Codec tests reject malformed/mixed pages and preserve
+revisions above2^53. This is read transport acceptance, not rendered contents UI
+or typed item-write acceptance. The diagnostic write transaction follows below.
 
 Native farm selection capture215347 on2026-10-28 records farm227 and its
 co-located crop item48436 as BUILDING then ITEM alternatives. Clicking the item

@@ -320,3 +320,25 @@ TEST_CASE("contained item edits distinguish refusal completion and uncertain nat
         CHECK(applies<=1);CHECK(reads<=1);
     }
 }
+
+TEST_CASE("contents paging has complete boundaries and measures encoded captions") {
+    using namespace df3d_production;
+    BuildingContentsSnapshot snapshot;snapshot.buildingId=968;snapshot.completed=true;
+    for(int i=0;i<70;++i){BuildingContentsRow row;row.id=1000-i;row.role=0;row.caption="seed";snapshot.rows.push_back(row);}
+    snapshot.revision=buildingContentsRevision(snapshot);
+    const auto unchanged=[](const std::string& value){return value;};
+    auto first=pageBuildingContents(snapshot,0,0,unchanged);REQUIRE(first);
+    CHECK(first->rows.size()==64);CHECK(first->nextCursor==64);CHECK(first->total==70);
+    auto last=pageBuildingContents(snapshot,64,snapshot.revision,unchanged);REQUIRE(last);
+    CHECK(last->rows.size()==6);CHECK(last->rows[0].id==936);CHECK(last->nextCursor==0);
+    CHECK_FALSE(pageBuildingContents(snapshot,64,0,unchanged));
+    CHECK_FALSE(pageBuildingContents(snapshot,64,snapshot.revision+1,unchanged));
+    CHECK_FALSE(pageBuildingContents(snapshot,70,snapshot.revision,unchanged));
+    CHECK_FALSE(pageBuildingContents(snapshot,UINT32_MAX,snapshot.revision,unchanged));
+    auto budget=pageBuildingContents(snapshot,0,0,[](const std::string&){return std::string(65536,'x');});
+    REQUIRE(budget);CHECK(budget->rows.size()==2);CHECK(budget->nextCursor==2);CHECK(budget->rows[0].caption.size()==65536);
+    CHECK_FALSE(pageBuildingContents(snapshot,0,0,[](const std::string&){return std::string(131073,'x');}));
+    snapshot.rows.clear();snapshot.revision=buildingContentsRevision(snapshot);
+    auto empty=pageBuildingContents(snapshot,0,0,unchanged);REQUIRE(empty);
+    CHECK(empty->rows.empty());CHECK(empty->nextCursor==0);CHECK(empty->total==0);
+}

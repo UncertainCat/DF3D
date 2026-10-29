@@ -83,7 +83,18 @@ struct FarmSnapshot {
   std::vector<int32_t> seasonalCrops;
   std::vector<NativeFarmCrop> choices;
 };
+struct BuildingContentsItem {
+  int32_t id=-1,role=-1;std::string name;
+  bool forbid=false,dump=false,melt=false,hidden=false,canDump=false,canMelt=false,inJob=false,inBuilding=false;
+};
+struct BuildingContentsPage {
+  int32_t buildingId=-1;uint64_t revision=0;
+  uint32_t cursor=0,nextCursor=0,total=0;
+  bool completed=false,removing=false;
+  std::vector<BuildingContentsItem> rows;
+};
 struct ProductionState {
+  std::optional<BuildingContentsPage> contents;
   df3d::mirror::FarmEditOutcome farmEditOutcome=df3d::mirror::FarmEditOutcome::None;
   std::optional<FarmSnapshot> farm;
   std::vector<ProductionBuilding> buildings;

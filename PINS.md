@@ -22,6 +22,16 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management88 adds an explicit ProductionInspect contents read and optional
+BuildingContentsPage. Pages retain native order, complete-vector revision and
+continuation cursor; continuation requests require the same revision. Missing
+historical contents remain unknown, never an invented empty list. Captions are
+native UTF-8; item flags and eligibility are semantic fields. Each page holds
+at most64 rows and128KiB of caption bytes within the management payload budget.
+Rebuild/install bridge and viewer together on `Local\\df3d_management_v88`;
+management87 is incompatible. Other wire versions are unchanged. Item writes
+remain diagnostic until their typed request/receipt migration.
+
 Management87 adds explicit FarmOperation.Remove and CancelRemoval. Both require
 the exact displayed farm revision and return a freshly observed farm receipt.
 They carry no crop, fertilizer or name fields. Rebuild/install bridge and viewer

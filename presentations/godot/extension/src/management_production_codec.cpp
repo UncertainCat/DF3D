@@ -83,6 +83,19 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   prod["selected_building"] = p.selectedBuilding;
   prod["created_job"] = p.createdJob;
   prod["detail"] = String::utf8(p.detail.c_str());
+  if(p.contents) {
+    const auto& page=*p.contents;Dictionary value;Array rows;
+    value["building_id"]=page.buildingId;value["revision"]=int64_t(page.revision);
+    value["cursor"]=page.cursor;value["next_cursor"]=page.nextCursor;value["total"]=page.total;
+    value["completed"]=page.completed;value["removing"]=page.removing;
+    for(const auto& item:page.rows) {
+      Dictionary row;row["id"]=item.id;row["role"]=item.role;row["name"]=String::utf8(item.name.c_str());
+      row["forbid"]=item.forbid;row["dump"]=item.dump;row["melt"]=item.melt;row["hidden"]=item.hidden;
+      row["can_dump"]=item.canDump;row["can_melt"]=item.canMelt;row["in_job"]=item.inJob;row["in_building"]=item.inBuilding;
+      rows.push_back(row);
+    }
+    value["rows"]=rows;prod["contents"]=value;
+  }
   prod["farm_edit_outcome"]=int(p.farmEditOutcome);
   if(p.farm) {
     const auto& f=*p.farm;Dictionary farm;Array choices,selected;
@@ -325,6 +338,8 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.buildingId = int32_t(n("building_id", -1, -1, INT32_MAX));
   value.jobId = int32_t(n("job_id", -1, -1, INT32_MAX));
   value.expectedRevision=uint64_t(n("expected_revision",0,0,INT64_MAX));
+  if(data.has("contents") && data["contents"].get_type()!=Variant::BOOL){error="Wrong management field type: contents";return false;}
+  value.contents=data.get("contents",false);
   value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,5));
   String farmName=data.get("farm_name",String());
   const auto nameBytes=farmName.utf8();value.farmName.assign(nameBytes.get_data(),nameBytes.length());

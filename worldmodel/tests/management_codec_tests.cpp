@@ -3393,3 +3393,47 @@ TEST_CASE("Tracker popup replies require one row and coherent location facts") {
     }
   }
 }
+
+TEST_CASE("contents reads carry exact independent revisions and reject mixed intents") {
+  for(int fault=0;fault<10;++fault) {
+    CAPTURE(fault);wm::ManagementRequest request;request.action=wm::ManagementAction::ProductionInspect;
+    auto& p=request.production;p.buildingId=968;p.contents=true;
+    if(fault==1){p.cursor=64;p.expectedRevision=9007199254740993ULL;}
+    if(fault==2)p.cursor=1;
+    if(fault==3)p.expectedRevision=UINT64_MAX;
+    if(fault==4)p.season=1;
+    if(fault==5)request.action=wm::ManagementAction::FarmEdit;
+    if(fault==6)p.cropId=2;
+    if(fault==7)p.query="mixed";
+    if(fault==8)p.cancel=true;
+    if(fault==9)p.farmName="mixed";
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault>1));
+    CHECK(value->production()->contents());CHECK(value->production()->expected_revision()==p.expectedRevision);
+  }
+}
+TEST_CASE("contents pages preserve native order and reject incomplete or ambiguous boundaries") {
+  for(int fault=0;fault<12;++fault) {
+    CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<wire::BuildingContentsItem>> rows;
+    for(int i=0;i<(fault==8?65:2);++i)rows.push_back(wire::CreateBuildingContentsItem(b,fault==7?1:5-i,fault==9?-1:0,
+      b.CreateString(fault==10?std::string(65537,'x'):"native caption"),true,false,false,true,true,false,true,true));
+    auto page=wire::CreateBuildingContentsPage(b,968,fault==1?0:9007199254740993ULL,
+      fault==2?4:0,fault==3?1:2,fault==4?1:3,true,false,b.CreateVector(rows));
+    wire::ProductionStateBuilder p(b);p.add_selected_building(fault==5?969:968);p.add_contents(page);
+    auto prod=p.Finish();wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(fault==6?wire::ManagementAction::FarmEdit:wire::ManagementAction::ProductionInspect);
+    state.add_status(fault==11?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);state.add_production(prod);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault) {
+      const auto result=codec::decodeProduction(value->production());REQUIRE(result.contents);
+      CHECK(result.contents->revision==9007199254740993ULL);CHECK(result.contents->nextCursor==2);
+      REQUIRE(result.contents->rows.size()==2);CHECK(result.contents->rows[0].id==5);CHECK(result.contents->rows[1].id==4);
+      CHECK(result.contents->rows[0].forbid);CHECK(result.contents->rows[0].inBuilding);
+    }
+  }
+  flatbuffers::FlatBufferBuilder b;auto p=wire::CreateProductionState(b);b.Finish(p);
+  CHECK_FALSE(codec::decodeProduction(flatbuffers::GetRoot<wire::ProductionState>(b.GetBufferPointer())).contents);
+}

@@ -23482,5 +23482,72 @@
       "native.log": "5357a1becf853cd85403ab855e1d5b819517a457bdf5cdf62d6a3557328e5406"
     },
     "scope": "Seed controller lifecycle and actual effects; main-scene composition, holder navigation and camera actions remain unfinished."
+  },
+  "item_scene_reference": {
+    "run": "build/areas-acceptance-20261029-140843",
+    "status": "passed_with_known_issues",
+    "known_issues": [
+      "godot-separate-thread-notice"
+    ],
+    "native_checks": 70,
+    "owned_df_pids": [
+      176200,
+      164292,
+      179500
+    ],
+    "exit": "unsaved",
+    "unchanged_save_manifests": 2,
+    "target": 47929,
+    "building_id": 968,
+    "behavior": [
+      "contents View transfers identity and input ownership",
+      "Forbid Dump Hide both directions",
+      "holder View returns to farm",
+      "overlay blocks edits",
+      "Escape right-click and F10 retire owner"
+    ],
+    "rendered_comparisons": [
+      {
+        "name": "item_baseline",
+        "rgb_sha256": "461f4a66651905e4317dbe400884ef49e3612dd0286d540be1d290b414f7cdcd",
+        "pixels": 345504
+      },
+      {
+        "name": "item_flag_0_0",
+        "rgb_sha256": "2587301d587e1a4e2eed6c31c0d41d3da0516f45f17a11d518faed7a5c719be2",
+        "pixels": 345504
+      },
+      {
+        "name": "item_flag_0_1",
+        "rgb_sha256": "461f4a66651905e4317dbe400884ef49e3612dd0286d540be1d290b414f7cdcd",
+        "pixels": 345504
+      },
+      {
+        "name": "item_flag_1_0",
+        "rgb_sha256": "344355880c5795fb8c2603418e04a9d34f0af0a602cd4ba892875613936617b0",
+        "pixels": 345504
+      },
+      {
+        "name": "item_flag_1_1",
+        "rgb_sha256": "461f4a66651905e4317dbe400884ef49e3612dd0286d540be1d290b414f7cdcd",
+        "pixels": 345504
+      },
+      {
+        "name": "item_flag_3_0",
+        "rgb_sha256": "25904ac3c6d4cb91a7d972391da17a482693a167bc07049decf292c9ff64a30f",
+        "pixels": 345504
+      },
+      {
+        "name": "item_flag_3_1",
+        "rgb_sha256": "461f4a66651905e4317dbe400884ef49e3612dd0286d540be1d290b414f7cdcd",
+        "pixels": 345504
+      }
+    ],
+    "artifacts": {
+      "item-scene-results.json": "3e1e9d76379f603d5997678046f45e03186fa1b1c903770e3db435007a3baf73",
+      "result.json": "a58a98c4370df55c843318c2e5da1dcd6310e0f839b9e07a4991819910e4ca49",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    "scope": "Staged actual main-scene seed sheet and holder roundtrip. Camera follow, item-specific live disconnect/replacement, broader holder types, long descriptions and resize remain incomplete. Public route remains hidden."
   }
 }

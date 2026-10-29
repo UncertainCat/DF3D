@@ -591,7 +591,26 @@ Protected140454 verifies seven confirmed controller edits on seed47486, native
 description/holder/flag readback, queued cancellation, sent completion after close,
 explicit reopen and restoration. DF171320 exits unsaved and both save manifests
 remain unchanged. `item_controller_reference` records provenance. This controller
-acceptance does not establish main-scene composition or camera/holder navigation.
+acceptance alone does not establish main-scene composition or camera/holder navigation.
+
+The staged farm contents View action now activates `item_panel.gd` through the
+shared UI host, retiring the farm owner. The item owner supplies installed seed
+and Farm Plot artwork, routes flags through the inspection controller and returns
+to the farm through holder View. Escape, right-click and F10 close the item owner;
+HUD overlays block its input. Public building/item exposure remains unchanged.
+
+Protected140843 exercises the actual main-scene viewport: target47929, Forbid,
+Dump and Hide in both directions, native snapshot readback, exact restoration,
+holder roundtrip, overlay gating and all three close paths. Baseline and six flag
+captures match the native reference across all2,418,528 panel pixels. The image
+was inspected. Existing farm/contents disconnect and two producer-replacement
+cases also pass; these do not establish item-owner-specific disconnect coverage.
+The run has only the known rendering-thread notice, and all three owned DF
+processes exit unsaved with two save manifests unchanged. `item_scene_reference`
+retains hashes and scope. Offline root/controller checks pass; component rendering
+passes with the three documented Godot diagnostics. Camera following, general
+item/holder types, item-owner live disconnect/replacement, long descriptions and
+resize acceptance remain unfinished.
 
 ## Native item-sheet semantic discovery
 

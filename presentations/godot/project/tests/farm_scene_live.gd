@@ -203,19 +203,65 @@ func contents_scene() -> void:
 		await native("contents-verify",{"rows":owner.contents.rows(),"cursor":cursor})
 		if stopped:return
 		await capture("contents_drag_"+str(probe[0]))
-	var viewed: Array=[]
-	view.view_requested.connect(func(id):viewed.append(id))
-	await pointer(view.get_global_transform_with_canvas()*view.control_rect(5,1).get_center())
-	if not check(viewed==[initial.rows[39].id],"contents endpoint View identity differs: "+str(viewed)):return
 	for size_case in [[1600,900,9],[960,600,0],[1200,800,6]]:
 		root.size=Vector2i(size_case[0],size_case[1])
 		for frame in 5:await process_frame
 		if not await contents_ready():return
 		if not check(view.cell_first==102 and owner.contents.snapshot.cursor==34 and view.page==size_case[2] and view.visible==(size_case[2]>0),"resizing contents changed retained endpoint"):return
 		await capture("contents_endpoint_resize_"+str(size_case[0]))
+	await item_sheet_scene(initial)
+	if stopped:return
 	owner.close_panel();await process_frame
 	if not check(owner.contents.snapshot.is_empty() and view.rows.is_empty() and not view.scrollbar.dragging,"closed farm retained contents"):return
 	if not check(not scene._fortress_hud.native_help.visible,"closed contents retained hover"):return
+
+func item_ready() -> bool:
+	var model=owner.item_owner.state
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll()
+		if model.phase==model.Phase.Ready:return true
+		if model.phase not in [model.Phase.Reading,model.Phase.Applying]:return check(false,"item sheet failed: "+str(model.phase))
+		await create_timer(0.01).timeout
+	incomplete("item sheet did not settle",true);return false
+
+func item_sheet_scene(initial: Dictionary) -> void:
+	step="main item sheet navigation and edits"
+	var item_owner=owner.item_owner;var view=owner.panel.contents
+	await pointer(view.get_global_transform_with_canvas()*view.control_rect(5,1).get_center())
+	if not await item_ready():return
+	var model=item_owner.state;var sheet=item_owner.panel
+	if not check(model.item_id==initial.rows[39].id and not owner.panel.visible and scene._ui.host.active==item_owner,"View did not transfer target and input ownership"):return
+	var baseline: Dictionary=model.view_snapshot()
+	await native("item-inspect",{"item":baseline,"revision_text":str(baseline.revision)})
+	if stopped:return
+	await capture("item_baseline")
+	for index in [0,1,3]:
+		for toggle in 2:
+			await pointer(sheet.get_global_transform_with_canvas()*sheet.flag_rect(index).get_center())
+			if not await item_ready():return
+			await native("item-inspect",{"item":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
+			if stopped:return
+			await capture("item_flag_"+str(index)+"_"+str(toggle))
+	if not check(model.snapshot==baseline,"item sheet flags not restored"):return
+	scene._fortress_hud.toggle_game_menu();await process_frame
+	var next_ticket: int=actions._next_ticket
+	await pointer(sheet.get_global_transform_with_canvas()*sheet.flag_rect(0).get_center())
+	if not check(actions._next_ticket==next_ticket,"overlay allowed item edit through"):return
+	scene._fortress_hud.close_menus();await process_frame
+	await pointer(sheet.get_global_transform_with_canvas()*sheet.holder_rect().get_center())
+	if not await contents_ready():return
+	if not check(scene._ui.host.active==owner and not sheet.visible and model.snapshot.is_empty() and farm.building_id==initial.building_id,"holder View did not return to farm"):return
+	for ending in ["escape","right","reset"]:
+		await pointer(view.get_global_transform_with_canvas()*view.control_rect(0,1).get_center())
+		if not await item_ready():return
+		if ending=="right":await pointer(Vector2(400,400),MOUSE_BUTTON_RIGHT)
+		else:key(KEY_ESCAPE if ending=="escape" else KEY_F10)
+		await process_frame
+		if not check(not sheet.visible and model.snapshot.is_empty() and scene._ui.host.active==null,"item close retained authority/input"):return
+		owner.open_target(initial.building_id)
+		if not await contents_ready():return
+	write_json("item-scene-results.json",{"target":baseline.id,"flags_restored":true,"holder_roundtrip":true,"overlay_blocks_edit":true,"close":["escape","right","reset"]})
 
 # Exercise actual item writes; farm rename/removal lifecycle does not establish
 # the separate contents controller's retirement or its receipt-offset recovery.

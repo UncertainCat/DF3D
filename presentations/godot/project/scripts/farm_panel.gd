@@ -6,6 +6,7 @@ var state=preload("res://scripts/farm_state.gd").new()
 var contents=preload("res://scripts/building_contents_state.gd").new()
 var ui_host
 var panel
+var item_owner
 var canvas: CanvasLayer
 var play_enabled:=true
 var modal_input:=false
@@ -18,6 +19,10 @@ func configure(world,service,host,help=null) -> void:
 	canvas=CanvasLayer.new();canvas.layer=5;add_child(canvas)
 	panel=preload("res://scripts/farm_sheet_view.gd").new();canvas.add_child(panel);panel.configure(world,state,help,contents)
 	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self)
+	item_owner=preload("res://scripts/item_panel.gd").new();add_child(item_owner);item_owner.configure(world,service,host,help)
+	item_owner.holder_requested.connect(func(id):open_target(id))
+	panel.contents.view_requested.connect(func(id):
+		if panel.contents_allowed() and contents.phase==contents.Phase.Ready:item_owner.open_target(state.building_id,id))
 	state.changed.connect(_state_changed)
 	state.applied.connect(contents.refresh)
 	contents.applied.connect(state.refresh)

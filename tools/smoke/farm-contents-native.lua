@@ -272,15 +272,15 @@ local function resize_shot(label,expected_items)
  while true do local ack=io.open(out..'/ack-'..row.name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<limit,'contents resize capture timeout');script.sleep(1,'frames')end
 end
-for _,size in ipairs{'small','wide','default'}do
+local function resize_window(size)
  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
  assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
  local limit=dfhack.getTickCount()+30000
  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
   assert(dfhack.getTickCount()<limit,'contents window resize timeout');script.sleep(1,'frames')end
  assert(os.remove(out..'/owner-input-ack'))
- resize_shot(size)
 end
+for _,size in ipairs{'small','wide','default'}do resize_window(size);resize_shot(size)end
 
 -- Native input probes, including the final page. No simulation writes.
 for _,probe in ipairs{{'wheel','CONTEXT_SCROLL_DOWN',650,526},{'bar-wheel','CONTEXT_SCROLL_DOWN',880,550},{'arrow-down','_MOUSE_L',880,718},{'arrow-up','_MOUSE_L',880,514}}do
@@ -307,3 +307,34 @@ restore_membership();select_map(b)
 assert(require('json').encode(items())==role_baseline,'short-list membership not restored')
 assert(short_ok,short_error)
 records[#records+1]={name='farm-contents-short-restored',restored=true}
+
+-- Saturate the scrollbar and verify actual item identity with native View.
+for i=1,150 do move(880,718);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())end
+resize_shot('endpoint')
+local endpoint=sheet.scroll_position_item
+move(756,706);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==saved[#saved].item.id,'endpoint last row identity differs')
+records[#records+1]={name='farm-contents-endpoint-identity',cell=endpoint,last_item_id=sheet.active_id}
+gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(b)
+records[#records+1]={name='farm-contents-endpoint-view-facts',before=require('json').decode(role_baseline),after=items()}
+role_baseline=require('json').encode(items())
+sheet.scroll_position_item=endpoint
+for _,size in ipairs{'wide','small','default'}do resize_window(size);resize_shot('scrolled-'..size)end
+-- Diagnostic-only state reset isolates native input mapping at each position.
+local old_lift=df.global.enabler.mouse_lbut_lift
+local drag_ok,drag_error=xpcall(function()
+ for _,y in ipairs{500,520,550,600,700,740}do
+  sheet.scroll_position_item=0;sheet.scrolling_item=false;view:render(dfhack.getTickCount())
+  move(880,538);df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+  g.precise_mouse_x=880;g.precise_mouse_y=y;g.mouse_x=110;g.mouse_y=(y-4)//12
+  gui.simulateInput(view,{'_MOUSE_L_DOWN'})
+  df.global.enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+  resize_shot('drag-'..y)
+ end
+end,debug.traceback)
+df.global.enabler.mouse_lbut_lift=old_lift
+assert(drag_ok,drag_error)
+for _,probe in ipairs{{'page-key','CONTEXT_SCROLL_PAGEDOWN',650,526},{'bar-page-key','CONTEXT_SCROLL_PAGEDOWN',880,550},{'track','_MOUSE_L',880,650}}do
+ sheet.scroll_position_item=0;sheet.scrolling_item=false;view:render(dfhack.getTickCount())
+ move(probe[3],probe[4]);gui.simulateInput(view,probe[2]);resize_shot(probe[1])
+end

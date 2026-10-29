@@ -397,7 +397,7 @@ by16 pixels. `contents_short_reference` and `contents_cell_scroll_reference` ret
 bounded evidence. GPU `contents-cell-scroll-complete` compares the full472x216
 region for every case, including the seven-item thumb previously excluded. This
 fixes the discovered viewer thumb defect. Scroll47 is a cell offset, not the end
-of the40-item list; actual endpoint identities and shift-wheel remain unverified.
+of the40-item list; endpoint identity is established by the navigation evidence below; physical shift-wheel remains unverified.
 Long-caption truncation and natural short-list main-scene coverage remain open.
 
 Protected main-scene002027 verifies six cell steps (1,2,3,2,1,0) over both rows and
@@ -409,6 +409,25 @@ and185992 exit unsaved. Core passes and GPU/live runs report only documented God
 diagnostics. `contents_cell_scene_reference` records this evidence. The earlier
 001411 run verified transport/order but used incorrect whole-item scroll steps;
 it is superseded for scroll-unit parity, not evidence for cell behavior.
+
+Protected native002651 on2026-10-29 verifies the40-item endpoint at cell102:
+native View on the last visible row selects item47929, the final membership entry.
+Opening its sheet sets item flag bit29 (`weight_computed`), from32 to536870944;
+subsequent navigation preserves all observed facts. This native lazy calculation
+is relevant to the unfinished semantic item-sheet route, not a resize side effect.
+The clone stays paused, source preservation passes and DF186836 exits unsaved.
+
+`contents_navigation_reference` records six isolated drag destinations, native
+page-key/track clicks and resizing at the endpoint. Drag local y values
+-8/12/42/92/192/232 map to cells0/0/12/38/102/102. Native page-key and track-below
+advance18 cells. Wide, minimum and restored windows retain cell102, even though
+nine rows fit when wide; the visible data still begins with item34. Do not silently
+clamp the local contents position merely because the scrollbar's range changes.
+GPU `contents-navigation` compares full contents regions for the endpoint, drags,
+page/track and wide/restored snapshots and checks drag mapping. All pass with the
+three known diagnostics; core passes cleanly. The native wide screenshot was
+inspected. This is native plus component evidence, not live viewer drag/resize
+acceptance. Physical shift-wheel mapping remains unverified.
 
 ## Farm contents native hover
 

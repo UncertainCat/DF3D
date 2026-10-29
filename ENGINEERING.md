@@ -446,6 +446,34 @@ product scrollbar workaround was retained. The isolated component test also
 checks dragging outside the control followed by normal item-control clicks.
 View still only emits an identity; the item sheet remains unfinished.
 
+## Native item-sheet semantic discovery
+
+`native_farm.json.item_sheet_discovery_reference` records the six seed sheets
+opened by native View in protected002651 and a pinned executable call-site audit.
+The first screenshot was inspected: native title, weight, full description, item
+controls, camera control and holder-building View are separate sheet elements.
+The item title at154924 calls c65450(item, owned string, false,-1), already exposed
+by buildingItemCaption. DFHack Items::getDescription's decorated branch manually
+reconstructs indicators and is not the full-description provider.
+
+Weight text at154c84 calls14d8e0(item,string). That small formatter tests flag
+0x20000000, invokes c65f10 when missing, reads weight at item+0x74 and appends the
+native weight symbol. c65f10 computes item and contained item/unit weights, then
+sets weight_computed. The observed last-seed View flag change is this cache fill;
+future acceptance must distinguish it from unrelated simulation mutation. These
+weight routines are discovered candidates, not yet bridge adapters or live-called
+with independently owned strings.
+
+The item-sheet initializer1a8df0 calls c75000(item,string,true,true,false,0) at
+1a8eab for full description text. The string destination in that caller is native
+view_sheets+0x1e10. Do not invoke1a8df0: it clears/rebuilds native description/use
+caches and timing state. A future adapter must instead audit c75000's complete
+body and transitive dependencies, then call it with its own output storage. The
+recorded0x46aa observed range/hash is discovery provenance, not an approved runtime
+pin: unwind coverage, relocations and global dependencies still need verification.
+Holder links, recenter/follow, item actions and the complete item-sheet lifecycle
+remain unfinished. No item-sheet management contract or public route is exposed.
+
 ## Farm contents native hover
 
 The contents component uses the shared500ms/1000ms native instruction timer and

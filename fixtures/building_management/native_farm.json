@@ -18646,5 +18646,199 @@
     "coverage": "Viewport drag at six native destinations, native item order at returned offsets, endpoint View emits47929, resize wide/minimum/default retains cell102 and item cursor34 with capacities9/0/6. Prior item effects, hover, disconnect and replacement remain checked. Both save manifests unchanged, DF153952/162388 exited unsaved; only known rendering-thread notice.",
     "rendering": "Wide image inspected. Wide/default contents crops differ from native002651 only in the6x6 scrollbar hover marker; pointer states were not aligned. Full neutral-pointer component comparisons remain in contents_navigation_reference.",
     "limitations": "View identity signal only; no item sheet opened in DF3D. Physical shift-wheel mapping not covered."
+  },
+  "item_sheet_discovery_reference": {
+    "native_capture": "build/stockpile-storage-native-farm-discovery-20261029-002651",
+    "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "seed_sheet_samples": [
+      {
+        "item_id": 47492,
+        "sheet": "ITEM",
+        "text_cells": [
+          {
+            "y": 6,
+            "x": 59,
+            "text": "sweet pod seeds"
+          },
+          {
+            "y": 7,
+            "x": 59,
+            "text": "Weight: <1"
+          },
+          {
+            "y": 10,
+            "x": 54,
+            "text": "These are sweet pod seeds."
+          },
+          {
+            "y": 20,
+            "x": 59,
+            "text": "In Farm Plot                             View"
+          }
+        ]
+      },
+      {
+        "item_id": 47486,
+        "sheet": "ITEM",
+        "text_cells": [
+          {
+            "y": 6,
+            "x": 59,
+            "text": "sweet pod seeds"
+          },
+          {
+            "y": 7,
+            "x": 59,
+            "text": "Weight: <1"
+          },
+          {
+            "y": 10,
+            "x": 54,
+            "text": "These are sweet pod seeds."
+          },
+          {
+            "y": 20,
+            "x": 59,
+            "text": "In Farm Plot                             View"
+          }
+        ]
+      },
+      {
+        "item_id": 47494,
+        "sheet": "ITEM",
+        "text_cells": [
+          {
+            "y": 6,
+            "x": 59,
+            "text": "sweet pod seeds"
+          },
+          {
+            "y": 7,
+            "x": 59,
+            "text": "Weight: <1"
+          },
+          {
+            "y": 10,
+            "x": 54,
+            "text": "These are sweet pod seeds."
+          },
+          {
+            "y": 20,
+            "x": 59,
+            "text": "In Farm Plot                             View"
+          }
+        ]
+      },
+      {
+        "item_id": 47485,
+        "sheet": "ITEM",
+        "text_cells": [
+          {
+            "y": 6,
+            "x": 59,
+            "text": "sweet pod seeds"
+          },
+          {
+            "y": 7,
+            "x": 59,
+            "text": "Weight: <1"
+          },
+          {
+            "y": 10,
+            "x": 54,
+            "text": "These are sweet pod seeds."
+          },
+          {
+            "y": 20,
+            "x": 59,
+            "text": "In Farm Plot                             View"
+          }
+        ]
+      },
+      {
+        "item_id": 47484,
+        "sheet": "ITEM",
+        "text_cells": [
+          {
+            "y": 6,
+            "x": 59,
+            "text": "sweet pod seeds"
+          },
+          {
+            "y": 7,
+            "x": 59,
+            "text": "Weight: <1"
+          },
+          {
+            "y": 10,
+            "x": 54,
+            "text": "These are sweet pod seeds."
+          },
+          {
+            "y": 20,
+            "x": 59,
+            "text": "In Farm Plot                             View"
+          }
+        ]
+      },
+      {
+        "item_id": 47493,
+        "sheet": "ITEM",
+        "text_cells": [
+          {
+            "y": 6,
+            "x": 59,
+            "text": "sweet pod seeds"
+          },
+          {
+            "y": 7,
+            "x": 59,
+            "text": "Weight: <1"
+          },
+          {
+            "y": 10,
+            "x": 54,
+            "text": "These are sweet pod seeds."
+          },
+          {
+            "y": 20,
+            "x": 59,
+            "text": "In Farm Plot                             View"
+          }
+        ]
+      }
+    ],
+    "candidates": [
+      {
+        "name": "item caption",
+        "rva": "0xc65450",
+        "observed_length": "0xaba",
+        "bytes_sha256": "28cc59fb225adcbb46a2e105abf426df05bf9037bb64ed2e692f7a47739aea5b",
+        "status": "Existing owned-string buildingItemCaption; sheet calls same false,-1 arguments at154924."
+      },
+      {
+        "name": "weight caption",
+        "rva": "0x14d8e0",
+        "observed_length": "0x58",
+        "bytes_sha256": "962f726391b9cedd13a611cef46d970ec3b7f877c504cea20252491c29202cd1",
+        "status": "Candidate owned-string formatter; calls native lazy weight calculation when weight_computed absent. No runtime adapter or live invocation acceptance yet."
+      },
+      {
+        "name": "lazy weight",
+        "rva": "0xc65f10",
+        "observed_length": "0x106",
+        "bytes_sha256": "dd99ab7c4b83bdd549c1ecd5be3103583a8ac7b55730615594658b6daf921b0d",
+        "status": "Semantic item/contained-unit/item weight recalculation; writes item cache flag/weight fields. Called by weight caption."
+      },
+      {
+        "name": "full description",
+        "rva": "0xc75000",
+        "observed_length": "0x46aa",
+        "bytes_sha256": "b0818946fcd400d7349bd5827de4ca241efb5f961a1ae97f84dbf96fee29064e",
+        "status": "Candidate only; transitive dependency and complete unwind/body audit required before runtime use. Signature from sheet call1a8eab: item, string, true,true,false,0."
+      }
+    ],
+    "excluded_wrapper": "1a8df0 directly clears/rebuilds view_sheets description/use caches and timer. Do not call it or borrow those native outputs at runtime.",
+    "scope": "Native screenshot farm-contents-view-0 inspected. Discovery only: no item-sheet wire/controller/UI exposed. Full descriptions, holder links, recenter/follow and item actions need semantic audit and live acceptance; existing DFHack getDescription decorations reconstruct rules and are not a full-description substitute."
   }
 }

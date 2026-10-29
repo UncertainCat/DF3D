@@ -16319,5 +16319,107 @@
     },
     "coverage": "Actual contents pointer hover with native timing for permanent/View/Forbid/Dump/Visibility, ineligible Melt has no help, close clears help. Existing item effects, native UI guards, farm disconnects and real replacement retain checks. Both save manifests unchanged; owned DF185340 and replacement163328 exit unsaved. Only known rendering-thread notice. Forbid screenshot inspected.",
     "limitations": "Task, temporary-item and eligible Melt help are covered by native text cells plus component hitboxes/GPU rendering, not naturally occurring main-scene workflows. View route remains unfinished."
+  },
+  "contents_resize_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261029-000629",
+    "cases": [
+      {
+        "name": "farm-contents-resize-small",
+        "grid": [
+          120,
+          50
+        ],
+        "visible_caption_cells": [],
+        "visible_rows": 0
+      },
+      {
+        "name": "farm-contents-resize-wide",
+        "grid": [
+          200,
+          75
+        ],
+        "visible_caption_cells": [
+          {
+            "x": 110,
+            "y": 43
+          },
+          {
+            "x": 110,
+            "y": 46
+          },
+          {
+            "x": 110,
+            "y": 49
+          },
+          {
+            "x": 110,
+            "y": 52
+          },
+          {
+            "x": 110,
+            "y": 55
+          },
+          {
+            "x": 110,
+            "y": 58
+          },
+          {
+            "x": 110,
+            "y": 61
+          },
+          {
+            "x": 110,
+            "y": 64
+          },
+          {
+            "x": 110,
+            "y": 67
+          }
+        ],
+        "visible_rows": 9
+      },
+      {
+        "name": "farm-contents-resize-default",
+        "grid": [
+          150,
+          66
+        ],
+        "visible_caption_cells": [
+          {
+            "x": 60,
+            "y": 43
+          },
+          {
+            "x": 60,
+            "y": 46
+          },
+          {
+            "x": 60,
+            "y": 49
+          },
+          {
+            "x": 60,
+            "y": 52
+          },
+          {
+            "x": 60,
+            "y": 55
+          },
+          {
+            "x": 60,
+            "y": 58
+          }
+        ],
+        "visible_rows": 6
+      }
+    ],
+    "hashes": {
+      "result.json": "1911d56eb98f250dc91e543f81e035c3b1ad93ac75b080401314dffb7502cd8f",
+      "capture-inputs.json": "f218356eec440c8d2ec2d0f548fe8eede05cd1c955e0933b64363881ef61e4d1",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "coverage": "Paused native contents at960x600,1600x900,1200x800; item facts unchanged. Minimum and wide screenshots inspected. Owned DF169536 exited unsaved; source save preserved.",
+    "limitations": "Initial scroll position only, forty seed items. Short lists, tail scrolling and viewer resize rendering are not established by this native capture."
   }
 }

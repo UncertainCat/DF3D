@@ -249,3 +249,34 @@ held.item=seed;seed.flags.whole=seed_flags
 assert(require('json').encode(items())==role_baseline,'tooltip fixture not restored')
 assert(probe_ok,probe_err)
 records[#records+1]={name='farm-contents-help-restored',restored=true}
+
+-- Resize oracle reads native presentation state only in this protected lane.
+local sheet=main.view_sheets
+local resize_frame=df.global.world.frame_counter
+local function resize_shot(label)
+ move(0,4)
+ for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+ assert(df.global.pause_state and df.global.world.frame_counter==resize_frame,'contents resize advanced simulation')
+ assert(sheet.open and sheet.active_id==b.id,'contents resize lost target')
+ assert(require('json').encode(items())==role_baseline,'contents resize changed item facts')
+ local row={name='farm-contents-resize-'..label,grid={g.dimx,g.dimy},pixels={g.screen_pixel_x,g.screen_pixel_y},lines={},positions={}}
+ for key,value in pairs(sheet)do if type(key)=='string' and key:find('scroll_position',1,true)then row.positions[key]=value end end
+ for y=0,g.dimy-1 do
+  local line={};for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;line[#line+1]=ch>=32 and ch<127 and string.char(ch)or' 'end
+  row.lines[#row.lines+1]=table.concat(line)
+ end
+ records[#records+1]=row
+ local f=assert(io.open(out..'/shot','w'));f:write(row.name);f:close()
+ local limit=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/ack-'..row.name);if ack then ack:close();break end
+  assert(dfhack.getTickCount()<limit,'contents resize capture timeout');script.sleep(1,'frames')end
+end
+for _,size in ipairs{'small','wide','default'}do
+ local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
+ assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local limit=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<limit,'contents window resize timeout');script.sleep(1,'frames')end
+ assert(os.remove(out..'/owner-input-ack'))
+ resize_shot(size)
+end

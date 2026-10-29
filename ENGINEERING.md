@@ -369,6 +369,15 @@ short-list and resized geometry, tail scrolling, non-seed artwork and actual
 item-write transport-loss/replacement still need verification. The public farm
 route remains hidden; other management screens and release work remain pending.
 
+Native contents resize evidence in `native_farm.json.contents_resize_reference`
+records protected000629 on2026-10-29: forty seeds at initial scroll position show
+zero rows at960x600, nine at1600x900 and six at1200x800. Caption origin remains
+cell43 vertically and shifts with the sheet horizontally. The minimum and wide
+screenshots were inspected. Item facts remain unchanged, the source save is
+preserved and owned DF169536 exits unsaved. This supports the current capacity
+calculation; it does not establish short-list geometry, tail scrolling or rendered
+viewer resize acceptance. Core `contents-resize-oracle` passes.
+
 ## Farm contents native hover
 
 The contents component uses the shared500ms/1000ms native instruction timer and

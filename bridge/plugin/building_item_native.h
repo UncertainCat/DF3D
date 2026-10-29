@@ -11,8 +11,8 @@
 #include "df/itemdef.h"
 
 namespace df3d_production {
-// Diagnostic-only until reference dispatch and moving/contained targets are
-// accepted. Native follow loops35e7b6/8b6b76 use these independently owned outputs.
+// Diagnostic-only; product position transport and follow ownership are not yet
+// connected. Native follow loops35e7b6/8b6b76 use these independently owned outputs.
 inline std::optional<df::coord> probeItemPosition(df::item* item) {
     using Resolve=void (*)(df::item*,int16_t*,int16_t*,int16_t*);
     static const auto resolve=[]()->Resolve {
@@ -24,7 +24,13 @@ inline std::optional<df::coord> probeItemPosition(df::item* item) {
             return value;
         };
         if(hash(0xc8baa0,0x11a)!=UINT64_C(0x2c62fce4a0555c66) ||
-           hash(0x1367430,0xc6)!=UINT64_C(0xc0292be8a6dacf2c))return nullptr;
+           hash(0x1367430,0xc6)!=UINT64_C(0xc0292be8a6dacf2c) ||
+           hash(0xedfa60,0xbd)!=UINT64_C(0x2f89116df6b958cc) ||
+           hash(0xedfb20,0x13)!=UINT64_C(0xa222e60f2f8301e4) ||
+           hash(0x14db50,0xb1)!=UINT64_C(0x4b9c987ca0656b35) ||
+           hash(0x14dc10,0x5a)!=UINT64_C(0xfb6e6c7bccbf765b) ||
+           hash(0x67270,6)!=UINT64_C(0x7dce27ae257f083d) ||
+           hash(0x7a840,6)!=UINT64_C(0xeff4222c8d49c252))return nullptr;
         return reinterpret_cast<Resolve>(base+0xc8baa0);
     }();
     if(!resolve||!item)return std::nullopt;

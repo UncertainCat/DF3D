@@ -23816,5 +23816,359 @@
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     },
     "scope": "Diagnostic native position call with owned outputs; direct and controlled moved/removed/invalid seed positions. Item/building/UI bytes unchanged and fixture restored. No product transport, contained/carried target or natural movement acceptance."
+  },
+  "item_position_references_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261029-143403",
+    "status": "passed",
+    "owned_df_pid": 180924,
+    "exit": "unsaved",
+    "bridge_sha256": "f7189e7462c4bb2cbbf8d8fc0c7f37562cf24567ff63df31ba5c7948f1a8d10f",
+    "cases": [
+      {
+        "name": "farm-item-position-direct",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "reference_cache_changes": [],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-moved",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 130,
+          "y": 115,
+          "z": 165
+        },
+        "reference_cache_changes": [],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-removed",
+        "position": {
+          "item_id": 47492,
+          "valid": false,
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "reference_cache_changes": [],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-invalid",
+        "position": {
+          "item_id": 47492,
+          "valid": false,
+          "x": -30000,
+          "y": 115,
+          "z": 165
+        },
+        "reference_cache_changes": [],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-container-cold",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 128,
+          "y": 119,
+          "z": 165
+        },
+        "reference_cache_changes": [
+          {
+            "after": 12754,
+            "before": -1
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-container-warm",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 128,
+          "y": 119,
+          "z": 165
+        },
+        "reference_cache_changes": [
+          {
+            "after": 12754,
+            "before": 12754
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-container-stale-cache",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 128,
+          "y": 119,
+          "z": 165
+        },
+        "reference_cache_changes": [
+          {
+            "after": 12754,
+            "before": 0
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-nested-container",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 128,
+          "y": 120,
+          "z": 165
+        },
+        "reference_cache_changes": [
+          {
+            "after": 12754,
+            "before": 12754
+          },
+          {
+            "after": 12759,
+            "before": -1
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-missing-container",
+        "position": {
+          "item_id": 47492,
+          "valid": false,
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "reference_cache_changes": [
+          {
+            "after": -1,
+            "before": -1
+          },
+          {
+            "after": 12759,
+            "before": 12759
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-unit-holder-cold",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 127,
+          "y": 61,
+          "z": 165
+        },
+        "reference_cache_changes": [
+          {
+            "after": -1,
+            "before": -1
+          },
+          {
+            "after": 12759,
+            "before": 12759
+          },
+          {
+            "after": 0,
+            "before": -1
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-unit-holder-warm",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 127,
+          "y": 61,
+          "z": 165
+        },
+        "reference_cache_changes": [
+          {
+            "after": -1,
+            "before": -1
+          },
+          {
+            "after": 12759,
+            "before": 12759
+          },
+          {
+            "after": 0,
+            "before": 0
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-unit-holder-stale-cache",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 127,
+          "y": 61,
+          "z": 165
+        },
+        "reference_cache_changes": [
+          {
+            "after": -1,
+            "before": -1
+          },
+          {
+            "after": 12759,
+            "before": 12759
+          },
+          {
+            "after": 0,
+            "before": 1
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-caged-unit-holder",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 128,
+          "y": 120,
+          "z": 165
+        },
+        "reference_cache_changes": [
+          {
+            "after": -1,
+            "before": -1
+          },
+          {
+            "after": 12759,
+            "before": 12759
+          },
+          {
+            "after": 0,
+            "before": 0
+          },
+          {
+            "after": 12759,
+            "before": -1
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-missing-unit-holder",
+        "position": {
+          "item_id": 47492,
+          "valid": false,
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "reference_cache_changes": [
+          {
+            "after": -1,
+            "before": -1
+          },
+          {
+            "after": 12759,
+            "before": 12759
+          },
+          {
+            "after": -1,
+            "before": -1
+          },
+          {
+            "after": 12759,
+            "before": 12759
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-escaped-vermin",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 131,
+          "y": 118,
+          "z": 165
+        },
+        "reference_cache_changes": [
+          {
+            "after": -1,
+            "before": -1
+          },
+          {
+            "after": 12759,
+            "before": 12759
+          },
+          {
+            "after": -1,
+            "before": -1
+          },
+          {
+            "after": 12759,
+            "before": 12759
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "item_id": 47492,
+        "name": "farm-item-position-restored",
+        "restored": true
+      }
+    ],
+    "additional_pins": [
+      [
+        "edfa60",
+        "bd",
+        "2f89116df6b958cc"
+      ],
+      [
+        "edfb20",
+        "13",
+        "a222e60f2f8301e4"
+      ],
+      [
+        "14db50",
+        "b1",
+        "4b9c987ca0656b35"
+      ],
+      [
+        "14dc10",
+        "5a",
+        "fb6e6c7bccbf765b"
+      ],
+      [
+        "67270",
+        "6",
+        "7dce27ae257f083d"
+      ],
+      [
+        "7a840",
+        "6",
+        "eff4222c8d49c252"
+      ]
+    ],
+    "artifacts": {
+      "result.json": "0276bb8430c36b75600dad5530e112b957164176bbf76adab334ddddb3fd208d",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "scope": "15 controlled paused position cases including nested containers, carried/caged holder, missing references and escaped vermin. Only recorded semantic reference cached_index changes allowed; other guarded object/UI bytes unchanged. Test references freed and flags/positions restored. No runtime transport, natural hauling or viewer following acceptance."
   }
 }

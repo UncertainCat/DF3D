@@ -675,8 +675,28 @@ binary-searches the item vector and can update the reference's cached_index.
 This semantic reference cache is not UI scratch. edfb20 is a0x13-byte tail wrapper
 to14db50 with the unit ID and cached-index address; the scratch disassembler's
 fallback160-byte output includes unrelated functions and is not its body length.
-No blanket transitive no-write claim or contained/carried-item acceptance follows
-from the direct-coordinate cases.
+The direct-coordinate cases alone do not establish contained/carried behavior.
+
+Protected143403 extends the diagnostic to15 cases with test-owned general and
+specific references: cold/warm/stale container and unit caches, nested containers,
+missing container/unit IDs, a caged carrier resolving through its containing
+item, and escaped-vermin coordinates. Byte guards include all participating
+items, unit, vermin, specific reference, building and UI state. General-reference
+guards normalize only cached_index for comparison, record its before/after value,
+and preserve DF's computed value until fixture cleanup. All other bytes remain
+unchanged. Added references are removed/freed and original flags/coordinates
+restored. DF180924 exits unsaved; the source save is unchanged. The earlier143224
+run passed but its unit stale-index case accidentally used the correct index;
+143403 explicitly uses a different index and supersedes that case.
+
+The adapter now pins complete item/unit reference getters and their unit lookup
+helpers. Unit lookup14db50/0xb1 validates cached indices, then calls recursive
+binary search14dc10/0x5a; only the caller's cached-index storage is written.
+Reference getType leaves67270/6 and7a840/6 return11 and18. All transitive direct
+calls in these reference paths are inspected and pinned. MSVC and root CTest
+pass; `item_position_references_reference` records case/cache/binary provenance.
+These paused controlled cases establish position resolution, not natural hauling,
+cyclic malformed reference graphs, runtime position transport or viewer following.
 
 `native_farm.json.item_sheet_discovery_reference` records the six seed sheets
 opened by native View in protected002651 and a pinned executable call-site audit.

@@ -74,11 +74,26 @@ local function camera_reference(item)
 end
 local function position_reference(item)
  local original={flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z}
+ local extra_objects,cache_refs,allocated={},{},{}
+ local carrier,carrier_flags,vermin,specific
+ local parent=assert(b.contained_items[1].item);local terminal=assert(b.contained_items[2].item)
+ local parent_flags=parent.flags.whole
+ local function link(object,ref)
+  object.general_refs:insert('#',ref);allocated[#allocated+1]={object=object,ref=ref}
+  cache_refs[#cache_refs+1]=ref;return ref
+ end
  local function probe(label,valid,x,y,z)
   local guards={}
-  for _,object in ipairs{item,b,main.view_sheets,df.global.plotinfo}do
+  local objects={item,b,main.view_sheets,df.global.plotinfo}
+  for _,object in ipairs(extra_objects)do objects[#objects+1]=object end
+  for _,object in ipairs(objects)do
    local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
    dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
+  end
+  local references={}
+  for _,ref in ipairs(cache_refs)do
+   local size,address=df.sizeof(ref);local bytes=df.new('uint8_t',size)
+   dfhack.internal.memmove(bytes,address,size);references[#references+1]={ref=ref,size=size,address=address,bytes=bytes,cached_index=ref.cached_index}
   end
   local text,code=dfhack.run_command_silent('df3d','item-position-probe',tostring(item.id))
   local unchanged=true
@@ -86,10 +101,17 @@ local function position_reference(item)
    unchanged=unchanged and dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0
    df.delete(guard.bytes)
   end
+  local caches={}
+  for _,guard in ipairs(references)do
+   local after=guard.ref.cached_index;guard.ref.cached_index=guard.cached_index
+   unchanged=unchanged and dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0
+   guard.ref.cached_index=after;df.delete(guard.bytes)
+   caches[#caches+1]={before=guard.cached_index,after=after}
+  end
   assert(code==0,text);local value=require('json').decode(text)
   assert(unchanged,'native position resolver changed item/building/UI bytes')
   assert(value.valid==valid and value.x==x and value.y==y and value.z==z,'native position differs: '..label)
-  records[#records+1]={name='farm-item-position-'..label,position=value,unchanged=true}
+  records[#records+1]={name='farm-item-position-'..label,position=value,unchanged=true,reference_cache_changes=caches}
  end
  local ok,err=xpcall(function()
   assert(not item.flags.in_inventory,'position fixture unexpectedly in inventory')
@@ -100,7 +122,51 @@ local function position_reference(item)
   probe('removed',false,-30000,-30000,-30000)
   item.flags.whole=original.flags;item.pos.x=-30000
   probe('invalid',false,-30000,original.y-1,original.z)
+  item.flags.whole=original.flags;item.flags.in_inventory=true
+  local ref=link(item,df.general_ref_contained_in_itemst:new());ref.item_id=parent.id;ref.cached_index=-1
+  extra_objects={parent,terminal}
+  assert(not parent.flags.in_inventory and not terminal.flags.in_inventory,'nested fixture already in inventory')
+  probe('container-cold',true,parent.pos.x,parent.pos.y,parent.pos.z)
+  assert(ref.cached_index>=0 and df.global.world.items.all[ref.cached_index].id==parent.id,'container lookup cache wrong')
+  probe('container-warm',true,parent.pos.x,parent.pos.y,parent.pos.z)
+  ref.cached_index=0;probe('container-stale-cache',true,parent.pos.x,parent.pos.y,parent.pos.z)
+  local nested=link(parent,df.general_ref_contained_in_itemst:new());nested.item_id=terminal.id;nested.cached_index=-1
+  parent.flags.in_inventory=true
+  probe('nested-container',true,terminal.pos.x,terminal.pos.y,terminal.pos.z)
+  ref.item_id=2147483647;ref.cached_index=-1
+  probe('missing-container',false,-30000,-30000,-30000)
+  for _,unit in ipairs(df.global.world.units.active)do if not unit.flags1.caged and unit.pos.x>=0 then carrier=unit;break end end
+  assert(carrier,'no uncaged carrier fixture')
+  carrier_flags=carrier.flags1.whole
+  extra_objects[#extra_objects+1]=carrier
+  local holder=link(item,df.general_ref_unit_holderst:new());holder.unit_id=carrier.id;holder.cached_index=-1
+  probe('unit-holder-cold',true,carrier.pos.x,carrier.pos.y,carrier.pos.z)
+  assert(holder.cached_index>=0 and df.global.world.units.all[holder.cached_index].id==carrier.id,'unit lookup cache wrong')
+  probe('unit-holder-warm',true,carrier.pos.x,carrier.pos.y,carrier.pos.z)
+  holder.cached_index=holder.cached_index==0 and 1 or 0
+  probe('unit-holder-stale-cache',true,carrier.pos.x,carrier.pos.y,carrier.pos.z)
+  local cage=link(carrier,df.general_ref_contained_in_itemst:new());cage.item_id=terminal.id;cage.cached_index=-1
+  carrier.flags1.caged=true
+  probe('caged-unit-holder',true,terminal.pos.x,terminal.pos.y,terminal.pos.z)
+  holder.unit_id=2147483647;holder.cached_index=-1
+  probe('missing-unit-holder',false,-30000,-30000,-30000)
+  vermin=df.vermin:new();vermin.pos.x=original.x+2;vermin.pos.y=original.y+2;vermin.pos.z=original.z
+  specific=df.specific_ref:new();specific.type=df.specific_ref_type.VERMIN_ESCAPED_PET;specific.data.vermin=vermin
+  item.specific_refs:insert('#',specific)
+  extra_objects[#extra_objects+1]=vermin;extra_objects[#extra_objects+1]=specific
+  probe('escaped-vermin',true,vermin.pos.x,vermin.pos.y,vermin.pos.z)
  end,debug.traceback)
+ if specific then
+  assert(item.specific_refs[#item.specific_refs-1]==specific,'position specific reference ownership changed')
+  item.specific_refs:erase(#item.specific_refs-1);df.delete(specific)
+ end
+ if vermin then df.delete(vermin)end
+ for index=#allocated,1,-1 do
+  local entry=allocated[index];assert(entry.object.general_refs[#entry.object.general_refs-1]==entry.ref,'position reference ownership changed')
+  entry.object.general_refs:erase(#entry.object.general_refs-1);df.delete(entry.ref)
+ end
+ parent.flags.whole=parent_flags
+ if carrier and carrier_flags then carrier.flags1.whole=carrier_flags end
  item.flags.whole=original.flags;item.pos.x=original.x;item.pos.y=original.y;item.pos.z=original.z
  assert(ok,err)
  records[#records+1]={name='farm-item-position-restored',item_id=item.id,restored=true}

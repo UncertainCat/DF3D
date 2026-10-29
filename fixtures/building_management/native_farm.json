@@ -19295,5 +19295,46 @@
     },
     "scope": "Actual second-row visibility clicks, queued and sent-before-observation detach, native all-row flag/identity and UI-scratch checks, unknown/not_sent outcomes, retired contents and input ownership, no replay or old applied observer, fresh read and restoration. Recovered panel screenshot inspected.",
     "limitations": "Item writes across actual producer replacement remain unverified; existing replacement case covers farm typing. No item-sheet View integration or generic nonseed/eligible Melt acceptance."
+  },
+  "contents_replacement_scene_reference": {
+    "capture": "build/areas-acceptance-20261029-084118",
+    "status": "passed_with_known_issues",
+    "native_checks": 63,
+    "processes": [
+      176252,
+      161220,
+      172740
+    ],
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "result": {
+      "fresh_edits_verified": true,
+      "new_epoch": "741912650711041",
+      "no_edit_or_recovery_replay": true,
+      "old_epoch": "692434627461121",
+      "old_observer_retired": true,
+      "old_outcome": "unknown",
+      "pid": 172740.0,
+      "reused_item_id": 47486
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "sha256": {
+      "contents-replacement-results.json": "879dfeef54385794ee6f832a3707329a6d56590f0749b0b2c1ebcf7bdc031aa1",
+      "contents-replacement-unobserved.json": "d29c53ad7f344dd6abb70b12ebe4358b087ee7ec58caacc68edf982fb884b4f3",
+      "farm_scene_contents_replacement_pending.png": "f4dc3ae7a05cea5385cd3ca5a3b483c94b7ce328f6ba03cb1a12ac56803534f3",
+      "farm_scene_contents_replacement_retired.png": "9a93f4a1ce1a5efe550dde98e63de50cb3467ae669dbb0520e9e3f8d7b7f5e32",
+      "farm_scene_contents_replacement_fresh.png": "22b867fb8f85ff916c62deec4b650a721e55d9a8741af161a0a78aa4b5d59a7b",
+      "result.json": "8592d9239d8700f5065f6f6526946d4b5ca47e35b3398678412445d2ea98012b"
+    },
+    "scope": "Actual second-row visibility click completes in old native DF with receipt withheld from controller. Owned unsaved process replacement changes epoch and reuses item ID47486. Old request becomes unknown; contents generation, target, page, input ownership and observer retire; no edit or offset-recovery request replay. Fresh explicit open sees saved flag, and two new viewport clicks are native-verified and restore full snapshot. Fresh screenshot inspected.",
+    "limitations": "Visibility-edit replacement acceptance only. Item-sheet View remains unfinished; eligible Melt, active-job cleanup and nonseed artwork remain separate gaps."
   }
 }

@@ -3694,7 +3694,7 @@
     {
       "path": "presentations/godot/project/tests/farm_scene_live.gd",
       "status": "manual",
-      "reason": "Protected main-scene farm owner and viewport-input acceptance through tools/smoke/areas_acceptance.ps1 -FarmSceneOnly on an owned unsaved clone, including contents item controls and scrolling with native effects, queued/sent item visibility, removal and typing disconnects, typing producer replacement, contents/visible/input retirement and fresh reopening."
+      "reason": "Protected main-scene farm owner and viewport-input acceptance through tools/smoke/areas_acceptance.ps1 -FarmSceneOnly on an owned unsaved clone, including contents item controls and scrolling with native effects, queued/sent item visibility, removal and typing disconnects, typing and item visibility producer replacement, contents/visible/input retirement and fresh reopening."
     },
     {
       "path": "presentations/godot/project/tests/farm_controller_live.gd",

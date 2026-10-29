@@ -228,31 +228,9 @@ func replacement_case(id: int,seasons: Array) -> void:
 	if not check(actions._requests.has(pending) and actions._requests[pending].sequence>0,"replacement edit not sent"):return
 	# Keep the observer unpolled until the producer has been replaced. Even a
 	# completed old receipt cannot authorize buffered text in the new fortress.
-	handshake+=1;write_json("request-%d.json" % handshake,{"op":"reload"})
-	var file:=FileAccess.open(directory+"/verify.tmp",FileAccess.WRITE)
-	file.store_string(str(handshake));file.close()
-	if not check(DirAccess.rename_absolute(directory+"/verify.tmp",directory+"/verify.txt")==OK,"farm restart handshake failed"):return
-	var deadline:=Time.get_ticks_msec()+690000
-	var ack: Dictionary={}
-	while ack.is_empty() and Time.get_ticks_msec()<deadline:
-		world.poll();world.poll_session()
-		for state in ["failed","incomplete","ack"]:
-			var path:=directory+"/%s-%d" % [state,handshake]
-			if not FileAccess.file_exists(path):continue
-			var reply: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
-			if state=="failed":check(false,"farm restart: "+str(reply.reason));return
-			if state=="incomplete":incomplete("farm restart: "+str(reply.reason),true);return
-			ack=reply
-		await create_timer(0.02).timeout
-	if not check(not ack.is_empty(),"farm restart timed out; no replay"):return
+	var ack: Dictionary=await replace_producer(old_epoch)
+	if stopped or ack.is_empty():return
 	var epoch:=int(str(ack.epoch))
-	if not check(epoch!=old_epoch and (epoch>>32)==int(ack.pid),"farm replacement identity invalid"):return
-	deadline=Time.get_ticks_msec()+60000
-	while Time.get_ticks_msec()<deadline:
-		world.poll();actions.poll(0.02)
-		if actions._epoch==epoch and not actions._needs_claim and actions._active==0 and actions._queue.is_empty():break
-		await create_timer(0.02).timeout
-	if not check(actions._epoch==epoch and actions._active==0 and actions._queue.is_empty(),"farm replacement service not ready"):return
 	if not check(farm.phase==Farm.Phase.Unavailable and farm.building_id==-1 and farm.snapshot.is_empty() and farm.name_session==null and applied_count==observers,"old farm observer survived replacement"):return
 	if not check(actions.result(pending).get("outcome")=="unknown" and not actions._requests.has(pending),"old farm edit was replayed or confirmed"):return
 	var next_ticket: int=actions._next_ticket
@@ -297,3 +275,32 @@ func no_farm_requests_since(first: int) -> bool:
 			var intent: Dictionary=record.get("request",record)
 			if intent.get("action") in [Contract.ManagementAction.FarmEdit,Contract.ManagementAction.ProductionInspect]:return false
 	return true
+
+# Shared protected restart handshake; callers keep their own observers unpolled.
+func replace_producer(old_epoch: int) -> Dictionary:
+	handshake+=1;write_json("request-%d.json" % handshake,{"op":"reload"})
+	var file:=FileAccess.open(directory+"/verify.tmp",FileAccess.WRITE)
+	file.store_string(str(handshake));file.close()
+	if not check(DirAccess.rename_absolute(directory+"/verify.tmp",directory+"/verify.txt")==OK,"farm restart handshake failed"):return {}
+	var deadline:=Time.get_ticks_msec()+690000
+	var ack: Dictionary={}
+	while ack.is_empty() and Time.get_ticks_msec()<deadline:
+		world.poll();world.poll_session()
+		for state in ["failed","incomplete","ack"]:
+			var path:=directory+"/%s-%d" % [state,handshake]
+			if not FileAccess.file_exists(path):continue
+			var reply: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
+			if state=="failed":check(false,"farm restart: "+str(reply.reason));return {}
+			if state=="incomplete":incomplete("farm restart: "+str(reply.reason),true);return {}
+			ack=reply
+		await create_timer(0.02).timeout
+	if not check(not ack.is_empty(),"farm restart timed out; no replay"):return {}
+	var epoch:=int(str(ack.epoch))
+	if not check(epoch!=old_epoch and (epoch>>32)==int(ack.pid),"farm replacement identity invalid"):return {}
+	deadline=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.02)
+		if actions._epoch==epoch and not actions._needs_claim and actions._active==0 and actions._queue.is_empty():break
+		await create_timer(0.02).timeout
+	if not check(actions._epoch==epoch and actions._active==0 and actions._queue.is_empty(),"farm replacement service not ready"):return {}
+	return ack

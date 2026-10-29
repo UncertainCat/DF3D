@@ -457,8 +457,22 @@ restores the original complete contents snapshot. The recovered panel screenshot
 was inspected. All58 native checks pass; both save manifests remain unchanged
 and owned DF92564/173916 exit unsaved. Only the known rendering-thread notice
 appears. `contents_disconnect_scene_reference` retains bounded evidence and
-hashes. This closes visibility-edit disconnect acceptance, not item-edit
-producer replacement: the existing replacement case still targets farm typing.
+hashes. This closes visibility-edit disconnect acceptance. The separate item-edit
+producer replacement acceptance follows below.
+
+Protected main-scene084118 on2026-10-29 sends a second-row visibility edit,
+waits for its completed native receipt without delivering it to the controller,
+and replaces the owned DF process. The replacement reuses item ID47486 under a
+new epoch. The old request remains unknown; its observer, contents target and
+page retire, and no mutation or receipt-offset recovery is replayed. A fresh
+explicit open observes the saved flag value, then two new viewport clicks change
+and restore it with native all-row/UI-scratch checks. The recovered panel image
+was inspected. All63 native checks pass, including existing typing replacement
+and item disconnect cases. Owned DF176252/161220/172740 exit unsaved; both save
+manifests are unchanged. Only the known rendering-thread notice appears.
+`contents_replacement_scene_reference` retains results and hashes. This proves
+visibility-edit replacement lifecycle; eligible Melt, active-job cleanup and
+item-sheet View remain separate unfinished workflows.
 
 ## Native item-sheet semantic discovery
 

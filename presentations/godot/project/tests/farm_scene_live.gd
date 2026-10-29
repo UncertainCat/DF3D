@@ -104,6 +104,8 @@ func exercise_scene() -> void:
 	await disconnect_cases(id,seasons)
 	if stopped:return
 	await replacement_case(id,seasons)
+	if stopped:return
+	await contents_replacement_case()
 
 func lifecycle_open(id: int) -> void:
 	var deadline:=Time.get_ticks_msec()+120000
@@ -281,3 +283,61 @@ func contents_disconnect_cases() -> void:
 		evidence.append({"sent":sent,"item_id":initial.rows[1].id,"outcome":outcome.get("outcome"),"unobserved_receipt_retired":sent,"no_replay":true,"fresh_read_and_restore":true})
 		owner.close_panel()
 	write_json("contents-disconnect-results.json",evidence)
+
+func contents_replacement_case() -> void:
+	step="contents producer replacement"
+	await lifecycle_open(int(fixture.contents.building_id))
+	if not await contents_ready():return
+	var initial: Dictionary=owner.contents.snapshot.duplicate(true)
+	var old_epoch: int=actions._epoch
+	var old_generation: int=owner.contents.generation
+	var observed: Array=[]
+	owner.contents.applied.connect(func():observed.append(true))
+	var view=owner.panel.contents
+	await pointer(view.get_global_transform_with_canvas()*view.control_rect(1,5).get_center())
+	var pending: int=owner.contents.ticket
+	if not check(owner.contents.phase==owner.contents.Phase.Applying and pending>0,"replacement item edit not queued"):return
+	actions.poll()
+	if not check(actions._requests.has(pending) and actions._requests[pending].sequence>0,"replacement item edit not sent"):return
+	var sequence: int=actions._requests[pending].sequence
+	var deadline:=Time.get_ticks_msec()+30000
+	var receipt: Dictionary={}
+	while Time.get_ticks_msec()<deadline:
+		world.poll();var candidate: Dictionary=world.poll_management()
+		if candidate.get("request_seq")==sequence and candidate.get("status")==S.Ok:receipt=candidate;break
+		await create_timer(0.01).timeout
+	if not check(not receipt.is_empty() and actions.result(pending).is_empty() and observed.is_empty(),"replacement item receipt was missing or delivered early"):return
+	if not check(receipt.production.contents_edit.item_id==initial.rows[1].id and receipt.production.contents.cursor==1,"replacement receipt target differs"):return
+	write_json("contents-replacement-unobserved.json",receipt)
+	var expected: Array=initial.rows.duplicate(true);expected[1].hidden=not expected[1].hidden
+	await native("contents-verify",{"rows":expected,"cursor":0})
+	if stopped:return
+	await capture("contents_replacement_pending")
+	var ack: Dictionary=await replace_producer(old_epoch)
+	if stopped or ack.is_empty():return
+	if not check(actions.result(pending).get("outcome")=="unknown" and not actions._requests.has(pending),"replacement confirmed or replayed the old item edit"):return
+	if not check(owner.contents.generation>old_generation and owner.contents.building_id==-1 and owner.contents.ticket==0 and owner.contents.snapshot.is_empty() and observed.is_empty(),"old item observer survived replacement"):return
+	var next_ticket: int=actions._next_ticket
+	for frame in 30:
+		world.poll();actions.poll();await process_frame
+	if not check(no_farm_requests_since(next_ticket) and observed.is_empty(),"replacement revived an item edit or receipt-offset recovery"):return
+	await lifecycle_retired("contents_replacement")
+	if stopped:return
+	fixture=JSON.parse_string(FileAccess.get_file_as_string(directory+"/fixture.json"))
+	await lifecycle_open(int(fixture.contents.building_id))
+	if not await contents_ready():return
+	var fresh: Dictionary=owner.contents.snapshot.duplicate(true)
+	# The reloaded clone deliberately reuses the IDs; the new epoch must prevent
+	# the previous receipt from changing the new fortress's same-numbered item.
+	if not check(fresh.rows[1].id==initial.rows[1].id and fresh.rows[1].hidden==initial.rows[1].hidden and observed.is_empty(),"replacement item inherited the old edit"):return
+	await native("contents-verify",{"rows":owner.contents.rows(),"cursor":0})
+	if stopped:return
+	await capture("contents_replacement_fresh")
+	for toggle in 2:
+		await pointer(view.get_global_transform_with_canvas()*view.control_rect(1,5).get_center())
+		if not await contents_ready():return
+		await native("contents-verify",{"rows":owner.contents.rows(),"cursor":0})
+		if stopped:return
+	if not check(observed.size()==2 and owner.contents.snapshot==fresh,"replacement fresh item edits did not restore contents"):return
+	write_json("contents-replacement-results.json",{"old_epoch":str(old_epoch),"new_epoch":str(ack.epoch),"pid":ack.pid,"reused_item_id":fresh.rows[1].id,"old_outcome":actions.result(pending).get("outcome"),"old_observer_retired":true,"no_edit_or_recovery_replay":true,"fresh_edits_verified":true})
+	owner.close_panel()

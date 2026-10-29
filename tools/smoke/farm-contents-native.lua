@@ -72,6 +72,39 @@ local function camera_reference(item)
  assert(main.view_sheets.active_sheet==df.view_sheet_type.ITEM and main.view_sheets.active_id==item.id,'camera oracle did not restore sheet')
  records[#records+1]={name='farm-item-camera-restored',restored=true,item_id=item.id}
 end
+local function position_reference(item)
+ local original={flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z}
+ local function probe(label,valid,x,y,z)
+  local guards={}
+  for _,object in ipairs{item,b,main.view_sheets,df.global.plotinfo}do
+   local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+   dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
+  end
+  local text,code=dfhack.run_command_silent('df3d','item-position-probe',tostring(item.id))
+  local unchanged=true
+  for _,guard in ipairs(guards)do
+   unchanged=unchanged and dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0
+   df.delete(guard.bytes)
+  end
+  assert(code==0,text);local value=require('json').decode(text)
+  assert(unchanged,'native position resolver changed item/building/UI bytes')
+  assert(value.valid==valid and value.x==x and value.y==y and value.z==z,'native position differs: '..label)
+  records[#records+1]={name='farm-item-position-'..label,position=value,unchanged=true}
+ end
+ local ok,err=xpcall(function()
+  assert(not item.flags.in_inventory,'position fixture unexpectedly in inventory')
+  probe('direct',true,original.x,original.y,original.z)
+  item.pos.x=original.x+1;item.pos.y=original.y-1
+  probe('moved',true,original.x+1,original.y-1,original.z)
+  item.flags.removed=true
+  probe('removed',false,-30000,-30000,-30000)
+  item.flags.whole=original.flags;item.pos.x=-30000
+  probe('invalid',false,-30000,original.y-1,original.z)
+ end,debug.traceback)
+ item.flags.whole=original.flags;item.pos.x=original.x;item.pos.y=original.y;item.pos.z=original.z
+ assert(ok,err)
+ records[#records+1]={name='farm-item-position-restored',item_id=item.id,restored=true}
+end
 local baseline=capture('farm-contents-baseline');baseline.contents=items()
 -- Diagnostic graphics provenance, never a runtime cache source. Native
 -- c8745b..c87484 selects seed art via plant raw+0x208, without material tint.
@@ -344,6 +377,7 @@ for index=0,5 do
    assert(require('json').encode(items())==before,'item-sheet toggles did not restore original facts')
   end
   camera_reference(item)
+  position_reference(item)
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  select_map(b)

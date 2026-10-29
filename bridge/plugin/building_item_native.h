@@ -11,6 +11,27 @@
 #include "df/itemdef.h"
 
 namespace df3d_production {
+// Diagnostic-only until reference dispatch and moving/contained targets are
+// accepted. Native follow loops35e7b6/8b6b76 use these independently owned outputs.
+inline std::optional<df::coord> probeItemPosition(df::item* item) {
+    using Resolve=void (*)(df::item*,int16_t*,int16_t*,int16_t*);
+    static const auto resolve=[]()->Resolve {
+        if(!farmFunctions())return nullptr;
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        if(hash(0xc8baa0,0x11a)!=UINT64_C(0x2c62fce4a0555c66) ||
+           hash(0x1367430,0xc6)!=UINT64_C(0xc0292be8a6dacf2c))return nullptr;
+        return reinterpret_cast<Resolve>(base+0xc8baa0);
+    }();
+    if(!resolve||!item)return std::nullopt;
+    int16_t x=-30000,y=-30000,z=-30000;
+    resolve(item,&x,&y,&z);
+    return df::coord(x,y,z);
+}
 // Common building-sheet caption at 19d4ae calls this semantic formatter with
 // independently owned string storage. The body spans two unwind entries.
 inline std::optional<std::string> buildingItemCaption(df::item* item) {

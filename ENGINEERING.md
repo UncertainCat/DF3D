@@ -657,6 +657,27 @@ DFHack Items::getPosition reconstructs these rules rather than calling DF.
 Runtime transport and viewer follow ownership remain unfinished; they must not
 borrow plotinfo follow fields or native camera state.
 
+Diagnostic command `item-position-probe <item-id>` now calls the two pinned
+resolver bodies through `probeItemPosition`, initializing all three outputs to
+-30000. Missing IDs or unavailable native entry points reject; a native invalid
+position remains explicitly invalid. This diagnostic has no management transport
+or product caller. Protected142726 verifies direct, changed-coordinate, removed
+and invalid-position cases for seed47492, with byte guards on the item, building,
+view_sheets and plotinfo. Controlled flags/coordinates are restored; DF185064
+exits unsaved and the source save is unchanged. MSVC and root CTest pass.
+`item_position_probe_reference` retains cases and binary provenance. Changed
+coordinates in a paused fixture are not evidence of naturally moving/hauling items.
+
+Reference dispatch audit remains separate: contained-item vtable1743370 uses
+getType67270 and getItemedfa60; unit-holder vtable17441e0 uses getType7a840 and
+getUnitedfb20. The complete edfa60/0xbd getter validates its cached index then
+binary-searches the item vector and can update the reference's cached_index.
+This semantic reference cache is not UI scratch. edfb20 is a0x13-byte tail wrapper
+to14db50 with the unit ID and cached-index address; the scratch disassembler's
+fallback160-byte output includes unrelated functions and is not its body length.
+No blanket transitive no-write claim or contained/carried-item acceptance follows
+from the direct-coordinate cases.
+
 `native_farm.json.item_sheet_discovery_reference` records the six seed sheets
 opened by native View in protected002651 and a pinned executable call-site audit.
 The first screenshot was inspected: native title, weight, full description, item

@@ -23753,5 +23753,68 @@
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     },
     "scope": "Native stationary seed follow toggle, close persistence and manual-pan cancellation. Static resolver audit is not runtime acceptance; transitive reference dispatch, moving/carried/container targets, invalidation, viewer follow ownership and native position transport remain unfinished."
+  },
+  "item_position_probe_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261029-142726",
+    "status": "passed",
+    "owned_df_pid": 185064,
+    "exit": "unsaved",
+    "bridge_sha256": "3afb743cf421044746786e634cee463a3ea00c94eca4301749d3e0a9f5e9881b",
+    "cases": [
+      {
+        "name": "farm-item-position-direct",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 129,
+          "y": 116,
+          "z": 165
+        },
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-moved",
+        "position": {
+          "item_id": 47492,
+          "valid": true,
+          "x": 130,
+          "y": 115,
+          "z": 165
+        },
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-removed",
+        "position": {
+          "item_id": 47492,
+          "valid": false,
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "unchanged": true
+      },
+      {
+        "name": "farm-item-position-invalid",
+        "position": {
+          "item_id": 47492,
+          "valid": false,
+          "x": -30000,
+          "y": 115,
+          "z": 165
+        },
+        "unchanged": true
+      },
+      {
+        "item_id": 47492,
+        "name": "farm-item-position-restored",
+        "restored": true
+      }
+    ],
+    "artifacts": {
+      "result.json": "bca1f3414ec38a635e11e598de33a1251f4accf8d792f1292246250c05b586fd",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "scope": "Diagnostic native position call with owned outputs; direct and controlled moved/removed/invalid seed positions. Item/building/UI bytes unchanged and fixture restored. No product transport, contained/carried target or natural movement acceptance."
   }
 }

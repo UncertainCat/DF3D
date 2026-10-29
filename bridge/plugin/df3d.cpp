@@ -1627,6 +1627,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["building_id"]=values[0];result["season"]=values[1];result["rows"]=std::move(rows);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="item-position-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          const auto position=df3d_production::probeItemPosition(df::item::find(id));
+          if(!position)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["item_id"]=id;result["valid"]=position->isValid();
+          result["x"]=position->x;result["y"]=position->y;result["z"]=position->z;
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="farm-item-header-read"||parameters[0]=="farm-item-description-probe") {
           if(parameters.size()!=3)return CR_WRONG_USAGE;
           int32_t ids[2]{};

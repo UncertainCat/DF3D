@@ -38,7 +38,17 @@ job with `dfhack.job.removeJob`; that is not the full sheet routine.
 requiring a completed farm, a destruction job, non-null jobs and a count that
 fits the native signed16-bit loop. The diagnostic command
 `df3d farm-cancel-removal <id>` also checks loaded/not-saving and visible target.
-This adapter is not yet connected to the runtime farm command or buttons.
+Management87 connects this adapter to explicit FarmOperation.Remove and
+CancelRemoval commands and the staged sheet's remove/cancel controls.
+Both commands require an exact displayed revision and freshly observe the
+completed farm at a safe point. They reject unrelated name/crop/fertilizer fields.
+Removal uses native virtual queueDestroy; cancellation uses54c130. Repeated
+same-state intent refuses rather than toggling. Post-entry exceptions, invalid
+receipts or unexpected semantic changes report Unknown without authority.
+Native job retirement may reduce pending fertilizer jobs; successful cancellation
+must leave none. Crop selections, names, fertilizer settings/progress and choices
+must otherwise remain unchanged. The controller uses the confirmed receipt to
+change the sheet and rejects a completion with the wrong removal state.
 
 MSVC build `build/notes/pm/farm-cancel-native-msvc.log` passes. Protected
 `areas-acceptance-20261028-202712 -FarmEditOnly` uses this routine to cancel
@@ -47,10 +57,30 @@ farm receipt. Unmarked, missing and non-farm cancellation targets refuse.
 The existing crop/fertilizer/rename checks pass, native UI scratch and paused
 frame stay unchanged, both save manifests remain unchanged and owned DF180892
 exits unsaved. `native_farm.json.removal_native_reference` records source/code
-hashes and run evidence. This verifies an inactive destruction job; active
-worker cancellation, stale/unknown wire outcomes and rendered removal controls
-remain to be implemented and verified. The unchanged management86 bridge built
+hashes and run evidence. This verifies an inactive destruction job. The management86 bridge built
 for this run has SHA256 `339A49352DE16694F443FD9C169234D37A86C8A30C6EEA0E2DE0BE6F4FFCBAE9`.
+
+Management87 validation passes core, wire contract and farm controller checks in
+`build/qa/farm-removal-wire-final`. The transaction has52 injected success/failure
+cases, including preflight refusal, stale revision, exceptions and malformed
+post-effect observations. These injected cases establish outcome handling,
+not native worker behavior. The first wire gate failed because the two schema
+defaults still named86; both defaults and matched binaries were corrected before
+acceptance. The earlier transaction compile failure used unsupported multi-value
+CAPTURE syntax and was fixed before its passing run.
+
+Protected `areas-acceptance-20261028-204629 -FarmEditOnly` verifies removal and
+cancellation with and without pending fertilizer jobs, stale cancellation refusal,
+same-state cancellation refusal and restoration of the original receipt. Native
+readback checks destruction-job count and holder, fertilizer jobs and selections.
+Protected `areas-acceptance-20261028-204710 -FarmSceneOnly` clicks the actual remove
+icon and Cancel removal control, observes the status/body transitions and verifies
+native effects, while retaining all five rename/closure cases (12 native checks).
+The removal screenshot was inspected. Wire acceptance is clean; the rendered run
+has only the known separate-thread notice. Both runs preserve both save manifests
+and exit their owned processes unsaved. `removal_wire_reference` records the evidence.
+Active-worker cancellation and real disconnect/replacement coverage remain open;
+the farm sheet stays staged. See PINS.md for the required87 compatibility boundary.
 
 ## Farm name entry presentation
 

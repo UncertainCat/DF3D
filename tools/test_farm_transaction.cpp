@@ -17,6 +17,64 @@ struct Snapshot {
     std::vector<Choice> choices{{175,"Pig tails",true,false,"GRASS_TAIL_PIG"},{176,"Sweet pods",false,true,"POD_SWEET"}};
 };
 }
+TEST_CASE("farm removal commits only explicit revision-matched observed outcomes") {
+    using namespace df3d_production;
+    for(bool remove:{false,true})for(int fault=0;fault<26;++fault) {
+        CAPTURE(remove);CAPTURE(fault);
+        Snapshot before;before.removing=!remove;before.pendingFertilization=3;
+        before.removalSuspended=!remove;before.removalHasWorker=!remove;
+        before.revision=farmRevision(before);
+        uint64_t expected=before.revision;
+        if(fault==1)expected=0;
+        if(fault==2)++expected;
+        if(fault==3)before.removing=remove;
+        int applies=0,reads=0,validations=0;
+        auto result=finishFarmRemoval(before,expected,remove,[&] {
+            ++applies;
+            if(fault==6)throw 6;
+            return fault!=5;
+        },[&]()->std::optional<Snapshot> {
+            ++reads;
+            if(fault==7)throw 7;
+            if(fault==8)return {};
+            auto after=before;after.removing=remove;after.removalSuspended=false;
+            after.removalHasWorker=false;after.pendingFertilization=0;
+            switch(fault) {
+            case 10:after.removing=!remove;break;
+            case 11:++after.buildingId;break;
+            case 12:after.selectedSeason=2;break;
+            case 13:after.currentSeason=2;break;
+            case 14:after.customName="unexpected";break;
+            case 15:after.headerName="unexpected";break;
+            case 16:after.seasonalCrops[3]=-1;break;
+            case 17:after.seasonalFertilization=false;break;
+            case 18:++after.currentFertilization;break;
+            case 19:++after.maxFertilization;break;
+            case 20:after.pendingFertilization=4;break;
+            case 21:after.choices[0].rawId="changed";break;
+            case 22:after.pendingFertilization=-1;break;
+            case 23:after.removalSuspended=true;after.removalHasWorker=true;break;
+            case 24:after.pendingFertilization=1;break;
+            }
+            after.revision=farmRevision(after);return after;
+        },[&](const Snapshot&) {
+            ++validations;
+            if(fault==4)throw 4;
+            if(fault==25 && validations==2)throw 25;
+            return !(fault==9 && validations==2);
+        });
+        const bool success=fault==0 || (remove && (fault==23 || fault==24));
+        const bool rejected=fault==1 || fault==3 || fault==4 || fault==5;
+        CHECK(result.outcome==(success?FarmEditOutcome::Completed:fault==2?FarmEditOutcome::Stale:
+            rejected?FarmEditOutcome::Rejected:FarmEditOutcome::Unknown));
+        CHECK(applies==(fault>=5 || fault==0?1:0));
+        CHECK(reads==(applies && fault!=5 && fault!=6?1:0));
+        CHECK(result.mutated==(!rejected && fault!=2));
+        CHECK(result.receipt.has_value()==success);
+        if(result.receipt)CHECK(result.receipt->removing==remove);
+    }
+}
+
 TEST_CASE("farm content revision tracks semantic fields and preserves identical receipts") {
     Snapshot original;const auto base=df3d_production::farmRevision(original);
     REQUIRE(base>0);CHECK(base<=INT64_MAX);

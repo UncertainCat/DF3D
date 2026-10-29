@@ -29,6 +29,8 @@ func configure(source,model) -> void:
 		rename_requested.connect(_begin_owned_rename)
 		name_edited.connect(state.edit_name_entry)
 		name_submitted.connect(_finish_owned_rename)
+		removal_requested.connect(state.request_removal)
+		cancel_removal_requested.connect(state.cancel_removal)
 	state.changed.connect(refresh);refresh()
 
 func allowed() -> bool:return not input_allowed.is_valid() or input_allowed.call()

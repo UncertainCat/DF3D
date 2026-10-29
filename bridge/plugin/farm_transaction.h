@@ -32,6 +32,37 @@ template<class Snapshot> struct FarmEditResult {
     std::optional<Snapshot> receipt;
 };
 
+// Removal and cancellation are explicit opposite intents, never a toggle.
+// Apply=false promises no effect; any exception after entry is Unknown. Native
+// removal may retire fertilizer jobs; cancellation clears every building job.
+// Callers validate a visible completed farm and the current epoch at a safe point.
+template<class Snapshot,class Apply,class Observe,class Valid>
+FarmEditResult<Snapshot> finishFarmRemoval(const Snapshot& before,uint64_t expectedRevision,
+                                          bool remove,Apply apply,Observe observe,Valid valid) {
+    FarmEditResult<Snapshot> result;
+    try {
+        if(!expectedRevision || !valid(before) || before.pendingFertilization<0 ||
+           (!before.removing && (before.removalSuspended || before.removalHasWorker)))return result;
+    } catch(...) {return result;}
+    if(before.revision!=expectedRevision){result.outcome=FarmEditOutcome::Stale;return result;}
+    if(before.removing==remove)return result;
+    result.mutated=true;result.outcome=FarmEditOutcome::Unknown;
+    try {
+        if(!apply()){result.mutated=false;result.outcome=FarmEditOutcome::Rejected;return result;}
+        auto after=observe();
+        if(!after || !valid(*after) || after->removing!=remove ||
+           after->pendingFertilization<0 || after->pendingFertilization>before.pendingFertilization ||
+           (!remove && (after->removalSuspended || after->removalHasWorker || after->pendingFertilization!=0)))return result;
+        auto unchanged=*after;
+        unchanged.removing=before.removing;unchanged.removalSuspended=before.removalSuspended;
+        unchanged.removalHasWorker=before.removalHasWorker;
+        unchanged.pendingFertilization=before.pendingFertilization;
+        if(farmRevision(unchanged)!=farmRevision(before))return result;
+        result.receipt=std::move(after);result.outcome=FarmEditOutcome::Completed;
+    } catch(...) {result.receipt.reset();}
+    return result;
+}
+
 // Native8bb3eb..8bb4ae assigns a changed local draft directly to building.name.
 // Its text-input helpers own SDL/global input state and must not run here.
 // Convert must return a lossless CP437 encoding, or nullopt. It is read-only;

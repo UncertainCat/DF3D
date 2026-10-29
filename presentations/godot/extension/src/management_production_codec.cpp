@@ -325,7 +325,7 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.buildingId = int32_t(n("building_id", -1, -1, INT32_MAX));
   value.jobId = int32_t(n("job_id", -1, -1, INT32_MAX));
   value.expectedRevision=uint64_t(n("expected_revision",0,0,INT64_MAX));
-  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,3));
+  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,5));
   String farmName=data.get("farm_name",String());
   const auto nameBytes=farmName.utf8();value.farmName.assign(nameBytes.get_data(),nameBytes.length());
   if(value.farmName.size()>90)valid=false;

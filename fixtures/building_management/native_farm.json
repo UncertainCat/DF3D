@@ -12301,5 +12301,52 @@
       "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
     },
     "limitations": "Adapter diagnostic exercised on inactive destruction job; no runtime farm removal/cancel command, active worker or rendered button acceptance."
+  },
+  "removal_wire_reference": {
+    "management_version": 87,
+    "bridge_sha256": "2137dcc27fdb5af991d079fd4e473126a91c7a6815451a06f920b74fbe22a2ac",
+    "extension_sha256": "90c7b658b25d15fa1972c1190f00a85f9b18a23c5e18e232de448b602c4fa422",
+    "runs": [
+      {
+        "capture": "build/areas-acceptance-20261028-204629",
+        "owned_df_pid": 140112,
+        "closed_unsaved": true,
+        "save_manifests_unchanged": 2,
+        "result": {
+          "reasons": [],
+          "status": "passed"
+        },
+        "evidence_sha256": {
+          "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+          "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+          "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+          "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+          "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
+        }
+      },
+      {
+        "capture": "build/areas-acceptance-20261028-204710",
+        "owned_df_pid": 163332,
+        "closed_unsaved": true,
+        "save_manifests_unchanged": 2,
+        "result": {
+          "native_checks": 12,
+          "reasons": [],
+          "status": "passed",
+          "surface": "staged farm owner in actual main scene; viewport keyboard and mouse input"
+        },
+        "evidence_sha256": {
+          "result.json": "48f8976f20da0284e7480a0cbadeae5be04e0ede5a9ed910a0f9db0c9e8e60d5",
+          "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+          "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+          "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+          "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+          "farm_scene_removing.png": "c747779fbc4730708b322ba31ee57cb14fa6872645364ed67860be418269a9c3",
+          "farm_scene_cancelled.png": "987166712d230526db9c203a759fcc4ff2994766d3f81b4ed6a23947c1a2665b"
+        }
+      }
+    ],
+    "coverage": "Explicit Remove/CancelRemoval with exact revision, with and without pending fertilizer jobs, stale and same-state cancellation refusal, actual main-scene buttons and native job-holder/count readback. Original receipts restored.",
+    "limitations": "Inactive destruction job. Active-worker cancellation and real disconnect/replacement acceptance remain open; farm remains staged."
   }
 }

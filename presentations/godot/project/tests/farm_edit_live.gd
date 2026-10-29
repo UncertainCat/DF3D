@@ -140,6 +140,23 @@ func exercise() -> void:
 	var final_receipt:=await read_farm(id,1)
 	if stopped:return
 	if not check(final_receipt==initial,"removal fixture did not restore receipt"):return
+	step="native removal commands"
+	for fertilized in [false,true]:
+		var before_remove: Dictionary=final_receipt
+		if fertilized:before_remove=await edit_crop(id,1,-1,before_remove.revision,1,1)
+		if stopped:return
+		var removed:=await edit_crop(id,1,-1,before_remove.revision,1,4)
+		if stopped:return
+		if not check(removed.removing,"remove command did not mark farm"):return
+		await native("verify",{"seasons":seasons,"removing":true,"fertilization":removed})
+		await edit_crop(id,1,-1,before_remove.revision,3,5)
+		if stopped:return
+		final_receipt=await edit_crop(id,1,-1,removed.revision,1,5)
+		if stopped:return
+		if not check(final_receipt==initial,"native cancellation did not restore farm receipt"):return
+		await native("verify",{"seasons":seasons,"removing":false,"fertilization":final_receipt})
+		await edit_crop(id,1,-1,final_receipt.revision,2,5)
+		if stopped:return
 	await native("verify",{"seasons":seasons})
 	if stopped:return
 	write_json("farm-edit-results.json",{"cases":results,"invalid_targets":2,"original_selections_restored":true,"fertilizer_completed":5,"fertilizer_stale":2,"fertilizer_original_restored":true,"rename_cases":rename_cases,"rename_invalid":2,"rename_original_restored":true,"removal_refusals":4})

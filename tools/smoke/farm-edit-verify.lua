@@ -46,6 +46,14 @@ if request.fertilization then
  fertilizer={current=farm.current_fertilization,maximum=farm.max_fertilization,pending=pending,seasonal=farm.farm_flags.seasonal_fertilize}
 end
 local header
+if request.removing~=nil then
+ assert(dfhack.buildings.markedForRemoval(state.farm)==request.removing,'wire removal state differs')
+ local count=0
+ for _,job in ipairs(state.farm.jobs)do if job.job_type==df.job_type.DestroyBuilding then
+  count=count+1;assert(dfhack.job.getHolder(job)==state.farm,'destruction holder differs')
+ end end
+ assert(count==(request.removing and 1 or 0),'destruction job count differs')
+end
 if request.name~=nil then
  assert(dfhack.df2utf(state.farm.name)==request.name,'wire rename/native name mismatch')
  local text,code=dfhack.run_command_silent('df3d','farm-header-read',tostring(state.farm.id))

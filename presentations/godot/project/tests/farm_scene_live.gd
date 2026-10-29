@@ -72,3 +72,16 @@ func exercise_scene() -> void:
 		await native("verify",{"seasons":seasons,"name":""})
 		if stopped:return
 		owner.close_panel()
+	step="main farm remove and cancel"
+	owner.open_target(id,1)
+	if not await settled(Farm.Phase.Ready):return
+	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(416,30))
+	if not await settled(Farm.Phase.Ready):return
+	if not check(farm.snapshot.removing and not owner.panel.body.visible,"remove icon did not show removal state"):return
+	await native("verify",{"seasons":seasons,"removing":true})
+	await capture("removing")
+	await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.cancel_rect().get_center())
+	if not await settled(Farm.Phase.Ready):return
+	if not check(not farm.snapshot.removing and owner.panel.body.visible,"cancel control did not restore farm body"):return
+	await native("verify",{"seasons":seasons,"removing":false})
+	await capture("cancelled")

@@ -2372,12 +2372,20 @@ void run(color_ostream& out) {
       const auto observe=[&]{return observeFarmSnapshot(q->building_id(),q->season());};
       auto before=observe();
       auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(q->building_id()));
-      if(before && farm && !before->removing && farm->getBuildStage()==farm->getMaxBuildStage()) {
+      const bool removal=q->farm_operation()==m::FarmOperation::Remove || q->farm_operation()==m::FarmOperation::CancelRemoval;
+      if(before && farm && (!before->removing || removal) && farm->getBuildStage()==farm->getMaxBuildStage()) {
         const auto valid=[](const FarmSnapshot& value){return value.revision>0 && value.revision<=INT64_MAX &&
             value.currentFertilization>=0 && value.maxFertilization>=0 && value.pendingFertilization>=0 &&
             value.seasonalCrops.size()==4 && std::all_of(value.seasonalCrops.begin(),value.seasonalCrops.end(),
               [](int32_t crop){return crop>=-1 && crop<=32767;});};
-        auto result=q->farm_operation()==m::FarmOperation::Rename?
+        auto result=removal?
+          df3d_production::finishFarmRemoval(*before,q->expected_revision(),q->farm_operation()==m::FarmOperation::Remove,
+            [&]{
+              if(!df3d_production::farmFunctions())return false;
+              if(q->farm_operation()==m::FarmOperation::CancelRemoval)return df3d_production::cancelFarmRemoval(farm);
+              farm->queueDestroy();return true;
+            },observe,valid):
+          q->farm_operation()==m::FarmOperation::Rename?
           df3d_production::finishFarmRename(*before,q->expected_revision(),q->farm_name()->str(),
             [](const std::string& text)->std::optional<std::string> {
               auto bytes=UTF2DF(text);if(DF2UTF(bytes)!=text)return {};return bytes;

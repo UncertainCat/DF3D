@@ -112,8 +112,14 @@ func rename(name: String) -> void:
 	if bytes.size()>90 or bytes.has(0):return
 	_edit(C.FarmOperation.Rename,{"farm_name":name})
 
+func request_removal() -> void:_edit(C.FarmOperation.Remove,{})
+func cancel_removal() -> void:_edit(C.FarmOperation.CancelRemoval,{})
+
 func _edit(operation: int, fields: Dictionary) -> void:
-	if phase!=Phase.Ready or ticket!=0 or snapshot.get("removing",true):return
+	if phase!=Phase.Ready or ticket!=0:return
+	if operation==C.FarmOperation.CancelRemoval:
+		if not snapshot.get("removing",false):return
+	elif snapshot.get("removing",true):return
 	var intent: Dictionary={"action":C.ManagementAction.FarmEdit,"building_id":building_id,
 		"season":season,"expected_revision":snapshot.revision,"farm_operation":operation}
 	intent.merge(fields);phase=Phase.Applying;_send(intent)
@@ -165,6 +171,8 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if result.get("action",-1)!=sent.action or not _valid(observed) or (editing and outcome!=C.FarmEditOutcome.Completed):
 		_fail(Phase.Unknown if editing else Phase.Rejected);return
 	if editing and sent.get("farm_operation",C.FarmOperation.Crop)==C.FarmOperation.Rename and observed.custom_name!=sent.farm_name:
+		_fail(Phase.Unknown);return
+	if editing and sent.get("farm_operation") in [C.FarmOperation.Remove,C.FarmOperation.CancelRemoval] and observed.removing!=(sent.farm_operation==C.FarmOperation.Remove):
 		_fail(Phase.Unknown);return
 	if _initial_current:
 		_initial_current=false

@@ -15,7 +15,9 @@ static_assert(static_cast<int>(wm::FarmOperation::Crop) == static_cast<int>(df3d
 static_assert(static_cast<int>(wm::FarmOperation::FertilizationToggle) == static_cast<int>(df3d::mirror::FarmOperation::FertilizationToggle));
 static_assert(static_cast<int>(wm::FarmOperation::SeasonalFertilization) == static_cast<int>(df3d::mirror::FarmOperation::SeasonalFertilization));
 static_assert(static_cast<int>(wm::FarmOperation::Rename) == static_cast<int>(df3d::mirror::FarmOperation::Rename));
-static_assert(sizeof(df3d::mirror::EnumValuesFarmOperation()) / sizeof(df3d::mirror::FarmOperation) == 4);
+static_assert(static_cast<int>(wm::FarmOperation::Remove) == static_cast<int>(df3d::mirror::FarmOperation::Remove));
+static_assert(static_cast<int>(wm::FarmOperation::CancelRemoval) == static_cast<int>(df3d::mirror::FarmOperation::CancelRemoval));
+static_assert(sizeof(df3d::mirror::EnumValuesFarmOperation()) / sizeof(df3d::mirror::FarmOperation) == 6);
 static_assert(static_cast<int>(wm::ManagementAction::Catalog) == static_cast<int>(df3d::mirror::ManagementAction::Catalog));
 static_assert(static_cast<int>(wm::ManagementAction::Preview) == static_cast<int>(df3d::mirror::ManagementAction::Preview));
 static_assert(static_cast<int>(wm::ManagementAction::Place) == static_cast<int>(df3d::mirror::ManagementAction::Place));

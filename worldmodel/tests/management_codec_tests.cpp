@@ -23,7 +23,7 @@ TEST_CASE("farm edits require exact revisions owned only by crop requests") {
     if(variant==8)p.cancel=true;
     if(variant==9)p.recipe="unowned";
     if(variant==10)p.query="unowned";
-    if(variant==11)p.farmOperation=wm::FarmOperation(4);
+    if(variant==11)p.farmOperation=wm::FarmOperation(6);
     if(variant==12)p.seasonalFertilization=0;
     if(variant==13)p.farmOperation=wm::FarmOperation::SeasonalFertilization;
     if(variant==14){p.farmOperation=wm::FarmOperation::FertilizationToggle;p.cropId=175;}
@@ -32,6 +32,21 @@ TEST_CASE("farm edits require exact revisions owned only by crop requests") {
     const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
     CHECK(bool(wire::validateConstructionRequest(*value))==(variant!=0));
     if(!variant)CHECK(value->production()->expected_revision()==9007199254740993ULL);
+  }
+}
+TEST_CASE("farm removal intents preserve exact revision and reject unrelated fields") {
+  for(auto operation:{wm::FarmOperation::Remove,wm::FarmOperation::CancelRemoval})for(int fault=0;fault<5;++fault) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::FarmEdit;
+    auto& p=r.production;p.buildingId=227;p.season=1;p.expectedRevision=9007199254740993ULL;p.farmOperation=operation;
+    if(fault==1)p.expectedRevision=0;
+    if(fault==2)p.cropId=175;
+    if(fault==3)p.seasonalFertilization=0;
+    if(fault==4)p.farmName="unowned";
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    CHECK(int(value->production()->farm_operation())==int(operation));
+    CHECK(value->production()->expected_revision()==p.expectedRevision);
   }
 }
 TEST_CASE("successful farm edit cannot omit its production result") {

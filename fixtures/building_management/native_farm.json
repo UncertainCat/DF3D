@@ -22840,5 +22840,159 @@
       "exit": "unsaved"
     },
     "limitations": "Diagnostic only. Full transitive helper audit and controlled wear, contaminants, magic and unusual flags remain; no runtime inspection approval."
+  },
+  "item_description_variants_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261029-131236",
+    "result_sha256": "9095d173078c69789ce60c9272ef81cb56b3104b97e3d463cce289eed7465e1e",
+    "cases": [
+      {
+        "variant": "wear-1",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  This object is showing some wear.  ",
+        "caption": "xsweet pod seedsx",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "wear-2",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  This object is heavily worn.  ",
+        "caption": "Xsweet pod seedsX",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "wear-3",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  This object is mangled.  ",
+        "caption": "XXsweet pod seedsXX",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "stack-3",
+        "item_id": 47492,
+        "native_description": "This is a stack of 3 sweet pod seeds.  ",
+        "caption": "sweet pod seeds [3]",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "rotten",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  ",
+        "caption": "sweet pod seeds",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "foreign",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  ",
+        "caption": "(sweet pod seeds)",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "trader",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  ",
+        "caption": "sweet pod seeds",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "forbid",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  ",
+        "caption": "{sweet pod seeds}",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "dump",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  ",
+        "caption": "sweet pod seeds",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "hidden",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  ",
+        "caption": "sweet pod seeds",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "from_worldgen",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  ",
+        "caption": "sweet pod seeds",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "artifact_mood",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  All craftsmanship is of the highest quality.  ",
+        "caption": "sweet pod seeds",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "water-contaminant-1",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  It is spattered with water.  ",
+        "caption": "sweet pod seeds",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "water-contaminant-100",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  It is coated with water.  ",
+        "caption": "sweet pod seeds",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "magic-empty",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  ",
+        "caption": "\u25c4sweet pod seeds\u25ba",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      },
+      {
+        "variant": "magic-negative-index",
+        "item_id": 47492,
+        "native_description": "These are sweet pod seeds.  ",
+        "caption": "\u25c4sweet pod seeds\u25ba",
+        "weight": "<1\u0393",
+        "native_equal": true,
+        "item_building_ui_unchanged": true
+      }
+    ],
+    "provenance": "Controlled semantic input variants on one existing sweet pod seed in a paused disposable fortress. Native sheet reopened for each variant before diagnostic provider comparison. These are not claims that every variant occurs naturally. Temporary contamination/magic allocations detached and freed; original scalar fields and pointers restored.",
+    "magic_source_available": false,
+    "scope": "Sixteen exact raw native descriptions and unchanged item/building/view_sheets/plotinfo plus allocated-object byte guards. Existing six-seed warm/cold matrix and native controls still pass. DF181916 exited unsaved; source unchanged.",
+    "limitations": "No populated ITEM_POWER source exists in this fixture. Water contamination only; creature/historical-figure material descriptions and populated magic remain unverified. No new runtime provider/UI exposure."
   }
 }

@@ -658,6 +658,21 @@ protected130534 result. All twelve warm/cold seed descriptions still match nativ
 full item/building/UI guards pass, and the nonseed probe remains refused. Owned
 DF186000 exits unsaved and the source manifest stays unchanged. MSVC passes.
 
+Protected131236 adds sixteen controlled semantic input variants on an existing
+sweet pod seed: wear1/2/3, stack3, rotten/foreign/trader/forbid/dump/hidden flags,
+from_worldgen, artifact_mood, water spatter/coating, empty magic and a negative
+interaction index. Each freshly reopened native sheet supplies the expected raw
+description; the diagnostic matches exactly. Item/building/view_sheets/plotinfo
+and temporary-object byte guards remain unchanged. Test-owned contamination and
+magic structures are detached and freed, restoring original pointers and scalar
+fields. These controlled states establish formatting coverage, not natural
+occurrence or full rendered layout acceptance. DF181916 exits unsaved and the
+source manifest stays unchanged. `item_description_variants_reference` records
+native strings and coverage. No ITEM_POWER raw source exists in this fortress;
+populated magic remains explicitly unverified. Water results do not establish
+creature/historical-material safety: native14d1920 has a separate historical
+lookup branch for material types219..418. The management provider stays staged.
+
 Protected082504 on2026-10-29 verifies six real seeds with warm and cold header
 caches. All twelve full descriptions exactly match the native sheet's raw
 description. Original item bytes and view_sheets/plotinfo bytes match after each

@@ -108,6 +108,81 @@ for _,probe in ipairs{{'role',732,526},{'view',756,526},{'forbid',780,526},{'dum
  records[#records+1]={name='farm-contents-hover-'..probe[1],hover=main.current_hover,
   enabled=main.hover_instructions_on,lines=lines,mouse={probe[2],probe[3]},contents=items()}
 end
+-- Exercise uncommon semantic inputs only on the paused disposable fortress.
+local function seed_description_variants(item)
+ local original={flags=item.flags.whole,wear=item.wear,stack=item.stack_size,
+  whole=item.weight.whole,fraction=item.weight.fraction,magic=item.magic,contaminants=item.contaminants}
+ local allocations={}
+ local function restore()
+  item.magic=original.magic;item.contaminants=original.contaminants
+  for i=#allocations,1,-1 do df.delete(allocations[i])end;allocations={}
+  item.flags.whole=original.flags;item.wear=original.wear;item.stack_size=original.stack
+  item.weight.whole=original.whole;item.weight.fraction=original.fraction
+ end
+ local function reopen()
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(b)
+  move(756,526);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  assert(main.view_sheets.active_sheet==df.view_sheet_type.ITEM and main.view_sheets.active_id==item.id,'variant reopened wrong item')
+ end
+ local cases={{name='wear-1',wear=1},{name='wear-2',wear=2},{name='wear-3',wear=3},{name='stack-3',stack=3}}
+ for _,flag in ipairs{'rotten','foreign','trader','forbid','dump','hidden','from_worldgen','artifact_mood'}do cases[#cases+1]={name=flag,flag=flag}end
+ for _,size in ipairs{1,100}do cases[#cases+1]={name='water-contaminant-'..size,contaminant=size}end
+ cases[#cases+1]={name='magic-empty',magic=true}
+ cases[#cases+1]={name='magic-negative-index',magic=true,power=-1}
+ local source_case
+ for i,interaction in ipairs(df.global.world.raws.interactions.all)do
+  for j,source in ipairs(interaction.sources)do
+   if source:getType()==df.interaction_source_type.ITEM_POWER then source_case={name='magic-native-source',magic=true,power=i,source_index=j,source=source,interaction=interaction};break end
+  end
+  if source_case then break end
+ end
+ if source_case then cases[#cases+1]=source_case else records[#records+1]={name='farm-seed-magic-source-unavailable'}end
+ local ok,err=xpcall(function()
+  for _,case in ipairs(cases)do
+   restore()
+   if case.wear then item.wear=case.wear end
+   if case.stack then item.stack_size=case.stack;item.flags.weight_computed=false end
+   if case.flag then item.flags[case.flag]=true end
+   if case.contaminant then
+    local water=assert(dfhack.matinfo.find('WATER'),'water material missing')
+    item.contaminants=nil;item.contaminants={new=true};allocations[#allocations+1]=item.contaminants
+    local spatter=df.spatter:new();allocations[#allocations+1]=spatter
+    spatter.base.mat_type=water.type;spatter.base.mat_index=water.index;spatter.base.mat_state=df.matter_state.Liquid;spatter.base.size=case.contaminant
+    item.contaminants:insert('#',spatter)
+   end
+   if case.magic then
+    item.magic=nil;item.magic={new=true};allocations[#allocations+1]=item.magic
+    if case.power then
+     local power=df.item_powerst:new();allocations[#allocations+1]=power
+     power.interaction_index=case.power;power.interaction_source_index=case.source_index or 0;power.delay=0
+     item.magic.power:insert('#',power)
+    end
+   end
+   reopen()
+   local expected=dfhack.df2utf(main.view_sheets.raw_description)
+   local guards={}
+   local objects={item,b,main.view_sheets,df.global.plotinfo}
+   for _,object in ipairs(allocations)do objects[#objects+1]=object end
+   if case.source then objects[#objects+1]=case.source;objects[#objects+1]=case.interaction end
+   for _,object in ipairs(objects)do
+    local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+    dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
+   end
+   local check_ok,check_error=xpcall(function()
+    local text,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(b.id),tostring(item.id));assert(code==0,text)
+    local result=require('json').decode(text)
+    assert(result.description==expected,'seed description variant differs: '..case.name)
+    for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'seed variant changed item/building/UI: '..case.name)end
+    records[#records+1]={name='farm-seed-description-variant',variant=case.name,item_id=item.id,
+     native_description=expected,header=result,native_equal=true,item_building_ui_unchanged=true}
+   end,debug.traceback)
+   for _,guard in ipairs(guards)do df.delete(guard.bytes)end
+   assert(check_ok,check_error)
+  end
+ end,debug.traceback)
+ restore();reopen();restore()
+ assert(ok,err)
+end
 -- Eye controls expose the actual row identity without guessing name order.
 for index=0,5 do
  move(756,526+index*36);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
@@ -159,6 +234,7 @@ for index=0,5 do
  item.flags.whole=original_flags;item.weight.whole=original_whole;item.weight.fraction=original_fraction
  for _,guard in ipairs(guards)do df.delete(guard.bytes)end
  assert(header_ok,header_error)
+ if index==0 then seed_description_variants(item)end
  -- Exercise the real native holder link, then return via the same row's View.
  move(816,250);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
  assert(main.view_sheets.active_sheet==df.view_sheet_type.BUILDING and main.view_sheets.active_id==b.id,'native holder link selected a different building')

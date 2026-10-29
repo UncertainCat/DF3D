@@ -1625,6 +1625,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["building_id"]=values[0];result["season"]=values[1];result["rows"]=std::move(rows);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="farm-cancel-removal") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(id));
+          auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
+          if(!tile || tile->bits.hidden || !df3d_production::cancelFarmRemoval(farm))return CR_FAILURE;
+          out.print("Native farm removal cancelled");return CR_OK;
+        }
         if(parameters[0]=="farm-header-read") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];

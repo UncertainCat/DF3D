@@ -18,8 +18,17 @@ if request.op=='mark_removal' then
  assert(df.building.find(state.farm.id)==state.farm and dfhack.buildings.markedForRemoval(state.farm),'fixture did not stage removal')
 elseif request.op=='clear_removal' then
  local jobs={};for _,job in ipairs(state.farm.jobs)do if job.job_type==df.job_type.DestroyBuilding then jobs[#jobs+1]=job end end
- assert(#jobs==1,'removal fixture changed');dfhack.job.removeJob(jobs[1])
+ assert(#jobs==1,'removal fixture changed')
+ local text,code=dfhack.run_command_silent('df3d','farm-cancel-removal',tostring(state.farm.id))
+ assert(code==0,text)
  assert(not dfhack.buildings.markedForRemoval(state.farm),'removal fixture did not clear')
+ local _,again=dfhack.run_command_silent('df3d','farm-cancel-removal',tostring(state.farm.id))
+ assert(again~=0,'unmarked farm cancellation should refuse without mutation')
+ local _,absent=dfhack.run_command_silent('df3d','farm-cancel-removal','2147483647')
+ assert(absent~=0,'absent cancellation target accepted')
+ local nonfarm=assert(df.global.world.buildings.other.STOCKPILE[0])
+ local _,wrong=dfhack.run_command_silent('df3d','farm-cancel-removal',tostring(nonfarm.id))
+ assert(wrong~=0,'nonfarm cancellation target accepted')
 end
 if request.op=='external_change' then
  assert(request.season~=df.global.cur_season,'external fixture requires future season')

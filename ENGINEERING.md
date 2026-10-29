@@ -20,6 +20,38 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Farm removal native entry points
+
+DF53.16 sheet dispatch1b0211 checks build stage and calls virtual
+`queueDestroy` (slot45, call1b0237) for a built farm. The existing DFHack
+`Buildings::deconstruct` reaches that same virtual call for actual built
+buildings. Unbuilt removal follows a different native path and is not covered
+by this completed-farm investigation.
+
+Cancel removal calls building routine54c130 from sheet1b00a3. Its full body
+54c130..54c216 spans unwind entries: it cancels the building's jobs through
+a67820, then restores occupancy for completed buildings that set occupancy,
+respecting extents. It takes a building pointer and no native UI scratch.
+The existing generic construction cancellation instead removes one destruction
+job with `dfhack.job.removeJob`; that is not the full sheet routine.
+`farm_native.h` now fingerprints and exposes the native cancellation routine,
+requiring a completed farm, a destruction job, non-null jobs and a count that
+fits the native signed16-bit loop. The diagnostic command
+`df3d farm-cancel-removal <id>` also checks loaded/not-saving and visible target.
+This adapter is not yet connected to the runtime farm command or buttons.
+
+MSVC build `build/notes/pm/farm-cancel-native-msvc.log` passes. Protected
+`areas-acceptance-20261028-202712 -FarmEditOnly` uses this routine to cancel
+the controlled removal fixture, then verifies restoration of the original
+farm receipt. Unmarked, missing and non-farm cancellation targets refuse.
+The existing crop/fertilizer/rename checks pass, native UI scratch and paused
+frame stay unchanged, both save manifests remain unchanged and owned DF180892
+exits unsaved. `native_farm.json.removal_native_reference` records source/code
+hashes and run evidence. This verifies an inactive destruction job; active
+worker cancellation, stale/unknown wire outcomes and rendered removal controls
+remain to be implemented and verified. The unchanged management86 bridge built
+for this run has SHA256 `339A49352DE16694F443FD9C169234D37A86C8A30C6EEA0E2DE0BE6F4FFCBAE9`.
+
 ## Farm name entry presentation
 
 The staged farm sheet exposes begin/finish/key-input methods and edited/submitted

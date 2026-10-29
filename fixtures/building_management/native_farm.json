@@ -12276,5 +12276,30 @@
       "farm_scene_tab_typing.png": "56c3d53e8cc176ddf8064bd79d136aef77af765cd2bac6e983d8bcd16e2951eb"
     },
     "limitations": "Staged controller explicitly opened in actual main scene. Does not establish public building selection, external alternatives, removal or real window Unicode input."
+  },
+  "removal_native_reference": {
+    "capture": "build/areas-acceptance-20261028-202712",
+    "status": "passed",
+    "owned_df_pid": 180892,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "df_exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "bridge_sha256": "339a49352de16694f443fd9c169234d37a86c8a30c6eea0e2de0be6f4ffcbae9",
+    "native": {
+      "removal": "sheet1b0211 tests build stage;1b0237 calls building.queueDestroy virtual slot45 for built farms",
+      "cancel_call": "sheet1b00a3",
+      "cancel_body": "54c130..54c216",
+      "cancel_fnv1a64": "cab44276dbb81fae",
+      "cancel_sha256": "c90c2927f6ea183d8fcedf9fcc346ec2b2d4782687180874f150aeac8443d613",
+      "ownership": "Building-only input. Cancels jobs through a67820 and restores completed occupancy; no sheet, cursor or menu scratch inputs."
+    },
+    "evidence_sha256": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
+    },
+    "limitations": "Adapter diagnostic exercised on inactive destruction job; no runtime farm removal/cancel command, active worker or rendered button acceptance."
   }
 }

@@ -37,7 +37,8 @@ struct FarmFunctions {
     Fertilize scheduleFertilization=nullptr,cancelFertilization=nullptr;
     HasWorker hasWorker=nullptr;
     FormatName formatName=nullptr;
-    explicit operator bool() const {return eligible && seasons && plantingWarning && name && compare && cancelJob && scheduleFertilization && cancelFertilization && hasWorker && formatName;}
+    Fertilize cancelRemoval=nullptr;
+    explicit operator bool() const {return eligible && seasons && plantingWarning && name && compare && cancelJob && scheduleFertilization && cancelFertilization && hasWorker && formatName && cancelRemoval;}
 };
 inline const FarmFunctions& farmFunctions() {
     static const auto functions=[]()->FarmFunctions {
@@ -68,7 +69,8 @@ inline const FarmFunctions& farmFunctions() {
            hash(0x589930,0x5e)!=UINT64_C(0xb07885291e299644) ||
            hash(0xa67820,0xcc)!=UINT64_C(0x506ce8a2c4eefca6) ||
            hash(0xd02850,0x4b)!=UINT64_C(0xea0c7dfd75f644de) ||
-           hash(0x52d650,0x2b0)!=UINT64_C(0xcf43211ff8e2c344))return {};
+           hash(0x52d650,0x2b0)!=UINT64_C(0xcf43211ff8e2c344) ||
+           hash(0x54c130,0xe6)!=UINT64_C(0xcab44276dbb81fae))return {};
         return {reinterpret_cast<FarmFunctions::Eligible>(base+0x557770),
                 reinterpret_cast<FarmFunctions::Seasons>(base+0xaae1a0),
                 reinterpret_cast<FarmFunctions::PlantingWarning>(base+0x57c050),
@@ -78,7 +80,8 @@ inline const FarmFunctions& farmFunctions() {
                 reinterpret_cast<FarmFunctions::Fertilize>(base+0x5894a0),
                 reinterpret_cast<FarmFunctions::Fertilize>(base+0x589930),
                 reinterpret_cast<FarmFunctions::HasWorker>(base+0xd02850),
-                reinterpret_cast<FarmFunctions::FormatName>(base+0x52d650)};
+                reinterpret_cast<FarmFunctions::FormatName>(base+0x52d650),
+                reinterpret_cast<FarmFunctions::Fertilize>(base+0x54c130)};
     }();
     return functions;
 }
@@ -86,6 +89,21 @@ struct FarmHeader {
     std::string customNameCp437,nativeNameCp437,headerNameCp437;
     bool removing=false,suspended=false,hasWorker=false;
 };
+// Native sheet1b00a3 cancels building jobs and restores completed occupancy.
+// It takes only a building, not selected-sheet or input scratch. The caller
+// owns safe-point validation and treats exceptions after entry as unknown.
+inline bool cancelFarmRemoval(df::building_farmplotst* farm) {
+    const auto& native=farmFunctions();
+    if(!native || !farm || farm->getBuildStage()!=farm->getMaxBuildStage() ||
+       farm->jobs.size()>size_t(INT16_MAX))return false;
+    bool removing=false;
+    for(const auto* job:farm->jobs) {
+        if(!job)return false;
+        if(job->job_type==df::job_type::DestroyBuilding)removing=true;
+    }
+    if(!removing)return false;
+    native.cancelRemoval(farm);return true;
+}
 // Native header1804bb calls virtual getName; removal180c3c..180de1 uses
 // the first job's suspend flag and native worker predicate, not job.working.
 inline std::optional<FarmHeader> farmHeader(df::building_farmplotst* farm) {

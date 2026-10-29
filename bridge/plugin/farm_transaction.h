@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <optional>
+#include <string>
 #include <utility>
 
 namespace df3d_production {
@@ -30,6 +31,42 @@ template<class Snapshot> struct FarmEditResult {
     bool mutated=false;
     std::optional<Snapshot> receipt;
 };
+
+// Native8bb3eb..8bb4ae assigns a changed local draft directly to building.name.
+// Its text-input helpers own SDL/global input state and must not run here.
+// Convert must return a lossless CP437 encoding, or nullopt. It is read-only;
+// Apply receives owned bytes and false must mean no effect began. Callers still
+// validate the current epoch, visible completed farm and exact target at a safe point.
+template<class Snapshot,class Convert,class Apply,class Observe,class Valid>
+FarmEditResult<Snapshot> finishFarmRename(const Snapshot& before,uint64_t expectedRevision,
+                                         const std::string& requested,Convert convert,
+                                         Apply apply,Observe observe,Valid valid) {
+    FarmEditResult<Snapshot> result;
+    std::optional<std::string> bytes;
+    try {
+        if(!expectedRevision || !valid(before) || before.removing || requested.size()>90 ||
+           requested.find('\0')!=std::string::npos)return result;
+        bytes=convert(requested);
+        if(!bytes || bytes->size()>30 || bytes->find('\0')!=std::string::npos)return result;
+    } catch(...) {return result;}
+    if(before.revision!=expectedRevision){result.outcome=FarmEditOutcome::Stale;return result;}
+    if(before.customName==requested) {
+        try {result.receipt=before;result.outcome=FarmEditOutcome::Completed;} catch(...) {}
+        return result;
+    }
+    result.mutated=true;result.outcome=FarmEditOutcome::Unknown;
+    try {
+        if(!apply(*bytes)){result.mutated=false;result.outcome=FarmEditOutcome::Rejected;return result;}
+        auto after=observe();
+        if(!after || !valid(*after) || after->customName!=requested || after->headerName.empty())return result;
+        // At this safe point a rename may change only the raw/formatted names.
+        // Compare every other semantic field, including choices and removal facts.
+        auto unchanged=*after;unchanged.customName=before.customName;unchanged.headerName=before.headerName;
+        if(farmRevision(unchanged)!=farmRevision(before))return result;
+        result.receipt=std::move(after);result.outcome=FarmEditOutcome::Completed;
+    } catch(...) {result.receipt.reset();}
+    return result;
+}
 
 // Called at one DF safe point with a freshly observed receipt. Apply's false
 // or nullopt must mean no effects began (the setFarmCrop contract). Exceptions

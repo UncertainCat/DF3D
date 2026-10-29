@@ -150,6 +150,20 @@ and live verification. Existing native captures establish immediate typing,
 backspace,30 ASCII characters and Enter/Escape/right-click behavior, not full
 Unicode or actual window-event coverage.
 
+`finishFarmRename` defines the pending semantic write transaction independently
+of native input state. It requires a valid current receipt and exact revision,
+rejects removing farms, requires an injected lossless CP437 conversion and enforces
+the native30-byte limit (with a90-byte UTF-8 transport ceiling and no embedded
+NUL). Identical names return the current receipt without assigning. Changed
+names apply once and require a fresh valid receipt with the requested custom
+name, a nonempty native-formatted caption and all non-name semantic facts
+unchanged. Exceptions or unverifiable post-effect receipts yield Unknown with
+no completion authority; false from the apply callback must mean no effects.
+Core `build/qa/farm-rename-transaction` covers26 refusal/fault paths plus clearing,
+30-byte names, an injected CP437 encoding and identical-name no-ops. This helper
+is not yet wired to a transport command. Its injected converter tests do not
+establish actual DF conversion or live rename effects.
+
 ## Locations integration verification
 
 ### Zones palette at minimum height

@@ -120,3 +120,78 @@ TEST_CASE("fertilizer transactions distinguish stale refusals and post-effect un
             fault==3?FarmEditOutcome::Rejected:FarmEditOutcome::Unknown));
     }
 }
+
+TEST_CASE("farm rename refuses invalid intent before effects and never retries uncertainty") {
+    using namespace df3d_production;
+    for(int fault=0;fault<26;++fault) {
+        CAPTURE(fault);Snapshot before;before.customName="old";before.headerName="Old";
+        if(fault==1)before.removing=true;
+        before.revision=farmRevision(before);
+        std::string requested="new farm";
+        if(fault==2)requested=std::string(91,'x');
+        if(fault==3)requested=std::string("a\0b",3);
+        const auto expected=fault==4?0:before.revision+(fault==5?1:0);
+        int applies=0,reads=0,validations=0;
+        auto result=finishFarmRename(before,expected,requested,[&](const std::string& text)->std::optional<std::string> {
+            if(fault==6)return {};
+            if(fault==7)throw 1;
+            if(fault==8)return std::string(31,'x');
+            if(fault==9)return std::string("a\0b",3);
+            return text;
+        },[&](const std::string& raw) {
+            ++applies;CHECK(raw=="new farm");
+            if(fault==10)throw 1;
+            return fault!=11;
+        },[&]()->std::optional<Snapshot> {
+            ++reads;if(fault==12)throw 1;if(fault==13)return {};
+            auto after=before;after.customName=requested;after.headerName="New farm";
+            if(fault==14)after.customName="wrong";
+            if(fault==15)after.headerName.clear();
+            if(fault==16)++after.buildingId;
+            if(fault==17)++after.selectedSeason;
+            if(fault==18)++after.currentSeason;
+            if(fault==19)++after.pendingFertilization;
+            if(fault==20)after.removing=true;
+            if(fault==21)after.seasonalCrops[0]=-1;
+            if(fault==22)after.choices[0].seedsAvailable=false;
+            after.revision=farmRevision(after);return after;
+        },[&](const Snapshot& s) {
+            ++validations;
+            if(fault==23)return false;
+            if(validations>1 && fault==24)return false;
+            if(validations>1 && fault==25)throw 1;
+            return s.revision>0;
+        });
+        const bool preflight=(fault>=1 && fault<=9) || fault==23;
+        CHECK(applies==(preflight?0:1));
+        CHECK(reads==(preflight || fault==10 || fault==11?0:1));
+        CHECK(result.mutated==(!preflight && fault!=11));
+        CHECK(result.receipt.has_value()==(fault==0));
+        CHECK(result.outcome==(fault==0?FarmEditOutcome::Completed:fault==5?FarmEditOutcome::Stale:
+            preflight || fault==11?FarmEditOutcome::Rejected:FarmEditOutcome::Unknown));
+    }
+}
+
+TEST_CASE("farm rename accepts clearing and lossless byte limits and skips identical writes") {
+    using namespace df3d_production;
+    // Injected encoding is explicit: the live adapter must verify DF2UTF(UTF2DF)
+    // equality. These cases exercise transaction boundaries, not DF's converter.
+    for(const std::string requested:{std::string(),std::string(30,'x'),std::string("\xc3\xa9"),std::string("old")}) {
+        Snapshot before;before.customName="old";before.revision=farmRevision(before);
+        int applies=0,reads=0;
+        auto result=finishFarmRename(before,before.revision,requested,
+            [&](const std::string& text)->std::optional<std::string> {
+                return text=="\xc3\xa9"?std::string(1,char(0x82)):text;
+            },[&](const std::string& bytes) {
+                ++applies;CHECK(bytes==(requested=="\xc3\xa9"?std::string(1,char(0x82)):requested));return true;
+            },[&]()->std::optional<Snapshot> {
+                ++reads;auto after=before;after.customName=requested;
+                after.headerName=requested.empty()?"Farm Plot":"Native formatted";
+                after.revision=farmRevision(after);return after;
+            },[](const Snapshot& s){return s.revision>0;});
+        REQUIRE(result.outcome==FarmEditOutcome::Completed);REQUIRE(result.receipt);
+        CHECK(result.receipt->customName==requested);
+        CHECK(result.mutated==(requested!="old"));
+        CHECK(applies==(requested=="old"?0:1));CHECK(reads==applies);
+    }
+}

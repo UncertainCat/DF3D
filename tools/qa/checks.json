@@ -3676,7 +3676,7 @@
     {
       "path": "presentations/godot/project/tests/farm_scene_live.gd",
       "status": "manual",
-      "reason": "Protected main-scene farm owner and viewport-input acceptance through tools/smoke/areas_acceptance.ps1 -FarmSceneOnly on an owned unsaved clone."
+      "reason": "Protected main-scene farm owner and viewport-input acceptance through tools/smoke/areas_acceptance.ps1 -FarmSceneOnly on an owned unsaved clone, including queued/sent removal and typing disconnects, producer replacement, visible/input retirement and fresh reopening."
     },
     {
       "path": "presentations/godot/project/tests/farm_controller_live.gd",

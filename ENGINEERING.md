@@ -106,8 +106,21 @@ a fresh farm read/rename/clear succeeds. The restart recreates the selected farm
 fixture, rather than the generic Areas fixture. Both save manifests remain
 unchanged and the owned replacement exits unsaved. The run is a clean pass.
 `native_farm.json.lifecycle_reference` records evidence. These are controller and
-service checks; rendered panel retirement, other farm operations across transport
-loss, and AI-progress destruction cancellation remain separate coverage gaps.
+service checks. Rendered acceptance213734 on2026-10-28 repeats the four
+queued/sent disconnect cases using actual main-scene remove/rename clicks and
+viewport name keys, then replaces DF167588 with181852 during pending typing.
+It verifies the sheet hides, name entry ends, the UI host releases ownership,
+and subsequent keys submit no farm requests. Reopening waits for the replacement
+scene's normal play-ready state; fresh controller rename/clear succeeds afterward.
+Retirement captures were inspected, including the replacement loading screen.
+The28 native checks preserve both save directories; owned replacement exits
+unsaved. Only the known separate-thread notice remains. Earlier rendered attempts
+213355/213529 exposed test assumptions: unrelated HUD requests are allowed, and
+the management channel can be ready before the rendered world. The no-replay
+check now inspects farm requests and receipts specifically. No runtime change
+was needed. `native_farm.json.scene_lifecycle_reference` records this evidence.
+Other farm operations across transport loss and AI-progress destruction
+cancellation remain separate coverage gaps.
 
 ## Farm name entry presentation
 

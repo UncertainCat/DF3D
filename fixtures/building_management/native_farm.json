@@ -12426,5 +12426,32 @@
     },
     "coverage": "Real WorldModel detach/attach, native effect verification before and after reconnect, old observer retirement, no buffered-name continuation replay across process epoch, fresh explicit read/edit. Both save directories unchanged; owned processes exited unsaved.",
     "limitations": "Controller/service only. Rendered retirement and disconnect coverage of other operations remain unverified."
+  },
+  "scene_lifecycle_reference": {
+    "run": "build/areas-acceptance-20261028-213734",
+    "status": "passed_with_known_issues",
+    "known_diagnostic": "godot-separate-thread-notice",
+    "native_checks": 28,
+    "replacement": {
+      "fresh_edit_verified": true,
+      "new_epoch": "781048392712193",
+      "no_continuation_replay": true,
+      "old_epoch": "719784979202049",
+      "old_outcome": "unknown",
+      "pid": 181852.0
+    },
+    "hashes": {
+      "result.json": "52563610f2fd33cc19887c0514e3889612c3447b5449bd43eeef77c1bcc9f254",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "farm-disconnect-results.json": "ac5c750fa95ebda8a4ee59a62c5a7e3d2da28ecf33d878d27b10c68a98364b88",
+      "farm-replacement-results.json": "7f6befc8de4fcd0e46365e31735c1254fe114460e5f6c29d7726471789a0952b",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "farm_scene_disconnect_typing_true_retired.png": "5843db37087f8b48094094f3750d7ca48ad14c40b3da7fe601c7f1a43a97e49a",
+      "farm_scene_replacement_retired.png": "9a93f4a1ce1a5efe550dde98e63de50cb3467ae669dbb0520e9e3f8d7b7f5e32"
+    },
+    "coverage": "Main-scene remove/rename pointer input and viewport name keys; queued/sent transport loss; producer replacement; hidden panel, stopped name entry, released UI host, ignored post-retirement keys; explicit owner reopening after normal scene readiness and fresh controller rename/clear. Native effect checks, both saves unchanged, owned processes exit unsaved.",
+    "limitations": "Staged owner, not public map selection. Other farm operation lifecycle cases remain separate."
   }
 }

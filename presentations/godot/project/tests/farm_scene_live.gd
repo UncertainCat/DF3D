@@ -15,6 +15,7 @@ func run() -> void:
 	if check(scene._loader.entered,"main scene did not enter fortress"):
 		actions=scene._ui.actions;actions.set_process(false)
 		owner=scene._ui.controller("farm");farm=owner.state
+		farm.applied.connect(func():applied_count+=1)
 		await exercise_scene()
 	var status:="failed" if failed else "incomplete" if not reasons.is_empty() else "passed"
 	write_json("result.json",{"status":status,"reasons":reasons,"native_checks":handshake,"surface":"staged farm owner in actual main scene; viewport keyboard and mouse input"})
@@ -85,3 +86,32 @@ func exercise_scene() -> void:
 	if not check(not farm.snapshot.removing and owner.panel.body.visible,"cancel control did not restore farm body"):return
 	await native("verify",{"seasons":seasons,"removing":false})
 	await capture("cancelled")
+	await disconnect_cases(id,seasons)
+	if stopped:return
+	await replacement_case(id,seasons)
+
+func lifecycle_open(id: int) -> void:
+	var deadline:=Time.get_ticks_msec()+120000
+	while (not scene._loader.entered or not owner.play_enabled) and Time.get_ticks_msec()<deadline:
+		actions.poll(0.02);await create_timer(0.02).timeout
+	if not check(scene._loader.entered and owner.play_enabled,"replacement scene did not finish loading"):return
+	owner.open_target(id,1)
+
+func lifecycle_intent(operation: String) -> void:
+	if not check(owner.panel.visible and scene._ui.host.active==owner,"lifecycle farm owner not active"):return
+	if operation=="remove":await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(416,30))
+	else:
+		await rename_click()
+		if stopped:return
+		key(0,65);key(0,66)
+		if not check(owner.panel.name_entry.value=="AB","lifecycle viewport typing differs"):return
+	await capture("lifecycle_"+operation+"_pending")
+
+func lifecycle_retired(label: String) -> void:
+	await process_frame
+	if not check(not owner.panel.visible and not owner.panel.name_entry.editing and scene._ui.host.active==null,"retired farm retained visible panel, draft or input ownership"):return
+	var next_ticket: int=actions._next_ticket
+	key(0,90);key(KEY_ENTER)
+	await process_frame
+	if not check(no_farm_requests_since(next_ticket) and farm.name_session==null and farm.snapshot.is_empty(),"retired farm accepted keyboard input"):return
+	await capture(label+"_retired")

@@ -161,13 +161,11 @@ func disconnect_cases(id: int,seasons: Array) -> void:
 	for operation in ["remove","typing"]:
 		for sent in [false,true]:
 			step="farm disconnect "+operation+" sent="+str(sent)
-			farm.open(id,1)
+			await lifecycle_open(id)
 			if not await settled(Farm.Phase.Ready):return
 			var observers:=applied_count
-			if operation=="remove":farm.request_removal()
-			else:
-				if not check(farm.begin_name_entry(),"disconnect typing could not begin"):return
-				farm.edit_name_entry("A");farm.edit_name_entry("AB")
+			await lifecycle_intent(operation)
+			if stopped:return
 			var pending: int=farm.ticket if operation=="remove" else farm.name_session.ticket
 			if not check(pending>0 and actions._requests[pending].sequence==0,"disconnect draft not queued"):return
 			if sent:
@@ -201,10 +199,12 @@ func disconnect_cases(id: int,seasons: Array) -> void:
 			var next_ticket: int=actions._next_ticket
 			for frame in 30:
 				world.poll();actions.poll();await process_frame
-			if not check(actions._next_ticket==next_ticket and applied_count==observers and farm.snapshot.is_empty() and farm.name_session==null,"reconnect replayed edit or revived observer"):return
+			if not check(no_farm_requests_since(next_ticket) and applied_count==observers and farm.snapshot.is_empty() and farm.name_session==null,"reconnect replayed edit or revived observer"):return
+			await lifecycle_retired("disconnect_"+operation+"_"+str(sent))
+			if stopped:return
 			await native("verify",{"seasons":seasons,"name":expected_name,"removing":expected_removing})
 			if stopped:return
-			farm.open(id,1)
+			await lifecycle_open(id)
 			if not await settled(Farm.Phase.Ready):return
 			if not check(farm.snapshot.custom_name==expected_name and farm.snapshot.removing==expected_removing,"fresh farm read differs"):return
 			if expected_removing:farm.cancel_removal()
@@ -217,12 +217,12 @@ func disconnect_cases(id: int,seasons: Array) -> void:
 
 func replacement_case(id: int,seasons: Array) -> void:
 	step="farm producer replacement"
-	farm.open(id,1)
+	await lifecycle_open(id)
 	if not await settled(Farm.Phase.Ready):return
 	var old_epoch: int=actions._epoch
 	var observers:=applied_count
-	if not check(farm.begin_name_entry(),"replacement typing could not begin"):return
-	farm.edit_name_entry("A");farm.edit_name_entry("AB")
+	await lifecycle_intent("typing")
+	if stopped:return
 	var pending: int=farm.name_session.ticket
 	actions.poll()
 	if not check(actions._requests.has(pending) and actions._requests[pending].sequence>0,"replacement edit not sent"):return
@@ -258,13 +258,15 @@ func replacement_case(id: int,seasons: Array) -> void:
 	var next_ticket: int=actions._next_ticket
 	for frame in 30:
 		world.poll();actions.poll();await process_frame
-	if not check(actions._next_ticket==next_ticket,"old typing resumed in replacement fortress"):return
+	if not check(no_farm_requests_since(next_ticket),"old typing resumed in replacement fortress"):return
+	await lifecycle_retired("replacement")
+	if stopped:return
 	fixture=JSON.parse_string(FileAccess.get_file_as_string(directory+"/fixture.json"))
 	seasons.clear()
 	for crop in fixture.seasons:seasons.append(int(crop))
 	await native("verify",{"seasons":seasons,"name":"","removing":false})
 	if stopped:return
-	farm.open(int(fixture.id),1)
+	await lifecycle_open(int(fixture.id))
 	if not await settled(Farm.Phase.Ready):return
 	farm.rename("fresh")
 	if not await settled(Farm.Phase.Ready):return
@@ -274,3 +276,24 @@ func replacement_case(id: int,seasons: Array) -> void:
 	if not await settled(Farm.Phase.Ready):return
 	await native("verify",{"seasons":seasons,"name":""})
 	write_json("farm-replacement-results.json",{"old_epoch":str(old_epoch),"new_epoch":str(epoch),"pid":ack.pid,"old_outcome":actions.result(pending).get("outcome"),"no_continuation_replay":true,"fresh_edit_verified":true})
+
+func lifecycle_open(id: int) -> void:
+	farm.open(id,1)
+
+func lifecycle_intent(operation: String) -> void:
+	if operation=="remove":farm.request_removal()
+	else:
+		if not check(farm.begin_name_entry(),"lifecycle typing could not begin"):return
+		farm.edit_name_entry("A");farm.edit_name_entry("AB")
+
+func lifecycle_retired(_label: String) -> void:
+	pass
+
+func no_farm_requests_since(first: int) -> bool:
+	for collection in [actions._requests,actions._results,actions._outcomes]:
+		for request_ticket in collection:
+			if int(request_ticket)<first:continue
+			var record: Dictionary=collection[request_ticket]
+			var intent: Dictionary=record.get("request",record)
+			if intent.get("action") in [Contract.ManagementAction.FarmEdit,Contract.ManagementAction.ProductionInspect]:return false
+	return true

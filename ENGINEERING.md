@@ -536,11 +536,30 @@ passes; GPU passes with only the three documented engine diagnostics. Owned
 DF125212 exits unsaved and source preservation passes.
 `item_description_layout_reference` retains native rows, width and RGB hashes.
 
-This accepts the captured seed rendering, hover and two-line descriptions.
+Protected native095657 on2026-10-30 extends description evidence using temporary
+item-power prose in the owned paused clone. The independent native semantic
+provider returns exactly the item sheet's raw description. Unbroken words split
+at53 characters within the54-column area. Descriptions display eight rows;
+scrollbar arrows move one row, track clicks eight, and dragging reaches the last
+page (53 of61 rows). Context and standard scroll-key probes produce no movement.
+The shared scrollbar disables wheel handling for this sheet; physical wheel and
+resized-sheet acceptance remain outstanding. Temporary powers and item fields
+are restored, DF112128 exits unsaved and the source-save manifest is unchanged.
+
+`native_farm.json.item_description_scroll_reference` retains native visible rows,
+positions and472x96 crop hashes. GPU `build/qa/item-description-scroll` matches
+all20 crops, including53/54/55/108/109-character words, long spaced and unbroken
+text, arrow/track/drag positions and the last page. Viewport clicks verify arrow
+and track navigation; refresh retains the same item's position, item replacement
+resets it, and pending input is denied. Core passes cleanly; GPU passes with only
+the three documented engine diagnostics. Captured native and rendered scrolling
+images were inspected. The renderer bounds description drawing to eight rows,
+so long text cannot overwrite relationship controls.
+
+This accepts the captured seed rendering, hover and description cases.
 Main-scene ownership and live holder/camera/action effects have separate evidence
-below. Longer scrolling descriptions, unbroken long words, nonseed artwork and
-general item-description providers remain unaccepted. The public farm route
-remains staged until the full workflow is complete.
+below. General item-description providers remain unaccepted. The public farm
+route remains staged until the full workflow is complete.
 
 Potash is a required nonseed farm-inspection case. Protected
 `stockpile_storage_native.ps1 -FarmDiscovery -FarmFertilizationProgress` supplies

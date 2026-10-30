@@ -18,6 +18,7 @@ var pointer_position:=Vector2.ZERO
 var pending:=false
 var following:=false
 var input_allowed: Callable
+var description_scroll
 
 func configure(world,help=null) -> void:
 	hover_help=help;mouse_exited.connect(_leave_hover)
@@ -25,10 +26,17 @@ func configure(world,help=null) -> void:
 	colors=art.installed_palette(world.assets_root())
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	size=Vector2(488,708)
+	description_scroll=preload("res://scripts/area_location_scrollbar.gd").new();add_child(description_scroll)
+	description_scroll.configure(world);description_scroll.position=Vector2(448,72);description_scroll.size=Vector2(16,96)
+	description_scroll.page=8;description_scroll.wheel_enabled=false;description_scroll.input_allowed=allowed
+	description_scroll.row_changed.connect(func(_first):queue_redraw())
 
 func present(value: Dictionary) -> void:
+	var reset_description: bool=snapshot.get("id",-1)!=value.get("id",-1) or snapshot.get("description","")!=value.get("description","")
 	if snapshot.get("id",-1)!=value.get("id",-1):_leave_hover()
 	snapshot=value.duplicate(true);icon=null
+	if reset_description:description_scroll.dragging=false
+	description_scroll.set_rows(description_lines(snapshot.get("description","")).size(),0 if reset_description else description_scroll.first)
 	if not snapshot.is_empty() and snapshot.get("item_type",-1)==53:
 		var material: PackedStringArray=snapshot.get("material_token","").split(":")
 		if material.size()==3 and material[0]=="PLANT":icon=source.farm_seed_icon(material[1])
@@ -100,7 +108,7 @@ static func description_lines(value: String) -> PackedStringArray:
 	var offset:=0
 	while value.length()-offset>54:
 		var split:=value.substr(offset,54).rfind(" ")
-		if split<=0:split=54
+		if split<=0:split=53
 		lines.append(value.substr(offset,split))
 		offset+=split
 		while offset<value.length() and value.unicode_at(offset)==32:offset+=1
@@ -115,7 +123,7 @@ func _draw() -> void:
 	text_at(snapshot.get("name",""),Vector2(56,36))
 	if not snapshot.get("weight","").is_empty():text_at("Weight: "+snapshot.weight,Vector2(56,48),colors[14])
 	var lines:=description_lines(snapshot.get("description",""))
-	for index in lines.size():text_at(lines[index],Vector2(16,84+index*12))
+	for index in mini(8,lines.size()-description_scroll.first):text_at(lines[description_scroll.first+index],Vector2(16,84+index*12))
 	if snapshot.get("in_job",false):
 		var task: Texture2D=art.texture("BUILDING_ITEM_TASK")
 		if task!=null:draw_texture_rect(task,Rect2(328,6,24,36),false)

@@ -49,7 +49,39 @@ func run() -> void:
 		var description_image:=image.get_region(Rect2i(crop[0],crop[1],crop[2],crop[3]))
 		hash.start(HashingContext.HASH_SHA256);hash.update(description_image.get_data())
 		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native wrapped description pixels differ: "+sample.name);return
+	for sample in fixture.item_description_scroll_reference.states:
+		var state: Dictionary=snapshot.duplicate(true)
+		state.description=sample.description;view.present(state)
+		view.description_scroll.move_to(int(sample.first))
+		var lines:=view.description_lines(state.description)
+		if sample.count!=null and lines.size()!=int(sample.count):fail("Native description row count differs: "+sample.name);return
+		for index in mini(8,lines.size()-int(sample.first)):
+			if lines[int(sample.first)+index].strip_edges()!=sample.rows[index]:fail("Native description viewport differs: "+sample.name);return
+		await process_frame;await RenderingServer.frame_post_draw
+		image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var description_image:=image.get_region(Rect2i(8,72,472,96))
+		description_image.save_png(ProjectSettings.globalize_path("res://../../../build/item-description-"+sample.name+".png"))
+		hash.start(HashingContext.HASH_SHA256);hash.update(description_image.get_data())
+		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native description scroll pixels differ: "+sample.name);return
+	var long_state: Dictionary=snapshot.duplicate(true)
+	long_state.description=fixture.item_description_scroll_reference.states[5].description
+	view.present(long_state)
+	view.description_scroll.move_to(0)
+	click(Vector2(456,162))
+	if view.description_scroll.first!=1:fail("Description arrow differs");return
+	view.description_scroll.move_to(0);click(Vector2(456,138))
+	if view.description_scroll.first!=8:fail("Description track differs");return
+	view.present(long_state)
+	if view.description_scroll.first!=8:fail("Same-item refresh lost description position");return
+	for probe in [[0,0],[36,17],[66,35],[96,53]]:
+		view.description_scroll.drag_to(probe[0])
+		if view.description_scroll.first!=probe[1]:fail("Native description drag mapping differs");return
+	view.pending=true;click(Vector2(456,78));view.pending=false
+	if view.description_scroll.first!=53:fail("Pending description accepted input");return
+	long_state.id+=1;view.present(long_state)
+	if view.description_scroll.first!=0:fail("New item retained description position");return
 	view.present(snapshot)
+	if view.description_scroll.visible:fail("Short description retained scrollbar");return
 	view.set_following(true)
 	await process_frame;await RenderingServer.frame_post_draw
 	image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)

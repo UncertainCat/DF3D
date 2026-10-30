@@ -11,6 +11,7 @@ var textures: Dictionary = {}
 var use_classic_art := false
 var classic_textures: Dictionary = {}
 var input_allowed: Callable
+var wheel_enabled := true
 
 func configure(world) -> void:
 	source = world
@@ -59,7 +60,7 @@ func _gui_input(event: InputEvent) -> void:
 		hover_cell = floori(event.position.y/12); queue_redraw()
 	if not event is InputEventMouseButton or not event.pressed: return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-		move_to(first+(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)*(page if event.shift_pressed else 1))
+		if wheel_enabled:move_to(first+(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)*(page if event.shift_pressed else 1))
 		accept_event(); return
 	if event.button_index != MOUSE_BUTTON_LEFT: return
 	var cell := floori(event.position.y/12)

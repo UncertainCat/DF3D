@@ -2,6 +2,13 @@
 local out,view,records,b,capture,select_map=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local main=df.global.game.main_interface
+local layout=io.open(out..'/farm-item-description-layout')
+if layout then
+ layout:close()
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-contents%-native.lua$','farm-item-description-layout-native.lua')
+ assert(loadfile(source))(out,view,records,b,capture,select_map)
+ return
+end
 local captions=io.open(out..'/farm-contents-captions')
 if captions then
  captions:close()

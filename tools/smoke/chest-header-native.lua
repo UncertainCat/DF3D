@@ -173,6 +173,27 @@ local wire_worker=fixture.attach(building)
 local row=wire('worker',stale_revision);row.worker_after=fixture.observe(building,wire_worker)
 assert(json.encode(row.worker_after)==json.encode(native_after),'wire worker cleanup differs from native')
 
+-- Capture the native chest at each supported test viewport before the main
+-- scene exercises the same layouts. This protocol is owned by the live lane.
+local script=require('gui.script')
+for _,size in ipairs{'small','medium','wide','default'}do
+ local request=assert(io.open(out..'/owner-input-request.tmp','w'));request:write('name-resize-'..size);request:close()
+ assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local limit=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<limit,'chest resize timeout');script.sleep(1,'frames')end
+ assert(os.remove(out..'/owner-input-ack'))
+ g.precise_mouse_x=0;g.precise_mouse_y=0;g.mouse_x=0;g.mouse_y=0
+ view:render(dfhack.getTickCount())
+ local row=capture('chest-resize-'..size);row.columns=g.dimx;row.rows=g.dimy
+ if size=='medium' then
+  g.precise_mouse_x=650;g.precise_mouse_y=526;g.mouse_x=650//8;g.mouse_y=(526-4)//12
+  for i=1,3 do key('CONTEXT_SCROLL_DOWN')end
+  g.precise_mouse_x=0;g.precise_mouse_y=0;g.mouse_x=0;g.mouse_y=0;view:render(dfhack.getTickCount())
+  local scrolled=capture('chest-resize-medium-scrolled');scrolled.columns=g.dimx;scrolled.rows=g.dimy
+ end
+end
+
 local file=assert(io.open(out..'/chest-header-expected.json','w'));file:write(json.encode({mode='scene',snapshot=action('read').snapshot}));file:close()
 local row=capture('chest-owner-wire')
 local result=assert(io.open(out..'/chest-scene-result.json'));row.scene=json.decode(result:read('*a'));result:close();assert(row.scene.success)

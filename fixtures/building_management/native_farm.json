@@ -34060,6 +34060,93 @@
         "Viewer intermediate header checks worker presence; full worker observation compared after cancellation",
         "Melt and resized chest remain unfinished"
       ]
+    },
+    "resize_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-142437",
+      "date": "2026-10-30",
+      "owned_df_pid": 174172,
+      "success": true,
+      "surface": "actual main.tscn staged chest owner",
+      "samples": [
+        {
+          "name": "small",
+          "viewport": [
+            960,
+            600
+          ],
+          "capacity": 0,
+          "panel_size": [
+            488,
+            516
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "69fe87244ab59f55dd5e80092c5503ef4e49ebbc616d8197be3c14f9deef4a32"
+        },
+        {
+          "name": "medium",
+          "viewport": [
+            1200,
+            720
+          ],
+          "capacity": 4,
+          "panel_size": [
+            488,
+            636
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "16b5896c2bba2ee2f6c5f21099adab73e3dfc3eef0b20b1b6f52b38b0111e841"
+        },
+        {
+          "name": "medium-scrolled",
+          "viewport": [
+            1200,
+            720
+          ],
+          "capacity": 4,
+          "panel_size": [
+            488,
+            636
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "bac0563ed12f353c7ba7fb2b334e2d42dc6e15092514eca7f491bce9056ea76c"
+        },
+        {
+          "name": "wide",
+          "viewport": [
+            1600,
+            900
+          ],
+          "capacity": 9,
+          "panel_size": [
+            488,
+            816
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "93a58f5a50f39b599a0d393cee61909a32b0a284f32c1313693f0282ac690b89"
+        },
+        {
+          "name": "default",
+          "viewport": [
+            1200,
+            800
+          ],
+          "capacity": 6,
+          "panel_size": [
+            488,
+            708
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "226411b7a54c7aaa42aee41e26fa4a2e898dc5b55bc5a95d5d2187b885512148"
+        }
+      ],
+      "input": "Three root viewport wheel-down clicks reach cell offset3, showing the last four items; native scroll offset behavior on widening retained",
+      "cleanup": "Owned session exits unsaved with source manifest unchanged and native name/jobs/flags restored",
+      "diagnostics": "12 GPU logs contain only known separate-render-thread notice",
+      "limitations": [
+        "Eligible Melt during removal still unverified",
+        "General container and unit navigation remain incomplete",
+        "Public chest route remains staged"
+      ]
     }
   }
 }

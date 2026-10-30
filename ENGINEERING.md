@@ -1242,7 +1242,7 @@ GPU logs contain only the known render-thread notice. build/qa/chest-panel passe
 core/header controller; the farm contents capture retains only its documented
 thread/device-finalize/shutdown-object diagnostics. This is standalone acceptance.
 Main-scene, suspended-state and removal-time contents acceptance follow below.
-Resize remains unfinished; public exposure is unchanged.
+Resize acceptance follows below; public exposure is unchanged.
 
 The staged chest_panel owner shares farm panel input and navigation lifetime,
 but uses the independent building header state and chest view. Item holder
@@ -1293,8 +1293,8 @@ lane, including idle/worker/suspended panel comparisons, passes with only known
 render-thread notices across twelve GPU logs. removing_contents_edit_reference
 retains the scope. QA chest-removal-edits-fixed passes core and both controllers;
 MSVC rebuild/install passes. Core regressions cover explicit opt-in, stale intent
-and changed removal state after entry. Assigned-worker evidence follows below. Eligible Melt, resize and general
-navigation remain unfinished; public exposure is unchanged.
+and changed removal state after entry. Assigned-worker evidence follows below. Eligible Melt and general navigation remain unfinished; resize acceptance
+follows below and public exposure is unchanged.
 
 Protected141923 on2026-10-30 extends the contents checks to a controlled removal
 worker. Native Forbid/Dump/Visibility clicks in both directions on Box5834 and
@@ -1307,6 +1307,19 @@ advance, intermediate viewer checks cover worker presence, and full worker state
 is compared after cancellation. Owned DF49720 exits unsaved with source
 preservation. All twelve GPU logs contain only the known thread notice; existing
 idle/suspended panels and main-scene navigation/edit regressions still pass.
+
+Protected142437 on2026-10-30 verifies the chest owner in actual main.tscn while
+resizing through960x600,1200x720,1600x900 and1200x800. Contents capacities are
+0/4/9/6 rows, matching native. At720px height, three viewport wheel-down events
+reach cell offset3 and expose the final four items. Five full-panel captures,
+including that scrolled state and subsequent widening, match native pixels
+exactly. Native retains the contents offset on widening; the shared view matches
+it. resize_reference retains dimensions and hashes. Owned DF174172 exits unsaved
+with source preservation; subsequent main-scene naming, edits and navigation
+still pass. All twelve GPU logs have only the known render-thread notice.
+The short viewport matches native's absent contents region; no new scrolling
+exception or authored layout is introduced. Eligible Melt and broader item
+navigation remain unfinished before public exposure.
 
 ## Native item holder provider
 

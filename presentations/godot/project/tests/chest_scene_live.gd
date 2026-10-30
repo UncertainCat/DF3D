@@ -41,6 +41,14 @@ func panel_capture(label: String,reference: String) -> void:
 	var crop:=image.get_region(Rect2i(416,52,488,708));crop.save_png(directory+"/chest-scene-"+label+".png")
 	var native:=Image.load_from_file(directory+"/"+reference+".png");native.convert(Image.FORMAT_RGB8)
 	check(crop.get_data()==native.get_region(Rect2i(416,52,488,708)).get_data(),"Main-scene chest pixels differ: "+label)
+func resize_capture(label: String) -> void:
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2.ZERO;root.push_input(motion,true)
+	await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	var region:=Rect2i(Vector2i(owner.panel.position),Vector2i(owner.panel.size))
+	var crop:=image.get_region(region);crop.save_png(directory+"/chest-scene-resize-"+label+".png")
+	var native:=Image.load_from_file(directory+"/chest-resize-"+label+".png");native.convert(Image.FORMAT_RGB8)
+	check(crop.get_data()==native.get_region(region).get_data(),"Chest resize pixels differ at "+label)
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	if directory.is_empty() or DisplayServer.get_name()=="headless":quit(77);return
@@ -69,6 +77,16 @@ func exercise(expected: Dictionary) -> void:
 	if not await chest_ready():return
 	check(owner.state.building_id==int(expected.snapshot.id) and not farm.panel.visible,"Box holder routed to wrong owner")
 	await panel_capture("initial","chest-header-wire-idle")
+	for sample in [["small",Vector2i(960,600),0],["medium",Vector2i(1200,720),4],["wide",Vector2i(1600,900),9],["default",Vector2i(1200,800),6]]:
+		root.size=sample[1]
+		await process_frame;await process_frame;await RenderingServer.frame_post_draw
+		check(owner.panel.contents.page==sample[2],"Chest contents capacity differs at "+sample[0])
+		await resize_capture(sample[0])
+		if sample[0]=="medium":
+			for index in 3:await pointer(owner.panel.contents.get_global_transform_with_canvas()*Vector2(200,18),MOUSE_BUTTON_WHEEL_DOWN)
+			if not await chest_ready():return
+			check(owner.panel.contents.cell_first==3,"Chest wheel did not reach next item")
+			await resize_capture("medium-scrolled")
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(384,30))
 	check(owner.panel.name_entry.editing,"Main-scene Rename did not start")
 	for character in "scene chest":key(0,character.unicode_at(0))

@@ -963,6 +963,25 @@ holder presentation fields as item_panel; this is not main-scene navigation
 acceptance. Carrier View routing, parent building management and remaining item
 families remain unfinished; public farm/item exposure stays staged.
 
+The native chest destination is recorded in item_chest_building_reference.
+Protected122427 on2026-10-30 follows item5834's holder View to building278/type10,
+enters and finishes Rename without changing its custom name, and opens every
+contents row by its native View button. This chest has one construction item
+(role2, BOX5834) and four stored instruments (role0, type13:7504,7583,19847,26550).
+The building panel has a name/header icon, Rename/Remove controls and a bottom
+contents list, with no category tabs in this fixture. Owned DF13152 exits unsaved;
+source preservation and prior carrier/wire/pixel checks pass, with only the known
+render-thread notice. Native chest and first instrument captures were inspected.
+
+The general buildingContents semantic reader already accepts building_actual,
+but observeFarmContents and its mutation path currently restrict transport to
+farms. The contents view only supplies seed/potash artwork, and the independent
+description provider admits seed/potash/BOX dispatches. Instrument captions,
+descriptions, artwork and chest header/removal semantics need verified providers
+before connecting this destination. The farm owner currently forwards holder
+intents to its farm route; general building navigation must dispatch by type.
+These native captures establish destination requirements, not a completed screen.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

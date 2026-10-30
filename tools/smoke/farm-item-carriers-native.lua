@@ -174,6 +174,33 @@ local ok,err=xpcall(function()
     return result
    end
    linked.description_probes={description_probe()}
+   -- Follow the actual item holder action before designing its destination.
+   local holder_text,holder_status=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(target.id))
+   assert(holder_status==0,holder_text)
+   local holder=assert(json.decode(holder_text).snapshot.holder,'installed box requires building holder')
+   move(816,250);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   local destination=capture('farm-item-carrier-container-building');destination.target_id=holder.id;destination.target_type=holder.type
+   assert(sheet.open and sheet.active_id==holder.id and sheet.active_sheet==df.view_sheet_type.BUILDING,'holder View selected wrong building')
+   local installed=assert(df.building.find(holder.id))
+   destination.custom_name=installed.name;destination.native_name=dfhack.df2utf(dfhack.buildings.getName(installed));destination.contents={}
+   for _,held in ipairs(installed.contained_items)do
+    local object=held.item
+    destination.contents[#destination.contents+1]={id=object.id,type=object:getType(),subtype=object:getSubtype(),role=held.use_mode,
+     material=object:getMaterial(),material_index=object:getMaterialIndex(),flags=object.flags.whole}
+   end
+   move(800,82);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   assert(sheet.building_entering_nickname,'chest Rename did not enter editing')
+   capture('farm-item-carrier-building-rename')
+   gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+   assert(not sheet.building_entering_nickname and installed.name==destination.custom_name,'empty rename changed chest name')
+   for index,held in ipairs(installed.contained_items)do
+    move(772,526+index*36);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+    assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==held.item.id,'chest contents View selected wrong item')
+    local inspected=capture('farm-item-carrier-building-item-'..index)
+    inspected.item_id=held.item.id;inspected.item_type=held.item:getType();inspected.description=dfhack.df2utf(sheet.raw_description)
+    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(installed)
+    assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==installed.id)
+   end
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    linked.description_probes[#linked.description_probes+1]=description_probe()
    local text,status=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(target.id));assert(status==0,text)

@@ -31285,5 +31285,126 @@
       }
     ],
     "scope": "Standalone item view, native description and header appearance, building-holder artwork and View intent; current item authority and Hidden edits. Actual carrier navigation, parent building management and other item families remain unfinished."
+  },
+  "item_chest_building_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261030-122427",
+    "owned_df_pid": 13152,
+    "status": "passed_with_known_issues",
+    "known_diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "source_manifest_unchanged": true,
+    "exit_without_saving": true,
+    "records": [
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "contents": [
+          {
+            "flags": 536887328,
+            "id": 5834,
+            "material": 420,
+            "material_index": 152,
+            "role": 2,
+            "subtype": -1,
+            "type": 30
+          },
+          {
+            "flags": 16384,
+            "id": 7504,
+            "material": 22,
+            "material_index": 609,
+            "role": 0,
+            "subtype": 87,
+            "type": 13
+          },
+          {
+            "flags": 16384,
+            "id": 7583,
+            "material": 3,
+            "material_index": -1,
+            "role": 0,
+            "subtype": 80,
+            "type": 13
+          },
+          {
+            "flags": 16384,
+            "id": 19847,
+            "material": 22,
+            "material_index": 399,
+            "role": 0,
+            "subtype": 83,
+            "type": 13
+          },
+          {
+            "flags": 0,
+            "id": 26550,
+            "material": 0,
+            "material_index": 34,
+            "role": 0,
+            "subtype": 52,
+            "type": 13
+          }
+        ],
+        "custom_name": "",
+        "name": "farm-item-carrier-container-building",
+        "native_name": "kumquat wood Chest",
+        "target_id": 278,
+        "target_type": 10,
+        "capture_sha256": "96655b483f9adbbdb5115cac4030fbce9f527e41d236902f3b7938f67707f918"
+      },
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "name": "farm-item-carrier-building-rename",
+        "capture_sha256": "4b5bd4b73525770a58f80e61f0fcb1523532e5a23e9fdb664b3f568cca7722b9"
+      },
+      {
+        "active_id": 5834,
+        "active_sheet": "ITEM",
+        "description": "This is a well-crafted kumquat wood chest.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  ",
+        "item_id": 5834,
+        "item_type": 30,
+        "name": "farm-item-carrier-building-item-0",
+        "capture_sha256": "f7794932cbe06c7979d90850783f383f06f10cb8e11618410409daf8eabdb271"
+      },
+      {
+        "active_id": 7504,
+        "active_sheet": "ITEM",
+        "description": "This is a giant rat bone libash.    The libash is a mid-size hand-held percussion instrument.  It consists of a bone chime.  The musician strikes the chime.  The instrument has a single mid-high pitch.  The instrument has a dark gentle timbre.  ",
+        "item_id": 7504,
+        "item_type": 13,
+        "name": "farm-item-carrier-building-item-1",
+        "capture_sha256": "36ba36f9c164738e5c4e1169323408755e94272b4e4892b28af0bacdd7016483"
+      },
+      {
+        "active_id": 7583,
+        "active_sheet": "ITEM",
+        "description": "This is a green glass ennol.  The body is made from green glass.  The strings are made from giant cave spider silk.  The bow is made from copper.    The ennol is a large hand-held silk-stringed instrument with a glass body.  The instrument rests flat as the musician plays the forty strings with a metal bow.  Tuning is possible with adjustable bridges.  The instrument has a four-and-a-half octave range going from a low to a high pitch.  It has four registers.  The low register has a sparse floating timbre.  The middle register begins at mid-low pitch and has a delicate quavering strident timbre.  The high register begins at middle pitch and has a quavering harsh nasal buzzy timbre.  The top register begins at mid-high pitch and has a full quavering harsh timbre.  ",
+        "item_id": 7583,
+        "item_type": 13,
+        "name": "farm-item-carrier-building-item-2",
+        "capture_sha256": "2b1f51b768727316ddf3f76fc6b4e4c21d78c5072414c324eaa21544b0f17570"
+      },
+      {
+        "active_id": 19847,
+        "active_sheet": "ITEM",
+        "description": "This is a well-crafted wolverine bone adesh.    The adesh is a large hand-held wind instrument consisting of thirteen adjacent cylindrical bone pipes.  The musician blows through a double reed in each pipe.  The instrument has a three octave range going from a very low to a middle pitch.  At all pitches, the instrument has a evolving wobbling timbre.  It has two registers.  The low register has a quavering watery timbre.  The high register begins at low pitch and has a raspy muddy timbre.  ",
+        "item_id": 19847,
+        "item_type": 13,
+        "name": "farm-item-carrier-building-item-3",
+        "capture_sha256": "3911a8d0331f305590419d16e60f48b3f24623924574cf5b520819bedddb0dc1"
+      },
+      {
+        "active_id": 26550,
+        "active_sheet": "ITEM",
+        "description": "This is a onyx migrur.    The migrur is a mid-size hand-held wind instrument consisting of fourteen adjacent cylindrical ceramic pipes.  The musician blows over a single reed in each pipe.  The instrument has a three-and-a-half octave range going from a mid-low to a very high pitch.  At all pitches, the instrument has a even timbre.  It has two registers.  The low register has a light piercing timbre.  The high register begins at high pitch and has a clear dull timbre.  ",
+        "item_id": 26550,
+        "item_type": 13,
+        "name": "farm-item-carrier-building-item-4",
+        "capture_sha256": "4bbe4b5a29f55b6bdf72ef63ae65b607579b157452def808600f4021c87319e1"
+      }
+    ],
+    "scope": "Native holder View reaches building278/type10; Rename enter/finish without text preserves custom name; all five contents View actions reach correct item identities. Four instrument descriptions are native references, not runtime-provider acceptance. Chest building header actions, contents transport/artwork and owner navigation remain unfinished."
   }
 }

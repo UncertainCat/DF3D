@@ -1,5 +1,7 @@
 extends "res://tests/areas_acceptance_live.gd"
 var observations: Array=[]
+var item_model
+var item_actions
 
 func ask(fields: Dictionary,outcome:=0) -> Dictionary:
 	var data=fields.duplicate();data.independent_item=true;data.item_id=fields.get("item_id",int(fixture.item_id))
@@ -61,7 +63,18 @@ func exercise() -> void:
 	if not retired:incomplete("original job did not retire",true);return
 	snapshot=await read_item();if stopped:return
 	var prior_revision: int=snapshot.revision
+	item_actions=load("res://scripts/semantic_action_service.gd").new();root.add_child(item_actions)
+	item_actions.set_process(false);item_actions.configure(world,true)
+	item_model=load("res://scripts/item_sheet_state.gd").new();item_model.configure(item_actions)
+	item_model.open(int(fixture.item_id))
+	if not await settle_controller():return
+	if not check(item_model.snapshot.holder.id==int(fixture.building_id),"controller initial holder differs"):return
 	await native("independent_transfer");if stopped:return
+	item_model.poll(1)
+	if not await settle_controller():return
+	if not check(item_model.phase==item_model.Phase.Ready and not item_model.snapshot.has("holder") and item_model.snapshot.has("stockpile"),"controller lost item after transfer"):return
+	await native("independent_verify",{"snapshot":item_model.view_snapshot(),"revision_text":str(item_model.snapshot.revision)})
+	if stopped:return
 	snapshot=await read_item();if stopped:return
 	if not check(not snapshot.has("holder") and snapshot.has("stockpile") and snapshot.revision!=prior_revision,"transferred item did not replace location authority"):return
 	await edit_item(Contract.FarmOperation.ItemHidden,true,prior_revision,Contract.FarmEditOutcome.Stale);if stopped:return
@@ -74,6 +87,16 @@ func exercise() -> void:
 		await edit_item(Contract.FarmOperation.ItemHidden,not value,old_revision,Contract.FarmEditOutcome.Stale);if stopped:return
 	await edit_item(Contract.FarmOperation.ItemMelt,true,int(snapshot.revision),Contract.FarmEditOutcome.Rejected);if stopped:return
 	await ask({"action":Contract.ManagementAction.ProductionInspect,"item_id":2147483647},-1);if stopped:return
+	item_model.refresh()
+	if not await settle_controller():return
+	for value in [true,false]:
+		item_model.set_flag(Contract.FarmOperation.ItemHidden,value)
+		if not await settle_controller():return
+		if not check(item_model.phase==item_model.Phase.Ready and item_model.snapshot.hidden==value,"transferred controller edit failed"):return
+		await native("independent_verify",{"snapshot":item_model.view_snapshot(),"revision_text":str(item_model.snapshot.revision)})
+		if stopped:return
+	write_json("independent-controller-results.json",{"transfer_survived":true,"visibility_both_values":true,"snapshot":item_model.view_snapshot()})
+	item_model.dispose();item_actions.free()
 	write_json("independent-item-results.json",{"controlled_transfer":true,"snapshot_count":observations.size(),"snapshots":observations})
 
 func request_pause(want_paused: bool) -> bool:
@@ -94,3 +117,11 @@ func request_pause(want_paused: bool) -> bool:
 		await create_timer(0.02).timeout
 	write_json("pause-timeout.json",{"sequence":sequence,"accepted":accepted,"session":session,"requested":want_paused})
 	incomplete("pause receipt/readback wait cap hit; no replay",true);return false
+
+func settle_controller() -> bool:
+	var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();item_actions.poll()
+		if item_model.ticket==0:return check(item_model.phase==item_model.Phase.Ready,"independent controller not ready")
+		await create_timer(0.01).timeout
+	return check(false,"independent controller timed out")

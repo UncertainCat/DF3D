@@ -18,7 +18,7 @@ func exercise() -> void:
 	model.dispose();follow.dispose();follow.free();actions.free()
 
 func open_item(model,follow,actions) -> void:
-	model.open(int(fixture.building_id),int(fixture.item_id))
+	model.open(int(fixture.item_id))
 	await settle(model,follow,actions)
 
 func edit_item(model,follow,actions,operation: int,value: bool) -> void:
@@ -49,7 +49,7 @@ func progress_cases(model,follow,actions) -> void:
 			await observe_item("baseline")
 			if stopped:return
 			if not check(model.phase==model.Phase.Ready,"potash inspection unavailable"):return
-			await native("verify",{"snapshot":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
+			await native("independent_verify",{"snapshot":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
 			if stopped:return
 			for hidden in [true,false]:
 				model.poll(1) # Explicit action must preempt a queued background read.
@@ -112,7 +112,7 @@ func action_progress_cases(model,follow,actions) -> void:
 		if sample.present:
 			if not check(sample.contained and model.phase==model.Phase.Ready and model.item_id==int(fixture.item_id),"surviving potash lost inspection"):return
 			if not check(follow.item_id==int(fixture.item_id) and follow.last_position!=null,"surviving potash lost follow"):return
-			await native("verify",{"snapshot":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
+			await native("independent_verify",{"snapshot":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
 			if stopped:return
 		else:
 			if not check(model.phase==model.Phase.Closed and model.snapshot.is_empty() and model.item_id==-1 and follow.item_id==-1 and follow.last_position==null,"consumed post-action potash retained authority"):return

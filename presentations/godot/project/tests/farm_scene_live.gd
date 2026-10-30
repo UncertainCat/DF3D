@@ -293,7 +293,7 @@ func item_lifecycle_cases() -> void:
 			await pointer(sheet.get_global_transform_with_canvas()*sheet.flag_rect(3).get_center())
 			if not await item_ready():return
 		if not check(model.snapshot.hidden==baseline.hidden,"item lifecycle restoration differs"):return
-		await native("item-inspect",{"item":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
+		await native("item-inspect",{"item":model.view_snapshot(),"independent":true,"revision_text":str(model.snapshot.revision)})
 		if stopped:return
 		evidence.append({"mode":mode,"item_id":baseline.id,"outcome":outcome.get("outcome"),"old_epoch":str(original_epoch),"fresh_epoch":str(actions._epoch),"no_replay":true,"fresh_read_and_restore":true})
 		item_owner.close_panel()
@@ -307,14 +307,14 @@ func item_sheet_scene(initial: Dictionary) -> void:
 	var model=item_owner.state;var sheet=item_owner.panel
 	if not check(model.item_id==initial.rows[39].id and not owner.panel.visible and scene._ui.host.active==item_owner,"View did not transfer target and input ownership"):return
 	var baseline: Dictionary=model.view_snapshot()
-	await native("item-inspect",{"item":baseline,"revision_text":str(baseline.revision)})
+	await native("item-inspect",{"item":baseline,"independent":true,"revision_text":str(baseline.revision)})
 	if stopped:return
 	await capture("item_baseline")
 	for index in [0,1,3]:
 		for toggle in 2:
 			await pointer(sheet.get_global_transform_with_canvas()*sheet.flag_rect(index).get_center())
 			if not await item_ready():return
-			await native("item-inspect",{"item":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
+			await native("item-inspect",{"item":model.view_snapshot(),"independent":true,"revision_text":str(model.snapshot.revision)})
 			if stopped:return
 			await capture("item_flag_"+str(index)+"_"+str(toggle))
 	if not check(model.snapshot==baseline,"item sheet flags not restored"):return
@@ -413,7 +413,6 @@ func item_camera_scene() -> void:
 	var item_owner=owner.item_owner;var sheet=item_owner.panel
 	var follow=scene._ui.item_follow;var rig=scene.camera_rig
 	var target: int=item_owner.state.item_id
-	var building: int=item_owner.state.building_id
 	await pointer(sheet.get_global_transform_with_canvas()*sheet.camera_rect().get_center())
 	if not await follow_ready():return
 	var original: Vector3i=follow.last_position
@@ -455,7 +454,7 @@ func item_camera_scene() -> void:
 	var motion:=InputEventMouseMotion.new();motion.position=Vector2(300,300);motion.relative=Vector2(32,0);motion.button_mask=MOUSE_BUTTON_MASK_MIDDLE
 	root.push_input(motion,true);await process_frame
 	if not check(follow.item_id==-1,"manual viewport pan retained follow identity"):return
-	item_owner.open_target(building,target)
+	item_owner.open_target(target)
 	if not await item_ready():return
 	if not check(not sheet.following,"reopened sheet retained active camera artwork"):return
 	write_json("item-follow-results.json",{"item_id":target,"toggle":true,"survives_close":true,"controlled_move":true,"restored":true,"manual_pan_stops":true,"native_anchor":true,"resize_zoom":true,"three_projections":true})

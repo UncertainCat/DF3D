@@ -28466,5 +28466,98 @@
       "Overlapping stockpiles",
       "Natural hauling transfer"
     ]
+  },
+  "independent_item_controller_reference": {
+    "scope": "Independent controller transfer continuity and Visibility edits, seed lifecycle and rendered potash consumption. Stockpile row/navigation and rendered transfer remain unfinished.",
+    "management_version": 93,
+    "runs": [
+      {
+        "capture": "build/areas-acceptance-20261029-222401",
+        "owned_df_pid": 184436,
+        "status": "passed",
+        "result": {
+          "snapshot": {
+            "can_dump": true,
+            "can_melt": false,
+            "description": "These are potash.  ",
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "in_building": false,
+            "in_job": false,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "name": "potash",
+            "revision": "4260184448600555116",
+            "stockpile": {
+              "id": 121,
+              "name": "Stockpile #2",
+              "type": 29
+            },
+            "subtype_raw": "",
+            "weight": "7Γ"
+          },
+          "transfer_survived": true,
+          "visibility_both_values": true
+        }
+      },
+      {
+        "capture": "build/areas-acceptance-20261029-222615",
+        "owned_df_pid": 188140,
+        "status": "passed_with_known_issues",
+        "result": {
+          "captures": [
+            {
+              "name": "baseline",
+              "rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a"
+            }
+          ],
+          "native_checks": 77,
+          "reasons": [],
+          "status": "passed",
+          "surface": "staged farm owner in actual main scene; viewport mouse input"
+        }
+      },
+      {
+        "capture": "build/areas-acceptance-20261029-222814",
+        "owned_df_pid": 68844,
+        "status": "passed",
+        "result": {
+          "confirmed_edits": 7,
+          "flags_restored": true,
+          "queued_close": "not_sent",
+          "sent_close": "detached_completed",
+          "snapshot": {
+            "can_dump": true,
+            "can_melt": false,
+            "description": "These are sweet pod seeds.  ",
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "holder": {
+              "id": 968,
+              "name": "Farm Plot",
+              "type": 4
+            },
+            "id": 47486,
+            "in_building": true,
+            "in_job": false,
+            "item_type": 53,
+            "material_token": "PLANT:POD_SWEET:SEED",
+            "melt": false,
+            "name": "sweet pod seeds",
+            "revision": "8142024355658834596",
+            "subtype_raw": "",
+            "weight": "<1Γ"
+          },
+          "target": 47486
+        }
+      }
+    ],
+    "exit": "All owned sessions unsaved; two save manifests unchanged in each run",
+    "offline": "build/qa/item-independent-controller-final: core, item_sheet_state_test, semantic_action_service_test passed",
+    "binary_reference": "independent_item_wire_reference (same binaries)"
   }
 }

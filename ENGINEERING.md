@@ -588,7 +588,8 @@ inspection/follow retirement after consumption at tick2448. Three later polls
 do not restart the consumed target. DF182308 exits unsaved; both save manifests
 remain unchanged. This is controller/transport acceptance, not rendered potash
 scene acceptance; immediate active-job Forbid/Dump acceptance is recorded below. Transfers out of the
-original farm remain outside the current farm-bound inspection provider.
+original farm were outside this management92 acceptance; independent controller
+transfer evidence is recorded below.
 
 `item_consumption_reference` records native sheet transitions and bounded viewer
 observations. Injected-time `item-sheet-refresh-fixed` passes serialized reads,
@@ -752,8 +753,9 @@ binary hashes are retained in `native_farm.json.independent_item_wire_reference`
 Core codec tests preserve revisions above2^53 and reject malformed/mixed authority;
 the semantic action service classifies independent Unknown outcomes without replay.
 
-The visible Godot item controller still uses the farm-bound contract, so its
-transfer gap remains until controller/view migration. Unit/container relationships,
+The Godot item controller now uses the independent contract described below.
+Its stockpile relationship still needs a visible View link and navigation;
+rendered transfer acceptance remains outstanding. Unit/container relationships,
 overlapping stockpile selection, other item types and eligible Melt remain separate
 acceptance work. No new public screen is exposed by this transport change.
 
@@ -820,11 +822,30 @@ full lifecycle and general item types remain outstanding.
 
 `item_sheet_state.gd` owns one inspection target and snapshot through the shared
 semantic action service. Flag edits use the exact inspected revision and native
-eligibility. A validated completion starts a fresh inspection for coherent text,
-holder and flags; it never splices changed flags into old descriptive data.
+eligibility. Its independent snapshot has no original-building identity or
+completion/removal precondition. A validated completion adopts the coherent fresh
+snapshot from the typed receipt, including text, holder, stockpile and flags;
+it never splices changed flags into old descriptive data or issues a redundant read.
 Closing cancels queued requests and detaches sent observers. Stale, rejected and
 unknown edits discard authority and require explicit refresh; no edit is replayed.
-The contents page validator is shared with the contents controller.
+Holder and stockpile links are independently validated and replaced on refresh.
+Building contents retain their separate revision and receipt contract.
+
+Protected IndependentItemOnly222401 on2026-10-29 verifies the controller remains
+Ready through controlled transfer from farm227 to stockpile121 and completes both
+Visibility values afterward. Native descriptions, exact revision strings, flags,
+links and UI guards match. DF184436 exits unsaved with two save manifests unchanged.
+Main-scene progress222615 passes77 native checks, exact baseline panel pixels,
+viewport Visibility/camera input and consumption retirement; its only diagnostic
+is the known rendering-thread notice. DF188140 exits unsaved with two manifests
+unchanged. FarmContentsOnly222814 additionally verifies seed-item controller
+edits, queued/sent close, reopen/restoration and the retained legacy contents path;
+DF68844 exits unsaved with both manifests unchanged. These runs are recorded in
+`native_farm.json.independent_item_controller_reference`. Core, controller and
+semantic-service tests pass in `item-independent-controller-final`; synthetic
+coverage includes transfer, malformed relationships, stale/unknown outcomes,
+late replies, exact revisions, epoch retirement and close during notification.
+This does not establish the missing stockpile View row or rendered transfer parity.
 
 `item_sheet_state_test` verifies exact 64-bit revisions, owned nested holders,
 absent holders, malformed snapshots, eligibility, completion readback, close,

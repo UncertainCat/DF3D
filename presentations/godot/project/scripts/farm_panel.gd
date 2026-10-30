@@ -22,7 +22,7 @@ func configure(world,service,host,help=null) -> void:
 	item_owner=preload("res://scripts/item_panel.gd").new();add_child(item_owner);item_owner.configure(world,service,host,help)
 	item_owner.holder_requested.connect(func(id):open_target(id))
 	panel.contents.view_requested.connect(func(id):
-		if panel.contents_allowed() and contents.phase==contents.Phase.Ready:item_owner.open_target(state.building_id,id))
+		if panel.contents_allowed() and contents.phase==contents.Phase.Ready:item_owner.open_target(id))
 	state.changed.connect(_state_changed)
 	state.applied.connect(contents.refresh)
 	contents.applied.connect(state.refresh)

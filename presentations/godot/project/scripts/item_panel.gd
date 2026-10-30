@@ -26,9 +26,9 @@ func configure(world,service,host,help=null) -> void:
 	state.changed.connect(_state_changed)
 	ui_host.register(self);_process(0)
 
-func open_target(building: int,item: int) -> void:
+func open_target(item: int) -> void:
 	if not play_enabled or not ui_host.activate(self):return
-	state.open(building,item)
+	state.open(item)
 
 func configure_follow(source) -> void:
 	follow=source;follow.changed.connect(_follow_changed)

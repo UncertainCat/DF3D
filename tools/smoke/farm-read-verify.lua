@@ -48,6 +48,17 @@ elseif request.op=='item-position' then
  result.item_position_equal=true;result.ui_scratch_unchanged=true
 elseif request.op=='item-inspect' then
  local observed=request.item
+ if request.independent then
+  local text,code=dfhack.run_command_silent('df3d','item-inspect-probe',string.format('%d',observed.id));assert(code==0,text)
+  local native=json.decode(text).snapshot
+  assert(native.revision==request.revision_text,'independent revision differs')
+  assert(native.caption==observed.name and native.weight==observed.weight and native.description==observed.description,'independent native text differs')
+  for _,key in ipairs{'item_type','material_token','forbid','dump','melt','hidden','can_dump','can_melt'}do assert(native[key]==observed[key],'independent facts differ: '..key)end
+  for _,key in ipairs{'holder','stockpile'}do
+   local link=native[key];local actual=observed[key]
+   if link and link~=json.null then assert(actual and actual.id==link.id and actual.type==link.type and actual.name==link.name,'independent link differs')else assert(not actual or actual==json.null,'invented independent link')end
+  end
+ else
  local text,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(assert(_G.df3d_contents_fixture).farm.id),string.format('%d',observed.id));assert(code==0,text)
  local native=json.decode(text)
  assert(native.contents_revision==request.revision_text,'item inspection revision differs')
@@ -55,6 +66,7 @@ elseif request.op=='item-inspect' then
  assert(native.building_id==observed.building_id and native.completed==observed.completed and native.removing==observed.removing,'item inspection building facts differ')
  for _,key in ipairs{'item_type','material_token','subtype_raw','forbid','dump','melt','hidden','can_dump','can_melt'}do assert(native.facts[key]==observed[key],'item inspection facts differ: '..key)end
  if native.holder then assert(observed.holder and observed.holder.id==native.holder.building_id and observed.holder.type==native.holder.building_type and observed.holder.name==native.holder.name,'item inspection holder differs')else assert(not observed.holder,'invented item holder')end
+ end
  for _,guard in ipairs(_G.df3d_contents_guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'inspection changed UI scratch')end
  result.item_inspection_equal=true;result.ui_scratch_unchanged=true
 elseif request.op=='contents-verify' then

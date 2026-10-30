@@ -27418,4 +27418,170 @@
     }
   ]
 }
+,
+  "item_transfer_reference": {
+  "capture": "build/stockpile-storage-native-farm-discovery-20261029-213047",
+  "owned_df_pid": 183780,
+  "exit": "unsaved",
+  "save_preservation": "Owned source unchanged",
+  "scope": "Controlled DFHack transfer of unreserved surviving potash from farm contents to a visible occupied ground tile outside the farm. Native sheet continuity, both Visibility button values, effective position, stockpile location link and actual navigation target. Not natural hauling acceptance, not DF3D item transport acceptance.",
+  "states": [
+    {
+      "building_id": 227,
+      "controlled_transfer": true,
+      "description": "These are potash.  ",
+      "destination": {
+        "x": 125,
+        "y": 65,
+        "z": 165
+      },
+      "farm_bound_provider_rejected": true,
+      "frame": 2186,
+      "item": {
+        "dump": false,
+        "forbid": false,
+        "hidden": false,
+        "id": 48520,
+        "in_job": false,
+        "on_ground": true,
+        "position": {
+          "x": 125,
+          "y": 65,
+          "z": 165
+        },
+        "refs": []
+      },
+      "item_id": 48520,
+      "name": "farm-potash-transfer-ground",
+      "position_provider": {
+        "item_id": 48520,
+        "valid": true,
+        "x": 125,
+        "y": 65,
+        "z": 165
+      },
+      "sheet": {
+        "id": 48520,
+        "open": true,
+        "type": "ITEM"
+      },
+      "native_text": [
+        "    █                                                      potash",
+        "                                                      These are potash.",
+        "                                                           Bar/Block Stockpile #19             View stockpile"
+      ],
+      "panel_rgb_sha256": "33bafce88775addd276c2b772a26a389004cc914ff7ebf040fc8b4ce6f40ac0f"
+    },
+    {
+      "building_id": 227,
+      "controlled_transfer": true,
+      "description": "These are potash.  ",
+      "destination": {
+        "x": 125,
+        "y": 65,
+        "z": 165
+      },
+      "farm_bound_provider_rejected": true,
+      "frame": 2186,
+      "item": {
+        "dump": false,
+        "forbid": false,
+        "hidden": true,
+        "id": 48520,
+        "in_job": false,
+        "on_ground": true,
+        "position": {
+          "x": 125,
+          "y": 65,
+          "z": 165
+        },
+        "refs": []
+      },
+      "item_id": 48520,
+      "name": "farm-potash-transfer-hidden",
+      "position_provider": {
+        "item_id": 48520,
+        "valid": true,
+        "x": 125,
+        "y": 65,
+        "z": 165
+      },
+      "sheet": {
+        "id": 48520,
+        "open": true,
+        "type": "ITEM"
+      },
+      "native_text": [
+        "       █                                                   potash",
+        "                                                      These are potash.",
+        "                                                           Bar/Block Stockpile #19             View stockpile"
+      ],
+      "panel_rgb_sha256": "4d34a44fdacf9edd9ed0c40bc3c3a727b616af81e141e634362af95c35a8762f"
+    },
+    {
+      "building_id": 227,
+      "controlled_transfer": true,
+      "description": "These are potash.  ",
+      "destination": {
+        "x": 125,
+        "y": 65,
+        "z": 165
+      },
+      "farm_bound_provider_rejected": true,
+      "frame": 2186,
+      "item": {
+        "dump": false,
+        "forbid": false,
+        "hidden": false,
+        "id": 48520,
+        "in_job": false,
+        "on_ground": true,
+        "position": {
+          "x": 125,
+          "y": 65,
+          "z": 165
+        },
+        "refs": []
+      },
+      "item_id": 48520,
+      "name": "farm-potash-transfer-visible",
+      "position_provider": {
+        "item_id": 48520,
+        "valid": true,
+        "x": 125,
+        "y": 65,
+        "z": 165
+      },
+      "sheet": {
+        "id": 48520,
+        "open": true,
+        "type": "ITEM"
+      },
+      "native_text": [
+        "          █                                                potash",
+        "                                                      These are potash.",
+        "                                                           Bar/Block Stockpile #19             View stockpile"
+      ],
+      "panel_rgb_sha256": "33bafce88775addd276c2b772a26a389004cc914ff7ebf040fc8b4ce6f40ac0f"
+    },
+    {
+      "bottom_mode_selected": 5,
+      "building_id": 227,
+      "frame": 2186,
+      "item_id": 48520,
+      "name": "farm-potash-transfer-stockpile-link",
+      "sheet": {
+        "id": -1,
+        "open": false,
+        "type": "NONE"
+      },
+      "stockpile_id": 333,
+      "stockpile_number": 19,
+      "native_text": [
+        "      Bar/Block Stockpile #19"
+      ]
+    }
+  ],
+  "runtime_gap": "observeFarmItem and its edits require original farm membership; transferred item is rejected. Native item sheet remains active and displays a separate spatial stockpile link. This needs independent item inspection/revision/actions and location relationships."
+}
 }

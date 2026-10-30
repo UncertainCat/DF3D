@@ -7,6 +7,9 @@ if action_marker then action=action_marker:read('*a'):match('%S+');action_marker
 local progress_marker=io.open(out..'/farm-item-action-progress')
 local action_progress=progress_marker~=nil
 if progress_marker then progress_marker:close();assert(action)end
+local transfer_marker=io.open(out..'/farm-item-transfer')
+local transfer=transfer_marker~=nil
+if transfer_marker then transfer_marker:close();assert(action_progress and action=='forbid')end
 local capture_final
 local original_job_id
 local retired_at
@@ -32,7 +35,8 @@ local text,code=dfhack.run_command_silent('df3d','farm-fertilize',tostring(farm.
 assert(code==0,text)
 assert(#farm.jobs>0,'native scheduler created no fertilizer jobs')
 local start=df.global.world.frame_counter
-local deadline=dfhack.getTickCount()+60000
+-- Allow bounded slow native startup before delivery.
+local deadline=dfhack.getTickCount()+180000
 local last_signature
 local function inspect_delivered_item(item)
  df.global.pause_state=true
@@ -186,6 +190,7 @@ local ok,why=pcall(function()
   script.sleep(1,'frames')
  end
 end)
+row.observation_pause_state=df.global.pause_state
 df.global.pause_state=true
 row.final=farm.current_fertilization;row.elapsed_ticks=df.global.world.frame_counter-start
 assert(ok,why)
@@ -199,6 +204,56 @@ if row.action_progress then
  final.sheet={open=sheet.open,type=df.view_sheet_type[sheet.active_sheet],id=sheet.active_id}
  final.potash_present=df.item.find(potash_id)~=nil
  final.fertilization=farm.current_fertilization
+ if transfer then
+  local item=assert(df.item.find(potash_id));assert(not item.flags.in_job)
+  local destination
+  for _,unit in ipairs(df.global.world.units.active)do
+   if dfhack.units.isCitizen(unit) and unit.pos.z==farm.z and
+    (unit.pos.x<farm.x1 or unit.pos.x>farm.x2 or unit.pos.y<farm.y1 or unit.pos.y>farm.y2)then
+    local designation=dfhack.maps.getTileFlags(unit.pos)
+    if designation and not designation.hidden then destination={x=unit.pos.x,y=unit.pos.y,z=unit.pos.z};break end
+   end
+  end
+  assert(destination,'no visible occupied tile outside farm for controlled transfer')
+  assert(dfhack.items.moveToGround(item,destination),'controlled transfer failed')
+  for _,held in ipairs(farm.contained_items)do assert(held.item.id~=potash_id,'transfer retained farm contents membership')end
+  local gui=require('gui');local gps=df.global.gps;local frame=df.global.world.frame_counter
+  local function observe(label)
+   local captured=capture_final('farm-potash-transfer-'..label)
+   captured.controlled_transfer=true;captured.destination=destination
+   captured.sheet={open=sheet.open,type=df.view_sheet_type[sheet.active_sheet],id=sheet.active_id}
+   captured.item={id=item.id,hidden=item.flags.hidden,forbid=item.flags.forbid,dump=item.flags.dump,
+    in_job=item.flags.in_job,on_ground=item.flags.on_ground,position={x=item.pos.x,y=item.pos.y,z=item.pos.z},refs={}}
+   for _,ref in ipairs(item.general_refs)do captured.item.refs[#captured.item.refs+1]=df.general_ref_type[ref:getType()]end
+   captured.description=dfhack.df2utf(sheet.raw_description)
+   local _,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(farm.id),tostring(potash_id))
+   captured.farm_bound_provider_rejected=code~=0
+   local text,position_code=dfhack.run_command_silent('df3d','item-position-probe',tostring(potash_id));assert(position_code==0,text)
+   captured.position_provider=require('json').decode(text)
+   assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==potash_id,'native lost transferred item sheet')
+   assert(df.global.pause_state and df.global.world.frame_counter==frame,'controlled transfer observation advanced simulation')
+   return captured
+  end
+  observe('ground')
+  for _,hidden in ipairs{true,false}do
+   gps.mouse_x=876//8;gps.mouse_y=(76-4)//12;gps.precise_mouse_x=876;gps.precise_mouse_y=76
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   assert(item.flags.hidden==hidden,'native transferred-item visibility click failed')
+   observe(hidden and 'hidden' or 'visible')
+  end
+  local has_stockpile_link=false
+  for _,line in ipairs(records[#records].lines)do if line:find('View stockpile',1,true)then has_stockpile_link=true end end
+  if has_stockpile_link then
+   gps.mouse_x=816//8;gps.mouse_y=(250-4)//12;gps.precise_mouse_x=816;gps.precise_mouse_y=250
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   local linked=capture_final('farm-potash-transfer-stockpile-link')
+   local selected=assert(df.global.game.main_interface.stockpile.cur_bld,'stockpile View selected no stockpile')
+   assert(not sheet.open and selected:getType()==df.building_type.Stockpile,'stockpile View did not leave the item sheet for stockpile controls')
+   linked.sheet={open=sheet.open,type=df.view_sheet_type[sheet.active_sheet],id=sheet.active_id}
+   linked.stockpile_id=selected.id;linked.stockpile_number=selected.stockpile_number
+   linked.bottom_mode_selected=df.global.game.main_interface.bottom_mode_selected
+  end
+ end
  return
 end
 assert(row.completed,'fertilizer job did not complete within the observation bound')

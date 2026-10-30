@@ -659,6 +659,40 @@ retains the bounded transitions and scene ownership evidence. No runtime change
 was needed for these outcomes; general item transfers remain unaccepted.
 
 
+## Native item transfer continuity gap
+
+Protected `stockpile_storage_native.ps1 -FarmDiscovery
+-FarmFertilizationProgress -FarmItemAction forbid -FarmItemActionProgress
+-FarmItemTransfer` establishes a controlled transfer reference. After the native
+job retires, DFHack detaches the surviving potash from farm contents and moves it
+to a visible occupied ground tile outside the farm. This fixture movement is
+explicit; it is not evidence of naturally scheduled hauling.
+
+Native213047 on2026-10-29 keeps item48520's sheet open after transfer. Both
+Visibility button values still work, the description remains native potash text,
+and the effective-position provider reports the new location. The old farm-bound
+header/description command rejects the item. Native replaces the farm-holder row
+with a spatial stockpile link. Clicking View stockpile closes the item sheet and
+selects stockpile333 (number19) through bottom mode5 and stockpile.cur_bld; it
+does not select a building view_sheet. DF183780 exits unsaved and the owned source
+manifest is unchanged. `item_transfer_reference` preserves the native captions,
+full-panel hashes, item facts and navigation target.
+
+The current runtime still has this gap: observeFarmItem and item edits depend on
+original farm membership and the whole farm contents revision. Background
+inspection therefore retires a still-existing transferred item. Do not treat
+this as native parity or weaken only the membership guard. Item identity,
+revision and actions need independent ownership, with location links represented
+separately from the original containing farm.
+
+The native renderer resolves building, item and unit holders at153bec/153c06/
+153c20, then independently calls effective-position resolverc8baa0 at153c59.
+Its153c72..153da5 loop selects the first matching stockpile using native extent
+predicate5587b0;15719a calls that stockpile's native getName. The stockpile row is
+separate from holder rows. Existing nativeStockpileAt uses generica82b00 and must
+not be assumed equivalent for overlapping candidates without verification. No
+runtime implementation of this new relationship is accepted yet.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

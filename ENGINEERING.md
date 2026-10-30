@@ -1622,9 +1622,29 @@ passes core19/19, context and thought-text checks; unit_header_name_ui_reference
 retains facts and crop hashes. The last fitted column overlaps native action
 artwork and is outside the pixel oracle. Animated/background colors, boundary
 lengths, no-name/other unit layouts, resize and reopen still need header-specific
-acceptance. The translated-name line still incorrectly follows a changed unit
-nickname instead of native historical identity; job/activity and header actions
-remain unfinished. These checks do not promote the staged unit route.
+acceptance. Job/activity and header actions remain unfinished. These checks do
+not promote the staged unit route.
+
+headerName also supplies the translated line through native13e5a90, which resolves
+the current identity or historical figure name, falling back to unit.name when
+history is absent. Its b530b0 lookup may refresh the semantic unit history index;
+identity helper c3a4f0 only reads identity/history names. Nativea946e0 formats the
+borrowed language_name into an owned string with true,false, as header15c18c does.
+No native drawing or menu state is used. The existing identity translated_name
+fact now carries this result; it stays outside header_name's twelve-fact budget.
+Godot renders the quoted line with native palette15 instead of the theme color.
+
+unit_header_translated_reference retains protected184659(adult),184805(long
+nickname/profession),184911(child) on2026-10-30. Fourteen direct comparisons across
+seven adult/child variants match native translated text and preserve warmed
+reader guards. All three rendered first33-cell translated rows match native,
+including the unchanged historical translation after a long unit nickname.
+Earlier184305 exceeded the name record fact budget and used the wrong subtitle
+color;184450 still used the old embedded Lua plugin and is not acceptance.
+Final sessions exit unsaved with source manifests unchanged; six GPU logs have
+only the known renderer notice. MSVC and unit-header-translated QA pass core19/19,
+context and thought-text checks. Disguised identities, missing history, no-name
+row positioning and long translated-name overflow remain unverified.
 
 headerPositionTitle invokes beb620 with the directly resolved historical figure
 and owned spouse/entity/assignment outputs. It reuses native precedence and spouse

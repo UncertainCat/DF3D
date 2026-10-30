@@ -39850,6 +39850,145 @@
         "Other unit layouts, resize and reopen unverified",
         "Translated historical name, job/activity and header actions unfinished"
       ]
+    },
+    "unit_header_translated_reference": {
+      "date": "2026-10-30",
+      "provider": "13e5a90 -> b530b0/72570/c3a4f0; a946e0(language_name,owned string,true,false)",
+      "resolver_pin": {
+        "rva": "13e5a90",
+        "length": "8c",
+        "fnv": "18f14fd96d2fb5d7"
+      },
+      "runs": [
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-184659",
+          "case": "adult",
+          "pid": 186312,
+          "translated_name": "Stodir Spotseals",
+          "reader_cases": [
+            {
+              "name": "original",
+              "translated_name": "Stodir Spotseals",
+              "native_row": "\"Stodir Spotseals\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "no-current-job",
+              "translated_name": "Stodir Spotseals",
+              "native_row": "\"Stodir Spotseals\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "rest",
+              "translated_name": "Stodir Spotseals",
+              "native_row": "\"Stodir Spotseals\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "rest-on-break",
+              "translated_name": "Stodir Spotseals",
+              "native_row": "\"Stodir Spotseals\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "sleep",
+              "translated_name": "Stodir Spotseals",
+              "native_row": "\"Stodir Spotseals\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "custom-profession",
+              "translated_name": "Stodir Spotseals",
+              "native_row": "\"Stodir Spotseals\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "nickname",
+              "translated_name": "Stodir Spotseals",
+              "native_row": "\"Stodir Spotseals\"",
+              "warmed_reader_unchanged": true
+            }
+          ],
+          "native_and_viewer_crop_sha256": "c70e170fd92014f0afa289fe20fa10cba902a438e837b5e43b82626e6d2bbdd1",
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-184805",
+          "case": "long-name",
+          "pid": 16932,
+          "translated_name": "Stodir Spotseals",
+          "reader_cases": [],
+          "native_and_viewer_crop_sha256": "c70e170fd92014f0afa289fe20fa10cba902a438e837b5e43b82626e6d2bbdd1",
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-184911",
+          "case": "child",
+          "pid": 163844,
+          "translated_name": "\u00eeton Ragplaited",
+          "reader_cases": [
+            {
+              "name": "original",
+              "translated_name": "\u00eeton Ragplaited",
+              "native_row": "\"\u00eeton Ragplaited\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "no-current-job",
+              "translated_name": "\u00eeton Ragplaited",
+              "native_row": "\"\u00eeton Ragplaited\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "rest",
+              "translated_name": "\u00eeton Ragplaited",
+              "native_row": "\"\u00eeton Ragplaited\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "rest-on-break",
+              "translated_name": "\u00eeton Ragplaited",
+              "native_row": "\"\u00eeton Ragplaited\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "sleep",
+              "translated_name": "\u00eeton Ragplaited",
+              "native_row": "\"\u00eeton Ragplaited\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "custom-profession",
+              "translated_name": "\u00eeton Ragplaited",
+              "native_row": "\"\u00eeton Ragplaited\"",
+              "warmed_reader_unchanged": true
+            },
+            {
+              "name": "nickname",
+              "translated_name": "\u00eeton Ragplaited",
+              "native_row": "\"\u00eeton Ragplaited\"",
+              "warmed_reader_unchanged": true
+            }
+          ],
+          "native_and_viewer_crop_sha256": "430d00040c2dbe68d7a2e6077d554d0e8078fce2be8a71d74a261fe44501af75",
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        }
+      ],
+      "pixel_rect": [
+        528,
+        88,
+        264,
+        12
+      ],
+      "qa": "build/qa/unit-header-translated",
+      "limits": [
+        "Disguised identity and missing history not exercised",
+        "No-name row positions and long translated-name overflow unfinished"
+      ],
+      "gpu_diagnostics": "Six logs; known separate-renderer notice only"
     }
   }
 }

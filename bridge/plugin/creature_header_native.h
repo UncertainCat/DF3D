@@ -8,7 +8,7 @@
 #include "zone_native.h"
 namespace df3d_creature {
 struct HeaderName {
-    std::string combined,name,profession;
+    std::string combined,name,profession,translated;
     df3d_area::ZoneOwnerNameColor color;
 };
 // Same formatter and color flags as native15b8ed/15b902. Reuse the existing
@@ -26,7 +26,13 @@ inline std::optional<HeaderName> headerName(df::unit* unit) {
             return value;
         };
         return hash(0x1330500,0x37d)==UINT64_C(0x963e5805735092ee) &&
-               hash(0x1330880,0x3ac)==UINT64_C(0xbef834f2b924d785);
+               hash(0x1330880,0x3ac)==UINT64_C(0xbef834f2b924d785) &&
+               hash(0x13e5a90,0x8c)==UINT64_C(0x18f14fd96d2fb5d7) &&
+               hash(0xb530b0,0xac)==UINT64_C(0x7c6f66602bdab157) &&
+               hash(0x72570,0x98)==UINT64_C(0xa69932c0f279084a) &&
+               hash(0xc3a4f0,0x98)==UINT64_C(0x90965a9fe84783f6) &&
+               hash(0xa946e0,0x7c2)==UINT64_C(0xdbc3db5f052419ee) &&
+               hash(0xd2cb50,0xf0)==UINT64_C(0xf7ab8eceaadda09f);
     }();
     if(!supported)return std::nullopt;
     const auto color=df3d_area::nativeZoneOwnerNameColor(*unit);
@@ -36,7 +42,12 @@ inline std::optional<HeaderName> headerName(df::unit* unit) {
     using Name=void (*)(df::unit*,std::string*);
     reinterpret_cast<Name>(const_cast<uint8_t*>(base+0x1330500))(unit,&result.name);
     reinterpret_cast<df3d_area::StaffOrderingFunctions::Text>(const_cast<uint8_t*>(base+0x1330880))(unit,&result.profession,false);
-    if(result.combined.size()>512 || result.name.size()>512 || result.profession.size()>512)return std::nullopt;
+    // Native15becf resolves historical/identity language_name, then15c18c
+    // formats its English form. Returned name is borrowed read-only; output is owned.
+    auto* language=reinterpret_cast<df::language_name* (*)(df::unit*)>(const_cast<uint8_t*>(base+0x13e5a90))(unit);
+    if(language && language->has_name)
+        reinterpret_cast<void (*)(df::language_name*,std::string*,bool,bool)>(const_cast<uint8_t*>(base+0xa946e0))(language,&result.translated,true,false);
+    if(result.combined.size()>512 || result.name.size()>512 || result.profession.size()>512 || result.translated.size()>512)return std::nullopt;
     return result;
 }
 struct HeaderStatus {std::string text;int32_t color=15;};

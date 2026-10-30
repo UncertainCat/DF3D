@@ -71,6 +71,8 @@ local function observe(name)
  local header=json.decode(name_text)
  local expected=dfhack.utf2df(header.combined):sub(1,33):gsub('%s+$','')
  assert(dfhack.df2utf(expected)==rows[1].text,'header name reader differs from native crop: '..name)
+ local translated=dfhack.utf2df('"'..header.translated_name..'"'):sub(1,33):gsub('%s+$','')
+ assert(dfhack.df2utf(translated)==rows[2].text,'header translated name differs from native: '..name)
  assert(header.effect==0,'name fixture requires steady color')
  local palette=header.color[1]+8*header.color[3]
  for _,color in ipairs(rows[1].colors)do assert(color==palette,'header name color differs from native: '..name)end

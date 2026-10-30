@@ -3193,6 +3193,7 @@ void run(color_ostream& out) {
       const auto value=df3d_creature::headerName(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!value)return luaL_error(state,"Native creature header name unavailable");
       lua_newtable(state);field(state,"combined",value->combined);field(state,"name",value->name);field(state,"profession",value->profession);
+      field(state,"translated_name",value->translated);
       field(state,"effect",int(value->color.effect));field(state,"source",int(value->color.source));
       field(state,"foreground",int(value->color.color[0]));field(state,"background",int(value->color.color[1]));field(state,"bright",int(value->color.color[2]));
       field(state,"alternate_foreground",int(value->color.alternate[0]));field(state,"alternate_background",int(value->color.alternate[1]));field(state,"alternate_bright",int(value->color.alternate[2]));

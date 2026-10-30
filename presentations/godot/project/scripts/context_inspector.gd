@@ -261,7 +261,7 @@ func redraw():
 				body.add_child(name_view)
 				# Native fixed 60-cell sheet: right-3-6 minus name-left14 minus2.
 				name_view.configure(header_name,35)
-			label_at("unit.subtitle",'"'+translated+'"' if not translated.is_empty() else "")
+			label_at("unit.subtitle",'"'+translated+'"' if not translated.is_empty() else "",15)
 			label_at("unit.status",header_status,header_color)
 			label_at("unit.job",str(detail.get("job",selected.get("job",""))))
 			if world.has_method("creature_portrait"):

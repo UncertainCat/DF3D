@@ -131,7 +131,6 @@ return function(request)
   fact(s,r,'civilization_id',u.civ_id);fact(s,r,'historical_figure_id',u.hist_figure_id)
   fact(s,r,'birth_year',u.birth_year);fact(s,r,'birth_time',u.birth_time)
   fact(s,r,'caste_description',caste.description)
-  fact(s,r,'translated_name',dfhack.translation.translateName(u.name,true))
   if request.overview_status then
    local eligible,needs,squad,assigned,focus,color=request.overview_status(u.id)
    fact(s,r,'personality_summary_eligible',eligible and 'yes' or 'no')
@@ -160,6 +159,7 @@ return function(request)
    local name=request.header_name(u.id)
    local header=record(s,-8,'')
    fact(s,header,'record_type','header_name')
+   fact(s,r,'translated_name',name.translated_name)
    for _,key in ipairs{'combined','name','profession','effect','source','foreground','background','bright','alternate_foreground','alternate_background','alternate_bright'}do fact(s,header,key,name[key])end
   end
   if request.header_status then

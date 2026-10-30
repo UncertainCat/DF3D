@@ -39392,6 +39392,379 @@
       "transport": "Management102 additive identity record -7, record_type header_status, text and numeric color. Godot uses installed palette and native header row; blank stays blank.",
       "verification": "MSVC builds passed; unit-header-status QA core19/19, context and thought-text passed. Ten GPU logs contain only known godot-separate-thread-notice. Prior Overview pixel/navigation/camera/Escape checks pass.",
       "limitations": "Status-row component only. Native name colors, job/activity captions and header actions remain incomplete. No rendered coverage for every reader case; long-text clipping, non-speaking raving, missing souls/history, identity suppression, land suffixes, resize and stale-target lifecycle need separate acceptance."
+    },
+    "unit_header_name_reader_reference": {
+      "date": "2026-10-30",
+      "provider": "headerName: shared staff name formatter1330c30(false) and nativeZoneOwnerNameColor; split1330500/1330880(false)",
+      "runs": [
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-182750",
+          "pid": 190244,
+          "result_sha256": "2aa699f72f60d044701c210c53998d1dbdec3fe12ca4bb0b2ac37c80a8676e2b",
+          "unit_id": 1017,
+          "overview_case": "neutral",
+          "cases": [
+            {
+              "name": "original",
+              "header_name": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "combined": "Stodir Tangakurvad, bookkeeper",
+                "effect": 0,
+                "name": "Stodir Tangakurvad",
+                "profession": "bookkeeper",
+                "source": 0
+              },
+              "native_name_text": "Stodir Tangakurvad, bookkeeper",
+              "native_foreground": 5,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "no-current-job",
+              "header_name": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "combined": "Stodir Tangakurvad, bookkeeper",
+                "effect": 0,
+                "name": "Stodir Tangakurvad",
+                "profession": "bookkeeper",
+                "source": 0
+              },
+              "native_name_text": "Stodir Tangakurvad, bookkeeper",
+              "native_foreground": 5,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "rest",
+              "header_name": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "combined": "Stodir Tangakurvad, bookkeeper",
+                "effect": 0,
+                "name": "Stodir Tangakurvad",
+                "profession": "bookkeeper",
+                "source": 0
+              },
+              "native_name_text": "Stodir Tangakurvad, bookkeeper",
+              "native_foreground": 5,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "rest-on-break",
+              "header_name": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "combined": "Stodir Tangakurvad, bookkeeper",
+                "effect": 0,
+                "name": "Stodir Tangakurvad",
+                "profession": "bookkeeper",
+                "source": 0
+              },
+              "native_name_text": "Stodir Tangakurvad, bookkeeper",
+              "native_foreground": 5,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "sleep",
+              "header_name": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "combined": "Stodir Tangakurvad, bookkeeper",
+                "effect": 0,
+                "name": "Stodir Tangakurvad",
+                "profession": "bookkeeper",
+                "source": 0
+              },
+              "native_name_text": "Stodir Tangakurvad, bookkeeper",
+              "native_foreground": 5,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "custom-profession",
+              "header_name": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "combined": "Stodir Tangakurvad, Header fixture",
+                "effect": 0,
+                "name": "Stodir Tangakurvad",
+                "profession": "Header fixture",
+                "source": 0
+              },
+              "native_name_text": "Stodir Tangakurvad, Header fixtur",
+              "native_foreground": 5,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "nickname",
+              "header_name": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "combined": "`Header' Tangakurvad, bookkeeper",
+                "effect": 0,
+                "name": "`Header' Tangakurvad",
+                "profession": "bookkeeper",
+                "source": 0
+              },
+              "native_name_text": "`Header' Tangakurvad, bookkeeper",
+              "native_foreground": 5,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            }
+          ],
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-182854",
+          "pid": 54208,
+          "result_sha256": "641ce0c5197edf775e49906bb4d6f1df5ab9cd984539368599dfd14e33dea355",
+          "unit_id": 988,
+          "overview_case": "child",
+          "cases": [
+            {
+              "name": "original",
+              "header_name": {
+                "alternate": [
+                  4,
+                  0,
+                  0
+                ],
+                "color": [
+                  4,
+                  0,
+                  0
+                ],
+                "combined": "\u00eeton Unibmamot, Dwarven Child",
+                "effect": 0,
+                "name": "\u00eeton Unibmamot",
+                "profession": "Dwarven Child",
+                "source": 0
+              },
+              "native_name_text": "\u00eeton Unibmamot, Dwarven Child",
+              "native_foreground": 4,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "no-current-job",
+              "header_name": {
+                "alternate": [
+                  4,
+                  0,
+                  0
+                ],
+                "color": [
+                  4,
+                  0,
+                  0
+                ],
+                "combined": "\u00eeton Unibmamot, Dwarven Child",
+                "effect": 0,
+                "name": "\u00eeton Unibmamot",
+                "profession": "Dwarven Child",
+                "source": 0
+              },
+              "native_name_text": "\u00eeton Unibmamot, Dwarven Child",
+              "native_foreground": 4,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "rest",
+              "header_name": {
+                "alternate": [
+                  4,
+                  0,
+                  0
+                ],
+                "color": [
+                  4,
+                  0,
+                  0
+                ],
+                "combined": "\u00eeton Unibmamot, Dwarven Child",
+                "effect": 0,
+                "name": "\u00eeton Unibmamot",
+                "profession": "Dwarven Child",
+                "source": 0
+              },
+              "native_name_text": "\u00eeton Unibmamot, Dwarven Child",
+              "native_foreground": 4,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "rest-on-break",
+              "header_name": {
+                "alternate": [
+                  4,
+                  0,
+                  0
+                ],
+                "color": [
+                  4,
+                  0,
+                  0
+                ],
+                "combined": "\u00eeton Unibmamot, Dwarven Child",
+                "effect": 0,
+                "name": "\u00eeton Unibmamot",
+                "profession": "Dwarven Child",
+                "source": 0
+              },
+              "native_name_text": "\u00eeton Unibmamot, Dwarven Child",
+              "native_foreground": 4,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "sleep",
+              "header_name": {
+                "alternate": [
+                  4,
+                  0,
+                  0
+                ],
+                "color": [
+                  4,
+                  0,
+                  0
+                ],
+                "combined": "\u00eeton Unibmamot, Dwarven Child",
+                "effect": 0,
+                "name": "\u00eeton Unibmamot",
+                "profession": "Dwarven Child",
+                "source": 0
+              },
+              "native_name_text": "\u00eeton Unibmamot, Dwarven Child",
+              "native_foreground": 4,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "custom-profession",
+              "header_name": {
+                "alternate": [
+                  4,
+                  0,
+                  0
+                ],
+                "color": [
+                  4,
+                  0,
+                  0
+                ],
+                "combined": "\u00eeton Unibmamot, Header fixture",
+                "effect": 0,
+                "name": "\u00eeton Unibmamot",
+                "profession": "Header fixture",
+                "source": 0
+              },
+              "native_name_text": "\u00eeton Unibmamot, Header fixture",
+              "native_foreground": 4,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            },
+            {
+              "name": "nickname",
+              "header_name": {
+                "alternate": [
+                  4,
+                  0,
+                  0
+                ],
+                "color": [
+                  4,
+                  0,
+                  0
+                ],
+                "combined": "`Header' Unibmamot, Dwarven Child",
+                "effect": 0,
+                "name": "`Header' Unibmamot",
+                "profession": "Dwarven Child",
+                "source": 0
+              },
+              "native_name_text": "`Header' Unibmamot, Dwarven Child",
+              "native_foreground": 4,
+              "name_reader_unchanged": true,
+              "name_reference_columns": 33
+            }
+          ],
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        }
+      ],
+      "acceptance": "14 combined-name first33-cell and steady foreground comparisons; guarded state unchanged after native render warms semantic lookup caches",
+      "limitations": [
+        "Diagnostic only; no CreatureInspect or Godot name/color integration",
+        "Split strings and full-width fitting not accepted",
+        "Cold-cache immutability not claimed",
+        "Background and animated colors not covered"
+      ],
+      "qa": "build/qa/unit-header-name",
+      "gpu_diagnostics": "Four logs; known separate-renderer notice only"
     }
   }
 }

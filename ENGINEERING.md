@@ -1584,6 +1584,24 @@ capitalization and optional9bdfb0 land suffix. It is not the general profession
 string. 13cbbd0 resolves history via b530b0, refreshing unit+0x1274, then delegates
 to beb620. The position component reader below bypasses that unit-cache wrapper.
 
+headerName reuses staffOrderingFunctions' pinned1330c30 formatter with false,
+and nativeZoneOwnerNameColor with the same background0/blinking/identity flags
+as native header15b902. It never calls the gps color writer. It also exposes
+owned split-name/profession strings through1330500/1330880 with false; header
+width fitting remains separate from zone-owner fitting. These shared semantic
+providers may warm the historical-figure lookup index, as native rendering does.
+The diagnostic unit-header-name-probe is not yet wired into CreatureInspect.
+
+unit_header_name_reader_reference records protected182750 and182854 on2026-10-30:
+seven variants each for adult1017 and child988 match the first33 native combined
+name cells and their steady foreground palette. Guarded unit/history/entity and
+UI state remain unchanged after native rendering warms the lookup cache. This
+does not establish cold-cache immutability, split-string rendering, full-width
+fitting, background colors or animated color phases. Both owned sessions exit
+unsaved with source saves unchanged; four GPU logs contain only the known
+renderer notice. MSVC and unit-header-name QA pass core19/19, context and
+thought-text checks. Godot header name/color integration remains unfinished.
+
 headerPositionTitle invokes beb620 with the directly resolved historical figure
 and owned spouse/entity/assignment outputs. It reuses native precedence and spouse
 selection, then99a3c0 and the header-specific52d3c0 capitalization on an owned

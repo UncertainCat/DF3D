@@ -58,7 +58,24 @@ local function observe(name)
  assert(status==0,text);assert(unchanged,'header position reader mutated guarded state: '..name)
  local position=json.decode(text)
  assert(position.text==rows[3].text,'header position reader differs from native: '..name)
- cases[#cases+1]={name=name,rows=rows,position=position,reader_unchanged=unchanged,cold_histfig_index=true}
+ -- The native render above has warmed semantic name lookup caches. Unlike the
+ -- position-only reader, the shared name/color providers may warm those caches.
+ for _,copy in ipairs(protected)do copy.bytes=df.new('uint8_t',copy.size);dfhack.internal.memmove(copy.bytes,copy.address,copy.size)end
+ local name_text,name_status=dfhack.run_command_silent('df3d','unit-header-name-probe',tostring(unit.id))
+ local name_unchanged=true
+ for _,copy in ipairs(protected)do
+  if dfhack.internal.memcmp(copy.bytes,copy.address,copy.size)~=0 then name_unchanged=false end
+  df.delete(copy.bytes)
+ end
+ assert(name_status==0,name_text);assert(name_unchanged,'header name reader mutated warmed guarded state: '..name)
+ local header=json.decode(name_text)
+ local expected=dfhack.utf2df(header.combined):sub(1,33):gsub('%s+$','')
+ assert(dfhack.df2utf(expected)==rows[1].text,'header name reader differs from native crop: '..name)
+ assert(header.effect==0,'name fixture requires steady color')
+ local palette=header.color[1]+8*header.color[3]
+ for _,color in ipairs(rows[1].colors)do assert(color==palette,'header name color differs from native: '..name)end
+ cases[#cases+1]={name=name,rows=rows,position=position,reader_unchanged=unchanged,cold_histfig_index=true,
+  header_name=header,name_reader_unchanged=name_unchanged,name_reference_columns=33}
 end
 local ok,err=xpcall(function()
  observe('original')

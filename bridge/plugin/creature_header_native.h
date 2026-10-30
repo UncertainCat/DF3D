@@ -4,7 +4,41 @@
 #include "df/personality_moodst.h"
 #include "df/identity.h"
 #include "df/game_mode.h"
+#include "location_staff_order_native.h"
+#include "zone_native.h"
 namespace df3d_creature {
+struct HeaderName {
+    std::string combined,name,profession;
+    df3d_area::ZoneOwnerNameColor color;
+};
+// Same formatter and color flags as native15b8ed/15b902. Reuse the existing
+// staff formatter and owner color provider; header width fitting is separate.
+// As in those providers, native semantic HF lookup may refresh its cache index.
+inline std::optional<HeaderName> headerName(df::unit* unit) {
+    if(!unit)return std::nullopt;
+    const auto& functions=df3d_area::staffOrderingFunctions();
+    if(!functions)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[&] {
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        return hash(0x1330500,0x37d)==UINT64_C(0x963e5805735092ee) &&
+               hash(0x1330880,0x3ac)==UINT64_C(0xbef834f2b924d785);
+    }();
+    if(!supported)return std::nullopt;
+    const auto color=df3d_area::nativeZoneOwnerNameColor(*unit);
+    if(!color)return std::nullopt;
+    HeaderName result;result.color=*color;
+    functions.name(unit,&result.combined,false);
+    using Name=void (*)(df::unit*,std::string*);
+    reinterpret_cast<Name>(const_cast<uint8_t*>(base+0x1330500))(unit,&result.name);
+    reinterpret_cast<df3d_area::StaffOrderingFunctions::Text>(const_cast<uint8_t*>(base+0x1330880))(unit,&result.profession,false);
+    if(result.combined.size()>512 || result.name.size()>512 || result.profession.size()>512)return std::nullopt;
+    return result;
+}
 struct HeaderStatus {std::string text;int32_t color=15;};
 // Native15c23a..15d588 selects the status inline among drawing calls. Keep
 // that priority here; reusable semantic name/relationship/position helpers

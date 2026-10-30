@@ -3,6 +3,7 @@ extends Control
 signal flag_requested(item_id: int, flag: String, value: bool)
 signal holder_requested(building_id: int)
 signal stockpile_requested(stockpile_id: int)
+signal carrier_requested(kind: int, id: int)
 signal camera_requested(item_id: int)
 const FLAGS=["forbid","dump","melt","hidden"]
 const BUTTONS=["SHORT_FORBID","SHORT_DUMP","SHORT_MELT","SHORT_HIDE"]
@@ -12,6 +13,7 @@ var source
 var snapshot: Dictionary={}
 var colors: Array[Color]=[]
 var icon: Texture2D
+var carrier_icon: Texture2D
 var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
@@ -34,7 +36,10 @@ func configure(world,help=null) -> void:
 func present(value: Dictionary) -> void:
 	var reset_description: bool=snapshot.get("id",-1)!=value.get("id",-1) or snapshot.get("description","")!=value.get("description","")
 	if snapshot.get("id",-1)!=value.get("id",-1):_leave_hover()
-	snapshot=value.duplicate(true);icon=null
+	snapshot=value.duplicate(true);icon=null;carrier_icon=null
+	if snapshot.has("carrier") and source.has_method("selection_icon"):
+		var carrier: Dictionary=snapshot.carrier
+		carrier_icon=source.selection_icon(2 if carrier.kind==1 else 1,int(carrier.id),true)
 	if reset_description:description_scroll.dragging=false
 	description_scroll.set_rows(description_lines(snapshot.get("description","")).size(),0 if reset_description else description_scroll.first)
 	if not snapshot.is_empty() and snapshot.get("item_type",-1)==53:
@@ -89,6 +94,7 @@ func _gui_input(event: InputEvent) -> void:
 	if camera_rect().has_point(event.position):camera_requested.emit(snapshot.id);accept_event()
 	elif snapshot.get("holder_id",-1)>=0 and holder_rect().has_point(event.position):holder_requested.emit(snapshot.holder_id);accept_event()
 	elif snapshot.has("stockpile") and stockpile_rect().has_point(event.position):stockpile_requested.emit(snapshot.stockpile.id);accept_event()
+	elif snapshot.has("carrier") and holder_rect().has_point(event.position):carrier_requested.emit(snapshot.carrier.kind,snapshot.carrier.id);accept_event()
 
 
 func patch(texture: Texture2D,rect: Rect2,rows:=3) -> void:
@@ -141,6 +147,14 @@ func _draw() -> void:
 		text_at(snapshot.get("holder_name",""),Vector2(56,204+holder_offset))
 		patch(art.texture("HORIZONTAL_OPTION_ACTIVE"),holder_rect())
 		text_at("View",Vector2(384,204+holder_offset),colors[10])
+	elif snapshot.has("carrier"):
+		var offset:=36 if snapshot.has("stockpile") else 0
+		if carrier_icon!=null:draw_texture_rect(carrier_icon,Rect2(10,182+offset,32,32),false)
+		var name: String=("In " if snapshot.carrier.kind==1 else "With ")+snapshot.carrier.name
+		if name.length()>=34:name=name.left(30)+"..."
+		text_at(name,Vector2(56,204+offset))
+		patch(art.texture("HORIZONTAL_OPTION_ACTIVE"),holder_rect())
+		text_at("View",Vector2(384,204+offset),colors[10])
 
 	if snapshot.has("stockpile"):
 		var offset:=0

@@ -885,6 +885,33 @@ links and conflicting holders, and transaction tests reject old carrier revision
 before native mutation. This accepts data and edit authority, not carrier rendering
 or general unit/container inspection. Public management exposure is unchanged.
 
+The staged item view draws carrier rows using native `In`/`With` prefixes,
+33-cell truncation (30 cells plus ellipsis at34 or more), the installed View button
+and a kind/ID signal. The owner forwards that intent only while Ready and only
+for its current carrier. Destination-screen navigation remains unconnected until
+those target workflows are verified. The row shifts down with a stockpile link
+like the existing building holder. Carrier artwork resets on each observation;
+unit icons reuse resident semantic actor appearance through selection_icon.
+
+Protected `-FarmItemCarriers -FarmItemCarrierArt` native103410 on2026-10-30 runs
+the actual Godot extension/renderer inside the owned lane. Citizen988's complete
+488x708 panel matches native exactly, including its sprite and truncated name.
+The chest5834 caption/button matches, but its sprite is absent (408 differing
+pixels): installed building items do not inhabit the terrain item stream used
+by selection_icon. `item_carrier_render_reference` records this explicit gap;
+a successful diagnostic run does not claim complete container rendering. The
+next implementation must supply semantic container appearance independently of
+terrain residency. Actual viewport clicks emit each correct kind/ID. Both wire
+edit directions and stale-carrier rejection also pass. DF161096 exits unsaved,
+source preservation passes, and each client reports only the known rendering
+thread notice. The native and rendered unit panels were inspected.
+
+Core passes and existing GPU item-sheet regressions pass with the three documented
+engine diagnostics in `build/qa/item-carrier-row`. The owner script passes the
+engine parser check. Public farm/item exposure remains unchanged. Container
+appearance, general item descriptions and carrier destination navigation remain
+required before the workflow is complete.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

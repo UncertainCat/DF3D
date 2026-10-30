@@ -3,6 +3,7 @@ const C=preload("res://scripts/management_contract.gd")
 var world
 var failed:=false
 var directory: String
+func inspect_render(_snapshot: Dictionary) -> void:pass
 func _initialize() -> void:call_deferred("run")
 func check(ok: bool,message: String) -> bool:
 	if not ok:failed=true;push_error(message)
@@ -38,6 +39,7 @@ func run() -> void:
 	for key in ["kind","id","item_type","name"]:check(snapshot.get("carrier",{}).get(key)==expected.snapshot.carrier[key],"Carrier field differs: "+key)
 	var model=preload("res://scripts/item_sheet_state.gd").new();model.item_id=int(expected.snapshot.id)
 	check(model._valid(snapshot),"Controller rejected native carrier snapshot")
+	await inspect_render(snapshot)
 	if expected.has("prior_revision"):
 		var stale:=intent.duplicate();stale.action=C.ManagementAction.FarmEdit;stale.farm_operation=C.FarmOperation.ItemHidden;stale.item_value=1;stale.expected_revision=int(expected.prior_revision)
 		var result:=await request("production",stale)

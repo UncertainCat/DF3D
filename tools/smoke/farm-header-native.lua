@@ -187,7 +187,8 @@ local function selection_shot(name)
  records[#records+1]=row
  local f=assert(io.open(out..'/shot','w'));f:write(name);f:close()
  -- Controlled blink phases pace GPU readbacks instead of synchronizing every frame.
- local blink=name=='farm-item-carrier-unit-scene' and os.getenv('DF3D_UNIT_HEALTH_CASE')=='blink'
+ local health_case=os.getenv('DF3D_UNIT_HEALTH_CASE')
+ local blink=name=='farm-item-carrier-unit-scene' and (health_case=='blink' or health_case=='bleeding')
  local limit=dfhack.getTickCount()+(blink and 60000 or 30000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<limit,'selection capture timeout');script.sleep(1,'frames')end

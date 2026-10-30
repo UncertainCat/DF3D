@@ -1611,7 +1611,7 @@ health rectangles424,292,232,72 match native pixels, with prior frame, portrait,
 title, hauling, squad, needs, camera and Escape checks passing. All eight GPU
 logs have only the known renderer notice. Owned sessions exit unsaved and source
 saves remain unchanged. MSVC and unit-health QA pass core19/19, context and
-thought-text checks. Threshold boundaries, traction, nonzero wound bleeding,
+thought-text checks. Additional selection and bleeding coverage is recorded below;
 resize and stale-identity cases remain live coverage gaps.
 
 unit_health_blink_reference adds protected172459 and172635 on2026-10-30.
@@ -1626,8 +1626,32 @@ blink selection capture has a60-second timeout; ordinary captures retain30 secon
 The child fixture matches Healthy and prior Overview regions. Both runs preserve
 guarded state and source saves, exit unsaved, and have only the known renderer
 notice in four GPU logs. unit-health-blink QA passes core19/19, context and
-thought-text checks. Heavy bleeding's animation, reopening and resize remain
-unverified; these results do not establish complete health or healthcare actions.
+thought-text checks. Reopening and resize remain unverified; these results do not
+establish complete health or healthcare actions.
+
+unit_health_threshold_reference records protected173332 on2026-10-30. With
+DF3D_UNIT_HEALTH_THRESHOLDS=1, unit-health-thresholds-native.lua checks98 cases
+within one paused session: stress and mood suppression, hunger/thirst/sleep,
+unconsciousness/paralysis, stun/dizziness/exhaustion, breathing, nausea, pain,
+numbness, fever, blood fractions, wound bleeding, webbing and health flags.
+Each native rendered row is compared with the direct reader's text/color; byte
+guards cover the unit, personality, health, wound parts and native UI. Rest-job
+cases include absent references, missing buildings, an unused bed, another user,
+ordinary Rest, RestInTraction, duplicate matching users and injury-flag precedence.
+Job/reference/building bytes and vector values remain unchanged by the reader.
+The temporary job is not linked into the simulation job list; references, users,
+wound parts and all changed fields are restored or removed before return.
+This proves controlled reader behavior, not healthcare actions or treatment.
+
+Protected173452 additionally keeps a temporary wound with bleeding10 through
+actual Overview transport and rendering. Heavy bleeding's palette4/12 phases
+match native at the same eleven display times used above, with unchanged guards,
+visible processing and retirement after Escape. The scoped60-second phase capture
+also covers this case. Both owned sessions exit unsaved and preserve source saves;
+four GPU logs contain only the known renderer notice. unit-health-thresholds QA
+passes core19/19, context and thought-text checks. The98-case matrix itself is
+native-versus-reader acceptance, not98 Godot pixel comparisons. Missing soul or
+health data, reopening, resize and stale identity still need separate coverage.
 
 ## Native item holder provider
 

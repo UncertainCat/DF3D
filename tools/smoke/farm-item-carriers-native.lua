@@ -36,6 +36,10 @@ local function restore()
  if overview_saved then
   local old=overview_saved;local p=unit.status.current_soul.personality
   for i=#(old.health_fields or {}),1,-1 do local saved=old.health_fields[i];saved.object[saved.key]=saved.value end
+  if old.health_wound then
+   erase_pointer(unit.body.wounds,old.health_wound)
+   old.health_wound.parts:erase(0);df.delete(old.health_part);df.delete(old.health_wound)
+  end
   if old.own_links then
    for _,saved in ipairs(old.own_links)do old.hf.entity_links:insert(saved.index,saved.link)end
    for _,saved in ipairs(old.member_strengths)do saved.link.link_strength=saved.strength end
@@ -180,6 +184,12 @@ local ok,err=xpcall(function()
      elseif health_case=='blink' then
       set(unit.counters,'winded',1);set(unit.flags1,'drowning',true);set(unit.counters,'pain',100)
       set(unit.body,'blood_count',math.max(0,unit.body.blood_max//4-1))
+     elseif health_case=='bleeding' then
+      local wound=df.unit_wound:new();local part=df.unit_wound_layerst:new()
+      overview_saved.health_wound=wound;overview_saved.health_part=part
+      wound.id=2147483000;wound.attacker_unit_id=-1;wound.attacker_hist_figure_id=-1;wound.syndrome_id=-1
+      part.body_part_id=0;part.layer_idx=0;part.global_layer_idx=0;part.bleeding=10
+      wound.parts:insert('#',part);unit.body.wounds:insert('#',wound)
      elseif health_case=='injury' then set(assert(unit.health,'injury fixture requires health info').flags,'whole',2)
      else error('unknown health case')end
     end
@@ -288,7 +298,7 @@ local ok,err=xpcall(function()
     local text=string.char(table.unpack(bytes)):gsub('[%z\1-\31]',' '):gsub('%s+$','')
     linked.health_rows[#linked.health_rows+1]={text=text,colors=colors}
    end
-   if health_case=='blink' then
+   if health_case=='blink' or health_case=='bleeding' then
     linked.health_phases={}
     for _,tick in ipairs{0,124,125,249,250,374,375,499,500,999,1000}do
      view:render(tick)
@@ -297,7 +307,7 @@ local ok,err=xpcall(function()
      linked.health_phases[#linked.health_phases+1]={tick=tick,colors=colors}
     end
     local phase_file=assert(io.open(out..'/unit-health-phases.json','w'))
-    phase_file:write(json.encode{phases=linked.health_phases,original_rows=linked.health_rows});phase_file:close()
+    phase_file:write(json.encode{phases=linked.health_phases,original_rows=linked.health_rows,animated_count=health_case=='blink' and 3 or 1});phase_file:close()
    end
    local health_protected={unit,sheet,df.global.plotinfo,unit.status.current_soul.personality}
    if unit.health then health_protected[#health_protected+1]=unit.health end
@@ -324,9 +334,13 @@ local ok,err=xpcall(function()
     assert((row and row.text or '')==native.text,'native health reader text differs')
     if row and row.flash==0 then assert(row.color==native.colors[1][1]+(native.colors[1][3] and 8 or 0),'native health reader color differs')end
    end
-   local expected_health=({pain={'Pain','Pain'},priority={'Harrowed','Starving','Dehydrated','Very drowsy','Unconscious','Stunned'},injury={'Seriously injured'}})[health_case]
+   local expected_health=({pain={'Pain','Pain'},priority={'Harrowed','Starving','Dehydrated','Very drowsy','Unconscious','Stunned'},injury={'Seriously injured'},bleeding={'Heavy bleeding'}})[health_case]
    if expected_health then
     for i=1,6 do assert(linked.health_rows[i].text==(expected_health[i] or ''),'native health order differs at row '..i..': '..linked.health_rows[i].text)end
+   end
+   if os.getenv('DF3D_UNIT_HEALTH_THRESHOLDS')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-health-thresholds-native.lua')
+    linked.health_thresholds=assert(loadfile(source))(unit,view)
    end
    linked.room_requirements={}
    for i=0,3 do linked.room_requirements[i+1]=sheet.reqroom[i]end

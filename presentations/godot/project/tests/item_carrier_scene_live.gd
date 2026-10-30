@@ -105,7 +105,7 @@ func unit_carrier(expected: Dictionary) -> void:
 			if label.get_script()==preload("res://scripts/creature_health_flash.gd"):
 				check(label.is_processing(),"Native health animation did not start")
 				label.set_process(false);health_labels.append(label)
-		check(health_labels.size()==3,"Missing animated native health labels")
+		check(health_labels.size()==int(phase_data.get("animated_count",3)),"Missing animated native health labels")
 		for phase in phase_data.phases:
 			for label in health_labels: label.apply_time(int(phase.tick))
 			await create_timer(1.1).timeout;await RenderingServer.frame_post_draw

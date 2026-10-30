@@ -223,7 +223,7 @@ try {
      if(-not $client.WaitForExit(90000)){$client.Kill();$client.WaitForExit();throw 'Chest scene client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/chest-scene-result.json")){throw 'Chest scene client failed'}
     }
-    if($FarmItemCarriers -and $name -match '^chest-header-wire-(idle|worker)$') {
+    if($FarmItemCarriers -and $name -match '^chest-header-wire-(idle|worker|suspended)$') {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      if($FarmItemCarrierArt){

@@ -59,9 +59,10 @@ func run() -> void:
 	for field in ["id","type","stage","max_stage","custom_name","native_name","header_name","removing","suspended","has_worker"]:
 		check(initial[field]==expected.snapshot[field],"Chest header field differs: "+field)
 	var receipts: Array=[]
-	if expected.mode=="worker":
-		var stale:=initial.duplicate();stale.revision=int(expected.stale_revision)
-		refused(await edit_header(stale,C.FarmOperation.CancelRemoval),C.FarmEditOutcome.Stale)
+	if expected.mode in ["worker","suspended"]:
+		if expected.mode=="worker":
+			var stale:=initial.duplicate();stale.revision=int(expected.stale_revision)
+			refused(await edit_header(stale,C.FarmOperation.CancelRemoval),C.FarmEditOutcome.Stale)
 		await open_header(initial.id)
 		check(header_model.snapshot==initial,"Controller worker read differs")
 		header_model.cancel_removal();await settle_header()

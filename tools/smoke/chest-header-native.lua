@@ -52,6 +52,21 @@ selected.opened_item=sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM 
 if selected.opened_item then key('LEAVESCREEN');select_map(building)end
 assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id)
 
+-- Native contents buttons remain visible while removal is queued. Observe their
+-- actual effects before granting the presentation any additional edit authority.
+local effects={}
+for index=0,1 do
+ local item=building.contained_items[index].item
+ for _,control in ipairs{{'forbid',800},{'dump',824},{'hidden',872}}do
+  local before=item.flags[control[1]]
+  click(control[2],526+index*36)
+  local changed=item.flags[control[1]]
+  click(control[2],526+index*36)
+  assert(item.flags[control[1]]==before,'native pending-removal item toggle did not restore')
+  effects[#effects+1]={id=item.id,flag=control[1],before=before,after=changed,restored=item.flags[control[1]]}
+ end
+end
+local observed=shot('removing-item-flags');observed.item_effects=effects
 job.flags.suspend=true;shot('remove-suspended');job.flags.whole=flags
 local cancelled=false
 local row=shot('remove-restored')
@@ -136,6 +151,8 @@ local function wire(mode,stale)
  return row
 end
 wire('idle')
+click(832,82);building.jobs[0].flags.suspend=true
+wire('suspended')
 click(832,82);local stale_revision=action('read').snapshot.revision
 local wire_worker=fixture.attach(building)
 local row=wire('worker',stale_revision);row.worker_after=fixture.observe(building,wire_worker)

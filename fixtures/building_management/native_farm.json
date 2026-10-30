@@ -33838,6 +33838,94 @@
         "New container-carrier navigation hook not yet exercised in main scene",
         "Unit carrier destination remains unfinished"
       ]
+    },
+    "suspended_and_removing_contents_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-140147",
+      "date": "2026-10-30",
+      "owned_df_pid": 17168,
+      "success": true,
+      "suspended_panel": {
+        "size": [
+          488,
+          708
+        ],
+        "different_pixels": 0,
+        "rgb_sha256": "4f8d938a2802cbb39c86ade1eaf599cef199e49ec38c64200d9de41c2b296c3a",
+        "wire": {
+          "controller_receipts": [],
+          "initial_revision": "3561394239274672028",
+          "mode": "suspended",
+          "receipts": [
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": false,
+              "revision": 1475866136942257694,
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            }
+          ],
+          "success": true,
+          "worker_uses_controller": false
+        }
+      },
+      "native_removing_item_effects": [
+        {
+          "after": true,
+          "before": false,
+          "flag": "forbid",
+          "id": 5834,
+          "restored": false
+        },
+        {
+          "after": true,
+          "before": false,
+          "flag": "dump",
+          "id": 5834,
+          "restored": false
+        },
+        {
+          "after": true,
+          "before": false,
+          "flag": "hidden",
+          "id": 5834,
+          "restored": false
+        },
+        {
+          "after": true,
+          "before": false,
+          "flag": "forbid",
+          "id": 7504,
+          "restored": false
+        },
+        {
+          "after": true,
+          "before": false,
+          "flag": "dump",
+          "id": 7504,
+          "restored": false
+        },
+        {
+          "after": true,
+          "before": false,
+          "flag": "hidden",
+          "id": 7504,
+          "restored": false
+        }
+      ],
+      "interpretation": "Native permits Forbid, Dump and Visibility in both directions for installed Box5834 and contained instrument7504 while removal is queued. DF3D contents transaction/controller/view currently refuse these edits; correction pending.",
+      "cleanup": "Owned session exited unsaved, source manifest unchanged, original name/jobs/item flag bits restored",
+      "diagnostics": "12 GPU logs: known separate-render-thread notice only",
+      "limitations": [
+        "No eligible Melt item in this sample",
+        "Pending-removal flag side effects with an assigned worker remain unverified",
+        "Resized chest rendering remains unverified"
+      ]
     }
   }
 }

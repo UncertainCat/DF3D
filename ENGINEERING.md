@@ -1261,6 +1261,20 @@ core passes19/19 and chest-owner-fixed passes header/Reports panel checks.
 The Reports scrollbar also inherits its parent wheel_enabled member instead of
 redeclaration, fixing the parser failure encountered by the complete scene.
 
+Protected140147 on2026-10-30 additionally verifies suspended removal through
+management100 and the rendered chest panel: the complete488x708 panel matches
+native exactly, all five contents View controls work, and controller cancellation
+clears removal. Native clicks also confirm Forbid, Dump and Visibility in both
+directions while removal is pending, for installed Box5834 and contained
+instrument7504. The current contents transaction/controller/view prohibition is
+therefore an unfinished parity gap, not native eligibility. Preserve native
+flag routines and receipt safeguards when removing that restriction. Eligible
+Melt and assigned-worker item cleanup still require evidence. The nested
+suspended_and_removing_contents_reference retains these observations. Owned
+DF17168 exits unsaved with source preservation and restored header/jobs/flag bits;
+all twelve GPU logs have only the known render-thread notice. Resize remains
+unfinished; these results do not authorize public exposure.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

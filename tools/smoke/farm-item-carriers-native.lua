@@ -6,6 +6,7 @@ local entry=assert(b.contained_items[0]);local item=entry.item
 local saved={flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z,refs={}}
 local overview_case=os.getenv('DF3D_UNIT_OVERVIEW_CASE') or 'child'
 local room_case=os.getenv('DF3D_UNIT_ROOM_CASE') or 'bedroom'
+local room_value_case=os.getenv('DF3D_UNIT_ROOM_VALUE_CASE') or 'original'
 for _,ref in ipairs(item.general_refs)do saved.refs[#saved.refs+1]=ref end
 local container,unit
 for _,candidate in ipairs(df.global.world.items.other.BOX)do
@@ -38,6 +39,7 @@ local function restore()
    for _,saved in ipairs(old.member_strengths)do saved.link.link_strength=saved.strength end
    unit.uwss_remove_caste_flag.whole=old.remove_caste_flags
   end
+  for _,saved in ipairs(old.room_types or {})do saved.room.type=saved.type end
   if old.preference then erase_pointer(unit.status.current_soul.preferences,old.preference);df.delete(old.preference)end
   for _,saved in ipairs(old.assignment_indices or {})do saved.assignment.position_vector_idx=saved.index end
   if old.spouse_link then erase_pointer(old.hf.histfig_links,old.spouse_link);df.delete(old.spouse_link)end
@@ -190,6 +192,17 @@ local ok,err=xpcall(function()
       local preference=df.unit_preference:new();overview_saved.preference=preference
       preference.type=df.unitpref_type.LikeMaterial;preference.mattype=-1;preference.matindex=-1;preference.flags.whole=0
       unit.status.current_soul.preferences:insert('#',preference)
+      if room_value_case~='original' then
+       local target_type=({dining=df.civzone_type.DiningHall,tomb=df.civzone_type.Tomb,['multiple-bedroom']=df.civzone_type.Bedroom})[room_value_case]
+       assert(target_type,'unknown room value case');overview_saved.room_types={}
+       local source_type=room_value_case=='multiple-bedroom' and df.civzone_type.Office or df.civzone_type.Bedroom
+       for _,room in ipairs(unit.owned_buildings)do
+        if df.building_civzonest:is_instance(room) and room.type==source_type then
+         overview_saved.room_types[#overview_saved.room_types+1]={room=room,type=room.type};room.type=target_type
+        end
+       end
+       assert(#overview_saved.room_types>0,'room value fixture requires an existing owned room')
+      end
      end
      local hf=assert(df.historical_figure.find(unit.hist_figure_id));overview_saved.hf=hf;overview_saved.offices={}
      local entity=assert(df.historical_entity.find(df.global.plotinfo.group_id))
@@ -253,6 +266,17 @@ local ok,err=xpcall(function()
    linked.room_requirements={}
    for i=0,3 do linked.room_requirements[i+1]=sheet.reqroom[i]end
    linked.room_values={};for i=0,3 do linked.room_values[i+1]=sheet.curroom[i]end
+   linked.room_value_case=room_value_case
+   if room_value_case~='original' then
+    local index=({dining=3,tomb=4,['multiple-bedroom']=2})[room_value_case]
+    assert(linked.room_values[index]>0,'native occupied room value must be positive')
+    local room_type=({dining=df.civzone_type.DiningHall,tomb=df.civzone_type.Tomb,['multiple-bedroom']=df.civzone_type.Bedroom})[room_value_case]
+    linked.matching_owned_rooms=0
+    for _,room in ipairs(unit.owned_buildings)do
+     if df.building_civzonest:is_instance(room) and room.type==room_type then linked.matching_owned_rooms=linked.matching_owned_rooms+1 end
+    end
+    if room_value_case=='multiple-bedroom' then assert(linked.matching_owned_rooms>=2,'multiple-room fixture needs two owned rooms')end
+   end
    local value_file=assert(io.open(out..'/unit-room-values.json','w'));value_file:write(json.encode(linked.room_values));value_file:close()
    local req_file=assert(io.open(out..'/unit-room-requirements.json','w'));req_file:write(json.encode(linked.room_requirements));req_file:close()
    if overview_case=='office-requirements' then

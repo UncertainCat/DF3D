@@ -1523,9 +1523,19 @@ match pixel-for-pixel. A temporary wildcard material preference is activated
 by native, then reset cold before the isolated reader. The reader reproduces
 native values while guarded unit, preferences, assignments and UI bytes remain
 unchanged. All sessions exit unsaved and preserve source saves; twelve GPU logs
-contain only the known renderer notice. Cold furnishing artwork initialization,
-nonzero dining/tomb values, room-sharing variants and other creature types still
-need live coverage. Overview and Zone owner status share the independently
+contain only the known renderer notice.
+
+unit_room_positive_values_reference adds protected165129/165239/165340 on
+2026-10-30. Temporary type changes to existing furnished owned rooms produce
+native arrays688/0/588/0 (Dining Hall),688/0/0/588 (Tomb), and0/688/0/0
+(two Bedrooms). Both native readers match, including the maximum across two
+rooms. Preferences remain cold and guarded unit/assignment/UI bytes unchanged.
+The exact title/warning pixels and prior main-scene navigation checks pass;
+all six GPU logs have only the known renderer notice. Original room types are
+restored; owned sessions exit unsaved with source saves preserved. This is
+valuation/display coverage, not assignment-action or shared-ownership acceptance.
+Cold furnishing artwork initialization, room-sharing variants and other creature
+types still need live coverage. Overview and Zone owner status share the independently
 owned valuation context in unit_room_native.h; each keeps its native calculation
 order. Zone status visits only matching room types, rather than using Overview’s
 all-room aggregate.

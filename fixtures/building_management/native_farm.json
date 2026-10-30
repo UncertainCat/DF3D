@@ -35318,6 +35318,291 @@
         "Controlled links/strength/speaking fixtures do not accept citizenship or appointment actions",
         "PET/PET_EXOTIC, missing history and other fortress-control exclusions remain unverified"
       ]
+    },
+    "unit_room_positive_values_reference": {
+      "cases": [
+        {
+          "case": "dining",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-165129",
+          "result_sha256": "cbf074479d9c88982bc24b81f4754cee96ebb2b42412c1cb37e1add165c6b7fe",
+          "owned_df_pid": 194808,
+          "native_values": [
+            688,
+            0,
+            588,
+            0
+          ],
+          "matching_owned_rooms": 1,
+          "owner_probe": {
+            "cold_preference_flags": 0,
+            "live_unit_preferences_ui_unchanged": true,
+            "statuses": [
+              [
+                688,
+                [
+                  72,
+                  97,
+                  115,
+                  32,
+                  68,
+                  101,
+                  99,
+                  101,
+                  110,
+                  116,
+                  32,
+                  83,
+                  116,
+                  117,
+                  100,
+                  121
+                ]
+              ],
+              [
+                0,
+                []
+              ],
+              [
+                588,
+                [
+                  72,
+                  97,
+                  115,
+                  32,
+                  68,
+                  101,
+                  99,
+                  101,
+                  110,
+                  116,
+                  32,
+                  68,
+                  105,
+                  110,
+                  105,
+                  110,
+                  103,
+                  32,
+                  82,
+                  111,
+                  111,
+                  109
+                ]
+              ],
+              [
+                0,
+                []
+              ]
+            ]
+          },
+          "scene": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          },
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        },
+        {
+          "case": "tomb",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-165239",
+          "result_sha256": "55798e6ccca8e6e379faf3972227f8c8569aa87e9e398c95a9b3e788da714700",
+          "owned_df_pid": 191572,
+          "native_values": [
+            688,
+            0,
+            0,
+            588
+          ],
+          "matching_owned_rooms": 1,
+          "owner_probe": {
+            "cold_preference_flags": 0,
+            "live_unit_preferences_ui_unchanged": true,
+            "statuses": [
+              [
+                688,
+                [
+                  72,
+                  97,
+                  115,
+                  32,
+                  68,
+                  101,
+                  99,
+                  101,
+                  110,
+                  116,
+                  32,
+                  83,
+                  116,
+                  117,
+                  100,
+                  121
+                ]
+              ],
+              [
+                0,
+                []
+              ],
+              [
+                0,
+                []
+              ],
+              [
+                588,
+                [
+                  72,
+                  97,
+                  115,
+                  32,
+                  84,
+                  111,
+                  109,
+                  98
+                ]
+              ]
+            ]
+          },
+          "scene": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          },
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        },
+        {
+          "case": "multiple-bedroom",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-165340",
+          "result_sha256": "313f8b961fab8eb5947d8d0d2ab2f1f909e33bddb5abe17c3e56c1fa9d8b54a3",
+          "owned_df_pid": 132752,
+          "native_values": [
+            0,
+            688,
+            0,
+            0
+          ],
+          "matching_owned_rooms": 2,
+          "owner_probe": {
+            "cold_preference_flags": 0,
+            "live_unit_preferences_ui_unchanged": true,
+            "statuses": [
+              [
+                0,
+                []
+              ],
+              [
+                688,
+                [
+                  72,
+                  97,
+                  115,
+                  32,
+                  68,
+                  101,
+                  99,
+                  101,
+                  110,
+                  116,
+                  32,
+                  81,
+                  117,
+                  97,
+                  114,
+                  116,
+                  101,
+                  114,
+                  115
+                ]
+              ],
+              [
+                0,
+                []
+              ],
+              [
+                0,
+                []
+              ]
+            ]
+          },
+          "scene": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          },
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        }
+      ],
+      "fixture": "Temporary type changes to existing furnished owned zones; restored before exit. No assignment action acceptance.",
+      "checks": "Independent native curroom, direct owned Overview/Zone values, cold preference byte guards, exact title/warning pixels and existing main-scene navigation checks.",
+      "limitations": "Shared ownership, cold furnishing artwork initialization and other creature types remain unverified."
     }
   }
 }

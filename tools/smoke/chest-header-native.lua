@@ -198,3 +198,52 @@ local file=assert(io.open(out..'/chest-header-expected.json','w'));file:write(js
 local row=capture('chest-owner-wire')
 local result=assert(io.open(out..'/chest-scene-result.json'));row.scene=json.decode(result:read('*a'));result:close();assert(row.scene.success)
 assert(building.name==original and #building.jobs==0 and not dfhack.buildings.markedForRemoval(building),'main scene did not restore chest')
+
+-- Native Melt effects on a real eligible weapon, in an owned paused fixture.
+-- Only the displayed contents pointer is substituted; no hauling or AI runs.
+local farm
+for _,candidate in ipairs(df.global.world.buildings.other.FARM_PLOT)do
+ if #candidate.contained_items>0 then farm=candidate;break end
+end
+assert(farm,'Melt eligibility fixture needs a farm contents row')
+local farm_entry=farm.contained_items[0];local farm_item=farm_entry.item
+local metal
+local find_ok,find_err=xpcall(function()
+ for _,candidate in ipairs(df.global.world.items.other.WEAPON)do
+  if not candidate.flags.in_job and not candidate.flags.melt and not candidate.flags.in_inventory then
+   farm_entry.item=candidate
+   local text,status=dfhack.run_command_silent('df3d','farm-contents-read',tostring(farm.id))
+   if status==0 and json.decode(text).rows[1].can_melt then metal=candidate;break end
+  end
+ end
+end,debug.traceback)
+farm_entry.item=farm_item;assert(find_ok,find_err);assert(metal,'No eligible native weapon')
+local function melt_ids()
+ local ids={};for _,item in ipairs(df.global.world.items.other.ANY_MELT_DESIGNATED)do ids[#ids+1]=item.id end;return ids
+end
+local held=building.contained_items[1];local held_item=held.item
+local original_flags=metal.flags.whole;local original_list=json.encode(melt_ids())
+local probe_ok,probe_err=xpcall(function()
+ held.item=metal;select_map(building)
+ g.precise_mouse_x=650;g.precise_mouse_y=526;g.mouse_x=650//8;g.mouse_y=(526-4)//12
+ for i=1,20 do key('CONTEXT_SCROLL_UP')end
+ click(832,82);assert(dfhack.buildings.markedForRemoval(building))
+ local row=capture('chest-melt-before');row.item_id=metal.id;row.flags=metal.flags.whole;row.melt_ids=melt_ids()
+ click(848,562)
+ local enabled=capture('chest-melt-enabled');enabled.item_id=metal.id;enabled.flags=metal.flags.whole;enabled.melt=metal.flags.melt;enabled.melt_ids=melt_ids()
+ assert(enabled.melt,'Native Melt refused eligible item during removal')
+ local found=0;for _,id in ipairs(enabled.melt_ids)do if id==metal.id then found=found+1 end end
+ assert(found==1,'Native Melt did not register item exactly once')
+ click(848,562)
+ local cleared=capture('chest-melt-cleared');cleared.item_id=metal.id;cleared.flags=metal.flags.whole;cleared.melt=metal.flags.melt;cleared.melt_ids=melt_ids()
+ assert(not cleared.melt and json.encode(cleared.melt_ids)==original_list,'Native Melt cancellation did not restore list')
+ assert(metal.flags.whole==original_flags,'Native Melt did not restore flags')
+ local expected=assert(io.open(out..'/chest-melt-expected.json','w'));expected:write(json.encode{building_id=building.id,item_id=metal.id});expected:close()
+ local wired=capture('chest-melt-wire')
+ local result=assert(io.open(out..'/chest-melt-scene-result.json'));wired.scene=json.decode(result:read('*a'));result:close()
+ assert(wired.scene.success and metal.flags.whole==original_flags and json.encode(melt_ids())==original_list,'Melt scene did not restore native state')
+ click(480,202);assert(#building.jobs==0 and not dfhack.buildings.markedForRemoval(building))
+end,debug.traceback)
+held.item=held_item
+assert(probe_ok,probe_err)
+records[#records+1]={name='chest-melt-restored',item_id=metal.id,restored=true,frame=df.global.world.frame_counter}

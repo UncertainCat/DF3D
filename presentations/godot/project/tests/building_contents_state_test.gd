@@ -119,6 +119,12 @@ func run() -> void:
 			service.poll();removing.rows[0].hidden=true;removing.revision+=1
 			reply(removing,1,{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1})
 			check(model.phase==Model.Phase.Ready and model.snapshot.removing and model.snapshot.rows[0].hidden,"Removing chest receipt accepted")
+	setup();model.edit_removing=true;model.open(968);service.poll()
+	var melting:=page();melting.removing=true;melting.rows[0].can_melt=true;reply(melting)
+	model.set_flag(1000,C.FarmOperation.ItemMelt,true);service.poll()
+	melting.rows[0].melt=true;melting.revision+=1
+	reply(melting,1,{"item_id":1000,"farm_operation":C.FarmOperation.ItemMelt,"value":1})
+	check(model.phase==Model.Phase.Ready and model.snapshot.rows[0].melt,"Eligible removing Melt receipt accepted")
 	model.dispose();service.free()
 	if failures==0:print("BUILDING_CONTENTS_STATE_PASS")
 	quit(0 if failures==0 else 1)

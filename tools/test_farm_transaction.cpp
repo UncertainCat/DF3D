@@ -505,3 +505,17 @@ TEST_CASE("pending chest contents edits require opt-in and stable removal state"
         CHECK(bool(result.receipt)==(allow&&!stale&&stable));
     }
 }
+
+TEST_CASE("removing chest Melt respects native eligibility before entry") {
+    using namespace df3d_production;
+    for(bool eligible:{false,true}) {
+        BuildingContentsSnapshot before;before.buildingId=278;before.completed=true;before.removing=true;
+        BuildingContentsRow row;row.itemType=24;row.id=123;row.role=0;row.canMelt=eligible;before.rows={row};
+        before.revision=buildingContentsRevision(before);int calls=0;
+        auto result=finishBuildingItemEdit(before,before.revision,123,BuildingItemAction::Melt,true,
+            [&]{++calls;return true;},[&]()->std::optional<BuildingContentsSnapshot>{
+                auto after=before;after.rows[0].melt=true;after.revision=buildingContentsRevision(after);return after;
+            },true);
+        CHECK(calls==(eligible?1:0));CHECK(result.outcome==(eligible?FarmEditOutcome::Completed:FarmEditOutcome::Rejected));
+    }
+}

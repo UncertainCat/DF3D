@@ -1278,7 +1278,7 @@ removal remains queued. The native transaction opts in only for Box buildings;
 farms retain their prior admission policy. Stale revisions still refuse before
 entry. Post-entry observation requires the same building and removal state, the
 requested flag and a valid complete snapshot; missing authority remains Unknown
-and is never replayed. Melt during removal is still refused pending evidence.
+and is never replayed. Management102 adds eligible Melt as described below.
 The chest owner opts its contents controller into these edits; other callers keep
 the default restriction. Both endpoints must rebuild for the new region/version.
 
@@ -1293,7 +1293,7 @@ lane, including idle/worker/suspended panel comparisons, passes with only known
 render-thread notices across twelve GPU logs. removing_contents_edit_reference
 retains the scope. QA chest-removal-edits-fixed passes core and both controllers;
 MSVC rebuild/install passes. Core regressions cover explicit opt-in, stale intent
-and changed removal state after entry. Assigned-worker evidence follows below. Eligible Melt and general navigation remain unfinished; resize acceptance
+and changed removal state after entry. Assigned-worker evidence follows below. General navigation remains unfinished; Melt and resize acceptance
 follows below and public exposure is unchanged.
 
 Protected141923 on2026-10-30 extends the contents checks to a controlled removal
@@ -1318,8 +1318,8 @@ it. resize_reference retains dimensions and hashes. Owned DF174172 exits unsaved
 with source preservation; subsequent main-scene naming, edits and navigation
 still pass. All twelve GPU logs have only the known render-thread notice.
 The short viewport matches native's absent contents region; no new scrolling
-exception or authored layout is introduced. Eligible Melt and broader item
-navigation remain unfinished before public exposure.
+exception or authored layout is introduced. Broader item navigation remains unfinished before public exposure; eligible
+Melt acceptance follows below.
 
 Protected142816 on2026-10-30 verifies container navigation in actual main.tscn.
 The existing paused reciprocal-container fixture supplies the carrier link;
@@ -1331,7 +1331,27 @@ final cleanup before reporting success. container_navigation_scene_reference
 records scope. Owned DF191860 exits unsaved with source preservation and restored
 fixture links. All thirteen GPU logs contain only the known thread notice; the
 remaining chest/item regression lane passes. Unit destinations and non-Box
-container types remain unfinished, as does removal-time Melt.
+container types remain unfinished; removal-time Melt acceptance follows below.
+
+Management102 permits confirmed eligible Melt contents receipts during Box
+removal. Native canMelt, markMelt and cancelMelt routines remain authoritative;
+no eligibility or melt-list behavior is reconstructed in Godot. The chest-only
+removal opt-in, exact revisions, same-removal-state postcondition and unknown
+outcome handling remain intact. Both endpoints must rebuild for version102.
+
+Protected144047 on2026-10-30 uses real weapon32574, selected through the native
+eligibility reader and temporarily substituted into the second contents row.
+Native Melt sets the flag and registers the item exactly once; native cancellation
+restores the exact original flags and ANY_MELT_DESIGNATED list. The actual main
+scene then executes both root-viewport Melt clicks with confirmed flags and
+continued removal, and native checks verify final flag/list restoration. All
+original contents pointers are restored; this paused display fixture does not
+prove natural hauling, active smelter job cleanup or general weapon artwork.
+melt_removal_reference records the precise scope. Owned DF188844 exits unsaved
+with source preservation. All fourteen GPU logs contain only the known thread
+notice. MSVC build/install and QA chest-melt pass, including core and contents
+controller tests for eligible/ineligible requests. The existing chest, worker,
+resize and navigation regression lane passes; public routes remain staged.
 
 ## Native item holder provider
 

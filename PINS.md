@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management102 also permits confirmed eligible Melt contents receipts during
+Box removal. The native eligibility and mark/cancel routines remain authoritative.
+Rebuild both endpoints on `Local\\df3d_management_v102`; management101 is
+incompatible. No historical receipt or missing authority is synthesized.
+
 Management101 permits confirmed contents Forbid/Dump/Visibility receipts during
 Box removal. Melt during removal remains unverified and refused. Rebuild both
 endpoints on `Local\\df3d_management_v101`; management100 is incompatible.

@@ -100,7 +100,7 @@ FarmEditResult<BuildingContentsSnapshot> finishBuildingItemEdit(
     FarmEditResult<BuildingContentsSnapshot> result;
     const BuildingContentsRow* row=nullptr;
     try {
-        if(!expected||!validBuildingContents(before)||!before.completed||(before.removing&&(!allowRemoving||action==BuildingItemAction::Melt)))return result;
+        if(!expected||!validBuildingContents(before)||!before.completed||(before.removing&&!allowRemoving))return result;
         if(before.revision!=expected){result.outcome=FarmEditOutcome::Stale;return result;}
         for(const auto& candidate:before.rows)if(candidate.id==itemId){row=&candidate;break;}
         if(!row)return result;

@@ -3763,6 +3763,11 @@
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers -FarmItemCarrierArt compares the complete chest panel with native and exercises contents View while removing."
     },
     {
+      "path": "presentations/godot/project/tests/chest_melt_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected FarmItemCarriers lane verifies eligible Melt through the main-scene chest contents control while removal is queued."
+    },
+    {
       "path": "presentations/godot/project/tests/item_carrier_scene_live.gd",
       "status": "manual",
       "reason": "Protected FarmItemCarriers lane verifies actual main-scene item to container to building and contents navigation."

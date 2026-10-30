@@ -34171,6 +34171,60 @@
         "Melt during removal remains unfinished",
         "Public routes remain staged"
       ]
+    },
+    "melt_removal_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-144047",
+      "date": "2026-10-30",
+      "management_version": 102,
+      "owned_df_pid": 188844,
+      "success": true,
+      "observations": [
+        {
+          "flags": 540673,
+          "item_id": 32574,
+          "melt_ids": [],
+          "name": "chest-melt-before"
+        },
+        {
+          "flags": 8929281,
+          "item_id": 32574,
+          "melt": true,
+          "melt_ids": [
+            32574
+          ],
+          "name": "chest-melt-enabled"
+        },
+        {
+          "flags": 540673,
+          "item_id": 32574,
+          "melt": false,
+          "melt_ids": [],
+          "name": "chest-melt-cleared"
+        },
+        {
+          "name": "chest-melt-wire",
+          "scene": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          }
+        },
+        {
+          "item_id": 32574,
+          "name": "chest-melt-restored",
+          "restored": true
+        }
+      ],
+      "fixture": "Real native-eligible weapon32574 temporarily substituted for the displayed second contents item; all original contents pointers restored. Paused, no hauling or AI ticks.",
+      "native_effect": "Melt adds exactly one ID to ANY_MELT_DESIGNATED; cancellation restores exact original list and flags.",
+      "viewer_effect": "Actual main.tscn root viewport Melt control true/false; confirmed flags and removal retained after each; native final list/flags checked after client exits.",
+      "cleanup": "Original item pointers, name/jobs/flags restored; owned session exits unsaved; source manifest unchanged",
+      "diagnostics": "14 GPU logs: known render-thread notice only",
+      "limitations": [
+        "Does not accept general weapon item-sheet appearance",
+        "No natural hauling or active smelter job cleanup in this fixture",
+        "Public routes remain staged"
+      ]
     }
   }
 }

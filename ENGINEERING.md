@@ -1241,8 +1241,25 @@ with source preservation; all previous effects and pixel regressions pass. All t
 GPU logs contain only the known render-thread notice. build/qa/chest-panel passes
 core/header controller; the farm contents capture retains only its documented
 thread/device-finalize/shutdown-object diagnostics. This is standalone acceptance.
-Main-scene input ownership/navigation, resize, suspended-state rendering and
+Main-scene acceptance follows below. Resize, suspended-state rendering and
 removal-time contents edits remain unfinished; public exposure is unchanged.
+
+The staged chest_panel owner shares farm panel input and navigation lifetime,
+but uses the independent building header state and chest view. Item holder
+navigation dispatches by authoritative building type, preserving Farm/Box targets.
+Chest contents remain inspectable during removal. A Box item-carrier hook is
+connected; its main-scene traversal and unit destinations remain unverified.
+
+Protected135843 on2026-10-30 verifies actual main.tscn with root mouse and keyboard
+input: Box holder routing, immediate naming retained after Escape/drain, restored
+name through Backspace/Enter, HUD game-menu input blocking, Remove, contents View,
+holder return during removal, Cancel and right-click closure. Initial, removing
+and restored full panels match native exactly. scene_reference retains hashes
+and scope. Owned DF70368 exits unsaved with unchanged source manifest and restored
+native name/jobs. All eleven GPU logs contain only the known render-thread notice;
+core passes19/19 and chest-owner-fixed passes header/Reports panel checks.
+The Reports scrollbar also inherits its parent wheel_enabled member instead of
+redeclaration, fixing the parser failure encountered by the complete scene.
 
 ## Native item holder provider
 

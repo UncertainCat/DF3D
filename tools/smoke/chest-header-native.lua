@@ -140,3 +140,8 @@ click(832,82);local stale_revision=action('read').snapshot.revision
 local wire_worker=fixture.attach(building)
 local row=wire('worker',stale_revision);row.worker_after=fixture.observe(building,wire_worker)
 assert(json.encode(row.worker_after)==json.encode(native_after),'wire worker cleanup differs from native')
+
+local file=assert(io.open(out..'/chest-header-expected.json','w'));file:write(json.encode({mode='scene',snapshot=action('read').snapshot}));file:close()
+local row=capture('chest-owner-wire')
+local result=assert(io.open(out..'/chest-scene-result.json'));row.scene=json.decode(result:read('*a'));result:close();assert(row.scene.success)
+assert(building.name==original and #building.jobs==0 and not dfhack.buildings.markedForRemoval(building),'main scene did not restore chest')

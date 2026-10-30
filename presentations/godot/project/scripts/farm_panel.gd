@@ -1,6 +1,7 @@
 extends Node
 # Staged main-scene owner. Public building selection remains on the inspector
 # until removal, external selectors and the full farm workflow are accepted.
+signal holder_requested(building_type: int, building_id: int)
 const Preferences=preload("res://scripts/presentation_settings.gd")
 var state=preload("res://scripts/farm_state.gd").new()
 var contents=preload("res://scripts/building_contents_state.gd").new()
@@ -17,10 +18,15 @@ var right_travel:=0.0
 func configure(world,service,host,help=null) -> void:
 	ui_host=host;state.configure(service);contents.configure(service)
 	canvas=CanvasLayer.new();canvas.layer=5;add_child(canvas)
-	panel=preload("res://scripts/farm_sheet_view.gd").new();canvas.add_child(panel);panel.configure(world,state,help,contents)
+	panel=_create_view();canvas.add_child(panel);panel.configure(world,state,help,contents)
 	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self)
 	item_owner=preload("res://scripts/item_panel.gd").new();add_child(item_owner);item_owner.configure(world,service,host,help)
-	item_owner.holder_requested.connect(func(id):open_target(id))
+	item_owner.holder_requested.connect(func(id):
+		var holder: Dictionary=item_owner.state.snapshot.get("holder",{})
+		if holder.get("id",-1)==id:holder_requested.emit(int(holder.get("type",-1)),id))
+	item_owner.carrier_requested.connect(func(kind,id):
+		var carrier: Dictionary=item_owner.state.snapshot.get("carrier",{})
+		if kind==1 and carrier.get("id",-1)==id and carrier.get("item_type",-1)==30:item_owner.open_target(id))
 	panel.contents.view_requested.connect(func(id):
 		if panel.contents_allowed() and contents.phase==contents.Phase.Ready:item_owner.open_target(id))
 	state.changed.connect(_state_changed)
@@ -28,13 +34,17 @@ func configure(world,service,host,help=null) -> void:
 	contents.applied.connect(state.refresh)
 	ui_host.register(self);_process(0)
 
+func _create_view():return preload("res://scripts/farm_sheet_view.gd").new()
+func _open_state(id: int,season: int) -> void:state.open(id,season)
+func _contents_supported() -> bool:return not state.snapshot.get("removing",false)
+
 func open_target(id: int,season: int=-1) -> void:
 	if not play_enabled or not ui_host.activate(self):return
-	opening=true;contents.close();state.open(id,season);opening=false;_state_changed()
+	opening=true;contents.close();_open_state(id,season);opening=false;_state_changed()
 
 func _state_changed() -> void:
 	if not opening and state.building_id>=0 and not state.snapshot.is_empty():
-		if state.snapshot.get("removing",false):contents.close()
+		if not _contents_supported():contents.close()
 		elif contents.building_id!=state.building_id:contents.open(state.building_id)
 	if not opening and state.building_id<0:
 		# A tab/target replacement emits Closed before starting its next read.

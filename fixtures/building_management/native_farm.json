@@ -33787,6 +33787,57 @@
         }
       },
       "scope": "Standalone full chest panel with actual header/contents controllers. All five contents View identities work in idle and assigned-worker removal states. Real viewport Rename/Remove/Cancel clicks and name-entry text/Backspace/Enter events apply and restore state. All five complete panel comparisons are exact. Keyboard owner routing, main-scene navigation, resize, suspended rendering and contents flag actions during removal remain unverified."
+    },
+    "scene_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-135843",
+      "date": "2026-10-30",
+      "owned_df_pid": 70368,
+      "success": true,
+      "surface": "scenes/main.tscn through staged chest_panel owner",
+      "checks": [
+        "Box item holder routes to chest, not farm",
+        "Root keyboard typing survives Escape and action drain",
+        "Root Backspace and Enter restore native name",
+        "HUD game-menu overlay blocks header edits",
+        "Remove retains contents; View opens item 5834; holder returns to removing chest",
+        "Cancel restores header and contents",
+        "Right-click releases input owner"
+      ],
+      "pixels": {
+        "initial": {
+          "size": [
+            488,
+            708
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "3ee4eee229bb98f2635d1cd9d4f281ccd32dcf1f7c8890800ad0ec9a88532a0d"
+        },
+        "removing": {
+          "size": [
+            488,
+            708
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "f6fa5aa868eb642c9d51af7fea1d912284d02651db34a02cc1da38764d4d2654"
+        },
+        "restored": {
+          "size": [
+            488,
+            708
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "3ee4eee229bb98f2635d1cd9d4f281ccd32dcf1f7c8890800ad0ec9a88532a0d"
+        }
+      },
+      "cleanup": "Owned session exits unsaved; source manifest unchanged; native name and jobs restored",
+      "diagnostics": "11 GPU logs: known separate-render-thread notice only",
+      "limitations": [
+        "Public chest route remains hidden",
+        "Resize and suspended-state rendering not yet accepted",
+        "Removal-time contents edits not yet accepted",
+        "New container-carrier navigation hook not yet exercised in main scene",
+        "Unit carrier destination remains unfinished"
+      ]
     }
   }
 }

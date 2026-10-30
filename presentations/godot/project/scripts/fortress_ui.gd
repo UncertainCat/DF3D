@@ -110,11 +110,15 @@ func ensure_agreement_tracker():
 		agreement_tracker.hover_claim_changed.connect(tile_hover.set_obscured)
 	return agreement_tracker
 
+func open_building_holder(kind: int,id: int) -> void:
+	if kind==4:controller("farm").open_target(id)
+	elif kind==10:controller("chest").open_target(id)
+
 func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
-	if id=="farm":
+	if id in ["farm","chest"]:
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		if item_follow==null:
 			item_follow=preload("res://scripts/item_follow.gd").new();add_child(item_follow);item_follow.configure(actions)
@@ -122,6 +126,7 @@ func controller(id: String):
 			view.camera_rig.navigation_requested.connect(item_follow.stop)
 			view.camera_rig.mode_changed.connect(func():
 				if view.camera_rig.is_walk_mode():item_follow.stop())
+		panel.holder_requested.connect(open_building_holder)
 		panel.item_owner.configure_follow(item_follow)
 		panel.item_owner.stockpile_requested.connect(func(target):controller("areas").open_stockpile(target))
 		controllers[id]=panel;return panel

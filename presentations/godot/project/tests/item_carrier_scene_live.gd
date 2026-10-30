@@ -97,7 +97,35 @@ func unit_carrier(expected: Dictionary) -> void:
 		var office_rect:=Rect2i(664,292,232,48 if overview_case=="office-requirements" else 36 if overview_case=="offices" else 24 if overview_case=="office-spouse" else 12)
 		check(rendered.get_region(office_rect).get_data()==native.get_region(office_rect).get_data(),"Native office title pixels differ")
 	var health_rect:=Rect2i(424,292,232,72)
-	check(rendered.get_region(health_rect).get_data()==native.get_region(health_rect).get_data(),"Native Overview health pixels differ")
+	var phase_path:=directory+"/unit-health-phases.json"
+	var health_labels: Array=[]
+	if FileAccess.file_exists(phase_path):
+		var phase_data: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(phase_path))
+		for label in inspector.panel.find_children("*","Label",true,false):
+			if label.get_script()==preload("res://scripts/creature_health_flash.gd"):
+				check(label.is_processing(),"Native health animation did not start")
+				label.set_process(false);health_labels.append(label)
+		check(health_labels.size()==3,"Missing animated native health labels")
+		for phase in phase_data.phases:
+			for label in health_labels: label.apply_time(int(phase.tick))
+			await create_timer(1.1).timeout;await RenderingServer.frame_post_draw
+			var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+			for row_index in 6:
+				var rect:=Rect2i(424,292+row_index*12,232,12)
+				var expected_region:=native.get_region(rect)
+				var original: Dictionary=phase_data.original_rows[row_index]
+				if not str(original.text).is_empty():
+					# The native screenshot and later tile read can land in different
+					# phases. Preserve its glyph mask, applying the controlled native color.
+					var background:=expected_region.get_pixel(231,11)
+					var new_color: Color=inspector.creature_sheet.NativeText.colors[int(phase.colors[row_index])]
+					for py in expected_region.get_height():
+						for px in expected_region.get_width():
+							if not expected_region.get_pixel(px,py).is_equal_approx(background):expected_region.set_pixel(px,py,new_color)
+				check(actual.get_region(rect).get_data()==expected_region.get_data(),"Native health phase pixels differ: %d row%d" % [phase.tick,row_index])
+		for label in health_labels:label.set_process(true)
+	else:
+		check(rendered.get_region(health_rect).get_data()==native.get_region(health_rect).get_data(),"Native Overview health pixels differ")
 	for region in [Rect2i(416,52,488,4),Rect2i(416,52,4,708),Rect2i(900,52,4,708),Rect2i(416,756,488,4),Rect2i(424,64,96,96),Rect2i(424,160,472,48),Rect2i(424,376,232,12),Rect2i(664,376,232,12),Rect2i(664,460,232,72)]:
 		check(rendered.get_region(region).get_data()==native.get_region(region).get_data(),"Unit frame/portrait pixels differ: "+str(region))
 	var evidence:=FileAccess.open(directory+"/unit-overview-scene.json",FileAccess.WRITE)
@@ -105,4 +133,6 @@ func unit_carrier(expected: Dictionary) -> void:
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
 	key(KEY_ESCAPE);await process_frame
 	check(scene._ui.host.active==null and not inspector.panel.visible,"Unit sheet Escape did not release input")
+	for label in health_labels:
+		if is_instance_valid(label):check(not label.is_processing(),"Hidden health animation kept processing")
 	exercised=true

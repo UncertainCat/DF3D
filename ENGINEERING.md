@@ -1597,8 +1597,9 @@ The fortress-only overviewHealth reader pins the reference block and native
 helper bodies. Request-local Lua rows carry caption, palette color and flash
 kind as additive overview_health facts in management102. The renderer consumes
 these rows in order, keeping the separate Health-tab body facts unchanged.
-A label-owned process handles native dark/bright or four-phase drowning cycles;
-freed labels retire their animation. No native UI timer or drawing scratch is read.
+A label-owned process handles native dark/bright or four-phase drowning cycles.
+Attaching the script explicitly starts processing when visible; visibility changes
+stop processing while hidden and restart it when shown. Freed labels retire it. No native UI timer or drawing scratch is read.
 The native sheet receives its display-time argument through14ef90's edx (saved
 at stack+b268); fortress render3d6950 forwards its own display-time argument.
 
@@ -1610,8 +1611,23 @@ health rectangles424,292,232,72 match native pixels, with prior frame, portrait,
 title, hauling, squad, needs, camera and Escape checks passing. All eight GPU
 logs have only the known renderer notice. Owned sessions exit unsaved and source
 saves remain unchanged. MSVC and unit-health QA pass core19/19, context and
-thought-text checks. Threshold boundaries, blinking phases, traction, nonzero
-wound bleeding, resize and stale-identity cases remain live coverage gaps.
+thought-text checks. Threshold boundaries, traction, nonzero wound bleeding,
+resize and stale-identity cases remain live coverage gaps.
+
+unit_health_blink_reference adds protected172459 and172635 on2026-10-30.
+The adult fixture combines Drowning, Pale and Extreme pain. Native renders at
+0/124/125/249/250/374/375/499/500/999/1000 milliseconds supply independent color
+oracles. Each of the six viewer rows matches the native screenshot's glyph mask
+recolored with those native phase colors. This avoids treating a screenshot and
+a later real-time native cell read as the same phase. The test verifies animation
+processing starts and stops after Escape; it caught the missing explicit start
+when a script is attached to an already-added Label. Only this paced eleven-frame
+blink selection capture has a60-second timeout; ordinary captures retain30 seconds.
+The child fixture matches Healthy and prior Overview regions. Both runs preserve
+guarded state and source saves, exit unsaved, and have only the known renderer
+notice in four GPU logs. unit-health-blink QA passes core19/19, context and
+thought-text checks. Heavy bleeding's animation, reopening and resize remain
+unverified; these results do not establish complete health or healthcare actions.
 
 ## Native item holder provider
 

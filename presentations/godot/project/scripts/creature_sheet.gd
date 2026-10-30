@@ -330,6 +330,7 @@ func overview(parent: Node, detail: Dictionary):
    if flash!=0:
     label.set_script(preload("res://scripts/creature_health_flash.gd"))
     label.set("base_color",int(fact_value(row,"color",15)));label.set("flash",flash)
+    label.set_process(label.is_visible_in_tree())
  var skills: Array=records_for("skills").duplicate()
  skills.sort_custom(func(a,b):
   var ar := int(fact_value(a,"rating",0));var br := int(fact_value(b,"rating",0))

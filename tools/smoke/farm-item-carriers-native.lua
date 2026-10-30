@@ -177,6 +177,9 @@ local ok,err=xpcall(function()
      elseif health_case=='priority' then
       set(p,'longterm_stress',100000);set(unit.counters2,'hunger_timer',75000);set(unit.counters2,'thirst_timer',50000)
       set(unit.counters2,'sleepiness_timer',150000);set(unit.counters,'unconscious',1);set(unit.counters,'stunned',1);set(unit.counters,'nausea',1)
+     elseif health_case=='blink' then
+      set(unit.counters,'winded',1);set(unit.flags1,'drowning',true);set(unit.counters,'pain',100)
+      set(unit.body,'blood_count',math.max(0,unit.body.blood_max//4-1))
      elseif health_case=='injury' then set(assert(unit.health,'injury fixture requires health info').flags,'whole',2)
      else error('unknown health case')end
     end
@@ -284,6 +287,17 @@ local ok,err=xpcall(function()
     for x=53,81 do local tile=dfhack.screen.readTile(x,y);bytes[#bytes+1]=tile.ch;colors[#colors+1]={tile.fg,tile.bg,tile.bold}end
     local text=string.char(table.unpack(bytes)):gsub('[%z\1-\31]',' '):gsub('%s+$','')
     linked.health_rows[#linked.health_rows+1]={text=text,colors=colors}
+   end
+   if health_case=='blink' then
+    linked.health_phases={}
+    for _,tick in ipairs{0,124,125,249,250,374,375,499,500,999,1000}do
+     view:render(tick)
+     local colors={}
+     for y=24,29 do local tile=dfhack.screen.readTile(53,y);colors[#colors+1]=tile.fg+(tile.bold and 8 or 0)end
+     linked.health_phases[#linked.health_phases+1]={tick=tick,colors=colors}
+    end
+    local phase_file=assert(io.open(out..'/unit-health-phases.json','w'))
+    phase_file:write(json.encode{phases=linked.health_phases,original_rows=linked.health_rows});phase_file:close()
    end
    local health_protected={unit,sheet,df.global.plotinfo,unit.status.current_soul.personality}
    if unit.health then health_protected[#health_protected+1]=unit.health end

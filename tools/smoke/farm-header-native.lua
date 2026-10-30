@@ -186,7 +186,9 @@ local function selection_shot(name)
   tile={x=sheet.viewing_x,y=sheet.viewing_y,z=sheet.viewing_z},lines=lines()}
  records[#records+1]=row
  local f=assert(io.open(out..'/shot','w'));f:write(name);f:close()
- local limit=dfhack.getTickCount()+30000
+ -- Controlled blink phases pace GPU readbacks instead of synchronizing every frame.
+ local blink=name=='farm-item-carrier-unit-scene' and os.getenv('DF3D_UNIT_HEALTH_CASE')=='blink'
+ local limit=dfhack.getTickCount()+(blink and 60000 or 30000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<limit,'selection capture timeout');script.sleep(1,'frames')end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'selection advanced simulation')

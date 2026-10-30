@@ -36100,7 +36100,232 @@
       ],
       "qa": "build/qa/unit-health",
       "diagnostic": "df3d unit-health-probe <unit>",
-      "limitations": "Threshold boundaries, blinking native/rendered phases, traction, nonzero wound bleeding, resize, stale identity and other creature types remain unverified."
+      "limitations": "Threshold boundaries, traction, nonzero wound bleeding, resize and stale identity remain unverified. See unit_health_blink_reference for blinking and child coverage."
+    },
+    "unit_health_blink_reference": {
+      "cases": [
+        {
+          "case": "blink",
+          "overview_case": "neutral",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-172459",
+          "result_sha256": "a98846cf72fba8c66119e733eba72b79dbedbeee33ad26ee281f7cb157af36f2",
+          "owned_df_pid": 196016,
+          "rows": [
+            {
+              "color": 1,
+              "flash": 2,
+              "text": "Drowning"
+            },
+            {
+              "color": 14,
+              "flash": 0,
+              "text": "Extreme pain"
+            },
+            {
+              "color": 5,
+              "flash": 1,
+              "text": "Pale"
+            },
+            {
+              "color": 6,
+              "flash": 1,
+              "text": "Extreme pain"
+            }
+          ],
+          "phases": [
+            {
+              "colors": [
+                1,
+                14,
+                5,
+                6,
+                15,
+                15
+              ],
+              "tick": 0
+            },
+            {
+              "colors": [
+                1,
+                14,
+                5,
+                6,
+                15,
+                15
+              ],
+              "tick": 124
+            },
+            {
+              "colors": [
+                9,
+                14,
+                5,
+                6,
+                15,
+                15
+              ],
+              "tick": 125
+            },
+            {
+              "colors": [
+                9,
+                14,
+                5,
+                6,
+                15,
+                15
+              ],
+              "tick": 249
+            },
+            {
+              "colors": [
+                11,
+                14,
+                5,
+                6,
+                15,
+                15
+              ],
+              "tick": 250
+            },
+            {
+              "colors": [
+                11,
+                14,
+                5,
+                6,
+                15,
+                15
+              ],
+              "tick": 374
+            },
+            {
+              "colors": [
+                9,
+                14,
+                5,
+                6,
+                15,
+                15
+              ],
+              "tick": 375
+            },
+            {
+              "colors": [
+                9,
+                14,
+                5,
+                6,
+                15,
+                15
+              ],
+              "tick": 499
+            },
+            {
+              "colors": [
+                1,
+                14,
+                13,
+                14,
+                15,
+                15
+              ],
+              "tick": 500
+            },
+            {
+              "colors": [
+                9,
+                14,
+                13,
+                14,
+                15,
+                15
+              ],
+              "tick": 999
+            },
+            {
+              "colors": [
+                1,
+                14,
+                5,
+                6,
+                15,
+                15
+              ],
+              "tick": 1000
+            }
+          ],
+          "guarded_state_unchanged": true,
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        },
+        {
+          "case": "original",
+          "overview_case": "child",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-172635",
+          "result_sha256": "3961af024eabfc6b1e0c8e6591aa3487f8b7223245b47dc92858b9e4620986bf",
+          "owned_df_pid": 181896,
+          "rows": [
+            {
+              "color": 15,
+              "flash": 0,
+              "text": "Healthy"
+            }
+          ],
+          "phases": [],
+          "guarded_state_unchanged": true,
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        }
+      ],
+      "qa": "build/qa/unit-health-blink",
+      "rendered_comparison": "Native screenshot glyph masks recolored using independently sampled native palette indices at eleven controlled display times; all six rendered rows compared at each time. Screenshot and later native cell sample can have different real-time phases.",
+      "lifecycle": "Animated labels start processing while visible and stop after Escape hides the sheet.",
+      "limitations": "Heavy bleeding, traction, health-selection thresholds, resize, reopening and stale identity remain separate coverage."
     }
   }
 }

@@ -1660,7 +1660,7 @@
     "plugin_sha256": "1b48af29ecb627fb5d90d66ec8de65e581ad9b3704721b1c281e3870fc3026c7",
     "diagnostic": "df3d zone-owner-status-read <zone id> <unit id>",
     "result": "Maximum matching owned-room value, and DF-encoded status label as byte array; zero/empty when no matching room",
-    "ownership": "Semantic unit.owned_buildings and zone type, native room-value calculation with local temporary vectors and owned output label. Reads map/furnishings/materials/unit preferences; does not call the status renderer or use UI/search scratch.",
+    "ownership": "Semantic owned-building pointers and zone type; independent unit/soul/copied preferences and owned label. Selected-type-only native iteration is preserved. Native furnishing artwork may initialize; no UI/search scratch is borrowed.",
     "room_kinds": {
       "Office": 0,
       "Bedroom": 1,
@@ -1804,7 +1804,85 @@
     ],
     "checks": "All three row lines compared byte-for-byte, including absent status; native main_interface/gps guards and initial map path_cost/path_tag arrays unchanged. Actual native dining assignment supplies a nonempty DiningHall case.",
     "offline": "build/qa/owner-room-status-final core19/19 and adapter passed",
-    "remaining": "Name colors, portraits, textbox behavior, variable-width formatting, creation owner validation and full picker lifecycle acceptance."
+    "remaining": "Name colors, portraits, textbox behavior, variable-width formatting, creation owner validation and full picker lifecycle acceptance.",
+    "owned_context_reference": {
+      "native_preference_guard": "build/stockpile-storage-native-farm-discovery-20261030-164704",
+      "guard_result_sha256": "8986491e8f64bbd6e65b98c2a64452997140157e2e6cb1b61db68d89e9d94390",
+      "owned_df_pid": 190304,
+      "probe": {
+        "cold_preference_flags": 0,
+        "live_unit_preferences_ui_unchanged": true,
+        "statuses": [
+          [
+            688,
+            [
+              72,
+              97,
+              115,
+              32,
+              68,
+              101,
+              99,
+              101,
+              110,
+              116,
+              32,
+              83,
+              116,
+              117,
+              100,
+              121
+            ]
+          ],
+          [
+            588,
+            [
+              72,
+              97,
+              115,
+              32,
+              68,
+              101,
+              99,
+              101,
+              110,
+              116,
+              32,
+              81,
+              117,
+              97,
+              114,
+              116,
+              101,
+              114,
+              115
+            ]
+          ],
+          [
+            0,
+            []
+          ],
+          [
+            0,
+            []
+          ]
+        ]
+      },
+      "native_room_values": [
+        688,
+        588,
+        0,
+        0
+      ],
+      "owner_picker_regression": "build/stockpile-storage-native-zone-owner-20261030-164816",
+      "picker_result_sha256": "73c54fc1855e61f195a22b3a502fa21717c49c507b8f72c7ba5f2cfaafc1b49f",
+      "picker_owned_df_pid": 122440,
+      "picker_observations": 690,
+      "closed_unsaved": true,
+      "source_manifest_unchanged": true,
+      "qa": "build/qa/zone-room-owned",
+      "limitations": "Cold furnishing artwork, nonzero dining/tomb preference guards and sharing variants remain separate coverage gaps."
+    }
   },
   "owner_display_integration": {
     "protocol": 63,

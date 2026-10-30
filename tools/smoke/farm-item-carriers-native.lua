@@ -277,6 +277,20 @@ local ok,err=xpcall(function()
     end
     local text,status=dfhack.run_command_silent('df3d','unit-room-requirements-probe',tostring(unit.id))
     local value_text,value_status=dfhack.run_command_silent('df3d','unit-room-values-probe',tostring(unit.id))
+    local owner_values={}
+    local room_types={df.civzone_type.Office,df.civzone_type.Bedroom,df.civzone_type.DiningHall,df.civzone_type.Tomb}
+    for index,room_type in ipairs(room_types)do
+     local room
+     for _,building in ipairs(df.global.world.buildings.all)do
+      if df.building_civzonest:is_instance(building) and building.type==room_type then room=building;break end
+     end
+     assert(room,'missing Zone owner valuation fixture')
+     local owner_text,owner_status=dfhack.run_command_silent('df3d','zone-owner-status-read',tostring(room.id),tostring(unit.id))
+     assert(owner_status==0,owner_text)
+     local result=json.decode(owner_text)
+     assert(result[1]==linked.room_values[index],'Zone owner value differs from native room value')
+     owner_values[index]=result
+    end
     local unchanged=true
     for _,copy in ipairs(copies)do
      local after=df.new('uint8_t',copy.size);dfhack.internal.memmove(after,copy.address,copy.size)
@@ -287,6 +301,7 @@ local ok,err=xpcall(function()
     assert(json.encode(json.decode(text))==json.encode(linked.room_requirements),'direct native requirements differ')
     linked.requirement_probe={values=json.decode(text),live_unit_assignments_ui_unchanged=true}
     assert(value_status==0,value_text);assert(json.encode(json.decode(value_text))==json.encode(linked.room_values),'owned room values differ from native')
+    linked.owner_value_probe={statuses=owner_values,live_unit_preferences_ui_unchanged=unchanged,cold_preference_flags=overview_saved.preference.flags.whole}
     linked.value_probe={values=json.decode(value_text),live_unit_preferences_ui_unchanged=unchanged,cold_preference_flags=overview_saved.preference.flags.whole}
    end
    local p=unit.status.current_soul.personality

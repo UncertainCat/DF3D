@@ -1,6 +1,7 @@
 #include "zone_native.h"
 #include "location_value_native.h"
 #include "location_staff_order_native.h"
+#include "unit_room_native.h"
 #include "df/world_site.h"
 #include "df/abstract_building.h"
 #include "df/building_civzonest.h"
@@ -795,7 +796,7 @@ std::optional<ZoneOwnerNameColor> nativeZoneOwnerNameColor(df::unit& candidate) 
     return result;
 }
 std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzonest& zone,df::unit& candidate) {
-    if(!df::global::world || !staffOrderingFunctions())return std::nullopt;
+    if(!df::global::world || !staffOrderingFunctions() || !df3d_room::valuationReady())return std::nullopt;
     int16_t roomKind;
     switch(zone.type) {
         case df::civzone_type::Office:roomKind=0;break;
@@ -816,11 +817,15 @@ std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzon
     static_assert(offsetof(df::unit,owned_buildings)==0x450);
     using Value=int32_t (*)(df::building_civzonest*,df::unit*);
     using Label=void (*)(std::string*,int32_t,int16_t);
+    df3d_room::ValuationContext context(&candidate);
+    if(!context.valid())return std::nullopt;
     ZoneOwnerRoomStatus result;
+    // Preserve the picker reference's selected-type-only order. Overview's
+    // all-room aggregate would visit unrelated rooms and alter this sequence.
     for(auto* building:candidate.owned_buildings) {
         auto* room=virtual_cast<df::building_civzonest>(building);
         if(!room || room->type!=zone.type)continue;
-        result.value=std::max({result.value,1,reinterpret_cast<Value>(const_cast<uint8_t*>(base+0x559610))(room,&candidate)});
+        result.value=std::max({result.value,1,reinterpret_cast<Value>(const_cast<uint8_t*>(base+0x559610))(room,context.unit())});
     }
     if(result.value>0) {
         reinterpret_cast<Label>(const_cast<uint8_t*>(base+0xab4f20))(&result.label,result.value,roomKind);

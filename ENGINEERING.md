@@ -1525,8 +1525,10 @@ native values while guarded unit, preferences, assignments and UI bytes remain
 unchanged. All sessions exit unsaved and preserve source saves; twelve GPU logs
 contain only the known renderer notice. Cold furnishing artwork initialization,
 nonzero dining/tomb values, room-sharing variants and other creature types still
-need live coverage. Existing Zone owner room-status reads still pass live
-preferences to native559610; sharing the owned context there remains follow-up.
+need live coverage. Overview and Zone owner status share the independently
+owned valuation context in unit_room_native.h; each keeps its native calculation
+order. Zone status visits only matching room types, rather than using Overview’s
+all-room aggregate.
 
 When neither titles nor a warning occupy the office quadrant, native status
 eligibility calls138ed20 (fortress control),1376500 (PET/PET_EXOTIC exclusion)
@@ -6970,6 +6972,21 @@ remain unchanged. DF119216 closes unsaved with source preserved. MSVC and
 `build/qa/owner-room-status-final` core19/19 plus adapter pass. This establishes
 the native status reader; full picker rendering/lifecycle acceptance remains
 separate from the production text integration below.
+
+Room valuation uses the shared unit_room_native.h context, copying the unit's
+preferences before native559610 can mark them. The picker retains selected-type
+iteration in owned-building order and its minimum value of1 for each matching
+room. It does not use Overview's all-room aggregate. Native furnishing artwork
+may still initialize lazily; this isolates preference writes, not all world effects.
+
+Protected164704 on2026-10-30 resets a material preference after native valuation,
+then checks Overview and all four Zone status reads against native688/588/0/0.
+Guarded unit, preference, assignment and UI bytes remain identical; the preference
+stays cold. Overview pixel/navigation checks pass, with only the known renderer
+notice in both GPU logs. Protected ZoneOwner164816 repeats the native picker
+regression (690 observations). Both owned sessions exit unsaved and preserve
+the source save. Evidence is retained in owner_room_status.owned_context_reference.
+MSVC and zone-room-owned QA pass core19/19, context and thought-text checks.
 
 Scoped owner candidate builders now call both native readers with request-local
 callbacks and retain only owned UTF-8 values. Native name/profession fields replace

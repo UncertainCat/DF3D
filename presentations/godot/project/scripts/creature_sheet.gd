@@ -300,6 +300,11 @@ func overview(parent: Node, detail: Dictionary):
   if relation in ["lover","spouse"]: summary_line(cells[0],relation.capitalize()+" "+str(fact_value(row,"translated_name",row.name)),Color(1,0,1))
  var offices: Array=records_for("identity").filter(func(row):return fact_value(row,"record_type")=="overview_office")
  for office in offices: summary_line(cells[3],str(office.name),NativeText.colors[15])
+ var room_warning: String=""
+ for row in records_for("identity"):
+  if fact_value(row,"record_type")=="overview_room_requirements":
+   room_warning=str(fact_value(row,"warning",""))
+   if not room_warning.is_empty():summary_line(cells[3],room_warning,NativeText.colors[int(fact_value(row,"warning_color","15"))])
  for row in records_for("identity"):
   if fact_value(row,"record_type")=="overview_hauling":
    var task_text := str(fact_value(row,"native_text",""))
@@ -312,7 +317,7 @@ func overview(parent: Node, detail: Dictionary):
   if children>0: summary_line(cells[0],"%d children" % children)
   var pet_owner := str(fact_value(row,"pet_owner",""))
   if not pet_owner.is_empty(): summary_line(cells[0],"Pet of "+pet_owner,Color(1,0,1))
-  if offices.is_empty() and fact_value(row,"citizen")=="yes": summary_line(cells[3],"Citizen",Color(0,1,1))
+  if offices.is_empty() and room_warning.is_empty() and fact_value(row,"citizen")=="yes": summary_line(cells[3],"Citizen",Color(0,1,1))
  for descriptor in NativeText.attributes(self):
   summary_line(cells[1],descriptor.text,descriptor.color)
  for row in records_for("health"):

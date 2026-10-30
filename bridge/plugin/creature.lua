@@ -149,7 +149,9 @@ return function(request)
   if request.room_requirements then
    local rooms=record(s,-5,'')
    fact(s,rooms,'record_type','overview_room_requirements')
-   for i,value in ipairs(request.room_requirements(u.id))do fact(s,rooms,({'office','bedroom','dining','tomb'})[i],value)end
+   local required,actual,warning,color=request.room_requirements(u.id)
+   for i,key in ipairs{'office','bedroom','dining','tomb'}do fact(s,rooms,key,required[i]);fact(s,rooms,'actual_'..key,actual[i])end
+   fact(s,rooms,'warning',warning);fact(s,rooms,'warning_color',color)
   end
   if request.office_titles then
    for _,title in ipairs(request.office_titles(u.id))do

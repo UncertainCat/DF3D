@@ -1458,7 +1458,7 @@ Set DF3D_UNIT_OVERVIEW_CASE to fresh-focused, fresh-distracted, focused-mild,
 distracted-mild, neutral, squad or squad-alias in the unit-only carrier lane to
 select these adult fixtures; the default child retains the original regression.
 Other creature types, needs-list clipping outside the tested region, header
-controls/colors/copy, health, office room warnings/status fallback and thoughts
+controls/colors/copy, health, office status fallback and thoughts
 still require acceptance.
 
 Creature Overview office titles use native assignment lookup b9dc0, position
@@ -1479,8 +1479,8 @@ Owned sessions exit unsaved with source preservation; all six GPU logs contain
 only the known renderer notice. Temporary position/assignment/link fixtures are
 removed; these checks do not accept appointment or marriage commands. Select
 offices or office-spouse with DF3D_UNIT_OVERVIEW_CASE in the unit-only lane.
-Room requirement warnings and no-office Citizen/Resident/No official position
-fallback remain unfinished; this is title acceptance, not the whole quadrant.
+No-office Citizen/Resident/No official position fallback remains unfinished;
+this is title acceptance, not the whole quadrant. Warning acceptance follows.
 
 The creature identity facts also carry native room requirements in office,
 bedroom, dining and tomb order. Native134a5e0 aggregates all own position links,
@@ -1499,10 +1499,35 @@ also matches native with cold position indices, preserving guarded unit,
 assignment and UI bytes. The broader viewer workflow warms position indices;
 the isolated guard establishes ownership for this reader only. All sessions
 exit unsaved and preserve the source; six GPU logs have only the known renderer
-notice. These facts are not yet used to render warnings: native134a830's actual
-room valuation and owned preference handling remain required. In particular,
-559610 and its furnishing preference helpers can set unit preference flags;
-calling that path with live preferences is not a read-only implementation.
+notice. This establishes requirements independently of the room values below.
+
+Actual room values call native134a830 with an independent unit/soul context and
+copied preferences. Native559610 and furnishing preference helpers133ee00 and
+133ec90 may mark matching preferences; those writes remain owned. The context
+supplies only audited unit inputs: race, owned-building pointers and current
+soul preferences. Native room/building/item value calculations read real map,
+materials, furnishings and decorations. Artwork can undergo native semantic
+lazy initialization through improvement color/shape collection caede0; this is
+retained native behavior, not a global read-only guarantee. No native UI state
+is an input. Full helper bodies and switch tables are pinned where applicable.
+
+The first unmet requirement uses native ab4f20 for its room-rank caption and the
+native "Needs " prefix. Global drawing-color writer ab4ee0 is not invoked:
+its scalar result is yellow14 for a positive insufficient value and red12 for
+zero. Satisfied requirements produce no warning. Title ordering is unchanged.
+
+unit_room_values_reference records protected162354,162525,162626,162728,162829
+and162938 on2026-10-30. Five controlled adult1017 cases cover bedroom, office,
+dining, tomb and satisfied requirements; child988 covers empty values. Adult
+values are688/588/0/0, matching native, and the232x48 title/warning regions
+match pixel-for-pixel. A temporary wildcard material preference is activated
+by native, then reset cold before the isolated reader. The reader reproduces
+native values while guarded unit, preferences, assignments and UI bytes remain
+unchanged. All sessions exit unsaved and preserve source saves; twelve GPU logs
+contain only the known renderer notice. Cold furnishing artwork initialization,
+nonzero dining/tomb values, room-sharing variants and other creature types still
+need live coverage. Existing Zone owner room-status reads still pass live
+preferences to native559610; sharing the owned context there remains follow-up.
 
 ## Native item holder provider
 

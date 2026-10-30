@@ -34995,6 +34995,227 @@
         "Controlled position fixtures do not accept appointment commands",
         "Direct ownership guard does not establish whole-viewer nonmutation"
       ]
+    },
+    "unit_room_values_reference": {
+      "date": "2026-10-30",
+      "native_aggregate": {
+        "rva": "134a830",
+        "length": 227,
+        "fnv64": "c1f6ffa4ccd5f4ee"
+      },
+      "native_value": {
+        "rva": "559610",
+        "length": 3923,
+        "fnv64": "b4aa2d070c8d24f1"
+      },
+      "ownership": "Independent unit/soul and copied preferences isolate preference writes. Real furnishing artwork may undergo native semantic lazy initialization. No UI state inputs.",
+      "warning": "First unmet requirement; native ab4f20 caption, Needs prefix; positive insufficient value color14, missing color12; no global drawing-color call",
+      "cases": [
+        {
+          "case": "bedroom",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-162354",
+          "required": [
+            300,
+            600,
+            1000,
+            10000
+          ],
+          "actual": [
+            688,
+            588,
+            0,
+            0
+          ],
+          "warning": "Needs Decent Quarters",
+          "color": 14,
+          "probe": {
+            "cold_preference_flags": 0,
+            "live_unit_preferences_ui_unchanged": true,
+            "values": [
+              688,
+              588,
+              0,
+              0
+            ]
+          },
+          "rect": [
+            664,
+            292,
+            232,
+            48
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "f1ec891df170a9c46aa5c0d27f324454585d217b1bd2d8df446521127789304f"
+        },
+        {
+          "case": "office",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-162525",
+          "required": [
+            1000,
+            0,
+            0,
+            0
+          ],
+          "actual": [
+            688,
+            588,
+            0,
+            0
+          ],
+          "warning": "Needs Splendid Study",
+          "color": 14,
+          "probe": {
+            "cold_preference_flags": 0,
+            "live_unit_preferences_ui_unchanged": true,
+            "values": [
+              688,
+              588,
+              0,
+              0
+            ]
+          },
+          "rect": [
+            664,
+            292,
+            232,
+            48
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "51a6b5c2f336debd6f3d5040bc3cdca41c4de97c0fff47c507fc6faec04962a9"
+        },
+        {
+          "case": "dining",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-162626",
+          "required": [
+            1,
+            0,
+            1000,
+            0
+          ],
+          "actual": [
+            688,
+            588,
+            0,
+            0
+          ],
+          "warning": "Needs Fine Dining Room",
+          "color": 12,
+          "probe": {
+            "cold_preference_flags": 0,
+            "live_unit_preferences_ui_unchanged": true,
+            "values": [
+              688,
+              588,
+              0,
+              0
+            ]
+          },
+          "rect": [
+            664,
+            292,
+            232,
+            48
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "c5de05fefee199538b483ad0c15e595b00d7ac7f9d14cce54453713c8ae715a2"
+        },
+        {
+          "case": "tomb",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-162728",
+          "required": [
+            1,
+            0,
+            0,
+            10000
+          ],
+          "actual": [
+            688,
+            588,
+            0,
+            0
+          ],
+          "warning": "Needs Royal Mausoleum",
+          "color": 12,
+          "probe": {
+            "cold_preference_flags": 0,
+            "live_unit_preferences_ui_unchanged": true,
+            "values": [
+              688,
+              588,
+              0,
+              0
+            ]
+          },
+          "rect": [
+            664,
+            292,
+            232,
+            48
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "b26c5f007ecca32fbaad23f11661a11613274306d96160c5262b0ce932f644fc"
+        },
+        {
+          "case": "satisfied",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-162829",
+          "required": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "actual": [
+            688,
+            588,
+            0,
+            0
+          ],
+          "warning": "",
+          "color": 15,
+          "probe": {
+            "cold_preference_flags": 0,
+            "live_unit_preferences_ui_unchanged": true,
+            "values": [
+              688,
+              588,
+              0,
+              0
+            ]
+          },
+          "rect": [
+            664,
+            292,
+            232,
+            48
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "2f33323b63bdb944a145757e2c125f2721db4ccc321e01936d6a24d7108debd6"
+        },
+        {
+          "case": "child",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-162938",
+          "required": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "actual": [
+            0,
+            295,
+            0,
+            0
+          ],
+          "scene_success": true
+        }
+      ],
+      "verification": "Owned unsaved/source preserved; all twelve GPU logs only known renderer notice",
+      "limitations": [
+        "Cold furnishing artwork initialization remains unverified on this path",
+        "Nonzero dining/tomb values, room-sharing variants and other creature kinds need live coverage",
+        "No-office fallback remains unfinished",
+        "Existing Zone owner room status still uses live preferences and needs ownership follow-up"
+      ]
     }
   }
 }

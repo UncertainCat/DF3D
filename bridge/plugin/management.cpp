@@ -3138,9 +3138,16 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto values=df3d_creature::requiredRooms(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!values)return luaL_error(state,"Native creature room requirements unavailable");
+      const auto actual=df3d_creature::actualRooms(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!actual)return luaL_error(state,"Native creature room values unavailable");
+      const auto warning=df3d_creature::roomWarning(*values,*actual);
+      if(!warning)return luaL_error(state,"Native creature room warning unavailable");
       lua_newtable(state);int index=0;
       for(auto value:*values){lua_pushinteger(state,value);lua_rawseti(state,-2,++index);}
-      return 1;
+      lua_newtable(state);index=0;
+      for(auto value:*actual){lua_pushinteger(state,value);lua_rawseti(state,-2,++index);}
+      lua_pushlstring(state,warning->text.data(),warning->text.size());lua_pushinteger(state,warning->color);
+      return 4;
     });
     lua_setfield(L,-2,"room_requirements");
     lua_pushcfunction(L,[](lua_State* state)->int {

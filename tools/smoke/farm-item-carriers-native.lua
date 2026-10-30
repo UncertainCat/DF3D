@@ -5,6 +5,7 @@ local g=df.global.gps;local sheet=df.global.game.main_interface.view_sheets
 local entry=assert(b.contained_items[0]);local item=entry.item
 local saved={flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z,refs={}}
 local overview_case=os.getenv('DF3D_UNIT_OVERVIEW_CASE') or 'child'
+local room_case=os.getenv('DF3D_UNIT_ROOM_CASE') or 'bedroom'
 for _,ref in ipairs(item.general_refs)do saved.refs[#saved.refs+1]=ref end
 local container,unit
 for _,candidate in ipairs(df.global.world.items.other.BOX)do
@@ -32,6 +33,7 @@ local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
  if overview_saved then
   local old=overview_saved;local p=unit.status.current_soul.personality
+  if old.preference then erase_pointer(unit.status.current_soul.preferences,old.preference);df.delete(old.preference)end
   for _,saved in ipairs(old.assignment_indices or {})do saved.assignment.position_vector_idx=saved.index end
   if old.spouse_link then erase_pointer(old.hf.histfig_links,old.spouse_link);df.delete(old.spouse_link)end
   for i=#(old.offices or {}),1,-1 do
@@ -165,6 +167,11 @@ local ok,err=xpcall(function()
      if overview_case=='squad-alias' then squad.alias='Native squad alias' end
     end
     if overview_case=='offices' or overview_case=='office-spouse' or overview_case=='office-requirements' then
+     if overview_case=='office-requirements' then
+      local preference=df.unit_preference:new();overview_saved.preference=preference
+      preference.type=df.unitpref_type.LikeMaterial;preference.mattype=-1;preference.matindex=-1;preference.flags.whole=0
+      unit.status.current_soul.preferences:insert('#',preference)
+     end
      local hf=assert(df.historical_figure.find(unit.hist_figure_id));overview_saved.hf=hf;overview_saved.offices={}
      local entity=assert(df.historical_entity.find(df.global.plotinfo.group_id))
      local function add_position(holder,label)
@@ -185,6 +192,13 @@ local ok,err=xpcall(function()
        if overview_case=='office-requirements' then
         position.required_office=i*100;position.required_bedroom=(4-i)*200
         position.required_dining=i==2 and 1000 or 0;position.required_tomb=i==3 and 10000 or 0
+        if room_case~='bedroom' then
+         position.required_office=room_case=='office' and 1000 or 0
+         position.required_bedroom=0
+         position.required_dining=room_case=='dining' and 1000 or 0
+         position.required_tomb=room_case=='tomb' and 10000 or 0
+         assert(room_case=='office' or room_case=='dining' or room_case=='tomb' or room_case=='satisfied','unknown room case')
+        end
        end
       end
      else
@@ -219,16 +233,23 @@ local ok,err=xpcall(function()
    linked.overview_case=overview_case
    linked.room_requirements={}
    for i=0,3 do linked.room_requirements[i+1]=sheet.reqroom[i]end
+   linked.room_values={};for i=0,3 do linked.room_values[i+1]=sheet.curroom[i]end
+   local value_file=assert(io.open(out..'/unit-room-values.json','w'));value_file:write(json.encode(linked.room_values));value_file:close()
    local req_file=assert(io.open(out..'/unit-room-requirements.json','w'));req_file:write(json.encode(linked.room_requirements));req_file:close()
    if overview_case=='office-requirements' then
-    assert(json.encode(linked.room_requirements)==json.encode({300,600,1000,10000}),'native requirement fixture differs')
+    linked.room_case=room_case
+    local expected_rooms=({bedroom={300,600,1000,10000},office={1000,0,0,0},dining={1,0,1000,0},tomb={1,0,0,10000},satisfied={1,0,0,0}})[room_case]
+    assert(json.encode(linked.room_requirements)==json.encode(expected_rooms),'native requirement fixture differs')
     gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+    assert(overview_saved.preference.flags.visible,'native room valuation did not activate fixture preference')
+    overview_saved.preference.flags.whole=0
     overview_saved.assignment_indices={}
     for _,extra in ipairs(overview_saved.offices)do
      overview_saved.assignment_indices[#overview_saved.assignment_indices+1]={assignment=extra.assignment,index=extra.assignment.position_vector_idx}
      extra.assignment.position_vector_idx=-1
     end
     local protected={unit,sheet,df.global.plotinfo}
+    for _,preference in ipairs(unit.status.current_soul.preferences)do protected[#protected+1]=preference end
     for _,extra in ipairs(overview_saved.offices)do protected[#protected+1]=extra.assignment end
     local copies={}
     for _,object in ipairs(protected)do
@@ -236,15 +257,18 @@ local ok,err=xpcall(function()
      copies[#copies+1]={size=size,address=address,bytes=bytes}
     end
     local text,status=dfhack.run_command_silent('df3d','unit-room-requirements-probe',tostring(unit.id))
+    local value_text,value_status=dfhack.run_command_silent('df3d','unit-room-values-probe',tostring(unit.id))
     local unchanged=true
     for _,copy in ipairs(copies)do
      local after=df.new('uint8_t',copy.size);dfhack.internal.memmove(after,copy.address,copy.size)
      for i=0,copy.size-1 do if after[i]~=copy.bytes[i]then unchanged=false end end
      df.delete(after);df.delete(copy.bytes)
     end
-    assert(status==0,text);assert(unchanged,'direct requirement reader changed live unit/assignment/UI bytes')
+    assert(status==0,text);assert(unchanged,'direct room readers changed live unit/preference/assignment/UI bytes')
     assert(json.encode(json.decode(text))==json.encode(linked.room_requirements),'direct native requirements differ')
     linked.requirement_probe={values=json.decode(text),live_unit_assignments_ui_unchanged=true}
+    assert(value_status==0,value_text);assert(json.encode(json.decode(value_text))==json.encode(linked.room_values),'owned room values differ from native')
+    linked.value_probe={values=json.decode(value_text),live_unit_preferences_ui_unchanged=unchanged,cold_preference_flags=overview_saved.preference.flags.whole}
    end
    local p=unit.status.current_soul.personality
    if overview_case:find('^fresh%-') then

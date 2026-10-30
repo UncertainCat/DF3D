@@ -3664,3 +3664,16 @@ TEST_CASE("independent BOX appearance is required coherent and decoded") {
     if(!fault){auto decoded=codec::decodeProduction(value->production());const auto& snapshot=*decoded.independentItem->snapshot;REQUIRE(snapshot.appearance);CHECK(snapshot.appearance->colorToken=="RED");CHECK(snapshot.appearance->stack==2);CHECK(snapshot.appearance->flags==32);}
   }
 }
+
+TEST_CASE("instrument inspection requires paired definition facts") {
+  for(int family=-1;family<=4;++family)for(int placed=-1;placed<=2;++placed) {
+    flatbuffers::FlatBufferBuilder b;
+    auto look=wire::CreateItemInspectionAppearance(b,b.CreateString("WOOD"),b.CreateString("INSTRUMENT"),b.CreateString(""),1,0,family,placed);
+    auto item=wire::CreateIndependentItemSnapshot(b,45,12,13,b.CreateString("instrument"),b.CreateString("WOOD"),b.CreateString("INSTRUMENT"),false,false,false,false,true,false,false,false,b.CreateString("weight"),b.CreateString("description"),0,0,-1,0,look);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());const bool valid=family>=0&&family<=3&&placed>=0&&placed<=1;
+    CHECK(bool(wire::validateManagementState(*value))!=valid);
+    if(valid){auto decoded=codec::decodeProduction(value->production());const auto& a=*decoded.independentItem->snapshot->appearance;CHECK(a.instrumentFamily==family);CHECK(a.instrumentPlaced==placed);}
+  }
+}

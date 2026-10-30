@@ -630,10 +630,10 @@ void publish() {
       const auto holder=link(v.holder),stockpile=link(v.stockpile);
       flatbuffers::Offset<m::ItemCarrier> carrier;
       if(v.carrier){const auto& c=*v.carrier;flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
-        if(c.appearance){const auto& a=*c.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags);}
+        if(c.appearance){const auto& a=*c.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced);}
         carrier=m::CreateItemCarrier(b,int8_t(c.kind),c.id,c.itemType,b.CreateString(c.name),appearance);}
       flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
-      if(v.appearance){const auto& a=*v.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags);}
+      if(v.appearance){const auto& a=*v.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced);}
       snapshot=m::CreateIndependentItemSnapshot(b,v.id,v.revision,v.itemType,b.CreateString(v.name),b.CreateString(v.materialToken),b.CreateString(v.subtypeRaw),
         v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile,v.stockpileCategories,carrier,appearance);
     }
@@ -2469,11 +2469,11 @@ std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_produc
   value.weight=DF2UTF(observed.weight);value.description=DF2UTF(observed.description);
   value.forbid=item.forbid;value.dump=item.dump;value.melt=item.melt;value.hidden=item.hidden;value.canDump=item.canDump;value.canMelt=item.canMelt;
   df::item_flags flags;flags.whole=item.flags;value.inJob=flags.bits.in_job;value.inBuilding=flags.bits.in_building;
-  if(observed.appearance){const auto& a=*observed.appearance;value.appearance=ItemInspectionAppearance{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags};
+  if(observed.appearance){const auto& a=*observed.appearance;value.appearance=ItemInspectionAppearance{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced};
     const auto& encoded=*value.appearance;if(encoded.materialToken.size()>256||encoded.subtypeRaw.size()>128||encoded.colorToken.size()>128)return std::nullopt;}
   if(observed.buildingHolder)value.holder=ItemBuildingHolder{observed.buildingHolder->id,observed.buildingHolder->type,DF2UTF(observed.buildingHolder->name)};
   if(observed.carrier){const auto& c=*observed.carrier;value.carrier=ItemCarrier{c.kind,c.id,c.itemType,DF2UTF(c.name)};
-    if(c.appearance){const auto& a=*c.appearance;value.carrier->appearance=ItemInspectionAppearance{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags};
+    if(c.appearance){const auto& a=*c.appearance;value.carrier->appearance=ItemInspectionAppearance{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced};
       const auto& encoded=*value.carrier->appearance;if(encoded.materialToken.size()>256||encoded.subtypeRaw.size()>128||encoded.colorToken.size()>128)return std::nullopt;}}
   if(observed.stockpile)value.stockpile=ItemBuildingHolder{observed.stockpile->id,observed.stockpile->type,DF2UTF(observed.stockpile->name)};
   if(value.name.size()>128*1024 || value.materialToken.size()>256 || value.subtypeRaw.size()>128 || value.weight.size()>128 || value.description.size()>32*1024 ||

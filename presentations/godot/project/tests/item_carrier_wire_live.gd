@@ -39,6 +39,8 @@ func run() -> void:
 	for key in ["id","item_type","description","weight"]:check(snapshot.get(key)==expected.snapshot[key],"Independent item field differs: "+key)
 	if expected.snapshot.has("appearance"):
 		for key in ["material_token","subtype_raw","color_token","stack","flags"]:check(snapshot.get("appearance",{}).get(key)==expected.snapshot.appearance[key],"Item appearance differs: "+key)
+	if expected.snapshot.get("appearance",{}).has("instrument"):
+		for key in ["family","placed"]:check(snapshot.appearance.get("instrument",{}).get(key,-1)==int(expected.snapshot.appearance.instrument[key]),"Instrument appearance differs: "+key)
 	if expected.snapshot.has("carrier"):
 		for key in ["kind","id","item_type","name"]:check(snapshot.get("carrier",{}).get(key)==expected.snapshot.carrier[key],"Carrier field differs: "+key)
 	if expected.snapshot.has("holder"):

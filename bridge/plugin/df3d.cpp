@@ -1660,7 +1660,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           const auto carrier=df3d_production::itemCarrier(df::item::find(id));if(!carrier)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["item_id"]=id;result["kind"]=carrier->kind;
           result["id"]=carrier->id;result["item_type"]=carrier->itemType;result["name"]=DF2UTF(carrier->name);
-          if(carrier->appearance){const auto& a=*carrier->appearance;Json::Value look(Json::objectValue);look["material_token"]=DF2UTF(a.materialToken);look["subtype_raw"]=DF2UTF(a.subtypeRaw);look["color_token"]=DF2UTF(a.colorToken);look["stack"]=a.stack;look["flags"]=a.flags;result["appearance"]=look;}
+          if(carrier->appearance){const auto& a=*carrier->appearance;Json::Value look(Json::objectValue);look["material_token"]=DF2UTF(a.materialToken);look["subtype_raw"]=DF2UTF(a.subtypeRaw);look["color_token"]=DF2UTF(a.colorToken);look["stack"]=a.stack;look["flags"]=a.flags;if(a.instrumentFamily>=0){Json::Value instrument(Json::objectValue);instrument["family"]=a.instrumentFamily;instrument["placed"]=a.instrumentPlaced;look["instrument"]=instrument;}result["appearance"]=look;}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="item-inspect-probe"||parameters[0]=="item-flag-probe") {
@@ -1693,7 +1693,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(value) {
             const auto& item=value->item;Json::Value snapshot(Json::objectValue);
             snapshot["id"]=item.id;snapshot["revision"]=std::to_string(value->revision);
-            if(value->appearance){const auto& a=*value->appearance;Json::Value look(Json::objectValue);look["material_token"]=DF2UTF(a.materialToken);look["subtype_raw"]=DF2UTF(a.subtypeRaw);look["color_token"]=DF2UTF(a.colorToken);look["stack"]=a.stack;look["flags"]=a.flags;snapshot["appearance"]=look;}
+            if(value->appearance){const auto& a=*value->appearance;Json::Value look(Json::objectValue);look["material_token"]=DF2UTF(a.materialToken);look["subtype_raw"]=DF2UTF(a.subtypeRaw);look["color_token"]=DF2UTF(a.colorToken);look["stack"]=a.stack;look["flags"]=a.flags;if(a.instrumentFamily>=0){Json::Value instrument(Json::objectValue);instrument["family"]=a.instrumentFamily;instrument["placed"]=a.instrumentPlaced;look["instrument"]=instrument;}snapshot["appearance"]=look;}
             snapshot["caption"]=DF2UTF(item.caption);snapshot["description"]=DF2UTF(value->description);snapshot["weight"]=DF2UTF(value->weight);
             snapshot["item_type"]=item.itemType;snapshot["material_token"]=DF2UTF(item.materialToken);
             snapshot["flags"]=Json::UInt(item.flags);snapshot["forbid"]=item.forbid;snapshot["dump"]=item.dump;
@@ -1702,7 +1702,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               Json::Value result(Json::nullValue);if(value){result["id"]=value->id;result["type"]=value->type;result["name"]=DF2UTF(value->name);}return result;
             };
             snapshot["holder"]=link(value->buildingHolder);snapshot["stockpile"]=link(value->stockpile);snapshot["stockpile_categories"]=value->stockpileCategories;
-            if(value->carrier){const auto& c=*value->carrier;Json::Value carrier(Json::objectValue);carrier["kind"]=c.kind;carrier["id"]=c.id;carrier["item_type"]=c.itemType;carrier["name"]=DF2UTF(c.name);if(c.appearance){const auto& a=*c.appearance;Json::Value look(Json::objectValue);look["material_token"]=DF2UTF(a.materialToken);look["subtype_raw"]=DF2UTF(a.subtypeRaw);look["color_token"]=DF2UTF(a.colorToken);look["stack"]=a.stack;look["flags"]=a.flags;carrier["appearance"]=look;}snapshot["carrier"]=carrier;}
+            if(value->carrier){const auto& c=*value->carrier;Json::Value carrier(Json::objectValue);carrier["kind"]=c.kind;carrier["id"]=c.id;carrier["item_type"]=c.itemType;carrier["name"]=DF2UTF(c.name);if(c.appearance){const auto& a=*c.appearance;Json::Value look(Json::objectValue);look["material_token"]=DF2UTF(a.materialToken);look["subtype_raw"]=DF2UTF(a.subtypeRaw);look["color_token"]=DF2UTF(a.colorToken);look["stack"]=a.stack;look["flags"]=a.flags;if(a.instrumentFamily>=0){Json::Value instrument(Json::objectValue);instrument["family"]=a.instrumentFamily;instrument["placed"]=a.instrumentPlaced;look["instrument"]=instrument;}carrier["appearance"]=look;}snapshot["carrier"]=carrier;}
             result["snapshot"]=std::move(snapshot);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

@@ -16,6 +16,8 @@
 #include "df/item_boxst.h"
 #include "df/item_instrumentst.h"
 #include "df/itemdef_instrumentst.h"
+#include "df/job_skill.h"
+#include "df/instrument_flags.h"
 #include "df/itemimprovement.h"
 
 namespace df3d_production {
@@ -112,6 +114,19 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     const auto color=item->getColorWhetherDyedOrNot();
     if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
     else if(color!=-1)return std::nullopt;
+    if(item->getType()==df::item_type::INSTRUMENT) {
+        auto* definition=virtual_cast<df::itemdef_instrumentst>(DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype()));
+        if(!definition)return std::nullopt;
+        // Native c855b9..c856a9 uses definition music_skill and PLACED_AS_BUILDING.
+        switch(definition->music_skill) {
+        case df::job_skill::PLAY_KEYBOARD_INSTRUMENT:appearance.instrumentFamily=0;break;
+        case df::job_skill::PLAY_STRINGED_INSTRUMENT:appearance.instrumentFamily=1;break;
+        case df::job_skill::PLAY_WIND_INSTRUMENT:appearance.instrumentFamily=2;break;
+        case df::job_skill::PLAY_PERCUSSION_INSTRUMENT:appearance.instrumentFamily=3;break;
+        default:return std::nullopt;
+        }
+        appearance.instrumentPlaced=definition->flags.is_set(df::instrument_flags::PLACED_AS_BUILDING)?1:0;
+    }
     appearance.stack=item->getStackSize();appearance.flags=(item->flags.bits.artifact?32:0)|(item->flags.bits.spider_web?64:0);
     if(appearance.materialToken.empty()||appearance.materialToken.size()>256||appearance.subtypeRaw.size()>128||appearance.colorToken.size()>128||appearance.stack<1)return std::nullopt;
     return appearance;
@@ -441,7 +456,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     // Observe facts after native lazy formatting, without borrowing a UI owner.
     auto facts=itemFacts(item);if(!facts)return std::nullopt;
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
-    if(value.item.itemType==30){value.appearance=itemAppearance(item);if(!value.appearance)return std::nullopt;}
+    if(value.item.itemType==30||value.item.itemType==13){value.appearance=itemAppearance(item);if(!value.appearance)return std::nullopt;}
     if(holder->id>=0)value.buildingHolder=*holder;
     else {const auto carrier=itemCarrier(item);if(!carrier)return std::nullopt;if(carrier->kind)value.carrier=*carrier;}
     if(stockpile->id>=0){

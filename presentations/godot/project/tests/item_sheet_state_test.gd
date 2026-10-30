@@ -94,6 +94,13 @@ func run() -> void:
 		item_reply({"snapshot":box})
 		check((model.phase==ItemModel.Phase.Ready)==(fault==0),"BOX appearance authority: "+str(fault))
 
+	for family in range(-1,5):
+		for placed in range(-1,3):
+			ready();model.poll(1);service.poll();var instrument:=item();instrument.item_type=13
+			instrument.appearance={"material_token":instrument.material_token,"subtype_raw":instrument.subtype_raw,"color_token":"","stack":1,"flags":0,"instrument":{"family":family,"placed":placed}}
+			item_reply({"snapshot":instrument})
+			check((model.phase==ItemModel.Phase.Ready)==(family>=0 and family<=3 and placed>=0 and placed<=1),"Instrument definition authority")
+
 	for kind in [1,2]:
 		ready();model.poll(1);service.poll()
 		var carried:=item();carried.erase("holder");carried.carrier={"kind":kind,"id":988,"item_type":30 if kind==1 else -1,"name":"native carrier"};carried.revision+=kind

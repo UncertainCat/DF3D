@@ -3,7 +3,7 @@
 
 namespace df3d_production {
 struct ItemLocationLink { int32_t id=-1,type=-1;std::string name; };
-struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0; };
+struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1; };
 struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name;std::optional<ItemInspectionAppearance> appearance; };
 struct ItemObservation {
     ItemFacts item;
@@ -30,16 +30,19 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
         byte(link->has_value());if(*link){number((*link)->id);number((*link)->type);text((*link)->name);}
     }
     number(value.stockpileCategories);
-    byte(value.carrier.has_value());if(value.carrier){const auto& c=*value.carrier;number(c.kind);number(c.id);number(c.itemType);text(c.name);byte(c.appearance.has_value());if(c.appearance){const auto& a=*c.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);}}
-    byte(value.appearance.has_value());if(value.appearance){const auto& a=*value.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);}
+    byte(value.carrier.has_value());if(value.carrier){const auto& c=*value.carrier;number(c.kind);number(c.id);number(c.itemType);text(c.name);byte(c.appearance.has_value());if(c.appearance){const auto& a=*c.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);}}
+    byte(value.appearance.has_value());if(value.appearance){const auto& a=*value.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);}
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
+}
+inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t type) {
+    return type==13 ? a.instrumentFamily>=0&&a.instrumentFamily<=3&&a.instrumentPlaced>=0&&a.instrumentPlaced<=1 : a.instrumentFamily==-1&&a.instrumentPlaced==-1;
 }
 inline bool validItemObservation(const ItemObservation& value) {
     const auto& item=value.item;
     if(value.carrier){const auto& c=*value.carrier;if(value.buildingHolder || c.id<0 || c.name.size()>512 || (c.kind!=1&&c.kind!=2) || (c.kind==1?(c.itemType<0||c.itemType>92):c.itemType!=-1))return false;}
-    if(value.carrier){const auto& c=*value.carrier;if((c.kind==1)!=c.appearance.has_value())return false;if(c.appearance){const auto& a=*c.appearance;if(a.materialToken.empty()||a.materialToken.size()>256||a.subtypeRaw.size()>128||a.colorToken.size()>128||a.stack<1||(a.flags&~96))return false;}}
-    if(item.itemType==30 && !value.appearance)return false;
-    if(value.appearance){const auto& a=*value.appearance;if(a.materialToken.empty()||a.materialToken.size()>256||a.subtypeRaw.size()>128||a.colorToken.size()>128||a.stack<1||(a.flags&~96)||a.materialToken!=item.materialToken||a.subtypeRaw!=item.subtypeRaw)return false;}
+    if(value.carrier){const auto& c=*value.carrier;if((c.kind==1)!=c.appearance.has_value())return false;if(c.appearance){const auto& a=*c.appearance;if(!validInspectionInstrument(a,c.itemType)||a.materialToken.empty()||a.materialToken.size()>256||a.subtypeRaw.size()>128||a.colorToken.size()>128||a.stack<1||(a.flags&~96))return false;}}
+    if((item.itemType==30||item.itemType==13) && !value.appearance)return false;
+    if(value.appearance){const auto& a=*value.appearance;if(!validInspectionInstrument(a,item.itemType)||a.materialToken.empty()||a.materialToken.size()>256||a.subtypeRaw.size()>128||a.colorToken.size()>128||a.stack<1||(a.flags&~96)||a.materialToken!=item.materialToken||a.subtypeRaw!=item.subtypeRaw)return false;}
     if(value.stockpile ? (value.stockpileCategories<0 || value.stockpileCategories>0x1ffff) : value.stockpileCategories!=-1)return false;
     if(item.id<0||item.itemType<0||item.itemType>92||item.caption.size()>128*1024||
        item.materialToken.size()>256||item.subtypeRaw.size()>128||value.weight.size()>128||

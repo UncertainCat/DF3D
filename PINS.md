@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management98 extends ItemInspectionAppearance with instrument family and placement
+facts. INSTRUMENT snapshots require appearance and family0..3/placed0..1; other
+item types require both fields absent (-1). The fields participate in item edit
+revisions and are validated across both endpoints. Rebuild bridge and viewer on
+`Local\\df3d_management_v98`; management97 is incompatible. Historical missing
+instrument facts remain unknown rather than inferred from item names.
+
 Management97 adds independent item appearance, required for BOX inspection and
 optional for other verified item families. The shared ItemInspectionAppearance
 also carries container appearance. Own material/subtype must match the item's

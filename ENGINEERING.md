@@ -1003,6 +1003,26 @@ and root CTest19/19 pass. This verifies semantic inspection/edit authority for
 four definitions, including multi-material construction; instrument artwork,
 main-scene navigation and decorated-instrument lazy art remain unverified.
 
+Management98 publishes independent instrument appearance, requiring music-skill
+family0..3 and placement0..1 for type13, and absent fields for other item types.
+The bridge reads the registered definition's music_skill and PLACED_AS_BUILDING,
+as in the verified construction candidate provider. Fields enter the item revision
+and survive neutral decoding and Godot conversion; validators reject missing,
+unpaired or out-of-range facts. Own appearance is now required for BOX and
+INSTRUMENT. PINS.md records the paired-endpoint migration.
+
+The native item selector c7cbc0 dispatches INSTRUMENT through c831ff to c83890;
+its c855b9..c856a9 branch resolves the definition, placement bit, music skill and
+material palette before cec840. The viewer's existing item_sheet_icon resolver
+consumes these owned facts without reading native graphics/menu caches. Tests
+cover all four families, both placement states and malformed pairs. Core,
+controller and construction-icon checks pass in
+build/qa/instrument-inspection-appearance; MSVC also passes. Protected124103
+on2026-10-30 verifies matched98 endpoints, first/warm native descriptions,
+appearance and exact edit revisions, with both Hidden directions restored.
+Owned DF169884 exits unsaved with source unchanged; live diagnostics contain
+only the known separate-render-thread notice.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

@@ -17,6 +17,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Fresh historical personality profiles leave current_focus and undistracted_focus uninitialized at offsets0x184/0x188. | No runtime correction; DF3D calls the same native initializer. | Discovered, not corrected. Native constructor5c02a0 and assignment accountant captures060438/060526/060814; fixture `assignment_cleanup_reference`. The oracle retains raw values and excludes only these newly allocated counters from comparison. |
 | Minimum-height hospital Details has no staff rows, but draws a malformed staff scrollbar over soap controls and scrolls an invisible list. | Hide the scrollbar and cancel scrolling when no staff row fits. | Implemented under approval2026-10-27. `native_location_details.json.staff_height_reference`, native010412, GPU `build/qa/location-staff-resize` and live `areas-acceptance-20261027-144319`; capacities0/8/5 at600/900/800 pixels. |
 | Minimum-height Zones palette extends behind the bottom toolbar, partly obscuring Sand and Clay. | Retain the scrolling palette wrapper within the space above the toolbar. | Implemented under approval2026-10-28; protected main-scene195546 verifies wheel scrolling, both type selections and cancellation at960x600. `native_zone_defaults.json.palette_resize_reference`, native154748. |
+| Overview evaluates pain twice and can show duplicate Pain rows with different colors. | No correction authorized or implemented. | Confirmed native165937 on2026-10-30: pain50 displays palette6 then14. Reference branches165cfe and1662aa; `native_farm.json.unit_health_reference`. Preserve native behavior pending a separate maintainer decision. |
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
@@ -1559,6 +1560,38 @@ strengths and flags are restored; these are display fixtures, not citizenship
 or office appointment actions. All owned sessions exit unsaved, preserve the
 source and have only the known renderer notice in ten GPU logs. PET/PET_EXOTIC,
 missing-history and other fortress-control exclusions still need live coverage.
+
+Overview health remains unfinished: the current Blood summary is not native
+parity. The reference block164389..166742 selects up to six ordered status rows;
+its scalar thresholds and drawing calls are inline, with no aggregate semantic
+formatter to invoke. Long-term stress (personality+0x180), rather than current
+stress, selects Harrowed/Haggard/Stressed; moods5..9 suppress that row. Fortress
+mode uses hunger75000/50000, thirst50000/25000 and sleep150000/57600 thresholds.
+Later groups cover unconsciousness/paralysis, stun/dizziness/exhaustion, breathing,
+nausea, pain, numbness, blood loss, fever, bleeding, a second pain evaluation,
+webbing and injury. Healthy appears only when no earlier row was emitted.
+Drowning cycles palette1/9/11/9 over four125ms phases; Pale, Heavy bleeding and
+the second Extreme pain row alternate dark/bright at500ms within a1000ms period.
+These are display-time effects, not simulation-tick sampling.
+
+Native14d940 (full0xde bytes, including chained unwind bodies) sums wound-part
+bleeding and is read-only. Native13406b0 classifies injury: health flag2 returns0
+(Seriously injured), flag4 returns1 (Injured); other treatment-request flags or
+RestInTraction return2, otherwise-1. Its Rest-job branch resolves general reference
+BUILDING_USE_TARGET_1 via edfb70's read-only world-building lookup, then reads
+building users through getUsers (bed/traction-bench28bec0 returns building+0x150).
+This is hospital traction state, not squad training. These helpers are candidates
+for direct runtime calls after live ownership checks. The enclosing renderer and
+its global gps writes must never be called as a semantic reader.
+
+unit_health_reference retains protected165937/170136/170237 on2026-10-30:
+pain50 yields two Pain rows (palette6 then14); controlled long-term stress and
+six additional conditions yield Harrowed, Starving, Dehydrated, Very drowsy,
+Unconscious, Stunned, omitting seventh-place Nauseous; health flags2 yields
+Seriously injured. Fixtures restore changed fields, exit owned sessions unsaved
+and preserve source saves. The six GPU logs contain only the known renderer
+notice; existing unrelated main-scene checks pass. These captures establish
+native health rows, not the still-missing rendered health implementation.
 
 ## Native item holder provider
 

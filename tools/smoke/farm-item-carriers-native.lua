@@ -6,6 +6,7 @@ local entry=assert(b.contained_items[0]);local item=entry.item
 local saved={flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z,refs={}}
 local overview_case=os.getenv('DF3D_UNIT_OVERVIEW_CASE') or 'child'
 local room_case=os.getenv('DF3D_UNIT_ROOM_CASE') or 'bedroom'
+local health_case=os.getenv('DF3D_UNIT_HEALTH_CASE') or 'original'
 local room_value_case=os.getenv('DF3D_UNIT_ROOM_VALUE_CASE') or 'original'
 for _,ref in ipairs(item.general_refs)do saved.refs[#saved.refs+1]=ref end
 local container,unit
@@ -34,6 +35,7 @@ local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
  if overview_saved then
   local old=overview_saved;local p=unit.status.current_soul.personality
+  for i=#(old.health_fields or {}),1,-1 do local saved=old.health_fields[i];saved.object[saved.key]=saved.value end
   if old.own_links then
    for _,saved in ipairs(old.own_links)do old.hf.entity_links:insert(saved.index,saved.link)end
    for _,saved in ipairs(old.member_strengths)do saved.link.link_strength=saved.strength end
@@ -165,6 +167,19 @@ local ok,err=xpcall(function()
     local ratio=assert(ratios[overview_case],'unknown Overview fixture case')
     local p=assert(unit.status.current_soul).personality
     overview_saved={profession=unit.profession,squad_id=unit.military.squad_id,focus=focus_state(p),needs={}}
+    if health_case~='original' then
+     overview_saved.health_fields={}
+     local function set(object,key,value)
+      overview_saved.health_fields[#overview_saved.health_fields+1]={object=object,key=key,value=object[key]};object[key]=value
+     end
+     set(p,'longterm_stress',0)
+     if health_case=='pain' then set(unit.counters,'pain',50)
+     elseif health_case=='priority' then
+      set(p,'longterm_stress',100000);set(unit.counters2,'hunger_timer',75000);set(unit.counters2,'thirst_timer',50000)
+      set(unit.counters2,'sleepiness_timer',150000);set(unit.counters,'unconscious',1);set(unit.counters,'stunned',1);set(unit.counters,'nausea',1)
+     elseif health_case=='injury' then set(assert(unit.health,'injury fixture requires health info').flags,'whole',2)
+     else error('unknown health case')end
+    end
     for _,need in ipairs(p.needs)do overview_saved.needs[#overview_saved.needs+1]=need.focus_level;need.focus_level=overview_case=='fresh-focused' and 300 or overview_case=='fresh-distracted' and -100000 or 0 end
     assert(#p.needs>0,'focus fixture needs at least one existing need')
     p.flags.distraction_calculated=not overview_case:find('^fresh%-');p.current_focus=ratio;p.undistracted_focus=100
@@ -263,6 +278,17 @@ local ok,err=xpcall(function()
   assert(sheet.open and sheet.active_id==target.id and sheet.active_sheet==(kind=='unit' and df.view_sheet_type.UNIT or df.view_sheet_type.ITEM),'native carrier View selected wrong identity')
   if kind=='unit' then
    linked.overview_case=overview_case
+   linked.health_case=health_case;linked.health_rows={}
+   for y=24,29 do
+    local bytes,colors={},{}
+    for x=53,81 do local tile=dfhack.screen.readTile(x,y);bytes[#bytes+1]=tile.ch;colors[#colors+1]={tile.fg,tile.bg,tile.bold}end
+    local text=string.char(table.unpack(bytes)):gsub('[%z\1-\31]',' '):gsub('%s+$','')
+    linked.health_rows[#linked.health_rows+1]={text=text,colors=colors}
+   end
+   local expected_health=({pain={'Pain','Pain'},priority={'Harrowed','Starving','Dehydrated','Very drowsy','Unconscious','Stunned'},injury={'Seriously injured'}})[health_case]
+   if expected_health then
+    for i=1,6 do assert(linked.health_rows[i].text==(expected_health[i] or ''),'native health order differs at row '..i..': '..linked.health_rows[i].text)end
+   end
    linked.room_requirements={}
    for i=0,3 do linked.room_requirements[i+1]=sheet.reqroom[i]end
    linked.room_values={};for i=0,3 do linked.room_values[i+1]=sheet.curroom[i]end

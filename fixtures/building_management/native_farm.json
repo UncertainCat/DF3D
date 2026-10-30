@@ -35603,6 +35603,291 @@
       "fixture": "Temporary type changes to existing furnished owned zones; restored before exit. No assignment action acceptance.",
       "checks": "Independent native curroom, direct owned Overview/Zone values, cold preference byte guards, exact title/warning pixels and existing main-scene navigation checks.",
       "limitations": "Shared ownership, cold furnishing artwork initialization and other creature types remain unverified."
+    },
+    "unit_health_reference": {
+      "status": "Native reference only; runtime health reader and rendered parity remain unfinished.",
+      "cases": [
+        {
+          "case": "pain",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-165937",
+          "result_sha256": "01da27f29f33e4a37a82f0c9d4fdc431c5a934e26074cbc71ca213731e6e6488",
+          "owned_df_pid": 195192,
+          "native_rows": [
+            {
+              "text": "Pain",
+              "first_cell_color": [
+                6,
+                0,
+                false
+              ]
+            },
+            {
+              "text": "Pain",
+              "first_cell_color": [
+                6,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            }
+          ],
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        },
+        {
+          "case": "priority",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-170136",
+          "result_sha256": "8183ae6a5d5e4e9f960096a85a7631cdc387b3224e9e1486dc6e669e005812de",
+          "owned_df_pid": 189160,
+          "native_rows": [
+            {
+              "text": "Harrowed",
+              "first_cell_color": [
+                5,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "Starving",
+              "first_cell_color": [
+                4,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "Dehydrated",
+              "first_cell_color": [
+                4,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "Very drowsy",
+              "first_cell_color": [
+                4,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "Unconscious",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "Stunned",
+              "first_cell_color": [
+                3,
+                0,
+                true
+              ]
+            }
+          ],
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        },
+        {
+          "case": "injury",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-170237",
+          "result_sha256": "07145a877223b98ee374e6e227817c055c845913782b5b20024c0988743d72e3",
+          "owned_df_pid": 195748,
+          "native_rows": [
+            {
+              "text": "Seriously injured",
+              "first_cell_color": [
+                4,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            },
+            {
+              "text": "",
+              "first_cell_color": [
+                7,
+                0,
+                true
+              ]
+            }
+          ],
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        }
+      ],
+      "pins": [
+        {
+          "rva": "0x164389",
+          "length": "0x23b9",
+          "fnv1a64": "62030b11da9ae730",
+          "role": "Reference-only Overview health block, includes drawing"
+        },
+        {
+          "rva": "0x14d940",
+          "length": "0xde",
+          "fnv1a64": "a4ba33cd7bf564c6",
+          "role": "Read-only wound bleeding sum"
+        },
+        {
+          "rva": "0x13406b0",
+          "length": "0x166",
+          "fnv1a64": "35584320cb46fabb",
+          "role": "Read-only injury/treatment classification"
+        },
+        {
+          "rva": "0xedfb70",
+          "length": "0x71",
+          "fnv1a64": "54bfec341c3232fc",
+          "role": "General reference building lookup"
+        },
+        {
+          "rva": "0x28bec0",
+          "length": "0x8",
+          "fnv1a64": "e9ac3ddf829a4b63",
+          "role": "Bed and traction bench getUsers"
+        },
+        {
+          "rva": "0x548f90",
+          "length": "0x6",
+          "fnv1a64": "8827482a6d039876",
+          "role": "Building use target1 reference type"
+        }
+      ],
+      "fixture": "Temporary longterm_stress/counter/health-flag changes restored in reverse order; no healthcare action acceptance.",
+      "limitations": "Current viewer Blood summary is unchanged. Helper ownership live guards, all thresholds, blinking, traction, overflow resize and rendered health parity remain unverified."
     }
   }
 }

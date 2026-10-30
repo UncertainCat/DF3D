@@ -45,6 +45,15 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "building_header_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/building_header_state_test.gd",
+      "completion": "^BUILDING_HEADER_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "building_contents_state_test",
       "lane": "core",
       "kind": "godot",

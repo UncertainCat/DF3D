@@ -1,0 +1,95 @@
+extends SceneTree
+const Model=preload("res://scripts/building_header_state.gd")
+const Service=preload("res://scripts/semantic_action_service.gd")
+const C=preload("res://scripts/management_contract.gd")
+var failures:=0
+var world
+var service
+var model
+var applied:=0
+class World:
+	extends RefCounted
+	var state: Dictionary={"world_epoch":5,"revision":1,"status":0}
+	var calls: Array=[]
+	func reconnect_management():pass
+	func session_generation():return 1
+	func is_live():return true
+	func last_error():return ""
+	func poll_management():return state.duplicate(true)
+	func management_request(domain,request):
+		calls.append({"domain":domain,"request":request.duplicate(true)});return calls.size()
+func check(ok: bool,message: String) -> void:
+	if not ok:failures+=1;push_error(message)
+func setup() -> void:
+	if model!=null:model.dispose();service.free()
+	world=World.new();service=Service.new();service.configure(world);model=Model.new();model.configure(service)
+	applied=0;model.applied.connect(func():applied+=1)
+func snapshot(id:=278,revision:=9007199254740993) -> Dictionary:
+	return {"id":id,"type":10,"revision":revision,"stage":1,"max_stage":1,"custom_name":"","native_name":"native chest","header_name":"Native chest","removing":false,"suspended":false,"has_worker":false}
+func reply(value: Dictionary,outcome:=0,operation:=0) -> void:
+	var sent: Dictionary=world.calls[-1].request
+	var state={"outcome":outcome,"operation":operation}
+	if not value.is_empty():state.snapshot=value
+	world.state={"world_epoch":5,"revision":world.calls.size()+1,"request_seq":world.calls.size(),"action":sent.action,
+		"status":C.ManagementStatus.Rejected if outcome>1 else C.ManagementStatus.Ok,"production":{"building_header":state}}
+	service.poll()
+func ready() -> void:
+	setup();model.open(278);service.poll();reply(snapshot())
+func _initialize() -> void:call_deferred("run")
+func run() -> void:
+	ready();check(model.phase==Model.Phase.Ready and world.calls[0].request.building_header and not world.calls[0].request.has("season"),"independent header read")
+	model.rename("new");service.poll();var sent: Dictionary=world.calls[-1].request
+	check(sent.expected_revision==9007199254740993 and sent.farm_name=="new" and not sent.has("season"),"rename preserves exact revision without farm data")
+	check(model.snapshot.custom_name=="","rename is not optimistic")
+	var renamed:=snapshot(278,9007199254740994);renamed.custom_name="new";renamed.native_name="new";renamed.header_name="New"
+	reply(renamed,1,C.FarmOperation.Rename);check(applied==1 and model.phase==Model.Phase.Ready,"confirmed rename accepted")
+	renamed.custom_name="external";check(model.snapshot.custom_name=="new","snapshot authority copied")
+	model.request_removal();service.poll();var removed: Dictionary=model.snapshot.duplicate(true);removed.removing=true;removed.revision+=1
+	reply(removed,1,C.FarmOperation.Remove);check(model.snapshot.removing,"remove receipt accepted")
+	var count: int=world.calls.size();model.rename("wrong");model.request_removal();service.poll();check(world.calls.size()==count,"removing blocks rename and second removal")
+	model.cancel_removal();service.poll();reply(snapshot(),1,C.FarmOperation.CancelRemoval);check(applied==3 and not model.snapshot.removing,"cancellation receipt accepted")
+	for fault in 11:
+		setup();model.open(278);service.poll();var bad:=snapshot()
+		match fault:
+			0:bad.id=279
+			1:bad.type=4
+			2:bad.revision=0
+			3:bad.stage=-1
+			4:bad.max_stage=0
+			5:bad.header_name=""
+			6:bad.custom_name="x".repeat(1537)
+			7:bad.has_worker=true
+			8:bad.suspended=true
+			9:bad.removing=1
+			10:bad.revision=1.0
+		reply(bad);check(model.phase==Model.Phase.Rejected and model.snapshot.is_empty(),"malformed header refused "+str(fault))
+	for fault in 4:
+		ready();model.rename("new");service.poll();var bad:=snapshot();bad.custom_name="new"
+		if fault==0:bad.custom_name="wrong"
+		if fault==1:bad.removing=true
+		if fault==2:bad.stage=0
+		reply(bad,1,C.FarmOperation.Remove if fault==3 else C.FarmOperation.Rename)
+		check(model.phase==Model.Phase.Unknown and applied==0 and model.snapshot.is_empty(),"mismatched completion has no authority")
+	for outcome in [2,3,4]:
+		ready();model.rename("new");service.poll();count=world.calls.size();reply({},outcome)
+		model.rename("new");service.poll()
+		check(model.phase==(Model.Phase.Unknown if outcome==4 else Model.Phase.Stale if outcome==3 else Model.Phase.Rejected) and model.snapshot.is_empty() and world.calls.size()==count,"failed edit is never replayed")
+	ready();model.rename("new");var queued: int=model.ticket;count=world.calls.size();model.close();service.poll()
+	check(world.calls.size()==count and service.result(queued).outcome=="not_sent","close cancels queued edit")
+	ready();model.rename("new");service.poll();model.open(279)
+	var late:=snapshot();late.custom_name="new";reply(late,1,C.FarmOperation.Rename)
+	check(applied==0 and model.building_id==279 and model.snapshot.is_empty(),"late completion cannot revive old target")
+	reply(snapshot(279));check(model.phase==Model.Phase.Ready,"replacement target accepts own read")
+	for sent_edit in [false,true]:
+		ready();model.rename("new");var pending: int=model.ticket
+		if sent_edit:service.poll()
+		count=world.calls.size();world.state.world_epoch=6;service.poll()
+		check(model.phase==Model.Phase.Unavailable and model.building_id==-1 and model.snapshot.is_empty() and model.ticket==0,"epoch retires header")
+		check(service.result(pending).outcome==("unknown" if sent_edit else "not_sent") and world.calls.size()==count,"epoch does not replay edit")
+	ready();model.request_removal();service.poll();var detached: int=model.ticket;model.close();reply({},C.FarmEditOutcome.Unknown)
+	check(service.result(detached).get("outcome")=="unknown" and service.last_detached_mutation("production").get("result",{}).get("outcome")=="unknown","detached header unknown is retained by service")
+	ready();model.request_removal();service.poll();world.state.transport_alive=false;service.poll()
+	check(model.phase==Model.Phase.Unavailable and model.snapshot.is_empty(),"disconnect retires header authority")
+	model.dispose();service.free()
+	if failures==0:print("BUILDING_HEADER_STATE_PASS")
+	quit(0 if failures==0 else 1)

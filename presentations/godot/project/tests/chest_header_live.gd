@@ -14,6 +14,30 @@ func refused(response: Dictionary, outcome: int) -> void:
 	var state: Dictionary=response.get("production",{}).get("building_header",{})
 	check(response.get("status")==C.ManagementStatus.Rejected and state.get("outcome")==outcome and not state.has("snapshot"),"Refused header edit granted authority")
 
+var header_service
+var header_model
+func settle_header() -> void:
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();header_service.poll(0.01)
+		if header_model.phase not in [header_model.Phase.Reading,header_model.Phase.Applying]:break
+		await create_timer(0.01).timeout
+	check(header_model.phase==header_model.Phase.Ready,"Header controller did not reach Ready")
+
+func open_header(id: int) -> void:
+	header_service=preload("res://scripts/semantic_action_service.gd").new();header_service.configure(world,true)
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();header_service.poll(0.01)
+		if header_service._epoch>0 and not header_service._needs_claim and header_service._active==0 and not header_service._transport_lost:break
+		await create_timer(0.01).timeout
+	check(header_service._epoch>0 and not header_service._needs_claim and header_service._active==0,"Header service claim failed")
+	header_model=preload("res://scripts/building_header_state.gd").new();header_model.configure(header_service)
+	header_model.open(id);await settle_header()
+
+func close_header() -> void:
+	header_model.dispose();header_service.free();header_model=null;header_service=null
+
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	if directory.is_empty():quit(77);return
@@ -38,9 +62,12 @@ func run() -> void:
 	if expected.mode=="worker":
 		var stale:=initial.duplicate();stale.revision=int(expected.stale_revision)
 		refused(await edit_header(stale,C.FarmOperation.CancelRemoval),C.FarmEditOutcome.Stale)
-		var cancelled:=completed(await edit_header(initial,C.FarmOperation.CancelRemoval),C.FarmOperation.CancelRemoval)
+		await open_header(initial.id)
+		check(header_model.snapshot==initial,"Controller worker read differs")
+		header_model.cancel_removal();await settle_header()
+		var cancelled: Dictionary=header_model.snapshot.duplicate(true)
 		check(not cancelled.get("removing",true) and not cancelled.get("has_worker",true),"Chest worker cancellation not reflected")
-		receipts.append(cancelled)
+		receipts.append(cancelled);close_header()
 	else:
 		var renamed:=completed(await edit_header(initial,C.FarmOperation.Rename,"lower chest"),C.FarmOperation.Rename)
 		if not check(not renamed.is_empty(),"Missing rename receipt"):quit(1);return
@@ -60,8 +87,22 @@ func run() -> void:
 		var absent:=intent.duplicate();absent.building_id=2147483647
 		var rejected:=await request("production",absent)
 		check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.get("production",{}).get("building_header",{}).has("snapshot"),"Absent chest read granted authority")
+	var controller_receipts: Array=[]
+	if expected.mode=="idle":
+		await open_header(initial.id)
+		check(header_model.snapshot==initial,"Controller header read differs")
+		header_model.rename("controller chest");await settle_header()
+		check(header_model.snapshot.get("custom_name")=="controller chest","Controller rename not reflected")
+		controller_receipts.append(header_model.snapshot.duplicate(true))
+		header_model.rename(initial.custom_name);await settle_header()
+		header_model.request_removal();await settle_header()
+		check(header_model.snapshot.get("removing",false),"Controller removal not reflected")
+		controller_receipts.append(header_model.snapshot.duplicate(true))
+		header_model.cancel_removal();await settle_header()
+		check(header_model.snapshot==initial,"Controller final restoration differs")
+		controller_receipts.append(header_model.snapshot.duplicate(true));close_header()
 	var file:=FileAccess.open(directory+"/chest-header-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"mode":expected.mode,"initial_revision":str(initial.revision),"receipts":receipts}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"mode":expected.mode,"initial_revision":str(initial.revision),"receipts":receipts,"controller_receipts":controller_receipts,"worker_uses_controller":expected.mode=="worker"}));file.close()
 	world.detach_live();world.queue_free();await process_frame
 	if not failed:print("CHEST_HEADER_WIRE_PASS")
 	quit(1 if failed else 0)

@@ -1177,6 +1177,27 @@ management100_wire_reference retains exact receipt revisions and binary hashes.
 The protected helper is registered in the QA manifest. Chest controller lifecycle,
 rendered composition and main-scene navigation remain unfinished and unexposed.
 
+building_header_state.gd owns one Box target and explicit header intents through
+the shared semantic action service. It retains displayed facts while awaiting an
+edit and changes them only on a valid typed receipt. Failure clears authority;
+refresh is explicit. Closing cancels queued work and detaches sent work, while
+generation/ticket checks exclude late replies after target replacement. Epoch or
+connection loss retires identity and authority. Header Unknown outcomes also enter
+the service's retained detached-action results. No failed edit is replayed.
+
+build/qa/chest-header-controller-final passes core and the new actual-service
+controller test: exact revisions, malformed reads/completions, successful effects,
+queued cancellation, late target replacement, epoch/disconnect and retained
+Unknown outcomes. Protected133433 on2026-10-30 verifies real controller reads,
+rename/restoration, remove/cancel and assigned-worker cancellation. Its fresh
+service completes the Catalog handshake before opening the controller. Native
+readback confirms original name/no jobs and matching worker cleanup. Owned
+DF173768 exits unsaved with source preservation; all previous regression checks
+pass and eight GPU plus two combined headless log pairs contain only the known
+render-thread notice. controller_reference retains receipts. This verifies
+explicit intents; native text-entry draft sessions, chest rendering and navigation
+still require integration and acceptance before exposure.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

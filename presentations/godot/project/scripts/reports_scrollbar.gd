@@ -1,6 +1,5 @@
 extends "res://scripts/area_location_scrollbar.gd"
 # Reports protected062806 agrees with the shared native scrollbar formula/input.
-var wheel_enabled:=true
 var use_standalone_sheet:=true
 var clamp_interior_thumb:=false
 func _input(event:InputEvent) -> void:

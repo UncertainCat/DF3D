@@ -30182,4 +30182,130 @@
     }
   ]
 }
+,
+  "item_carrier_native_reference": {
+  "source": "build/stockpile-storage-native-farm-discovery-20261030-101149",
+  "bridge_sha256": "7f482b95f7e0bbd8e4cfb3c7c6fedc39451e40d87af6755900cc494b8da799b0",
+  "scope": "Paused reciprocal temporary container/unit relationship fixture; original farm membership/reference pointers/order, position and flags restored. Native View targets and semantic names match; native view_sheets/plotinfo bytes unchanged by carrier reader. Owned DF15724 exits unsaved; source manifest unchanged. Not natural hauling or viewer/wire acceptance.",
+  "states": [
+    {
+      "name": "farm-item-carrier-container",
+      "item_id": 47492,
+      "target_id": 5834,
+      "active_sheet": "ITEM",
+      "active_id": 47492,
+      "description": "These are sweet pod seeds.  ",
+      "independent": {
+        "can_dump": true,
+        "can_melt": false,
+        "caption": "sweet pod seeds",
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870920,
+        "forbid": false,
+        "hidden": false,
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "6431158049801236760",
+        "stockpile_categories": -1,
+        "weight": "<1Γ"
+      },
+      "carrier": {
+        "id": 5834,
+        "item_id": 47492,
+        "item_type": 30,
+        "kind": 1,
+        "name": "(+«-kumquat wood chest-»+)"
+      },
+      "native_ui_unchanged": true,
+      "panel_rgb_sha256": "253c3f525d4aea4a0e6e9ac87152deba6b034b9a685b583eef066d83b37539c2",
+      "rows": [
+        "",
+        "",
+        "       In (+ -kumquat wood chest- +)            View",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "name": "farm-item-carrier-container-view",
+      "target_id": 5834,
+      "active_sheet": "ITEM",
+      "active_id": 5834,
+      "panel_rgb_sha256": "717862894866f6ee42cccf31883700c3d3bd2594f45bc789a1bea4d7249604bd",
+      "rows": [
+        "",
+        "",
+        "       In kumquat wood Chest                    View",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "name": "farm-item-carrier-unit",
+      "item_id": 47492,
+      "target_id": 988,
+      "active_sheet": "ITEM",
+      "active_id": 47492,
+      "description": "These are sweet pod seeds.  ",
+      "independent": {
+        "can_dump": true,
+        "can_melt": false,
+        "caption": "sweet pod seeds",
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870920,
+        "forbid": false,
+        "hidden": false,
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "6431158049801236760",
+        "stockpile_categories": -1,
+        "weight": "<1Γ"
+      },
+      "carrier": {
+        "id": 988,
+        "item_id": 47492,
+        "item_type": -1,
+        "kind": 2,
+        "name": "îton Unibmamot, Dwarven Child"
+      },
+      "native_ui_unchanged": true,
+      "panel_rgb_sha256": "c8c165f7641522a0cbce606e74c4d77c36be597231f4ef5caea299de1e12534f",
+      "rows": [
+        "",
+        "",
+        "       With  ton Unibmamot, Dwarven C...        View",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "name": "farm-item-carrier-unit-view",
+      "target_id": 988,
+      "active_sheet": "UNIT",
+      "active_id": 988,
+      "panel_rgb_sha256": "fd45fa94e6f0eb27574e3a53b9669357f38097ede3887b6f7b21d34808f866aa",
+      "rows": [
+        "                               Values power",
+        "                               Disdains artwork",
+        "                               High kinesthetic sense",
+        "                               Disdains fairness",
+        "                               Private",
+        "",
+        " Healthy                       Citizen"
+      ]
+    }
+  ]
+}
 }

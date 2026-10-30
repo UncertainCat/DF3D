@@ -830,6 +830,39 @@ rendered Sheets panels were inspected. Unit/container relationships, overlapping
 stockpile selection, other item types and eligible Melt remain separate acceptance
 work. No new public screen is exposed by this change.
 
+## Native item container and unit carriers
+
+The item renderer resolves CONTAINED_IN_ITEM at153c06 through cb15d0 and
+UNIT_HOLDER at153c20 through cb1640. Both readers scan semantic general
+references and resolve the first matching target. Their complete0x63-byte bodies
+are pinned (FNV092eaa3e70951baf and576ff7966803ca67). Container captions call the
+existing native c65450 formatter; unit names call1330c30 with an owned string and
+false, matching renderer156869. The unit name body is pinned at0x688 bytes,
+FNV0e165ee31decf426. These routines do not consume native UI inputs.
+
+`item-carrier-probe <item>` exposes this reader for diagnostics: kind0 absent,
+kind1 item container, kind2 unit, stable ID, native name and container item type.
+A container takes precedence over a unit; the sheet's building holder takes
+precedence over either carrier. The reader does not yet change ItemObservation,
+its revision or the management94 wire contract. That gap matters: the current
+independent item snapshot remains identical when the same seed moves from the
+chest to the dwarf in the controlled fixture. The next contract migration must
+include carrier identity and native text in observation authority.
+
+Protected native101149 on2026-10-30 temporarily substitutes reciprocal semantic
+relationships for farm968 seed47492 in a paused owned clone. Native renders
+`In` with chest5834's decorated caption and `With` with citizen988's native name,
+then each actual View click opens the matching ITEM or UNIT sheet. The reader
+matches both identities and the visible native caption prefix; full native names
+and panel hashes are retained in `native_farm.json.item_carrier_native_reference`.
+Byte guards confirm view_sheets and plotinfo are unchanged by the reader.
+Original membership/reference pointers and order, item position and flags are
+restored; owned DF15724 exits unsaved and the source manifest is unchanged.
+Native screenshots were inspected. MSVC and core `item-carrier-native` pass.
+This establishes the semantic reader and native targets, not natural hauling,
+carrier artwork in Godot, general container inspection, Residents navigation or
+wire/controller acceptance. These remain required before public exposure.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

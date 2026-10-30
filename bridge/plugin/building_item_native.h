@@ -11,6 +11,7 @@
 #include "modules/Materials.h"
 #include "modules/Items.h"
 #include "df/itemdef.h"
+#include "df/unit.h"
 
 namespace df3d_production {
 // Native follow loops35e7b6/8b6b76 use these independently owned outputs.
@@ -94,6 +95,39 @@ inline std::optional<ItemBuildingHolder> itemBuildingHolder(df::item* item) {
         building->getName(&result.name);
         if(result.name.size()>512)return std::nullopt;
     }
+    return result;
+}
+struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name; };
+// Native item renderer153c06/153c20 resolves semantic general references.
+// The displayed carrier prefers an item container over a unit; a building
+// holder takes precedence over both in the caller. No UI state is an input.
+inline std::optional<ItemCarrier> itemCarrier(df::item* item) {
+    using FindItem=df::item* (*)(df::item*,int32_t);
+    using FindUnit=df::unit* (*)(df::item*,int32_t);
+    using Name=void (*)(df::unit*,std::string*,bool);
+    struct Functions { FindItem container=nullptr;FindUnit unit=nullptr;Name name=nullptr; };
+    static const auto functions=[]()->Functions {
+        if(!farmFunctions())return {};
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        if(hash(0xcb15d0,0x63)!=UINT64_C(0x092eaa3e70951baf) ||
+           hash(0xcb1640,0x63)!=UINT64_C(0x576ff7966803ca67) ||
+           hash(0x1330c30,0x688)!=UINT64_C(0x0e165ee31decf426))return {};
+        return {reinterpret_cast<FindItem>(base+0xcb15d0),reinterpret_cast<FindUnit>(base+0xcb1640),reinterpret_cast<Name>(base+0x1330c30)};
+    }();
+    if(!item||!functions.container||!functions.unit||!functions.name)return std::nullopt;
+    ItemCarrier result;
+    if(auto* container=functions.container(item,0xb)) {
+        const auto caption=buildingItemCaption(container);if(!caption)return std::nullopt;
+        result.kind=1;result.id=container->id;result.itemType=static_cast<int32_t>(container->getType());result.name=*caption;
+    }else if(auto* unit=functions.unit(item,0x12)) {
+        result.kind=2;result.id=unit->id;functions.name(unit,&result.name,false);
+    }
+    if(result.name.size()>512)return std::nullopt;
     return result;
 }
 // Item-sheet renderer154c84 calls this owned-string weight formatter. Native

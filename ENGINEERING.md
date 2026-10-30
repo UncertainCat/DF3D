@@ -767,8 +767,13 @@ Core codec tests preserve revisions above2^53 and reject malformed/mixed authori
 the semantic action service classifies independent Unknown outcomes without replay.
 
 The Godot item controller now uses the independent contract described below.
-Its stockpile relationship still needs a visible View link and navigation;
-rendered transfer acceptance remains outstanding. Unit/container relationships,
+Its stockpile relationship has the native category artwork, name and View
+stockpile action. The action opens the existing areas owner, reads current
+stockpile identity/settings and retires the item owner; it does not fabricate
+area bounds or revisions. Closing retires queued and sent navigation observers.
+Native154052..154143 reserves the stockpile row before the holder row, shifting
+the holder by three12-pixel rows when both exist. Combined relationships and
+singleton category artwork still need rendered acceptance. Unit/container relationships,
 overlapping stockpile selection, other item types and eligible Melt remain separate
 acceptance work. No new public screen is exposed by this transport change.
 
@@ -858,7 +863,24 @@ DF68844 exits unsaved with both manifests unchanged. These runs are recorded in
 semantic-service tests pass in `item-independent-controller-final`; synthetic
 coverage includes transfer, malformed relationships, stale/unknown outcomes,
 late replies, exact revisions, epoch retirement and close during notification.
-This does not establish the missing stockpile View row or rendered transfer parity.
+Rendered transfer acceptance follows below.
+
+Protected FarmItemTransferScene225057 on2026-10-29 passes100 native checks through
+the actual main scene after Forbid restoration, original-job retirement and600
+later simulation ticks. An explicitly controlled DFHack move takes surviving
+potash from farm227 to stockpile121. Inspection stays open, native observation
+and both viewport Visibility edits match, and both full488x708 panel images match
+native hashes exactly. View stockpile selects121 with a fresh area revision and
+retires the item sheet. Queued navigation close yields not_sent; sent navigation
+completion does not revive the panel. Missing stockpile identity is refused.
+DF184600 exits unsaved with two save manifests unchanged; only the known rendering
+thread notice is present. Run224812 also passed transfer pixels/navigation before
+the lifecycle cases were added. Run223439 failed the exact comparison because a
+blank icon was used instead of category-driven artwork; it is not acceptance.
+`native_farm.json.item_transfer_scene_reference` retains final evidence. Existing
+seed/potash render regressions pass with documented Godot diagnostics, and core
+and controller tests pass in `item-stockpile-final`. This is controlled-transfer
+acceptance, not natural hauling, general item types or all category artwork.
 
 `item_sheet_state_test` verifies exact 64-bit revisions, owned nested holders,
 absent holders, malformed snapshots, eligibility, completion readback, close,

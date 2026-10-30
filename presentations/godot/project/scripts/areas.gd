@@ -7,6 +7,7 @@ const Status = Contract.ManagementStatus
 # Area semantics come from the versioned management contract.
 const Selection = preload("res://scripts/interaction_state.gd")
 const MenuData = preload("res://scripts/area_menu_data.gd")
+var _open_stockpile_id: int=-1
 var menu_data: Dictionary = MenuData.read()
 var category_labels: Array[String] = MenuData.category_labels_by_bit(menu_data)
 var world
@@ -348,6 +349,12 @@ func open_panel() -> void:
 	update_controls()
 
 
+func open_stockpile(id: int) -> void:
+	if not play_enabled or id<0:return
+	if panel.visible:close_panel()
+	set_area_kind(0);open_panel()
+	if panel.visible:_open_stockpile_id=id
+
 func set_area_kind(value: int) -> void:
 	if value not in [0,1]: return
 	if kind_picker.selected != value and panel.visible: close_panel()
@@ -355,6 +362,7 @@ func set_area_kind(value: int) -> void:
 	launcher_destination = "Stockpiles" if value == 0 else "Zones"
 
 func close_panel() -> void:
+	_open_stockpile_id=-1
 	stockpile_help.reset()
 	_release_rename()
 	_release_paint_session("exit")
@@ -1568,6 +1576,10 @@ func _receive_result(s: Dictionary, _request: Dictionary, completed_ticket := 0)
 		for c in zone_types:
 			zone_picker.add_item(c.label, c.id)
 		available = true
+		if _open_stockpile_id>=0:
+			var target:=_open_stockpile_id;_open_stockpile_id=-1
+			send({"action":Action.AreaInspect,"id":target,"kind":0})
+			return
 	elif action == Action.AreaCandidates:
 		_cancel_candidate_poll()
 		if str(_request.get("query", "")) != search.text or selected.is_empty():
@@ -1862,6 +1874,7 @@ func _detach_draft() -> void:
 	request_ticket = 0
 
 func _session_changed() -> void:
+	_open_stockpile_id=-1
 	stockpile_help.reset()
 	paint_saved_corner = Vector3i(-1,-1,-1)
 	# The service notifies the interaction owner separately; never drain an old

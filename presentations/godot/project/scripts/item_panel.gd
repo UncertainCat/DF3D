@@ -1,5 +1,6 @@
 extends Node
 # Staged farm item owner. General item types remain unfinished.
+signal stockpile_requested(stockpile_id: int)
 signal holder_requested(building_id: int)
 const Preferences=preload("res://scripts/presentation_settings.gd")
 const C=preload("res://scripts/management_contract.gd")
@@ -23,6 +24,8 @@ func configure(world,service,host,help=null) -> void:
 		if id==state.item_id and OPERATIONS.has(flag):state.set_flag(OPERATIONS[flag],value))
 	panel.holder_requested.connect(func(id):
 		if state.phase==state.Phase.Ready and state.snapshot.get("holder",{}).get("id",-1)==id:holder_requested.emit(id))
+	panel.stockpile_requested.connect(func(id):
+		if state.phase==state.Phase.Ready and state.snapshot.get("stockpile",{}).get("id",-1)==id:stockpile_requested.emit(id))
 	state.changed.connect(_state_changed)
 	ui_host.register(self);_process(0)
 

@@ -2,6 +2,7 @@ extends Control
 # Staged item sheet; native semantic transport/owner must precede public exposure.
 signal flag_requested(item_id: int, flag: String, value: bool)
 signal holder_requested(building_id: int)
+signal stockpile_requested(stockpile_id: int)
 signal camera_requested(item_id: int)
 const FLAGS=["forbid","dump","melt","hidden"]
 const BUTTONS=["SHORT_FORBID","SHORT_DUMP","SHORT_MELT","SHORT_HIDE"]
@@ -40,7 +41,14 @@ func set_following(value: bool) -> void:
 func allowed() -> bool:return not pending and not snapshot.is_empty() and (not input_allowed.is_valid() or input_allowed.call())
 func flag_rect(index: int) -> Rect2:return Rect2(376+index*24,12,24,24)
 func camera_rect() -> Rect2:return Rect2(424,36,32,36)
-func holder_rect() -> Rect2:return Rect2(328,180,144,36)
+func holder_rect() -> Rect2:return Rect2(328,180+(36 if snapshot.has("stockpile") else 0),144,36)
+func stockpile_rect() -> Rect2:return Rect2(328,180,144,36)
+static func stockpile_art(categories: int) -> String:
+	# Native item renderer 156c13..15712b: singleton categories, otherwise Custom.
+	var tokens=["ANIMALS","FOOD","FURNITURE","CORPSES","REFUSE","STONE","AMMO","COINS","BARS","GEMS","FINISHED_GOODS","LEATHER","CLOTH","WOOD","WEAPONS","ARMOR","SHEETS"]
+	for index in tokens.size():
+		if categories==(1<<index):return "STOCKPILE_ICON_"+tokens[index]
+	return "STOCKPILE_ICON_CUSTOM"
 func eligible(index: int) -> bool:
 	return index!=1 and index!=2 or snapshot.get("can_dump" if index==1 else "can_melt",false)
 
@@ -71,6 +79,8 @@ func _gui_input(event: InputEvent) -> void:
 			flag_requested.emit(snapshot.id,FLAGS[index],not snapshot[FLAGS[index]]);accept_event();return
 	if camera_rect().has_point(event.position):camera_requested.emit(snapshot.id);accept_event()
 	elif snapshot.get("holder_id",-1)>=0 and holder_rect().has_point(event.position):holder_requested.emit(snapshot.holder_id);accept_event()
+	elif snapshot.has("stockpile") and stockpile_rect().has_point(event.position):stockpile_requested.emit(snapshot.stockpile.id);accept_event()
+
 
 func patch(texture: Texture2D,rect: Rect2,rows:=3) -> void:
 	if texture==null:return
@@ -116,8 +126,17 @@ func _draw() -> void:
 	var camera: Texture2D=art.texture("UNIT_SHEET_CAMERA_ACTIVE" if following else "UNIT_SHEET_CAMERA_INACTIVE")
 	if camera!=null:draw_texture_rect(camera,camera_rect(),false)
 	if snapshot.get("holder_id",-1)>=0:
+		var holder_offset:=36 if snapshot.has("stockpile") else 0
 		var holder: Texture2D=art.texture(snapshot.get("holder_art",""))
-		if holder!=null:draw_texture_rect(holder,Rect2(10,182,32,32),false)
-		text_at(snapshot.get("holder_name",""),Vector2(56,204))
+		if holder!=null:draw_texture_rect(holder,Rect2(10,182+holder_offset,32,32),false)
+		text_at(snapshot.get("holder_name",""),Vector2(56,204+holder_offset))
 		patch(art.texture("HORIZONTAL_OPTION_ACTIVE"),holder_rect())
-		text_at("View",Vector2(384,204),colors[10])
+		text_at("View",Vector2(384,204+holder_offset),colors[10])
+
+	if snapshot.has("stockpile"):
+		var offset:=0
+		var texture: Texture2D=art.texture(stockpile_art(snapshot.get("stockpile_categories",-1)))
+		if texture!=null:draw_texture_rect(texture,Rect2(10,182+offset,32,32),false)
+		text_at(snapshot.stockpile.name,Vector2(56,204+offset))
+		patch(art.texture("HORIZONTAL_OPTION_ACTIVE"),stockpile_rect())
+		text_at("View stockpile",Vector2(344,204+offset),colors[10])

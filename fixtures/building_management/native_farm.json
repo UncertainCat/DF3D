@@ -28576,5 +28576,61 @@
     "extension_sha256": "332e0bea3ffdfd1db2f5732514c20ead6c1b2cbc6de748f065e78d3329d5bd6d",
     "scope": "Native stockpile settings bitset, independent revision, model/Godot transport and relationship consistency. Missing historical categories remain unknown.",
     "offline": "item-stockpile-final: core and controller PASS; existing item render PASS with known diagnostics"
+  },
+  "item_transfer_scene_reference": {
+    "capture": "build/areas-acceptance-20261029-225057",
+    "owned_df_pid": 184600,
+    "status": "passed_with_known_issues",
+    "diagnostics": "Known separate rendering-thread notice only",
+    "exit": "unsaved",
+    "save_manifests_unchanged": 2,
+    "binary_reference": "independent_stockpile_categories_reference",
+    "result": {
+      "captures": [
+        {
+          "name": "baseline",
+          "rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a"
+        },
+        {
+          "name": "forbid_enabled",
+          "rgb_sha256": "1989dea2130b30cf577d1b42127e9defe0fc2397da515fb3962df9483c5bd1c3"
+        },
+        {
+          "name": "forbid_disabled",
+          "rgb_sha256": "d7995042f19816df40502fcd6c03073dbd9efc59e95dbcf223e32c3b1faf5a4f"
+        },
+        {
+          "name": "transferred_hidden",
+          "rgb_sha256": "8ed0ebec9754df121187618f787f63f2fe8d26bd5a443f1393e4c0d036795e7f"
+        },
+        {
+          "name": "transferred_visible",
+          "rgb_sha256": "d56732fe0776a038084a0d42520ee71321e32ba788b092daaa186ebdc7cf05ff"
+        }
+      ],
+      "native_checks": 100,
+      "reasons": [],
+      "status": "passed",
+      "surface": "staged farm owner in actual main scene; viewport mouse input"
+    },
+    "navigation": {
+      "closed_bootstrap": [
+        {
+          "outcome": "not_sent",
+          "sent": false
+        },
+        {
+          "outcome": "",
+          "sent": true
+        }
+      ],
+      "item_owner_retired": true,
+      "missing_stockpile_rejected": true,
+      "stockpile_id": 121,
+      "stockpile_revision": "4929607382097237545",
+      "viewport_navigation": true,
+      "visibility_both_values": true
+    },
+    "scope": "Controlled DFHack transfer after native job retirement and 600 further ticks; independent inspection, viewport Visibility both values, exact native panel pixels, View stockpile handoff, queued/sent retirement and missing-target refusal. Not natural hauling, all category artwork, overlapping stockpiles or combined holder/stockpile rendering."
   }
 }

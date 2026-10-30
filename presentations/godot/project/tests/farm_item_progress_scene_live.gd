@@ -116,3 +116,68 @@ func observe_retained() -> void:
 	await RenderingServer.frame_post_draw
 	check(root.get_texture().get_image().save_png(directory+"/potash_scene_retained.png")==OK,"retained scene capture failed")
 	write_json("potash-scene-retained.json",{"sheet_visible":true,"owner_retained":true,"following":true})
+
+	if fixture.get("transfer_scene",false):await transfer_scene()
+
+func transfer_scene() -> void:
+	var model=owner.item_owner.state;var follow=scene._ui.item_follow;var actions=scene._ui.actions
+	var sheet=owner.item_owner.panel
+	await native("independent_transfer");if stopped:return
+	model.poll(1);follow._process(1)
+	if not await settle(model,follow,actions):return
+	if not check(model.phase==model.Phase.Ready and model.snapshot.has("stockpile") and not model.snapshot.has("holder") and scene._ui.host.active==owner.item_owner,"rendered transfer lost item authority"):return
+	await native("independent_verify",{"snapshot":model.view_snapshot(),"revision_text":str(model.snapshot.revision)});if stopped:return
+	await pointer(sheet.get_global_transform_with_canvas()*sheet.camera_rect().get_center())
+	if not await settle(model,follow,actions):return
+	if not check(follow.item_id==-1,"camera toggle did not stop follow"):return
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json"))
+	for hidden in [true,false]:
+		await edit_item(model,follow,actions,Contract.FarmOperation.ItemHidden,hidden);if stopped:return
+		await native("independent_verify",{"snapshot":model.view_snapshot(),"revision_text":str(model.snapshot.revision)});if stopped:return
+		var motion:=InputEventMouseMotion.new();motion.position=Vector2(300,400);root.push_input(motion,true)
+		await process_frame;await RenderingServer.frame_post_draw
+		var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var label:="hidden" if hidden else "visible"
+		check(image.save_png(directory+"/transferred_"+label+".png")==OK,"transfer capture failed")
+		var crop:=image.get_region(Rect2i(Vector2i(sheet.get_global_transform_with_canvas().origin),Vector2i(sheet.size)))
+		var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(crop.get_data())
+		var expected:=""
+		for native_state in reference.independent_item_native_reference.runs[1].states:
+			if native_state.name=="farm-potash-transfer-helper-"+label:expected=native_state.panel_rgb_sha256
+		var digest:=hash.finish().hex_encode();captures.append({"name":"transferred_"+label,"rgb_sha256":digest})
+		if not check(digest==expected,"transferred panel differs from native: "+label):return
+	var target: int=model.snapshot.stockpile.id
+	await pointer(sheet.get_global_transform_with_canvas()*sheet.stockpile_rect().get_center())
+	var areas=scene._ui.controller("areas");var deadline:=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll()
+		if areas.request_ticket==0 and areas.selected.get("id",-1)==target:break
+		await create_timer(0.01).timeout
+	if not check(areas.selected.get("id",-1)==target and areas.selected.get("kind",-1)==0 and areas.mode=="inspect" and areas.panel.visible and scene._ui.host.active==areas and model.item_id==-1 and not sheet.visible,"View stockpile did not transfer ownership to fresh stockpile controls"):return
+	await RenderingServer.frame_post_draw
+	check(root.get_texture().get_image().save_png(directory+"/stockpile_navigation.png")==OK,"stockpile navigation capture failed")
+	write_json("item-transfer-scene-results.json",{"stockpile_id":target,"item_owner_retired":true,"viewport_navigation":true,"visibility_both_values":true,"stockpile_revision":str(areas.selected.revision)})
+
+	var navigation_revision:=str(areas.selected.revision)
+	var retired: Array=[]
+	for sent in [false,true]:
+		areas.close_panel();areas.open_stockpile(target)
+		var ticket: int=areas.request_ticket
+		if not check(ticket>0,"stockpile handoff did not queue bootstrap"):return
+		if sent:actions.poll()
+		areas.close_panel()
+		deadline=Time.get_ticks_msec()+30000
+		while actions.result(ticket).is_empty() and Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll();await create_timer(0.01).timeout
+		if not check(not actions.result(ticket).is_empty() and not areas.panel.visible and areas.request_ticket==0 and areas._open_stockpile_id==-1 and scene._ui.host.active==null,"late stockpile bootstrap revived retired handoff"):return
+		if not sent and not check(actions.result(ticket).outcome=="not_sent","closed queued handoff was sent"):return
+		retired.append({"sent":sent,"outcome":actions.result(ticket).get("outcome","")})
+	areas.open_stockpile(2147483647)
+	deadline=Time.get_ticks_msec()+30000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll()
+		if areas.request_ticket==0 and areas._open_stockpile_id==-1:break
+		await create_timer(0.01).timeout
+	if not check(areas.request_problem and areas.selected.is_empty(),"missing stockpile acquired selection authority"):return
+	areas.close_panel()
+	write_json("item-transfer-scene-results.json",{"stockpile_id":target,"item_owner_retired":true,"viewport_navigation":true,"visibility_both_values":true,"stockpile_revision":navigation_revision,"closed_bootstrap":retired,"missing_stockpile_rejected":true})

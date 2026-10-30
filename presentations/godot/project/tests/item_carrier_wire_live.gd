@@ -36,8 +36,13 @@ func run() -> void:
 	var snapshot: Dictionary=response.get("production",{}).get("independent_item",{}).get("snapshot",{})
 	if not check(response.get("status")==C.ManagementStatus.Ok and not snapshot.is_empty(),"Carrier read failed"):quit(1);return
 	check(str(snapshot.revision)==expected.snapshot.revision,"Carrier exact revision changed across wire")
-	for key in ["kind","id","item_type","name"]:check(snapshot.get("carrier",{}).get(key)==expected.snapshot.carrier[key],"Carrier field differs: "+key)
-	if snapshot.carrier.kind==1:
+	for key in ["id","item_type","description","weight"]:check(snapshot.get(key)==expected.snapshot[key],"Independent item field differs: "+key)
+	if expected.snapshot.has("carrier"):
+		for key in ["kind","id","item_type","name"]:check(snapshot.get("carrier",{}).get(key)==expected.snapshot.carrier[key],"Carrier field differs: "+key)
+	if expected.snapshot.has("holder"):
+		for key in ["id","type"]:check(snapshot.get("holder",{}).get(key,-1)==int(expected.snapshot.holder[key]),"Independent item holder differs: "+key)
+		check(snapshot.get("holder",{}).get("name","")==expected.snapshot.holder.name,"Independent item holder name differs")
+	if snapshot.get("carrier",{}).get("kind",0)==1:
 		for key in ["material_token","subtype_raw","color_token","stack","flags"]:
 			check(snapshot.carrier.get("appearance",{}).get(key)==expected.snapshot.carrier.appearance[key],"Carrier appearance differs: "+key)
 	var model=preload("res://scripts/item_sheet_state.gd").new();model.item_id=int(expected.snapshot.id)
@@ -49,15 +54,20 @@ func run() -> void:
 		var state: Dictionary=result.get("production",{}).get("independent_item",{})
 		check(result.get("status")==C.ManagementStatus.Rejected and state.get("outcome")==C.FarmEditOutcome.Stale and not state.has("snapshot"),"Old carrier revision granted authority")
 	var receipts: Array=[]
-	for value in [true,false]:
+	for value in [not snapshot.hidden,snapshot.hidden]:
 		if failed:break
 		var edit:=intent.duplicate();edit.action=C.ManagementAction.FarmEdit;edit.farm_operation=C.FarmOperation.ItemHidden;edit.item_value=int(value);edit.expected_revision=snapshot.revision
 		var result:=await request("production",edit)
 		var state: Dictionary=result.get("production",{}).get("independent_item",{})
 		if not check(result.get("status")==C.ManagementStatus.Ok and state.get("outcome")==C.FarmEditOutcome.Completed,"Carrier edit not confirmed"):break
 		snapshot=state.get("snapshot",{})
-		check(model._valid(snapshot) and snapshot.hidden==value and snapshot.carrier.id==int(expected.snapshot.carrier.id),"Carrier receipt mismatch")
-		receipts.append({"value":value,"revision":str(snapshot.revision),"carrier":snapshot.carrier})
+		check(model._valid(snapshot) and snapshot.hidden==value and snapshot.id==int(expected.snapshot.id),"Carrier receipt mismatch")
+		var receipt={"value":value,"revision":str(snapshot.revision),"id":snapshot.id}
+		if snapshot.has("carrier"):
+			check(snapshot.carrier.id==int(expected.snapshot.carrier.id),"Carrier receipt identity differs")
+			receipt.carrier=snapshot.carrier
+		if snapshot.has("holder"):receipt.holder=snapshot.holder
+		receipts.append(receipt)
 	var file:=FileAccess.open(directory+"/carrier-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"stale_checked":expected.has("prior_revision")}));file.close()
 	world.detach_live();world.queue_free();await process_frame

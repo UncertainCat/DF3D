@@ -2438,8 +2438,8 @@ std::optional<BuildingItemSnapshot> observeFarmItem(int32_t buildingId,int32_t i
   if(!tile||tile->bits.hidden)return std::nullopt;
   df::item* item=nullptr;
   for(auto* held:farm->contained_items)if(held&&held->item&&held->item->id==itemId)item=held->item;
-  if(!df3d_production::farmItemDescriptionDispatch(item))return std::nullopt;
-  const auto description=df3d_production::farmItemDescription(item);
+  if(!df3d_production::itemDescriptionDispatch(item))return std::nullopt;
+  const auto description=df3d_production::itemDescription(item);
   const auto weight=df3d_production::itemWeightCaption(item);
   const auto holder=df3d_production::itemBuildingHolder(item);
   if(!description||!weight||!holder)return std::nullopt;

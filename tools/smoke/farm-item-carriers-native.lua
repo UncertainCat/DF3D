@@ -14,8 +14,18 @@ for _,candidate in ipairs(df.global.world.units.active)do
  if dfhack.units.isCitizen(candidate) and candidate.pos.z==b.z then unit=candidate;break end
 end
 assert(container and unit,'carrier fixture requires a box and citizen on the farm level')
+local description_case=os.getenv('DF3D_BOX_DESCRIPTION_CASE') or 'none'
+assert(description_case=='none' or description_case=='image' or description_case=='masterpiece','unknown box description case')
+local extra_image,box_saved
 local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
+ if box_saved then
+  assert(container.improvements[#container.improvements-1]==extra_image)
+  container.improvements:erase(#container.improvements-1);df.delete(extra_image);extra_image=nil
+  container.quality=box_saved.quality;container.maker=box_saved.maker;container.maker_race=box_saved.maker_race
+  container.flags.whole=box_saved.flags;container.weight.whole=box_saved.whole;container.weight.fraction=box_saved.fraction
+  box_saved=nil
+ end
  if not detached then return end
  if reciprocal then assert(container.general_refs[#container.general_refs-1]==reciprocal);container.general_refs:erase(#container.general_refs-1);df.delete(reciprocal);reciprocal=nil end
  if inventory then assert(unit.inventory[#unit.inventory-1]==inventory);unit.inventory:erase(#unit.inventory-1);df.delete(inventory);inventory=nil end
@@ -73,6 +83,40 @@ local ok,err=xpcall(function()
   local result=assert(io.open(out..'/carrier-wire-result.json'));row.wire=json.decode(result:read('*a'));result:close()
   assert(row.wire.success and item.flags.hidden==false,'carrier wire verification failed or changed final flag')
   prior_revision=row.independent.revision
+  local cold_probe
+  if kind=='container' and description_case~='none' then
+   assert(target.world_data_id==-1,'cold image fixture must not retire worldgen backing')
+   box_saved={quality=target.quality,maker=target.maker,maker_race=target.maker_race,flags=target.flags.whole,whole=target.weight.whole,fraction=target.weight.fraction}
+   extra_image=df.itemimprovement_art_imagest:new()
+   extra_image.mat_type=target:getMaterial();extra_image.mat_index=target:getMaterialIndex();extra_image.quality=3;extra_image.maker=-1
+   extra_image.image.id=-1;extra_image.image.subid=-1;extra_image.image.civ_id=-1;extra_image.image.site_id=-1
+   target.improvements:insert('#',extra_image)
+   if description_case=='masterpiece' then
+    assert(unit.hist_figure_id>=0);target.quality=5;target.maker=unit.hist_figure_id;target.maker_race=unit.race
+    extra_image.quality=5;extra_image.maker=unit.hist_figure_id
+   end
+   local copies={}
+   for _,object in ipairs{sheet,df.global.plotinfo}do
+    local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+    copies[#copies+1]={size=size,address=address,bytes=bytes}
+   end
+   local before={id=df.global.world.worldgen.next_art_image_chunk_id,offset=df.global.world.worldgen.next_art_image_chunk_offset}
+   local text,status=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(target.id))
+   local unchanged=true
+   for _,copy in ipairs(copies)do
+    local current=df.new('uint8_t',copy.size);dfhack.internal.memmove(current,copy.address,copy.size)
+    for i=0,copy.size-1 do if current[i]~=copy.bytes[i]then unchanged=false end end
+    df.delete(current);df.delete(copy.bytes)
+   end
+   assert(status==0,text);assert(unchanged,'cold image description changed native UI')
+   cold_probe=json.decode(text).snapshot;cold_probe.case=description_case;cold_probe.native_ui_unchanged=true;cold_probe.before=before
+   cold_probe.after={id=df.global.world.worldgen.next_art_image_chunk_id,offset=df.global.world.worldgen.next_art_image_chunk_offset}
+   cold_probe.image={id=extra_image.image.id,subid=extra_image.image.subid}
+   assert(cold_probe.image.id>=0 and cold_probe.image.subid>=0,'native description did not initialize image')
+   local chunk=assert(df.art_image_chunk.find(cold_probe.image.id));local art=assert(chunk.images[cold_probe.image.subid].art_image)
+   cold_probe.art={id=art.id,subid=art.subid,elements=#art.elements,properties=#art.properties,quality=art.quality,artist=art.artist,has_source=art.ref~=nil}
+   assert(cold_probe.art.elements>0 and cold_probe.art.has_source,'native art record incomplete')
+  end
   local target_before,target_size,target_address
   if kind=='container' then
    target_size,target_address=df.sizeof(target);target_before=df.new('uint8_t',target_size)
@@ -83,6 +127,10 @@ local ok,err=xpcall(function()
   assert(sheet.open and sheet.active_id==target.id and sheet.active_sheet==(kind=='unit' and df.view_sheet_type.UNIT or df.view_sheet_type.ITEM),'native carrier View selected wrong identity')
   if kind=='container' then
    linked.description=dfhack.df2utf(sheet.raw_description)
+   if cold_probe then
+    assert(cold_probe.description==linked.description,'cold owned description differs from later native sheet')
+    linked.cold_description_probe=cold_probe
+   end
    linked.item_type=target:getType();linked.quality=target.quality;linked.maker=target.maker;linked.maker_race=target.maker_race
    linked.improvements={}
    for _,improvement in ipairs(target.improvements)do
@@ -97,6 +145,13 @@ local ok,err=xpcall(function()
    local function description_probe()
     local protected={target,sheet,df.global.plotinfo}
     for _,improvement in ipairs(target.improvements)do protected[#protected+1]=improvement end
+    if extra_image then
+     local chunk=assert(df.art_image_chunk.find(extra_image.image.id));local art=assert(chunk.images[extra_image.image.subid].art_image)
+     protected[#protected+1]=art
+     if art.ref then protected[#protected+1]=art.ref end
+     for _,element in ipairs(art.elements)do protected[#protected+1]=element end
+     for _,property in ipairs(art.properties)do protected[#protected+1]=property end
+    end
     local copies={}
     for _,object in ipairs(protected)do
      local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
@@ -112,11 +167,21 @@ local ok,err=xpcall(function()
     assert(status==0,text);assert(unchanged,'box description changed item/improvement/UI bytes')
     local result=json.decode(text);assert(result.description==linked.description,'owned box description differs from native')
     result.item_improvement_ui_unchanged=true;result.native_sheet_open=sheet.open
+    if cold_probe then
+     assert(df.global.world.worldgen.next_art_image_chunk_id==cold_probe.after.id and df.global.world.worldgen.next_art_image_chunk_offset==cold_probe.after.offset,'repeated description allocated another art image')
+     result.art_unchanged=true;result.no_additional_art=true
+    end
     return result
    end
    linked.description_probes={description_probe()}
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    linked.description_probes[#linked.description_probes+1]=description_probe()
+   local text,status=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(target.id));assert(status==0,text)
+   linked.independent=json.decode(text).snapshot;assert(linked.independent.description==linked.description)
+   local expected=assert(io.open(out..'/carrier-expected.json','w'));expected:write(json.encode{snapshot=linked.independent});expected:close()
+   capture('farm-item-carrier-box-wire')
+   local result=assert(io.open(out..'/carrier-wire-result.json'));linked.wire=json.decode(result:read('*a'));result:close()
+   assert(linked.wire.success and target.flags.hidden==linked.independent.hidden,'box wire verification failed or left hidden flag changed')
   end
   if sheet.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end;restore()
  end

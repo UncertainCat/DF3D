@@ -215,10 +215,10 @@ try {
     if($ZoneSquads){Start-Sleep -Milliseconds 250}
     [Shot]::SetThreadDpiAwarenessContext([IntPtr](-4)) | Out-Null
     [Shot]::Capture([Shot]::Find($owned.Id),"$out/$name.png") | Out-Null
-    if($FarmItemCarriers -and $name -match '^farm-item-carrier-(container|unit)-wire$') {
+    if($FarmItemCarriers -and $name -match '^farm-item-carrier-(container|unit|box)-wire$') {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
-     if($FarmItemCarrierArt){
+     if($FarmItemCarrierArt -and $name -ne 'farm-item-carrier-box-wire'){
       $env:DF3D_DF_PATH=$dfPath
       $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/item_carrier_art_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
      }else{

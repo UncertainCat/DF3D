@@ -585,7 +585,7 @@ The native description allowlist includes exact seed16d06e0 and bar16f6da0
 vtables. BAR shares the audited null-image/nonconstructed/noncritter getters;
 its type getter66e90 returns0, and material/actual-material getter5453d0 is an
 eight-byte read-only leaf (FNVe3389d0d7d85b545). Native c7527b supplies BAR grammar.
-`farmItemDescription` calls c75000 into owned storage; it does not borrow native
+`itemDescription` calls c75000 into owned storage; it does not borrow native
 sheet text. Protected193721 and193942 verify the delivered potash description
 matches native and preserves guarded item, farm, sheet, plotinfo and raw-vector
 bytes. DF152828/180120 exit unsaved with source preservation. Seed management
@@ -1350,9 +1350,9 @@ Thus seed objects skip this initialization branch at c75765 regardless of
 seed material or flags. This is static branch evidence, not a complete
 read-only proof. `item_description_image_branch_audit` retains the exact target,
 bytes and executable identity. The seed-specific dependencies and controlled variants are covered below; this
-does not authorize item types beyond the seed/bar allowlist described above.
+does not by itself authorize other item dispatches; BOX acceptance follows below.
 The UI-owning1a8df0 wrapper remains excluded. Normal farm item inspection and
-this diagnostic share farmItemDescription.
+this diagnostic share itemDescription.
 
 The probe also pins the exact seed vtable and seventeen item virtual dispatch
 entries with complete leaf bodies. These establish type53, zero quality,
@@ -1375,26 +1375,46 @@ protected130534 result. All twelve warm/cold seed descriptions still match nativ
 full item/building/UI guards pass, and the nonseed probe remains refused. Owned
 DF186000 exits unsaved and the source manifest stays unchanged. MSVC passes.
 
-The diagnostic `df3d box-description-probe <item-id>` additionally exercises
-c75000 for a bounded constructed branch without widening runtime admission.
-Exact BOX vtable1623198 retains the null getImageRef exclusion; its native
-isConstructed getter admits the improvement loop. The diagnostic pins all17
-item virtual targets, ring/band getType leaves and the gem-shape formatter
-14e1ec0. It permits only ring/band improvement classes, quality0..4, unknown
-maker/race and nonartifact items; these are audit limits, not native eligibility.
-Native material and gem-shape text are returned directly into owned storage.
+Independent item inspection additionally accepts native BOX dispatch1623198.
+`itemDescription` calls c75000 with the native sheet options and owned output;
+`observeItem` reads facts after description and weight initialization, so receipts
+include native effects. The BOX path pins all17 item virtual targets, all15 native
+improvement classes' getType/getImage dispatch, and formatter/image helpers.
+Valid quality includes Artifact; maker and decoration prose come from DF.
+Other item types remain gated. Public farm/item navigation is still staged.
 
-Protected113657 on2026-10-30 verifies chest5834's native description, including
-its quality, rose-cut gem bands and two hanging-ring materials. Owned-string
-reads match exactly with the native sheet open and closed. Item, each improvement,
-view_sheets and plotinfo remain byte-identical across both probes. Opening the
-native sheet itself populates the expected item weight cache. Source preservation
-passes and DF174476 exits unsaved. `item_box_description_probe_reference` retains
-the native text, semantic facts, mutation offsets, dispatch pins and binary hash.
-The carrier render/wire regressions also pass, with only the known rendering-thread
-notice. MSVC passes. Runtime descriptions still admit only seeds/bars. Image-bearing
-improvements, maker attribution, other item dispatch and their transitive effects
-remain required before complete generic item inspection and carrier navigation.
+Art-image, sewn-image and illustration improvements share getImage cabd70/0x9b.
+A missing image calls cabb50/0x21e, spanning multiple unwind entries, to create a
+semantic world art record and source-item reference. Native1453130 advances the
+world art chunk/offset and inserts the record; this is not a rendering cache.
+The same path can retire worldgen backing via cc83e0/0xe6 and clear from_worldgen.
+These native semantic effects are preserved. The description formatter1451b10
+uses owned output and native caller options; BOX getImageRef still returns null.
+The diagnostic `df3d box-description-probe <item-id>` shares this provider.
+
+Protected115731 on2026-10-30 starts with an uninitialized art-image improvement
+and a controlled masterwork maker on chest5834. The independent runtime read
+creates one art record with its source reference, then returns text identical to
+the subsequently opened native sheet. Warm open/closed probes preserve the item,
+every improvement, art record/elements/properties/source reference, view_sheets
+and plotinfo bytes and allocate no additional art. The actual Godot client matches
+exact revision, description, weight and building holder278, accepts the controller
+snapshot and confirms both Hidden edit directions. Ordinary-chest115815 repeats
+the independent read and edit transport. Both runs also pass exact carrier-panel
+and stale-carrier regressions; only the known rendering-thread notice occurs.
+Owned DF190324/177752 exit unsaved and source-save manifests are unchanged.
+`item_box_native_initialization_reference` retains records, receipts and hashes.
+MSVC and core `build/qa/box-independent-provider` pass.
+
+The protected helper accepts `DF3D_BOX_DESCRIPTION_CASE=image` or `masterpiece`
+with the FarmDiscovery/FarmHeader/FarmItemCarriers/FarmItemCarrierArt switches;
+omitted/none uses the ordinary chest. Controlled item fields and references are
+restored. Generated art stays owned by the disposable session and is discarded
+by unsaved exit; the harness does not attempt allocation rollback. Prior
+diagnostic113657 remains recorded separately. These cases cover bands, rings,
+a generated art-image and maker attribution. Other decoration subtypes and item
+types, worldgen-backed image retirement, rendered chest destination controls,
+and carrier navigation remain separate acceptance work.
 
 Protected131236 adds sixteen controlled semantic input variants on an existing
 sweet pod seed: wear1/2/3, stack3, rotten/foreign/trader/forbid/dump/hidden flags,

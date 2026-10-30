@@ -30819,5 +30819,273 @@
       }
     ],
     "scope": "Diagnostic owned-string c75000 call only. BOX exact vtable1623198; rings/bands exact improvement dispatch; quality0..4, unknown maker/race and nonartifact guard. Observed chest5834 (quality1, three quality1/2 ring/band improvements) matches native with sheet open and closed, preserving item/improvement/view_sheets/plotinfo bytes. Native View itself populates weight cache. No runtime BOX admission, image improvements, maker attribution, complete generic description acceptance or destination navigation. Existing carrier panel/wire regression also passes; source unchanged and owned DF exits unsaved."
+  },
+  "item_box_native_initialization_reference": {
+    "bridge_sha256": "8183b87fbf9e922984929a18a15dcb893f07347b60a86294e6a0d146f8b8a926",
+    "management_version": 96,
+    "cases": [
+      {
+        "source": "build/stockpile-storage-native-farm-discovery-20261030-115731",
+        "owned_df_pid": 190324,
+        "case": "masterpiece",
+        "status": "passed_with_known_issues",
+        "known_diagnostics": [
+          "godot-separate-thread-notice"
+        ],
+        "observation": {
+          "target_id": 5834,
+          "description": "This is a masterful kumquat wood chest created by \u00eeton Unibmamot.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  On the item is a masterfully designed image of Burydust the Ashen Oblivion the raw adamantine slab in kumquat wood.  ",
+          "quality": 5,
+          "maker": 8490,
+          "maker_race": 572,
+          "improvements": [
+            {
+              "maker": -1,
+              "material_index": 136,
+              "material_type": 0,
+              "quality": 2,
+              "type": 2
+            },
+            {
+              "maker": -1,
+              "material_index": 120,
+              "material_type": 0,
+              "quality": 1,
+              "type": 3
+            },
+            {
+              "maker": -1,
+              "material_index": 372,
+              "material_type": 22,
+              "quality": 1,
+              "type": 2
+            },
+            {
+              "maker": 8490,
+              "material_index": 152,
+              "material_type": 420,
+              "quality": 5,
+              "type": 0
+            }
+          ],
+          "description_probes": [
+            {
+              "art_unchanged": true,
+              "description": "This is a masterful kumquat wood chest created by \u00eeton Unibmamot.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  On the item is a masterfully designed image of Burydust the Ashen Oblivion the raw adamantine slab in kumquat wood.  ",
+              "item_id": 5834,
+              "item_improvement_ui_unchanged": true,
+              "native_sheet_open": true,
+              "no_additional_art": true
+            },
+            {
+              "art_unchanged": true,
+              "description": "This is a masterful kumquat wood chest created by \u00eeton Unibmamot.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  On the item is a masterfully designed image of Burydust the Ashen Oblivion the raw adamantine slab in kumquat wood.  ",
+              "item_id": 5834,
+              "item_improvement_ui_unchanged": true,
+              "native_sheet_open": false,
+              "no_additional_art": true
+            }
+          ],
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "(\u263c\u00ab\u263ckumquat wood chest\u263c\u00bb\u263c)",
+            "description": "This is a masterful kumquat wood chest created by \u00eeton Unibmamot.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  On the item is a masterfully designed image of Burydust the Ashen Oblivion the raw adamantine slab in kumquat wood.  ",
+            "dump": false,
+            "flags": 536887328,
+            "forbid": false,
+            "hidden": false,
+            "holder": {
+              "id": 278,
+              "name": "kumquat wood Chest",
+              "type": 10
+            },
+            "id": 5834,
+            "item_type": 30,
+            "material_token": "PLANT:KUMQUAT:WOOD",
+            "melt": false,
+            "revision": "484793218214620194",
+            "stockpile_categories": -1,
+            "weight": "11\u0393"
+          },
+          "wire": {
+            "receipts": [
+              {
+                "holder": {
+                  "id": 278,
+                  "name": "kumquat wood Chest",
+                  "type": 10
+                },
+                "id": 5834,
+                "revision": "6094180800866413850",
+                "value": true
+              },
+              {
+                "holder": {
+                  "id": 278,
+                  "name": "kumquat wood Chest",
+                  "type": 10
+                },
+                "id": 5834,
+                "revision": "484793218214620194",
+                "value": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        "cold_initialization": {
+          "after": {
+            "id": 4,
+            "offset": 124
+          },
+          "art": {
+            "artist": -1,
+            "elements": 1,
+            "has_source": true,
+            "id": 4,
+            "properties": 0,
+            "quality": 5,
+            "subid": 123
+          },
+          "before": {
+            "id": 4,
+            "offset": 123
+          },
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "(\u263c\u00ab\u263ckumquat wood chest\u263c\u00bb\u263c)",
+          "case": "masterpiece",
+          "description": "This is a masterful kumquat wood chest created by \u00eeton Unibmamot.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  On the item is a masterfully designed image of Burydust the Ashen Oblivion the raw adamantine slab in kumquat wood.  ",
+          "dump": false,
+          "flags": 536887328,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 278,
+            "name": "kumquat wood Chest",
+            "type": 10
+          },
+          "id": 5834,
+          "image": {
+            "id": 4,
+            "subid": 123
+          },
+          "item_type": 30,
+          "material_token": "PLANT:KUMQUAT:WOOD",
+          "melt": false,
+          "native_ui_unchanged": true,
+          "revision": "484793218214620194",
+          "stockpile_categories": -1,
+          "weight": "11\u0393"
+        },
+        "save_preservation": "Owned source unchanged"
+      },
+      {
+        "source": "build/stockpile-storage-native-farm-discovery-20261030-115815",
+        "owned_df_pid": 177752,
+        "case": "ordinary",
+        "status": "passed_with_known_issues",
+        "known_diagnostics": [
+          "godot-separate-thread-notice"
+        ],
+        "observation": {
+          "target_id": 5834,
+          "description": "This is a well-crafted kumquat wood chest.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  ",
+          "quality": 1,
+          "maker": -1,
+          "maker_race": -1,
+          "improvements": [
+            {
+              "maker": -1,
+              "material_index": 136,
+              "material_type": 0,
+              "quality": 2,
+              "type": 2
+            },
+            {
+              "maker": -1,
+              "material_index": 120,
+              "material_type": 0,
+              "quality": 1,
+              "type": 3
+            },
+            {
+              "maker": -1,
+              "material_index": 372,
+              "material_type": 22,
+              "quality": 1,
+              "type": 2
+            }
+          ],
+          "description_probes": [
+            {
+              "description": "This is a well-crafted kumquat wood chest.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  ",
+              "item_id": 5834,
+              "item_improvement_ui_unchanged": true,
+              "native_sheet_open": true
+            },
+            {
+              "description": "This is a well-crafted kumquat wood chest.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  ",
+              "item_id": 5834,
+              "item_improvement_ui_unchanged": true,
+              "native_sheet_open": false
+            }
+          ],
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "(+\u00ab-kumquat wood chest-\u00bb+)",
+            "description": "This is a well-crafted kumquat wood chest.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  ",
+            "dump": false,
+            "flags": 536887328,
+            "forbid": false,
+            "hidden": false,
+            "holder": {
+              "id": 278,
+              "name": "kumquat wood Chest",
+              "type": 10
+            },
+            "id": 5834,
+            "item_type": 30,
+            "material_token": "PLANT:KUMQUAT:WOOD",
+            "melt": false,
+            "revision": "6998144133598922904",
+            "stockpile_categories": -1,
+            "weight": "11\u0393"
+          },
+          "wire": {
+            "receipts": [
+              {
+                "holder": {
+                  "id": 278,
+                  "name": "kumquat wood Chest",
+                  "type": 10
+                },
+                "id": 5834,
+                "revision": "8376342031583175208",
+                "value": true
+              },
+              {
+                "holder": {
+                  "id": 278,
+                  "name": "kumquat wood Chest",
+                  "type": 10
+                },
+                "id": 5834,
+                "revision": "6998144133598922904",
+                "value": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        "cold_initialization": null,
+        "save_preservation": "Owned source unchanged"
+      }
+    ],
+    "scope": "Runtime independent BOX inspection. Native c75000 options match item-sheet initializer; owned output and facts observed after native art/weight initialization. Cold masterwork image creates one semantic art record; native sheet matches; warm open/closed probes preserve item/improvement/art/UI bytes and allocate nothing further. Matched Godot client validates exact revision, description, weight, holder identity and two Hidden edit receipts. Ordinary chest repeats transport and edits; carrier panel/wire regressions pass in both runs. Controlled item fields/references restored; newly generated semantic art belongs to disposable session, which exits unsaved. Not generic item-type, every improvement subtype, rendered chest destination or navigation acceptance."
   }
 }

@@ -1646,8 +1646,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
           if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
           auto* item=df::item::find(id);
-          if(!df3d_production::boxItemDescriptionProbeDispatch(item))return CR_FAILURE;
-          const auto description=df3d_production::farmItemDescription(item,true);if(!description)return CR_FAILURE;
+          if(!df3d_production::boxItemDescriptionDispatch(item))return CR_FAILURE;
+          const auto description=df3d_production::itemDescription(item);if(!description)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["item_id"]=id;result["description"]=DF2UTF(*description);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
@@ -1733,7 +1733,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result["holder"]=std::move(link);
           }
           if(parameters[0]=="farm-item-description-probe") {
-            const auto description=df3d_production::farmItemDescription(item);
+            const auto description=df3d_production::itemDescription(item);
             if(!description)return CR_FAILURE;
             result["description"]=DF2UTF(*description);
           }

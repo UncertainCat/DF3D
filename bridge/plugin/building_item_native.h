@@ -163,7 +163,7 @@ inline std::optional<std::string> itemWeightCaption(df::item* item) {
 }
 // Seed/bar virtual targets used by c75000. Pin both dispatch and complete
 // leaf bodies before relying on type/quality/construction/image exclusions.
-inline bool farmItemDescriptionDispatch(df::item* item) {
+inline bool simpleItemDescriptionDispatch(df::item* item) {
     if(!item||!farmFunctions())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto* table=*reinterpret_cast<const void* const*>(item);
@@ -228,9 +228,9 @@ inline bool farmItemDescriptionDispatch(df::item* item) {
     }();
     return pinned;
 }
-// Diagnostic-only constructed branch: rings and bands without maker attribution.
-// Other improvements can initialize art/knowledge; retain the runtime allowlist.
-inline bool boxItemDescriptionProbeDispatch(df::item* item) {
+// Native BOX dispatch. Lazy art generation owns semantic world records, not
+// native UI state; observations are built after those native effects.
+inline bool boxItemDescriptionDispatch(df::item* item) {
     if(!item||!farmFunctions())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     if(*reinterpret_cast<const void* const*>(item)!=base+0x1623198)return false;
@@ -266,25 +266,53 @@ inline bool boxItemDescriptionProbeDispatch(df::item* item) {
         if(hash(0x14e1ec0,0xb68)!=UINT64_C(0x1d38184423ba8a35))return false;
         if(hash(0x14d1920,0x459)!=UINT64_C(0xf48e28715360ed9a))return false;
         if(hash(0x14add70,0x12f)!=UINT64_C(0x01f897b15772d540))return false;
-        return *reinterpret_cast<const void* const*>(base+0x16f5e48+0x28)==base+0x67520 &&
-               *reinterpret_cast<const void* const*>(base+0x16fe860+0x28)==base+0x67540;
+        struct Improvement {size_t table,image,type,length;uint64_t hash;};
+        constexpr Improvement improvements[]={
+            {0x1702ce8,0xcabd70,0x66e90,0x3,UINT64_C(0x58389c18233078ff)},
+            {0x16f5e48,0x66e90,0x67520,0x6,UINT64_C(0x18580e5a3b056825)},
+            {0x16fd188,0x66e90,0x67530,0x6,UINT64_C(0xe59b01b045c53219)},
+            {0x16f7ca0,0x66e90,0x7b7a0,0x6,UINT64_C(0x57c0fc2ead8fec2e)},
+            {0x16f8c50,0x66e90,0x67500,0x6,UINT64_C(0x31b5d0af35a4361f)},
+            {0x16ff810,0xcabd70,0x671f0,0x6,UINT64_C(0x8a7e08d8a2d0223a)},
+            {0x16f8bf8,0x66e90,0x673c0,0x6,UINT64_C(0x6470dd592ae1062b)},
+            {0x16f0a68,0x66e90,0x67270,0x6,UINT64_C(0x7dce27ae257f083d)},
+            {0x16f4e98,0x66e90,0x67a50,0x6,UINT64_C(0xfef8c40540640013)},
+            {0x17034c0,0x66e90,0x676d0,0x6,UINT64_C(0x972bea03201dd637)},
+            {0x16fe860,0x66e90,0x67540,0x6,UINT64_C(0x2505ef84b8531c22)},
+            {0x16f8d58,0xcabd70,0x67860,0x6,UINT64_C(0xa3dbcb2d9d6ef034)},
+            {0x16ff7b8,0x66e90,0x67a40,0x6,UINT64_C(0x0ba8a52fbdb51a10)},
+            {0x16f4ef0,0x66e90,0x67b90,0x6,UINT64_C(0xf24ae2dac3164c16)},
+            {0x16fa430,0x66e90,0x67490,0x6,UINT64_C(0x711ebe83a82eba28)},
+        };
+        for(const auto& pin:improvements)if(*reinterpret_cast<const void* const*>(base+pin.table)!=base+pin.image ||
+            *reinterpret_cast<const void* const*>(base+pin.table+0x28)!=base+pin.type || hash(pin.type,pin.length)!=pin.hash)return false;
+        if(hash(0x66e90,0x3)!=UINT64_C(0x58389c18233078ff))return false;
+        if(hash(0xcabd70,0x9b)!=UINT64_C(0x9d40a9da4ede71df))return false;
+        if(hash(0xcabb50,0x21e)!=UINT64_C(0xee57b9bc216cc548))return false;
+        if(hash(0xcc83e0,0xe6)!=UINT64_C(0x153208913b9388eb))return false;
+        if(hash(0x1453130,0xf8)!=UINT64_C(0x8908ab4dc6f55824))return false;
+        if(hash(0x1451b10,0x161c)!=UINT64_C(0x5afdbfca1604e13b))return false;
+        return true;
     }();
     if(!pinned)return false;
     const auto* box=static_cast<df::item_boxst*>(item);
-    if(box->maker!=-1 || box->maker_race!=-1 || int(box->quality)<0 || int(box->quality)>4 || box->flags.bits.artifact)return false;
+    if(int(box->quality)<0 || int(box->quality)>int(df::item_quality::Artifact))return false;
     for(const auto* improvement:box->improvements) {
         if(!improvement)return false;
         const auto* table=*reinterpret_cast<const void* const*>(improvement);
-        if(table!=base+0x16f5e48 && table!=base+0x16fe860)return false;
-        if(improvement->maker!=-1 || int(improvement->quality)<0 || int(improvement->quality)>4)return false;
+        if(table!=base+0x1702ce8 && table!=base+0x16f5e48 && table!=base+0x16fd188 && table!=base+0x16f7ca0 && table!=base+0x16f8c50 && table!=base+0x16ff810 && table!=base+0x16f8bf8 && table!=base+0x16f0a68 && table!=base+0x16f4e98 && table!=base+0x17034c0 && table!=base+0x16fe860 && table!=base+0x16f8d58 && table!=base+0x16ff7b8 && table!=base+0x16f4ef0 && table!=base+0x16fa430)return false;
+        if(int(improvement->quality)<0 || int(improvement->quality)>int(df::item_quality::Artifact))return false;
     }
     return true;
 }
-// Owned seed/bar description. Other item branches can initialize art or grant
-// adventure knowledge and are excluded by the exact dispatch allowlist.
-inline std::optional<std::string> farmItemDescription(df::item* item, bool diagnosticBox=false) {
+inline bool itemDescriptionDispatch(df::item* item) {
+    return simpleItemDescriptionDispatch(item) || boxItemDescriptionDispatch(item);
+}
+// Native sheet options with owned output. BOX may initialize semantic art;
+// retain native effects and observe item facts only after formatting.
+inline std::optional<std::string> itemDescription(df::item* item) {
     using Describe=void (*)(df::item*,std::string*,bool,bool,bool,int32_t);
-    if(!farmItemDescriptionDispatch(item) && !(diagnosticBox && boxItemDescriptionProbeDispatch(item)))return std::nullopt;
+    if(!itemDescriptionDispatch(item))return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool pinned=[base]() {
         uint64_t value=UINT64_C(14695981039346656037);
@@ -384,9 +412,9 @@ inline std::optional<ItemLocationLink> itemStockpile(df::coord position) {
     return ItemLocationLink{};
 }
 inline std::optional<ItemObservation> observeItem(df::item* item) {
-    if(!farmItemDescriptionDispatch(item))return std::nullopt;
+    if(!itemDescriptionDispatch(item))return std::nullopt;
     const auto position=itemFollowPosition(item);if(!position)return std::nullopt;
-    const auto description=farmItemDescription(item),weight=itemWeightCaption(item);
+    const auto description=itemDescription(item),weight=itemWeightCaption(item);
     const auto holder=itemBuildingHolder(item),stockpile=itemStockpile(*position);
     if(!description||!weight||!holder||!stockpile)return std::nullopt;
     // Observe facts after native lazy formatting, without borrowing a UI owner.

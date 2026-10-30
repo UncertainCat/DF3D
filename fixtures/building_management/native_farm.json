@@ -38592,6 +38592,363 @@
       "ownership": "Paused disposable sessions. Temporary job never linked into simulation job list; original current_job pointer, custom profession and nickname restored before viewer checks; temporary job deleted. Both owned sessions exit unsaved and source manifests unchanged.",
       "diagnostics": "Four GPU logs: only known godot-separate-thread-notice. unit-header-reference QA core19/19, context and thought-text passed.",
       "limitations": "Native reference only; no runtime header parity claim. Fixed 33-cell crop can truncate long text (custom-profession adult). Activity/squad/social branches, identities, pets, creator captions, mood rows, multiple positions, width/height variants and header actions remain unverified. Pins identify audit targets, not call-safety approval."
+    },
+    "unit_header_position_reader_reference": {
+      "cases": [
+        {
+          "overview_case": "neutral",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-175553",
+          "result_sha256": "09dd6cb81952c55a4713343acd74c9c90ee9a6467490faa750bdb5c837f6ddab",
+          "owned_df_pid": 189216,
+          "observations": [
+            {
+              "case": "original",
+              "position": {
+                "entity_id": 865,
+                "position_id": 13,
+                "spouse": false,
+                "text": "Bookkeeper"
+              },
+              "native_text": "Bookkeeper"
+            },
+            {
+              "case": "no-current-job",
+              "position": {
+                "entity_id": 865,
+                "position_id": 13,
+                "spouse": false,
+                "text": "Bookkeeper"
+              },
+              "native_text": "Bookkeeper"
+            },
+            {
+              "case": "rest",
+              "position": {
+                "entity_id": 865,
+                "position_id": 13,
+                "spouse": false,
+                "text": "Bookkeeper"
+              },
+              "native_text": "Bookkeeper"
+            },
+            {
+              "case": "rest-on-break",
+              "position": {
+                "entity_id": 865,
+                "position_id": 13,
+                "spouse": false,
+                "text": "Bookkeeper"
+              },
+              "native_text": "Bookkeeper"
+            },
+            {
+              "case": "sleep",
+              "position": {
+                "entity_id": 865,
+                "position_id": 13,
+                "spouse": false,
+                "text": "Bookkeeper"
+              },
+              "native_text": "Bookkeeper"
+            },
+            {
+              "case": "custom-profession",
+              "position": {
+                "entity_id": 865,
+                "position_id": 13,
+                "spouse": false,
+                "text": "Bookkeeper"
+              },
+              "native_text": "Bookkeeper"
+            },
+            {
+              "case": "nickname",
+              "position": {
+                "entity_id": 865,
+                "position_id": 13,
+                "spouse": false,
+                "text": "Bookkeeper"
+              },
+              "native_text": "Bookkeeper"
+            }
+          ]
+        },
+        {
+          "overview_case": "offices",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-175700",
+          "result_sha256": "4ec659c6de6cadbb53adc689a66b6c7db59c7fc03ef902009cc4e73dfdedcb00",
+          "owned_df_pid": 195712,
+          "observations": [
+            {
+              "case": "original",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": false,
+                "text": "Second Office"
+              },
+              "native_text": "Second Office"
+            },
+            {
+              "case": "no-current-job",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": false,
+                "text": "Second Office"
+              },
+              "native_text": "Second Office"
+            },
+            {
+              "case": "rest",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": false,
+                "text": "Second Office"
+              },
+              "native_text": "Second Office"
+            },
+            {
+              "case": "rest-on-break",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": false,
+                "text": "Second Office"
+              },
+              "native_text": "Second Office"
+            },
+            {
+              "case": "sleep",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": false,
+                "text": "Second Office"
+              },
+              "native_text": "Second Office"
+            },
+            {
+              "case": "custom-profession",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": false,
+                "text": "Second Office"
+              },
+              "native_text": "Second Office"
+            },
+            {
+              "case": "nickname",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": false,
+                "text": "Second Office"
+              },
+              "native_text": "Second Office"
+            }
+          ]
+        },
+        {
+          "overview_case": "office-spouse",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-175802",
+          "result_sha256": "4a7a77ab9c271dc2670034ca02c2573bd51ed20b93eac6408a460915bec94eb7",
+          "owned_df_pid": 190508,
+          "observations": [
+            {
+              "case": "original",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": true,
+                "text": "Native Consort"
+              },
+              "native_text": "Native Consort"
+            },
+            {
+              "case": "no-current-job",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": true,
+                "text": "Native Consort"
+              },
+              "native_text": "Native Consort"
+            },
+            {
+              "case": "rest",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": true,
+                "text": "Native Consort"
+              },
+              "native_text": "Native Consort"
+            },
+            {
+              "case": "rest-on-break",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": true,
+                "text": "Native Consort"
+              },
+              "native_text": "Native Consort"
+            },
+            {
+              "case": "sleep",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": true,
+                "text": "Native Consort"
+              },
+              "native_text": "Native Consort"
+            },
+            {
+              "case": "custom-profession",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": true,
+                "text": "Native Consort"
+              },
+              "native_text": "Native Consort"
+            },
+            {
+              "case": "nickname",
+              "position": {
+                "entity_id": 865,
+                "position_id": 24,
+                "spouse": true,
+                "text": "Native Consort"
+              },
+              "native_text": "Native Consort"
+            }
+          ]
+        },
+        {
+          "overview_case": "child",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-175903",
+          "result_sha256": "793135c619e245399fed98d9ce767ed8e14dc143107ab517c407bb4189bc143c",
+          "owned_df_pid": 173196,
+          "observations": [
+            {
+              "case": "original",
+              "position": {
+                "entity_id": -1,
+                "position_id": -1,
+                "spouse": false,
+                "text": ""
+              },
+              "native_text": ""
+            },
+            {
+              "case": "no-current-job",
+              "position": {
+                "entity_id": -1,
+                "position_id": -1,
+                "spouse": false,
+                "text": ""
+              },
+              "native_text": ""
+            },
+            {
+              "case": "rest",
+              "position": {
+                "entity_id": -1,
+                "position_id": -1,
+                "spouse": false,
+                "text": ""
+              },
+              "native_text": ""
+            },
+            {
+              "case": "rest-on-break",
+              "position": {
+                "entity_id": -1,
+                "position_id": -1,
+                "spouse": false,
+                "text": ""
+              },
+              "native_text": ""
+            },
+            {
+              "case": "sleep",
+              "position": {
+                "entity_id": -1,
+                "position_id": -1,
+                "spouse": false,
+                "text": ""
+              },
+              "native_text": ""
+            },
+            {
+              "case": "custom-profession",
+              "position": {
+                "entity_id": -1,
+                "position_id": -1,
+                "spouse": false,
+                "text": ""
+              },
+              "native_text": ""
+            },
+            {
+              "case": "nickname",
+              "position": {
+                "entity_id": -1,
+                "position_id": -1,
+                "spouse": false,
+                "text": ""
+              },
+              "native_text": ""
+            }
+          ]
+        }
+      ],
+      "pins": [
+        {
+          "rva": "0xbeb620",
+          "length": "0x15f",
+          "fnv1a64": "5c1636cd597dfb58"
+        },
+        {
+          "rva": "0xbeb780",
+          "length": "0x114",
+          "fnv1a64": "2bea0cd9ba41c566"
+        },
+        {
+          "rva": "0x52d3c0",
+          "length": "0x288",
+          "fnv1a64": "6e1fbc2416fba9fc"
+        },
+        {
+          "rva": "0x9bdfb0",
+          "length": "0x148",
+          "fnv1a64": "044d2f90a27b9a05"
+        },
+        {
+          "rva": "0xa946e0",
+          "length": "0x7c2",
+          "fnv1a64": "dbc3db5f052419ee"
+        },
+        {
+          "rva": "0xd2cb50",
+          "length": "0xf0",
+          "fnv1a64": "f7ab8eceaadda09f"
+        },
+        {
+          "rva": "0x7db20",
+          "length": "0xb6",
+          "fnv1a64": "4ee4244d4f7af0ae"
+        }
+      ],
+      "coverage": "28 direct reader/native header comparisons. Adult original position, three additional equal-precedence own positions (first selected), higher-precedence spouse with title, child without a position. Seven job/name variants per case.",
+      "ownership": "Every reader call starts with unit.enemy.histfig_vector_idx=-1. Unit, own/first-spouse HF and link structs, referenced entities/position/assignment structs, view_sheets and plotinfo remain byte-for-byte unchanged. Original cache restored after observation. Temporary fixture records/strings/pointers restored; all owned sessions exit unsaved and source saves unchanged.",
+      "verification": "MSVC unit-header-position-msvc.log; unit-header-position QA core19/19, context and thought-text passed. All eight GPU logs have only known godot-separate-thread-notice. Existing main-scene checks pass.",
+      "limitations": "Position component diagnostic only, not management-wire or rendered header acceptance. Header display eligibility (moods, pets, creators, identities), land suffixes, spouse ties, sex-specific titles, missing historical records and long-title clipping remain unverified."
     }
   }
 }

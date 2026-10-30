@@ -4,6 +4,7 @@
 #include "df/historical_figure.h"
 #include "df/historical_entity.h"
 #include "df/histfig_entity_link.h"
+#include "df/histfig_hf_link.h"
 #include "df/entity_position.h"
 #include "df/entity_position_assignment.h"
 #include "unit_room_native.h"
@@ -107,6 +108,70 @@ inline std::optional<std::array<int32_t,4>> requiredRooms(df::unit* unit) {
     return result;
 }
 struct OfficeTitle { int32_t positionId,entityId; bool spouse; std::string text; };
+// The header selects one position by native precedence, including a spouse's
+// position. Start at the HF overload to avoid warming the live unit's HF index.
+// This returns a title component; the sheet's mood/pet/identity gates are separate.
+inline std::optional<OfficeTitle> headerPositionTitle(df::unit* unit) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        return hash(0xbeb620,0x15f)==UINT64_C(0x5c1636cd597dfb58) &&
+               hash(0xbeb780,0x114)==UINT64_C(0x2bea0cd9ba41c566) &&
+               hash(0xba0a0,0xa8)==UINT64_C(0xcf6b2a7b534d3331) &&
+               hash(0xb9dc0,0xa7)==UINT64_C(0x4d8961b901732215) &&
+               hash(0x1ba140,0xa8)==UINT64_C(0xdb6eb9072d509b29) &&
+               hash(0x99a3c0,0x113)==UINT64_C(0x14b5664261afc791) &&
+               hash(0x52d3c0,0x288)==UINT64_C(0x6e1fbc2416fba9fc) &&
+               hash(0x9bdfb0,0x148)==UINT64_C(0x044d2f90a27b9a05) &&
+               hash(0x7db20,0xb6)==UINT64_C(0x4ee4244d4f7af0ae) &&
+               hash(0xa946e0,0x7c2)==UINT64_C(0xdbc3db5f052419ee) &&
+               hash(0xd2cb50,0xf0)==UINT64_C(0xf7ab8eceaadda09f);
+    }();
+    if(!supported || !unit)return std::nullopt;
+    static_assert(offsetof(df::entity_position,land_holder)==0x2c8);
+    OfficeTitle result{-1,-1,false,{}};
+    auto* hf=df::historical_figure::find(unit->hist_figure_id);
+    if(!hf)return result;
+    const auto valid=[](const df::historical_figure* source) {
+        if(!source)return true;
+        if(source->entity_links.size()>4096 || source->histfig_links.size()>4096)return false;
+        for(const auto* link:source->histfig_links)if(!link)return false;
+        for(auto* link:source->entity_links) {
+            if(!link)return false;
+            if(link->getType()!=df::histfig_entity_link_type::POSITION)continue;
+            const auto* entity=df::historical_entity::find(link->entity_id);
+            if(!entity)continue;
+            if(entity->positions.assignments.size()>65536 || entity->positions.own.size()>65536)return false;
+            for(const auto* assignment:entity->positions.assignments)if(!assignment)return false;
+            for(const auto* position:entity->positions.own)if(!position)return false;
+        }
+        return true;
+    };
+    if(!valid(hf))return std::nullopt;
+    for(auto* link:hf->histfig_links)if(link->getType()==df::histfig_hf_link_type::SPOUSE) {
+        if(!valid(df::historical_figure::find(link->target_hf)))return std::nullopt;
+        break;
+    }
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    using Select=df::entity_position* (*)(df::historical_figure*,int32_t,bool*,df::historical_entity**,df::entity_position_assignment**);
+    df::historical_entity* entity=nullptr;df::entity_position_assignment* assignment=nullptr;
+    auto* position=reinterpret_cast<Select>(base+0xbeb620)(hf,-1,&result.spouse,&entity,&assignment);
+    if(!position)return result;
+    if(!entity || !assignment)return std::nullopt;
+    using Name=const std::string* (*)(const df::entity_position*,int8_t,bool,bool);
+    const auto* name=reinterpret_cast<Name>(base+0x99a3c0)(position,unit->sex,false,result.spouse);
+    if(!name || name->size()>512)return std::nullopt;
+    result.positionId=position->id;result.entityId=entity->id;result.text=*name;
+    reinterpret_cast<void (*)(std::string*)>(base+0x52d3c0)(&result.text);
+    if(position->land_holder>0)
+        reinterpret_cast<bool (*)(df::historical_entity*,df::entity_position_assignment*,std::string*)>(base+0x9bdfb0)(entity,assignment,&result.text);
+    return result;
+}
 struct RoomWarning { std::string text;int32_t color=15; };
 inline std::optional<RoomWarning> roomWarning(const std::array<int32_t,4>& required,const std::array<int32_t,4>& actual) {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));

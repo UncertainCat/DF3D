@@ -1582,7 +1582,33 @@ and must not be called by a semantic reader. The separate position line at15d448
 uses13cbbd0(unit,-1,spouse flag,entity,assignment outputs), then99a3c0,52d3c0
 capitalization and optional9bdfb0 land suffix. It is not the general profession
 string. 13cbbd0 resolves history via b530b0, refreshing unit+0x1274, then delegates
-to beb620; ownership and position-selection acceptance remain pending.
+to beb620. The position component reader below bypasses that unit-cache wrapper.
+
+headerPositionTitle invokes beb620 with the directly resolved historical figure
+and owned spouse/entity/assignment outputs. It reuses native precedence and spouse
+selection, then99a3c0 and the header-specific52d3c0 capitalization on an owned
+string. Unlike the Overview quadrant's title list, this produces one selected
+title and capitalizes each word. For land holders,9bdfb0 resolves the assigned
+site and appends its native a946e0 name; the naming path reads semantic sites,
+language records and installed name-display settings, writing only owned strings.
+The complete d2cb50 word selector includes its nine-entry table through d2cc40.
+This component does not use native menus or update the unit's history index.
+It is currently exposed only by unit-header-position-probe; header display gates
+and management transport remain unfinished.
+
+unit_header_position_reader_reference records protected175553/175700/175802/
+175903 on2026-10-30. Twenty-eight comparisons cover Bookkeeper, first among three
+additional equal-precedence own positions (Second Office), higher-precedence
+spouse (Native Consort), and a child with no position. Seven job/name variants
+per case match the native position row exactly. Every direct call starts with
+histfig_vector_idx=-1 and preserves guarded unit, own/first-spouse history/link,
+entity/assignment/position, view_sheets and plotinfo structs byte-for-byte.
+The fixture restores the original cache after comparison. All owned sessions exit
+unsaved and preserve source saves; eight GPU logs contain only the known renderer
+notice. MSVC and unit-header-position QA pass core19/19, context and thought-text.
+These are reader checks; no rendered header or appointment-action acceptance is
+claimed. Land suffixes, spouse precedence ties, sex-specific titles, missing
+history and the full header eligibility branches still need live coverage.
 
 The job row at15d588 checks effective caste flag0x3a and native138ed20 control
 (or unit flags3 bit31). A non-on_break current job goes to d03170 with palette11.

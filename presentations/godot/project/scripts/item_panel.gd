@@ -1,5 +1,5 @@
 extends Node
-# Staged seed item owner. General item types remain unfinished.
+# Staged farm item owner. General item types remain unfinished.
 signal holder_requested(building_id: int)
 const Preferences=preload("res://scripts/presentation_settings.gd")
 const C=preload("res://scripts/management_contract.gd")
@@ -48,10 +48,10 @@ func _state_changed() -> void:
 	panel.pending=state.phase!=state.Phase.Ready
 	panel.present(value)
 	_follow_changed()
-	if state.item_id<0:_release_if_closed.call_deferred()
+	if state.item_id<0 or (value.is_empty() and state.phase not in [state.Phase.Reading,state.Phase.Applying]):_release_if_closed.call_deferred()
 
 func _release_if_closed() -> void:
-	if state.item_id<0:ui_host.release(self);cancel_gesture()
+	if state.item_id<0 or (state.snapshot.is_empty() and state.phase not in [state.Phase.Reading,state.Phase.Applying]):ui_host.release(self);cancel_gesture()
 
 func close_panel() -> void:
 	state.close();panel.hide();ui_host.release(self);cancel_gesture()
@@ -62,8 +62,9 @@ func set_play_enabled(value: bool) -> void:
 	if not value and panel!=null:close_panel()
 func cancel_gesture() -> void:right_down=false;right_travel=0
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if panel==null:return
+	if play_enabled:state.poll(delta)
 	var viewport:=get_viewport().get_visible_rect().size
 	var factor:=Preferences.effective_scale_vector(viewport)
 	canvas.scale=factor

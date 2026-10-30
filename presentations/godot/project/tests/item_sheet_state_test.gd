@@ -27,6 +27,26 @@ func completed(wrong_flag:=false) -> void:
 		"contents_edit":{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
 
 func run() -> void:
+	ready();var original: Dictionary=model.view_snapshot();var calls_before: int=world.calls.size()
+	model.poll(ItemModel.REFRESH_INTERVAL*0.5);service.poll()
+	check(world.calls.size()==calls_before,"background refresh waits after receipt")
+	model.poll(ItemModel.REFRESH_INTERVAL);service.poll()
+	check(model.background_refresh and model.phase==ItemModel.Phase.Ready and model.snapshot==original,"background read retains visible authority")
+	model.poll(100);service.poll();check(world.calls.size()==calls_before+1,"only one refresh in flight")
+	item_reply({},C.ManagementStatus.Rejected)
+	check(model.phase==ItemModel.Phase.Closed and model.item_id==-1 and model.snapshot.is_empty(),"missing refreshed item retires sheet")
+	model.poll(100);service.poll();check(world.calls.size()==calls_before+1,"retired target never automatically retries")
+	for sent in [false,true]:
+		ready();model.poll(1)
+		var old_ticket: int=model.ticket
+		if sent:service.poll()
+		model.set_flag(C.FarmOperation.ItemHidden,true)
+		check(model.phase==ItemModel.Phase.Applying and not model.background_refresh and model.ticket!=old_ticket,"explicit edit preempts refresh")
+		if sent:item_reply({"item":item()})
+		else:service.poll()
+		check(world.calls[-1].request.action==C.ManagementAction.FarmEdit and not model.snapshot.hidden,"late refresh cannot replace pending edit")
+		completed();var edited:=item();edited.hidden=true;item_reply({"item":edited})
+		check(model.snapshot.hidden and applied==1,"preempting edit completes with fresh snapshot")
 	ready();check(model.phase==ItemModel.Phase.Ready,"item snapshot ready")
 	check(world.calls[0].request=={"action":C.ManagementAction.ProductionInspect,"building_id":968,"item_id":1000},"inspection has no paging or revision precondition")
 	var copy: Dictionary=model.view_snapshot();copy.holder.name="changed"

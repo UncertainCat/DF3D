@@ -5,6 +5,7 @@ signal applied
 const C=preload("res://scripts/management_contract.gd")
 const Contents=preload("res://scripts/building_contents_state.gd")
 const FIELDS=Contents.FIELDS
+const REFRESH_INTERVAL:=0.25
 enum Phase { Closed, Reading, Ready, Applying, Rejected, Stale, Unknown, Unavailable }
 var service
 var phase:=Phase.Closed
@@ -13,6 +14,8 @@ var item_id: int=-1
 var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
+var background_refresh:=false
+var refresh_remaining:=0.0
 
 func configure(source) -> void:
 	dispose();service=source
@@ -26,6 +29,7 @@ func dispose() -> void:
 func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
+	background_refresh=false;refresh_remaining=0
 	if service!=null and previous!=0:service.detach(previous)
 	building_id=-1;item_id=-1;snapshot={};phase=Phase.Closed;changed.emit()
 
@@ -42,20 +46,32 @@ func refresh() -> void:
 	if building_id<0 or item_id<0 or ticket!=0 or phase in [Phase.Closed,Phase.Unavailable]:return
 	_read()
 
+func poll(delta: float) -> void:
+	if phase!=Phase.Ready or ticket!=0:return
+	refresh_remaining-=maxf(0,delta)
+	if refresh_remaining<=0:_read(true)
+
 func view_snapshot() -> Dictionary:
 	return snapshot.duplicate(true)
 
 func set_flag(operation: int, desired: bool) -> void:
-	if phase!=Phase.Ready or ticket!=0 or not FIELDS.has(operation) or snapshot.is_empty():return
+	if phase!=Phase.Ready or (ticket!=0 and not background_refresh) or not FIELDS.has(operation) or snapshot.is_empty():return
 	if not snapshot.completed or snapshot.removing:return
 	if operation==C.FarmOperation.ItemDump and not snapshot.can_dump:return
 	if operation==C.FarmOperation.ItemMelt and not snapshot.can_melt:return
+	# A read has no effects to replay. Explicit edits retire its observer and use
+	# the last complete revision; DF still validates that revision before writing.
+	if background_refresh:
+		generation+=1
+		var previous:=ticket;ticket=0;background_refresh=false
+		service.detach(previous)
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.FarmEdit,"building_id":building_id,"item_id":item_id,
 		"farm_operation":operation,"item_value":int(desired),"expected_revision":snapshot.revision})
 
-func _read() -> void:
-	snapshot={};phase=Phase.Reading
+func _read(background:=false) -> void:
+	background_refresh=background
+	if not background:snapshot={};phase=Phase.Reading
 	_send({"action":C.ManagementAction.ProductionInspect,"building_id":building_id,"item_id":item_id})
 
 func _send(intent: Dictionary) -> void:
@@ -63,9 +79,10 @@ func _send(intent: Dictionary) -> void:
 	ticket=service.submit("production",intent,func(received,result,sent):
 		if owner==generation and received==ticket:_receive(result,sent))
 	if ticket==0:_fail(Phase.Unavailable);return
-	changed.emit()
+	if not background_refresh:changed.emit()
 
 func _fail(next: Phase) -> void:
+	if background_refresh:close();return
 	phase=next;snapshot={};changed.emit()
 
 func _valid(value: Dictionary) -> bool:
@@ -85,7 +102,7 @@ func _valid(value: Dictionary) -> bool:
 	return true
 
 func _receive(result: Dictionary, sent: Dictionary) -> void:
-	ticket=0
+	ticket=0;refresh_remaining=REFRESH_INTERVAL
 	var owner:=generation
 	var editing: bool=sent.action==C.ManagementAction.FarmEdit
 	var production: Dictionary=result.get("production",{})
@@ -98,7 +115,10 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if not editing:
 		var value: Dictionary=production.get("item",{})
 		if outcome!=C.FarmEditOutcome.None or production.has("contents") or production.has("contents_edit") or not _valid(value):_fail(Phase.Rejected);return
-		snapshot=value.duplicate(true);phase=Phase.Ready;changed.emit();return
+		var different: bool=not background_refresh or snapshot!=value
+		background_refresh=false;snapshot=value.duplicate(true);phase=Phase.Ready
+		if different:changed.emit()
+		return
 	var page: Dictionary=production.get("contents",{})
 	var receipt: Dictionary=production.get("contents_edit",{})
 	if production.has("item") or outcome!=C.FarmEditOutcome.Completed or not Contents.valid_page(page,building_id):_fail(Phase.Unknown);return

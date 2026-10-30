@@ -26334,4 +26334,151 @@
   ],
   "scope": "Owned native seed/bar description dispatch, delivered potash text/read guards, installed-art rendering reference and native inert item-sheet job indicator. Management-wire potash inspection, live viewer effects and consumption retirement remain unaccepted."
 }
+,
+  "item_consumption_reference": {
+  "native_capture": "build/stockpile-storage-native-farm-discovery-20261029-203429",
+  "native_retired": {
+    "frame": 2810,
+    "item_id": 48520,
+    "name": "farm-consumed-potash-item",
+    "sheet": {
+      "id": 48520,
+      "open": false,
+      "type": "ITEM"
+    }
+  },
+  "native_sheet_transitions": [
+    {
+      "frame": 386,
+      "present": true,
+      "sheet": {
+        "id": -1,
+        "open": false,
+        "type": "NONE"
+      }
+    },
+    {
+      "frame": 1842,
+      "present": true,
+      "sheet": {
+        "id": -1,
+        "open": false,
+        "type": "NONE"
+      }
+    },
+    {
+      "frame": 1843,
+      "present": true,
+      "sheet": {
+        "id": 48520,
+        "open": true,
+        "type": "ITEM"
+      }
+    },
+    {
+      "frame": 2810,
+      "present": false,
+      "sheet": {
+        "id": 48520,
+        "open": true,
+        "type": "ITEM"
+      }
+    }
+  ],
+  "viewer_capture": "build/areas-acceptance-20261029-202653",
+  "opened": true,
+  "consumed": true,
+  "sample_count": 69,
+  "transitions": [
+    {
+      "contained": false,
+      "current": 0.0,
+      "frame": 0.0,
+      "job_count": 29.0,
+      "present": true,
+      "status": "passed"
+    },
+    {
+      "contained": false,
+      "current": 0.0,
+      "frame": 102.0,
+      "job_count": 18.0,
+      "present": true,
+      "status": "passed"
+    },
+    {
+      "contained": false,
+      "current": 0.0,
+      "frame": 219.0,
+      "job_count": 10.0,
+      "present": true,
+      "status": "passed"
+    },
+    {
+      "contained": false,
+      "current": 0.0,
+      "frame": 289.0,
+      "job_count": 5.0,
+      "present": true,
+      "status": "passed"
+    },
+    {
+      "contained": false,
+      "current": 0.0,
+      "frame": 391.0,
+      "job_count": 1.0,
+      "present": true,
+      "status": "passed"
+    },
+    {
+      "contained": true,
+      "current": 0.0,
+      "frame": 1485.0,
+      "job_count": 1.0,
+      "present": true,
+      "status": "passed"
+    },
+    {
+      "contained": false,
+      "current": 1.0,
+      "frame": 2448.0,
+      "job_count": 0.0,
+      "present": false,
+      "status": "passed"
+    }
+  ],
+  "inspection": {
+    "op": "verify",
+    "revision_text": "1753857701864581862",
+    "snapshot": {
+      "building_id": 227,
+      "can_dump": true,
+      "can_melt": false,
+      "completed": true,
+      "description": "These are potash.  ",
+      "dump": false,
+      "forbid": false,
+      "hidden": false,
+      "holder": {
+        "id": 227,
+        "name": "Farm Plot",
+        "type": 4
+      },
+      "id": 48520,
+      "in_building": false,
+      "in_job": true,
+      "item_type": 0,
+      "material_token": "POTASH",
+      "melt": false,
+      "name": "potash",
+      "removing": false,
+      "revision": 1753857701864581862,
+      "role": 0,
+      "subtype_raw": "",
+      "weight": "7Γ"
+    }
+  },
+  "scene_regression": "build/areas-acceptance-20261029-202900",
+  "scope": "Native open-sheet retirement after consumption; real management potash inspection, both visibility values preserving assigned job, serialized background refresh and independent follow retirement. Main-scene seed/input/lifecycle regressions pass separately. Rendered potash scene and active-job Forbid/Dump effects remain unaccepted."
+}
 }

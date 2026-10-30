@@ -96,7 +96,8 @@ local function inspect_delivered_item(item)
  click(756,76)
  local clicked=capture('farm-potash-item-task-click')
  clicked.sheet=df.view_sheet_type[sheet.active_sheet];clicked.active_id=sheet.active_id;clicked.open=sheet.open
- gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ -- Keep the native item sheet open while DF consumes its target.
+ assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id)
  row.delivered_item_inspected=true
  df.global.pause_state=false
  deadline=dfhack.getTickCount()+60000
@@ -107,6 +108,8 @@ local ok,why=pcall(function()
   local item=df.item.find(potash_id)
   local sample={frame=df.global.world.frame_counter,current=farm.current_fertilization,
    contents={},jobs={},potash_present=item~=nil,potash_removed=item and item.flags.removed or false}
+  local sheet=df.global.game.main_interface.view_sheets
+  sample.sheet={open=sheet.open,type=df.view_sheet_type[sheet.active_sheet],id=sheet.active_id}
   for _,held in ipairs(farm.contained_items)do
    sample.contents[#sample.contents+1]={id=held.item.id,type=df.item_type[held.item:getType()],role=held.use_mode}
    row.contents_types[df.item_type[held.item:getType()]]=true
@@ -117,7 +120,7 @@ local ok,why=pcall(function()
    for _,ref in ipairs(job.items)do if ref.item then entry.items[#entry.items+1]=ref.item.id end end
    sample.jobs[#sample.jobs+1]=entry
   end
-  local signature=require('json').encode{sample.current,sample.contents,sample.jobs,sample.potash_present,sample.potash_removed}
+  local signature=require('json').encode{sample.current,sample.contents,sample.jobs,sample.potash_present,sample.potash_removed,sample.sheet}
   if signature~=last_signature then row.samples[#row.samples+1]=sample;last_signature=signature end
   if not row.delivered_item_inspected then
    for _,held in ipairs(farm.contained_items)do if held.item.id==potash_id then inspect_delivered_item(held.item);break end end
@@ -138,3 +141,12 @@ end end
 assert(reserved,'DF never assigned a worker with the supplied potash')
 assert(not df.item.find(potash_id),'completed fertilizer job retained supplied potash')
 row.reservation_observed=true;row.supplied_potash_consumed=true
+for i=1,15 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+local sheet=df.global.game.main_interface.view_sheets
+assert(not sheet.open,'native item sheet remained open after consumption and redraw')
+records[#records+1]={name='farm-consumed-potash-item',frame=df.global.world.frame_counter,
+ item_id=potash_id,sheet={open=sheet.open,type=df.view_sheet_type[sheet.active_sheet],id=sheet.active_id}}
+local f=assert(io.open(out..'/shot','w'));f:write('farm-consumed-potash-item');f:close()
+local limit=dfhack.getTickCount()+30000
+while true do local ack=io.open(out..'/ack-farm-consumed-potash-item');if ack then ack:close();break end
+ assert(dfhack.getTickCount()<limit,'consumed item capture timeout');script.sleep(1,'frames')end

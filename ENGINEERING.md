@@ -539,8 +539,8 @@ fertilizer inspection. DF166324 exits unsaved and source preservation passes.
 description/artwork evidence, contents/header reads and the rejection by the
 then-seed-only description provider. Native displays the delivered potash's
 active-job indicator as well. Potash now has the staged support described below;
-live viewer inspection/effects and consumed-item retirement remain required
-before exposure.
+rendered potash-scene acceptance and remaining active-job effects are still
+required before exposure.
 This is controlled-supply native workflow evidence, not DF3D item-sheet acceptance
 or an exhaustive trace of every simulation tick. Other native farm scopes remain
 paused; only this explicitly selected progress scope advances simulation.
@@ -566,8 +566,37 @@ The contents reference uses inspected193222:193942's first contents screenshot
 was an incomplete window redraw and is excluded from pixel acceptance. Native
 and viewer images were inspected. Core passes; both GPU checks pass with only
 the three documented engine diagnostics. `potash_item_reference` retains the
-native sources, typed snapshot and hashes. Other bar artwork, potash-specific
-management-wire/live-viewer effects and consumption retirement remain unaccepted.
+native sources, typed snapshot and hashes. Other bar artwork remains unaccepted;
+potash transport and consumption evidence follows below.
+
+Native203429 leaves the potash item sheet open through fertilizer execution.
+After consumption, the next native redraw closes it (the inactive native ID is
+retained). DF187672 exits unsaved and source preservation passes. DF3D's
+`item_sheet_state.poll(delta)` schedules one background inspection at a time,
+250ms after the preceding receipt. Pending background reads preserve the visible
+snapshot; unchanged receipts do not redraw it. Explicit edits detach a background
+read's observer and retain exact-revision validation, so refresh cannot swallow
+an edit or publish a late read over its result. Failed background reads retire
+the target without automatic retry. The owner releases its input gate after
+closure or terminal loss of authority, while preserving write-outcome state.
+
+Protected `areas_acceptance.ps1 -FarmItemProgressOnly`202653 uses the real
+management92 client and controlled potash supplies, letting DF assign and execute
+the jobs. It verifies typed inspection text/revision/flags/holder against the
+native provider, both visibility values while preserving the assigned job, and
+inspection/follow retirement after consumption at tick2448. Three later polls
+do not restart the consumed target. DF182308 exits unsaved; both save manifests
+remain unchanged. This is controller/transport acceptance, not rendered potash
+scene acceptance or active-job Forbid/Dump acceptance. Transfers out of the
+original farm remain outside the current farm-bound inspection provider.
+
+`item_consumption_reference` records native sheet transitions and bounded viewer
+observations. Injected-time `item-sheet-refresh-fixed` passes serialized reads,
+retained snapshots, retirement/no retry and queued/sent read preemption by edits,
+alongside existing stale/unknown/close/epoch tests. Main-scene regression202900
+passes80 native checks and the existing input/edit/follow/disconnect/replacement
+matrix with only the known rendering-thread notice. All five owned DF processes
+exit unsaved, with both save manifests unchanged.
 
 ## Native item holder provider
 

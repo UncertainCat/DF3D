@@ -3739,6 +3739,11 @@
       "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmContentsOnly verifies typed contents edits, stale/invalid/eligibility refusal, repeated desired values, fresh native receipts, controller viewport/scroll ownership, queued/sent close and byte-for-byte UI guards. No rendered UI or transport-loss claim."
     },
     {
+      "path": "presentations/godot/project/tests/farm_item_progress_live.gd",
+      "status": "manual",
+      "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmItemProgressOnly verifies real management potash inspection, visibility edits, background refresh and follow retirement after DF consumes fertilizer. Controlled supplies; no rendered scene claim."
+    },
+    {
       "path": "presentations/godot/project/tests/item_hauling_live.gd",
       "status": "manual",
       "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -ItemHaulingOnly advances natural stockpile hauling in bounded simulation bursts and compares production follow coordinates with native effective positions while paused. No rendered UI claim."

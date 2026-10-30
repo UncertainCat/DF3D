@@ -1590,7 +1590,9 @@ as native header15b902. It never calls the gps color writer. It also exposes
 owned split-name/profession strings through1330500/1330880 with false; header
 width fitting remains separate from zone-owner fitting. These shared semantic
 providers may warm the historical-figure lookup index, as native rendering does.
-The diagnostic unit-header-name-probe is not yet wired into CreatureInspect.
+CreatureInspect transports these strings and semantic color alternatives as
+identity record-8, header_name, using additive management102 facts. Conversion
+from DF text occurs once at the ordinary fact boundary.
 
 unit_header_name_reader_reference records protected182750 and182854 on2026-10-30:
 seven variants each for adult1017 and child988 match the first33 native combined
@@ -1600,7 +1602,29 @@ does not establish cold-cache immutability, split-string rendering, full-width
 fitting, background colors or animated color phases. Both owned sessions exit
 unsaved with source saves unchanged; four GPU logs contain only the known
 renderer notice. MSVC and unit-header-name QA pass core19/19, context and
-thought-text checks. Godot header name/color integration remains unfinished.
+thought-text checks.
+
+creature_header_name.gd renders the native combined name, or split name above
+profession when the combined length reaches35 columns in the fixed unit sheet.
+Native15b93f..15bbd3 uses a strict width comparison and shortens split strings to
+34 cells with three trailing dots. The viewer no longer strips nicknames from
+DFHack's reconstructed readable name. Color alternatives use the existing
+native_name_color selector; the node owns presentation time and retires processing
+when hidden. No native menu state or RNG is borrowed.
+
+Protected183644(long nickname/profession),183749(child),183858(adult) on2026-10-30
+verify exact first33-cell pixels across both name rows and preserve earlier
+Overview region checks. The initial183352 comparison mistakenly included native
+action artwork;183521 caught a real one-column fitting error. Neither is accepted
+evidence. Final three sessions exit unsaved, source manifests are unchanged and
+six GPU logs contain only the known renderer notice. unit-header-name-ui-final
+passes core19/19, context and thought-text checks; unit_header_name_ui_reference
+retains facts and crop hashes. The last fitted column overlaps native action
+artwork and is outside the pixel oracle. Animated/background colors, boundary
+lengths, no-name/other unit layouts, resize and reopen still need header-specific
+acceptance. The translated-name line still incorrectly follows a changed unit
+nickname instead of native historical identity; job/activity and header actions
+remain unfinished. These checks do not promote the staged unit route.
 
 headerPositionTitle invokes beb620 with the directly resolved historical figure
 and owned spouse/entity/assignment outputs. It reuses native precedence and spouse

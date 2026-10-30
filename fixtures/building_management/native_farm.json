@@ -39765,6 +39765,91 @@
       ],
       "qa": "build/qa/unit-header-name",
       "gpu_diagnostics": "Four logs; known separate-renderer notice only"
+    },
+    "unit_header_name_ui_reference": {
+      "date": "2026-10-30",
+      "runs": [
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-183644",
+          "case": "long-name",
+          "pid": 193868,
+          "name_facts": {
+            "record_type": "header_name",
+            "combined": "`A deliberately long nickname for native fitting' Tangakurvad, A deliberately long custom profession for native fitting",
+            "name": "`A deliberately long nickname for native fitting' Tangakurvad",
+            "profession": "A deliberately long custom profession for native fitting",
+            "effect": 0,
+            "source": 0,
+            "foreground": 5,
+            "background": 0,
+            "bright": 0,
+            "alternate_foreground": 5,
+            "alternate_background": 0,
+            "alternate_bright": 0
+          },
+          "native_and_viewer_crop_sha256": "55dcde80f07767b8bbef103f9b891a445b7041be676a6f44723178b6b2554c1e",
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-183749",
+          "case": "child",
+          "pid": 188076,
+          "name_facts": {
+            "record_type": "header_name",
+            "combined": "\u00eeton Unibmamot, Dwarven Child",
+            "name": "\u00eeton Unibmamot",
+            "profession": "Dwarven Child",
+            "effect": 0,
+            "source": 0,
+            "foreground": 4,
+            "background": 0,
+            "bright": 0,
+            "alternate_foreground": 4,
+            "alternate_background": 0,
+            "alternate_bright": 0
+          },
+          "native_and_viewer_crop_sha256": "e3144b6dc53b97cf2a91e5a0d8db38871d7eb1a7f173133353f0433395b59aa6",
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-183858",
+          "case": "adult",
+          "pid": 190964,
+          "name_facts": {
+            "record_type": "header_name",
+            "combined": "Stodir Tangakurvad, bookkeeper",
+            "name": "Stodir Tangakurvad",
+            "profession": "bookkeeper",
+            "effect": 0,
+            "source": 0,
+            "foreground": 5,
+            "background": 0,
+            "bright": 0,
+            "alternate_foreground": 5,
+            "alternate_background": 0,
+            "alternate_bright": 0
+          },
+          "native_and_viewer_crop_sha256": "c46d0307af9be584d73ba5ccc4c8a210ccec6d50ce8f974fd3a7f6f7ff5c7756",
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        }
+      ],
+      "pixel_rect": [
+        528,
+        64,
+        264,
+        24
+      ],
+      "qa": "build/qa/unit-header-name-ui-final",
+      "gpu_diagnostics": "Six logs, known separate-renderer notice only",
+      "limits": [
+        "First33 name columns only; final fitted cell overlaps native actions",
+        "Animated/background colors and boundary lengths not covered",
+        "Other unit layouts, resize and reopen unverified",
+        "Translated historical name, job/activity and header actions unfinished"
+      ]
     }
   }
 }

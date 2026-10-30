@@ -156,6 +156,12 @@ return function(request)
    fact(s,rooms,'warning',warning);fact(s,rooms,'warning_color',color)
   end
   local office_count=0
+  if request.header_name then
+   local name=request.header_name(u.id)
+   local header=record(s,-8,'')
+   fact(s,header,'record_type','header_name')
+   for _,key in ipairs{'combined','name','profession','effect','source','foreground','background','bright','alternate_foreground','alternate_background','alternate_bright'}do fact(s,header,key,name[key])end
+  end
   if request.header_status then
    local text,color=request.header_status(u.id)
    local header=record(s,-7,'')

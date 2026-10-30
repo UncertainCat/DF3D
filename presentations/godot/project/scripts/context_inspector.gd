@@ -242,6 +242,7 @@ func redraw():
 			var translated := ""
 			var header_status := ""
 			var header_color := 15
+			var header_name: Dictionary = {}
 			for section in detail.get("sections",[]):
 				if section.key!="identity": continue
 				for record in section.records:
@@ -249,13 +250,17 @@ func redraw():
 					for fact in record.facts: facts[fact.key]=fact.number if fact.get("has_number",false) else fact.get("text","")
 					if facts.get("record_type","")=="header_status":
 						header_status=facts.get("text","");header_color=int(facts.get("color","15"))
+					if facts.get("record_type","")=="header_name": header_name=facts
 					for fact in record.facts:
 						if fact.key=="translated_name": translated=str(fact.text)
-			var quote := name_text.find('"')
-			if quote>=0:
-				var end_quote := name_text.find('"',quote+1)
-				if end_quote>quote: name_text=(name_text.substr(0,quote).strip_edges()+name_text.substr(end_quote+1)).strip_edges()
-			label_at("unit.title",name_text)
+			if not header_name.is_empty():
+				preload("res://scripts/native_creature_text.gd").load_text(world)
+				var name_view:=preload("res://scripts/creature_header_name.gd").new()
+				name_view.name="NativeHeaderName";name_view.position=Vector2(104,0)
+				name_view.mouse_filter=Control.MOUSE_FILTER_IGNORE
+				body.add_child(name_view)
+				# Native fixed 60-cell sheet: right-3-6 minus name-left14 minus2.
+				name_view.configure(header_name,35)
 			label_at("unit.subtitle",'"'+translated+'"' if not translated.is_empty() else "")
 			label_at("unit.status",header_status,header_color)
 			label_at("unit.job",str(detail.get("job",selected.get("job",""))))

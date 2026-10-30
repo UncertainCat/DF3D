@@ -201,6 +201,8 @@ local ok,err=xpcall(function()
      end
      if header_case=='soldier' then set(unit.counters,'soldier_mood',0)
      elseif header_case=='possessed' then set(unit.counters,'soldier_mood',-1);set(unit,'mood',df.mood_type.Possessed)
+     elseif header_case=='long-name' then set(unit.name,'nickname','A deliberately long nickname for native fitting');set(unit,'custom_profession','A deliberately long custom profession for native fitting')
+     elseif header_case=='nickname' then set(unit.name,'nickname','Header')
      else error('unknown header display case')end
     end
     for _,need in ipairs(p.needs)do overview_saved.needs[#overview_saved.needs+1]=need.focus_level;need.focus_level=overview_case=='fresh-focused' and 300 or overview_case=='fresh-distracted' and -100000 or 0 end

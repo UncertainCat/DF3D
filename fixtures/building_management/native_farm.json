@@ -33926,6 +33926,48 @@
         "Pending-removal flag side effects with an assigned worker remain unverified",
         "Resized chest rendering remains unverified"
       ]
+    },
+    "removing_contents_edit_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-141546",
+      "date": "2026-10-30",
+      "management_version": 101,
+      "owned_df_pid": 185024,
+      "success": true,
+      "native_reference": "suspended_and_removing_contents_reference.native_removing_item_effects",
+      "main_scene_effects": {
+        "items": [
+          5834,
+          7504
+        ],
+        "operations": [
+          "Forbid",
+          "Dump",
+          "Visibility"
+        ],
+        "directions": [
+          true,
+          false
+        ],
+        "confirmed_clicks": 12,
+        "removal_retained": true,
+        "final_cleanup_reached": true
+      },
+      "regressions": [
+        "Header naming/close-drain",
+        "HUD overlay blocking",
+        "Contents View and holder return during removal",
+        "Cancellation and right-click closure",
+        "Idle, worker and suspended panels",
+        "Independent item and contents regression lane"
+      ],
+      "cleanup": "Native name/jobs restored; tested flags restored; owned session exited unsaved; source manifest unchanged",
+      "diagnostics": "12 GPU logs contain only known separate-render-thread notice",
+      "limitations": [
+        "Melt during removal refused pending native evidence",
+        "Assigned-worker contents edit side effects not verified",
+        "Resized chest and main-scene container-carrier navigation still incomplete",
+        "Chest route remains staged"
+      ]
     }
   }
 }

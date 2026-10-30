@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management101 permits confirmed contents Forbid/Dump/Visibility receipts during
+Box removal. Melt during removal remains unverified and refused. Rebuild both
+endpoints on `Local\\df3d_management_v101`; management100 is incompatible.
+No historical receipt or missing authority is synthesized.
+
 Management100 adds independent building header reads and revision-checked actions.
 The request flag excludes farm/item/contents fields; header results carry their
 own snapshot, typed outcome and confirmed operation. Current production supports

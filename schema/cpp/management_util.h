@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 100;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v100";
+inline constexpr uint32_t kManagementVersion = 101;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v101";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1432,7 +1432,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(const auto* edit=p->contents_edit()) {
       if(s.action()!=ManagementAction::FarmEdit || s.status()!=ManagementStatus::Ok ||
          p->farm_edit_outcome()!=FarmEditOutcome::Completed || !p->contents() || p->farm() ||
-         !p->contents()->completed() || p->contents()->removing() ||
+         !p->contents()->completed() || (p->contents()->removing() && edit->operation()==FarmOperation::ItemMelt) ||
          edit->item_id()<0 || edit->value()<0 || edit->value()>1 ||
          edit->operation()<FarmOperation::ItemForbid || edit->operation()>FarmOperation::ItemHidden)return "invalid contained item receipt";
       const BuildingContentsItem* target=nullptr;

@@ -96,11 +96,11 @@ std::optional<BuildingContentsSlice> pageBuildingContents(const BuildingContents
 template<class Apply,class Observe>
 FarmEditResult<BuildingContentsSnapshot> finishBuildingItemEdit(
     const BuildingContentsSnapshot& before,uint64_t expected,int32_t itemId,
-    BuildingItemAction action,bool desired,Apply apply,Observe observe) {
+    BuildingItemAction action,bool desired,Apply apply,Observe observe,bool allowRemoving=false) {
     FarmEditResult<BuildingContentsSnapshot> result;
     const BuildingContentsRow* row=nullptr;
     try {
-        if(!expected||!validBuildingContents(before)||!before.completed||before.removing)return result;
+        if(!expected||!validBuildingContents(before)||!before.completed||(before.removing&&(!allowRemoving||action==BuildingItemAction::Melt)))return result;
         if(before.revision!=expected){result.outcome=FarmEditOutcome::Stale;return result;}
         for(const auto& candidate:before.rows)if(candidate.id==itemId){row=&candidate;break;}
         if(!row)return result;
@@ -119,7 +119,7 @@ FarmEditResult<BuildingContentsSnapshot> finishBuildingItemEdit(
         if(!apply()){result.mutated=false;result.outcome=FarmEditOutcome::Rejected;return result;}
         auto after=observe();
         if(!after||!validBuildingContents(*after)||after->buildingId!=before.buildingId||
-           !after->completed||after->removing)return result;
+           !after->completed||after->removing!=before.removing)return result;
         for(const auto& candidate:after->rows)if(candidate.id==itemId) {
             if(buildingItemValue(candidate,action)!=desired)return result;
             result.receipt=std::move(after);result.outcome=FarmEditOutcome::Completed;return result;

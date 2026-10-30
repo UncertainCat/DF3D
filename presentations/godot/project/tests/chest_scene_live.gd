@@ -2,6 +2,7 @@ extends "res://tests/item_carrier_wire_live.gd"
 var scene
 var actions
 var owner
+var exercised:=false
 func pointer(point: Vector2,button:=MOUSE_BUTTON_LEFT) -> void:
 	var motion:=InputEventMouseMotion.new();motion.position=point;root.push_input(motion,true)
 	for pressed in [true,false]:
@@ -18,9 +19,14 @@ func settle(model) -> bool:
 		await create_timer(0.01).timeout
 	return check(model.phase==model.Phase.Ready,"Main-scene model did not reach Ready")
 func chest_ready() -> bool:
-	if not await settle(owner.state):return false
-	if not await settle(owner.contents):return false
-	return check(scene._ui.host.active==owner and owner.panel.visible,"Chest does not own active panel")
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01)
+		if owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready:
+			return check(scene._ui.host.active==owner and owner.panel.visible,"Chest does not own active panel")
+		if owner.state.phase in [owner.state.Phase.Rejected,owner.state.Phase.Stale,owner.state.Phase.Unknown,owner.state.Phase.Unavailable] or owner.contents.phase in [owner.contents.Phase.Rejected,owner.contents.Phase.Stale,owner.contents.Phase.Unknown,owner.contents.Phase.Unavailable]:break
+		await create_timer(0.01).timeout
+	return check(false,"Chest header and contents did not both reach Ready")
 func drain() -> void:
 	var deadline:=Time.get_ticks_msec()+10000
 	while Time.get_ticks_msec()<deadline:
@@ -48,6 +54,7 @@ func run() -> void:
 	if check(scene._loader.entered,"Main scene did not enter fortress"):
 		actions=scene._ui.actions;actions.set_process(false)
 		await exercise(expected)
+	check(exercised,"Main-scene workflow did not reach final cleanup")
 	var file:=FileAccess.open(directory+"/chest-scene-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"surface":"actual main scene","roundtrip":true}));file.close()
 	scene.queue_free();await process_frame
@@ -85,6 +92,16 @@ func exercise(expected: Dictionary) -> void:
 	if not await chest_ready():return
 	check(owner.state.snapshot.removing and owner.contents.snapshot.removing and owner.panel.contents.visible,"Removal hid chest contents")
 	await panel_capture("removing","chest-header-remove")
+	# Native oracle verifies these controls on installed Box and contained instrument
+	# while removal is queued. Drive the real contents owner and viewport here.
+	for row_index in 2:
+		for entry in [[2,"forbid"],[3,"dump"],[5,"hidden"]]:
+			var initial_flag: bool=owner.contents.snapshot.rows[row_index][entry[1]]
+			for desired in [not initial_flag,initial_flag]:
+				await pointer(owner.panel.contents.get_global_transform_with_canvas()*owner.panel.contents.control_rect(row_index,entry[0]).get_center())
+				if not await chest_ready():return
+				check(owner.contents.snapshot.rows[row_index][entry[1]]==desired,"Pending-removal contents edit differs: "+entry[1])
+				check(owner.state.snapshot.removing and owner.contents.snapshot.removing,"Contents edit lost removal state")
 	var contents=owner.panel.contents
 	await pointer(contents.get_global_transform_with_canvas()*contents.control_rect(0,1).get_center())
 	if not await settle(owner.item_owner.state):return
@@ -98,3 +115,4 @@ func exercise(expected: Dictionary) -> void:
 	await panel_capture("restored","chest-header-wire-idle")
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(100,200),MOUSE_BUTTON_RIGHT)
 	check(scene._ui.host.active==null and not owner.panel.visible,"Right-click did not release chest input")
+	exercised=true

@@ -114,7 +114,7 @@ func _gui_input(event: InputEvent) -> void:
 	for control in range(1,6):
 		if not control_rect(index,control).has_point(event.position) or not eligible(row,control):continue
 		if control==1:view_requested.emit(row.id)
-		elif not state.snapshot.removing:state.set_flag(row.id,ACTIONS[control-2],not row[FLAGS[control-2]])
+		else:state.set_flag(row.id,ACTIONS[control-2],not row[FLAGS[control-2]])
 		accept_event();return
 
 func patch(texture: Texture2D,origin: Vector2,columns: int) -> void:

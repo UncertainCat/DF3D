@@ -1227,7 +1227,7 @@ It uses the independent header controller and existing native name-entry widget;
 no farm choices or seasons are fabricated. Contents stay visible while removing.
 The shared contents view has an opt-in inspection mode for removal, enabling View
 without widening flag-edit authority. Farm callers retain their previous behavior.
-Contents flag effects during chest removal still require native acceptance.
+Removal-time contents effects and their accepted subset are documented below.
 
 Protected134604 on2026-10-30 runs chest_header_art_live.gd with actual header and
 contents controllers and matched management100 endpoints. Five complete488x708
@@ -1241,8 +1241,8 @@ with source preservation; all previous effects and pixel regressions pass. All t
 GPU logs contain only the known render-thread notice. build/qa/chest-panel passes
 core/header controller; the farm contents capture retains only its documented
 thread/device-finalize/shutdown-object diagnostics. This is standalone acceptance.
-Main-scene acceptance follows below. Resize, suspended-state rendering and
-removal-time contents edits remain unfinished; public exposure is unchanged.
+Main-scene, suspended-state and removal-time contents acceptance follow below.
+Resize remains unfinished; public exposure is unchanged.
 
 The staged chest_panel owner shares farm panel input and navigation lifetime,
 but uses the independent building header state and chest view. Item holder
@@ -1266,14 +1266,36 @@ management100 and the rendered chest panel: the complete488x708 panel matches
 native exactly, all five contents View controls work, and controller cancellation
 clears removal. Native clicks also confirm Forbid, Dump and Visibility in both
 directions while removal is pending, for installed Box5834 and contained
-instrument7504. The current contents transaction/controller/view prohibition is
-therefore an unfinished parity gap, not native eligibility. Preserve native
-flag routines and receipt safeguards when removing that restriction. Eligible
+instrument7504. This establishes native eligibility for the management101 change below. Eligible
 Melt and assigned-worker item cleanup still require evidence. The nested
 suspended_and_removing_contents_reference retains these observations. Owned
 DF17168 exits unsaved with source preservation and restored header/jobs/flag bits;
 all twelve GPU logs have only the known render-thread notice. Resize remains
 unfinished; these results do not authorize public exposure.
+
+Management101 permits confirmed Forbid/Dump/Visibility contents receipts while
+removal remains queued. The native transaction opts in only for Box buildings;
+farms retain their prior admission policy. Stale revisions still refuse before
+entry. Post-entry observation requires the same building and removal state, the
+requested flag and a valid complete snapshot; missing authority remains Unknown
+and is never replayed. Melt during removal is still refused pending evidence.
+The chest owner opts its contents controller into these edits; other callers keep
+the default restriction. Both endpoints must rebuild for the new region/version.
+
+Protected141546 on2026-10-30 drives all twelve root-viewport clicks through actual
+main.tscn: both directions of Forbid/Dump/Visibility on installed Box5834 and
+contained instrument7504 during removal. Confirmed flags and continued removal
+are checked after every click, waiting for both contents and header refreshes.
+The workflow then completes item/holder navigation, cancellation and closure.
+Its success requires reaching final cleanup. Native header/jobs and tested flags
+are restored; owned DF185024 exits unsaved with source preservation. The complete
+lane, including idle/worker/suspended panel comparisons, passes with only known
+render-thread notices across twelve GPU logs. removing_contents_edit_reference
+retains the scope. QA chest-removal-edits-fixed passes core and both controllers;
+MSVC rebuild/install passes. Core regressions cover explicit opt-in, stale intent
+and changed removal state after entry. Assigned-worker item effects and eligible
+Melt remain unfinished, alongside resize and general navigation; public exposure
+is unchanged.
 
 ## Native item holder provider
 

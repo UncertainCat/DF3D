@@ -110,6 +110,15 @@ func run() -> void:
 		count=world.calls.size();world.state.world_epoch=6;service.poll()
 		check(model.phase==Model.Phase.Unavailable and model.building_id==-1 and model.ticket==0 and model.snapshot.is_empty(),"epoch change retires contents")
 		check(service.result(pending).outcome==("unknown" if sent else "not_sent") and world.calls.size()==count,"epoch change never replays item intent")
+	for enabled in [false,true]:
+		setup();model.edit_removing=enabled;model.open(968);service.poll()
+		var removing:=page();removing.removing=true;reply(removing)
+		model.set_flag(1000,C.FarmOperation.ItemHidden,true)
+		check((model.ticket>0)==enabled,"Removal edits require chest opt-in")
+		if enabled:
+			service.poll();removing.rows[0].hidden=true;removing.revision+=1
+			reply(removing,1,{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1})
+			check(model.phase==Model.Phase.Ready and model.snapshot.removing and model.snapshot.rows[0].hidden,"Removing chest receipt accepted")
 	model.dispose();service.free()
 	if failures==0:print("BUILDING_CONTENTS_STATE_PASS")
 	quit(0 if failures==0 else 1)

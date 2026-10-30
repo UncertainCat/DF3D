@@ -6,6 +6,7 @@ const C=preload("res://scripts/management_contract.gd")
 enum Phase { Closed, Reading, Ready, Applying, Rejected, Stale, Unknown, Unavailable }
 const FIELDS={C.FarmOperation.ItemForbid:"forbid",C.FarmOperation.ItemDump:"dump",C.FarmOperation.ItemMelt:"melt",C.FarmOperation.ItemHidden:"hidden"}
 var service
+var edit_removing:=false
 var phase:=Phase.Closed
 var building_id: int=-1
 var snapshot: Dictionary={}
@@ -56,7 +57,7 @@ func rows() -> Array:
 
 func set_flag(item_id: int, operation: int, desired: bool) -> void:
 	if phase!=Phase.Ready or ticket!=0 or not FIELDS.has(operation) or snapshot.is_empty():return
-	if not snapshot.completed or snapshot.removing:return
+	if not snapshot.completed or (snapshot.removing and (not edit_removing or operation==C.FarmOperation.ItemMelt)):return
 	var selected: Dictionary={}
 	for row in snapshot.rows:
 		if row.id==item_id:selected=row;break
@@ -129,7 +130,7 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 		if not snapshot.is_empty() and sent.expected_revision>0 and (page.total!=snapshot.total or page.completed!=snapshot.completed or page.removing!=snapshot.removing):_fail(Phase.Rejected);return
 		snapshot=page.duplicate(true);phase=Phase.Ready;changed.emit();return
 	var receipt: Dictionary=production.get("contents_edit",{})
-	if outcome!=C.FarmEditOutcome.Completed or not page.completed or page.removing or receipt!={"item_id":sent.item_id,"farm_operation":sent.farm_operation,"value":sent.item_value}:
+	if outcome!=C.FarmEditOutcome.Completed or not page.completed or (page.removing and (not edit_removing or sent.farm_operation==C.FarmOperation.ItemMelt)) or page.removing!=snapshot.removing or receipt!={"item_id":sent.item_id,"farm_operation":sent.farm_operation,"value":sent.item_value}:
 		_fail(Phase.Unknown);return
 	var target: Dictionary={}
 	for row in page.rows:

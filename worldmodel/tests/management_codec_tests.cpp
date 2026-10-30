@@ -3470,8 +3470,8 @@ TEST_CASE("contained item completion grants authority only for the observed targ
     state.add_action(fault==8?wire::ManagementAction::ProductionInspect:wire::ManagementAction::FarmEdit);
     state.add_status(fault==9?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);state.add_production(prod);
     b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
-    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
-    if(fault==0){const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.contentsEdit);CHECK(decoded.contentsEdit->itemId==47492);CHECK(decoded.contentsEdit->value==1);}
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0 && fault!=11));
+    if(fault==0||fault==11){const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.contentsEdit);CHECK(decoded.contentsEdit->itemId==47492);CHECK(decoded.contentsEdit->value==1);}
   }
 }
 

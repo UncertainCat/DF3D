@@ -2605,7 +2605,7 @@ void run(color_ostream& out) {
             entered=true;return df3d_production::setBuildingItemFlag(held->item,action,q->item_value()!=0);
           }
           return false;
-        },observe);
+        },observe,contentsBuilding(q->building_id())->getType()==df::building_type::Box);
         mutated=edit.mutated;
         using O=df3d_production::FarmEditOutcome;
         if(edit.outcome==O::Completed) {

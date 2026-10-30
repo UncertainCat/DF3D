@@ -133,12 +133,13 @@ return function(request)
   fact(s,r,'caste_description',caste.description)
   fact(s,r,'translated_name',dfhack.translation.translateName(u.name,true))
   if request.overview_status then
-   local eligible,needs,squad,assigned=request.overview_status(u.id)
+   local eligible,needs,squad,assigned,focus,color=request.overview_status(u.id)
    fact(s,r,'personality_summary_eligible',eligible and 'yes' or 'no')
    local summary=record(s,-4,'')
    fact(s,summary,'record_type','overview_status')
    fact(s,summary,'needs_summary_eligible',needs and 'yes' or 'no')
    fact(s,summary,'squad_text',squad);fact(s,summary,'squad_assigned',assigned and 'yes' or 'no')
+   fact(s,summary,'focus_text',focus);fact(s,summary,'focus_color',color)
   end
   if request.hauling_summary then
    local id,text=request.hauling_summary(u.id)

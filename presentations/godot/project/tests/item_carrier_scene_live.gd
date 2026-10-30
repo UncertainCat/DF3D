@@ -57,8 +57,12 @@ func unit_carrier(expected: Dictionary) -> void:
 	var overview_status: Dictionary={}
 	for row in inspector.creature_sheet.records_for("identity"):
 		if inspector.creature_sheet.fact_value(row,"record_type")=="overview_status":overview_status=row
-	check(inspector.creature_sheet.fact_value(overview_status,"needs_summary_eligible","")=="no","Native child needs gate differs")
-	check(inspector.creature_sheet.fact_value(overview_status,"squad_text","")=="None","Native unassigned squad summary differs")
+	var overview_case: String=expected.get("overview_case","child")
+	check(inspector.creature_sheet.fact_value(overview_status,"needs_summary_eligible","")==("no" if overview_case=="child" else "yes"),"Native needs gate differs")
+	if overview_case=="squad-alias":check(inspector.creature_sheet.fact_value(overview_status,"squad_text","")=="Native squad alias","Native squad alias differs")
+	elif overview_case!="squad":check(inspector.creature_sheet.fact_value(overview_status,"squad_text","")=="None","Native unassigned squad summary differs")
+	var focus_text: String={"focused":"Focused!","focused-mild":"Focused","distracted":"Distracted!","distracted-mild":"Distracted","fresh-focused":"Focused!","fresh-distracted":"Distracted!"}.get(overview_case,"")
+	check(inspector.creature_sheet.fact_value(overview_status,"focus_text","")==focus_text,"Native focus header differs")
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/unit-overview-scene.png")
 	var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)

@@ -169,8 +169,13 @@ static func skill_rust(sheet, record: Dictionary) -> Dictionary:
 
 static func overview_needs(sheet) -> Array:
  var eligible := false
+ var result: Array=[]
+ load_text(sheet.owner.world)
  for record in sheet.records_for("identity"):
   if sheet.fact_value(record,"needs_summary_eligible")=="yes":eligible=true
+  var focus := str(sheet.fact_value(record,"focus_text",""))
+  var color := int(sheet.fact_value(record,"focus_color",-1))
+  if not focus.is_empty() and color>=0 and color<colors.size():result.append([{"text":focus,"color":colors[color]}])
  if not eligible:return []
  var data := load_text(sheet.owner.world)
  var section: Dictionary=sheet.sections.get("needs",{})
@@ -183,8 +188,7 @@ static func overview_needs(sheet) -> Array:
   rows.append({"record":record,"index":index,"severity":-3 if focus<=-100000 else -2 if focus<=-10000 else -1})
  rows.sort_custom(func(a,b): return a.severity<b.severity if a.severity!=b.severity else a.index<b.index)
  var join: Dictionary=data.overview_need_joiners
- if rows.is_empty(): return [[{"text":join.none.text,"color":colors[7]}]]
- var result: Array=[]
+ if rows.is_empty(): return result if not result.is_empty() else [[{"text":join.none.text,"color":colors[15]}]]
  for row in rows.slice(0,30):
   var id := int(sheet.fact_value(row.record,"need_id",-1))
   if id<0 or id>=data.overview_need_labels.size(): continue

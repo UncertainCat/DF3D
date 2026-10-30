@@ -4,6 +4,7 @@ local gui=require('gui');local json=require('json')
 local g=df.global.gps;local sheet=df.global.game.main_interface.view_sheets
 local entry=assert(b.contained_items[0]);local item=entry.item
 local saved={flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z,refs={}}
+local overview_case=os.getenv('DF3D_UNIT_OVERVIEW_CASE') or 'child'
 for _,ref in ipairs(item.general_refs)do saved.refs[#saved.refs+1]=ref end
 local container,unit
 for _,candidate in ipairs(df.global.world.items.other.BOX)do
@@ -11,14 +12,30 @@ for _,candidate in ipairs(df.global.world.items.other.BOX)do
  if not candidate.flags.removed and x and x>=0 and z==b.z then container=candidate;break end
 end
 for _,candidate in ipairs(df.global.world.units.active)do
- if dfhack.units.isCitizen(candidate) and candidate.pos.z==b.z then unit=candidate;break end
+ local adult=candidate.profession~=df.profession.CHILD and candidate.profession~=df.profession.BABY
+ local hauling=false;for _,held in ipairs(candidate.inventory)do if held.mode==df.inv_item_role_type.Hauled then hauling=true end end
+ if dfhack.units.isCitizen(candidate) and candidate.pos.z==b.z and
+  (overview_case=='child' or (adult and not hauling and candidate.military.squad_id<0))then unit=candidate;break end
 end
 assert(container and unit,'carrier fixture requires a box and citizen on the farm level')
 local description_case=os.getenv('DF3D_BOX_DESCRIPTION_CASE') or 'none'
 assert(description_case=='none' or description_case=='image' or description_case=='masterpiece','unknown box description case')
 local extra_image,box_saved
+local overview_saved
+local function focus_state(p)
+ return {flags=p.flags.whole,current=p.current_focus,baseline=p.undistracted_focus,year=p.slack_end_year,tick=p.slack_end_year_tick}
+end
 local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
+ if overview_saved then
+  local old=overview_saved;local p=unit.status.current_soul.personality
+  unit.profession=old.profession;unit.military.squad_id=old.squad_id
+  p.flags.whole=old.focus.flags;p.current_focus=old.focus.current;p.undistracted_focus=old.focus.baseline
+  p.slack_end_year=old.focus.year;p.slack_end_year_tick=old.focus.tick
+  for i,value in ipairs(old.needs)do p.needs[i-1].focus_level=value end
+  if old.squad then old.squad.alias=old.alias end
+  overview_saved=nil
+ end
  if box_saved then
   assert(container.improvements[#container.improvements-1]==extra_image)
   container.improvements:erase(#container.improvements-1);df.delete(extra_image);extra_image=nil
@@ -78,7 +95,7 @@ local ok,err=xpcall(function()
   row.native_ui_unchanged=true
   assert(row.independent.carrier and row.independent.carrier.id==target.id and row.independent.carrier.name==row.carrier.name)
   if prior_revision then assert(prior_revision~=row.independent.revision,'carrier change retained old revision')end
-  local expected={snapshot=row.independent,prior_revision=prior_revision}
+  local expected={snapshot=row.independent,prior_revision=prior_revision,overview_case=overview_case}
   local f=assert(io.open(out..'/carrier-expected.json','w'));f:write(json.encode(expected));f:close()
   capture('farm-item-carrier-'..kind..'-wire')
   local result=assert(io.open(out..'/carrier-wire-result.json'));row.wire=json.decode(result:read('*a'));result:close()
@@ -123,6 +140,22 @@ local ok,err=xpcall(function()
    cold_probe.art={id=art.id,subid=art.subid,elements=#art.elements,properties=#art.properties,quality=art.quality,artist=art.artist,has_source=art.ref~=nil}
    assert(cold_probe.art.elements>0 and cold_probe.art.has_source,'native art record incomplete')
   end
+  if kind=='unit' then
+   if overview_case~='child' then
+    local ratios={focused=150,['focused-mild']=130,distracted=50,['distracted-mild']=70,neutral=100,['fresh-focused']=150,['fresh-distracted']=50,squad=100,['squad-alias']=100}
+    local ratio=assert(ratios[overview_case],'unknown Overview fixture case')
+    local p=assert(unit.status.current_soul).personality
+    overview_saved={profession=unit.profession,squad_id=unit.military.squad_id,focus=focus_state(p),needs={}}
+    for _,need in ipairs(p.needs)do overview_saved.needs[#overview_saved.needs+1]=need.focus_level;need.focus_level=overview_case=='fresh-focused' and 300 or overview_case=='fresh-distracted' and -100000 or 0 end
+    assert(#p.needs>0,'focus fixture needs at least one existing need')
+    p.flags.distraction_calculated=not overview_case:find('^fresh%-');p.current_focus=ratio;p.undistracted_focus=100
+    if overview_case=='squad' or overview_case=='squad-alias' then
+     local squad=assert(df.global.world.squads.all[0],'assigned-squad fixture needs an existing squad')
+     overview_saved.squad=squad;overview_saved.alias=squad.alias;unit.military.squad_id=squad.id
+     if overview_case=='squad-alias' then squad.alias='Native squad alias' end
+    end
+   end
+  end
   local target_before,target_size,target_address
   if kind=='container' then
    target_size,target_address=df.sizeof(target);target_before=df.new('uint8_t',target_size)
@@ -133,11 +166,23 @@ local ok,err=xpcall(function()
   local linked=capture('farm-item-carrier-'..kind..'-view');linked.target_id=target.id
   assert(sheet.open and sheet.active_id==target.id and sheet.active_sheet==(kind=='unit' and df.view_sheet_type.UNIT or df.view_sheet_type.ITEM),'native carrier View selected wrong identity')
   if kind=='unit' then
+   linked.overview_case=overview_case
+   local p=unit.status.current_soul.personality
+   if overview_case:find('^fresh%-') then
+    -- Native has calculated its reference. Make the live source cold again;
+    -- the viewer must compute on its own copy without changing these fields.
+    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+    p.flags.distraction_calculated=false;p.current_focus=-999;p.undistracted_focus=-999
+    p.slack_end_year=0;p.slack_end_year_tick=0
+   end
+   local before_focus=focus_state(p)
    linked.camera_before=camera_before;linked.camera_after={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
    assert(json.encode(linked.camera_before)==json.encode(linked.camera_after),'Unit carrier View moved native camera')
    capture('farm-item-carrier-unit-scene')
    local result=assert(io.open(out..'/carrier-scene-result.json'));linked.scene=json.decode(result:read('*a'));result:close()
    assert(linked.scene.success,'unit carrier main-scene navigation failed')
+   linked.focus_before=before_focus;linked.focus_after=focus_state(p)
+   assert(json.encode(before_focus)==json.encode(linked.focus_after),'viewer changed live personality focus cache/timestamps')
   end
   if kind=='container' then
    linked.description=dfhack.df2utf(sheet.raw_description)

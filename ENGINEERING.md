@@ -1374,7 +1374,7 @@ Overview divider no longer overwrites the tab boundary. Protected150507 on
 main tab rows at1200x800. The harness waits for the inspector to consume detail,
 not merely for the model publication. unit_sheet_frame_reference records the
 regions and remaining defects. DF3D still lacks native header controls/colors
-and correct Overview health/office/squad/needs/thought selection; this is
+and correct Overview health/office/thought selection; this is
 not full unit-sheet acceptance. Existing native semantic providers must be
 audited before replacing those locally assembled summaries.
 
@@ -1419,12 +1419,46 @@ Protected152221 on2026-10-30 verifies child988 has no needs summary and displays
 Squad: None. Both the232x12 squad line and232x72 empty needs region match native
 pixels. Previous frame/portrait/tabs/hauling checks, camera preservation and Escape
 release pass. unit_overview_status_reference retains code pins and scoped evidence.
-Assigned squads/aliases, adults and other excluded creature kinds require additional
-live coverage; overall focus text, health, offices and thoughts remain unfinished.
+Other excluded creature kinds require additional live coverage; health, offices
+and thoughts remain unfinished. Adult focus and squad-name coverage follows below.
 QA unit-overview-status passes core19/19, context inspector and thought-text tests,
 including positive, missing and rejected eligibility with severe synthetic needs.
 The bridge build/install passes. Owned DF86976 exits unsaved with source preservation;
 both GPU logs contain only the known renderer notice. Public exposure is unchanged.
+
+Overview focus calls native14d720 with independently owned personality storage
+and copied needs. Its callee e2c090 refreshes flags, focus counters and slack
+expiration timestamps, so calling it on the live personality would violate this
+read-only UI path. Both complete bodies are pinned, including e2c090's multiple
+unwind regions. The adapter copies only the semantic inputs that those routines
+read, retaining native warm-cache behavior; all refresh writes stay owned.
+Native Overview thresholds supply Focused!/Focused/Distracted!/Distracted and
+palette codes. Neutral focus with no unmet needs uses native white text. Needs
+rows retain native ordering and the focus heading takes the first available row.
+
+Overview skill lines retain native unwrapped overflow into the adjacent column.
+Needs text paints an opaque background only behind its character span, matching
+native overwrite order without clearing unused rows. This is required for the
+adult bookkeeper's long skill names and was caught by the full needs-region check.
+
+unit_focus_reference records eight protected cases on2026-10-30: adult1017 cold
+focused and distracted calculations, both mild headings, neutral focus, existing
+squad name and temporary alias, plus child988 regression. Each compares the232x12
+squad line and232x72 needs region pixel-for-pixel alongside prior frame, portrait,
+tab and hauling checks. Cold cases close native's sheet after capturing its
+reference, then set live focus counters to-999 and slack timestamps to0; DF3D
+calculates the expected display while all guarded live fields remain unchanged.
+The fixture restores need levels, counters, squad ID and alias. These are paused
+controlled states, not acceptance of natural focus progression or squad assignment
+commands. All eight owned sessions exit unsaved with source preservation. All16
+GPU logs contain only the known renderer notice. Final QA unit-focus-final passes
+core19/19, context inspector and thought-text checks. No public routes are promoted.
+
+Set DF3D_UNIT_OVERVIEW_CASE to fresh-focused, fresh-distracted, focused-mild,
+distracted-mild, neutral, squad or squad-alias in the unit-only carrier lane to
+select these adult fixtures; the default child retains the original regression.
+Other creature types, needs-list clipping outside the tested region, header
+controls/colors/copy, health, offices and thoughts still require acceptance.
 
 ## Native item holder provider
 

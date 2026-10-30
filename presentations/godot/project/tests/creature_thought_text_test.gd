@@ -75,5 +75,9 @@ func _initialize():
  check(needs.size()==2 and needs[0][1].text=="Socialize","Unmet needs use native threshold and source-order ties within a severity band")
  sheet.sections.identity.records=[row(-4,{"needs_summary_eligible":"no"})]
  check(Native.overview_needs(sheet).is_empty(),"Native-ineligible unit does not show even severe unmet needs")
+ sheet.sections.identity.records=[row(-4,{"needs_summary_eligible":"yes","focus_text":"Focused!","focus_color":10})]
+ check(plain(Native.overview_needs(sheet)[0])=="Focused!","Native focus heading precedes unmet needs")
+ sheet.sections.needs.records=[]
+ check(Native.overview_needs(sheet).size()==1 and plain(Native.overview_needs(sheet)[0])=="Focused!","Focus heading replaces the neutral empty-needs label")
  if failures==0: print("CREATURE_THOUGHT_TEXT_PASS")
  quit(1 if failures else 0)

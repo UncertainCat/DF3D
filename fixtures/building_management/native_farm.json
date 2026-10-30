@@ -34441,6 +34441,419 @@
       "scope": "Unassigned citizen child; assigned squad, aliases, adults and other excluded creature kinds remain separate live coverage",
       "cleanup": "Owned session exits unsaved with source preservation and restored fixture links",
       "diagnostics": "Two GPU logs contain only known separate-renderer notice"
+    },
+    "unit_focus_reference": {
+      "date": "2026-10-30",
+      "native_ratio": {
+        "rva": "0x14d720",
+        "length": 51,
+        "fnv64": "011b14951ccbf4f2"
+      },
+      "native_cache_update": {
+        "rva": "0xe2c090",
+        "length": 455,
+        "fnv64": "d98351a8d8b2ee07"
+      },
+      "ownership": "Native refresh operates on independent personality storage and copied needs; live flags/counters/slack timestamps remain unchanged, including cold sentinels",
+      "native_display_rules": "Overview167a03..167c49: >=140 Focused!, >=120 Focused, <=60 Distracted!, <=80 Distracted; neutral with no unmet needs uses white No unmet needs",
+      "rendering": "Unwrapped skill overflow and text-sized opaque needs backgrounds match native draw order",
+      "cases": [
+        {
+          "case": "fresh-distracted",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-153812",
+          "unit_id": 1017,
+          "facts": {
+            "needs_summary_eligible": "yes",
+            "squad_text": "None",
+            "squad_assigned": "no",
+            "focus_text": "Distracted!",
+            "focus_color": 12
+          },
+          "focus_before": {
+            "baseline": -999,
+            "current": -999,
+            "flags": 2,
+            "tick": 0,
+            "year": 0
+          },
+          "focus_after": {
+            "baseline": -999,
+            "current": -999,
+            "flags": 2,
+            "tick": 0,
+            "year": 0
+          },
+          "regions": [
+            {
+              "rect": [
+                664,
+                376,
+                232,
+                12
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "2070e611dd4d858c0873bce1350104267c768f02e51ce6649b07df76c2193bfb"
+            },
+            {
+              "rect": [
+                664,
+                460,
+                232,
+                72
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "0cafe3902fd8cc06d420d6b308b0a150c92d01a37da61fa8c9057361fc82ac04"
+            }
+          ],
+          "success": true
+        },
+        {
+          "case": "focused-mild",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-153932",
+          "unit_id": 1017,
+          "facts": {
+            "needs_summary_eligible": "yes",
+            "squad_text": "None",
+            "squad_assigned": "no",
+            "focus_text": "Focused",
+            "focus_color": 10
+          },
+          "focus_before": {
+            "baseline": 100,
+            "current": 130,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "focus_after": {
+            "baseline": 100,
+            "current": 130,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "regions": [
+            {
+              "rect": [
+                664,
+                376,
+                232,
+                12
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "2070e611dd4d858c0873bce1350104267c768f02e51ce6649b07df76c2193bfb"
+            },
+            {
+              "rect": [
+                664,
+                460,
+                232,
+                72
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "3a18c5296bfc953a46659b34a58ebbb3f70084d4effe6aee587ea991c48e312d"
+            }
+          ],
+          "success": true
+        },
+        {
+          "case": "distracted-mild",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-154037",
+          "unit_id": 1017,
+          "facts": {
+            "needs_summary_eligible": "yes",
+            "squad_text": "None",
+            "squad_assigned": "no",
+            "focus_text": "Distracted",
+            "focus_color": 14
+          },
+          "focus_before": {
+            "baseline": 100,
+            "current": 70,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "focus_after": {
+            "baseline": 100,
+            "current": 70,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "regions": [
+            {
+              "rect": [
+                664,
+                376,
+                232,
+                12
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "2070e611dd4d858c0873bce1350104267c768f02e51ce6649b07df76c2193bfb"
+            },
+            {
+              "rect": [
+                664,
+                460,
+                232,
+                72
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "c7f1bf83198df916535664fbda3dcb3db212f6e1cdb5e410caba6f4798bcafa4"
+            }
+          ],
+          "success": true
+        },
+        {
+          "case": "neutral",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-154142",
+          "unit_id": 1017,
+          "facts": {
+            "needs_summary_eligible": "yes",
+            "squad_text": "None",
+            "squad_assigned": "no",
+            "focus_text": "",
+            "focus_color": 15
+          },
+          "focus_before": {
+            "baseline": 100,
+            "current": 100,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "focus_after": {
+            "baseline": 100,
+            "current": 100,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "regions": [
+            {
+              "rect": [
+                664,
+                376,
+                232,
+                12
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "2070e611dd4d858c0873bce1350104267c768f02e51ce6649b07df76c2193bfb"
+            },
+            {
+              "rect": [
+                664,
+                460,
+                232,
+                72
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "bc294de8cf4990e64efe625203c2e740fbf85eda68fac3c652f23195d4317ca1"
+            }
+          ],
+          "success": true
+        },
+        {
+          "case": "squad",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-154246",
+          "unit_id": 1017,
+          "facts": {
+            "needs_summary_eligible": "yes",
+            "squad_text": "The Hops of Tweeting",
+            "squad_assigned": "yes",
+            "focus_text": "",
+            "focus_color": 15
+          },
+          "focus_before": {
+            "baseline": 100,
+            "current": 100,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "focus_after": {
+            "baseline": 100,
+            "current": 100,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "regions": [
+            {
+              "rect": [
+                664,
+                376,
+                232,
+                12
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "e1620e3baa13c04adc32f232de2dfc96a7bf76fb7ad8e7a1184320bd1c7c4245"
+            },
+            {
+              "rect": [
+                664,
+                460,
+                232,
+                72
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "bc294de8cf4990e64efe625203c2e740fbf85eda68fac3c652f23195d4317ca1"
+            }
+          ],
+          "success": true
+        },
+        {
+          "case": "squad-alias",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-154351",
+          "unit_id": 1017,
+          "facts": {
+            "needs_summary_eligible": "yes",
+            "squad_text": "Native squad alias",
+            "squad_assigned": "yes",
+            "focus_text": "",
+            "focus_color": 15
+          },
+          "focus_before": {
+            "baseline": 100,
+            "current": 100,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "focus_after": {
+            "baseline": 100,
+            "current": 100,
+            "flags": 3,
+            "tick": -1,
+            "year": -1
+          },
+          "regions": [
+            {
+              "rect": [
+                664,
+                376,
+                232,
+                12
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "6b31e9d70f316f835865a2e6f84920a49ec6e82442a73cea9559a7b32677a950"
+            },
+            {
+              "rect": [
+                664,
+                460,
+                232,
+                72
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "bc294de8cf4990e64efe625203c2e740fbf85eda68fac3c652f23195d4317ca1"
+            }
+          ],
+          "success": true
+        },
+        {
+          "case": "child",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-154455",
+          "unit_id": 988,
+          "facts": {
+            "needs_summary_eligible": "no",
+            "squad_text": "None",
+            "squad_assigned": "no",
+            "focus_text": "",
+            "focus_color": 15
+          },
+          "focus_before": {
+            "baseline": 76,
+            "current": 104,
+            "flags": 1,
+            "tick": -1,
+            "year": -1
+          },
+          "focus_after": {
+            "baseline": 76,
+            "current": 104,
+            "flags": 1,
+            "tick": -1,
+            "year": -1
+          },
+          "regions": [
+            {
+              "rect": [
+                664,
+                376,
+                232,
+                12
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "2070e611dd4d858c0873bce1350104267c768f02e51ce6649b07df76c2193bfb"
+            },
+            {
+              "rect": [
+                664,
+                460,
+                232,
+                72
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "5202c17f37e70a955d5056b5eceef2d33f8b11bdd15af6c96145a694c581cabc"
+            }
+          ],
+          "success": true
+        },
+        {
+          "case": "fresh-focused",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-154600",
+          "unit_id": 1017,
+          "facts": {
+            "needs_summary_eligible": "yes",
+            "squad_text": "None",
+            "squad_assigned": "no",
+            "focus_text": "Focused!",
+            "focus_color": 10
+          },
+          "focus_before": {
+            "baseline": -999,
+            "current": -999,
+            "flags": 0,
+            "tick": 0,
+            "year": 0
+          },
+          "focus_after": {
+            "baseline": -999,
+            "current": -999,
+            "flags": 0,
+            "tick": 0,
+            "year": 0
+          },
+          "regions": [
+            {
+              "rect": [
+                664,
+                376,
+                232,
+                12
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "2070e611dd4d858c0873bce1350104267c768f02e51ce6649b07df76c2193bfb"
+            },
+            {
+              "rect": [
+                664,
+                460,
+                232,
+                72
+              ],
+              "different_pixels": 0,
+              "rgb_sha256": "6596264a34b964fcab1b3770487abe03fb446b053a2ebe0f046340d390b11fde"
+            }
+          ],
+          "success": true
+        }
+      ],
+      "scope": "Actual adult1017 and child988; paused controlled focus levels/caches and temporary squad ID/alias, restored without saving; not squad membership commands or natural focus progression",
+      "diagnostics": "Sixteen GPU logs contain only the known separate-renderer notice; all eight cases pass",
+      "verification": "QA unit-focus-final: core19/19, context inspector, thought text; installed bridge build succeeds"
     }
   }
 }

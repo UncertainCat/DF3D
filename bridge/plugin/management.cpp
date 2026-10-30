@@ -3139,7 +3139,9 @@ void run(color_ostream& out) {
       if(!value)return luaL_error(state,"Native creature Overview status unavailable");
       lua_pushboolean(state,value->personality);lua_pushboolean(state,value->needs);
       lua_pushlstring(state,value->squad.data(),value->squad.size());
-      lua_pushboolean(state,value->assignedSquad);return 4;
+      lua_pushboolean(state,value->assignedSquad);
+      lua_pushlstring(state,value->focus.data(),value->focus.size());
+      lua_pushinteger(state,value->focusColor);return 6;
     });
     lua_setfield(L,-2,"overview_status");
     lua_pushcfunction(L,[](lua_State* state)->int {

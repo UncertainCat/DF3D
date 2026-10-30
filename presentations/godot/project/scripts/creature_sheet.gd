@@ -41,7 +41,7 @@ func text(parent: Node, value: String, color := Color.WHITE) -> Label:
  parent.add_child(label)
  return label
 
-func paragraph(parent: Node, spans: Array, spacing := 12, wrap := true) -> RichTextLabel:
+func paragraph(parent: Node, spans: Array, spacing := 12, wrap := true, opaque := false) -> RichTextLabel:
  if spans.is_empty(): return null
  var value := RichTextLabel.new()
  value.add_theme_font_override("normal_font",owner.body.get_theme_font("font","Label"))
@@ -53,8 +53,13 @@ func paragraph(parent: Node, spans: Array, spacing := 12, wrap := true) -> RichT
  value.clip_contents=true
  value.size_flags_horizontal=Control.SIZE_EXPAND_FILL
  parent.add_child(value)
+ if opaque:
+  value.add_theme_constant_override("text_highlight_h_padding",0)
+  value.add_theme_constant_override("text_highlight_v_padding",0)
+  value.push_bgcolor(Color8(28,28,28))
  for span in spans:
   value.push_color(span.color);value.add_text(span.text);value.pop()
+ if opaque:value.pop()
  if spacing>0:
   var gap := Control.new();gap.custom_minimum_size.y=spacing;parent.add_child(gap)
  return value
@@ -325,8 +330,11 @@ func overview(parent: Node, detail: Dictionary):
   var group := 1 if combat else 0
   if counts[group]>=(5 if combat else 6): continue
   counts[group]+=1
-  paragraph(cells[5 if combat else 6],skill_spans(row),0,false)
- for spans in NativeText.overview_needs(self).slice(0,6): paragraph(cells[7],spans,0,false)
+  var skill_line := paragraph(cells[5 if combat else 6],skill_spans(row),0,false)
+  # Native Overview draws unwrapped skill names beyond the column boundary;
+  # the following needs column paints over overlapping text in its own rows.
+  if skill_line!=null: skill_line.clip_contents=false
+ for spans in NativeText.overview_needs(self).slice(0,6): paragraph(cells[7],spans,0,false,true)
  for spans in Thoughts.recent(self,int(detail.get("sex",-1))).slice(0,8): paragraph(parent,spans,0)
 
 func room_summary(parent: Node):

@@ -36100,7 +36100,7 @@
       ],
       "qa": "build/qa/unit-health",
       "diagnostic": "df3d unit-health-probe <unit>",
-      "limitations": "See unit_health_blink_reference and unit_health_threshold_reference for additional cases. Resize, reopening and stale identity remain unverified."
+      "limitations": "See unit_health_blink_reference and unit_health_threshold_reference for additional cases. Resize and stale identity remain unverified. Same-unit reopening is covered by unit_health_reopen_reference."
     },
     "unit_health_blink_reference": {
       "cases": [
@@ -36325,7 +36325,7 @@
       "qa": "build/qa/unit-health-blink",
       "rendered_comparison": "Native screenshot glyph masks recolored using independently sampled native palette indices at eleven controlled display times; all six rendered rows compared at each time. Screenshot and later native cell sample can have different real-time phases.",
       "lifecycle": "Animated labels start processing while visible and stop after Escape hides the sheet.",
-      "limitations": "See unit_health_threshold_reference for Heavy bleeding, traction and selection thresholds. Resize, reopening and stale identity remain separate coverage."
+      "limitations": "See unit_health_threshold_reference for Heavy bleeding, traction and selection thresholds. Resize and stale identity remain separate coverage. Same-unit reopening is covered by unit_health_reopen_reference."
     },
     "unit_health_threshold_reference": {
       "evidence": "build/stockpile-storage-native-farm-discovery-20261030-173332",
@@ -38170,7 +38170,39 @@
       },
       "qa": "build/qa/unit-health-thresholds",
       "diagnostics": "Four GPU logs contain only the known separate-render-thread notice.",
-      "limitations": "Controlled thresholds and Rest/traction references are reader acceptance, not healthcare job creation or treatment actions. Matrix cases are not all rendered through Godot; Heavy bleeding is. Resize, reopening, stale identity, missing soul/health info and other creature types remain separate coverage."
+      "limitations": "Controlled thresholds and Rest/traction references are reader acceptance, not healthcare job creation or treatment actions. Matrix cases are not all rendered through Godot; Heavy bleeding is. Resize, stale identity, missing soul/health info and other creature types remain separate coverage. Same-unit reopening is covered by unit_health_reopen_reference."
+    },
+    "unit_health_reopen_reference": {
+      "evidence": "build/stockpile-storage-native-farm-discovery-20261030-173933",
+      "result_sha256": "e9363104e7d089fbbd7246ff88c548115c35318da671262b035a2dfe3ab1b156",
+      "owned_df_pid": 197496,
+      "health_case": "blink",
+      "rows": [
+        {
+          "text": "Drowning"
+        },
+        {
+          "text": "Extreme pain"
+        },
+        {
+          "text": "Pale"
+        },
+        {
+          "text": "Extreme pain"
+        },
+        {
+          "text": ""
+        },
+        {
+          "text": ""
+        }
+      ],
+      "reader_guards_unchanged": true,
+      "coverage": "Actual main-scene item holder View, Escape, reopen the same unit through holder View, three visible animated labels processing without duplication, unchanged camera and input ownership, second Escape hides panel and stops processing. Eleven native phase comparisons and existing Overview regions pass.",
+      "diagnostics": "passed_with_known_issues: two GPU logs contain only godot-separate-thread-notice",
+      "save_preservation": "Owned source unchanged; owned session exits unsaved",
+      "qa": "build/qa/unit-health-reopen: core19/19, context_inspect_test and creature_thought_text_test passed",
+      "limitations": "Same-unit reopening only. Resize, stale identity, missing soul/health info and healthcare actions remain unverified."
     }
   }
 }

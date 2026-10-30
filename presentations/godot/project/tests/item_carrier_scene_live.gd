@@ -135,4 +135,23 @@ func unit_carrier(expected: Dictionary) -> void:
 	check(scene._ui.host.active==null and not inspector.panel.visible,"Unit sheet Escape did not release input")
 	for label in health_labels:
 		if is_instance_valid(label):check(not label.is_processing(),"Hidden health animation kept processing")
+	if not health_labels.is_empty():
+		source.open_target(int(expected.snapshot.id))
+		if not await settle(source.state):return
+		await pointer(source.panel.get_global_transform_with_canvas()*source.panel.holder_rect().get_center())
+		var reopen_deadline:=Time.get_ticks_msec()+5000
+		while (not inspector.panel.visible or inspector.creature_display.get("detail",{}).is_empty()) and Time.get_ticks_msec()<reopen_deadline:await create_timer(0.02).timeout
+		await process_frame;await process_frame
+		check(scene._ui.host.active==inspector and inspector.selected.get("id",-1)==target,"Unit reopen lost input owner or identity")
+		var resumed: Array=[]
+		for label in inspector.panel.find_children("*","Label",true,false):
+			if label.get_script()==preload("res://scripts/creature_health_flash.gd"):
+				check(label.is_visible_in_tree() and label.is_processing(),"Reopened health animation did not resume")
+				resumed.append(label)
+		check(resumed.size()==health_labels.size(),"Reopening duplicated or lost animated health rows")
+		check(scene.camera_rig.position==camera_before,"Reopening Unit sheet moved camera")
+		key(KEY_ESCAPE);await process_frame
+		check(scene._ui.host.active==null and not inspector.panel.visible,"Reopened Unit sheet retained input")
+		for label in resumed:
+			if is_instance_valid(label):check(not label.is_processing(),"Reopened health animation did not retire")
 	exercised=true

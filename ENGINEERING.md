@@ -1626,8 +1626,18 @@ blink selection capture has a60-second timeout; ordinary captures retain30 secon
 The child fixture matches Healthy and prior Overview regions. Both runs preserve
 guarded state and source saves, exit unsaved, and have only the known renderer
 notice in four GPU logs. unit-health-blink QA passes core19/19, context and
-thought-text checks. Reopening and resize remain unverified; these results do not
-establish complete health or healthcare actions.
+thought-text checks. Same-unit reopening is covered below; resize remains unverified.
+These results do not establish complete health or healthcare actions.
+
+unit_health_reopen_reference records protected173933 on2026-10-30. After Escape,
+the actual main-scene item holder View reopens the same unit. All three animated
+health rows are visible and processing, without duplication; input ownership and
+camera position remain correct. A second Escape hides the panel, releases input
+and stops processing. Native phase and previous Overview comparisons also pass.
+Reader guards and source saves remain unchanged; owned DF197496 exits unsaved.
+Both GPU logs contain only the known renderer notice. unit-health-reopen QA passes
+core19/19, context and thought-text checks. Different-target and stale-identity
+reopening remain separate coverage.
 
 unit_health_threshold_reference records protected173332 on2026-10-30. With
 DF3D_UNIT_HEALTH_THRESHOLDS=1, unit-health-thresholds-native.lua checks98 cases

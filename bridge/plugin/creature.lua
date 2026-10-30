@@ -156,6 +156,11 @@ return function(request)
    fact(s,rooms,'warning',warning);fact(s,rooms,'warning_color',color)
   end
   local office_count=0
+  if request.header_status then
+   local text,color=request.header_status(u.id)
+   local header=record(s,-7,'')
+   fact(s,header,'record_type','header_status');fact(s,header,'text',text);fact(s,header,'color',color)
+  end
   if request.office_titles then
    for _,title in ipairs(request.office_titles(u.id))do
     office_count=office_count+1

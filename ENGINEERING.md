@@ -1593,8 +1593,8 @@ site and appends its native a946e0 name; the naming path reads semantic sites,
 language records and installed name-display settings, writing only owned strings.
 The complete d2cb50 word selector includes its nine-entry table through d2cc40.
 This component does not use native menus or update the unit's history index.
-It is currently exposed only by unit-header-position-probe; header display gates
-and management transport remain unfinished.
+It is exposed by unit-header-position-probe and supplies the ordinary final
+branch of headerStatus below.
 
 unit_header_position_reader_reference records protected175553/175700/175802/
 175903 on2026-10-30. Twenty-eight comparisons cover Bookkeeper, first among three
@@ -1608,7 +1608,41 @@ unsaved and preserve source saves; eight GPU logs contain only the known rendere
 notice. MSVC and unit-header-position QA pass core19/19, context and thought-text.
 These are reader checks; no rendered header or appointment-action acceptance is
 claimed. Land suffixes, spouse precedence ties, sex-specific titles, missing
-history and the full header eligibility branches still need live coverage.
+history still need live coverage. Additional header-status coverage follows below.
+
+headerStatus supplies the third header line. Native15c23a..15d588 has no aggregate
+semantic formatter: its inline priority is soldier mood, strange mood (excluding
+None/Baby), emotional overload, controlled pet owner, artifact creator, then
+position unless an identity supplies a profession. The bridge ports this pinned
+selection and its native captions/colors, calling73760/72850 for the Raving
+speech distinction,138ed20 for control,134f250 for pet-owner lookup,a94030 for
+owner/artifact names,c0f630 for identity, and headerPositionTitle for position.
+Those helpers read semantic world records and write owned strings; no renderer,
+gps state, native widget or UI timer is used. Emotional overload scans in vector
+order for the first recognized failed_to_overcome emotion, otherwise displaying
+Emotionally overloaded!; grief uses native sex-specific pronouns.
+
+unit_header_status_reference records protected180823 on2026-10-30:48 direct
+reader/native comparisons cover all five soldier moods, ten strange-mood values,
+Raving on the ground, sixteen mapped emotions, unmapped/empty/unflagged emotions,
+pronouns, vector ordering, missing/present pet owners, creator text and priority
+interactions. Every call starts with a cold history index and preserves guarded
+unit, soul, personality, emotion, owner-unit and native UI structs. Temporary
+emotions and altered facts are restored; these are display fixtures, not mood,
+pet-adoption or artifact-creation actions.
+
+Management102 adds identity record-7 with header_status text and numeric palette
+color. Godot places it in the native third row and reads the installed palette;
+empty statuses add no label. Protected181342/181458/181559/181700 verify exact
+264x12 pixels at528,100 for Bookkeeper, green martial trance, magenta possession
+and the empty child row, through actual main-scene holder View navigation.
+Previous Overview comparisons, camera and Escape checks also pass. All five
+retained reader/render sessions exit owned DF unsaved and preserve source saves;
+ten GPU logs contain only the known renderer notice. MSVC and unit-header-status
+QA pass core19/19, context and thought-text. Long-text clipping, non-speaking
+Raving, missing souls, identity suppression, land suffixes, resize and stale-target
+coverage remain incomplete. The name colors, job/activity caption and header
+actions are separate unfinished parts of this staged surface.
 
 The job row at15d588 checks effective caste flag0x3a and native138ed20 control
 (or unit flags3 bit31). A non-on_break current job goes to d03170 with palette11.

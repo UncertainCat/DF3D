@@ -128,6 +128,14 @@
       "color": "white"
     },
     {
+      "id": "unit.status",
+      "type": "label",
+      "view": "unit",
+      "rect": [104,36,336,12],
+      "binding": "selection.header_status",
+      "color": "white"
+    },
+    {
       "id": "unit.job",
       "type": "label",
       "view": "unit",

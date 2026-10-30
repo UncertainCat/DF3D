@@ -7,6 +7,7 @@ local saved={flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z,refs=
 local overview_case=os.getenv('DF3D_UNIT_OVERVIEW_CASE') or 'child'
 local room_case=os.getenv('DF3D_UNIT_ROOM_CASE') or 'bedroom'
 local health_case=os.getenv('DF3D_UNIT_HEALTH_CASE') or 'original'
+local header_case=os.getenv('DF3D_UNIT_HEADER_DISPLAY') or 'original'
 local room_value_case=os.getenv('DF3D_UNIT_ROOM_VALUE_CASE') or 'original'
 for _,ref in ipairs(item.general_refs)do saved.refs[#saved.refs+1]=ref end
 local container,unit
@@ -193,6 +194,15 @@ local ok,err=xpcall(function()
      elseif health_case=='injury' then set(assert(unit.health,'injury fixture requires health info').flags,'whole',2)
      else error('unknown health case')end
     end
+    if header_case~='original' then
+     overview_saved.health_fields=overview_saved.health_fields or {}
+     local function set(object,key,value)
+      overview_saved.health_fields[#overview_saved.health_fields+1]={object=object,key=key,value=object[key]};object[key]=value
+     end
+     if header_case=='soldier' then set(unit.counters,'soldier_mood',0)
+     elseif header_case=='possessed' then set(unit.counters,'soldier_mood',-1);set(unit,'mood',df.mood_type.Possessed)
+     else error('unknown header display case')end
+    end
     for _,need in ipairs(p.needs)do overview_saved.needs[#overview_saved.needs+1]=need.focus_level;need.focus_level=overview_case=='fresh-focused' and 300 or overview_case=='fresh-distracted' and -100000 or 0 end
     assert(#p.needs>0,'focus fixture needs at least one existing need')
     p.flags.distraction_calculated=not overview_case:find('^fresh%-');p.current_focus=ratio;p.undistracted_focus=100
@@ -345,6 +355,10 @@ local ok,err=xpcall(function()
    if os.getenv('DF3D_UNIT_HEADER_REFERENCE')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-header-native.lua')
     linked.header_reference=assert(loadfile(source))(unit,view)
+   end
+   if os.getenv('DF3D_UNIT_HEADER_STATUS')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-header-status-native.lua')
+    linked.header_status=assert(loadfile(source))(unit,view)
    end
    linked.room_requirements={}
    for i=0,3 do linked.room_requirements[i+1]=sheet.reqroom[i]end

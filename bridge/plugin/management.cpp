@@ -78,6 +78,7 @@
 #include "building_item_native.h"
 #include "creature_overview_native.h"
 #include "creature_office_native.h"
+#include "creature_header_native.h"
 #include "creature_health_native.h"
 #include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
@@ -3182,6 +3183,12 @@ void run(color_ostream& out) {
       return 1;
     });
     lua_setfield(L,-2,"office_titles");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_creature::headerStatus(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!value)return luaL_error(state,"Native creature header status unavailable");
+      lua_pushlstring(state,value->text.data(),value->text.size());lua_pushinteger(state,value->color);return 2;
+    });
+    lua_setfield(L,-2,"header_status");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto value=df3d_creature::overviewStatus(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!value)return luaL_error(state,"Native creature Overview status unavailable");

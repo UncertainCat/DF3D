@@ -38949,6 +38949,449 @@
       "ownership": "Every reader call starts with unit.enemy.histfig_vector_idx=-1. Unit, own/first-spouse HF and link structs, referenced entities/position/assignment structs, view_sheets and plotinfo remain byte-for-byte unchanged. Original cache restored after observation. Temporary fixture records/strings/pointers restored; all owned sessions exit unsaved and source saves unchanged.",
       "verification": "MSVC unit-header-position-msvc.log; unit-header-position QA core19/19, context and thought-text passed. All eight GPU logs have only known godot-separate-thread-notice. Existing main-scene checks pass.",
       "limitations": "Position component diagnostic only, not management-wire or rendered header acceptance. Header display eligibility (moods, pets, creators, identities), land suffixes, spouse ties, sex-specific titles, missing historical records and long-title clipping remain unverified."
+    },
+    "unit_header_status_reference": {
+      "reader_evidence": "build/stockpile-storage-native-farm-discovery-20261030-180823",
+      "owned_reader_df_pid": 196000,
+      "reader_result_sha256": "10da1d75e4db7650d1a09624a6c6a3b262f6142f816b3aeda579372d771897b4",
+      "observations": [
+        {
+          "case": "baseline",
+          "text": "Bookkeeper",
+          "color": 15,
+          "native_text": "Bookkeeper",
+          "native_color": 15
+        },
+        {
+          "case": "soldier=0",
+          "text": "In a martial trance!",
+          "color": 10,
+          "native_text": "In a martial trance!",
+          "native_color": 10
+        },
+        {
+          "case": "soldier=1",
+          "text": "Enraged at all enemies!",
+          "color": 4,
+          "native_text": "Enraged at all enemies!",
+          "native_color": 4
+        },
+        {
+          "case": "soldier=2",
+          "text": "Throwing a tantrum!",
+          "color": 14,
+          "native_text": "Throwing a tantrum!",
+          "native_color": 14
+        },
+        {
+          "case": "soldier=3",
+          "text": "Sunk into depression...",
+          "color": 6,
+          "native_text": "Sunk into depression...",
+          "native_color": 6
+        },
+        {
+          "case": "soldier=4",
+          "text": "Stumbling obliviously!",
+          "color": 3,
+          "native_text": "Stumbling obliviously!",
+          "native_color": 3
+        },
+        {
+          "case": "mood=0",
+          "text": "Has the aspect of one fey!",
+          "color": 15,
+          "native_text": "Has the aspect of one fey!",
+          "native_color": 15
+        },
+        {
+          "case": "mood=1",
+          "text": "Peculiarly secretive...",
+          "color": 7,
+          "native_text": "Peculiarly secretive...",
+          "native_color": 7
+        },
+        {
+          "case": "mood=2",
+          "text": "Possessed by unknown forces!",
+          "color": 13,
+          "native_text": "Possessed by unknown forces!",
+          "native_color": 13
+        },
+        {
+          "case": "mood=3",
+          "text": "Brooding darkly...",
+          "color": 8,
+          "native_text": "Brooding darkly...",
+          "native_color": 8
+        },
+        {
+          "case": "mood=4",
+          "text": "Has a horrible fell look!",
+          "color": 5,
+          "native_text": "Has a horrible fell look!",
+          "native_color": 5
+        },
+        {
+          "case": "mood=5",
+          "text": "Stricken by melancholy...",
+          "color": 9,
+          "native_text": "Stricken by melancholy...",
+          "native_color": 9
+        },
+        {
+          "case": "mood=6",
+          "text": "Running around babbling!",
+          "color": 11,
+          "native_text": "Running around babbling!",
+          "native_color": 11
+        },
+        {
+          "case": "mood=7",
+          "text": "In a berserk rage!",
+          "color": 12,
+          "native_text": "In a berserk rage!",
+          "native_color": 12
+        },
+        {
+          "case": "mood=8",
+          "text": "Bookkeeper",
+          "color": 15,
+          "native_text": "Bookkeeper",
+          "native_color": 15
+        },
+        {
+          "case": "mood=9",
+          "text": "Staring off into space...",
+          "color": 2,
+          "native_text": "Staring off into space...",
+          "native_color": 2
+        },
+        {
+          "case": "raving-on-ground",
+          "text": "Crawling around babbling!",
+          "color": 11,
+          "native_text": "Crawling around babbling!",
+          "native_color": 11
+        },
+        {
+          "case": "overloaded-emotion=5",
+          "text": "Writhing in agony!",
+          "color": 9,
+          "native_text": "Writhing in agony!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=12",
+          "text": "In existential crisis!",
+          "color": 9,
+          "native_text": "In existential crisis!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=13",
+          "text": "Anguished!",
+          "color": 9,
+          "native_text": "Anguished!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=39",
+          "text": "Lost in despair!",
+          "color": 9,
+          "native_text": "Lost in despair!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=44",
+          "text": "Completely dismayed!",
+          "color": 9,
+          "native_text": "Completely dismayed!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=46",
+          "text": "Distressed!",
+          "color": 9,
+          "native_text": "Distressed!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=64",
+          "text": "Experiencing mortal fear!",
+          "color": 9,
+          "native_text": "Experiencing mortal fear!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=68",
+          "text": "Taken by a fright!",
+          "color": 9,
+          "native_text": "Taken by a fright!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=78",
+          "text": "Beside himself with grief!",
+          "color": 9,
+          "native_text": "Beside himself with grief!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=88",
+          "text": "Overwhelmed by horror!",
+          "color": 9,
+          "native_text": "Overwhelmed by horror!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=111",
+          "text": "Wallowing in misery!",
+          "color": 9,
+          "native_text": "Wallowing in misery!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=112",
+          "text": "Truly mortified!",
+          "color": 9,
+          "native_text": "Truly mortified!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=135",
+          "text": "Drowning in sadness!",
+          "color": 9,
+          "native_text": "Drowning in sadness!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=141",
+          "text": "Shaken to the core!",
+          "color": 9,
+          "native_text": "Shaken to the core!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=143",
+          "text": "In emotional shock!",
+          "color": 9,
+          "native_text": "In emotional shock!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=152",
+          "text": "Overcome by terror!",
+          "color": 9,
+          "native_text": "Overcome by terror!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-emotion=0",
+          "text": "Emotionally overloaded!",
+          "color": 9,
+          "native_text": "Emotionally overloaded!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-sex=-1",
+          "text": "Beside itself with grief!",
+          "color": 9,
+          "native_text": "Beside itself with grief!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-sex=0",
+          "text": "Beside herself with grief!",
+          "color": 9,
+          "native_text": "Beside herself with grief!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-sex=1",
+          "text": "Beside himself with grief!",
+          "color": 9,
+          "native_text": "Beside himself with grief!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-empty",
+          "text": "Emotionally overloaded!",
+          "color": 9,
+          "native_text": "Emotionally overloaded!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-unflagged",
+          "text": "Emotionally overloaded!",
+          "color": 9,
+          "native_text": "Emotionally overloaded!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-skips-unmapped",
+          "text": "Overcome by terror!",
+          "color": 9,
+          "native_text": "Overcome by terror!",
+          "native_color": 9
+        },
+        {
+          "case": "overloaded-first-mapped",
+          "text": "Writhing in agony!",
+          "color": 9,
+          "native_text": "Writhing in agony!",
+          "native_color": 9
+        },
+        {
+          "case": "mood-before-overload",
+          "text": "Has the aspect of one fey!",
+          "color": 15,
+          "native_text": "Has the aspect of one fey!",
+          "native_color": 15
+        },
+        {
+          "case": "soldier-before-mood",
+          "text": "In a martial trance!",
+          "color": 10,
+          "native_text": "In a martial trance!",
+          "native_color": 10
+        },
+        {
+          "case": "pet-missing-owner",
+          "text": "Pet of Somebody",
+          "color": 15,
+          "native_text": "Pet of Somebody",
+          "native_color": 15
+        },
+        {
+          "case": "pet-owner",
+          "text": "Pet of \u00eeton Unibmamot",
+          "color": 15,
+          "native_text": "Pet of \u00eeton Unibmamot",
+          "native_color": 15
+        },
+        {
+          "case": "creator",
+          "text": "Creator of \u00eeton Unibmamot",
+          "color": 15,
+          "native_text": "Creator of \u00eeton Unibmamot",
+          "native_color": 15
+        },
+        {
+          "case": "pet-before-creator",
+          "text": "Pet of \u00eeton Unibmamot",
+          "color": 15,
+          "native_text": "Pet of \u00eeton Unibmamot",
+          "native_color": 15
+        },
+        {
+          "case": "overload-before-pet",
+          "text": "Emotionally overloaded!",
+          "color": 9,
+          "native_text": "Emotionally overloaded!",
+          "native_color": 9
+        }
+      ],
+      "pins": [
+        {
+          "rva": "0x15c23a",
+          "length": "0x134e",
+          "fnv1a64": "c8ec4ec556530230"
+        },
+        {
+          "rva": "0x19ea80",
+          "length": "0x100",
+          "fnv1a64": "efcbaa58578e8c42"
+        },
+        {
+          "rva": "0x73760",
+          "length": "0x4c",
+          "fnv1a64": "d6e159fb1367c80e"
+        },
+        {
+          "rva": "0x72850",
+          "length": "0x8b",
+          "fnv1a64": "f9b1c2f8d7f55288"
+        },
+        {
+          "rva": "0x138ed20",
+          "length": "0xff",
+          "fnv1a64": "430951f9f3e403c2"
+        },
+        {
+          "rva": "0x134f250",
+          "length": "0x87",
+          "fnv1a64": "9c327e1e67bb8fcc"
+        },
+        {
+          "rva": "0xa94030",
+          "length": "0x6a1",
+          "fnv1a64": "d81db68b3c9b33d2"
+        },
+        {
+          "rva": "0x52d3c0",
+          "length": "0x288",
+          "fnv1a64": "6e1fbc2416fba9fc"
+        },
+        {
+          "rva": "0xc0f630",
+          "length": "0x2c",
+          "fnv1a64": "2f03e40b0a07e0bf"
+        },
+        {
+          "rva": "0x72570",
+          "length": "0x98",
+          "fnv1a64": "a69932c0f279084a"
+        }
+      ],
+      "rendered_region": [
+        528,
+        100,
+        264,
+        12
+      ],
+      "rendered": [
+        {
+          "case": "position",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-181342",
+          "owned_df_pid": 154688,
+          "result_sha256": "b6f80a243887e80097131f7791063aa0da7172d3c880a3b631493f6642ffe704",
+          "text": "Bookkeeper",
+          "color": 15,
+          "native_and_viewer_region_sha256": "fb040117a41342507fb5a6bc7012d3fd3b9737a3e6329073d37e25e935bae1b7"
+        },
+        {
+          "case": "soldier",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-181458",
+          "owned_df_pid": 194164,
+          "result_sha256": "f10200cc656886f97ed772a5684bbd073b50b35ad661f826b87edec2bb4274e0",
+          "text": "In a martial trance!",
+          "color": 10,
+          "native_and_viewer_region_sha256": "a4afd511734aa428b2a53ed7c7d64dc397c5bec7b332065325a0b02c55062831"
+        },
+        {
+          "case": "possessed",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-181559",
+          "owned_df_pid": 178548,
+          "result_sha256": "ef03c600931c41123af6c3076338c3c08113676e2dd8398a055de172a0e32275",
+          "text": "Possessed by unknown forces!",
+          "color": 13,
+          "native_and_viewer_region_sha256": "3e3e643496345edb28b5615d2f128ed803fee6706fdfc44240ef4560ace4aa7c"
+        },
+        {
+          "case": "child",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-181700",
+          "owned_df_pid": 195304,
+          "result_sha256": "7c342a40571b265c68db115e58e32cfe198aaf306b32d2a95bc7eb6a821605c6",
+          "text": "",
+          "color": 15,
+          "native_and_viewer_region_sha256": "1dac45e9f37b120ddcd9feb4f09d67285658c84ce35a5bff1577927d73c20248"
+        }
+      ],
+      "ownership": "48 native/direct reader comparisons with cold unit history index and unchanged guarded unit, soul, personality, emotions, owner-unit and native UI structs. Temporary emotions detached and freed; original emotion pointers, moods, sex, flags, pet owner and artifact name restored. All five retained sessions exit owned DF unsaved; source saves unchanged.",
+      "transport": "Management102 additive identity record -7, record_type header_status, text and numeric color. Godot uses installed palette and native header row; blank stays blank.",
+      "verification": "MSVC builds passed; unit-header-status QA core19/19, context and thought-text passed. Ten GPU logs contain only known godot-separate-thread-notice. Prior Overview pixel/navigation/camera/Escape checks pass.",
+      "limitations": "Status-row component only. Native name colors, job/activity captions and header actions remain incomplete. No rendered coverage for every reader case; long-text clipping, non-speaking raving, missing souls/history, identity suppression, land suffixes, resize and stale-target lifecycle need separate acceptance."
     }
   }
 }

@@ -174,14 +174,14 @@ func _input(event):
 func clear_children(node: Node):
 	for child in node.get_children(): node.remove_child(child); child.queue_free()
 
-func label_at(id: String, text: String):
+func label_at(id: String, text: String, native_color: int = -1):
 	if text.is_empty(): return
 	var label := Label.new()
 	var rect: Rect2 = definition.rect(id,body.size)
 	label.position = rect.position
 	label.size = rect.size
 	label.text = text
-	label.tooltip_text = text
+	if id!="unit.status": label.tooltip_text = text
 	label.clip_text = true
 	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	if id.begins_with("unit."):
@@ -197,6 +197,9 @@ func label_at(id: String, text: String):
 			label.add_theme_color_override("font_color",Color.YELLOW)
 	label.mouse_filter = Control.MOUSE_FILTER_PASS
 	label.add_theme_font_size_override("font_size",12)
+	if native_color>=0 and native_color<16:
+		preload("res://scripts/native_creature_text.gd").load_text(world)
+		label.add_theme_color_override("font_color",preload("res://scripts/native_creature_text.gd").colors[native_color])
 	body.add_child(label)
 
 func icon_at(id: String):
@@ -237,9 +240,15 @@ func redraw():
 			var detail: Dictionary = detail_state.get("detail",{})
 			name_text = str(detail.get("name",name_text))
 			var translated := ""
+			var header_status := ""
+			var header_color := 15
 			for section in detail.get("sections",[]):
 				if section.key!="identity": continue
 				for record in section.records:
+					var facts: Dictionary={}
+					for fact in record.facts: facts[fact.key]=fact.number if fact.get("has_number",false) else fact.get("text","")
+					if facts.get("record_type","")=="header_status":
+						header_status=facts.get("text","");header_color=int(facts.get("color","15"))
 					for fact in record.facts:
 						if fact.key=="translated_name": translated=str(fact.text)
 			var quote := name_text.find('"')
@@ -248,6 +257,7 @@ func redraw():
 				if end_quote>quote: name_text=(name_text.substr(0,quote).strip_edges()+name_text.substr(end_quote+1)).strip_edges()
 			label_at("unit.title",name_text)
 			label_at("unit.subtitle",'"'+translated+'"' if not translated.is_empty() else "")
+			label_at("unit.status",header_status,header_color)
 			label_at("unit.job",str(detail.get("job",selected.get("job",""))))
 			if world.has_method("creature_portrait"):
 				var portrait := TextureRect.new()

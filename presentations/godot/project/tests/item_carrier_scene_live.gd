@@ -90,6 +90,8 @@ func unit_carrier(expected: Dictionary) -> void:
 	root.get_texture().get_image().save_png(directory+"/unit-overview-scene.png")
 	var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
 	var native:=Image.load_from_file(directory+"/farm-item-carrier-unit-view.png");native.convert(Image.FORMAT_RGB8)
+	var header_status_rect:=Rect2i(528,100,264,12)
+	check(rendered.get_region(header_status_rect).get_data()==native.get_region(header_status_rect).get_data(),"Native header status pixels differ")
 	if status_case:
 		var status_rect:=Rect2i(664,292,232,24)
 		check(rendered.get_region(status_rect).get_data()==native.get_region(status_rect).get_data(),"Native office status pixels differ")

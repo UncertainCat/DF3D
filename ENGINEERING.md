@@ -782,7 +782,8 @@ observations and their revision. The value is DF's stockpile_group_set, read fro
 the selected stockpile's settings; a present link requires0..131071, while an
 absent link requires-1. Version93 peers are incompatible and missing historical
 categories remain unknown. Native item renderer156c13..15712b selects singleton
-category artwork and Custom for other masks; a generic blank icon is incorrect.
+category artwork, Blank for zero and Custom for multiple categories. A generic
+blank icon is incorrect for a populated stockpile.
 The controller validates category/link consistency. Core tests cover bounds,
 absence, exact round-trip values and revision invalidation on category changes.
 Protected224812 on2026-10-29 verifies19 independent observations, including
@@ -808,10 +809,26 @@ stockpile action. The action opens the existing areas owner, reads current
 stockpile identity/settings and retires the item owner; it does not fabricate
 area bounds or revisions. Closing retires queued and sent navigation observers.
 Native154052..154143 reserves the stockpile row before the holder row, shifting
-the holder by three12-pixel rows when both exist. Combined relationships and
-singleton category artwork still need rendered acceptance. Unit/container relationships,
-overlapping stockpile selection, other item types and eligible Melt remain separate
-acceptance work. No new public screen is exposed by this transport change.
+the holder by three12-pixel rows when both exist.
+
+Protected native100247 on2026-10-30 captures both relationships together on a
+farm-held seed. A paused diagnostic temporarily overlaps one existing stockpile's
+extent with the item, preserving its category settings and restoring all touched
+bounds, extents and item fields. All17 singleton category masks, zero and multiple
+categories are captured with independent native observations. The native shifted
+holder View opens farm968. DF74896 exits unsaved and the source manifest remains
+unchanged. This is layout/provider evidence, not natural hauling or acceptance of
+overlapping-stockpile selection priority.
+
+`native_farm.json.item_relationships_reference` records19 full488x708 panel hashes.
+GPU `build/qa/item-relationships-final` matches every panel and checks both link
+hitboxes against their distinct IDs. The zero-mask comparison exposed a viewer
+bug: empty stockpiles used Custom instead of Blank; this is corrected. The other
+18 category cases and stacked layout already matched. Core passes cleanly; GPU
+passes with only the three documented engine diagnostics. Native Animals and
+rendered Sheets panels were inspected. Unit/container relationships, overlapping
+stockpile selection, other item types and eligible Melt remain separate acceptance
+work. No new public screen is exposed by this change.
 
 ## Native item holder provider
 

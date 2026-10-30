@@ -52,7 +52,8 @@ func camera_rect() -> Rect2:return Rect2(424,36,32,36)
 func holder_rect() -> Rect2:return Rect2(328,180+(36 if snapshot.has("stockpile") else 0),144,36)
 func stockpile_rect() -> Rect2:return Rect2(328,180,144,36)
 static func stockpile_art(categories: int) -> String:
-	# Native item renderer 156c13..15712b: singleton categories, otherwise Custom.
+	# Native item renderer 156c13..15712b: empty, singleton, otherwise Custom.
+	if categories==0:return "STOCKPILE_ICON_BLANK"
 	var tokens=["ANIMALS","FOOD","FURNITURE","CORPSES","REFUSE","STONE","AMMO","COINS","BARS","GEMS","FINISHED_GOODS","LEATHER","CLOTH","WOOD","WEAPONS","ARMOR","SHEETS"]
 	for index in tokens.size():
 		if categories==(1<<index):return "STOCKPILE_ICON_"+tokens[index]

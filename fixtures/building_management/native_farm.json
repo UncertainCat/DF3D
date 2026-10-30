@@ -29491,4 +29491,695 @@
     }
   ]
 }
+,
+  "item_relationships_reference": {
+  "source": "build/stockpile-storage-native-farm-discovery-20261030-100247",
+  "scope": "Paused diagnostic overlap of one stockpile with a farm-held seed. All seventeen singleton category masks plus zero/multiple, stacked relationship rows and native shifted holder View. Original extents, bounds, settings and item fields restored; owned DF exits unsaved/source manifest unchanged. Not natural hauling or overlapping-stockpile priority acceptance.",
+  "states": [
+    {
+      "name": "farm-item-relationships-0",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "884466599891958974",
+        "stockpile": {
+          "id": 121,
+          "name": "Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 0,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "de91e3dbb6e8acca68b248c69597b528206f51164a5ceef7d1bfda567c2f655b"
+    },
+    {
+      "name": "farm-item-relationships-3",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "7875523229779145373",
+        "stockpile": {
+          "id": 121,
+          "name": "Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 3,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "62e5eb1eb192df253684ef3447630a5384985c204c4c0df5941509b4aaec4276"
+    },
+    {
+      "name": "farm-item-relationships-1",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "5491478111269028496",
+        "stockpile": {
+          "id": 121,
+          "name": "Animal Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 1,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "497c6d7e6fddd89bfd2e0ac5fedcab17cf0e72a9c13cb2c5811c86b2e712c1d8"
+    },
+    {
+      "name": "farm-item-relationships-2",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "2335068874051854113",
+        "stockpile": {
+          "id": 121,
+          "name": "Food Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 2,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "e4c5e70e76323d6f498b719d0c3dfc986917253ede052fcc2c95e09d382d749d"
+    },
+    {
+      "name": "farm-item-relationships-4",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "617980136696001878",
+        "stockpile": {
+          "id": 121,
+          "name": "Furniture Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 4,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "ba4a77535be35caf92d921fd2c41a58e4db6f3f57c5479f6957760713e0d9472"
+    },
+    {
+      "name": "farm-item-relationships-8",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "1475106043181253545",
+        "stockpile": {
+          "id": 121,
+          "name": "Corpse Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 8,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "f1449bd1e8d07c4f55edd96d1ffb74c3e85b934f86fb44bc8c7ac54aa6b1e281"
+    },
+    {
+      "name": "farm-item-relationships-16",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "8537970620502638565",
+        "stockpile": {
+          "id": 121,
+          "name": "Refuse Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 16,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "d58ac48062aba92dc0cc274041d67a5714a0ce2dd250c214bf288c128051bf95"
+    },
+    {
+      "name": "farm-item-relationships-32",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "8864512228205909231",
+        "stockpile": {
+          "id": 121,
+          "name": "Stone Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 32,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "7304652d4e5cf56fd3e9db733af7933af9b33dfcfb47dd438b6115a180a77294"
+    },
+    {
+      "name": "farm-item-relationships-64",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "124624384255764649",
+        "stockpile": {
+          "id": 121,
+          "name": "Ammo Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 64,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "5dbaef03639fab3c5e0983344cb9f8ce182c1f1d8ff3a2a1ddf9f66955bda136"
+    },
+    {
+      "name": "farm-item-relationships-128",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "9020800003272386070",
+        "stockpile": {
+          "id": 121,
+          "name": "Coins Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 128,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "778117f8d7c43e1b6231e153086a20bbcc9937052092ff42363c464bda13b3c6"
+    },
+    {
+      "name": "farm-item-relationships-256",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "741253221478982618",
+        "stockpile": {
+          "id": 121,
+          "name": "Bar/Block Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 256,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "e3d3f1e74df46ef68a33809b51b305e5deef5ef88759dfeff3e20d336458d88e"
+    },
+    {
+      "name": "farm-item-relationships-512",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "199943093119077877",
+        "stockpile": {
+          "id": 121,
+          "name": "Gem Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 512,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "cce99a6e4fd097e52f5761cbe203016e56e13f23a7c34e05fe584a0cc39819ad"
+    },
+    {
+      "name": "farm-item-relationships-1024",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "648828672430104621",
+        "stockpile": {
+          "id": 121,
+          "name": "Finished Goods Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 1024,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "681479eb9f9a721e32c42c21db880651fdcffe6dddeee14dd20734347fbaeac4"
+    },
+    {
+      "name": "farm-item-relationships-2048",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "1376380553813358977",
+        "stockpile": {
+          "id": 121,
+          "name": "Leather Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 2048,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "431d425207d6761dcc7ecb5a34820a6c6c6a4135a86aa4fd81f4411bae343662"
+    },
+    {
+      "name": "farm-item-relationships-4096",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "6179798608208379056",
+        "stockpile": {
+          "id": 121,
+          "name": "Cloth Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 4096,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "a2265b206c95a3f204d6f533a549af64679c0e819ce55b6cd304babe1b7534b4"
+    },
+    {
+      "name": "farm-item-relationships-8192",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "2062502501083664000",
+        "stockpile": {
+          "id": 121,
+          "name": "Wood Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 8192,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "058a182ce16321d42a99329f09b9a15ab144f9965cb0aada983be732115ee561"
+    },
+    {
+      "name": "farm-item-relationships-16384",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "1001586572044862925",
+        "stockpile": {
+          "id": 121,
+          "name": "Weapon Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 16384,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "e237f9e5a9b84af957a83d11afa856c838573e4fdb9b96b278c1fea9d8e136d8"
+    },
+    {
+      "name": "farm-item-relationships-32768",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "594211915650000629",
+        "stockpile": {
+          "id": 121,
+          "name": "Armor Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 32768,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "fb0fd46e2aa7089262dcd301add760151a79b4277ad14d8e019ea57f0d0d62d8"
+    },
+    {
+      "name": "farm-item-relationships-65536",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870944,
+        "forbid": false,
+        "hidden": false,
+        "holder": {
+          "id": 968,
+          "name": "Farm Plot",
+          "type": 4
+        },
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "4506139370803251856",
+        "stockpile": {
+          "id": 121,
+          "name": "Sheet Stockpile #2",
+          "type": 29
+        },
+        "stockpile_categories": 65536,
+        "weight": "<1Γ",
+        "name": "sweet pod seeds",
+        "holder_id": 968,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT",
+        "in_job": false,
+        "in_building": true
+      },
+      "rgb_sha256": "80701d6769cf1d1467d8740abc6824fdeb98d79c27cc3c51f1acf0c6e519c841"
+    }
+  ]
+}
 }

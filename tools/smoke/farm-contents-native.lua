@@ -2,6 +2,13 @@
 local out,view,records,b,capture,select_map=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local main=df.global.game.main_interface
+local relationships=io.open(out..'/farm-item-relationships')
+if relationships then
+ relationships:close()
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-contents%-native.lua$','farm-item-relationships-native.lua')
+ assert(loadfile(source))(out,view,records,b,capture,select_map)
+ return
+end
 local layout=io.open(out..'/farm-item-description-layout')
 if layout then
  layout:close()

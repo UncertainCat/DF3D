@@ -37,6 +37,22 @@ func run() -> void:
 		image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
 		hash.start(HashingContext.HASH_SHA256);hash.update(image.get_data())
 		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native item flag state differs: "+sample.name);return
+	var relationships: Array=[]
+	var on_holder:=func(id):relationships.append(["holder",id])
+	var on_stockpile:=func(id):relationships.append(["stockpile",id])
+	view.holder_requested.connect(on_holder);view.stockpile_requested.connect(on_stockpile)
+	for sample in fixture.item_relationships_reference.states:
+		var state: Dictionary=sample.snapshot.duplicate(true)
+		for key in ["id","item_type","holder_id","stockpile_categories"]:state[key]=int(state[key])
+		state.stockpile.id=int(state.stockpile.id);view.present(state)
+		await process_frame;await RenderingServer.frame_post_draw
+		image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		image.save_png(ProjectSettings.globalize_path("res://../../../build/"+sample.name+"-viewer.png"))
+		hash.start(HashingContext.HASH_SHA256);hash.update(image.get_data())
+		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native stacked item relationships differ: "+sample.name);return
+		relationships.clear();click(Vector2(400,198));click(Vector2(400,234))
+		if relationships!=[["stockpile",state.stockpile.id],["holder",state.holder_id]]:fail("Stacked item relationship targets differ");return
+	view.holder_requested.disconnect(on_holder);view.stockpile_requested.disconnect(on_stockpile)
 	for sample in fixture.item_description_layout_reference.states:
 		var state: Dictionary=snapshot.duplicate(true)
 		state.description=sample.description;view.present(state)

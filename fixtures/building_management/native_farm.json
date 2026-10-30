@@ -30448,27 +30448,27 @@
 }
 ,
   "item_carrier_render_reference": {
-  "source": "build/stockpile-storage-native-farm-discovery-20261030-103410",
-  "states": [
-    {
-      "kind": 1,
-      "full_panel_match": false,
-      "icon_available": false,
-      "native_rgb_sha256": "253c3f525d4aea4a0e6e9ac87152deba6b034b9a685b583eef066d83b37539c2",
-      "viewer_rgb_sha256": "d71332e5d47daaecc188169d0dd8f588a4d5e34acb753943221fc7d47c9b529f",
-      "different_pixels": 408
-    },
-    {
-      "kind": 2,
-      "full_panel_match": true,
-      "icon_available": true,
-      "native_rgb_sha256": "c8c165f7641522a0cbce606e74c4d77c36be597231f4ef5caea299de1e12534f",
-      "viewer_rgb_sha256": "c8c165f7641522a0cbce606e74c4d77c36be597231f4ef5caea299de1e12534f",
-      "different_pixels": 0
-    }
-  ],
-  "scope": "Native and live Godot panels at488x708. Unit full-panel exact; container caption/button match but408 icon pixels missing because installed chest absent from terrain item stream. Actual viewport clicks emit correct kind/ID; no target-screen navigation acceptance. Wire read/edit/stale checks also pass. Owned DF161096 exits unsaved/source manifest unchanged; only known separate-thread notice in each client."
-},
+    "source": "build/stockpile-storage-native-farm-discovery-20261030-112449",
+    "states": [
+      {
+        "kind": 1,
+        "full_panel_match": true,
+        "icon_available": true,
+        "native_rgb_sha256": "253c3f525d4aea4a0e6e9ac87152deba6b034b9a685b583eef066d83b37539c2",
+        "viewer_rgb_sha256": "253c3f525d4aea4a0e6e9ac87152deba6b034b9a685b583eef066d83b37539c2",
+        "different_pixels": 0
+      },
+      {
+        "kind": 2,
+        "full_panel_match": true,
+        "icon_available": true,
+        "native_rgb_sha256": "c8c165f7641522a0cbce606e74c4d77c36be597231f4ef5caea299de1e12534f",
+        "viewer_rgb_sha256": "c8c165f7641522a0cbce606e74c4d77c36be597231f4ef5caea299de1e12534f",
+        "different_pixels": 0
+      }
+    ],
+    "scope": "Native and live Godot full488x708 panels match exactly for chest5834 and unit988. Container uses independently transported appearance and existing native chest base/ID overlay composition; no terrain-item residency required. Actual viewport clicks emit correct kind/ID. Wire read/edit/stale checks pass. Owned DF188164 exits unsaved/source manifest unchanged; only known separate-thread notice in each client. General container/Residents destination screens, other container artwork and natural hauling remain unaccepted."
+  },
   "item_carrier_appearance_reference": {
     "source": "build/stockpile-storage-native-farm-discovery-20261030-112449",
     "management_version": 96,

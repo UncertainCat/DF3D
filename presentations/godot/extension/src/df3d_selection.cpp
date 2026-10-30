@@ -32,6 +32,12 @@ int Df3dWorld::bedSlot(std::string_view material, const wm::BeddingFacts& beddin
 }
 
 Ref<Texture2D> Df3dWorld::construction_item_icon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId) {
+    return itemIcon(itemType,appearance,genericGroup,itemId,false);
+}
+Ref<Texture2D> Df3dWorld::item_sheet_icon(int itemType,const Dictionary& appearance,int64_t itemId) {
+    return itemIcon(itemType,appearance,false,itemId,true);
+}
+Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
        appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
@@ -118,6 +124,29 @@ Ref<Texture2D> Df3dWorld::construction_item_icon(int itemType,const Dictionary& 
     if(beddingFacts.sheet>=0) {
         const int slot=bedSlot(materialToken,beddingFacts);
         const TextureSlot* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
+        if(texture)return texture->texture;
+        return {};
+    }
+    // DF's BOX item selector c7f595 uses the same base/ID overlay as
+    // placed chest artwork (cefaa0). Use owned item facts, not terrain presence.
+    if(sheet && itemType+1==int(wm::ItemKind::Box)) {
+        if(itemId<0)return {};
+        df3d::assets::BuildingQuery box;box.kind=wm::BuildingKind::Box;
+        box.material=materialToken;box.constructionItemMaterial=materialToken;
+        box.constructionItemSolidColor=colorToken;box.constructionItemId=int32_t(itemId);
+        const auto resolved=df3d::assets::resolveBuildingTiles(assets_->index,box);
+        if(!resolved.found || resolved.tiles.empty())return {};
+        std::vector<std::pair<int,Color>> layers;
+        for(const auto& tile:resolved.tiles) {
+            const int slot=slotFor(tile.sprite.page,resolved.paletteRow,false);
+            const auto* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
+            if(!texture || texture->texture.is_null())return {};
+            const auto rect=assets_->index.pixels(tile.sprite);
+            layers.push_back({slot,Color(float(rect.px)/texture->width,float(rect.py)/texture->height,
+                float(rect.pw)/texture->width,float(rect.ph)/texture->height)});
+        }
+        const int slot=compositeBuildingTile(layers,false,true);
+        const auto* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
         if(texture)return texture->texture;
         return {};
     }

@@ -39,7 +39,9 @@ func present(value: Dictionary) -> void:
 	snapshot=value.duplicate(true);icon=null;carrier_icon=null
 	if snapshot.has("carrier") and source.has_method("selection_icon"):
 		var carrier: Dictionary=snapshot.carrier
-		carrier_icon=source.selection_icon(2 if carrier.kind==1 else 1,int(carrier.id),true)
+		if carrier.kind==1 and carrier.has("appearance") and source.has_method("item_sheet_icon"):
+			carrier_icon=source.item_sheet_icon(carrier.item_type,carrier.appearance,int(carrier.id))
+		else:carrier_icon=source.selection_icon(2 if carrier.kind==1 else 1,int(carrier.id),true)
 	if reset_description:description_scroll.dragging=false
 	description_scroll.set_rows(description_lines(snapshot.get("description","")).size(),0 if reset_description else description_scroll.first)
 	if not snapshot.is_empty() and snapshot.get("item_type",-1)==53:

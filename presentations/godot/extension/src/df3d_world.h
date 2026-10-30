@@ -107,6 +107,7 @@ public:
     // Original interface art, resolved only through the verified parsed index.
     godot::Ref<godot::Texture2D> ui_texture(const godot::String& name, int variant = -1);
     godot::Ref<godot::Texture2D> construction_item_icon(int item_type, const godot::Dictionary& appearance, bool generic_group=false, int64_t item_id=-1);
+    godot::Ref<godot::Texture2D> item_sheet_icon(int itemType, const godot::Dictionary& appearance, int64_t itemId);
     godot::Ref<godot::Texture2D> farm_crop_icon(const godot::String& raw_id);
     godot::Ref<godot::Texture2D> farm_seed_icon(const godot::String& raw_id);
     godot::Ref<godot::Texture2D> farm_potash_icon();
@@ -377,6 +378,7 @@ protected:
     static void _bind_methods();
 
 private:
+    godot::Ref<godot::Texture2D> itemIcon(int itemType,const godot::Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet);
     struct ResidentIconMemo {
         wm::SelectionAppearance source;
         godot::Ref<godot::Texture2D> texture;

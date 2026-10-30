@@ -30633,5 +30633,191 @@
       }
     ],
     "scope": "Owned paused reciprocal carrier fixture: container5834 and unit988. Exact independent revision, all appearance fields, controller validation, Hidden both directions and stale prior-container rejection pass. Native UI byte guards unchanged. Original references/order/flags/position restored; DF188164 exited unsaved, source-save manifest unchanged. No natural hauling, broader container artwork or carrier destination navigation acceptance."
+  },
+  "item_box_description_probe_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261030-113657",
+    "owned_df_pid": 174476,
+    "status": "passed_with_known_issues",
+    "known_diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "bridge_sha256": "ff0216b0138bf66cb9aad8a30360801460ddbddd794e205bc37f84718678511b",
+    "case": {
+      "target_id": 5834,
+      "description": "This is a well-crafted kumquat wood chest.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  ",
+      "item_type": 30,
+      "quality": 1,
+      "maker": -1,
+      "maker_race": -1,
+      "improvements": [
+        {
+          "maker": -1,
+          "material_index": 136,
+          "material_type": 0,
+          "quality": 2,
+          "type": 2
+        },
+        {
+          "maker": -1,
+          "material_index": 120,
+          "material_type": 0,
+          "quality": 1,
+          "type": 3
+        },
+        {
+          "maker": -1,
+          "material_index": 372,
+          "material_type": 22,
+          "quality": 1,
+          "type": 2
+        }
+      ],
+      "native_item_changed_bytes": [
+        {
+          "after": 32,
+          "before": 0,
+          "offset": 19
+        },
+        {
+          "after": 11,
+          "before": 0,
+          "offset": 116
+        },
+        {
+          "after": 96,
+          "before": 0,
+          "offset": 120
+        },
+        {
+          "after": 31,
+          "before": 0,
+          "offset": 121
+        },
+        {
+          "after": 13,
+          "before": 0,
+          "offset": 122
+        }
+      ],
+      "description_probes": [
+        {
+          "description": "This is a well-crafted kumquat wood chest.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  ",
+          "item_id": 5834,
+          "item_improvement_ui_unchanged": true,
+          "native_sheet_open": true
+        },
+        {
+          "description": "This is a well-crafted kumquat wood chest.  It is encircled with bands of well-crafted rose cut honey yellow beryls.  This object is adorned with hanging rings of finely-crafted red spinel and well-crafted vulture bone.  ",
+          "item_id": 5834,
+          "item_improvement_ui_unchanged": true,
+          "native_sheet_open": false
+        }
+      ]
+    },
+    "dispatch": [
+      {
+        "slot": "0x0",
+        "target": "0x28ab30",
+        "length": 6,
+        "fnv": "22af2ed68286925e"
+      },
+      {
+        "slot": "0x10",
+        "target": "0xfca10",
+        "length": 8,
+        "fnv": "fc97df6278270fbf"
+      },
+      {
+        "slot": "0x18",
+        "target": "0xfca20",
+        "length": 7,
+        "fnv": "5ca530bad2557b5a"
+      },
+      {
+        "slot": "0x38",
+        "target": "0xfca10",
+        "length": 8,
+        "fnv": "fc97df6278270fbf"
+      },
+      {
+        "slot": "0x40",
+        "target": "0xfca20",
+        "length": 7,
+        "fnv": "5ca530bad2557b5a"
+      },
+      {
+        "slot": "0x1d8",
+        "target": "0xfc240",
+        "length": 8,
+        "fnv": "fa411eb4425a85fb"
+      },
+      {
+        "slot": "0x1e8",
+        "target": "0xfcbe0",
+        "length": 7,
+        "fnv": "8ab43c085bfbc45e"
+      },
+      {
+        "slot": "0x230",
+        "target": "0x75f60",
+        "length": 9,
+        "fnv": "6aa4478617a62f2e"
+      },
+      {
+        "slot": "0x448",
+        "target": "0x67040",
+        "length": 3,
+        "fnv": "a3703b1a918cfbeb"
+      },
+      {
+        "slot": "0x478",
+        "target": "0xfc190",
+        "length": 7,
+        "fnv": "f985d8151da86506"
+      },
+      {
+        "slot": "0x508",
+        "target": "0xfcc20",
+        "length": 8,
+        "fnv": "a97ace58e6e5d46d"
+      },
+      {
+        "slot": "0x590",
+        "target": "0xfcc30",
+        "length": 8,
+        "fnv": "c2d890ade184a267"
+      },
+      {
+        "slot": "0x5a8",
+        "target": "0x67040",
+        "length": 3,
+        "fnv": "a3703b1a918cfbeb"
+      },
+      {
+        "slot": "0x5e0",
+        "target": "0xfc1c0",
+        "length": 8,
+        "fnv": "2d52a42a21f4c0e4"
+      },
+      {
+        "slot": "0x6b0",
+        "target": "0xcaeb90",
+        "length": 317,
+        "fnv": "6d30f4cd8ac4c4c7"
+      },
+      {
+        "slot": "0x6c0",
+        "target": "0x67050",
+        "length": 3,
+        "fnv": "62941518298855c4"
+      },
+      {
+        "slot": "0x750",
+        "target": "0x66e60",
+        "length": 6,
+        "fnv": "62d2efd24138f070"
+      }
+    ],
+    "scope": "Diagnostic owned-string c75000 call only. BOX exact vtable1623198; rings/bands exact improvement dispatch; quality0..4, unknown maker/race and nonartifact guard. Observed chest5834 (quality1, three quality1/2 ring/band improvements) matches native with sheet open and closed, preserving item/improvement/view_sheets/plotinfo bytes. Native View itself populates weight cache. No runtime BOX admission, image improvements, maker attribution, complete generic description acceptance or destination navigation. Existing carrier panel/wire regression also passes; source unchanged and owned DF exits unsaved."
   }
 }

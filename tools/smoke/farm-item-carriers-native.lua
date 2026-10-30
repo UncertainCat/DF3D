@@ -73,10 +73,52 @@ local ok,err=xpcall(function()
   local result=assert(io.open(out..'/carrier-wire-result.json'));row.wire=json.decode(result:read('*a'));result:close()
   assert(row.wire.success and item.flags.hidden==false,'carrier wire verification failed or changed final flag')
   prior_revision=row.independent.revision
+  local target_before,target_size,target_address
+  if kind=='container' then
+   target_size,target_address=df.sizeof(target);target_before=df.new('uint8_t',target_size)
+   dfhack.internal.memmove(target_before,target_address,target_size)
+  end
   move(816,250);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
   local linked=capture('farm-item-carrier-'..kind..'-view');linked.target_id=target.id
   assert(sheet.open and sheet.active_id==target.id and sheet.active_sheet==(kind=='unit' and df.view_sheet_type.UNIT or df.view_sheet_type.ITEM),'native carrier View selected wrong identity')
-  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());restore()
+  if kind=='container' then
+   linked.description=dfhack.df2utf(sheet.raw_description)
+   linked.item_type=target:getType();linked.quality=target.quality;linked.maker=target.maker;linked.maker_race=target.maker_race
+   linked.improvements={}
+   for _,improvement in ipairs(target.improvements)do
+    linked.improvements[#linked.improvements+1]={type=improvement:getType(),material_type=improvement.mat_type,material_index=improvement.mat_index,quality=improvement.quality,maker=improvement.maker}
+   end
+   local after=df.new('uint8_t',target_size);dfhack.internal.memmove(after,target_address,target_size)
+   linked.native_item_changed_bytes={}
+   for index=0,target_size-1 do
+    if after[index]~=target_before[index]then linked.native_item_changed_bytes[#linked.native_item_changed_bytes+1]={offset=index,before=target_before[index],after=after[index]}end
+   end
+   df.delete(after);df.delete(target_before)
+   local function description_probe()
+    local protected={target,sheet,df.global.plotinfo}
+    for _,improvement in ipairs(target.improvements)do protected[#protected+1]=improvement end
+    local copies={}
+    for _,object in ipairs(protected)do
+     local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+     copies[#copies+1]={size=size,address=address,bytes=bytes}
+    end
+    local text,status=dfhack.run_command_silent('df3d','box-description-probe',tostring(target.id))
+    local unchanged=true
+    for _,copy in ipairs(copies)do
+     local current=df.new('uint8_t',copy.size);dfhack.internal.memmove(current,copy.address,copy.size)
+     for i=0,copy.size-1 do if current[i]~=copy.bytes[i]then unchanged=false end end
+     df.delete(current);df.delete(copy.bytes)
+    end
+    assert(status==0,text);assert(unchanged,'box description changed item/improvement/UI bytes')
+    local result=json.decode(text);assert(result.description==linked.description,'owned box description differs from native')
+    result.item_improvement_ui_unchanged=true;result.native_sheet_open=sheet.open
+    return result
+   end
+   linked.description_probes={description_probe()}
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   linked.description_probes[#linked.description_probes+1]=description_probe()
+  end
+  if sheet.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end;restore()
  end
 end,debug.traceback)
 if sheet.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end

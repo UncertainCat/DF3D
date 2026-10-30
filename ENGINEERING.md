@@ -1375,6 +1375,27 @@ protected130534 result. All twelve warm/cold seed descriptions still match nativ
 full item/building/UI guards pass, and the nonseed probe remains refused. Owned
 DF186000 exits unsaved and the source manifest stays unchanged. MSVC passes.
 
+The diagnostic `df3d box-description-probe <item-id>` additionally exercises
+c75000 for a bounded constructed branch without widening runtime admission.
+Exact BOX vtable1623198 retains the null getImageRef exclusion; its native
+isConstructed getter admits the improvement loop. The diagnostic pins all17
+item virtual targets, ring/band getType leaves and the gem-shape formatter
+14e1ec0. It permits only ring/band improvement classes, quality0..4, unknown
+maker/race and nonartifact items; these are audit limits, not native eligibility.
+Native material and gem-shape text are returned directly into owned storage.
+
+Protected113657 on2026-10-30 verifies chest5834's native description, including
+its quality, rose-cut gem bands and two hanging-ring materials. Owned-string
+reads match exactly with the native sheet open and closed. Item, each improvement,
+view_sheets and plotinfo remain byte-identical across both probes. Opening the
+native sheet itself populates the expected item weight cache. Source preservation
+passes and DF174476 exits unsaved. `item_box_description_probe_reference` retains
+the native text, semantic facts, mutation offsets, dispatch pins and binary hash.
+The carrier render/wire regressions also pass, with only the known rendering-thread
+notice. MSVC passes. Runtime descriptions still admit only seeds/bars. Image-bearing
+improvements, maker attribution, other item dispatch and their transitive effects
+remain required before complete generic item inspection and carrier navigation.
+
 Protected131236 adds sixteen controlled semantic input variants on an existing
 sweet pod seed: wear1/2/3, stack3, rotten/foreign/trader/forbid/dump/hidden flags,
 from_worldgen, artifact_mood, water spatter/coating, empty magic and a negative

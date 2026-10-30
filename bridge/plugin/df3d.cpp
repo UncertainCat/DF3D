@@ -1639,6 +1639,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["x"]=position->x;result["y"]=position->y;result["z"]=position->z;
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="box-description-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          auto* item=df::item::find(id);
+          if(!df3d_production::boxItemDescriptionProbeDispatch(item))return CR_FAILURE;
+          const auto description=df3d_production::farmItemDescription(item,true);if(!description)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["item_id"]=id;result["description"]=DF2UTF(*description);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="item-carrier-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];

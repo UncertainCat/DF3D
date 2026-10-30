@@ -13,6 +13,8 @@
 #include "df/itemdef.h"
 #include "df/unit.h"
 #include "df/descriptor_color.h"
+#include "df/item_boxst.h"
+#include "df/itemimprovement.h"
 
 namespace df3d_production {
 // Native follow loops35e7b6/8b6b76 use these independently owned outputs.
@@ -226,11 +228,63 @@ inline bool farmItemDescriptionDispatch(df::item* item) {
     }();
     return pinned;
 }
+// Diagnostic-only constructed branch: rings and bands without maker attribution.
+// Other improvements can initialize art/knowledge; retain the runtime allowlist.
+inline bool boxItemDescriptionProbeDispatch(df::item* item) {
+    if(!item||!farmFunctions())return false;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    if(*reinterpret_cast<const void* const*>(item)!=base+0x1623198)return false;
+    static const bool pinned=[base]() {
+        struct Pin {size_t slot,target,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x0,0x28ab30,0x6,UINT64_C(0x22af2ed68286925e)},
+            {0x10,0xfca10,0x8,UINT64_C(0xfc97df6278270fbf)},
+            {0x18,0xfca20,0x7,UINT64_C(0x5ca530bad2557b5a)},
+            {0x38,0xfca10,0x8,UINT64_C(0xfc97df6278270fbf)},
+            {0x40,0xfca20,0x7,UINT64_C(0x5ca530bad2557b5a)},
+            {0x1d8,0xfc240,0x8,UINT64_C(0xfa411eb4425a85fb)},
+            {0x1e8,0xfcbe0,0x7,UINT64_C(0x8ab43c085bfbc45e)},
+            {0x230,0x75f60,0x9,UINT64_C(0x6aa4478617a62f2e)},
+            {0x448,0x67040,0x3,UINT64_C(0xa3703b1a918cfbeb)},
+            {0x478,0xfc190,0x7,UINT64_C(0xf985d8151da86506)},
+            {0x508,0xfcc20,0x8,UINT64_C(0xa97ace58e6e5d46d)},
+            {0x590,0xfcc30,0x8,UINT64_C(0xc2d890ade184a267)},
+            {0x5a8,0x67040,0x3,UINT64_C(0xa3703b1a918cfbeb)},
+            {0x5e0,0xfc1c0,0x8,UINT64_C(0x2d52a42a21f4c0e4)},
+            {0x6b0,0xcaeb90,0x13d,UINT64_C(0x6d30f4cd8ac4c4c7)},
+            {0x6c0,0x67050,0x3,UINT64_C(0x62941518298855c4)},
+            {0x750,0x66e60,0x6,UINT64_C(0x62d2efd24138f070)},
+        };
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        for(const auto& pin:pins)if(*reinterpret_cast<const void* const*>(base+0x1623198+pin.slot)!=base+pin.target || hash(pin.target,pin.length)!=pin.hash)return false;
+        if(hash(0x67520,0x6)!=UINT64_C(0x18580e5a3b056825))return false;
+        if(hash(0x67540,0x6)!=UINT64_C(0x2505ef84b8531c22))return false;
+        if(hash(0x14e1ec0,0xb68)!=UINT64_C(0x1d38184423ba8a35))return false;
+        if(hash(0x14d1920,0x459)!=UINT64_C(0xf48e28715360ed9a))return false;
+        if(hash(0x14add70,0x12f)!=UINT64_C(0x01f897b15772d540))return false;
+        return *reinterpret_cast<const void* const*>(base+0x16f5e48+0x28)==base+0x67520 &&
+               *reinterpret_cast<const void* const*>(base+0x16fe860+0x28)==base+0x67540;
+    }();
+    if(!pinned)return false;
+    const auto* box=static_cast<df::item_boxst*>(item);
+    if(box->maker!=-1 || box->maker_race!=-1 || int(box->quality)<0 || int(box->quality)>4 || box->flags.bits.artifact)return false;
+    for(const auto* improvement:box->improvements) {
+        if(!improvement)return false;
+        const auto* table=*reinterpret_cast<const void* const*>(improvement);
+        if(table!=base+0x16f5e48 && table!=base+0x16fe860)return false;
+        if(improvement->maker!=-1 || int(improvement->quality)<0 || int(improvement->quality)>4)return false;
+    }
+    return true;
+}
 // Owned seed/bar description. Other item branches can initialize art or grant
 // adventure knowledge and are excluded by the exact dispatch allowlist.
-inline std::optional<std::string> farmItemDescription(df::item* item) {
+inline std::optional<std::string> farmItemDescription(df::item* item, bool diagnosticBox=false) {
     using Describe=void (*)(df::item*,std::string*,bool,bool,bool,int32_t);
-    if(!farmItemDescriptionDispatch(item))return std::nullopt;
+    if(!farmItemDescriptionDispatch(item) && !(diagnosticBox && boxItemDescriptionProbeDispatch(item)))return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool pinned=[base]() {
         uint64_t value=UINT64_C(14695981039346656037);

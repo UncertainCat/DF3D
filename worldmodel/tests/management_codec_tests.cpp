@@ -3594,7 +3594,7 @@ TEST_CASE("independent item receipts reject mixed and unconfirmed authority") {
     auto pile=wire::CreateItemBuildingHolder(b,fault==8?-1:121,fault==9?4:29,b.CreateString("native pile"));
     auto item=wire::CreateIndependentItemSnapshot(b,fault==1?-1:45,fault==2?0:fault==3?UINT64_MAX:9007199254740993ULL,
       fault==5?93:0,fault==4?0:b.CreateString("native item"),b.CreateString(fault==6?std::string(257,'x'):"POTASH"),b.CreateString(""),
-      false,true,false,false,true,false,false,false,b.CreateString("weight"),b.CreateString(fault==7?std::string(32769,'x'):"description"),0,pile);
+      false,true,false,false,true,false,false,false,b.CreateString("weight"),b.CreateString(fault==7?std::string(32769,'x'):"description"),0,pile,0x1ffff);
     auto receipt=wire::CreateBuildingItemReceipt(b,fault==14?46:45,fault==18?wire::FarmOperation::Crop:wire::FarmOperation::ItemDump,fault==17?-1:fault==15?0:1);
     const auto outcome=editing?(fault==16?wire::FarmEditOutcome::Unknown:wire::FarmEditOutcome::Completed):
       (fault==14?wire::FarmEditOutcome::Completed:wire::FarmEditOutcome::None);
@@ -3608,7 +3608,7 @@ TEST_CASE("independent item receipts reject mixed and unconfirmed authority") {
     if(!fault) {
       auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.independentItem);REQUIRE(decoded.independentItem->snapshot);
       const auto& snapshot=*decoded.independentItem->snapshot;CHECK(snapshot.revision==9007199254740993ULL);CHECK(snapshot.id==45);
-      REQUIRE(snapshot.stockpile);CHECK(snapshot.stockpile->id==121);CHECK(snapshot.stockpile->name=="native pile");CHECK_FALSE(snapshot.holder);
+      REQUIRE(snapshot.stockpile);CHECK(snapshot.stockpileCategories==0x1ffff);CHECK(snapshot.stockpile->id==121);CHECK(snapshot.stockpile->name=="native pile");CHECK_FALSE(snapshot.holder);
       CHECK(bool(decoded.independentItem->edit)==editing);CHECK_FALSE(decoded.item);CHECK_FALSE(decoded.contents);
     }
   }
@@ -3617,5 +3617,21 @@ TEST_CASE("independent item receipts reject mixed and unconfirmed authority") {
     wire::ProductionStateBuilder prod(b);prod.add_independent_item(independent);auto payload=prod.Finish();
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::FarmEdit);state.add_status(wire::ManagementStatus::Rejected);
     b.Finish(state.Finish());CHECK_FALSE(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())));
+  }
+}
+
+TEST_CASE("independent item stockpile categories require matching relationship authority") {
+  for(bool linked:{false,true})for(int categories:{-1,0,1,0x1ffff,0x20000}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto pile=wire::CreateItemBuildingHolder(b,121,29,b.CreateString("pile"));
+    auto text=b.CreateString("");
+    auto item=wire::CreateIndependentItemSnapshot(b,45,1,0,text,text,text,false,false,false,false,true,false,false,false,text,text,0,linked?pile:0,categories);
+    auto independent=wire::CreateIndependentItemState(b,item);
+    wire::ProductionStateBuilder prod(b);prod.add_independent_item(independent);auto payload=prod.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);
+    state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool valid=linked?(categories>=0&&categories<=0x1ffff):categories==-1;
+    CHECK(bool(wire::validateManagementState(*value))==!valid);
   }
 }

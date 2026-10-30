@@ -84,7 +84,7 @@ func _fail(next: Phase) -> void:
 	phase=next;snapshot={};changed.emit()
 
 func _valid(value: Dictionary) -> bool:
-	for key in ["id","item_type","revision"]:
+	for key in ["id","item_type","revision","stockpile_categories"]:
 		if typeof(value.get(key))!=TYPE_INT:return false
 	if value.id!=item_id or value.item_type<0 or value.item_type>92 or value.revision<=0:return false
 	for key in ["forbid","dump","melt","hidden","can_dump","can_melt","in_job","in_building"]:
@@ -92,6 +92,9 @@ func _valid(value: Dictionary) -> bool:
 	for key in ["name","weight","description","material_token","subtype_raw"]:
 		var limit: int={"name":131072,"weight":128,"description":32768,"material_token":256,"subtype_raw":128}[key]
 		if typeof(value.get(key))!=TYPE_STRING or value[key].to_utf8_buffer().size()>limit:return false
+	if value.has("stockpile"):
+		if value.stockpile_categories<0 or value.stockpile_categories>0x1ffff:return false
+	elif value.stockpile_categories!=-1:return false
 	for forbidden in ["building_id","role","completed","removing"]:
 		if value.has(forbidden):return false
 	for field in ["holder","stockpile"]:

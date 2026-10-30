@@ -7,6 +7,7 @@ struct ItemObservation {
     ItemFacts item;
     std::string weight,description;
     std::optional<ItemLocationLink> buildingHolder,stockpile;
+    int32_t stockpileCategories=-1;
     uint64_t revision=0;
 };
 // Item authority never depends on the former containing building or its rows.
@@ -24,10 +25,12 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
     for(const auto* link:{&value.buildingHolder,&value.stockpile}) {
         byte(link->has_value());if(*link){number((*link)->id);number((*link)->type);text((*link)->name);}
     }
+    number(value.stockpileCategories);
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
 }
 inline bool validItemObservation(const ItemObservation& value) {
     const auto& item=value.item;
+    if(value.stockpile ? (value.stockpileCategories<0 || value.stockpileCategories>0x1ffff) : value.stockpileCategories!=-1)return false;
     if(item.id<0||item.itemType<0||item.itemType>92||item.caption.size()>128*1024||
        item.materialToken.size()>256||item.subtypeRaw.size()>128||value.weight.size()>128||
        value.description.size()>32*1024||!value.revision||value.revision!=itemObservationRevision(value))return false;

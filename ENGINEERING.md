@@ -741,6 +741,19 @@ The legacy building-contents and farm-bound item contracts retain their semantic
 Version92 peers are incompatible; rebuild both endpoints. Old recordings cannot
 supply independent observations they never captured.
 
+Management94 adds the native `stockpile_categories` bitset to independent item
+observations and their revision. The value is DF's stockpile_group_set, read from
+the selected stockpile's settings; a present link requires0..131071, while an
+absent link requires-1. Version93 peers are incompatible and missing historical
+categories remain unknown. Native item renderer156c13..15712b selects singleton
+category artwork and Custom for other masks; a generic blank icon is incorrect.
+The controller validates category/link consistency. Core tests cover bounds,
+absence, exact round-trip values and revision invalidation on category changes.
+Protected224812 on2026-10-29 verifies19 independent observations, including
+no-stockpile -1 and stockpile121's actual mask81601, against native settings.
+DF185384 exits unsaved with both manifests unchanged. Bridge and viewer hashes
+and scope are in `native_farm.json.independent_stockpile_categories_reference`.
+
 Protected IndependentItemOnly221327 on2026-10-29 passes15 native-verified snapshots
 through the Godot/model client: delivered potash, both Visibility/Dump/Forbid
 values, original-job retirement, controlled transfer to stockpile121, both

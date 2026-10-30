@@ -358,7 +358,7 @@ TEST_CASE("independent item edits preserve identity across location changes and 
             [&]()->std::optional<ItemObservation>{
                 ++reads;if(fault==5)return std::nullopt;if(fault==6)throw 1;
                 auto after=before;after.item.dump=fault!=7;
-                after.buildingHolder.reset();after.stockpile=ItemLocationLink{333,29,"stockpile"};
+                after.buildingHolder.reset();after.stockpile=ItemLocationLink{333,29,"stockpile"};after.stockpileCategories=1;
                 if(fault==8)++after.item.id;
                 after.revision=itemObservationRevision(after);if(fault==9)++after.revision;
                 return after;
@@ -379,8 +379,9 @@ TEST_CASE("independent item edits preserve identity across location changes and 
         []()->std::optional<ItemObservation>{FAIL("repeated desired value re-read");return std::nullopt;});
     CHECK(repeated.outcome==FarmEditOutcome::Completed);CHECK_FALSE(repeated.mutated);
     const auto revision=item.revision;
-    item.stockpile=ItemLocationLink{333,29,"pile"};CHECK(itemObservationRevision(item)!=revision);
+    item.stockpile=ItemLocationLink{333,29,"pile"};item.stockpileCategories=1;CHECK(itemObservationRevision(item)!=revision);
     item.revision=itemObservationRevision(item);const auto linked=item.revision;
+    item.stockpileCategories=2;CHECK(itemObservationRevision(item)!=linked);item.stockpileCategories=1;
     item.stockpile->name="renamed";CHECK(itemObservationRevision(item)!=linked);
     item.revision=itemObservationRevision(item);CHECK(validItemObservation(item));
     item.stockpile->id=-1;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));

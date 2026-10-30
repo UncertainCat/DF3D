@@ -334,7 +334,7 @@ struct BuildingItemSnapshot {
 };
 struct ItemPosition { int32_t id=-1,x=0,y=0,z=0; };
 struct IndependentItemSnapshot {
-  int32_t id=-1,itemType=-1;uint64_t revision=0;
+  int32_t id=-1,itemType=-1,stockpileCategories=-1;uint64_t revision=0;
   std::string name,materialToken,subtypeRaw,weight,description;
   bool forbid=false,dump=false,melt=false,hidden=false,canDump=false,canMelt=false,inJob=false,inBuilding=false;
   std::optional<ItemBuildingHolder> holder,stockpile;

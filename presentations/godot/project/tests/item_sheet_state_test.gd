@@ -8,7 +8,7 @@ func setup() -> void:
 
 func item(id:=1000) -> Dictionary:
 	var value: Dictionary=page().rows[0].duplicate(true)
-	value.merge({"id":id,"revision":9007199254740993,
+	value.merge({"stockpile_categories":-1,"id":id,"revision":9007199254740993,
 		"weight":"native weight","description":"native description","holder":{"id":968,"type":4,"name":"native holder"}},true)
 	value.erase("role");return value
 
@@ -75,7 +75,7 @@ func run() -> void:
 	check(world.calls.size()==count+1 and world.calls[-1].request.expected_revision==9007199254740993 and not model.snapshot.hidden,"single exact revision edit, no optimistic flag")
 	completed();check(applied==1 and model.phase==ItemModel.Phase.Ready and model.snapshot.hidden and model.snapshot.description=="fresh native description","confirmed receipt adopts coherent native snapshot")
 	check(world.calls.size()==count+1,"confirmed receipt needs no redundant read")
-	model.poll(1);service.poll();var transferred:=item();transferred.erase("holder");transferred.stockpile={"id":121,"type":29,"name":"native stockpile"};transferred.revision+=2
+	model.poll(1);service.poll();var transferred:=item();transferred.erase("holder");transferred.stockpile={"id":121,"type":29,"name":"native stockpile"};transferred.revision+=2;transferred.stockpile_categories=1
 	item_reply({"snapshot":transferred})
 	check(model.phase==ItemModel.Phase.Ready and not model.snapshot.has("holder") and model.snapshot.stockpile.id==121,"same item survives transfer and replaces relationship authority")
 	model.set_flag(C.FarmOperation.ItemHidden,true);service.poll()

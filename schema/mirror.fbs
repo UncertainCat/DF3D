@@ -1598,6 +1598,7 @@ table IndependentItemSnapshot {
   can_dump:bool; can_melt:bool; in_job:bool; in_building:bool;
   weight:string; description:string;
   holder:ItemBuildingHolder; stockpile:ItemBuildingHolder;
+  stockpile_categories:int32 = -1; // DF stockpile_group_set; -1 requires absent stockpile.
 }
 table IndependentItemState {
   snapshot:IndependentItemSnapshot; edit:BuildingItemReceipt;
@@ -1902,7 +1903,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 93;
+  schema_version:uint32 = 94;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1948,7 +1949,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 93;
+  schema_version:uint32 = 94;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

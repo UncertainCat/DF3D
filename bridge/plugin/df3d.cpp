@@ -1676,7 +1676,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             const auto link=[](const std::optional<ItemLocationLink>& value) {
               Json::Value result(Json::nullValue);if(value){result["id"]=value->id;result["type"]=value->type;result["name"]=DF2UTF(value->name);}return result;
             };
-            snapshot["holder"]=link(value->buildingHolder);snapshot["stockpile"]=link(value->stockpile);
+            snapshot["holder"]=link(value->buildingHolder);snapshot["stockpile"]=link(value->stockpile);snapshot["stockpile_categories"]=value->stockpileCategories;
             result["snapshot"]=std::move(snapshot);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

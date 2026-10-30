@@ -25,7 +25,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     auto& state=n.independentItem.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());
     if(const auto* edit=source->edit())state.edit=BuildingItemReceipt{edit->item_id(),static_cast<FarmOperation>(edit->operation()),edit->value()};
     if(const auto* item=source->snapshot()) {
-      auto& value=state.snapshot.emplace();value.id=item->id();value.revision=item->revision();value.itemType=item->item_type();
+      auto& value=state.snapshot.emplace();value.id=item->id();value.revision=item->revision();value.itemType=item->item_type();value.stockpileCategories=item->stockpile_categories();
       value.name=str(item->name());value.materialToken=str(item->material_token());value.subtypeRaw=str(item->subtype_raw());
       value.weight=str(item->weight());value.description=str(item->description());
       value.forbid=item->forbid();value.dump=item->dump();value.melt=item->melt();value.hidden=item->hidden();

@@ -28559,5 +28559,22 @@
     "exit": "All owned sessions unsaved; two save manifests unchanged in each run",
     "offline": "build/qa/item-independent-controller-final: core, item_sheet_state_test, semantic_action_service_test passed",
     "binary_reference": "independent_item_wire_reference (same binaries)"
+  },
+  "independent_stockpile_categories_reference": {
+    "management_version": 94,
+    "capture": "build/areas-acceptance-20261029-224812",
+    "owned_df_pid": 185384,
+    "exit": "unsaved",
+    "save_manifests_unchanged": 2,
+    "native_observations": 19,
+    "observed_stockpile_categories": [
+      -1,
+      81601
+    ],
+    "stockpile_id": 121,
+    "bridge_sha256": "77d58379f0ddb7eeb8df8100b57fb8f2db5df34953d40fe0bd2b96acc983192c",
+    "extension_sha256": "332e0bea3ffdfd1db2f5732514c20ead6c1b2cbc6de748f065e78d3329d5bd6d",
+    "scope": "Native stockpile settings bitset, independent revision, model/Godot transport and relationship consistency. Missing historical categories remain unknown.",
+    "offline": "item-stockpile-final: core and controller PASS; existing item render PASS with known diagnostics"
   }
 }

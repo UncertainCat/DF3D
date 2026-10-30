@@ -295,7 +295,10 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     auto facts=itemFacts(item);if(!facts)return std::nullopt;
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
     if(holder->id>=0)value.buildingHolder=*holder;
-    if(stockpile->id>=0)value.stockpile=*stockpile;
+    if(stockpile->id>=0){
+        auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(stockpile->id));if(!pile)return std::nullopt;
+        value.stockpile=*stockpile;value.stockpileCategories=pile->settings.flags.whole;
+    }
     value.revision=itemObservationRevision(value);
     if(!validItemObservation(value))return std::nullopt;
     return value;

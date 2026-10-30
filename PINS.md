@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management94 adds `stockpile_categories` to independent item snapshots. It is
+DF's 17-bit stockpile_group_set and participates in the item observation revision.
+A stockpile link requires categories0..131071; absent links require -1. Rebuild
+bridge and viewer together on `Local\\df3d_management_v94`; management93 is
+incompatible. Never infer categories missing from historical observations.
+
 Management93 adds explicit `independent_item` inspection and flag-edit intents
 and a separate IndependentItemState snapshot/receipt. These requests exclude
 building identity and use an item observation revision, preserving the existing

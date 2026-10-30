@@ -16,6 +16,7 @@ if not index then
  local fixture={building_id=farm.id,item_id=item.id,initial=farm.current_fertilization,frame=df.global.world.frame_counter}
  local marker=io.open(out..'/farm-item-action');if marker then fixture.action=marker:read('*a'):match('%S+');marker:close()end
  local progress=io.open(out..'/farm-item-action-progress');if progress then fixture.action_progress=true;progress:close();assert(fixture.action)end
+ local transfer=io.open(out..'/farm-item-transfer-scene');if transfer then fixture.transfer_scene=true;transfer:close()end
  _G.df3d_farm_item_progress=fixture;write('fixture.json',fixture);print('FIXTURE_READY');return
 end
 local fixture=assert(_G.df3d_farm_item_progress)
@@ -64,9 +65,11 @@ elseif request.op=='independent_verify' then
  assert(item and fixture.frame==df.global.world.frame_counter and fixture.ui==ui,'independent request changed frame/native UI')
  local text,code=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(item.id));assert(code==0,text)
  local expected=json.decode(text).snapshot;local actual=request.snapshot
+ local pile=expected.stockpile and expected.stockpile~=json.null and df.building.find(expected.stockpile.id)
+ assert(expected.stockpile_categories==(pile and pile.settings.flags.whole or -1),'native stockpile category fact differs')
  assert(actual.id==item.id and request.revision_text==expected.revision,'independent identity/revision differs')
  assert(actual.name==expected.caption and actual.weight==expected.weight and actual.description==expected.description,'independent native text differs')
- for _,field in ipairs{'forbid','dump','melt','hidden','can_dump','can_melt','item_type','material_token'}do assert(actual[field]==expected[field],field..' differs')end
+ for _,field in ipairs{'forbid','dump','melt','hidden','can_dump','can_melt','stockpile_categories','item_type','material_token'}do assert(actual[field]==expected[field],field..' differs')end
  assert(actual.in_job==item.flags.in_job and actual.in_building==item.flags.in_building,'independent job/building flags differ')
  for _,field in ipairs{'holder','stockpile'}do
   local e=expected[field];local a=actual[field]

@@ -53,7 +53,7 @@ elseif request.op=='item-inspect' then
   local native=json.decode(text).snapshot
   assert(native.revision==request.revision_text,'independent revision differs')
   assert(native.caption==observed.name and native.weight==observed.weight and native.description==observed.description,'independent native text differs')
-  for _,key in ipairs{'item_type','material_token','forbid','dump','melt','hidden','can_dump','can_melt'}do assert(native[key]==observed[key],'independent facts differ: '..key)end
+  for _,key in ipairs{'item_type','material_token','forbid','dump','melt','hidden','can_dump','can_melt','stockpile_categories'}do assert(native[key]==observed[key],'independent facts differ: '..key)end
   for _,key in ipairs{'holder','stockpile'}do
    local link=native[key];local actual=observed[key]
    if link and link~=json.null then assert(actual and actual.id==link.id and actual.type==link.type and actual.name==link.name,'independent link differs')else assert(not actual or actual==json.null,'invented independent link')end

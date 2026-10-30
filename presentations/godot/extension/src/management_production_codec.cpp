@@ -90,7 +90,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     }
     if(state.snapshot) {
       const auto& s=*state.snapshot;Dictionary value;
-      value["id"]=s.id;value["revision"]=int64_t(s.revision);value["item_type"]=s.itemType;
+      value["stockpile_categories"]=s.stockpileCategories;value["id"]=s.id;value["revision"]=int64_t(s.revision);value["item_type"]=s.itemType;
       value["name"]=String::utf8(s.name.c_str());value["material_token"]=String::utf8(s.materialToken.c_str());value["subtype_raw"]=String::utf8(s.subtypeRaw.c_str());
       value["weight"]=String::utf8(s.weight.c_str());value["description"]=String::utf8(s.description.c_str());
       value["forbid"]=s.forbid;value["dump"]=s.dump;value["melt"]=s.melt;value["hidden"]=s.hidden;

@@ -76,8 +76,20 @@ local function observe(name)
  assert(header.effect==0,'name fixture requires steady color')
  local palette=header.color[1]+8*header.color[3]
  for _,color in ipairs(rows[1].colors)do assert(color==palette,'header name color differs from native: '..name)end
+ for _,copy in ipairs(protected)do copy.bytes=df.new('uint8_t',copy.size);dfhack.internal.memmove(copy.bytes,copy.address,copy.size)end
+ local activity_text,activity_status=dfhack.run_command_silent('df3d','unit-header-activity-probe',tostring(unit.id))
+ local activity_unchanged=true
+ for _,copy in ipairs(protected)do
+  if dfhack.internal.memcmp(copy.bytes,copy.address,copy.size)~=0 then activity_unchanged=false end
+  df.delete(copy.bytes)
+ end
+ assert(activity_status==0,activity_text);assert(activity_unchanged,'header activity changed warmed guarded state: '..name)
+ local activity=json.decode(activity_text)
+ assert(dfhack.df2utf(dfhack.utf2df(activity.text):sub(1,33):gsub('%s+$',''))==rows[4].text,'activity differs from native: '..name)
+ for _,color in ipairs(rows[4].colors)do assert(color==activity.color,'activity color differs from native: '..name)end
  cases[#cases+1]={name=name,rows=rows,position=position,reader_unchanged=unchanged,cold_histfig_index=true,
-  header_name=header,name_reader_unchanged=name_unchanged,name_reference_columns=33}
+  header_name=header,name_reader_unchanged=name_unchanged,name_reference_columns=33,
+  activity=activity,activity_reader_unchanged=activity_unchanged}
 end
 local ok,err=xpcall(function()
  observe('original')

@@ -1646,6 +1646,35 @@ only the known renderer notice. MSVC and unit-header-translated QA pass core19/1
 context and thought-text checks. Disguised identities, missing history, no-name
 row positioning and long translated-name overflow remain unverified.
 
+headerActivity is a diagnostic semantic component for the next header line.
+An ordinary current job calls natived03170 with an owned string and uses
+palette11; on-break or absent jobs call138ffd0(unit,true,false,owned string,
+owned foreground/background/bright outputs). Never call the enclosing1390cf0
+renderer, which writes GPS. This component does not yet apply the native
+header's73230 CAN_LEARN and138ed20/control-or-guest gates and is not wired into
+CreatureInspect. The visible job line remains unfinished.
+
+These calls are not universally read-only: b530b0 can refresh a unit's history
+index, and13cc610 clears stale squad_position activity/event IDs at178/184.
+Those are native semantic lazy repairs, not menu scratch; a shallow owned unit
+would not isolate the squad writes. Social/drill lookup13d0800/13d0950 and squad
+order lookup13cc1d0 inspect world activities and schedules. Their virtual calls
+include participant info, checkDrillInvalid, reasonCannot/isInactive and owned
+description outputs. Broader virtual branches and stale-reference effects need
+live acceptance before general runtime use. Job formatterd032b0 formats names,
+materials and raw reactions through semantic providers and owned strings.
+
+unit_header_activity_reader_reference records protected185425(adult1017) and
+185530(child988) on2026-10-30. Fourteen caption/foreground comparisons match
+native: No job14, Drink/Rest/Sleep11, on-break Rest14 and Play Make Believe10.
+Warmed unit/history/entity/UI guards remain unchanged in these cases. This does
+not prove all world records immutable or cover military/social activities,
+stale squad repairs, other job types, background colors or header eligibility.
+Both sessions exit unsaved with source manifests unchanged; four GPU logs have
+only the known renderer notice. MSVC and unit-header-activity QA pass core19/19,
+context and thought-text checks. Existing rendered header regions still pass;
+the new activity comparisons exercise the direct reader, not a Godot job label.
+
 headerPositionTitle invokes beb620 with the directly resolved historical figure
 and owned spouse/entity/assignment outputs. It reuses native precedence and spouse
 selection, then99a3c0 and the header-specific52d3c0 capitalization on an owned

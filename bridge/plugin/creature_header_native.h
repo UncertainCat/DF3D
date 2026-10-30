@@ -4,9 +4,47 @@
 #include "df/personality_moodst.h"
 #include "df/identity.h"
 #include "df/game_mode.h"
+#include "df/job.h"
 #include "location_staff_order_native.h"
 #include "zone_native.h"
 namespace df3d_creature {
+struct HeaderActivity {std::string text;int16_t foreground=0,background=0;bool bright=false;};
+// Semantic formatter component, before the header's CAN_LEARN/control gates.
+// Native may refresh the unit HF index and retire stale squad activity/event
+// IDs. These are semantic lazy repairs, not owned or restored menu scratch.
+// No renderer1390cf0/GPS call is permitted here. Outputs are independently owned.
+inline std::optional<HeaderActivity> headerActivity(df::unit* unit) {
+    if(!unit)return std::nullopt;
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x138ffd0,0xd20,UINT64_C(0x904926737b452832)},
+            {0xd03170,0x12b,UINT64_C(0x90da46373e49508e)},
+            {0xd032b0,0x5024,UINT64_C(0xba755d2dfd15322d)},
+            {0x13cc610,0x1ab,UINT64_C(0xb9e9ed9744ed0fe3)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    if(!supported)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    HeaderActivity result;
+    if(unit->job.current_job && !unit->job.current_job->flags.bits.on_break) {
+        reinterpret_cast<void (*)(df::job*,std::string*)>(base+0xd03170)(unit->job.current_job,&result.text);
+        result.foreground=3;result.bright=true;
+    } else {
+        reinterpret_cast<void (*)(df::unit*,bool,bool,std::string*,int16_t*,int16_t*,bool*)>(base+0x138ffd0)
+            (unit,true,false,&result.text,&result.foreground,&result.background,&result.bright);
+    }
+    if(result.text.size()>512 || result.foreground<0 || result.foreground>7 || result.background<0 || result.background>7)return std::nullopt;
+    return result;
+}
 struct HeaderName {
     std::string combined,name,profession,translated;
     df3d_area::ZoneOwnerNameColor color;

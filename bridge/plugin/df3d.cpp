@@ -1642,6 +1642,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["x"]=position->x;result["y"]=position->y;result["z"]=position->z;
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="unit-header-activity-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          const auto row=df3d_creature::headerActivity(df::unit::find(id));if(!row)return CR_FAILURE;
+          Json::Value result;result["text"]=DF2UTF(row->text);result["color"]=row->foreground+(row->bright?8:0);result["background"]=row->background;
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="unit-header-name-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];

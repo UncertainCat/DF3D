@@ -39989,6 +39989,216 @@
         "No-name row positions and long translated-name overflow unfinished"
       ],
       "gpu_diagnostics": "Six logs; known separate-renderer notice only"
+    },
+    "unit_header_activity_reader_reference": {
+      "date": "2026-10-30",
+      "provider": "headerActivity: d03170(job,owned string), or138ffd0(unit,true,false,owned text and colors)",
+      "pins": [
+        {
+          "rva": "138ffd0",
+          "length": "d20",
+          "fnv": "904926737b452832"
+        },
+        {
+          "rva": "d03170",
+          "length": "12b",
+          "fnv": "90da46373e49508e"
+        },
+        {
+          "rva": "d032b0",
+          "length": "5024",
+          "fnv": "ba755d2dfd15322d"
+        },
+        {
+          "rva": "13cc610",
+          "length": "1ab",
+          "fnv": "b9e9ed9744ed0fe3"
+        }
+      ],
+      "runs": [
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-185425",
+          "pid": 198252,
+          "unit_id": 1017,
+          "result_sha256": "8e13f1b3c2c520921c47e735588d73ee1fdc9cb228f48b20c10965a4c3534436",
+          "cases": [
+            {
+              "name": "original",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "No job"
+              },
+              "native_text": "No job",
+              "native_foreground": 14,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "no-current-job",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "No job"
+              },
+              "native_text": "No job",
+              "native_foreground": 14,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "rest",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Rest"
+              },
+              "native_text": "Rest",
+              "native_foreground": 11,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "rest-on-break",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "Rest"
+              },
+              "native_text": "Rest",
+              "native_foreground": 14,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "sleep",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Sleep"
+              },
+              "native_text": "Sleep",
+              "native_foreground": 11,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "custom-profession",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "No job"
+              },
+              "native_text": "No job",
+              "native_foreground": 14,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "nickname",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "No job"
+              },
+              "native_text": "No job",
+              "native_foreground": 14,
+              "warmed_guards_unchanged": true
+            }
+          ],
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-185530",
+          "pid": 186308,
+          "unit_id": 988,
+          "result_sha256": "1591ba5d888cc1bb8aa898295c9f86d723226e01c43bf3e6a370bc81f6fcb83a",
+          "cases": [
+            {
+              "name": "original",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Drink"
+              },
+              "native_text": "Drink",
+              "native_foreground": 11,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "no-current-job",
+              "activity": {
+                "background": 0,
+                "color": 10,
+                "text": "Play Make Believe"
+              },
+              "native_text": "Play Make Believe",
+              "native_foreground": 10,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "rest",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Rest"
+              },
+              "native_text": "Rest",
+              "native_foreground": 11,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "rest-on-break",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "Rest"
+              },
+              "native_text": "Rest",
+              "native_foreground": 14,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "sleep",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Sleep"
+              },
+              "native_text": "Sleep",
+              "native_foreground": 11,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "custom-profession",
+              "activity": {
+                "background": 0,
+                "color": 10,
+                "text": "Play Make Believe"
+              },
+              "native_text": "Play Make Believe",
+              "native_foreground": 10,
+              "warmed_guards_unchanged": true
+            },
+            {
+              "name": "nickname",
+              "activity": {
+                "background": 0,
+                "color": 10,
+                "text": "Play Make Believe"
+              },
+              "native_text": "Play Make Believe",
+              "native_foreground": 10,
+              "warmed_guards_unchanged": true
+            }
+          ],
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        }
+      ],
+      "qa": "build/qa/unit-header-activity",
+      "limits": [
+        "Diagnostic only; header eligibility gates and wire/UI unfinished",
+        "Military/social and other job branches not accepted",
+        "Semantic history-cache/stale squad-ID repairs are possible; no blanket immutability claim",
+        "Background not compared"
+      ],
+      "gpu_diagnostics": "Four logs, known separate-renderer notice only"
     }
   }
 }

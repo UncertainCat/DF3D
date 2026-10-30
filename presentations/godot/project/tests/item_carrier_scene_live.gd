@@ -49,11 +49,16 @@ func unit_carrier(expected: Dictionary) -> void:
 	var view_deadline:=Time.get_ticks_msec()+5000
 	while inspector.creature_display.get("detail",{}).is_empty() and Time.get_ticks_msec()<view_deadline:await create_timer(0.02).timeout
 	check(not inspector.creature_display.get("detail",{}).is_empty(),"Creature view did not consume loaded detail")
+	var hauling: Dictionary={}
+	for row in inspector.creature_sheet.records_for("identity"):
+		if inspector.creature_sheet.fact_value(row,"record_type")=="overview_hauling":hauling=row
+	check(int(hauling.get("id",-1))==int(expected.snapshot.id),"Native hauling selector returned a different item")
+	check(inspector.creature_sheet.fact_value(hauling,"native_text","")=="Haul: sweet pod seeds","Native hauling caption differs")
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/unit-overview-scene.png")
 	var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
 	var native:=Image.load_from_file(directory+"/farm-item-carrier-unit-view.png");native.convert(Image.FORMAT_RGB8)
-	for region in [Rect2i(416,52,488,4),Rect2i(416,52,4,708),Rect2i(900,52,4,708),Rect2i(416,756,488,4),Rect2i(424,64,96,96),Rect2i(424,160,472,48)]:
+	for region in [Rect2i(416,52,488,4),Rect2i(416,52,4,708),Rect2i(900,52,4,708),Rect2i(416,756,488,4),Rect2i(424,64,96,96),Rect2i(424,160,472,48),Rect2i(424,376,232,12)]:
 		check(rendered.get_region(region).get_data()==native.get_region(region).get_data(),"Unit frame/portrait pixels differ: "+str(region))
 	var evidence:=FileAccess.open(directory+"/unit-overview-scene.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()

@@ -76,6 +76,7 @@
 #include "room_mutation_native.h"
 #include "farm_native.h"
 #include "building_item_native.h"
+#include "creature_overview_native.h"
 #include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
 // kernel objects) has no POSIX path yet; say so instead of failing on HANDLE.
@@ -3132,6 +3133,16 @@ void run(color_ostream& out) {
     citizenHelperGeneration=helpers.generation();
   }
   if(r->creature()) field(L,"unit_id",r->creature()->unit_id());
+  if(action==m::ManagementAction::CreatureInspect) {
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_creature::haulingSummary(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!value)return luaL_error(state,"Native creature hauling summary unavailable");
+      lua_pushinteger(state,value->itemId);
+      // creature.lua's fact boundary performs the single DF-to-UTF8 conversion.
+      lua_pushlstring(state,value->text.data(),value->text.size());return 2;
+    });
+    lua_setfield(L,-2,"hauling_summary");
+  }
   field(L, "definition", r->definition() ? r->definition()->str() : "");
   if (r->origin()) {
     field(L, "x", r->origin()->x());

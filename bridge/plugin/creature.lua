@@ -137,6 +137,11 @@ return function(request)
   -- animated undead.
   fact(s,r,'personality_summary_eligible',not u.enemy.undead and not u.uwss_remove_caste_flag.CAN_LEARN
    and (u.enemy.caste_flags.CAN_LEARN or u.uwss_add_caste_flag.CAN_LEARN) and 'yes' or 'no')
+  if request.hauling_summary then
+   local id,text=request.hauling_summary(u.id)
+   local task=record(s,id,'')
+   fact(s,task,'record_type','overview_hauling');fact(s,task,'native_text',text)
+  end
   local dates=record(s,-3,'')
   fact(s,dates,'record_type','age_inputs');fact(s,dates,'current_year',df.global.cur_year)
   fact(s,dates,'birth_year_bias',u.birth_year_bias);fact(s,dates,'birth_time_bias',u.birth_time_bias)

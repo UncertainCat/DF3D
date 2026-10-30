@@ -34349,6 +34349,39 @@
       ],
       "cleanup": "Owned session exits unsaved with source preservation",
       "diagnostics": "Two GPU logs have only known render-thread notice"
+    },
+    "unit_hauling_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-151715",
+      "date": "2026-10-30",
+      "owned_df_pid": 197480,
+      "unit_id": 988,
+      "item_id": 47492,
+      "native_text": "Haul: sweet pod seeds",
+      "success": true,
+      "selector": {
+        "rva": "0x1324b50",
+        "length": 44,
+        "fnv64": "da0ae0ab2370567d",
+        "sha256": "c1b9d61d02997717a132193433d82a41fff2c3aeb34ddc6ce26a9e5a9e6bda41",
+        "semantics": "First inventory entry with mode Hauled; null when none; read-only leaf with no global reads or writes"
+      },
+      "native_renderer_call": "0x166e81..0x166f72",
+      "caption_rva": "0xc65450",
+      "ownership": "Owned string, live unit inventory; no viewsheet or menu scratch",
+      "region": {
+        "rect": [
+          424,
+          376,
+          232,
+          12
+        ],
+        "different_pixels": 0,
+        "rgb_sha256": "722da13b9a3613f0b189b8a53172e9cf1ea86848731fa3192e4defaf257344a1"
+      },
+      "color": "Installed YELLOW palette entry (native fg6 bright1)",
+      "scope": "Paused synthetic reciprocal hauling fixture, actual main-scene carrier route; not natural hauling jobs or multiple hauled items",
+      "cleanup": "Owned session exits unsaved with source preservation and restored fixture links",
+      "diagnostics": "Both GPU logs contain only known separate-renderer notice; no unclassified errors"
     }
   }
 }

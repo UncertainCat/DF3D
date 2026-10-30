@@ -1374,7 +1374,7 @@ Overview divider no longer overwrites the tab boundary. Protected150507 on
 main tab rows at1200x800. The harness waits for the inspector to consume detail,
 not merely for the model publication. unit_sheet_frame_reference records the
 regions and remaining defects. DF3D still lacks native header controls/colors
-and correct Overview health/task/office/squad/needs/thought selection; this is
+and correct Overview health/office/squad/needs/thought selection; this is
 not full unit-sheet acceptance. Existing native semantic providers must be
 audited before replacing those locally assembled summaries.
 
@@ -1384,6 +1384,26 @@ chest and Melt checks and must not be reported as their regression coverage.
 Owned DF164556 exits unsaved with source preservation; both GPU logs contain only
 the known render-thread notice. QA unit-sheet-frame passes core, inspector
 lifecycle/tab checks and thought-text tests. No public routes are promoted.
+
+The Overview hauling line uses native selector1324b50(unit), the same call made
+by renderer166e81, followed by the existing owned caption formatter c65450.
+The selector is a44-byte read-only leaf returning the first inventory entry in
+Hauled mode. creature_overview_native.h pins its complete body and inventory
+layout, bounds/validates the input vector and returns an owned caption or an
+empty summary. No sheet state is read or driven. The Lua fact boundary converts
+DF text to UTF8 once; Godot renders the supplied text using the installed YELLOW
+palette entry. The generic creature-fact contract remains management102.
+
+Protected151715 on2026-10-30 verifies unit988 selects seed47492, produces native
+“Haul: sweet pod seeds”, and matches all232x12 task-line pixels in actual
+main.tscn. Frame/portrait/tab comparisons, unchanged camera and Escape release
+also pass. unit_hauling_reference records this paused reciprocal-inventory
+fixture; natural hauling jobs, multiple hauled items and other Overview summaries
+remain outside this evidence. The earlier151523 run caught default Godot yellow
+instead of the installed palette; the corrected run passes with only the known
+renderer notice in both GPU logs. Owned DF197480 exits unsaved, restores fixture
+links and preserves the source save. QA unit-hauling passes core, context inspector
+and thought-text checks; final root CTest passes19/19. No public routes are promoted.
 
 ## Native item holder provider
 

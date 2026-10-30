@@ -238,6 +238,7 @@ func summary_line(cell: Control, value: String, color := Color.WHITE):
  label.mouse_filter=Control.MOUSE_FILTER_PASS
 
 func overview(parent: Node, detail: Dictionary):
+ NativeText.load_text(owner.world)
  # Native summaries use equal columns and clipped single-line entries.
  var grid := GridContainer.new()
  grid.columns=2
@@ -293,6 +294,9 @@ func overview(parent: Node, detail: Dictionary):
   var relation := str(fact_value(row,"relationship")).to_lower()
   if relation in ["lover","spouse"]: summary_line(cells[0],relation.capitalize()+" "+str(fact_value(row,"translated_name",row.name)),Color(1,0,1))
  for row in records_for("identity"):
+  if fact_value(row,"record_type")=="overview_hauling":
+   var task_text := str(fact_value(row,"native_text",""))
+   if not task_text.is_empty(): summary_line(cells[4],task_text,NativeText.colors[14])
   var children := int(fact_value(row,"children_count",0))
   if children>0: summary_line(cells[0],"%d children" % children)
   var pet_owner := str(fact_value(row,"pet_owner",""))

@@ -1125,6 +1125,31 @@ Godot logs contain only the known render-thread notice. The nested worker refere
 retains effects and binary provenance. MSVC and root CTest pass. Natural worker
 progress and chest transport/lifecycle/presentation are separate acceptance work.
 
+building_header_transaction.h defines an independent owned header observation:
+identity/type, construction stages, native CP437 names, removal state and job
+IDs/types/flags. Every field enters its positive signed-range revision. It does
+not synthesize farm crop/fertilizer state. Rename, Remove and CancelRemoval require
+a complete observation and exact revision. Rename accepts at most30 losslessly
+encoded CP437 bytes; repeating the same name returns unchanged authority without
+execution. Successful effects require a fresh valid observation with matching
+identity/stages and the requested change. Rejected/Stale/Unknown grant no receipt;
+post-entry exceptions or unverifiable effects are Unknown and never replayed.
+Transport callers must additionally validate the world epoch and target visibility.
+
+The diagnostic building-header-action currently admits only visible Box targets
+and exercises this transaction using native queueDestroy/cancelBuildingRemoval
+and the native inline rename assignment. Protected131519 on2026-10-30 passes
+rename/restoration, repeated name, oversized name rejection, stale rename, Remove,
+stale cancellation after worker assignment, rename refusal during removal, and
+worker-attached cancellation. Guarded sheet/plotinfo bytes remain unchanged, the
+worker result matches native cancellation, and the final revision equals the
+original. Owned DF177060 exits unsaved with source preservation; all previous
+item/contents regressions pass and all eight Godot logs have only the known
+render-thread notice. guarded_action_reference retains receipts and provenance.
+MSVC and build/qa/chest-header-transaction core pass, including injected failure
+and post-effect identity/field drift cases. This is semantic action acceptance;
+management transport, controller lifecycle and chest composition remain unfinished.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

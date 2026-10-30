@@ -1818,6 +1818,56 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="building-header-action") {
+          if(parameters.size()<4 || parameters.size()>5)return CR_WRONG_USAGE;
+          int32_t id=-1;uint64_t revision=0;
+          const auto parse=[](const std::string& raw,auto& value) {
+            const auto result=std::from_chars(raw.data(),raw.data()+raw.size(),value);
+            return result.ec==std::errc{} && result.ptr==raw.data()+raw.size();
+          };
+          if(!parse(parameters[1],id) || id<0 || !parse(parameters[2],revision))return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto target=[&]()->df::building* {
+            auto* building=df::building::find(id);
+            if(!building || building->getType()!=df::building_type::Box)return nullptr;
+            auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
+            return tile && !tile->bits.hidden?building:nullptr;
+          };
+          const auto observe=[&]{return df3d_production::observeBuildingHeader(target());};
+          const auto before=observe();if(!before)return CR_FAILURE;
+          using Operation=df3d_production::BuildingHeaderOperation;
+          using Outcome=df3d_production::BuildingHeaderOutcome;
+          df3d_production::BuildingHeaderEdit edit;
+          const auto& op=parameters[3];
+          if(op=="read" && parameters.size()==4 && revision==0) {
+            edit.outcome=Outcome::Completed;edit.receipt=before;
+          } else {
+            const bool rename=op=="rename";
+            if((rename && parameters.size()!=5) || (!rename && parameters.size()!=4) ||
+               (op!="rename" && op!="remove" && op!="cancel"))return CR_WRONG_USAGE;
+            const auto operation=rename?Operation::Rename:op=="remove"?Operation::Remove:Operation::CancelRemoval;
+            const auto name=rename?UTF2DF(parameters[4]):std::string{};
+            if(rename && DF2UTF(name)!=parameters[4])return CR_FAILURE;
+            edit=df3d_production::finishBuildingHeaderEdit(*before,revision,operation,name,[&]{
+              auto* building=target();if(!building)return false;
+              if(rename){building->name=name;return true;}
+              if(operation==Operation::CancelRemoval)return df3d_production::cancelBuildingRemoval(building);
+              building->queueDestroy();return true;
+            },observe);
+          }
+          Json::Value result(Json::objectValue);
+          result["outcome"]=edit.outcome==Outcome::Completed?"completed":edit.outcome==Outcome::Stale?"stale":edit.outcome==Outcome::Unknown?"unknown":"rejected";
+          result["mutated"]=edit.mutated;
+          if(edit.receipt) {
+            const auto& value=*edit.receipt;Json::Value row(Json::objectValue);
+            row["id"]=value.id;row["type"]=value.type;row["stage"]=value.stage;row["max_stage"]=value.maxStage;
+            row["revision"]=std::to_string(value.revision);row["custom_name"]=DF2UTF(value.customName);
+            row["native_name"]=DF2UTF(value.nativeName);row["header_name"]=DF2UTF(value.headerName);
+            row["removing"]=value.removing;row["suspended"]=value.suspended;row["has_worker"]=value.hasWorker;
+            result["snapshot"]=row;
+          }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="farm-cancel-removal" || parameters[0]=="building-cancel-removal") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];

@@ -1,4 +1,5 @@
 #include "doctest.h"
+#include "../bridge/plugin/building_header_transaction.h"
 #include "../bridge/plugin/farm_transaction.h"
 #include "../bridge/plugin/building_item_transaction.h"
 #include "../bridge/plugin/item_transaction.h"
@@ -422,4 +423,67 @@ TEST_CASE("contents appearance changes revision and rejects missing instrument f
     value.rows[0].appearance=ItemInspectionAppearance{"WOOD","INSTRUMENT","",1,0,3,0};value.revision=buildingContentsRevision(value);REQUIRE(validBuildingContents(value));
     auto old=value.revision;value.rows[0].appearance->instrumentPlaced=1;value.revision=buildingContentsRevision(value);CHECK(value.revision!=old);CHECK(validBuildingContents(value));
     value.rows[0].appearance->instrumentFamily=-1;value.revision=buildingContentsRevision(value);CHECK_FALSE(validBuildingContents(value));
+}
+
+TEST_CASE("building header actions reject stale authority and uncertain effects") {
+    using namespace df3d_production;
+    for(auto operation:{BuildingHeaderOperation::Rename,BuildingHeaderOperation::Remove,BuildingHeaderOperation::CancelRemoval}) {
+        for(int fault=0;fault<14;++fault) {
+            CAPTURE(int(operation));CAPTURE(fault);
+            BuildingHeaderObservation before;before.id=278;before.type=10;before.stage=before.maxStage=1;
+            before.nativeName=before.headerName="Chest";
+            before.removing=operation==BuildingHeaderOperation::CancelRemoval;
+            if(before.removing)before.jobs.push_back({123,88,0});
+            before.revision=buildingHeaderRevision(before);
+            const std::string name=operation==BuildingHeaderOperation::Rename?"named":"";
+            uint64_t expected=before.revision;if(fault==1)++expected;if(fault==2)expected=0;
+            int applies=0,reads=0;
+            auto result=finishBuildingHeaderEdit(before,expected,operation,name,[&] {
+                ++applies;if(fault==3)throw 3;return fault!=4;
+            },[&]()->std::optional<BuildingHeaderObservation> {
+                ++reads;if(fault==5)throw 5;if(fault==6)return {};
+                auto after=before;
+                if(operation==BuildingHeaderOperation::Rename)after.customName=after.nativeName=after.headerName=name;
+                else {
+                    after.removing=operation==BuildingHeaderOperation::Remove;
+                    after.jobs.clear();if(after.removing)after.jobs.push_back({124,88,0});
+                }
+                if(fault==7)++after.id;
+                if(fault==8)++after.type;
+                if(fault==9)after.stage=0;
+                if(fault==10)after.headerName="";
+                if(fault==11) {
+                    if(operation==BuildingHeaderOperation::Rename)after.jobs.push_back({124,88,0});
+                    else after.customName="unexpected";
+                }
+                if(fault==12) {
+                    if(operation==BuildingHeaderOperation::Rename)after.customName="wrong";
+                    else after.removing=!after.removing;
+                }
+                after.revision=buildingHeaderRevision(after);if(fault==13)++after.revision;
+                return after;
+            });
+            const auto outcome=fault==0?BuildingHeaderOutcome::Completed:fault==1?BuildingHeaderOutcome::Stale:
+                (fault==2||fault==4)?BuildingHeaderOutcome::Rejected:BuildingHeaderOutcome::Unknown;
+            CHECK(result.outcome==outcome);CHECK(bool(result.receipt)==(fault==0));
+            CHECK(applies==((fault==1||fault==2)?0:1));
+            CHECK(reads==((fault==1||fault==2||fault==3||fault==4)?0:1));
+            CHECK(result.mutated==(fault!=1 && fault!=2 && fault!=4));
+        }
+    }
+}
+TEST_CASE("building header rename bounds and repeated name are effect free") {
+    using namespace df3d_production;
+    BuildingHeaderObservation before;before.id=278;before.type=10;before.stage=before.maxStage=1;
+    before.customName=before.nativeName=before.headerName="Chest";before.revision=buildingHeaderRevision(before);
+    int calls=0;auto apply=[&]{++calls;return true;};auto observe=[&]{++calls;return std::optional<BuildingHeaderObservation>{before};};
+    auto repeated=finishBuildingHeaderEdit(before,before.revision,BuildingHeaderOperation::Rename,"Chest",apply,observe);
+    CHECK(repeated.outcome==BuildingHeaderOutcome::Completed);CHECK_FALSE(repeated.mutated);CHECK(calls==0);
+    for(const auto& name:{std::string(31,'X'),std::string("bad\0name",8)}) {
+        auto result=finishBuildingHeaderEdit(before,before.revision,BuildingHeaderOperation::Rename,name,apply,observe);
+        CHECK(result.outcome==BuildingHeaderOutcome::Rejected);CHECK_FALSE(result.receipt);CHECK(calls==0);
+    }
+    before.jobs.push_back({1,88,0});auto revision=buildingHeaderRevision(before);
+    before.jobs[0].id=2;CHECK(buildingHeaderRevision(before)!=revision);revision=buildingHeaderRevision(before);
+    before.jobs[0].flags=2;CHECK(buildingHeaderRevision(before)!=revision);
 }

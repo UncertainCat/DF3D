@@ -97,3 +97,32 @@ for _,id in ipairs{tostring(building.id),'2147483647','-1','not-an-id'}do
  local _,status=dfhack.run_command_silent('df3d','building-cancel-removal',id);assert(status~=0,'invalid cancellation accepted')
 end
 local _,wrong=dfhack.run_command_silent('df3d','farm-cancel-removal',tostring(building.id));assert(wrong~=0,'farm cancellation accepted chest')
+
+-- Exercise the same guarded action transaction used by the future chest wire.
+local function action(op,revision,name)
+ local args={'df3d','building-header-action',tostring(building.id),revision or '0',op}
+ if name~=nil then args[#args+1]=name end
+ local guards={}
+ for _,object in ipairs{sheet,df.global.plotinfo}do
+  local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+  guards[#guards+1]={bytes=bytes,address=address,size=size}
+ end
+ local message,status=dfhack.run_command_silent(table.unpack(args));assert(status==0,message)
+ for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'guarded header action changed UI');df.delete(guard.bytes)end
+ return json.decode(message)
+end
+local initial=action('read').snapshot
+local renamed=action('rename',initial.revision,'lower chest');assert(renamed.outcome=='completed' and renamed.mutated and building.name=='lower chest')
+local stale=action('rename',initial.revision,'stale');assert(stale.outcome=='stale' and not stale.mutated and not stale.snapshot and building.name=='lower chest')
+local repeated=action('rename',renamed.snapshot.revision,'lower chest');assert(repeated.outcome=='completed' and not repeated.mutated)
+local too_long=action('rename',renamed.snapshot.revision,string.rep('X',31));assert(too_long.outcome=='rejected' and not too_long.mutated and not too_long.snapshot)
+local restored=action('rename',renamed.snapshot.revision,dfhack.df2utf(original));assert(restored.outcome=='completed' and building.name==original)
+local removed=action('remove',restored.snapshot.revision);assert(removed.outcome=='completed' and removed.mutated and #building.jobs==1)
+local identity=fixture.attach(building);local assigned=action('read').snapshot
+assert(assigned.revision~=removed.snapshot.revision and assigned.has_worker)
+local stale_cancel=action('cancel',removed.snapshot.revision);assert(stale_cancel.outcome=='stale' and not stale_cancel.mutated and dfhack.job.getWorker(building.jobs[0]).id==identity.worker_id)
+local blocked_name=action('rename',assigned.revision,'wrong');assert(blocked_name.outcome=='rejected' and not blocked_name.mutated)
+local cancelled=action('cancel',assigned.revision);assert(cancelled.outcome=='completed' and cancelled.mutated)
+local after=fixture.observe(building,identity);assert(json.encode(after)==json.encode(native_after))
+assert(cancelled.snapshot.revision==initial.revision and building.name==original)
+local row=shot('guarded-actions');row.actions={initial=initial,renamed=renamed,stale=stale,repeated=repeated,too_long=too_long,restored=restored,removed=removed,assigned=assigned,stale_cancel=stale_cancel,blocked_name=blocked_name,cancelled=cancelled,worker_after=after}

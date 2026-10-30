@@ -33021,6 +33021,162 @@
       ],
       "bridge_sha256": "479fb981fce0087f5d44ace6300cc566f4c82931950d004c6f3dba49e26b0c92",
       "scope": "Paused controlled assigned-worker cancellation through native click and shared native semantic routine. Both release the worker and job, yield identical observed worker state and preserve completed occupancy. No simulation ticks or natural destruction progress; chest wire/UI integration remains unfinished."
+    },
+    "guarded_action_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261030-131519",
+      "owned_df_pid": 177060,
+      "actions": {
+        "assigned": {
+          "custom_name": "",
+          "has_worker": true,
+          "header_name": "Kumquat wood Chest",
+          "id": 278,
+          "max_stage": 1,
+          "native_name": "kumquat wood Chest",
+          "removing": true,
+          "revision": "1451449867319604756",
+          "stage": 1,
+          "suspended": false,
+          "type": 10
+        },
+        "blocked_name": {
+          "mutated": false,
+          "outcome": "rejected"
+        },
+        "cancelled": {
+          "mutated": true,
+          "outcome": "completed",
+          "snapshot": {
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Kumquat wood Chest",
+            "id": 278,
+            "max_stage": 1,
+            "native_name": "kumquat wood Chest",
+            "removing": false,
+            "revision": "1475866136942257694",
+            "stage": 1,
+            "suspended": false,
+            "type": 10
+          }
+        },
+        "initial": {
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Kumquat wood Chest",
+          "id": 278,
+          "max_stage": 1,
+          "native_name": "kumquat wood Chest",
+          "removing": false,
+          "revision": "1475866136942257694",
+          "stage": 1,
+          "suspended": false,
+          "type": 10
+        },
+        "removed": {
+          "mutated": true,
+          "outcome": "completed",
+          "snapshot": {
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Kumquat wood Chest",
+            "id": 278,
+            "max_stage": 1,
+            "native_name": "kumquat wood Chest",
+            "removing": true,
+            "revision": "8410970999148380483",
+            "stage": 1,
+            "suspended": false,
+            "type": 10
+          }
+        },
+        "renamed": {
+          "mutated": true,
+          "outcome": "completed",
+          "snapshot": {
+            "custom_name": "lower chest",
+            "has_worker": false,
+            "header_name": "Lower chest",
+            "id": 278,
+            "max_stage": 1,
+            "native_name": "lower chest",
+            "removing": false,
+            "revision": "471251419895981851",
+            "stage": 1,
+            "suspended": false,
+            "type": 10
+          }
+        },
+        "repeated": {
+          "mutated": false,
+          "outcome": "completed",
+          "snapshot": {
+            "custom_name": "lower chest",
+            "has_worker": false,
+            "header_name": "Lower chest",
+            "id": 278,
+            "max_stage": 1,
+            "native_name": "lower chest",
+            "removing": false,
+            "revision": "471251419895981851",
+            "stage": 1,
+            "suspended": false,
+            "type": 10
+          }
+        },
+        "restored": {
+          "mutated": true,
+          "outcome": "completed",
+          "snapshot": {
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Kumquat wood Chest",
+            "id": 278,
+            "max_stage": 1,
+            "native_name": "kumquat wood Chest",
+            "removing": false,
+            "revision": "1475866136942257694",
+            "stage": 1,
+            "suspended": false,
+            "type": 10
+          }
+        },
+        "stale": {
+          "mutated": false,
+          "outcome": "stale"
+        },
+        "stale_cancel": {
+          "mutated": false,
+          "outcome": "stale"
+        },
+        "too_long": {
+          "mutated": false,
+          "outcome": "rejected"
+        },
+        "worker_after": {
+          "current_job": -1,
+          "destination": {
+            "x": -30000,
+            "y": -30000,
+            "z": -30000
+          },
+          "job_counter": 0,
+          "jobs": [],
+          "occupancy": [
+            134217730
+          ],
+          "path_goal": -1,
+          "position": {
+            "x": 191,
+            "y": 180,
+            "z": 175
+          },
+          "worker_id": 996
+        }
+      },
+      "ui_bytes_unchanged": true,
+      "bridge_sha256": "fe293d20d051a6375b585f2a2d5f08c88acf86624b917fd9ec1828b79d361f4b",
+      "scope": "Independent revision-checked rename/remove/cancel transaction executed at a safe point through diagnostic command. Stale and rejected edits have no authority/effects; assigned-worker cleanup matches native reference. Management-wire transport, controller and chest screen remain unfinished."
     }
   }
 }

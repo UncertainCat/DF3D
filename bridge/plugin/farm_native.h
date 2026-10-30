@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <windows.h>
+#include "building_header_transaction.h"
 #include "df/building_farmplotst.h"
 #include "df/plotinfost.h"
 #include "df/world.h"
@@ -126,6 +127,22 @@ inline std::optional<BuildingHeader> buildingHeader(df::building* farm) {
 }
 inline std::optional<BuildingHeader> farmHeader(df::building_farmplotst* farm) {
     return buildingHeader(farm);
+}
+// Shared semantic header observation for independent building action authority.
+inline std::optional<BuildingHeaderObservation> observeBuildingHeader(df::building* building) {
+    const auto header=buildingHeader(building);if(!header)return {};
+    BuildingHeaderObservation value;value.id=building->id;value.type=int32_t(building->getType());
+    value.stage=building->getBuildStage();value.maxStage=building->getMaxBuildStage();
+    value.customName=header->customNameCp437;value.nativeName=header->nativeNameCp437;
+    value.headerName=header->headerNameCp437;value.removing=header->removing;
+    value.suspended=header->suspended;value.hasWorker=header->hasWorker;
+    for(const auto* job:building->jobs) {
+        if(!job)return {};
+        value.jobs.push_back({job->id,int32_t(job->job_type),job->flags.whole});
+    }
+    value.revision=buildingHeaderRevision(value);
+    if(!validBuildingHeader(value))return {};
+    return value;
 }
 // The native checkbox dispatch (sheet1afe40) is inline. Both job operations
 // accept only the farm; scheduling owns its local position vectors and consumes

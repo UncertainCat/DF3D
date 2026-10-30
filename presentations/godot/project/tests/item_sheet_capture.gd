@@ -29,7 +29,7 @@ func run() -> void:
 	var on_flag:=func(id,flag,value):indicator_calls.append([id,flag,value])
 	view.flag_requested.connect(on_flag);click(Vector2(340,24));view.flag_requested.disconnect(on_flag)
 	if not indicator_calls.is_empty():fail("Job indicator submitted an item edit");return
-	for sample in fixture.item_sheet_controls_reference.states:
+	for sample in fixture.item_sheet_controls_reference.states+fixture.potash_actions_reference.states:
 		var state: Dictionary=sample.snapshot.duplicate(true)
 		for key in ["id","item_type","holder_id"]:state[key]=int(state[key])
 		view.present(state)

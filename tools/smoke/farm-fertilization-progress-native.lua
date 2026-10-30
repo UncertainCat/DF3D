@@ -1,6 +1,9 @@
 -- Disposable owned-clone discovery. Supplies are controlled; DF executes jobs.
 local out,view,records,farm=...
 local script=require('gui.script')
+local action_marker=io.open(out..'/farm-item-action')
+local action
+if action_marker then action=action_marker:read('*a'):match('%S+');action_marker:close();assert(action=='forbid' or action=='dump')end
 assert(df.global.pause_state and #farm.jobs==0)
 df.global.d_init.feature.autosave=df.d_init_autosave.NONE
 local worker
@@ -96,6 +99,30 @@ local function inspect_delivered_item(item)
  click(756,76)
  local clicked=capture('farm-potash-item-task-click')
  clicked.sheet=df.view_sheet_type[sheet.active_sheet];clicked.active_id=sheet.active_id;clicked.open=sheet.open
+ if action then
+  local action_frame=df.global.world.frame_counter
+  local function action_state(label)
+   local captured=capture('farm-potash-'..action..'-'..label)
+   captured.item_flags=item.flags.whole;captured.forbid=item.flags.forbid;captured.dump=item.flags.dump
+   captured.in_job=item.flags.in_job;captured.in_building=item.flags.in_building
+   captured.sheet={open=sheet.open,type=df.view_sheet_type[sheet.active_sheet],id=sheet.active_id}
+   captured.contents={};captured.jobs={};captured.refs={}
+   for _,held in ipairs(farm.contained_items)do captured.contents[#captured.contents+1]={id=held.item.id,role=held.use_mode}end
+   for _,job in ipairs(farm.jobs)do
+    local unit=dfhack.job.getWorker(job);local ids={}
+    for _,ref in ipairs(job.items)do if ref.item then ids[#ids+1]=ref.item.id end end
+    captured.jobs[#captured.jobs+1]={id=job.id,worker=unit and unit.id or -1,items=ids}
+   end
+   for _,ref in ipairs(item.general_refs)do captured.refs[#captured.refs+1]=df.general_ref_type[ref:getType()]end
+   assert(df.global.pause_state and df.global.world.frame_counter==action_frame,'item action advanced simulation')
+  end
+  action_state('before')
+  for _,label in ipairs{'enabled','disabled'}do
+   if not sheet.open or sheet.active_sheet~=df.view_sheet_type.ITEM or sheet.active_id~=item.id then break end
+   click(action=='forbid' and 804 or 828,76);action_state(label)
+  end
+  row.action_only=action;row.delivered_item_inspected=true;return
+ end
  -- Keep the native item sheet open while DF consumes its target.
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id)
  row.delivered_item_inspected=true
@@ -125,6 +152,7 @@ local ok,why=pcall(function()
   if not row.delivered_item_inspected then
    for _,held in ipairs(farm.contained_items)do if held.item.id==potash_id then inspect_delivered_item(held.item);break end end
   end
+  if row.action_only then break end
   if farm.current_fertilization>initial then row.completed=true;break end
   script.sleep(1,'frames')
  end
@@ -132,6 +160,7 @@ end)
 df.global.pause_state=true
 row.final=farm.current_fertilization;row.elapsed_ticks=df.global.world.frame_counter-start
 assert(ok,why)
+if row.action_only then assert(row.delivered_item_inspected);return end
 assert(row.completed,'fertilizer job did not complete within the observation bound')
 assert(row.delivered_item_inspected,'delivered potash never reached farm contents')
 local reserved=false

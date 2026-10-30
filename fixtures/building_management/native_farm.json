@@ -26481,4 +26481,462 @@
   "scene_regression": "build/areas-acceptance-20261029-202900",
   "scope": "Native open-sheet retirement after consumption; real management potash inspection, both visibility values preserving assigned job, serialized background refresh and independent follow retirement. Main-scene seed/input/lifecycle regressions pass separately. Rendered potash scene and active-job Forbid/Dump effects remain unaccepted."
 }
+,
+  "potash_actions_reference": {
+  "states": [
+    {
+      "name": "farm-potash-forbid-enabled",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "dump": false,
+        "forbid": true,
+        "hidden": false,
+        "item_type": 0,
+        "material_token": "POTASH",
+        "melt": false,
+        "subtype_raw": "",
+        "id": 48520,
+        "role": 0,
+        "name": "{potash}",
+        "weight": "7Γ",
+        "description": "These are potash.  ",
+        "in_job": false,
+        "in_building": false,
+        "holder_id": 227,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT"
+      },
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-204037/farm-potash-forbid-enabled.png",
+      "rgb_sha256": "1989dea2130b30cf577d1b42127e9defe0fc2397da515fb3962df9483c5bd1c3"
+    },
+    {
+      "name": "farm-potash-forbid-disabled",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "dump": false,
+        "forbid": false,
+        "hidden": false,
+        "item_type": 0,
+        "material_token": "POTASH",
+        "melt": false,
+        "subtype_raw": "",
+        "id": 48520,
+        "role": 0,
+        "name": "potash",
+        "weight": "7Γ",
+        "description": "These are potash.  ",
+        "in_job": false,
+        "in_building": false,
+        "holder_id": 227,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT"
+      },
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-204037/farm-potash-forbid-disabled.png",
+      "rgb_sha256": "d7995042f19816df40502fcd6c03073dbd9efc59e95dbcf223e32c3b1faf5a4f"
+    },
+    {
+      "name": "farm-potash-dump-enabled",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "dump": true,
+        "forbid": false,
+        "hidden": false,
+        "item_type": 0,
+        "material_token": "POTASH",
+        "melt": false,
+        "subtype_raw": "",
+        "id": 48520,
+        "role": 0,
+        "name": "potash",
+        "weight": "7Γ",
+        "description": "These are potash.  ",
+        "in_job": true,
+        "in_building": false,
+        "holder_id": 227,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT"
+      },
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-204136/farm-potash-dump-enabled.png",
+      "rgb_sha256": "509eadff8028c1f9e0e7ab95d4cad933d156f75dba25337222eb3f13d8697627"
+    },
+    {
+      "name": "farm-potash-dump-disabled",
+      "snapshot": {
+        "can_dump": true,
+        "can_melt": false,
+        "dump": false,
+        "forbid": false,
+        "hidden": false,
+        "item_type": 0,
+        "material_token": "POTASH",
+        "melt": false,
+        "subtype_raw": "",
+        "id": 48520,
+        "role": 0,
+        "name": "potash",
+        "weight": "7Γ",
+        "description": "These are potash.  ",
+        "in_job": true,
+        "in_building": false,
+        "holder_id": 227,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT"
+      },
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-204136/farm-potash-dump-disabled.png",
+      "rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a"
+    }
+  ],
+  "native": {
+    "forbid": {
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-204037",
+      "states": [
+        {
+          "building_id": 227,
+          "contents": [
+            {
+              "id": 48520,
+              "role": 0
+            }
+          ],
+          "dump": false,
+          "forbid": false,
+          "frame": 1624,
+          "in_building": false,
+          "in_job": true,
+          "item_flags": 805306370,
+          "item_id": 48520,
+          "jobs": [
+            {
+              "id": 382820,
+              "items": [
+                48520
+              ],
+              "worker": 1017
+            }
+          ],
+          "name": "farm-potash-forbid-before",
+          "refs": [
+            "BUILDING_HOLDER"
+          ],
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        },
+        {
+          "building_id": 227,
+          "contents": [
+            {
+              "id": 48520,
+              "role": 0
+            }
+          ],
+          "dump": false,
+          "forbid": true,
+          "frame": 1624,
+          "in_building": false,
+          "in_job": false,
+          "item_flags": 805830656,
+          "item_id": 48520,
+          "jobs": [
+            {
+              "id": 382820,
+              "items": [],
+              "worker": 1017
+            }
+          ],
+          "name": "farm-potash-forbid-enabled",
+          "refs": [
+            "BUILDING_HOLDER"
+          ],
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        },
+        {
+          "building_id": 227,
+          "contents": [
+            {
+              "id": 48520,
+              "role": 0
+            }
+          ],
+          "dump": false,
+          "forbid": false,
+          "frame": 1624,
+          "in_building": false,
+          "in_job": false,
+          "item_flags": 805306368,
+          "item_id": 48520,
+          "jobs": [
+            {
+              "id": 382820,
+              "items": [],
+              "worker": 1017
+            }
+          ],
+          "name": "farm-potash-forbid-disabled",
+          "refs": [
+            "BUILDING_HOLDER"
+          ],
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        }
+      ]
+    },
+    "dump": {
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-204136",
+      "states": [
+        {
+          "building_id": 227,
+          "contents": [
+            {
+              "id": 48520,
+              "role": 0
+            }
+          ],
+          "dump": false,
+          "forbid": false,
+          "frame": 1672,
+          "in_building": false,
+          "in_job": true,
+          "item_flags": 805306370,
+          "item_id": 48520,
+          "jobs": [
+            {
+              "id": 382821,
+              "items": [
+                48520
+              ],
+              "worker": 1017
+            }
+          ],
+          "name": "farm-potash-dump-before",
+          "refs": [
+            "BUILDING_HOLDER"
+          ],
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        },
+        {
+          "building_id": 227,
+          "contents": [
+            {
+              "id": 48520,
+              "role": 0
+            }
+          ],
+          "dump": true,
+          "forbid": false,
+          "frame": 1672,
+          "in_building": false,
+          "in_job": true,
+          "item_flags": 807403522,
+          "item_id": 48520,
+          "jobs": [
+            {
+              "id": 382821,
+              "items": [
+                48520
+              ],
+              "worker": 1017
+            }
+          ],
+          "name": "farm-potash-dump-enabled",
+          "refs": [
+            "BUILDING_HOLDER"
+          ],
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        },
+        {
+          "building_id": 227,
+          "contents": [
+            {
+              "id": 48520,
+              "role": 0
+            }
+          ],
+          "dump": false,
+          "forbid": false,
+          "frame": 1672,
+          "in_building": false,
+          "in_job": true,
+          "item_flags": 805306370,
+          "item_id": 48520,
+          "jobs": [
+            {
+              "id": 382821,
+              "items": [
+                48520
+              ],
+              "worker": 1017
+            }
+          ],
+          "name": "farm-potash-dump-disabled",
+          "refs": [
+            "BUILDING_HOLDER"
+          ],
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        }
+      ]
+    }
+  },
+  "wire": {
+    "forbid": {
+      "capture": "build/areas-acceptance-20261029-204409",
+      "result": {
+        "action": "forbid",
+        "observations": [
+          {
+            "action": "forbid",
+            "contained": true,
+            "current": 0.0,
+            "frame": 1697.0,
+            "in_job": false,
+            "job_count": 1.0,
+            "job_id": 382821.0,
+            "job_items": 0.0,
+            "job_refs": 0.0,
+            "present": true,
+            "status": "passed",
+            "ui_unchanged": true,
+            "value": true,
+            "worker_id": 1017.0
+          },
+          {
+            "action": "forbid",
+            "contained": true,
+            "current": 0.0,
+            "frame": 1697.0,
+            "in_job": false,
+            "job_count": 1.0,
+            "job_id": 382821.0,
+            "job_items": 0.0,
+            "job_refs": 0.0,
+            "present": true,
+            "status": "passed",
+            "ui_unchanged": true,
+            "value": false,
+            "worker_id": 1017.0
+          }
+        ],
+        "snapshot": {
+          "building_id": 227,
+          "can_dump": true,
+          "can_melt": false,
+          "completed": true,
+          "description": "These are potash.  ",
+          "dump": false,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 227,
+            "name": "Farm Plot",
+            "type": 4
+          },
+          "id": 48520,
+          "in_building": false,
+          "in_job": false,
+          "item_type": 0,
+          "material_token": "POTASH",
+          "melt": false,
+          "name": "potash",
+          "removing": false,
+          "revision": 3915608483983938496,
+          "role": 0,
+          "subtype_raw": "",
+          "weight": "7Γ"
+        }
+      }
+    },
+    "dump": {
+      "capture": "build/areas-acceptance-20261029-204538",
+      "result": {
+        "action": "dump",
+        "observations": [
+          {
+            "action": "dump",
+            "contained": true,
+            "current": 0.0,
+            "frame": 1848.0,
+            "in_job": true,
+            "job_count": 1.0,
+            "job_id": 382821.0,
+            "job_items": 1.0,
+            "job_refs": 1.0,
+            "present": true,
+            "status": "passed",
+            "ui_unchanged": true,
+            "value": true,
+            "worker_id": 1017.0
+          },
+          {
+            "action": "dump",
+            "contained": true,
+            "current": 0.0,
+            "frame": 1848.0,
+            "in_job": true,
+            "job_count": 1.0,
+            "job_id": 382821.0,
+            "job_items": 1.0,
+            "job_refs": 1.0,
+            "present": true,
+            "status": "passed",
+            "ui_unchanged": true,
+            "value": false,
+            "worker_id": 1017.0
+          }
+        ],
+        "snapshot": {
+          "building_id": 227,
+          "can_dump": true,
+          "can_melt": false,
+          "completed": true,
+          "description": "These are potash.  ",
+          "dump": false,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 227,
+            "name": "Farm Plot",
+            "type": 4
+          },
+          "id": 48520,
+          "in_building": false,
+          "in_job": true,
+          "item_type": 0,
+          "material_token": "POTASH",
+          "melt": false,
+          "name": "potash",
+          "removing": false,
+          "revision": 6861315585775711082,
+          "role": 0,
+          "subtype_raw": "",
+          "weight": "7Γ"
+        }
+      }
+    }
+  },
+  "scope": "Immediate paused Forbid/Dump behavior on naturally assigned fertilizer: both flag values, reservation/job/worker/item references, retained farm membership and open native sheet. Later simulation after these actions and rendered main-scene action input remain unaccepted."
+}
 }

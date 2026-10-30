@@ -539,7 +539,7 @@ fertilizer inspection. DF166324 exits unsaved and source preservation passes.
 description/artwork evidence, contents/header reads and the rejection by the
 then-seed-only description provider. Native displays the delivered potash's
 active-job indicator as well. Potash now has the staged support described below;
-rendered potash-scene acceptance and remaining active-job effects are still
+rendered potash-scene acceptance and later simulation after job-affecting edits are still
 required before exposure.
 This is controlled-supply native workflow evidence, not DF3D item-sheet acceptance
 or an exhaustive trace of every simulation tick. Other native farm scopes remain
@@ -587,7 +587,7 @@ native provider, both visibility values while preserving the assigned job, and
 inspection/follow retirement after consumption at tick2448. Three later polls
 do not restart the consumed target. DF182308 exits unsaved; both save manifests
 remain unchanged. This is controller/transport acceptance, not rendered potash
-scene acceptance or active-job Forbid/Dump acceptance. Transfers out of the
+scene acceptance; immediate active-job Forbid/Dump acceptance is recorded below. Transfers out of the
 original farm remain outside the current farm-bound inspection provider.
 
 `item_consumption_reference` records native sheet transitions and bounded viewer
@@ -597,6 +597,28 @@ alongside existing stale/unknown/close/epoch tests. Main-scene regression202900
 passes80 native checks and the existing input/edit/follow/disconnect/replacement
 matrix with only the known rendering-thread notice. All five owned DF processes
 exit unsaved, with both save manifests unchanged.
+
+Immediate active-job Forbid/Dump behavior is covered by the optional
+`-FarmItemAction forbid|dump` variants of both protected progress runners.
+Native204037/204136 operate the actual item-sheet buttons after DF delivers
+potash. Forbid clears the item's job reservation and the job's item list, while
+retaining the assigned worker, original job, farm contents membership and open
+item sheet. Unforbidding clears the flag without restoring the reservation.
+Dump preserves the reservation in both directions. These are paused effects;
+they do not establish what the job does after simulation resumes.
+
+Live client204409/204538 verifies the same transitions through the real
+management/model path, including item-side job references and refreshed job
+indicator state, without altering the observed native UI or simulation frame.
+Both directions complete with confirmed receipts. Native DF150340/177360 and
+client DF130120/186440 exit unsaved; source preservation passes, including both
+client save manifests. No runtime change was needed: the existing native action
+calls supplied the observed effects. `potash_actions_reference` retains the
+separate native and client evidence. GPU `potash-active-job-actions` matches all
+four488x708 action-state panels, including the native forbidden-name decoration
+and present/absent job indicator. Core passes; GPU passes with only the three
+documented engine diagnostics. Actual main-scene action input and subsequent
+simulation remain separate gates.
 
 ## Native item holder provider
 

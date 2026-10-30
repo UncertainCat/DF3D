@@ -14,6 +14,7 @@ if not index then
  item.flags.forbid=false;worker.status.labors[df.unit_labor.PLANT]=true
  local text,code=dfhack.run_command_silent('df3d','farm-fertilize',tostring(farm.id),'toggle');assert(code==0,text)
  local fixture={building_id=farm.id,item_id=item.id,initial=farm.current_fertilization,frame=df.global.world.frame_counter}
+ local marker=io.open(out..'/farm-item-action');if marker then fixture.action=marker:read('*a'):match('%S+');marker:close()end
  _G.df3d_farm_item_progress=fixture;write('fixture.json',fixture);print('FIXTURE_READY');return
 end
 local fixture=assert(_G.df3d_farm_item_progress)
@@ -29,6 +30,11 @@ if request.op=='sample' then
  if contained then
   local text,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(farm.id),tostring(item.id));assert(code==0,text)
   fixture.expected=json.decode(text);fixture.frame=df.global.world.frame_counter;fixture.ui=ui
+  if not fixture.assignment then
+   for _,job in ipairs(farm.jobs)do for _,ref in ipairs(job.items)do if ref.item==item then
+    fixture.assignment={job_id=job.id,worker_id=assert(dfhack.job.getWorker(job)).id}
+   end end end
+  end
  end
 elseif request.op=='verify' then
  assert(contained and fixture.expected,'potash target disappeared while paused')
@@ -45,5 +51,20 @@ elseif request.op=='flags' then
  local reserved=false
  for _,job in ipairs(farm.jobs)do for _,ref in ipairs(job.items)do if ref.item==item and dfhack.job.getWorker(job)then reserved=true end end end
  assert(reserved,'visibility edit lost assigned fertilizer job');result.hidden=item.flags.hidden;result.reservation_preserved=true
+elseif request.op=='item_action' then
+ assert(fixture.action=='forbid' or fixture.action=='dump')
+ assert(contained and item.flags[fixture.action]==request.value,'action flag differs')
+ assert(fixture.frame==df.global.world.frame_counter and fixture.ui==ui,'item action changed frame/native UI')
+ local assignment=assert(fixture.assignment);local job
+ for _,candidate in ipairs(farm.jobs)do if candidate.id==assignment.job_id then job=candidate;break end end
+ assert(job,'native retains the original farm job immediately after this action')
+ local worker=assert(dfhack.job.getWorker(job));assert(worker.id==assignment.worker_id and worker.job.current_job==job,'assigned worker changed')
+ local retained=fixture.action=='dump'
+ assert(item.flags.in_job==retained and #job.items==(retained and 1 or 0),'native reservation cleanup differs')
+ if retained then assert(job.items[0].item==item)end
+ local job_refs=0;for _,ref in ipairs(item.specific_refs)do if ref.type==df.specific_ref_type.JOB then job_refs=job_refs+1 end end
+ assert(job_refs==(retained and 1 or 0),'item job reference cleanup differs')
+ result.action=fixture.action;result.value=item.flags[fixture.action];result.in_job=item.flags.in_job
+ result.job_id=job.id;result.worker_id=worker.id;result.job_items=#job.items;result.job_refs=job_refs;result.ui_unchanged=true
 else error('unknown progress request')end
 write('response-'..index..'.json',result);print('SEMANTIC_PASS farm-item-progress '..request.op)

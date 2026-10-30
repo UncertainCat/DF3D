@@ -40,6 +40,19 @@ func progress_cases(model,follow,actions) -> void:
 				if not check(model.phase==model.Phase.Ready and model.snapshot.hidden==hidden,"potash visibility receipt failed"):return
 				await native("flags",{"hidden":hidden})
 				if stopped:return
+			if fixture.has("action"):
+				var observations: Array=[]
+				var operation: int=Contract.FarmOperation.ItemForbid if fixture.action=="forbid" else Contract.FarmOperation.ItemDump
+				for value in [true,false]:
+					model.set_flag(operation,value)
+					if not await settle(model,follow,actions):return
+					if not check(model.phase==model.Phase.Ready and model.snapshot[fixture.action]==value,"active-job action receipt failed"):return
+					var observed:=await native("item_action",{"value":value})
+					if stopped:return
+					if not check(model.snapshot.in_job==observed.in_job,"fresh item sheet retained old job indicator"):return
+					observations.append(observed)
+				write_json("farm-item-action-results.json",{"action":fixture.action,"observations":observations,"snapshot":model.view_snapshot()})
+				return
 			follow.toggle(int(fixture.item_id))
 			if not await settle(model,follow,actions):return
 			if not check(follow.last_position!=null,"potash follow failed"):return

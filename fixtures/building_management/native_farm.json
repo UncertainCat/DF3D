@@ -35605,7 +35605,7 @@
       "limitations": "Shared ownership, cold furnishing artwork initialization and other creature types remain unverified."
     },
     "unit_health_reference": {
-      "status": "Native reference only; runtime health reader and rendered parity remain unfinished.",
+      "status": "Native reference; initial reader and rendered cases recorded separately in unit_health_reader_reference.",
       "cases": [
         {
           "case": "pain",
@@ -35887,7 +35887,220 @@
         }
       ],
       "fixture": "Temporary longterm_stress/counter/health-flag changes restored in reverse order; no healthcare action acceptance.",
-      "limitations": "Current viewer Blood summary is unchanged. Helper ownership live guards, all thresholds, blinking, traction, overflow resize and rendered health parity remain unverified."
+      "limitations": "Reference cases do not cover all thresholds, blinking or traction. See unit_health_reader_reference for runtime acceptance."
+    },
+    "unit_health_reader_reference": {
+      "cases": [
+        {
+          "case": "original",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-170905",
+          "result_sha256": "c565148c9e5cddc1c9a785ef97679dd3eb527c37aa1c06a35044972f0b6c2ba8",
+          "owned_df_pid": 194896,
+          "rows": [
+            {
+              "color": 15,
+              "flash": 0,
+              "text": "Healthy"
+            }
+          ],
+          "guarded_unit_personality_wounds_health_ui_unchanged": true,
+          "health_pixel_rectangle": [
+            424,
+            292,
+            232,
+            72
+          ],
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        },
+        {
+          "case": "pain",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-171006",
+          "result_sha256": "381f9aedf200f1392b1287704c994f9afaadb39385271e99d87ced0c8093e052",
+          "owned_df_pid": 488,
+          "rows": [
+            {
+              "color": 6,
+              "flash": 0,
+              "text": "Pain"
+            },
+            {
+              "color": 14,
+              "flash": 0,
+              "text": "Pain"
+            }
+          ],
+          "guarded_unit_personality_wounds_health_ui_unchanged": true,
+          "health_pixel_rectangle": [
+            424,
+            292,
+            232,
+            72
+          ],
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        },
+        {
+          "case": "priority",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-171107",
+          "result_sha256": "b185e157ad2810dbe9a489e08abf4d9d46c2f26a2a4ab622ac3c4d1fbe2df23c",
+          "owned_df_pid": 85320,
+          "rows": [
+            {
+              "color": 13,
+              "flash": 0,
+              "text": "Harrowed"
+            },
+            {
+              "color": 12,
+              "flash": 0,
+              "text": "Starving"
+            },
+            {
+              "color": 12,
+              "flash": 0,
+              "text": "Dehydrated"
+            },
+            {
+              "color": 12,
+              "flash": 0,
+              "text": "Very drowsy"
+            },
+            {
+              "color": 15,
+              "flash": 0,
+              "text": "Unconscious"
+            },
+            {
+              "color": 11,
+              "flash": 0,
+              "text": "Stunned"
+            }
+          ],
+          "guarded_unit_personality_wounds_health_ui_unchanged": true,
+          "health_pixel_rectangle": [
+            424,
+            292,
+            232,
+            72
+          ],
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        },
+        {
+          "case": "injury",
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-171209",
+          "result_sha256": "a94f02125bf160d5355057a25231b50b2669ad54d365ddb58414db55c09f62e5",
+          "owned_df_pid": 190664,
+          "rows": [
+            {
+              "color": 12,
+              "flash": 0,
+              "text": "Seriously injured"
+            }
+          ],
+          "guarded_unit_personality_wounds_health_ui_unchanged": true,
+          "health_pixel_rectangle": [
+            424,
+            292,
+            232,
+            72
+          ],
+          "closed_unsaved": true,
+          "source_manifest_unchanged": true,
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          }
+        }
+      ],
+      "qa": "build/qa/unit-health",
+      "diagnostic": "df3d unit-health-probe <unit>",
+      "limitations": "Threshold boundaries, blinking native/rendered phases, traction, nonzero wound bleeding, resize, stale identity and other creature types remain unverified."
     }
   }
 }

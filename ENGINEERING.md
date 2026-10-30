@@ -1561,8 +1561,8 @@ or office appointment actions. All owned sessions exit unsaved, preserve the
 source and have only the known renderer notice in ten GPU logs. PET/PET_EXOTIC,
 missing-history and other fortress-control exclusions still need live coverage.
 
-Overview health remains unfinished: the current Blood summary is not native
-parity. The reference block164389..166742 selects up to six ordered status rows;
+Overview health uses ordered native statuses instead of the former Blood summary.
+The reference block164389..166742 selects up to six ordered status rows;
 its scalar thresholds and drawing calls are inline, with no aggregate semantic
 formatter to invoke. Long-term stress (personality+0x180), rather than current
 stress, selects Harrowed/Haggard/Stressed; moods5..9 suppress that row. Fortress
@@ -1580,8 +1580,8 @@ bleeding and is read-only. Native13406b0 classifies injury: health flag2 returns
 RestInTraction return2, otherwise-1. Its Rest-job branch resolves general reference
 BUILDING_USE_TARGET_1 via edfb70's read-only world-building lookup, then reads
 building users through getUsers (bed/traction-bench28bec0 returns building+0x150).
-This is hospital traction state, not squad training. These helpers are candidates
-for direct runtime calls after live ownership checks. The enclosing renderer and
+This is hospital traction state, not squad training. The bridge calls these
+helpers directly when the native row budget permits. The enclosing renderer and
 its global gps writes must never be called as a semantic reader.
 
 unit_health_reference retains protected165937/170136/170237 on2026-10-30:
@@ -1591,7 +1591,27 @@ Unconscious, Stunned, omitting seventh-place Nauseous; health flags2 yields
 Seriously injured. Fixtures restore changed fields, exit owned sessions unsaved
 and preserve source saves. The six GPU logs contain only the known renderer
 notice; existing unrelated main-scene checks pass. These captures establish
-native health rows, not the still-missing rendered health implementation.
+native health rows; runtime acceptance is recorded below.
+
+The fortress-only overviewHealth reader pins the reference block and native
+helper bodies. Request-local Lua rows carry caption, palette color and flash
+kind as additive overview_health facts in management102. The renderer consumes
+these rows in order, keeping the separate Health-tab body facts unchanged.
+A label-owned process handles native dark/bright or four-phase drowning cycles;
+freed labels retire their animation. No native UI timer or drawing scratch is read.
+The native sheet receives its display-time argument through14ef90's edx (saved
+at stack+b268); fortress render3d6950 forwards its own display-time argument.
+
+unit_health_reader_reference records protected170905/171006/171107/171209 on
+2026-10-30: Healthy, duplicated Pain, six-row priority and Seriously injured.
+Direct unit-health-probe reads match native captions and colors and preserve
+all guarded unit, personality, wound, health and UI bytes. Actual main-scene
+health rectangles424,292,232,72 match native pixels, with prior frame, portrait,
+title, hauling, squad, needs, camera and Escape checks passing. All eight GPU
+logs have only the known renderer notice. Owned sessions exit unsaved and source
+saves remain unchanged. MSVC and unit-health QA pass core19/19, context and
+thought-text checks. Threshold boundaries, blinking phases, traction, nonzero
+wound bleeding, resize and stale-identity cases remain live coverage gaps.
 
 ## Native item holder provider
 

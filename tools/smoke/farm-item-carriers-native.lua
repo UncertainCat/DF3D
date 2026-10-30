@@ -285,6 +285,31 @@ local ok,err=xpcall(function()
     local text=string.char(table.unpack(bytes)):gsub('[%z\1-\31]',' '):gsub('%s+$','')
     linked.health_rows[#linked.health_rows+1]={text=text,colors=colors}
    end
+   local health_protected={unit,sheet,df.global.plotinfo,unit.status.current_soul.personality}
+   if unit.health then health_protected[#health_protected+1]=unit.health end
+   for _,wound in ipairs(unit.body.wounds)do
+    health_protected[#health_protected+1]=wound
+    for _,part in ipairs(wound.parts)do health_protected[#health_protected+1]=part end
+   end
+   local health_copies={}
+   for _,object in ipairs(health_protected)do
+    local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+    health_copies[#health_copies+1]={size=size,address=address,bytes=bytes}
+   end
+   local health_text,health_status=dfhack.run_command_silent('df3d','unit-health-probe',tostring(unit.id))
+   local health_unchanged=true
+   for _,copy in ipairs(health_copies)do
+    local after=df.new('uint8_t',copy.size);dfhack.internal.memmove(after,copy.address,copy.size)
+    for i=0,copy.size-1 do if after[i]~=copy.bytes[i]then health_unchanged=false end end
+    df.delete(after);df.delete(copy.bytes)
+   end
+   assert(health_status==0,health_text);assert(health_unchanged,'native health reader changed guarded unit/wounds/UI state')
+   linked.health_probe=json.decode(health_text);linked.health_reader_unchanged=true
+   for i=1,6 do
+    local row=linked.health_probe[i];local native=linked.health_rows[i]
+    assert((row and row.text or '')==native.text,'native health reader text differs')
+    if row and row.flash==0 then assert(row.color==native.colors[1][1]+(native.colors[1][3] and 8 or 0),'native health reader color differs')end
+   end
    local expected_health=({pain={'Pain','Pain'},priority={'Harrowed','Starving','Dehydrated','Very drowsy','Unconscious','Stunned'},injury={'Seriously injured'}})[health_case]
    if expected_health then
     for i=1,6 do assert(linked.health_rows[i].text==(expected_health[i] or ''),'native health order differs at row '..i..': '..linked.health_rows[i].text)end

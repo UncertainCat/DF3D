@@ -78,6 +78,7 @@
 #include "building_item_native.h"
 #include "creature_overview_native.h"
 #include "creature_office_native.h"
+#include "creature_health_native.h"
 #include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
 // kernel objects) has no POSIX path yet; say so instead of failing on HANDLE.
@@ -3135,6 +3136,17 @@ void run(color_ostream& out) {
   }
   if(r->creature()) field(L,"unit_id",r->creature()->unit_id());
   if(action==m::ManagementAction::CreatureInspect) {
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto rows=df3d_creature::overviewHealth(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!rows)return luaL_error(state,"Native creature health status unavailable");
+      lua_newtable(state);int index=0;
+      for(const auto& row:*rows) {
+        lua_newtable(state);field(state,"text",row.text);field(state,"color",row.color);field(state,"flash",row.flash);
+        lua_rawseti(state,-2,++index);
+      }
+      return 1;
+    });
+    lua_setfield(L,-2,"overview_health");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto value=df3d_creature::noOfficeFallback(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!value)return luaL_error(state,"Native creature office status unavailable");

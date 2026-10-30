@@ -96,6 +96,8 @@ func unit_carrier(expected: Dictionary) -> void:
 	elif overview_case!="child":
 		var office_rect:=Rect2i(664,292,232,48 if overview_case=="office-requirements" else 36 if overview_case=="offices" else 24 if overview_case=="office-spouse" else 12)
 		check(rendered.get_region(office_rect).get_data()==native.get_region(office_rect).get_data(),"Native office title pixels differ")
+	var health_rect:=Rect2i(424,292,232,72)
+	check(rendered.get_region(health_rect).get_data()==native.get_region(health_rect).get_data(),"Native Overview health pixels differ")
 	for region in [Rect2i(416,52,488,4),Rect2i(416,52,4,708),Rect2i(900,52,4,708),Rect2i(416,756,488,4),Rect2i(424,64,96,96),Rect2i(424,160,472,48),Rect2i(424,376,232,12),Rect2i(664,376,232,12),Rect2i(664,460,232,72)]:
 		check(rendered.get_region(region).get_data()==native.get_region(region).get_data(),"Unit frame/portrait pixels differ: "+str(region))
 	var evidence:=FileAccess.open(directory+"/unit-overview-scene.json",FileAccess.WRITE)

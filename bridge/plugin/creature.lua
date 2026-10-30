@@ -235,6 +235,12 @@ return function(request)
   end end
  end)
  section(3,function(s)
+  if request.overview_health then
+   for i,status in ipairs(request.overview_health(u.id))do
+    local r=record(s,-100-i,status.text);fact(s,r,'record_type','overview_health')
+    fact(s,r,'color',status.color);fact(s,r,'flash',status.flash)
+   end
+  end
   local r=record(s,-1,'Body condition');fact(s,r,'record_type','status');fact(s,r,'blood',u.body.blood_count);fact(s,r,'blood_maximum',u.body.blood_max)
   fact(s,r,'infection',u.body.infection_level);fact(s,r,'body_size',u.body.size_info.size_cur)
   each(s,u.body.wounds,function(v)

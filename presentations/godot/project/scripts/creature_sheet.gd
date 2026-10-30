@@ -137,7 +137,7 @@ func filtered_records(key: String, records: Array) -> Array:
   return records.filter(func(row): return str(fact_value(row,"record_type"))==wanted and (wanted!="wound" or fact_value(row,"diagnosed")=="yes"))
  if tab=="Health" and key=="treatment":
   return records.filter(func(row): return fact_value(row,"native_treatment")=="yes")
- if tab=="Overview" and key=="health": return records.filter(func(row): return str(fact_value(row,"record_type"))=="status")
+ if tab=="Overview" and key=="health": return records.filter(func(row): return str(fact_value(row,"record_type"))=="overview_health")
  if tab=="Skills" and key=="skills":
   var sub := str(subtabs.get(tab,"Labor"))
   var found: Array = []
@@ -323,9 +323,13 @@ func overview(parent: Node, detail: Dictionary):
  for descriptor in NativeText.attributes(self):
   summary_line(cells[1],descriptor.text,descriptor.color)
  for row in records_for("health"):
-  if fact_value(row,"record_type")=="status":
-   summary_line(cells[2],"Blood: %s / %s" % [fact_value(row,"blood"),fact_value(row,"blood_maximum")])
-   if int(fact_value(row,"infection",0))>0: summary_line(cells[2],"Infection: %s" % fact_value(row,"infection"),Color(1,.6,0))
+  if fact_value(row,"record_type")=="overview_health":
+   var label := text(cells[2],str(row.get("name","")),NativeText.colors[int(fact_value(row,"color",15))])
+   label.autowrap_mode=TextServer.AUTOWRAP_OFF;label.clip_text=true
+   var flash := int(fact_value(row,"flash",0))
+   if flash!=0:
+    label.set_script(preload("res://scripts/creature_health_flash.gd"))
+    label.set("base_color",int(fact_value(row,"color",15)));label.set("flash",flash)
  var skills: Array=records_for("skills").duplicate()
  skills.sort_custom(func(a,b):
   var ar := int(fact_value(a,"rating",0));var br := int(fact_value(b,"rating",0))

@@ -60,10 +60,11 @@ func refresh() -> void:
 	if state.snapshot.is_empty() or (state.phase!=state.Phase.Reading and floori(cell_first/3.0)!=cursor):cell_first=cursor*3
 	if state.phase==state.Phase.Reading and floori(cell_first/3.0)!=cursor:rows=[]
 	for row in rows.slice(0,visible_count()):
-		# This provider is verified for plant seeds; other kinds remain unfinished.
+		# Native planted seeds and delivered fertilizer use original page colors.
 		var material: PackedStringArray=String(row.material_token).split(":")
 		if row.item_type==53 and material.size()==3 and material[0]=="PLANT" and material[2]=="SEED":
 			icons[row.id]=world.farm_seed_icon(material[1])
+		elif row.item_type==0 and row.material_token=="POTASH":icons[row.id]=world.farm_potash_icon()
 	scrollbar.set_rows(int(state.snapshot.get("total",0))*3,cell_first)
 	scrollbar.visible=page>0 and int(state.snapshot.get("total",0))>page
 	if not can_scroll():scrollbar.dragging=false

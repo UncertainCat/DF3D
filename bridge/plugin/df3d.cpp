@@ -1652,7 +1652,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!tile||tile->bits.hidden)return CR_FAILURE;
           df::item* item=nullptr;
           for(auto* held:farm->contained_items)if(held&&held->item&&held->item->id==ids[1])item=held->item;
-          if(!item||(parameters[0]=="farm-item-description-probe"&&int(item->getType())!=53))return CR_FAILURE;
+          if(!item)return CR_FAILURE;
           const auto caption=df3d_production::buildingItemCaption(item);
           const auto weight=df3d_production::itemWeightCaption(item);
           if(!caption||!weight)return CR_FAILURE;
@@ -1666,7 +1666,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result["holder"]=std::move(link);
           }
           if(parameters[0]=="farm-item-description-probe") {
-            const auto description=df3d_production::seedItemDescription(item);
+            const auto description=df3d_production::farmItemDescription(item);
             if(!description)return CR_FAILURE;
             result["description"]=DF2UTF(*description);
           }

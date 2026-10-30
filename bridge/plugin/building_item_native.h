@@ -116,12 +116,13 @@ inline std::optional<std::string> itemWeightCaption(df::item* item) {
     if(!format||!item)return std::nullopt;
     std::string result;format(item,&result);return result;
 }
-// Seed-specific virtual targets used by c75000. Pin both dispatch and complete
+// Seed/bar virtual targets used by c75000. Pin both dispatch and complete
 // leaf bodies before relying on type/quality/construction/image exclusions.
-inline bool seedDescriptionDispatch(df::item* item) {
+inline bool farmItemDescriptionDispatch(df::item* item) {
     if(!item||!farmFunctions())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
-    if(*reinterpret_cast<const void* const*>(item)!=base+0x16d06e0)return false;
+    const auto* table=*reinterpret_cast<const void* const*>(item);
+    if(table!=base+0x16d06e0 && table!=base+0x16f6da0)return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -143,8 +144,16 @@ inline bool seedDescriptionDispatch(df::item* item) {
             {0x6c0,0x67050,3,UINT64_C(0x62941518298855c4)}, // isCritter
             {0x750,0x66e60,6,UINT64_C(0x62d2efd24138f070)}, // getFaceUp
         };
-        for(const auto& pin:pins) {
-            if(*reinterpret_cast<const void* const*>(base+0x16d06e0+pin.slot)!=base+pin.target)return false;
+        // BAR shares the seed exclusions: no image reference, construction,
+        // maker, critter or face-up branch. Only type and material getters differ.
+        // Native c7527b adjusts BAR grammar; all text still comes from c75000.
+        for(const size_t table:{size_t(0x16d06e0),size_t(0x16f6da0)})for(auto pin:pins) {
+            if(table==0x16f6da0) {
+                if(pin.slot==0)pin={0,0x66e90,3,UINT64_C(0x58389c18233078ff)};
+                else if(pin.slot==0x10 || pin.slot==0x38)
+                    pin={pin.slot,0x5453d0,8,UINT64_C(0xe3389d0d7d85b545)};
+            }
+            if(*reinterpret_cast<const void* const*>(base+table+pin.slot)!=base+pin.target)return false;
             uint64_t hash=UINT64_C(14695981039346656037);
             for(size_t i=0;i<pin.length;++i){hash^=base[pin.target+i];hash*=UINT64_C(1099511628211);}
             if(hash!=pin.hash)return false;
@@ -174,11 +183,11 @@ inline bool seedDescriptionDispatch(df::item* item) {
     }();
     return pinned;
 }
-// Seed-specific owned description. General item branches can initialize art
-// or grant adventure knowledge and must not use this seed-only entry point.
-inline std::optional<std::string> seedItemDescription(df::item* item) {
+// Owned seed/bar description. Other item branches can initialize art or grant
+// adventure knowledge and are excluded by the exact dispatch allowlist.
+inline std::optional<std::string> farmItemDescription(df::item* item) {
     using Describe=void (*)(df::item*,std::string*,bool,bool,bool,int32_t);
-    if(!seedDescriptionDispatch(item))return std::nullopt;
+    if(!farmItemDescriptionDispatch(item))return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool pinned=[base]() {
         uint64_t value=UINT64_C(14695981039346656037);

@@ -44,8 +44,8 @@ local function inspect_delivered_item(item)
   end
  end if found then break end end
  assert(found and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==farm.id,'delivered farm not selected')
- local function capture(name)
-  g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0
+ local function capture(name,keep_pointer)
+  if not keep_pointer then g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0 end
   for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
   local shot={name=name,item_id=item.id,building_id=farm.id,frame=df.global.world.frame_counter,lines={}}
   for y=0,g.dimy-1 do
@@ -70,8 +70,32 @@ local function inspect_delivered_item(item)
  native.description=dfhack.df2utf(sheet.raw_description);native.description_width=sheet.description_width
  local header,header_code=dfhack.run_command_silent('df3d','farm-item-header-read',tostring(farm.id),tostring(item.id))
  assert(header_code==0,header);native.header=require('json').decode(header)
- local _,description_code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(farm.id),tostring(item.id))
- native.description_provider_accepted=description_code==0
+ local guards={}
+ for _,object in ipairs{item,farm,sheet,df.global.plotinfo,df.global.world.raws.interactions.all}do
+  local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+  dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={bytes=bytes,address=address,size=size}
+ end
+ local description,description_code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(farm.id),tostring(item.id))
+ assert(description_code==0,description)
+ native.description_provider=require('json').decode(description)
+ assert(native.description_provider.description==native.description,'owned potash description differs from native')
+ for _,guard in ipairs(guards)do
+  assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'potash description changed guarded item/farm/UI/raws')
+  df.delete(guard.bytes)
+ end
+ native.description_provider_accepted=true;native.description_guards_unchanged=true
+ local hover_deadline=dfhack.getTickCount()+3000
+ repeat
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.mouse_x=756//8;g.mouse_y=(76-4)//12;g.precise_mouse_x=756;g.precise_mouse_y=76
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+ until dfhack.getTickCount()>=hover_deadline
+ local hover=capture('farm-potash-item-task-hover',true)
+ hover.hover=df.global.game.main_interface.current_hover
+ hover.enabled=df.global.game.main_interface.hover_instructions_on
+ click(756,76)
+ local clicked=capture('farm-potash-item-task-click')
+ clicked.sheet=df.view_sheet_type[sheet.active_sheet];clicked.active_id=sheet.active_id;clicked.open=sheet.open
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  row.delivered_item_inspected=true
  df.global.pause_state=false

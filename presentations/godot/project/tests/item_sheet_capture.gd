@@ -16,6 +16,19 @@ func run() -> void:
 	image.save_png(ProjectSettings.globalize_path("res://../../../build/item-sheet-viewer.png"))
 	var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_data())
 	if hash.finish().hex_encode()!=reference.rgb_sha256:fail("Native item sheet pixels differ");return
+	var potash: Dictionary=fixture.potash_item_reference.snapshot.duplicate(true)
+	for key in ["id","item_type","holder_id"]:potash[key]=int(potash[key])
+	view.present(potash)
+	await process_frame;await RenderingServer.frame_post_draw
+	image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	image.save_png(ProjectSettings.globalize_path("res://../../../build/potash-item-viewer.png"))
+	hash.start(HashingContext.HASH_SHA256);hash.update(image.get_data())
+	if hash.finish().hex_encode()!=fixture.potash_item_reference.panel_rgb_sha256:fail("Native potash sheet pixels differ");return
+	if view.help_at(Vector2(340,24))!="":fail("Native inert job indicator acquired help");return
+	var indicator_calls: Array=[]
+	var on_flag:=func(id,flag,value):indicator_calls.append([id,flag,value])
+	view.flag_requested.connect(on_flag);click(Vector2(340,24));view.flag_requested.disconnect(on_flag)
+	if not indicator_calls.is_empty():fail("Job indicator submitted an item edit");return
 	for sample in fixture.item_sheet_controls_reference.states:
 		var state: Dictionary=sample.snapshot.duplicate(true)
 		for key in ["id","item_type","holder_id"]:state[key]=int(state[key])

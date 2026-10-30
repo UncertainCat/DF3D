@@ -25918,7 +25918,7 @@
     ]
   },
   "scope": "Owned disposable clone with one created potash bar placed on farm and Plant labor enabled for the creation worker. Native scheduler, worker assignment, delivery and consumption run without forced jobs or item movement after setup. Native item View and header read succeed; description provider rejects BAR. No DF3D potash item rendering or writes accepted.",
-  "limitations": "Samples taken at script-frame callbacks; not a trace of every simulation tick. Native screenshot is authoritative for glyphs; header diagnostic weight retains the command-output encoding.",
+  "limitations": "Samples taken at script-frame callbacks; not a trace of every simulation tick.",
   "baseline_census": {
     "farms": [
       {
@@ -26256,5 +26256,82 @@
     "name": "farm-item-census",
     "potash": []
   }
+}
+,
+  "potash_item_reference": {
+  "capture": "build/stockpile-storage-native-farm-discovery-20261029-193942",
+  "snapshot": {
+    "can_dump": true,
+    "can_melt": false,
+    "dump": false,
+    "forbid": false,
+    "hidden": false,
+    "item_type": 0,
+    "material_token": "POTASH",
+    "melt": false,
+    "subtype_raw": "",
+    "id": 48520,
+    "role": 0,
+    "name": "potash",
+    "weight": "7Γ",
+    "description": "These are potash.  ",
+    "in_job": true,
+    "in_building": false,
+    "holder_id": 227,
+    "holder_name": "In Farm Plot",
+    "holder_art": "BUILDING_ICON_FARM_PLOT"
+  },
+  "description_guards_unchanged": true,
+  "panel_rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a",
+  "contents": {
+    "name": "delivered-potash",
+    "total": 1,
+    "page": 6,
+    "rows": [
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "dump": false,
+        "forbid": false,
+        "hidden": false,
+        "item_type": 0,
+        "material_token": "POTASH",
+        "melt": false,
+        "subtype_raw": "",
+        "id": 48520,
+        "role": 0,
+        "name": "potash",
+        "weight": "7Γ",
+        "description": "These are potash.  ",
+        "in_job": true,
+        "in_building": false,
+        "holder_id": 227,
+        "holder_name": "In Farm Plot",
+        "holder_art": "BUILDING_ICON_FARM_PLOT"
+      }
+    ],
+    "capture": "build/stockpile-storage-native-farm-discovery-20261029-193222/farm-delivered-potash-contents.png",
+    "rgb_sha256": "b8cb02dc299ced4cdf34656be6f0951143c27672a15326eea10403d3344007cf"
+  },
+  "indicator": [
+    {
+      "building_id": 227,
+      "enabled": true,
+      "frame": 1598,
+      "hover": -1,
+      "item_id": 48520,
+      "name": "farm-potash-item-task-hover"
+    },
+    {
+      "active_id": 48520,
+      "building_id": 227,
+      "frame": 1598,
+      "item_id": 48520,
+      "name": "farm-potash-item-task-click",
+      "open": true,
+      "sheet": "ITEM"
+    }
+  ],
+  "scope": "Owned native seed/bar description dispatch, delivered potash text/read guards, installed-art rendering reference and native inert item-sheet job indicator. Management-wire potash inspection, live viewer effects and consumption retirement remain unaccepted."
 }
 }

@@ -536,13 +536,38 @@ fertilization increasing from0 to1. The initial untouched save has two farms,
 fertilizer inspection. DF166324 exits unsaved and source preservation passes.
 
 `fertilizer_delivery_reference` records bounded transition samples, native sheet
-description/artwork evidence, contents/header reads and the confirmed rejection
-by the current seed-only description provider. Native displays the delivered
-potash's active-job indicator as well. Potash description/artwork/job-indicator
-support and consumed-item retirement in DF3D remain required before exposure.
+description/artwork evidence, contents/header reads and the rejection by the
+then-seed-only description provider. Native displays the delivered potash's
+active-job indicator as well. Potash now has the staged support described below;
+live viewer inspection/effects and consumed-item retirement remain required
+before exposure.
 This is controlled-supply native workflow evidence, not DF3D item-sheet acceptance
 or an exhaustive trace of every simulation tick. Other native farm scopes remain
 paused; only this explicitly selected progress scope advances simulation.
+
+The native description allowlist includes exact seed16d06e0 and bar16f6da0
+vtables. BAR shares the audited null-image/nonconstructed/noncritter getters;
+its type getter66e90 returns0, and material/actual-material getter5453d0 is an
+eight-byte read-only leaf (FNVe3389d0d7d85b545). Native c7527b supplies BAR grammar.
+`farmItemDescription` calls c75000 into owned storage; it does not borrow native
+sheet text. Protected193721 and193942 verify the delivered potash description
+matches native and preserves guarded item, farm, sheet, plotinfo and raw-vector
+bytes. DF152828/180120 exit unsaved with source preservation. Seed management
+inspection/edit/follow regressions pass in protected `areas-acceptance-20261029-194519`,
+with DF165848 exiting unsaved and both save manifests unchanged.
+
+`farm_potash_icon()` resolves the installed BARS_GRAPHICS POTASH entry with
+original page colors for both contents and the item sheet. The item-sheet job
+indicator uses the native24x36 artwork at local328,6. Native193942 confirms no
+tooltip and no sheet navigation when clicking it; the viewer keeps it inert.
+GPU `build/qa/potash-item-render-fixed` matches the full488x708 potash sheet and
+472x216 contents region, plus existing seed/flag/camera/description regressions.
+The contents reference uses inspected193222:193942's first contents screenshot
+was an incomplete window redraw and is excluded from pixel acceptance. Native
+and viewer images were inspected. Core passes; both GPU checks pass with only
+the three documented engine diagnostics. `potash_item_reference` retains the
+native sources, typed snapshot and hashes. Other bar artwork, potash-specific
+management-wire/live-viewer effects and consumption retirement remain unaccepted.
 
 ## Native item holder provider
 
@@ -586,7 +611,7 @@ string, require identity and reject mixed or unsuccessful authority. PINS.md
 records the breaking migration; both bridge and viewer must be rebuilt together.
 
 Bridge encoding, neutral decoding and Godot dictionary conversion are implemented.
-The runtime provider validates visible farm membership and exact seed dispatch
+The runtime provider validates visible farm membership and exact seed/bar dispatch
 before native entry. It returns native description, weight, holder identity and
 contents facts observed after formatting. Missing targets and other item types
 are rejected without falling through to the legacy building inspector. Native
@@ -908,8 +933,9 @@ Thus seed objects skip this initialization branch at c75765 regardless of
 seed material or flags. This is static branch evidence, not a complete
 read-only proof. `item_description_image_branch_audit` retains the exact target,
 bytes and executable identity. The seed-specific dependencies and controlled variants are covered below; this
-is not approval for nonseed types. The UI-owning1a8df0 wrapper remains excluded.
-Normal seed inspection and this diagnostic share seedItemDescription.
+does not authorize item types beyond the seed/bar allowlist described above.
+The UI-owning1a8df0 wrapper remains excluded. Normal farm item inspection and
+this diagnostic share farmItemDescription.
 
 The probe also pins the exact seed vtable and seventeen item virtual dispatch
 entries with complete leaf bodies. These establish type53, zero quality,

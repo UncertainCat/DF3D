@@ -2411,14 +2411,14 @@ std::optional<BuildingContentsPage> contentsPage(const df3d_production::Building
   }
   return page;
 }
-std::optional<BuildingItemSnapshot> observeFarmSeedItem(int32_t buildingId,int32_t itemId) {
+std::optional<BuildingItemSnapshot> observeFarmItem(int32_t buildingId,int32_t itemId) {
   auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(buildingId));
   auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
   if(!tile||tile->bits.hidden)return std::nullopt;
   df::item* item=nullptr;
   for(auto* held:farm->contained_items)if(held&&held->item&&held->item->id==itemId)item=held->item;
-  if(!df3d_production::seedDescriptionDispatch(item))return std::nullopt;
-  const auto description=df3d_production::seedItemDescription(item);
+  if(!df3d_production::farmItemDescriptionDispatch(item))return std::nullopt;
+  const auto description=df3d_production::farmItemDescription(item);
   const auto weight=df3d_production::itemWeightCaption(item);
   const auto holder=df3d_production::itemBuildingHolder(item);
   if(!description||!weight||!holder)return std::nullopt;
@@ -2559,7 +2559,7 @@ void run(color_ostream& out) {
   }
   if(r->action()==m::ManagementAction::ProductionInspect && r->production() && r->production()->item_id()>=0) {
     message.clear();status=m::ManagementStatus::Rejected;production={};
-    const auto* q=r->production();auto snapshot=observeFarmSeedItem(q->building_id(),q->item_id());
+    const auto* q=r->production();auto snapshot=observeFarmItem(q->building_id(),q->item_id());
     if(snapshot) {
       production.selectedBuilding=snapshot->buildingId;production.item=std::move(snapshot);status=m::ManagementStatus::Ok;
     }

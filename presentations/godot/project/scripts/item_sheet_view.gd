@@ -31,6 +31,7 @@ func present(value: Dictionary) -> void:
 	if not snapshot.is_empty() and snapshot.get("item_type",-1)==53:
 		var material: PackedStringArray=snapshot.get("material_token","").split(":")
 		if material.size()==3 and material[0]=="PLANT":icon=source.farm_seed_icon(material[1])
+	elif snapshot.get("item_type",-1)==0 and snapshot.get("material_token","")=="POTASH":icon=source.farm_potash_icon()
 	visible=not snapshot.is_empty();queue_redraw()
 
 func set_following(value: bool) -> void:
@@ -105,6 +106,9 @@ func _draw() -> void:
 	if not snapshot.get("weight","").is_empty():text_at("Weight: "+snapshot.weight,Vector2(56,48),colors[14])
 	var lines:=description_lines(snapshot.get("description",""))
 	for index in lines.size():text_at(lines[index],Vector2(16,84+index*12))
+	if snapshot.get("in_job",false):
+		var task: Texture2D=art.texture("BUILDING_ITEM_TASK")
+		if task!=null:draw_texture_rect(task,Rect2(328,6,24,36),false)
 	for index in 4:
 		if not eligible(index):continue
 		var texture: Texture2D=art.texture(BUTTONS[index]+("_ACTIVE" if snapshot.get(FLAGS[index],false) else ""))

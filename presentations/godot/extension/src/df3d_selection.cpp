@@ -146,6 +146,12 @@ Ref<Texture2D> Df3dWorld::farm_seed_icon(const String& rawId) {
     return plantItemIcon(rawId,wm::ItemKind::Seeds);
 }
 
+Ref<Texture2D> Df3dWorld::farm_potash_icon() {
+    // Native delivered-fertilizer sheet uses the installed BARS_GRAPHICS POTASH
+    // entry with original page colors, as does the farm's contents row.
+    return originalItemIcon("POTASH",wm::ItemKind::Bar);
+}
+
 Ref<Texture2D> Df3dWorld::plantItemIcon(const String& rawId,wm::ItemKind kind) {
     const auto raw=rawId.utf8();
     if(!assets_ || !raw.length() || raw.length()>128)return {};
@@ -153,9 +159,13 @@ Ref<Texture2D> Df3dWorld::plantItemIcon(const String& rawId,wm::ItemKind kind) {
     // SEEDS takes c8745b..c87484 through plant seed lookup c5df30. Neither
     // branch applies the material palette used by map items. Owned raw ID only.
     // Reuse installed selection rules, but retain the original page colors.
-    df3d::assets::ItemQuery query;query.kind=kind;
-    query.material="PLANT:"+std::string(raw.get_data(),raw.length())+
-        (kind==wm::ItemKind::Seeds?":SEED":":STRUCTURAL");
+    return originalItemIcon("PLANT:"+std::string(raw.get_data(),raw.length())+
+        (kind==wm::ItemKind::Seeds?":SEED":":STRUCTURAL"),kind);
+}
+
+Ref<Texture2D> Df3dWorld::originalItemIcon(std::string_view material,wm::ItemKind kind) {
+    if(!assets_)return {};
+    df3d::assets::ItemQuery query;query.kind=kind;query.material=material;
     const auto resolved=df3d::assets::resolveItem(assets_->index,query);
     if(!resolved.found)return {};
     const int slot=slotFor(resolved.sprite.page,-1,false);

@@ -4,6 +4,10 @@
 #include <unordered_set>
 
 namespace df3d_production {
+struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1; };
+inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t type) {
+    return type==13 ? a.instrumentFamily>=0&&a.instrumentFamily<=3&&a.instrumentPlaced>=0&&a.instrumentPlaced<=1 : a.instrumentFamily==-1&&a.instrumentPlaced==-1;
+}
 enum class BuildingItemAction { Forbid, Dump, Melt, Hidden };
 struct BuildingItemJob { int32_t id=-1,type=-1;uint32_t flags=0; };
 struct ItemFacts {
@@ -15,7 +19,7 @@ struct ItemFacts {
     std::vector<BuildingItemJob> jobs;
     int32_t itemType=-1;std::string materialToken,subtypeRaw;
 };
-struct BuildingContentsRow : ItemFacts { int32_t role=-1; };
+struct BuildingContentsRow : ItemFacts { int32_t role=-1;std::optional<ItemInspectionAppearance> appearance; };
 struct BuildingContentsSnapshot {
     int32_t buildingId=-1;
     uint64_t revision=0;
@@ -43,6 +47,9 @@ inline uint64_t buildingContentsRevision(const BuildingContentsSnapshot& value) 
         number(row.itemType);
         for(const auto* text:{&row.materialToken,&row.subtypeRaw}){number(text->size());for(unsigned char c:*text)byte(c);}
         byte(row.forbid);byte(row.dump);byte(row.melt);byte(row.hidden);byte(row.canDump);byte(row.canMelt);
+        byte(row.appearance.has_value());if(row.appearance){const auto& a=*row.appearance;
+            for(const auto* text:{&a.materialToken,&a.subtypeRaw,&a.colorToken}){number(text->size());for(unsigned char c:*text)byte(c);}
+            number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);}
         number(row.jobs.size());for(const auto& job:row.jobs){number(job.id);number(job.type);number(job.flags);}
     }
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
@@ -53,6 +60,8 @@ inline bool validBuildingContents(const BuildingContentsSnapshot& value) {
     for(const auto& row:value.rows) {
         if(row.id<0||row.role<0||!ids.insert(row.id).second || row.itemType<0 || row.itemType>92 ||
            row.materialToken.size()>256 || row.subtypeRaw.size()>128)return false;
+        if((row.itemType==13||row.itemType==30)&&!row.appearance)return false;
+        if(row.appearance){const auto& a=*row.appearance;if(!validInspectionInstrument(a,row.itemType)||a.materialToken.empty()||a.materialToken!=row.materialToken||a.subtypeRaw!=row.subtypeRaw||a.colorToken.size()>128||a.stack<1||(a.flags&~96))return false;}
         for(const auto& job:row.jobs)if(job.id<0||job.type<0)return false;
     }
     return true;

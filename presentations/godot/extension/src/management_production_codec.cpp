@@ -121,6 +121,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
       row["forbid"]=item.forbid;row["dump"]=item.dump;row["melt"]=item.melt;row["hidden"]=item.hidden;
       row["can_dump"]=item.canDump;row["can_melt"]=item.canMelt;row["in_job"]=item.inJob;row["in_building"]=item.inBuilding;
       row["item_type"]=item.itemType;row["material_token"]=String::utf8(item.materialToken.c_str());row["subtype_raw"]=String::utf8(item.subtypeRaw.c_str());
+      if(item.appearance){const auto& a=*item.appearance;Dictionary look;look["material_token"]=String::utf8(a.materialToken.c_str());look["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());look["color_token"]=String::utf8(a.colorToken.c_str());look["stack"]=a.stack;look["flags"]=a.flags;if(a.instrumentFamily>=0){Dictionary instrument;instrument["family"]=a.instrumentFamily;instrument["placed"]=a.instrumentPlaced;look["instrument"]=instrument;}row["appearance"]=look;}
       rows.push_back(row);
     }
     value["rows"]=rows;prod["contents"]=value;
@@ -133,6 +134,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     value["item_type"]=row.itemType;value["material_token"]=String::utf8(row.materialToken.c_str());value["subtype_raw"]=String::utf8(row.subtypeRaw.c_str());
     value["forbid"]=row.forbid;value["dump"]=row.dump;value["melt"]=row.melt;value["hidden"]=row.hidden;
     value["can_dump"]=row.canDump;value["can_melt"]=row.canMelt;value["in_job"]=row.inJob;value["in_building"]=row.inBuilding;
+    if(row.appearance){const auto& a=*row.appearance;Dictionary look;look["material_token"]=String::utf8(a.materialToken.c_str());look["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());look["color_token"]=String::utf8(a.colorToken.c_str());look["stack"]=a.stack;look["flags"]=a.flags;if(a.instrumentFamily>=0){Dictionary instrument;instrument["family"]=a.instrumentFamily;instrument["placed"]=a.instrumentPlaced;look["instrument"]=instrument;}value["appearance"]=look;}
     value["weight"]=String::utf8(source.weight.c_str());value["description"]=String::utf8(source.description.c_str());
     if(source.holder) {
       Dictionary holder;holder["id"]=source.holder->id;holder["type"]=source.holder->type;holder["name"]=String::utf8(source.holder->name.c_str());

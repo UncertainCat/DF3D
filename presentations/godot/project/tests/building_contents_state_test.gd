@@ -41,6 +41,13 @@ func ready() -> void:
 	setup();model.open(968);service.poll();reply(page())
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	var appearance_page:=page(0,12,278,1);appearance_page.rows[0].item_type=13
+	check(not Model.valid_page(appearance_page,278),"Instrument row requires appearance")
+	var row: Dictionary=appearance_page.rows[0]
+	row.appearance={"material_token":row.material_token,"subtype_raw":row.subtype_raw,"color_token":"","stack":1,"flags":0,"instrument":{"family":3,"placed":0}}
+	check(Model.valid_page(appearance_page,278),"Instrument row appearance accepted")
+	row.appearance.instrument.family=-1
+	check(not Model.valid_page(appearance_page,278),"Invalid instrument row family rejected")
 	ready();check(model.phase==Model.Phase.Ready and model.rows().size()==64,"initial bounded page ready")
 	var copy: Array=model.rows();copy[0].name="mutated"
 	check(model.rows()[0].name=="native caption","view rows cannot mutate authority")

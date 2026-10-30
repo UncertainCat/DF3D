@@ -605,11 +605,15 @@ void publish() {
     for(const auto& c:f.choices)rows.push_back(m::CreateNativeFarmCrop(b,c.id,b.CreateString(c.name),c.seedsAvailable,c.currentSeasonWarning,b.CreateString(c.rawId)));
     farmSnapshot=m::CreateFarmSnapshot(b,f.buildingId,f.revision,f.selectedSeason,f.currentSeason,b.CreateVector(f.seasonalCrops),b.CreateVector(rows),f.currentFertilization,f.maxFertilization,f.pendingFertilization,f.seasonalFertilization,b.CreateString(f.customName),b.CreateString(f.headerName),f.removing,f.removalSuspended,f.removalHasWorker);
   }
+  const auto encodeInspectionAppearance=[&](const std::optional<ItemInspectionAppearance>& look) {
+    flatbuffers::Offset<m::ItemInspectionAppearance> result;
+    if(look){const auto& a=*look;result=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced);}return result;
+  };
   flatbuffers::Offset<m::BuildingContentsPage> contentsPage;
   if(production.contents) {
     const auto& page=*production.contents;std::vector<flatbuffers::Offset<m::BuildingContentsItem>> rows;
     for(const auto& row:page.rows)rows.push_back(m::CreateBuildingContentsItem(b,row.id,row.role,b.CreateString(row.name),
-      row.forbid,row.dump,row.melt,row.hidden,row.canDump,row.canMelt,row.inJob,row.inBuilding,row.itemType,b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw)));
+      row.forbid,row.dump,row.melt,row.hidden,row.canDump,row.canMelt,row.inJob,row.inBuilding,row.itemType,b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw),encodeInspectionAppearance(row.appearance)));
     contentsPage=m::CreateBuildingContentsPage(b,page.buildingId,page.revision,page.cursor,page.nextCursor,page.total,
       page.completed,page.removing,b.CreateVector(rows));
   }
@@ -644,7 +648,7 @@ void publish() {
   if(production.item) {
     const auto& value=*production.item;const auto& row=value.item;
     auto item=m::CreateBuildingContentsItem(b,row.id,row.role,b.CreateString(row.name),
-      row.forbid,row.dump,row.melt,row.hidden,row.canDump,row.canMelt,row.inJob,row.inBuilding,row.itemType,b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw));
+      row.forbid,row.dump,row.melt,row.hidden,row.canDump,row.canMelt,row.inJob,row.inBuilding,row.itemType,b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw),encodeInspectionAppearance(row.appearance));
     flatbuffers::Offset<m::ItemBuildingHolder> holder;
     if(value.holder)holder=m::CreateItemBuildingHolder(b,value.holder->id,value.holder->type,b.CreateString(value.holder->name));
     itemSnapshot=m::CreateBuildingItemSnapshot(b,value.buildingId,value.revision,value.completed,value.removing,item,
@@ -2435,6 +2439,8 @@ std::optional<BuildingContentsPage> contentsPage(const df3d_production::Building
     if(material.size()>256 || subtype.size()>128)return std::nullopt;
     page.rows.push_back({row.id,row.role,std::move(row.caption),row.forbid,row.dump,row.melt,row.hidden,
       row.canDump,row.canMelt,bool(flags.bits.in_job),bool(flags.bits.in_building),row.itemType,material,subtype});
+    if(row.appearance){const auto& a=*row.appearance;auto color=DF2UTF(a.colorToken);if(color.size()>128)return std::nullopt;
+      page.rows.back().appearance=ItemInspectionAppearance{material,subtype,std::move(color),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced};}
   }
   return page;
 }

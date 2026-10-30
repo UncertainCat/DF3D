@@ -9,6 +9,9 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     return out;
   auto& n = out;
   auto str = [](const flatbuffers::String* v) { return v ? v->str() : std::string(); };
+  const auto decodeAppearance=[&](const m::ItemInspectionAppearance* a)->std::optional<ItemInspectionAppearance> {
+    if(!a)return std::nullopt;return ItemInspectionAppearance{str(a->material_token()),str(a->subtype_raw()),str(a->color_token()),a->stack(),a->flags(),a->instrument_family(),a->instrument_placed()};
+  };
   auto reqs = [&](const auto* vs) {
     std::vector<ProductionRequirement> out;
     if (vs)
@@ -44,14 +47,14 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     value.cursor=page->cursor();value.nextCursor=page->next_cursor();value.total=page->total();
     value.completed=page->completed();value.removing=page->removing();
     if(page->rows())for(const auto* row:*page->rows())value.rows.push_back({row->id(),row->role(),str(row->name()),
-      row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building(),row->item_type(),str(row->material_token()),str(row->subtype_raw())});
+      row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building(),row->item_type(),str(row->material_token()),str(row->subtype_raw()),decodeAppearance(row->appearance())});
   }
   if(const auto* source=p->item()) {
     auto& value=n.item.emplace();value.buildingId=source->building_id();value.revision=source->revision();
     value.completed=source->completed();value.removing=source->removing();
     value.weight=str(source->weight());value.description=str(source->description());
     const auto* row=source->item();value.item={row->id(),row->role(),str(row->name()),
-      row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building(),row->item_type(),str(row->material_token()),str(row->subtype_raw())};
+      row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building(),row->item_type(),str(row->material_token()),str(row->subtype_raw()),decodeAppearance(row->appearance())};
     if(const auto* holder=source->holder())value.holder=ItemBuildingHolder{holder->id(),holder->type(),str(holder->name())};
   }
   n.farmEditOutcome=static_cast<FarmEditOutcome>(p->farm_edit_outcome());

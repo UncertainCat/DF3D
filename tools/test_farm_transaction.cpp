@@ -413,3 +413,13 @@ TEST_CASE("independent item appearance participates in authority") {
     item.appearance->materialToken="STONE";item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
     item.appearance->materialToken="WOOD";item.appearance->stack=0;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
 }
+
+TEST_CASE("contents appearance changes revision and rejects missing instrument facts") {
+    using namespace df3d_production;
+    BuildingContentsSnapshot value;value.buildingId=278;value.completed=true;
+    BuildingContentsRow row;row.id=7504;row.role=0;row.itemType=13;row.materialToken="WOOD";row.subtypeRaw="INSTRUMENT";
+    value.rows.push_back(row);value.revision=buildingContentsRevision(value);CHECK_FALSE(validBuildingContents(value));
+    value.rows[0].appearance=ItemInspectionAppearance{"WOOD","INSTRUMENT","",1,0,3,0};value.revision=buildingContentsRevision(value);REQUIRE(validBuildingContents(value));
+    auto old=value.revision;value.rows[0].appearance->instrumentPlaced=1;value.revision=buildingContentsRevision(value);CHECK(value.revision!=old);CHECK(validBuildingContents(value));
+    value.rows[0].appearance->instrumentFamily=-1;value.revision=buildingContentsRevision(value);CHECK_FALSE(validBuildingContents(value));
+}

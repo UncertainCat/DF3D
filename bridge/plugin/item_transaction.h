@@ -3,7 +3,6 @@
 
 namespace df3d_production {
 struct ItemLocationLink { int32_t id=-1,type=-1;std::string name; };
-struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1; };
 struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name;std::optional<ItemInspectionAppearance> appearance; };
 struct ItemObservation {
     ItemFacts item;
@@ -33,9 +32,6 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
     byte(value.carrier.has_value());if(value.carrier){const auto& c=*value.carrier;number(c.kind);number(c.id);number(c.itemType);text(c.name);byte(c.appearance.has_value());if(c.appearance){const auto& a=*c.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);}}
     byte(value.appearance.has_value());if(value.appearance){const auto& a=*value.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);}
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
-}
-inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t type) {
-    return type==13 ? a.instrumentFamily>=0&&a.instrumentFamily<=3&&a.instrumentPlaced>=0&&a.instrumentPlaced<=1 : a.instrumentFamily==-1&&a.instrumentPlaced==-1;
 }
 inline bool validItemObservation(const ItemObservation& value) {
     const auto& item=value.item;

@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management99 adds ItemInspectionAppearance to building contents rows, including
+the legacy building-item wrapper. BOX and INSTRUMENT rows require coherent
+appearance; other rows may omit it. Appearance participates in the complete
+contents revision and survives paging, receipts and both codecs. Rebuild both
+endpoints on `Local\\df3d_management_v99`; management98 is incompatible. Missing
+facts in historical recordings remain unknown, never inferred from captions.
+
 Management98 extends ItemInspectionAppearance with instrument family and placement
 facts. INSTRUMENT snapshots require appearance and family0..3/placed0..1; other
 item types require both fields absent (-1). The fields participate in item edit

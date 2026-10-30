@@ -23,8 +23,15 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
 inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t type) {
   return type==13 ? a.instrument_family()>=0&&a.instrument_family()<=3&&a.instrument_placed()>=0&&a.instrument_placed()<=1 : a.instrument_family()==-1&&a.instrument_placed()==-1;
 }
-inline constexpr uint32_t kManagementVersion = 98;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v98";
+inline bool validContentsAppearance(const BuildingContentsItem& row) {
+  const auto* a=row.appearance();
+  if(!a)return row.item_type()!=13&&row.item_type()!=30;
+  return validInspectionInstrument(*a,row.item_type())&&a->material_token()&&a->material_token()->size()>0&&a->material_token()->size()<=256&&
+    a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
+    row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
+}
+inline constexpr uint32_t kManagementVersion = 99;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v99";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1360,7 +1367,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       const auto* row=item->item();
       if(s.action()!=ManagementAction::ProductionInspect || s.status()!=ManagementStatus::Ok ||
          item->building_id()<0 || item->building_id()!=p->selected_building() ||
-         !item->revision() || item->revision()>INT64_MAX || !row || row->id()<0 || row->role()<0 ||
+         !item->revision() || item->revision()>INT64_MAX || !row || !validContentsAppearance(*row) || row->id()<0 || row->role()<0 ||
          !row->name() || row->name()->size()>128*1024 || row->item_type()<0 || row->item_type()>92 ||
          !row->material_token() || row->material_token()->size()>256 || !row->subtype_raw() || row->subtype_raw()->size()>128 ||
          !item->weight() || item->weight()->size()>128 || !item->description() || item->description()->size()>32*1024)
@@ -1386,7 +1393,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       std::set<int32_t> contentIds;size_t names=0;
       for(const auto* row:*page->rows()) {
         if(!row || row->id()<0 || row->role()<0 || !contentIds.insert(row->id()).second || !row->name())return "invalid contents row";
-        if(row->item_type()<0 || row->item_type()>92 || !row->material_token() || !row->subtype_raw() ||
+        if(!validContentsAppearance(*row) || row->item_type()<0 || row->item_type()>92 || !row->material_token() || !row->subtype_raw() ||
            row->material_token()->size()>256 || row->subtype_raw()->size()>128)return "invalid contents item identity";
         names+=row->name()->size();if(names>128*1024)return "contents names exceed payload budget";
       }

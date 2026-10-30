@@ -1057,6 +1057,26 @@ This is contents authority acceptance, not a complete chest screen. Chest header
 rename/removal, contents appearance, other native flag effects and main-scene
 navigation still need integration and verification. Public exposure is unchanged.
 
+Management99 extends BuildingContentsItem with the same owned appearance facts
+used by independent inspection. The bridge reads appearance for BOX/INSTRUMENT
+rows; both require coherent material/subtype tokens, bounded color/stack/flags
+and type-correct instrument facts. Other item families may omit appearance.
+The common semantic type lives in building_item_transaction.h below both
+observation types. Presence and every appearance field enter the full contents
+revision. Paging and fresh edit receipts preserve those facts; bridge UTF-8
+conversion, schema/model codecs and Godot page validation enforce the contract.
+The legacy building-item wrapper preserves the new field as well. PINS.md records
+the paired-endpoint migration; no historical appearance is synthesized.
+
+Core and both item/contents controller checks pass in
+build/qa/chest-contents-appearance-final. The transaction regression rejects
+missing instrument appearance and proves placement changes invalidate revisions;
+the controller rejects malformed family facts. MSVC passes. Protected125641
+on2026-10-30 verifies all five chest rows through matched99 endpoints, ten Hidden
+receipts with original state restored, and stale/foreign rejection. Owned DF159280
+exits unsaved and source preservation passes. Existing independent item/carrier
+checks pass; live clients report only the known render-thread notice.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

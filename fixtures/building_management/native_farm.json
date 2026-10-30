@@ -28632,5 +28632,97 @@
       "visibility_both_values": true
     },
     "scope": "Controlled DFHack transfer after native job retirement and 600 further ticks; independent inspection, viewport Visibility both values, exact native panel pixels, View stockpile handoff, queued/sent retirement and missing-target refusal. Not natural hauling, all category artwork, overlapping stockpiles or combined holder/stockpile rendering."
+  },
+  "independent_item_full_scene_reference": {
+    "capture": "build/areas-acceptance-20261029-225543",
+    "management_version": 94,
+    "owned_df_pids": [
+      175936,
+      186920,
+      185956,
+      186500,
+      174468
+    ],
+    "status": "passed_with_known_issues",
+    "diagnostics": "Known separate rendering-thread notice only",
+    "exit": "All owned sessions unsaved; save hashes verified across restart and both final manifests unchanged",
+    "binary_reference": "independent_stockpile_categories_reference",
+    "result": {
+      "native_checks": 80,
+      "reasons": [],
+      "status": "passed",
+      "surface": "staged farm owner in actual main scene; viewport keyboard and mouse input"
+    },
+    "item_lifecycle": [
+      {
+        "fresh_epoch": "798674938494977",
+        "fresh_read_and_restore": true,
+        "item_id": 47486,
+        "mode": "queued",
+        "no_replay": true,
+        "old_epoch": "798674938494977",
+        "outcome": "not_sent"
+      },
+      {
+        "fresh_epoch": "798674938494977",
+        "fresh_read_and_restore": true,
+        "item_id": 47486,
+        "mode": "sent",
+        "no_replay": true,
+        "old_epoch": "798674938494977",
+        "outcome": "unknown"
+      },
+      {
+        "fresh_epoch": "801011400704001",
+        "fresh_read_and_restore": true,
+        "item_id": 47486,
+        "mode": "restart",
+        "no_replay": true,
+        "old_epoch": "798674938494977",
+        "outcome": "unknown"
+      }
+    ],
+    "follow_lifecycle": [
+      {
+        "explicit_recovery": true,
+        "fresh_epoch": "801011400704001",
+        "item_id": 47486,
+        "late_focus_suppressed": true,
+        "mode": "queued",
+        "old_epoch": "801011400704001",
+        "outcome": "not_sent"
+      },
+      {
+        "explicit_recovery": true,
+        "fresh_epoch": "801011400704001",
+        "item_id": 47486,
+        "late_focus_suppressed": true,
+        "mode": "sent",
+        "old_epoch": "801011400704001",
+        "outcome": "unknown"
+      },
+      {
+        "explicit_recovery": true,
+        "fresh_epoch": "749334354198529",
+        "item_id": 47486,
+        "late_focus_suppressed": true,
+        "mode": "restart",
+        "old_epoch": "801011400704001",
+        "outcome": "unknown"
+      }
+    ],
+    "item_controls": {
+      "close": [
+        "escape",
+        "right",
+        "reset"
+      ],
+      "flags_restored": true,
+      "holder_roundtrip": true,
+      "overlay_blocks_edit": true,
+      "target": 47929
+    },
+    "offline": "build/qa/farm-full94-regression: root build/core passed",
+    "scope": "Full existing farm-scene suite under the independent item contract; does not establish long captions, general item relationships/types, or public exposure."
   }
 }

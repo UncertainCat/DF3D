@@ -258,8 +258,9 @@ func item_lifecycle_cases() -> void:
 				if candidate.get("request_seq")==sequence and candidate.get("status")==S.Ok:receipt=candidate;break
 				await create_timer(0.01).timeout
 			if not check(not receipt.is_empty() and actions.result(pending).is_empty() and observed.size()==observations,"item lifecycle receipt missing or delivered early"):return
-			if not check(receipt.production.contents_edit.item_id==baseline.id and receipt.production.contents.rows[0].hidden!=baseline.hidden,"item lifecycle effect target differs"):return
-			await native("contents-verify",{"rows":receipt.production.contents.rows,"cursor":receipt.production.contents.cursor})
+			if not check(receipt.production.independent_item.edit.item_id==baseline.id and receipt.production.independent_item.snapshot.hidden!=baseline.hidden,"item lifecycle effect target differs"):return
+			var confirmed: Dictionary=receipt.production.independent_item.snapshot
+			await native("item-inspect",{"item":confirmed,"independent":true,"revision_text":str(confirmed.revision)})
 			if stopped:return
 			write_json("item-"+mode+"-unobserved.json",receipt)
 		if mode=="restart":
@@ -283,7 +284,7 @@ func item_lifecycle_cases() -> void:
 		for frame in 30:
 			world.poll();actions.poll();await process_frame
 		if not check(no_farm_requests_since(next_ticket) and observed.size()==observations and model.snapshot.is_empty() and not sheet.visible,"item reconnect replayed edit/read or revived old observer"):return
-		await lifecycle_open(baseline.building_id)
+		await lifecycle_open(int(fixture.contents.building_id))
 		if not await contents_ready():return
 		await pointer(view.get_global_transform_with_canvas()*view.control_rect(1,1).get_center())
 		if not await item_ready():return

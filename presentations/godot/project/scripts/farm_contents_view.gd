@@ -1,5 +1,5 @@
 extends Control
-# Staged native farm contents. View emits an identity; its item sheet is unfinished.
+# Staged native farm contents. View hands item identity to the independent sheet owner.
 signal view_requested(item_id: int)
 const C=preload("res://scripts/management_contract.gd")
 const ACTIONS=[C.FarmOperation.ItemForbid,C.FarmOperation.ItemDump,C.FarmOperation.ItemMelt,C.FarmOperation.ItemHidden]

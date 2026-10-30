@@ -444,7 +444,7 @@ release retained GUI mouse-button state and swallowed later endpoint clicks;
 several diagnostic runs failed that assertion before this was corrected. No
 product scrollbar workaround was retained. The isolated component test also
 checks dragging outside the control followed by normal item-control clicks.
-View still only emits an identity; the item sheet remains unfinished.
+View emits an item identity for the independent item-sheet owner described below.
 
 Protected main-scene083548 on2026-10-29 verifies actual item edits across
 queued and sent disconnects. Viewport clicks toggle the second row's visibility;
@@ -863,6 +863,22 @@ DF68844 exits unsaved with both manifests unchanged. These runs are recorded in
 semantic-service tests pass in `item-independent-controller-final`; synthetic
 coverage includes transfer, malformed relationships, stale/unknown outcomes,
 late replies, exact revisions, epoch retirement and close during notification.
+The full protected FarmSceneOnly225543 on2026-10-29 reruns the staged main scene
+with management94. All80 native checks pass across five owned DF processes:
+175936,186920,185956,186500 and174468, each closed unsaved. Save manifests remain
+unchanged through replacements and final cleanup. It covers contents drag/resize
+and effects, item View/holder/flags/camera, farm typing/removal, contents and farm
+disconnect/replacement, and independent item/follow retirement. Queued item edits
+retire as not_sent; sent edits and producer replacement retire as unknown. Old
+observers never revive or replay; explicit recovery observes native effects and
+restores flags. The item lifecycle oracle now reads the independent typed receipt
+and uses its fixture's farm ID for navigation, rather than requiring obsolete
+building authority in an item snapshot. Only the documented rendering-thread
+notice occurs. `native_farm.json.independent_item_full_scene_reference` retains
+bounded results. This regression closes the current-contract replacement gap;
+long-caption truncation, general item relationships/types and the other explicitly
+unaccepted cases still prevent full farm/public-route acceptance.
+
 Rendered transfer acceptance follows below.
 
 Protected FarmItemTransferScene225057 on2026-10-29 passes100 native checks through

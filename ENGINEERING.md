@@ -1108,8 +1108,22 @@ chest_header_reference retains the bounded native records. MSVC and all19 root
 CTest checks pass; the protected lane exits owned DF53944 unsaved with source
 preservation and existing item/contents regressions passing. All eight Godot logs
 have only the known render-thread notice. This verifies header reads and native
-reference behavior, not chest edit transport or presentation. Worker-attached
-cancellation, non-ASCII rename and complete navigation remain unverified.
+reference behavior, not chest edit transport or presentation. Non-ASCII rename
+and complete navigation remain unverified.
+
+cancelBuildingRemoval now admits completed FarmPlot/Box targets and calls native
+54c130 with the building alone. The typed farm wrapper and farm-only diagnostic
+retain their restrictions. building-cancel-removal validates visible targets and
+rejects absent removal jobs; it is a diagnostic path, not chest edit transport.
+Protected130955 on2026-10-30 compares native Cancel removal and this semantic call
+with controlled assigned workers. Both release worker996/job links, preserve the
+completed chest occupancy and yield identical observed worker position, path and
+counter state. The semantic call preserves sheet/plotinfo bytes. Invalid targets
+and a chest passed to the farm-only diagnostic are rejected. Owned DF183500 exits
+unsaved, source preservation and existing item/contents regressions pass; all eight
+Godot logs contain only the known render-thread notice. The nested worker reference
+retains effects and binary provenance. MSVC and root CTest pass. Natural worker
+progress and chest transport/lifecycle/presentation are separate acceptance work.
 
 ## Native item holder provider
 

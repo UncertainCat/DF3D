@@ -32845,6 +32845,182 @@
       }
     },
     "result_sha256": "572da84be1bdedf416802efd82a539bdde34ab3082e769efe47e525fcae66c0b",
-    "scope": "Native chest rename/remove/cancel oracle and shared owned header reader. Rename applies during typing; Enter ends editing; Escape closes without reverting; ASCII input caps at 30 characters. Contents View remains active while removal is pending. Reader leaves guarded building, jobs and UI bytes unchanged. Worker-attached cancellation, non-ASCII rename, semantic edit transport and complete chest presentation/navigation remain unverified."
+    "scope": "Native chest rename/remove/cancel oracle and shared owned header reader. Rename applies during typing; Enter ends editing; Escape closes without reverting; ASCII input caps at 30 characters. Contents View remains active while removal is pending. Reader leaves guarded building, jobs and UI bytes unchanged. Non-ASCII rename, semantic edit transport and complete chest presentation/navigation remain unverified.",
+    "worker_cancellation_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261030-130955",
+      "owned_df_pid": 183500,
+      "records": [
+        {
+          "guards_unchanged": true,
+          "name": "chest-header-worker-native-assigned",
+          "semantic": {
+            "building_id": 278,
+            "custom_name": "",
+            "has_worker": true,
+            "header_name": "Kumquat wood Chest",
+            "native_name": "kumquat wood Chest",
+            "removing": true,
+            "suspended": false
+          }
+        },
+        {
+          "guards_unchanged": true,
+          "name": "chest-header-worker-native-cancelled",
+          "semantic": {
+            "building_id": 278,
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Kumquat wood Chest",
+            "native_name": "kumquat wood Chest",
+            "removing": false,
+            "suspended": false
+          },
+          "worker_cancellation": {
+            "after": {
+              "current_job": -1,
+              "destination": {
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              "job_counter": 0,
+              "jobs": [],
+              "occupancy": [
+                134217730
+              ],
+              "path_goal": -1,
+              "position": {
+                "x": 191,
+                "y": 180,
+                "z": 175
+              },
+              "worker_id": 996
+            },
+            "before": {
+              "current_job": 382797,
+              "destination": {
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              "job_counter": 0,
+              "jobs": [
+                {
+                  "id": 382797,
+                  "type": "DestroyBuilding",
+                  "worker_id": 996,
+                  "working": true
+                }
+              ],
+              "occupancy": [
+                134217730
+              ],
+              "path_goal": -1,
+              "position": {
+                "x": 191,
+                "y": 180,
+                "z": 175
+              },
+              "worker_id": 996
+            },
+            "identity": {
+              "job_id": 382797,
+              "setup": "Paused fixture uses addWorker and working=true; no AI ticks advanced.",
+              "worker_id": 996
+            }
+          }
+        },
+        {
+          "guards_unchanged": true,
+          "name": "chest-header-worker-semantic-assigned",
+          "semantic": {
+            "building_id": 278,
+            "custom_name": "",
+            "has_worker": true,
+            "header_name": "Kumquat wood Chest",
+            "native_name": "kumquat wood Chest",
+            "removing": true,
+            "suspended": false
+          }
+        },
+        {
+          "guards_unchanged": true,
+          "name": "chest-header-worker-semantic-cancelled",
+          "semantic": {
+            "building_id": 278,
+            "custom_name": "",
+            "has_worker": false,
+            "header_name": "Kumquat wood Chest",
+            "native_name": "kumquat wood Chest",
+            "removing": false,
+            "suspended": false
+          },
+          "worker_cancellation": {
+            "after": {
+              "current_job": -1,
+              "destination": {
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              "job_counter": 0,
+              "jobs": [],
+              "occupancy": [
+                134217730
+              ],
+              "path_goal": -1,
+              "position": {
+                "x": 191,
+                "y": 180,
+                "z": 175
+              },
+              "worker_id": 996
+            },
+            "before": {
+              "current_job": 382798,
+              "destination": {
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              "job_counter": 0,
+              "jobs": [
+                {
+                  "id": 382798,
+                  "type": "DestroyBuilding",
+                  "worker_id": 996,
+                  "working": true
+                }
+              ],
+              "occupancy": [
+                134217730
+              ],
+              "path_goal": -1,
+              "position": {
+                "x": 191,
+                "y": 180,
+                "z": 175
+              },
+              "worker_id": 996
+            },
+            "identity": {
+              "job_id": 382798,
+              "setup": "Paused fixture uses addWorker and working=true; no AI ticks advanced.",
+              "worker_id": 996
+            }
+          }
+        }
+      ],
+      "ui_bytes_unchanged": true,
+      "rejected_targets": [
+        "no removal job",
+        "absent building",
+        "negative ID",
+        "malformed ID",
+        "farm-only command with chest"
+      ],
+      "bridge_sha256": "479fb981fce0087f5d44ace6300cc566f4c82931950d004c6f3dba49e26b0c92",
+      "scope": "Paused controlled assigned-worker cancellation through native click and shared native semantic routine. Both release the worker and job, yield identical observed worker state and preserve completed occupancy. No simulation ticks or natural destruction progress; chest wire/UI integration remains unfinished."
+    }
   }
 }

@@ -26,6 +26,7 @@ struct FarmFunctions {
     using Compare=int8_t (*)(const std::string*,const std::string*);
     using CancelJob=void (*)(df::building_farmplotst*,int32_t);
     using Fertilize=void (*)(df::building_farmplotst*);
+    using CancelRemoval=void (*)(df::building*);
     using HasWorker=bool (*)(df::job*);
     using FormatName=void (*)(std::string*);
     Eligible eligible=nullptr;
@@ -37,7 +38,7 @@ struct FarmFunctions {
     Fertilize scheduleFertilization=nullptr,cancelFertilization=nullptr;
     HasWorker hasWorker=nullptr;
     FormatName formatName=nullptr;
-    Fertilize cancelRemoval=nullptr;
+    CancelRemoval cancelRemoval=nullptr;
     explicit operator bool() const {return eligible && seasons && plantingWarning && name && compare && cancelJob && scheduleFertilization && cancelFertilization && hasWorker && formatName && cancelRemoval;}
 };
 inline const FarmFunctions& farmFunctions() {
@@ -81,7 +82,7 @@ inline const FarmFunctions& farmFunctions() {
                 reinterpret_cast<FarmFunctions::Fertilize>(base+0x589930),
                 reinterpret_cast<FarmFunctions::HasWorker>(base+0xd02850),
                 reinterpret_cast<FarmFunctions::FormatName>(base+0x52d650),
-                reinterpret_cast<FarmFunctions::Fertilize>(base+0x54c130)};
+                reinterpret_cast<FarmFunctions::CancelRemoval>(base+0x54c130)};
     }();
     return functions;
 }
@@ -92,17 +93,21 @@ struct BuildingHeader {
 // Native sheet1b00a3 cancels building jobs and restores completed occupancy.
 // It takes only a building, not selected-sheet or input scratch. The caller
 // owns safe-point validation and treats exceptions after entry as unknown.
-inline bool cancelFarmRemoval(df::building_farmplotst* farm) {
+inline bool cancelBuildingRemoval(df::building* building) {
     const auto& native=farmFunctions();
-    if(!native || !farm || farm->getBuildStage()!=farm->getMaxBuildStage() ||
-       farm->jobs.size()>size_t(INT16_MAX))return false;
+    if(!native || !building ||
+       (building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box) || building->getBuildStage()!=building->getMaxBuildStage() ||
+       building->jobs.size()>size_t(INT16_MAX))return false;
     bool removing=false;
-    for(const auto* job:farm->jobs) {
+    for(const auto* job:building->jobs) {
         if(!job)return false;
         if(job->job_type==df::job_type::DestroyBuilding)removing=true;
     }
     if(!removing)return false;
-    native.cancelRemoval(farm);return true;
+    native.cancelRemoval(building);return true;
+}
+inline bool cancelFarmRemoval(df::building_farmplotst* farm) {
+    return cancelBuildingRemoval(farm);
 }
 // Native header1804bb calls virtual getName; removal180c3c..180de1 uses
 // the first job's suspend flag and native worker predicate, not job.working.

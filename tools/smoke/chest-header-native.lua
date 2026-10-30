@@ -61,3 +61,39 @@ for y,line in ipairs(row.lines)do
 end
 assert(cancelled and #building.jobs==0 and not dfhack.buildings.markedForRemoval(building),'chest cancellation failed')
 shot('cancel-removal');assert(building.name==original)
+
+-- Compare native Cancel removal with the owned semantic entry, including worker
+-- release and completed-building occupancy. These controlled jobs never tick.
+local worker_source=debug.getinfo(1,'S').source:sub(2):gsub('chest%-header%-native.lua$','farm-worker-fixture.lua')
+local fixture=assert(loadfile(worker_source))()
+local json=require('json');local occupancy=fixture.occupancy(building);local native_after
+for _,method in ipairs{'native','semantic'}do
+ click(832,82)
+ local identity=fixture.attach(building);local before=fixture.observe(building,identity)
+ local assigned=shot('worker-'..method..'-assigned');assert(assigned.semantic.has_worker)
+ if method=='native' then
+  local clicked=false
+  for y,line in ipairs(assigned.lines)do
+   local x=line:find('Cancel removal',1,true)
+   if x then click((x+2)*8,(y-1)*12+10);clicked=true;break end
+  end
+  assert(clicked,'native worker cancellation control missing')
+ else
+  local guards={}
+  for _,object in ipairs{sheet,df.global.plotinfo}do
+   local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+   guards[#guards+1]={bytes=bytes,address=address,size=size}
+  end
+  local message,status=dfhack.run_command_silent('df3d','building-cancel-removal',tostring(building.id));assert(status==0,message)
+  for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'semantic cancellation changed UI');df.delete(guard.bytes)end
+ end
+ local after=fixture.observe(building,identity)
+ assert(after.current_job==-1 and #after.jobs==0 and not dfhack.buildings.markedForRemoval(building),'cancellation retained worker/job links')
+ assert(json.encode(after.occupancy)==json.encode(occupancy),'cancellation changed completed chest occupancy')
+ if method=='native' then native_after=after else assert(json.encode(after)==json.encode(native_after),'semantic worker cleanup differs from native')end
+ local row=shot('worker-'..method..'-cancelled');row.worker_cancellation={identity=identity,before=before,after=after}
+end
+for _,id in ipairs{tostring(building.id),'2147483647','-1','not-an-id'}do
+ local _,status=dfhack.run_command_silent('df3d','building-cancel-removal',id);assert(status~=0,'invalid cancellation accepted')
+end
+local _,wrong=dfhack.run_command_silent('df3d','farm-cancel-removal',tostring(building.id));assert(wrong~=0,'farm cancellation accepted chest')

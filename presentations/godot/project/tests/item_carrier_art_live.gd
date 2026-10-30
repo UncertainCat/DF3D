@@ -2,9 +2,9 @@ extends "res://tests/item_carrier_wire_live.gd"
 func inspect_render(snapshot: Dictionary) -> void:
 	if not check(DisplayServer.get_name()!="headless","Carrier capture requires renderer"):return
 	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Carrier assets unavailable"):return
-	var box: bool=snapshot.item_type==30
-	var kind: String="box" if box else "container" if snapshot.carrier.kind==1 else "unit"
-	var label: String="box" if box else str(snapshot.carrier.kind)
+	var box: bool=snapshot.item_type in [13,30]
+	var kind: String=("box" if snapshot.item_type==30 else "instrument-"+str(snapshot.id)) if box else "container" if snapshot.carrier.kind==1 else "unit"
+	var label: String=kind if box else str(snapshot.carrier.kind)
 	if box and snapshot.has("holder"):
 		snapshot=snapshot.duplicate(true);snapshot.holder_id=snapshot.holder.id
 		snapshot.holder_name="In "+snapshot.holder.name;snapshot.holder_art="BUILDING_ICON_BOX"
@@ -18,7 +18,9 @@ func inspect_render(snapshot: Dictionary) -> void:
 	await process_frame;await RenderingServer.frame_post_draw
 	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
 	image.save_png(directory+"/carrier-"+label+"-viewer.png")
-	var native:=Image.load_from_file(directory+("/farm-item-carrier-container-view.png" if box else "/farm-item-carrier-"+kind+".png"))
+	var expected: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/carrier-expected.json"))
+	var reference: String=expected.get("native_reference","farm-item-carrier-container-view" if box else "farm-item-carrier-"+kind)
+	var native:=Image.load_from_file(directory+"/"+reference+".png")
 	native.convert(Image.FORMAT_RGB8);native=native.get_region(Rect2i(416,52,488,708))
 	var matched:=native.get_data()==image.get_data()
 	check(matched,"Native carrier panel pixels differ: "+kind)

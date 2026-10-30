@@ -1000,8 +1000,9 @@ exits unsaved; source preservation and chest/carrier regressions pass. Only the
 known render-thread notice occurs (headless stdout/stderr classified together).
 item_instrument_provider_reference retains these facts and the bridge hash. MSVC
 and root CTest19/19 pass. This verifies semantic inspection/edit authority for
-four definitions, including multi-material construction; instrument artwork,
-main-scene navigation and decorated-instrument lazy art remain unverified.
+four definitions, including multi-material construction. The rendered appearance
+checks below extend this evidence; main-scene navigation and decorated-instrument
+lazy art remain unverified.
 
 Management98 publishes independent instrument appearance, requiring music-skill
 family0..3 and placement0..1 for type13, and absent fields for other item types.
@@ -1022,6 +1023,17 @@ on2026-10-30 verifies matched98 endpoints, first/warm native descriptions,
 appearance and exact edit revisions, with both Hidden directions restored.
 Owned DF169884 exits unsaved with source unchanged; live diagnostics contain
 only the known separate-render-thread notice.
+
+item_instrument_render_reference records the four complete488x708 panels from
+protected124103: every pixel matches the native item screen. This includes the
+stringed instrument's initial long-description scrollbar, header artwork and
+holder row. Actual viewport clicks emit holder278; both edit directions succeed.
+Chest, container-carrier and unit-carrier full-panel regressions also remain exact.
+The percussion and long stringed-instrument renders were inspected. This is a
+standalone renderer/transport check; the harness supplies the same holder fields
+as item_panel. Physical description scrolling, chest contents integration and
+main-scene navigation remain separate acceptance; public farm/item screens stay
+staged. No game artwork is retained in the fixture, only semantic facts and hashes.
 
 ## Native item holder provider
 

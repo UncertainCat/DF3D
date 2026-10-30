@@ -31768,5 +31768,308 @@
       }
     },
     "scope": "Four native instrument definitions, first owned inspection before native sheet, repeated warm inspection, exact native descriptions and wire revisions, controller acceptance and Hidden edits in both directions. Instrument artwork, main scene navigation, other definitions and decorated-instrument art initialization are not established."
+  },
+  "item_instrument_render_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261030-124103",
+    "owned_df_pid": 169884,
+    "management_version": 98,
+    "bridge_sha256": "24ad52a6c9a35cf6ac964a597e66b12fc0a05261c2786feae1a189ce4c6456db",
+    "extension_sha256": "b135c7ac580d0f026c99ce40be32d01c702fb118a7b62e019f2731151ca4eea5",
+    "status": "passed_with_known_issues",
+    "source_manifest_unchanged": true,
+    "exit_without_saving": true,
+    "records": [
+      {
+        "id": 7504,
+        "appearance": {
+          "color_token": "WHITE",
+          "flags": 0,
+          "instrument": {
+            "family": 3,
+            "placed": 0
+          },
+          "material_token": "CREATURE:RAT_GIANT:BONE",
+          "stack": 1,
+          "subtype_raw": "ENT245 INP1"
+        },
+        "description": "This is a giant rat bone libash.    The libash is a mid-size hand-held percussion instrument.  It consists of a bone chime.  The musician strikes the chime.  The instrument has a single mid-high pitch.  The instrument has a dark gentle timbre.  ",
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 7504,
+              "revision": "1595891106439949661",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 7504,
+              "revision": "8067740020723297581",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        },
+        "first_read_ui_unchanged": true,
+        "warm_guards_unchanged": true,
+        "full_panel_size": [
+          488,
+          708
+        ],
+        "differing_pixels": 0,
+        "native_rgb_sha256": "c191eb85abdc5fb3e1e8b7a95f64b6fcd5deb961484ba3ae9b36d6bc67c3ed16",
+        "viewer_rgb_sha256": "c191eb85abdc5fb3e1e8b7a95f64b6fcd5deb961484ba3ae9b36d6bc67c3ed16",
+        "holder_view_id": 278
+      },
+      {
+        "id": 7583,
+        "appearance": {
+          "color_token": "DARK_GREEN",
+          "flags": 0,
+          "instrument": {
+            "family": 1,
+            "placed": 0
+          },
+          "material_token": "GLASS_GREEN",
+          "stack": 1,
+          "subtype_raw": "ENT245 INS1"
+        },
+        "description": "This is a green glass ennol.  The body is made from green glass.  The strings are made from giant cave spider silk.  The bow is made from copper.    The ennol is a large hand-held silk-stringed instrument with a glass body.  The instrument rests flat as the musician plays the forty strings with a metal bow.  Tuning is possible with adjustable bridges.  The instrument has a four-and-a-half octave range going from a low to a high pitch.  It has four registers.  The low register has a sparse floating timbre.  The middle register begins at mid-low pitch and has a delicate quavering strident timbre.  The high register begins at middle pitch and has a quavering harsh nasal buzzy timbre.  The top register begins at mid-high pitch and has a full quavering harsh timbre.  ",
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 7583,
+              "revision": "3230967480444624927",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 7583,
+              "revision": "6745965553827995789",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        },
+        "first_read_ui_unchanged": true,
+        "warm_guards_unchanged": true,
+        "full_panel_size": [
+          488,
+          708
+        ],
+        "differing_pixels": 0,
+        "native_rgb_sha256": "bca6e02cc1431d032589d2eb6d3aa2229456b8c27131433979b31540d175df8d",
+        "viewer_rgb_sha256": "bca6e02cc1431d032589d2eb6d3aa2229456b8c27131433979b31540d175df8d",
+        "holder_view_id": 278
+      },
+      {
+        "id": 19847,
+        "appearance": {
+          "color_token": "WHITE",
+          "flags": 0,
+          "instrument": {
+            "family": 2,
+            "placed": 0
+          },
+          "material_token": "CREATURE:WOLVERINE:BONE",
+          "stack": 1,
+          "subtype_raw": "ENT245 INW1"
+        },
+        "description": "This is a well-crafted wolverine bone adesh.    The adesh is a large hand-held wind instrument consisting of thirteen adjacent cylindrical bone pipes.  The musician blows through a double reed in each pipe.  The instrument has a three octave range going from a very low to a middle pitch.  At all pitches, the instrument has a evolving wobbling timbre.  It has two registers.  The low register has a quavering watery timbre.  The high register begins at low pitch and has a raspy muddy timbre.  ",
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 19847,
+              "revision": "9106954879113131012",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 19847,
+              "revision": "7129205943896939418",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        },
+        "first_read_ui_unchanged": true,
+        "warm_guards_unchanged": true,
+        "full_panel_size": [
+          488,
+          708
+        ],
+        "differing_pixels": 0,
+        "native_rgb_sha256": "243538846a0b886e8a6109b4df3cd149bd34142baaf19e52d28b0c7b5dd04c1e",
+        "viewer_rgb_sha256": "243538846a0b886e8a6109b4df3cd149bd34142baaf19e52d28b0c7b5dd04c1e",
+        "holder_view_id": 278
+      },
+      {
+        "id": 26550,
+        "appearance": {
+          "color_token": "BLACK",
+          "flags": 0,
+          "instrument": {
+            "family": 2,
+            "placed": 0
+          },
+          "material_token": "INORGANIC:ONYX",
+          "stack": 1,
+          "subtype_raw": "ENT235 INW4"
+        },
+        "description": "This is a onyx migrur.    The migrur is a mid-size hand-held wind instrument consisting of fourteen adjacent cylindrical ceramic pipes.  The musician blows over a single reed in each pipe.  The instrument has a three-and-a-half octave range going from a mid-low to a very high pitch.  At all pitches, the instrument has a even timbre.  It has two registers.  The low register has a light piercing timbre.  The high register begins at high pitch and has a clear dull timbre.  ",
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 26550,
+              "revision": "2197657943847436287",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 26550,
+              "revision": "3293928490118146515",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        },
+        "first_read_ui_unchanged": true,
+        "warm_guards_unchanged": true,
+        "full_panel_size": [
+          488,
+          708
+        ],
+        "differing_pixels": 0,
+        "native_rgb_sha256": "be44e476cfd18ed824019d70426acc44741d824a01b0dd43bf31f06e4982f284",
+        "viewer_rgb_sha256": "be44e476cfd18ed824019d70426acc44741d824a01b0dd43bf31f06e4982f284",
+        "holder_view_id": 278
+      }
+    ],
+    "regressions": {
+      "1": {
+        "full_panel_match": true,
+        "icon_available": true
+      },
+      "2": {
+        "full_panel_match": true,
+        "icon_available": true
+      },
+      "box": {
+        "full_panel_match": true,
+        "icon_available": true
+      }
+    },
+    "diagnostics": {
+      "farm-item-carrier-box-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-container-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-1-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-2-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-3-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-4-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-unit-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      }
+    },
+    "scope": "Four standalone full item panels, including initial description scrollbar, actual holder View intent and Hidden edits. Chest contents/main scene navigation, physical scrolling, other instrument definitions and decorated-instrument lazy art remain separate work."
   }
 }

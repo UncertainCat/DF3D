@@ -218,7 +218,7 @@ try {
     if($FarmItemCarriers -and $name -match '^farm-item-carrier-(container|unit|box|instrument-[0-9]+)-wire$') {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
-     if($FarmItemCarrierArt -and $name -notmatch 'instrument-'){
+     if($FarmItemCarrierArt){
       $env:DF3D_DF_PATH=$dfPath
       $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/item_carrier_art_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
      }else{

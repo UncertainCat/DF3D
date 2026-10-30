@@ -228,7 +228,7 @@ local ok,err=xpcall(function()
     end
     inspected.guards_unchanged=true
     if held.item:getType()==df.item_type.INSTRUMENT then
-     local expected=assert(io.open(out..'/carrier-expected.json','w'));expected:write(json.encode{snapshot=inspected.independent});expected:close()
+     local expected=assert(io.open(out..'/carrier-expected.json','w'));expected:write(json.encode{snapshot=inspected.independent,native_reference=inspected.name});expected:close()
      capture('farm-item-carrier-instrument-'..index..'-wire')
      local result=assert(io.open(out..'/carrier-wire-result.json'));inspected.wire=json.decode(result:read('*a'));result:close()
      assert(inspected.wire.success and held.item.flags.hidden==inspected.independent.hidden,'instrument wire failed or left hidden flag changed')

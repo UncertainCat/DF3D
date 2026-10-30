@@ -32233,5 +32233,314 @@
       "success": true
     },
     "scope": "Contents transport for building278/type10: five ordered rows, ten Hidden edits, stale revision and foreign item rejection, native final visibility restoration. Does not establish contents artwork, other flag effects for chests, removal/rename, main-scene owner navigation or natural hauling."
+  },
+  "chest_contents_render_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261030-125641",
+    "owned_df_pid": 159280,
+    "management_version": 99,
+    "bridge_sha256": "f756ddb56e4f4b56832777c752ac3ace1e689be081c2a62a805d65575c8f4608",
+    "extension_sha256": "c93337f5704a2b4478ccc4c1e3ac9d7b73f99740ffa69f353d341770d4bd1954",
+    "status": "passed_with_known_issues",
+    "source_manifest_unchanged": true,
+    "exit_without_saving": true,
+    "crop": [
+      424,
+      508,
+      472,
+      216
+    ],
+    "differing_pixels": 0,
+    "native_rgb_sha256": "907c695f0d1c36076c659d965aac0697f23adc2f5006139b42524feba302ed35",
+    "viewer_rgb_sha256": "907c695f0d1c36076c659d965aac0697f23adc2f5006139b42524feba302ed35",
+    "view_ids": [
+      5834,
+      7504,
+      7583,
+      19847,
+      26550
+    ],
+    "result": {
+      "foreign_rejected": true,
+      "initial": {
+        "building_id": 278,
+        "completed": true,
+        "cursor": 0,
+        "next_cursor": 0,
+        "removing": false,
+        "revision": "3452302774699206637",
+        "rows": [
+          {
+            "appearance": {
+              "color_token": "TAUPE_PALE",
+              "flags": 0,
+              "material_token": "PLANT:KUMQUAT:WOOD",
+              "stack": 1,
+              "subtype_raw": ""
+            },
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 5834,
+            "in_building": true,
+            "in_job": false,
+            "item_type": 30,
+            "material_token": "PLANT:KUMQUAT:WOOD",
+            "melt": false,
+            "name": "(+\u00c2\u00ab-kumquat wood chest-\u00c2\u00bb+)",
+            "role": 2,
+            "subtype_raw": ""
+          },
+          {
+            "appearance": {
+              "color_token": "WHITE",
+              "flags": 0,
+              "instrument": {
+                "family": 3,
+                "placed": 0
+              },
+              "material_token": "CREATURE:RAT_GIANT:BONE",
+              "stack": 1,
+              "subtype_raw": "ENT245 INP1"
+            },
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 7504,
+            "in_building": false,
+            "in_job": false,
+            "item_type": 13,
+            "material_token": "CREATURE:RAT_GIANT:BONE",
+            "melt": false,
+            "name": "(giant rat bone libash)",
+            "role": 0,
+            "subtype_raw": "ENT245 INP1"
+          },
+          {
+            "appearance": {
+              "color_token": "DARK_GREEN",
+              "flags": 0,
+              "instrument": {
+                "family": 1,
+                "placed": 0
+              },
+              "material_token": "GLASS_GREEN",
+              "stack": 1,
+              "subtype_raw": "ENT245 INS1"
+            },
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 7583,
+            "in_building": false,
+            "in_job": false,
+            "item_type": 13,
+            "material_token": "GLASS_GREEN",
+            "melt": false,
+            "name": "(green glass ennol)",
+            "role": 0,
+            "subtype_raw": "ENT245 INS1"
+          },
+          {
+            "appearance": {
+              "color_token": "WHITE",
+              "flags": 0,
+              "instrument": {
+                "family": 2,
+                "placed": 0
+              },
+              "material_token": "CREATURE:WOLVERINE:BONE",
+              "stack": 1,
+              "subtype_raw": "ENT245 INW1"
+            },
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 19847,
+            "in_building": false,
+            "in_job": false,
+            "item_type": 13,
+            "material_token": "CREATURE:WOLVERINE:BONE",
+            "melt": false,
+            "name": "(-wolverine bone adesh-)",
+            "role": 0,
+            "subtype_raw": "ENT245 INW1"
+          },
+          {
+            "appearance": {
+              "color_token": "BLACK",
+              "flags": 0,
+              "instrument": {
+                "family": 2,
+                "placed": 0
+              },
+              "material_token": "INORGANIC:ONYX",
+              "stack": 1,
+              "subtype_raw": "ENT235 INW4"
+            },
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 26550,
+            "in_building": false,
+            "in_job": false,
+            "item_type": 13,
+            "material_token": "INORGANIC:ONYX",
+            "melt": false,
+            "name": "onyx migrur",
+            "role": 0,
+            "subtype_raw": "ENT235 INW4"
+          }
+        ],
+        "total": 5
+      },
+      "receipts": [
+        {
+          "id": 5834,
+          "revision": "3026968580223246625",
+          "value": true
+        },
+        {
+          "id": 5834,
+          "revision": "3452302774699206637",
+          "value": false
+        },
+        {
+          "id": 7504,
+          "revision": "5480174465313610305",
+          "value": true
+        },
+        {
+          "id": 7504,
+          "revision": "3452302774699206637",
+          "value": false
+        },
+        {
+          "id": 7583,
+          "revision": "2579045822232300845",
+          "value": true
+        },
+        {
+          "id": 7583,
+          "revision": "3452302774699206637",
+          "value": false
+        },
+        {
+          "id": 19847,
+          "revision": "5167684523979847529",
+          "value": true
+        },
+        {
+          "id": 19847,
+          "revision": "3452302774699206637",
+          "value": false
+        },
+        {
+          "id": 26550,
+          "revision": "4595074325715547399",
+          "value": true
+        },
+        {
+          "id": 26550,
+          "revision": "3452302774699206637",
+          "value": false
+        }
+      ],
+      "restored": true,
+      "stale_rejected": true,
+      "success": true
+    },
+    "diagnostics": {
+      "farm-chest-contents-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-box-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-container-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-1-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-2-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-3-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-4-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-unit-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      }
+    },
+    "scope": "Standalone complete contents viewport, installed native row artwork, five actual View intents, ten Hidden edits and stale/foreign rejection. Chest header actions, main-scene navigation, other flag effects and natural hauling remain unfinished."
   }
 }

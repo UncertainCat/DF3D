@@ -65,6 +65,7 @@ func refresh() -> void:
 		if row.item_type==53 and material.size()==3 and material[0]=="PLANT" and material[2]=="SEED":
 			icons[row.id]=world.farm_seed_icon(material[1])
 		elif row.item_type==0 and row.material_token=="POTASH":icons[row.id]=world.farm_potash_icon()
+		elif row.has("appearance"):icons[row.id]=world.item_sheet_icon(row.item_type,row.appearance,int(row.id))
 	scrollbar.set_rows(int(state.snapshot.get("total",0))*3,cell_first)
 	scrollbar.visible=page>0 and int(state.snapshot.get("total",0))>page
 	if not can_scroll():scrollbar.dragging=false

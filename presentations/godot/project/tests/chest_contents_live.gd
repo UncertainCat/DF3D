@@ -21,6 +21,7 @@ func run() -> void:
 		var row: Dictionary=page.rows[index];var native: Dictionary=expected.contents[index]
 		check(row.id==int(native.id) and row.role==int(native.role) and row.item_type==int(native.type),"Chest membership/order/type differs")
 		check(row.hidden==native.hidden,"Chest visibility differs")
+	await inspect_render(page)
 	var initial:=page.duplicate(true);var receipts: Array=[]
 	for row in initial.rows:
 		if failed:break

@@ -975,7 +975,7 @@ render-thread notice. Native chest and first instrument captures were inspected.
 
 The general buildingContents semantic reader already accepts building_actual,
 and the verified lookup now admits farms and chests as described below. The
-contents view only supplies seed/potash artwork, and the independent
+contents view now also supplies verified BOX/instrument artwork below. The independent
 description provider admits seed/potash/BOX and the verified instrument dispatch
 below. Instrument artwork and chest header/removal semantics need verified providers
 before connecting this destination. The farm owner currently forwards holder
@@ -1054,7 +1054,7 @@ core and building_contents_state_test pass in build/qa/chest-contents-authority.
 The live client is registered as a protected manual harness in tools/qa/checks.json.
 
 This is contents authority acceptance, not a complete chest screen. Chest header
-rename/removal, contents appearance, other native flag effects and main-scene
+rename/removal, other native flag effects and main-scene
 navigation still need integration and verification. Public exposure is unchanged.
 
 Management99 extends BuildingContentsItem with the same owned appearance facts
@@ -1076,6 +1076,22 @@ on2026-10-30 verifies all five chest rows through matched99 endpoints, ten Hidde
 receipts with original state restored, and stale/foreign rejection. Owned DF159280
 exits unsaved and source preservation passes. Existing independent item/carrier
 checks pass; live clients report only the known render-thread notice.
+
+The shared contents renderer uses row appearance through item_sheet_icon for
+BOX/INSTRUMENT while retaining seed/potash original-color paths. Protected125641
+compares the complete472x216 native chest contents viewport: zero differing
+pixels across all five rows, captions, role marks and controls. Actual viewport
+clicks produce all five View item IDs in native order. The same run performs
+the contents authority checks above and all independent chest/instrument/carrier
+regressions. chest_contents_render_reference retains semantic rows, receipts,
+pixel hashes and diagnostics; the rendered viewport was inspected. All recorded
+farm contents captures still pass, with only documented Godot capture diagnostics.
+
+The protected GPU helper is chest_contents_art_live.gd, selected by the existing
+-FarmItemCarrierArt lane switch and registered as manual in the QA manifest.
+This verifies the standalone contents viewport, not chest header actions or
+main-scene composition/navigation. Other flag effects and natural hauling remain
+separate acceptance work. Public farm/item exposure is unchanged.
 
 ## Native item holder provider
 

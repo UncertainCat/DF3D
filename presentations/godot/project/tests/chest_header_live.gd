@@ -100,6 +100,21 @@ func run() -> void:
 		controller_receipts.append(header_model.snapshot.duplicate(true))
 		header_model.cancel_removal();await settle_header()
 		check(header_model.snapshot==initial,"Controller final restoration differs")
+		controller_receipts.append(header_model.snapshot.duplicate(true))
+		check(header_model.begin_name_entry(),"Live chest name entry did not begin")
+		header_model.edit_name_entry("typed");header_model.edit_name_entry("typed chest");header_model.finish_name_entry();await settle_header()
+		check(header_model.snapshot.get("custom_name")=="typed chest","Final typed chest name differs")
+		controller_receipts.append(header_model.snapshot.duplicate(true))
+		check(header_model.begin_name_entry(),"Live restore name entry did not begin")
+		header_model.edit_name_entry(initial.custom_name);header_model.close()
+		var drain_deadline:=Time.get_ticks_msec()+5000
+		while Time.get_ticks_msec()<drain_deadline:
+			world.poll();header_service.poll(0.01)
+			if header_service._active==0 and header_service._queue.is_empty():break
+			await create_timer(0.01).timeout
+		check(header_service._active==0 and header_service._queue.is_empty() and header_model.phase==header_model.Phase.Closed,"Close did not drain typed name")
+		header_model.open(initial.id);await settle_header()
+		check(header_model.snapshot==initial,"Closing name entry did not restore final typed name")
 		controller_receipts.append(header_model.snapshot.duplicate(true));close_header()
 	var file:=FileAccess.open(directory+"/chest-header-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"mode":expected.mode,"initial_revision":str(initial.revision),"receipts":receipts,"controller_receipts":controller_receipts,"worker_uses_controller":expected.mode=="worker"}));file.close()

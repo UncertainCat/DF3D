@@ -33457,6 +33457,182 @@
         }
       },
       "scope": "Independent header controller performs live read, explicit rename/restoration, removal/cancellation and assigned-worker cancellation. Offline actual-service tests cover queued/sent retirement, epoch/disconnect, malformed receipts and retained unknown outcomes. Text-entry draft/session behavior, rendered chest panel and main-scene navigation remain unfinished."
+    },
+    "name_session_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261030-133843",
+      "owned_df_pid": 167824,
+      "cases": {
+        "idle": {
+          "controller_receipts": [
+            {
+              "custom_name": "controller chest",
+              "has_worker": false,
+              "header_name": "Controller chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "controller chest",
+              "removing": false,
+              "revision": "8282814728735724965",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": true,
+              "revision": "8325035279915698849",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": false,
+              "revision": "1475866136942257694",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "typed chest",
+              "has_worker": false,
+              "header_name": "Typed chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "typed chest",
+              "removing": false,
+              "revision": "1610397697353417666",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": false,
+              "revision": "1475866136942257694",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            }
+          ],
+          "initial_revision": "1475866136942257694",
+          "mode": "idle",
+          "receipts": [
+            {
+              "custom_name": "lower chest",
+              "has_worker": false,
+              "header_name": "Lower chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "lower chest",
+              "removing": false,
+              "revision": "471251419895981851",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": false,
+              "revision": "1475866136942257694",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": true,
+              "revision": "6816714865335275888",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": false,
+              "revision": "1475866136942257694",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            }
+          ],
+          "success": true,
+          "worker_uses_controller": false,
+          "diagnostics": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "worker": {
+          "controller_receipts": [],
+          "initial_revision": "5882428572299803817",
+          "mode": "worker",
+          "receipts": [
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": false,
+              "revision": "1475866136942257694",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            }
+          ],
+          "success": true,
+          "worker_uses_controller": true,
+          "diagnostics": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        }
+      },
+      "scope": "Actual service-owned chest rename session coalesces typed values, finishes on confirmed final text, and drains a pending restore after controller close. Native readback confirms original name. Offline tests cover continuation ordering, stale/rejected/unknown retirement and epoch changes; existing farm session regressions pass. Rendered keyboard/text-entry integration remains unfinished."
     }
   }
 }

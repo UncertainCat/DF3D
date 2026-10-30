@@ -90,6 +90,38 @@ func run() -> void:
 	check(service.result(detached).get("outcome")=="unknown" and service.last_detached_mutation("production").get("result",{}).get("outcome")=="unknown","detached header unknown is retained by service")
 	ready();model.request_removal();service.poll();world.state.transport_alive=false;service.poll()
 	check(model.phase==Model.Phase.Unavailable and model.snapshot.is_empty(),"disconnect retires header authority")
+	ready();check(model.begin_name_entry(),"chest name entry begins")
+	model.edit_name_entry("A");model.edit_name_entry("AB");model.edit_name_entry("ABC")
+	model.finish_name_entry();service.poll()
+	check(world.calls[-1].request.farm_name=="A" and world.calls[-1].request.building_header and not world.calls[-1].request.has("season"),"typed header uses independent intent")
+	var typed:=snapshot(278,9007199254740994);typed.custom_name="A";typed.native_name="A";typed.header_name="A"
+	reply(typed,1,C.FarmOperation.Rename)
+	check(model.phase==Model.Phase.Applying and model.snapshot.custom_name=="A" and world.calls[-1].request.farm_name=="ABC","typing coalesces on confirmed authority")
+	typed=typed.duplicate(true);typed.custom_name="ABC";typed.native_name="ABC";typed.header_name="ABC";typed.revision+=1
+	reply(typed,1,C.FarmOperation.Rename);check(model.phase==Model.Phase.Ready and model.name_session==null and model.snapshot.custom_name=="ABC","Enter drains final typed text")
+	await process_frame
+	ready();check(model.begin_name_entry(),"second name entry begins")
+	model.edit_name_entry("A");model.edit_name_entry("AB");model.close()
+	service.submit("production",{"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":279},Callable())
+	service.poll();check(world.calls[-1].request.farm_name=="A","closing keeps explicitly typed intent")
+	typed=snapshot(278,9007199254740994);typed.custom_name="A";typed.native_name="A";typed.header_name="A"
+	reply(typed,1,C.FarmOperation.Rename)
+	check(world.calls[-1].request.farm_name=="AB" and world.calls[-1].request.expected_revision==typed.revision,"closing preserves latest text before later interactions")
+	typed=typed.duplicate(true);typed.custom_name="AB";typed.native_name="AB";typed.header_name="AB";typed.revision+=1
+	reply(typed,1,C.FarmOperation.Rename)
+	check(model.phase==Model.Phase.Closed and model.snapshot.is_empty() and applied==0 and world.calls[-1].request.building_id==279,"retired panel cannot revive from name continuation")
+	await process_frame
+	for outcome in [2,3,4]:
+		ready();model.begin_name_entry();model.edit_name_entry("A");service.poll();model.edit_name_entry("AB");model.finish_name_entry();reply({},outcome)
+		check(model.name_session==null and model.snapshot.is_empty() and world.calls.size()==2,"failed typed session retires buffered text")
+		service.poll();check(world.calls.size()==2,"failed typed session never replays")
+		await process_frame
+	for sent_name in [false,true]:
+		ready();model.begin_name_entry();model.edit_name_entry("A")
+		if sent_name:service.poll()
+		model.edit_name_entry("AB");world.state.world_epoch=6;service.poll()
+		check(model.phase==Model.Phase.Unavailable and model.name_session==null and world.calls.size()==1+int(sent_name),"epoch retires typed name session")
+		await process_frame
 	model.dispose();service.free()
 	if failures==0:print("BUILDING_HEADER_STATE_PASS")
 	quit(0 if failures==0 else 1)

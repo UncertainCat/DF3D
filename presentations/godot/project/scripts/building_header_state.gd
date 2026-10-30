@@ -10,6 +10,7 @@ var building_id: int=-1
 var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
+var name_session
 
 func configure(source) -> void:
 	dispose();service=source
@@ -22,6 +23,8 @@ func dispose() -> void:
 
 func close() -> void:
 	generation+=1
+	var previous_name=name_session;name_session=null
+	if previous_name!=null:previous_name.finish()
 	var previous:=ticket;ticket=0;building_id=-1;snapshot={};phase=Phase.Closed
 	if service!=null and previous!=0:service.detach(previous)
 	changed.emit()
@@ -36,12 +39,38 @@ func open(id: int) -> void:
 	building_id=id;_read()
 
 func refresh() -> void:
-	if building_id<0 or ticket!=0 or phase in [Phase.Closed,Phase.Unavailable]:return
+	if building_id<0 or ticket!=0 or name_session!=null or phase in [Phase.Closed,Phase.Unavailable]:return
 	_read()
 
 func _read() -> void:
 	snapshot={};phase=Phase.Reading
 	_send({"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":building_id})
+
+func begin_name_entry() -> bool:
+	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
+	var owner:=generation
+	var owned=load("res://scripts/farm_rename_session.gd").new()
+	service.add_child(owned);owned.configure(service,snapshot,true)
+	if owned.stopped:return false
+	name_session=owned;phase=Phase.Applying
+	owned.changed.connect(func(observed):
+		if owner!=generation or name_session!=owned:return
+		snapshot=observed.duplicate(true);phase=Phase.Applying;changed.emit();applied.emit())
+	owned.finished.connect(func():
+		if owner!=generation or name_session!=owned:return
+		name_session=null;phase=Phase.Ready;changed.emit())
+	owned.failed.connect(func(result):
+		if owner!=generation or name_session!=owned:return
+		name_session=null
+		var outcome: int=result.get("production",{}).get("building_header",{}).get("outcome",C.FarmEditOutcome.None)
+		_fail(Phase.Unknown if result.get("outcome","")=="unknown" or outcome==C.FarmEditOutcome.Unknown else Phase.Stale if outcome==C.FarmEditOutcome.Stale else Phase.Rejected))
+	changed.emit();return true
+
+func edit_name_entry(value: String) -> void:
+	if name_session!=null:name_session.edit(value)
+
+func finish_name_entry() -> void:
+	if name_session!=null:name_session.finish()
 
 func rename(value: String) -> void:
 	var bytes:=value.to_utf8_buffer()

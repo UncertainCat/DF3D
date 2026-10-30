@@ -1198,6 +1198,29 @@ render-thread notice. controller_reference retains receipts. This verifies
 explicit intents; native text-entry draft sessions, chest rendering and navigation
 still require integration and acceptance before exposure.
 
+The existing farm_rename_session now also accepts independent building headers.
+Its default farm mode keeps the same validator and season-qualified intent. Chest
+mode validates the Box header and emits building_header intents without a season.
+Both modes keep explicit typing under service ownership: rapid edits coalesce,
+confirmed receipts authorize the next text continuation ahead of later queued
+interactions, and finishing/closing drains the latest typed value. Failed or
+unknown receipts and epoch changes retire buffered text without replay. The chest
+controller exposes begin/edit/finish entry methods and disconnects its observer on
+close while the owned session finishes. This reproduces native's retained typed
+name on close; ordinary queued non-session actions still cancel on close.
+
+build/qa/chest-name-session passes core, header controller and existing farm rename
+session regressions, including close-before-send, exact continuation revisions,
+retired observers and failed/epoch text retirement. Protected133843 on2026-10-30
+verifies coalesced chest typing and finish through the real session, then types the
+original name and immediately closes the controller. After the service drains,
+a fresh read equals the original snapshot; native readback confirms restoration.
+Owned DF167824 exits unsaved with source preservation. Existing item/contents and
+worker cancellation regressions pass; eight GPU and two combined headless logs
+contain only the known render-thread notice. name_session_reference retains the
+receipts. Physical key input, text-entry rendering and complete chest navigation
+remain separate acceptance work before public exposure.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

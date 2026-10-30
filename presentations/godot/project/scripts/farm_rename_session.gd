@@ -13,16 +13,26 @@ var ticket:=0
 var ending:=false
 var stopped:=false
 var receiving:=false
+var building_header:=false
+var target_id: int=-1
 
-func configure(owner_service,observed: Dictionary) -> void:
-	service=owner_service
-	if service==null or typeof(observed.get("building_id"))!=TYPE_INT or typeof(observed.get("selected_season"))!=TYPE_INT:
-		_fail({});return
-	validator.building_id=observed.building_id;validator.season=observed.selected_season
-	if validator.building_id<0 or validator.season<0 or validator.season>3 or not validator._valid(observed) or observed.removing:
-		_fail({});return
+func configure(owner_service,observed: Dictionary,independent_header:=false) -> void:
+	service=owner_service;building_header=independent_header
+	if service==null:_fail({});return
+	if building_header:
+		if typeof(observed.get("id"))!=TYPE_INT:_fail({});return
+		target_id=observed.id
+	else:
+		if typeof(observed.get("building_id"))!=TYPE_INT or typeof(observed.get("selected_season"))!=TYPE_INT:_fail({});return
+		validator.building_id=observed.building_id;validator.season=observed.selected_season;target_id=observed.building_id
+	if not _valid(observed) or observed.removing:_fail({});return
 	snapshot=observed.duplicate(true);desired=snapshot.custom_name
 	service.session_changed.connect(_invalidated)
+
+func _valid(observed: Dictionary) -> bool:
+	if building_header:
+		return preload("res://scripts/building_header_state.gd").valid_snapshot(observed,target_id) and observed.stage==observed.max_stage
+	return validator.building_id>=0 and validator.season>=0 and validator.season<=3 and validator._valid(observed)
 
 func edit(value: String) -> bool:
 	var bytes:=value.to_utf8_buffer()
@@ -38,9 +48,10 @@ func _drain(previous:=0) -> void:
 	if desired==snapshot.custom_name:
 		if ending:_stop();finished.emit();queue_free()
 		return
-	var request: Dictionary={"action":C.ManagementAction.FarmEdit,"building_id":snapshot.building_id,
-		"season":snapshot.selected_season,"expected_revision":snapshot.revision,
-		"farm_operation":C.FarmOperation.Rename,"farm_name":desired}
+	var request: Dictionary={"action":C.ManagementAction.FarmEdit,"building_id":target_id,
+		"expected_revision":snapshot.revision,"farm_operation":C.FarmOperation.Rename,"farm_name":desired}
+	if building_header:request.building_header=true
+	else:request.season=snapshot.selected_season
 	ticket=service.submit_continuation(previous,"production",request,_received) if previous>0 else service.submit("production",request,_received)
 	if ticket==0:_fail({})
 
@@ -48,10 +59,12 @@ func _received(receipt: int,result: Dictionary,request: Dictionary) -> void:
 	if stopped or receipt!=ticket:return
 	ticket=0
 	var production: Dictionary=result.get("production",{})
-	var observed: Dictionary=production.get("farm",{})
-	if result.get("status",C.ManagementStatus.Rejected)!=C.ManagementStatus.Ok or result.get("outcome","")=="unknown" or production.get("farm_edit_outcome")!=C.FarmEditOutcome.Completed:
+	var header: Dictionary=production.get("building_header",{})
+	var observed: Dictionary=header.get("snapshot",{}) if building_header else production.get("farm",{})
+	var outcome=header.get("outcome") if building_header else production.get("farm_edit_outcome")
+	if result.get("status",C.ManagementStatus.Rejected)!=C.ManagementStatus.Ok or result.get("outcome","")=="unknown" or outcome!=C.FarmEditOutcome.Completed:
 		_fail(result);return
-	if result.get("action")!=C.ManagementAction.FarmEdit or not validator._valid(observed) or observed.removing or observed.custom_name!=request.farm_name:
+	if result.get("action")!=C.ManagementAction.FarmEdit or not _valid(observed) or observed.removing or observed.custom_name!=request.farm_name or (building_header and header.get("operation")!=C.FarmOperation.Rename):
 		var uncertain:=result.duplicate(true);uncertain.outcome="unknown";_fail(uncertain);return
 	snapshot=observed.duplicate(true)
 	# Observers may finish or type again synchronously. Preserve continuation

@@ -244,6 +244,9 @@ local ok,err=xpcall(function()
     assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==installed.id)
    end
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   local header_source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','chest-header-native.lua')
+   assert(loadfile(header_source))(out,view,records,installed,capture,select_map)
+   if sheet.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
    linked.description_probes[#linked.description_probes+1]=description_probe()
    local text,status=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(target.id));assert(status==0,text)
    linked.independent=json.decode(text).snapshot;assert(linked.independent.description==linked.description)

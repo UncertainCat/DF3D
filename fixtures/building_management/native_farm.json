@@ -32542,5 +32542,309 @@
       }
     },
     "scope": "Standalone complete contents viewport, installed native row artwork, five actual View intents, ten Hidden edits and stale/foreign rejection. Chest header actions, main-scene navigation, other flag effects and natural hauling remain unfinished."
+  },
+  "chest_header_reference": {
+    "native_run": "build/stockpile-storage-native-farm-discovery-20261030-130343",
+    "owned_df_pid": 53944,
+    "records": [
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "custom_name": "lower chest",
+        "draft": "lower chest",
+        "editing": true,
+        "guards_unchanged": true,
+        "jobs": [],
+        "name": "chest-header-rename-draft",
+        "native_name": "lower chest",
+        "removing": false,
+        "semantic": {
+          "building_id": 278,
+          "custom_name": "lower chest",
+          "has_worker": false,
+          "header_name": "Lower chest",
+          "native_name": "lower chest",
+          "removing": false,
+          "suspended": false
+        }
+      },
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "custom_name": "lower chest",
+        "draft": "lower chest",
+        "editing": false,
+        "guards_unchanged": true,
+        "jobs": [],
+        "name": "chest-header-renamed",
+        "native_name": "lower chest",
+        "removing": false,
+        "semantic": {
+          "building_id": 278,
+          "custom_name": "lower chest",
+          "has_worker": false,
+          "header_name": "Lower chest",
+          "native_name": "lower chest",
+          "removing": false,
+          "suspended": false
+        }
+      },
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "custom_name": "lower chest appended",
+        "draft": "lower chest appended",
+        "editing": true,
+        "guards_unchanged": true,
+        "jobs": [],
+        "name": "chest-header-rename-escape",
+        "native_name": "lower chest appended",
+        "removing": false,
+        "semantic": {
+          "building_id": 278,
+          "custom_name": "lower chest appended",
+          "has_worker": false,
+          "header_name": "Lower chest appended",
+          "native_name": "lower chest appended",
+          "removing": false,
+          "suspended": false
+        }
+      },
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "custom_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "draft": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "editing": true,
+        "guards_unchanged": true,
+        "jobs": [],
+        "name": "chest-header-rename-limit",
+        "native_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "removing": false,
+        "semantic": {
+          "building_id": 278,
+          "custom_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "has_worker": false,
+          "header_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "native_name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "removing": false,
+          "suspended": false
+        }
+      },
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "custom_name": "",
+        "draft": "",
+        "editing": false,
+        "guards_unchanged": true,
+        "jobs": [],
+        "name": "chest-header-rename-restored",
+        "native_name": "kumquat wood Chest",
+        "removing": false,
+        "semantic": {
+          "building_id": 278,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Kumquat wood Chest",
+          "native_name": "kumquat wood Chest",
+          "removing": false,
+          "suspended": false
+        }
+      },
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "custom_name": "",
+        "draft": "",
+        "editing": false,
+        "guards_unchanged": true,
+        "jobs": [
+          {
+            "id": 382796,
+            "suspended": false,
+            "type": 88
+          }
+        ],
+        "name": "chest-header-remove",
+        "native_name": "kumquat wood Chest",
+        "removing": true,
+        "semantic": {
+          "building_id": 278,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Kumquat wood Chest",
+          "native_name": "kumquat wood Chest",
+          "removing": true,
+          "suspended": false
+        }
+      },
+      {
+        "active_id": 5834,
+        "active_sheet": "ITEM",
+        "name": "chest-header-removing-item-view",
+        "opened_item": true,
+        "target_id": 5834
+      },
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "custom_name": "",
+        "draft": "",
+        "editing": false,
+        "guards_unchanged": true,
+        "jobs": [
+          {
+            "id": 382796,
+            "suspended": true,
+            "type": 88
+          }
+        ],
+        "name": "chest-header-remove-suspended",
+        "native_name": "kumquat wood Chest",
+        "removing": true,
+        "semantic": {
+          "building_id": 278,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Kumquat wood Chest",
+          "native_name": "kumquat wood Chest",
+          "removing": true,
+          "suspended": true
+        }
+      },
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "custom_name": "",
+        "draft": "",
+        "editing": false,
+        "guards_unchanged": true,
+        "jobs": [
+          {
+            "id": 382796,
+            "suspended": false,
+            "type": 88
+          }
+        ],
+        "name": "chest-header-remove-restored",
+        "native_name": "kumquat wood Chest",
+        "removing": true,
+        "semantic": {
+          "building_id": 278,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Kumquat wood Chest",
+          "native_name": "kumquat wood Chest",
+          "removing": true,
+          "suspended": false
+        }
+      },
+      {
+        "active_id": 278,
+        "active_sheet": "BUILDING",
+        "custom_name": "",
+        "draft": "",
+        "editing": false,
+        "guards_unchanged": true,
+        "jobs": [],
+        "name": "chest-header-cancel-removal",
+        "native_name": "kumquat wood Chest",
+        "removing": false,
+        "semantic": {
+          "building_id": 278,
+          "custom_name": "",
+          "has_worker": false,
+          "header_name": "Kumquat wood Chest",
+          "native_name": "kumquat wood Chest",
+          "removing": false,
+          "suspended": false
+        }
+      }
+    ],
+    "diagnostics": {
+      "farm-chest-contents-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-box-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-container-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-1-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-2-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-3-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-4-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-unit-wire.godot.log": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      }
+    },
+    "result_sha256": "572da84be1bdedf416802efd82a539bdde34ab3082e769efe47e525fcae66c0b",
+    "scope": "Native chest rename/remove/cancel oracle and shared owned header reader. Rename applies during typing; Enter ends editing; Escape closes without reverting; ASCII input caps at 30 characters. Contents View remains active while removal is pending. Reader leaves guarded building, jobs and UI bytes unchanged. Worker-attached cancellation, non-ASCII rename, semantic edit transport and complete chest presentation/navigation remain unverified."
   }
 }

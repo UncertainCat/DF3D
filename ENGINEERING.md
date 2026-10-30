@@ -1093,6 +1093,24 @@ This verifies the standalone contents viewport, not chest header actions or
 main-scene composition/navigation. Other flag effects and natural hauling remain
 separate acceptance work. Public farm/item exposure is unchanged.
 
+The shared buildingHeader reader now admits FarmPlot and Box only. It uses the
+same native getName/formatName and removal worker predicate as the verified farm
+header; farmHeader retains its typed wrapper. The diagnostic building-header-read
+exposes owned captions and removal state without widening farm mutation routes.
+Protected130343 on2026-10-30 compares the reader with native chest278 through
+rename, removal, suspension and cancellation. Guarded building, jobs, sheet and
+plotinfo bytes remain unchanged by each read. Native Rename applies during typing;
+Enter finishes editing, Escape closes without reverting, and ASCII input stops at
+30 characters. Native removal leaves contents visible and View opens item5834.
+The smoke restores the original name and cancels its idle removal job.
+
+chest_header_reference retains the bounded native records. MSVC and all19 root
+CTest checks pass; the protected lane exits owned DF53944 unsaved with source
+preservation and existing item/contents regressions passing. All eight Godot logs
+have only the known render-thread notice. This verifies header reads and native
+reference behavior, not chest edit transport or presentation. Worker-attached
+cancellation, non-ASCII rename and complete navigation remain unverified.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

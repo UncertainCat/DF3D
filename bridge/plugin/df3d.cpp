@@ -1829,16 +1829,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!tile || tile->bits.hidden || !df3d_production::cancelFarmRemoval(farm))return CR_FAILURE;
           out.print("Native farm removal cancelled");return CR_OK;
         }
-        if(parameters[0]=="farm-header-read") {
+        if(parameters[0]=="farm-header-read"||parameters[0]=="building-header-read") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];
           const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
           if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
-          auto* farm=virtual_cast<df::building_farmplotst>(df::building::find(id));
+          auto* farm=df::building::find(id);
+          if(parameters[0]=="farm-header-read" && !virtual_cast<df::building_farmplotst>(farm))return CR_FAILURE;
           auto* tile=farm?Maps::getTileDesignation(farm->centerx,farm->centery,farm->z):nullptr;
           if(!tile || tile->bits.hidden)return CR_FAILURE;
-          const auto header=df3d_production::farmHeader(farm);if(!header)return CR_FAILURE;
+          const auto header=df3d_production::buildingHeader(farm);if(!header)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["building_id"]=id;
           result["custom_name"]=DF2UTF(header->customNameCp437);result["native_name"]=DF2UTF(header->nativeNameCp437);
           result["header_name"]=DF2UTF(header->headerNameCp437);

@@ -85,7 +85,7 @@ inline const FarmFunctions& farmFunctions() {
     }();
     return functions;
 }
-struct FarmHeader {
+struct BuildingHeader {
     std::string customNameCp437,nativeNameCp437,headerNameCp437;
     bool removing=false,suspended=false,hasWorker=false;
 };
@@ -106,10 +106,10 @@ inline bool cancelFarmRemoval(df::building_farmplotst* farm) {
 }
 // Native header1804bb calls virtual getName; removal180c3c..180de1 uses
 // the first job's suspend flag and native worker predicate, not job.working.
-inline std::optional<FarmHeader> farmHeader(df::building_farmplotst* farm) {
+inline std::optional<BuildingHeader> buildingHeader(df::building* farm) {
     const auto& native=farmFunctions();
-    if(!native || !farm || farm->name.size()>512 || farm->jobs.size()>size_t(INT32_MAX))return {};
-    FarmHeader value;value.customNameCp437=farm->name;farm->getName(&value.nativeNameCp437);
+    if(!native || !farm || (farm->getType()!=df::building_type::FarmPlot && farm->getType()!=df::building_type::Box) || farm->name.size()>512 || farm->jobs.size()>size_t(INT32_MAX))return {};
+    BuildingHeader value;value.customNameCp437=farm->name;farm->getName(&value.nativeNameCp437);
     if(value.nativeNameCp437.size()>512)return {};
     value.headerNameCp437=value.nativeNameCp437;native.formatName(&value.headerNameCp437);
     for(const auto* job:farm->jobs)if(job && job->job_type==df::job_type::DestroyBuilding)value.removing=true;
@@ -118,6 +118,9 @@ inline std::optional<FarmHeader> farmHeader(df::building_farmplotst* farm) {
         value.suspended=first->flags.bits.suspend;value.hasWorker=native.hasWorker(first);
     }
     return value;
+}
+inline std::optional<BuildingHeader> farmHeader(df::building_farmplotst* farm) {
+    return buildingHeader(farm);
 }
 // The native checkbox dispatch (sheet1afe40) is inline. Both job operations
 // accept only the farm; scheduling owns its local position vectors and consumes

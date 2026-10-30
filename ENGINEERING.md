@@ -1561,6 +1561,44 @@ or office appointment actions. All owned sessions exit unsaved, preserve the
 source and have only the known renderer notice in ten GPU logs. PET/PET_EXOTIC,
 missing-history and other fortress-control exclusions still need live coverage.
 
+The unit header remains unfinished. unit_header_reference records native174632
+and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017
+and child988. The adult name uses palette5, translated name and separate
+Bookkeeper title use15, and No job uses14. Rest/Sleep use11; Rest with on_break
+uses14 without changing its caption. A custom profession changes the combined
+name but leaves Bookkeeper unchanged. The child name uses4 and has no separate
+position title; clearing its current Drink job reveals Play Make Believe in10.
+Nicknames change the combined name but preserve the translated name. These are
+native references, not acceptance of the existing Godot header. The fixed cell
+crop66..98,6..12 truncates some long captions; it cannot prove full-name wrapping.
+Temporary jobs are unlinked from simulation, and original pointers/strings are
+restored before viewer regression checks. Both sessions exit unsaved with source
+saves unchanged. Four GPU logs have only the known renderer notice; QA
+unit-header-reference passes core19/19, context and thought-text checks.
+
+Native header15b8be calls1330c30(unit, owned string, false), with a width-dependent
+split into1330500 name and1330880 profession. Its1333bc0 color writer touches gps
+and must not be called by a semantic reader. The separate position line at15d448
+uses13cbbd0(unit,-1,spouse flag,entity,assignment outputs), then99a3c0,52d3c0
+capitalization and optional9bdfb0 land suffix. It is not the general profession
+string. 13cbbd0 resolves history via b530b0, refreshing unit+0x1274, then delegates
+to beb620; ownership and position-selection acceptance remain pending.
+
+The job row at15d588 checks effective caste flag0x3a and native138ed20 control
+(or unit flags3 bit31). A non-on_break current job goes to d03170 with palette11.
+Otherwise1390cf0 calls138ffd0(unit,true,false,owned string,owned foreground,
+background,bold outputs), then writes gps and draws. Only the inner semantic
+formatter is a candidate runtime API. Its full0xd20 includes jump tables through
+1390cf0; apparent instructions after1390c7b are data. The formatter also resolves
+social and squad activities and historical responsibilities. It is not a pure
+read: b530b0 can refresh the unit history index, while13cc610 clears stale
+squad_position activities/events via hardcoded world squad lookup. Copying only
+the unit or output string does not isolate those latter writes. Further callee
+and virtual-method audit is required before choosing an owned call boundary;
+no runtime call, global substitution or native UI borrowing is authorized by
+these reference pins. d03170 delegates ordinary job captions to d032b0; that
+formatter's full ownership audit is also pending.
+
 Overview health uses ordered native statuses instead of the former Blood summary.
 The reference block164389..166742 selects up to six ordered status rows;
 its scalar thresholds and drawing calls are inline, with no aggregate semantic

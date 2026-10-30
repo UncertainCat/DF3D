@@ -38203,6 +38203,395 @@
       "save_preservation": "Owned source unchanged; owned session exits unsaved",
       "qa": "build/qa/unit-health-reopen: core19/19, context_inspect_test and creature_thought_text_test passed",
       "limitations": "Same-unit reopening only. Resize, stale identity, missing soul/health info and healthcare actions remain unverified."
+    },
+    "unit_header_reference": {
+      "native_cell_region": {
+        "x": 66,
+        "last_x": 98,
+        "y": 6,
+        "last_y": 12
+      },
+      "cases": [
+        {
+          "overview_case": "neutral",
+          "unit_id": 1017,
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-174632",
+          "result_sha256": "7d93bcf45152a892799cf4838403bf86b7e094232beafe01ccacf8149d6cbb53",
+          "owned_df_pid": 195880,
+          "captures": [
+            {
+              "case": "original",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "Stodir Tangakurvad, bookkeeper",
+                  "color": 5
+                },
+                {
+                  "y": 7,
+                  "text": "\"Stodir Spotseals\"",
+                  "color": 15
+                },
+                {
+                  "y": 8,
+                  "text": "Bookkeeper",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "No job",
+                  "color": 14
+                }
+              ]
+            },
+            {
+              "case": "no-current-job",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "Stodir Tangakurvad, bookkeeper",
+                  "color": 5
+                },
+                {
+                  "y": 7,
+                  "text": "\"Stodir Spotseals\"",
+                  "color": 15
+                },
+                {
+                  "y": 8,
+                  "text": "Bookkeeper",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "No job",
+                  "color": 14
+                }
+              ]
+            },
+            {
+              "case": "rest",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "Stodir Tangakurvad, bookkeeper",
+                  "color": 5
+                },
+                {
+                  "y": 7,
+                  "text": "\"Stodir Spotseals\"",
+                  "color": 15
+                },
+                {
+                  "y": 8,
+                  "text": "Bookkeeper",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Rest",
+                  "color": 11
+                }
+              ]
+            },
+            {
+              "case": "rest-on-break",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "Stodir Tangakurvad, bookkeeper",
+                  "color": 5
+                },
+                {
+                  "y": 7,
+                  "text": "\"Stodir Spotseals\"",
+                  "color": 15
+                },
+                {
+                  "y": 8,
+                  "text": "Bookkeeper",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Rest",
+                  "color": 14
+                }
+              ]
+            },
+            {
+              "case": "sleep",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "Stodir Tangakurvad, bookkeeper",
+                  "color": 5
+                },
+                {
+                  "y": 7,
+                  "text": "\"Stodir Spotseals\"",
+                  "color": 15
+                },
+                {
+                  "y": 8,
+                  "text": "Bookkeeper",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Sleep",
+                  "color": 11
+                }
+              ]
+            },
+            {
+              "case": "custom-profession",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "Stodir Tangakurvad, Header fixtur",
+                  "color": 5
+                },
+                {
+                  "y": 7,
+                  "text": "\"Stodir Spotseals\"",
+                  "color": 15
+                },
+                {
+                  "y": 8,
+                  "text": "Bookkeeper",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "No job",
+                  "color": 14
+                }
+              ]
+            },
+            {
+              "case": "nickname",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "`Header' Tangakurvad, bookkeeper",
+                  "color": 5
+                },
+                {
+                  "y": 7,
+                  "text": "\"Stodir Spotseals\"",
+                  "color": 15
+                },
+                {
+                  "y": 8,
+                  "text": "Bookkeeper",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "No job",
+                  "color": 14
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "overview_case": "child",
+          "unit_id": 988,
+          "evidence": "build/stockpile-storage-native-farm-discovery-20261030-174915",
+          "result_sha256": "65d81d8729250a6e56d37b319fa2b1185694bda145dd348e7aa4db27b3ac82a2",
+          "owned_df_pid": 197688,
+          "captures": [
+            {
+              "case": "original",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "\u00eeton Unibmamot, Dwarven Child",
+                  "color": 4
+                },
+                {
+                  "y": 7,
+                  "text": "\"\u00eeton Ragplaited\"",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Drink",
+                  "color": 11
+                }
+              ]
+            },
+            {
+              "case": "no-current-job",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "\u00eeton Unibmamot, Dwarven Child",
+                  "color": 4
+                },
+                {
+                  "y": 7,
+                  "text": "\"\u00eeton Ragplaited\"",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Play Make Believe",
+                  "color": 10
+                }
+              ]
+            },
+            {
+              "case": "rest",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "\u00eeton Unibmamot, Dwarven Child",
+                  "color": 4
+                },
+                {
+                  "y": 7,
+                  "text": "\"\u00eeton Ragplaited\"",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Rest",
+                  "color": 11
+                }
+              ]
+            },
+            {
+              "case": "rest-on-break",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "\u00eeton Unibmamot, Dwarven Child",
+                  "color": 4
+                },
+                {
+                  "y": 7,
+                  "text": "\"\u00eeton Ragplaited\"",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Rest",
+                  "color": 14
+                }
+              ]
+            },
+            {
+              "case": "sleep",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "\u00eeton Unibmamot, Dwarven Child",
+                  "color": 4
+                },
+                {
+                  "y": 7,
+                  "text": "\"\u00eeton Ragplaited\"",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Sleep",
+                  "color": 11
+                }
+              ]
+            },
+            {
+              "case": "custom-profession",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "\u00eeton Unibmamot, Header fixture",
+                  "color": 4
+                },
+                {
+                  "y": 7,
+                  "text": "\"\u00eeton Ragplaited\"",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Play Make Believe",
+                  "color": 10
+                }
+              ]
+            },
+            {
+              "case": "nickname",
+              "rows": [
+                {
+                  "y": 6,
+                  "text": "`Header' Unibmamot, Dwarven Child",
+                  "color": 4
+                },
+                {
+                  "y": 7,
+                  "text": "\"\u00eeton Ragplaited\"",
+                  "color": 15
+                },
+                {
+                  "y": 9,
+                  "text": "Play Make Believe",
+                  "color": 10
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "reference_pins": [
+        {
+          "rva": "0x138ffd0",
+          "length": "0xd20",
+          "fnv1a64": "904926737b452832"
+        },
+        {
+          "rva": "0x1390cf0",
+          "length": "0xfc",
+          "fnv1a64": "dfc254960b57c5af"
+        },
+        {
+          "rva": "0xd03170",
+          "length": "0x12b",
+          "fnv1a64": "90da46373e49508e"
+        },
+        {
+          "rva": "0x13cbbd0",
+          "length": "0x69",
+          "fnv1a64": "1e1cfb1a25f62ade"
+        },
+        {
+          "rva": "0x13cc610",
+          "length": "0x1ab",
+          "fnv1a64": "b9e9ed9744ed0fe3"
+        },
+        {
+          "rva": "0x13cc1d0",
+          "length": "0x224",
+          "fnv1a64": "c9ff3ea4503393a7"
+        },
+        {
+          "rva": "0x13d0800",
+          "length": "0x141",
+          "fnv1a64": "ca19cb88568ace2d"
+        },
+        {
+          "rva": "0x13d0950",
+          "length": "0xe6",
+          "fnv1a64": "563b2943f56fed6d"
+        }
+      ],
+      "coverage": "Native header observations for adult bookkeeper and child: original, no current job, temporary Rest, Rest on_break, Sleep, custom profession, nickname. Empty sampled rows omitted. Colors use native palette including bold. DF byte strings converted to UTF-8.",
+      "ownership": "Paused disposable sessions. Temporary job never linked into simulation job list; original current_job pointer, custom profession and nickname restored before viewer checks; temporary job deleted. Both owned sessions exit unsaved and source manifests unchanged.",
+      "diagnostics": "Four GPU logs: only known godot-separate-thread-notice. unit-header-reference QA core19/19, context and thought-text passed.",
+      "limitations": "Native reference only; no runtime header parity claim. Fixed 33-cell crop can truncate long text (custom-profession adult). Activity/squad/social branches, identities, pets, creator captions, mood rows, multiple positions, width/height variants and header actions remain unverified. Pins identify audit targets, not call-safety approval."
     }
   }
 }

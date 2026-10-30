@@ -342,6 +342,10 @@ local ok,err=xpcall(function()
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-health-thresholds-native.lua')
     linked.health_thresholds=assert(loadfile(source))(unit,view)
    end
+   if os.getenv('DF3D_UNIT_HEADER_REFERENCE')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-header-native.lua')
+    linked.header_reference=assert(loadfile(source))(unit,view)
+   end
    linked.room_requirements={}
    for i=0,3 do linked.room_requirements[i+1]=sheet.reqroom[i]end
    linked.room_values={};for i=0,3 do linked.room_values[i+1]=sheet.curroom[i]end

@@ -34147,6 +34147,30 @@
         "General container and unit navigation remain incomplete",
         "Public chest route remains staged"
       ]
+    },
+    "container_navigation_scene_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-142816",
+      "date": "2026-10-30",
+      "owned_df_pid": 191860,
+      "management_version": 101,
+      "success": true,
+      "source_item": 47492,
+      "container_item": 5834,
+      "workflow": [
+        "Root viewport carrier View opens Box item in same item owner",
+        "Box holder opens chest building with distinct input owner",
+        "Chest contents View returns to installed Box item",
+        "Right-click closes and releases input"
+      ],
+      "surface": "actual main.tscn with authoritative item and building snapshots",
+      "cleanup": "Temporary reciprocal carrier links restored; owned session exits unsaved with source manifest unchanged",
+      "diagnostics": "13 GPU logs contain only known render-thread notice",
+      "limitations": [
+        "Unit-carrier destination requires Residents workflow",
+        "General container item types beyond Box remain unfinished",
+        "Melt during removal remains unfinished",
+        "Public routes remain staged"
+      ]
     }
   }
 }

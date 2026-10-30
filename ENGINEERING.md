@@ -1247,8 +1247,8 @@ Resize acceptance follows below; public exposure is unchanged.
 The staged chest_panel owner shares farm panel input and navigation lifetime,
 but uses the independent building header state and chest view. Item holder
 navigation dispatches by authoritative building type, preserving Farm/Box targets.
-Chest contents remain inspectable during removal. A Box item-carrier hook is
-connected; its main-scene traversal and unit destinations remain unverified.
+Chest contents remain inspectable during removal. A Box item-carrier hook is connected; its main-scene traversal is verified below.
+Unit destinations remain unfinished.
 
 Protected135843 on2026-10-30 verifies actual main.tscn with root mouse and keyboard
 input: Box holder routing, immediate naming retained after Escape/drain, restored
@@ -1320,6 +1320,18 @@ still pass. All twelve GPU logs have only the known render-thread notice.
 The short viewport matches native's absent contents region; no new scrolling
 exception or authored layout is introduced. Eligible Melt and broader item
 navigation remain unfinished before public exposure.
+
+Protected142816 on2026-10-30 verifies container navigation in actual main.tscn.
+The existing paused reciprocal-container fixture supplies the carrier link;
+root viewport clicks open the Box item, its chest building holder, and the
+installed Box item again through contents View. Authoritative target IDs and
+input-owner transfers are checked at each step, followed by right-click release.
+item_carrier_scene_live.gd reuses the main-scene startup/settle helpers and requires
+final cleanup before reporting success. container_navigation_scene_reference
+records scope. Owned DF191860 exits unsaved with source preservation and restored
+fixture links. All thirteen GPU logs contain only the known thread notice; the
+remaining chest/item regression lane passes. Unit destinations and non-Box
+container types remain unfinished, as does removal-time Melt.
 
 ## Native item holder provider
 

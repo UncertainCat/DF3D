@@ -49,13 +49,15 @@ func resize_capture(label: String) -> void:
 	var crop:=image.get_region(region);crop.save_png(directory+"/chest-scene-resize-"+label+".png")
 	var native:=Image.load_from_file(directory+"/chest-resize-"+label+".png");native.convert(Image.FORMAT_RGB8)
 	check(crop.get_data()==native.get_region(region).get_data(),"Chest resize pixels differ at "+label)
+func expected_filename() -> String:return "chest-header-expected.json"
+func result_filename() -> String:return "chest-scene-result.json"
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	if directory.is_empty() or DisplayServer.get_name()=="headless":quit(77);return
 	OS.set_environment("DF3D_FIXTURE","")
 	var prefs=preload("res://scripts/presentation_settings.gd");prefs.loaded=true;prefs.ui_scale=1.0;prefs.camera_mode="df"
 	root.size=Vector2i(1200,800)
-	var expected: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/chest-header-expected.json"))
+	var expected: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/"+expected_filename()))
 	scene=load("res://scenes/main.tscn").instantiate();root.add_child(scene);world=scene.world
 	var deadline:=Time.get_ticks_msec()+60000
 	while not scene._loader.entered and Time.get_ticks_msec()<deadline:await create_timer(0.05).timeout
@@ -63,7 +65,7 @@ func run() -> void:
 		actions=scene._ui.actions;actions.set_process(false)
 		await exercise(expected)
 	check(exercised,"Main-scene workflow did not reach final cleanup")
-	var file:=FileAccess.open(directory+"/chest-scene-result.json",FileAccess.WRITE)
+	var file:=FileAccess.open(directory+"/"+result_filename(),FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"surface":"actual main scene","roundtrip":true}));file.close()
 	scene.queue_free();await process_frame
 	if not failed:print("CHEST_SCENE_PASS")

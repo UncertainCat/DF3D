@@ -3763,6 +3763,11 @@
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers -FarmItemCarrierArt compares the complete chest panel with native and exercises contents View while removing."
     },
     {
+      "path": "presentations/godot/project/tests/item_carrier_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected FarmItemCarriers lane verifies actual main-scene item to container to building and contents navigation."
+    },
+    {
       "path": "presentations/godot/project/tests/chest_scene_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers verifies the staged chest owner in the actual main scene, including holder routing, keyboard close/drain, removal-time View and overlay input."

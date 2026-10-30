@@ -82,6 +82,11 @@ local ok,err=xpcall(function()
   capture('farm-item-carrier-'..kind..'-wire')
   local result=assert(io.open(out..'/carrier-wire-result.json'));row.wire=json.decode(result:read('*a'));result:close()
   assert(row.wire.success and item.flags.hidden==false,'carrier wire verification failed or changed final flag')
+  if kind=='container' then
+   capture('farm-item-carrier-scene')
+   local scene_result=assert(io.open(out..'/carrier-scene-result.json'));row.scene=json.decode(scene_result:read('*a'));scene_result:close()
+   assert(row.scene.success,'container main-scene navigation failed')
+  end
   prior_revision=row.independent.revision
   local cold_probe
   if kind=='container' and description_case~='none' then

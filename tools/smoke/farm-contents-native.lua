@@ -379,6 +379,18 @@ local function seed_description_variants(item)
    end
    reopen()
    local expected=dfhack.df2utf(main.view_sheets.raw_description)
+   if case.name=='wear-1' or case.name=='wear-2' or case.name=='artifact_mood' then
+    local layout=capture('farm-seed-description-layout-'..case.name)
+    layout.description=expected;layout.description_width=main.view_sheets.description_width;layout.description_rows={}
+    for y=10,18 do
+     local line={}
+     for x=54,111 do
+      local ch=dfhack.screen.readTile(x,y).ch
+      line[#line+1]=ch>=32 and ch<=255 and string.char(ch)or' '
+     end
+     layout.description_rows[#layout.description_rows+1]=dfhack.df2utf(table.concat(line)):gsub('%s+$','')
+    end
+   end
    local guards={}
    local objects={item,b,main.view_sheets,df.global.plotinfo,df.global.world.raws.interactions.all}
    for _,object in ipairs(allocations)do objects[#objects+1]=object end

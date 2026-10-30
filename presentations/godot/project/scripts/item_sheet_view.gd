@@ -82,6 +82,20 @@ func patch(texture: Texture2D,rect: Rect2,rows:=3) -> void:
 func text_at(value: String,point: Vector2,color:=Color.WHITE) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
 
+static func description_lines(value: String) -> PackedStringArray:
+	# Native item renderer 155565 uses panel column span minus six (54 here).
+	# Preserve sentence spacing, but discard spaces at a wrapped line's start.
+	var lines: PackedStringArray=[]
+	var offset:=0
+	while value.length()-offset>54:
+		var split:=value.substr(offset,54).rfind(" ")
+		if split<=0:split=54
+		lines.append(value.substr(offset,split))
+		offset+=split
+		while offset<value.length() and value.unicode_at(offset)==32:offset+=1
+	if offset<value.length():lines.append(value.substr(offset))
+	return lines
+
 func _draw() -> void:
 	if snapshot.is_empty():return
 	patch(art.texture("HOVER_RECTANGLE"),Rect2(Vector2.ZERO,size))
@@ -89,7 +103,8 @@ func _draw() -> void:
 	if icon!=null:draw_texture_rect(icon,Rect2(10,14,32,32),false)
 	text_at(snapshot.get("name",""),Vector2(56,36))
 	if not snapshot.get("weight","").is_empty():text_at("Weight: "+snapshot.weight,Vector2(56,48),colors[14])
-	text_at(snapshot.get("description",""),Vector2(16,84))
+	var lines:=description_lines(snapshot.get("description",""))
+	for index in lines.size():text_at(lines[index],Vector2(16,84+index*12))
 	for index in 4:
 		if not eligible(index):continue
 		var texture: Texture2D=art.texture(BUTTONS[index]+("_ACTIVE" if snapshot.get(FLAGS[index],false) else ""))

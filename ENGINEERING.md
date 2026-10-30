@@ -476,8 +476,8 @@ item-sheet View remain separate unfinished workflows.
 
 ## Staged native item-sheet renderer
 
-`item_sheet_view.gd` draws an owned semantic snapshot; it is not connected to
-normal navigation or a management observer yet. Baseline seed rendering uses
+`item_sheet_view.gd` draws an owned semantic snapshot through the staged farm
+item owner and management observer described below. Baseline seed rendering uses
 the installed seed artwork, original picture frame, SHORT_FORBID/DUMP/MELT/HIDE
 controls, UNIT_SHEET_CAMERA_INACTIVE and HORIZONTAL_OPTION_ACTIVE for the holder
 View button. Native title, weight and description come from the diagnostic
@@ -509,10 +509,21 @@ routing, ineligible Melt, absent holder help and hidden/pending retirement. Core
 passes cleanly and both GPU checks pass with only the documented three engine
 diagnostics. Native flag-state and rendered camera-help images were inspected.
 
-This accepts the captured seed rendering, hover and local signal routing.
-No main-scene item-sheet owner, live DF3D holder/camera/action effects,
-long/multiline description layout, resize or nonseed artwork is accepted.
-The public farm route remains staged until the full workflow is complete.
+The description uses native's54-column width and12-pixel line pitch. Protected
+native192027 on2026-10-29 records that width and captures wear1, wear2 and
+artifact-quality seed descriptions, each wrapping onto two lines. The renderer
+preserves internal sentence spacing and skips spaces after a wrap. GPU
+`build/qa/item-description-wrap` matches all three472x108 description crops
+exactly, alongside the existing full-panel and flag/camera regressions. Core
+passes; GPU passes with only the three documented engine diagnostics. Owned
+DF125212 exits unsaved and source preservation passes.
+`item_description_layout_reference` retains native rows, width and RGB hashes.
+
+This accepts the captured seed rendering, hover and two-line descriptions.
+Main-scene ownership and live holder/camera/action effects have separate evidence
+below. Longer scrolling descriptions, unbroken long words, nonseed artwork and
+general item-description providers remain unaccepted. The public farm route
+remains staged until the full workflow is complete.
 
 ## Native item holder provider
 

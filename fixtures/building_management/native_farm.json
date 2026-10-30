@@ -25664,4 +25664,68 @@
     },
     "scope": "Existing stockpile-hauling job advances naturally through viewer pause commands; production follow controller compared at paused identical frames with native resolver and camera/sheet guards. Delivery requires original job retirement, no carrier, on-ground target at recorded destination and three later samples. No artificial item movement or job creation; no new rendered UI or naturally nested-container claim."
   }
+,
+  "item_description_layout_reference": {
+  "capture": "build/stockpile-storage-native-farm-discovery-20261029-192027",
+  "panel_crop": [
+    8,
+    72,
+    472,
+    108
+  ],
+  "states": [
+    {
+      "name": "farm-seed-description-layout-wear-1",
+      "description": "These are sweet pod seeds.  This object is showing some wear.  ",
+      "width": 54,
+      "rows": [
+        "These are sweet pod seeds.  This object is showing",
+        "some wear.",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "rgb_sha256": "e8334f94169d58d76801666b0b81fd9265ffc3471ed7d7edbd4144244f6a41f4"
+    },
+    {
+      "name": "farm-seed-description-layout-wear-2",
+      "description": "These are sweet pod seeds.  This object is heavily worn.  ",
+      "width": 54,
+      "rows": [
+        "These are sweet pod seeds.  This object is heavily",
+        "worn.",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "rgb_sha256": "824e93f787003823a297b7ac489c47f53bce177dc20c31a121962c8dbb2835b0"
+    },
+    {
+      "name": "farm-seed-description-layout-artifact_mood",
+      "description": "These are sweet pod seeds.  All craftsmanship is of the highest quality.  ",
+      "width": 54,
+      "rows": [
+        "These are sweet pod seeds.  All craftsmanship is of",
+        "the highest quality.",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "rgb_sha256": "2286960f27d01d6fb34f51aa31393c5b046dcd7a6f6164af0793c654cd2015c0"
+    }
+  ],
+  "scope": "Native seed description wrapping at 54 columns, 12-pixel line pitch. Description-area pixels only; longer scrolling descriptions and nonseed items remain unaccepted."
+}
 }

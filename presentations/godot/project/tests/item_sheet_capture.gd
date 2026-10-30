@@ -24,6 +24,18 @@ func run() -> void:
 		image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
 		hash.start(HashingContext.HASH_SHA256);hash.update(image.get_data())
 		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native item flag state differs: "+sample.name);return
+	for sample in fixture.item_description_layout_reference.states:
+		var state: Dictionary=snapshot.duplicate(true)
+		state.description=sample.description;view.present(state)
+		var lines:=view.description_lines(state.description)
+		for index in lines.size():
+			if lines[index].strip_edges()!=sample.rows[index]:fail("Native item description line differs: "+sample.name);return
+		await process_frame;await RenderingServer.frame_post_draw
+		image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var crop: Array=fixture.item_description_layout_reference.panel_crop
+		var description_image:=image.get_region(Rect2i(crop[0],crop[1],crop[2],crop[3]))
+		hash.start(HashingContext.HASH_SHA256);hash.update(description_image.get_data())
+		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native wrapped description pixels differ: "+sample.name);return
 	view.present(snapshot)
 	view.set_following(true)
 	await process_frame;await RenderingServer.frame_post_draw

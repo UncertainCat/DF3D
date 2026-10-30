@@ -114,6 +114,11 @@ func open_building_holder(kind: int,id: int) -> void:
 	if kind==4:controller("farm").open_target(id)
 	elif kind==10:controller("chest").open_target(id)
 
+func open_item_carrier(kind: int,id: int) -> void:
+	if kind!=2 or not host.play_enabled:return
+	var target: Dictionary=world.inspect_entity(1,id)
+	if not target.is_empty():open_target(target.tile,1,id)
+
 func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
 	if controllers.has(id): return controllers[id]
@@ -128,6 +133,7 @@ func controller(id: String):
 				if view.camera_rig.is_walk_mode():item_follow.stop())
 		panel.holder_requested.connect(open_building_holder)
 		panel.item_owner.configure_follow(item_follow)
+		panel.item_owner.carrier_requested.connect(open_item_carrier)
 		panel.item_owner.stockpile_requested.connect(func(target):controller("areas").open_stockpile(target))
 		controllers[id]=panel;return panel
 	if id in ["reports", "alerts"]:

@@ -127,9 +127,17 @@ local ok,err=xpcall(function()
    target_size,target_address=df.sizeof(target);target_before=df.new('uint8_t',target_size)
    dfhack.internal.memmove(target_before,target_address,target_size)
   end
+  local camera_before={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
   move(816,250);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
   local linked=capture('farm-item-carrier-'..kind..'-view');linked.target_id=target.id
   assert(sheet.open and sheet.active_id==target.id and sheet.active_sheet==(kind=='unit' and df.view_sheet_type.UNIT or df.view_sheet_type.ITEM),'native carrier View selected wrong identity')
+  if kind=='unit' then
+   linked.camera_before=camera_before;linked.camera_after={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
+   assert(json.encode(linked.camera_before)==json.encode(linked.camera_after),'Unit carrier View moved native camera')
+   capture('farm-item-carrier-unit-scene')
+   local result=assert(io.open(out..'/carrier-scene-result.json'));linked.scene=json.decode(result:read('*a'));result:close()
+   assert(linked.scene.success,'unit carrier main-scene navigation failed')
+  end
   if kind=='container' then
    linked.description=dfhack.df2utf(sheet.raw_description)
    if cold_probe then

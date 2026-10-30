@@ -224,7 +224,7 @@ try {
      if(-not $client.WaitForExit(90000)){$client.Kill();$client.WaitForExit();throw 'Melt scene timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/chest-melt-scene-result.json")){throw 'Melt scene client failed'}
     }
-    if($FarmItemCarriers -and $name -eq 'farm-item-carrier-scene') {
+    if($FarmItemCarriers -and $name -in @('farm-item-carrier-scene','farm-item-carrier-unit-scene')) {
      $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/item_carrier_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"

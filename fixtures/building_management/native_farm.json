@@ -34225,6 +34225,38 @@
         "No natural hauling or active smelter job cleanup in this fixture",
         "Public routes remain staged"
       ]
+    },
+    "unit_navigation_scene_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-144644",
+      "date": "2026-10-30",
+      "owned_df_pid": 189748,
+      "management_version": 102,
+      "success": true,
+      "unit_id": 988,
+      "native_camera_before": {
+        "x": 129,
+        "y": 109,
+        "z": 165
+      },
+      "native_camera_after": {
+        "x": 129,
+        "y": 109,
+        "z": 165
+      },
+      "workflow": [
+        "Actual main-scene item carrier click resolves current unit entity",
+        "Existing inspector creature sheet owns input with correct unit identity",
+        "Creature detail contains populated sections and selected Overview tab",
+        "Camera remains unchanged",
+        "Escape closes destination and releases input"
+      ],
+      "cleanup": "Fixture reciprocal carrier links restored; owned session exits unsaved with source preservation",
+      "diagnostics": "15 GPU logs contain only known render-thread notice",
+      "limitations": [
+        "Routing and populated destination acceptance only",
+        "Full creature-sheet visual/action parity not established",
+        "Public item/chest routes remain staged"
+      ]
     }
   }
 }

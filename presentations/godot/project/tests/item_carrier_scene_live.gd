@@ -2,6 +2,8 @@ extends "res://tests/chest_scene_live.gd"
 func expected_filename() -> String:return "carrier-expected.json"
 func result_filename() -> String:return "carrier-scene-result.json"
 func exercise(expected: Dictionary) -> void:
+	if int(expected.snapshot.carrier.kind)==2:
+		await unit_carrier(expected);return
 	var farm=scene._ui.controller("farm")
 	var inspector=farm.item_owner
 	var target: int=int(expected.snapshot.carrier.id)
@@ -24,4 +26,27 @@ func exercise(expected: Dictionary) -> void:
 	check(scene._ui.host.active==owner.item_owner and owner.item_owner.state.item_id==target,"Chest contents did not return to Box item")
 	await pointer(owner.item_owner.panel.get_global_transform_with_canvas()*Vector2(100,200),MOUSE_BUTTON_RIGHT)
 	check(scene._ui.host.active==null and not owner.item_owner.panel.visible,"Carrier navigation left input owner active")
+	exercised=true
+
+func unit_carrier(expected: Dictionary) -> void:
+	var source=scene._ui.controller("farm").item_owner
+	source.open_target(int(expected.snapshot.id))
+	if not await settle(source.state):return
+	var target: int=int(expected.snapshot.carrier.id)
+	var camera_before: Vector3=scene.camera_rig.position
+	await pointer(source.panel.get_global_transform_with_canvas()*source.panel.holder_rect().get_center())
+	var inspector=scene._ui.controller("inspector")
+	if not check(scene._ui.host.active==inspector and inspector.selected.get("id",-1)==target and inspector.selected.get("kind",0)==1,"Unit carrier did not open creature sheet"):return
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		var info: Dictionary=world.creature_info_state(target)
+		if not info.get("detail",{}).is_empty() and not info.get("loading",true):break
+		await create_timer(0.02).timeout
+	var detail: Dictionary=world.creature_info_state(target).get("detail",{})
+	check(not detail.is_empty() and detail.get("sections",[]).size()>0,"Unit destination remained a loading shell")
+	check(inspector.creature_sheet.tab=="Overview" and not source.panel.visible,"Unit destination did not start Overview")
+	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
+	key(KEY_ESCAPE);await process_frame
+	check(scene._ui.host.active==null and not inspector.panel.visible,"Unit sheet Escape did not release input")
 	exercised=true

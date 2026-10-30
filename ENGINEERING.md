@@ -1248,7 +1248,7 @@ The staged chest_panel owner shares farm panel input and navigation lifetime,
 but uses the independent building header state and chest view. Item holder
 navigation dispatches by authoritative building type, preserving Farm/Box targets.
 Chest contents remain inspectable during removal. A Box item-carrier hook is connected; its main-scene traversal is verified below.
-Unit destinations remain unfinished.
+Unit carrier routing acceptance follows below; full creature-sheet parity remains unfinished.
 
 Protected135843 on2026-10-30 verifies actual main.tscn with root mouse and keyboard
 input: Box holder routing, immediate naming retained after Escape/drain, restored
@@ -1330,8 +1330,8 @@ item_carrier_scene_live.gd reuses the main-scene startup/settle helpers and requ
 final cleanup before reporting success. container_navigation_scene_reference
 records scope. Owned DF191860 exits unsaved with source preservation and restored
 fixture links. All thirteen GPU logs contain only the known thread notice; the
-remaining chest/item regression lane passes. Unit destinations and non-Box
-container types remain unfinished; removal-time Melt acceptance follows below.
+remaining chest/item regression lane passes. Unit routing and removal-time Melt acceptance follow below; non-Box container
+types and full creature-sheet parity remain unfinished.
 
 Management102 permits confirmed eligible Melt contents receipts during Box
 removal. Native canMelt, markMelt and cancelMelt routines remain authoritative;
@@ -1352,6 +1352,19 @@ with source preservation. All fourteen GPU logs contain only the known thread
 notice. MSVC build/install and QA chest-melt pass, including core and contents
 controller tests for eligible/ineligible requests. The existing chest, worker,
 resize and navigation regression lane passes; public routes remain staged.
+
+Unit item-carrier navigation reuses the existing creature sheet inside
+context_inspector.gd. The factory resolves the current semantic unit entity and
+opens that target without a camera move; absent entities leave the item sheet
+in place. The source item owner admits only a matching current carrier identity.
+Protected144644 on2026-10-30 confirms native carrier View opens unit988 without
+changing window coordinates. In actual main.tscn, the carrier click transfers
+input to the inspector, selects unit988/Overview, waits for populated creature
+sections and leaves the viewer camera unchanged. Escape closes and releases input.
+unit_navigation_scene_reference records routing scope; this is not acceptance of
+full creature-sheet appearance or actions. Owned DF189748 exits unsaved with
+source preservation and restored carrier links. All fifteen GPU logs contain
+only the known render-thread notice; existing chest/item regressions pass.
 
 ## Native item holder provider
 

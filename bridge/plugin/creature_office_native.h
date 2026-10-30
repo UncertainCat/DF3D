@@ -8,9 +8,46 @@
 #include "df/entity_position_assignment.h"
 #include "df/unit_soul.h"
 #include "df/unit_preference.h"
+#include "df/plotinfost.h"
 #include <array>
 
 namespace df3d_creature {
+struct OfficeFallback { std::string status,position;int32_t color=15; };
+// Called only when neither titles nor a room warning occupy this quadrant.
+// Native166b65..166da2 gates status with semantic unit/caste/link predicates.
+inline std::optional<OfficeFallback> noOfficeFallback(df::unit* unit) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        return hash(0x138ed20,0xff)==UINT64_C(0x430951f9f3e403c2) &&
+               hash(0x1376500,0xf0)==UINT64_C(0x2c5ca25b0abc0a79) &&
+               hash(0x73760,0x4c)==UINT64_C(0xd6e159fb1367c80e) &&
+               hash(0xb973c0,0x79)==UINT64_C(0xe30c0166fa2e4d2a);
+    }();
+    if(!supported || !unit || !df::global::plotinfo)return std::nullopt;
+    static_assert(offsetof(df::plotinfost,group_id)==0x2448); // Native RVA2393678.
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    OfficeFallback result;
+    using UnitPredicate=bool (*)(df::unit*);
+    using CastePredicate=bool (*)(int16_t,int16_t);
+    if(!reinterpret_cast<UnitPredicate>(base+0x138ed20)(unit) ||
+       reinterpret_cast<CastePredicate>(base+0x1376500)(unit->race,unit->caste) ||
+       !reinterpret_cast<UnitPredicate>(base+0x73760)(unit))return result;
+    const auto* hf=df::historical_figure::find(unit->hist_figure_id);
+    if(hf && hf->entity_links.size()>4096)return std::nullopt;
+    if(hf)for(const auto* link:hf->entity_links)if(!link)return std::nullopt;
+    using Strength=int16_t (*)(const df::historical_figure*,int16_t,int32_t);
+    const bool member=hf && reinterpret_cast<Strength>(base+0xb973c0)(hf,0,df::global::plotinfo->group_id)!=0;
+    // Native literals15ff7a8/15ff798/15ff780 and palette at166c23/166ca4/166d23.
+    result.status=member?"Citizen":"Resident";result.color=member?11:15;
+    result.position="No official position";
+    return result;
+}
 // Native room valuation marks matching unit preferences. Keep those writes in
 // an owned unit/soul/preferences context. Furnishing artwork may still undergo
 // native semantic lazy initialization (as in the native sheet); no UI cache is

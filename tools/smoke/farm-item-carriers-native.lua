@@ -33,6 +33,11 @@ local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
  if overview_saved then
   local old=overview_saved;local p=unit.status.current_soul.personality
+  if old.own_links then
+   for _,saved in ipairs(old.own_links)do old.hf.entity_links:insert(saved.index,saved.link)end
+   for _,saved in ipairs(old.member_strengths)do saved.link.link_strength=saved.strength end
+   unit.uwss_remove_caste_flag.whole=old.remove_caste_flags
+  end
   if old.preference then erase_pointer(unit.status.current_soul.preferences,old.preference);df.delete(old.preference)end
   for _,saved in ipairs(old.assignment_indices or {})do saved.assignment.position_vector_idx=saved.index end
   if old.spouse_link then erase_pointer(old.hf.histfig_links,old.spouse_link);df.delete(old.spouse_link)end
@@ -154,13 +159,27 @@ local ok,err=xpcall(function()
   end
   if kind=='unit' then
    if overview_case~='child' then
-    local ratios={focused=150,['focused-mild']=130,distracted=50,['distracted-mild']=70,neutral=100,['fresh-focused']=150,['fresh-distracted']=50,squad=100,['squad-alias']=100,offices=100,['office-spouse']=100,['office-requirements']=100}
+    local ratios={focused=150,['focused-mild']=130,distracted=50,['distracted-mild']=70,neutral=100,['fresh-focused']=150,['fresh-distracted']=50,squad=100,['squad-alias']=100,offices=100,['office-spouse']=100,['office-requirements']=100,['office-citizen']=100,['office-resident']=100,['office-excluded']=100}
     local ratio=assert(ratios[overview_case],'unknown Overview fixture case')
     local p=assert(unit.status.current_soul).personality
     overview_saved={profession=unit.profession,squad_id=unit.military.squad_id,focus=focus_state(p),needs={}}
     for _,need in ipairs(p.needs)do overview_saved.needs[#overview_saved.needs+1]=need.focus_level;need.focus_level=overview_case=='fresh-focused' and 300 or overview_case=='fresh-distracted' and -100000 or 0 end
     assert(#p.needs>0,'focus fixture needs at least one existing need')
     p.flags.distraction_calculated=not overview_case:find('^fresh%-');p.current_focus=ratio;p.undistracted_focus=100
+    if overview_case=='office-citizen' or overview_case=='office-resident' or overview_case=='office-excluded' then
+     local hf=assert(df.historical_figure.find(unit.hist_figure_id));overview_saved.hf=hf
+     overview_saved.own_links={};overview_saved.member_strengths={};overview_saved.remove_caste_flags=unit.uwss_remove_caste_flag.whole
+     for index,link in ipairs(hf.entity_links)do
+      if link:getType()==df.histfig_entity_link_type.POSITION then overview_saved.own_links[#overview_saved.own_links+1]={index=index,link=link}end
+      if link:getType()==df.histfig_entity_link_type.MEMBER and link.entity_id==df.global.plotinfo.group_id then
+       overview_saved.member_strengths[#overview_saved.member_strengths+1]={link=link,strength=link.link_strength}
+       if overview_case=='office-resident' then link.link_strength=0 end
+      end
+     end
+     for i=#overview_saved.own_links,1,-1 do hf.entity_links:erase(overview_saved.own_links[i].index)end
+     assert(#overview_saved.own_links>0 and #overview_saved.member_strengths>0,'office status fixture requires position and membership')
+     if overview_case=='office-excluded' then unit.uwss_remove_caste_flag.CAN_SPEAK=true end
+    end
     if overview_case=='squad' or overview_case=='squad-alias' then
      local squad=assert(df.global.world.squads.all[0],'assigned-squad fixture needs an existing squad')
      overview_saved.squad=squad;overview_saved.alias=squad.alias;unit.military.squad_id=squad.id

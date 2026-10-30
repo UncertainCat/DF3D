@@ -1458,7 +1458,7 @@ Set DF3D_UNIT_OVERVIEW_CASE to fresh-focused, fresh-distracted, focused-mild,
 distracted-mild, neutral, squad or squad-alias in the unit-only carrier lane to
 select these adult fixtures; the default child retains the original regression.
 Other creature types, needs-list clipping outside the tested region, header
-controls/colors/copy, health, office status fallback and thoughts
+controls/colors/copy, health and thoughts
 still require acceptance.
 
 Creature Overview office titles use native assignment lookup b9dc0, position
@@ -1479,8 +1479,7 @@ Owned sessions exit unsaved with source preservation; all six GPU logs contain
 only the known renderer notice. Temporary position/assignment/link fixtures are
 removed; these checks do not accept appointment or marriage commands. Select
 offices or office-spouse with DF3D_UNIT_OVERVIEW_CASE in the unit-only lane.
-No-office Citizen/Resident/No official position fallback remains unfinished;
-this is title acceptance, not the whole quadrant. Warning acceptance follows.
+This establishes title acceptance. Warning and no-office status acceptance follow.
 
 The creature identity facts also carry native room requirements in office,
 bedroom, dining and tomb order. Native134a5e0 aggregates all own position links,
@@ -1528,6 +1527,26 @@ contain only the known renderer notice. Cold furnishing artwork initialization,
 nonzero dining/tomb values, room-sharing variants and other creature types still
 need live coverage. Existing Zone owner room-status reads still pass live
 preferences to native559610; sharing the owned context there remains follow-up.
+
+When neither titles nor a warning occupy the office quadrant, native status
+eligibility calls138ed20 (fortress control),1376500 (PET/PET_EXOTIC exclusion)
+and73760 (effective speaking ability). Historical membership strength b973c0
+uses the fortress group ID at plotinfo+2448, native RVA2393678. A nonzero
+strength displays Citizen in palette11; zero or missing history displays
+Resident in palette15. Both add No official position in palette7. All predicate
+bodies are pinned and read semantic inputs, with no native viewsheet state.
+The former presentation-side citizen flag shortcut has been removed.
+
+unit_office_fallback_reference records protected163536,163649,163750,163851
+and163952 on2026-10-30. Controlled adult1017 cases detach its position links,
+then retain membership, zero fortress membership strength, or remove effective
+speaking ability. The232x24 status region matches native exactly for Citizen,
+Resident and blank exclusion. Child988 also matches both lines. The normal
+bookkeeper regression confirms titles suppress the fallback. Temporary links,
+strengths and flags are restored; these are display fixtures, not citizenship
+or office appointment actions. All owned sessions exit unsaved, preserve the
+source and have only the known renderer notice in ten GPU logs. PET/PET_EXOTIC,
+missing-history and other fortress-control exclusions still need live coverage.
 
 ## Native item holder provider
 

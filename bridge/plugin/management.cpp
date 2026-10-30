@@ -3136,6 +3136,14 @@ void run(color_ostream& out) {
   if(r->creature()) field(L,"unit_id",r->creature()->unit_id());
   if(action==m::ManagementAction::CreatureInspect) {
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_creature::noOfficeFallback(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!value)return luaL_error(state,"Native creature office status unavailable");
+      lua_pushlstring(state,value->status.data(),value->status.size());
+      lua_pushlstring(state,value->position.data(),value->position.size());
+      lua_pushinteger(state,value->color);return 3;
+    });
+    lua_setfield(L,-2,"office_fallback");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto values=df3d_creature::requiredRooms(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!values)return luaL_error(state,"Native creature room requirements unavailable");
       const auto actual=df3d_creature::actualRooms(df::unit::find(int32_t(luaL_checkinteger(state,1))));

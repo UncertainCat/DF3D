@@ -317,7 +317,9 @@ func overview(parent: Node, detail: Dictionary):
   if children>0: summary_line(cells[0],"%d children" % children)
   var pet_owner := str(fact_value(row,"pet_owner",""))
   if not pet_owner.is_empty(): summary_line(cells[0],"Pet of "+pet_owner,Color(1,0,1))
-  if offices.is_empty() and room_warning.is_empty() and fact_value(row,"citizen")=="yes": summary_line(cells[3],"Citizen",Color(0,1,1))
+  if offices.is_empty() and room_warning.is_empty() and fact_value(row,"record_type")=="overview_office_fallback":
+   summary_line(cells[3],str(fact_value(row,"status","")),NativeText.colors[int(fact_value(row,"color","15"))])
+   summary_line(cells[3],str(fact_value(row,"position","")),NativeText.colors[7])
  for descriptor in NativeText.attributes(self):
   summary_line(cells[1],descriptor.text,descriptor.color)
  for row in records_for("health"):

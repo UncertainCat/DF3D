@@ -146,17 +146,29 @@ return function(request)
    local task=record(s,id,'')
    fact(s,task,'record_type','overview_hauling');fact(s,task,'native_text',text)
   end
+  local room_warning=''
   if request.room_requirements then
    local rooms=record(s,-5,'')
    fact(s,rooms,'record_type','overview_room_requirements')
    local required,actual,warning,color=request.room_requirements(u.id)
+   room_warning=warning
    for i,key in ipairs{'office','bedroom','dining','tomb'}do fact(s,rooms,key,required[i]);fact(s,rooms,'actual_'..key,actual[i])end
    fact(s,rooms,'warning',warning);fact(s,rooms,'warning_color',color)
   end
+  local office_count=0
   if request.office_titles then
    for _,title in ipairs(request.office_titles(u.id))do
+    office_count=office_count+1
     local office=record(s,title.id,title.text,title.entity_id)
     fact(s,office,'record_type','overview_office');fact(s,office,'spouse',title.spouse and 'yes' or 'no')
+   end
+  end
+  if office_count==0 and room_warning=='' and request.office_fallback then
+   local status,position,color=request.office_fallback(u.id)
+   if status~='' then
+    local fallback=record(s,-6,'')
+    fact(s,fallback,'record_type','overview_office_fallback');fact(s,fallback,'status',status)
+    fact(s,fallback,'position',position);fact(s,fallback,'color',color)
    end
   end
   local dates=record(s,-3,'')

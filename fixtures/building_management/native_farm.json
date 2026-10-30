@@ -34924,7 +34924,7 @@
       ],
       "verification": "All owned sessions exited unsaved, source preserved, temporary fixtures removed; six GPU logs contain only known renderer notice",
       "limitations": [
-        "Room requirement warnings and no-office fallback remain unfinished",
+        "Room warnings and no-office fallback have separate acceptance references",
         "Controlled office/spouse fixtures do not verify appointment or marriage commands",
         "Other gendered and plural name variants remain unverified"
       ]
@@ -35213,8 +35213,110 @@
       "limitations": [
         "Cold furnishing artwork initialization remains unverified on this path",
         "Nonzero dining/tomb values, room-sharing variants and other creature kinds need live coverage",
-        "No-office fallback remains unfinished",
+        "No-office fallback has a separate acceptance reference",
         "Existing Zone owner room status still uses live preferences and needs ownership follow-up"
+      ]
+    },
+    "unit_office_fallback_reference": {
+      "date": "2026-10-30",
+      "native_predicates": [
+        "138ed20 fortress control",
+        "1376500 PET/PET_EXOTIC",
+        "73760 effective CAN_SPEAK",
+        "b973c0 fortress MEMBER strength"
+      ],
+      "group_input": "plotinfo+2448 = native RVA2393678, verified Steam53.16 symbols",
+      "display": "Only without titles or room warning; Citizen color11 or Resident color15, then No official position color7",
+      "cases": [
+        {
+          "case": "office-citizen",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-163536",
+          "unit_id": 1017,
+          "fallback": [
+            {
+              "record_type": "overview_office_fallback",
+              "status": "Citizen",
+              "position": "No official position",
+              "color": 11
+            }
+          ],
+          "rect": [
+            664,
+            292,
+            232,
+            24
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "bd729e60254acf327b60c5c84445c59be3062253d24dd0ede3ca34d5b50df7da"
+        },
+        {
+          "case": "office-resident",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-163649",
+          "unit_id": 1017,
+          "fallback": [
+            {
+              "record_type": "overview_office_fallback",
+              "status": "Resident",
+              "position": "No official position",
+              "color": 15
+            }
+          ],
+          "rect": [
+            664,
+            292,
+            232,
+            24
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "d34cfed3102c97227ca5db94c1624f24b1127a31750271a78e8874b472abb00a"
+        },
+        {
+          "case": "office-excluded",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-163750",
+          "unit_id": 1017,
+          "fallback": [],
+          "rect": [
+            664,
+            292,
+            232,
+            24
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "e29a35f0058fbc049dd308a26d9cd316535abd0064d3b3bc39cf7d367694ef73"
+        },
+        {
+          "case": "child",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-163851",
+          "unit_id": 988,
+          "fallback": [
+            {
+              "record_type": "overview_office_fallback",
+              "status": "Citizen",
+              "position": "No official position",
+              "color": 11
+            }
+          ],
+          "rect": [
+            664,
+            292,
+            232,
+            24
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "bd729e60254acf327b60c5c84445c59be3062253d24dd0ede3ca34d5b50df7da"
+        },
+        {
+          "case": "neutral",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-163952",
+          "unit_id": 1017,
+          "fallback": [],
+          "scene_success": true
+        }
+      ],
+      "verification": "Owned unsaved/source preserved; ten GPU logs only known renderer notice",
+      "limitations": [
+        "Controlled links/strength/speaking fixtures do not accept citizenship or appointment actions",
+        "PET/PET_EXOTIC, missing history and other fortress-control exclusions remain unverified"
       ]
     }
   }

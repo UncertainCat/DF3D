@@ -689,9 +689,51 @@ The native renderer resolves building, item and unit holders at153bec/153c06/
 153c20, then independently calls effective-position resolverc8baa0 at153c59.
 Its153c72..153da5 loop selects the first matching stockpile using native extent
 predicate5587b0;15719a calls that stockpile's native getName. The stockpile row is
-separate from holder rows. Existing nativeStockpileAt uses generica82b00 and must
-not be assumed equivalent for overlapping candidates without verification. No
-runtime implementation of this new relationship is accepted yet.
+separate from holder rows. Existing nativeStockpileAt uses generica82b00, whose reverse scan and extra
+occupancy filtering differ from the item renderer. The independent native helper
+below follows the item renderer; management transport/UI migration remains pending.
+
+## Independent native item observation and edits
+
+`observeItem(item)` now supplies item-owned facts, native caption/weight/description,
+building-holder and spatial-stockpile links, and an item-specific revision.
+It retains the audited seed/bar description allowlist and uses native effective
+position/visibility and extent predicates. Stockpile names call native getName.
+It never reads view_sheets or uses the former containing farm as authority.
+Building contents share the extracted ItemFacts reader and retain their separate
+membership, role, build-state and whole-contents revision contract.
+
+`ItemObservation` revisions cover item facts, eligibility, job references, native
+text and location links, including link names. Follow coordinates remain separate
+from edit authority. `finishItemEdit` requires the exact observed revision, checks
+native eligibility, and confirms the same item and requested flag in a fresh
+receipt. Stale/unconfirmed outcomes confer no receipt; uncertain entry is never
+replayed. Location changes do not themselves invalidate a confirmed same-item
+receipt. Repeated desired values return existing authority without mutation.
+The diagnostic commands are `item-inspect-probe <item>` and
+`item-flag-probe <item> <forbid|dump|melt|hidden> <0|1> <revision>`.
+
+Protected214042/214447 on2026-10-29 verify controlled transfers to ordinary ground
+and a deterministic stockpile tile. Add `-FarmItemTransferStockpile` to the transfer
+runner for the latter. Reads match native descriptions/flags and holder absence,
+and stockpile121's name and actual View navigation target match native. Item,
+original-farm, view_sheets and plotinfo bytes remain unchanged by observations.
+Both independent Visibility values match the full native488x708 panel images;
+stale revisions are rejected and repeated desired values enter no mutation.
+DF177560/182812 exit unsaved with source manifests unchanged.
+
+Existing main-scene farm progress214207 also passes, with only the known separate
+rendering-thread notice. DF166816 exits unsaved and both save manifests remain
+unchanged. `independent_item_native_reference` records these results and bridge
+hash338f007f0f70f00f594841401d0cd120972290055dc9cba431a2e527c1e7a806.
+Core tests cover identity replacement, location changes, stale/invalid receipts,
+refused/throwing entry, lost readback, eligibility and repeated desired values.
+
+This is the native producer/transaction foundation. Management92 still exposes
+the old farm-bound item contract; the Godot transfer gap remains until the schema,
+model and controller migrate. Unit/container relationships, overlapping stockpile
+selection, other item types and independent Forbid/Dump/Melt live transport remain
+separate acceptance work. No new public screen is exposed by this change.
 
 ## Native item holder provider
 

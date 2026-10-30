@@ -206,6 +206,10 @@ if row.action_progress then
  final.fertilization=farm.current_fertilization
  if transfer then
   local item=assert(df.item.find(potash_id));assert(not item.flags.in_job)
+  local json=require('json')
+  local before_text,before_code=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(potash_id));assert(before_code==0,before_text)
+  local before_transfer=json.decode(before_text).snapshot
+  assert(before_transfer.holder and before_transfer.holder.id==farm.id,'independent reader lost original farm holder')
   local destination
   for _,unit in ipairs(df.global.world.units.active)do
    if dfhack.units.isCitizen(unit) and unit.pos.z==farm.z and
@@ -214,7 +218,22 @@ if row.action_progress then
     if designation and not designation.hidden then destination={x=unit.pos.x,y=unit.pos.y,z=unit.pos.z};break end
    end
   end
-  assert(destination,'no visible occupied tile outside farm for controlled transfer')
+  local pile_marker=io.open(out..'/farm-item-transfer-stockpile')
+  if pile_marker then
+   pile_marker:close();destination=nil
+   for _,pile in ipairs(df.global.world.buildings.other.STOCKPILE)do
+    if pile.z==farm.z then
+     for y=pile.y1,pile.y2 do for x=pile.x1,pile.x2 do
+      if (x<farm.x1 or x>farm.x2 or y<farm.y1 or y>farm.y2) and dfhack.buildings.containsTile(pile,x,y) then
+       local designation=dfhack.maps.getTileFlags(x,y,pile.z)
+       if designation and not designation.hidden then destination={x=x,y=y,z=pile.z};break end
+      end
+     end if destination then break end end
+    end
+    if destination then break end
+   end
+  end
+  assert(destination,'no visible destination outside farm for controlled transfer')
   assert(dfhack.items.moveToGround(item,destination),'controlled transfer failed')
   for _,held in ipairs(farm.contained_items)do assert(held.item.id~=potash_id,'transfer retained farm contents membership')end
   local gui=require('gui');local gps=df.global.gps;local frame=df.global.world.frame_counter
@@ -230,6 +249,30 @@ if row.action_progress then
    captured.farm_bound_provider_rejected=code~=0
    local text,position_code=dfhack.run_command_silent('df3d','item-position-probe',tostring(potash_id));assert(position_code==0,text)
    captured.position_provider=require('json').decode(text)
+   local guards={}
+   for _,object in ipairs{item,farm,sheet,df.global.plotinfo}do
+    local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+    dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={bytes=bytes,address=address,size=size}
+   end
+   local independent,independent_code=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(potash_id))
+   assert(independent_code==0,independent)
+   local snapshot=json.decode(independent).snapshot
+   assert(snapshot.id==potash_id and snapshot.description==captured.description and snapshot.hidden==item.flags.hidden)
+   assert(snapshot.holder==json.null or snapshot.holder==nil,'transferred item retained original farm holder')
+   assert(snapshot.revision~=before_transfer.revision,'transfer did not replace independent authority')
+   local native_stockpile=false
+   for _,line in ipairs(captured.lines)do if line:find('View stockpile',1,true)then native_stockpile=true end end
+   assert(native_stockpile==(snapshot.stockpile~=nil and snapshot.stockpile~=json.null),'independent stockpile presence differs from native')
+   if pile_marker then assert(native_stockpile,'deterministic stockpile target has no native link')end
+   if snapshot.stockpile and snapshot.stockpile~=json.null then
+    local found=false;for _,line in ipairs(captured.lines)do if line:find(snapshot.stockpile.name,1,true)then found=true end end
+    assert(found,'independent stockpile name not present on native sheet')
+   end
+   for _,guard in ipairs(guards)do
+    assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'independent item observation changed guarded state')
+    df.delete(guard.bytes)
+   end
+   captured.independent=snapshot;captured.observation_guards_unchanged=true
    assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==potash_id,'native lost transferred item sheet')
    assert(df.global.pause_state and df.global.world.frame_counter==frame,'controlled transfer observation advanced simulation')
    return captured
@@ -241,14 +284,34 @@ if row.action_progress then
    assert(item.flags.hidden==hidden,'native transferred-item visibility click failed')
    observe(hidden and 'hidden' or 'visible')
   end
+  local original_revision=records[#records].independent.revision
+  for _,hidden in ipairs{true,false}do
+   local latest,code=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(potash_id));assert(code==0,latest)
+   local receipt=json.decode(latest).snapshot
+   local changed,changed_code=dfhack.run_command_silent('df3d','item-flag-probe',tostring(potash_id),'hidden',hidden and '1' or '0',receipt.revision)
+   assert(changed_code==0,changed);local result=json.decode(changed)
+   assert(result.outcome==1 and result.mutated and result.snapshot.hidden==hidden and item.flags.hidden==hidden,'independent edit did not confirm native visibility')
+   local captured=observe(hidden and 'helper-hidden' or 'helper-visible');captured.edit=result
+   local repeated,repeated_code=dfhack.run_command_silent('df3d','item-flag-probe',tostring(potash_id),'hidden',hidden and '1' or '0',result.snapshot.revision)
+   assert(repeated_code==0,repeated);local again=json.decode(repeated)
+   assert(again.outcome==1 and not again.mutated,'repeated desired value entered mutation')
+   captured.repeated_no_mutation=true
+   if hidden then
+    local stale,stale_code=dfhack.run_command_silent('df3d','item-flag-probe',tostring(potash_id),'hidden','0',original_revision)
+    assert(stale_code==0,stale);local refused=json.decode(stale)
+    assert(refused.outcome==2 and not refused.mutated and not refused.snapshot and item.flags.hidden,'stale item edit gained authority')
+    captured.stale_rejected=true
+   end
+  end
   local has_stockpile_link=false
   for _,line in ipairs(records[#records].lines)do if line:find('View stockpile',1,true)then has_stockpile_link=true end end
   if has_stockpile_link then
    gps.mouse_x=816//8;gps.mouse_y=(250-4)//12;gps.precise_mouse_x=816;gps.precise_mouse_y=250
    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   local expected_stockpile=records[#records].independent.stockpile.id
    local linked=capture_final('farm-potash-transfer-stockpile-link')
    local selected=assert(df.global.game.main_interface.stockpile.cur_bld,'stockpile View selected no stockpile')
-   assert(not sheet.open and selected:getType()==df.building_type.Stockpile,'stockpile View did not leave the item sheet for stockpile controls')
+   assert(selected.id==expected_stockpile and not sheet.open and selected:getType()==df.building_type.Stockpile,'stockpile View did not leave the item sheet for stockpile controls')
    linked.sheet={open=sheet.open,type=df.view_sheet_type[sheet.active_sheet],id=sheet.active_id}
    linked.stockpile_id=selected.id;linked.stockpile_number=selected.stockpile_number
    linked.bottom_mode_selected=df.global.game.main_interface.bottom_mode_selected

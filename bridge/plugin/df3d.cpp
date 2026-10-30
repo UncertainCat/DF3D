@@ -1639,6 +1639,48 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["x"]=position->x;result["y"]=position->y;result["z"]=position->z;
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="item-inspect-probe"||parameters[0]=="item-flag-probe") {
+          using namespace df3d_production;
+          const bool edit=parameters[0]=="item-flag-probe";
+          if(parameters.size()!=(edit?5:2))return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          auto value=observeItem(df::item::find(id));if(!value)return CR_FAILURE;
+          Json::Value result(Json::objectValue);
+          if(edit) {
+            BuildingItemAction action;
+            if(parameters[2]=="forbid")action=BuildingItemAction::Forbid;
+            else if(parameters[2]=="dump")action=BuildingItemAction::Dump;
+            else if(parameters[2]=="melt")action=BuildingItemAction::Melt;
+            else if(parameters[2]=="hidden")action=BuildingItemAction::Hidden;
+            else return CR_WRONG_USAGE;
+            if(parameters[3]!="0"&&parameters[3]!="1")return CR_WRONG_USAGE;
+            uint64_t expected=0;const auto& revision=parameters[4];
+            const auto read=std::from_chars(revision.data(),revision.data()+revision.size(),expected);
+            if(read.ec!=std::errc{}||read.ptr!=revision.data()+revision.size()||!expected||expected>INT64_MAX)return CR_WRONG_USAGE;
+            const auto changed=finishItemEdit(*value,expected,action,parameters[3]=="1",
+              [&]{return setBuildingItemFlag(df::item::find(id),action,parameters[3]=="1");},
+              [&]{return observeItem(df::item::find(id));});
+            result["outcome"]=static_cast<int>(changed.outcome);result["mutated"]=changed.mutated;
+            value=changed.receipt;
+          }
+          if(value) {
+            const auto& item=value->item;Json::Value snapshot(Json::objectValue);
+            snapshot["id"]=item.id;snapshot["revision"]=std::to_string(value->revision);
+            snapshot["caption"]=DF2UTF(item.caption);snapshot["description"]=DF2UTF(value->description);snapshot["weight"]=DF2UTF(value->weight);
+            snapshot["item_type"]=item.itemType;snapshot["material_token"]=DF2UTF(item.materialToken);
+            snapshot["flags"]=Json::UInt(item.flags);snapshot["forbid"]=item.forbid;snapshot["dump"]=item.dump;
+            snapshot["melt"]=item.melt;snapshot["hidden"]=item.hidden;snapshot["can_dump"]=item.canDump;snapshot["can_melt"]=item.canMelt;
+            const auto link=[](const std::optional<ItemLocationLink>& value) {
+              Json::Value result(Json::nullValue);if(value){result["id"]=value->id;result["type"]=value->type;result["name"]=DF2UTF(value->name);}return result;
+            };
+            snapshot["holder"]=link(value->buildingHolder);snapshot["stockpile"]=link(value->stockpile);
+            result["snapshot"]=std::move(snapshot);
+          }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="farm-item-header-read"||parameters[0]=="farm-item-description-probe") {
           if(parameters.size()!=3)return CR_WRONG_USAGE;
           int32_t ids[2]{};

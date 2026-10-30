@@ -1,6 +1,7 @@
 #include "doctest.h"
 #include "../bridge/plugin/farm_transaction.h"
 #include "../bridge/plugin/building_item_transaction.h"
+#include "../bridge/plugin/item_transaction.h"
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -344,4 +345,43 @@ TEST_CASE("contents paging has complete boundaries and measures encoded captions
     snapshot.rows.clear();snapshot.revision=buildingContentsRevision(snapshot);
     auto empty=pageBuildingContents(snapshot,0,0,unchanged);REQUIRE(empty);
     CHECK(empty->rows.empty());CHECK(empty->nextCursor==0);CHECK(empty->total==0);
+}
+
+TEST_CASE("independent item edits preserve identity across location changes and uncertainty") {
+    using namespace df3d_production;
+    for(int fault=0;fault<10;++fault) {
+        ItemObservation before;before.item.id=45;before.item.itemType=0;before.item.canDump=true;
+        before.buildingHolder=ItemLocationLink{227,4,"farm"};before.revision=itemObservationRevision(before);
+        int applies=0,reads=0;
+        const auto result=finishItemEdit(before,fault==1?before.revision+1:before.revision,
+            fault==2?BuildingItemAction::Melt:BuildingItemAction::Dump,true,[&]{++applies;if(fault==3)throw 1;return fault!=4;},
+            [&]()->std::optional<ItemObservation>{
+                ++reads;if(fault==5)return std::nullopt;if(fault==6)throw 1;
+                auto after=before;after.item.dump=fault!=7;
+                after.buildingHolder.reset();after.stockpile=ItemLocationLink{333,29,"stockpile"};
+                if(fault==8)++after.item.id;
+                after.revision=itemObservationRevision(after);if(fault==9)++after.revision;
+                return after;
+            });
+        if(fault==0) {
+            CHECK(result.outcome==FarmEditOutcome::Completed);REQUIRE(result.receipt);
+            CHECK_FALSE(result.receipt->buildingHolder);REQUIRE(result.receipt->stockpile);
+            CHECK(result.receipt->stockpile->id==333);CHECK(result.receipt->revision!=before.revision);
+        } else if(fault==1){CHECK(result.outcome==FarmEditOutcome::Stale);CHECK_FALSE(result.mutated);}
+        else if(fault==2||fault==4){CHECK(result.outcome==FarmEditOutcome::Rejected);CHECK_FALSE(result.mutated);}
+        else {CHECK(result.outcome==FarmEditOutcome::Unknown);CHECK(result.mutated);CHECK_FALSE(result.receipt);}
+        CHECK(applies<=1);CHECK(reads<=1);
+    }
+    ItemObservation item;item.item.id=45;item.item.itemType=0;item.item.canDump=true;
+    item.item.dump=true;item.revision=itemObservationRevision(item);
+    const auto repeated=finishItemEdit(item,item.revision,BuildingItemAction::Dump,true,
+        []{FAIL("repeated desired value entered native mutation");return true;},
+        []()->std::optional<ItemObservation>{FAIL("repeated desired value re-read");return std::nullopt;});
+    CHECK(repeated.outcome==FarmEditOutcome::Completed);CHECK_FALSE(repeated.mutated);
+    const auto revision=item.revision;
+    item.stockpile=ItemLocationLink{333,29,"pile"};CHECK(itemObservationRevision(item)!=revision);
+    item.revision=itemObservationRevision(item);const auto linked=item.revision;
+    item.stockpile->name="renamed";CHECK(itemObservationRevision(item)!=linked);
+    item.revision=itemObservationRevision(item);CHECK(validItemObservation(item));
+    item.stockpile->id=-1;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
 }

@@ -27584,4 +27584,513 @@
   ],
   "runtime_gap": "observeFarmItem and its edits require original farm membership; transferred item is rejected. Native item sheet remains active and displays a separate spatial stockpile link. This needs independent item inspection/revision/actions and location relationships."
 }
+,
+  "independent_item_native_reference": {
+  "bridge_sha256": "338f007f0f70f00f594841401d0cd120972290055dc9cba431a2e527c1e7a806",
+  "scope": "Independent native item observation and guarded Visibility edits after controlled farm-to-ground transfer, with and without a spatial stockpile link. Native panel pixels, item/farm/UI guards, stale rejection and repeated desired values. No independent management-wire or Godot transfer acceptance yet; unit/container links and overlapping stockpiles remain unverified.",
+  "runs": [
+    {
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-214042",
+      "owned_df_pid": 177560,
+      "exit": "unsaved",
+      "save_preservation": "Owned source unchanged",
+      "states": [
+        {
+          "name": "farm-potash-transfer-ground",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 134,
+              "y": 82,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 805306369,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "2507056434757486465",
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "panel_rgb_sha256": "cf8b38bfee7fbb07fcd7a9dd00d9cdfd180e4f45e7c8fc8fb7680ec6081d426d"
+        },
+        {
+          "name": "farm-potash-transfer-hidden",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": true,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 134,
+              "y": 82,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 822083585,
+            "forbid": false,
+            "hidden": true,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "36916442134660815",
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "panel_rgb_sha256": "ee3ceab232ede9f3af901fd805cab2160fde6aaf10cffad32557a83ee9bd734b"
+        },
+        {
+          "name": "farm-potash-transfer-visible",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 134,
+              "y": 82,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 805306369,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "2507056434757486465",
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "panel_rgb_sha256": "cf8b38bfee7fbb07fcd7a9dd00d9cdfd180e4f45e7c8fc8fb7680ec6081d426d"
+        },
+        {
+          "name": "farm-potash-transfer-helper-hidden",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": true,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 134,
+              "y": 82,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 822083585,
+            "forbid": false,
+            "hidden": true,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "36916442134660815",
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "edit": {
+            "mutated": true,
+            "outcome": 1,
+            "snapshot": {
+              "can_dump": true,
+              "can_melt": false,
+              "caption": "potash",
+              "description": "These are potash.  ",
+              "dump": false,
+              "flags": 822083585,
+              "forbid": false,
+              "hidden": true,
+              "id": 48520,
+              "item_type": 0,
+              "material_token": "POTASH",
+              "melt": false,
+              "revision": "36916442134660815",
+              "weight": "7Γ"
+            }
+          },
+          "repeated_no_mutation": true,
+          "stale_rejected": true,
+          "panel_rgb_sha256": "ee3ceab232ede9f3af901fd805cab2160fde6aaf10cffad32557a83ee9bd734b"
+        },
+        {
+          "name": "farm-potash-transfer-helper-visible",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 134,
+              "y": 82,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 805306369,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "2507056434757486465",
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "edit": {
+            "mutated": true,
+            "outcome": 1,
+            "snapshot": {
+              "can_dump": true,
+              "can_melt": false,
+              "caption": "potash",
+              "description": "These are potash.  ",
+              "dump": false,
+              "flags": 805306369,
+              "forbid": false,
+              "hidden": false,
+              "id": 48520,
+              "item_type": 0,
+              "material_token": "POTASH",
+              "melt": false,
+              "revision": "2507056434757486465",
+              "weight": "7Γ"
+            }
+          },
+          "repeated_no_mutation": true,
+          "panel_rgb_sha256": "cf8b38bfee7fbb07fcd7a9dd00d9cdfd180e4f45e7c8fc8fb7680ec6081d426d"
+        }
+      ]
+    },
+    {
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-214447",
+      "owned_df_pid": 182812,
+      "exit": "unsaved",
+      "save_preservation": "Owned source unchanged",
+      "states": [
+        {
+          "name": "farm-potash-transfer-ground",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 111,
+              "y": 61,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 805306369,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "298888598165436392",
+            "stockpile": {
+              "id": 121,
+              "name": "Stockpile #2",
+              "type": 29
+            },
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "panel_rgb_sha256": "d56732fe0776a038084a0d42520ee71321e32ba788b092daaa186ebdc7cf05ff"
+        },
+        {
+          "name": "farm-potash-transfer-hidden",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": true,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 111,
+              "y": 61,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 822083585,
+            "forbid": false,
+            "hidden": true,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "5859726476743716846",
+            "stockpile": {
+              "id": 121,
+              "name": "Stockpile #2",
+              "type": 29
+            },
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "panel_rgb_sha256": "8ed0ebec9754df121187618f787f63f2fe8d26bd5a443f1393e4c0d036795e7f"
+        },
+        {
+          "name": "farm-potash-transfer-visible",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 111,
+              "y": 61,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 805306369,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "298888598165436392",
+            "stockpile": {
+              "id": 121,
+              "name": "Stockpile #2",
+              "type": 29
+            },
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "panel_rgb_sha256": "d56732fe0776a038084a0d42520ee71321e32ba788b092daaa186ebdc7cf05ff"
+        },
+        {
+          "name": "farm-potash-transfer-helper-hidden",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": true,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 111,
+              "y": 61,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 822083585,
+            "forbid": false,
+            "hidden": true,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "5859726476743716846",
+            "stockpile": {
+              "id": 121,
+              "name": "Stockpile #2",
+              "type": 29
+            },
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "edit": {
+            "mutated": true,
+            "outcome": 1,
+            "snapshot": {
+              "can_dump": true,
+              "can_melt": false,
+              "caption": "potash",
+              "description": "These are potash.  ",
+              "dump": false,
+              "flags": 822083585,
+              "forbid": false,
+              "hidden": true,
+              "id": 48520,
+              "item_type": 0,
+              "material_token": "POTASH",
+              "melt": false,
+              "revision": "5859726476743716846",
+              "stockpile": {
+                "id": 121,
+                "name": "Stockpile #2",
+                "type": 29
+              },
+              "weight": "7Γ"
+            }
+          },
+          "repeated_no_mutation": true,
+          "stale_rejected": true,
+          "panel_rgb_sha256": "8ed0ebec9754df121187618f787f63f2fe8d26bd5a443f1393e4c0d036795e7f"
+        },
+        {
+          "name": "farm-potash-transfer-helper-visible",
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "in_job": false,
+            "on_ground": true,
+            "position": {
+              "x": 111,
+              "y": 61,
+              "z": 165
+            },
+            "refs": []
+          },
+          "independent": {
+            "can_dump": true,
+            "can_melt": false,
+            "caption": "potash",
+            "description": "These are potash.  ",
+            "dump": false,
+            "flags": 805306369,
+            "forbid": false,
+            "hidden": false,
+            "id": 48520,
+            "item_type": 0,
+            "material_token": "POTASH",
+            "melt": false,
+            "revision": "298888598165436392",
+            "stockpile": {
+              "id": 121,
+              "name": "Stockpile #2",
+              "type": 29
+            },
+            "weight": "7Γ"
+          },
+          "observation_guards_unchanged": true,
+          "edit": {
+            "mutated": true,
+            "outcome": 1,
+            "snapshot": {
+              "can_dump": true,
+              "can_melt": false,
+              "caption": "potash",
+              "description": "These are potash.  ",
+              "dump": false,
+              "flags": 805306369,
+              "forbid": false,
+              "hidden": false,
+              "id": 48520,
+              "item_type": 0,
+              "material_token": "POTASH",
+              "melt": false,
+              "revision": "298888598165436392",
+              "stockpile": {
+                "id": 121,
+                "name": "Stockpile #2",
+                "type": 29
+              },
+              "weight": "7Γ"
+            }
+          },
+          "repeated_no_mutation": true,
+          "panel_rgb_sha256": "d56732fe0776a038084a0d42520ee71321e32ba788b092daaa186ebdc7cf05ff"
+        }
+      ]
+    }
+  ],
+  "existing_scene_regression": {
+    "capture": "build/areas-acceptance-20261029-214207",
+    "owned_df_pid": 166816,
+    "exit": "unsaved",
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "status": "passed_with_known_issues",
+    "diagnostics": "Known separate rendering-thread notice only",
+    "native_checks": 81,
+    "captures": [
+      {
+        "name": "baseline",
+        "rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a"
+      }
+    ]
+  }
+}
 }

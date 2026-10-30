@@ -1,6 +1,8 @@
 #pragma once
 #include "farm_native.h"
 #include "building_item_transaction.h"
+#include "item_transaction.h"
+#include "df/building_stockpilest.h"
 #include "df/buildingitemst.h"
 #include "df/item.h"
 #include "df/job.h"
@@ -72,10 +74,7 @@ inline std::optional<std::string> buildingItemCaption(df::item* item) {
     if(!caption||!item)return std::nullopt;
     std::string result;caption(item,&result,false,-1);return result;
 }
-struct ItemBuildingHolder {
-    int32_t id=-1,type=-1;
-    std::string name;
-};
+using ItemBuildingHolder=ItemLocationLink;
 // Native item sheet153bec resolves BUILDING_HOLDER through the semantic general
 // reference lookup. Renderer1567ed calls holder->getName into owned text storage.
 inline std::optional<ItemBuildingHolder> itemBuildingHolder(df::item* item) {
@@ -244,6 +243,63 @@ inline bool buildingItemValue(df::item* item,BuildingItemAction action) {
     case BuildingItemAction::Hidden:return item->flags.bits.hidden;
     }return false;
 }
+inline std::optional<ItemFacts> itemFacts(df::item* item) {
+    const auto& native=buildingItemFunctions();if(!native||!item)return std::nullopt;
+    auto caption=buildingItemCaption(item);if(!caption)return std::nullopt;
+    ItemFacts row;row.id=item->id;
+    row.caption=std::move(*caption);row.flags=item->flags.whole;
+    row.itemType=static_cast<int32_t>(item->getType());
+    DFHack::MaterialInfo material(item->getMaterial(),item->getMaterialIndex());
+    if(material.isValid())row.materialToken=material.getToken();
+    if(auto* subtype=DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype()))row.subtypeRaw=subtype->id;
+    row.countdown=item->stockpile_countdown;row.delay=item->stockpile_delay;
+    row.forbid=item->flags.bits.forbid;row.dump=item->flags.bits.dump;
+    row.melt=item->flags.bits.melt;row.hidden=item->flags.bits.hidden;
+    row.canDump=native.canDump(item);row.canMelt=native.canMelt(item);
+    for(auto* ref:item->specific_refs) {
+        if(!ref)return std::nullopt;
+        if(ref->type!=df::specific_ref_type::JOB)continue;
+        auto* job=ref->data.job;if(!job)return std::nullopt;
+        row.jobs.push_back({job->id,static_cast<int32_t>(job->job_type),job->flags.whole});
+    }
+    return row;
+}
+// Item renderer153c72..153da5 scans STOCKPILE forward and calls5587b0.
+// Generic a82b00 scans in reverse and has additional occupancy filtering.
+inline std::optional<ItemLocationLink> itemStockpile(df::coord position) {
+    using Contains=uint8_t (*)(df::building*,int16_t,int16_t,int16_t);
+    static const auto contains=[]()->Contains {
+        if(!farmFunctions())return nullptr;
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x79;++i){hash^=base[0x5587b0+i];hash*=UINT64_C(1099511628211);}
+        if(hash!=UINT64_C(0x14b4f3f138690067))return nullptr;
+        return reinterpret_cast<Contains>(base+0x5587b0);
+    }();
+    if(!contains||!df::global::world)return std::nullopt;
+    for(auto* pile:df::global::world->buildings.other.STOCKPILE) {
+        if(!pile)return std::nullopt;
+        if(!contains(pile,position.x,position.y,position.z))continue;
+        ItemLocationLink link;link.id=pile->id;link.type=static_cast<int32_t>(pile->getType());
+        pile->getName(&link.name);return link;
+    }
+    return ItemLocationLink{};
+}
+inline std::optional<ItemObservation> observeItem(df::item* item) {
+    if(!farmItemDescriptionDispatch(item))return std::nullopt;
+    const auto position=itemFollowPosition(item);if(!position)return std::nullopt;
+    const auto description=farmItemDescription(item),weight=itemWeightCaption(item);
+    const auto holder=itemBuildingHolder(item),stockpile=itemStockpile(*position);
+    if(!description||!weight||!holder||!stockpile)return std::nullopt;
+    // Observe facts after native lazy formatting, without borrowing a UI owner.
+    auto facts=itemFacts(item);if(!facts)return std::nullopt;
+    ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
+    if(holder->id>=0)value.buildingHolder=*holder;
+    if(stockpile->id>=0)value.stockpile=*stockpile;
+    value.revision=itemObservationRevision(value);
+    if(!validItemObservation(value))return std::nullopt;
+    return value;
+}
 inline std::optional<BuildingContentsSnapshot> buildingContents(df::building_actual* building) {
     const auto& native=buildingItemFunctions();if(!native||!building)return std::nullopt;
     BuildingContentsSnapshot snapshot;snapshot.buildingId=building->id;
@@ -252,23 +308,9 @@ inline std::optional<BuildingContentsSnapshot> buildingContents(df::building_act
     snapshot.rows.reserve(building->contained_items.size());
     for(auto* held:building->contained_items) {
         if(!held||!held->item)return std::nullopt;
-        auto* item=held->item;auto caption=buildingItemCaption(item);if(!caption)return std::nullopt;
-        BuildingContentsRow row;row.id=item->id;row.role=static_cast<int32_t>(held->use_mode);
-        row.caption=std::move(*caption);row.flags=item->flags.whole;
-        row.itemType=static_cast<int32_t>(item->getType());
-        DFHack::MaterialInfo material(item->getMaterial(),item->getMaterialIndex());
-        if(material.isValid())row.materialToken=material.getToken();
-        if(auto* subtype=DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype()))row.subtypeRaw=subtype->id;
-        row.countdown=item->stockpile_countdown;row.delay=item->stockpile_delay;
-        row.forbid=item->flags.bits.forbid;row.dump=item->flags.bits.dump;
-        row.melt=item->flags.bits.melt;row.hidden=item->flags.bits.hidden;
-        row.canDump=native.canDump(item);row.canMelt=native.canMelt(item);
-        for(auto* ref:item->specific_refs) {
-            if(!ref)return std::nullopt;
-            if(ref->type!=df::specific_ref_type::JOB)continue;
-            auto* job=ref->data.job;if(!job)return std::nullopt;
-            row.jobs.push_back({job->id,static_cast<int32_t>(job->job_type),job->flags.whole});
-        }
+        auto facts=itemFacts(held->item);if(!facts)return std::nullopt;
+        BuildingContentsRow row;static_cast<ItemFacts&>(row)=std::move(*facts);
+        row.role=static_cast<int32_t>(held->use_mode);
         snapshot.rows.push_back(std::move(row));
     }
     snapshot.revision=buildingContentsRevision(snapshot);

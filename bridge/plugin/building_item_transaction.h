@@ -6,8 +6,8 @@
 namespace df3d_production {
 enum class BuildingItemAction { Forbid, Dump, Melt, Hidden };
 struct BuildingItemJob { int32_t id=-1,type=-1;uint32_t flags=0; };
-struct BuildingContentsRow {
-    int32_t id=-1,role=-1;
+struct ItemFacts {
+    int32_t id=-1;
     std::string caption;
     uint32_t flags=0;
     int8_t countdown=0,delay=0;
@@ -15,13 +15,14 @@ struct BuildingContentsRow {
     std::vector<BuildingItemJob> jobs;
     int32_t itemType=-1;std::string materialToken,subtypeRaw;
 };
+struct BuildingContentsRow : ItemFacts { int32_t role=-1; };
 struct BuildingContentsSnapshot {
     int32_t buildingId=-1;
     uint64_t revision=0;
     bool completed=false,removing=false;
     std::vector<BuildingContentsRow> rows;
 };
-inline bool buildingItemValue(const BuildingContentsRow& row,BuildingItemAction action) {
+inline bool buildingItemValue(const ItemFacts& row,BuildingItemAction action) {
     switch(action) {
     case BuildingItemAction::Forbid:return row.forbid;
     case BuildingItemAction::Dump:return row.dump;

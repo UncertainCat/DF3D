@@ -1221,6 +1221,29 @@ contain only the known render-thread notice. name_session_reference retains the
 receipts. Physical key input, text-entry rendering and complete chest navigation
 remain separate acceptance work before public exposure.
 
+chest_sheet_view.gd composes the installed Box header, native rename/remove
+controls, common removal status/cancellation and the shared contents renderer.
+It uses the independent header controller and existing native name-entry widget;
+no farm choices or seasons are fabricated. Contents stay visible while removing.
+The shared contents view has an opt-in inspection mode for removal, enabling View
+without widening flag-edit authority. Farm callers retain their previous behavior.
+Contents flag effects during chest removal still require native acceptance.
+
+Protected134604 on2026-10-30 runs chest_header_art_live.gd with actual header and
+contents controllers and matched management100 endpoints. Five complete488x708
+panels match native exactly: idle, assigned-worker removal, renamed, inactive
+removal and restored. Every contents View button emits the correct item ID in idle
+and assigned-worker removal states. Viewport Rename/Remove/Cancel clicks and the
+name widget's text/Backspace/Enter events execute real semantic actions; final
+name/jobs match the initial state. Rendered images were inspected. The nested
+panel_reference records exact pixel hashes and scope. Owned DF42976 exits unsaved
+with source preservation; all previous effects and pixel regressions pass. All ten
+GPU logs contain only the known render-thread notice. build/qa/chest-panel passes
+core/header controller; the farm contents capture retains only its documented
+thread/device-finalize/shutdown-object diagnostics. This is standalone acceptance.
+Main-scene input ownership/navigation, resize, suspended-state rendering and
+removal-time contents edits remain unfinished; public exposure is unchanged.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

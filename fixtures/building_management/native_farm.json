@@ -33633,6 +33633,160 @@
         }
       },
       "scope": "Actual service-owned chest rename session coalesces typed values, finishes on confirmed final text, and drains a pending restore after controller close. Native readback confirms original name. Offline tests cover continuation ordering, stale/rejected/unknown retirement and epoch changes; existing farm session regressions pass. Rendered keyboard/text-entry integration remains unfinished."
+    },
+    "panel_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261030-134604",
+      "owned_df_pid": 42976,
+      "images": {
+        "idle-0": {
+          "native_reference": "chest-header-wire-idle",
+          "size": [
+            488,
+            708
+          ],
+          "differing_pixels": 0,
+          "rgb_sha256": "3ee4eee229bb98f2635d1cd9d4f281ccd32dcf1f7c8890800ad0ec9a88532a0d"
+        },
+        "worker-0": {
+          "native_reference": "chest-header-wire-worker",
+          "size": [
+            488,
+            708
+          ],
+          "differing_pixels": 0,
+          "rgb_sha256": "57d515d53c3925d642c4c1726a213260d1866012f59ef039dfe2e3f4c86990e3"
+        },
+        "renamed": {
+          "native_reference": "chest-header-renamed",
+          "size": [
+            488,
+            708
+          ],
+          "differing_pixels": 0,
+          "rgb_sha256": "76187910498f430a70eb66506e0cc36e81c99c8b68dcdc55ef8a62480a2820bf"
+        },
+        "remove": {
+          "native_reference": "chest-header-remove",
+          "size": [
+            488,
+            708
+          ],
+          "differing_pixels": 0,
+          "rgb_sha256": "f6fa5aa868eb642c9d51af7fea1d912284d02651db34a02cc1da38764d4d2654"
+        },
+        "restored": {
+          "native_reference": "chest-header-wire-idle",
+          "size": [
+            488,
+            708
+          ],
+          "differing_pixels": 0,
+          "rgb_sha256": "3ee4eee229bb98f2635d1cd9d4f281ccd32dcf1f7c8890800ad0ec9a88532a0d"
+        }
+      },
+      "diagnostics": {
+        "chest-header-wire-idle.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "chest-header-wire-worker.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-chest-contents-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-box-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-container-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-instrument-1-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-instrument-2-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-instrument-3-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-instrument-4-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-unit-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        }
+      },
+      "scope": "Standalone full chest panel with actual header/contents controllers. All five contents View identities work in idle and assigned-worker removal states. Real viewport Rename/Remove/Cancel clicks and name-entry text/Backspace/Enter events apply and restore state. All five complete panel comparisons are exact. Keyboard owner routing, main-scene navigation, resize, suspended rendering and contents flag actions during removal remain unverified."
     }
   }
 }

@@ -218,7 +218,12 @@ try {
     if($FarmItemCarriers -and $name -match '^chest-header-wire-(idle|worker)$') {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
+     if($FarmItemCarrierArt){
+      $env:DF3D_DF_PATH=$dfPath
+      $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/chest_header_art_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+     }else{
      $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/chest_header_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
+     }
      $null=$client.Handle
      if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Chest header client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/chest-header-wire-result.json")){throw 'Chest header client failed'}

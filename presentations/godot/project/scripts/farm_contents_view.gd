@@ -18,6 +18,7 @@ var pointer_position:=Vector2.ZERO
 var page:=6
 var cell_first:=0
 var input_allowed: Callable
+var inspect_removing:=false
 
 func configure(source,model,help=null) -> void:
 	hover_help=help
@@ -48,7 +49,7 @@ func visible_count() -> int:return mini(page+(1 if row_offset()>0 else 0),rows.s
 
 func permitted() -> bool:return not input_allowed.is_valid() or input_allowed.call()
 func available() -> bool:
-	return permitted() and page>0 and state!=null and state.phase==state.Phase.Ready and state.ticket==0 and not state.snapshot.is_empty() and state.snapshot.completed and not state.snapshot.removing
+	return permitted() and page>0 and state!=null and state.phase==state.Phase.Ready and state.ticket==0 and not state.snapshot.is_empty() and state.snapshot.completed and (not state.snapshot.removing or inspect_removing)
 func can_scroll() -> bool:
 	return permitted() and page>0 and state!=null and state.phase in [state.Phase.Ready,state.Phase.Reading] and not state.snapshot.is_empty()
 
@@ -113,7 +114,7 @@ func _gui_input(event: InputEvent) -> void:
 	for control in range(1,6):
 		if not control_rect(index,control).has_point(event.position) or not eligible(row,control):continue
 		if control==1:view_requested.emit(row.id)
-		else:state.set_flag(row.id,ACTIONS[control-2],not row[FLAGS[control-2]])
+		elif not state.snapshot.removing:state.set_flag(row.id,ACTIONS[control-2],not row[FLAGS[control-2]])
 		accept_event();return
 
 func patch(texture: Texture2D,origin: Vector2,columns: int) -> void:

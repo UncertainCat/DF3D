@@ -194,10 +194,45 @@ local ok,err=xpcall(function()
    gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
    assert(not sheet.building_entering_nickname and installed.name==destination.custom_name,'empty rename changed chest name')
    for index,held in ipairs(installed.contained_items)do
+    local first
+    if held.item:getType()==df.item_type.INSTRUMENT then
+     local guards={}
+     for _,object in ipairs{sheet,df.global.plotinfo}do
+      local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+      guards[#guards+1]={size=size,address=address,bytes=bytes}
+     end
+     local text,status=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(held.item.id));assert(status==0,text)
+     first=json.decode(text).snapshot
+     for _,guard in ipairs(guards)do
+      assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'first instrument inspection changed UI bytes');df.delete(guard.bytes)
+     end
+    end
     move(772,526+index*36);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
     assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==held.item.id,'chest contents View selected wrong item')
     local inspected=capture('farm-item-carrier-building-item-'..index)
     inspected.item_id=held.item.id;inspected.item_type=held.item:getType();inspected.description=dfhack.df2utf(sheet.raw_description)
+    if first then
+     assert(first.description==inspected.description,'first instrument description differs from later native screen')
+     inspected.first_read=first;inspected.first_read_ui_unchanged=true
+    end
+    local guards={}
+    for _,object in ipairs{held.item,sheet,df.global.plotinfo}do
+     local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+     guards[#guards+1]={size=size,address=address,bytes=bytes}
+    end
+    local text,status=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(held.item.id));assert(status==0,text)
+    inspected.independent=json.decode(text).snapshot
+    assert(inspected.independent.description==inspected.description,'instrument semantic description differs from native')
+    for _,guard in ipairs(guards)do
+     assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'warm instrument inspection changed item/UI bytes');df.delete(guard.bytes)
+    end
+    inspected.guards_unchanged=true
+    if held.item:getType()==df.item_type.INSTRUMENT then
+     local expected=assert(io.open(out..'/carrier-expected.json','w'));expected:write(json.encode{snapshot=inspected.independent});expected:close()
+     capture('farm-item-carrier-instrument-'..index..'-wire')
+     local result=assert(io.open(out..'/carrier-wire-result.json'));inspected.wire=json.decode(result:read('*a'));result:close()
+     assert(inspected.wire.success and held.item.flags.hidden==inspected.independent.hidden,'instrument wire failed or left hidden flag changed')
+    end
     gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(installed)
     assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==installed.id)
    end

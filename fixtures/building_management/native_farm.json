@@ -31406,5 +31406,367 @@
       }
     ],
     "scope": "Native holder View reaches building278/type10; Rename enter/finish without text preserves custom name; all five contents View actions reach correct item identities. Four instrument descriptions are native references, not runtime-provider acceptance. Chest building header actions, contents transport/artwork and owner navigation remain unfinished."
+  },
+  "item_instrument_provider_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261030-123019",
+    "owned_df_pid": 184440,
+    "bridge_sha256": "fb8273e3f708534329d5c740ba8d8e2ba250e07a557c16cfac703413ccd6d0fe",
+    "management_version": 97,
+    "status": "passed_with_known_issues",
+    "source_manifest_unchanged": true,
+    "exit_without_saving": true,
+    "records": [
+      {
+        "item_id": 7504,
+        "item_type": 13,
+        "description": "This is a giant rat bone libash.    The libash is a mid-size hand-held percussion instrument.  It consists of a bone chime.  The musician strikes the chime.  The instrument has a single mid-high pitch.  The instrument has a dark gentle timbre.  ",
+        "first_read": {
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "(giant rat bone libash)",
+          "description": "This is a giant rat bone libash.    The libash is a mid-size hand-held percussion instrument.  It consists of a bone chime.  The musician strikes the chime.  The instrument has a single mid-high pitch.  The instrument has a dark gentle timbre.  ",
+          "dump": false,
+          "flags": 536887296,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 278,
+            "name": "kumquat wood Chest",
+            "type": 10
+          },
+          "id": 7504,
+          "item_type": 13,
+          "material_token": "CREATURE:RAT_GIANT:BONE",
+          "melt": false,
+          "revision": "8584579757508780986",
+          "stockpile_categories": -1,
+          "weight": "2\u0393"
+        },
+        "first_read_ui_unchanged": true,
+        "independent": {
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "(giant rat bone libash)",
+          "description": "This is a giant rat bone libash.    The libash is a mid-size hand-held percussion instrument.  It consists of a bone chime.  The musician strikes the chime.  The instrument has a single mid-high pitch.  The instrument has a dark gentle timbre.  ",
+          "dump": false,
+          "flags": 536887296,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 278,
+            "name": "kumquat wood Chest",
+            "type": 10
+          },
+          "id": 7504,
+          "item_type": 13,
+          "material_token": "CREATURE:RAT_GIANT:BONE",
+          "melt": false,
+          "revision": "8584579757508780986",
+          "stockpile_categories": -1,
+          "weight": "2\u0393"
+        },
+        "guards_unchanged": true,
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 7504,
+              "revision": "8833223255571007242",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 7504,
+              "revision": "8584579757508780986",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        }
+      },
+      {
+        "item_id": 7583,
+        "item_type": 13,
+        "description": "This is a green glass ennol.  The body is made from green glass.  The strings are made from giant cave spider silk.  The bow is made from copper.    The ennol is a large hand-held silk-stringed instrument with a glass body.  The instrument rests flat as the musician plays the forty strings with a metal bow.  Tuning is possible with adjustable bridges.  The instrument has a four-and-a-half octave range going from a low to a high pitch.  It has four registers.  The low register has a sparse floating timbre.  The middle register begins at mid-low pitch and has a delicate quavering strident timbre.  The high register begins at middle pitch and has a quavering harsh nasal buzzy timbre.  The top register begins at mid-high pitch and has a full quavering harsh timbre.  ",
+        "first_read": {
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "(green glass ennol)",
+          "description": "This is a green glass ennol.  The body is made from green glass.  The strings are made from giant cave spider silk.  The bow is made from copper.    The ennol is a large hand-held silk-stringed instrument with a glass body.  The instrument rests flat as the musician plays the forty strings with a metal bow.  Tuning is possible with adjustable bridges.  The instrument has a four-and-a-half octave range going from a low to a high pitch.  It has four registers.  The low register has a sparse floating timbre.  The middle register begins at mid-low pitch and has a delicate quavering strident timbre.  The high register begins at middle pitch and has a quavering harsh nasal buzzy timbre.  The top register begins at mid-high pitch and has a full quavering harsh timbre.  ",
+          "dump": false,
+          "flags": 536887296,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 278,
+            "name": "kumquat wood Chest",
+            "type": 10
+          },
+          "id": 7583,
+          "item_type": 13,
+          "material_token": "GLASS_GREEN",
+          "melt": false,
+          "revision": "693897611091761215",
+          "stockpile_categories": -1,
+          "weight": "10\u0393"
+        },
+        "first_read_ui_unchanged": true,
+        "independent": {
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "(green glass ennol)",
+          "description": "This is a green glass ennol.  The body is made from green glass.  The strings are made from giant cave spider silk.  The bow is made from copper.    The ennol is a large hand-held silk-stringed instrument with a glass body.  The instrument rests flat as the musician plays the forty strings with a metal bow.  Tuning is possible with adjustable bridges.  The instrument has a four-and-a-half octave range going from a low to a high pitch.  It has four registers.  The low register has a sparse floating timbre.  The middle register begins at mid-low pitch and has a delicate quavering strident timbre.  The high register begins at middle pitch and has a quavering harsh nasal buzzy timbre.  The top register begins at mid-high pitch and has a full quavering harsh timbre.  ",
+          "dump": false,
+          "flags": 536887296,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 278,
+            "name": "kumquat wood Chest",
+            "type": 10
+          },
+          "id": 7583,
+          "item_type": 13,
+          "material_token": "GLASS_GREEN",
+          "melt": false,
+          "revision": "693897611091761215",
+          "stockpile_categories": -1,
+          "weight": "10\u0393"
+        },
+        "guards_unchanged": true,
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 7583,
+              "revision": "5915528363303312405",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 7583,
+              "revision": "693897611091761215",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        }
+      },
+      {
+        "item_id": 19847,
+        "item_type": 13,
+        "description": "This is a well-crafted wolverine bone adesh.    The adesh is a large hand-held wind instrument consisting of thirteen adjacent cylindrical bone pipes.  The musician blows through a double reed in each pipe.  The instrument has a three octave range going from a very low to a middle pitch.  At all pitches, the instrument has a evolving wobbling timbre.  It has two registers.  The low register has a quavering watery timbre.  The high register begins at low pitch and has a raspy muddy timbre.  ",
+        "first_read": {
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "(-wolverine bone adesh-)",
+          "description": "This is a well-crafted wolverine bone adesh.    The adesh is a large hand-held wind instrument consisting of thirteen adjacent cylindrical bone pipes.  The musician blows through a double reed in each pipe.  The instrument has a three octave range going from a very low to a middle pitch.  At all pitches, the instrument has a evolving wobbling timbre.  It has two registers.  The low register has a quavering watery timbre.  The high register begins at low pitch and has a raspy muddy timbre.  ",
+          "dump": false,
+          "flags": 536887296,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 278,
+            "name": "kumquat wood Chest",
+            "type": 10
+          },
+          "id": 19847,
+          "item_type": 13,
+          "material_token": "CREATURE:WOLVERINE:BONE",
+          "melt": false,
+          "revision": "229236762240177085",
+          "stockpile_categories": -1,
+          "weight": "2\u0393"
+        },
+        "first_read_ui_unchanged": true,
+        "independent": {
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "(-wolverine bone adesh-)",
+          "description": "This is a well-crafted wolverine bone adesh.    The adesh is a large hand-held wind instrument consisting of thirteen adjacent cylindrical bone pipes.  The musician blows through a double reed in each pipe.  The instrument has a three octave range going from a very low to a middle pitch.  At all pitches, the instrument has a evolving wobbling timbre.  It has two registers.  The low register has a quavering watery timbre.  The high register begins at low pitch and has a raspy muddy timbre.  ",
+          "dump": false,
+          "flags": 536887296,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 278,
+            "name": "kumquat wood Chest",
+            "type": 10
+          },
+          "id": 19847,
+          "item_type": 13,
+          "material_token": "CREATURE:WOLVERINE:BONE",
+          "melt": false,
+          "revision": "229236762240177085",
+          "stockpile_categories": -1,
+          "weight": "2\u0393"
+        },
+        "guards_unchanged": true,
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 19847,
+              "revision": "1095710119191453219",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 19847,
+              "revision": "229236762240177085",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        }
+      },
+      {
+        "item_id": 26550,
+        "item_type": 13,
+        "description": "This is a onyx migrur.    The migrur is a mid-size hand-held wind instrument consisting of fourteen adjacent cylindrical ceramic pipes.  The musician blows over a single reed in each pipe.  The instrument has a three-and-a-half octave range going from a mid-low to a very high pitch.  At all pitches, the instrument has a even timbre.  It has two registers.  The low register has a light piercing timbre.  The high register begins at high pitch and has a clear dull timbre.  ",
+        "first_read": {
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "onyx migrur",
+          "description": "This is a onyx migrur.    The migrur is a mid-size hand-held wind instrument consisting of fourteen adjacent cylindrical ceramic pipes.  The musician blows over a single reed in each pipe.  The instrument has a three-and-a-half octave range going from a mid-low to a very high pitch.  At all pitches, the instrument has a even timbre.  It has two registers.  The low register has a light piercing timbre.  The high register begins at high pitch and has a clear dull timbre.  ",
+          "dump": false,
+          "flags": 536870912,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 278,
+            "name": "kumquat wood Chest",
+            "type": 10
+          },
+          "id": 26550,
+          "item_type": 13,
+          "material_token": "INORGANIC:ONYX",
+          "melt": false,
+          "revision": "1645653663678751571",
+          "stockpile_categories": -1,
+          "weight": "10\u0393"
+        },
+        "first_read_ui_unchanged": true,
+        "independent": {
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "onyx migrur",
+          "description": "This is a onyx migrur.    The migrur is a mid-size hand-held wind instrument consisting of fourteen adjacent cylindrical ceramic pipes.  The musician blows over a single reed in each pipe.  The instrument has a three-and-a-half octave range going from a mid-low to a very high pitch.  At all pitches, the instrument has a even timbre.  It has two registers.  The low register has a light piercing timbre.  The high register begins at high pitch and has a clear dull timbre.  ",
+          "dump": false,
+          "flags": 536870912,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 278,
+            "name": "kumquat wood Chest",
+            "type": 10
+          },
+          "id": 26550,
+          "item_type": 13,
+          "material_token": "INORGANIC:ONYX",
+          "melt": false,
+          "revision": "1645653663678751571",
+          "stockpile_categories": -1,
+          "weight": "10\u0393"
+        },
+        "guards_unchanged": true,
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 26550,
+              "revision": "209969685076963015",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 26550,
+              "revision": "1645653663678751571",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        }
+      }
+    ],
+    "diagnostics": {
+      "farm-item-carrier-instrument-1-wire": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-2-wire": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-3-wire": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "farm-item-carrier-instrument-4-wire": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      }
+    },
+    "scope": "Four native instrument definitions, first owned inspection before native sheet, repeated warm inspection, exact native descriptions and wire revisions, controller acceptance and Hidden edits in both directions. Instrument artwork, main scene navigation, other definitions and decorated-instrument art initialization are not established."
   }
 }

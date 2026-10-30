@@ -976,11 +976,32 @@ render-thread notice. Native chest and first instrument captures were inspected.
 The general buildingContents semantic reader already accepts building_actual,
 but observeFarmContents and its mutation path currently restrict transport to
 farms. The contents view only supplies seed/potash artwork, and the independent
-description provider admits seed/potash/BOX dispatches. Instrument captions,
-descriptions, artwork and chest header/removal semantics need verified providers
+description provider admits seed/potash/BOX and the verified instrument dispatch
+below. Instrument artwork and chest header/removal semantics need verified providers
 before connecting this destination. The farm owner currently forwards holder
 intents to its farm route; general building navigation must dispatch by type.
 These native captures establish destination requirements, not a completed screen.
+
+Instrument inspection uses native c75000 with owned output and the same native
+sheet options as BOX. The pinned Steam instrument vtable is16c6cf0; all seventeen
+constructed-item methods match BOX except getType673c0, and subtype getterfd0c0
+is separately pinned. The subtype pointer must match the registered instrument
+definition. Native c7691f reads component definitions for improvement descriptions;
+c795a9 appends the definition's description at278. Neither uses native UI scratch.
+Shared improvement dispatch/quality guards and native lazy-art behavior remain
+intact. No procedural instrument prose is recreated in DF3D.
+
+Protected123019 on2026-10-30 verifies instruments7504/7583/19847/26550 before their
+native item sheets open, then compares each full description with the later native
+screen. Warm item/UI guards remain unchanged. The actual Godot client receives
+exact revisions/descriptions/weight/holder, accepts every snapshot, and confirms
+Hidden edits in both directions with the original value restored. Owned DF184440
+exits unsaved; source preservation and chest/carrier regressions pass. Only the
+known render-thread notice occurs (headless stdout/stderr classified together).
+item_instrument_provider_reference retains these facts and the bridge hash. MSVC
+and root CTest19/19 pass. This verifies semantic inspection/edit authority for
+four definitions, including multi-material construction; instrument artwork,
+main-scene navigation and decorated-instrument lazy art remain unverified.
 
 ## Native item holder provider
 

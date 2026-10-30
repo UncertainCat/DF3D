@@ -1693,6 +1693,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(value) {
             const auto& item=value->item;Json::Value snapshot(Json::objectValue);
             snapshot["id"]=item.id;snapshot["revision"]=std::to_string(value->revision);
+            if(value->appearance){const auto& a=*value->appearance;Json::Value look(Json::objectValue);look["material_token"]=DF2UTF(a.materialToken);look["subtype_raw"]=DF2UTF(a.subtypeRaw);look["color_token"]=DF2UTF(a.colorToken);look["stack"]=a.stack;look["flags"]=a.flags;snapshot["appearance"]=look;}
             snapshot["caption"]=DF2UTF(item.caption);snapshot["description"]=DF2UTF(value->description);snapshot["weight"]=DF2UTF(value->weight);
             snapshot["item_type"]=item.itemType;snapshot["material_token"]=DF2UTF(item.materialToken);
             snapshot["flags"]=Json::UInt(item.flags);snapshot["forbid"]=item.forbid;snapshot["dump"]=item.dump;

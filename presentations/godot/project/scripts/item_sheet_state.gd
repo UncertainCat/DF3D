@@ -92,6 +92,10 @@ func _valid(value: Dictionary) -> bool:
 	for key in ["name","weight","description","material_token","subtype_raw"]:
 		var limit: int={"name":131072,"weight":128,"description":32768,"material_token":256,"subtype_raw":128}[key]
 		if typeof(value.get(key))!=TYPE_STRING or value[key].to_utf8_buffer().size()>limit:return false
+	if value.item_type==30 and not value.has("appearance"):return false
+	if value.has("appearance"):
+		if not _valid_appearance(value.appearance):return false
+		if value.appearance.material_token!=value.material_token or value.appearance.subtype_raw!=value.subtype_raw:return false
 	if value.has("stockpile"):
 		if value.stockpile_categories<0 or value.stockpile_categories>0x1ffff:return false
 	elif value.stockpile_categories!=-1:return false
@@ -104,15 +108,7 @@ func _valid(value: Dictionary) -> bool:
 		if carrier.kind==1 and (carrier.item_type<0 or carrier.item_type>92):return false
 		if carrier.kind==2 and carrier.item_type!=-1:return false
 		if (carrier.kind==1)!=carrier.has("appearance"):return false
-		if carrier.has("appearance"):
-			var look=carrier.appearance
-			if typeof(look)!=TYPE_DICTIONARY or look.size()!=5:return false
-			for key in ["material_token","subtype_raw","color_token"]:
-				if typeof(look.get(key))!=TYPE_STRING or look[key].to_utf8_buffer().size()>(256 if key=="material_token" else 128):return false
-			if look.material_token.is_empty():return false
-			for key in ["stack","flags"]:
-				if typeof(look.get(key))!=TYPE_INT:return false
-			if look.stack<1 or look.stack>2147483647 or look.flags<0 or look.flags&~96:return false
+		if carrier.has("appearance") and not _valid_appearance(carrier.appearance):return false
 		if typeof(carrier.get("name"))!=TYPE_STRING or carrier.name.to_utf8_buffer().size()>512:return false
 	for forbidden in ["building_id","role","completed","removing"]:
 		if value.has(forbidden):return false
@@ -151,3 +147,12 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	background_refresh=false;snapshot=value.duplicate(true);phase=Phase.Ready
 	if different:changed.emit()
 	if editing and owner==generation:applied.emit()
+
+static func _valid_appearance(look: Variant) -> bool:
+	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5:return false
+	for key in ["material_token","subtype_raw","color_token"]:
+		if typeof(look.get(key))!=TYPE_STRING or look[key].to_utf8_buffer().size()>(256 if key=="material_token" else 128):return false
+	if look.material_token.is_empty():return false
+	for key in ["stack","flags"]:
+		if typeof(look.get(key))!=TYPE_INT:return false
+	return look.stack>=1 and look.stack<=2147483647 and look.flags>=0 and (look.flags&~96)==0

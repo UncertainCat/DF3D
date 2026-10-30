@@ -3639,8 +3639,8 @@ TEST_CASE("independent item stockpile categories require matching relationship a
 TEST_CASE("independent item carrier codec preserves identity and rejects malformed authority") {
   for(int kind:{1,2})for(int fault=0;fault<14;++fault) {
     CAPTURE(kind);CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
-    flatbuffers::Offset<wire::ItemCarrierAppearance> appearance;
-    if((kind==1&&fault!=8)||(kind==2&&fault>=8))appearance=wire::CreateItemCarrierAppearance(b,b.CreateString(fault==9?"":fault==10?std::string(257,'x'):"WOOD"),b.CreateString(fault==11?std::string(129,'x'):""),b.CreateString(""),fault==12?0:1,fault==13?1:0);
+    flatbuffers::Offset<wire::ItemInspectionAppearance> appearance;
+    if((kind==1&&fault!=8)||(kind==2&&fault>=8))appearance=wire::CreateItemInspectionAppearance(b,b.CreateString(fault==9?"":fault==10?std::string(257,'x'):"WOOD"),b.CreateString(fault==11?std::string(129,'x'):""),b.CreateString(""),fault==12?0:1,fault==13?1:0);
     auto carrier=wire::CreateItemCarrier(b,fault==1?0:kind,fault==2?-1:988,
       fault==3?(kind==1?-1:0):fault==4?93:(kind==1?30:-1),fault==5?0:b.CreateString(fault==6?std::string(513,'x'):"native carrier"),appearance);
     auto holder=fault==7?wire::CreateItemBuildingHolder(b,1,4,b.CreateString("farm")):flatbuffers::Offset<wire::ItemBuildingHolder>{};
@@ -3650,5 +3650,17 @@ TEST_CASE("independent item carrier codec preserves identity and rejects malform
     auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
     CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
     if(!fault){auto decoded=codec::decodeProduction(value->production());const auto& snapshot=*decoded.independentItem->snapshot;REQUIRE(snapshot.carrier);CHECK(snapshot.carrier->kind==kind);CHECK(snapshot.carrier->id==988);CHECK(snapshot.carrier->name=="native carrier");CHECK(snapshot.carrier->appearance.has_value()==(kind==1));if(kind==1)CHECK(snapshot.carrier->appearance->materialToken=="WOOD");}
+  }
+}
+
+TEST_CASE("independent BOX appearance is required coherent and decoded") {
+  for(int fault=0;fault<7;++fault) {
+    CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    auto look=wire::CreateItemInspectionAppearance(b,b.CreateString(fault==2?"STONE":"WOOD"),b.CreateString(fault==3?"mismatch":""),b.CreateString(fault==6?std::string(129,'x'):"RED"),fault==4?0:2,fault==5?1:32);
+    auto item=wire::CreateIndependentItemSnapshot(b,45,9007199254740993ULL,30,b.CreateString("chest"),b.CreateString("WOOD"),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString("weight"),b.CreateString("description"),0,0,-1,0,fault==1?0:look);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeProduction(value->production());const auto& snapshot=*decoded.independentItem->snapshot;REQUIRE(snapshot.appearance);CHECK(snapshot.appearance->colorToken=="RED");CHECK(snapshot.appearance->stack==2);CHECK(snapshot.appearance->flags==32);}
   }
 }

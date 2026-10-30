@@ -37,6 +37,8 @@ func run() -> void:
 	if not check(response.get("status")==C.ManagementStatus.Ok and not snapshot.is_empty(),"Carrier read failed"):quit(1);return
 	check(str(snapshot.revision)==expected.snapshot.revision,"Carrier exact revision changed across wire")
 	for key in ["id","item_type","description","weight"]:check(snapshot.get(key)==expected.snapshot[key],"Independent item field differs: "+key)
+	if expected.snapshot.has("appearance"):
+		for key in ["material_token","subtype_raw","color_token","stack","flags"]:check(snapshot.get("appearance",{}).get(key)==expected.snapshot.appearance[key],"Item appearance differs: "+key)
 	if expected.snapshot.has("carrier"):
 		for key in ["kind","id","item_type","name"]:check(snapshot.get("carrier",{}).get(key)==expected.snapshot.carrier[key],"Carrier field differs: "+key)
 	if expected.snapshot.has("holder"):

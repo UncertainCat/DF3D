@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management97 adds independent item appearance, required for BOX inspection and
+optional for other verified item families. The shared ItemInspectionAppearance
+also carries container appearance. Own material/subtype must match the item's
+identity facts; all appearance fields participate in its revision. Rebuild both
+endpoints on `Local\\df3d_management_v97`; management96 is incompatible. Missing
+appearance in historical recordings remains unknown, never inferred from names.
+
 Management96 adds required semantic appearance to container carriers: native
 material/subtype/color tokens, stack size and artifact/spider flags. Unit carriers
 must omit it. Appearance participates in the independent item revision and is

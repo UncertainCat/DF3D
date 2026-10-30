@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 96;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v96";
+inline constexpr uint32_t kManagementVersion = 97;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v97";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1320,6 +1320,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           if(link && (link->id()<0 || link->type()<0 || !text(link->name(),512)))return "invalid independent item link";
         if(item->stockpile() ? (item->stockpile_categories()<0 || item->stockpile_categories()>0x1ffff) : item->stockpile_categories()!=-1)return "invalid independent stockpile categories";
         if(item->stockpile() && item->stockpile()->type()!=29)return "invalid item stockpile type";
+        if(item->item_type()==30 && !item->appearance())return "missing item appearance";
+        if(const auto* a=item->appearance())if(!text(a->material_token(),256)||a->material_token()->size()==0||!text(a->subtype_raw(),128)||!text(a->color_token(),128)||a->stack()<1||(a->flags()&~96)||a->material_token()->str()!=item->material_token()->str()||a->subtype_raw()->str()!=item->subtype_raw()->str())return "invalid item appearance";
         if(const auto* c=item->carrier()) {
           if(item->holder() || c->id()<0 || !text(c->name(),512) || (c->kind()!=1&&c->kind()!=2) ||
              (c->kind()==1?(c->item_type()<0||c->item_type()>92):c->item_type()!=-1))return "invalid item carrier";

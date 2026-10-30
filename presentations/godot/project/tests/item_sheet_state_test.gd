@@ -81,6 +81,19 @@ func run() -> void:
 	model.set_flag(C.FarmOperation.ItemHidden,true);service.poll()
 	check(not world.calls[-1].request.has("building_id") and world.calls[-1].request.expected_revision==transferred.revision,"transferred item edit uses only current item authority")
 
+	for fault in range(7):
+		ready();model.poll(1);service.poll();var box:=item();box.item_type=30
+		box.appearance={"material_token":box.material_token,"subtype_raw":box.subtype_raw,"color_token":"RED","stack":1,"flags":0}
+		match fault:
+			1:box.erase("appearance")
+			2:box.appearance.material_token="mismatch"
+			3:box.appearance.stack=0
+			4:box.appearance.flags=1
+			5:box.appearance.color_token="x".repeat(129)
+			6:box.appearance.stack="1"
+		item_reply({"snapshot":box})
+		check((model.phase==ItemModel.Phase.Ready)==(fault==0),"BOX appearance authority: "+str(fault))
+
 	for kind in [1,2]:
 		ready();model.poll(1);service.poll()
 		var carried:=item();carried.erase("holder");carried.carrier={"kind":kind,"id":988,"item_type":30 if kind==1 else -1,"name":"native carrier"};carried.revision+=kind

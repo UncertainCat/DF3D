@@ -390,7 +390,7 @@ TEST_CASE("independent item edits preserve identity across location changes and 
 TEST_CASE("item carrier changes invalidate authority and malformed links fail closed") {
     using namespace df3d_production;
     ItemObservation item;item.item.id=45;item.item.itemType=53;
-    item.carrier=ItemCarrier{1,5834,30,"native chest"};item.carrier->appearance=ItemCarrierAppearance{"WOOD","","",1,0};item.revision=itemObservationRevision(item);
+    item.carrier=ItemCarrier{1,5834,30,"native chest"};item.carrier->appearance=ItemInspectionAppearance{"WOOD","","",1,0};item.revision=itemObservationRevision(item);
     REQUIRE(validItemObservation(item));const auto before=item.revision;
     item.carrier->appearance->colorToken="RED";CHECK(itemObservationRevision(item)!=before);item.carrier->appearance->colorToken="";
     item.carrier->appearance->stack=0;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));item.carrier->appearance->stack=1;item.revision=before;
@@ -402,4 +402,14 @@ TEST_CASE("item carrier changes invalidate authority and malformed links fail cl
     const auto unit=item.revision;item.carrier->name="renamed citizen";CHECK(itemObservationRevision(item)!=unit);
     item.carrier->itemType=0;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
     item.carrier->itemType=-1;item.buildingHolder=ItemLocationLink{1,4,"farm"};item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+}
+
+TEST_CASE("independent item appearance participates in authority") {
+    using namespace df3d_production;
+    ItemObservation item;item.item.id=45;item.item.itemType=30;item.item.materialToken="WOOD";
+    item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+    item.appearance=ItemInspectionAppearance{"WOOD","","RED",1,0};item.revision=itemObservationRevision(item);REQUIRE(validItemObservation(item));
+    const auto before=item.revision;item.appearance->colorToken="BLUE";CHECK(itemObservationRevision(item)!=before);
+    item.appearance->materialToken="STONE";item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+    item.appearance->materialToken="WOOD";item.appearance->stack=0;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
 }

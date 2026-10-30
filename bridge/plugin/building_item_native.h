@@ -100,6 +100,20 @@ inline std::optional<ItemBuildingHolder> itemBuildingHolder(df::item* item) {
     }
     return result;
 }
+// Independently owned semantic appearance, also used for off-map installed items.
+inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
+    if(!item)return std::nullopt;
+    ItemInspectionAppearance appearance;
+    DFHack::MaterialInfo material(item->getMaterial(),item->getMaterialIndex());
+    if(!material.isValid())return std::nullopt;appearance.materialToken=material.getToken();
+    if(auto* subtype=DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype()))appearance.subtypeRaw=subtype->id;
+    const auto color=item->getColorWhetherDyedOrNot();
+    if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
+    else if(color!=-1)return std::nullopt;
+    appearance.stack=item->getStackSize();appearance.flags=(item->flags.bits.artifact?32:0)|(item->flags.bits.spider_web?64:0);
+    if(appearance.materialToken.empty()||appearance.materialToken.size()>256||appearance.subtypeRaw.size()>128||appearance.colorToken.size()>128||appearance.stack<1)return std::nullopt;
+    return appearance;
+}
 // Native item renderer153c06/153c20 resolves semantic general references.
 // The displayed carrier prefers an item container over a unit; a building
 // holder takes precedence over both in the caller. No UI state is an input.
@@ -126,16 +140,7 @@ inline std::optional<ItemCarrier> itemCarrier(df::item* item) {
     if(auto* container=functions.container(item,0xb)) {
         const auto caption=buildingItemCaption(container);if(!caption)return std::nullopt;
         result.kind=1;result.id=container->id;result.itemType=static_cast<int32_t>(container->getType());result.name=*caption;
-        ItemCarrierAppearance appearance;
-        DFHack::MaterialInfo material(container->getMaterial(),container->getMaterialIndex());
-        if(!material.isValid())return std::nullopt;appearance.materialToken=material.getToken();
-        if(auto* subtype=DFHack::Items::getSubtypeDef(container->getType(),container->getSubtype()))appearance.subtypeRaw=subtype->id;
-        const auto color=container->getColorWhetherDyedOrNot();
-        if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
-        else if(color!=-1)return std::nullopt;
-        appearance.stack=container->getStackSize();appearance.flags=(container->flags.bits.artifact?32:0)|(container->flags.bits.spider_web?64:0);
-        if(appearance.materialToken.empty()||appearance.materialToken.size()>256||appearance.subtypeRaw.size()>128||appearance.colorToken.size()>128||appearance.stack<1)return std::nullopt;
-        result.appearance=std::move(appearance);
+        result.appearance=itemAppearance(container);if(!result.appearance)return std::nullopt;
     }else if(auto* unit=functions.unit(item,0x12)) {
         result.kind=2;result.id=unit->id;functions.name(unit,&result.name,false);
     }
@@ -420,6 +425,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     // Observe facts after native lazy formatting, without borrowing a UI owner.
     auto facts=itemFacts(item);if(!facts)return std::nullopt;
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
+    if(value.item.itemType==30){value.appearance=itemAppearance(item);if(!value.appearance)return std::nullopt;}
     if(holder->id>=0)value.buildingHolder=*holder;
     else {const auto carrier=itemCarrier(item);if(!carrier)return std::nullopt;if(carrier->kind)value.carrier=*carrier;}
     if(stockpile->id>=0){

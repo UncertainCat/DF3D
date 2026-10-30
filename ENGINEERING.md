@@ -885,6 +885,23 @@ links and conflicting holders, and transaction tests reject old carrier revision
 before native mutation. This accepts data and edit authority, not carrier rendering
 or general unit/container inspection. Public management exposure is unchanged.
 
+Management97 also publishes the inspected item's own appearance for BOX, using
+the same native getters and bounded semantic facts as container carriers. The
+shared ItemInspectionAppearance is independent of the terrain stream. BOX
+snapshots require it; other item families may omit it. Material/subtype must
+match the snapshot's identity tokens. Presence and all appearance fields enter
+the item revision, so appearance changes invalidate stale edits. Schema, bridge,
+neutral codec and Godot controller enforce the contract; PINS.md records the
+paired-endpoint migration. Missing historical facts are never reconstructed.
+
+Protected ordinary121834 and masterwork121926 runs on2026-10-30 verify matched97
+endpoints, exact revisions and appearance, native descriptions, holder278/type10,
+both Hidden edit directions and stale prior-carrier rejection. Owned DF173992
+and125208 exit unsaved with unchanged source manifests. Core and controller
+checks pass in build/qa/item-own-appearance-fixed; MSVC passes. GPU regression
+reports only documented engine diagnostics; live clients only the known separate
+render-thread notice. Rendering and destination navigation are separate acceptance.
+
 Management96 supplies container appearance independently of terrain residency.
 The carrier reader calls the item's native material/index, subtype, color and
 stack getters and publishes bounded material/subtype/color tokens plus semantic

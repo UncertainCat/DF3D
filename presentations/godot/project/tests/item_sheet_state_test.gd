@@ -84,6 +84,7 @@ func run() -> void:
 	for kind in [1,2]:
 		ready();model.poll(1);service.poll()
 		var carried:=item();carried.erase("holder");carried.carrier={"kind":kind,"id":988,"item_type":30 if kind==1 else -1,"name":"native carrier"};carried.revision+=kind
+		if kind==1:carried.carrier.appearance={"material_token":"WOOD","subtype_raw":"","color_token":"","stack":1,"flags":0}
 		item_reply({"snapshot":carried})
 		check(model.phase==ItemModel.Phase.Ready and model.snapshot.carrier.kind==kind,"carrier replaces item relationship authority")
 		model.set_flag(C.FarmOperation.ItemHidden,true);service.poll()

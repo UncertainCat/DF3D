@@ -32,7 +32,8 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       value.canDump=item->can_dump();value.canMelt=item->can_melt();value.inJob=item->in_job();value.inBuilding=item->in_building();
       if(const auto* link=item->holder())value.holder=ItemBuildingHolder{link->id(),link->type(),str(link->name())};
       if(const auto* link=item->stockpile())value.stockpile=ItemBuildingHolder{link->id(),link->type(),str(link->name())};
-      if(const auto* c=item->carrier())value.carrier=ItemCarrier{c->kind(),c->id(),c->item_type(),str(c->name())};
+      if(const auto* c=item->carrier()){value.carrier=ItemCarrier{c->kind(),c->id(),c->item_type(),str(c->name())};
+        if(const auto* a=c->appearance())value.carrier->appearance=ItemCarrierAppearance{str(a->material_token()),str(a->subtype_raw()),str(a->color_token()),a->stack(),a->flags()};}
     }
   }
   if(const auto* value=p->item_position())n.itemPosition=ItemPosition{value->id(),value->position()->x(),value->position()->y(),value->position()->z()};

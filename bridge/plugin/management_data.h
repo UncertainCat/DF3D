@@ -104,7 +104,8 @@ struct BuildingItemSnapshot {
   std::optional<ItemBuildingHolder> holder;
 };
 struct ItemPosition { int32_t id=-1,x=0,y=0,z=0; };
-struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name; };
+struct ItemCarrierAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0; };
+struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name;std::optional<ItemCarrierAppearance> appearance; };
 struct IndependentItemSnapshot {
   int32_t id=-1,itemType=-1,stockpileCategories=-1;uint64_t revision=0;
   std::string name,materialToken,subtypeRaw,weight,description;

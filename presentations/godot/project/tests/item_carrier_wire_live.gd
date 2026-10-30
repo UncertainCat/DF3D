@@ -37,6 +37,9 @@ func run() -> void:
 	if not check(response.get("status")==C.ManagementStatus.Ok and not snapshot.is_empty(),"Carrier read failed"):quit(1);return
 	check(str(snapshot.revision)==expected.snapshot.revision,"Carrier exact revision changed across wire")
 	for key in ["kind","id","item_type","name"]:check(snapshot.get("carrier",{}).get(key)==expected.snapshot.carrier[key],"Carrier field differs: "+key)
+	if snapshot.carrier.kind==1:
+		for key in ["material_token","subtype_raw","color_token","stack","flags"]:
+			check(snapshot.carrier.get("appearance",{}).get(key)==expected.snapshot.carrier.appearance[key],"Carrier appearance differs: "+key)
 	var model=preload("res://scripts/item_sheet_state.gd").new();model.item_id=int(expected.snapshot.id)
 	check(model._valid(snapshot),"Controller rejected native carrier snapshot")
 	await inspect_render(snapshot)

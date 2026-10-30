@@ -390,8 +390,10 @@ TEST_CASE("independent item edits preserve identity across location changes and 
 TEST_CASE("item carrier changes invalidate authority and malformed links fail closed") {
     using namespace df3d_production;
     ItemObservation item;item.item.id=45;item.item.itemType=53;
-    item.carrier=ItemCarrier{1,5834,30,"native chest"};item.revision=itemObservationRevision(item);
+    item.carrier=ItemCarrier{1,5834,30,"native chest"};item.carrier->appearance=ItemCarrierAppearance{"WOOD","","",1,0};item.revision=itemObservationRevision(item);
     REQUIRE(validItemObservation(item));const auto before=item.revision;
+    item.carrier->appearance->colorToken="RED";CHECK(itemObservationRevision(item)!=before);item.carrier->appearance->colorToken="";
+    item.carrier->appearance->stack=0;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));item.carrier->appearance->stack=1;item.revision=before;
     item.carrier=ItemCarrier{2,988,-1,"native citizen"};item.revision=itemObservationRevision(item);
     CHECK(item.revision!=before);CHECK(validItemObservation(item));
     auto result=finishItemEdit(item,before,BuildingItemAction::Hidden,true,

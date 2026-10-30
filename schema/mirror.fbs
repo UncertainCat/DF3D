@@ -1592,7 +1592,8 @@ table BuildingItemSnapshot {
 }
 // Item-owned authority: no containing-building identity, role or build state.
 // kind: 1 container item, 2 unit. Unit item_type must remain -1.
-table ItemCarrier { kind:int8; id:int32 = -1; item_type:int32 = -1; name:string; }
+table ItemCarrierAppearance { material_token:string; subtype_raw:string; color_token:string; stack:int32; flags:uint8; }
+table ItemCarrier { kind:int8; id:int32 = -1; item_type:int32 = -1; name:string; appearance:ItemCarrierAppearance; }
 table IndependentItemSnapshot {
   id:int32 = -1; revision:uint64; item_type:int32 = -1;
   name:string; material_token:string; subtype_raw:string;
@@ -1906,7 +1907,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 95;
+  schema_version:uint32 = 96;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1952,7 +1953,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 95;
+  schema_version:uint32 = 96;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

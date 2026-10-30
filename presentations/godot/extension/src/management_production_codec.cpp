@@ -97,7 +97,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
       value["can_dump"]=s.canDump;value["can_melt"]=s.canMelt;value["in_job"]=s.inJob;value["in_building"]=s.inBuilding;
       const auto link=[](const wm::ItemBuildingHolder& source){Dictionary v;v["id"]=source.id;v["type"]=source.type;v["name"]=String::utf8(source.name.c_str());return v;};
       if(s.holder)value["holder"]=link(*s.holder);if(s.stockpile)value["stockpile"]=link(*s.stockpile);
-      if(s.carrier){const auto& c=*s.carrier;Dictionary v;v["kind"]=c.kind;v["id"]=c.id;v["item_type"]=c.itemType;v["name"]=String::utf8(c.name.c_str());value["carrier"]=v;}
+      if(s.carrier){const auto& c=*s.carrier;Dictionary v;v["kind"]=c.kind;v["id"]=c.id;v["item_type"]=c.itemType;v["name"]=String::utf8(c.name.c_str());if(c.appearance){const auto& a=*c.appearance;Dictionary look;look["material_token"]=String::utf8(a.materialToken.c_str());look["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());look["color_token"]=String::utf8(a.colorToken.c_str());look["stack"]=a.stack;look["flags"]=a.flags;v["appearance"]=look;}value["carrier"]=v;}
       itemState["snapshot"]=value;
     }
     prod["independent_item"]=itemState;

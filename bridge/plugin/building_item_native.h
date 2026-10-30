@@ -12,6 +12,7 @@
 #include "modules/Items.h"
 #include "df/itemdef.h"
 #include "df/unit.h"
+#include "df/descriptor_color.h"
 
 namespace df3d_production {
 // Native follow loops35e7b6/8b6b76 use these independently owned outputs.
@@ -123,6 +124,16 @@ inline std::optional<ItemCarrier> itemCarrier(df::item* item) {
     if(auto* container=functions.container(item,0xb)) {
         const auto caption=buildingItemCaption(container);if(!caption)return std::nullopt;
         result.kind=1;result.id=container->id;result.itemType=static_cast<int32_t>(container->getType());result.name=*caption;
+        ItemCarrierAppearance appearance;
+        DFHack::MaterialInfo material(container->getMaterial(),container->getMaterialIndex());
+        if(!material.isValid())return std::nullopt;appearance.materialToken=material.getToken();
+        if(auto* subtype=DFHack::Items::getSubtypeDef(container->getType(),container->getSubtype()))appearance.subtypeRaw=subtype->id;
+        const auto color=container->getColorWhetherDyedOrNot();
+        if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
+        else if(color!=-1)return std::nullopt;
+        appearance.stack=container->getStackSize();appearance.flags=(container->flags.bits.artifact?32:0)|(container->flags.bits.spider_web?64:0);
+        if(appearance.materialToken.empty()||appearance.materialToken.size()>256||appearance.subtypeRaw.size()>128||appearance.colorToken.size()>128||appearance.stack<1)return std::nullopt;
+        result.appearance=std::move(appearance);
     }else if(auto* unit=functions.unit(item,0x12)) {
         result.kind=2;result.id=unit->id;functions.name(unit,&result.name,false);
     }

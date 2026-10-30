@@ -885,6 +885,24 @@ links and conflicting holders, and transaction tests reject old carrier revision
 before native mutation. This accepts data and edit authority, not carrier rendering
 or general unit/container inspection. Public management exposure is unchanged.
 
+Management96 supplies container appearance independently of terrain residency.
+The carrier reader calls the item's native material/index, subtype, color and
+stack getters and publishes bounded material/subtype/color tokens plus semantic
+artifact/spider flags. The optional appearance is required for container carriers
+and forbidden for units. All facts participate in the independent revision;
+UTF-8 conversion, wire validation and controller validation preserve their limits.
+No native UI, graphics cache or renderer identifiers cross the process boundary.
+
+Protected native112449 on2026-10-30 verifies the matched96 bridge/model/Godot path
+for chest5834 and unit988, all appearance fields, exact revisions, both Hidden
+edit directions and stale prior-container rejection. Native UI byte guards remain
+unchanged. Owned DF188164 exits unsaved and the source manifest is unchanged.
+`item_carrier_appearance_reference` retains identities, receipts and binary hashes.
+MSVC, core, controller and construction-icon checks pass in
+`build/qa/item-carrier-composite-final`. Both live clients have only the documented
+separate-render-thread notice. Natural hauling and carrier destination navigation
+remain separate acceptance gaps.
+
 The staged item view draws carrier rows using native `In`/`With` prefixes,
 33-cell truncation (30 cells plus ellipsis at34 or more), the installed View button
 and a kind/ID signal. The owner forwards that intent only while Ready and only

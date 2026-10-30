@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 95;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v95";
+inline constexpr uint32_t kManagementVersion = 96;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v96";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1323,6 +1323,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(const auto* c=item->carrier()) {
           if(item->holder() || c->id()<0 || !text(c->name(),512) || (c->kind()!=1&&c->kind()!=2) ||
              (c->kind()==1?(c->item_type()<0||c->item_type()>92):c->item_type()!=-1))return "invalid item carrier";
+          if((c->kind()==1)!=(c->appearance()!=nullptr))return "invalid carrier appearance presence";
+          if(const auto* a=c->appearance())if(!text(a->material_token(),256)||a->material_token()->size()==0||!text(a->subtype_raw(),128)||!text(a->color_token(),128)||a->stack()<1||(a->flags()&~96))return "invalid carrier appearance";
         }
       }
       if(s.action()==ManagementAction::ProductionInspect) {

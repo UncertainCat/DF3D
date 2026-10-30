@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management96 adds required semantic appearance to container carriers: native
+material/subtype/color tokens, stack size and artifact/spider flags. Unit carriers
+must omit it. Appearance participates in the independent item revision and is
+validated across the bridge/model/viewer path. Rebuild both endpoints on
+`Local\\df3d_management_v96`; management95 is incompatible. Historical recordings
+without these facts remain unknown; do not infer appearance from a carrier name.
+
 Management95 adds an optional native item carrier (container or unit) to independent
 item observations and their revision. A building holder and carrier are mutually
 exclusive; stockpile location remains independent. Carrier kind, ID, native name

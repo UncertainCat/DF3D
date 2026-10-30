@@ -103,6 +103,16 @@ func _valid(value: Dictionary) -> bool:
 		if carrier.id<0 or carrier.id>2147483647 or carrier.kind not in [1,2]:return false
 		if carrier.kind==1 and (carrier.item_type<0 or carrier.item_type>92):return false
 		if carrier.kind==2 and carrier.item_type!=-1:return false
+		if (carrier.kind==1)!=carrier.has("appearance"):return false
+		if carrier.has("appearance"):
+			var look=carrier.appearance
+			if typeof(look)!=TYPE_DICTIONARY or look.size()!=5:return false
+			for key in ["material_token","subtype_raw","color_token"]:
+				if typeof(look.get(key))!=TYPE_STRING or look[key].to_utf8_buffer().size()>(256 if key=="material_token" else 128):return false
+			if look.material_token.is_empty():return false
+			for key in ["stack","flags"]:
+				if typeof(look.get(key))!=TYPE_INT:return false
+			if look.stack<1 or look.stack>2147483647 or look.flags<0 or look.flags&~96:return false
 		if typeof(carrier.get("name"))!=TYPE_STRING or carrier.name.to_utf8_buffer().size()>512:return false
 	for forbidden in ["building_id","role","completed","removing"]:
 		if value.has(forbidden):return false

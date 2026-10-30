@@ -34854,6 +34854,80 @@
       "scope": "Actual adult1017 and child988; paused controlled focus levels/caches and temporary squad ID/alias, restored without saving; not squad membership commands or natural focus progression",
       "diagnostics": "Sixteen GPU logs contain only the known separate-renderer notice; all eight cases pass",
       "verification": "QA unit-focus-final: core19/19, context inspector, thought text; installed bridge build succeeds"
+    },
+    "unit_office_reference": {
+      "date": "2026-10-30",
+      "native_collection": "Inline1a5f41..1a61d7; own links then spouse links, first three; no precedence sort",
+      "native_helpers": {
+        "assignment": "b9dc0:a7:4d8961b901732215",
+        "position": "1ba140:a8:db6eb9072d509b29",
+        "name": "99a3c0:113:14b5664261afc791",
+        "capitalize_with_tables": "52d650:2b4:9e8023d09def7af9",
+        "spouse": "b98d30:5f:0b20f43042d158dc"
+      },
+      "ownership": "Semantic records and owned strings; no native viewsheet state",
+      "cases": [
+        {
+          "case": "neutral",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-155612",
+          "unit_id": 1017,
+          "titles": [
+            "Bookkeeper"
+          ],
+          "rect": [
+            664,
+            292,
+            232,
+            12
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "3dc4b0a930aa3047e8949613e0178ff8d3659bb011a00b750e31120176c7495a",
+          "success": true
+        },
+        {
+          "case": "offices",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-155824",
+          "unit_id": 1017,
+          "titles": [
+            "Bookkeeper",
+            "Second office",
+            "Third office"
+          ],
+          "rect": [
+            664,
+            292,
+            232,
+            36
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "291b6894170ff18a8c8941f21f70759434b93ab4279aed7c48cb3b3f2c379bbd",
+          "success": true
+        },
+        {
+          "case": "office-spouse",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-160100",
+          "unit_id": 1017,
+          "titles": [
+            "Bookkeeper",
+            "Native consort"
+          ],
+          "rect": [
+            664,
+            292,
+            232,
+            24
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "0e47c929f60ea2205aa38af6d08cdf1736ef4f7bc9b886c4fde048f168619b1d",
+          "success": true
+        }
+      ],
+      "verification": "All owned sessions exited unsaved, source preserved, temporary fixtures removed; six GPU logs contain only known renderer notice",
+      "limitations": [
+        "Room requirement warnings and no-office fallback remain unfinished",
+        "Controlled office/spouse fixtures do not verify appointment or marriage commands",
+        "Other gendered and plural name variants remain unverified"
+      ]
     }
   }
 }

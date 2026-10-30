@@ -25,10 +25,19 @@ local overview_saved
 local function focus_state(p)
  return {flags=p.flags.whole,current=p.current_focus,baseline=p.undistracted_focus,year=p.slack_end_year,tick=p.slack_end_year_tick}
 end
+local function erase_pointer(vector,value)
+ for i=#vector-1,0,-1 do if vector[i]==value then vector:erase(i);return end end
+end
 local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
  if overview_saved then
   local old=overview_saved;local p=unit.status.current_soul.personality
+  if old.spouse_link then erase_pointer(old.hf.histfig_links,old.spouse_link);df.delete(old.spouse_link)end
+  for i=#(old.offices or {}),1,-1 do
+   local extra=old.offices[i]
+   erase_pointer(extra.hf.entity_links,extra.link);erase_pointer(extra.entity.positions.assignments,extra.assignment);erase_pointer(extra.entity.positions.own,extra.position)
+   df.delete(extra.link);df.delete(extra.assignment);df.delete(extra.position)
+  end
   unit.profession=old.profession;unit.military.squad_id=old.squad_id
   p.flags.whole=old.focus.flags;p.current_focus=old.focus.current;p.undistracted_focus=old.focus.baseline
   p.slack_end_year=old.focus.year;p.slack_end_year_tick=old.focus.tick
@@ -142,7 +151,7 @@ local ok,err=xpcall(function()
   end
   if kind=='unit' then
    if overview_case~='child' then
-    local ratios={focused=150,['focused-mild']=130,distracted=50,['distracted-mild']=70,neutral=100,['fresh-focused']=150,['fresh-distracted']=50,squad=100,['squad-alias']=100}
+    local ratios={focused=150,['focused-mild']=130,distracted=50,['distracted-mild']=70,neutral=100,['fresh-focused']=150,['fresh-distracted']=50,squad=100,['squad-alias']=100,offices=100,['office-spouse']=100}
     local ratio=assert(ratios[overview_case],'unknown Overview fixture case')
     local p=assert(unit.status.current_soul).personality
     overview_saved={profession=unit.profession,squad_id=unit.military.squad_id,focus=focus_state(p),needs={}}
@@ -153,6 +162,39 @@ local ok,err=xpcall(function()
      local squad=assert(df.global.world.squads.all[0],'assigned-squad fixture needs an existing squad')
      overview_saved.squad=squad;overview_saved.alias=squad.alias;unit.military.squad_id=squad.id
      if overview_case=='squad-alias' then squad.alias='Native squad alias' end
+    end
+    if overview_case=='offices' or overview_case=='office-spouse' then
+     local hf=assert(df.historical_figure.find(unit.hist_figure_id));overview_saved.hf=hf;overview_saved.offices={}
+     local entity=assert(df.historical_entity.find(df.global.plotinfo.group_id))
+     local function add_position(holder,label)
+      local position=df.entity_position:new();local assignment=df.entity_position_assignment:new();local link=df.histfig_entity_link_positionst:new()
+      overview_saved.offices[#overview_saved.offices+1]={hf=holder,entity=entity,position=position,assignment=assignment,link=link}
+      position.id=#entity.positions.own>0 and entity.positions.own[#entity.positions.own-1].id+1 or 0
+      assignment.id=#entity.positions.assignments>0 and entity.positions.assignments[#entity.positions.assignments-1].id+1 or 0
+      position.name[0]=label;position.name_male[0]=label;position.name_female[0]=label
+      position.precedence=0 -- Deliberately differs from the existing bookkeeper's precedence.
+      assignment.histfig=holder.id;assignment.position_id=position.id
+      link.entity_id=entity.id;link.assignment_id=assignment.id;link.link_strength=100
+      entity.positions.own:insert('#',position);entity.positions.assignments:insert('#',assignment);holder.entity_links:insert('#',link)
+      return position
+     end
+     if overview_case=='offices' then
+      for _,label in ipairs{'second office','third office','fourth office'}do add_position(hf,label)end
+     else
+      local other
+      for _,candidate in ipairs(df.global.world.units.active)do
+       if candidate.id~=unit.id and dfhack.units.isCitizen(candidate) and candidate.profession~=df.profession.CHILD and candidate.profession~=df.profession.BABY then
+        local figure=df.historical_figure.find(candidate.hist_figure_id);local has_position=false
+        if figure then for _,link in ipairs(figure.entity_links)do if link:getType()==df.histfig_entity_link_type.POSITION then has_position=true end end end
+        if figure and not has_position then other=figure;break end
+       end
+      end
+      assert(other,'spouse fixture needs an adult without positions')
+      local position=add_position(other,'companion office')
+      position.spouse[0]='native consort';position.spouse_female[0]='native consort';position.spouse_male[0]='native consort'
+      local link=df.histfig_hf_link_spousest:new();overview_saved.spouse_link=link;link.target_hf=other.id;link.link_strength=100
+      hf.histfig_links:insert(0,link)
+     end
     end
    end
   end

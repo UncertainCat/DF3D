@@ -1458,7 +1458,29 @@ Set DF3D_UNIT_OVERVIEW_CASE to fresh-focused, fresh-distracted, focused-mild,
 distracted-mild, neutral, squad or squad-alias in the unit-only carrier lane to
 select these adult fixtures; the default child retains the original regression.
 Other creature types, needs-list clipping outside the tested region, header
-controls/colors/copy, health, offices and thoughts still require acceptance.
+controls/colors/copy, health, office room warnings/status fallback and thoughts
+still require acceptance.
+
+Creature Overview office titles use native assignment lookup b9dc0, position
+lookup1ba140, gender/spouse name selection99a3c0, spouse lookup b98d30 and
+capitalization52d650. The provider pins complete bodies (including capitalization
+case tables), copies names into owned strings and converts DF bytes once at the
+Lua record boundary. Collection is inline in native1a5f41..1a61d7: own historical
+position links first, spouse links second, at most three displayed titles.
+DFHack's noble collector sorts by precedence and is unsuitable here. Runtime
+never calls the enclosing viewsheet initializer or reads its cached vectors.
+
+native_farm.json chest_header_reference.unit_office_reference records protected
+155612,155824 and160100 on2026-10-30: real bookkeeper1017, four available titles
+with deliberately different precedence, and a temporary spouse office. The
+232-pixel-wide title regions match native exactly at heights12/36/24. Existing
+frame, portrait, tabs, hauling, squad, needs, camera and Escape checks also pass.
+Owned sessions exit unsaved with source preservation; all six GPU logs contain
+only the known renderer notice. Temporary position/assignment/link fixtures are
+removed; these checks do not accept appointment or marriage commands. Select
+offices or office-spouse with DF3D_UNIT_OVERVIEW_CASE in the unit-only lane.
+Room requirement warnings and no-office Citizen/Resident/No official position
+fallback remain unfinished; this is title acceptance, not the whole quadrant.
 
 ## Native item holder provider
 

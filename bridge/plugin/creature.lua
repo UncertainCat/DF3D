@@ -146,6 +146,12 @@ return function(request)
    local task=record(s,id,'')
    fact(s,task,'record_type','overview_hauling');fact(s,task,'native_text',text)
   end
+  if request.office_titles then
+   for _,title in ipairs(request.office_titles(u.id))do
+    local office=record(s,title.id,title.text,title.entity_id)
+    fact(s,office,'record_type','overview_office');fact(s,office,'spouse',title.spouse and 'yes' or 'no')
+   end
+  end
   local dates=record(s,-3,'')
   fact(s,dates,'record_type','age_inputs');fact(s,dates,'current_year',df.global.cur_year)
   fact(s,dates,'birth_year_bias',u.birth_year_bias);fact(s,dates,'birth_time_bias',u.birth_time_bias)

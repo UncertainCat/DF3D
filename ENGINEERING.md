@@ -974,8 +974,8 @@ source preservation and prior carrier/wire/pixel checks pass, with only the know
 render-thread notice. Native chest and first instrument captures were inspected.
 
 The general buildingContents semantic reader already accepts building_actual,
-but observeFarmContents and its mutation path currently restrict transport to
-farms. The contents view only supplies seed/potash artwork, and the independent
+and the verified lookup now admits farms and chests as described below. The
+contents view only supplies seed/potash artwork, and the independent
 description provider admits seed/potash/BOX and the verified instrument dispatch
 below. Instrument artwork and chest header/removal semantics need verified providers
 before connecting this destination. The farm owner currently forwards holder
@@ -1034,6 +1034,28 @@ standalone renderer/transport check; the harness supplies the same holder fields
 as item_panel. Physical description scrolling, chest contents integration and
 main-scene navigation remain separate acceptance; public farm/item screens stay
 staged. No game artwork is retained in the fixture, only semantic facts and hashes.
+
+Building contents transport now uses contentsBuilding/observeBuildingContents
+for visible FarmPlot and Box buildings. Both reads and the immediate mutation
+lookup use the same type/visibility guard. Other building types remain gated.
+Ordered native membership, build/removal state, revisions, flag eligibility and
+post-effect receipts still use the existing buildingContents/finishBuildingItemEdit
+transaction. No farm crop or fertilization rules are applied to chests.
+
+Protected124512 on2026-10-30 verifies chest278's five ordered rows against native
+membership: BOX5834(role2), instruments7504/7583/19847/26550(role0). The actual
+Godot client validates the page, toggles Hidden on and off for every row, rejects
+old revisions after each first edit, and rejects the foreign seed47492. The
+final full page equals the initial page and native readback confirms all original
+visibility flags. Owned DF133068 exits unsaved; source preservation and existing
+item/carrier pixel regressions pass. Only the known render-thread notice occurs.
+chest_contents_wire_reference retains receipts and binary provenance. MSVC,
+core and building_contents_state_test pass in build/qa/chest-contents-authority.
+The live client is registered as a protected manual harness in tools/qa/checks.json.
+
+This is contents authority acceptance, not a complete chest screen. Chest header
+rename/removal, contents appearance, other native flag effects and main-scene
+navigation still need integration and verification. Public exposure is unchanged.
 
 ## Native item holder provider
 

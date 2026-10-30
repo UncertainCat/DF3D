@@ -32071,5 +32071,167 @@
       }
     },
     "scope": "Four standalone full item panels, including initial description scrollbar, actual holder View intent and Hidden edits. Chest contents/main scene navigation, physical scrolling, other instrument definitions and decorated-instrument lazy art remain separate work."
+  },
+  "chest_contents_wire_reference": {
+    "source": "build/stockpile-storage-native-farm-discovery-20261030-124512",
+    "owned_df_pid": 133068,
+    "management_version": 98,
+    "bridge_sha256": "3ca909db07818ba7dd21228867a39fc7728a001e17bae112aac5e6bb30a12726",
+    "status": "passed_with_known_issues",
+    "known_diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "source_manifest_unchanged": true,
+    "exit_without_saving": true,
+    "result": {
+      "foreign_rejected": true,
+      "initial": {
+        "building_id": 278,
+        "completed": true,
+        "cursor": 0,
+        "next_cursor": 0,
+        "removing": false,
+        "revision": "2838520260524642755",
+        "rows": [
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 5834,
+            "in_building": true,
+            "in_job": false,
+            "item_type": 30,
+            "material_token": "PLANT:KUMQUAT:WOOD",
+            "melt": false,
+            "name": "(+\u00c2\u00ab-kumquat wood chest-\u00c2\u00bb+)",
+            "role": 2,
+            "subtype_raw": ""
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 7504,
+            "in_building": false,
+            "in_job": false,
+            "item_type": 13,
+            "material_token": "CREATURE:RAT_GIANT:BONE",
+            "melt": false,
+            "name": "(giant rat bone libash)",
+            "role": 0,
+            "subtype_raw": "ENT245 INP1"
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 7583,
+            "in_building": false,
+            "in_job": false,
+            "item_type": 13,
+            "material_token": "GLASS_GREEN",
+            "melt": false,
+            "name": "(green glass ennol)",
+            "role": 0,
+            "subtype_raw": "ENT245 INS1"
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 19847,
+            "in_building": false,
+            "in_job": false,
+            "item_type": 13,
+            "material_token": "CREATURE:WOLVERINE:BONE",
+            "melt": false,
+            "name": "(-wolverine bone adesh-)",
+            "role": 0,
+            "subtype_raw": "ENT245 INW1"
+          },
+          {
+            "can_dump": true,
+            "can_melt": false,
+            "dump": false,
+            "forbid": false,
+            "hidden": false,
+            "id": 26550,
+            "in_building": false,
+            "in_job": false,
+            "item_type": 13,
+            "material_token": "INORGANIC:ONYX",
+            "melt": false,
+            "name": "onyx migrur",
+            "role": 0,
+            "subtype_raw": "ENT235 INW4"
+          }
+        ],
+        "total": 5
+      },
+      "receipts": [
+        {
+          "id": 5834,
+          "revision": "8470133476448514303",
+          "value": true
+        },
+        {
+          "id": 5834,
+          "revision": "2838520260524642755",
+          "value": false
+        },
+        {
+          "id": 7504,
+          "revision": "21994751501988487",
+          "value": true
+        },
+        {
+          "id": 7504,
+          "revision": "2838520260524642755",
+          "value": false
+        },
+        {
+          "id": 7583,
+          "revision": "1355748673553843299",
+          "value": true
+        },
+        {
+          "id": 7583,
+          "revision": "2838520260524642755",
+          "value": false
+        },
+        {
+          "id": 19847,
+          "revision": "1614197160840040895",
+          "value": true
+        },
+        {
+          "id": 19847,
+          "revision": "2838520260524642755",
+          "value": false
+        },
+        {
+          "id": 26550,
+          "revision": "5253823405570222589",
+          "value": true
+        },
+        {
+          "id": 26550,
+          "revision": "2838520260524642755",
+          "value": false
+        }
+      ],
+      "restored": true,
+      "stale_rejected": true,
+      "success": true
+    },
+    "scope": "Contents transport for building278/type10: five ordered rows, ten Hidden edits, stale revision and foreign item rejection, native final visibility restoration. Does not establish contents artwork, other flag effects for chests, removal/rename, main-scene owner navigation or natural hauling."
   }
 }

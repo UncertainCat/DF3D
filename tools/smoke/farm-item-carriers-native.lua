@@ -186,8 +186,15 @@ local ok,err=xpcall(function()
    for _,held in ipairs(installed.contained_items)do
     local object=held.item
     destination.contents[#destination.contents+1]={id=object.id,type=object:getType(),subtype=object:getSubtype(),role=held.use_mode,
-     material=object:getMaterial(),material_index=object:getMaterialIndex(),flags=object.flags.whole}
+     material=object:getMaterial(),material_index=object:getMaterialIndex(),flags=object.flags.whole,hidden=object.flags.hidden}
    end
+   destination.foreign_item=item.id
+   local expected=assert(io.open(out..'/chest-contents-expected.json','w'));expected:write(json.encode(destination));expected:close()
+   capture('farm-chest-contents-wire')
+   local result=assert(io.open(out..'/chest-contents-result.json'));destination.contents_wire=json.decode(result:read('*a'));result:close()
+   assert(destination.contents_wire.success,'chest contents wire failed')
+   for index,held in ipairs(installed.contained_items)do assert(held.item.flags.hidden==destination.contents[index+1].hidden,'chest contents visibility not restored')end
+   assert(not item.flags.hidden,'foreign chest edit changed seed')
    move(800,82);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
    assert(sheet.building_entering_nickname,'chest Rename did not enter editing')
    capture('farm-item-carrier-building-rename')

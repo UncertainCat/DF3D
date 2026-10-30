@@ -187,13 +187,13 @@ func label_at(id: String, text: String):
 	if id.begins_with("unit."):
 		label.size.x = maxf(32,body.size.x-label.position.x-28)
 		if id == "unit.title":
-			label.position.y = 8
+			label.position.y = 12
 			label.size.y = 12
 		elif id == "unit.subtitle":
-			label.position.y = 20
+			label.position.y = 24
 			label.size.y = 12
 		elif id == "unit.job":
-			label.position.y = 44
+			label.position.y = 48
 			label.add_theme_color_override("font_color",Color.YELLOW)
 	label.mouse_filter = Control.MOUSE_FILTER_PASS
 	label.add_theme_font_size_override("font_size",12)
@@ -218,6 +218,9 @@ func redraw():
 	panel.scale = scale_factor
 	panel.position = Vector2(maxf(8,view.x-784),48) * scale_factor
 	panel.size = Vector2(minf(488,view.x-56),maxf(120,view.y-84))
+	if int(selected.kind)==1:
+		panel.position=Vector2((floori(view.x/8)-98)*8,48+fposmod(view.y,12)*0.5)*scale_factor
+		panel.size=Vector2(488,floori(view.y/12)*12-84)
 	body.position = Vector2(8,12)
 	body.size = panel.size-Vector2(16,24)
 	alternatives.position = Vector2(panel.size.x,0)

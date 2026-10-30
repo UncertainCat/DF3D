@@ -1366,6 +1366,25 @@ full creature-sheet appearance or actions. Owned DF189748 exits unsaved with
 source preservation and restored carrier links. All fifteen GPU logs contain
 only the known render-thread notice; existing chest/item regressions pass.
 
+The unit inspector now uses the native8x12 grid for panel origin/height, with
+native header baselines. Creature tabs use full24px sprites, matching caption
+insets and selected text color; size is applied after native theme setup. The
+Overview divider no longer overwrites the tab boundary. Protected150507 on
+2026-10-30 verifies exact pixels for all four frame edges, portrait and both
+main tab rows at1200x800. The harness waits for the inspector to consume detail,
+not merely for the model publication. unit_sheet_frame_reference records the
+regions and remaining defects. DF3D still lacks native header controls/colors
+and correct Overview health/task/office/squad/needs/thought selection; this is
+not full unit-sheet acceptance. Existing native semantic providers must be
+audited before replacing those locally assembled summaries.
+
+Set DF3D_UNIT_CARRIER_ONLY=1 with the protected FarmItemCarriers lane to isolate
+unit routing/capture while retaining its owned-save protections. This skips Box,
+chest and Melt checks and must not be reported as their regression coverage.
+Owned DF164556 exits unsaved with source preservation; both GPU logs contain only
+the known render-thread notice. QA unit-sheet-frame passes core, inspector
+lifecycle/tab checks and thought-text tests. No public routes are promoted.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

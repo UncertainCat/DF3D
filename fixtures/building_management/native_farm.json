@@ -34257,6 +34257,98 @@
         "Full creature-sheet visual/action parity not established",
         "Public item/chest routes remain staged"
       ]
+    },
+    "unit_sheet_frame_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-150507",
+      "date": "2026-10-30",
+      "owned_df_pid": 164556,
+      "unit_id": 988,
+      "success": true,
+      "viewport": [
+        1200,
+        800
+      ],
+      "panel": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "regions": [
+        {
+          "rect": [
+            416,
+            52,
+            488,
+            4
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "8ce15c6aa5d19d9077b3439144e2947f2576f4faf450728816c57f7a99895a27"
+        },
+        {
+          "rect": [
+            416,
+            52,
+            4,
+            708
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "69260331400191eff2c7c380e9a6162faed73479eead17d4c83cb4823b380116"
+        },
+        {
+          "rect": [
+            900,
+            52,
+            4,
+            708
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "ae8e3737d9a033541b496bdaf8f02b5712cda070116a168397096fd9bf6cf061"
+        },
+        {
+          "rect": [
+            416,
+            756,
+            488,
+            4
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "0b6e01f3affe108b509dd9731d8f72d4cd0cfdf778cc763e0d21100df393d36f"
+        },
+        {
+          "rect": [
+            424,
+            64,
+            96,
+            96
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "8a5c03f963996c642633c4762048b7ef14fc68c7919b2012dd4d214869a1a209"
+        },
+        {
+          "rect": [
+            424,
+            160,
+            472,
+            48
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "f8ea48e3561dc42bcb4a2c1252d02f2ce7a1f6a2117ddc41b8542e2d0bca7730"
+        }
+      ],
+      "render_ready": "Waits for inspector.creature_display detail, not just model publication, before capture",
+      "scope": "Unit-only protected lane; frame perimeter, portrait and main tab rows only",
+      "remaining_mismatches": [
+        "Header nickname/follow controls replaced by old Close control",
+        "Title/job colors",
+        "Overview health summary displays raw blood counts",
+        "Missing task and official-position/squad summaries",
+        "Overview divider horizontal position/color",
+        "Thought selection/order and missing quote",
+        "No unmet needs shown where native leaves summary blank"
+      ],
+      "cleanup": "Owned session exits unsaved with source preservation",
+      "diagnostics": "Two GPU logs have only known render-thread notice"
     }
   }
 }

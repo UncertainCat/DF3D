@@ -71,9 +71,8 @@ func tabs_at(names: Array, y: float, nested := false) -> float:
    width=minf(float(recipe.get("subtab_widths",{}).get(tab,{}).get(title,width)),owner.body.size.x)
   if x>0 and x+width>owner.body.size.x:
    x=0; y+=24
-  # Native tabs occupy 20 pixels within a 24-pixel row pitch.
-  button.position=Vector2(x,y-2)
-  button.size=Vector2(width,20)
+  # Native tabs use the full 24-pixel sprite and row pitch.
+  button.position=Vector2(x,y)
   button.clip_text=true
   button.tooltip_text=title
   button.add_theme_font_size_override("font_size",12)
@@ -81,13 +80,14 @@ func tabs_at(names: Array, y: float, nested := false) -> float:
   var selector := "SHORT_SUBTAB" if nested else "SHORT_TAB"
   style.texture=owner.world.ui_texture(selector+("_SELECTED" if selected else ""))
   style.set_texture_margin(SIDE_LEFT,16);style.set_texture_margin(SIDE_RIGHT,16)
-  style.set_content_margin(SIDE_LEFT,15);style.set_content_margin(SIDE_RIGHT,9)
-  style.set_content_margin(SIDE_TOP,0);style.set_content_margin(SIDE_BOTTOM,4)
+  style.set_content_margin(SIDE_LEFT,16);style.set_content_margin(SIDE_RIGHT,8)
+  style.set_content_margin(SIDE_TOP,0);style.set_content_margin(SIDE_BOTTOM,0)
   for state in ["normal","hover","pressed","focus"]: button.add_theme_stylebox_override(state,style)
   for state in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:
-   button.add_theme_color_override(state,Color.BLACK if selected else Color.WHITE)
+   button.add_theme_color_override(state,Color8(70,44,0) if selected else Color.WHITE)
   button.pressed.connect(func(): change_tab(title,nested))
   owner.body.add_child(button)
+  button.size=Vector2(width,24)
   x+=button.size.x
  return y+24
 
@@ -282,7 +282,7 @@ func overview(parent: Node, detail: Dictionary):
     # Extend decoration back to the cell edges so adjacent rules join.
     if vertical:
      line.offset_left=4; line.offset_right=6
-     line.offset_top=-4; line.offset_bottom=6
+     line.offset_top=0 if i<2 else -4; line.offset_bottom=6
     else:
      line.offset_left=-4; line.offset_right=6
      line.offset_top=4; line.offset_bottom=6

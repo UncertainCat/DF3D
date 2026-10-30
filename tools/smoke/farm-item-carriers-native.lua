@@ -41,7 +41,8 @@ local function move(x,y)
  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
 end
 local ok,err=xpcall(function()
- for _,kind in ipairs{'container','unit'}do
+ local kinds=os.getenv('DF3D_UNIT_CARRIER_ONLY')=='1' and {'unit'} or {'container','unit'}
+ for _,kind in ipairs(kinds)do
   select_map(b);move(756,526);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
   assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id)
   b.contained_items:erase(0);detached=true

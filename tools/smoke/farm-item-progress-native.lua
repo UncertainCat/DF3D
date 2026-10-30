@@ -15,6 +15,7 @@ if not index then
  local text,code=dfhack.run_command_silent('df3d','farm-fertilize',tostring(farm.id),'toggle');assert(code==0,text)
  local fixture={building_id=farm.id,item_id=item.id,initial=farm.current_fertilization,frame=df.global.world.frame_counter}
  local marker=io.open(out..'/farm-item-action');if marker then fixture.action=marker:read('*a'):match('%S+');marker:close()end
+ local progress=io.open(out..'/farm-item-action-progress');if progress then fixture.action_progress=true;progress:close();assert(fixture.action)end
  _G.df3d_farm_item_progress=fixture;write('fixture.json',fixture);print('FIXTURE_READY');return
 end
 local fixture=assert(_G.df3d_farm_item_progress)
@@ -26,6 +27,12 @@ local sheet=df.global.game.main_interface.view_sheets;local plot=df.global.ploti
 local ui=json.encode{sheet.open,sheet.active_sheet,sheet.active_id,plot.follow_item,plot.follow_unit,df.global.window_x,df.global.window_y,df.global.window_z}
 local result={status='passed',frame=df.global.world.frame_counter,present=item~=nil,contained=contained,
  current=farm.current_fertilization,job_count=#farm.jobs}
+if fixture.assignment then
+ local original_alive=false;local link=df.global.world.jobs.list.next
+ while link do if link.item and link.item.id==fixture.assignment.job_id then original_alive=true;break end;link=link.next end
+ result.original_job_alive=original_alive
+end
+if item then result.in_job=item.flags.in_job;result.forbid=item.flags.forbid;result.dump=item.flags.dump end
 if request.op=='sample' then
  if contained then
   local text,code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(farm.id),tostring(item.id));assert(code==0,text)

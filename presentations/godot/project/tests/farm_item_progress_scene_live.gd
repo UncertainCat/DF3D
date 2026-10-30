@@ -109,3 +109,10 @@ func request_pause(want_paused: bool) -> bool:
 		await create_timer(0.02).timeout
 	interaction.command_results_received.disconnect(receive)
 	incomplete("scene pause receipt/readback wait cap hit; no replay",true);return false
+
+func observe_retained() -> void:
+	await process_frame
+	if not check(owner.item_owner.panel.visible and scene._ui.host.active==owner.item_owner and owner.item_owner.panel.following,"surviving post-Forbid potash lost sheet ownership or follow artwork"):return
+	await RenderingServer.frame_post_draw
+	check(root.get_texture().get_image().save_png(directory+"/potash_scene_retained.png")==OK,"retained scene capture failed")
+	write_json("potash-scene-retained.json",{"sheet_visible":true,"owner_retained":true,"following":true})

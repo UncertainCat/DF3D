@@ -26937,11 +26937,11 @@
       }
     }
   },
-  "scope": "Immediate paused Forbid/Dump behavior on naturally assigned fertilizer: both flag values, reservation/job/worker/item references, retained farm membership and open native sheet. Later simulation after these actions remains unaccepted; actual main-scene input is covered separately in potash_scene_reference."
+  "scope": "Immediate paused Forbid/Dump behavior on naturally assigned fertilizer: both flag values, reservation/job/worker/item references, retained farm membership and open native sheet. Later simulation after restoring each flag is covered in potash_action_progress_reference; actual main-scene input is covered in potash_scene_reference."
 }
 ,
   "potash_scene_reference": {
-  "scope": "Actual main-scene staged farm owner: viewport View, both Visibility values, follow and consumption retirement; optional Forbid/Dump cases compare immediate paused effects and full native item panel pixels. Public farm route remains hidden. Subsequent simulation after job-affecting edits and existing items leaving farm membership remain unaccepted.",
+  "scope": "Actual main-scene staged farm owner: viewport View, both Visibility values, follow and consumption retirement; optional Forbid/Dump cases compare immediate paused effects and full native item panel pixels. Public farm route remains hidden. Subsequent simulation after restoring each flag is covered in potash_action_progress_reference. Leaving flags enabled and existing items leaving farm membership remain unaccepted.",
   "runs": [
     {
       "mode": "consumption",
@@ -27173,6 +27173,247 @@
           "subtype_raw": "",
           "weight": "7Γ"
         }
+      }
+    }
+  ]
+}
+,
+  "potash_action_progress_reference": {
+  "scope": "Forbid/Dump toggled true then false while paused on delivered potash, then natural simulation through original job retirement and at least 600 further ticks. Does not cover leaving a flag enabled, arbitrary later scheduling, or farm-membership transfers.",
+  "native": [
+    {
+      "action": "forbid",
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-210800",
+      "owned_df_pid": 184636,
+      "exit": "unsaved",
+      "save_preservation": "Owned source unchanged",
+      "original_job_id": 382820,
+      "retired_at": 1797,
+      "followup_ticks": 600,
+      "initial": 0,
+      "final": 0,
+      "transitions": [
+        {
+          "contents": [
+            {
+              "id": 48520,
+              "role": 0,
+              "type": "BAR"
+            }
+          ],
+          "current": 0,
+          "frame": 1787,
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "in_building": false,
+            "in_job": false,
+            "on_ground": false,
+            "refs": [
+              "BUILDING_HOLDER"
+            ]
+          },
+          "original_job_alive": true,
+          "potash_present": true,
+          "potash_removed": false,
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        },
+        {
+          "contents": [
+            {
+              "id": 48520,
+              "role": 0,
+              "type": "BAR"
+            }
+          ],
+          "current": 0,
+          "frame": 1797,
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "in_building": false,
+            "in_job": false,
+            "on_ground": false,
+            "refs": [
+              "BUILDING_HOLDER"
+            ]
+          },
+          "original_job_alive": false,
+          "potash_present": true,
+          "potash_removed": false,
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        }
+      ],
+      "final_sheet": {
+        "id": 48520,
+        "open": true,
+        "type": "ITEM"
+      },
+      "potash_present": true
+    },
+    {
+      "action": "dump",
+      "capture": "build/stockpile-storage-native-farm-discovery-20261029-211042",
+      "owned_df_pid": 185308,
+      "exit": "unsaved",
+      "save_preservation": "Owned source unchanged",
+      "original_job_id": 382820,
+      "retired_at": 2598,
+      "followup_ticks": 600,
+      "initial": 0,
+      "final": 1,
+      "transitions": [
+        {
+          "contents": [
+            {
+              "id": 48520,
+              "role": 0,
+              "type": "BAR"
+            }
+          ],
+          "current": 0,
+          "frame": 1631,
+          "item": {
+            "dump": false,
+            "forbid": false,
+            "in_building": false,
+            "in_job": true,
+            "on_ground": false,
+            "refs": [
+              "BUILDING_HOLDER"
+            ]
+          },
+          "original_job_alive": true,
+          "potash_present": true,
+          "potash_removed": false,
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        },
+        {
+          "contents": [],
+          "current": 1,
+          "frame": 2598,
+          "original_job_alive": false,
+          "potash_present": false,
+          "potash_removed": false,
+          "sheet": {
+            "id": 48520,
+            "open": true,
+            "type": "ITEM"
+          }
+        },
+        {
+          "contents": [],
+          "current": 1,
+          "frame": 2599,
+          "original_job_alive": false,
+          "potash_present": false,
+          "potash_removed": false,
+          "sheet": {
+            "id": 48520,
+            "open": false,
+            "type": "ITEM"
+          }
+        }
+      ],
+      "final_sheet": {
+        "id": 48520,
+        "open": false,
+        "type": "ITEM"
+      },
+      "potash_present": false
+    }
+  ],
+  "viewer": [
+    {
+      "action": "forbid",
+      "capture": "build/areas-acceptance-20261029-211411",
+      "owned_df_pid": 159824,
+      "exit": "unsaved",
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "status": "passed_with_known_issues",
+      "diagnostics": "Known separate rendering-thread notice only",
+      "native_checks": 81,
+      "sample_count": 18,
+      "original_job_retired_at": 1404,
+      "first": {
+        "contained": true,
+        "current": 0.0,
+        "dump": false,
+        "forbid": false,
+        "frame": 1404.0,
+        "in_job": false,
+        "job_count": 0.0,
+        "original_job_alive": false,
+        "present": true,
+        "status": "passed"
+      },
+      "last": {
+        "contained": true,
+        "current": 0.0,
+        "dump": false,
+        "forbid": false,
+        "frame": 2037.0,
+        "in_job": false,
+        "job_count": 0.0,
+        "original_job_alive": false,
+        "present": true,
+        "status": "passed"
+      },
+      "panel": {
+        "following": true,
+        "owner_retained": true,
+        "sheet_visible": true
+      }
+    },
+    {
+      "action": "dump",
+      "capture": "build/areas-acceptance-20261029-211600",
+      "owned_df_pid": 472,
+      "exit": "unsaved",
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "status": "passed_with_known_issues",
+      "diagnostics": "Known separate rendering-thread notice only",
+      "native_checks": 109,
+      "sample_count": 40,
+      "original_job_retired_at": 2428,
+      "first": {
+        "contained": true,
+        "current": 0.0,
+        "dump": false,
+        "forbid": false,
+        "frame": 1527.0,
+        "in_job": true,
+        "job_count": 1.0,
+        "original_job_alive": true,
+        "present": true,
+        "status": "passed"
+      },
+      "last": {
+        "contained": false,
+        "current": 1.0,
+        "frame": 3035.0,
+        "job_count": 0.0,
+        "original_job_alive": false,
+        "present": false,
+        "status": "passed"
+      },
+      "panel": {
+        "elevation_released": true,
+        "minimap_released": true,
+        "owner_released": true,
+        "sheet_hidden": true
       }
     }
   ]

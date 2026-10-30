@@ -539,8 +539,8 @@ fertilizer inspection. DF166324 exits unsaved and source preservation passes.
 description/artwork evidence, contents/header reads and the rejection by the
 then-seed-only description provider. Native displays the delivered potash's
 active-job indicator as well. Potash now has the staged support described below;
-rendered potash-scene acceptance is recorded below. Later simulation after
-job-affecting edits remains required before exposure.
+rendered potash-scene and restored-flag simulation acceptance are recorded below.
+Leaving flags enabled and item transfers remain separate gates before exposure.
 This is controlled-supply native workflow evidence, not DF3D item-sheet acceptance
 or an exhaustive trace of every simulation tick. Other native farm scopes remain
 paused; only this explicitly selected progress scope advances simulation.
@@ -617,7 +617,7 @@ calls supplied the observed effects. `potash_actions_reference` retains the
 separate native and client evidence. GPU `potash-active-job-actions` matches all
 four488x708 action-state panels, including the native forbidden-name decoration
 and present/absent job indicator. Core passes; GPU passes with only the three
-documented engine diagnostics. Subsequent simulation remains a separate gate.
+documented engine diagnostics. Restored-flag simulation is covered below.
 
 `areas_acceptance.ps1 -FarmItemProgressOnly -FarmItemProgressScene` exercises
 potash in the actual main scene. The staged farm owner opens the native-fed
@@ -637,6 +637,27 @@ rendering-thread notice. DF161456/154520/180544 exit unsaved; both save manifest
 remain unchanged in each run. `potash_scene_reference` records panel hashes,
 receipts and retirement evidence. The public farm route remains staged, and
 inspection/actions remain bound to the original farm's membership.
+
+`-FarmItemActionProgress` extends either progress runner's Forbid/Dump variant
+past its true/false flag pair into natural simulation. The native oracle records
+original-job retirement and600 further ticks. Protected210800 on2026-10-29
+shows Forbid cancels that job, leaves the unreserved potash in the farm and keeps
+its item sheet open, without increasing fertilization. Native211042 shows Dump
+preserves job execution: potash is consumed, fertilization rises0->1 and the
+sheet closes. These observations cover restoring each flag before resuming;
+they do not establish outcomes with flags left enabled or arbitrary later jobs.
+
+Rendered viewer211411/211600 exercises the same real mouse actions and then
+passes81/109 native checks respectively. Forbid retains inspection, owner and
+follow633 ticks beyond observed job retirement; Dump retires the consumed sheet,
+owner and follow, still retired607 ticks later. Surviving-item reads match the
+native provider at paused checkpoints, preserving the observed native UI and
+frame. Native DF184636/185308 and viewer DF159824/472 exit unsaved. Native source
+preservation and both viewer save manifests pass. Viewer runs have only the
+known separate rendering-thread notice. `potash_action_progress_reference`
+retains the bounded transitions and scene ownership evidence. No runtime change
+was needed for these outcomes; general item transfers remain unaccepted.
+
 
 ## Native item holder provider
 

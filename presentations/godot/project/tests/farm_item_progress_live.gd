@@ -31,6 +31,7 @@ func start_follow(model,follow,actions) -> void:
 
 func observe_item(_label: String) -> void:pass
 func observe_retirement() -> void:pass
+func observe_retained() -> void:pass
 
 func progress_cases(model,follow,actions) -> void:
 	var opened:=false;var consumed:=false;var samples: Array=[]
@@ -71,6 +72,7 @@ func progress_cases(model,follow,actions) -> void:
 					if not check(model.snapshot.in_job==observed.in_job,"fresh item sheet retained old job indicator"):return
 					observations.append(observed)
 				write_json("farm-item-action-results.json",{"action":fixture.action,"observations":observations,"snapshot":model.view_snapshot()})
+				if fixture.get("action_progress",false):await action_progress_cases(model,follow,actions)
 				return
 			await start_follow(model,follow,actions)
 			if stopped:return
@@ -93,3 +95,36 @@ func progress_cases(model,follow,actions) -> void:
 			if not check(model.ticket==0 and follow.ticket==0 and model.item_id==-1 and follow.item_id==-1,"consumed target restarted"):return
 	write_json("farm-item-progress-results.json",{"opened":opened,"consumed":consumed,"samples":samples})
 	if not opened or not consumed:incomplete("fertilizer did not complete inspection and consumption within bounded run",true)
+
+func action_progress_cases(model,follow,actions) -> void:
+	await start_follow(model,follow,actions)
+	if stopped:return
+	var retired_at: int=-1;var complete:=false;var samples: Array=[]
+	for iteration in 100:
+		step="post-action simulation "+str(iteration)
+		if not await request_pause(false):return
+		await create_timer(0.3).timeout
+		if not await request_pause(true):return
+		var sample:=await native("sample");if stopped:return
+		samples.append(sample)
+		model.poll(1);follow._process(1)
+		if not await settle(model,follow,actions):return
+		if sample.present:
+			if not check(sample.contained and model.phase==model.Phase.Ready and model.item_id==int(fixture.item_id),"surviving potash lost inspection"):return
+			if not check(follow.item_id==int(fixture.item_id) and follow.last_position!=null,"surviving potash lost follow"):return
+			await native("verify",{"snapshot":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
+			if stopped:return
+		else:
+			if not check(model.phase==model.Phase.Closed and model.snapshot.is_empty() and model.item_id==-1 and follow.item_id==-1 and follow.last_position==null,"consumed post-action potash retained authority"):return
+		if not sample.original_job_alive and retired_at<0:retired_at=int(sample.frame)
+		if retired_at>=0 and int(sample.frame)-retired_at>=600:
+			if fixture.action=="forbid":
+				if not check(sample.present and sample.contained and not sample.in_job and not sample.forbid and sample.current==fixture.initial,"post-Forbid native retained-item behavior differs"):return
+				await observe_retained()
+			else:
+				if not check(not sample.present and not sample.contained and sample.current==fixture.initial+1,"post-Dump native consumption differs"):return
+				await observe_retirement()
+			if stopped:return
+			complete=true;break
+	write_json("farm-item-action-progress-results.json",{"action":fixture.action,"complete":complete,"original_job_retired_at":retired_at,"samples":samples})
+	if not complete:incomplete("post-action job retirement and 600 later ticks not observed within bound",true)

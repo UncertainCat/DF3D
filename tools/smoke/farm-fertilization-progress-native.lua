@@ -4,6 +4,12 @@ local script=require('gui.script')
 local action_marker=io.open(out..'/farm-item-action')
 local action
 if action_marker then action=action_marker:read('*a'):match('%S+');action_marker:close();assert(action=='forbid' or action=='dump')end
+local progress_marker=io.open(out..'/farm-item-action-progress')
+local action_progress=progress_marker~=nil
+if progress_marker then progress_marker:close();assert(action)end
+local capture_final
+local original_job_id
+local retired_at
 assert(df.global.pause_state and #farm.jobs==0)
 df.global.d_init.feature.autosave=df.d_init_autosave.NONE
 local worker
@@ -50,7 +56,7 @@ local function inspect_delivered_item(item)
  local function capture(name,keep_pointer)
   if not keep_pointer then g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0 end
   for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
-  local shot={name=name,item_id=item.id,building_id=farm.id,frame=df.global.world.frame_counter,lines={}}
+  local shot={name=name,item_id=potash_id,building_id=farm.id,frame=df.global.world.frame_counter,lines={}}
   for y=0,g.dimy-1 do
    local line={}
    for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;line[#line+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
@@ -63,6 +69,7 @@ local function inspect_delivered_item(item)
    assert(dfhack.getTickCount()<limit,'potash capture timeout');script.sleep(1,'frames')end
   return shot
  end
+ capture_final=capture
  local contents=capture('farm-delivered-potash-contents')
  local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(farm.id))
  assert(code==0,text);contents.semantic=require('json').decode(text)
@@ -116,12 +123,20 @@ local function inspect_delivered_item(item)
    for _,ref in ipairs(item.general_refs)do captured.refs[#captured.refs+1]=df.general_ref_type[ref:getType()]end
    assert(df.global.pause_state and df.global.world.frame_counter==action_frame,'item action advanced simulation')
   end
+  for _,job in ipairs(farm.jobs)do for _,ref in ipairs(job.items)do
+   if ref.item==item then original_job_id=job.id end
+  end end
+  assert(original_job_id,'no assigned potash job before native action')
+  row.original_job_id=original_job_id
   action_state('before')
   for _,label in ipairs{'enabled','disabled'}do
    if not sheet.open or sheet.active_sheet~=df.view_sheet_type.ITEM or sheet.active_id~=item.id then break end
    click(action=='forbid' and 804 or 828,76);action_state(label)
   end
-  row.action_only=action;row.delivered_item_inspected=true;return
+  row.delivered_item_inspected=true
+  if not action_progress then row.action_only=action;return end
+  row.action_progress=action
+  df.global.pause_state=false;deadline=dfhack.getTickCount()+60000;return
  end
  -- Keep the native item sheet open while DF consumes its target.
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id)
@@ -147,13 +162,27 @@ local ok,why=pcall(function()
    for _,ref in ipairs(job.items)do if ref.item then entry.items[#entry.items+1]=ref.item.id end end
    sample.jobs[#sample.jobs+1]=entry
   end
-  local signature=require('json').encode{sample.current,sample.contents,sample.jobs,sample.potash_present,sample.potash_removed,sample.sheet}
+  if item then
+   sample.item={forbid=item.flags.forbid,dump=item.flags.dump,in_job=item.flags.in_job,
+    on_ground=item.flags.on_ground,in_building=item.flags.in_building,refs={}}
+   for _,ref in ipairs(item.general_refs)do sample.item.refs[#sample.item.refs+1]=df.general_ref_type[ref:getType()]end
+  end
+  local original_alive=false
+  if original_job_id then
+   local link=df.global.world.jobs.list.next
+   while link do if link.item and link.item.id==original_job_id then original_alive=true;break end;link=link.next end
+   sample.original_job_alive=original_alive
+  end
+  local signature=require('json').encode{sample.current,sample.contents,sample.jobs,sample.potash_present,sample.potash_removed,sample.sheet,sample.item,sample.original_job_alive}
   if signature~=last_signature then row.samples[#row.samples+1]=sample;last_signature=signature end
   if not row.delivered_item_inspected then
    for _,held in ipairs(farm.contained_items)do if held.item.id==potash_id then inspect_delivered_item(held.item);break end end
   end
   if row.action_only then break end
-  if farm.current_fertilization>initial then row.completed=true;break end
+  if row.action_progress then
+   if sample.original_job_alive==false and not retired_at then retired_at=df.global.world.frame_counter end
+   if retired_at and df.global.world.frame_counter-retired_at>=600 then row.progress_observed=true;break end
+  elseif farm.current_fertilization>initial then row.completed=true;break end
   script.sleep(1,'frames')
  end
 end)
@@ -161,6 +190,17 @@ df.global.pause_state=true
 row.final=farm.current_fertilization;row.elapsed_ticks=df.global.world.frame_counter-start
 assert(ok,why)
 if row.action_only then assert(row.delivered_item_inspected);return end
+if row.action_progress then
+ assert(row.progress_observed,'original job did not retire with 600 later ticks inside observation bound')
+ row.original_job_retired_at=retired_at
+ row.followup_ticks=df.global.world.frame_counter-retired_at
+ local final=capture_final('farm-potash-'..action..'-progress-final')
+ local sheet=df.global.game.main_interface.view_sheets
+ final.sheet={open=sheet.open,type=df.view_sheet_type[sheet.active_sheet],id=sheet.active_id}
+ final.potash_present=df.item.find(potash_id)~=nil
+ final.fertilization=farm.current_fertilization
+ return
+end
 assert(row.completed,'fertilizer job did not complete within the observation bound')
 assert(row.delivered_item_inspected,'delivered potash never reached farm contents')
 local reserved=false

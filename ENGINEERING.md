@@ -1293,9 +1293,20 @@ lane, including idle/worker/suspended panel comparisons, passes with only known
 render-thread notices across twelve GPU logs. removing_contents_edit_reference
 retains the scope. QA chest-removal-edits-fixed passes core and both controllers;
 MSVC rebuild/install passes. Core regressions cover explicit opt-in, stale intent
-and changed removal state after entry. Assigned-worker item effects and eligible
-Melt remain unfinished, alongside resize and general navigation; public exposure
-is unchanged.
+and changed removal state after entry. Assigned-worker evidence follows below. Eligible Melt, resize and general
+navigation remain unfinished; public exposure is unchanged.
+
+Protected141923 on2026-10-30 extends the contents checks to a controlled removal
+worker. Native Forbid/Dump/Visibility clicks in both directions on Box5834 and
+instrument7504 preserve the complete observed worker/job links, path, counters
+and occupancy. The actual Godot header/contents controllers execute the same
+twelve viewport clicks, check each confirmed flag and retain removal/worker
+presence. Subsequent cancellation is checked against native worker cleanup.
+worker_contents_edit_reference stores the observations and scope: no AI ticks
+advance, intermediate viewer checks cover worker presence, and full worker state
+is compared after cancellation. Owned DF49720 exits unsaved with source
+preservation. All twelve GPU logs contain only the known thread notice; existing
+idle/suspended panels and main-scene navigation/edit regressions still pass.
 
 ## Native item holder provider
 

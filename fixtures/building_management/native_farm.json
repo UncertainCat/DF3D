@@ -33968,6 +33968,98 @@
         "Resized chest and main-scene container-carrier navigation still incomplete",
         "Chest route remains staged"
       ]
+    },
+    "worker_contents_edit_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-141923",
+      "date": "2026-10-30",
+      "owned_df_pid": 49720,
+      "management_version": 101,
+      "success": true,
+      "native_worker": {
+        "current_job": 382797,
+        "destination": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "job_counter": 0,
+        "jobs": [
+          {
+            "id": 382797,
+            "type": "DestroyBuilding",
+            "worker_id": 996,
+            "working": true
+          }
+        ],
+        "occupancy": [
+          134217730
+        ],
+        "path_goal": -1,
+        "position": {
+          "x": 191,
+          "y": 180,
+          "z": 175
+        },
+        "worker_id": 996
+      },
+      "native_effects": [
+        {
+          "id": 5834,
+          "flag": "forbid",
+          "original": false,
+          "enabled": true,
+          "restored": false,
+          "worker_observation_unchanged": true
+        },
+        {
+          "id": 5834,
+          "flag": "dump",
+          "original": false,
+          "enabled": true,
+          "restored": false,
+          "worker_observation_unchanged": true
+        },
+        {
+          "id": 5834,
+          "flag": "hidden",
+          "original": false,
+          "enabled": true,
+          "restored": false,
+          "worker_observation_unchanged": true
+        },
+        {
+          "id": 7504,
+          "flag": "forbid",
+          "original": false,
+          "enabled": true,
+          "restored": false,
+          "worker_observation_unchanged": true
+        },
+        {
+          "id": 7504,
+          "flag": "dump",
+          "original": false,
+          "enabled": true,
+          "restored": false,
+          "worker_observation_unchanged": true
+        },
+        {
+          "id": 7504,
+          "flag": "hidden",
+          "original": false,
+          "enabled": true,
+          "restored": false,
+          "worker_observation_unchanged": true
+        }
+      ],
+      "viewer": "Actual header and contents controllers with root-viewport controls; twelve edits confirmed, removing and has_worker retained after each; subsequent native worker cleanup equals native-button cancellation",
+      "cleanup": "Owned session exits unsaved, source manifest unchanged, original name/jobs/flag bits restored",
+      "diagnostics": "12 GPU logs: known separate-render-thread notice only",
+      "limitations": [
+        "Controlled paused worker fixture, no AI ticks advanced",
+        "Viewer intermediate header checks worker presence; full worker observation compared after cancellation",
+        "Melt and resized chest remain unfinished"
+      ]
     }
   }
 }

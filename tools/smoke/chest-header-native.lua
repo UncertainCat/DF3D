@@ -87,6 +87,21 @@ for _,method in ipairs{'native','semantic'}do
  local identity=fixture.attach(building);local before=fixture.observe(building,identity)
  local assigned=shot('worker-'..method..'-assigned');assert(assigned.semantic.has_worker)
  if method=='native' then
+  local effects={}
+  for index=0,1 do
+   local item=building.contained_items[index].item
+   for _,control in ipairs{{'forbid',800},{'dump',824},{'hidden',872}}do
+    local original_flag=item.flags[control[1]]
+    local entry={id=item.id,flag=control[1],before=fixture.observe(building,identity),original=original_flag}
+    click(control[2],526+index*36)
+    entry.enabled=item.flags[control[1]];entry.after=fixture.observe(building,identity)
+    click(control[2],526+index*36)
+    entry.restored=item.flags[control[1]];entry.restored_worker=fixture.observe(building,identity)
+    assert(entry.enabled~=original_flag and entry.restored==original_flag,'worker contents toggle differs')
+    effects[#effects+1]=entry
+   end
+  end
+  local observed=shot('worker-native-contents');observed.worker_contents_effects=effects
   local clicked=false
   for y,line in ipairs(assigned.lines)do
    local x=line:find('Cancel removal',1,true)

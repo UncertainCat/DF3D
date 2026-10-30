@@ -28,6 +28,24 @@ func open_header(id: int) -> void:
 			event.position=sheet.contents.position+sheet.contents.control_rect(index,1).get_center();root.push_input(event,true)
 	check(calls==contents_model.snapshot.rows.map(func(row):return row.id),"Chest View input differs, including removal")
 
+	if expected.mode=="worker":
+		contents_model.edit_removing=true
+		for row_index in 2:
+			for entry in [[2,"forbid"],[3,"dump"],[5,"hidden"]]:
+				var initial_flag: bool=contents_model.snapshot.rows[row_index][entry[1]]
+				for desired in [not initial_flag,initial_flag]:
+					click_header(sheet.contents.position+sheet.contents.control_rect(row_index,entry[0]).get_center())
+					var limit:=Time.get_ticks_msec()+5000
+					while contents_model.phase==contents_model.Phase.Applying and Time.get_ticks_msec()<limit:
+						world.poll();header_service.poll(0.01);await create_timer(0.01).timeout
+					# A receipt for a later row recovers the previous page asynchronously.
+					while contents_model.phase==contents_model.Phase.Reading and Time.get_ticks_msec()<limit:
+						world.poll();header_service.poll(0.01);await create_timer(0.01).timeout
+					if not check(contents_model.phase==contents_model.Phase.Ready,"Worker contents edit did not finish"):return
+					check(contents_model.snapshot.rows[row_index][entry[1]]==desired,"Worker contents flag differs")
+					header_model.refresh();await settle_header()
+					check(header_model.snapshot.removing and header_model.snapshot.has_worker,"Worker contents edit changed removal worker")
+
 	if expected.mode=="idle":
 		click_header(Vector2(384,30));check(sheet.name_entry.editing,"Rendered Rename did not start editing")
 		for character in "lower chest":

@@ -297,6 +297,10 @@ func overview(parent: Node, detail: Dictionary):
   if fact_value(row,"record_type")=="overview_hauling":
    var task_text := str(fact_value(row,"native_text",""))
    if not task_text.is_empty(): summary_line(cells[4],task_text,NativeText.colors[14])
+  if fact_value(row,"record_type")=="overview_status":
+   var squad_text := str(fact_value(row,"squad_text",""))
+   if not squad_text.is_empty():
+    paragraph(cells[5],[{"text":"Squad: ","color":NativeText.colors[15]},{"text":squad_text,"color":NativeText.colors[11 if fact_value(row,"squad_assigned")=="yes" else 7]}],0,false)
   var children := int(fact_value(row,"children_count",0))
   if children>0: summary_line(cells[0],"%d children" % children)
   var pet_owner := str(fact_value(row,"pet_owner",""))
@@ -308,8 +312,6 @@ func overview(parent: Node, detail: Dictionary):
   if fact_value(row,"record_type")=="status":
    summary_line(cells[2],"Blood: %s / %s" % [fact_value(row,"blood"),fact_value(row,"blood_maximum")])
    if int(fact_value(row,"infection",0))>0: summary_line(cells[2],"Infection: %s" % fact_value(row,"infection"),Color(1,.6,0))
- for row in records_for("military"):
-  if int(fact_value(row,"squad_id",-1))>=0: summary_line(cells[5],"Squad: "+str(row.name),Color(0,1,1))
  var skills: Array=records_for("skills").duplicate()
  skills.sort_custom(func(a,b):
   var ar := int(fact_value(a,"rating",0));var br := int(fact_value(b,"rating",0))

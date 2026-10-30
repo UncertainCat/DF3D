@@ -1405,6 +1405,27 @@ renderer notice in both GPU logs. Owned DF197480 exits unsaved, restores fixture
 links and preserves the source save. QA unit-hauling passes core, context inspector
 and thought-text checks; final root CTest passes19/19. No public routes are promoted.
 
+Creature Overview eligibility now calls DF predicates73710 (effective learning
+capability, excluding animated undead),73b50 (adult profession) and138ed20
+(fortress control), with complete code pins. Personality uses73710 directly,
+replacing the previous Lua reconstruction. Squad display requires learning and
+fortress control; needs additionally require a current soul and adult profession,
+as native call sites166fca and16797d do. The bridge returns semantic facts through
+the existing creature contract. Missing eligibility does not invent a summary.
+Squad names reuse nativeZoneSquadName's owned native translation/alias path;
+missing squads use native None. The renderer preserves separate prefix/name colors.
+
+Protected152221 on2026-10-30 verifies child988 has no needs summary and displays
+Squad: None. Both the232x12 squad line and232x72 empty needs region match native
+pixels. Previous frame/portrait/tabs/hauling checks, camera preservation and Escape
+release pass. unit_overview_status_reference retains code pins and scoped evidence.
+Assigned squads/aliases, adults and other excluded creature kinds require additional
+live coverage; overall focus text, health, offices and thoughts remain unfinished.
+QA unit-overview-status passes core19/19, context inspector and thought-text tests,
+including positive, missing and rejected eligibility with severe synthetic needs.
+The bridge build/install passes. Owned DF86976 exits unsaved with source preservation;
+both GPU logs contain only the known renderer notice. Public exposure is unchanged.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

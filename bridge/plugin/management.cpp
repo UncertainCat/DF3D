@@ -3135,6 +3135,14 @@ void run(color_ostream& out) {
   if(r->creature()) field(L,"unit_id",r->creature()->unit_id());
   if(action==m::ManagementAction::CreatureInspect) {
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_creature::overviewStatus(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!value)return luaL_error(state,"Native creature Overview status unavailable");
+      lua_pushboolean(state,value->personality);lua_pushboolean(state,value->needs);
+      lua_pushlstring(state,value->squad.data(),value->squad.size());
+      lua_pushboolean(state,value->assignedSquad);return 4;
+    });
+    lua_setfield(L,-2,"overview_status");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto value=df3d_creature::haulingSummary(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!value)return luaL_error(state,"Native creature hauling summary unavailable");
       lua_pushinteger(state,value->itemId);

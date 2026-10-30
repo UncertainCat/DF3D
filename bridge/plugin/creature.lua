@@ -132,11 +132,14 @@ return function(request)
   fact(s,r,'birth_year',u.birth_year);fact(s,r,'birth_time',u.birth_time)
   fact(s,r,'caste_description',caste.description)
   fact(s,r,'translated_name',dfhack.translation.translateName(u.name,true))
-  -- Matches the native creature sheet formatter in DF 53.16: summary
-  -- values/facets require the current effective CAN_LEARN flag and exclude
-  -- animated undead.
-  fact(s,r,'personality_summary_eligible',not u.enemy.undead and not u.uwss_remove_caste_flag.CAN_LEARN
-   and (u.enemy.caste_flags.CAN_LEARN or u.uwss_add_caste_flag.CAN_LEARN) and 'yes' or 'no')
+  if request.overview_status then
+   local eligible,needs,squad,assigned=request.overview_status(u.id)
+   fact(s,r,'personality_summary_eligible',eligible and 'yes' or 'no')
+   local summary=record(s,-4,'')
+   fact(s,summary,'record_type','overview_status')
+   fact(s,summary,'needs_summary_eligible',needs and 'yes' or 'no')
+   fact(s,summary,'squad_text',squad);fact(s,summary,'squad_assigned',assigned and 'yes' or 'no')
+  end
   if request.hauling_summary then
    local id,text=request.hauling_summary(u.id)
    local task=record(s,id,'')

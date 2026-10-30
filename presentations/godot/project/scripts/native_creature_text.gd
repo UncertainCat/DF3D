@@ -168,6 +168,10 @@ static func skill_rust(sheet, record: Dictionary) -> Dictionary:
  return {}
 
 static func overview_needs(sheet) -> Array:
+ var eligible := false
+ for record in sheet.records_for("identity"):
+  if sheet.fact_value(record,"needs_summary_eligible")=="yes":eligible=true
+ if not eligible:return []
  var data := load_text(sheet.owner.world)
  var section: Dictionary=sheet.sections.get("needs",{})
  if not data.has("overview_need_labels") or not section.get("available",false) or section.get("truncated",false): return []

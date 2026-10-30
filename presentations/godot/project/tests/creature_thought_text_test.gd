@@ -69,7 +69,11 @@ func _initialize():
  check(Native.skill_rust(sheet,row(0,{"rating":4,"rusty":2})).get("text")==" (Rusty)","Half nominal skill gets native Rusty suffix")
  check(Native.skill_rust(sheet,row(0,{"rating":4,"rusty":3})).get("text")==" (V Rusty)","Quarter nominal skill gets native Very Rusty suffix")
  sheet.sections.needs={"available":true,"truncated":false,"records":[row(0,{"need_id":0,"focus":-100000}),row(1,{"need_id":1,"focus":-999999}),row(2,{"need_id":2,"focus":-999})]}
+ check(Native.overview_needs(sheet).is_empty(),"Missing native eligibility does not invent a needs summary")
+ sheet.sections.identity={"available":true,"records":[row(-4,{"needs_summary_eligible":"yes"})]}
  var needs := Native.overview_needs(sheet)
  check(needs.size()==2 and needs[0][1].text=="Socialize","Unmet needs use native threshold and source-order ties within a severity band")
+ sheet.sections.identity.records=[row(-4,{"needs_summary_eligible":"no"})]
+ check(Native.overview_needs(sheet).is_empty(),"Native-ineligible unit does not show even severe unmet needs")
  if failures==0: print("CREATURE_THOUGHT_TEXT_PASS")
  quit(1 if failures else 0)

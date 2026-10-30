@@ -1,8 +1,45 @@
 #pragma once
 #include "building_item_native.h"
 #include "df/unit_inventory_item.h"
+#include "df/squad.h"
+#include "zone_native.h"
 
 namespace df3d_creature {
+struct OverviewStatus {
+    bool personality=false,needs=false,assignedSquad=false;
+    std::string squad;
+};
+// Native Overview166fca and16797d use these pure semantic predicates. The
+// fortress predicate reads simulation globals, never menu/widget state.
+inline std::optional<OverviewStatus> overviewStatus(df::unit* unit) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        return hash(0x73710,0x4c)==UINT64_C(0xe700e2d52b0deb31) &&
+               hash(0x73b50,0x13)==UINT64_C(0xa0106d5e9beb23b7) &&
+               hash(0x138ed20,0xff)==UINT64_C(0x430951f9f3e403c2);
+    }();
+    if(!supported || !unit)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    using Predicate=bool (*)(df::unit*);
+    OverviewStatus result;
+    result.personality=reinterpret_cast<Predicate>(base+0x73710)(unit);
+    const bool controlled=result.personality && reinterpret_cast<Predicate>(base+0x138ed20)(unit);
+    result.needs=unit->status.current_soul && reinterpret_cast<Predicate>(base+0x73b50)(unit) && controlled;
+    if(controlled) {
+        if(const auto* squad=df::squad::find(unit->military.squad_id)) {
+            auto name=df3d_area::nativeZoneSquadName(*squad);
+            if(!name)return std::nullopt;
+            result.squad=*name;result.assignedSquad=true;
+        } else result.squad="None"; // Native Overview167173.
+    }
+    return result;
+}
 struct HaulingSummary { int32_t itemId=-1; std::string text; };
 // Overview166e81 calls this read-only inventory selector, then the same owned
 // item-caption formatter used by building contents. Never invoke the enclosing

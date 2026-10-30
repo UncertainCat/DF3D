@@ -34382,6 +34382,65 @@
       "scope": "Paused synthetic reciprocal hauling fixture, actual main-scene carrier route; not natural hauling jobs or multiple hauled items",
       "cleanup": "Owned session exits unsaved with source preservation and restored fixture links",
       "diagnostics": "Both GPU logs contain only known separate-renderer notice; no unclassified errors"
+    },
+    "unit_overview_status_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261030-152221",
+      "date": "2026-10-30",
+      "owned_df_pid": 86976,
+      "unit_id": 988,
+      "success": true,
+      "native_calls": {
+        "personality": {
+          "rva": "0x73710",
+          "length": 76,
+          "fnv64": "e700e2d52b0deb31"
+        },
+        "adult": {
+          "rva": "0x73b50",
+          "length": 19,
+          "fnv64": "a0106d5e9beb23b7"
+        },
+        "controlled": {
+          "rva": "0x138ed20",
+          "length": 255,
+          "fnv64": "430951f9f3e403c2"
+        }
+      },
+      "native_call_sites": [
+        "0x166fca",
+        "0x16797d"
+      ],
+      "facts": {
+        "needs_summary_eligible": false,
+        "squad_text": "None",
+        "squad_assigned": false
+      },
+      "regions": [
+        {
+          "rect": [
+            664,
+            376,
+            232,
+            12
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "2070e611dd4d858c0873bce1350104267c768f02e51ce6649b07df76c2193bfb"
+        },
+        {
+          "rect": [
+            664,
+            460,
+            232,
+            72
+          ],
+          "different_pixels": 0,
+          "rgb_sha256": "5202c17f37e70a955d5056b5eceef2d33f8b11bdd15af6c96145a694c581cabc"
+        }
+      ],
+      "ownership": "Read-only semantic predicates plus owned native squad-name output; no native sheet state",
+      "scope": "Unassigned citizen child; assigned squad, aliases, adults and other excluded creature kinds remain separate live coverage",
+      "cleanup": "Owned session exits unsaved with source preservation and restored fixture links",
+      "diagnostics": "Two GPU logs contain only known separate-renderer notice"
     }
   }
 }

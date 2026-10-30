@@ -386,3 +386,18 @@ TEST_CASE("independent item edits preserve identity across location changes and 
     item.revision=itemObservationRevision(item);CHECK(validItemObservation(item));
     item.stockpile->id=-1;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
 }
+
+TEST_CASE("item carrier changes invalidate authority and malformed links fail closed") {
+    using namespace df3d_production;
+    ItemObservation item;item.item.id=45;item.item.itemType=53;
+    item.carrier=ItemCarrier{1,5834,30,"native chest"};item.revision=itemObservationRevision(item);
+    REQUIRE(validItemObservation(item));const auto before=item.revision;
+    item.carrier=ItemCarrier{2,988,-1,"native citizen"};item.revision=itemObservationRevision(item);
+    CHECK(item.revision!=before);CHECK(validItemObservation(item));
+    auto result=finishItemEdit(item,before,BuildingItemAction::Hidden,true,
+        []{FAIL("old carrier revision entered mutation");return true;},[&]{return std::optional<ItemObservation>(item);});
+    CHECK(result.outcome==FarmEditOutcome::Stale);CHECK_FALSE(result.mutated);
+    const auto unit=item.revision;item.carrier->name="renamed citizen";CHECK(itemObservationRevision(item)!=unit);
+    item.carrier->itemType=0;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+    item.carrier->itemType=-1;item.buildingHolder=ItemLocationLink{1,4,"farm"};item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+}

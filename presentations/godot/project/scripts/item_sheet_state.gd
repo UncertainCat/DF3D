@@ -95,6 +95,15 @@ func _valid(value: Dictionary) -> bool:
 	if value.has("stockpile"):
 		if value.stockpile_categories<0 or value.stockpile_categories>0x1ffff:return false
 	elif value.stockpile_categories!=-1:return false
+	if value.has("carrier"):
+		var carrier=value.carrier
+		if value.has("holder") or typeof(carrier)!=TYPE_DICTIONARY:return false
+		for key in ["kind","id","item_type"]:
+			if typeof(carrier.get(key))!=TYPE_INT:return false
+		if carrier.id<0 or carrier.id>2147483647 or carrier.kind not in [1,2]:return false
+		if carrier.kind==1 and (carrier.item_type<0 or carrier.item_type>92):return false
+		if carrier.kind==2 and carrier.item_type!=-1:return false
+		if typeof(carrier.get("name"))!=TYPE_STRING or carrier.name.to_utf8_buffer().size()>512:return false
 	for forbidden in ["building_id","role","completed","removing"]:
 		if value.has(forbidden):return false
 	for field in ["holder","stockpile"]:

@@ -3635,3 +3635,18 @@ TEST_CASE("independent item stockpile categories require matching relationship a
     CHECK(bool(wire::validateManagementState(*value))==!valid);
   }
 }
+
+TEST_CASE("independent item carrier codec preserves identity and rejects malformed authority") {
+  for(int kind:{1,2})for(int fault=0;fault<8;++fault) {
+    CAPTURE(kind);CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    auto carrier=wire::CreateItemCarrier(b,fault==1?0:kind,fault==2?-1:988,
+      fault==3?(kind==1?-1:0):fault==4?93:(kind==1?30:-1),fault==5?0:b.CreateString(fault==6?std::string(513,'x'):"native carrier"));
+    auto holder=fault==7?wire::CreateItemBuildingHolder(b,1,4,b.CreateString("farm")):flatbuffers::Offset<wire::ItemBuildingHolder>{};
+    auto item=wire::CreateIndependentItemSnapshot(b,45,9007199254740993ULL,53,b.CreateString("seed"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),holder,0,-1,carrier);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeProduction(value->production());const auto& snapshot=*decoded.independentItem->snapshot;REQUIRE(snapshot.carrier);CHECK(snapshot.carrier->kind==kind);CHECK(snapshot.carrier->id==988);CHECK(snapshot.carrier->name=="native carrier");}
+  }
+}

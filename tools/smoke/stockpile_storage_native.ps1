@@ -214,6 +214,15 @@ try {
     if($ZoneSquads){Start-Sleep -Milliseconds 250}
     [Shot]::SetThreadDpiAwarenessContext([IntPtr](-4)) | Out-Null
     [Shot]::Capture([Shot]::Find($owned.Id),"$out/$name.png") | Out-Null
+    if($FarmItemCarriers -and $name -match '^farm-item-carrier-(container|unit)-wire$') {
+     $env:DF3D_CARRIER_DIRECTORY=$out
+     $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
+     $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/item_carrier_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
+     $null=$client.Handle
+     if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Carrier wire client timed out; no replay'}
+     if($client.ExitCode -ne 0 -or -not (Test-Path "$out/carrier-wire-result.json")){throw 'Carrier wire client failed'}
+     Copy-Item -LiteralPath "$out/carrier-wire-result.json" -Destination "$out/$name.json"
+    }
     # A transient Windows file lock must not abort an otherwise valid capture.
     # Acknowledge only after removal, so the producer cannot publish its next shot.
     for($attempt=0;;$attempt++) {

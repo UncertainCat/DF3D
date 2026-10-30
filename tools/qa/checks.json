@@ -3744,6 +3744,11 @@
       "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmItemProgressOnly -FarmItemProgressScene exercises actual main-scene potash View, viewport flags and follow, native panel pixels and consumption retirement. Optional -FarmItemAction forbid|dump covers immediate paused action effects; -FarmItemActionProgress additionally verifies original job retirement and 600 later ticks after restoring the flag. With Forbid, -FarmItemTransferScene adds controlled transfer, exact native item pixels, stockpile View navigation, queued/sent handoff retirement and missing-target refusal."
     },
     {
+      "path": "presentations/godot/project/tests/item_carrier_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers invokes this during paused carrier fixtures; never run standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/item_independent_live.gd",
       "status": "manual",
       "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmItemProgressOnly -IndependentItemOnly verifies independent item transport, flags, stale authority, controlled transfer and native text/location receipts. No rendered controller migration claim."

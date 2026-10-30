@@ -3,11 +3,13 @@
 
 namespace df3d_production {
 struct ItemLocationLink { int32_t id=-1,type=-1;std::string name; };
+struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name; };
 struct ItemObservation {
     ItemFacts item;
     std::string weight,description;
     std::optional<ItemLocationLink> buildingHolder,stockpile;
     int32_t stockpileCategories=-1;
+    std::optional<ItemCarrier> carrier;
     uint64_t revision=0;
 };
 // Item authority never depends on the former containing building or its rows.
@@ -26,10 +28,12 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
         byte(link->has_value());if(*link){number((*link)->id);number((*link)->type);text((*link)->name);}
     }
     number(value.stockpileCategories);
+    byte(value.carrier.has_value());if(value.carrier){const auto& c=*value.carrier;number(c.kind);number(c.id);number(c.itemType);text(c.name);}
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
 }
 inline bool validItemObservation(const ItemObservation& value) {
     const auto& item=value.item;
+    if(value.carrier){const auto& c=*value.carrier;if(value.buildingHolder || c.id<0 || c.name.size()>512 || (c.kind!=1&&c.kind!=2) || (c.kind==1?(c.itemType<0||c.itemType>92):c.itemType!=-1))return false;}
     if(value.stockpile ? (value.stockpileCategories<0 || value.stockpileCategories>0x1ffff) : value.stockpileCategories!=-1)return false;
     if(item.id<0||item.itemType<0||item.itemType>92||item.caption.size()>128*1024||
        item.materialToken.size()>256||item.subtypeRaw.size()>128||value.weight.size()>128||

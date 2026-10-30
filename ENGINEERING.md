@@ -843,11 +843,14 @@ FNV0e165ee31decf426. These routines do not consume native UI inputs.
 `item-carrier-probe <item>` exposes this reader for diagnostics: kind0 absent,
 kind1 item container, kind2 unit, stable ID, native name and container item type.
 A container takes precedence over a unit; the sheet's building holder takes
-precedence over either carrier. The reader does not yet change ItemObservation,
-its revision or the management94 wire contract. That gap matters: the current
-independent item snapshot remains identical when the same seed moves from the
-chest to the dwarf in the controlled fixture. The next contract migration must
-include carrier identity and native text in observation authority.
+precedence over either carrier. Management95 includes the selected carrier in ItemObservation and its revision,
+then carries the semantic kind, ID, native name and container item type through
+FlatBuffers, worldmodel and the Godot controller. Building holders and carriers
+are mutually exclusive; a spatial stockpile remains independent. A carrier change
+or rename invalidates the prior revision. Unit links require item type -1;
+container types require0..92. Invalid kinds, IDs, text or conflicting holders grant
+no authority. Version94 peers are incompatible; missing historical relationships
+remain unknown. Artwork and navigation integration remain separate work.
 
 Protected native101149 on2026-10-30 temporarily substitutes reciprocal semantic
 relationships for farm968 seed47492 in a paused owned clone. Native renders
@@ -862,6 +865,25 @@ Native screenshots were inspected. MSVC and core `item-carrier-native` pass.
 This establishes the semantic reader and native targets, not natural hauling,
 carrier artwork in Godot, general container inspection, Residents navigation or
 wire/controller acceptance. These remain required before public exposure.
+
+Protected native102453 on2026-10-30 exercises management95 through the real
+Godot extension during both paused carrier fixtures. Reads preserve exact int64
+revisions and native carrier fields; Hidden true/false edits return confirmed
+snapshots with the same carrier. After changing from chest5834 to unit988, an edit
+using the old chest revision is rejected as Stale without snapshot authority.
+The controller accepts the native snapshots. The fixture restores the final flag,
+reference pointers/order and original position; DF181756 exits unsaved and the
+source manifest is unchanged. `item_carrier_wire_reference` records receipts and
+binary hashes. Both clients report only the known separate-render-thread notice;
+no unclassified diagnostics occur. The earlier102358 attempt passed the container
+client but the PowerShell harness lost its exit-code handle; it is not counted as
+a complete run. The harness now retains that handle through process completion.
+
+MSVC passes. Core and `item_sheet_state_test` pass in
+`build/qa/item-carrier-wire-fixed`; codec tests cover both carrier kinds, malformed
+links and conflicting holders, and transaction tests reject old carrier revisions
+before native mutation. This accepts data and edit authority, not carrier rendering
+or general unit/container inspection. Public management exposure is unchanged.
 
 ## Native item holder provider
 

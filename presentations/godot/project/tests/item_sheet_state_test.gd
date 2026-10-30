@@ -81,6 +81,20 @@ func run() -> void:
 	model.set_flag(C.FarmOperation.ItemHidden,true);service.poll()
 	check(not world.calls[-1].request.has("building_id") and world.calls[-1].request.expected_revision==transferred.revision,"transferred item edit uses only current item authority")
 
+	for kind in [1,2]:
+		ready();model.poll(1);service.poll()
+		var carried:=item();carried.erase("holder");carried.carrier={"kind":kind,"id":988,"item_type":30 if kind==1 else -1,"name":"native carrier"};carried.revision+=kind
+		item_reply({"snapshot":carried})
+		check(model.phase==ItemModel.Phase.Ready and model.snapshot.carrier.kind==kind,"carrier replaces item relationship authority")
+		model.set_flag(C.FarmOperation.ItemHidden,true);service.poll()
+		check(world.calls[-1].request.expected_revision==carried.revision,"carrier edit uses refreshed revision")
+		for fault in ["kind","id","item_type","name","holder"]:
+			ready();model.poll(1);service.poll();var invalid: Dictionary=carried.duplicate(true)
+			if fault=="holder":invalid.holder={"id":1,"type":4,"name":"farm"}
+			elif fault=="name":invalid.carrier.name="x".repeat(513)
+			else:invalid.carrier[fault]=0 if fault=="kind" else -1 if fault=="id" or kind==1 else 0
+			item_reply({"snapshot":invalid});check(model.snapshot.is_empty(),"invalid carrier grants no authority")
+
 	for outcome in [2,3,4]:
 		ready();model.set_flag(C.FarmOperation.ItemHidden,true);service.poll();count=world.calls.size()
 		item_reply({"outcome":outcome},C.ManagementStatus.Rejected);model.set_flag(C.FarmOperation.ItemHidden,true);service.poll()

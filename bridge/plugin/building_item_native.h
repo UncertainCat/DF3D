@@ -97,7 +97,6 @@ inline std::optional<ItemBuildingHolder> itemBuildingHolder(df::item* item) {
     }
     return result;
 }
-struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name; };
 // Native item renderer153c06/153c20 resolves semantic general references.
 // The displayed carrier prefers an item container over a unit; a building
 // holder takes precedence over both in the caller. No UI state is an input.
@@ -329,6 +328,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     auto facts=itemFacts(item);if(!facts)return std::nullopt;
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
     if(holder->id>=0)value.buildingHolder=*holder;
+    else {const auto carrier=itemCarrier(item);if(!carrier)return std::nullopt;if(carrier->kind)value.carrier=*carrier;}
     if(stockpile->id>=0){
         auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(stockpile->id));if(!pile)return std::nullopt;
         value.stockpile=*stockpile;value.stockpileCategories=pile->settings.flags.whole;

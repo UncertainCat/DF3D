@@ -14,7 +14,7 @@ for _,candidate in ipairs(df.global.world.units.active)do
  if dfhack.units.isCitizen(candidate) and candidate.pos.z==b.z then unit=candidate;break end
 end
 assert(container and unit,'carrier fixture requires a box and citizen on the farm level')
-local ref,reciprocal,inventory,detached
+local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
  if not detached then return end
  if reciprocal then assert(container.general_refs[#container.general_refs-1]==reciprocal);container.general_refs:erase(#container.general_refs-1);df.delete(reciprocal);reciprocal=nil end
@@ -65,6 +65,14 @@ local ok,err=xpcall(function()
    df.delete(bytes);df.delete(guard.bytes)
   end
   row.native_ui_unchanged=true
+  assert(row.independent.carrier and row.independent.carrier.id==target.id and row.independent.carrier.name==row.carrier.name)
+  if prior_revision then assert(prior_revision~=row.independent.revision,'carrier change retained old revision')end
+  local expected={snapshot=row.independent,prior_revision=prior_revision}
+  local f=assert(io.open(out..'/carrier-expected.json','w'));f:write(json.encode(expected));f:close()
+  capture('farm-item-carrier-'..kind..'-wire')
+  local result=assert(io.open(out..'/carrier-wire-result.json'));row.wire=json.decode(result:read('*a'));result:close()
+  assert(row.wire.success and item.flags.hidden==false,'carrier wire verification failed or changed final flag')
+  prior_revision=row.independent.revision
   move(816,250);gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
   local linked=capture('farm-item-carrier-'..kind..'-view');linked.target_id=target.id
   assert(sheet.open and sheet.active_id==target.id and sheet.active_sheet==(kind=='unit' and df.view_sheet_type.UNIT or df.view_sheet_type.ITEM),'native carrier View selected wrong identity')

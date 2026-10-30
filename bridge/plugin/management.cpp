@@ -628,8 +628,10 @@ void publish() {
         if(!value)return {};return m::CreateItemBuildingHolder(b,value->id,value->type,b.CreateString(value->name));
       };
       const auto holder=link(v.holder),stockpile=link(v.stockpile);
+      flatbuffers::Offset<m::ItemCarrier> carrier;
+      if(v.carrier){const auto& c=*v.carrier;carrier=m::CreateItemCarrier(b,int8_t(c.kind),c.id,c.itemType,b.CreateString(c.name));}
       snapshot=m::CreateIndependentItemSnapshot(b,v.id,v.revision,v.itemType,b.CreateString(v.name),b.CreateString(v.materialToken),b.CreateString(v.subtypeRaw),
-        v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile,v.stockpileCategories);
+        v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile,v.stockpileCategories,carrier);
     }
     if(state.edit)edit=m::CreateBuildingItemReceipt(b,state.edit->itemId,state.edit->operation,state.edit->value);
     independentItem=m::CreateIndependentItemState(b,snapshot,edit,state.outcome);
@@ -2464,9 +2466,10 @@ std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_produc
   value.forbid=item.forbid;value.dump=item.dump;value.melt=item.melt;value.hidden=item.hidden;value.canDump=item.canDump;value.canMelt=item.canMelt;
   df::item_flags flags;flags.whole=item.flags;value.inJob=flags.bits.in_job;value.inBuilding=flags.bits.in_building;
   if(observed.buildingHolder)value.holder=ItemBuildingHolder{observed.buildingHolder->id,observed.buildingHolder->type,DF2UTF(observed.buildingHolder->name)};
+  if(observed.carrier){const auto& c=*observed.carrier;value.carrier=ItemCarrier{c.kind,c.id,c.itemType,DF2UTF(c.name)};}
   if(observed.stockpile)value.stockpile=ItemBuildingHolder{observed.stockpile->id,observed.stockpile->type,DF2UTF(observed.stockpile->name)};
   if(value.name.size()>128*1024 || value.materialToken.size()>256 || value.subtypeRaw.size()>128 || value.weight.size()>128 || value.description.size()>32*1024 ||
-     (value.holder && value.holder->name.size()>512) || (value.stockpile && value.stockpile->name.size()>512))return std::nullopt;
+     (value.holder && value.holder->name.size()>512) || (value.stockpile && value.stockpile->name.size()>512) || (value.carrier && value.carrier->name.size()>512))return std::nullopt;
   return value;
 }
 void run(color_ostream& out) {

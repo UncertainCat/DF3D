@@ -1688,6 +1688,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               Json::Value result(Json::nullValue);if(value){result["id"]=value->id;result["type"]=value->type;result["name"]=DF2UTF(value->name);}return result;
             };
             snapshot["holder"]=link(value->buildingHolder);snapshot["stockpile"]=link(value->stockpile);snapshot["stockpile_categories"]=value->stockpileCategories;
+            if(value->carrier){const auto& c=*value->carrier;Json::Value carrier(Json::objectValue);carrier["kind"]=c.kind;carrier["id"]=c.id;carrier["item_type"]=c.itemType;carrier["name"]=DF2UTF(c.name);snapshot["carrier"]=carrier;}
             result["snapshot"]=std::move(snapshot);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

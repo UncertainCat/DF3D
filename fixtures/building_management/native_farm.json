@@ -30308,4 +30308,142 @@
     }
   ]
 }
+,
+  "item_carrier_wire_reference": {
+  "source": "build/stockpile-storage-native-farm-discovery-20261030-102453",
+  "management_version": 95,
+  "status": "passed_with_known_issues",
+  "known_diagnostics": [
+    "godot-separate-thread-notice"
+  ],
+  "bridge_sha256": "321b6213335c88f1b9f22904b33aed0d72333139e7f3ad9bb3952c504ddad8cd",
+  "extension_sha256": "0f4ab402932a173d912557407b054943921a3a3cc87fc8c6d2ed9ee0ed158b1a",
+  "cases": [
+    {
+      "name": "farm-item-carrier-container",
+      "item_id": 47492,
+      "target_id": 5834,
+      "independent": {
+        "can_dump": true,
+        "can_melt": false,
+        "caption": "sweet pod seeds",
+        "carrier": {
+          "id": 5834,
+          "item_type": 30,
+          "kind": 1,
+          "name": "(+«-kumquat wood chest-»+)"
+        },
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870920,
+        "forbid": false,
+        "hidden": false,
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "9155294562176008710",
+        "stockpile_categories": -1,
+        "weight": "<1Γ"
+      },
+      "carrier": {
+        "id": 5834,
+        "item_id": 47492,
+        "item_type": 30,
+        "kind": 1,
+        "name": "(+«-kumquat wood chest-»+)"
+      },
+      "native_ui_unchanged": true,
+      "wire": {
+        "receipts": [
+          {
+            "carrier": {
+              "id": 5834,
+              "item_type": 30,
+              "kind": 1,
+              "name": "(+«-kumquat wood chest-»+)"
+            },
+            "revision": "4673459064968808710",
+            "value": true
+          },
+          {
+            "carrier": {
+              "id": 5834,
+              "item_type": 30,
+              "kind": 1,
+              "name": "(+«-kumquat wood chest-»+)"
+            },
+            "revision": "9155294562176008710",
+            "value": false
+          }
+        ],
+        "stale_checked": false,
+        "success": true
+      }
+    },
+    {
+      "name": "farm-item-carrier-unit",
+      "item_id": 47492,
+      "target_id": 988,
+      "independent": {
+        "can_dump": true,
+        "can_melt": false,
+        "caption": "sweet pod seeds",
+        "carrier": {
+          "id": 988,
+          "item_type": -1,
+          "kind": 2,
+          "name": "îton Unibmamot, Dwarven Child"
+        },
+        "description": "These are sweet pod seeds.  ",
+        "dump": false,
+        "flags": 536870920,
+        "forbid": false,
+        "hidden": false,
+        "id": 47492,
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "melt": false,
+        "revision": "4539017211874796363",
+        "stockpile_categories": -1,
+        "weight": "<1Γ"
+      },
+      "carrier": {
+        "id": 988,
+        "item_id": 47492,
+        "item_type": -1,
+        "kind": 2,
+        "name": "îton Unibmamot, Dwarven Child"
+      },
+      "native_ui_unchanged": true,
+      "wire": {
+        "receipts": [
+          {
+            "carrier": {
+              "id": 988,
+              "item_type": -1,
+              "kind": 2,
+              "name": "îton Unibmamot, Dwarven Child"
+            },
+            "revision": "7772603969909067851",
+            "value": true
+          },
+          {
+            "carrier": {
+              "id": 988,
+              "item_type": -1,
+              "kind": 2,
+              "name": "îton Unibmamot, Dwarven Child"
+            },
+            "revision": "4539017211874796363",
+            "value": false
+          }
+        ],
+        "stale_checked": true,
+        "success": true
+      }
+    }
+  ],
+  "scope": "Real extension reads/edits and controller validation during paused reciprocal carrier fixtures. Exact revisions, native carrier fields, both Hidden values and stale prior-carrier rejection. Original references/position/flags restored; owned DF181756 exits unsaved, source manifest unchanged. No carrier rendering/navigation acceptance."
+}
 }

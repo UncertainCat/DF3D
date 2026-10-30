@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management95 adds an optional native item carrier (container or unit) to independent
+item observations and their revision. A building holder and carrier are mutually
+exclusive; stockpile location remains independent. Carrier kind, ID, native name
+and container item type are validated throughout the bridge/model/viewer path.
+Rebuild both endpoints on `Local\\df3d_management_v95`; management94 is incompatible.
+Missing carrier observations in historical recordings cannot be invented.
+
 Management94 adds `stockpile_categories` to independent item snapshots. It is
 DF's 17-bit stockpile_group_set and participates in the item observation revision.
 A stockpile link requires categories0..131071; absent links require -1. Rebuild

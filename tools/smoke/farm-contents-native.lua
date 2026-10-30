@@ -2,6 +2,13 @@
 local out,view,records,b,capture,select_map=...
 local gui=require('gui');local script=require('gui.script');local g=df.global.gps
 local main=df.global.game.main_interface
+local captions=io.open(out..'/farm-contents-captions')
+if captions then
+ captions:close()
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-contents%-native.lua$','farm-contents-captions-native.lua')
+ assert(loadfile(source))(out,view,records,b,capture,select_map)
+ return
+end
 local function move(x,y)
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12

@@ -398,7 +398,24 @@ bounded evidence. GPU `contents-cell-scroll-complete` compares the full472x216
 region for every case, including the seven-item thumb previously excluded. This
 fixes the discovered viewer thumb defect. Scroll47 is a cell offset, not the end
 of the40-item list; endpoint identity is established by the navigation evidence below; physical shift-wheel remains unverified.
-Long-caption truncation and natural short-list main-scene coverage remain open.
+Long-caption evidence follows below; natural short-list main-scene pixel coverage
+remains separate from these component captures.
+
+Protected native094454 on2026-10-30 verifies planted seed captions at lengths
+28..36 and64 in40-row and6-row lists. It temporarily changes only raw seed names
+and membership in an owned paused clone, restoring both names, every membership
+pointer/order and all item flags. DF116748 exits unsaved with the source save
+unchanged. The native formatter supplies complete names while the renderer
+truncates at31 characters with a scrollbar, retaining27 plus an ellipsis;
+without the scrollbar it truncates at33, retaining29 plus an ellipsis.
+`stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmContentsCaptions`
+reproduces this focused oracle. `native_farm.json.contents_caption_reference`
+stores bounded native rows, screen text and full472x216 pixel hashes.
+The existing renderer matches all20 cases exactly in `farm-contents-captions`;
+no runtime change was needed. Native threshold31 and viewer threshold33 images
+were inspected. Core passes cleanly; the GPU check reports only the documented
+rendering-thread, device-finalize and shutdown-object diagnostics. This covers
+incorporated seeds, not all item types or unincorporated-item caption widths.
 
 Protected main-scene002027 verifies six cell steps (1,2,3,2,1,0) over both rows and
 scrollbar, semantic item order across page reads, restoration, existing item effects,

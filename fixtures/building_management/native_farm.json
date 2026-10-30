@@ -28724,5 +28724,418 @@
     },
     "offline": "build/qa/farm-full94-regression: root build/core passed",
     "scope": "Full existing farm-scene suite under the independent item contract; does not establish long captions, general item relationships/types, or public exposure."
+  },
+  "contents_caption_reference": {
+    "capture": "build/stockpile-storage-native-farm-discovery-20261030-094454",
+    "owned_df_pid": 116748,
+    "exit": "unsaved",
+    "save_preservation": "Owned source unchanged",
+    "crop": [
+      424,
+      508,
+      472,
+      216
+    ],
+    "base_rows": [
+      {
+        "id": 47492,
+        "name": "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "subtype_raw": "",
+        "can_dump": true,
+        "can_melt": false,
+        "role": 2,
+        "forbid": false,
+        "dump": false,
+        "melt": false,
+        "hidden": false,
+        "in_job": false,
+        "in_building": true
+      },
+      {
+        "id": 47486,
+        "name": "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "subtype_raw": "",
+        "can_dump": true,
+        "can_melt": false,
+        "role": 2,
+        "forbid": false,
+        "dump": false,
+        "melt": false,
+        "hidden": false,
+        "in_job": false,
+        "in_building": true
+      },
+      {
+        "id": 47494,
+        "name": "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "subtype_raw": "",
+        "can_dump": true,
+        "can_melt": false,
+        "role": 2,
+        "forbid": false,
+        "dump": false,
+        "melt": false,
+        "hidden": false,
+        "in_job": false,
+        "in_building": true
+      },
+      {
+        "id": 47485,
+        "name": "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "subtype_raw": "",
+        "can_dump": true,
+        "can_melt": false,
+        "role": 2,
+        "forbid": false,
+        "dump": false,
+        "melt": false,
+        "hidden": false,
+        "in_job": false,
+        "in_building": true
+      },
+      {
+        "id": 47484,
+        "name": "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "subtype_raw": "",
+        "can_dump": true,
+        "can_melt": false,
+        "role": 2,
+        "forbid": false,
+        "dump": false,
+        "melt": false,
+        "hidden": false,
+        "in_job": false,
+        "in_building": true
+      },
+      {
+        "id": 47493,
+        "name": "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+        "item_type": 53,
+        "material_token": "PLANT:POD_SWEET:SEED",
+        "subtype_raw": "",
+        "can_dump": true,
+        "can_melt": false,
+        "role": 2,
+        "forbid": false,
+        "dump": false,
+        "melt": false,
+        "hidden": false,
+        "in_job": false,
+        "in_building": true
+      }
+    ],
+    "cases": [
+      {
+        "name": "farm-contents-caption-40-28",
+        "total": 40,
+        "caption_length": 28,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+        "rgb_sha256": "a1966bd82c86fe668e8dd7a23880089578edc4264f720efdefd3a88dd521a4f8"
+      },
+      {
+        "name": "farm-contents-caption-40-29",
+        "total": 40,
+        "caption_length": 29,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+        "rgb_sha256": "33639d5497c9cdb8bef9e9726b5f39f38562a44067813a036b0ef19258b25b73"
+      },
+      {
+        "name": "farm-contents-caption-40-30",
+        "total": 40,
+        "caption_length": 30,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+        "rgb_sha256": "efbeda5736fe7425f2acce22872bdaf18700695656e0101079644162d8a7b109"
+      },
+      {
+        "name": "farm-contents-caption-40-31",
+        "total": 40,
+        "caption_length": 31,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZA...",
+        "rgb_sha256": "e9bef17d3ac9be18c19b581c99a92e86133087bdf334651916647e083d8acf8a"
+      },
+      {
+        "name": "farm-contents-caption-40-32",
+        "total": 40,
+        "caption_length": 32,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZA...",
+        "rgb_sha256": "e9bef17d3ac9be18c19b581c99a92e86133087bdf334651916647e083d8acf8a"
+      },
+      {
+        "name": "farm-contents-caption-40-33",
+        "total": 40,
+        "caption_length": 33,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZA...",
+        "rgb_sha256": "e9bef17d3ac9be18c19b581c99a92e86133087bdf334651916647e083d8acf8a"
+      },
+      {
+        "name": "farm-contents-caption-40-34",
+        "total": 40,
+        "caption_length": 34,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZA...",
+        "rgb_sha256": "e9bef17d3ac9be18c19b581c99a92e86133087bdf334651916647e083d8acf8a"
+      },
+      {
+        "name": "farm-contents-caption-40-35",
+        "total": 40,
+        "caption_length": 35,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZA...",
+        "rgb_sha256": "e9bef17d3ac9be18c19b581c99a92e86133087bdf334651916647e083d8acf8a"
+      },
+      {
+        "name": "farm-contents-caption-40-36",
+        "total": 40,
+        "caption_length": 36,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZA...",
+        "rgb_sha256": "e9bef17d3ac9be18c19b581c99a92e86133087bdf334651916647e083d8acf8a"
+      },
+      {
+        "name": "farm-contents-caption-40-64",
+        "total": 40,
+        "caption_length": 64,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZA...",
+        "rgb_sha256": "e9bef17d3ac9be18c19b581c99a92e86133087bdf334651916647e083d8acf8a"
+      },
+      {
+        "name": "farm-contents-caption-6-28",
+        "total": 6,
+        "caption_length": 28,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZAB"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZAB",
+        "rgb_sha256": "4c96cc2adc2caca36da05c170e205c2371a53b58b1940313c1925f38eb25959f"
+      },
+      {
+        "name": "farm-contents-caption-6-29",
+        "total": 6,
+        "caption_length": 29,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABC"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABC",
+        "rgb_sha256": "786abf00169579aecb31a68f5e895b7a68a3090bdb79d63e85b2d8327ea6c200"
+      },
+      {
+        "name": "farm-contents-caption-6-30",
+        "total": 6,
+        "caption_length": 30,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+        "rgb_sha256": "651b3443bb523becd656190898c03f733bacf2fbb9c65e7f5f86aefcd3df477d"
+      },
+      {
+        "name": "farm-contents-caption-6-31",
+        "total": 6,
+        "caption_length": 31,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+        "rgb_sha256": "f7d84136d9c74be2b6a80d7e2aa54c9c756f6f6051f67ef769eb1b10cffc41b6"
+      },
+      {
+        "name": "farm-contents-caption-6-32",
+        "total": 6,
+        "caption_length": 32,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF",
+        "rgb_sha256": "a055ab79003673ee2d12ef12c2d8d956de9681f456b1a2bf1b4fd74ef6227783"
+      },
+      {
+        "name": "farm-contents-caption-6-33",
+        "total": 6,
+        "caption_length": 33,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABC...",
+        "rgb_sha256": "31493f026c5789d69569bfc66c0ec7347e41d6bf9558afc4b16035b102b881b9"
+      },
+      {
+        "name": "farm-contents-caption-6-34",
+        "total": 6,
+        "caption_length": 34,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABC...",
+        "rgb_sha256": "31493f026c5789d69569bfc66c0ec7347e41d6bf9558afc4b16035b102b881b9"
+      },
+      {
+        "name": "farm-contents-caption-6-35",
+        "total": 6,
+        "caption_length": 35,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABC...",
+        "rgb_sha256": "31493f026c5789d69569bfc66c0ec7347e41d6bf9558afc4b16035b102b881b9"
+      },
+      {
+        "name": "farm-contents-caption-6-36",
+        "total": 6,
+        "caption_length": 36,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABC...",
+        "rgb_sha256": "31493f026c5789d69569bfc66c0ec7347e41d6bf9558afc4b16035b102b881b9"
+      },
+      {
+        "name": "farm-contents-caption-6-64",
+        "total": 6,
+        "caption_length": 64,
+        "captions": [
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL",
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL"
+        ],
+        "rendered_caption": "ABCDEFGHIJKLMNOPQRSTUVWXYZABC...",
+        "rgb_sha256": "31493f026c5789d69569bfc66c0ec7347e41d6bf9558afc4b16035b102b881b9"
+      }
+    ],
+    "scope": "Native planted seed captions at lengths28..36 and64 in40-row and6-row lists. Diagnostic raw seed names and membership restored, all item flags/order unchanged, paused frame0. Not unincorporated items, all item types, or main-scene natural long-name acceptance."
   }
 }

@@ -22,6 +22,11 @@ func run() -> void:
 	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json"))
 	var cases: Array=fixture.contents_rows_reference.cases+fixture.contents_short_reference.cases+fixture.contents_cell_scroll_reference.cases+fixture.contents_navigation_reference.cases
 	cases.append(fixture.potash_item_reference.contents)
+	for recorded in fixture.contents_caption_reference.cases:
+		var sample: Dictionary=recorded.duplicate(true)
+		sample.rows=fixture.contents_caption_reference.base_rows.duplicate(true)
+		for index in sample.rows.size():sample.rows[index].name=recorded.captions[index]
+		cases.append(sample)
 	for sample in cases:
 		var height:=int(sample.get("page",6))*36
 		root.size=Vector2i(472,height);background.size=Vector2(472,height);view.set_capacity(int(sample.get("page",6)))

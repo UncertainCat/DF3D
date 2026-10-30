@@ -3136,6 +3136,14 @@ void run(color_ostream& out) {
   if(r->creature()) field(L,"unit_id",r->creature()->unit_id());
   if(action==m::ManagementAction::CreatureInspect) {
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto values=df3d_creature::requiredRooms(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!values)return luaL_error(state,"Native creature room requirements unavailable");
+      lua_newtable(state);int index=0;
+      for(auto value:*values){lua_pushinteger(state,value);lua_rawseti(state,-2,++index);}
+      return 1;
+    });
+    lua_setfield(L,-2,"room_requirements");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto values=df3d_creature::officeTitles(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!values)return luaL_error(state,"Native creature office titles unavailable");
       lua_newtable(state);int index=0;

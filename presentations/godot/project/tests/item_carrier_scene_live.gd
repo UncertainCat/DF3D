@@ -64,9 +64,15 @@ func unit_carrier(expected: Dictionary) -> void:
 	var focus_text: String={"focused":"Focused!","focused-mild":"Focused","distracted":"Distracted!","distracted-mild":"Distracted","fresh-focused":"Focused!","fresh-distracted":"Distracted!"}.get(overview_case,"")
 	check(inspector.creature_sheet.fact_value(overview_status,"focus_text","")==focus_text,"Native focus header differs")
 	var offices: Array=inspector.creature_sheet.records_for("identity").filter(func(row):return inspector.creature_sheet.fact_value(row,"record_type")=="overview_office")
+	var required: Array=inspector.creature_sheet.records_for("identity").filter(func(row):return inspector.creature_sheet.fact_value(row,"record_type")=="overview_room_requirements")
+	check(required.size()==1,"Missing native room requirements")
+	if required.size()==1:
+		var native_required: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-room-requirements.json"))
+		var keys: Array=["office","bedroom","dining","tomb"]
+		for i in 4:check(int(inspector.creature_sheet.fact_value(required[0],keys[i],"-1"))==int(native_required[i]),"Native room requirement differs: "+keys[i])
 	if overview_case!="child":
 		var titles: Array=offices.map(func(row):return row.name)
-		var expected_titles: Array={"offices":["Bookkeeper","Second office","Third office"],"office-spouse":["Bookkeeper","Native consort"]}.get(overview_case,["Bookkeeper"])
+		var expected_titles: Array={"offices":["Bookkeeper","Second office","Third office"],"office-requirements":["Bookkeeper","Second office","Third office"],"office-spouse":["Bookkeeper","Native consort"]}.get(overview_case,["Bookkeeper"])
 		check(titles==expected_titles,"Native office title/order differs")
 		if overview_case=="office-spouse" and offices.size()==2:check(inspector.creature_sheet.fact_value(offices[1],"spouse","")=="yes","Spouse title lost its semantic source")
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
@@ -74,7 +80,7 @@ func unit_carrier(expected: Dictionary) -> void:
 	var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
 	var native:=Image.load_from_file(directory+"/farm-item-carrier-unit-view.png");native.convert(Image.FORMAT_RGB8)
 	if overview_case!="child":
-		var office_rect:=Rect2i(664,292,232,36 if overview_case=="offices" else 24 if overview_case=="office-spouse" else 12)
+		var office_rect:=Rect2i(664,292,232,36 if overview_case in ["offices","office-requirements"] else 24 if overview_case=="office-spouse" else 12)
 		check(rendered.get_region(office_rect).get_data()==native.get_region(office_rect).get_data(),"Native office title pixels differ")
 	for region in [Rect2i(416,52,488,4),Rect2i(416,52,4,708),Rect2i(900,52,4,708),Rect2i(416,756,488,4),Rect2i(424,64,96,96),Rect2i(424,160,472,48),Rect2i(424,376,232,12),Rect2i(664,376,232,12),Rect2i(664,460,232,72)]:
 		check(rendered.get_region(region).get_data()==native.get_region(region).get_data(),"Unit frame/portrait pixels differ: "+str(region))

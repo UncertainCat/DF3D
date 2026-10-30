@@ -34928,6 +34928,73 @@
         "Controlled office/spouse fixtures do not verify appointment or marriage commands",
         "Other gendered and plural name variants remain unverified"
       ]
+    },
+    "unit_room_requirements_reference": {
+      "date": "2026-10-30",
+      "native_aggregate": {
+        "rva": "134a5e0",
+        "length": 582,
+        "fnv64": "d73a74b32f6acbe4"
+      },
+      "ownership": "Optional native assignment/holder/entity vectors use independently owned assignments; bbe40 writes only owned indices. Direct probe preserves guarded unit, assignments and UI bytes. Broader viewer workflow warms live indices separately.",
+      "cases": [
+        {
+          "case": "office-requirements",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-161337",
+          "unit_id": 1017,
+          "native_requirements": [
+            300,
+            600,
+            1000,
+            10000
+          ],
+          "scene_success": true,
+          "direct_probe": {
+            "live_unit_assignments_ui_unchanged": true,
+            "values": [
+              300,
+              600,
+              1000,
+              10000
+            ]
+          },
+          "broader_viewer_position_indices": [
+            14,
+            15,
+            16
+          ]
+        },
+        {
+          "case": "office-spouse",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-161502",
+          "unit_id": 1017,
+          "native_requirements": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "scene_success": true
+        },
+        {
+          "case": "child",
+          "run": "build/stockpile-storage-native-farm-discovery-20261030-161604",
+          "unit_id": 988,
+          "native_requirements": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "scene_success": true
+        }
+      ],
+      "verification": "All values match native reqroom; owned sessions exit unsaved, source preserved; six GPU logs only known renderer notice",
+      "limitations": [
+        "Requirement transport only; warning rendering and actual room values remain unfinished",
+        "Controlled position fixtures do not accept appointment commands",
+        "Direct ownership guard does not establish whole-viewer nonmutation"
+      ]
     }
   }
 }

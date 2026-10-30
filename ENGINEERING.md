@@ -1482,6 +1482,28 @@ offices or office-spouse with DF3D_UNIT_OVERVIEW_CASE in the unit-only lane.
 Room requirement warnings and no-office Citizen/Resident/No official position
 fallback remain unfinished; this is title acceptance, not the whole quadrant.
 
+The creature identity facts also carry native room requirements in office,
+bedroom, dining and tomb order. Native134a5e0 aggregates all own position links,
+including positions beyond the three displayed titles; spouse positions do not
+contribute. Its optional assignment/holder/entity arrays let the bridge supply
+independent assignment records. Native bbe40's position-index writes therefore
+remain owned, and the alternate path that writes the unit's HF index is avoided.
+The complete aggregator and entity/assignment/position lookup bodies are pinned.
+No requirement is reconstructed from precedence, title count or displayed text.
+
+unit_room_requirements_reference records protected161337/161502/161604 on
+2026-10-30: differing requirements across four offices, a spouse office with a
+12345 requirement that is excluded, and child988 with no requirements. All four
+transported values match native reqroom. The direct unit-room-requirements-probe
+also matches native with cold position indices, preserving guarded unit,
+assignment and UI bytes. The broader viewer workflow warms position indices;
+the isolated guard establishes ownership for this reader only. All sessions
+exit unsaved and preserve the source; six GPU logs have only the known renderer
+notice. These facts are not yet used to render warnings: native134a830's actual
+room valuation and owned preference handling remain required. In particular,
+559610 and its furnishing preference helpers can set unit preference flags;
+calling that path with live preferences is not a read-only implementation.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

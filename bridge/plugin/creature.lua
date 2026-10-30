@@ -146,6 +146,11 @@ return function(request)
    local task=record(s,id,'')
    fact(s,task,'record_type','overview_hauling');fact(s,task,'native_text',text)
   end
+  if request.room_requirements then
+   local rooms=record(s,-5,'')
+   fact(s,rooms,'record_type','overview_room_requirements')
+   for i,value in ipairs(request.room_requirements(u.id))do fact(s,rooms,({'office','bedroom','dining','tomb'})[i],value)end
+  end
   if request.office_titles then
    for _,title in ipairs(request.office_titles(u.id))do
     local office=record(s,title.id,title.text,title.entity_id)

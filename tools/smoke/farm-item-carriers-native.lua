@@ -32,6 +32,7 @@ local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
  if overview_saved then
   local old=overview_saved;local p=unit.status.current_soul.personality
+  for _,saved in ipairs(old.assignment_indices or {})do saved.assignment.position_vector_idx=saved.index end
   if old.spouse_link then erase_pointer(old.hf.histfig_links,old.spouse_link);df.delete(old.spouse_link)end
   for i=#(old.offices or {}),1,-1 do
    local extra=old.offices[i]
@@ -151,7 +152,7 @@ local ok,err=xpcall(function()
   end
   if kind=='unit' then
    if overview_case~='child' then
-    local ratios={focused=150,['focused-mild']=130,distracted=50,['distracted-mild']=70,neutral=100,['fresh-focused']=150,['fresh-distracted']=50,squad=100,['squad-alias']=100,offices=100,['office-spouse']=100}
+    local ratios={focused=150,['focused-mild']=130,distracted=50,['distracted-mild']=70,neutral=100,['fresh-focused']=150,['fresh-distracted']=50,squad=100,['squad-alias']=100,offices=100,['office-spouse']=100,['office-requirements']=100}
     local ratio=assert(ratios[overview_case],'unknown Overview fixture case')
     local p=assert(unit.status.current_soul).personality
     overview_saved={profession=unit.profession,squad_id=unit.military.squad_id,focus=focus_state(p),needs={}}
@@ -163,7 +164,7 @@ local ok,err=xpcall(function()
      overview_saved.squad=squad;overview_saved.alias=squad.alias;unit.military.squad_id=squad.id
      if overview_case=='squad-alias' then squad.alias='Native squad alias' end
     end
-    if overview_case=='offices' or overview_case=='office-spouse' then
+    if overview_case=='offices' or overview_case=='office-spouse' or overview_case=='office-requirements' then
      local hf=assert(df.historical_figure.find(unit.hist_figure_id));overview_saved.hf=hf;overview_saved.offices={}
      local entity=assert(df.historical_entity.find(df.global.plotinfo.group_id))
      local function add_position(holder,label)
@@ -178,8 +179,14 @@ local ok,err=xpcall(function()
       entity.positions.own:insert('#',position);entity.positions.assignments:insert('#',assignment);holder.entity_links:insert('#',link)
       return position
      end
-     if overview_case=='offices' then
-      for _,label in ipairs{'second office','third office','fourth office'}do add_position(hf,label)end
+     if overview_case=='offices' or overview_case=='office-requirements' then
+      for i,label in ipairs{'second office','third office','fourth office'}do
+       local position=add_position(hf,label)
+       if overview_case=='office-requirements' then
+        position.required_office=i*100;position.required_bedroom=(4-i)*200
+        position.required_dining=i==2 and 1000 or 0;position.required_tomb=i==3 and 10000 or 0
+       end
+      end
      else
       local other
       for _,candidate in ipairs(df.global.world.units.active)do
@@ -191,6 +198,7 @@ local ok,err=xpcall(function()
       end
       assert(other,'spouse fixture needs an adult without positions')
       local position=add_position(other,'companion office')
+      position.required_office=12345 -- A spouse title must not impose the spouse's office requirement.
       position.spouse[0]='native consort';position.spouse_female[0]='native consort';position.spouse_male[0]='native consort'
       local link=df.histfig_hf_link_spousest:new();overview_saved.spouse_link=link;link.target_hf=other.id;link.link_strength=100
       hf.histfig_links:insert(0,link)
@@ -209,6 +217,35 @@ local ok,err=xpcall(function()
   assert(sheet.open and sheet.active_id==target.id and sheet.active_sheet==(kind=='unit' and df.view_sheet_type.UNIT or df.view_sheet_type.ITEM),'native carrier View selected wrong identity')
   if kind=='unit' then
    linked.overview_case=overview_case
+   linked.room_requirements={}
+   for i=0,3 do linked.room_requirements[i+1]=sheet.reqroom[i]end
+   local req_file=assert(io.open(out..'/unit-room-requirements.json','w'));req_file:write(json.encode(linked.room_requirements));req_file:close()
+   if overview_case=='office-requirements' then
+    assert(json.encode(linked.room_requirements)==json.encode({300,600,1000,10000}),'native requirement fixture differs')
+    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+    overview_saved.assignment_indices={}
+    for _,extra in ipairs(overview_saved.offices)do
+     overview_saved.assignment_indices[#overview_saved.assignment_indices+1]={assignment=extra.assignment,index=extra.assignment.position_vector_idx}
+     extra.assignment.position_vector_idx=-1
+    end
+    local protected={unit,sheet,df.global.plotinfo}
+    for _,extra in ipairs(overview_saved.offices)do protected[#protected+1]=extra.assignment end
+    local copies={}
+    for _,object in ipairs(protected)do
+     local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+     copies[#copies+1]={size=size,address=address,bytes=bytes}
+    end
+    local text,status=dfhack.run_command_silent('df3d','unit-room-requirements-probe',tostring(unit.id))
+    local unchanged=true
+    for _,copy in ipairs(copies)do
+     local after=df.new('uint8_t',copy.size);dfhack.internal.memmove(after,copy.address,copy.size)
+     for i=0,copy.size-1 do if after[i]~=copy.bytes[i]then unchanged=false end end
+     df.delete(after);df.delete(copy.bytes)
+    end
+    assert(status==0,text);assert(unchanged,'direct requirement reader changed live unit/assignment/UI bytes')
+    assert(json.encode(json.decode(text))==json.encode(linked.room_requirements),'direct native requirements differ')
+    linked.requirement_probe={values=json.decode(text),live_unit_assignments_ui_unchanged=true}
+   end
    local p=unit.status.current_soul.personality
    if overview_case:find('^fresh%-') then
     -- Native has calculated its reference. Make the live source cold again;
@@ -225,6 +262,10 @@ local ok,err=xpcall(function()
    assert(linked.scene.success,'unit carrier main-scene navigation failed')
    linked.focus_before=before_focus;linked.focus_after=focus_state(p)
    assert(json.encode(before_focus)==json.encode(linked.focus_after),'viewer changed live personality focus cache/timestamps')
+   if overview_case=='office-requirements' then
+    linked.viewer_position_indices={}
+    for _,saved in ipairs(overview_saved.assignment_indices)do linked.viewer_position_indices[#linked.viewer_position_indices+1]=saved.assignment.position_vector_idx end
+   end
   end
   if kind=='container' then
    linked.description=dfhack.df2utf(sheet.raw_description)

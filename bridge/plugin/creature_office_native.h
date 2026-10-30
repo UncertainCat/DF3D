@@ -6,8 +6,58 @@
 #include "df/histfig_entity_link.h"
 #include "df/entity_position.h"
 #include "df/entity_position_assignment.h"
+#include <array>
 
 namespace df3d_creature {
+// Native requirement aggregation accepts optional assignment/holder/entity
+// arrays. Populate those from factual own-position links, with independent
+// assignments: bbe40 refreshes position_vector_idx. The alternate native path
+// would also refresh the live unit's historical-figure index.
+inline std::optional<std::array<int32_t,4>> requiredRooms(df::unit* unit) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        return hash(0x134a5e0,0x246)==UINT64_C(0xd73a74b32f6acbe4) &&
+               hash(0xba0a0,0xa8)==UINT64_C(0xcf6b2a7b534d3331) &&
+               hash(0xb9dc0,0xa7)==UINT64_C(0x4d8961b901732215) &&
+               hash(0xbbe40,0xad)==UINT64_C(0x062a266340f9bf38);
+    }();
+    if(!supported || !unit)return std::nullopt;
+    static_assert(offsetof(df::unit,hist_figure_id)==0xc30);
+    static_assert(offsetof(df::entity_position_assignment,position_vector_idx)==0x10);
+    static_assert(offsetof(df::entity_position,required_office)==0x390);
+    std::array<int32_t,4> result{};
+    const auto* hf=df::historical_figure::find(unit->hist_figure_id);
+    if(!hf)return result;
+    if(hf->entity_links.size()>4096)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    using Find=df::entity_position_assignment* (*)(int32_t,const std::vector<df::entity_position_assignment*>*);
+    std::vector<df::entity_position_assignment> owned;owned.reserve(hf->entity_links.size());
+    std::vector<int32_t> holders,entities;
+    for(auto* link:hf->entity_links) {
+        if(!link)return std::nullopt;
+        if(link->getType()!=df::histfig_entity_link_type::POSITION)continue;
+        const auto* entity=df::historical_entity::find(link->entity_id);
+        if(!entity)continue;
+        if(entity->positions.assignments.size()>65536 || entity->positions.own.size()>65536)return std::nullopt;
+        const auto* assignment=reinterpret_cast<Find>(base+0xb9dc0)(link->getPosition(),&entity->positions.assignments);
+        if(!assignment)continue;
+        owned.emplace_back();owned.back().position_id=assignment->position_id;
+        owned.back().position_vector_idx=-1;
+        holders.push_back(unit->hist_figure_id);entities.push_back(entity->id);
+    }
+    std::vector<df::entity_position_assignment*> assignments;
+    for(auto& value:owned)assignments.push_back(&value);
+    using Aggregate=void (*)(df::unit*,int32_t*,const std::vector<df::entity_position_assignment*>*,const std::vector<int32_t>*,const std::vector<int32_t>*);
+    // With all three vectors supplied, the native routine only reads unit HF ID.
+    reinterpret_cast<Aggregate>(base+0x134a5e0)(unit,result.data(),&assignments,&holders,&entities);
+    return result;
+}
 struct OfficeTitle { int32_t positionId,entityId; bool spouse; std::string text; };
 // Title collection is inline in native1a5f41..1a61d7, not a reusable semantic
 // API. Preserve its own-link then spouse-link order; DFHack's noble collector

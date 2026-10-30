@@ -1532,6 +1532,7 @@ table ProductionRequest {
   item_value:int8 = -1;
   locate_item:bool;
   independent_item:bool;
+  building_header:bool;
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 table ProductionRecipe { key:string; name:string; requirements:[ProductionRequirement]; }
@@ -1610,6 +1611,17 @@ table IndependentItemState {
   snapshot:IndependentItemSnapshot; edit:BuildingItemReceipt;
   outcome:FarmEditOutcome;
 }
+table BuildingHeaderSnapshot {
+  id:int32 = -1; type:int32 = -1; revision:uint64;
+  stage:int32 = -1; max_stage:int32 = -1;
+  custom_name:string; native_name:string; header_name:string;
+  removing:bool; suspended:bool; has_worker:bool;
+}
+table BuildingHeaderState {
+  snapshot:BuildingHeaderSnapshot;
+  outcome:FarmEditOutcome;
+  operation:FarmOperation;
+}
 table ProductionState {
   buildings:[ProductionBuilding]; next_cursor:uint32;
   recipes:[ProductionRecipe]; jobs:[ProductionJob]; crops:[FarmCrop];
@@ -1623,6 +1635,7 @@ table ProductionState {
   item:BuildingItemSnapshot;
   item_position:ItemPosition;
   independent_item:IndependentItemState;
+  building_header:BuildingHeaderState;
 }
 table WorkOrderRequest {
   id:int32 = -1;
@@ -1909,7 +1922,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 99;
+  schema_version:uint32 = 100;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1955,7 +1968,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 99;
+  schema_version:uint32 = 100;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

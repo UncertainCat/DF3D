@@ -126,3 +126,17 @@ local cancelled=action('cancel',assigned.revision);assert(cancelled.outcome=='co
 local after=fixture.observe(building,identity);assert(json.encode(after)==json.encode(native_after))
 assert(cancelled.snapshot.revision==initial.revision and building.name==original)
 local row=shot('guarded-actions');row.actions={initial=initial,renamed=renamed,stale=stale,repeated=repeated,too_long=too_long,restored=restored,removed=removed,assigned=assigned,stale_cancel=stale_cancel,blocked_name=blocked_name,cancelled=cancelled,worker_after=after}
+
+local function wire(mode,stale)
+ local expected={mode=mode,snapshot=action('read').snapshot,stale_revision=stale}
+ local file=assert(io.open(out..'/chest-header-expected.json','w'));file:write(json.encode(expected));file:close()
+ local row=capture('chest-header-wire-'..mode)
+ local result=assert(io.open(out..'/chest-header-wire-result.json'));row.wire=json.decode(result:read('*a'));result:close();assert(row.wire.success)
+ assert(building.name==original and #building.jobs==0 and not dfhack.buildings.markedForRemoval(building),'wire header did not restore chest')
+ return row
+end
+wire('idle')
+click(832,82);local stale_revision=action('read').snapshot.revision
+local wire_worker=fixture.attach(building)
+local row=wire('worker',stale_revision);row.worker_after=fixture.observe(building,wire_worker)
+assert(json.encode(row.worker_after)==json.encode(native_after),'wire worker cleanup differs from native')

@@ -33177,6 +33177,136 @@
       "ui_bytes_unchanged": true,
       "bridge_sha256": "fe293d20d051a6375b585f2a2d5f08c88acf86624b917fd9ec1828b79d361f4b",
       "scope": "Independent revision-checked rename/remove/cancel transaction executed at a safe point through diagnostic command. Stale and rejected edits have no authority/effects; assigned-worker cleanup matches native reference. Management-wire transport, controller and chest screen remain unfinished."
+    },
+    "management100_wire_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261030-132645",
+      "owned_df_pid": 456,
+      "cases": {
+        "idle": {
+          "initial_revision": "1475866136942257694",
+          "mode": "idle",
+          "receipts": [
+            {
+              "custom_name": "lower chest",
+              "has_worker": false,
+              "header_name": "Lower chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "lower chest",
+              "removing": false,
+              "revision": "471251419895981851",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": false,
+              "revision": "1475866136942257694",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": true,
+              "revision": "6816714865335275888",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            },
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": false,
+              "revision": "1475866136942257694",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            }
+          ],
+          "success": true,
+          "diagnostics": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "worker": {
+          "initial_revision": "6574063799659674870",
+          "mode": "worker",
+          "receipts": [
+            {
+              "custom_name": "",
+              "has_worker": false,
+              "header_name": "Kumquat wood Chest",
+              "id": 278,
+              "max_stage": 1,
+              "native_name": "kumquat wood Chest",
+              "removing": false,
+              "revision": "1475866136942257694",
+              "stage": 1,
+              "suspended": false,
+              "type": 10
+            }
+          ],
+          "success": true,
+          "diagnostics": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        }
+      },
+      "native_worker_after": {
+        "current_job": -1,
+        "destination": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "job_counter": 0,
+        "jobs": [],
+        "occupancy": [
+          134217730
+        ],
+        "path_goal": -1,
+        "position": {
+          "x": 191,
+          "y": 180,
+          "z": 175
+        },
+        "worker_id": 996
+      },
+      "binaries": {
+        "bridge": "318c5a420fea50b9b3600ff3234e53ba55ba06474205f1cb734df11142a601ab",
+        "viewer": "080617ac436a7e9ad28e8ed09dc7380e59eff0e71d508b48ae6dcf677d06ec05"
+      },
+      "scope": "Matched management100 bridge/model/Godot header reads and Rename/Remove/CancelRemoval receipts, stale/invalid refusal, name restoration and assigned-worker cleanup. Existing item/contents regressions pass. No chest controller, rendered screen or main-scene navigation acceptance."
     }
   }
 }

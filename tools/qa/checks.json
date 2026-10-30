@@ -3749,6 +3749,11 @@
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers -FarmItemCarrierArt compares native chest contents pixels and View identities, then exercises contents authority."
     },
     {
+      "path": "presentations/godot/project/tests/chest_header_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers exercises revision-checked chest header reads, rename/remove/cancel and assigned-worker cleanup through the real Godot transport."
+    },
+    {
       "path": "presentations/godot/project/tests/chest_contents_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers invokes this with an owned paused chest fixture; tests ordered membership, Hidden edits and stale/foreign rejection. Never run standalone."

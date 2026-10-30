@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 99;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v99";
+inline constexpr uint32_t kManagementVersion = 100;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v100";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -421,6 +421,12 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
         p->season() < -1 || p->season()>3 || (p->query() && p->query()->size()>128) ||
         (p->recipe() && p->recipe()->size()>128)) return "invalid production request";
+    if(p->building_header() && (p->building_id()<0 || p->independent_item() || p->locate_item() || p->contents() ||
+       p->item_id()!=-1 || p->item_value()!=-1 || p->season()!=-1 || p->crop_id()!=-1 || p->seasonal_fertilization()!=-1 ||
+       p->job_id()!=-1 || p->cursor() || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() ||
+       (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size()) ||
+       (r.action()!=ManagementAction::ProductionInspect && r.action()!=ManagementAction::FarmEdit) ||
+       (r.action()==ManagementAction::FarmEdit && (p->farm_operation()<FarmOperation::Rename || p->farm_operation()>FarmOperation::CancelRemoval))))return "invalid building header intent";
     if(p->independent_item() && (p->building_id()!=-1 || p->item_id()<0 || p->locate_item() ||
        (r.action()!=ManagementAction::ProductionInspect && r.action()!=ManagementAction::FarmEdit) ||
        (r.action()==ManagementAction::FarmEdit && (p->farm_operation()<FarmOperation::ItemForbid || p->farm_operation()>FarmOperation::ItemHidden))))return "invalid independent item intent";
@@ -445,7 +451,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
          p->season()!=-1 || p->contents())return "invalid contained item intent";
     } else if(!itemInspect && (p->item_id()!=-1 || p->item_value()!=-1))return "unexpected contained item intent";
     if(r.action()==ManagementAction::FarmEdit) {
-      if(!itemEdit && p->season()<0)return "season required";
+      if(!itemEdit && !p->building_header() && p->season()<0)return "season required";
       if(p->farm_operation()!=FarmOperation::Crop && p->crop_id()!=-1)return "unexpected farm crop";
       if(p->farm_operation()==FarmOperation::SeasonalFertilization ? p->seasonal_fertilization()<0 : p->seasonal_fertilization()!=-1)return "invalid seasonal fertilization intent";
     }
@@ -1312,7 +1318,30 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
-    if(const auto* state=p->independent_item()) {
+    if(const auto* state=p->building_header()) {
+      if(p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
+         p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor() ||
+         (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||
+         (p->jobs() && p->jobs()->size()) || (p->crops() && p->crops()->size()) ||
+         (p->seasonal_crops() && p->seasonal_crops()->size()) || (p->detail() && p->detail()->size()))return "mixed building header response";
+      const auto* f=state->snapshot();const auto outcome=state->outcome();const auto op=state->operation();
+      if(static_cast<uint8_t>(outcome)>4)return "invalid building header outcome";
+      if(f) {
+        const auto text=[](const flatbuffers::String* t,bool empty){return t && t->size()<=1536 && (empty || t->size()>0) && t->str().find('\0')==std::string::npos;};
+        if(f->id()<0 || f->type()!=10 || !f->revision() || f->revision()>INT64_MAX || f->stage()<0 || f->max_stage()<f->stage() ||
+           !text(f->custom_name(),true) || !text(f->native_name(),false) || !text(f->header_name(),false) ||
+           (!f->removing() && (f->suspended() || f->has_worker())))return "invalid building header snapshot";
+      }
+      if(s.action()==ManagementAction::ProductionInspect) {
+        if(outcome!=FarmEditOutcome::None || op!=FarmOperation::Crop || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr)))return "invalid building header read";
+      } else if(s.action()==ManagementAction::FarmEdit) {
+        if(outcome==FarmEditOutcome::None)return "missing building header outcome";
+        if(outcome==FarmEditOutcome::Completed) {
+          if(s.status()!=ManagementStatus::Ok || !f || f->stage()!=f->max_stage() || op<FarmOperation::Rename || op>FarmOperation::CancelRemoval ||
+             f->removing()!=(op==FarmOperation::Remove))return "invalid building header completion";
+        } else if(s.status()==ManagementStatus::Ok || f || op!=FarmOperation::Crop)return "unconfirmed building header authority";
+      } else return "unexpected building header response";
+    } else if(const auto* state=p->independent_item()) {
       if(p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
          p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor() ||
          (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||

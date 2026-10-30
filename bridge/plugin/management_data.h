@@ -120,7 +120,18 @@ struct IndependentItemState {
   std::optional<BuildingItemReceipt> edit;
   df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
 };
+struct BuildingHeaderSnapshot {
+  int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
+  std::string customName,nativeName,headerName;
+  bool removing=false,suspended=false,hasWorker=false;
+};
+struct BuildingHeaderState {
+  std::optional<BuildingHeaderSnapshot> snapshot;
+  df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
+  df3d::mirror::FarmOperation operation=df3d::mirror::FarmOperation::Crop;
+};
 struct ProductionState {
+  std::optional<BuildingHeaderState> buildingHeader;
   std::optional<IndependentItemState> independentItem;
   std::optional<ItemPosition> itemPosition;
   std::optional<BuildingItemSnapshot> item;

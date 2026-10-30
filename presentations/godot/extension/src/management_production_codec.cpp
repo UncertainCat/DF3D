@@ -83,6 +83,16 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   prod["selected_building"] = p.selectedBuilding;
   prod["created_job"] = p.createdJob;
   prod["detail"] = String::utf8(p.detail.c_str());
+  if(p.buildingHeader) {
+    const auto& state=*p.buildingHeader;Dictionary headerState;headerState["outcome"]=int(state.outcome);headerState["operation"]=int(state.operation);
+    if(state.snapshot) {
+      const auto& f=*state.snapshot;Dictionary value;
+      value["id"]=f.id;value["type"]=f.type;value["revision"]=int64_t(f.revision);value["stage"]=f.stage;value["max_stage"]=f.maxStage;
+      value["custom_name"]=String::utf8(f.customName.c_str());value["native_name"]=String::utf8(f.nativeName.c_str());value["header_name"]=String::utf8(f.headerName.c_str());
+      value["removing"]=f.removing;value["suspended"]=f.suspended;value["has_worker"]=f.hasWorker;headerState["snapshot"]=value;
+    }
+    prod["building_header"]=headerState;
+  }
   if(p.independentItem) {
     const auto& state=*p.independentItem;Dictionary itemState;itemState["outcome"]=int(state.outcome);
     if(state.edit) {
@@ -354,6 +364,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 }
 
 bool validateProductionShape(const Dictionary& data, String& error) {
+  if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
   if(data.has("independent_item") && data["independent_item"].get_type()!=Variant::BOOL){error="Wrong management field type: independent_item";return false;}
   if(data.has("locate_item") && data["locate_item"].get_type()!=Variant::BOOL){error="Wrong management field type: locate_item";return false;}
   if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization", "item_id", "item_value"}, error))return false;
@@ -392,6 +403,8 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.locateItem=data.get("locate_item",false);
   if(data.has("independent_item") && data["independent_item"].get_type()!=Variant::BOOL){error="Wrong management field type: independent_item";return false;}
   value.independentItem=data.get("independent_item",false);
+  if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
+  value.buildingHeader=data.get("building_header",false);
   value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,9));
   value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));value.itemValue=int8_t(n("item_value",-1,-1,1));
   String farmName=data.get("farm_name",String());

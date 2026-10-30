@@ -659,7 +659,16 @@ void publish() {
     const auto& value=*production.itemPosition;const m::TilePos pos(value.x,value.y,value.z);
     itemPosition=m::CreateItemPosition(b,value.id,&pos);
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem);
+  flatbuffers::Offset<m::BuildingHeaderState> buildingHeader;
+  if(production.buildingHeader) {
+    const auto& state=*production.buildingHeader;flatbuffers::Offset<m::BuildingHeaderSnapshot> snapshot;
+    if(state.snapshot) {
+      const auto& f=*state.snapshot;snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
+        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker);
+    }
+    buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation);
+  }
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -2493,6 +2502,49 @@ std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_produc
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->production() && r->production()->building_header()) {
+    const auto* q=r->production();message.clear();status=m::ManagementStatus::Rejected;production={};
+    auto& response=production.buildingHeader.emplace();const bool editing=r->action()==m::ManagementAction::FarmEdit;
+    response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;bool entered=false;
+    try {
+      const auto target=[&]()->df::building* {
+        auto* building=df::building::find(q->building_id());
+        if(!building || building->getType()!=df::building_type::Box)return nullptr;
+        auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
+        return tile && !tile->bits.hidden?building:nullptr;
+      };
+      const auto observe=[&]{return df3d_production::observeBuildingHeader(target());};
+      const auto convert=[](const df3d_production::BuildingHeaderObservation& f) {
+        return BuildingHeaderSnapshot{f.id,f.type,f.stage,f.maxStage,f.revision,DF2UTF(f.customName),DF2UTF(f.nativeName),DF2UTF(f.headerName),f.removing,f.suspended,f.hasWorker};
+      };
+      const auto before=observe();
+      if(before && !editing){response.snapshot=convert(*before);status=m::ManagementStatus::Ok;}
+      else if(before) {
+        using A=df3d_production::BuildingHeaderOperation;using O=df3d_production::BuildingHeaderOutcome;
+        const bool rename=q->farm_operation()==m::FarmOperation::Rename;
+        const auto operation=rename?A::Rename:q->farm_operation()==m::FarmOperation::Remove?A::Remove:A::CancelRemoval;
+        const auto text=rename?q->farm_name()->str():std::string{};const auto name=UTF2DF(text);
+        if(DF2UTF(name)==text) {
+          const auto result=df3d_production::finishBuildingHeaderEdit(*before,q->expected_revision(),operation,name,[&]{
+            auto* building=target();if(!building)return false;entered=true;
+            if(rename){building->name=name;return true;}
+            if(operation==A::CancelRemoval){const bool applied=df3d_production::cancelBuildingRemoval(building);if(!applied)entered=false;return applied;}
+            building->queueDestroy();return true;
+          },observe);
+          mutated=result.mutated;
+          if(result.outcome==O::Completed) {
+            response.outcome=m::FarmEditOutcome::Unknown;response.snapshot=convert(*result.receipt);
+            response.operation=q->farm_operation();response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
+          } else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
+          else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+        }
+      }
+    }catch(...) {
+      response.snapshot.reset();response.operation=m::FarmOperation::Crop;status=m::ManagementStatus::Rejected;
+      if(entered || response.outcome==m::FarmEditOutcome::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+    }
+    publish();return;
+  }
   if(r->production() && r->production()->independent_item()) {
     const auto* q=r->production();message.clear();status=m::ManagementStatus::Rejected;production={};
     auto& response=production.independentItem.emplace();

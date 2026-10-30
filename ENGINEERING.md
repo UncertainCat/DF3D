@@ -1150,6 +1150,33 @@ MSVC and build/qa/chest-header-transaction core pass, including injected failure
 and post-effect identity/field drift cases. This is semantic action acceptance;
 management transport, controller lifecycle and chest composition remain unfinished.
 
+Management100 carries these observations independently through ProductionInspect
+with building_header=true and edits through FarmEdit with the same flag. Header
+intents exclude farm seasons/crops/fertilizer, items, contents, queries and jobs.
+Rename/Remove/CancelRemoval retain their existing semantic operation IDs; no farm
+snapshot is fabricated. The Box-only bridge observes fresh native state at a safe
+point under the existing epoch/save admission checks, performs the verified action,
+and returns a typed outcome and confirmed operation. Snapshot names convert from
+CP437 to bounded UTF-8 while the native revision remains exact. Rejected/Stale/
+Unknown carry no header snapshot or confirmed operation. Strict request/result
+validation rejects mixed authority; model and Godot codecs preserve all fields.
+Both endpoints must rebuild on management100, as recorded in PINS.md.
+
+MSVC and build/qa/chest-header-wire pass: root/core, extension and existing item/
+contents controllers. Codec tests preserve revisions above2^53 and reject mixed
+requests, malformed snapshots and unconfirmed results. Protected132645 on2026-10-30
+runs chest_header_live.gd through the real transport with exact revisions. It
+verifies native captions, rename/repeat/restoration, stale rename, oversized-name
+refusal, remove/cancel, blocked rename during removal, absent target refusal,
+stale cancellation after worker assignment and confirmed worker cleanup. Native
+readback verifies original name/no jobs and the same worker state as the native
+button. Owned DF456 exits unsaved with source preservation. All previous item/
+contents pixel and effect regressions pass; eight GPU logs and the two combined
+headless log pairs contain only the known render-thread notice. The nested
+management100_wire_reference retains exact receipt revisions and binary hashes.
+The protected helper is registered in the QA manifest. Chest controller lifecycle,
+rendered composition and main-scene navigation remain unfinished and unexposed.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

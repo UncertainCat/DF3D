@@ -3677,3 +3677,45 @@ TEST_CASE("instrument inspection requires paired definition facts") {
     if(valid){auto decoded=codec::decodeProduction(value->production());const auto& a=*decoded.independentItem->snapshot->appearance;CHECK(a.instrumentFamily==family);CHECK(a.instrumentPlaced==placed);}
   }
 }
+
+TEST_CASE("building header requests preserve revisions and exclude unrelated intent") {
+  for(bool edit:{false,true})for(int fault=0;fault<13;++fault) {
+    CAPTURE(edit);CAPTURE(fault);wm::ManagementRequest r;
+    r.action=edit?wm::ManagementAction::FarmEdit:wm::ManagementAction::ProductionInspect;
+    auto& p=r.production;p.buildingHeader=true;p.buildingId=278;
+    if(edit){p.farmOperation=wm::FarmOperation::Rename;p.farmName="name";p.expectedRevision=9007199254740993ULL;}
+    if(fault==1)p.buildingId=-1;if(fault==2)p.independentItem=true;if(fault==3)p.contents=true;
+    if(fault==4)p.locateItem=true;if(fault==5)p.season=0;if(fault==6)p.itemId=45;
+    if(fault==7)p.expectedRevision=edit?0:1;if(fault==8)p.jobId=1;if(fault==9)p.cropId=1;
+    if(fault==10)p.query="mixed";if(fault==11)r.action=wm::ManagementAction::ProductionList;
+    if(fault==12){p.farmOperation=wm::FarmOperation::FertilizationToggle;p.farmName.clear();}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){CHECK(value->production()->building_header());if(edit)CHECK(value->production()->expected_revision()==9007199254740993ULL);}
+  }
+}
+TEST_CASE("building header receipts preserve authority and reject malformed state") {
+  for(bool edit:{false,true})for(int fault=0;fault<13;++fault) {
+    CAPTURE(edit);CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    auto snapshot=wire::CreateBuildingHeaderSnapshot(b,fault==1?-1:278,fault==2?4:10,fault==3?0:9007199254740993ULL,
+      fault==4?-1:1,1,b.CreateString("name"),b.CreateString("name"),fault==5?0:b.CreateString("Name"),false,fault==6,false);
+    auto header=wire::CreateBuildingHeaderState(b,fault==7?0:snapshot,
+      edit?(fault==8?wire::FarmEditOutcome::Unknown:wire::FarmEditOutcome::Completed):(fault==8?wire::FarmEditOutcome::Completed:wire::FarmEditOutcome::None),
+      fault==9?wire::FarmOperation::Remove:edit?wire::FarmOperation::Rename:wire::FarmOperation::Crop);
+    wire::ProductionStateBuilder prod(b);prod.add_building_header(header);if(fault==10)prod.add_selected_building(278);
+    auto payload=prod.Finish();wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);
+    state.add_action(fault==11?wire::ManagementAction::ProductionList:edit?wire::ManagementAction::FarmEdit:wire::ManagementAction::ProductionInspect);
+    state.add_status(fault==12?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.buildingHeader);REQUIRE(decoded.buildingHeader->snapshot);
+      CHECK(decoded.buildingHeader->snapshot->revision==9007199254740993ULL);CHECK(decoded.buildingHeader->snapshot->headerName=="Name");CHECK_FALSE(decoded.farm);}
+  }
+  for(auto outcome:{wire::FarmEditOutcome::Rejected,wire::FarmEditOutcome::Stale,wire::FarmEditOutcome::Unknown}) {
+    flatbuffers::FlatBufferBuilder b;auto header=wire::CreateBuildingHeaderState(b,0,outcome);
+    wire::ProductionStateBuilder prod(b);prod.add_building_header(header);auto payload=prod.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::FarmEdit);state.add_status(wire::ManagementStatus::Rejected);
+    b.Finish(state.Finish());CHECK_FALSE(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())));
+  }
+}

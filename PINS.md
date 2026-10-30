@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management100 adds independent building header reads and revision-checked actions.
+The request flag excludes farm/item/contents fields; header results carry their
+own snapshot, typed outcome and confirmed operation. Current production supports
+Box targets only. Both endpoints must rebuild on `Local\\df3d_management_v100`;
+management99 is incompatible. Missing historical header facts remain unknown.
+
 Management99 adds ItemInspectionAppearance to building contents rows, including
 the legacy building-item wrapper. BOX and INSTRUMENT rows require coherent
 appearance; other rows may omit it. Appearance participates in the complete

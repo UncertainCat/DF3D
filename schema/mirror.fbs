@@ -1531,6 +1531,7 @@ table ProductionRequest {
   item_id:int32 = -1;
   item_value:int8 = -1;
   locate_item:bool;
+  independent_item:bool;
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 table ProductionRecipe { key:string; name:string; requirements:[ProductionRequirement]; }
@@ -1589,6 +1590,19 @@ table BuildingItemSnapshot {
   weight:string; description:string;
   holder:ItemBuildingHolder;
 }
+// Item-owned authority: no containing-building identity, role or build state.
+table IndependentItemSnapshot {
+  id:int32 = -1; revision:uint64; item_type:int32 = -1;
+  name:string; material_token:string; subtype_raw:string;
+  forbid:bool; dump:bool; melt:bool; hidden:bool;
+  can_dump:bool; can_melt:bool; in_job:bool; in_building:bool;
+  weight:string; description:string;
+  holder:ItemBuildingHolder; stockpile:ItemBuildingHolder;
+}
+table IndependentItemState {
+  snapshot:IndependentItemSnapshot; edit:BuildingItemReceipt;
+  outcome:FarmEditOutcome;
+}
 table ProductionState {
   buildings:[ProductionBuilding]; next_cursor:uint32;
   recipes:[ProductionRecipe]; jobs:[ProductionJob]; crops:[FarmCrop];
@@ -1601,6 +1615,7 @@ table ProductionState {
   contents_edit:BuildingItemReceipt;
   item:BuildingItemSnapshot;
   item_position:ItemPosition;
+  independent_item:IndependentItemState;
 }
 table WorkOrderRequest {
   id:int32 = -1;
@@ -1887,7 +1902,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 92;
+  schema_version:uint32 = 93;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1933,7 +1948,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 92;
+  schema_version:uint32 = 93;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

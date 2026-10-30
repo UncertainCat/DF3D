@@ -3570,3 +3570,52 @@ TEST_CASE("item position response is bounded and has no mixed authority") {
   flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateProductionState(b));
   CHECK_FALSE(codec::decodeProduction(flatbuffers::GetRoot<wire::ProductionState>(b.GetBufferPointer())).itemPosition);
 }
+
+TEST_CASE("independent item requests exclude building authority and preserve exact revisions") {
+  for(bool edit:{false,true})for(int fault=0;fault<10;++fault) {
+    CAPTURE(edit);CAPTURE(fault);wm::ManagementRequest request;
+    request.action=edit?wm::ManagementAction::FarmEdit:wm::ManagementAction::ProductionInspect;
+    auto& p=request.production;p.independentItem=true;p.itemId=45;
+    if(edit){p.farmOperation=wm::FarmOperation::ItemHidden;p.itemValue=1;p.expectedRevision=9007199254740993ULL;}
+    if(fault==1)p.buildingId=227;if(fault==2)p.itemId=-1;if(fault==3)p.contents=true;
+    if(fault==4)p.locateItem=true;if(fault==5)p.season=0;if(fault==6)p.query="mixed";
+    if(fault==7)p.expectedRevision=edit?0:1;
+    if(fault==8)request.action=wm::ManagementAction::ProductionList;
+    if(fault==9)p.farmOperation=wm::FarmOperation::Rename;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){CHECK(value->production()->independent_item());if(edit)CHECK(value->production()->expected_revision()==9007199254740993ULL);}
+  }
+}
+TEST_CASE("independent item receipts reject mixed and unconfirmed authority") {
+  for(bool editing:{false,true})for(int fault=0;fault<(editing?19:15);++fault) {
+    CAPTURE(editing);CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    auto pile=wire::CreateItemBuildingHolder(b,fault==8?-1:121,fault==9?4:29,b.CreateString("native pile"));
+    auto item=wire::CreateIndependentItemSnapshot(b,fault==1?-1:45,fault==2?0:fault==3?UINT64_MAX:9007199254740993ULL,
+      fault==5?93:0,fault==4?0:b.CreateString("native item"),b.CreateString(fault==6?std::string(257,'x'):"POTASH"),b.CreateString(""),
+      false,true,false,false,true,false,false,false,b.CreateString("weight"),b.CreateString(fault==7?std::string(32769,'x'):"description"),0,pile);
+    auto receipt=wire::CreateBuildingItemReceipt(b,fault==14?46:45,fault==18?wire::FarmOperation::Crop:wire::FarmOperation::ItemDump,fault==17?-1:fault==15?0:1);
+    const auto outcome=editing?(fault==16?wire::FarmEditOutcome::Unknown:wire::FarmEditOutcome::Completed):
+      (fault==14?wire::FarmEditOutcome::Completed:wire::FarmEditOutcome::None);
+    auto independent=wire::CreateIndependentItemState(b,item,(editing&&fault!=13)||(!editing&&fault==13)?receipt:0,outcome);
+    wire::ProductionStateBuilder prod(b);prod.add_independent_item(independent);if(fault==10)prod.add_selected_building(227);
+    auto payload=prod.Finish();wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);
+    state.add_action(fault==12?wire::ManagementAction::ProductionList:editing?wire::ManagementAction::FarmEdit:wire::ManagementAction::ProductionInspect);
+    state.add_status(fault==11?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault) {
+      auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.independentItem);REQUIRE(decoded.independentItem->snapshot);
+      const auto& snapshot=*decoded.independentItem->snapshot;CHECK(snapshot.revision==9007199254740993ULL);CHECK(snapshot.id==45);
+      REQUIRE(snapshot.stockpile);CHECK(snapshot.stockpile->id==121);CHECK(snapshot.stockpile->name=="native pile");CHECK_FALSE(snapshot.holder);
+      CHECK(bool(decoded.independentItem->edit)==editing);CHECK_FALSE(decoded.item);CHECK_FALSE(decoded.contents);
+    }
+  }
+  for(auto outcome:{wire::FarmEditOutcome::Rejected,wire::FarmEditOutcome::Stale,wire::FarmEditOutcome::Unknown}) {
+    flatbuffers::FlatBufferBuilder b;auto independent=wire::CreateIndependentItemState(b,0,0,outcome);
+    wire::ProductionStateBuilder prod(b);prod.add_independent_item(independent);auto payload=prod.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::FarmEdit);state.add_status(wire::ManagementStatus::Rejected);
+    b.Finish(state.Finish());CHECK_FALSE(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())));
+  }
+}

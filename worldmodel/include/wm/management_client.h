@@ -272,7 +272,7 @@ struct AreaState {
 };
 struct ProductionRequest {
   int32_t itemId=-1;int8_t itemValue=-1;
-  bool contents=false,locateItem=false;
+  bool contents=false,locateItem=false,independentItem=false;
   FarmOperation farmOperation=FarmOperation::Crop;
   int8_t seasonalFertilization=-1;
   std::string farmName;
@@ -333,7 +333,19 @@ struct BuildingItemSnapshot {
   std::optional<ItemBuildingHolder> holder;
 };
 struct ItemPosition { int32_t id=-1,x=0,y=0,z=0; };
+struct IndependentItemSnapshot {
+  int32_t id=-1,itemType=-1;uint64_t revision=0;
+  std::string name,materialToken,subtypeRaw,weight,description;
+  bool forbid=false,dump=false,melt=false,hidden=false,canDump=false,canMelt=false,inJob=false,inBuilding=false;
+  std::optional<ItemBuildingHolder> holder,stockpile;
+};
+struct IndependentItemState {
+  std::optional<IndependentItemSnapshot> snapshot;
+  std::optional<BuildingItemReceipt> edit;
+  FarmEditOutcome outcome=FarmEditOutcome::None;
+};
 struct ProductionState {
+  std::optional<IndependentItemState> independentItem;
   std::optional<ItemPosition> itemPosition;
   std::optional<BuildingItemSnapshot> item;
   std::optional<BuildingItemReceipt> contentsEdit;

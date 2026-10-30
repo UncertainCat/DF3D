@@ -617,6 +617,23 @@ void publish() {
   if(production.contentsEdit) {
     const auto& edit=*production.contentsEdit;contentsEdit=m::CreateBuildingItemReceipt(b,edit.itemId,edit.operation,edit.value);
   }
+  flatbuffers::Offset<m::IndependentItemState> independentItem;
+  if(production.independentItem) {
+    const auto& state=*production.independentItem;
+    flatbuffers::Offset<m::IndependentItemSnapshot> snapshot;
+    flatbuffers::Offset<m::BuildingItemReceipt> edit;
+    if(state.snapshot) {
+      const auto& v=*state.snapshot;
+      const auto link=[&](const std::optional<ItemBuildingHolder>& value)->flatbuffers::Offset<m::ItemBuildingHolder> {
+        if(!value)return {};return m::CreateItemBuildingHolder(b,value->id,value->type,b.CreateString(value->name));
+      };
+      const auto holder=link(v.holder),stockpile=link(v.stockpile);
+      snapshot=m::CreateIndependentItemSnapshot(b,v.id,v.revision,v.itemType,b.CreateString(v.name),b.CreateString(v.materialToken),b.CreateString(v.subtypeRaw),
+        v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile);
+    }
+    if(state.edit)edit=m::CreateBuildingItemReceipt(b,state.edit->itemId,state.edit->operation,state.edit->value);
+    independentItem=m::CreateIndependentItemState(b,snapshot,edit,state.outcome);
+  }
   flatbuffers::Offset<m::BuildingItemSnapshot> itemSnapshot;
   if(production.item) {
     const auto& value=*production.item;const auto& row=value.item;
@@ -632,7 +649,7 @@ void publish() {
     const auto& value=*production.itemPosition;const m::TilePos pos(value.x,value.y,value.z);
     itemPosition=m::CreateItemPosition(b,value.id,&pos);
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition);
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -2439,9 +2456,58 @@ std::optional<BuildingItemSnapshot> observeFarmItem(int32_t buildingId,int32_t i
   }
   return std::nullopt;
 }
+std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_production::ItemObservation& observed) {
+  const auto& item=observed.item;IndependentItemSnapshot value;
+  value.id=item.id;value.revision=observed.revision;value.itemType=item.itemType;
+  value.name=DF2UTF(item.caption);value.materialToken=DF2UTF(item.materialToken);value.subtypeRaw=DF2UTF(item.subtypeRaw);
+  value.weight=DF2UTF(observed.weight);value.description=DF2UTF(observed.description);
+  value.forbid=item.forbid;value.dump=item.dump;value.melt=item.melt;value.hidden=item.hidden;value.canDump=item.canDump;value.canMelt=item.canMelt;
+  df::item_flags flags;flags.whole=item.flags;value.inJob=flags.bits.in_job;value.inBuilding=flags.bits.in_building;
+  if(observed.buildingHolder)value.holder=ItemBuildingHolder{observed.buildingHolder->id,observed.buildingHolder->type,DF2UTF(observed.buildingHolder->name)};
+  if(observed.stockpile)value.stockpile=ItemBuildingHolder{observed.stockpile->id,observed.stockpile->type,DF2UTF(observed.stockpile->name)};
+  if(value.name.size()>128*1024 || value.materialToken.size()>256 || value.subtypeRaw.size()>128 || value.weight.size()>128 || value.description.size()>32*1024 ||
+     (value.holder && value.holder->name.size()>512) || (value.stockpile && value.stockpile->name.size()>512))return std::nullopt;
+  return value;
+}
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->production() && r->production()->independent_item()) {
+    const auto* q=r->production();message.clear();status=m::ManagementStatus::Rejected;production={};
+    auto& response=production.independentItem.emplace();
+    const bool editing=r->action()==m::ManagementAction::FarmEdit;
+    response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
+    bool entered=false;
+    try {
+      const auto observe=[&]{return df3d_production::observeItem(df::item::find(q->item_id()));};
+      auto before=observe();
+      if(before && !editing) {
+        response.snapshot=independentItemSnapshot(*before);if(response.snapshot)status=m::ManagementStatus::Ok;
+      } else if(before) {
+        using A=df3d_production::BuildingItemAction;
+        const auto operation=q->farm_operation()==m::FarmOperation::ItemForbid?A::Forbid:q->farm_operation()==m::FarmOperation::ItemDump?A::Dump:
+          q->farm_operation()==m::FarmOperation::ItemMelt?A::Melt:A::Hidden;
+        const auto result=df3d_production::finishItemEdit(*before,q->expected_revision(),operation,q->item_value()!=0,[&]{
+          entered=true;const bool applied=df3d_production::setBuildingItemFlag(df::item::find(q->item_id()),operation,q->item_value()!=0);
+          if(!applied)entered=false;return applied;
+        },observe);
+        using O=df3d_production::FarmEditOutcome;
+        if(result.outcome==O::Completed) {
+          response.outcome=m::FarmEditOutcome::Unknown;
+          response.snapshot=independentItemSnapshot(*result.receipt);
+          if(response.snapshot) {
+            response.edit=BuildingItemReceipt{q->item_id(),q->farm_operation(),q->item_value()};
+            response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
+          }
+        } else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
+        else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+      }
+    }catch(...) {
+      response.snapshot.reset();response.edit.reset();status=m::ManagementStatus::Rejected;
+      if(entered || response.outcome==m::FarmEditOutcome::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+    }
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::FarmEdit && r->production() &&
      r->production()->farm_operation()>=m::FarmOperation::ItemForbid) {
     message.clear();status=m::ManagementStatus::Rejected;production={};

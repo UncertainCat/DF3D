@@ -22,6 +22,14 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management93 adds explicit `independent_item` inspection and flag-edit intents
+and a separate IndependentItemState snapshot/receipt. These requests exclude
+building identity and use an item observation revision, preserving the existing
+building-contents contract. Optional holder and spatial stockpile links remain
+distinct; absent historical observations cannot be synthesized. Rebuild/install
+bridge and viewer together on `Local\\df3d_management_v93`; management92 is
+incompatible. Other wire versions are unchanged.
+
 Management92 adds ProductionInspect locate_item requests and optional ItemPosition
 responses. Position-only requests require item_id and exclude building identity,
 contents paging, revisions and edit fields. Replies carry only the requested item

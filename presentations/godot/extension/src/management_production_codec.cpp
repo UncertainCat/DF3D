@@ -83,6 +83,24 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   prod["selected_building"] = p.selectedBuilding;
   prod["created_job"] = p.createdJob;
   prod["detail"] = String::utf8(p.detail.c_str());
+  if(p.independentItem) {
+    const auto& state=*p.independentItem;Dictionary itemState;itemState["outcome"]=int(state.outcome);
+    if(state.edit) {
+      Dictionary edit;edit["item_id"]=state.edit->itemId;edit["farm_operation"]=int(state.edit->operation);edit["value"]=state.edit->value;itemState["edit"]=edit;
+    }
+    if(state.snapshot) {
+      const auto& s=*state.snapshot;Dictionary value;
+      value["id"]=s.id;value["revision"]=int64_t(s.revision);value["item_type"]=s.itemType;
+      value["name"]=String::utf8(s.name.c_str());value["material_token"]=String::utf8(s.materialToken.c_str());value["subtype_raw"]=String::utf8(s.subtypeRaw.c_str());
+      value["weight"]=String::utf8(s.weight.c_str());value["description"]=String::utf8(s.description.c_str());
+      value["forbid"]=s.forbid;value["dump"]=s.dump;value["melt"]=s.melt;value["hidden"]=s.hidden;
+      value["can_dump"]=s.canDump;value["can_melt"]=s.canMelt;value["in_job"]=s.inJob;value["in_building"]=s.inBuilding;
+      const auto link=[](const wm::ItemBuildingHolder& source){Dictionary v;v["id"]=source.id;v["type"]=source.type;v["name"]=String::utf8(source.name.c_str());return v;};
+      if(s.holder)value["holder"]=link(*s.holder);if(s.stockpile)value["stockpile"]=link(*s.stockpile);
+      itemState["snapshot"]=value;
+    }
+    prod["independent_item"]=itemState;
+  }
   if(p.itemPosition) {
     Dictionary value;value["id"]=p.itemPosition->id;value["position"]=Vector3i(p.itemPosition->x,p.itemPosition->y,p.itemPosition->z);
     prod["item_position"]=value;
@@ -332,6 +350,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 }
 
 bool validateProductionShape(const Dictionary& data, String& error) {
+  if(data.has("independent_item") && data["independent_item"].get_type()!=Variant::BOOL){error="Wrong management field type: independent_item";return false;}
   if(data.has("locate_item") && data["locate_item"].get_type()!=Variant::BOOL){error="Wrong management field type: locate_item";return false;}
   if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization", "item_id", "item_value"}, error))return false;
   if(data.has("farm_name") && data["farm_name"].get_type()!=Variant::STRING) {error="Wrong management field type: farm_name";return false;}
@@ -367,6 +386,8 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.contents=data.get("contents",false);
   if(data.has("locate_item") && data["locate_item"].get_type()!=Variant::BOOL){error="Wrong management field type: locate_item";return false;}
   value.locateItem=data.get("locate_item",false);
+  if(data.has("independent_item") && data["independent_item"].get_type()!=Variant::BOOL){error="Wrong management field type: independent_item";return false;}
+  value.independentItem=data.get("independent_item",false);
   value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,9));
   value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));value.itemValue=int8_t(n("item_value",-1,-1,1));
   String farmName=data.get("farm_name",String());

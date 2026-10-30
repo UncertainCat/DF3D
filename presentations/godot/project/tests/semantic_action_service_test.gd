@@ -82,6 +82,7 @@ func test_construction_outcomes() -> void:
 func run():
 	test_header_payload_delivery()
 	test_result_ownership()
+	test_independent_item_unknown()
 	test_construction_outcomes()
 	test_location_entry_unknown()
 	test_continuation_order()
@@ -590,4 +591,14 @@ func test_header_payload_delivery() -> void:
 	check(world.payload_calls==2,"unrelated sequence does not fetch a payload")
 	world.generation+=1; service.poll()
 	check(world.payload_calls==2 and service._active==0,"generation replacement invalidates before fetching a stale receipt")
+	service.free()
+
+func test_independent_item_unknown() -> void:
+	var world:=FakeWorld.new();var service:=Service.new();service.configure(world)
+	var ticket:=service.submit("production",{"action":Contract.ManagementAction.FarmEdit,"independent_item":true,"item_id":45,"farm_operation":Contract.FarmOperation.ItemHidden,"item_value":1,"expected_revision":7},Callable())
+	service.poll()
+	world.state={"world_epoch":5,"revision":2,"request_seq":1,"status":3,"action":Contract.ManagementAction.FarmEdit,"production":{"independent_item":{"outcome":Contract.FarmEditOutcome.Unknown}}}
+	service.poll();check(service.result(ticket).outcome=="unknown","independent item uncertainty classified as ordinary rejection")
+	for i in 5:service.poll()
+	check(world.calls.size()==1,"uncertain independent item edit replayed")
 	service.free()

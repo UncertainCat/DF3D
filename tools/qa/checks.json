@@ -3744,6 +3744,11 @@
       "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmItemProgressOnly -FarmItemProgressScene exercises actual main-scene potash View, viewport flags and follow, native panel pixels and consumption retirement. Optional -FarmItemAction forbid|dump covers immediate paused action effects; -FarmItemActionProgress additionally verifies original job retirement and 600 later ticks after restoring the flag."
     },
     {
+      "path": "presentations/godot/project/tests/item_independent_live.gd",
+      "status": "manual",
+      "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmItemProgressOnly -IndependentItemOnly verifies independent item transport, flags, stale authority, controlled transfer and native text/location receipts. No rendered controller migration claim."
+    },
+    {
       "path": "presentations/godot/project/tests/farm_item_progress_live.gd",
       "status": "manual",
       "reason": "Protected owned unsaved clone: areas_acceptance.ps1 -FarmItemProgressOnly verifies real management potash inspection, visibility edits, background refresh and follow retirement after DF consumes fertilizer. Controlled supplies; no rendered scene claim."

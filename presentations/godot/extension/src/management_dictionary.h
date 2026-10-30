@@ -114,11 +114,11 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
              int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationStaffCandidates)))return true;
         return require("id");
     case A::AreaDelete: case A::AreaLink: return require("id");
-    case A::ProductionInspect: return bool(data.get("locate_item",false))?require("item_id"):require("building_id");
+    case A::ProductionInspect: return (bool(data.get("locate_item",false)) || bool(data.get("independent_item",false)))?require("item_id"):require("building_id");
     case A::ProductionQueue: return require("building_id") && require("recipe");
     case A::ProductionJobEdit: return require("building_id") && require("job_id");
     case A::FarmEdit:
-        if(int64_t(data.get("farm_operation",0))>=6)return require("building_id") && require("expected_revision") && require("item_id") && require("item_value");
+        if(int64_t(data.get("farm_operation",0))>=6)return (bool(data.get("independent_item",false)) || require("building_id")) && require("expected_revision") && require("item_id") && require("item_value");
         if(!(require("building_id") && require("season") && require("expected_revision")))return false;
         if(int64_t(data.get("farm_operation",0))==0)return require("crop_id");
         if(int64_t(data.get("farm_operation",0))==2)return require("seasonal_fertilization");

@@ -729,11 +729,33 @@ hash338f007f0f70f00f594841401d0cd120972290055dc9cba431a2e527c1e7a806.
 Core tests cover identity replacement, location changes, stale/invalid receipts,
 refused/throwing entry, lost readback, eligibility and repeated desired values.
 
-This is the native producer/transaction foundation. Management92 still exposes
-the old farm-bound item contract; the Godot transfer gap remains until the schema,
-model and controller migrate. Unit/container relationships, overlapping stockpile
-selection, other item types and independent Forbid/Dump/Melt live transport remain
-separate acceptance work. No new public screen is exposed by this change.
+Management93 exposes this producer through explicit `independent_item` requests
+and a separate `IndependentItemState` response. Reads carry an item ID; flag edits
+also require an exact observation revision and desired value. Building identity,
+contents paging and position-only requests cannot be mixed into these intents.
+Confirmed edits return a fresh snapshot and matching typed receipt. Rejected,
+Stale and Unknown edits carry no snapshot authority; unknown effects are never
+replayed. Holder and spatial stockpile links remain separate optional facts.
+The legacy building-contents and farm-bound item contracts retain their semantics.
+Version92 peers are incompatible; rebuild both endpoints. Old recordings cannot
+supply independent observations they never captured.
+
+Protected IndependentItemOnly221327 on2026-10-29 passes15 native-verified snapshots
+through the Godot/model client: delivered potash, both Visibility/Dump/Forbid
+values, original-job retirement, controlled transfer to stockpile121, both
+Visibility/Dump values after transfer, repeated desired values, stale revisions,
+missing-target refusal and ineligible Melt refusal. Exact revision strings and
+native UI guards are checked. Owned DF186856 exits unsaved; two save manifests
+remain unchanged. Existing rendered farm-item progress221728 also passes with
+only the known rendering-thread notice; DF162056 exits unsaved. Evidence and
+binary hashes are retained in `native_farm.json.independent_item_wire_reference`.
+Core codec tests preserve revisions above2^53 and reject malformed/mixed authority;
+the semantic action service classifies independent Unknown outcomes without replay.
+
+The visible Godot item controller still uses the farm-bound contract, so its
+transfer gap remains until controller/view migration. Unit/container relationships,
+overlapping stockpile selection, other item types and eligible Melt remain separate
+acceptance work. No new public screen is exposed by this transport change.
 
 ## Native item holder provider
 

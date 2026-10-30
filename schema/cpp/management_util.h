@@ -20,8 +20,8 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
      (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
   return nullptr;
 }
-inline constexpr uint32_t kManagementVersion = 92;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v92";
+inline constexpr uint32_t kManagementVersion = 93;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v93";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -411,8 +411,11 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
         p->season() < -1 || p->season()>3 || (p->query() && p->query()->size()>128) ||
         (p->recipe() && p->recipe()->size()>128)) return "invalid production request";
+    if(p->independent_item() && (p->building_id()!=-1 || p->item_id()<0 || p->locate_item() ||
+       (r.action()!=ManagementAction::ProductionInspect && r.action()!=ManagementAction::FarmEdit) ||
+       (r.action()==ManagementAction::FarmEdit && (p->farm_operation()<FarmOperation::ItemForbid || p->farm_operation()>FarmOperation::ItemHidden))))return "invalid independent item intent";
     if(p->locate_item() && (r.action()!=ManagementAction::ProductionInspect || p->building_id()!=-1 || p->item_id()<0))return "invalid item position intent";
-    if (r.action()!=ManagementAction::ProductionList && !p->locate_item() && p->building_id()<0) return "production building required";
+    if (r.action()!=ManagementAction::ProductionList && !p->locate_item() && !p->independent_item() && p->building_id()<0) return "production building required";
     if (r.action()==ManagementAction::ProductionQueue && (!p->recipe() || !p->recipe()->size())) return "recipe required";
     if (r.action()==ManagementAction::ProductionJobEdit && (p->job_id()<0 ||
         (p->cancel() && (p->repeat()!=-1 || p->suspend()!=-1)) ||
@@ -1299,6 +1302,37 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
+    if(const auto* state=p->independent_item()) {
+      if(p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
+         p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor() ||
+         (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||
+         (p->jobs() && p->jobs()->size()) || (p->crops() && p->crops()->size()) ||
+         (p->seasonal_crops() && p->seasonal_crops()->size()) || (p->detail() && p->detail()->size()))return "mixed independent item response";
+      if(s.action()!=ManagementAction::ProductionInspect && s.action()!=ManagementAction::FarmEdit)return "unexpected independent item response";
+      const auto* item=state->snapshot();const auto* edit=state->edit();const auto outcome=state->outcome();
+      if(static_cast<uint8_t>(outcome)>4)return "invalid independent item outcome";
+      if(item) {
+        auto text=[](const flatbuffers::String* value,size_t limit){return value && value->size()<=limit;};
+        if(item->id()<0 || !item->revision() || item->revision()>INT64_MAX || item->item_type()<0 || item->item_type()>92 ||
+           !text(item->name(),128*1024) || !text(item->material_token(),256) || !text(item->subtype_raw(),128) ||
+           !text(item->weight(),128) || !text(item->description(),32*1024))return "invalid independent item snapshot";
+        for(const auto* link:{item->holder(),item->stockpile()})
+          if(link && (link->id()<0 || link->type()<0 || !text(link->name(),512)))return "invalid independent item link";
+        if(item->stockpile() && item->stockpile()->type()!=29)return "invalid item stockpile type";
+      }
+      if(s.action()==ManagementAction::ProductionInspect) {
+        if(edit || outcome!=FarmEditOutcome::None || ((s.status()==ManagementStatus::Ok)!=(item!=nullptr)))return "invalid independent item read";
+      } else {
+        if(outcome==FarmEditOutcome::None)return "missing independent item outcome";
+        if(outcome==FarmEditOutcome::Completed) {
+          if(s.status()!=ManagementStatus::Ok || !item || !edit || edit->item_id()!=item->id() || edit->value()<0 || edit->value()>1 ||
+             edit->operation()<FarmOperation::ItemForbid || edit->operation()>FarmOperation::ItemHidden)return "invalid independent item receipt";
+          const bool actual=edit->operation()==FarmOperation::ItemForbid?item->forbid():edit->operation()==FarmOperation::ItemDump?item->dump():
+            edit->operation()==FarmOperation::ItemMelt?item->melt():item->hidden();
+          if(actual!=(edit->value()!=0))return "unconfirmed independent item value";
+        } else if(s.status()==ManagementStatus::Ok || item || edit)return "unconfirmed independent item authority";
+      }
+    } else {
     if(const auto* value=p->item_position()) {
       const auto* pos=value->position();
       if(s.action()!=ManagementAction::ProductionInspect || s.status()!=ManagementStatus::Ok || value->id()<0 || !pos ||
@@ -1399,6 +1433,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     ids.clear();
     if(p->crops()) for(const auto* v:*p->crops()) if(!v || v->id()<0 || v->id()>32767 || !ids.insert(v->id()).second || !textOk(v->name(),512) || !v->seasons() || v->seasons()>15) return "invalid farm crop";
     if(p->seasonal_crops()) for(auto id:*p->seasonal_crops()) if(id < -1 || id>32767) return "invalid seasonal crop";
+    } // Legacy building/contents production state.
   }
 
   if(const auto* a=s.selection()) {

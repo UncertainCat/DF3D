@@ -43,6 +43,37 @@ if request.op=='sample' then
    end end end
   end
  end
+elseif request.op=='independent_transfer' then
+ assert(item and not item.flags.in_job,'transfer requires unreserved potash')
+ local destination
+ for _,pile in ipairs(df.global.world.buildings.other.STOCKPILE)do
+  if pile.z==farm.z then
+   for y=pile.y1,pile.y2 do for x=pile.x1,pile.x2 do
+    if (x<farm.x1 or x>farm.x2 or y<farm.y1 or y>farm.y2) and dfhack.buildings.containsTile(pile,x,y)then
+     local designation=dfhack.maps.getTileFlags(x,y,pile.z)
+     if designation and not designation.hidden then destination={x=x,y=y,z=pile.z};break end
+    end
+   end if destination then break end end
+  end
+  if destination then break end
+ end
+ assert(destination and dfhack.items.moveToGround(item,destination),'controlled transfer failed')
+ for _,held in ipairs(farm.contained_items)do assert(held.item.id~=item.id,'transfer retained farm membership')end
+ fixture.frame=df.global.world.frame_counter;fixture.ui=ui;result.destination=destination;result.controlled_transfer=true
+elseif request.op=='independent_verify' then
+ assert(item and fixture.frame==df.global.world.frame_counter and fixture.ui==ui,'independent request changed frame/native UI')
+ local text,code=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(item.id));assert(code==0,text)
+ local expected=json.decode(text).snapshot;local actual=request.snapshot
+ assert(actual.id==item.id and request.revision_text==expected.revision,'independent identity/revision differs')
+ assert(actual.name==expected.caption and actual.weight==expected.weight and actual.description==expected.description,'independent native text differs')
+ for _,field in ipairs{'forbid','dump','melt','hidden','can_dump','can_melt','item_type','material_token'}do assert(actual[field]==expected[field],field..' differs')end
+ assert(actual.in_job==item.flags.in_job and actual.in_building==item.flags.in_building,'independent job/building flags differ')
+ for _,field in ipairs{'holder','stockpile'}do
+  local e=expected[field];local a=actual[field]
+  if e and e~=json.null then assert(a and a.id==e.id and a.type==e.type and a.name==e.name,'independent '..field..' differs')
+  else assert(not a or a==json.null,'invented independent '..field)end
+ end
+ result.snapshot=expected;result.ui_unchanged=true
 elseif request.op=='verify' then
  assert(contained and fixture.expected,'potash target disappeared while paused')
  assert(fixture.frame==df.global.world.frame_counter and fixture.ui==ui,'inspection changed frame/native UI')

@@ -21,6 +21,19 @@ ProductionState decodeProduction(const m::ProductionState* p) {
   n.selectedBuilding = p->selected_building();
   n.createdJob = p->created_job();
   n.detail = str(p->detail());
+  if(const auto* source=p->independent_item()) {
+    auto& state=n.independentItem.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());
+    if(const auto* edit=source->edit())state.edit=BuildingItemReceipt{edit->item_id(),static_cast<FarmOperation>(edit->operation()),edit->value()};
+    if(const auto* item=source->snapshot()) {
+      auto& value=state.snapshot.emplace();value.id=item->id();value.revision=item->revision();value.itemType=item->item_type();
+      value.name=str(item->name());value.materialToken=str(item->material_token());value.subtypeRaw=str(item->subtype_raw());
+      value.weight=str(item->weight());value.description=str(item->description());
+      value.forbid=item->forbid();value.dump=item->dump();value.melt=item->melt();value.hidden=item->hidden();
+      value.canDump=item->can_dump();value.canMelt=item->can_melt();value.inJob=item->in_job();value.inBuilding=item->in_building();
+      if(const auto* link=item->holder())value.holder=ItemBuildingHolder{link->id(),link->type(),str(link->name())};
+      if(const auto* link=item->stockpile())value.stockpile=ItemBuildingHolder{link->id(),link->type(),str(link->name())};
+    }
+  }
   if(const auto* value=p->item_position())n.itemPosition=ItemPosition{value->id(),value->position()->x(),value->position()->y(),value->position()->z()};
   if(const auto* edit=p->contents_edit())n.contentsEdit=BuildingItemReceipt{edit->item_id(),static_cast<FarmOperation>(edit->operation()),edit->value()};
   if(const auto* page=p->contents()) {
@@ -187,7 +200,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
                                     p.cancel, p.season, p.cropId, p.expectedRevision,static_cast<m::FarmOperation>(p.farmOperation),p.seasonalFertilization,
-                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem);
+                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem);
 }
 
 flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBufferBuilder& b,

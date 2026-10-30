@@ -48,6 +48,7 @@ func present(value: Dictionary) -> void:
 		var material: PackedStringArray=snapshot.get("material_token","").split(":")
 		if material.size()==3 and material[0]=="PLANT":icon=source.farm_seed_icon(material[1])
 	elif snapshot.get("item_type",-1)==0 and snapshot.get("material_token","")=="POTASH":icon=source.farm_potash_icon()
+	elif snapshot.has("appearance") and source.has_method("item_sheet_icon"):icon=source.item_sheet_icon(snapshot.item_type,snapshot.appearance,int(snapshot.id))
 	visible=not snapshot.is_empty();queue_redraw()
 
 func set_following(value: bool) -> void:

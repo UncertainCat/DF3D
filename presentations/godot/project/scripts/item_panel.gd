@@ -52,6 +52,7 @@ func _state_changed() -> void:
 		value.holder_id=value.holder.id
 		value.holder_name=("On " if value.holder.type==2 else "In ")+value.holder.name
 		if value.holder.type==4:value.holder_art="BUILDING_ICON_FARM_PLOT"
+		elif value.holder.type==10:value.holder_art="BUILDING_ICON_BOX"
 	panel.pending=state.phase!=state.Phase.Ready
 	panel.present(value)
 	_follow_changed()

@@ -31087,5 +31087,203 @@
       }
     ],
     "scope": "Runtime independent BOX inspection. Native c75000 options match item-sheet initializer; owned output and facts observed after native art/weight initialization. Cold masterwork image creates one semantic art record; native sheet matches; warm open/closed probes preserve item/improvement/art/UI bytes and allocate nothing further. Matched Godot client validates exact revision, description, weight, holder identity and two Hidden edit receipts. Ordinary chest repeats transport and edits; carrier panel/wire regressions pass in both runs. Controlled item fields/references restored; newly generated semantic art belongs to disposable session, which exits unsaved. Not generic item-type, every improvement subtype, rendered chest destination or navigation acceptance."
+  },
+  "item_box_render_reference": {
+    "management_version": 97,
+    "bridge_sha256": "8bd301578e004b55af648cf8896733b83d19c7a6ad168c6487ed0af6b2de29e7",
+    "extension_sha256": "2dc34897cc830b94b8dcbef0c289c634e470cde99ca3e31b6dc07119bb8bfeae",
+    "cases": [
+      {
+        "case": "ordinary",
+        "source": "build/stockpile-storage-native-farm-discovery-20261030-121834",
+        "owned_df_pid": 173992,
+        "status": "passed_with_known_issues",
+        "source_manifest_unchanged": true,
+        "exit_without_saving": true,
+        "panel_size": [
+          488,
+          708
+        ],
+        "differing_pixels": 0,
+        "native_rgb_sha256": "717862894866f6ee42cccf31883700c3d3bd2594f45bc789a1bea4d7249604bd",
+        "viewer_rgb_sha256": "717862894866f6ee42cccf31883700c3d3bd2594f45bc789a1bea4d7249604bd",
+        "view_intent_building_id": 278,
+        "own_appearance": {
+          "color_token": "TAUPE_PALE",
+          "flags": 0,
+          "material_token": "PLANT:KUMQUAT:WOOD",
+          "stack": 1,
+          "subtype_raw": ""
+        },
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 5834,
+              "revision": "3872842437599687722",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 5834,
+              "revision": "4421565664735192314",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        },
+        "regression_panels": {
+          "1": {
+            "full_panel_match": true,
+            "icon_available": true
+          },
+          "2": {
+            "full_panel_match": true,
+            "icon_available": true
+          },
+          "box": {
+            "full_panel_match": true,
+            "icon_available": true
+          }
+        },
+        "diagnostics": {
+          "farm-item-carrier-box-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-container-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        }
+      },
+      {
+        "case": "masterpiece",
+        "source": "build/stockpile-storage-native-farm-discovery-20261030-121926",
+        "owned_df_pid": 125208,
+        "status": "passed_with_known_issues",
+        "source_manifest_unchanged": true,
+        "exit_without_saving": true,
+        "panel_size": [
+          488,
+          708
+        ],
+        "differing_pixels": 0,
+        "native_rgb_sha256": "4ff87febc1b3dbe80ab62edb903fa755835721221be06401df79b9e369df7fe6",
+        "viewer_rgb_sha256": "4ff87febc1b3dbe80ab62edb903fa755835721221be06401df79b9e369df7fe6",
+        "view_intent_building_id": 278,
+        "own_appearance": {
+          "color_token": "TAUPE_PALE",
+          "flags": 0,
+          "material_token": "PLANT:KUMQUAT:WOOD",
+          "stack": 1,
+          "subtype_raw": ""
+        },
+        "wire": {
+          "receipts": [
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 5834,
+              "revision": "1173025897618668788",
+              "value": true
+            },
+            {
+              "holder": {
+                "id": 278,
+                "name": "kumquat wood Chest",
+                "type": 10
+              },
+              "id": 5834,
+              "revision": "5095750059903760722",
+              "value": false
+            }
+          ],
+          "stale_checked": false,
+          "success": true
+        },
+        "regression_panels": {
+          "1": {
+            "full_panel_match": true,
+            "icon_available": true
+          },
+          "2": {
+            "full_panel_match": true,
+            "icon_available": true
+          },
+          "box": {
+            "full_panel_match": true,
+            "icon_available": true
+          }
+        },
+        "diagnostics": {
+          "farm-item-carrier-box-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-container-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        }
+      }
+    ],
+    "scope": "Standalone item view, native description and header appearance, building-holder artwork and View intent; current item authority and Hidden edits. Actual carrier navigation, parent building management and other item families remain unfinished."
   }
 }

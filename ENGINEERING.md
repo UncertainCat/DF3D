@@ -928,7 +928,7 @@ those target workflows are verified. The row shifts down with a stockpile link
 like the existing building holder. Carrier artwork resets on each observation;
 unit icons reuse resident semantic actor appearance through selection_icon.
 
-Container artwork uses its management96 appearance through item_sheet_icon,
+Container artwork uses its independent appearance through item_sheet_icon,
 independently of the terrain-item stream. BOX dispatch c7f595..c7f931 calls native
 cefaa0, which composes the material-class base and item-ID variant with the
 material palette. The presentation reuses the existing placed-chest resolver
@@ -950,6 +950,18 @@ Core, item-sheet controller and construction-icon regressions pass in
 `build/qa/item-carrier-composite-final`. Public farm/item exposure remains staged.
 General item descriptions and carrier destination navigation remain required
 before this workflow is complete.
+
+The BOX inspection header now uses its own management97 appearance through the
+same item_sheet_icon renderer. The holder row selects installed BUILDING_ICON_BOX
+for building type10. Protected ordinary121834 and masterwork121926 on2026-10-30
+compare complete488x708 rendered chest panels with native DF: both are pixel
+identical, including caption, description, header and holder artwork. Actual
+viewport clicks emit holder278. Seed/container and seed/unit panel regressions
+also remain pixel identical. item_box_render_reference records hashes, appearance,
+edit receipts and known diagnostics. The standalone harness supplies the same
+holder presentation fields as item_panel; this is not main-scene navigation
+acceptance. Carrier View routing, parent building management and remaining item
+families remain unfinished; public farm/item exposure stays staged.
 
 ## Native item holder provider
 

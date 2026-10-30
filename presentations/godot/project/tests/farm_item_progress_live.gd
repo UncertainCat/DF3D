@@ -17,6 +17,21 @@ func exercise() -> void:
 	await progress_cases(model,follow,actions)
 	model.dispose();follow.dispose();follow.free();actions.free()
 
+func open_item(model,follow,actions) -> void:
+	model.open(int(fixture.building_id),int(fixture.item_id))
+	await settle(model,follow,actions)
+
+func edit_item(model,follow,actions,operation: int,value: bool) -> void:
+	model.set_flag(operation,value)
+	await settle(model,follow,actions)
+
+func start_follow(model,follow,actions) -> void:
+	follow.toggle(int(fixture.item_id))
+	await settle(model,follow,actions)
+
+func observe_item(_label: String) -> void:pass
+func observe_retirement() -> void:pass
+
 func progress_cases(model,follow,actions) -> void:
 	var opened:=false;var consumed:=false;var samples: Array=[]
 	for iteration in 100:
@@ -28,15 +43,17 @@ func progress_cases(model,follow,actions) -> void:
 		var sample:=await native("sample");if stopped:return
 		samples.append(sample)
 		if sample.contained and not opened:
-			model.open(int(fixture.building_id),int(fixture.item_id))
-			if not await settle(model,follow,actions):return
+			await open_item(model,follow,actions)
+			if stopped:return
+			await observe_item("baseline")
+			if stopped:return
 			if not check(model.phase==model.Phase.Ready,"potash inspection unavailable"):return
 			await native("verify",{"snapshot":model.view_snapshot(),"revision_text":str(model.snapshot.revision)})
 			if stopped:return
 			for hidden in [true,false]:
 				model.poll(1) # Explicit action must preempt a queued background read.
-				model.set_flag(Contract.FarmOperation.ItemHidden,hidden)
-				if not await settle(model,follow,actions):return
+				await edit_item(model,follow,actions,Contract.FarmOperation.ItemHidden,hidden)
+				if stopped:return
 				if not check(model.phase==model.Phase.Ready and model.snapshot.hidden==hidden,"potash visibility receipt failed"):return
 				await native("flags",{"hidden":hidden})
 				if stopped:return
@@ -44,8 +61,10 @@ func progress_cases(model,follow,actions) -> void:
 				var observations: Array=[]
 				var operation: int=Contract.FarmOperation.ItemForbid if fixture.action=="forbid" else Contract.FarmOperation.ItemDump
 				for value in [true,false]:
-					model.set_flag(operation,value)
-					if not await settle(model,follow,actions):return
+					await edit_item(model,follow,actions,operation,value)
+					if stopped:return
+					await observe_item(str(fixture.action)+("_enabled" if value else "_disabled"))
+					if stopped:return
 					if not check(model.phase==model.Phase.Ready and model.snapshot[fixture.action]==value,"active-job action receipt failed"):return
 					var observed:=await native("item_action",{"value":value})
 					if stopped:return
@@ -53,8 +72,8 @@ func progress_cases(model,follow,actions) -> void:
 					observations.append(observed)
 				write_json("farm-item-action-results.json",{"action":fixture.action,"observations":observations,"snapshot":model.view_snapshot()})
 				return
-			follow.toggle(int(fixture.item_id))
-			if not await settle(model,follow,actions):return
+			await start_follow(model,follow,actions)
+			if stopped:return
 			if not check(follow.last_position!=null,"potash follow failed"):return
 			opened=true
 		elif opened:
@@ -67,6 +86,8 @@ func progress_cases(model,follow,actions) -> void:
 				consumed=true;break
 			if not check(model.phase==model.Phase.Ready and model.snapshot.id==int(fixture.item_id),"live potash refresh lost target"):return
 	if consumed:
+		await observe_retirement()
+		if stopped:return
 		for i in 3:
 			model.poll(1);follow._process(1);world.poll();actions.poll()
 			if not check(model.ticket==0 and follow.ticket==0 and model.item_id==-1 and follow.item_id==-1,"consumed target restarted"):return

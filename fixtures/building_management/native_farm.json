@@ -26937,6 +26937,244 @@
       }
     }
   },
-  "scope": "Immediate paused Forbid/Dump behavior on naturally assigned fertilizer: both flag values, reservation/job/worker/item references, retained farm membership and open native sheet. Later simulation after these actions and rendered main-scene action input remain unaccepted."
+  "scope": "Immediate paused Forbid/Dump behavior on naturally assigned fertilizer: both flag values, reservation/job/worker/item references, retained farm membership and open native sheet. Later simulation after these actions remains unaccepted; actual main-scene input is covered separately in potash_scene_reference."
+}
+,
+  "potash_scene_reference": {
+  "scope": "Actual main-scene staged farm owner: viewport View, both Visibility values, follow and consumption retirement; optional Forbid/Dump cases compare immediate paused effects and full native item panel pixels. Public farm route remains hidden. Subsequent simulation after job-affecting edits and existing items leaving farm membership remain unaccepted.",
+  "runs": [
+    {
+      "mode": "consumption",
+      "capture": "build/areas-acceptance-20261029-205834",
+      "owned_df_pid": 161456,
+      "exit": "unsaved",
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "status": "passed_with_known_issues",
+      "diagnostics": "Known separate rendering-thread notice only",
+      "result": {
+        "captures": [
+          {
+            "name": "baseline",
+            "rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a"
+          }
+        ],
+        "native_checks": 75,
+        "reasons": [],
+        "status": "passed",
+        "surface": "staged farm owner in actual main scene; viewport mouse input"
+      },
+      "opened": true,
+      "consumed": true,
+      "sample_count": 72,
+      "first": {
+        "contained": false,
+        "current": 0.0,
+        "frame": 0.0,
+        "job_count": 29.0,
+        "present": true,
+        "status": "passed"
+      },
+      "last": {
+        "contained": false,
+        "current": 1.0,
+        "frame": 2574.0,
+        "job_count": 0.0,
+        "present": false,
+        "status": "passed"
+      },
+      "retirement": {
+        "elevation_released": true,
+        "minimap_released": true,
+        "owner_released": true,
+        "sheet_hidden": true
+      }
+    },
+    {
+      "mode": "forbid",
+      "capture": "build/areas-acceptance-20261029-210044",
+      "owned_df_pid": 154520,
+      "exit": "unsaved",
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "status": "passed_with_known_issues",
+      "diagnostics": "Known separate rendering-thread notice only",
+      "result": {
+        "captures": [
+          {
+            "name": "baseline",
+            "rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a"
+          },
+          {
+            "name": "forbid_enabled",
+            "rgb_sha256": "1989dea2130b30cf577d1b42127e9defe0fc2397da515fb3962df9483c5bd1c3"
+          },
+          {
+            "name": "forbid_disabled",
+            "rgb_sha256": "d7995042f19816df40502fcd6c03073dbd9efc59e95dbcf223e32c3b1faf5a4f"
+          }
+        ],
+        "native_checks": 55,
+        "reasons": [],
+        "status": "passed",
+        "surface": "staged farm owner in actual main scene; viewport mouse input"
+      },
+      "effects": {
+        "action": "forbid",
+        "observations": [
+          {
+            "action": "forbid",
+            "contained": true,
+            "current": 0.0,
+            "frame": 1772.0,
+            "in_job": false,
+            "job_count": 1.0,
+            "job_id": 382820.0,
+            "job_items": 0.0,
+            "job_refs": 0.0,
+            "present": true,
+            "status": "passed",
+            "ui_unchanged": true,
+            "value": true,
+            "worker_id": 1017.0
+          },
+          {
+            "action": "forbid",
+            "contained": true,
+            "current": 0.0,
+            "frame": 1772.0,
+            "in_job": false,
+            "job_count": 1.0,
+            "job_id": 382820.0,
+            "job_items": 0.0,
+            "job_refs": 0.0,
+            "present": true,
+            "status": "passed",
+            "ui_unchanged": true,
+            "value": false,
+            "worker_id": 1017.0
+          }
+        ],
+        "snapshot": {
+          "building_id": 227,
+          "can_dump": true,
+          "can_melt": false,
+          "completed": true,
+          "description": "These are potash.  ",
+          "dump": false,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 227,
+            "name": "Farm Plot",
+            "type": 4
+          },
+          "id": 48520,
+          "in_building": false,
+          "in_job": false,
+          "item_type": 0,
+          "material_token": "POTASH",
+          "melt": false,
+          "name": "potash",
+          "removing": false,
+          "revision": 3915608483983938496,
+          "role": 0,
+          "subtype_raw": "",
+          "weight": "7Γ"
+        }
+      }
+    },
+    {
+      "mode": "dump",
+      "capture": "build/areas-acceptance-20261029-210219",
+      "owned_df_pid": 180544,
+      "exit": "unsaved",
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "status": "passed_with_known_issues",
+      "diagnostics": "Known separate rendering-thread notice only",
+      "result": {
+        "captures": [
+          {
+            "name": "baseline",
+            "rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a"
+          },
+          {
+            "name": "dump_enabled",
+            "rgb_sha256": "509eadff8028c1f9e0e7ab95d4cad933d156f75dba25337222eb3f13d8697627"
+          },
+          {
+            "name": "dump_disabled",
+            "rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a"
+          }
+        ],
+        "native_checks": 46,
+        "reasons": [],
+        "status": "passed",
+        "surface": "staged farm owner in actual main scene; viewport mouse input"
+      },
+      "effects": {
+        "action": "dump",
+        "observations": [
+          {
+            "action": "dump",
+            "contained": true,
+            "current": 0.0,
+            "frame": 1421.0,
+            "in_job": true,
+            "job_count": 1.0,
+            "job_id": 382821.0,
+            "job_items": 1.0,
+            "job_refs": 1.0,
+            "present": true,
+            "status": "passed",
+            "ui_unchanged": true,
+            "value": true,
+            "worker_id": 1017.0
+          },
+          {
+            "action": "dump",
+            "contained": true,
+            "current": 0.0,
+            "frame": 1421.0,
+            "in_job": true,
+            "job_count": 1.0,
+            "job_id": 382821.0,
+            "job_items": 1.0,
+            "job_refs": 1.0,
+            "present": true,
+            "status": "passed",
+            "ui_unchanged": true,
+            "value": false,
+            "worker_id": 1017.0
+          }
+        ],
+        "snapshot": {
+          "building_id": 227,
+          "can_dump": true,
+          "can_melt": false,
+          "completed": true,
+          "description": "These are potash.  ",
+          "dump": false,
+          "forbid": false,
+          "hidden": false,
+          "holder": {
+            "id": 227,
+            "name": "Farm Plot",
+            "type": 4
+          },
+          "id": 48520,
+          "in_building": false,
+          "in_job": true,
+          "item_type": 0,
+          "material_token": "POTASH",
+          "melt": false,
+          "name": "potash",
+          "removing": false,
+          "revision": 6861315585775711082,
+          "role": 0,
+          "subtype_raw": "",
+          "weight": "7Γ"
+        }
+      }
+    }
+  ]
 }
 }

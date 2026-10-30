@@ -6,6 +6,36 @@ local script=require('gui.script')
   assert(df.global.pause_state);local frame=df.global.world.frame_counter
   assert(dfhack.run_command('disable','overlay')==0)
   local b=assert(df.global.world.buildings.other.FARM_PLOT[0],'fixture has no farm')
+  -- Capture the unmodified save's item population before controlled variants.
+  local census={name='farm-item-census',farms={},potash={}}
+  local function item_fact(item)
+   return {id=item.id,type=df.item_type[item:getType()],material_type=item:getMaterial(),
+    material_index=item:getMaterialIndex(),flags=item.flags.whole}
+  end
+  for _,farm in ipairs(df.global.world.buildings.other.FARM_PLOT)do
+   local entry={id=farm.id,contents={},jobs={}}
+   for _,held in ipairs(farm.contained_items)do
+    local row=item_fact(assert(held.item));row.role=held.use_mode
+    entry.contents[#entry.contents+1]=row
+   end
+   for _,job in ipairs(farm.jobs)do
+    local row={id=job.id,type=df.job_type[job.job_type],items={}}
+    for _,ref in ipairs(job.items)do if ref.item then row.items[#row.items+1]=item_fact(ref.item)end end
+    entry.jobs[#entry.jobs+1]=row
+   end
+   census.farms[#census.farms+1]=entry
+  end
+  for _,item in ipairs(df.global.world.items.all)do
+   if item:getMaterial()==df.builtin_mats.POTASH then census.potash[#census.potash+1]=item_fact(item)end
+  end
+  records[#records+1]=census
+  local progress=io.open(out..'/farm-fertilization-progress')
+  if progress then
+   progress:close()
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-native.lua$','farm-fertilization-progress-native.lua')
+   assert(loadfile(source))(out,view,records,b)
+   return
+  end
   local function semantic_rows()
    local guards={}
    local function guard(address,size)

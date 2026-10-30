@@ -25728,4 +25728,533 @@
   ],
   "scope": "Native seed description wrapping at 54 columns, 12-pixel line pitch. Description-area pixels only; longer scrolling descriptions and nonseed items remain unaccepted."
 }
+,
+  "fertilizer_delivery_reference": {
+  "completed": true,
+  "contents_types": {
+    "BAR": true
+  },
+  "delivered_item_inspected": true,
+  "elapsed_ticks": 2634,
+  "farm_id": 227,
+  "final": 1,
+  "fixture_supplies": true,
+  "fixture_worker_id": 996,
+  "initial": 0,
+  "maximum": 29,
+  "name": "farm-fertilization-progress",
+  "potash_id": 48520,
+  "reservation_observed": true,
+  "supplied_potash_consumed": true,
+  "capture": "build/stockpile-storage-native-farm-discovery-20261029-193222",
+  "samples": [
+    {
+      "frame": 0,
+      "current": 0,
+      "contents": [],
+      "potash_present": true,
+      "potash_removed": false,
+      "job_count": 29,
+      "potash_jobs": []
+    },
+    {
+      "frame": 86,
+      "current": 0,
+      "contents": [],
+      "potash_present": true,
+      "potash_removed": false,
+      "job_count": 18,
+      "potash_jobs": [
+        {
+          "id": 382820,
+          "items": [
+            48520
+          ],
+          "type": "FertilizeField",
+          "worker": 1017
+        }
+      ]
+    },
+    {
+      "frame": 186,
+      "current": 0,
+      "contents": [],
+      "potash_present": true,
+      "potash_removed": false,
+      "job_count": 10,
+      "potash_jobs": [
+        {
+          "id": 382820,
+          "items": [
+            48520
+          ],
+          "type": "FertilizeField",
+          "worker": 1017
+        }
+      ]
+    },
+    {
+      "frame": 286,
+      "current": 0,
+      "contents": [],
+      "potash_present": true,
+      "potash_removed": false,
+      "job_count": 5,
+      "potash_jobs": [
+        {
+          "id": 382820,
+          "items": [
+            48520
+          ],
+          "type": "FertilizeField",
+          "worker": 1017
+        }
+      ]
+    },
+    {
+      "frame": 386,
+      "current": 0,
+      "contents": [],
+      "potash_present": true,
+      "potash_removed": false,
+      "job_count": 1,
+      "potash_jobs": [
+        {
+          "id": 382820,
+          "items": [
+            48520
+          ],
+          "type": "FertilizeField",
+          "worker": 1017
+        }
+      ]
+    },
+    {
+      "frame": 1666,
+      "current": 0,
+      "contents": [
+        {
+          "id": 48520,
+          "role": 0,
+          "type": "BAR"
+        }
+      ],
+      "potash_present": true,
+      "potash_removed": false,
+      "job_count": 1,
+      "potash_jobs": [
+        {
+          "id": 382820,
+          "items": [
+            48520
+          ],
+          "type": "FertilizeField",
+          "worker": 1017
+        }
+      ]
+    },
+    {
+      "frame": 2634,
+      "current": 1,
+      "contents": [],
+      "potash_present": false,
+      "potash_removed": false,
+      "job_count": 0,
+      "potash_jobs": []
+    }
+  ],
+  "native_item": {
+    "building_id": 227,
+    "description": "These are potash.  ",
+    "description_provider_accepted": false,
+    "description_width": 54,
+    "frame": 1666,
+    "header": {
+      "building_id": 227,
+      "caption": "potash",
+      "completed": true,
+      "contents_revision": "6668445376462680316",
+      "facts": {
+        "can_dump": true,
+        "can_melt": false,
+        "dump": false,
+        "forbid": false,
+        "hidden": false,
+        "item_type": 0,
+        "material_token": "POTASH",
+        "melt": false,
+        "subtype_raw": ""
+      },
+      "holder": {
+        "building_id": 227,
+        "building_type": 4,
+        "name": "Farm Plot"
+      },
+      "item_id": 48520,
+      "removing": false,
+      "weight": "7Γ"
+    },
+    "item_id": 48520,
+    "name": "farm-delivered-potash-item",
+    "panel_rgb_sha256": "b7bd6b9b85189db8cc7d031da3ad301086d0b20d94d2a9d30e8f6afdadf0382a"
+  },
+  "contents": {
+    "building_id": 227,
+    "revision": "6668445376462680316",
+    "rows": [
+      {
+        "can_dump": true,
+        "can_melt": false,
+        "countdown": 39,
+        "delay": 40,
+        "flags": 805306370,
+        "id": 48520,
+        "item_type": 0,
+        "material_token": "POTASH",
+        "name": "potash",
+        "role_value": 0,
+        "subtype_raw": ""
+      }
+    ]
+  },
+  "scope": "Owned disposable clone with one created potash bar placed on farm and Plant labor enabled for the creation worker. Native scheduler, worker assignment, delivery and consumption run without forced jobs or item movement after setup. Native item View and header read succeed; description provider rejects BAR. No DF3D potash item rendering or writes accepted.",
+  "limitations": "Samples taken at script-frame callbacks; not a trace of every simulation tick. Native screenshot is authoritative for glyphs; header diagnostic weight retains the command-output encoding.",
+  "baseline_census": {
+    "farms": [
+      {
+        "contents": [],
+        "id": 227,
+        "jobs": []
+      },
+      {
+        "contents": [
+          {
+            "flags": 32,
+            "id": 47492,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47486,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47494,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47485,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47484,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47493,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47491,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47545,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47540,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47541,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47544,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47536,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47534,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47537,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47532,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47543,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47542,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47533,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47530,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47531,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47535,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47529,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47600,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47611,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47594,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47665,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47695,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47696,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47697,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47664,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47680,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47692,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47749,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47764,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47763,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47762,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47742,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47748,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47881,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          },
+          {
+            "flags": 32,
+            "id": 47929,
+            "material_index": 176,
+            "material_type": 423,
+            "role": 2,
+            "type": "SEEDS"
+          }
+        ],
+        "id": 968,
+        "jobs": []
+      }
+    ],
+    "name": "farm-item-census",
+    "potash": []
+  }
+}
 }

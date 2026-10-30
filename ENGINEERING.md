@@ -525,6 +525,25 @@ below. Longer scrolling descriptions, unbroken long words, nonseed artwork and
 general item-description providers remain unaccepted. The public farm route
 remains staged until the full workflow is complete.
 
+Potash is a required nonseed farm-inspection case. Protected
+`stockpile_storage_native.ps1 -FarmDiscovery -FarmFertilizationProgress` supplies
+one potash bar in an owned disposable clone, enables Plant labor for its creation
+worker, then lets DF assign and execute the native scheduled jobs. Final193222
+on2026-10-29 verifies worker reservation, temporary BAR membership in farm227's
+contents, native View opening that item, consumption of the supplied bar and
+fertilization increasing from0 to1. The initial untouched save has two farms,
+40 contained seeds, no farm jobs and no potash; that baseline alone cannot test
+fertilizer inspection. DF166324 exits unsaved and source preservation passes.
+
+`fertilizer_delivery_reference` records bounded transition samples, native sheet
+description/artwork evidence, contents/header reads and the confirmed rejection
+by the current seed-only description provider. Native displays the delivered
+potash's active-job indicator as well. Potash description/artwork/job-indicator
+support and consumed-item retirement in DF3D remain required before exposure.
+This is controlled-supply native workflow evidence, not DF3D item-sheet acceptance
+or an exhaustive trace of every simulation tick. Other native farm scopes remain
+paused; only this explicitly selected progress scope advances simulation.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

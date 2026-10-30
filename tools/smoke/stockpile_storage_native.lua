@@ -14,7 +14,9 @@ require('gui.script').start(function()
    farm_marker:close()
    local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','farm-native.lua')
    assert(loadfile(source))(out,view,records)
-   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+   local progress=io.open(out..'/farm-fertilization-progress')
+   if progress then progress:close();assert(df.global.pause_state,'progress scope did not pause')
+   else assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')end
    return
   end
   if test_location_names then

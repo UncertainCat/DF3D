@@ -1,0 +1,116 @@
+-- Disposable owned-clone discovery. Supplies are controlled; DF executes jobs.
+local out,view,records,farm=...
+local script=require('gui.script')
+assert(df.global.pause_state and #farm.jobs==0)
+df.global.d_init.feature.autosave=df.d_init_autosave.NONE
+local worker
+for _,unit in ipairs(df.global.world.units.active)do
+ if dfhack.units.isCitizen(unit) and not unit.job.current_job then worker=unit;break end
+end
+assert(worker,'no idle citizen for disposable potash creation')
+local created=dfhack.items.createItem(worker,df.item_type.BAR,-1,df.builtin_mats.POTASH,-1)
+assert(#created==1,'potash fixture creation failed')
+local potash=created[1];local potash_id=potash.id
+assert(dfhack.items.moveToGround(potash,{x=farm.centerx,y=farm.centery,z=farm.z}))
+potash.flags.forbid=false
+worker.status.labors[df.unit_labor.PLANT]=true
+local initial=farm.current_fertilization
+local row={name='farm-fertilization-progress',farm_id=farm.id,potash_id=potash_id,
+ initial=initial,maximum=farm.max_fertilization,fixture_supplies=true,fixture_worker_id=worker.id,
+ samples={},contents_types={}}
+records[#records+1]=row
+local text,code=dfhack.run_command_silent('df3d','farm-fertilize',tostring(farm.id),'toggle')
+assert(code==0,text)
+assert(#farm.jobs>0,'native scheduler created no fertilizer jobs')
+local start=df.global.world.frame_counter
+local deadline=dfhack.getTickCount()+60000
+local last_signature
+local function inspect_delivered_item(item)
+ df.global.pause_state=true
+ local gui=require('gui');local g=df.global.gps;local sheet=df.global.game.main_interface.view_sheets
+ local function click(x,y)
+  g.mouse_x=x//8;g.mouse_y=(y-4)//12;g.precise_mouse_x=x;g.precise_mouse_y=y
+  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ end
+ df.global.game.main_interface.bottom_mode_selected=-1
+ dfhack.gui.revealInDwarfmodeMap({x=farm.centerx,y=farm.centery,z=farm.z},true)
+ view:render(dfhack.getTickCount())
+ local found=false
+ for y=0,g.dimy-1 do for x=0,g.dimx-1 do
+  g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6
+  local p=dfhack.gui.getMousePos(true)
+  if p and p.x==farm.centerx and p.y==farm.centery and p.z==farm.z then
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());found=true;break
+  end
+ end if found then break end end
+ assert(found and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==farm.id,'delivered farm not selected')
+ local function capture(name)
+  g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0
+  for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+  local shot={name=name,item_id=item.id,building_id=farm.id,frame=df.global.world.frame_counter,lines={}}
+  for y=0,g.dimy-1 do
+   local line={}
+   for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;line[#line+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
+   shot.lines[#shot.lines+1]=dfhack.df2utf(table.concat(line)):gsub('%s+$','')
+  end
+  records[#records+1]=shot
+  local f=assert(io.open(out..'/shot','w'));f:write(name);f:close()
+  local limit=dfhack.getTickCount()+30000
+  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
+   assert(dfhack.getTickCount()<limit,'potash capture timeout');script.sleep(1,'frames')end
+  return shot
+ end
+ local contents=capture('farm-delivered-potash-contents')
+ local text,code=dfhack.run_command_silent('df3d','farm-contents-read',tostring(farm.id))
+ assert(code==0,text);contents.semantic=require('json').decode(text)
+ -- This one-row native panel has no scrollbar, so View is at772 (not756).
+ click(772,526)
+ assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id,'native potash View failed')
+ local native=capture('farm-delivered-potash-item')
+ native.description=dfhack.df2utf(sheet.raw_description);native.description_width=sheet.description_width
+ local header,header_code=dfhack.run_command_silent('df3d','farm-item-header-read',tostring(farm.id),tostring(item.id))
+ assert(header_code==0,header);native.header=require('json').decode(header)
+ local _,description_code=dfhack.run_command_silent('df3d','farm-item-description-probe',tostring(farm.id),tostring(item.id))
+ native.description_provider_accepted=description_code==0
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ row.delivered_item_inspected=true
+ df.global.pause_state=false
+ deadline=dfhack.getTickCount()+60000
+end
+local ok,why=pcall(function()
+ df.global.pause_state=false
+ while dfhack.getTickCount()<deadline and df.global.world.frame_counter-start<10000 do
+  local item=df.item.find(potash_id)
+  local sample={frame=df.global.world.frame_counter,current=farm.current_fertilization,
+   contents={},jobs={},potash_present=item~=nil,potash_removed=item and item.flags.removed or false}
+  for _,held in ipairs(farm.contained_items)do
+   sample.contents[#sample.contents+1]={id=held.item.id,type=df.item_type[held.item:getType()],role=held.use_mode}
+   row.contents_types[df.item_type[held.item:getType()]]=true
+  end
+  for _,job in ipairs(farm.jobs)do
+   local entry={id=job.id,type=df.job_type[job.job_type],items={}}
+   local unit=dfhack.job.getWorker(job);entry.worker=unit and unit.id or -1
+   for _,ref in ipairs(job.items)do if ref.item then entry.items[#entry.items+1]=ref.item.id end end
+   sample.jobs[#sample.jobs+1]=entry
+  end
+  local signature=require('json').encode{sample.current,sample.contents,sample.jobs,sample.potash_present,sample.potash_removed}
+  if signature~=last_signature then row.samples[#row.samples+1]=sample;last_signature=signature end
+  if not row.delivered_item_inspected then
+   for _,held in ipairs(farm.contained_items)do if held.item.id==potash_id then inspect_delivered_item(held.item);break end end
+  end
+  if farm.current_fertilization>initial then row.completed=true;break end
+  script.sleep(1,'frames')
+ end
+end)
+df.global.pause_state=true
+row.final=farm.current_fertilization;row.elapsed_ticks=df.global.world.frame_counter-start
+assert(ok,why)
+assert(row.completed,'fertilizer job did not complete within the observation bound')
+assert(row.delivered_item_inspected,'delivered potash never reached farm contents')
+local reserved=false
+for _,sample in ipairs(row.samples)do for _,job in ipairs(sample.jobs)do
+ for _,id in ipairs(job.items)do if id==potash_id and job.worker>=0 then reserved=true end end
+end end
+assert(reserved,'DF never assigned a worker with the supplied potash')
+assert(not df.item.find(potash_id),'completed fertilizer job retained supplied potash')
+row.reservation_observed=true;row.supplied_potash_consumed=true

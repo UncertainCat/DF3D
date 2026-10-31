@@ -47,5 +47,23 @@ func run() -> void:
   top_hash.update(image.get_region(Rect2i(int(r[0]),int(r[1]),int(r[2]),int(r[3]))).get_data())
   if top_hash.finish().hex_encode()!=sample.sha256:
    push_error("Wide Combat top-page pixels differ");quit(1);return
+ root.size=Vector2i(1200,800)
+ for i in 2:await process_frame
+ state.scroll_to(7);root.size=Vector2i(1600,900)
+ for i in 2:await process_frame
+ var append_index:=22
+ for sample in fixture.chest_header_reference.unit_reports_append_reference.events:
+  state.pause_on_new=sample.pause_option
+  state.refresh_new_reports()
+  var row:Dictionary={"id":append_index,"text":"Synthetic appended unit combat report","color":3,"bright":true,"position_visible":true,"position":Vector3i(1,1,1)}
+  state.accept(state.generation,0,{"view":3,"unit_id":1017,"unit_category":0,"list_revision":1,"reports":[row],"total":append_index+1})
+  assert(state.log_requested==int(sample.first) and state.visible_log_rows()==int(sample.visible))
+  for i in 2:await process_frame;await RenderingServer.frame_post_draw
+  image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+  image.save_png(directory+"/append-"+str(append_index-21)+".png")
+  var append_hash:=HashingContext.new();append_hash.start(HashingContext.HASH_SHA256);append_hash.update(image.get_region(Rect2i(48,96,1320,732)).get_data())
+  if append_hash.finish().hex_encode()!=sample.rgb_sha256:
+   push_error("Combat append frame differs: "+str(append_index));quit(1);return
+  append_index+=1
  view.queue_free();world.queue_free();await process_frame
  print("CREATURE_REPORTS_CAPTURE_PASS");quit(0)

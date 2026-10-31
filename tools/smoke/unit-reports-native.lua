@@ -5,6 +5,7 @@ local g=df.global.gps;local main=df.global.game.main_interface
 local sheet=main.view_sheets;local alert=main.announcement_alert
 local frame=df.global.world.frame_counter
 local observations={}
+local append_events={}
 local added_ids={}
 local original_log={}
 for _,id in ipairs(unit.reports.log[0])do original_log[#original_log+1]=id end
@@ -105,6 +106,21 @@ local ok,err=xpcall(function()
     local previous=texts.scroll;texts.scroll=0;view:render(dfhack.getTickCount());record('wide-top')
     assert(texts.num_visible==18,'wide native capacity differs')
     texts.scroll=previous;view:render(dfhack.getTickCount())
+    if os.getenv('DF3D_UNIT_REPORTS_APPEND')=='1' then
+     for step,pause in ipairs{false,true,false,true}do
+      widget.pause_on_new=pause
+      local before={first=texts.scroll,visible=texts.num_visible}
+      local flags=df.announcement_flags:new()
+      local index=dfhack.gui.makeAnnouncement(df.announcement_type.COMBAT_STRIKE_DETAILS,flags,unit.pos,'Synthetic appended unit combat report',3,true);flags:delete()
+      local report=assert(df.global.world.status.reports[index]);added_ids[#added_ids+1]=report.id;unit.reports.log[0]:insert('#',report.id)
+      local effect_ok,effect_err=pcall(function()df.global.pause_state=false;widget:logic()end)
+      local paused=df.global.pause_state;df.global.pause_state=true;assert(effect_ok,effect_err)
+      view:render(dfhack.getTickCount())
+      append_events[#append_events+1]={pause_option=pause,paused=paused,before=before,first=texts.scroll,visible=texts.num_visible,id=report.id}
+      assert(paused==pause,'native pause-on-new effect differs')
+      record('wide-append-'..step..'-'..tostring(pause))
+     end
+    end
    end
   end
   local texts=shared(widget.texts,df.widget_scroll_rows)
@@ -126,6 +142,6 @@ if #added_ids>0 then
  for _,id in ipairs(original_log)do unit.reports.log[0]:insert('#',id)end
 end
 pointer(400,400)
-local result={success=ok,unit_id=unit.id,observations=observations,synthetic_report_ids=added_ids,error=not ok and err or nil}
+local result={success=ok,unit_id=unit.id,observations=observations,append_events=append_events,synthetic_report_ids=added_ids,error=not ok and err or nil}
 local f=assert(io.open(out..'/unit-reports-native.json','w'));f:write(json.encode(result));f:close()
 assert(ok,err);return result

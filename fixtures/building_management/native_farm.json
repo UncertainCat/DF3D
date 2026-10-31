@@ -44091,8 +44091,190 @@
       ],
       "limits": [
         "Single-click native arrow/drag parity remains unverified.",
-        "Dynamic new-report append after resizing remains unverified."
+        "Dynamic append is accepted separately in unit_reports_append_reference."
       ]
+    },
+    "unit_reports_append_reference": {
+      "provenance": "Native120157 on2026-10-31, DF194308; paused owned clone, source unchanged and unsaved exit.",
+      "events": [
+        {
+          "before": {
+            "first": 7,
+            "visible": 15
+          },
+          "first": 7,
+          "id": 78868,
+          "pause_option": false,
+          "paused": false,
+          "visible": 16,
+          "rgb_sha256": "920a6b1a42a3107d2af83db5e2231ef02b3ee8eea863af47d071b5014cf060ff"
+        },
+        {
+          "before": {
+            "first": 7,
+            "visible": 16
+          },
+          "first": 7,
+          "id": 78869,
+          "pause_option": true,
+          "paused": true,
+          "visible": 17,
+          "rgb_sha256": "b95c2e76ada3248f6db893ede19b7fdf182cff4647f4211f144db6f41c4b6bc6"
+        },
+        {
+          "before": {
+            "first": 7,
+            "visible": 17
+          },
+          "first": 7,
+          "id": 78870,
+          "pause_option": false,
+          "paused": false,
+          "visible": 18,
+          "rgb_sha256": "c2cb3ee8c58a068d86a8cf73dec87e425dfcb844a1bb70bc7e9c3b242692cc2e"
+        },
+        {
+          "before": {
+            "first": 7,
+            "visible": 18
+          },
+          "first": 8,
+          "id": 78871,
+          "pause_option": true,
+          "paused": true,
+          "visible": 18,
+          "rgb_sha256": "2b40aacd970b1471fbc8b7fcb74398817784b45e55d4793d457c458ad98f6286"
+        }
+      ],
+      "region": [
+        48,
+        96,
+        1320,
+        732
+      ],
+      "rule": "Fill spare viewport space without moving upward; once full, follow the newest row.",
+      "limits": [
+        "Native effects verify pause synchronously without simulation advancement; composed viewer verifies pause intent counts while the fixture remains paused."
+      ],
+      "live": {
+        "provenance": "Protected120557 on2026-10-31, DF4080; source unchanged, owned unsaved exit.",
+        "result": {
+          "observations": [
+            {
+              "first": 7,
+              "id": 78844,
+              "pause_intents": 0,
+              "pause_option": false,
+              "rows": 23,
+              "visible": 16
+            },
+            {
+              "first": 7,
+              "id": 78845,
+              "pause_intents": 1,
+              "pause_option": true,
+              "rows": 24,
+              "visible": 17
+            },
+            {
+              "first": 7,
+              "id": 78846,
+              "pause_intents": 0,
+              "pause_option": false,
+              "rows": 25,
+              "visible": 18
+            },
+            {
+              "first": 8,
+              "id": 78847,
+              "pause_intents": 1,
+              "pause_option": true,
+              "rows": 26,
+              "visible": 18
+            }
+          ],
+          "success": true
+        },
+        "native_effects": [
+          {
+            "before": {
+              "first": 7,
+              "visible": 15
+            },
+            "first": 7,
+            "id": 78870,
+            "pause_option": false,
+            "paused": false,
+            "visible": 16
+          },
+          {
+            "before": {
+              "first": 7,
+              "visible": 16
+            },
+            "first": 7,
+            "id": 78871,
+            "pause_option": true,
+            "paused": true,
+            "visible": 17
+          },
+          {
+            "before": {
+              "first": 7,
+              "visible": 17
+            },
+            "first": 7,
+            "id": 78872,
+            "pause_option": false,
+            "paused": false,
+            "visible": 18
+          },
+          {
+            "before": {
+              "first": 7,
+              "visible": 18
+            },
+            "first": 8,
+            "id": 78873,
+            "pause_option": true,
+            "paused": true,
+            "visible": 18
+          }
+        ],
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire.stdout.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        }
+      },
+      "qa": "unit-reports-append-final: core, Reports state/controller, baseline/resize/four append GPU frames pass; GPU known startup/finalize/ObjectDB only."
     }
   }
 }

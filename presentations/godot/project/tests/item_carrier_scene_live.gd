@@ -423,6 +423,7 @@ func exercise_history(inspector,source,source_id:int,target:int) -> void:
 		check(model.log_requested==6,"Combat scrollbar up did not navigate retained rows")
 		await pointer(reports.panel.position+Vector2(400,250),MOUSE_BUTTON_WHEEL_UP)
 		check(model.log_requested==6,"Combat text wheel moved native-inert log")
+		if expected.get("append_enabled",false):await exercise_history_append(reports,target)
 	var paused:bool=model.pause_on_new
 	await pointer(reports.panel.position+reports.panel.pause_target().get_center())
 	check(model.pause_on_new!=paused,"Combat pause toggle did not receive input")
@@ -449,3 +450,40 @@ func exercise_history(inspector,source,source_id:int,target:int) -> void:
 		check(is_equal_approx(scene.camera_rig.position.x,tile.x+0.5) and is_equal_approx(scene.camera_rig.position.z,tile.y+0.5) and world.get_top_z()==tile.z,"Combat recenter missed stored report position")
 	var file:=FileAccess.open(directory+"/unit-reports-scene-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"direct_combat":true,"back_to_map":true,"overlay_blocks_input":true,"resize":true,"native_help_glyph_pixels":ink_count,"native_button_pixels":1152,"populated_navigation":populated}));file.close()
+
+func exercise_history_append(reports,target:int) -> void:
+	var model=reports.controller.state
+	model.scroll_to(7)
+	root.size=Vector2i(1600,900);await process_frame;await process_frame
+	check(model.log_requested==7 and model.visible_log_rows()==15,"Append fixture did not retain resized first row")
+	var deadline:=Time.get_ticks_msec()+5000
+	while model.unit_log_length<0 and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+	check(model.unit_log_length>=0,"Report source length baseline missing")
+	var pauses:Array=[]
+	var observe_pause:=func():pauses.append(true)
+	model.pause_requested.connect(observe_pause)
+	var evidence:Array=[]
+	for serial in [1,2,3,4]:
+		var pause:bool=serial%2==0
+		if model.pause_on_new!=pause:await pointer(reports.panel.position+reports.panel.pause_target().get_center())
+		var before:=pauses.size()
+		var file:=FileAccess.open(directory+"/unit-report-append-request.tmp",FileAccess.WRITE)
+		file.store_string(JSON.stringify({"unit_id":target,"serial":serial}));file.close()
+		DirAccess.rename_absolute(directory+"/unit-report-append-request.tmp",directory+"/unit-report-append-request.json")
+		deadline=Time.get_ticks_msec()+5000
+		while not FileAccess.file_exists(directory+"/unit-report-append-ack.json") and Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+		if not check(FileAccess.file_exists(directory+"/unit-report-append-ack.json"),"Native append acknowledgement missing; no replay"):break
+		var ack:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-report-append-ack.json"));DirAccess.remove_absolute(directory+"/unit-report-append-ack.json")
+		deadline=Time.get_ticks_msec()+5000
+		while int(model.rows.back().id)!=int(ack.id) and Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+		check(model.rows.size()==22+serial and int(model.rows.back().id)==int(ack.id),"Live Combat append missing or duplicated")
+		check(model.log_requested==maxi(7,4+serial) and model.visible_log_rows()==mini(18,15+serial),"Live append moved above retained native first row")
+		check(pauses.size()-before==int(pause),"Pause-on-new emitted wrong number of intents")
+		evidence.append({"id":int(ack.id),"rows":model.rows.size(),"first":model.log_requested,"visible":model.visible_log_rows(),"pause_option":pause,"pause_intents":pauses.size()-before})
+	model.pause_requested.disconnect(observe_pause)
+	root.size=Vector2i(1200,800);await process_frame;await process_frame
+	var file:=FileAccess.open(directory+"/unit-reports-append-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"observations":evidence}));file.close()

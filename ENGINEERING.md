@@ -1939,7 +1939,7 @@ save remains unchanged; owned DF185196 exits unsaved. Core, composition and
 Reports state/controller checks pass. GPU capture has only known startup and
 shutdown diagnostics; live logs have only the known startup notice. Earlier
 113127 stopped before interaction on a test indentation error, subsequently fixed.
-Dynamic new reports, native scrolling input, and complete unit-page
+Native scrolling input and complete unit-page
 acceptance remain unfinished; the public unit route stays staged.
 
 unit_reports_resize_reference records native113533 and composed114450 on
@@ -1962,8 +1962,8 @@ startup notice; GPU has only known startup/finalize/ObjectDB diagnostics.
 
 Native wheel/Up/Page Up probes do not move the log. The diagnostic simulated
 arrow press moves two rows, including after explicit mouse-state release; isolate
-SDL press/release/repeat before claiming single-click parity. Wide capacity and populated live navigation are verified below; dynamic new
-reports and native single-click/drag equivalence remain unverified.
+SDL press/release/repeat before claiming single-click parity. Wide capacity and populated live navigation are verified below; native single-click/drag equivalence remains unverified; dynamic updates are
+accepted separately below.
 The unit route remains staged; these checks do not complete all unit pages.
 
 unit_reports_populated_live_reference records protected115134 on2026-10-31,
@@ -1985,8 +1985,31 @@ x48..255,y780..827, explicitly excluded from this reference. The same border
 area is covered by the earlier unobscured resize captures. GPU checks pass with
 known startup/finalize/ObjectDB diagnostics. A posted window click did not reach
 the hidden native scrollbar, so its helper was removed; it is not evidence for
-single-click behavior. Dynamic append after resize and native arrow/drag input
-remain unfinished. No runtime changes were needed for this acceptance work.
+single-click behavior. Native arrow/drag input remains unfinished; dynamic append is accepted below. No runtime changes were needed for this acceptance work.
+
+unit_reports_append_reference records native120157 and composed120557 on
+2026-10-31. After widening a22-report log at first7, three new rows fill the
+available space without moving that first row; the fourth advances to first8.
+The displayed counts are16,17,18,18. Direct-entry refresh now preserves its
+current first row when the new last full page would lie above it. Ordinary
+Reports-list refresh keeps its existing behavior. This fixes an upward jump
+exposed by the native reference, without changing report eligibility or data.
+
+The owned live fixture appends native records through a serial, non-replayed
+callback while the composed viewer runs. All four IDs arrive exactly once and
+match native first-row/visible-count transitions. Alternating pause-on-new off/on
+emits0,1,0,1 pause intents. A synchronous native oracle independently verifies
+false/true/false/true pause effects, restoring pause before yielding and advancing
+no simulation frames. The composed fixture remains paused throughout. Original
+unit report references are restored; global diagnostic reports are discarded on
+unsaved exit. Native effect failure also restores pause before propagating.
+
+Protected120557 uses owned DF4080 and preserves the source save. Live logs contain
+only the known startup notice. unit-reports-append-final passes core and Reports
+state/controller tests; GPU matches the full1320x732 native panel for all four
+append states, in addition to earlier baseline/resize checks, with only known
+startup/finalize/ObjectDB diagnostics. Native single-click/drag parity and other
+unit pages remain unfinished; the public unit route remains staged.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

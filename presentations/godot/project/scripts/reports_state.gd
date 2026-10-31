@@ -213,7 +213,9 @@ func accept(token: int, world_epoch: int, reply: Dictionary) -> bool:
  elif not history_page:total=maxi(int(reply.get("total",rows.size())),rows.size())
  # History extends the cached snapshot. A newer source total must not count an
  # append here and again when the tail refresh arrives, or discard cached removals.
- if live_append:log_requested=maxi(0,total-unit_page_rows)
+ if live_append:
+  # Native direct entry fills space exposed by a resize without moving upward.
+  log_requested=maxi(log_requested if direct_unit_entry else 0,total-unit_page_rows)
  if live_append and next_after>=0 and not incoming.is_empty():
   pending={};refresh_new_reports();changed.emit();return true
  if live_append:log_refresh_needed=false

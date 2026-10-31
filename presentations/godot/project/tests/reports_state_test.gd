@@ -151,4 +151,13 @@ func _initialize() -> void:
  assert(direct.accept(direct.generation,0,{"view":3,"unit_id":1018,"unit_category":0,"list_revision":2,"reports":[],"total":0}))
  assert(direct.rows.is_empty() and not direct.log_initial_needed)
  direct.close();direct.open();assert(not direct.direct_unit_entry and direct.unit_page_rows==17)
+ var resized=Model.new();resized.open_creature_history(1017)
+ chunk=[]
+ for i in 22:chunk.append({"id":i})
+ resized.accept(resized.generation,0,{"view":3,"unit_id":1017,"unit_category":0,"list_revision":1,"reports":chunk,"total":22})
+ resized.resize_direct_log(18)
+ for id in [22,23,24,25]:
+  resized.refresh_new_reports()
+  assert(resized.accept(resized.generation,0,{"view":3,"unit_id":1017,"unit_category":0,"list_revision":1,"reports":[{"id":id}],"total":id+1}))
+  assert(resized.log_requested==maxi(7,id-17) and resized.visible_log_rows()==mini(18,id-6))
  print("REPORTS_STATE_PASS");quit()

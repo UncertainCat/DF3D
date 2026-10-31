@@ -1774,6 +1774,22 @@ QA passes core19/19, controller, context and UI composition. This establishes
 panel replacement and return to the same unit, not a different-unit selection or
 actual transport-loss acceptance.
 
+unit_camera_reference records protected103117 on2026-10-31. The native camera
+at856,64 (32x36) reports hover289 and toggles follow for citizen1017 while keeping
+the sheet open. Moving the paused unit by(+1,-1) moves the camera by(+1,-1).
+Closing the sheet preserves follow; manual panning cancels it. Hidden terrain
+does not cancel follow for this fortress-controlled citizen. This differs from
+the item follow guard and must not be replaced with the item visibility policy.
+Native loops35e5a6/8b6a4b call position1367430, reject flags1 bit1, and call
+unit visibility137bd50. That routine includes fortress-control and containment
+semantics; its complete dependency audit is still required before runtime use.
+The oracle restores position, designation, follow IDs and camera state. Owned
+DF197152 exits unsaved with unchanged source save; two GPU logs and the combined
+header client have only known renderer notices. Active/inactive camera artwork
+is captured and the active screenshot was inspected. This is native reference
+acceptance only: viewer unit follow, noncitizens, dead/caged/invalid targets and
+rendered camera tooltip remain unfinished. Existing Customize checks also pass.
+
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017
 and child988. The adult name uses palette5, translated name and separate

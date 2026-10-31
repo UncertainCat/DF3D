@@ -1561,7 +1561,25 @@ or office appointment actions. All owned sessions exit unsaved, preserve the
 source and have only the known renderer notice in ten GPU logs. PET/PET_EXOTIC,
 missing-history and other fortress-control exclusions still need live coverage.
 
-The unit header remains unfinished. unit_header_reference records native174632
+The unit header remains unfinished. unit_header_actions_reference records protected
+075718 on2026-10-31 for adult1017: Customize hover287 at824,64 opens two stacked
+nickname/profession fields, clicks at600,82 and600,118 activate their respective
+editing flags, and Escape returns to the same unit Overview. The native input
+branch1b07fd..1b08eb toggles the flags independently and copies either current
+string into shared editor scratch. Clicking the second field leaves both flags
+set; typing behavior in that state is not yet established. Entry1b099b..1b09de
+clears both flags and draft; Escape1aa8d4..1aa8f9 clears Customize only.
+These are reference-only native UI operations, never runtime semantic APIs.
+The four captured editor/return states were inspected, unit strings and paused
+frame stayed unchanged, source preservation passed, and owned DF171276 exited
+unsaved. Existing rendered Overview regression passed; its two GPU logs contain
+only the known renderer notice. unit-header-actions-reference QA passes core19/19,
+context and thought-text checks. Text entry, native nickname propagation,
+profession writes, eligibility variants and DF3D controls remain unfinished.
+The first diagnostic075624 failed to find the hover because the harness omitted
+hidden-window mouse focus;075718 enables it explicitly before pointer input.
+
+unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017
 and child988. The adult name uses palette5, translated name and separate
 Bookkeeper title use15, and No job uses14. Rest/Sleep use11; Rest with on_break

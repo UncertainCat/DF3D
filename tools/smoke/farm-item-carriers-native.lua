@@ -363,6 +363,10 @@ local ok,err=xpcall(function()
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-header-native.lua')
     linked.header_reference=assert(loadfile(source))(unit,view)
    end
+   if os.getenv('DF3D_UNIT_HEADER_ACTIONS')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-header-actions-native.lua')
+    linked.header_actions=assert(loadfile(source))(unit,view,capture)
+   end
    if os.getenv('DF3D_UNIT_HEADER_STATUS')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-header-status-native.lua')
     linked.header_status=assert(loadfile(source))(unit,view)

@@ -40861,6 +40861,75 @@
         "Direct caption and effects oracle; no new Godot military/guest display acceptance"
       ],
       "gpu_diagnostics": "Four logs; known separate-renderer notice only"
+    },
+    "unit_header_actions_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-075718",
+      "unit_id": 1017,
+      "observations": [
+        {
+          "hover": 287,
+          "mouse": [
+            824,
+            64
+          ],
+          "name": "customize-hitbox"
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "",
+          "name": "open",
+          "nickname_focus": false,
+          "open": true,
+          "profession_focus": false
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "",
+          "name": "nickname-focus",
+          "nickname_focus": true,
+          "open": true,
+          "profession_focus": false
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "",
+          "name": "profession-focus",
+          "nickname_focus": true,
+          "open": true,
+          "profession_focus": true
+        },
+        {
+          "active_id": 1017,
+          "customizing": false,
+          "draft": "",
+          "name": "escape",
+          "nickname_focus": true,
+          "open": true,
+          "profession_focus": true
+        }
+      ],
+      "screenshots": {
+        "unit-header-actions-escape.png": "f73e0f38915541855e11291a3a4425d7f6d11308ce7d219f734f4f7791b8d1f8",
+        "unit-header-actions-nickname-focus.png": "7d5abcdb92aa73dd186cd1ebb34a65d0227854777a9d80dd03611063ba5ef11f",
+        "unit-header-actions-open.png": "c1e040e80e8243278574f3570368a8316378fcb7d266bff78933b63f56f6ab14",
+        "unit-header-actions-profession-focus.png": "ab617c63214886ed56f493c035286016bc4971ac7e53608e11624e5547510497"
+      },
+      "source_unchanged": true,
+      "owned_unsaved": true,
+      "scope": "Native Customize opening, empty-field focus toggles, Escape to same Overview. No typing or semantic write acceptance; simultaneous focus flags require text-input audit. Existing unit Overview regression passed.",
+      "input_ranges": [
+        "1b07fd..1b08eb: independent field focus toggles and shared draft initialization",
+        "1b099b..1b09de: Customize entry clears both focus flags and draft",
+        "1aa8d4..1aa8f9: Escape exits Customize"
+      ],
+      "renderer_ranges": [
+        "15aa16..15b172: custom editor",
+        "15b2e0..15b426: Customize icon and hover287"
+      ],
+      "qa": "build/qa/unit-header-actions-reference"
     }
   }
 }

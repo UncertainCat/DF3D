@@ -226,6 +226,7 @@ return function(request)
    fact(s,r,'rank',df.skill_rating.attrs[math.max(0,math.min(v.rating,df.skill_rating.Legendary))].caption)
    fact(s,r,'rusty',v.rusty)
    fact(s,r,'skill_class',enum(df.job_skill_class,attrs.type))
+   if request.skill_profession then fact(s,r,'native_profession',request.skill_profession(v.id))end
    -- Raw profession-name overrides provide species-specific skill nouns
    -- (e.g. swordsdwarf); do not substitute generic profession captions.
    if attrs.profession>=0 then

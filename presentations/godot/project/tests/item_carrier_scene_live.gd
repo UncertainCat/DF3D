@@ -58,9 +58,10 @@ func unit_carrier(expected: Dictionary) -> void:
 	for row in inspector.creature_sheet.records_for("identity"):
 		if inspector.creature_sheet.fact_value(row,"record_type")=="overview_status":overview_status=row
 	var overview_case: String=expected.get("overview_case","child")
-	check(inspector.creature_sheet.fact_value(overview_status,"needs_summary_eligible","")==("no" if overview_case=="child" else "yes"),"Native needs gate differs")
+	var cannot_learn: bool=expected.get("header_case","")=="cannot-learn"
+	check(inspector.creature_sheet.fact_value(overview_status,"needs_summary_eligible","")==("no" if overview_case=="child" or cannot_learn else "yes"),"Native needs gate differs")
 	if overview_case=="squad-alias":check(inspector.creature_sheet.fact_value(overview_status,"squad_text","")=="Native squad alias","Native squad alias differs")
-	elif overview_case!="squad":check(inspector.creature_sheet.fact_value(overview_status,"squad_text","")=="None","Native unassigned squad summary differs")
+	elif overview_case!="squad":check(inspector.creature_sheet.fact_value(overview_status,"squad_text","")==("" if cannot_learn else "None"),"Native unassigned squad summary differs")
 	var focus_text: String={"focused":"Focused!","focused-mild":"Focused","distracted":"Distracted!","distracted-mild":"Distracted","fresh-focused":"Focused!","fresh-distracted":"Distracted!"}.get(overview_case,"")
 	check(inspector.creature_sheet.fact_value(overview_status,"focus_text","")==focus_text,"Native focus header differs")
 	var offices: Array=inspector.creature_sheet.records_for("identity").filter(func(row):return inspector.creature_sheet.fact_value(row,"record_type")=="overview_office")
@@ -92,6 +93,8 @@ func unit_carrier(expected: Dictionary) -> void:
 	var native:=Image.load_from_file(directory+"/farm-item-carrier-unit-view.png");native.convert(Image.FORMAT_RGB8)
 	var header_status_rect:=Rect2i(528,100,264,12)
 	var activity_rect:=Rect2i(528,112,264,12)
+	var combat_rect:=Rect2i(664,376,232,72)
+	check(rendered.get_region(combat_rect).get_data()==native.get_region(combat_rect).get_data(),"Native combat skill rows differ")
 	check(rendered.get_region(activity_rect).get_data()==native.get_region(activity_rect).get_data(),"Native activity pixels differ")
 	var header_name_rect:=Rect2i(528,64,264,24)
 	check(rendered.get_region(header_name_rect).get_data()==native.get_region(header_name_rect).get_data(),"Native header name pixels differ")

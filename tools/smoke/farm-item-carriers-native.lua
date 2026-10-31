@@ -122,7 +122,7 @@ local ok,err=xpcall(function()
   row.native_ui_unchanged=true
   assert(row.independent.carrier and row.independent.carrier.id==target.id and row.independent.carrier.name==row.carrier.name)
   if prior_revision then assert(prior_revision~=row.independent.revision,'carrier change retained old revision')end
-  local expected={snapshot=row.independent,prior_revision=prior_revision,overview_case=overview_case}
+  local expected={snapshot=row.independent,prior_revision=prior_revision,overview_case=overview_case,header_case=header_case}
   local f=assert(io.open(out..'/carrier-expected.json','w'));f:write(json.encode(expected));f:close()
   capture('farm-item-carrier-'..kind..'-wire')
   local result=assert(io.open(out..'/carrier-wire-result.json'));row.wire=json.decode(result:read('*a'));result:close()

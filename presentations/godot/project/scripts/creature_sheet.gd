@@ -212,8 +212,10 @@ func skill_title(record: Dictionary) -> String:
  noun=noun.left(1).to_upper()+noun.substr(1)
  return (str(fact_value(record,"rank",""))+" "+noun).strip_edges()
 
-func skill_spans(record: Dictionary) -> Array:
+func skill_spans(record: Dictionary, overview: bool = false) -> Array:
  var result: Array=[{"text":skill_title(record),"color":skill_color(record)}]
+ # Native Overview16726a explicitly selects bright white for unmapped skills.
+ if overview and int(fact_value(record,"native_profession",-2))==-1: result[0].color=NativeText.colors[15]
  var rust := NativeText.skill_rust(self,record)
  if not rust.is_empty(): result.append(rust)
  return result
@@ -344,7 +346,7 @@ func overview(parent: Node, detail: Dictionary):
   var group := 1 if combat else 0
   if counts[group]>=(5 if combat else 6): continue
   counts[group]+=1
-  var skill_line := paragraph(cells[5 if combat else 6],skill_spans(row),0,false)
+  var skill_line := paragraph(cells[5 if combat else 6],skill_spans(row,true),0,false)
   # Native Overview draws unwrapped skill names beyond the column boundary;
   # the following needs column paints over overlapping text in its own rows.
   if skill_line!=null: skill_line.clip_contents=false

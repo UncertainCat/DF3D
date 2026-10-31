@@ -40450,11 +40450,325 @@
       },
       "qa": "build/qa/unit-header-activity-ui",
       "limits": [
-        "Cannot-learn full scene fails; header row alone matches",
+        "Historical cannot-learn failure corrected by unit_overview_skill_color_reference; original failing run retained",
         "Military/social/stale-squad behavior and guest/control exclusions remain unverified",
         "Long text and lifecycle remain unverified"
       ],
       "diagnostics": "Three passing runs: six logs known separate-thread notice only. Cannot-learn scene retains three assertion errors."
+    },
+    "unit_overview_skill_color_reference": {
+      "date": "2026-10-31",
+      "runs": [
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261031-074253",
+          "case": "cannot-learn",
+          "pid": 199164,
+          "skills": [
+            {
+              "id": 2,
+              "native_profession": 2
+            },
+            {
+              "id": 3,
+              "native_profession": 8
+            },
+            {
+              "id": 4,
+              "native_profession": 9
+            },
+            {
+              "id": 10,
+              "native_profession": 47
+            },
+            {
+              "id": 14,
+              "native_profession": 52
+            },
+            {
+              "id": 15,
+              "native_profession": 31
+            },
+            {
+              "id": 16,
+              "native_profession": 46
+            },
+            {
+              "id": 17,
+              "native_profession": 45
+            },
+            {
+              "id": 21,
+              "native_profession": 50
+            },
+            {
+              "id": 24,
+              "native_profession": 17
+            },
+            {
+              "id": 33,
+              "native_profession": 21
+            },
+            {
+              "id": 45,
+              "native_profession": -1
+            },
+            {
+              "id": 61,
+              "native_profession": 72
+            },
+            {
+              "id": 62,
+              "native_profession": -1
+            },
+            {
+              "id": 63,
+              "native_profession": 56
+            },
+            {
+              "id": 70,
+              "native_profession": -1
+            },
+            {
+              "id": 71,
+              "native_profession": -1
+            },
+            {
+              "id": 72,
+              "native_profession": -1
+            },
+            {
+              "id": 73,
+              "native_profession": 68
+            },
+            {
+              "id": 74,
+              "native_profession": 67
+            },
+            {
+              "id": 75,
+              "native_profession": 66
+            },
+            {
+              "id": 77,
+              "native_profession": -1
+            },
+            {
+              "id": 78,
+              "native_profession": -1
+            },
+            {
+              "id": 79,
+              "native_profession": -1
+            },
+            {
+              "id": 81,
+              "native_profession": -1
+            },
+            {
+              "id": 82,
+              "native_profession": -1
+            },
+            {
+              "id": 84,
+              "native_profession": -1
+            },
+            {
+              "id": 87,
+              "native_profession": -1
+            },
+            {
+              "id": 91,
+              "native_profession": -1
+            },
+            {
+              "id": 92,
+              "native_profession": -1
+            },
+            {
+              "id": 97,
+              "native_profession": -1
+            },
+            {
+              "id": 103,
+              "native_profession": -1
+            },
+            {
+              "id": 135,
+              "native_profession": 6
+            },
+            {
+              "id": 136,
+              "native_profession": 7
+            }
+          ],
+          "combat_native_and_viewer_crop_sha256": "7519b7148f4e719e55859f996cc4e857d4eb2068cfd0be84150e55d56b869581",
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261031-074404",
+          "case": "adult",
+          "pid": 159096,
+          "skills": [
+            {
+              "id": 2,
+              "native_profession": 2
+            },
+            {
+              "id": 3,
+              "native_profession": 8
+            },
+            {
+              "id": 4,
+              "native_profession": 9
+            },
+            {
+              "id": 10,
+              "native_profession": 47
+            },
+            {
+              "id": 14,
+              "native_profession": 52
+            },
+            {
+              "id": 15,
+              "native_profession": 31
+            },
+            {
+              "id": 16,
+              "native_profession": 46
+            },
+            {
+              "id": 17,
+              "native_profession": 45
+            },
+            {
+              "id": 21,
+              "native_profession": 50
+            },
+            {
+              "id": 24,
+              "native_profession": 17
+            },
+            {
+              "id": 33,
+              "native_profession": 21
+            },
+            {
+              "id": 45,
+              "native_profession": -1
+            },
+            {
+              "id": 61,
+              "native_profession": 72
+            },
+            {
+              "id": 62,
+              "native_profession": -1
+            },
+            {
+              "id": 63,
+              "native_profession": 56
+            },
+            {
+              "id": 70,
+              "native_profession": -1
+            },
+            {
+              "id": 71,
+              "native_profession": -1
+            },
+            {
+              "id": 72,
+              "native_profession": -1
+            },
+            {
+              "id": 73,
+              "native_profession": 68
+            },
+            {
+              "id": 74,
+              "native_profession": 67
+            },
+            {
+              "id": 75,
+              "native_profession": 66
+            },
+            {
+              "id": 77,
+              "native_profession": -1
+            },
+            {
+              "id": 78,
+              "native_profession": -1
+            },
+            {
+              "id": 79,
+              "native_profession": -1
+            },
+            {
+              "id": 81,
+              "native_profession": -1
+            },
+            {
+              "id": 82,
+              "native_profession": -1
+            },
+            {
+              "id": 84,
+              "native_profession": -1
+            },
+            {
+              "id": 87,
+              "native_profession": -1
+            },
+            {
+              "id": 91,
+              "native_profession": -1
+            },
+            {
+              "id": 92,
+              "native_profession": -1
+            },
+            {
+              "id": 97,
+              "native_profession": -1
+            },
+            {
+              "id": 103,
+              "native_profession": -1
+            },
+            {
+              "id": 135,
+              "native_profession": 6
+            },
+            {
+              "id": 136,
+              "native_profession": 7
+            }
+          ],
+          "combat_native_and_viewer_crop_sha256": "55a9b17cdb5818f1c80c5fc3a12f707387d0a7b07c0a980e3a5079f8329d1527",
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        }
+      ],
+      "pixel_rect": [
+        664,
+        376,
+        232,
+        72
+      ],
+      "native_selector": {
+        "rva": "764a70",
+        "length": "3c9",
+        "fnv": "fe54e4ebd35a80fa"
+      },
+      "native_color_branch": "167219..16727b: unmapped profession uses palette15",
+      "qa": "build/qa/unit-overview-skill-color",
+      "limits": [
+        "Mapped profession colors, other species and other skill tabs not accepted"
+      ],
+      "gpu_diagnostics": "Four logs; known separate-renderer notice only"
     }
   }
 }

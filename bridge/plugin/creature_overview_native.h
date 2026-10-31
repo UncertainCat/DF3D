@@ -40,6 +40,19 @@ inline std::optional<int32_t> focusPercent(const df::unit_personality& source) {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     return reinterpret_cast<int32_t (*)(df::unit_personality*)>(base+0x14d720)(&owned);
 }
+inline std::optional<int16_t> overviewSkillProfession(int16_t skill) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x3c9;++i){hash^=base[0x764a70+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0xfe54e4ebd35a80fa);
+    }();
+    if(!supported)return std::nullopt;
+    // Native167219: pure skill-to-profession selector, including its tables.
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    return reinterpret_cast<int16_t (*)(int16_t)>(base+0x764a70)(skill);
+}
 struct OverviewStatus {
     bool personality=false,needs=false,assignedSquad=false;
     std::string squad;

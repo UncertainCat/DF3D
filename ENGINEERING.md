@@ -1689,11 +1689,32 @@ unsaved with source manifests unchanged; six GPU logs have only the known
 renderer notice. MSVC and unit-header-activity-ui QA pass core19/19, context and
 thought-text checks. Additional073512 keeps CAN_LEARN removed through rendering:
 the activity row matches, but the complete run FAILS existing adult needs/squad
-expectations and the first combat-skill row pixel check. Those expectations must
-account for this fixture, and the skill-row discrepancy needs investigation.
-It is retained as a failing regression, not acceptance; its source is preserved.
+expectations and the first combat-skill row pixel check. That failed run is
+retained as the reproducer for the corrected skill-color case below; it is not
+acceptance, and its source is preserved.
 Guest/control exclusions, military/social/stale-squad effects, long text and
 header lifecycle remain unverified. The public unit route stays staged.
+
+Overview skill colors use native764a70's profession selector, transported as
+the numeric native_profession fact on each skill. Its pinned body and tables
+span3c9 bytes, FNVfe54e4ebd35a80fa. Native167219..16727b uses profession color
+when mapped and explicitly selects palette15 when the result is-1. The latter
+was previously gray7 in DF3D. The correction is scoped to Overview; other tabs
+retain their existing presentation pending their own acceptance. Do not infer
+the native mapping from DFHack metadata: static comparison already finds a
+disagreement at skill90 (metadata profession113, native-1).
+
+unit_overview_skill_color_reference records protected074253(CAN_LEARN removed)
+and074404(ordinary adult) on2026-10-31. Both complete scene checks pass, including
+all72 pixels of height in the combat-skill block, header rows and prior regions.
+The disabled-learning fixture now explicitly expects no needs/squad heading;
+the skill pixel comparison is expanded, not bypassed. All four combat skill
+glyph masks were already identical in073512, but native used white255 while
+DF3D used gray192. Final runs preserve source manifests and exit owned sessions
+unsaved; four GPU logs contain only the known renderer notice. MSVC and
+unit-overview-skill-color QA pass core19/19, context and thought-text checks.
+Mapped profession colors, alternate species and other skill-tab colors still
+need broader native acceptance.
 
 headerPositionTitle invokes beb620 with the directly resolved historical figure
 and owned spouse/entity/assignment outputs. It reuses native precedence and spouse

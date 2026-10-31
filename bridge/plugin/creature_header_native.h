@@ -7,7 +7,19 @@
 #include "df/job.h"
 #include "location_staff_order_native.h"
 #include "zone_native.h"
+#include "creature_header_transaction.h"
 namespace df3d_creature {
+inline std::optional<HeaderEditSnapshot> headerEditSnapshot(df::unit* unit) {
+    if(!unit)return std::nullopt;
+    HeaderEditSnapshot value;value.unitId=unit->id;value.histFigureId=unit->hist_figure_id;
+    value.nickname=unit->name.nickname;value.profession=unit->custom_profession;
+    if(auto* figure=df::historical_figure::find(value.histFigureId)) {
+        value.hasFigure=true;value.figureNickname=figure->name.nickname;
+    }
+    value.revision=headerEditRevision(value);
+    if(!validHeaderEditSnapshot(value))return std::nullopt;
+    return value;
+}
 // Native8bb4af..8bb650 implements these writes inline, after its SDL text
 // helper changes a draft. There is no aggregate rename call on that path.
 // Do not call the text helper or borrow its draft/focus/input globals. The

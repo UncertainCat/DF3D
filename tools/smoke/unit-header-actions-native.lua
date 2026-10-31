@@ -97,6 +97,29 @@ local ok,err=xpcall(function()
  assert(status~=0,'oversized nickname accepted')
  for i,actual in ipairs(names())do assert(actual==before[i],'oversized write changed names')end
  observations[#observations+1]={name='oversized-refused',unchanged=true}
+ local json=require('json')
+ local function receipt()
+  local output,status=dfhack.run_command_silent('df3d','unit-header-name-edit-read',tostring(unit.id))
+  assert(status==0,output);return json.decode(output)
+ end
+ restore_names()
+ local prior=receipt()
+ unit.custom_profession='External change'
+ local output,status=dfhack.run_command_silent('df3d','unit-header-name-write-probe',tostring(unit.id),'nickname','Stale write',tostring(prior.revision))
+ local stale=json.decode(output)
+ assert(status~=0 and stale.outcome==2 and not stale.mutated,'stale edit was not rejected')
+ assert(unit.name.nickname==original.nickname and unit.custom_profession=='External change' and figure.name.nickname==saved_figure,'stale edit changed names')
+ observations[#observations+1]={name='stale-revision',outcome=stale.outcome,mutated=stale.mutated,unchanged=true}
+ restore_names()
+ figure.name.nickname='Divergent history'
+ click(found[1],found[2]);click(600,82);key('SELECT');key('LEAVESCREEN')
+ assert(figure.name.nickname=='Divergent history','native unchanged nickname repaired historical name')
+ local current=receipt()
+ output,status=dfhack.run_command_silent('df3d','unit-header-name-write-probe',tostring(unit.id),'nickname',dfhack.df2utf(unit.name.nickname),tostring(current.revision))
+ local unchanged=json.decode(output)
+ assert(status==0 and unchanged.outcome==1 and not unchanged.mutated,'unchanged edit was not a no-op')
+ assert(figure.name.nickname=='Divergent history','direct unchanged nickname repaired historical name')
+ observations[#observations+1]={name='unchanged-divergent-history',outcome=unchanged.outcome,mutated=unchanged.mutated,native_match=true}
 end,debug.traceback)
 unit.name.nickname=original.nickname;unit.custom_profession=original.profession
 if figure then figure.name.nickname=saved_figure end

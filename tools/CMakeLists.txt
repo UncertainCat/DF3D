@@ -28,6 +28,7 @@ add_executable(bridge_policy_tests
   test_location_catalog.cpp
   test_location_details.cpp
   test_farm_transaction.cpp
+  test_creature_header_transaction.cpp
   test_location_staff_page.cpp
     test_location_catalog_page.cpp
   test_room_discovery.cpp

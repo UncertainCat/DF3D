@@ -1642,16 +1642,38 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["x"]=position->x;result["y"]=position->y;result["z"]=position->z;
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
-        if(parameters[0]=="unit-header-name-write-probe") {
-          if(parameters.size()!=4 || (parameters[2]!="nickname" && parameters[2]!="profession"))return CR_WRONG_USAGE;
+        if(parameters[0]=="unit-header-name-write-probe" || parameters[0]=="unit-header-name-edit-read") {
+          const bool read=parameters[0]=="unit-header-name-edit-read";
+          if(read?parameters.size()!=2:((parameters.size()!=4 && parameters.size()!=5) ||
+             (parameters[2]!="nickname" && parameters[2]!="profession")))return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];
           const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
           if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
           if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          auto* unit=df::unit::find(id);
+          const auto before=df3d_creature::headerEditSnapshot(unit);if(!before)return CR_FAILURE;
+          if(read) {
+            Json::Value result;result["revision"]=Json::UInt64(before->revision);
+            result["nickname"]=DF2UTF(before->nickname);result["profession"]=DF2UTF(before->profession);
+            result["historical_figure_id"]=before->histFigureId;result["has_figure"]=before->hasFigure;
+            result["figure_nickname"]=DF2UTF(before->figureNickname);
+            out.print("{}",Json::FastWriter().write(result));return CR_OK;
+          }
           const auto bytes=UTF2DF(parameters[3]);
           if(DF2UTF(bytes)!=parameters[3])return CR_FAILURE;
-          if(!df3d_creature::setHeaderCustomName(df::unit::find(id),parameters[2]=="profession",bytes))return CR_FAILURE;
-          out.print("ok\n");return CR_OK;
+          auto expected=before->revision;
+          if(parameters.size()==5) {
+            const auto& rawRevision=parameters[4];
+            const auto parsedRevision=std::from_chars(rawRevision.data(),rawRevision.data()+rawRevision.size(),expected);
+            if(parsedRevision.ec!=std::errc{} || parsedRevision.ptr!=rawRevision.data()+rawRevision.size())return CR_WRONG_USAGE;
+          }
+          const auto result=df3d_creature::finishHeaderNameEdit(*before,expected,parameters[2]=="profession",bytes,
+            [&](const std::string& owned){return df3d_creature::setHeaderCustomName(unit,parameters[2]=="profession",owned);},
+            [&]{return df3d_creature::headerEditSnapshot(df::unit::find(id));});
+          Json::Value output;output["outcome"]=int(result.outcome);output["mutated"]=result.mutated;
+          if(result.receipt)output["revision"]=Json::UInt64(result.receipt->revision);
+          out.print("{}",Json::FastWriter().write(output));
+          return result.outcome==df3d_creature::HeaderEditOutcome::Completed?CR_OK:CR_FAILURE;
         }
         if(parameters[0]=="unit-header-activity-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;

@@ -41067,6 +41067,80 @@
       "owned_unsaved": true,
       "qa": "build/qa/unit-header-name-write",
       "scope": "Inline native writes and direct primitive only; eight ordinary-adult comparisons, one oversized refusal. No management transport or Godot editor acceptance. Missing history, identities, unchanged values, and dual-focus input still pending."
+    },
+    "unit_header_name_transaction_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-081113",
+      "observations": [
+        {
+          "menu_unchanged": true,
+          "name": "direct-nickname-1",
+          "native_match": true,
+          "value": "Compared name"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-nickname-2",
+          "native_match": true,
+          "value": ""
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-nickname-3",
+          "native_match": true,
+          "value": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-nickname-4",
+          "native_match": true,
+          "value": "Native \u00e9"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-profession-1",
+          "native_match": true,
+          "value": "Compared name"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-profession-2",
+          "native_match": true,
+          "value": ""
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-profession-3",
+          "native_match": true,
+          "value": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-profession-4",
+          "native_match": true,
+          "value": "Native \u00e9"
+        },
+        {
+          "name": "oversized-refused",
+          "unchanged": true
+        },
+        {
+          "mutated": false,
+          "name": "stale-revision",
+          "outcome": 2,
+          "unchanged": true
+        },
+        {
+          "mutated": false,
+          "name": "unchanged-divergent-history",
+          "native_match": true,
+          "outcome": 1
+        }
+      ],
+      "result_sha256": "78347039ffc2cf020b5e4879516a9aa81bc9e4fe4015ebd20ad02139c06f033c",
+      "source_unchanged": true,
+      "owned_unsaved": true,
+      "qa": "build/qa/unit-header-name-transaction",
+      "scope": "Diagnostic transaction with content revision and confirmed receipt. Eight native-effect comparisons, oversized refusal, stale revision after external profession change, unchanged nickname with divergent HF name. Management protocol/editor/epoch lifecycle remain unwired."
     }
   }
 }

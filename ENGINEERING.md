@@ -1604,9 +1604,33 @@ names. Native typing and Enter screenshots were inspected. Both owned sessions
 restore names, pass the existing rendered Overview regression, preserve source
 saves and exit unsaved. Four GPU logs contain only the known renderer notice.
 MSVC and unit-header-name-write QA pass core19/19, context and thought-text
-checks. Missing history, identity variants, unchanged-value behavior and typing
+checks. Missing history, identity variants and typing
 with both focus flags set still need acceptance; no broad rename completion is
 claimed from these ordinary-adult cases.
+
+creature_header_transaction.h provides a pointer-free snapshot of unit identity,
+historical-figure identity/presence and raw nickname/profession/HF nickname.
+Its content revision includes all these fields; transport world epoch remains
+an independent required check. finishHeaderNameEdit rejects stale revisions,
+oversized/NUL input and inconsistent snapshots before applying. Unchanged values
+return the existing receipt without rewriting the HF nickname. A changed name
+must be read back with exactly the native field effects; exceptions after write
+entry or unsuccessful readback produce Unknown without replay. The diagnostic
+write probe uses this transaction and optionally takes an expected revision;
+unit-header-name-edit-read returns its current authority. Production commands
+still need epoch/visibility checks and integration with the editor.
+
+unit_header_name_transaction_reference records protected081113 on2026-10-31:
+all eight direct/native comparisons still pass, an external profession change
+invalidates an old nickname-edit revision with no effect, and a same-value
+nickname leaves a deliberately divergent historical name untouched in both DF
+and the direct transaction. Names are restored, prior Overview checks pass,
+source saves remain unchanged, and owned DF190596 exits unsaved. Two GPU logs
+have only the known renderer notice. MSVC and unit-header-name-transaction QA
+pass core19/19, context and thought-text checks. The core transaction tests cover
+60 combinations of field, HF presence, refusal and post-write fault, plus the
+unchanged-value case. These fault tests do not establish transport lifecycle or
+native missing-history behavior.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

@@ -1592,9 +1592,9 @@ flags0x17. Enter ends the active field without leaving Customize.
 creature_header_native.h::setHeaderCustomName reproduces the pinned inline
 assignments with owned text and the native historical-figure resolver. It
 rejects strings over30 DF bytes or containing NUL before writing. The diagnostic
-unit-header-name-write-probe requires lossless UTF8/DF conversion. This is not
-yet a management command: epoch, current visibility, revision checks, receipts
-and editor lifecycle must be connected before exposing the control.
+unit-header-name-write-probe requires lossless UTF8/DF conversion. The transaction
+and management command below add revision, epoch and visibility validation around
+this primitive; the visible editor and its lifecycle remain unfinished.
 unit_header_name_write_reference records protected080206 and080512 on2026-10-31.
 080512 compares native input and direct writes for nickname and profession with
 ordinary text, clearing,30 characters and CP437 byte130; all eight cases match
@@ -1617,8 +1617,8 @@ return the existing receipt without rewriting the HF nickname. A changed name
 must be read back with exactly the native field effects; exceptions after write
 entry or unsuccessful readback produce Unknown without replay. The diagnostic
 write probe uses this transaction and optionally takes an expected revision;
-unit-header-name-edit-read returns its current authority. Production commands
-still need epoch/visibility checks and integration with the editor.
+unit-header-name-edit-read returns its current authority. The production command
+below adds epoch/visibility checks; integration with the visible editor remains.
 
 unit_header_name_transaction_reference records protected081113 on2026-10-31:
 all eight direct/native comparisons still pass, an external profession change
@@ -1631,6 +1631,32 @@ pass core19/19, context and thought-text checks. The core transaction tests cove
 60 combinations of field, HF presence, refusal and post-write fault, plus the
 unchanged-value case. These fault tests do not establish transport lifecycle or
 native missing-history behavior.
+
+Management103 adds CreatureHeaderRead and CreatureHeaderEdit, independent of the
+large CreatureInspect payload. The typed request carries stable unit identity,
+field selection, exact content revision and UTF8 text. The reply carries an
+explicit outcome, possible-mutation flag and a snapshot only on confirmed
+completion. Read requests cannot contain edit fields; revisions stay64-bit
+through the model and Godot dictionary adapter. Both endpoints must be rebuilt
+for Local\\df3d_management_v103; no old receipt gains synthetic authority.
+The dispatcher uses the shared world-epoch/save admission gate, then resolves
+the current active unit and rejects hidden, unloaded or invalid positions.
+Writes require lossless conversion to DF bytes and use the verified transaction.
+No native viewscreen or draft participates. Godot's creature_header management
+domain exposes the commands; the actual editor remains hidden and unfinished.
+
+unit_header_transport_reference records protected082406 on2026-10-31. The real
+Godot adapter reads adult1017, compares the exact revision with the independent
+native probe, performs nickname/profession changes and clearing, confirms two
+same-value requests, rejects four stale revisions and an absent unit, then
+restores the complete original snapshot. Native readback also confirms restored
+unit, HF and soul names. Existing unit Overview checks pass; source saves remain
+unchanged and owned DF190436 exits unsaved. The two GPU logs and combined
+stdout/stderr of the headless protocol client contain only the known renderer
+notice. MSVC and unit-header-contract QA pass core19/19, context and thought-text
+checks, including malformed command/result and exact-revision codec tests.
+This is transport acceptance, not editor or disconnect/selection lifecycle
+acceptance; hidden-target, missing-history and identity variants remain pending.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

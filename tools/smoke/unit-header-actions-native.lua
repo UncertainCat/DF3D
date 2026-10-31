@@ -1,5 +1,5 @@
 -- Native input/layout reference in the paused, owned fixture. Names are restored.
-local unit,view,capture=...
+local unit,view,capture,out=...
 local gui=require('gui')
 local g=df.global.gps
 local main=df.global.game.main_interface
@@ -130,4 +130,19 @@ sheet.unit_overview_entering_profession_nickname=original.profession_focus
 sheet.unit_overview_entering_str=original.draft
 pointer(0,4)
 assert(ok,err)
+if os.getenv('DF3D_UNIT_HEADER_WIRE')=='1' then
+ local json=require('json')
+ local output,status=dfhack.run_command_silent('df3d','unit-header-name-edit-read',tostring(unit.id))
+ assert(status==0,output);local expected=json.decode(output);expected.revision=tostring(expected.revision);expected.unit_id=unit.id
+ -- The lane passes its evidence directory explicitly; the viewer environment
+ -- is established by the PowerShell capture handler.
+ assert(out,'missing header wire directory')
+ local file=assert(io.open(out..'/unit-header-wire-expected.json','w'));file:write(json.encode(expected));file:close()
+ capture('unit-header-wire')
+ file=assert(io.open(out..'/unit-header-wire-result.json'));local result=json.decode(file:read('*a'));file:close()
+ assert(result.success and result.restored,'header wire verification failed')
+ assert(unit.name.nickname==original.nickname and unit.custom_profession==original.profession and
+  figure.name.nickname==saved_figure and soul.name.nickname==saved_soul,'header wire changed restored names')
+ observations[#observations+1]={name='wire',result=result}
+end
 return observations

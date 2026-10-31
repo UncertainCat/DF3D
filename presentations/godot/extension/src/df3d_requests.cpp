@@ -136,6 +136,18 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     { PerfScope profile("management.convert_construction", nullptr, df3d::profiling::detailed()); management::writeConstruction(result, s); }
     management::writeArea(result, s.area);
     management::writeProduction(result, s.production);
+    if(s.creatureHeader) {
+        const auto& h=*s.creatureHeader;Dictionary header;
+        header["outcome"]=int(h.outcome);header["mutated"]=h.mutated;
+        if(h.snapshot) {
+            const auto& v=*h.snapshot;Dictionary snapshot;
+            snapshot["unit_id"]=v.unitId;snapshot["historical_figure_id"]=v.historicalFigureId;
+            snapshot["has_figure"]=v.hasFigure;snapshot["revision"]=v.revision;
+            snapshot["nickname"]=String::utf8(v.nickname.c_str());snapshot["profession"]=String::utf8(v.profession.c_str());
+            snapshot["figure_nickname"]=String::utf8(v.figureNickname.c_str());header["snapshot"]=snapshot;
+        }
+        result["creature_header"]=header;
+    }
     management::writeWorkOrder(result, s.workOrder);
     management::writeCitizen(result, s.citizen);
     management::writeAgreement(result, s.agreement);
@@ -172,6 +184,28 @@ bool readHover(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::WorldHover;
     request.x=tile.x;request.y=tile.y;request.z=tile.z;return true;
 }
+bool validateCreatureHeader(const Dictionary& data,String& error) {
+    const bool edit=int64_t(data["action"])==int64_t(wm::ManagementAction::CreatureHeaderEdit);
+    if(data.size()!=(edit?5:2) || !data.has("unit_id") || data["unit_id"].get_type()!=Variant::INT ||
+       (edit && (!data.has("profession") || data["profession"].get_type()!=Variant::BOOL ||
+        !data.has("expected_revision") || data["expected_revision"].get_type()!=Variant::INT ||
+        !data.has("name") || data["name"].get_type()!=Variant::STRING))) {
+        error="Invalid creature header fields";return false;
+    }
+    return true;
+}
+bool readCreatureHeader(const Dictionary& data,wm::ManagementRequest& request,String& error) {
+    const int64_t id=data["unit_id"],revision=data.get("expected_revision",0);
+    const String name=data.get("name",String());
+    const auto utf8=name.utf8();
+    if(id<0 || id>INT32_MAX || revision<0 || utf8.length()>90 ||
+       (int64_t(data["action"])==int64_t(wm::ManagementAction::CreatureHeaderEdit) && !revision)) {
+        error="Invalid creature header values";return false;
+    }
+    request.action=wm::ManagementAction(int64_t(data["action"]));
+    request.creatureHeader={int32_t(id),bool(data.get("profession",false)),uint64_t(revision),std::string(utf8.get_data(),utf8.length())};
+    return true;
+}
 struct ManagementCodec {
     const char* domain;
     bool (*validate)(const Dictionary&, String&);
@@ -187,6 +221,7 @@ const ManagementCodec managementCodecs[] = {
     {"agreements", management::validateAgreementShape, management::readAgreement},
     {"trade", management::validateTradeShape, management::readTrade},
     {"hover", validateHover, readHover},
+    {"creature_header",validateCreatureHeader,readCreatureHeader},
 };
 }
 
@@ -197,7 +232,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::WorldHover)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CreatureHeaderEdit)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

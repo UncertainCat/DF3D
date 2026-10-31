@@ -41141,6 +41141,75 @@
       "owned_unsaved": true,
       "qa": "build/qa/unit-header-name-transaction",
       "scope": "Diagnostic transaction with content revision and confirmed receipt. Eight native-effect comparisons, oversized refusal, stale revision after external profession change, unchanged nickname with divergent HF name. Management protocol/editor/epoch lifecycle remain unwired."
+    },
+    "unit_header_transport_reference": {
+      "protocol": 103,
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-082406",
+      "result": {
+        "receipts": [
+          {
+            "figure_nickname": "Wire nickname",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "Wire nickname",
+            "profession": "",
+            "revision": 3815159162228629755,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "",
+            "revision": 5077264299204790931,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "",
+            "revision": 5077264299204790931,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "Wire profession",
+            "revision": 4411701247142128105,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "",
+            "revision": 5077264299204790931,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "",
+            "revision": 5077264299204790931,
+            "unit_id": 1017
+          }
+        ],
+        "restored": true,
+        "success": true
+      },
+      "result_sha256": "57e0e4157c65ce80144322c2c40e7289997f976de5c9cf95dd79d5fb9d49117b",
+      "source_unchanged": true,
+      "owned_unsaved": true,
+      "qa": "build/qa/unit-header-contract",
+      "scope": "Godot adapter and semantic protocol only. Six completed edit/no-op receipts, four stale refusals, absent-unit refusal, exact64-bit revision and restored native names. Editor and lifecycle unaccepted."
     }
   }
 }

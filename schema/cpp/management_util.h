@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 102;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v102";
+inline constexpr uint32_t kManagementVersion = 103;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v103";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -326,7 +326,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::WorldHover &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::CreatureHeaderEdit &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -382,7 +382,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::WorldHover)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CreatureHeaderEdit)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -392,6 +392,14 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   if(r.action()==ManagementAction::CreatureInspect) {
     if(!r.creature() || r.creature()->unit_id()<0) return "creature identity required";
   } else if(r.creature()) return "unexpected creature payload";
+  if(r.action()==ManagementAction::CreatureHeaderRead || r.action()==ManagementAction::CreatureHeaderEdit) {
+    const auto* h=r.creature_header();
+    if(!h || h->unit_id()<0 || !h->name() || h->name()->size()>90 ||
+       h->name()->str().find('\0')!=std::string::npos)return "invalid creature header request";
+    if(r.action()==ManagementAction::CreatureHeaderRead) {
+      if(h->profession() || h->expected_revision() || h->name()->size())return "unexpected creature header read intent";
+    } else if(!h->expected_revision() || h->expected_revision()>INT64_MAX)return "creature header revision required";
+  } else if(r.creature_header())return "unexpected creature header request";
   if(r.action()==ManagementAction::Selection) {
     const auto* a=r.selection();
     if(!a || a->operation()>SelectionOperation::Back || a->index() < -1 || a->index()>255) return "invalid selection request";
@@ -730,7 +738,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::WorldHover ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CreatureHeaderEdit ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -749,6 +757,21 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(s.action()==ManagementAction::CreatureInspect && s.status()==ManagementStatus::Ok && !s.creature()) return "creature result required";
   if(s.creature() && s.action()!=ManagementAction::CreatureInspect) return "unexpected creature result";
+  if(const auto* h=s.creature_header()) {
+    if((s.action()!=ManagementAction::CreatureHeaderRead && s.action()!=ManagementAction::CreatureHeaderEdit) ||
+       h->outcome()>CreatureHeaderOutcome::Unknown)return "invalid creature header result";
+    const bool completed=h->outcome()==CreatureHeaderOutcome::Completed;
+    if(completed!=(s.status()==ManagementStatus::Ok) || completed!=(h->snapshot()!=nullptr) ||
+       (h->mutated() && (s.action()!=ManagementAction::CreatureHeaderEdit ||
+        (h->outcome()!=CreatureHeaderOutcome::Completed && h->outcome()!=CreatureHeaderOutcome::Unknown))))return "invalid creature header outcome";
+    if(const auto* v=h->snapshot()) {
+      if(v->unit_id()<0 || v->historical_figure_id() < -1 || (v->has_figure() && v->historical_figure_id()<0) ||
+         !v->revision() || v->revision()>INT64_MAX || !v->nickname() || !v->profession() || !v->figure_nickname() ||
+         v->nickname()->size()>1536 || v->profession()->size()>1536 || v->figure_nickname()->size()>1536 ||
+         (!v->has_figure() && v->figure_nickname()->size()))return "invalid creature header snapshot";
+    }
+  } else if((s.action()==ManagementAction::CreatureHeaderRead || s.action()==ManagementAction::CreatureHeaderEdit) &&
+            s.status()==ManagementStatus::Ok)return "creature header result required";
   if(const auto* c=s.creature()) {
     size_t bytes=0,records=0,facts=0;
     auto text=[&](const flatbuffers::String* t,size_t limit){if(!t)return true;bytes+=t->size();return t->size()<=limit && bytes<=131072;};

@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management103 adds independent creature header reads and revision-checked
+nickname/profession edits with confirmed receipts. Rebuild both endpoints on
+`Local\\df3d_management_v103`; management102 is incompatible. Older captures do
+not acquire synthetic header authority. The unit editor remains staged until
+its rendered workflow and lifecycle checks are complete.
+
 Management102 also permits confirmed eligible Melt contents receipts during
 Box removal. The native eligibility and mark/cancel routines remain authoritative.
 Rebuild both endpoints on `Local\\df3d_management_v102`; management101 is

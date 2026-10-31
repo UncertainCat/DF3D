@@ -371,8 +371,10 @@ int32_t building = -1;
 int16_t stage = -1, maxStage = -1;
 bool valid = false, removing = false;
 std::optional<std::vector<df3d_hover::Description>> worldHover;
+std::optional<df3d_creature::HeaderEditResult> creatureHeader;
 m::TilePos worldHoverTile;
 void clearResult() {
+  creatureHeader.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -733,6 +735,16 @@ void publish() {
   if(agreements.trackerDetails) {const auto& d=*agreements.trackerDetails;trackerDetails=m::CreateContinuingAgreementDetails(b,d.requiredValue,d.matchingLocations,d.locationId,d.locationValue,d.locationTier,d.siteAvailable,d.tierMet,b.CreateString(d.locationName));}
   auto agreementResult=m::CreateAgreementState(b,b.CreateVector(agreementRows),agreements.nextBeforeId,agreements.pendingOnly,b.CreateString(agreements.detail),agreements.tracker,b.CreateVector(trackerRows),trackerDetails);
   auto creatureResult=creature_data::build(b,creature);
+  flatbuffers::Offset<m::CreatureHeaderState> creatureHeaderResult;
+  if(creatureHeader) {
+    flatbuffers::Offset<m::CreatureHeaderSnapshot> receipt;
+    if(creatureHeader->receipt) {
+      const auto& h=*creatureHeader->receipt;
+      receipt=m::CreateCreatureHeaderSnapshot(b,h.unitId,h.histFigureId,h.hasFigure,h.revision,
+          b.CreateString(DF2UTF(h.nickname)),b.CreateString(DF2UTF(h.profession)),b.CreateString(DF2UTF(h.figureNickname)));
+    }
+    creatureHeaderResult=m::CreateCreatureHeaderState(b,m::CreatureHeaderOutcome(creatureHeader->outcome),creatureHeader->mutated,receipt);
+  }
   flatbuffers::Offset<m::WorldHover> terrainResult;
   if(worldHover) {
     std::vector<flatbuffers::Offset<m::WorldHoverEntry>> entries;
@@ -742,7 +754,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -2934,6 +2946,33 @@ void run(color_ostream& out) {
         if(!page.truncated || !page.choices.empty()){areaPage.locationNamePage=std::move(page);status=m::ManagementStatus::Ok;}
       }
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::CreatureHeaderRead || r->action()==m::ManagementAction::CreatureHeaderEdit) {
+    message.clear();status=m::ManagementStatus::Rejected;creatureHeader.emplace();
+    const auto& request=*r->creature_header();
+    auto visible=[&]() -> df::unit* {
+      auto* unit=df::unit::find(request.unit_id());
+      if(!unit || !Units::isActive(unit))return nullptr;
+      const auto p=Units::getPosition(unit);
+      auto* block=Maps::isValidTilePos(p.x,p.y,p.z)?Maps::getTileBlock(p.x,p.y,p.z):nullptr;
+      return block && !block->designation[p.x&15][p.y&15].bits.hidden?unit:nullptr;
+    };
+    if(auto* unit=visible()) {
+      const auto before=df3d_creature::headerEditSnapshot(unit);
+      if(before && r->action()==m::ManagementAction::CreatureHeaderRead) {
+        creatureHeader->receipt=*before;creatureHeader->outcome=df3d_creature::HeaderEditOutcome::Completed;
+      } else if(before) {
+        const auto requested=request.name()->str();const auto bytes=UTF2DF(requested);
+        if(DF2UTF(bytes)==requested) {
+          *creatureHeader=df3d_creature::finishHeaderNameEdit(*before,request.expected_revision(),request.profession(),bytes,
+              [&](const std::string& owned){return df3d_creature::setHeaderCustomName(unit,request.profession(),owned);},
+              [&]{return df3d_creature::headerEditSnapshot(visible());});
+          mutated=creatureHeader->mutated;
+        }
+      }
+    }
+    if(creatureHeader->outcome==df3d_creature::HeaderEditOutcome::Completed)status=m::ManagementStatus::Ok;
     publish();return;
   }
   if(r->action()==m::ManagementAction::WorldHover) {

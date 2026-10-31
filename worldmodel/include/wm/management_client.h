@@ -602,6 +602,15 @@ struct ConstructionInput {
   std::string description;
   uint32_t quantity = 1;
 };
+struct CreatureHeaderRequest { int32_t unitId=-1; bool profession=false; uint64_t expectedRevision=0; std::string name; };
+struct CreatureHeaderSnapshot {
+  int32_t unitId=-1,historicalFigureId=-1; bool hasFigure=false; uint64_t revision=0;
+  std::string nickname,profession,figureNickname;
+};
+struct CreatureHeaderState {
+  CreatureHeaderOutcome outcome=CreatureHeaderOutcome::Rejected; bool mutated=false;
+  std::optional<CreatureHeaderSnapshot> snapshot;
+};
 struct ManagementRequest {
   ManagementAction action = ManagementAction::Catalog;
   std::string definition;
@@ -624,6 +633,7 @@ struct ManagementRequest {
   AlertRequest alert;
   SelectionRequest selection;
   int32_t creatureUnitId=-1;
+  CreatureHeaderRequest creatureHeader;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -670,6 +680,7 @@ struct ManagementState {
   AlertState alert;
   SelectionState selection;
   CreatureInfo creature;
+  std::optional<CreatureHeaderState> creatureHeader;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

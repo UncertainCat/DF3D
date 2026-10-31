@@ -1,4 +1,9 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::CreatureHeaderOutcome::Rejected) == static_cast<int>(df3d::mirror::CreatureHeaderOutcome::Rejected));
+static_assert(static_cast<int>(wm::CreatureHeaderOutcome::Completed) == static_cast<int>(df3d::mirror::CreatureHeaderOutcome::Completed));
+static_assert(static_cast<int>(wm::CreatureHeaderOutcome::Stale) == static_cast<int>(df3d::mirror::CreatureHeaderOutcome::Stale));
+static_assert(static_cast<int>(wm::CreatureHeaderOutcome::Unknown) == static_cast<int>(df3d::mirror::CreatureHeaderOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesCreatureHeaderOutcome()) / sizeof(df3d::mirror::CreatureHeaderOutcome) == 4);
 static_assert(static_cast<int>(wm::ConstructionOutcome::None) == static_cast<int>(df3d::mirror::ConstructionOutcome::None));
 static_assert(static_cast<int>(wm::ConstructionOutcome::Complete) == static_cast<int>(df3d::mirror::ConstructionOutcome::Complete));
 static_assert(static_cast<int>(wm::ConstructionOutcome::Rejected) == static_cast<int>(df3d::mirror::ConstructionOutcome::Rejected));
@@ -93,7 +98,9 @@ static_assert(static_cast<int>(wm::ManagementAction::CitizenWorkScope) == static
 static_assert(static_cast<int>(wm::ManagementAction::PrepareAlertDismissal) == static_cast<int>(df3d::mirror::ManagementAction::PrepareAlertDismissal));
 static_assert(static_cast<int>(wm::ManagementAction::DismissAlert) == static_cast<int>(df3d::mirror::ManagementAction::DismissAlert));
 static_assert(static_cast<int>(wm::ManagementAction::WorldHover) == static_cast<int>(df3d::mirror::ManagementAction::WorldHover));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 71);
+static_assert(static_cast<int>(wm::ManagementAction::CreatureHeaderRead) == static_cast<int>(df3d::mirror::ManagementAction::CreatureHeaderRead));
+static_assert(static_cast<int>(wm::ManagementAction::CreatureHeaderEdit) == static_cast<int>(df3d::mirror::ManagementAction::CreatureHeaderEdit));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 73);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -371,3 +378,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::CitizenWorkScope) == df3
 static_assert(wm::isRuntimeAction(wm::ManagementAction::PrepareAlertDismissal) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::PrepareAlertDismissal));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::DismissAlert) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DismissAlert));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::WorldHover) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorldHover));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureHeaderRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureHeaderRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureHeaderEdit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureHeaderEdit));

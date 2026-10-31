@@ -15,6 +15,11 @@ ManagementState decodeState(const m::ManagementState* s) {
   decodeConstruction(s, next);
   next.area = decodeArea(s->area());
   next.creature = decodeCreature(s->creature());
+  if(const auto* h=s->creature_header()) {
+    CreatureHeaderState header;header.outcome=CreatureHeaderOutcome(h->outcome());header.mutated=h->mutated();
+    if(const auto* v=h->snapshot())header.snapshot=CreatureHeaderSnapshot{v->unit_id(),v->historical_figure_id(),v->has_figure(),v->revision(),v->nickname()->str(),v->profession()->str(),v->figure_nickname()->str()};
+    next.creatureHeader=std::move(header);
+  }
   next.citizen = decodeCitizen(s->citizen());
   next.appointments = decodeAppointments(s->appointments());
   next.production = decodeProduction(s->production());
@@ -114,7 +119,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       r.pressurePlate?m::CreatePressurePlateOptions(b,r.pressurePlate->units,r.pressurePlate->water,r.pressurePlate->magma,
           r.pressurePlate->citizens,r.pressurePlate->resets,r.pressurePlate->track,r.pressurePlate->unitMin,r.pressurePlate->unitMax,
           r.pressurePlate->waterMin,r.pressurePlate->waterMax,r.pressurePlate->magmaMin,r.pressurePlate->magmaMax,
-          r.pressurePlate->trackMin,r.pressurePlate->trackMax):flatbuffers::Offset<m::PressurePlateOptions>{},connectedTrack,r.materialAnchor ? &materialAnchor : nullptr,r.cancelRemoval);
+          r.pressurePlate->trackMin,r.pressurePlate->trackMax):flatbuffers::Offset<m::PressurePlateOptions>{},connectedTrack,r.materialAnchor ? &materialAnchor : nullptr,r.cancelRemoval,
+      (r.action==ManagementAction::CreatureHeaderRead || r.action==ManagementAction::CreatureHeaderEdit)?
+          m::CreateCreatureHeaderRequest(b,r.creatureHeader.unitId,r.creatureHeader.profession,r.creatureHeader.expectedRevision,b.CreateString(r.creatureHeader.name)):
+          flatbuffers::Offset<m::CreatureHeaderRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

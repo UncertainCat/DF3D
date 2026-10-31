@@ -3719,3 +3719,31 @@ TEST_CASE("building header receipts preserve authority and reject malformed stat
     b.Finish(state.Finish());CHECK_FALSE(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())));
   }
 }
+
+TEST_CASE("creature header command retains exact revision and strict read/edit separation") {
+  for(bool edit:{false,true})for(int fault=0;fault<5;++fault) {
+    wm::ManagementRequest r;r.action=edit?wm::ManagementAction::CreatureHeaderEdit:wm::ManagementAction::CreatureHeaderRead;
+    r.creatureHeader={86,false,edit?9007199254740993ULL:0,""};
+    if(fault==1)r.creatureHeader.unitId=-1;
+    if(fault==2)r.creatureHeader.expectedRevision=edit?0:1;
+    if(fault==3)r.creatureHeader.name=edit?std::string(91,'X'):"unexpected";
+    if(fault==4){if(edit)r.creatureHeader.name=std::string("x\0y",3);else r.creatureHeader.profession=true;}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    REQUIRE(value->creature_header());CHECK(value->creature_header()->expected_revision()==r.creatureHeader.expectedRevision);
+  }
+}
+TEST_CASE("creature header result requires confirmed bounded authority") {
+  for(int fault=0;fault<7;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    auto snapshot=wire::CreateCreatureHeaderSnapshot(b,86,102,true,9007199254740993ULL,b.CreateString("Nick"),b.CreateString(fault==1?std::string(1537,'X'):"Miner"),b.CreateString("Nick"));
+    auto result=wire::CreateCreatureHeaderState(b,fault==2?wire::CreatureHeaderOutcome::Unknown:wire::CreatureHeaderOutcome::Completed,true,fault==3?0:snapshot);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(7);
+    state.add_action(fault==4?wire::ManagementAction::CreatureHeaderRead:fault==5?wire::ManagementAction::Catalog:wire::ManagementAction::CreatureHeaderEdit);
+    state.add_status(fault==6?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);state.add_creature_header(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeState(value);REQUIRE(decoded.creatureHeader);REQUIRE(decoded.creatureHeader->snapshot);CHECK(decoded.creatureHeader->snapshot->revision==9007199254740993ULL);CHECK(decoded.creatureHeader->snapshot->nickname=="Nick");}
+  }
+}

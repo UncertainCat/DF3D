@@ -87,6 +87,7 @@
 #include "building_item_native.h"
 #include "creature_office_native.h"
 #include "creature_header_native.h"
+#include "creature_follow_native.h"
 #include "creature_health_native.h"
 #include "modules/Buildings.h"
 #endif
@@ -1628,6 +1629,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             rows.append(std::move(row));
           }
           result["building_id"]=values[0];result["season"]=values[1];result["rows"]=std::move(rows);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="unit-follow-position-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          const auto position=df3d_creature::followPosition(df::unit::find(id));
+          if(!position)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["unit_id"]=id;result["valid"]=position->isValid();
+          result["x"]=position->x;result["y"]=position->y;result["z"]=position->z;
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="item-position-probe") {

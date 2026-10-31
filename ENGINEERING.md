@@ -1782,13 +1782,36 @@ does not cancel follow for this fortress-controlled citizen. This differs from
 the item follow guard and must not be replaced with the item visibility policy.
 Native loops35e5a6/8b6a4b call position1367430, reject flags1 bit1, and call
 unit visibility137bd50. That routine includes fortress-control and containment
-semantics; its complete dependency audit is still required before runtime use.
+semantics; the semantic reader and its acceptance are described below.
 The oracle restores position, designation, follow IDs and camera state. Owned
 DF197152 exits unsaved with unchanged source save; two GPU logs and the combined
 header client have only known renderer notices. Active/inactive camera artwork
 is captured and the active screenshot was inspected. This is native reference
 acceptance only: viewer unit follow, noncitizens, dead/caged/invalid targets and
 rendered camera tooltip remain unfinished. Existing Customize checks also pass.
+
+creature_follow_native.h exposes these same position/visibility calls with
+independently owned coordinates and no follow/sheet/camera inputs. The visibility
+routine reads debug_showambush, game mode, adventure identity, fortress control,
+containment and map designation. Container resolver c8be10 writes an owned
+specific_ref; reference getters can warm semantic cached indices. Pins cover
+the complete position/visibility/control/container bodies and existing item
+position/reference dependencies. Invalid coordinates mean follow is unavailable
+for that target; a missing optional means the native build is unsupported.
+The diagnostic unit-follow-position-probe exposes this reader; management
+transport and the viewer unit-follow button remain unfinished.
+
+unit_follow_reader_reference records protected103826 on2026-10-31. Eleven
+reader observations match native movement/visibility and preserve warmed unit,
+view_sheets and plotinfo bytes. Inactive units lose both native follow and their
+sheet; restoring activity does not resume follow. The oracle explicitly restores
+its sheet fixture before testing the remaining camera actions. Earlier103717
+failed because its next click assumed the sheet remained open. Final103826
+passes existing Customize/Overview/wire checks, exits owned DF183216 unsaved,
+and preserves the source save. Two GPU logs and combined header client contain
+only known renderer startup notices. MSVC and unit-follow-reader QA pass core,
+controller and context checks. Noncitizen and containment variants still need
+live acceptance; this evidence does not establish viewer integration.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

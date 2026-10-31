@@ -17,7 +17,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Fresh historical personality profiles leave current_focus and undistracted_focus uninitialized at offsets0x184/0x188. | No runtime correction; DF3D calls the same native initializer. | Discovered, not corrected. Native constructor5c02a0 and assignment accountant captures060438/060526/060814; fixture `assignment_cleanup_reference`. The oracle retains raw values and excludes only these newly allocated counters from comparison. |
 | Minimum-height hospital Details has no staff rows, but draws a malformed staff scrollbar over soap controls and scrolls an invisible list. | Hide the scrollbar and cancel scrolling when no staff row fits. | Implemented under approval2026-10-27. `native_location_details.json.staff_height_reference`, native010412, GPU `build/qa/location-staff-resize` and live `areas-acceptance-20261027-144319`; capacities0/8/5 at600/900/800 pixels. |
 | Minimum-height Zones palette extends behind the bottom toolbar, partly obscuring Sand and Clay. | Retain the scrolling palette wrapper within the space above the toolbar. | Implemented under approval2026-10-28; protected main-scene195546 verifies wheel scrolling, both type selections and cancellation at960x600. `native_zone_defaults.json.palette_resize_reference`, native154748. |
-| Unit Customize retains nickname focus after clicking profession, so subsequent typing changes the nickname. | Use the last field clicked. Approved2026-10-31; implementation pending. | Protected083457 on2026-10-31 verifies both click orders, typed effects and Enter focus; nickname dispatch8bb4af takes precedence. `native_farm.json.unit_header_dual_focus_reference`. |
+| Unit Customize retains nickname focus after clicking profession, so subsequent typing changes the nickname. | Use the last field clicked. Implemented under approval2026-10-31; composed live085513 verifies nickname then profession edits. | Protected083457 on2026-10-31 verifies both click orders, typed effects and Enter focus; nickname dispatch8bb4af takes precedence. `native_farm.json.unit_header_dual_focus_reference`. |
 | Overview evaluates pain twice and can show duplicate Pain rows with different colors. | No correction authorized or implemented. | Confirmed native165937 on2026-10-30: pain50 displays palette6 then14. Reference branches165cfe and1662aa; `native_farm.json.unit_health_reference`. Preserve native behavior pending a separate maintainer decision. |
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
@@ -1644,7 +1644,8 @@ The dispatcher uses the shared world-epoch/save admission gate, then resolves
 the current active unit and rejects hidden, unloaded or invalid positions.
 Writes require lossless conversion to DF bytes and use the verified transaction.
 No native viewscreen or draft participates. Godot's creature_header management
-domain exposes the commands; the actual editor remains hidden and unfinished.
+domain exposes the commands; the composed editor remains staged, with acceptance
+and remaining gaps below.
 
 unit_header_transport_reference records protected082406 on2026-10-31. The real
 Godot adapter reads adult1017, compares the exact revision with the independent
@@ -1665,7 +1666,7 @@ profession changes using each confirmed revision. Adjacent pending edits to the
 same field coalesce; switching fields preserves intent order. Closing the panel
 drains explicit typing, while old callbacks cannot populate another selection.
 Rejected, Stale, Unknown, contradictory receipts and epoch changes discard
-buffered edits without replay. The visible editor remains unfinished.
+buffered edits without replay. The composed editor acceptance follows below.
 
 unit_header_controller_reference records protected083017 on2026-10-31: the real
 Godot controller closes and reopens before buffered edits are sent, observes the
@@ -1685,7 +1686,7 @@ was clicked last. Enter clears nickname focus and retains profession focus.
 Native8bb4af checks nickname focus before the profession branch and consumes that
 input. The two typed captures were visually inspected. This is a confirmed native
 focus defect; the maintainer approved a last-clicked-field correction on2026-10-31,
-with implementation pending. Nonempty
+implemented and verified in composed085513 below. Nonempty
 shared drafts and continued typing after Enter remain unverified. Original names
 are restored; owned DF200156 exits unsaved with unchanged source save. Existing
 wire/controller/Overview checks pass, all three Godot processes report only the
@@ -1701,9 +1702,8 @@ fields from083457. GPU creature_customize_capture matches both rows against each
 native hash (41472 pixels), verifies field hitboxes and disabled input, and saves
 an inspected screenshot. unit-customize-view QA passes core19/19, controller and
 context checks; GPU diagnostics are the known startup/finalize/ObjectDB shutdown
-signatures only. The view is not yet integrated into the unit sheet. Fallback
-captions, keyboard/focus behavior, animated colors and composed lifecycle remain
-unfinished; this component test does not establish editor acceptance.
+signatures only. This component test establishes field rendering; composed editor
+acceptance and remaining lifecycle gaps follow below.
 
 customizeCaptions exposes the unfocused captions via a separate identity record
 (-10), keeping the normal header record within its12-fact bound. Empty nickname
@@ -1721,6 +1721,35 @@ Overview and edit/controller checks pass. Owned DF197288 exits unsaved, source
 save unchanged, with only known renderer notices. MSVC and unit-customize-captions
 QA pass core19/19, controller and context. Child, missing-history and identity
 variants remain unverified; this establishes caption delivery, not editor input.
+
+The staged unit sheet connects Customize to creature_customize_editor. Its local
+field drafts survive body redraws; typing edits only the last field clicked under
+the approved native-bug correction. Enter ends field input while retaining
+Customize. The UI host routes Escape through handle_escape, closing Customize
+before the sheet. Explicit typing drains through the service-owned session on
+close. Confirmed edits demand fresh creature details; typing immediately
+invalidates old fallback captions, which remain blank until a newer publication
+arrives. Rejected/Stale/Unknown results retire the draft without replay. The
+normal header is replaced by the native two-field view while customizing.
+
+unit_header_customize_editor_reference records composed085513 on2026-10-31.
+The native button opens an editor matching all288x72 native pixels. Actual
+pointer/key input sets nickname Q, switches to profession without Enter, sets R,
+confirms both, exercises Enter/Escape, reopens, clears both fields and restores
+the exact original snapshot. Native readback confirms restored unit/HF/soul
+names. Existing Overview and header transport/controller checks pass. Owned
+DF192164 exits unsaved; source save unchanged; both GPU logs and combined header
+client log show only the known renderer notice. The rendered image was inspected.
+Run085145 failed on focus loss during body rebuilding, host Escape bypass and a
+deferred scrollbar callback referencing freed controls; it is not acceptance.
+Focus/text updates now retain their controls, and the callback uses weak refs.
+Core19/controller checks pass in unit-customize-input; context passes in
+unit-customize-input-repair after correcting weakref type declarations. The final
+immediate fallback invalidation passes unit-customize-draft-fallback controller
+coverage; the composed run predates that one-line change. Hover help, actual
+transport replacement/disconnect, visible target-switch/resize during typing,
+animated name backgrounds and child/missing-history/identity variants remain
+unverified or unfinished. The public unit route remains staged.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

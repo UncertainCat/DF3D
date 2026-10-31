@@ -57,6 +57,27 @@ func run() -> void:
 		check(model.phase==Header.Phase.Unavailable and model.snapshot.is_empty() and world.calls.size()==1+int(sent),"epoch change retires draft without continuation")
 		await process_frame
 	setup_header();model.open(86);model.close();service.poll();check(world.calls.is_empty(),"queued read detaches on close")
-	model.dispose();service.free();service=null;model=null
+	model.dispose()
+	var editor=preload("res://scripts/creature_customize_editor.gd").new();root.add_child(editor);editor.configure(service);model=editor.state
+	editor.observe_captions(1,{"name":"Native name","profession":"Native profession"})
+	editor.open(86);service.poll();header_reply(header_facts())
+	check(editor.opened and editor.field==-1 and editor.caption(0,0)=="Native name","Customize opens with native fallback")
+	editor.focus(false)
+	var letter:=InputEventKey.new();letter.pressed=true;letter.unicode=81;letter.keycode=KEY_Q
+	editor.feed_key(letter);editor.focus(true);letter.unicode=82;letter.keycode=KEY_R;editor.feed_key(letter)
+	check(editor.values==["Q","R"] and editor.field==1,"last clicked field receives typing")
+	check(editor.caption(1,0)=="R_" and editor.caption(1,500)=="R","native cursor phase")
+	var enter:=InputEventKey.new();enter.pressed=true;enter.keycode=KEY_ENTER;editor.feed_key(enter)
+	check(editor.opened and editor.field==-1,"Enter ends field without closing Customize")
+	check(not editor.fallback_valid,"unconfirmed typing cannot reuse old fallback captions")
+	service.poll();header_reply(header_facts(86,"Q","",9007199254740994));header_reply(header_facts(86,"Q","R",9007199254740995))
+	check(not editor.fallback_valid,"confirmed edits invalidate old fallback captions")
+	editor.observe_captions(1,{"name":"Native name","profession":"Native profession"});check(not editor.fallback_valid,"old publication cannot reauthorize fallback")
+	editor.observe_captions(2,{"name":"Q","profession":"R"});check(editor.fallback_valid,"fresh publication supplies fallback")
+	editor.focus(false);letter.unicode=0;letter.keycode=KEY_BACKSPACE;editor.feed_key(letter)
+	service.poll();header_reply({},2)
+	check(not editor.opened and editor.values==["",""] and editor.field==-1,"stale write retires editor draft")
+	editor.queue_free();await process_frame;model=null
+	service.free();service=null
 	if failures==0:print("CREATURE_HEADER_STATE_PASS")
 	quit(1 if failures else 0)

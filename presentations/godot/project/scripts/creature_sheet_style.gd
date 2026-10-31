@@ -66,12 +66,17 @@ static func scrollbar(scroll: ScrollContainer, world):
  marker.texture=ImageTexture.create_from_image(center)
  marker.mouse_filter=Control.MOUSE_FILTER_IGNORE
  bar.add_child(marker)
+ var weak_bar: WeakRef=weakref(bar)
+ var weak_marker: WeakRef=weakref(marker)
  var place := func():
-  var extent := maxf(bar.max_value-bar.min_value,1)
-  var track_height := maxf(bar.size.y-2,0)
-  var thumb := clampf(track_height*bar.page/extent,12,track_height)
-  var fraction := clampf((bar.value-bar.min_value)/maxf(extent-bar.page,1),0,1)
-  marker.position=Vector2(0,roundf(1+(track_height-thumb)*fraction+thumb*.5-6))
+  var current=weak_bar.get_ref()
+  var current_marker=weak_marker.get_ref()
+  if current==null or current_marker==null:return
+  var extent := maxf(current.max_value-current.min_value,1)
+  var track_height := maxf(current.size.y-2,0)
+  var thumb := clampf(track_height*current.page/extent,12,track_height)
+  var fraction := clampf((current.value-current.min_value)/maxf(extent-current.page,1),0,1)
+  current_marker.position=Vector2(0,roundf(1+(track_height-thumb)*fraction+thumb*.5-6))
  bar.changed.connect(place)
  bar.resized.connect(place)
  bar.value_changed.connect(func(_value): place.call())

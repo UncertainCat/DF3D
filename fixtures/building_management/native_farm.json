@@ -41383,7 +41383,7 @@
       "source_save": "Owned source unchanged",
       "diagnostics": "Two GPU logs and combined header-client output contain only known renderer notice.",
       "scope": "Empty initial custom names on adult1017; typed captures inspected. Nonempty shared drafts and post-Enter continued typing remain unverified.",
-      "correction": "Maintainer approved last-clicked-field focus on2026-10-31; implementation pending."
+      "correction": "Maintainer approved2026-10-31; implemented last-clicked-field focus and verified in composed live085513."
     },
     "unit_header_customize_art_reference": {
       "renderer": "DF53.16 15aa16..15b172",
@@ -41511,6 +41511,49 @@
         "Warmed semantic name cache",
         "Unfocused captions only",
         "Missing-history and identity variants not accepted"
+      ]
+    },
+    "unit_header_customize_editor_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-085513",
+      "owned_df_pid": 192164,
+      "result": {
+        "enter_keeps_customize": true,
+        "escape_keeps_sheet": true,
+        "last_clicked_field": true,
+        "restored": true,
+        "success": true
+      },
+      "image_sha256": "c53d2b3b2444f2a3aff38a27a74a573281dbc115776581340fbacb301028c61f",
+      "native_region": [
+        528,
+        64,
+        288,
+        72
+      ],
+      "verified": [
+        "Native Customize button opens two fields in actual main scene",
+        "Entire initial editor region matches native screenshot; inspected rendered image",
+        "Nickname Q then profession R without Enter preserves both confirmed native fields",
+        "Enter retains Customize; Escape retains unit sheet",
+        "Reopen observes names; clearing restores exact original header snapshot",
+        "Native Lua readback restores unit nickname/profession, HF nickname and soul nickname",
+        "Existing Overview, transport and controller checks pass"
+      ],
+      "source_save": "Owned source unchanged",
+      "diagnostics": "Both GPU logs and combined protocol-client stdout/stderr have only known renderer notice.",
+      "qa": [
+        "unit-customize-integrated core19/controller/context and GPU fields pass (known shutdown issues in GPU component test)",
+        "unit-customize-input core19/controller pass; context initially rejected weakref type inference",
+        "unit-customize-input-repair context passes",
+        "unit-customize-draft-fallback controller passes after immediate invalidation of old captions during typing"
+      ],
+      "failed_run": "085145 exposed redraw-driven focus loss, host Escape bypass and deferred scrollbar freed captures; not acceptance.",
+      "limits": [
+        "Public unit route remains staged",
+        "Customize hover tooltip not implemented",
+        "Actual disconnect/replacement, resize and target-switch during visible typing not yet accepted",
+        "Animated name backgrounds, child and identity/missing-history variants remain unverified",
+        "Final immediate fallback invalidation has controller coverage; live run predates that one-line change"
       ]
     }
   }

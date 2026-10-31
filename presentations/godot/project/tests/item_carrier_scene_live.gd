@@ -148,6 +148,8 @@ func unit_carrier(expected: Dictionary) -> void:
 	var evidence:=FileAccess.open(directory+"/unit-overview-scene.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
+	if FileAccess.file_exists(directory+"/unit-customize-captions.json"):
+		await exercise_customize(inspector)
 	key(KEY_ESCAPE);await process_frame
 	check(scene._ui.host.active==null and not inspector.panel.visible,"Unit sheet Escape did not release input")
 	for label in health_labels:
@@ -172,3 +174,42 @@ func unit_carrier(expected: Dictionary) -> void:
 		for label in resumed:
 			if is_instance_valid(label):check(not label.is_processing(),"Reopened health animation did not retire")
 	exercised=true
+
+func open_customize(inspector) -> bool:
+	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(416,18))
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline and not inspector.customize.opened:
+		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+	return check(inspector.customize.opened,"Customize did not open from native button")
+
+func exercise_customize(inspector) -> void:
+	if not await open_customize(inspector):return
+	var editor=inspector.customize
+	var original: Dictionary=editor.state.snapshot.duplicate(true)
+	if not check(original.nickname.is_empty() and original.profession.is_empty(),"Customize fixture expects empty original custom fields"):return
+	await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	image.save_png(directory+"/unit-customize-scene.png")
+	var native:=Image.load_from_file(directory+"/unit-header-actions-open.png");native.convert(Image.FORMAT_RGB8)
+	var region:=Rect2i(528,64,288,72)
+	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Composed Customize pixels differ")
+	await pointer(Vector2(600,82));check(editor.field==0,"Nickname click lost focus");key(KEY_Q,81)
+	check(editor.values[0]=="Q","Nickname key lost input")
+	await pointer(Vector2(600,118));check(editor.field==1,"Profession click lost focus");key(KEY_R,82)
+	check(editor.values==["Q","R"],"Profession key lost input")
+	await drain()
+	check(editor.values==["Q","R"] and editor.state.snapshot.nickname=="Q" and editor.state.snapshot.profession=="R","Last clicked field did not receive confirmed edits: "+str(editor.values)+" phase="+str(editor.state.phase)+" results="+str(actions._results))
+	key(KEY_ENTER);await process_frame
+	check(editor.opened and editor.field==-1,"Enter unexpectedly closed Customize")
+	key(KEY_ESCAPE);await process_frame
+	check(inspector.panel.visible and not editor.opened and scene._ui.host.active==inspector,"Customize Escape closed unit sheet")
+	if not await open_customize(inspector):return
+	check(editor.state.snapshot.nickname=="Q" and editor.state.snapshot.profession=="R","Reopened editor lost native names")
+	await pointer(Vector2(600,82));key(KEY_BACKSPACE)
+	await pointer(Vector2(600,118));key(KEY_BACKSPACE)
+	await drain()
+	var restored: bool=editor.state.snapshot==original
+	check(restored,"Editor did not restore original semantic snapshot")
+	key(KEY_ENTER);key(KEY_ESCAPE);await process_frame
+	var file:=FileAccess.open(directory+"/unit-customize-scene-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"last_clicked_field":true,"enter_keeps_customize":true,"escape_keeps_sheet":true,"restored":restored}));file.close()

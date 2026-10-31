@@ -28,8 +28,21 @@ var creature_generation := -1
 var creature_display := {}
 var creature_status := {}
 var creature_texture: Texture2D
+var customize=preload("res://scripts/creature_customize_editor.gd").new()
+var customize_view
+var customize_color: Dictionary={}
+var customize_presented:=false
+var customize_requested:=false
 
 func _ready():
+	add_child(customize);customize.configure(action_service)
+	customize.changed.connect(func():
+		if not is_open() or selected.is_empty():return
+		if customize.opened!=customize_presented or customize.requested!=customize_requested:redraw()
+		else:_update_customize())
+	customize.applied.connect(func():
+		if not selected.is_empty() and int(selected.kind)==1:
+			world.demand_creature_info(-1);world.demand_creature_info(int(selected.id)))
 	building_removal.service = action_service
 	building_removal.changed.connect(func():
 		if is_open(): redraw())
@@ -79,6 +92,7 @@ func open_target(tile: Vector3i, kind: int, id: int):
 	choose(target if not target.is_empty() else choices[0])
 
 func choose(row: Dictionary):
+	customize.close();customize.fallback_generation=-1;customize.fallback_valid=false
 	selected = row
 	building_removal.select(int(row.id) if int(row.kind) == 3 else -1)
 	world.demand_resident_info(0)
@@ -93,6 +107,7 @@ func choose(row: Dictionary):
 	redraw()
 
 func close_panel():
+	customize.close()
 	building_removal.select(-1)
 	if ui_host != null: ui_host.release(self)
 	if panel != null and panel.visible:
@@ -112,12 +127,17 @@ func set_play_enabled(value: bool):
 
 func is_open() -> bool: return panel != null and panel.visible
 
+func handle_escape() -> void:
+	if customize.opened or customize.requested:customize.close()
+	else:close_panel()
+
 func cancel_gesture() -> void:
 	right_down = false
 	right_travel = 0.0
 
 func _process(delta: float):
 	if not is_open(): return
+	_update_customize()
 	var size := get_viewport().get_visible_rect().size / Preferences.effective_scale_vector(get_viewport().get_visible_rect().size)
 	if size != last_size:
 		last_size = size
@@ -161,7 +181,10 @@ func _input(event):
 	if ui_host != null and not ui_host.allows_panel_input(self): return
 	if not is_open(): return
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		close_panel(); get_viewport().set_input_as_handled()
+		handle_escape()
+		get_viewport().set_input_as_handled()
+	elif event is InputEventKey and customize.feed_key(event):
+		get_viewport().set_input_as_handled()
 	elif event is InputEventMouseMotion and right_down:
 		right_travel += event.relative.length()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -173,6 +196,13 @@ func _input(event):
 
 func clear_children(node: Node):
 	for child in node.get_children(): node.remove_child(child); child.queue_free()
+
+func _update_customize() -> void:
+	if not is_instance_valid(customize_view):return
+	var ticks:=Time.get_ticks_msec()
+	var color:=preload("res://scripts/native_name_color.gd").choose(customize_color,ticks,randi_range(0,1))
+	if color.is_empty():return
+	customize_view.present(customize.caption(0,ticks),customize.caption(1,ticks),preload("res://scripts/native_creature_text.gd").colors[color[0]+color[2]*8])
 
 func label_at(id: String, text: String, native_color: int = -1):
 	if text.is_empty(): return
@@ -215,6 +245,7 @@ func icon_at(id: String):
 
 func redraw():
 	if selected.is_empty(): return
+	customize_presented=customize.opened;customize_requested=customize.requested
 	var view := get_viewport().get_visible_rect().size
 	var scale_factor: Vector2 = Preferences.effective_scale_vector(view)
 	view /= scale_factor
@@ -228,6 +259,7 @@ func redraw():
 	body.size = panel.size-Vector2(16,24)
 	alternatives.position = Vector2(panel.size.x,0)
 	clear_children(body)
+	customize_view=null
 	building_remove_button = null
 	clear_children(alternatives)
 	var name_text := str(selected.get("name",""))
@@ -245,6 +277,7 @@ func redraw():
 			var header_name: Dictionary = {}
 			var header_activity := ""
 			var activity_color := 15
+			var customize_captions: Dictionary={}
 			for section in detail.get("sections",[]):
 				if section.key!="identity": continue
 				for record in section.records:
@@ -253,6 +286,7 @@ func redraw():
 					if facts.get("record_type","")=="header_status":
 						header_status=facts.get("text","");header_color=int(facts.get("color","15"))
 					if facts.get("record_type","")=="header_name": header_name=facts
+					if facts.get("record_type","")=="customize_captions":customize_captions=facts
 					if facts.get("record_type","")=="header_activity":
 						header_activity=str(facts.get("text",""));activity_color=int(facts.get("color",15))
 					for fact in record.facts:
@@ -265,9 +299,28 @@ func redraw():
 				body.add_child(name_view)
 				# Native fixed 60-cell sheet: right-3-6 minus name-left14 minus2.
 				name_view.configure(header_name,35)
+				customize_color=name_view.description
+				name_view.visible=not customize.opened
 			label_at("unit.subtitle",'"'+translated+'"' if not translated.is_empty() else "",15)
 			label_at("unit.status",header_status,header_color)
 			label_at("unit.job",header_activity,activity_color)
+			customize.observe_captions(int(detail_state.get("generation",-1)),customize_captions)
+			if customize.opened:
+				# Customize replaces all ordinary header text, retaining portrait/tabs.
+				for child in body.get_children():child.hide()
+				customize_view=preload("res://scripts/creature_customize_view.gd").new()
+				body.add_child(customize_view);customize_view.configure(world);customize_view.position=Vector2(104,0)
+				customize_view.input_allowed=func():return ui_host==null or ui_host.allows_panel_input(self)
+				customize_view.field_requested.connect(customize.focus)
+				_update_customize()
+			elif action_service!=null and not customize_captions.is_empty():
+				var button:=TextureButton.new();button.name="Customize"
+				button.texture_normal=world.ui_texture("UNIT_SHEET_CUSTOMIZE")
+				button.position=Vector2(400,0);button.size=Vector2(32,36)
+				button.disabled=customize.requested
+				button.pressed.connect(func():
+					if ui_host==null or ui_host.allows_panel_input(self):customize.open(int(selected.id)))
+				body.add_child(button)
 			if world.has_method("creature_portrait"):
 				var portrait := TextureRect.new()
 				portrait.texture = world.creature_portrait(int(selected.id))
@@ -324,7 +377,7 @@ func redraw():
 		body.add_child(status)
 	# Native building sheets close through the existing right-click/Escape path;
 	# a local Close button here overlaps the native removal action.
-	if int(selected.kind) != 3:
+	if int(selected.kind) not in [1,3]:
 		var close := Button.new()
 		close.text = "Close"
 		close.size = Vector2(60,24)

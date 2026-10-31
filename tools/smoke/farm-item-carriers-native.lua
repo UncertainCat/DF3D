@@ -451,7 +451,15 @@ local ok,err=xpcall(function()
    local before_focus=focus_state(p)
    linked.camera_before=camera_before;linked.camera_after={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
    assert(json.encode(linked.camera_before)==json.encode(linked.camera_after),'Unit carrier View moved native camera')
+   local header_figure=df.historical_figure.find(unit.hist_figure_id)
+   local header_names={unit.name.nickname,unit.custom_profession,header_figure and header_figure.name.nickname,unit.status.current_soul and unit.status.current_soul.name.nickname}
    capture('farm-item-carrier-unit-scene')
+   local final_names={unit.name.nickname,unit.custom_profession,header_figure and header_figure.name.nickname,unit.status.current_soul and unit.status.current_soul.name.nickname}
+   assert(json.encode(header_names)==json.encode(final_names),'unit editor did not restore native names')
+   if os.getenv('DF3D_UNIT_HEADER_ACTIONS')=='1' then
+    local file=assert(io.open(out..'/unit-customize-scene-result.json'));linked.customize_scene=json.decode(file:read('*a'));file:close()
+    assert(linked.customize_scene.success and linked.customize_scene.restored,'Customize main scene failed')
+   end
    local result=assert(io.open(out..'/carrier-scene-result.json'));linked.scene=json.decode(result:read('*a'));result:close()
    assert(linked.scene.success,'unit carrier main-scene navigation failed')
    linked.focus_before=before_focus;linked.focus_after=focus_state(p)

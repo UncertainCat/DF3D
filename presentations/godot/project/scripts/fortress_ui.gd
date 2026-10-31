@@ -151,6 +151,7 @@ func controller(id: String):
 	panel.ui_host = host
 	if id == "inspector":
 		ensure_follow();panel.follow=creature_follow
+		panel.history_requested.connect(func(unit_id):controller("reports").open_creature_history(unit_id))
 		panel.action_service = actions
 		panel.hover_help=view._fortress_hud.native_help
 	if id in ["construction", "areas"]: panel.hud = view._fortress_hud

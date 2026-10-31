@@ -33,6 +33,10 @@ func open_panel() -> void:
  if not play_enabled or ui_host==null or not ui_host.activate(self):return
  controller.state.open()
 
+func open_creature_history(unit_id:int) -> void:
+ if unit_id<0 or not play_enabled or ui_host==null or not ui_host.activate(self):return
+ controller.state.open_creature_history(unit_id)
+
 func close_panel() -> void:
  controller.state.close()
 

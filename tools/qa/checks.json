@@ -3656,6 +3656,15 @@
       ]
     },
     {
+      "id": "creature_reports_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/creature_reports_capture.gd",
+      "completion": "CREATURE_REPORTS_CAPTURE_PASS",
+      "timeout": 60,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "creature_customize_capture",
       "lane": "gpu",
       "kind": "godot",

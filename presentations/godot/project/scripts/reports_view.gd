@@ -29,18 +29,21 @@ func configure(source,model,install_root: String) -> void:
  scrollbar.input_allowed=func():return not input_allowed.is_valid() or input_allowed.call()
  scrollbar.row_changed.connect(func(first):state.scroll_to(first))
  state.changed.connect(refresh);refresh()
+func pause_target() -> Rect2:
+ return Rect2(872,12,24,36) if state.direct_unit_entry else PAUSE_TARGET
+
 func refresh() -> void:
  var key:="%s:%s:%s" % [state.opened,state.selected_tab,state.unit_id]
  if key!=selection_key:selection_key=key
  scroll_row=state.log_first if state.unit_id>=0 else state.first_row
- position.y=64 if state.unit_id>=0 else 52
- size.y=696 if state.unit_id>=0 else 708
+ position=Vector2(48,100) if state.direct_unit_entry else Vector2(32,64 if state.unit_id>=0 else 52)
+ size=Vector2(920,624) if state.direct_unit_entry else Vector2(944,696 if state.unit_id>=0 else 708)
  visible=state.opened
  if scrollbar!=null:
   var log_view:bool=state.unit_id>=0
-  scrollbar.position=Vector2(928,48 if log_view else 96)
-  scrollbar.size=Vector2(16,636 if log_view else 564)
-  scrollbar.page=17 if log_view else 15
+  scrollbar.position=Vector2(904 if state.direct_unit_entry else 928,48 if log_view else 96)
+  scrollbar.size=Vector2(16,564 if state.direct_unit_entry else 636 if log_view else 564)
+  scrollbar.page=state.unit_page_rows if log_view else 15
   # Native ordinary report tabs and unit logs ignore wheel even over the bar;
   # only Combat/Sparring/Hunting unit lists handle contextual wheel input.
   scrollbar.wheel_enabled=not log_view and state.selected_tab>=23
@@ -59,7 +62,7 @@ func _gui_input(event: InputEvent) -> void:
    state.scroll_to(state.requested_row+(-step if event.button_index==MOUSE_BUTTON_WHEEL_UP else step))
    queue_redraw();accept_event();return
  if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
-  if state.unit_id>=0 and PAUSE_TARGET.has_point(event.position):
+  if state.unit_id>=0 and pause_target().has_point(event.position):
    state.toggle_pause_on_new();accept_event();return
   for target in tab_targets:
    if target.rect.has_point(event.position):state.choose_tab(target.tab);accept_event();return
@@ -70,7 +73,7 @@ func _gui_input(event: InputEvent) -> void:
   for target in speaker_targets:
    if target.rect.has_point(event.position):state.inspect_speaker(target.id);accept_event();return
 func _get_tooltip(at_position:Vector2) -> String:
- if state.unit_id>=0 and PAUSE_TARGET.has_point(at_position):return "Toggle auto-pause on new report."
+ if state.unit_id>=0 and pause_target().has_point(at_position):return "Toggle auto-pause on new report."
  for target in report_targets:
   if target.rect.has_point(at_position):return "Leave this menu and recenter on this creature."
  return ""
@@ -85,7 +88,10 @@ func patch(token: String,origin: Vector2,columns: int,rows: int,edge_columns: in
    draw_texture_rect_region(texture,Rect2(origin+Vector2(x*8,y*12),Vector2(8,12)),Rect2(tx*8+(40 if token=="selected" else 0),ty*12,8,12))
 func _draw() -> void:
  if state==null:return
- patch("border",Vector2.ZERO,118,58 if state.unit_id>=0 else 59)
+ patch("border",Vector2.ZERO,115 if state.direct_unit_entry else 118,52 if state.direct_unit_entry else 58 if state.unit_id>=0 else 59)
+ if state.direct_unit_entry:
+  patch("selected",Vector2(0,-24),10,2,2)
+  theme.default_font.draw_string(get_canvas_item(),Vector2(16,-6),"Combat",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color8(70,44,0))
  tab_targets=[];unit_targets=[];report_targets=[];speaker_targets=[]
  if state.unit_id>=0:
   draw_unit_log();return
@@ -181,27 +187,28 @@ func draw_unit_log() -> void:
  var font:Font=theme.default_font
  if font==null:return
  var pause_icon:Texture2D=art.texture("ANNOUNCEMENT_PAUSING_ON_NEW_REPORT" if state.pause_on_new else "ANNOUNCEMENT_NOT_PAUSING_ON_NEW_REPORT")
- if pause_icon!=null:draw_texture_rect(pause_icon,PAUSE_TARGET,false)
+ if pause_icon!=null:draw_texture_rect(pause_icon,pause_target(),false)
  var header:="You can recenter on the locations of the announcements. You may also toggle pausing when there is a new announcement."
- var heading:=wrap_report(header,110)
+ var heading:=wrap_report(header,107 if state.direct_unit_entry else 110)
  for i in heading.size():font.draw_string(get_canvas_item(),Vector2(8,24+i*12),heading[i],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
  var icon:Texture2D=art.texture("STOCKS_RECENTER")
- for index in mini(17,state.rows.size()-scroll_row):
+ var right:int=856 if state.direct_unit_entry else 880
+ for index in mini(state.unit_page_rows,state.rows.size()-scroll_row):
   var row:Dictionary=state.rows[scroll_row+index]
   # Native072011: secondary-only uses the right slot; two positions use both.
   if int(row.get("speaker_id",-1))>=0:
    var positions:=int(bool(row.get("position_visible",false)))+int(bool(row.get("position2_visible",false)))
-   var speaker_rect:=Rect2(880-24*positions,48+index*36,24,36)
+   var speaker_rect:=Rect2(right-24*positions,48+index*36,24,36)
    var speaker_icon:Texture2D=art.texture("STOCKS_VIEW_ITEM")
    if speaker_icon!=null:draw_texture_rect(speaker_icon,speaker_rect,false)
    speaker_targets.append({"rect":speaker_rect,"id":int(row.id)})
   for secondary in [false,true]:
    if not row.get("position2_visible" if secondary else "position_visible",false):continue
-   var target:=Rect2(880 if secondary or not row.get("position2_visible",false) else 856,48+index*36,24,36)
+   var target:=Rect2(right if secondary or not row.get("position2_visible",false) else right-24,48+index*36,24,36)
    if icon!=null:draw_texture_rect(icon,target,false)
    report_targets.append({"rect":target,"id":int(row.id),"secondary":secondary})
   var color:Color=art.world.ui_palette_color(int(row.get("color",7))+(8 if row.get("bright",false) else 0))
-  var lines:=wrap_report(str(row.get("text","")),108,visible_text_lines(48+index*36))
+  var lines:=wrap_report(str(row.get("text","")),105 if state.direct_unit_entry else 108,visible_text_lines(48+index*36))
   for line in lines.size():
    var y:=48+index*36+line*12
    var background_height:=clampi(int(size.y)-12-y,0,12)

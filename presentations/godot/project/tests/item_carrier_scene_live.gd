@@ -175,6 +175,7 @@ func unit_carrier(expected: Dictionary) -> void:
 			if is_instance_valid(label):check(not label.is_processing(),"Reopened health animation did not retire")
 	if FileAccess.file_exists(directory+"/unit-camera-native.json"):
 		await exercise_follow(inspector,source,int(expected.snapshot.id),target)
+	await exercise_history(inspector,source,int(expected.snapshot.id),target)
 	exercised=true
 
 func follow_ready() -> bool:
@@ -372,3 +373,32 @@ func exercise_customize(inspector,source_item: int) -> void:
 	key(KEY_ENTER);key(KEY_ESCAPE);await process_frame
 	var file:=FileAccess.open(directory+"/unit-customize-scene-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"last_clicked_field":true,"enter_keeps_customize":true,"escape_keeps_sheet":true,"restored":restored,"native_help_glyph_pixels":ink_count,"resize_retains_draft":true,"overlay_blocks_input":true,"panel_switch_drains_typing":true}));file.close()
+
+func exercise_history(inspector,source,source_id:int,target:int) -> void:
+	source.open_target(source_id)
+	if not await settle(source.state):return
+	await pointer(source.panel.get_global_transform_with_canvas()*source.panel.holder_rect().get_center())
+	var deadline:=Time.get_ticks_msec()+5000
+	while (not is_instance_valid(inspector.history_button) or not inspector.panel.visible) and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+	if not check(is_instance_valid(inspector.history_button),"Unit Reports button missing"):return
+	await pointer(inspector.history_button.get_global_transform_with_canvas()*Vector2(16,18))
+	var reports=scene._ui.controller("reports")
+	var model=reports.controller.state
+	await drain()
+	check(scene._ui.host.active==reports and reports.panel.visible and not inspector.panel.visible,"Reports click did not replace unit sheet")
+	check(model.direct_unit_entry and model.unit_id==target and model.unit_category==0 and not model.log_initial_needed,"Reports click did not load direct Combat history")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/unit-reports-scene.png")
+	var paused:bool=model.pause_on_new
+	await pointer(reports.panel.position+reports.panel.pause_target().get_center())
+	check(model.pause_on_new!=paused,"Combat pause toggle did not receive input")
+	scene._fortress_hud.toggle_settings()
+	await pointer(reports.panel.position+reports.panel.pause_target().get_center())
+	check(model.pause_on_new!=paused,"Overlay allowed Combat input")
+	key(KEY_ESCAPE);await process_frame
+	check(model.opened,"Overlay Escape closed Combat history")
+	key(KEY_ESCAPE);await process_frame
+	check(not model.opened and scene._ui.host.active==null and not inspector.panel.visible,"Combat Back reopened unit sheet or retained input")
+	var file:=FileAccess.open(directory+"/unit-reports-scene-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"direct_combat":true,"back_to_map":true,"overlay_blocks_input":true}));file.close()

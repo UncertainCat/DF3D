@@ -1,4 +1,5 @@
 extends Node
+signal history_requested(unit_id:int)
 # Local entity identity and presentation only. Queries never navigate DF screens.
 const Preferences = preload("res://scripts/presentation_settings.gd")
 const OriginalUI = preload("res://scripts/original_ui.gd")
@@ -38,6 +39,7 @@ var hover_position:=Vector2(-1,-1)
 var customize_button: BaseButton
 var follow
 var follow_button: TextureButton
+var history_button: TextureButton
 
 func _ready():
 	if follow!=null:follow.changed.connect(_update_follow)
@@ -220,6 +222,9 @@ func _update_follow() -> void:
 
 func _update_customize_help() -> void:
 	if not is_instance_valid(hover_help):return
+	if is_instance_valid(history_button) and history_button.is_visible_in_tree() and (ui_host==null or ui_host.allows_panel_input(self)):
+		var local: Vector2=history_button.get_global_transform_with_canvas().affine_inverse()*hover_position
+		if Rect2(Vector2.ZERO,history_button.size).has_point(local):hover_help.enter_unit(get_instance_id(),"reports");return
 	if is_instance_valid(follow_button) and follow_button.is_visible_in_tree() and (ui_host==null or ui_host.allows_panel_input(self)):
 		var local: Vector2=follow_button.get_global_transform_with_canvas().affine_inverse()*hover_position
 		if Rect2(Vector2.ZERO,follow_button.size).has_point(local):hover_help.enter_unit(get_instance_id(),"camera");return
@@ -285,6 +290,7 @@ func redraw():
 	clear_children(body)
 	customize_view=null
 	customize_button=null
+	history_button=null
 	follow_button=null
 	building_remove_button = null
 	clear_children(alternatives)
@@ -348,6 +354,13 @@ func redraw():
 				button.pressed.connect(func():
 					if ui_host==null or ui_host.allows_panel_input(self):customize.open(int(selected.id)))
 				body.add_child(button)
+			if action_service!=null and not customize.opened:
+				history_button=TextureButton.new();history_button.name="CreatureHistory"
+				history_button.texture_normal=world.ui_texture("UNIT_SHEET_REPORTS")
+				history_button.position=Vector2(368,0);history_button.size=Vector2(32,36)
+				history_button.pressed.connect(func():
+					if ui_host==null or ui_host.allows_panel_input(self):history_requested.emit(int(selected.id)))
+				body.add_child(history_button)
 			if follow!=null and not customize.opened:
 				follow_button=TextureButton.new();follow_button.name="FollowCreature"
 				follow_button.position=Vector2(432,0);follow_button.size=Vector2(32,36)

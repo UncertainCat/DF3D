@@ -1917,8 +1917,30 @@ Reports state now provides open_creature_history(unit_id), using the existing
 retained semantic log reader without requiring a Reports-list row. Direct entry
 uses15 rows; existing list entry retains17. QA unit-reports-direct-state passes
 core and Reports state/controller/text checks, including empty history, stale
-list receipts, replacement and page bounds. No viewer button calls this method
-yet; direct-entry rendering and composed navigation remain unfinished.
+list receipts, replacement and page bounds. Viewer entry and baseline rendering are described below; broader direct-entry
+acceptance remains unfinished.
+
+unit_reports_view_reference records protected113233 on2026-10-31.
+The unit header uses installed UNIT_SHEET_REPORTS at body368,0, hides it during
+Customize, and routes its stable unit ID through fortress_ui to the Reports
+owner. Host activation retires the creature sheet; Back releases Reports without
+reopening that sheet. Hover288 uses the captured native two-line message.
+The direct-entry view adds the Combat tab, frame48,100,920,624 and15-row capacity
+at1200x800 while preserving the existing Reports-list entry geometry. It reuses
+the Reports semantic reader, controller, pause preference and navigation intents.
+The existing approved pause-on-new initialization policy applies to both entries.
+
+creature_reports_capture compares574656 RGB pixels against native112423 hashes,
+including all15 synthetic rows, recenter icons, scrollbar and pause icon. Raw
+native art stays outside the repository. The composed live scenario verifies
+button navigation with an empty real log, pause toggle, Settings input blocking,
+overlay Escape retaining Reports, and final Escape returning to the map. Source
+save remains unchanged; owned DF185196 exits unsaved. Core, composition and
+Reports state/controller checks pass. GPU capture has only known startup and
+shutdown diagnostics; live logs have only the known startup notice. Earlier
+113127 stopped before interaction on a test indentation error, subsequently fixed.
+Direct-entry resize, populated live navigation, scrolling, and complete unit-page
+acceptance remain unfinished; the public unit route stays staged.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

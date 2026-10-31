@@ -43414,7 +43414,76 @@
           ],
           "unclassified": []
         }
-      }
+      },
+      "rgb_regions": [
+        {
+          "rect": [
+            48,
+            100,
+            920,
+            624
+          ],
+          "sha256": "10da3a68327dd434aaef723c84e2abb59c3831d5a96bdca01ee159443a8809a6"
+        },
+        {
+          "rect": [
+            64,
+            82,
+            48,
+            12
+          ],
+          "sha256": "0b4db0d75b399f43b1020a1800fdacb059c9f04b68fef3e9050406e06ef0cffb"
+        }
+      ]
+    },
+    "unit_reports_view_reference": {
+      "provenance": "Protected composed run20261031-113233, DF185196; owned unsaved exit, source unchanged.",
+      "result": {
+        "back_to_map": true,
+        "direct_combat": true,
+        "overlay_blocks_input": true,
+        "success": true,
+        "unit_id": 1017
+      },
+      "rendered_reference": "unit_reports_populated_reference.rgb_regions: full920x624 frame and48x12 tab label match native112423.",
+      "qa": "unit-reports-render-final: core, UI composition, Reports state/controller pass; GPU known startup/finalize/ObjectDB diagnostics only.",
+      "diagnostics": {
+        "farm-item-carrier-unit-scene.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-unit-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "unit-header-wire.stdout.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        }
+      },
+      "limits": [
+        "Composed live log is empty; populated rows are GPU fixture acceptance only.",
+        "Direct-entry resize, native scrolling and populated live recenter/speaker navigation remain unverified.",
+        "Public unit route remains staged."
+      ]
     }
   }
 }

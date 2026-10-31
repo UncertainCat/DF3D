@@ -243,6 +243,8 @@ func redraw():
 			var header_status := ""
 			var header_color := 15
 			var header_name: Dictionary = {}
+			var header_activity := ""
+			var activity_color := 15
 			for section in detail.get("sections",[]):
 				if section.key!="identity": continue
 				for record in section.records:
@@ -251,6 +253,8 @@ func redraw():
 					if facts.get("record_type","")=="header_status":
 						header_status=facts.get("text","");header_color=int(facts.get("color","15"))
 					if facts.get("record_type","")=="header_name": header_name=facts
+					if facts.get("record_type","")=="header_activity":
+						header_activity=str(facts.get("text",""));activity_color=int(facts.get("color",15))
 					for fact in record.facts:
 						if fact.key=="translated_name": translated=str(fact.text)
 			if not header_name.is_empty():
@@ -263,7 +267,7 @@ func redraw():
 				name_view.configure(header_name,35)
 			label_at("unit.subtitle",'"'+translated+'"' if not translated.is_empty() else "",15)
 			label_at("unit.status",header_status,header_color)
-			label_at("unit.job",str(detail.get("job",selected.get("job",""))))
+			label_at("unit.job",header_activity,activity_color)
 			if world.has_method("creature_portrait"):
 				var portrait := TextureRect.new()
 				portrait.texture = world.creature_portrait(int(selected.id))

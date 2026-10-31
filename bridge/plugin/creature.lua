@@ -155,6 +155,12 @@ return function(request)
    fact(s,rooms,'warning',warning);fact(s,rooms,'warning_color',color)
   end
   local office_count=0
+  if request.header_activity then
+   local text,color,background=request.header_activity(u.id)
+   local activity=record(s,-9,'')
+   fact(s,activity,'record_type','header_activity');fact(s,activity,'text',text)
+   fact(s,activity,'color',color);fact(s,activity,'background',background)
+  end
   if request.header_name then
    local name=request.header_name(u.id)
    local header=record(s,-8,'')

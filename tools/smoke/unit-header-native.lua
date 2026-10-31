@@ -3,6 +3,7 @@ local unit,view=...
 local saved_job=unit.job.current_job
 local saved_profession=unit.custom_profession
 local saved_nickname=unit.name.nickname
+local saved_removed=unit.uwss_remove_caste_flag.whole
 local json=require('json')
 local job,cases
 cases={}
@@ -102,10 +103,12 @@ local ok,err=xpcall(function()
  unit.custom_profession='Header fixture';observe('custom-profession')
  unit.custom_profession=saved_profession
  unit.name.nickname='Header';observe('nickname')
+ unit.uwss_remove_caste_flag.whole=saved_removed|0x2000000;observe('cannot-learn')
 end,debug.traceback)
 unit.job.current_job=saved_job
 unit.custom_profession=saved_profession
 unit.name.nickname=saved_nickname
+unit.uwss_remove_caste_flag.whole=saved_removed
 if job then df.delete(job)end
 view:render(dfhack.getTickCount())
 assert(ok,err)

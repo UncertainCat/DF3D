@@ -91,6 +91,8 @@ func unit_carrier(expected: Dictionary) -> void:
 	var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
 	var native:=Image.load_from_file(directory+"/farm-item-carrier-unit-view.png");native.convert(Image.FORMAT_RGB8)
 	var header_status_rect:=Rect2i(528,100,264,12)
+	var activity_rect:=Rect2i(528,112,264,12)
+	check(rendered.get_region(activity_rect).get_data()==native.get_region(activity_rect).get_data(),"Native activity pixels differ")
 	var header_name_rect:=Rect2i(528,64,264,24)
 	check(rendered.get_region(header_name_rect).get_data()==native.get_region(header_name_rect).get_data(),"Native header name pixels differ")
 	var translated_name_rect:=Rect2i(528,88,264,12)

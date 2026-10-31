@@ -1646,13 +1646,18 @@ only the known renderer notice. MSVC and unit-header-translated QA pass core19/1
 context and thought-text checks. Disguised identities, missing history, no-name
 row positioning and long translated-name overflow remain unverified.
 
-headerActivity is a diagnostic semantic component for the next header line.
+headerActivity supplies the native job/activity header line.
 An ordinary current job calls natived03170 with an owned string and uses
 palette11; on-break or absent jobs call138ffd0(unit,true,false,owned string,
 owned foreground/background/bright outputs). Never call the enclosing1390cf0
-renderer, which writes GPS. This component does not yet apply the native
-header's73230 CAN_LEARN and138ed20/control-or-guest gates and is not wired into
-CreatureInspect. The visible job line remains unfinished.
+renderer, which writes GPS. Native73230 CAN_LEARN and138ed20/control-or-guest
+gates run first; ineligible units return an empty line. The73230 pin covers its
+complete body and dispatch tables through736aa (length47b), not the truncated
+leaf disassembler fallback. CreatureInspect carries text, foreground palette
+and background as identity record-9, header_activity, in additive management102
+facts. The staged Godot header uses that text and palette instead of the
+reconstructed job label. Military/social and other specialized branches still
+need acceptance before exposing the complete unit screen.
 
 These calls are not universally read-only: b530b0 can refresh a unit's history
 index, and13cc610 clears stale squad_position activity/event IDs at178/184.
@@ -1674,6 +1679,21 @@ Both sessions exit unsaved with source manifests unchanged; four GPU logs have
 only the known renderer notice. MSVC and unit-header-activity QA pass core19/19,
 context and thought-text checks. Existing rendered header regions still pass;
 the new activity comparisons exercise the direct reader, not a Godot job label.
+
+unit_header_activity_ui_reference records rendered acceptance for adult No job
+(2026-10-30/190022), child Drink (2026-10-31/073248) and on-break Rest (073403).
+Their first33-cell job rows match native pixels; prior Overview region checks
+also pass. The first two runs additionally compare eight direct cases each,
+including native exclusion when CAN_LEARN is removed. All three sessions exit
+unsaved with source manifests unchanged; six GPU logs have only the known
+renderer notice. MSVC and unit-header-activity-ui QA pass core19/19, context and
+thought-text checks. Additional073512 keeps CAN_LEARN removed through rendering:
+the activity row matches, but the complete run FAILS existing adult needs/squad
+expectations and the first combat-skill row pixel check. Those expectations must
+account for this fixture, and the skill-row discrepancy needs investigation.
+It is retained as a failing regression, not acceptance; its source is preserved.
+Guest/control exclusions, military/social/stale-squad effects, long text and
+header lifecycle remain unverified. The public unit route stays staged.
 
 headerPositionTitle invokes beb620 with the directly resolved historical figure
 and owned spouse/entity/assignment outputs. It reuses native precedence and spouse

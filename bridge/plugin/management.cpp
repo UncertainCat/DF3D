@@ -3190,6 +3190,13 @@ void run(color_ostream& out) {
     });
     lua_setfield(L,-2,"header_status");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_creature::headerActivity(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!value)return luaL_error(state,"Native creature header activity unavailable");
+      lua_pushlstring(state,value->text.data(),value->text.size());
+      lua_pushinteger(state,value->foreground+(value->bright?8:0));lua_pushinteger(state,value->background);return 3;
+    });
+    lua_setfield(L,-2,"header_activity");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto value=df3d_creature::headerName(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!value)return luaL_error(state,"Native creature header name unavailable");
       lua_newtable(state);field(state,"combined",value->combined);field(state,"name",value->name);field(state,"profession",value->profession);

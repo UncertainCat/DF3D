@@ -9,7 +9,7 @@
 #include "zone_native.h"
 namespace df3d_creature {
 struct HeaderActivity {std::string text;int16_t foreground=0,background=0;bool bright=false;};
-// Semantic formatter component, before the header's CAN_LEARN/control gates.
+// Native header CAN_LEARN/control gates precede the semantic formatter.
 // Native may refresh the unit HF index and retire stale squad activity/event
 // IDs. These are semantic lazy repairs, not owned or restored menu scratch.
 // No renderer1390cf0/GPS call is permitted here. Outputs are independently owned.
@@ -24,6 +24,8 @@ inline std::optional<HeaderActivity> headerActivity(df::unit* unit) {
             {0xd03170,0x12b,UINT64_C(0x90da46373e49508e)},
             {0xd032b0,0x5024,UINT64_C(0xba755d2dfd15322d)},
             {0x13cc610,0x1ab,UINT64_C(0xb9e9ed9744ed0fe3)},
+            {0x73230,0x47b,UINT64_C(0x8bb8f157af0b9c69)}, // body and all dispatch tables
+            {0x138ed20,0xff,UINT64_C(0x430951f9f3e403c2)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -35,6 +37,8 @@ inline std::optional<HeaderActivity> headerActivity(df::unit* unit) {
     if(!supported)return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     HeaderActivity result;
+    if(!reinterpret_cast<bool (*)(df::unit*,int32_t)>(base+0x73230)(unit,58) ||
+       (!reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(unit) && !unit->flags3.bits.guest))return result;
     if(unit->job.current_job && !unit->job.current_job->flags.bits.on_break) {
         reinterpret_cast<void (*)(df::job*,std::string*)>(base+0xd03170)(unit->job.current_job,&result.text);
         result.foreground=3;result.bright=true;

@@ -40199,6 +40199,262 @@
         "Background not compared"
       ],
       "gpu_diagnostics": "Four logs, known separate-renderer notice only"
+    },
+    "unit_header_activity_ui_reference": {
+      "date": "2026-10-31",
+      "runs": [
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261030-190022",
+          "case": "adult",
+          "pid": 182276,
+          "activity": {
+            "record_type": "header_activity",
+            "text": "No job",
+            "color": 14,
+            "background": 0
+          },
+          "native_and_viewer_crop_sha256": "fb7fca79b926fb5cdd531dab4a43cfddf428fd5d932cb6799ae1d965f0b14c86",
+          "reader_cases": [
+            {
+              "name": "original",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "No job"
+              },
+              "native_text": "No job",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "no-current-job",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "No job"
+              },
+              "native_text": "No job",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "rest",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Rest"
+              },
+              "native_text": "Rest",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "rest-on-break",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "Rest"
+              },
+              "native_text": "Rest",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "sleep",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Sleep"
+              },
+              "native_text": "Sleep",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "custom-profession",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "No job"
+              },
+              "native_text": "No job",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "nickname",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "No job"
+              },
+              "native_text": "No job",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "cannot-learn",
+              "activity": {
+                "background": 0,
+                "color": 0,
+                "text": ""
+              },
+              "native_text": "",
+              "warmed_guard_unchanged": true
+            }
+          ],
+          "lane_pass": true,
+          "remaining_failures": [],
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261031-073248",
+          "case": "child",
+          "pid": 169456,
+          "activity": {
+            "record_type": "header_activity",
+            "text": "Drink",
+            "color": 11,
+            "background": 0
+          },
+          "native_and_viewer_crop_sha256": "17b7bdf403665ccfefc07f926c94d6d4d50654142281da14c9043c52821d2e5d",
+          "reader_cases": [
+            {
+              "name": "original",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Drink"
+              },
+              "native_text": "Drink",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "no-current-job",
+              "activity": {
+                "background": 0,
+                "color": 10,
+                "text": "Play Make Believe"
+              },
+              "native_text": "Play Make Believe",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "rest",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Rest"
+              },
+              "native_text": "Rest",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "rest-on-break",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "Rest"
+              },
+              "native_text": "Rest",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "sleep",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Sleep"
+              },
+              "native_text": "Sleep",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "custom-profession",
+              "activity": {
+                "background": 0,
+                "color": 10,
+                "text": "Play Make Believe"
+              },
+              "native_text": "Play Make Believe",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "nickname",
+              "activity": {
+                "background": 0,
+                "color": 10,
+                "text": "Play Make Believe"
+              },
+              "native_text": "Play Make Believe",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "cannot-learn",
+              "activity": {
+                "background": 0,
+                "color": 0,
+                "text": ""
+              },
+              "native_text": "",
+              "warmed_guard_unchanged": true
+            }
+          ],
+          "lane_pass": true,
+          "remaining_failures": [],
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261031-073403",
+          "case": "rest-on-break",
+          "pid": 175620,
+          "activity": {
+            "record_type": "header_activity",
+            "text": "Rest",
+            "color": 14,
+            "background": 0
+          },
+          "native_and_viewer_crop_sha256": "c0f28c6f31ba4294d1d51801a7e60b7ce536373c50f9cc826da7ddb8e9ca339d",
+          "reader_cases": [],
+          "lane_pass": true,
+          "remaining_failures": [],
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261031-073512",
+          "case": "cannot-learn",
+          "pid": 185320,
+          "activity": {
+            "record_type": "header_activity",
+            "text": "",
+            "color": 0,
+            "background": 0
+          },
+          "native_and_viewer_crop_sha256": "1dac45e9f37b120ddcd9feb4f09d67285658c84ce35a5bff1577927d73c20248",
+          "reader_cases": [],
+          "lane_pass": false,
+          "remaining_failures": [
+            "Adult needs/squad fixture expectations",
+            "First combat-skill row pixels"
+          ],
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        }
+      ],
+      "pixel_rect": [
+        528,
+        112,
+        264,
+        12
+      ],
+      "eligibility_pin": {
+        "rva": "73230",
+        "length": "47b",
+        "fnv": "8bb8f157af0b9c69"
+      },
+      "qa": "build/qa/unit-header-activity-ui",
+      "limits": [
+        "Cannot-learn full scene fails; header row alone matches",
+        "Military/social/stale-squad behavior and guest/control exclusions remain unverified",
+        "Long text and lifecycle remain unverified"
+      ],
+      "diagnostics": "Three passing runs: six logs known separate-thread notice only. Cannot-learn scene retains three assertion errors."
     }
   }
 }

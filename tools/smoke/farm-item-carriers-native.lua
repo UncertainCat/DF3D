@@ -37,6 +37,7 @@ local function restore()
  if overview_saved then
   local old=overview_saved;local p=unit.status.current_soul.personality
   for i=#(old.health_fields or {}),1,-1 do local saved=old.health_fields[i];saved.object[saved.key]=saved.value end
+  if old.header_job then df.delete(old.header_job)end
   if old.health_wound then
    erase_pointer(unit.body.wounds,old.health_wound)
    old.health_wound.parts:erase(0);df.delete(old.health_part);df.delete(old.health_wound)
@@ -203,6 +204,10 @@ local ok,err=xpcall(function()
      elseif header_case=='possessed' then set(unit.counters,'soldier_mood',-1);set(unit,'mood',df.mood_type.Possessed)
      elseif header_case=='long-name' then set(unit.name,'nickname','A deliberately long nickname for native fitting');set(unit,'custom_profession','A deliberately long custom profession for native fitting')
      elseif header_case=='nickname' then set(unit.name,'nickname','Header')
+     elseif header_case=='cannot-learn' then set(unit.uwss_remove_caste_flag,'whole',unit.uwss_remove_caste_flag.whole|0x2000000)
+     elseif header_case=='rest' or header_case=='rest-on-break' then
+      local job=df.job:new();job.id=-1;job.job_type=df.job_type.Rest;job.pos:assign(unit.pos);job.flags.on_break=header_case=='rest-on-break'
+      overview_saved.header_job=job;set(unit.job,'current_job',job)
      else error('unknown header display case')end
     end
     for _,need in ipairs(p.needs)do overview_saved.needs[#overview_saved.needs+1]=need.focus_level;need.focus_level=overview_case=='fresh-focused' and 300 or overview_case=='fresh-distracted' and -100000 or 0 end

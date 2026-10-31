@@ -5,6 +5,20 @@ local g=df.global.gps;local main=df.global.game.main_interface
 local sheet=main.view_sheets;local alert=main.announcement_alert
 local frame=df.global.world.frame_counter
 local observations={}
+local added_ids={}
+local original_log={}
+for _,id in ipairs(unit.reports.log[0])do original_log[#original_log+1]=id end
+local function geometry(w)
+ local r=w.rect
+ local row={name=w.name,rect={r.x1,r.y1,r.x2,r.y2},children={}}
+ if df.widget_scroll_rows:is_instance(w)then
+  row.scroll=w.scroll;row.num_visible=w.num_visible;row.maximum=w.scrollbar.sel_max
+ end
+ if df.widget_container:is_instance(w)then
+  for _,child in ipairs(dfhack.gui.getWidgetChildren(w))do row.children[#row.children+1]=geometry(child)end
+ end
+ return row
+end
 local function popup(w)
  if df.widget_report_popup:is_instance(w)then return w end
  if df.widget_container:is_instance(w)then
@@ -25,11 +39,21 @@ local function record(label)
  for _,report in ipairs(alert.uac_zoom_line_ann)do row.report_lines[#row.report_lines+1]=report and report.id or -1 end
  for i=0,2 do row.log_counts[#row.log_counts+1]=#unit.reports.log[i]end
  for _,id in ipairs(unit.reports.log[0])do if df.report.find(id)then row.valid_combat_ids[#row.valid_combat_ids+1]=id end end
+ if widget then row.geometry=geometry(widget)end
  observations[#observations+1]=row;capture('unit-reports-'..label)
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'reports advanced simulation')
 end
 local ok,err=xpcall(function()
  assert(not alert.open and sheet.open and sheet.active_id==unit.id,'reports fixture not ready')
+ if os.getenv('DF3D_UNIT_REPORTS_POPULATED')=='1' then
+  for i=1,22 do
+   local flags=df.announcement_flags:new()
+   local index=dfhack.gui.makeAnnouncement(df.announcement_type.COMBAT_STRIKE_DETAILS,flags,unit.pos,'Synthetic unit combat history row '..i,3,true)
+   flags:delete()
+   local report=assert(df.global.world.status.reports[index])
+   added_ids[#added_ids+1]=report.id;unit.reports.log[0]:insert('#',report.id)
+  end
+ end
  record('before');pointer(808,82)
  assert(main.current_hover==df.main_hover_instruction.UNIT_SHEET_REPORTS,'reports hitbox mismatch')
  local deadline=dfhack.getTickCount()+650
@@ -56,7 +80,13 @@ local ok,err=xpcall(function()
 end,debug.traceback)
 -- This probe runs after unit-sheet acceptance because native closes that sheet.
 if popup(main.announcements.stack)then gui.simulateInput(view,'LEAVESCREEN')end
+-- Synthetic reports exist only in this owned unsaved clone. Restore the unit
+-- log before returning; global diagnostic announcements are discarded on exit.
+if #added_ids>0 then
+ unit.reports.log[0]:resize(0)
+ for _,id in ipairs(original_log)do unit.reports.log[0]:insert('#',id)end
+end
 pointer(400,400)
-local result={success=ok,unit_id=unit.id,observations=observations,error=not ok and err or nil}
+local result={success=ok,unit_id=unit.id,observations=observations,synthetic_report_ids=added_ids,error=not ok and err or nil}
 local f=assert(io.open(out..'/unit-reports-native.json','w'));f:write(json.encode(result));f:close()
 assert(ok,err);return result

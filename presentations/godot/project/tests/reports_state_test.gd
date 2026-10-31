@@ -124,4 +124,25 @@ func _initialize() -> void:
  assert(snapshot.pending.mode=="snapshot" and snapshot.pending.request.tab==1)
  snapshot.accept(snapshot.generation,0,{"view":1,"tab":1,"list_revision":42,"reports":[],"tab_counts":enabled})
  assert(snapshot.pending.request.view==2 and snapshot.tab_revision==42)
+ # Direct entry must not depend on a populated Reports-list row or accept a
+ # superseded list receipt. Its smaller native page follows the newest15 rows.
+ var direct=Model.new();direct.open()
+ var old_token:int=direct.generation
+ assert(not direct.open_creature_history(-1))
+ assert(direct.open_creature_history(1017))
+ assert(direct.direct_unit_entry and direct.unit_category==0 and direct.unit_page_rows==15)
+ assert(direct.pending.request.view==3 and direct.pending.request.from_end)
+ assert(not direct.accept(old_token,0,{"view":1,"tab":1,"list_revision":1,"reports":[]}))
+ chunk=[]
+ for i in 22:chunk.append({"id":i})
+ assert(direct.accept(direct.generation,0,{"view":3,"unit_id":1017,"unit_category":0,"list_revision":1,"reports":chunk,"total":22}))
+ assert(direct.log_first==7 and direct.log_requested==7)
+ direct.scroll_to(0);assert(direct.log_first==0)
+ direct.scroll_to(99);assert(direct.log_first==7)
+ direct.close();assert(not direct.opened)
+ direct.open_creature_history(1018)
+ assert(direct.rows.is_empty() and direct.log_revision==0 and direct.unit_log_length==-1)
+ assert(direct.accept(direct.generation,0,{"view":3,"unit_id":1018,"unit_category":0,"list_revision":2,"reports":[],"total":0}))
+ assert(direct.rows.is_empty() and not direct.log_initial_needed)
+ direct.close();direct.open();assert(not direct.direct_unit_entry and direct.unit_page_rows==17)
  print("REPORTS_STATE_PASS");quit()

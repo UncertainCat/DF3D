@@ -1906,6 +1906,20 @@ unsaved with unchanged source save; two GPU logs and one combined headless log
 contain only the known renderer startup notice. This reference does not expose
 the unfinished unit Reports action.
 
+unit_reports_populated_reference records protected112423 on2026-10-31.
+Twenty-two diagnostic reports added to the owned clone establish that direct
+unit-header entry displays the newest15 rows at1200x800 (rows8..22), with a
+Combat tab and frame48,100,920,624. Native widget rect is7,9,119,58 in cells.
+The original unit log is restored; synthetic world announcements are discarded
+on unsaved exit. The source save remains unchanged. This is native reference
+only; direct-entry scrolling and other viewport sizes still need verification.
+Reports state now provides open_creature_history(unit_id), using the existing
+retained semantic log reader without requiring a Reports-list row. Direct entry
+uses15 rows; existing list entry retains17. QA unit-reports-direct-state passes
+core and Reports state/controller/text checks, including empty history, stale
+list receipts, replacement and page bounds. No viewer button calls this method
+yet; direct-entry rendering and composed navigation remain unfinished.
+
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017
 and child988. The adult name uses palette5, translated name and separate

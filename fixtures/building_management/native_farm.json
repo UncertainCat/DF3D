@@ -43193,6 +43193,228 @@
           "unclassified": []
         }
       }
+    },
+    "unit_reports_populated_reference": {
+      "provenance": "Protected owned run20261031-112423, DF15736, source unchanged and unsaved exit.",
+      "result": {
+        "observations": [
+          {
+            "alert_open": false,
+            "category": -1,
+            "list_size": 0,
+            "log_counts": [
+              41,
+              0,
+              0
+            ],
+            "name": "before",
+            "report_lines": [],
+            "scroll": 0,
+            "sheet_id": 1017,
+            "sheet_open": true,
+            "unit_id": -1,
+            "valid_combat_ids": [
+              78822,
+              78823,
+              78824,
+              78825,
+              78826,
+              78827,
+              78828,
+              78829,
+              78830,
+              78831,
+              78832,
+              78833,
+              78834,
+              78835,
+              78836,
+              78837,
+              78838,
+              78839,
+              78840,
+              78841,
+              78842,
+              78843
+            ]
+          },
+          {
+            "alert_open": false,
+            "category": -1,
+            "geometry": {
+              "children": [],
+              "name": "Combat",
+              "rect": [
+                7,
+                9,
+                119,
+                58
+              ]
+            },
+            "list_size": 0,
+            "log_counts": [
+              41,
+              0,
+              0
+            ],
+            "name": "opened",
+            "popup": {
+              "category": 0,
+              "last_length": 41,
+              "pause_on_new": true,
+              "unit_id": 1017
+            },
+            "report_lines": [],
+            "scroll": 0,
+            "sheet_id": -1,
+            "sheet_open": false,
+            "unit_id": -1,
+            "valid_combat_ids": [
+              78822,
+              78823,
+              78824,
+              78825,
+              78826,
+              78827,
+              78828,
+              78829,
+              78830,
+              78831,
+              78832,
+              78833,
+              78834,
+              78835,
+              78836,
+              78837,
+              78838,
+              78839,
+              78840,
+              78841,
+              78842,
+              78843
+            ]
+          },
+          {
+            "alert_open": false,
+            "category": -1,
+            "list_size": 0,
+            "log_counts": [
+              41,
+              0,
+              0
+            ],
+            "name": "back",
+            "report_lines": [],
+            "scroll": 0,
+            "sheet_id": -1,
+            "sheet_open": false,
+            "unit_id": -1,
+            "valid_combat_ids": [
+              78822,
+              78823,
+              78824,
+              78825,
+              78826,
+              78827,
+              78828,
+              78829,
+              78830,
+              78831,
+              78832,
+              78833,
+              78834,
+              78835,
+              78836,
+              78837,
+              78838,
+              78839,
+              78840,
+              78841,
+              78842,
+              78843
+            ]
+          }
+        ],
+        "success": true,
+        "synthetic_report_ids": [
+          78822,
+          78823,
+          78824,
+          78825,
+          78826,
+          78827,
+          78828,
+          78829,
+          78830,
+          78831,
+          78832,
+          78833,
+          78834,
+          78835,
+          78836,
+          78837,
+          78838,
+          78839,
+          78840,
+          78841,
+          78842,
+          78843
+        ],
+        "unit_id": 1017
+      },
+      "rendered_observation": {
+        "viewport": [
+          1200,
+          800
+        ],
+        "frame_rect": [
+          48,
+          100,
+          920,
+          624
+        ],
+        "first_synthetic_row": 8,
+        "last_synthetic_row": 22,
+        "visible_rows": 15,
+        "top_tab": "Combat"
+      },
+      "limits": [
+        "Synthetic text is diagnostic only, not product copy.",
+        "No direct-entry Godot rendered or live acceptance yet.",
+        "Other viewport capacities and input scrolling remain unverified."
+      ],
+      "diagnostics": {
+        "farm-item-carrier-unit-scene.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-unit-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "unit-header-wire.stdout.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        }
+      }
     }
   }
 }

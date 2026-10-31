@@ -21,6 +21,8 @@ var unit_log_length:=-1
 var log_refresh_needed:=false
 var unit_id := -1
 var unit_category := -1
+var direct_unit_entry:=false
+var unit_page_rows:=17
 var rows: Array = []
 var total:=0
 var log_start:=0
@@ -53,7 +55,7 @@ func set_epoch(value: int) -> void:
  _clear_text()
  read_retry={};tab_cache.clear();tab_revision=0;log_revision=0;log_initial_needed=false
  epoch=value;pause_on_new=false;unit_log_length=-1;log_refresh_needed=false;generation+=1;pending={};rows=[];log_start=0;log_requested=0;log_first=0;total=0;first_row=0;requested_row=0;counts=[]
- unit_id=-1;unit_category=-1;list_revision=0
+ unit_id=-1;unit_category=-1;list_revision=0;direct_unit_entry=false;unit_page_rows=17
  next_before=-1;next_after=-1;next_cursor=0
  changed.emit()
 
@@ -61,6 +63,7 @@ func open() -> void:
  _clear_text()
  read_retry={};tab_cache.clear();tab_revision=0;log_revision=0;log_initial_needed=false
  log_refresh_needed=false
+ direct_unit_entry=false;unit_page_rows=17
  opened=true;unit_id=-1;unit_category=-1;rows=[];log_start=0;log_requested=0;log_first=0;total=0;first_row=0;requested_row=0
  _request_selection()
 
@@ -92,17 +95,32 @@ func choose_tab(tab: int) -> bool:
   changed.emit();return true
  _request_selection();return true
 
+# Native unit-header Reports opens Combat directly, even with no retained rows.
+# Its 1200x800 reference shows15 rows; ordinary Reports-list logs retain17.
+func open_creature_history(id:int) -> bool:
+ if id<0:return false
+ _clear_text()
+ read_retry={};tab_cache.clear();tab_revision=0;log_revision=0
+ direct_unit_entry=true;unit_page_rows=15;unit_log_length=-1
+ opened=true
+ _open_log(id,0)
+ return true
+
 func open_unit(id: int, category: int) -> bool:
  if not opened or id<0 or category<0 or category>2:return false
  var found:=false
  for row in rows:
   if int(row.get("unit_id",-1))==id and int(row.get("category",-1))==category:found=true;unit_log_length=int(row.get("log_count",-1));break
  if not found:return false
+ direct_unit_entry=false;unit_page_rows=17
+ _open_log(id,category)
+ return true
+
+func _open_log(id:int,category:int) -> void:
  log_refresh_needed=false
  log_revision=0;log_initial_needed=true
  unit_id=id;unit_category=category;rows=[];log_start=0;log_requested=0;log_first=0;total=0;first_row=0;requested_row=0
  _send({"action":34,"view":3,"unit_id":id,"unit_category":category,"from_end":true},"replace")
- return true
 
 func _request_selection() -> void:
  if selected_tab<=22:_send({"action":34,"view":1,"tab":selected_tab,"expected_list_revision":tab_revision},"replace")
@@ -184,7 +202,7 @@ func accept(token: int, world_epoch: int, reply: Dictionary) -> bool:
   rows=incoming.duplicate(true)
   if unit_id>=0:
    log_start=maxi(0,int(reply.get("total",rows.size()))-rows.size()) if request.get("from_end",false) else 0
-   log_first=maxi(0,rows.size()-17) if request.get("from_end",false) else 0
+   log_first=maxi(0,rows.size()-unit_page_rows) if request.get("from_end",false) else 0
    log_requested=log_start+log_first
  if int(request.view)==1 and reply.get("tab_counts",[]).size()==25:counts=reply.tab_counts.duplicate()
  # Preserve the other end when extending a loaded range.
@@ -195,7 +213,7 @@ func accept(token: int, world_epoch: int, reply: Dictionary) -> bool:
  elif not history_page:total=maxi(int(reply.get("total",rows.size())),rows.size())
  # History extends the cached snapshot. A newer source total must not count an
  # append here and again when the tail refresh arrives, or discard cached removals.
- if live_append:log_requested=maxi(0,total-17)
+ if live_append:log_requested=maxi(0,total-unit_page_rows)
  if live_append and next_after>=0 and not incoming.is_empty():
   pending={};refresh_new_reports();changed.emit();return true
  if live_append:log_refresh_needed=false
@@ -249,17 +267,17 @@ func scroll_to(first:int) -> void:
  if read_retry.get("mode","") in ["replace","snapshot"]:return
  read_retry={}
  if unit_id>=0:
-  log_requested=clampi(first,0,maxi(0,list_count()-17))
+  log_requested=clampi(first,0,maxi(0,list_count()-unit_page_rows))
   _advance_window();changed.emit();return
  requested_row=clampi(first,0,maxi(0,list_count()-PAGE_ROWS))
  _advance_window();changed.emit()
 
 func _advance_window() -> void:
  if unit_id>=0:
-  log_first=clampi(log_requested-log_start,0,maxi(0,rows.size()-17))
+  log_first=clampi(log_requested-log_start,0,maxi(0,rows.size()-unit_page_rows))
   if pending.is_empty():
    if log_requested<log_start:previous_page()
-   elif log_requested+17>log_start+rows.size():next_page()
+   elif log_requested+unit_page_rows>log_start+rows.size():next_page()
   return
  requested_row=clampi(requested_row,0,maxi(0,list_count()-PAGE_ROWS))
  # Keep displaying retained rows until the requested range has arrived.

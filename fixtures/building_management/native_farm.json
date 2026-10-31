@@ -44275,6 +44275,68 @@
         }
       },
       "qa": "unit-reports-append-final: core, Reports state/controller, baseline/resize/four append GPU frames pass; GPU known startup/finalize/ObjectDB only."
+    },
+    "unit_reports_scroll_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261031-121720",
+      "viewport": [
+        1200,
+        800
+      ],
+      "valid_rows": 22,
+      "initial_first": 7,
+      "cases": [
+        {
+          "name": "scroll-arrow-left",
+          "first": 6,
+          "visible": 15
+        },
+        {
+          "name": "scroll-arrow-right",
+          "first": 5,
+          "visible": 15
+        },
+        {
+          "name": "scroll-track",
+          "first": 0,
+          "visible": 15
+        },
+        {
+          "name": "scroll-drag",
+          "first": 1,
+          "visible": 15
+        }
+      ],
+      "pointer_pixels": [
+        [
+          954,
+          154
+        ],
+        [
+          960,
+          154
+        ],
+        [
+          960,
+          200
+        ],
+        [
+          960,
+          600,
+          960,
+          300
+        ]
+      ],
+      "maintainer_approval": "2026-10-31: Keep one-row scrolling across the arrow.",
+      "viewer_first_rows": [
+        6,
+        6,
+        0,
+        1
+      ],
+      "live_evidence": "build/stockpile-storage-native-farm-discovery-20261031-121720/unit-reports-scroll-scene.json",
+      "qa": "build/qa/unit-reports-scroll-final",
+      "diagnostics": "Only documented Godot diagnostics; no unclassified errors. Owned source unchanged; exited unsaved.",
+      "scope": "Arrow stepping correction only; track and drag preserve native behavior."
     }
   }
 }

@@ -130,6 +130,28 @@ local ok,err=xpcall(function()
    assert(texts.scroll==before,'unexpected direct log keyboard/wheel scrolling')
   end
  end
+ if os.getenv('DF3D_UNIT_REPORTS_SCROLL')=='1' then
+  local texts=shared(widget.texts,df.widget_scroll_rows)
+  local e=df.global.enabler
+  local function reset()
+   e.mouse_lbut=0;e.mouse_lbut_down=0;e.mouse_lbut_lift=0
+   texts.scroll=7;pointer(400,400)
+  end
+  local function release()
+   e.mouse_lbut=0;e.mouse_lbut_down=0;e.mouse_lbut_lift=1
+   pointer(400,400)
+  end
+  for _,case in ipairs{{'arrow-left',954,154},{'arrow-right',960,154},{'track',960,200}}do
+   reset();pointer(case[2],case[3]);e.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   release();record('scroll-'..case[1])
+  end
+  reset();pointer(960,600);e.mouse_lbut_lift=0
+  gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+  g.precise_mouse_y=300;g.mouse_y=(300-4)//12
+  gui.simulateInput(view,{'_MOUSE_L_DOWN'});view:render(dfhack.getTickCount())
+  release();record('scroll-drag')
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());script.sleep(2,'frames');record('back')
  assert(not popup(main.announcements.stack) and not sheet.open,'Back did not close report and leave unit sheet closed')
 end,debug.traceback)

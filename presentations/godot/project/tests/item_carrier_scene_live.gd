@@ -419,6 +419,24 @@ func exercise_history(inspector,source,source_id:int,target:int) -> void:
 		check(model.rows.size()==22 and model.log_requested==7,"Populated direct history did not load newest native rows")
 		for index in model.rows.size():
 			check(int(model.rows[index].id)==int(expected.report_ids[index]) and int(model.rows[index].speaker_id)==target,"Combat history row identity/speaker differs")
+		var scroll_checks:Array=[]
+		for sample in [[Vector2(2,6),6],[Vector2(8,6),6],[Vector2(8,52),0]]:
+			model.scroll_to(7);await process_frame
+			await pointer(reports.panel.position+reports.panel.scrollbar.position+sample[0])
+			check(model.log_requested==sample[1],"Combat arrow/track stepping differs")
+			scroll_checks.append(model.log_requested)
+		model.scroll_to(7);await process_frame
+		var origin:Vector2=reports.panel.position+reports.panel.scrollbar.position
+		var drag_motion:=InputEventMouseMotion.new();drag_motion.position=origin+Vector2(8,452);root.push_input(drag_motion,true)
+		var drag_press:=InputEventMouseButton.new();drag_press.position=drag_motion.position;drag_press.button_index=MOUSE_BUTTON_LEFT;drag_press.pressed=true;root.push_input(drag_press,true)
+		drag_motion=InputEventMouseMotion.new();drag_motion.position=origin+Vector2(8,152);drag_motion.button_mask=MOUSE_BUTTON_MASK_LEFT;root.push_input(drag_motion,true)
+		var drag_release:=InputEventMouseButton.new();drag_release.position=drag_motion.position;drag_release.button_index=MOUSE_BUTTON_LEFT;root.push_input(drag_release,true)
+		await process_frame
+		check(model.log_requested==1 and not reports.panel.scrollbar.dragging,"Combat drag differs or retained capture")
+		scroll_checks.append(model.log_requested)
+		var scroll_file=FileAccess.open(directory+"/unit-reports-scroll-scene.json",FileAccess.WRITE)
+		scroll_file.store_string(JSON.stringify({"first_rows":scroll_checks,"approved_right_half_correction":true}));scroll_file.close()
+		model.scroll_to(7);await process_frame
 		await pointer(reports.panel.position+reports.panel.scrollbar.position+Vector2(8,6))
 		check(model.log_requested==6,"Combat scrollbar up did not navigate retained rows")
 		await pointer(reports.panel.position+Vector2(400,250),MOUSE_BUTTON_WHEEL_UP)

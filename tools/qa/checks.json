@@ -99,6 +99,15 @@
       "prerequisites": ["extension_build"]
     },
     {
+      "id": "creature_follow_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/creature_follow_test.gd",
+      "completion": "^CREATURE_FOLLOW_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "creature_header_state_test",
       "lane": "core",
       "kind": "godot",

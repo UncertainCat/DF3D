@@ -12,7 +12,8 @@ const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
 # Native farm-header214429, instructions301/302, exact24-cell text.
 const BUILDING_HELP={"rename":["Name this building."],"remove":["Remove this building."]}
 # Native Customize instruction287, protected085935 text-cell readback.
-const UNIT_HELP={"customize":["Customize this","creature's nickname and","profession nickname."]}
+const UNIT_HELP={"customize":["Customize this","creature's nickname and","profession nickname."],
+	"camera":["Set the camera to","follow this creature."]} # Native289, protected105504.
 # Native item-sheet122502 instructions207..210/285.
 const ITEM_HELP={
   "forbid": [

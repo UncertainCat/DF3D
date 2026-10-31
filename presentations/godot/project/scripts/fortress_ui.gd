@@ -14,6 +14,7 @@ var native_options_session
 var agreement_tracker
 var tile_hover
 var item_follow
+var creature_follow
 var follow_frame: Array=[]
 
 func setup(owner, audio_panel, original_ui) -> void:
@@ -125,12 +126,7 @@ func controller(id: String):
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
 	if id in ["farm","chest"]:
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
-		if item_follow==null:
-			item_follow=preload("res://scripts/item_follow.gd").new();add_child(item_follow);item_follow.configure(actions)
-			item_follow.position_changed.connect(_follow_tile)
-			view.camera_rig.navigation_requested.connect(item_follow.stop)
-			view.camera_rig.mode_changed.connect(func():
-				if view.camera_rig.is_walk_mode():item_follow.stop())
+		ensure_follow()
 		panel.holder_requested.connect(open_building_holder)
 		panel.item_owner.configure_follow(item_follow)
 		panel.item_owner.carrier_requested.connect(open_item_carrier)
@@ -154,6 +150,7 @@ func controller(id: String):
 	panel.interaction = view._interaction
 	panel.ui_host = host
 	if id == "inspector":
+		ensure_follow();panel.follow=creature_follow
 		panel.action_service = actions
 		panel.hover_help=view._fortress_hud.native_help
 	if id in ["construction", "areas"]: panel.hud = view._fortress_hud
@@ -210,6 +207,20 @@ func is_open() -> bool:
 func focus_tile(tile: Vector3i) -> void:
 	_focus_tile(tile,false)
 
+func ensure_follow() -> void:
+	if item_follow!=null:return
+	item_follow=preload("res://scripts/item_follow.gd").new();add_child(item_follow);item_follow.configure(actions)
+	creature_follow=preload("res://scripts/creature_follow.gd").new();add_child(creature_follow);creature_follow.configure(actions)
+	item_follow.changed.connect(func():
+		if item_follow.item_id>=0 and creature_follow.unit_id>=0:creature_follow.stop())
+	creature_follow.changed.connect(func():
+		if creature_follow.unit_id>=0 and item_follow.item_id>=0:item_follow.stop())
+	for follower in [item_follow,creature_follow]:
+		follower.position_changed.connect(_follow_tile)
+		view.camera_rig.navigation_requested.connect(follower.stop)
+	view.camera_rig.mode_changed.connect(func():
+		if view.camera_rig.is_walk_mode():item_follow.stop();creature_follow.stop())
+
 func _follow_tile(tile: Vector3i) -> void:
 	world.set_top_z(tile.z)
 	var rig=view.camera_rig
@@ -223,9 +234,11 @@ func _follow_frame() -> Array:
 	return [extent,preload("res://scripts/presentation_settings.gd").effective_scale_vector(extent),camera.projection,camera.size,camera.fov,camera.basis,rig.current_distance()]
 
 func _process(_delta: float) -> void:
-	if item_follow==null or item_follow.last_position==null:return
-	# Resizing, zooming and rotating do not change DF's item coordinate.
-	if _follow_frame()!=follow_frame:_follow_tile(item_follow.last_position)
+	if item_follow==null:return
+	var position: Variant=creature_follow.last_position if creature_follow.unit_id>=0 else item_follow.last_position
+	if position==null:return
+	# Reframe stationary targets after viewport/projection changes.
+	if _follow_frame()!=follow_frame:_follow_tile(position)
 
 func _focus_tile(tile: Vector3i, automatic: bool) -> void:
 	# Leave gravity controls before selecting the report/entity destination,

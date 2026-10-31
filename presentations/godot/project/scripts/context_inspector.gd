@@ -36,8 +36,11 @@ var customize_requested:=false
 var hover_help
 var hover_position:=Vector2(-1,-1)
 var customize_button: BaseButton
+var follow
+var follow_button: TextureButton
 
 func _ready():
+	if follow!=null:follow.changed.connect(_update_follow)
 	add_child(customize);customize.configure(action_service)
 	customize.changed.connect(func():
 		if not is_open() or selected.is_empty():return
@@ -211,8 +214,15 @@ func _update_customize() -> void:
 	if color.is_empty():return
 	customize_view.present(customize.caption(0,ticks),customize.caption(1,ticks),preload("res://scripts/native_creature_text.gd").colors[color[0]+color[2]*8])
 
+func _update_follow() -> void:
+	if not is_instance_valid(follow_button) or selected.is_empty():return
+	follow_button.texture_normal=world.ui_texture("UNIT_SHEET_CAMERA_ACTIVE" if follow.unit_id==int(selected.id) else "UNIT_SHEET_CAMERA_INACTIVE")
+
 func _update_customize_help() -> void:
 	if not is_instance_valid(hover_help):return
+	if is_instance_valid(follow_button) and follow_button.is_visible_in_tree() and (ui_host==null or ui_host.allows_panel_input(self)):
+		var local: Vector2=follow_button.get_global_transform_with_canvas().affine_inverse()*hover_position
+		if Rect2(Vector2.ZERO,follow_button.size).has_point(local):hover_help.enter_unit(get_instance_id(),"camera");return
 	if is_instance_valid(customize_button) and customize_button.is_visible_in_tree() and not customize_button.disabled and (ui_host==null or ui_host.allows_panel_input(self)):
 		var local: Vector2=customize_button.get_global_transform_with_canvas().affine_inverse()*hover_position
 		if Rect2(Vector2.ZERO,customize_button.size).has_point(local):hover_help.enter_unit(get_instance_id(),"customize");return
@@ -275,6 +285,7 @@ func redraw():
 	clear_children(body)
 	customize_view=null
 	customize_button=null
+	follow_button=null
 	building_remove_button = null
 	clear_children(alternatives)
 	var name_text := str(selected.get("name",""))
@@ -337,6 +348,12 @@ func redraw():
 				button.pressed.connect(func():
 					if ui_host==null or ui_host.allows_panel_input(self):customize.open(int(selected.id)))
 				body.add_child(button)
+			if follow!=null and not customize.opened:
+				follow_button=TextureButton.new();follow_button.name="FollowCreature"
+				follow_button.position=Vector2(432,0);follow_button.size=Vector2(32,36)
+				follow_button.pressed.connect(func():
+					if ui_host==null or ui_host.allows_panel_input(self):follow.toggle(int(selected.id)))
+				body.add_child(follow_button);_update_follow()
 			if world.has_method("creature_portrait"):
 				var portrait := TextureRect.new()
 				portrait.texture = world.creature_portrait(int(selected.id))

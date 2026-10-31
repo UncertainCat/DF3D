@@ -1787,8 +1787,8 @@ The oracle restores position, designation, follow IDs and camera state. Owned
 DF197152 exits unsaved with unchanged source save; two GPU logs and the combined
 header client have only known renderer notices. Active/inactive camera artwork
 is captured and the active screenshot was inspected. This is native reference
-acceptance only: viewer unit follow, noncitizens, dead/caged/invalid targets and
-rendered camera tooltip remain unfinished. Existing Customize checks also pass.
+acceptance only: viewer follow acceptance is recorded below. Noncitizens and
+caged/invalid targets remain unverified. Existing Customize checks also pass.
 
 creature_follow_native.h exposes these same position/visibility calls with
 independently owned coordinates and no follow/sheet/camera inputs. The visibility
@@ -1799,7 +1799,7 @@ the complete position/visibility/control/container bodies and existing item
 position/reference dependencies. Invalid coordinates mean follow is unavailable
 for that target; a missing optional means the native build is unsupported.
 The diagnostic unit-follow-position-probe exposes this reader; management104
-transports it as described below. The viewer unit-follow button remains unfinished.
+transports it as described below. Viewer integration has separate evidence below.
 
 unit_follow_reader_reference records protected103826 on2026-10-31. Eleven
 reader observations match native movement/visibility and preserve warmed unit,
@@ -1831,8 +1831,39 @@ unchanged source save; two GPU logs and five combined headless client logs
 have only known renderer startup notices. MSVC and unit-follow-contract QA
 pass core19/19, controller and context checks. Codec tests cover bounded tiles,
 missing/negative identity, absent payload, wrong action and rejected authority.
-Viewer controls, follow lifecycle and additional native unit variants remain
-separate acceptance work.
+Viewer controls and follow lifecycle have separate acceptance below; additional
+native unit variants remain unverified.
+
+creature_follow.gd owns a unit ID, request generation and at most one pending
+100ms observation. Changed confirmed coordinates move the viewer camera;
+unchanged ones do not reset it. Stop, target replacement and session changes
+detach stale observers; refusal or malformed authority stops polling without
+automatic replay. The fortress UI owns both item and unit follow independently
+of sheets and makes them mutually exclusive. Manual camera navigation and walk
+mode stop both; viewport/projection changes reframe the current target. No
+native follow/camera fields are read or written by this runtime path.
+
+The unit camera uses installed inactive/active artwork at body432,0 (32x36),
+and is absent during Customize as in native. Hover289 uses the shared tooltip
+timer/frame and the two native lines captured in105504. Its glyph positions
+and colors are compared with immediate native screen-cell evidence; hidden SDL
+pointer capture limitations still preclude a full native tooltip screenshot claim.
+unit_follow_view_reference records protected105742 on2026-10-31: both button
+states match2304 native pixels, actual clicks toggle follow,960x600/default
+resizing preserves the native anchor, Escape closes the sheet without stopping
+follow, item/unit camera clicks replace each other, and a middle-button map pan
+stops follow. The active rendered screenshot was inspected. Existing Customize,
+Overview and four follow-wire cases pass; owned DF183704 exits unsaved and the
+source save is unchanged. Two GPU and five combined client logs have only known
+renderer startup notices. unit-follow-view-final QA passes core19/19, both
+follow controllers, context and UI composition. The controller test covers
+pacing, changed/unchanged positions, queued/sent stop, target replacement, bad
+identity/position, rejection and epoch retirement. First105504 failed because
+the controller mistook the shared client's empty production section for mixed
+authority; regression coverage now includes that default section. Real producer
+replacement/disconnect, a moving unit in the composed viewer and noncitizen/
+containment variants remain unverified. Other unit actions/pages are unfinished;
+the public unit route remains staged.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

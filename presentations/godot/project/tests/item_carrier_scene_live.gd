@@ -173,7 +173,81 @@ func unit_carrier(expected: Dictionary) -> void:
 		check(scene._ui.host.active==null and not inspector.panel.visible,"Reopened Unit sheet retained input")
 		for label in resumed:
 			if is_instance_valid(label):check(not label.is_processing(),"Reopened health animation did not retire")
+	if FileAccess.file_exists(directory+"/unit-camera-native.json"):
+		await exercise_follow(inspector,source,int(expected.snapshot.id),target)
 	exercised=true
+
+func follow_ready() -> bool:
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01)
+		if scene._ui.creature_follow.last_position!=null:return true
+		await create_timer(0.01).timeout
+	return check(false,"Creature follow did not confirm position")
+
+func follow_pixels(inspector,label: String) -> void:
+	await process_frame;await RenderingServer.frame_post_draw
+	var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+	var native:=Image.load_from_file(directory+"/unit-camera-"+label+".png");native.convert(Image.FORMAT_RGB8)
+	check(actual.get_region(Rect2i(856,64,32,36)).get_data()==native.get_region(Rect2i(856,64,32,36)).get_data(),"Creature camera artwork differs: "+label)
+	actual.save_png(directory+"/unit-follow-scene-"+label+".png")
+
+func exercise_follow(inspector,source,source_id: int,target: int) -> void:
+	source.open_target(source_id)
+	if not await settle(source.state):return
+	await pointer(source.panel.get_global_transform_with_canvas()*source.panel.holder_rect().get_center())
+	await drain();await process_frame
+	check(inspector.panel.visible and is_instance_valid(inspector.follow_button),"Unit camera button absent")
+	await follow_pixels(inspector,"before")
+	var hover_motion:=InputEventMouseMotion.new();hover_motion.position=Vector2(872,82);root.push_input(hover_motion,true)
+	await create_timer(0.65).timeout;await process_frame;await RenderingServer.frame_post_draw
+	check(inspector.hover_help.visible and inspector.hover_help.displayed=="unit_camera","Unit camera help absent")
+	var help: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-camera-help.json"))
+	check(help.lines==preload("res://scripts/native_hover_view.gd").UNIT_HELP.camera,"Unit camera help wording differs")
+	var hover_image:=root.get_texture().get_image();hover_image.convert(Image.FORMAT_RGB8)
+	var font:=Image.load_from_file(world.ui_font_path())
+	for cell in help.cells:
+		var ch:=int(cell.ch)
+		for y in 12:
+			for x in 8:
+				var ink:=font.get_pixel(ch%16*8+x,ch/16*12+y)
+				if ink.a<0.99 or minf(ink.r,minf(ink.g,ink.b))<0.99:continue
+				check(hover_image.get_pixel(int(cell.x)*8+x,int(cell.y)*12+4+y).is_equal_approx(preload("res://scripts/native_creature_text.gd").colors[int(cell.color)]),"Unit camera help glyph differs")
+	hover_image.save_png(directory+"/unit-camera-help-viewer.png")
+	await pointer(inspector.follow_button.get_global_transform_with_canvas()*Vector2(16,18))
+	if not await follow_ready():return
+	var follow=scene._ui.creature_follow;var rig=scene.camera_rig
+	check(follow.unit_id==target,"Camera button followed wrong unit")
+	await follow_pixels(inspector,"enabled")
+	var tile: Vector3i=follow.last_position
+	var point:=Vector3(tile.x+0.5,tile.z+1.0,tile.y+0.5)
+	for extent in [Vector2i(960,600),Vector2i(1200,800)]:
+		root.size=extent;await process_frame;await process_frame;await process_frame
+		var scale: Vector2=preload("res://scripts/presentation_settings.gd").effective_scale_vector(Vector2(extent))
+		var anchor: Vector2=rig.native_follow_anchor(Vector2(extent),scale,rig._df_pixels_per_tile)
+		check(rig.get_node("Camera3D").unproject_position(point).distance_to(anchor)<0.1,"Creature follow resize framing differs")
+	await pointer(inspector.follow_button.get_global_transform_with_canvas()*Vector2(16,18))
+	check(follow.unit_id==-1,"Second camera click retained follow")
+	await pointer(inspector.follow_button.get_global_transform_with_canvas()*Vector2(16,18))
+	if not await follow_ready():return
+	key(KEY_ESCAPE);await process_frame
+	check(not inspector.panel.visible and follow.unit_id==target,"Closing unit sheet lost follow")
+	source.open_target(source_id)
+	if not await settle(source.state):return
+	await pointer(source.panel.get_global_transform_with_canvas()*source.panel.camera_rect().get_center())
+	await drain()
+	check(follow.unit_id==-1 and scene._ui.item_follow.item_id==source_id,"Item follow did not replace unit follow")
+	await pointer(source.panel.get_global_transform_with_canvas()*source.panel.holder_rect().get_center())
+	await drain();await process_frame
+	await pointer(inspector.follow_button.get_global_transform_with_canvas()*Vector2(16,18))
+	if not await follow_ready():return
+	check(scene._ui.item_follow.item_id==-1,"Unit follow did not replace item follow")
+	key(KEY_ESCAPE);await process_frame
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(200,400);motion.relative=Vector2(16,0);motion.button_mask=MOUSE_BUTTON_MASK_MIDDLE
+	root.push_input(motion,true);await process_frame
+	check(follow.unit_id==-1 and follow.last_position==null,"Manual map pan retained unit follow")
+	var file:=FileAccess.open(directory+"/unit-follow-scene-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"resize":true,"close_preserves":true,"exclusive":true,"pan_stops":true}));file.close()
 
 func open_customize(inspector) -> bool:
 	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(416,18))

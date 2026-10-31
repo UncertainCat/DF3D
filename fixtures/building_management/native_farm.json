@@ -42722,6 +42722,240 @@
         "Viewer unit-follow control and lifecycle remain unfinished",
         "Noncitizen/caged/invalid-position variants unverified"
       ]
+    },
+    "unit_follow_view_reference": {
+      "date": "2026-10-31",
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-105742",
+      "owned_df_pid": 183704,
+      "result": {
+        "close_preserves": true,
+        "exclusive": true,
+        "pan_stops": true,
+        "resize": true,
+        "success": true,
+        "unit_id": 1017
+      },
+      "native_help": {
+        "cells": [
+          {
+            "ch": 83,
+            "color": 15,
+            "x": 126,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 127,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 128,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 130,
+            "y": 0
+          },
+          {
+            "ch": 104,
+            "color": 15,
+            "x": 131,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 132,
+            "y": 0
+          },
+          {
+            "ch": 99,
+            "color": 15,
+            "x": 134,
+            "y": 0
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 135,
+            "y": 0
+          },
+          {
+            "ch": 109,
+            "color": 15,
+            "x": 136,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 137,
+            "y": 0
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 138,
+            "y": 0
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 139,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 141,
+            "y": 0
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 142,
+            "y": 0
+          },
+          {
+            "ch": 102,
+            "color": 15,
+            "x": 126,
+            "y": 1
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 127,
+            "y": 1
+          },
+          {
+            "ch": 108,
+            "color": 15,
+            "x": 128,
+            "y": 1
+          },
+          {
+            "ch": 108,
+            "color": 15,
+            "x": 129,
+            "y": 1
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 130,
+            "y": 1
+          },
+          {
+            "ch": 119,
+            "color": 15,
+            "x": 131,
+            "y": 1
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 133,
+            "y": 1
+          },
+          {
+            "ch": 104,
+            "color": 15,
+            "x": 134,
+            "y": 1
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 135,
+            "y": 1
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 136,
+            "y": 1
+          },
+          {
+            "ch": 99,
+            "color": 15,
+            "x": 138,
+            "y": 1
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 139,
+            "y": 1
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 140,
+            "y": 1
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 141,
+            "y": 1
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 142,
+            "y": 1
+          },
+          {
+            "ch": 117,
+            "color": 15,
+            "x": 143,
+            "y": 1
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 144,
+            "y": 1
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 145,
+            "y": 1
+          },
+          {
+            "ch": 46,
+            "color": 15,
+            "x": 146,
+            "y": 1
+          }
+        ],
+        "lines": [
+          "Set the camera to",
+          "follow this creature."
+        ]
+      },
+      "button_pixels": 2304,
+      "screenshots": {
+        "unit-follow-scene-before": "ca8b6b15814575f80bcc279ad300398db6f4e242261a3b5a07126a4feb950c15",
+        "unit-follow-scene-enabled": "761e063f87a5ad4f59ffb5ab9799006f54f350d650a26885216b64b2bf2429a7",
+        "unit-camera-help-viewer": "e2c4e92668e2c71e3eff4d70a87a30dc8f09c6636f56b04a3c07bf6c833f06af"
+      },
+      "qa": "build/qa/unit-follow-view-final",
+      "source_save": "unchanged; owned clone exited unsaved",
+      "diagnostics": "Two GPU and five combined headless clients: known renderer startup notices only",
+      "failed_attempt": "105504 controller rejected default empty production section; regression added",
+      "limitations": [
+        "Composed moving-unit follow and actual producer replacement/disconnect unverified",
+        "Noncitizen/caged/invalid-position native variants unverified",
+        "Other unit actions/pages unfinished; public route staged"
+      ]
     }
   }
 }

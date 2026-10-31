@@ -66,6 +66,21 @@ local ok,err=xpcall(function()
  record('before');pointer(872,82)
  observations[#observations+1]={name='hover',instruction=main.current_hover}
  assert(main.current_hover==df.main_hover_instruction.FOLLOW_UNIT,'unit camera hitbox mismatch')
+ local until_hover=dfhack.getTickCount()+650
+ while dfhack.getTickCount()<until_hover do pointer(872,82);script.sleep(1,'frames')end
+ pointer(872,82)
+ assert(main.last_displayed_hover_inst==df.main_hover_instruction.FOLLOW_UNIT,'unit camera help not displayed')
+ local help={lines={},cells={}}
+ for y=0,17 do
+  local bytes={}
+  for x=g.dimx-24,g.dimx-1 do
+   local pen=dfhack.screen.readTile(x,y);bytes[#bytes+1]=pen.ch>=32 and string.char(pen.ch%256) or ' '
+   if pen.ch>=33 and pen.ch<=255 then help.cells[#help.cells+1]={x=x,y=y,ch=pen.ch,color=pen.fg+(pen.bold and 8 or 0)}end
+  end
+  help.lines[#help.lines+1]=dfhack.df2utf(table.concat(bytes)):gsub('%s+$','')
+ end
+ while #help.lines>0 and help.lines[#help.lines]==''do table.remove(help.lines)end
+ local help_file=assert(io.open(out..'/unit-camera-help.json','w'));help_file:write(json.encode(help));help_file:close()
  click();record('enabled')
  assert(plot.follow_unit==unit.id and plot.follow_item==-1 and sheet.open,'unit camera did not enable follow')
  unit.pos.x=pos.x+1;unit.pos.y=pos.y-1;settle();record('moved')

@@ -43793,8 +43793,7 @@
       "input": "CONTEXT_SCROLL_UP, CURSOR_UP, STANDARDSCROLL_PAGEUP do not move the log.",
       "scroll_policy": "Retain first visible row across resize; scrollbar page counts actually visible rows.",
       "limits": [
-        "Simulated wide arrow click moves7 to5; isolate press/release/repeat before claiming native single-click parity.",
-        "Populated live navigation and full wide-page capacity at scroll0 remain unverified."
+        "Single-click native arrow/drag parity remains unverified; posted window click did not reach hidden native widget."
       ],
       "viewer_acceptance": {
         "provenance": "Protected114450 on2026-10-31, DF173000; source unchanged, owned unsaved exit.",
@@ -43978,6 +43977,121 @@
             "sel_min": 0
           }
         }
+      ],
+      "wide_top": {
+        "provenance": "Protected115134 on2026-10-31, native first0/capacity18.",
+        "viewport": [
+          1600,
+          900
+        ],
+        "first": 0,
+        "visible": 18,
+        "mask_reason": "Native task tooltip covers frame x48..255,y780..827. Compare all unobscured frame pixels, including all18 report texts and row actions.",
+        "rgb_regions": [
+          {
+            "rect": [
+              48,
+              96,
+              1320,
+              684
+            ],
+            "sha256": "a4da0518eafa4da98b12e1d180e11ff539d08620e239b5489469900b602dfae3"
+          },
+          {
+            "rect": [
+              256,
+              780,
+              1112,
+              48
+            ],
+            "sha256": "72ad6144e4d1431a3a51727418612db790ae09d21cd7969f3bb3f2aec97d9fb7"
+          }
+        ]
+      }
+    },
+    "unit_reports_populated_live_reference": {
+      "provenance": "Protected115134 on2026-10-31, DF182692; owned unsaved exit, source unchanged. First passed114932, DF180776.",
+      "result": {
+        "back_to_map": true,
+        "direct_combat": true,
+        "native_button_pixels": 1152,
+        "native_help_glyph_pixels": 720,
+        "overlay_blocks_input": true,
+        "populated_navigation": true,
+        "resize": true,
+        "success": true,
+        "unit_id": 1017
+      },
+      "native_fixture": {
+        "report_ids": [
+          78822,
+          78823,
+          78824,
+          78825,
+          78826,
+          78827,
+          78828,
+          78829,
+          78830,
+          78831,
+          78832,
+          78833,
+          78834,
+          78835,
+          78836,
+          78837,
+          78838,
+          78839,
+          78840,
+          78841,
+          78842,
+          78843
+        ],
+        "restored_log": true,
+        "success": true,
+        "unit_id": 1017
+      },
+      "diagnostics": {
+        "farm-item-carrier-unit-scene.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-unit-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "unit-header-wire.stdout.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        }
+      },
+      "coverage": [
+        "22 real native report IDs and speaker IDs through the semantic reader.",
+        "Latest15 rows, viewer arrow and inert text-wheel input.",
+        "Speaker navigation to current creature, reopen history, recenter on stored location.",
+        "Original unit report references restored before leaving diagnostic wrapper."
+      ],
+      "limits": [
+        "Single-click native arrow/drag parity remains unverified.",
+        "Dynamic new-report append after resizing remains unverified."
       ]
     }
   }

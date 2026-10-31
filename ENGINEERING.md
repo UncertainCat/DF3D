@@ -1939,7 +1939,7 @@ save remains unchanged; owned DF185196 exits unsaved. Core, composition and
 Reports state/controller checks pass. GPU capture has only known startup and
 shutdown diagnostics; live logs have only the known startup notice. Earlier
 113127 stopped before interaction on a test indentation error, subsequently fixed.
-Populated live navigation, scrolling, and complete unit-page
+Dynamic new reports, native scrolling input, and complete unit-page
 acceptance remain unfinished; the public unit route stays staged.
 
 unit_reports_resize_reference records native113533 and composed114450 on
@@ -1962,9 +1962,31 @@ startup notice; GPU has only known startup/finalize/ObjectDB diagnostics.
 
 Native wheel/Up/Page Up probes do not move the log. The diagnostic simulated
 arrow press moves two rows, including after explicit mouse-state release; isolate
-SDL press/release/repeat before claiming single-click parity. Full wide capacity
-at first row0 and populated live recenter/speaker navigation remain unverified.
+SDL press/release/repeat before claiming single-click parity. Wide capacity and populated live navigation are verified below; dynamic new
+reports and native single-click/drag equivalence remain unverified.
 The unit route remains staged; these checks do not complete all unit pages.
+
+unit_reports_populated_live_reference records protected115134 on2026-10-31,
+first passed114932. A diagnostic wrapper inserts22 native report records with
+speaker and stored-position references before the actual main-scene workflow.
+The bridge returns those exact IDs, the viewer opens at the newest15 reports,
+and its scrollbar changes the first visible row while text-wheel input remains
+inert. Clicking a speaker opens that current creature; clicking its history
+button reopens Combat. Recenter closes the panel and moves the viewer camera
+and elevation to the stored report position. The wrapper restores the original
+unit log on success or failure; diagnostic global reports are discarded with
+the unsaved owned clone. Native camera/sheet ownership remains separate.
+
+Owned DF182692 exits unsaved with unchanged source; GPU and combined headless
+logs contain only known startup notices. Core and Reports state/controller pass.
+The wide top-page reference confirms18 native rows. GPU compares all unobscured
+frame pixels, including all18 report texts/actions; a native task tooltip hides
+x48..255,y780..827, explicitly excluded from this reference. The same border
+area is covered by the earlier unobscured resize captures. GPU checks pass with
+known startup/finalize/ObjectDB diagnostics. A posted window click did not reach
+the hidden native scrollbar, so its helper was removed; it is not evidence for
+single-click behavior. Dynamic append after resize and native arrow/drag input
+remain unfinished. No runtime changes were needed for this acceptance work.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

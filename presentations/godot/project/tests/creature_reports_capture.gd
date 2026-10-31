@@ -33,5 +33,19 @@ func run() -> void:
   var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_region(region).get_data())
   if hash.finish().hex_encode()!=sample.rgb_sha256:
    push_error("Direct Combat resize pixels differ: "+sample.label);quit(1);return
+ var top:Dictionary=fixture.chest_header_reference.unit_reports_resize_reference.wide_top
+ root.size=Vector2i(1600,900)
+ for i in 2:await process_frame
+ state.scroll_to(0)
+ for i in 2:await process_frame;await RenderingServer.frame_post_draw
+ image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+ image.save_png(directory+"/wide-top.png")
+ assert(state.log_requested==0 and state.visible_log_rows()==18)
+ for sample in top.rgb_regions:
+  var r:Array=sample.rect
+  var top_hash:=HashingContext.new();top_hash.start(HashingContext.HASH_SHA256)
+  top_hash.update(image.get_region(Rect2i(int(r[0]),int(r[1]),int(r[2]),int(r[3]))).get_data())
+  if top_hash.finish().hex_encode()!=sample.sha256:
+   push_error("Wide Combat top-page pixels differ");quit(1);return
  view.queue_free();world.queue_free();await process_frame
  print("CREATURE_REPORTS_CAPTURE_PASS");quit(0)

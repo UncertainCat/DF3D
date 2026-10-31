@@ -413,6 +413,16 @@ func exercise_history(inspector,source,source_id:int,target:int) -> void:
 	for sample in [[Vector2i(960,600),Vector2(680,432),10],[Vector2i(1600,900),Vector2(1320,732),18],[Vector2i(1200,800),Vector2(920,624),15]]:
 		root.size=sample[0];await process_frame;await process_frame
 		check(model.opened and scene._ui.host.active==reports and reports.panel.size==sample[1] and model.unit_page_rows==sample[2],"Composed Combat resize lost identity or native geometry")
+	var populated:=FileAccess.file_exists(directory+"/unit-reports-scene-expected.json")
+	if populated:
+		var expected:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-reports-scene-expected.json"))
+		check(model.rows.size()==22 and model.log_requested==7,"Populated direct history did not load newest native rows")
+		for index in model.rows.size():
+			check(int(model.rows[index].id)==int(expected.report_ids[index]) and int(model.rows[index].speaker_id)==target,"Combat history row identity/speaker differs")
+		await pointer(reports.panel.position+reports.panel.scrollbar.position+Vector2(8,6))
+		check(model.log_requested==6,"Combat scrollbar up did not navigate retained rows")
+		await pointer(reports.panel.position+Vector2(400,250),MOUSE_BUTTON_WHEEL_UP)
+		check(model.log_requested==6,"Combat text wheel moved native-inert log")
 	var paused:bool=model.pause_on_new
 	await pointer(reports.panel.position+reports.panel.pause_target().get_center())
 	check(model.pause_on_new!=paused,"Combat pause toggle did not receive input")
@@ -423,5 +433,19 @@ func exercise_history(inspector,source,source_id:int,target:int) -> void:
 	check(model.opened,"Overlay Escape closed Combat history")
 	key(KEY_ESCAPE);await process_frame
 	check(not model.opened and scene._ui.host.active==null and not inspector.panel.visible,"Combat Back reopened unit sheet or retained input")
+	if populated:
+		reports.open_creature_history(target);await drain();await process_frame;await RenderingServer.frame_post_draw
+		check(reports.panel.speaker_targets.size()==15,"Combat speaker targets missing")
+		await pointer(reports.panel.position+reports.panel.speaker_targets[0].rect.get_center())
+		check(not model.opened and scene._ui.host.active==inspector and inspector.selected.get("id",-1)==target,"Combat speaker did not open current creature")
+		var ready:=Time.get_ticks_msec()+5000
+		while not is_instance_valid(inspector.history_button) and Time.get_ticks_msec()<ready:
+			world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+		if not check(is_instance_valid(inspector.history_button),"Speaker sheet history button absent"):return
+		await pointer(inspector.history_button.get_global_transform_with_canvas()*Vector2(16,18));await drain();await process_frame;await RenderingServer.frame_post_draw
+		var tile:Vector3i=model.rows[model.log_first].position
+		await pointer(reports.panel.position+reports.panel.report_targets[0].rect.get_center())
+		check(not model.opened and scene._ui.host.active==null,"Combat recenter retained a panel")
+		check(is_equal_approx(scene.camera_rig.position.x,tile.x+0.5) and is_equal_approx(scene.camera_rig.position.z,tile.y+0.5) and world.get_top_z()==tile.z,"Combat recenter missed stored report position")
 	var file:=FileAccess.open(directory+"/unit-reports-scene-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"direct_combat":true,"back_to_map":true,"overlay_blocks_input":true,"resize":true,"native_help_glyph_pixels":ink_count,"native_button_pixels":1152}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"direct_combat":true,"back_to_map":true,"overlay_blocks_input":true,"resize":true,"native_help_glyph_pixels":ink_count,"native_button_pixels":1152,"populated_navigation":populated}));file.close()

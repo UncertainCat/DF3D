@@ -15,6 +15,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   decodeConstruction(s, next);
   next.area = decodeArea(s->area());
   next.creature = decodeCreature(s->creature());
+  if(const auto* p=s->creature_position())next.creaturePosition=CreaturePosition{p->unit_id(),{p->position()->x(),p->position()->y(),p->position()->z()}};
   if(const auto* h=s->creature_header()) {
     CreatureHeaderState header;header.outcome=CreatureHeaderOutcome(h->outcome());header.mutated=h->mutated();
     if(const auto* v=h->snapshot())header.snapshot=CreatureHeaderSnapshot{v->unit_id(),v->historical_figure_id(),v->has_figure(),v->revision(),v->nickname()->str(),v->profession()->str(),v->figure_nickname()->str()};
@@ -112,7 +113,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       b.CreateString(r.definition), &p, r.width, r.height, r.direction, b.CreateVector(r.items),
       r.cursor, r.buildingId, area, production, workOrder, citizen, report, agreement, trade,
       stocks, appointments, kitchen, alert, selection,
-      r.action == ManagementAction::CreatureInspect ? m::CreateCreatureRequest(b, r.creatureUnitId)
+      (r.action == ManagementAction::CreatureInspect || r.action == ManagementAction::CreatureLocate) ? m::CreateCreatureRequest(b, r.creatureUnitId)
                                                     : flatbuffers::Offset<m::CreatureRequest>{},
       r.depth,r.retracting,r.filter,b.CreateVector(selections),uint64_t(r.expectedListRevision),r.rollerSpeed,
       r.trackStop?m::CreateTrackStopOptions(b,r.trackStop->friction,r.trackStop->dumpDirection):flatbuffers::Offset<m::TrackStopOptions>{},

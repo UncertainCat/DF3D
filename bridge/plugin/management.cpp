@@ -79,6 +79,7 @@
 #include "creature_overview_native.h"
 #include "creature_office_native.h"
 #include "creature_header_native.h"
+#include "creature_follow_native.h"
 #include "creature_health_native.h"
 #include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
@@ -372,9 +373,11 @@ int16_t stage = -1, maxStage = -1;
 bool valid = false, removing = false;
 std::optional<std::vector<df3d_hover::Description>> worldHover;
 std::optional<df3d_creature::HeaderEditResult> creatureHeader;
+std::optional<std::pair<int32_t,df::coord>> creaturePosition;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
+  creaturePosition.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -735,6 +738,11 @@ void publish() {
   if(agreements.trackerDetails) {const auto& d=*agreements.trackerDetails;trackerDetails=m::CreateContinuingAgreementDetails(b,d.requiredValue,d.matchingLocations,d.locationId,d.locationValue,d.locationTier,d.siteAvailable,d.tierMet,b.CreateString(d.locationName));}
   auto agreementResult=m::CreateAgreementState(b,b.CreateVector(agreementRows),agreements.nextBeforeId,agreements.pendingOnly,b.CreateString(agreements.detail),agreements.tracker,b.CreateVector(trackerRows),trackerDetails);
   auto creatureResult=creature_data::build(b,creature);
+  flatbuffers::Offset<m::CreaturePosition> creaturePositionResult;
+  if(creaturePosition) {
+    const auto& [id,p]=*creaturePosition;const m::TilePos tile(p.x,p.y,p.z);
+    creaturePositionResult=m::CreateCreaturePosition(b,id,&tile);
+  }
   flatbuffers::Offset<m::CreatureHeaderState> creatureHeaderResult;
   if(creatureHeader) {
     flatbuffers::Offset<m::CreatureHeaderSnapshot> receipt;
@@ -754,7 +762,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -2946,6 +2954,15 @@ void run(color_ostream& out) {
         if(!page.truncated || !page.choices.empty()){areaPage.locationNamePage=std::move(page);status=m::ManagementStatus::Ok;}
       }
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::CreatureLocate) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto id=r->creature()->unit_id();
+    const auto position=df3d_creature::followPosition(df::unit::find(id));
+    if(position && position->isValid() && position->x>=0 && position->y>=0 && position->z>=0) {
+      creaturePosition=std::make_pair(id,*position);status=m::ManagementStatus::Ok;
+    }
     publish();return;
   }
   if(r->action()==m::ManagementAction::CreatureHeaderRead || r->action()==m::ManagementAction::CreatureHeaderEdit) {

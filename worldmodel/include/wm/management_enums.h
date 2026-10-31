@@ -108,6 +108,7 @@ enum class ManagementAction : uint8_t {
   WorldHover = 70,
   CreatureHeaderRead = 71,
   CreatureHeaderEdit = 72,
+  CreatureLocate = 73,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -391,11 +392,13 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::WorldHover: return true;
   case ManagementAction::CreatureHeaderRead: return true;
   case ManagementAction::CreatureHeaderEdit: return true;
+  case ManagementAction::CreatureLocate: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::CreatureLocate: return "creature_follow";
   case ManagementAction::CreatureHeaderRead: return "creature_header";
   case ManagementAction::CreatureHeaderEdit: return "creature_header";
   case ManagementAction::WorldHover: return "hover";

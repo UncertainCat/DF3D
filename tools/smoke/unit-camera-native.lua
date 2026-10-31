@@ -39,6 +39,14 @@ end
 local function record(label)
  capture('unit-camera-'..label)
  local semantic=probe()
+ if os.getenv('DF3D_UNIT_FOLLOW_WIRE')=='1' and
+    (label=='enabled' or label=='terrain-hidden' or label=='inactive' or label=='active-restored') then
+  local file=assert(io.open(out..'/unit-follow-wire-expected.json','w'));file:write(json.encode(semantic));file:close()
+  capture('unit-follow-wire-'..label)
+  file=assert(io.open(out..'/unit-follow-wire-result.json'));local result=json.decode(file:read('*a'));file:close()
+  assert(result.success and result.valid==semantic.valid and result.unit_id==unit.id,'follow transport differs')
+  assert(os.remove(out..'/unit-follow-wire-result.json'))
+ end
  observations[#observations+1]={name=label,follow_unit=plot.follow_unit,follow_item=plot.follow_item,
   semantic=semantic,guards_unchanged=true,
   sheet_open=sheet.open,position={x=unit.pos.x,y=unit.pos.y,z=unit.pos.z},

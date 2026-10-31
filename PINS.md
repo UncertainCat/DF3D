@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management104 adds CreatureLocate, an independent native follow-position read
+with a stable unit ID and confirmed tile. Rebuild both endpoints on
+`Local\\df3d_management_v104`; management103 is incompatible. Older captures
+have no follow authority. This does not expose the staged unit UI.
+
 Management103 adds independent creature header reads and revision-checked
 nickname/profession edits with confirmed receipts. Rebuild both endpoints on
 `Local\\df3d_management_v103`; management102 is incompatible. Older captures do

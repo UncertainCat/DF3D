@@ -267,6 +267,14 @@ try {
      if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Chest contents client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/chest-contents-result.json")){throw 'Chest contents client failed'}
     }
+    if($FarmItemCarriers -and $name -match '^unit-follow-wire-') {
+     $env:DF3D_CARRIER_DIRECTORY=$out
+     $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
+     $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/creature_follow_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
+     $null=$client.Handle
+     if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Unit follow client timed out; no replay'}
+     if($client.ExitCode -ne 0 -or -not (Test-Path "$out/unit-follow-wire-result.json")){throw 'Unit follow client failed'}
+    }
     if($FarmItemCarriers -and $name -eq 'unit-header-wire') {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'

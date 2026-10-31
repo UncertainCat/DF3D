@@ -602,6 +602,7 @@ struct ConstructionInput {
   std::string description;
   uint32_t quantity = 1;
 };
+struct CreaturePosition { int32_t unitId=-1; TilePos position; };
 struct CreatureHeaderRequest { int32_t unitId=-1; bool profession=false; uint64_t expectedRevision=0; std::string name; };
 struct CreatureHeaderSnapshot {
   int32_t unitId=-1,historicalFigureId=-1; bool hasFigure=false; uint64_t revision=0;
@@ -681,6 +682,7 @@ struct ManagementState {
   SelectionState selection;
   CreatureInfo creature;
   std::optional<CreatureHeaderState> creatureHeader;
+  std::optional<CreaturePosition> creaturePosition;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

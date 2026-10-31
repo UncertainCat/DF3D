@@ -3734,6 +3734,29 @@ TEST_CASE("creature header command retains exact revision and strict read/edit s
     REQUIRE(value->creature_header());CHECK(value->creature_header()->expected_revision()==r.creatureHeader.expectedRevision);
   }
 }
+TEST_CASE("creature locate transports only confirmed bounded positions") {
+  for(int id:{-1,86}) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::CreatureLocate;r.creatureUnitId=id;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(id<0));
+    REQUIRE(value->creature());CHECK(value->creature()->unit_id()==id);CHECK_FALSE(value->creature_header());
+  }
+  for(int fault=0;fault<8;++fault) {
+    flatbuffers::FlatBufferBuilder b;wire::TilePos tile(fault==1?-1:fault==2?32768:126,75,165);
+    auto p=wire::CreateCreaturePosition(b,fault==3?-1:86,fault==4?nullptr:&tile);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(7);
+    state.add_action(fault==5?wire::ManagementAction::CreatureInspect:wire::ManagementAction::CreatureLocate);
+    state.add_status(fault==6?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    if(fault!=7)state.add_creature_position(p);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.creaturePosition);CHECK(decoded.creaturePosition->unitId==86);CHECK(decoded.creaturePosition->position.z==165);}
+  }
+  flatbuffers::FlatBufferBuilder b;wire::ManagementStateBuilder state(b);
+  state.add_revision(1);state.add_action(wire::ManagementAction::CreatureLocate);state.add_status(wire::ManagementStatus::Rejected);
+  b.Finish(state.Finish());CHECK_FALSE(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())));
+}
 TEST_CASE("creature header result requires confirmed bounded authority") {
   for(int fault=0;fault<7;++fault) {
     flatbuffers::FlatBufferBuilder b;

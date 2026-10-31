@@ -10,6 +10,7 @@ ENUMS = ("CreatureHeaderOutcome", "ConstructionOutcome", "FarmEditOutcome", "Far
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
+    "creature_follow": ("CreatureLocate", "CreatureLocate"),
     "creature_header": ("CreatureHeaderRead", "CreatureHeaderEdit"),
     "hover": ("WorldHover", "WorldHover"),
     "construction": ("Catalog", "RemoveConstruction"),

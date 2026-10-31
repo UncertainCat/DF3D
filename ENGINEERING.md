@@ -1798,8 +1798,8 @@ specific_ref; reference getters can warm semantic cached indices. Pins cover
 the complete position/visibility/control/container bodies and existing item
 position/reference dependencies. Invalid coordinates mean follow is unavailable
 for that target; a missing optional means the native build is unsupported.
-The diagnostic unit-follow-position-probe exposes this reader; management
-transport and the viewer unit-follow button remain unfinished.
+The diagnostic unit-follow-position-probe exposes this reader; management104
+transports it as described below. The viewer unit-follow button remains unfinished.
 
 unit_follow_reader_reference records protected103826 on2026-10-31. Eleven
 reader observations match native movement/visibility and preserve warmed unit,
@@ -1812,6 +1812,27 @@ and preserves the source save. Two GPU logs and combined header client contain
 only known renderer startup notices. MSVC and unit-follow-reader QA pass core,
 controller and context checks. Noncitizen and containment variants still need
 live acceptance; this evidence does not establish viewer integration.
+
+Management104 adds CreatureLocate (73), a read in the creature_follow domain.
+It takes the existing typed CreatureRequest unit ID and returns only a
+CreaturePosition with a confirmed ID/tile. The bridge applies shared epoch/save
+admission and native followPosition eligibility; it does not apply the header
+editor's hidden-terrain guard, which would incorrectly reject controlled units.
+Rejected reads carry no position. Model decoding replaces prior authority;
+the Godot adapter accepts only action and an integer unit_id. Both endpoints
+must use management104; older captures gain no synthetic position authority.
+
+unit_follow_transport_reference records protected104943 on2026-10-31. Four
+real Godot clients compare ordinary, hidden-terrain, inactive and restored
+states with the native reader. Each checks missing-unit refusal after its
+first response and rejects malformed identities/extra fields. Existing native
+camera, Customize and Overview checks pass. Owned DF134200 exits unsaved with
+unchanged source save; two GPU logs and five combined headless client logs
+have only known renderer startup notices. MSVC and unit-follow-contract QA
+pass core19/19, controller and context checks. Codec tests cover bounded tiles,
+missing/negative identity, absent payload, wrong action and rejected authority.
+Viewer controls, follow lifecycle and additional native unit variants remain
+separate acceptance work.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

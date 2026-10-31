@@ -153,7 +153,9 @@ func controller(id: String):
 	panel.world = world
 	panel.interaction = view._interaction
 	panel.ui_host = host
-	if id == "inspector": panel.action_service = actions
+	if id == "inspector":
+		panel.action_service = actions
+		panel.hover_help=view._fortress_hud.native_help
 	if id in ["construction", "areas"]: panel.hud = view._fortress_hud
 	if id in ["construction", "areas"]:
 		panel.action_service = actions

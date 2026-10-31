@@ -64,6 +64,24 @@ local ok,err=xpcall(function()
  end if found then break end end
  assert(found,'native Customize hitbox not found')
  observations[#observations+1]={name='customize-hitbox',mouse=found,hover=main.current_hover}
+ local until_hover=dfhack.getTickCount()+650
+ while dfhack.getTickCount()<until_hover do pointer(found[1],found[2]);require('gui.script').sleep(1,'frames')end
+ pointer(found[1],found[2])
+ assert(main.current_hover==df.main_hover_instruction.UNIT_SHEET_CUSTOMIZE and main.hover_instructions_on,'Customize help did not activate')
+ local help={name='customize-help',hover=main.current_hover,lines={},cells={}}
+ for y=0,17 do
+  local bytes={}
+  for x=g.dimx-24,g.dimx-1 do
+   local pen=dfhack.screen.readTile(x,y);bytes[#bytes+1]=pen.ch>=32 and string.char(pen.ch%256) or ' '
+   if pen.ch>=33 and pen.ch<=255 then help.cells[#help.cells+1]={x=x,y=y,ch=pen.ch,color=pen.fg+(pen.bold and 8 or 0)}end
+  end
+  help.lines[#help.lines+1]=dfhack.df2utf(table.concat(bytes)):gsub('%s+$','')
+ end
+ while #help.lines>0 and help.lines[#help.lines]==''do table.remove(help.lines)end
+ observations[#observations+1]=help
+ local help_file=assert(io.open(out..'/unit-customize-help.json','w'));help_file:write(require('json').encode(help));help_file:close()
+ assert(main.last_displayed_hover_inst==df.main_hover_instruction.UNIT_SHEET_CUSTOMIZE,'Customize help not displayed')
+ capture('unit-customize-help',function()pointer(found[1],found[2])end)
  click(found[1],found[2]);assert(sheet.unit_overview_customizing,'Customize did not open editor')
  record('open')
  click(600,82);assert(sheet.unit_overview_entering_nickname,'nickname field did not focus');record('nickname-focus')

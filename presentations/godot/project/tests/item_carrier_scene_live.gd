@@ -149,7 +149,7 @@ func unit_carrier(expected: Dictionary) -> void:
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
 	if FileAccess.file_exists(directory+"/unit-customize-captions.json"):
-		await exercise_customize(inspector)
+		await exercise_customize(inspector,int(expected.snapshot.id))
 	key(KEY_ESCAPE);await process_frame
 	check(scene._ui.host.active==null and not inspector.panel.visible,"Unit sheet Escape did not release input")
 	for label in health_labels:
@@ -182,8 +182,29 @@ func open_customize(inspector) -> bool:
 		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
 	return check(inspector.customize.opened,"Customize did not open from native button")
 
-func exercise_customize(inspector) -> void:
+func exercise_customize(inspector,source_item: int) -> void:
+	var hover_motion:=InputEventMouseMotion.new();hover_motion.position=Vector2(840,82);root.push_input(hover_motion,true)
+	await create_timer(0.65).timeout
+	await process_frame;await RenderingServer.frame_post_draw
+	check(inspector.hover_help.visible and inspector.hover_help.displayed=="unit_customize","Customize native hover did not appear")
+	var hover_image:=root.get_texture().get_image();hover_image.convert(Image.FORMAT_RGB8)
+	var native_help: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-customize-help.json"))
+	check(native_help.lines==preload("res://scripts/native_hover_view.gd").UNIT_HELP.customize,"Customize help wording differs")
+	var font:=Image.load_from_file(world.ui_font_path())
+	var ink_count:=0
+	for cell in native_help.cells:
+		var ch:=int(cell.ch)
+		for y in 12:
+			for x in 8:
+				var ink:=font.get_pixel(ch%16*8+x,ch/16*12+y)
+				if ink.a<0.99 or minf(ink.r,minf(ink.g,ink.b))<0.99:continue
+				ink_count+=1
+				check(hover_image.get_pixel(int(cell.x)*8+x,int(cell.y)*12+4+y).is_equal_approx(preload("res://scripts/native_creature_text.gd").colors[int(cell.color)]),"Customize help glyph differs")
+	check(ink_count>0,"Customize native help contains no glyph evidence")
+	hover_image.save_png(directory+"/unit-customize-help-viewer.png")
 	if not await open_customize(inspector):return
+	await process_frame
+	check(not inspector.hover_help.visible,"Opening Customize retained obsolete help")
 	var editor=inspector.customize
 	var original: Dictionary=editor.state.snapshot.duplicate(true)
 	if not check(original.nickname.is_empty() and original.profession.is_empty(),"Customize fixture expects empty original custom fields"):return
@@ -195,6 +216,16 @@ func exercise_customize(inspector) -> void:
 	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Composed Customize pixels differ")
 	await pointer(Vector2(600,82));check(editor.field==0,"Nickname click lost focus");key(KEY_Q,81)
 	check(editor.values[0]=="Q","Nickname key lost input")
+	root.size=Vector2i(960,600);await process_frame;await process_frame
+	check(editor.opened and editor.field==0 and editor.values[0]=="Q","Resize lost active draft")
+	check(inspector.customize_view.size==Vector2(288,72),"Resize changed native editor geometry")
+	scene._fortress_hud.toggle_settings()
+	key(KEY_Z,90)
+	await pointer(inspector.customize_view.get_global_transform_with_canvas()*Vector2(72,54))
+	check(editor.opened and editor.field==0 and editor.values[0]=="Q","Overlay allowed hidden editor input")
+	key(KEY_ESCAPE);await process_frame
+	check(not scene._fortress_hud.settings.visible and editor.opened,"Overlay Escape retired underlying editor")
+	root.size=Vector2i(1200,800);await process_frame;await process_frame
 	await pointer(Vector2(600,118));check(editor.field==1,"Profession click lost focus");key(KEY_R,82)
 	check(editor.values==["Q","R"],"Profession key lost input")
 	await drain()
@@ -205,11 +236,19 @@ func exercise_customize(inspector) -> void:
 	check(inspector.panel.visible and not editor.opened and scene._ui.host.active==inspector,"Customize Escape closed unit sheet")
 	if not await open_customize(inspector):return
 	check(editor.state.snapshot.nickname=="Q" and editor.state.snapshot.profession=="R","Reopened editor lost native names")
-	await pointer(Vector2(600,82));key(KEY_BACKSPACE)
+	await pointer(Vector2(600,82));key(KEY_X,88)
+	var source=scene._ui.controller("farm").item_owner
+	source.open_target(source_item)
+	check(not editor.opened,"Changing active panel retained unit draft")
+	if not await settle(source.state):return
+	await pointer(source.panel.get_global_transform_with_canvas()*source.panel.holder_rect().get_center())
+	if not await open_customize(inspector):return
+	check(editor.state.snapshot.nickname=="QX" and editor.state.snapshot.profession=="R","Panel switch lost queued typing or selected wrong unit")
+	await pointer(Vector2(600,82));key(KEY_BACKSPACE);key(KEY_BACKSPACE)
 	await pointer(Vector2(600,118));key(KEY_BACKSPACE)
 	await drain()
 	var restored: bool=editor.state.snapshot==original
 	check(restored,"Editor did not restore original semantic snapshot")
 	key(KEY_ENTER);key(KEY_ESCAPE);await process_frame
 	var file:=FileAccess.open(directory+"/unit-customize-scene-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"last_clicked_field":true,"enter_keeps_customize":true,"escape_keeps_sheet":true,"restored":restored}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"last_clicked_field":true,"enter_keeps_customize":true,"escape_keeps_sheet":true,"restored":restored,"native_help_glyph_pixels":ink_count,"resize_retains_draft":true,"overlay_blocks_input":true,"panel_switch_drains_typing":true}));file.close()

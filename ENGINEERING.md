@@ -1746,10 +1746,33 @@ Focus/text updates now retain their controls, and the callback uses weak refs.
 Core19/controller checks pass in unit-customize-input; context passes in
 unit-customize-input-repair after correcting weakref type declarations. The final
 immediate fallback invalidation passes unit-customize-draft-fallback controller
-coverage; the composed run predates that one-line change. Hover help, actual
-transport replacement/disconnect, visible target-switch/resize during typing,
-animated name backgrounds and child/missing-history/identity variants remain
-unverified or unfinished. The public unit route remains staged.
+coverage; composed090642 below also exercises that final implementation. Actual
+transport replacement/disconnect, different-unit switching, animated name
+backgrounds and child/missing-history/identity variants remain unverified or
+unfinished. The public unit route remains staged.
+
+Customize hover uses the shared HUD native-help renderer and timer with the
+verbatim instruction287 text. The inspector owns the hover identity and retires
+it when the button is absent, disabled, blocked, closed or destroyed.
+unit_header_customize_hover_lifecycle_reference records protected090642:
+1261 foreground glyph pixels match native screen-cell character positions and
+palette values, and the rendered tooltip was inspected. Hidden-desktop native
+GPU capture loses the tooltip to SDL mouse polling even with pointer restoration;
+no full native-tooltip screenshot match is claimed. Its frame uses the existing
+accepted shared renderer. Text was first captured in085935;090348's screenshot
+comparison and bare overlay-flag simulation are failed harness attempts.
+
+The same composed090642 run preserves the active field/draft across960x600 and
+back to1200x800. Actual Settings blocks pointer/key edits; Escape closes that
+overlay while retaining Customize. Activating the item panel with a nickname
+edit still queued retires the visible editor and drains explicit typing; following
+the carrier link back confirms QX/R before restoring the original snapshot and
+native unit/HF/soul names. Existing editor/Overview/wire checks pass. Owned
+DF190184 exits unsaved with unchanged source save; both GPU logs and combined
+header client contain only known renderer notices. unit-customize-hover-lifecycle
+QA passes core19/19, controller, context and UI composition. This establishes
+panel replacement and return to the same unit, not a different-unit selection or
+actual transport-loss acceptance.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

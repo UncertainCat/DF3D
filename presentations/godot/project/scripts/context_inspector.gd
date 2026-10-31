@@ -33,6 +33,9 @@ var customize_view
 var customize_color: Dictionary={}
 var customize_presented:=false
 var customize_requested:=false
+var hover_help
+var hover_position:=Vector2(-1,-1)
+var customize_button: BaseButton
 
 func _ready():
 	add_child(customize);customize.configure(action_service)
@@ -107,6 +110,7 @@ func choose(row: Dictionary):
 	redraw()
 
 func close_panel():
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 	customize.close()
 	building_removal.select(-1)
 	if ui_host != null: ui_host.release(self)
@@ -119,6 +123,7 @@ func close_panel():
 	right_down = false
 
 func _exit_tree() -> void:
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 	building_removal.select(-1)
 
 func set_play_enabled(value: bool):
@@ -138,6 +143,7 @@ func cancel_gesture() -> void:
 func _process(delta: float):
 	if not is_open(): return
 	_update_customize()
+	_update_customize_help()
 	var size := get_viewport().get_visible_rect().size / Preferences.effective_scale_vector(get_viewport().get_visible_rect().size)
 	if size != last_size:
 		last_size = size
@@ -178,6 +184,7 @@ func _process(delta: float):
 	if previous != next or changed: redraw()
 
 func _input(event):
+	if event is InputEventMouseMotion:hover_position=event.position
 	if ui_host != null and not ui_host.allows_panel_input(self): return
 	if not is_open(): return
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
@@ -203,6 +210,13 @@ func _update_customize() -> void:
 	var color:=preload("res://scripts/native_name_color.gd").choose(customize_color,ticks,randi_range(0,1))
 	if color.is_empty():return
 	customize_view.present(customize.caption(0,ticks),customize.caption(1,ticks),preload("res://scripts/native_creature_text.gd").colors[color[0]+color[2]*8])
+
+func _update_customize_help() -> void:
+	if not is_instance_valid(hover_help):return
+	if is_instance_valid(customize_button) and customize_button.is_visible_in_tree() and not customize_button.disabled and (ui_host==null or ui_host.allows_panel_input(self)):
+		var local: Vector2=customize_button.get_global_transform_with_canvas().affine_inverse()*hover_position
+		if Rect2(Vector2.ZERO,customize_button.size).has_point(local):hover_help.enter_unit(get_instance_id(),"customize");return
+	hover_help.leave(get_instance_id())
 
 func label_at(id: String, text: String, native_color: int = -1):
 	if text.is_empty(): return
@@ -260,6 +274,7 @@ func redraw():
 	alternatives.position = Vector2(panel.size.x,0)
 	clear_children(body)
 	customize_view=null
+	customize_button=null
 	building_remove_button = null
 	clear_children(alternatives)
 	var name_text := str(selected.get("name",""))
@@ -315,6 +330,7 @@ func redraw():
 				_update_customize()
 			elif action_service!=null and not customize_captions.is_empty():
 				var button:=TextureButton.new();button.name="Customize"
+				customize_button=button
 				button.texture_normal=world.ui_texture("UNIT_SHEET_CUSTOMIZE")
 				button.position=Vector2(400,0);button.size=Vector2(32,36)
 				button.disabled=customize.requested

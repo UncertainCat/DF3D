@@ -41550,10 +41550,376 @@
       "failed_run": "085145 exposed redraw-driven focus loss, host Escape bypass and deferred scrollbar freed captures; not acceptance.",
       "limits": [
         "Public unit route remains staged",
-        "Customize hover tooltip not implemented",
-        "Actual disconnect/replacement, resize and target-switch during visible typing not yet accepted",
-        "Animated name backgrounds, child and identity/missing-history variants remain unverified",
-        "Final immediate fallback invalidation has controller coverage; live run predates that one-line change"
+        "Actual disconnect/replacement and different-unit switch during visible typing not yet accepted",
+        "Animated name backgrounds, child and identity/missing-history variants remain unverified"
+      ]
+    },
+    "unit_header_customize_hover_lifecycle_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-090642",
+      "owned_df_pid": 190184,
+      "help": {
+        "cells": [
+          {
+            "ch": 67,
+            "color": 15,
+            "x": 126,
+            "y": 0
+          },
+          {
+            "ch": 117,
+            "color": 15,
+            "x": 127,
+            "y": 0
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 128,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 129,
+            "y": 0
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 130,
+            "y": 0
+          },
+          {
+            "ch": 109,
+            "color": 15,
+            "x": 131,
+            "y": 0
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 132,
+            "y": 0
+          },
+          {
+            "ch": 122,
+            "color": 15,
+            "x": 133,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 134,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 136,
+            "y": 0
+          },
+          {
+            "ch": 104,
+            "color": 15,
+            "x": 137,
+            "y": 0
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 138,
+            "y": 0
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 139,
+            "y": 0
+          },
+          {
+            "ch": 99,
+            "color": 15,
+            "x": 126,
+            "y": 1
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 127,
+            "y": 1
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 128,
+            "y": 1
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 129,
+            "y": 1
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 130,
+            "y": 1
+          },
+          {
+            "ch": 117,
+            "color": 15,
+            "x": 131,
+            "y": 1
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 132,
+            "y": 1
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 133,
+            "y": 1
+          },
+          {
+            "ch": 39,
+            "color": 15,
+            "x": 134,
+            "y": 1
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 135,
+            "y": 1
+          },
+          {
+            "ch": 110,
+            "color": 15,
+            "x": 137,
+            "y": 1
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 138,
+            "y": 1
+          },
+          {
+            "ch": 99,
+            "color": 15,
+            "x": 139,
+            "y": 1
+          },
+          {
+            "ch": 107,
+            "color": 15,
+            "x": 140,
+            "y": 1
+          },
+          {
+            "ch": 110,
+            "color": 15,
+            "x": 141,
+            "y": 1
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 142,
+            "y": 1
+          },
+          {
+            "ch": 109,
+            "color": 15,
+            "x": 143,
+            "y": 1
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 144,
+            "y": 1
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 146,
+            "y": 1
+          },
+          {
+            "ch": 110,
+            "color": 15,
+            "x": 147,
+            "y": 1
+          },
+          {
+            "ch": 100,
+            "color": 15,
+            "x": 148,
+            "y": 1
+          },
+          {
+            "ch": 112,
+            "color": 15,
+            "x": 126,
+            "y": 2
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 127,
+            "y": 2
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 128,
+            "y": 2
+          },
+          {
+            "ch": 102,
+            "color": 15,
+            "x": 129,
+            "y": 2
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 130,
+            "y": 2
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 131,
+            "y": 2
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 132,
+            "y": 2
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 133,
+            "y": 2
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 134,
+            "y": 2
+          },
+          {
+            "ch": 110,
+            "color": 15,
+            "x": 135,
+            "y": 2
+          },
+          {
+            "ch": 110,
+            "color": 15,
+            "x": 137,
+            "y": 2
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 138,
+            "y": 2
+          },
+          {
+            "ch": 99,
+            "color": 15,
+            "x": 139,
+            "y": 2
+          },
+          {
+            "ch": 107,
+            "color": 15,
+            "x": 140,
+            "y": 2
+          },
+          {
+            "ch": 110,
+            "color": 15,
+            "x": 141,
+            "y": 2
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 142,
+            "y": 2
+          },
+          {
+            "ch": 109,
+            "color": 15,
+            "x": 143,
+            "y": 2
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 144,
+            "y": 2
+          },
+          {
+            "ch": 46,
+            "color": 15,
+            "x": 145,
+            "y": 2
+          }
+        ],
+        "hover": 287,
+        "lines": [
+          "Customize this",
+          "creature's nickname and",
+          "profession nickname."
+        ],
+        "name": "customize-help"
+      },
+      "scene_result": {
+        "enter_keeps_customize": true,
+        "escape_keeps_sheet": true,
+        "last_clicked_field": true,
+        "native_help_glyph_pixels": 1261,
+        "overlay_blocks_input": true,
+        "panel_switch_drains_typing": true,
+        "resize_retains_draft": true,
+        "restored": true,
+        "success": true
+      },
+      "viewer_image_sha256": "e680045886dcee7ac2ca21e55d44bc80059fc9a159112a06ee0f5722309ebbbf",
+      "source_save": "Owned source unchanged",
+      "diagnostics": "Both GPU logs and combined header client have only known renderer notice.",
+      "qa": "unit-customize-hover-lifecycle core19/controller/context/ui_composition pass",
+      "scope": [
+        "Native instruction287 wording, cell placement and colors;1261 rendered foreground glyph pixels match installed font at native coordinates",
+        "Tooltip retires on editor open",
+        "960x600 resize and return preserve selected field and draft",
+        "Real Settings overlay blocks key and pointer edits; Escape closes overlay without closing Customize",
+        "Item-panel activation while nickname edit queued retires visible editor and drains explicit typing; carrier link reopens original unit with confirmed QX/R",
+        "Clearing restores full header snapshot and independent native unit/HF/soul names",
+        "Prior editor, Overview, native-caption and management-wire checks pass"
+      ],
+      "capture_limit": "Hidden-desktop native GPU screenshots lose tooltip to SDL mouse polling despite pointer restoration; native screen-cell readback is authoritative. No native full-tooltip screenshot match claimed. Shared tooltip frame retains prior acceptance.",
+      "failed_attempts": [
+        "085935 native text readback correct but screenshot pointer reset",
+        "090348 failed screenshot comparison and bare overlay-flag simulation; replaced with native cell oracle and actual Settings overlay"
+      ],
+      "remaining": [
+        "Actual transport disconnect/replacement during visible edits",
+        "Animated name backgrounds",
+        "Child/missing-history/identity variants",
+        "Different-unit selection during queued edits"
       ]
     }
   }

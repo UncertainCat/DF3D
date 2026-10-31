@@ -41384,6 +41384,49 @@
       "diagnostics": "Two GPU logs and combined header-client output contain only known renderer notice.",
       "scope": "Empty initial custom names on adult1017; typed captures inspected. Nonempty shared drafts and post-Enter continued typing remain unverified.",
       "correction": "Approval requested; not implemented."
+    },
+    "unit_header_customize_art_reference": {
+      "renderer": "DF53.16 15aa16..15b172",
+      "field_size": [
+        288,
+        36
+      ],
+      "text_position": [
+        16,
+        12
+      ],
+      "tokens": [
+        "BUTTON_FILTER",
+        "BUTTON_FILTER_NAME"
+      ],
+      "native_cases": [
+        {
+          "caption": "",
+          "native_capture": "build/stockpile-storage-native-farm-discovery-20261031-083457/unit-header-actions-dual-nickname-before.png",
+          "rgb_sha256": "960567332013205bfe989db79dbe4bd7e3651e6cf5e1c41efc18b007b78d4d79",
+          "rect": [
+            528,
+            64,
+            288,
+            36
+          ]
+        },
+        {
+          "caption": "Q",
+          "native_capture": "build/stockpile-storage-native-farm-discovery-20261031-083457/unit-header-actions-dual-nickname-typed.png",
+          "rgb_sha256": "ba04c422780da1232fe6aeca495e743fcddc50a7dbc8deff6f7f0f33f60b5f9e",
+          "rect": [
+            528,
+            64,
+            288,
+            36
+          ]
+        }
+      ],
+      "scope": "Native top field blank and Q, palette5, adult1017; other captions and name-color effects pending.",
+      "godot_verified": true,
+      "qa": "build/qa/unit-customize-view",
+      "gpu_evidence": "Both rows independently match each native top-field RGB hash: 41472 pixels; field hitboxes and input admission pass. Screenshot inspected. Known renderer startup/finalize/ObjectDB shutdown diagnostics only."
     }
   }
 }

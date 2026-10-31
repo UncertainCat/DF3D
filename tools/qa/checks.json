@@ -3645,6 +3645,19 @@
         "df_assets",
         "real_renderer"
       ]
+    },
+    {
+      "id": "creature_customize_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/creature_customize_capture.gd",
+      "completion": "CREATURE_CUSTOMIZE_CAPTURE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
     }
   ],
   "exclusions": [

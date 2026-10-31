@@ -1691,6 +1691,19 @@ wire/controller/Overview checks pass, all three Godot processes report only the
 known renderer notice, and unit-header-focus-reference QA passes core19/19,
 controller and context checks.
 
+creature_customize_view draws the two native288x36 fields using BUTTON_FILTER's
+left/middle tiles and BUTTON_FILTER_NAME's four-column feather. Captions begin
+at16,12 within each field. It exposes field-selection intents with an input
+admission callback; the owning editor must supply captions and focus state.
+unit_header_customize_art_reference stores native RGB hashes for blank and Q
+fields from083457. GPU creature_customize_capture matches both rows against each
+native hash (41472 pixels), verifies field hitboxes and disabled input, and saves
+an inspected screenshot. unit-customize-view QA passes core19/19, controller and
+context checks; GPU diagnostics are the known startup/finalize/ObjectDB shutdown
+signatures only. The view is not yet integrated into the unit sheet. Fallback
+captions, keyboard/focus behavior, animated colors and composed lifecycle remain
+unfinished; this component test does not establish editor acceptance.
+
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017
 and child988. The adult name uses palette5, translated name and separate

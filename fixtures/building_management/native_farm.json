@@ -40451,7 +40451,7 @@
       "qa": "build/qa/unit-header-activity-ui",
       "limits": [
         "Historical cannot-learn failure corrected by unit_overview_skill_color_reference; original failing run retained",
-        "Military/social/stale-squad behavior and guest/control exclusions remain unverified",
+        "Basic controlled guest/control exclusions and stale missing squad references verified by unit_header_activity_gates_reference; active military/social captions remain unverified",
         "Long text and lifecycle remain unverified"
       ],
       "diagnostics": "Three passing runs: six logs known separate-thread notice only. Cannot-learn scene retains three assertion errors."
@@ -40767,6 +40767,98 @@
       "qa": "build/qa/unit-overview-skill-color",
       "limits": [
         "Mapped profession colors, other species and other skill tabs not accepted"
+      ],
+      "gpu_diagnostics": "Four logs; known separate-renderer notice only"
+    },
+    "unit_header_activity_gates_reference": {
+      "date": "2026-10-31",
+      "runs": [
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261031-074719",
+          "pid": 196140,
+          "result_sha256": "1269601090129a1c5323db8553ed54e6e638b1c72cc575c1577bcb8436a3c252",
+          "observation": [
+            {
+              "name": "uncontrolled-idle",
+              "activity": {
+                "background": 0,
+                "color": 0,
+                "text": ""
+              },
+              "native_text": "",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "uncontrolled-job",
+              "activity": {
+                "background": 0,
+                "color": 0,
+                "text": ""
+              },
+              "native_text": "",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "guest-job",
+              "activity": {
+                "background": 0,
+                "color": 11,
+                "text": "Rest"
+              },
+              "native_text": "Rest",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "guest-idle",
+              "activity": {
+                "background": 0,
+                "color": 14,
+                "text": "No activity"
+              },
+              "native_text": "No activity",
+              "warmed_guard_unchanged": true
+            },
+            {
+              "name": "guest-cannot-learn",
+              "activity": {
+                "background": 0,
+                "color": 0,
+                "text": ""
+              },
+              "native_text": "",
+              "warmed_guard_unchanged": true
+            }
+          ],
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261031-074932",
+          "pid": 190676,
+          "result_sha256": "97874708f8533addbff7a1da52e3dced0458dd27bb65a3097a9ca6655f166cca",
+          "observation": {
+            "activity": {
+              "background": 0,
+              "color": 14,
+              "text": "No job"
+            },
+            "direct_stale_ids_cleared": true,
+            "native_foreground": 14,
+            "native_stale_ids_cleared": true,
+            "native_text": "No job",
+            "squad_id": 0,
+            "ui_unchanged": true,
+            "unit_id": 1017
+          },
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        }
+      ],
+      "qa": "build/qa/unit-header-activity-gates",
+      "limits": [
+        "Controlled guest flags/civ ID; not visitor-arrival action acceptance",
+        "Stale squad references only; valid/finished events and actual training captions unverified",
+        "Direct caption and effects oracle; no new Godot military/guest display acceptance"
       ],
       "gpu_diagnostics": "Four logs; known separate-renderer notice only"
     }

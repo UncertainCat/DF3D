@@ -1692,8 +1692,28 @@ the activity row matches, but the complete run FAILS existing adult needs/squad
 expectations and the first combat-skill row pixel check. That failed run is
 retained as the reproducer for the corrected skill-color case below; it is not
 acceptance, and its source is preserved.
-Guest/control exclusions, military/social/stale-squad effects, long text and
-header lifecycle remain unverified. The public unit route stays staged.
+Broader military/social activity captions, long text and header lifecycle remain
+unverified. The public unit route stays staged.
+
+unit_header_activity_gates_reference records protected074719 on2026-10-31:
+five additional direct/native comparisons cover non-controlled idle/current-job
+units (empty), guest Rest11, guest idle No activity14 and guest without CAN_LEARN
+(empty). Warmed unit/history/entity/UI guards remain unchanged. Original civ ID,
+guest flags, effective flags, names and job pointer are restored. These are
+controlled semantic eligibility fixtures, not visitor-arrival action acceptance.
+
+Protected074932 additionally replaces one squad slot with an owned temporary
+position and training order while paused. All three activity/event pairs point
+to a verified missing activity ID. The bridge formatter clears all six IDs;
+after reseeding, the native sheet clears the same six IDs. Both return No job14
+in this setup, not a training caption. Native view_sheets/plotinfo bytes remain
+unchanged around the direct call. The fixture restores the original squad-slot
+pointer and unit job/military fields before deleting only its owned objects.
+This proves the observed stale-reference repair without borrowing UI scratch;
+valid/finished activity references and active military/social names remain gaps.
+Both final sessions exit unsaved with source manifests unchanged and four GPU
+logs containing only the known renderer notice. unit-header-activity-gates QA
+passes core19/19, context and thought-text checks; runtime code is unchanged.
 
 Overview skill colors use native764a70's profession selector, transported as
 the numeric native_profession fact on each skill. Its pinned body and tables

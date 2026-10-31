@@ -4,6 +4,7 @@ local saved_job=unit.job.current_job
 local saved_profession=unit.custom_profession
 local saved_nickname=unit.name.nickname
 local saved_removed=unit.uwss_remove_caste_flag.whole
+local saved_civ,saved_flags3=unit.civ_id,unit.flags3.whole
 local json=require('json')
 local job,cases
 cases={}
@@ -104,11 +105,18 @@ local ok,err=xpcall(function()
  unit.custom_profession=saved_profession
  unit.name.nickname='Header';observe('nickname')
  unit.uwss_remove_caste_flag.whole=saved_removed|0x2000000;observe('cannot-learn')
+ unit.uwss_remove_caste_flag.whole=saved_removed
+ unit.civ_id=-1;unit.flags3.guest=false;observe('uncontrolled-idle')
+ unit.job.current_job=job;job.job_type=df.job_type.Rest;observe('uncontrolled-job')
+ unit.flags3.guest=true;observe('guest-job')
+ unit.job.current_job=nil;observe('guest-idle')
+ unit.uwss_remove_caste_flag.whole=saved_removed|0x2000000;observe('guest-cannot-learn')
 end,debug.traceback)
 unit.job.current_job=saved_job
 unit.custom_profession=saved_profession
 unit.name.nickname=saved_nickname
 unit.uwss_remove_caste_flag.whole=saved_removed
+unit.civ_id=saved_civ;unit.flags3.whole=saved_flags3
 if job then df.delete(job)end
 view:render(dfhack.getTickCount())
 assert(ok,err)

@@ -8,11 +8,26 @@ local observations={}
 local added_ids={}
 local original_log={}
 for _,id in ipairs(unit.reports.log[0])do original_log[#original_log+1]=id end
+local function shared(value,kind)
+ local _,address=value:sizeof()
+ return df.reinterpret_cast(kind,df.reinterpret_cast('uint64_t',address).value)
+end
+local function resize(size)
+ local request=assert(io.open(out..'/owner-input-request.tmp','w'));request:write('name-resize-'..size);request:close()
+ assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local limit=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<limit,'unit Reports resize timeout');script.sleep(1,'frames')end
+ assert(os.remove(out..'/owner-input-ack'))
+ view:render(dfhack.getTickCount());script.sleep(2,'frames')
+end
 local function geometry(w)
  local r=w.rect
  local row={name=w.name,rect={r.x1,r.y1,r.x2,r.y2},children={}}
  if df.widget_scroll_rows:is_instance(w)then
   row.scroll=w.scroll;row.num_visible=w.num_visible;row.maximum=w.scrollbar.sel_max
+  row.bar={}
+  for _,field in ipairs{'sel','sel_min','sel_max','page_size','print_sy','print_ey','scroller_sy','scroller_ey'}do row.bar[field]=w.scrollbar[field]end
  end
  if df.widget_container:is_instance(w)then
   for _,child in ipairs(dfhack.gui.getWidgetChildren(w))do row.children[#row.children+1]=geometry(child)end
@@ -39,7 +54,13 @@ local function record(label)
  for _,report in ipairs(alert.uac_zoom_line_ann)do row.report_lines[#row.report_lines+1]=report and report.id or -1 end
  for i=0,2 do row.log_counts[#row.log_counts+1]=#unit.reports.log[i]end
  for _,id in ipairs(unit.reports.log[0])do if df.report.find(id)then row.valid_combat_ids[#row.valid_combat_ids+1]=id end end
- if widget then row.geometry=geometry(widget)end
+ if widget then
+  row.geometry=geometry(widget)
+  row.texts=geometry(shared(widget.texts,df.widget_scroll_rows))
+  row.pause=geometry(shared(widget.pause_button,df.widget_better_button))
+  row.explanation=geometry(shared(widget.explanation,df.widget_text_multiline))
+  row.grid={g.dimx,g.dimy}
+ end
  observations[#observations+1]=row;capture('unit-reports-'..label)
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'reports advanced simulation')
 end
@@ -75,6 +96,26 @@ local ok,err=xpcall(function()
  record('opened')
  local widget=assert(popup(main.announcements.stack),'unit report popup absent')
  assert(widget.unid==unit.id and widget.uac==0 and not sheet.open,'unit Reports did not open Combat log')
+ if os.getenv('DF3D_UNIT_REPORTS_RESIZE')=='1' then
+  for _,size in ipairs{'small','medium','wide','default'}do
+   resize(size);pointer(400,400);record('resize-'..size)
+   if size=='wide' then
+    local texts=shared(widget.texts,df.widget_scroll_rows)
+    local e=df.global.enabler;e.mouse_lbut=0;e.mouse_lbut_down=0;e.mouse_lbut_lift=1
+    pointer((texts.rect.x2+1)*8+8,texts.rect.y1*12+6)
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+    local e=df.global.enabler;e.mouse_lbut=0;e.mouse_lbut_down=0;e.mouse_lbut_lift=1
+    pointer(400,400)
+    record('wide-arrow-up')
+   end
+  end
+  local texts=shared(widget.texts,df.widget_scroll_rows)
+  for _,key in ipairs{'CONTEXT_SCROLL_UP','CURSOR_UP','STANDARDSCROLL_PAGEUP'}do
+   local before=texts.scroll
+   gui.simulateInput(view,key);view:render(dfhack.getTickCount());record('input-'..key)
+   assert(texts.scroll==before,'unexpected direct log keyboard/wheel scrolling')
+  end
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());script.sleep(2,'frames');record('back')
  assert(not popup(main.announcements.stack) and not sheet.open,'Back did not close report and leave unit sheet closed')
 end,debug.traceback)

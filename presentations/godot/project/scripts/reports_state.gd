@@ -260,6 +260,16 @@ func inspect_speaker(report_id:int) -> bool:
 
 func list_count() -> int:return maxi(total,rows.size())
 
+func visible_log_rows() -> int:
+ return mini(unit_page_rows,maxi(0,list_count()-log_requested)) if direct_unit_entry else unit_page_rows
+
+func resize_direct_log(capacity:int) -> void:
+ if not direct_unit_entry or capacity==unit_page_rows:return
+ unit_page_rows=maxi(1,capacity)
+ # Native retains the first row when resizing, even beyond the newly computed
+ # last full page. The scrollbar page counts only the rows actually displayed.
+ _advance_window();changed.emit()
+
 func scroll_to(first:int) -> void:
  if not opened:return
  # Initial content is still required even if scrolling arrives after rejection.
@@ -267,14 +277,14 @@ func scroll_to(first:int) -> void:
  if read_retry.get("mode","") in ["replace","snapshot"]:return
  read_retry={}
  if unit_id>=0:
-  log_requested=clampi(first,0,maxi(0,list_count()-unit_page_rows))
+  log_requested=clampi(first,0,maxi(0,list_count()-visible_log_rows()))
   _advance_window();changed.emit();return
  requested_row=clampi(first,0,maxi(0,list_count()-PAGE_ROWS))
  _advance_window();changed.emit()
 
 func _advance_window() -> void:
  if unit_id>=0:
-  log_first=clampi(log_requested-log_start,0,maxi(0,rows.size()-unit_page_rows))
+  log_first=clampi(log_requested-log_start,0,maxi(0,rows.size()-(1 if direct_unit_entry else unit_page_rows)))
   if pending.is_empty():
    if log_requested<log_start:previous_page()
    elif log_requested+unit_page_rows>log_start+rows.size():next_page()

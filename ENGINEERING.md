@@ -1921,7 +1921,7 @@ list receipts, replacement and page bounds. Viewer entry and baseline rendering 
 acceptance remains unfinished.
 
 unit_reports_view_reference records protected113233 on2026-10-31.
-The unit header uses installed UNIT_SHEET_REPORTS at body368,0, hides it during
+The unit header uses installed UNIT_SHEET_VIEW_REPORTS at body368,0, hides it during
 Customize, and routes its stable unit ID through fortress_ui to the Reports
 owner. Host activation retires the creature sheet; Back releases Reports without
 reopening that sheet. Hover288 uses the captured native two-line message.
@@ -1939,8 +1939,32 @@ save remains unchanged; owned DF185196 exits unsaved. Core, composition and
 Reports state/controller checks pass. GPU capture has only known startup and
 shutdown diagnostics; live logs have only the known startup notice. Earlier
 113127 stopped before interaction on a test indentation error, subsequently fixed.
-Direct-entry resize, populated live navigation, scrolling, and complete unit-page
+Populated live navigation, scrolling, and complete unit-page
 acceptance remain unfinished; the public unit route stays staged.
+
+unit_reports_resize_reference records native113533 and composed114450 on
+2026-10-31. Direct entry uses the viewport cell grid: origin(6,8), width gridX-35,
+height gridY-14, with the native centered pixel remainder. The log starts four
+rows below the frame top; row capacity derives from floor((gridY-19)/3). Resize
+preserves the first report, and scrollbar page size counts only actual visible
+rows. Native captures show10,13,15,15 visible rows at960x600,1200x720,1600x900,
+and1200x800 respectively when starting at row7 of22. The wide view leaves blank
+space after the last report. Full frame hashes at all four sizes match in the
+GPU check. State tests cover retained row position and changing scrollbar pages.
+
+The composed viewer verifies resizing,1152 native button pixels,720 native hover
+glyph pixels, Settings gating and Back. This stronger test exposed a missing
+button texture: UNIT_SHEET_REPORTS is the hover enum, while installed artwork is
+UNIT_SHEET_VIEW_REPORTS. It also exposed a teardown refresh accessing a detached
+viewport; refresh now ignores detached views. Both fixes pass protected114450,
+with owned DF173000 unsaved and source unchanged. Live logs have only the known
+startup notice; GPU has only known startup/finalize/ObjectDB diagnostics.
+
+Native wheel/Up/Page Up probes do not move the log. The diagnostic simulated
+arrow press moves two rows, including after explicit mouse-state release; isolate
+SDL press/release/repeat before claiming single-click parity. Full wide capacity
+at first row0 and populated live recenter/speaker navigation remain unverified.
+The unit route remains staged; these checks do not complete all unit pages.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

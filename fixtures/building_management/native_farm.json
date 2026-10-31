@@ -43147,6 +43147,194 @@
         "lines": [
           "See this creature's",
           "combat history."
+        ],
+        "cells": [
+          {
+            "ch": 83,
+            "color": 15,
+            "x": 126,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 127,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 128,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 130,
+            "y": 0
+          },
+          {
+            "ch": 104,
+            "color": 15,
+            "x": 131,
+            "y": 0
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 132,
+            "y": 0
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 133,
+            "y": 0
+          },
+          {
+            "ch": 99,
+            "color": 15,
+            "x": 135,
+            "y": 0
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 136,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 137,
+            "y": 0
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 138,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 139,
+            "y": 0
+          },
+          {
+            "ch": 117,
+            "color": 15,
+            "x": 140,
+            "y": 0
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 141,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 142,
+            "y": 0
+          },
+          {
+            "ch": 39,
+            "color": 15,
+            "x": 143,
+            "y": 0
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 144,
+            "y": 0
+          },
+          {
+            "ch": 99,
+            "color": 15,
+            "x": 126,
+            "y": 1
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 127,
+            "y": 1
+          },
+          {
+            "ch": 109,
+            "color": 15,
+            "x": 128,
+            "y": 1
+          },
+          {
+            "ch": 98,
+            "color": 15,
+            "x": 129,
+            "y": 1
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 130,
+            "y": 1
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 131,
+            "y": 1
+          },
+          {
+            "ch": 104,
+            "color": 15,
+            "x": 133,
+            "y": 1
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 134,
+            "y": 1
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 135,
+            "y": 1
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 136,
+            "y": 1
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 137,
+            "y": 1
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 138,
+            "y": 1
+          },
+          {
+            "ch": 121,
+            "color": 15,
+            "x": 139,
+            "y": 1
+          },
+          {
+            "ch": 46,
+            "color": 15,
+            "x": 140,
+            "y": 1
+          }
         ]
       },
       "button_rect": [
@@ -43192,7 +43380,8 @@
           ],
           "unclassified": []
         }
-      }
+      },
+      "button_rgb_sha256": "6c0e76f6eb1ea647edaab0275a8b4f4587b5d994df230264078fdea3c304114c"
     },
     "unit_reports_populated_reference": {
       "provenance": "Protected owned run20261031-112423, DF15736, source unchanged and unsaved exit.",
@@ -43483,6 +43672,312 @@
         "Composed live log is empty; populated rows are GPU fixture acceptance only.",
         "Direct-entry resize, native scrolling and populated live recenter/speaker navigation remain unverified.",
         "Public unit route remains staged."
+      ]
+    },
+    "unit_reports_resize_reference": {
+      "provenance": "Protected113533 on2026-10-31, DF184804, unchanged source and owned unsaved exit.",
+      "cases": [
+        {
+          "label": "small",
+          "viewport": [
+            960,
+            600
+          ],
+          "first": 7,
+          "visible": 10,
+          "widget_rect": [
+            7,
+            9,
+            89,
+            42
+          ],
+          "text_rect": [
+            7,
+            12,
+            88,
+            42
+          ],
+          "region": [
+            48,
+            96,
+            680,
+            432
+          ],
+          "rgb_sha256": "3fff97ba26fbefcb6b0310db7b88a73bf149620079e7b6ae28cfa2383905e093"
+        },
+        {
+          "label": "medium",
+          "viewport": [
+            1200,
+            720
+          ],
+          "first": 7,
+          "visible": 13,
+          "widget_rect": [
+            7,
+            9,
+            119,
+            52
+          ],
+          "text_rect": [
+            7,
+            12,
+            118,
+            52
+          ],
+          "region": [
+            48,
+            96,
+            920,
+            552
+          ],
+          "rgb_sha256": "8418fc23f76806f686759530a8d300730f01d899b43ad085034f31b646c9255f"
+        },
+        {
+          "label": "wide",
+          "viewport": [
+            1600,
+            900
+          ],
+          "first": 7,
+          "visible": 15,
+          "widget_rect": [
+            7,
+            9,
+            169,
+            67
+          ],
+          "text_rect": [
+            7,
+            12,
+            168,
+            67
+          ],
+          "region": [
+            48,
+            96,
+            1320,
+            732
+          ],
+          "rgb_sha256": "9853c43eaff468886051111af06228e6239fe2b290546605faace7ffd7cfc50e"
+        },
+        {
+          "label": "default",
+          "viewport": [
+            1200,
+            800
+          ],
+          "first": 7,
+          "visible": 15,
+          "widget_rect": [
+            7,
+            9,
+            119,
+            58
+          ],
+          "text_rect": [
+            7,
+            12,
+            118,
+            58
+          ],
+          "region": [
+            48,
+            100,
+            920,
+            624
+          ],
+          "rgb_sha256": "10da3a68327dd434aaef723c84e2abb59c3831d5a96bdca01ee159443a8809a6"
+        }
+      ],
+      "input": "CONTEXT_SCROLL_UP, CURSOR_UP, STANDARDSCROLL_PAGEUP do not move the log.",
+      "scroll_policy": "Retain first visible row across resize; scrollbar page counts actually visible rows.",
+      "limits": [
+        "Simulated wide arrow click moves7 to5; isolate press/release/repeat before claiming native single-click parity.",
+        "Populated live navigation and full wide-page capacity at scroll0 remain unverified."
+      ],
+      "viewer_acceptance": {
+        "provenance": "Protected114450 on2026-10-31, DF173000; source unchanged, owned unsaved exit.",
+        "result": {
+          "back_to_map": true,
+          "direct_combat": true,
+          "native_button_pixels": 1152,
+          "native_help_glyph_pixels": 720,
+          "overlay_blocks_input": true,
+          "resize": true,
+          "success": true,
+          "unit_id": 1017
+        },
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire.stdout.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "qa": "unit-reports-resize-final: core, context, composition, Reports state/controller pass; GPU resize hashes pass with known startup/finalize/ObjectDB diagnostics."
+      },
+      "native_bar_observations": [
+        {
+          "name": "opened",
+          "first": 7,
+          "visible": 15,
+          "bar": {
+            "page_size": 15,
+            "print_ey": 57,
+            "print_sy": 13,
+            "scroller_ey": 57,
+            "scroller_sy": 29,
+            "sel": 7,
+            "sel_max": 21,
+            "sel_min": 0
+          }
+        },
+        {
+          "name": "resize-small",
+          "first": 7,
+          "visible": 10,
+          "bar": {
+            "page_size": 10,
+            "print_ey": 41,
+            "print_sy": 13,
+            "scroller_ey": 33,
+            "scroller_sy": 22,
+            "sel": 7,
+            "sel_max": 21,
+            "sel_min": 0
+          }
+        },
+        {
+          "name": "resize-medium",
+          "first": 7,
+          "visible": 13,
+          "bar": {
+            "page_size": 13,
+            "print_ey": 51,
+            "print_sy": 13,
+            "scroller_ey": 46,
+            "scroller_sy": 25,
+            "sel": 7,
+            "sel_max": 21,
+            "sel_min": 0
+          }
+        },
+        {
+          "name": "resize-wide",
+          "first": 7,
+          "visible": 15,
+          "bar": {
+            "page_size": 15,
+            "print_ey": 66,
+            "print_sy": 13,
+            "scroller_ey": 66,
+            "scroller_sy": 32,
+            "sel": 7,
+            "sel_max": 21,
+            "sel_min": 0
+          }
+        },
+        {
+          "name": "wide-arrow-up",
+          "first": 5,
+          "visible": 17,
+          "bar": {
+            "page_size": 17,
+            "print_ey": 66,
+            "print_sy": 13,
+            "scroller_ey": 66,
+            "scroller_sy": 27,
+            "sel": 5,
+            "sel_max": 21,
+            "sel_min": 0
+          }
+        },
+        {
+          "name": "resize-default",
+          "first": 5,
+          "visible": 15,
+          "bar": {
+            "page_size": 15,
+            "print_ey": 57,
+            "print_sy": 13,
+            "scroller_ey": 51,
+            "scroller_sy": 23,
+            "sel": 5,
+            "sel_max": 21,
+            "sel_min": 0
+          }
+        },
+        {
+          "name": "input-CONTEXT_SCROLL_UP",
+          "first": 5,
+          "visible": 15,
+          "bar": {
+            "page_size": 15,
+            "print_ey": 57,
+            "print_sy": 13,
+            "scroller_ey": 51,
+            "scroller_sy": 23,
+            "sel": 5,
+            "sel_max": 21,
+            "sel_min": 0
+          }
+        },
+        {
+          "name": "input-CURSOR_UP",
+          "first": 5,
+          "visible": 15,
+          "bar": {
+            "page_size": 15,
+            "print_ey": 57,
+            "print_sy": 13,
+            "scroller_ey": 51,
+            "scroller_sy": 23,
+            "sel": 5,
+            "sel_max": 21,
+            "sel_min": 0
+          }
+        },
+        {
+          "name": "input-STANDARDSCROLL_PAGEUP",
+          "first": 5,
+          "visible": 15,
+          "bar": {
+            "page_size": 15,
+            "print_ey": 57,
+            "print_sy": 13,
+            "scroller_ey": 51,
+            "scroller_sy": 23,
+            "sel": 5,
+            "sel_max": 21,
+            "sel_min": 0
+          }
+        }
       ]
     }
   }

@@ -22,5 +22,16 @@ func run() -> void:
   var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_region(region).get_data())
   if hash.finish().hex_encode()!=sample.sha256:
    push_error("Direct Combat log native pixels differ: "+str(region));quit(1);return
+ for sample in fixture.chest_header_reference.unit_reports_resize_reference.cases:
+  root.size=Vector2i(int(sample.viewport[0]),int(sample.viewport[1]))
+  for i in 3:await process_frame;await RenderingServer.frame_post_draw
+  image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+  image.save_png(directory+"/resize-"+sample.label+".png")
+  assert(state.log_requested==int(sample.first) and state.visible_log_rows()==int(sample.visible))
+  var r:Array=sample.region
+  var region:=Rect2i(int(r[0]),int(r[1]),int(r[2]),int(r[3]))
+  var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_region(region).get_data())
+  if hash.finish().hex_encode()!=sample.rgb_sha256:
+   push_error("Direct Combat resize pixels differ: "+sample.label);quit(1);return
  view.queue_free();world.queue_free();await process_frame
  print("CREATURE_REPORTS_CAPTURE_PASS");quit(0)

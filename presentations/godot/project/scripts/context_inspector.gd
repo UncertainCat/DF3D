@@ -356,7 +356,7 @@ func redraw():
 				body.add_child(button)
 			if action_service!=null and not customize.opened:
 				history_button=TextureButton.new();history_button.name="CreatureHistory"
-				history_button.texture_normal=world.ui_texture("UNIT_SHEET_REPORTS")
+				history_button.texture_normal=world.ui_texture("UNIT_SHEET_VIEW_REPORTS")
 				history_button.position=Vector2(368,0);history_button.size=Vector2(32,36)
 				history_button.pressed.connect(func():
 					if ui_host==null or ui_host.allows_panel_input(self):history_requested.emit(int(selected.id)))

@@ -382,6 +382,26 @@ func exercise_history(inspector,source,source_id:int,target:int) -> void:
 	while (not is_instance_valid(inspector.history_button) or not inspector.panel.visible) and Time.get_ticks_msec()<deadline:
 		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
 	if not check(is_instance_valid(inspector.history_button),"Unit Reports button missing"):return
+	await process_frame;await RenderingServer.frame_post_draw
+	var reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json")).chest_header_reference.unit_reports_navigation_reference
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_region(Rect2i(792,64,32,36)).get_data())
+	check(hash.finish().hex_encode()==reference.button_rgb_sha256,"Unit Reports artwork differs from native")
+	var motion:=InputEventMouseMotion.new();motion.position=inspector.history_button.get_global_transform_with_canvas()*Vector2(16,18);root.push_input(motion,true)
+	await create_timer(0.6).timeout;await RenderingServer.frame_post_draw
+	image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	check(inspector.hover_help.visible,"Reports hover did not appear")
+	var font:=Image.load_from_file(world.ui_font_path())
+	var ink_count:=0
+	for cell in reference.hover.cells:
+		var ch:=int(cell.ch)
+		for y in 12:
+			for x in 8:
+				var ink:=font.get_pixel(ch%16*8+x,ch/16*12+y)
+				if ink.a<0.99 or minf(ink.r,minf(ink.g,ink.b))<0.99:continue
+				ink_count+=1
+				check(image.get_pixel(int(cell.x)*8+x,int(cell.y)*12+4+y).is_equal_approx(preload("res://scripts/native_creature_text.gd").colors[int(cell.color)]),"Reports help glyph differs")
+	check(ink_count>0,"Reports hover missing native glyph evidence")
 	await pointer(inspector.history_button.get_global_transform_with_canvas()*Vector2(16,18))
 	var reports=scene._ui.controller("reports")
 	var model=reports.controller.state
@@ -390,6 +410,9 @@ func exercise_history(inspector,source,source_id:int,target:int) -> void:
 	check(model.direct_unit_entry and model.unit_id==target and model.unit_category==0 and not model.log_initial_needed,"Reports click did not load direct Combat history")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/unit-reports-scene.png")
+	for sample in [[Vector2i(960,600),Vector2(680,432),10],[Vector2i(1600,900),Vector2(1320,732),18],[Vector2i(1200,800),Vector2(920,624),15]]:
+		root.size=sample[0];await process_frame;await process_frame
+		check(model.opened and scene._ui.host.active==reports and reports.panel.size==sample[1] and model.unit_page_rows==sample[2],"Composed Combat resize lost identity or native geometry")
 	var paused:bool=model.pause_on_new
 	await pointer(reports.panel.position+reports.panel.pause_target().get_center())
 	check(model.pause_on_new!=paused,"Combat pause toggle did not receive input")
@@ -401,4 +424,4 @@ func exercise_history(inspector,source,source_id:int,target:int) -> void:
 	key(KEY_ESCAPE);await process_frame
 	check(not model.opened and scene._ui.host.active==null and not inspector.panel.visible,"Combat Back reopened unit sheet or retained input")
 	var file:=FileAccess.open(directory+"/unit-reports-scene-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"direct_combat":true,"back_to_map":true,"overlay_blocks_input":true}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"direct_combat":true,"back_to_map":true,"overlay_blocks_input":true,"resize":true,"native_help_glyph_pixels":ink_count,"native_button_pixels":1152}));file.close()

@@ -28,22 +28,30 @@ func configure(source,model,install_root: String) -> void:
  scrollbar.configure(source);scrollbar.position=Vector2(928,96);scrollbar.size=Vector2(16,564);scrollbar.page=15
  scrollbar.input_allowed=func():return not input_allowed.is_valid() or input_allowed.call()
  scrollbar.row_changed.connect(func(first):state.scroll_to(first))
- state.changed.connect(refresh);refresh()
+ state.changed.connect(refresh);get_viewport().size_changed.connect(refresh);refresh()
 func pause_target() -> Rect2:
- return Rect2(872,12,24,36) if state.direct_unit_entry else PAUSE_TARGET
+ return Rect2(size.x-48,12,24,36) if state.direct_unit_entry else PAUSE_TARGET
 
 func refresh() -> void:
+ if not is_inside_tree():return
  var key:="%s:%s:%s" % [state.opened,state.selected_tab,state.unit_id]
  if key!=selection_key:selection_key=key
+ if state.direct_unit_entry:
+  var viewport:Vector2=get_viewport_rect().size
+  var grid:=Vector2i(floori(viewport.x/8),floori(viewport.y/12))
+  position=Vector2(48,96)+Vector2(fmod(viewport.x,8),fmod(viewport.y,12))*0.5
+  size=Vector2((grid.x-35)*8,(grid.y-14)*12)
+  state.resize_direct_log(maxi(1,(grid.y-19)/3))
+ else:
+  position=Vector2(32,64 if state.unit_id>=0 else 52)
+  size=Vector2(944,696 if state.unit_id>=0 else 708)
  scroll_row=state.log_first if state.unit_id>=0 else state.first_row
- position=Vector2(48,100) if state.direct_unit_entry else Vector2(32,64 if state.unit_id>=0 else 52)
- size=Vector2(920,624) if state.direct_unit_entry else Vector2(944,696 if state.unit_id>=0 else 708)
  visible=state.opened
  if scrollbar!=null:
   var log_view:bool=state.unit_id>=0
-  scrollbar.position=Vector2(904 if state.direct_unit_entry else 928,48 if log_view else 96)
-  scrollbar.size=Vector2(16,564 if state.direct_unit_entry else 636 if log_view else 564)
-  scrollbar.page=state.unit_page_rows if log_view else 15
+  scrollbar.position=Vector2(size.x-16 if state.direct_unit_entry else 928,48 if log_view else 96)
+  scrollbar.size=Vector2(16,size.y-60 if state.direct_unit_entry else 636 if log_view else 564)
+  scrollbar.page=state.visible_log_rows() if log_view else 15
   # Native ordinary report tabs and unit logs ignore wheel even over the bar;
   # only Combat/Sparring/Hunting unit lists handle contextual wheel input.
   scrollbar.wheel_enabled=not log_view and state.selected_tab>=23
@@ -88,7 +96,7 @@ func patch(token: String,origin: Vector2,columns: int,rows: int,edge_columns: in
    draw_texture_rect_region(texture,Rect2(origin+Vector2(x*8,y*12),Vector2(8,12)),Rect2(tx*8+(40 if token=="selected" else 0),ty*12,8,12))
 func _draw() -> void:
  if state==null:return
- patch("border",Vector2.ZERO,115 if state.direct_unit_entry else 118,52 if state.direct_unit_entry else 58 if state.unit_id>=0 else 59)
+ patch("border",Vector2.ZERO,int(size.x/8) if state.direct_unit_entry else 118,int(size.y/12) if state.direct_unit_entry else 58 if state.unit_id>=0 else 59)
  if state.direct_unit_entry:
   patch("selected",Vector2(0,-24),10,2,2)
   theme.default_font.draw_string(get_canvas_item(),Vector2(16,-6),"Combat",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color8(70,44,0))
@@ -189,10 +197,10 @@ func draw_unit_log() -> void:
  var pause_icon:Texture2D=art.texture("ANNOUNCEMENT_PAUSING_ON_NEW_REPORT" if state.pause_on_new else "ANNOUNCEMENT_NOT_PAUSING_ON_NEW_REPORT")
  if pause_icon!=null:draw_texture_rect(pause_icon,pause_target(),false)
  var header:="You can recenter on the locations of the announcements. You may also toggle pausing when there is a new announcement."
- var heading:=wrap_report(header,107 if state.direct_unit_entry else 110)
+ var heading:=wrap_report(header,int(size.x/8)-8 if state.direct_unit_entry else 110)
  for i in heading.size():font.draw_string(get_canvas_item(),Vector2(8,24+i*12),heading[i],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
  var icon:Texture2D=art.texture("STOCKS_RECENTER")
- var right:int=856 if state.direct_unit_entry else 880
+ var right:int=int(size.x)-64 if state.direct_unit_entry else 880
  for index in mini(state.unit_page_rows,state.rows.size()-scroll_row):
   var row:Dictionary=state.rows[scroll_row+index]
   # Native072011: secondary-only uses the right slot; two positions use both.
@@ -208,7 +216,7 @@ func draw_unit_log() -> void:
    if icon!=null:draw_texture_rect(icon,target,false)
    report_targets.append({"rect":target,"id":int(row.id),"secondary":secondary})
   var color:Color=art.world.ui_palette_color(int(row.get("color",7))+(8 if row.get("bright",false) else 0))
-  var lines:=wrap_report(str(row.get("text","")),105 if state.direct_unit_entry else 108,visible_text_lines(48+index*36))
+  var lines:=wrap_report(str(row.get("text","")),int(size.x/8)-10 if state.direct_unit_entry else 108,visible_text_lines(48+index*36))
   for line in lines.size():
    var y:=48+index*36+line*12
    var background_height:=clampi(int(size.y)-12-y,0,12)

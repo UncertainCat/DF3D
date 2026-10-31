@@ -67,6 +67,20 @@ local ok,err=xpcall(function()
  local function names()
   return {unit.name.nickname,unit.custom_profession,figure.name.nickname,soul.name.nickname}
  end
+ -- Observe both focus orders through native input, including typing and Enter.
+ -- The two flags share one draft; do not infer behavior from flags alone.
+ for _,first in ipairs{'nickname','profession'}do
+  restore_names()
+  click(found[1],found[2])
+  click(600,first=='nickname' and 82 or 118)
+  click(600,first=='nickname' and 118 or 82)
+  assert(sheet.unit_overview_entering_nickname and sheet.unit_overview_entering_profession_nickname,'dual focus setup failed')
+  record('dual-'..first..'-before')
+  text('Q');record('dual-'..first..'-typed',true)
+  key('SELECT');record('dual-'..first..'-enter',true)
+  key('LEAVESCREEN')
+ end
+ restore_names()
  for _,kind in ipairs{'nickname','profession'}do
   for index,value in ipairs{'Compared name','',string.rep('X',30),'Native '..string.char(130)}do
    restore_names()

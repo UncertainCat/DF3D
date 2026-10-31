@@ -41285,6 +41285,105 @@
         "Actual transport disconnect or producer replacement",
         "Missing historical figure and identity variants"
       ]
+    },
+    "unit_header_dual_focus_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-083457",
+      "date": "2026-10-31",
+      "owned_df_pid": 200156,
+      "observations": [
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "",
+          "figure_nickname": "",
+          "name": "dual-nickname-before",
+          "nickname": "",
+          "nickname_focus": true,
+          "open": true,
+          "profession": "",
+          "profession_focus": true,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "Q",
+          "figure_nickname": "Q",
+          "name": "dual-nickname-typed",
+          "nickname": "Q",
+          "nickname_focus": true,
+          "open": true,
+          "profession": "",
+          "profession_focus": true,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "Q",
+          "figure_nickname": "Q",
+          "name": "dual-nickname-enter",
+          "nickname": "Q",
+          "nickname_focus": false,
+          "open": true,
+          "profession": "",
+          "profession_focus": true,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "",
+          "figure_nickname": "",
+          "name": "dual-profession-before",
+          "nickname": "",
+          "nickname_focus": true,
+          "open": true,
+          "profession": "",
+          "profession_focus": true,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "Q",
+          "figure_nickname": "Q",
+          "name": "dual-profession-typed",
+          "nickname": "Q",
+          "nickname_focus": true,
+          "open": true,
+          "profession": "",
+          "profession_focus": true,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "Q",
+          "figure_nickname": "Q",
+          "name": "dual-profession-enter",
+          "nickname": "Q",
+          "nickname_focus": false,
+          "open": true,
+          "profession": "",
+          "profession_focus": true,
+          "soul_nickname": ""
+        }
+      ],
+      "captures": {
+        "unit-header-actions-dual-nickname-before.png": "cf605ab7d4acfae9a9c7653b1c4ad0a72dd7dc5924f4416da065cddbd62ebade",
+        "unit-header-actions-dual-nickname-enter.png": "f492aa6a4cd0f4a3c11c3a9f5ffb44488bf28bfb5f113346610b8063a06e35a0",
+        "unit-header-actions-dual-nickname-typed.png": "f492aa6a4cd0f4a3c11c3a9f5ffb44488bf28bfb5f113346610b8063a06e35a0",
+        "unit-header-actions-dual-profession-before.png": "f4eae3c50f5b95a767bf91c5785fdc3ed7e543da6bb166f2cc06ad9623376874",
+        "unit-header-actions-dual-profession-enter.png": "2180068c744255c475dd8da7bcaa93143da3c9b02336d306aad5e27a8ac2cfb5",
+        "unit-header-actions-dual-profession-typed.png": "9f17d1a1a7b0ad2a165bb8407d169c1f899a235a76bfd62e7efa6c74a58cb5e3"
+      },
+      "finding": "Both focus orders leave both flags set; typing Q changes unit and HF nickname only, including after profession was clicked last. Enter clears nickname focus only.",
+      "static_evidence": "8bb4af branches on nickname focus before profession; nickname handler consumes input and jumps past the profession path.",
+      "source_save": "Owned source unchanged",
+      "diagnostics": "Two GPU logs and combined header-client output contain only known renderer notice.",
+      "scope": "Empty initial custom names on adult1017; typed captures inspected. Nonempty shared drafts and post-Enter continued typing remain unverified.",
+      "correction": "Approval requested; not implemented."
     }
   }
 }

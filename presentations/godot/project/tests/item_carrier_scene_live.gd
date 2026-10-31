@@ -49,6 +49,12 @@ func unit_carrier(expected: Dictionary) -> void:
 	var view_deadline:=Time.get_ticks_msec()+5000
 	while inspector.creature_display.get("detail",{}).is_empty() and Time.get_ticks_msec()<view_deadline:await create_timer(0.02).timeout
 	check(not inspector.creature_display.get("detail",{}).is_empty(),"Creature view did not consume loaded detail")
+	if FileAccess.file_exists(directory+"/unit-customize-captions.json"):
+		var captions: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-customize-captions.json"))
+		var records: Array=inspector.creature_sheet.records_for("identity").filter(func(row):return inspector.creature_sheet.fact_value(row,"record_type")=="customize_captions")
+		check(records.size()==1,"Missing native Customize captions")
+		if records.size()==1:
+			for key in ["name","profession"]:check(inspector.creature_sheet.fact_value(records[0],key)==captions[key],"Customize wire caption differs: "+key)
 	var hauling: Dictionary={}
 	for row in inspector.creature_sheet.records_for("identity"):
 		if inspector.creature_sheet.fact_value(row,"record_type")=="overview_hauling":hauling=row

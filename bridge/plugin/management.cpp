@@ -3253,6 +3253,13 @@ void run(color_ostream& out) {
     });
     lua_setfield(L,-2,"header_name");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_creature::customizeCaptions(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!value)return luaL_error(state,"Native creature Customize captions unavailable");
+      lua_pushlstring(state,value->name.data(),value->name.size());
+      lua_pushlstring(state,value->profession.data(),value->profession.size());return 2;
+    });
+    lua_setfield(L,-2,"customize_captions");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto value=df3d_creature::overviewStatus(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!value)return luaL_error(state,"Native creature Overview status unavailable");
       lua_pushboolean(state,value->personality);lua_pushboolean(state,value->needs);

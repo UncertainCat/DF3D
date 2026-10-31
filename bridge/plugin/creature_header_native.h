@@ -96,6 +96,30 @@ inline std::optional<HeaderActivity> headerActivity(df::unit* unit) {
     if(result.text.size()>512 || result.foreground<0 || result.foreground>7 || result.background<0 || result.background>7)return std::nullopt;
     return result;
 }
+struct CustomizeCaptions {std::string name,profession;};
+// Native15af88..15b106 uses the unit's own language_name (not the normal
+// header's historical/identity resolver) and profession formatter with true.
+// These are unfocused captions. Focus and draft text belong to the viewer.
+inline std::optional<CustomizeCaptions> customizeCaptions(df::unit* unit) {
+    if(!unit)return std::nullopt;
+    const auto& functions=df3d_area::staffOrderingFunctions();
+    if(!functions)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[&] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x6a1;++i){hash^=base[0xa94030+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0xd81db68b3c9b33d2);
+    }();
+    if(!supported)return std::nullopt;
+    CustomizeCaptions result;
+    if(unit->name.nickname.empty())
+        reinterpret_cast<void (*)(df::language_name*,std::string*)>(const_cast<uint8_t*>(base+0xa94030))(&unit->name,&result.name);
+    else result.name=unit->name.nickname;
+    if(unit->custom_profession.empty())functions.profession(unit,&result.profession,true);
+    else result.profession=unit->custom_profession;
+    if(result.name.size()>512 || result.profession.size()>512)return std::nullopt;
+    return result;
+}
 struct HeaderName {
     std::string combined,name,profession,translated;
     df3d_area::ZoneOwnerNameColor color;

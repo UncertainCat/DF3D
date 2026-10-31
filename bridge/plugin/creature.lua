@@ -168,6 +168,12 @@ return function(request)
    fact(s,r,'translated_name',name.translated_name)
    for _,key in ipairs{'combined','name','profession','effect','source','foreground','background','bright','alternate_foreground','alternate_background','alternate_bright'}do fact(s,header,key,name[key])end
   end
+  if request.customize_captions then
+   local name,profession=request.customize_captions(u.id)
+   local captions=record(s,-10,'')
+   fact(s,captions,'record_type','customize_captions')
+   fact(s,captions,'name',name);fact(s,captions,'profession',profession)
+  end
   if request.header_status then
    local text,color=request.header_status(u.id)
    local header=record(s,-7,'')

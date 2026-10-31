@@ -151,6 +151,10 @@ copy, fabricated progress percentages or broader native-UI departures.
   window height so Sand and Clay remain reachable above the bottom toolbar.
   This exception covers palette overflow only; preserve native choices and
   placement semantics. Record the correction in the native bug register.
+- Maintainer decision, 2026-10-31: unit Customize typing affects only the last
+  nickname/profession field clicked. Do not reproduce native's retained nickname
+  focus overriding a later profession click. This exception covers field focus
+  only; preserve native name effects and record the correction in the bug register.
 - Before extending an incomplete gameplay UI, locate the DF routine or existing
   semantic API that supplies its choices, eligibility, ordering and actions.
   Prefer exposing that behavior over reconstructing it in Godot or the bridge.

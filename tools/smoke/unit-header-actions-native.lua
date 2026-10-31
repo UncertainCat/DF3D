@@ -26,6 +26,30 @@ local function record(name,edited)
   draft=dfhack.df2utf(sheet.unit_overview_entering_str),open=sheet.open,active_id=sheet.active_id,
   nickname=dfhack.df2utf(unit.name.nickname),profession=dfhack.df2utf(unit.custom_profession),
   figure_nickname=figure and dfhack.df2utf(figure.name.nickname),soul_nickname=soul and dfhack.df2utf(soul.name.nickname)}
+ if sheet.unit_overview_customizing and not sheet.unit_overview_entering_nickname and not sheet.unit_overview_entering_profession_nickname then
+  local guards={}
+  for _,object in ipairs{sheet,df.global.plotinfo,unit}do
+   local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+   dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
+  end
+  local output,status=dfhack.run_command_silent('df3d','unit-customize-captions-probe',tostring(unit.id))
+  local unchanged=true
+  for _,guard in ipairs(guards)do
+   if dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)~=0 then unchanged=false end
+   df.delete(guard.bytes)
+  end
+  assert(status==0,output);assert(unchanged,'Customize reader changed warmed unit/menu state')
+  local captions=require('json').decode(output)
+  for _,field in ipairs{{'name',6},{'profession',9}}do
+   local bytes={}
+   for x=68,97 do local pen=dfhack.screen.readTile(x,field[2]);bytes[#bytes+1]=pen.ch>=32 and string.char(pen.ch) or ' ' end
+   local expected=dfhack.utf2df(captions[field[1]]):sub(1,30):gsub('%s+$','')
+   assert(expected==table.concat(bytes):gsub('%s+$',''),'Customize caption differs: '..name..' '..field[1])
+  end
+  observations[#observations].captions=captions
+  observations[#observations].captions_native_match=true
+  observations[#observations].captions_guards_unchanged=unchanged
+ end
  if not edited then assert(unit.name.nickname==original.nickname and unit.custom_profession==original.profession,'focus action edited unit')end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'header reference advanced simulation')
 end
@@ -144,6 +168,11 @@ sheet.unit_overview_entering_profession_nickname=original.profession_focus
 sheet.unit_overview_entering_str=original.draft
 pointer(0,4)
 assert(ok,err)
+do
+ local output,status=dfhack.run_command_silent('df3d','unit-customize-captions-probe',tostring(unit.id))
+ assert(status==0,output)
+ local file=assert(io.open(out..'/unit-customize-captions.json','w'));file:write(output);file:close()
+end
 if os.getenv('DF3D_UNIT_HEADER_WIRE')=='1' then
  local json=require('json')
  local output,status=dfhack.run_command_silent('df3d','unit-header-name-edit-read',tostring(unit.id))

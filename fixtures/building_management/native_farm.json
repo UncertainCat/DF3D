@@ -41383,7 +41383,7 @@
       "source_save": "Owned source unchanged",
       "diagnostics": "Two GPU logs and combined header-client output contain only known renderer notice.",
       "scope": "Empty initial custom names on adult1017; typed captures inspected. Nonempty shared drafts and post-Enter continued typing remain unverified.",
-      "correction": "Approval requested; not implemented."
+      "correction": "Maintainer approved last-clicked-field focus on2026-10-31; implementation pending."
     },
     "unit_header_customize_art_reference": {
       "renderer": "DF53.16 15aa16..15b172",
@@ -41427,6 +41427,91 @@
       "godot_verified": true,
       "qa": "build/qa/unit-customize-view",
       "gpu_evidence": "Both rows independently match each native top-field RGB hash: 41472 pixels; field hitboxes and input admission pass. Screenshot inspected. Known renderer startup/finalize/ObjectDB shutdown diagnostics only."
+    },
+    "unit_header_customize_captions_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-084434",
+      "owned_df_pid": 197288,
+      "observations": [
+        {
+          "active_id": 1017,
+          "captions": {
+            "name": "Stodir Tangakurvad",
+            "profession": "bookkeeper"
+          },
+          "captions_guards_unchanged": true,
+          "captions_native_match": true,
+          "customizing": true,
+          "draft": "",
+          "figure_nickname": "",
+          "name": "open",
+          "nickname": "",
+          "nickname_focus": false,
+          "open": true,
+          "profession": "",
+          "profession_focus": false,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "captions": {
+            "name": "Native nick",
+            "profession": "bookkeeper"
+          },
+          "captions_guards_unchanged": true,
+          "captions_native_match": true,
+          "customizing": true,
+          "draft": "Native nick",
+          "figure_nickname": "Native nick",
+          "name": "nickname-enter",
+          "nickname": "Native nick",
+          "nickname_focus": false,
+          "open": true,
+          "profession": "",
+          "profession_focus": false,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "captions": {
+            "name": "Native nick",
+            "profession": "Native profession"
+          },
+          "captions_guards_unchanged": true,
+          "captions_native_match": true,
+          "customizing": true,
+          "draft": "Native profession",
+          "figure_nickname": "Native nick",
+          "name": "profession-enter",
+          "nickname": "Native nick",
+          "nickname_focus": false,
+          "open": true,
+          "profession": "Native profession",
+          "profession_focus": false,
+          "soul_nickname": ""
+        }
+      ],
+      "restored_captions": {
+        "name": "Stodir Tangakurvad",
+        "profession": "bookkeeper"
+      },
+      "reader": "a94030(&unit.name,owned string) when nickname empty;132f980(unit,owned string,true) when custom profession empty; raw custom fields otherwise. No native focus/draft inputs.",
+      "pins": {
+        "a94030": {
+          "length": "0x6a1",
+          "fnv1a64": "d81db68b3c9b33d2"
+        },
+        "132f980": "existing staffOrderingFunctions pin"
+      },
+      "wire": "CreatureInspect identity record -10 customize_captions; real Godot sheet verifies both fields against independent native probe.",
+      "source_save": "Owned source unchanged",
+      "diagnostics": "Two GPU logs and combined header client only known separate-renderer notice.",
+      "qa": "unit-customize-captions core19/controller/context pass; MSVC unit-customize-captions-msvc.log passes.",
+      "limits": [
+        "Adult1017 only",
+        "Warmed semantic name cache",
+        "Unfocused captions only",
+        "Missing-history and identity variants not accepted"
+      ]
     }
   }
 }

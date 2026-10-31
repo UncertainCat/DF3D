@@ -457,7 +457,12 @@ local ok,err=xpcall(function()
    assert(json.encode(linked.camera_before)==json.encode(linked.camera_after),'Unit carrier View moved native camera')
    local header_figure=df.historical_figure.find(unit.hist_figure_id)
    local header_names={unit.name.nickname,unit.custom_profession,header_figure and header_figure.name.nickname,unit.status.current_soul and unit.status.current_soul.name.nickname}
-   capture('farm-item-carrier-unit-scene')
+   if os.getenv('DF3D_UNIT_CAMERA')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-follow-scene-native.lua')
+    linked.follow_motion=assert(loadfile(source))(unit,capture,out)
+    source=source:gsub('unit%-follow%-scene%-native.lua$','unit-follow-lifecycle-native.lua')
+    linked.follow_lifecycle=assert(loadfile(source))(unit,capture,out)
+   else capture('farm-item-carrier-unit-scene')end
    local final_names={unit.name.nickname,unit.custom_profession,header_figure and header_figure.name.nickname,unit.status.current_soul and unit.status.current_soul.name.nickname}
    assert(json.encode(header_names)==json.encode(final_names),'unit editor did not restore native names')
    if os.getenv('DF3D_UNIT_HEADER_ACTIONS')=='1' then

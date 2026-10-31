@@ -42956,6 +42956,126 @@
         "Noncitizen/caged/invalid-position native variants unverified",
         "Other unit actions/pages unfinished; public route staged"
       ]
+    },
+    "unit_follow_motion_lifecycle_reference": {
+      "date": "2026-10-31",
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-111028",
+      "owned_df_pid": 129096,
+      "results": {
+        "unit-follow-motion-native": {
+          "observations": [
+            {
+              "op": "move",
+              "position": {
+                "unit_id": 1017,
+                "valid": true,
+                "x": 127,
+                "y": 74,
+                "z": 165
+              },
+              "serial": 1
+            },
+            {
+              "op": "restore",
+              "position": {
+                "unit_id": 1017,
+                "valid": true,
+                "x": 126,
+                "y": 75,
+                "z": 165
+              },
+              "serial": 2
+            },
+            {
+              "op": "hidden",
+              "position": {
+                "unit_id": 1017,
+                "valid": true,
+                "x": 126,
+                "y": 75,
+                "z": 165
+              },
+              "serial": 3
+            },
+            {
+              "op": "visible",
+              "position": {
+                "unit_id": 1017,
+                "valid": true,
+                "x": 126,
+                "y": 75,
+                "z": 165
+              },
+              "serial": 4
+            },
+            {
+              "op": "inactive",
+              "position": {
+                "unit_id": 1017,
+                "valid": false,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              "serial": 5
+            },
+            {
+              "op": "active",
+              "position": {
+                "unit_id": 1017,
+                "valid": true,
+                "x": 126,
+                "y": 75,
+                "z": 165
+              },
+              "serial": 6
+            }
+          ],
+          "restored": true,
+          "success": true
+        },
+        "unit-follow-scene-result": {
+          "close_preserves": true,
+          "exclusive": true,
+          "native_motion": true,
+          "native_refusal_stops": true,
+          "no_auto_resume": true,
+          "pan_stops": true,
+          "resize": true,
+          "success": true,
+          "unit_id": 1017
+        },
+        "unit-follow-lifecycle-native": {
+          "events": [
+            "disable",
+            "enable"
+          ],
+          "restored": true,
+          "success": true
+        },
+        "unit-follow-lifecycle-result": {
+          "explicit_recovery": true,
+          "resets": 1,
+          "stopped_on_loss": true,
+          "success": true
+        }
+      },
+      "sha256": {
+        "unit-follow-motion-native": "f6f20e94cfdeb694445cd4696128c121ddf4c93c0fe82a6f150c8a695d433dc8",
+        "unit-follow-lifecycle-result": "4e5c6bdee1b9d7247f4c8da0e669b9364c56067653001953b3607aaee3f80096"
+      },
+      "qa": "build/qa/unit-follow-lifecycle-final",
+      "source_save": "unchanged; owned clone exited unsaved",
+      "diagnostics": "Two GPU and six combined headless clients: known renderer startup notice only",
+      "failed_attempts": [
+        "110315 capture helper lacked wait callback; no movement applied",
+        "110830 lifecycle service omitted Catalog bootstrap after reconnect; failed before disabling bridge"
+      ],
+      "limitations": [
+        "Actual disconnect exercises headless controller/service, not composed loader overlay",
+        "Noncitizen/caged/invalid-position native variants remain unverified",
+        "Other unit actions/pages remain unfinished"
+      ]
     }
   }
 }

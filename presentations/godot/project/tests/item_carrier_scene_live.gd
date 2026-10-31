@@ -192,6 +192,32 @@ func follow_pixels(inspector,label: String) -> void:
 	check(actual.get_region(Rect2i(856,64,32,36)).get_data()==native.get_region(Rect2i(856,64,32,36)).get_data(),"Creature camera artwork differs: "+label)
 	actual.save_png(directory+"/unit-follow-scene-"+label+".png")
 
+var follow_serial:=0
+func native_follow_change(target: int,operation: String) -> Dictionary:
+	follow_serial+=1
+	var file:=FileAccess.open(directory+"/unit-follow-request.tmp",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"unit_id":target,"op":operation,"serial":follow_serial}));file.close()
+	DirAccess.rename_absolute(directory+"/unit-follow-request.tmp",directory+"/unit-follow-request.json")
+	var deadline:=Time.get_ticks_msec()+5000
+	while not FileAccess.file_exists(directory+"/unit-follow-ack.json") and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+	if not check(FileAccess.file_exists(directory+"/unit-follow-ack.json"),"Native follow change timed out"):return {}
+	var result: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-follow-ack.json"))
+	DirAccess.remove_absolute(directory+"/unit-follow-ack.json")
+	check(int(result.serial)==follow_serial and result.op==operation,"Native follow acknowledgement mismatched")
+	return result.position
+
+func await_follow_position(tile: Vector3i) -> void:
+	var deadline:=Time.get_ticks_msec()+5000
+	while scene._ui.creature_follow.last_position!=tile and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+	check(scene._ui.creature_follow.last_position==tile,"Composed camera missed native movement")
+	await process_frame;await process_frame
+	var rig=scene.camera_rig
+	var point:=Vector3(tile.x+0.5,tile.z+1.0,tile.y+0.5)
+	var anchor: Vector2=rig.native_follow_anchor(Vector2(root.size),Vector2.ONE,rig._df_pixels_per_tile)
+	check(rig.get_node("Camera3D").unproject_position(point).distance_to(anchor)<0.1,"Moving unit camera anchor differs")
+
 func exercise_follow(inspector,source,source_id: int,target: int) -> void:
 	source.open_target(source_id)
 	if not await settle(source.state):return
@@ -232,6 +258,15 @@ func exercise_follow(inspector,source,source_id: int,target: int) -> void:
 	if not await follow_ready():return
 	key(KEY_ESCAPE);await process_frame
 	check(not inspector.panel.visible and follow.unit_id==target,"Closing unit sheet lost follow")
+	var moved:=await native_follow_change(target,"move")
+	check(moved.get("valid",false),"Moved native unit unavailable")
+	await await_follow_position(tile+Vector3i(1,-1,0))
+	await native_follow_change(target,"restore");await await_follow_position(tile)
+	var hidden:=await native_follow_change(target,"hidden")
+	check(hidden.get("valid",false),"Native controlled unit hidden-terrain rule changed")
+	await create_timer(0.15).timeout;await drain()
+	check(follow.unit_id==target,"Hidden terrain incorrectly stopped controlled unit follow")
+	await native_follow_change(target,"visible")
 	source.open_target(source_id)
 	if not await settle(source.state):return
 	await pointer(source.panel.get_global_transform_with_canvas()*source.panel.camera_rect().get_center())
@@ -246,8 +281,19 @@ func exercise_follow(inspector,source,source_id: int,target: int) -> void:
 	var motion:=InputEventMouseMotion.new();motion.position=Vector2(200,400);motion.relative=Vector2(16,0);motion.button_mask=MOUSE_BUTTON_MASK_MIDDLE
 	root.push_input(motion,true);await process_frame
 	check(follow.unit_id==-1 and follow.last_position==null,"Manual map pan retained unit follow")
+	follow.toggle(target)
+	if not await follow_ready():return
+	var inactive:=await native_follow_change(target,"inactive")
+	check(not inactive.get("valid",true),"Inactive native unit still followable")
+	var deadline:=Time.get_ticks_msec()+5000
+	while follow.unit_id>=0 and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+	check(follow.unit_id==-1 and follow.last_position==null,"Native refusal did not stop composed follow")
+	await native_follow_change(target,"active")
+	await create_timer(0.15).timeout;await drain()
+	check(follow.unit_id==-1,"Restoring unit automatically resumed follow")
 	var file:=FileAccess.open(directory+"/unit-follow-scene-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"resize":true,"close_preserves":true,"exclusive":true,"pan_stops":true}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"resize":true,"close_preserves":true,"exclusive":true,"pan_stops":true,"native_motion":true,"native_refusal_stops":true,"no_auto_resume":true}));file.close()
 
 func open_customize(inspector) -> bool:
 	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(416,18))

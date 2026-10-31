@@ -176,7 +176,7 @@ local _,hidden_code=dfhack.run_command_silent('df3d','farm-header-read',tostring
 assert(hidden_code~=0,'hidden farm header disclosed')
 
 -- Selection is diagnostic UI observation only, never a runtime data source.
-local function selection_shot(name)
+local function selection_shot(name,while_waiting)
  pointer(0,4);for i=1,5 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
  local tabs={};for index,kind in ipairs(sheet.tab)do tabs[#tabs+1]={kind=df.view_sheet_type[kind],id=sheet.tab_id[index]}end
  local units={};for _,value in ipairs(sheet.viewing_unid)do units[#units+1]=value end
@@ -191,7 +191,9 @@ local function selection_shot(name)
  local blink=name=='farm-item-carrier-unit-scene' and (health_case=='blink' or health_case=='bleeding')
  local limit=dfhack.getTickCount()+(blink and 60000 or 30000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
-  assert(dfhack.getTickCount()<limit,'selection capture timeout');script.sleep(1,'frames')end
+  assert(dfhack.getTickCount()<limit,'selection capture timeout')
+  if while_waiting then while_waiting()end
+  script.sleep(1,'frames')end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'selection advanced simulation')
  for i=0,3 do assert(b.plant_id[i]==seasons[i+1],'selection changed crops')end
  return row

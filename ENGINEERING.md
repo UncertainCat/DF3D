@@ -1860,10 +1860,37 @@ follow controllers, context and UI composition. The controller test covers
 pacing, changed/unchanged positions, queued/sent stop, target replacement, bad
 identity/position, rejection and epoch retirement. First105504 failed because
 the controller mistook the shared client's empty production section for mixed
-authority; regression coverage now includes that default section. Real producer
-replacement/disconnect, a moving unit in the composed viewer and noncitizen/
-containment variants remain unverified. Other unit actions/pages are unfinished;
+authority; regression coverage now includes that default section. Moving-unit
+and real producer lifecycle acceptance follow below. Noncitizen/containment
+variants remain unverified. Other unit actions/pages are unfinished;
 the public unit route remains staged.
+
+unit_follow_motion_lifecycle_reference records protected111028 on2026-10-31.
+The composed viewer follows native(+1,-1) movement with its sheet closed, then
+returns to the restored position; both project within0.1pixel of the native
+follow anchor. Controlled hidden terrain preserves follow. Native inactivity
+clears the viewer's target/position and restoring activity does not auto-resume.
+The diagnostic service restores position, flags and designation even on failure,
+and verifies that the viewer requested full restoration on success.
+
+A separate real headless client uses the same follow controller/action service
+while the owned native fixture disables and re-enables the bridge. It observes
+actual producer loss, retires follow authority, stays stopped across reconnection,
+and recovers the original native position only after an explicit new request.
+This verifies the controller/transport lifecycle, not the composed loader's
+disconnect overlay. Configure the service with its normal Catalog bootstrap:
+configure reconnects the client and retires any prior manual Catalog claim.
+Earlier110830 omitted bootstrap and failed before requesting any disconnect.
+Earlier110315 used a capture helper without a wait callback; no movement was
+applied. farm-header's selection capture now services an optional diagnostic
+callback while waiting. Moving-unit acceptance first passed110540.
+
+Final111028 also passes all prior camera/Customize/Overview and four wire cases.
+Owned DF129096 exits unsaved with unchanged source save; two GPU and six combined
+headless logs contain only known renderer startup notices. unit-follow-lifecycle-final
+QA passes core19/19, follow controller and context. No runtime changes were needed
+for these scenarios. Additional native unit variants and the remaining unit
+actions/pages remain separate work.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

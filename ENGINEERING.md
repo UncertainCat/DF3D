@@ -1658,6 +1658,25 @@ checks, including malformed command/result and exact-revision codec tests.
 This is transport acceptance, not editor or disconnect/selection lifecycle
 acceptance; hidden-target, missing-history and identity variants remain pending.
 
+The unit header controller owns stable selection generations and confirmed name
+snapshots. Its service-owned typing session serializes explicit nickname and
+profession changes using each confirmed revision. Adjacent pending edits to the
+same field coalesce; switching fields preserves intent order. Closing the panel
+drains explicit typing, while old callbacks cannot populate another selection.
+Rejected, Stale, Unknown, contradictory receipts and epoch changes discard
+buffered edits without replay. The visible editor remains unfinished.
+
+unit_header_controller_reference records protected083017 on2026-10-31: the real
+Godot controller closes and reopens before buffered edits are sent, observes the
+final nickname/profession through the reopened read, then restores the complete
+original snapshot. Prior protocol and Overview checks pass. Owned DF182964 exits
+unsaved and the source save is unchanged. Two GPU logs and the combined header
+client log contain only the known renderer notice. unit-header-controller QA
+passes core19/19, context and controller checks; injected cases cover selection
+replacement, field coalescing, contradictory receipts and queued/sent epoch
+retirement. Actual disconnect/producer replacement and rendered focus/selection
+behavior remain unverified; these tests do not establish visible editor parity.
+
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017
 and child988. The adult name uses palette5, translated name and separate

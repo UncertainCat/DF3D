@@ -1,4 +1,14 @@
 extends "res://tests/item_carrier_wire_live.gd"
+const Header=preload("res://scripts/creature_header_state.gd")
+
+func wait_ready(model,service) -> bool:
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();service.poll()
+		if model.phase==Header.Phase.Ready:return true
+		if model.phase not in [Header.Phase.Reading,Header.Phase.Editing]:break
+		await create_timer(0.01).timeout
+	return check(false,"Header controller did not become ready; no replay")
 
 func header(data: Dictionary, outcome: int) -> Dictionary:
 	var reply:=await request("creature_header",data)
@@ -46,7 +56,21 @@ func run() -> void:
 	await header(absent,0)
 	var final:=await header(read,1)
 	check(final==initial,"Header transport did not restore original state")
+	var service=preload("res://scripts/semantic_action_service.gd").new()
+	root.add_child(service);service.configure(world,true)
+	var model=Header.new();model.configure(service);model.open(id)
+	if not await wait_ready(model,service):quit(1);return
+	check(model.begin(),"Header controller refused entry")
+	model.edit(false,"Controller A");model.edit(false,"Controller AB");model.edit(true,"Controller job")
+	model.close();model.open(id)
+	if not await wait_ready(model,service):quit(1);return
+	check(model.snapshot.nickname=="Controller AB" and model.snapshot.profession=="Controller job","Closed editor did not finish explicit text before reopen")
+	check(model.begin(),"Header controller refused restoration")
+	model.edit(false,initial.nickname);model.edit(true,initial.profession);model.finish()
+	if not await wait_ready(model,service):quit(1);return
+	check(model.snapshot==initial,"Header controller restoration differs")
+	model.dispose();service.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/unit-header-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"restored":final==initial}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"restored":final==initial,"controller_close_reopen_restored":not failed}));file.close()
 	world.queue_free();await process_frame
 	quit(1 if failed else 0)

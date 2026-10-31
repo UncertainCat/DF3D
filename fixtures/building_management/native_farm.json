@@ -41210,6 +41210,81 @@
       "owned_unsaved": true,
       "qa": "build/qa/unit-header-contract",
       "scope": "Godot adapter and semantic protocol only. Six completed edit/no-op receipts, four stale refusals, absent-unit refusal, exact64-bit revision and restored native names. Editor and lifecycle unaccepted."
+    },
+    "unit_header_controller_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-083017",
+      "date": "2026-10-31",
+      "owned_df_pid": 182964,
+      "result": {
+        "controller_close_reopen_restored": true,
+        "receipts": [
+          {
+            "figure_nickname": "Wire nickname",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "Wire nickname",
+            "profession": "",
+            "revision": 3815159162228629755,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "",
+            "revision": 5077264299204790931,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "",
+            "revision": 5077264299204790931,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "Wire profession",
+            "revision": 4411701247142128105,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "",
+            "revision": 5077264299204790931,
+            "unit_id": 1017
+          },
+          {
+            "figure_nickname": "",
+            "has_figure": true,
+            "historical_figure_id": 1217,
+            "nickname": "",
+            "profession": "",
+            "revision": 5077264299204790931,
+            "unit_id": 1017
+          }
+        ],
+        "restored": true,
+        "success": true
+      },
+      "result_sha256": "2b4e61df47998a6baa2d2a45a4e9960ad011ab3debb0626a42ee4121255bf135",
+      "source_save": "Owned source unchanged",
+      "diagnostics": "Two GPU logs and combined header-client stdout/stderr: known separate-renderer notice only.",
+      "scope": "Actual semantic service and controller: buffered nickname/profession edits drain across close and reopen, new read observes final edits, original full snapshot restored. Offline tests cover selection generations, coalescing, rejected/stale/unknown receipts and epoch invalidation.",
+      "not_accepted": [
+        "Visible editor",
+        "Actual transport disconnect or producer replacement",
+        "Missing historical figure and identity variants"
+      ]
     }
   }
 }

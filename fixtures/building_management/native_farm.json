@@ -40930,6 +40930,143 @@
         "15b2e0..15b426: Customize icon and hover287"
       ],
       "qa": "build/qa/unit-header-actions-reference"
+    },
+    "unit_header_name_write_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261031-080512",
+      "native_initial_run": "build/stockpile-storage-native-farm-discovery-20261031-080206",
+      "observations": [
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "Native nick",
+          "figure_nickname": "Native nick",
+          "name": "nickname-typed",
+          "nickname": "Native nick",
+          "nickname_focus": true,
+          "open": true,
+          "profession": "",
+          "profession_focus": false,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "Native nick",
+          "figure_nickname": "Native nick",
+          "name": "nickname-enter",
+          "nickname": "Native nick",
+          "nickname_focus": false,
+          "open": true,
+          "profession": "",
+          "profession_focus": false,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "Native profession",
+          "figure_nickname": "Native nick",
+          "name": "profession-typed",
+          "nickname": "Native nick",
+          "nickname_focus": false,
+          "open": true,
+          "profession": "Native profession",
+          "profession_focus": true,
+          "soul_nickname": ""
+        },
+        {
+          "active_id": 1017,
+          "customizing": true,
+          "draft": "Native profession",
+          "figure_nickname": "Native nick",
+          "name": "profession-enter",
+          "nickname": "Native nick",
+          "nickname_focus": false,
+          "open": true,
+          "profession": "Native profession",
+          "profession_focus": false,
+          "soul_nickname": ""
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-nickname-1",
+          "native_match": true,
+          "value": "Compared name"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-nickname-2",
+          "native_match": true,
+          "value": ""
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-nickname-3",
+          "native_match": true,
+          "value": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-nickname-4",
+          "native_match": true,
+          "value": "Native \u00e9"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-profession-1",
+          "native_match": true,
+          "value": "Compared name"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-profession-2",
+          "native_match": true,
+          "value": ""
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-profession-3",
+          "native_match": true,
+          "value": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        {
+          "menu_unchanged": true,
+          "name": "direct-profession-4",
+          "native_match": true,
+          "value": "Native \u00e9"
+        },
+        {
+          "name": "oversized-refused",
+          "unchanged": true
+        }
+      ],
+      "pins": [
+        {
+          "rva": "8bb4af",
+          "length": "1a2",
+          "fnv1a64": "66e693ff90782333"
+        },
+        {
+          "rva": "13b3090",
+          "length": "19",
+          "fnv1a64": "901cd2f6d41c1657"
+        },
+        {
+          "rva": "b530b0",
+          "length": "ac",
+          "fnv1a64": "7c6f66602bdab157"
+        }
+      ],
+      "screenshots": {
+        "unit-header-actions-nickname-enter.png": "482ee1849fa414c1809567d40f3f0451b183bd73fcd38e20668786342713014d",
+        "unit-header-actions-nickname-typed.png": "e922554fe652df5dc65eb136ed995c21cbbbeedcc33096407aeb2be1159514eb",
+        "unit-header-actions-profession-enter.png": "f3278b5110027ae6a6bf524ffaf7b7ee6ca08525c9b3033fd9a23e060d61b959",
+        "unit-header-actions-profession-typed.png": "81a2b2edff73628081f46320d73db48c927b27b2550cba842768886785e7f411"
+      },
+      "source_unchanged": true,
+      "owned_unsaved": true,
+      "qa": "build/qa/unit-header-name-write",
+      "scope": "Inline native writes and direct primitive only; eight ordinary-adult comparisons, one oversized refusal. No management transport or Godot editor acceptance. Missing history, identities, unchanged values, and dual-focus input still pending."
     }
   }
 }

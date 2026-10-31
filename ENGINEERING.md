@@ -1574,10 +1574,39 @@ The four captured editor/return states were inspected, unit strings and paused
 frame stayed unchanged, source preservation passed, and owned DF171276 exited
 unsaved. Existing rendered Overview regression passed; its two GPU logs contain
 only the known renderer notice. unit-header-actions-reference QA passes core19/19,
-context and thought-text checks. Text entry, native nickname propagation,
-profession writes, eligibility variants and DF3D controls remain unfinished.
+context and thought-text checks. Eligibility variants and DF3D controls remain
+unfinished; the text-write reference and independent primitive are described below.
 The first diagnostic075624 failed to find the hover because the harness omitted
 hidden-window mouse focus;075718 enables it explicitly before pointer input.
+
+Native keyboard input8bb4af..8bb650 applies each changed draft immediately.
+Nickname assignment writes unit.name.nickname, resolves its historical figure
+through13b3090 (b530b0 may refresh the semantic HF index), then writes that
+figure's nickname. It does not update the soul or identity names. Profession
+assignment writes unit.custom_profession only. There is no aggregate rename
+routine on this path. DFHack Units::setNickname has additional effects and is
+not an interchangeable implementation. Native c396d0/c39700 consume global SDL
+input and are prohibited runtime helpers; their native call uses length30 and
+flags0x17. Enter ends the active field without leaving Customize.
+
+creature_header_native.h::setHeaderCustomName reproduces the pinned inline
+assignments with owned text and the native historical-figure resolver. It
+rejects strings over30 DF bytes or containing NUL before writing. The diagnostic
+unit-header-name-write-probe requires lossless UTF8/DF conversion. This is not
+yet a management command: epoch, current visibility, revision checks, receipts
+and editor lifecycle must be connected before exposing the control.
+unit_header_name_write_reference records protected080206 and080512 on2026-10-31.
+080512 compares native input and direct writes for nickname and profession with
+ordinary text, clearing,30 characters and CP437 byte130; all eight cases match
+unit/profession/HF/soul fields, while direct writes leave guarded view_sheets
+and plotinfo bytes unchanged. A31-byte request is refused without changing
+names. Native typing and Enter screenshots were inspected. Both owned sessions
+restore names, pass the existing rendered Overview regression, preserve source
+saves and exit unsaved. Four GPU logs contain only the known renderer notice.
+MSVC and unit-header-name-write QA pass core19/19, context and thought-text
+checks. Missing history, identity variants, unchanged-value behavior and typing
+with both focus flags set still need acceptance; no broad rename completion is
+claimed from these ordinary-adult cases.
 
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017

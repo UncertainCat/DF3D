@@ -8,6 +8,41 @@
 #include "location_staff_order_native.h"
 #include "zone_native.h"
 namespace df3d_creature {
+// Native8bb4af..8bb650 implements these writes inline, after its SDL text
+// helper changes a draft. There is no aggregate rename call on that path.
+// Do not call the text helper or borrow its draft/focus/input globals. The
+// nickname writes only unit and HF names, not soul or identity names.
+// Caller owns epoch/visibility/stale validation. False means no write began;
+// exceptions after entry have an unknown outcome and must not be replayed.
+inline bool setHeaderCustomName(df::unit* unit,bool profession,const std::string& bytes) {
+    if(!unit || bytes.size()>30 || bytes.find('\0')!=std::string::npos)return false;
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x8bb4af,0x1a2,UINT64_C(0x66e693ff90782333)},
+            {0x13b3090,0x19,UINT64_C(0x901cd2f6d41c1657)},
+            {0xb530b0,0xac,UINT64_C(0x7c6f66602bdab157)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    if(!supported)return false;
+    auto& target=profession?unit->custom_profession:unit->name.nickname;
+    if(target==bytes)return true;
+    target=bytes;
+    if(!profession) {
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        auto* figure=reinterpret_cast<df::historical_figure* (*)(df::unit*)>(base+0x13b3090)(unit);
+        if(figure)figure->name.nickname=unit->name.nickname;
+    }
+    return true;
+}
 struct HeaderActivity {std::string text;int16_t foreground=0,background=0;bool bright=false;};
 // Native header CAN_LEARN/control gates precede the semantic formatter.
 // Native may refresh the unit HF index and retire stale squad activity/event

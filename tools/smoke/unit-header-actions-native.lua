@@ -1,4 +1,4 @@
--- Native input/layout reference in the paused, owned fixture. No text is edited.
+-- Native input/layout reference in the paused, owned fixture. Names are restored.
 local unit,view,capture=...
 local gui=require('gui')
 local g=df.global.gps
@@ -8,19 +8,25 @@ local original={nickname=unit.name.nickname,profession=unit.custom_profession,
  customizing=sheet.unit_overview_customizing,nickname_focus=sheet.unit_overview_entering_nickname,
  profession_focus=sheet.unit_overview_entering_profession_nickname,draft=sheet.unit_overview_entering_str}
 local frame=df.global.world.frame_counter
+local figure=df.historical_figure.find(unit.hist_figure_id)
+local soul=unit.status.current_soul
+local saved_figure=figure and figure.name.nickname
+local saved_soul=soul and soul.name.nickname
 local observations={}
 local function pointer(x,y)
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
  g.mouse_x=x//8;g.mouse_y=(y-4)//12;g.precise_mouse_x=x;g.precise_mouse_y=y
  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
 end
-local function record(name)
+local function record(name,edited)
  capture('unit-header-actions-'..name)
  observations[#observations+1]={name=name,customizing=sheet.unit_overview_customizing,
   nickname_focus=sheet.unit_overview_entering_nickname,
   profession_focus=sheet.unit_overview_entering_profession_nickname,
-  draft=dfhack.df2utf(sheet.unit_overview_entering_str),open=sheet.open,active_id=sheet.active_id}
- assert(unit.name.nickname==original.nickname and unit.custom_profession==original.profession,'focus action edited unit')
+  draft=dfhack.df2utf(sheet.unit_overview_entering_str),open=sheet.open,active_id=sheet.active_id,
+  nickname=dfhack.df2utf(unit.name.nickname),profession=dfhack.df2utf(unit.custom_profession),
+  figure_nickname=figure and dfhack.df2utf(figure.name.nickname),soul_nickname=soul and dfhack.df2utf(soul.name.nickname)}
+ if not edited then assert(unit.name.nickname==original.nickname and unit.custom_profession==original.profession,'focus action edited unit')end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'header reference advanced simulation')
 end
 local function click(x,y)
@@ -41,7 +47,60 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not sheet.unit_overview_customizing and sheet.open and sheet.active_id==unit.id,'Escape did not return to unit Overview')
  record('escape')
+ local function key(value)gui.simulateInput(view,value);view:render(dfhack.getTickCount())end
+ local function text(value)for i=1,#value do key(('STRING_A%03d'):format(value:byte(i)))end end
+ click(found[1],found[2]);click(600,82)
+ text('Native nick');record('nickname-typed',true)
+ assert(unit.name.nickname=='Native nick' and figure.name.nickname=='Native nick','native nickname propagation differs')
+ assert(soul.name.nickname==saved_soul,'native nickname unexpectedly changed soul')
+ key('SELECT');record('nickname-enter',true)
+ key('LEAVESCREEN')
+ click(found[1],found[2]);click(600,118)
+ text('Native profession');record('profession-typed',true)
+ assert(unit.custom_profession=='Native profession','native profession did not apply while typing')
+ key('SELECT');record('profession-enter',true)
+ key('LEAVESCREEN')
+ local function restore_names()
+  unit.name.nickname=original.nickname;unit.custom_profession=original.profession
+  figure.name.nickname=saved_figure;soul.name.nickname=saved_soul
+ end
+ local function names()
+  return {unit.name.nickname,unit.custom_profession,figure.name.nickname,soul.name.nickname}
+ end
+ for _,kind in ipairs{'nickname','profession'}do
+  for index,value in ipairs{'Compared name','',string.rep('X',30),'Native '..string.char(130)}do
+   restore_names()
+   click(found[1],found[2]);click(600,kind=='nickname' and 82 or 118)
+   for i=1,40 do key('STRING_A000')end
+   text(value);key('SELECT');key('LEAVESCREEN')
+   local expected=names()
+   assert(expected[kind=='nickname' and 1 or 2]==value,'native text entry differs')
+   restore_names()
+   local guards={}
+   for _,object in ipairs{sheet,df.global.plotinfo}do
+    local size,address=df.sizeof(object);local bytes=df.new('uint8_t',size)
+    dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={size=size,address=address,bytes=bytes}
+   end
+   local output,status=dfhack.run_command_silent('df3d','unit-header-name-write-probe',tostring(unit.id),kind,dfhack.df2utf(value))
+   local unchanged=true
+   for _,guard in ipairs(guards)do
+    if dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)~=0 then unchanged=false end
+    df.delete(guard.bytes)
+   end
+   assert(status==0,output);assert(unchanged,'direct name write changed menu state')
+   for i,actual in ipairs(names())do assert(actual==expected[i],'direct name write differs from native')end
+   observations[#observations+1]={name='direct-'..kind..'-'..index,value=dfhack.df2utf(value),native_match=true,menu_unchanged=unchanged}
+  end
+ end
+ local before=names()
+ local _,status=dfhack.run_command_silent('df3d','unit-header-name-write-probe',tostring(unit.id),'nickname',string.rep('X',31))
+ assert(status~=0,'oversized nickname accepted')
+ for i,actual in ipairs(names())do assert(actual==before[i],'oversized write changed names')end
+ observations[#observations+1]={name='oversized-refused',unchanged=true}
 end,debug.traceback)
+unit.name.nickname=original.nickname;unit.custom_profession=original.profession
+if figure then figure.name.nickname=saved_figure end
+if soul then soul.name.nickname=saved_soul end
 sheet.unit_overview_customizing=original.customizing
 sheet.unit_overview_entering_nickname=original.nickname_focus
 sheet.unit_overview_entering_profession_nickname=original.profession_focus

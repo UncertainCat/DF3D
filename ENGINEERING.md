@@ -1892,6 +1892,20 @@ QA passes core19/19, follow controller and context. No runtime changes were need
 for these scenarios. Additional native unit variants and the remaining unit
 actions/pages remain separate work.
 
+unit_reports_navigation_reference records protected111847 on2026-10-31.
+The unit header Reports button at792,64 (32x36) opens widget_report_popup for
+that unit with category0 (Combat), closes the unit sheet, and leaves the sheet
+closed when Back returns to the map. This is the full report widget, not the
+compact announcement alert. Hover288 displays "See this creature's" followed
+by "combat history." The fixture has19 expired combat references and no valid
+report rows; it establishes empty-log navigation only. Direct-entry geometry
+and populated content need separate acceptance before viewer integration.
+The diagnostic runs after sheet acceptance because restoring only sheet fields
+after native navigation leaves stale selection state. Owned DF183836 exits
+unsaved with unchanged source save; two GPU logs and one combined headless log
+contain only the known renderer startup notice. This reference does not expose
+the unfinished unit Reports action.
+
 unit_header_reference records native174632
 and174915 on2026-10-30, with seven controlled cases each for adult bookkeeper1017
 and child988. The adult name uses palette5, translated name and separate

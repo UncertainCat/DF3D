@@ -43076,6 +43076,123 @@
         "Noncitizen/caged/invalid-position native variants remain unverified",
         "Other unit actions/pages remain unfinished"
       ]
+    },
+    "unit_reports_navigation_reference": {
+      "provenance": "Protected owned native run20261031-111847, DF183836; source save unchanged, unsaved exit.",
+      "result": {
+        "observations": [
+          {
+            "alert_open": false,
+            "category": -1,
+            "list_size": 0,
+            "log_counts": [
+              19,
+              0,
+              0
+            ],
+            "name": "before",
+            "report_lines": [],
+            "scroll": 0,
+            "sheet_id": 1017,
+            "sheet_open": true,
+            "unit_id": -1,
+            "valid_combat_ids": []
+          },
+          {
+            "alert_open": false,
+            "category": -1,
+            "list_size": 0,
+            "log_counts": [
+              19,
+              0,
+              0
+            ],
+            "name": "opened",
+            "popup": {
+              "category": 0,
+              "last_length": 19,
+              "pause_on_new": true,
+              "unit_id": 1017
+            },
+            "report_lines": [],
+            "scroll": 0,
+            "sheet_id": -1,
+            "sheet_open": false,
+            "unit_id": -1,
+            "valid_combat_ids": []
+          },
+          {
+            "alert_open": false,
+            "category": -1,
+            "list_size": 0,
+            "log_counts": [
+              19,
+              0,
+              0
+            ],
+            "name": "back",
+            "report_lines": [],
+            "scroll": 0,
+            "sheet_id": -1,
+            "sheet_open": false,
+            "unit_id": -1,
+            "valid_combat_ids": []
+          }
+        ],
+        "success": true,
+        "unit_id": 1017
+      },
+      "hover": {
+        "enum": 288,
+        "lines": [
+          "See this creature's",
+          "combat history."
+        ]
+      },
+      "button_rect": [
+        792,
+        64,
+        32,
+        36
+      ],
+      "semantics": "Opens widget_report_popup for unit1017/category0 (Combat), closes unit sheet; Back closes report and returns to map.",
+      "limits": [
+        "All19 unit combat references expired; no populated log acceptance.",
+        "Native reference only; DF3D unit-header Reports button not implemented.",
+        "Direct-entry layout requires separate rendered acceptance."
+      ],
+      "diagnostics": {
+        "farm-item-carrier-unit-scene.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-unit-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "unit-header-wire.stdout.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        }
+      }
     }
   }
 }

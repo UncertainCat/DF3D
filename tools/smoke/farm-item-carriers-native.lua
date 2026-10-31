@@ -473,6 +473,10 @@ local ok,err=xpcall(function()
    assert(linked.scene.success,'unit carrier main-scene navigation failed')
    linked.focus_before=before_focus;linked.focus_after=focus_state(p)
    assert(json.encode(before_focus)==json.encode(linked.focus_after),'viewer changed live personality focus cache/timestamps')
+   if os.getenv('DF3D_UNIT_REPORTS')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-reports-native.lua')
+    linked.reports=assert(loadfile(source))(unit,view,capture,out)
+   end
    if overview_case=='office-requirements' then
     linked.viewer_position_indices={}
     for _,saved in ipairs(overview_saved.assignment_indices)do linked.viewer_position_indices[#linked.viewer_position_indices+1]=saved.assignment.position_vector_idx end

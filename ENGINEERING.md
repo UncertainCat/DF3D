@@ -2504,14 +2504,33 @@ all guards remain unchanged. No frames advance and no final action is submitted.
 The Send away screenshot was inspected. Enable `DF3D_UNIT_EXPEL_CHOICES=1` with
 the destination flags above. Source preservation and core19 pass; live logs have
 only known startup notices. `unit_expel_destination_reference.choice_reference`
-retains the native rows and state transitions. Confirmation effects remain absent.
+retains the native rows and state transitions. Runtime confirmation remains absent.
 
-Confirmation1b1825..1b1c26 allocates an army controller with MOVE_TO_SITE goal, records expulsion history when
-there is no destination, invokes unit cleanup/assignment helpers, emits thoughts,
-and associates every departing unit with that controller. It is not equivalent to
-setting a departure flag. These effects, remaining refusal/family cases and
-linked destinations still need native acceptance before implementation can be
-exposed. The current probe never confirms expulsion; no runtime control is added.
+Confirmation1b1825..1b1c26 allocates an army controller with MOVE_TO_SITE goal,
+records expulsion history when there is no destination, invokes cleanup and
+assignment helpers, emits thoughts, and associates departing units with the
+controller. It is not equivalent to setting a departure flag.
+
+unit_expel_effect_reference records native final confirmation in protected
+214559 (Expel) and214712 (Send away to site8). Each creates one controller,
+removes unit1017's bookkeeper assignment, sets visitor flags2 bit23, and creates
+travel state flags4. Expel creates entity-expels-HF event111 and emotion with
+Expelled thought241; Send away creates neither. The controller site is-1 or8,
+respectively, with current year/tick and its own ID as master. Both return to
+Overview, remove the Expel header control and update the header. No simulation
+frames advance; these captures do not establish later departure or arrival.
+
+Use DF3D_UNIT_EXPEL_EFFECT=expel|send with DF3D_UNIT_EXPEL=1 in the unit-only
+carrier lane. Restore the carrier fixture before native confirmation: departure
+can remove inventory entries, conflicting with later fixture cleanup. Initial
+214434 failed that cleanup assertion after successful effects and is not accepted
+as a passing lane. All source saves were preserved. Final runs exit owned
+DF38428/32360 unsaved; screenshots were inspected and live logs contain only
+known startup notices. Core19 passes in unit-expel-effects. Effects are discarded
+by process exit, not structure rollback. Family/relative thoughts, active jobs,
+squad cleanup and later simulation remain unverified. Helper ownership audit,
+the semantic command, transport and viewer remain unfinished; no runtime Expel
+control is added.
 
 ## Native item holder provider
 

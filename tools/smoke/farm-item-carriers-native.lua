@@ -479,6 +479,19 @@ local ok,err=xpcall(function()
    if os.getenv('DF3D_UNIT_EXPEL')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-expel-native.lua')
     linked.expel=assert(loadfile(source))(unit,view,capture,out)
+    local effect=os.getenv('DF3D_UNIT_EXPEL_EFFECT')
+    if effect and effect~='' then
+     -- Departure drops inventory. Retire the carrier fixture before native owns
+     -- that mutation; do not later delete entries already consumed by DF.
+     restore()
+     source=source:gsub('unit%-expel%-native.lua$','unit-expel-effect-native.lua')
+     linked.expel_effect=assert(loadfile(source))(unit,view,function(x,y)
+      local g=df.global.gps
+      df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+      g.mouse_x=x//8;g.mouse_y=(y-4)//12;g.precise_mouse_x=x;g.precise_mouse_y=y
+      gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+     end,capture,out,effect)
+    end
    end
    if os.getenv('DF3D_UNIT_REPORTS')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-reports-native.lua')

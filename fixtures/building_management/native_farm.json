@@ -45823,6 +45823,148 @@
         "verification": "Site8 choice enters affected-unit list with Send away; sentinel -1 enters same list with Expel. Escape closes each preview to the same unit Overview. No frames advanced or effects confirmed. Group and destination readers match, using retained chooser IDs after native clears its UI vector; byte guards unchanged. Source unchanged, owned DF38104 exited. Two GPU and paired header-wire logs have only known startup diagnostics; core19 passes.",
         "qa": "build/qa/unit-expel-choices"
       }
+    },
+    "unit_expel_effect_reference": {
+      "cases": [
+        {
+          "affected": [
+            1017
+          ],
+          "after": {
+            "army_id": 1163542,
+            "civ_id": 245,
+            "controller": {
+              "entity_id": -1,
+              "goal": 12,
+              "id": 1163542,
+              "master_id": 1163542,
+              "site_id": -1,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "controllers": 1690,
+            "flags1": 2147500033,
+            "flags2": 310386800,
+            "history_count": 54232,
+            "job_id": -1,
+            "offices": [],
+            "travel": {
+              "flags": 4,
+              "rumour_location_id": -1,
+              "rumour_type": -1,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "emotion_count": 92
+          },
+          "before": {
+            "army_id": -1,
+            "civ_id": 245,
+            "controllers": 1689,
+            "flags1": 2147500033,
+            "flags2": 301998192,
+            "history_count": 54231,
+            "job_id": -1,
+            "offices": [
+              {
+                "assignment": 3,
+                "entity": 865,
+                "histfig": 1217
+              }
+            ],
+            "emotion_count": 92
+          },
+          "destination": -1,
+          "events": [
+            {
+              "expelled": true,
+              "id": 64037,
+              "type": 111
+            }
+          ],
+          "expelling": false,
+          "histfig_id": 1217,
+          "mode": "expel",
+          "success": true,
+          "unit_id": 1017,
+          "new_emotions": [
+            {
+              "subthought": -1,
+              "thought": 241,
+              "type": 11
+            }
+          ],
+          "native_run": "build/stockpile-storage-native-farm-discovery-20261031-214559"
+        },
+        {
+          "affected": [
+            1017
+          ],
+          "after": {
+            "army_id": 1163542,
+            "civ_id": 245,
+            "controller": {
+              "entity_id": -1,
+              "goal": 12,
+              "id": 1163542,
+              "master_id": 1163542,
+              "site_id": 8,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "controllers": 1690,
+            "flags1": 2147500033,
+            "flags2": 310386800,
+            "history_count": 54231,
+            "job_id": -1,
+            "offices": [],
+            "travel": {
+              "flags": 4,
+              "rumour_location_id": -1,
+              "rumour_type": -1,
+              "year": 106,
+              "year_tick": 157249
+            },
+            "emotion_count": 92
+          },
+          "before": {
+            "army_id": -1,
+            "civ_id": 245,
+            "controllers": 1689,
+            "flags1": 2147500033,
+            "flags2": 301998192,
+            "history_count": 54231,
+            "job_id": -1,
+            "offices": [
+              {
+                "assignment": 3,
+                "entity": 865,
+                "histfig": 1217
+              }
+            ],
+            "emotion_count": 92
+          },
+          "destination": 8,
+          "events": [],
+          "expelling": false,
+          "histfig_id": 1217,
+          "mode": "send",
+          "success": true,
+          "unit_id": 1017,
+          "new_emotions": [],
+          "native_run": "build/stockpile-storage-native-farm-discovery-20261031-214712"
+        }
+      ],
+      "verification": "Native confirmation creates one MOVE_TO_SITE controller, removes bookkeeper office, sets visitor and travel flags. Only Expel emits entity-expels-HF history and Expelled thought241. No frames advanced. Owned DF38428/32360 exited unsaved, source unchanged. Two GPU and paired header-wire logs per run have only known startup notices. Both post-effect screenshots inspected; core19 passed.",
+      "qa": "build/qa/unit-expel-effects",
+      "fixture": "Restore carrier inventory and Overview modifications before confirmation. Send mode temporarily links site8 government to current fortress market, then restores links. Effects discarded on unsaved process exit, not structure rollback.",
+      "failed_attempt": "214434: effect succeeded but carrier cleanup expected an inventory entry already removed by DF. Lane failed; source unchanged. Fixed by restoring carrier fixture before confirmation.",
+      "remaining": [
+        "Helper ownership audit and semantic command",
+        "Active jobs, squads, family effects and relative thoughts",
+        "Departure over simulation ticks and arrival",
+        "Transport, lifecycle and viewer controls"
+      ]
     }
   }
 }

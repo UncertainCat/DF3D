@@ -1509,7 +1509,7 @@ from Box only in type/subtype getters; the latter shares Instrument's fd0c0.
 Each clothing subtype must match its installed semantic definition. Existing
 quality/improvement checks and native c75000 ownership remain unchanged.
 Only hood navigation is live-verified. Its native description reaches the
-snapshot; the native Owner header remains missing. The native
+snapshot; its Owner header is covered by the protocol106 evidence below. The native
 inspected screenshot lacks body/controls, so it is not a full description pixel
 oracle. Indicators, hover, scroll/resize/lifecycle and nested navigation remain
 unfinished; the creature route stays staged. The fixture's
@@ -1529,8 +1529,8 @@ The native Owner header uses cb1640(item,16) at154878, independently of the
 carrier's UNIT_HOLDER reference18. It formats the resolved unit with1330c30
 at154aaf (third argument false), prefixed with installed text15fe098, "Owner: ".
 The native header moves the item caption up one row when an owner exists.
-Owner identity/name transport and rendering remain unimplemented; the fixture's
-`owner_header_audit` records the entry points and required ownership distinction.
+The fixture's `owner_header_audit` records the entry points and required
+ownership distinction; protocol106 transport is described below.
 
 `item_owner_native.h` now exposes that lookup through diagnostic
 `df3d item-owner-probe <item>`. The name is formatted with the owned unit context
@@ -1547,7 +1547,30 @@ Dwarven Child, while the adapter's default profession produced Peasant. The shar
 context now copies profession/profession2 and cultural_identity;003620 matches
 both the child and bookkeeper. This also corrects those inputs for contained
 creature captions. The fixture's `owner_reader_reference` records cases and
-limitations. No item-owner snapshot field or rendered owner header exists yet.
+limitations. The subsequent owner snapshot transport is described below.
+
+Management106 adds optional `ItemOwner {id,name}` to independent item snapshots.
+Absent means no resolved UNIT_ITEMOWNER; it does not mean an unknown or inferred
+carrier. Bridge observations call the owned native reader, and owner presence,
+identity and name participate in the revision used to guard item edits. Both
+wire and Godot validation reject negative IDs, missing/oversized names and
+malformed local dictionaries. Ownership remains independent of carrier/holder.
+The shared owned-unit context now lives in `unit_description_native.h`, avoiding
+a dependency cycle between item observation and inventory description adapters.
+
+Migration: both management schema defaults, version guard and shared-memory
+region move from105to106. Rebuild/install bridge and viewer together. Older
+management messages are rejected; never invent owner facts from105 snapshots.
+No fortress save migration is involved. Core checks cover independent owner
+codec validation and stale-owner edit rejection; the item-state engine test
+covers validation and deep-copy isolation. Initial QA `item-owner-wire-first`
+failed because the schema defaults still said105; corrected `item-owner-wire`
+passes core, item-state and UI composition checks. Protected005142 verifies the
+original owner through actual main-scene Items inspection and carrier return,
+with unchanged source save and owned DF35476 exiting unsaved. Each Godot process
+has only the known renderer notice. The four native owner-reference cases also
+repeat successfully, but composed changing/absent owner refresh is not yet
+accepted. `owner_wire_reference` retains the current scope.
 
 The Overview hauling line uses native selector1324b50(unit), the same call made
 by renderer166e81, followed by the existing owned caption formatter c65450.

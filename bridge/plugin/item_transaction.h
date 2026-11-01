@@ -4,7 +4,9 @@
 namespace df3d_production {
 struct ItemLocationLink { int32_t id=-1,type=-1;std::string name; };
 struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name;std::optional<ItemInspectionAppearance> appearance; };
+struct ItemOwner { int32_t id=-1;std::string name; };
 struct ItemObservation {
+    std::optional<ItemOwner> owner;
     ItemFacts item;
     std::string weight,description;
     std::optional<ItemLocationLink> buildingHolder,stockpile;
@@ -22,6 +24,7 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
     const auto text=[&](const std::string& s){number(s.size());for(unsigned char c:s)byte(c);};
     const auto& item=value.item;
     number(item.id);number(item.itemType);number(item.flags);byte(item.countdown);byte(item.delay);
+    byte(value.owner.has_value());if(value.owner){number(value.owner->id);text(value.owner->name);}
     text(item.caption);text(item.materialToken);text(item.subtypeRaw);text(value.weight);text(value.description);
     byte(item.forbid);byte(item.dump);byte(item.melt);byte(item.hidden);byte(item.canDump);byte(item.canMelt);
     number(item.jobs.size());for(const auto& job:item.jobs){number(job.id);number(job.type);number(job.flags);}
@@ -35,6 +38,7 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
 }
 inline bool validItemObservation(const ItemObservation& value) {
     const auto& item=value.item;
+    if(value.owner && (value.owner->id<0 || value.owner->name.size()>512))return false;
     if(value.carrier){const auto& c=*value.carrier;if(value.buildingHolder || c.id<0 || c.name.size()>512 || (c.kind!=1&&c.kind!=2) || (c.kind==1?(c.itemType<0||c.itemType>92):c.itemType!=-1))return false;}
     if(value.carrier){const auto& c=*value.carrier;if((c.kind==1)!=c.appearance.has_value())return false;if(c.appearance){const auto& a=*c.appearance;if(!validInspectionInstrument(a,c.itemType)||a.materialToken.empty()||a.materialToken.size()>256||a.subtypeRaw.size()>128||a.colorToken.size()>128||a.stack<1||(a.flags&~96))return false;}}
     if((item.itemType==30||item.itemType==13) && !value.appearance)return false;

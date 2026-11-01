@@ -27,6 +27,19 @@ func completed(wrong_flag:=false) -> void:
 		"edit":{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
 
 func run() -> void:
+	for fault in 5:
+		setup();model.open(1000);service.poll();var owned:=item()
+		owned.owner={"id":988,"name":"native owner"}
+		match fault:
+			1:owned.owner.id=-1
+			2:owned.owner.name="x".repeat(513)
+			3:owned.owner.id="988"
+			4:owned.owner.extra=true
+		item_reply({"snapshot":owned})
+		check(model.phase==(ItemModel.Phase.Ready if fault==0 else ItemModel.Phase.Rejected),"Owner validation differs: "+str(fault))
+		if fault==0:
+			var isolated: Dictionary=model.view_snapshot();isolated.owner.name="changed"
+			check(model.snapshot.owner.name=="native owner","Owner snapshot is not isolated")
 	ready();var original: Dictionary=model.view_snapshot();var calls_before: int=world.calls.size()
 	model.poll(ItemModel.REFRESH_INTERVAL*0.5);service.poll()
 	check(world.calls.size()==calls_before,"background refresh waits after receipt")

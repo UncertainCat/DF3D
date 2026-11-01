@@ -519,3 +519,18 @@ TEST_CASE("removing chest Melt respects native eligibility before entry") {
         CHECK(calls==(eligible?1:0));CHECK(result.outcome==(eligible?FarmEditOutcome::Completed:FarmEditOutcome::Rejected));
     }
 }
+
+TEST_CASE("item owner changes invalidate edits independently of carrier") {
+    using namespace df3d_production;
+    ItemObservation item;item.item.id=45;item.item.itemType=53;
+    item.carrier=ItemCarrier{2,1017,-1,"carrier"};item.revision=itemObservationRevision(item);
+    const auto unowned=item.revision;item.owner=ItemOwner{988,"owner"};item.revision=itemObservationRevision(item);
+    REQUIRE(validItemObservation(item));CHECK(item.revision!=unowned);
+    const auto owned=item.revision;item.owner->id=989;item.revision=itemObservationRevision(item);
+    const auto stale=finishItemEdit(item,owned,BuildingItemAction::Hidden,true,
+      []{FAIL("owner change entered mutation");return true;},[&]{return std::optional<ItemObservation>(item);});
+    CHECK(stale.outcome==FarmEditOutcome::Stale);CHECK_FALSE(stale.mutated);
+    const auto renamed=item.revision;item.owner->name="new name";CHECK(itemObservationRevision(item)!=renamed);
+    item.owner->id=-1;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+    item.owner=ItemOwner{988,std::string(513,'x')};item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+}

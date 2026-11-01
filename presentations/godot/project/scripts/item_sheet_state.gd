@@ -99,6 +99,11 @@ func _valid(value: Dictionary) -> bool:
 	if value.has("stockpile"):
 		if value.stockpile_categories<0 or value.stockpile_categories>0x1ffff:return false
 	elif value.stockpile_categories!=-1:return false
+	if value.has("owner"):
+		var owner=value.owner
+		if typeof(owner)!=TYPE_DICTIONARY or owner.size()!=2:return false
+		if typeof(owner.get("id"))!=TYPE_INT or owner.id<0 or owner.id>2147483647:return false
+		if typeof(owner.get("name"))!=TYPE_STRING or owner.name.to_utf8_buffer().size()>512:return false
 	if value.has("carrier"):
 		var carrier=value.carrier
 		if value.has("holder") or typeof(carrier)!=TYPE_DICTIONARY:return false

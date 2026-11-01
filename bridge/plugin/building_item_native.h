@@ -2,6 +2,7 @@
 #include "farm_native.h"
 #include "building_item_transaction.h"
 #include "item_transaction.h"
+#include "item_owner_native.h"
 #include "df/building_stockpilest.h"
 #include "df/buildingitemst.h"
 #include "df/item.h"
@@ -502,6 +503,8 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
         auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(stockpile->id));if(!pile)return std::nullopt;
         value.stockpile=*stockpile;value.stockpileCategories=pile->settings.flags.whole;
     }
+    const auto owner=itemOwnerDescription(item);if(!owner)return std::nullopt;
+    if(owner->id>=0)value.owner=*owner;
     value.revision=itemObservationRevision(value);
     if(!validItemObservation(value))return std::nullopt;
     return value;

@@ -1,11 +1,12 @@
 #pragma once
-#include "creature_items_native.h"
+#include "unit_description_native.h"
+#include "item_transaction.h"
+#include "df/item.h"
 
 namespace df3d_production {
-struct ItemOwnerDescription { int32_t id=-1;std::string name; };
 // Sheet154878 resolves UNIT_ITEMOWNER (16), independently of UNIT_HOLDER (18).
 // Keep the name formatter's unit/body scratch and random streams owned.
-inline std::optional<ItemOwnerDescription> itemOwnerDescription(df::item* item) {
+inline std::optional<ItemOwner> itemOwnerDescription(df::item* item) {
     if(!item||!df3d_creature::inventoryDescriptionReady())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool pinned=[base] {
@@ -16,7 +17,7 @@ inline std::optional<ItemOwnerDescription> itemOwnerDescription(df::item* item) 
     if(!pinned)return std::nullopt;
     using Find=df::unit* (*)(df::item*,int32_t);
     using Name=void (*)(df::unit*,std::string*,bool);
-    ItemOwnerDescription result;
+    ItemOwner result;
     if(auto* owner=reinterpret_cast<Find>(base+0xcb1640)(item,16)) {
         if(owner->inventory.size()>10000)return std::nullopt;
         for(const auto* entry:owner->inventory)if(!entry)return std::nullopt;

@@ -3824,3 +3824,17 @@ TEST_CASE("creature expel result outcomes cannot invent successful previews or r
     CHECK(bool(wire::validateManagementState(*value))==invalid);
   }
 }
+
+TEST_CASE("independent item owner codec validates separate ownership") {
+  for(int fault=0;fault<5;++fault) {
+    CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    auto owner=wire::CreateItemOwner(b,fault==1?-1:988,fault==2?0:b.CreateString(fault==3?std::string(513,'x'):"native owner"));
+    auto carrier=wire::CreateItemCarrier(b,2,1017,-1,b.CreateString("native carrier"));
+    auto item=wire::CreateIndependentItemSnapshot(b,45,1,53,b.CreateString("seed"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,carrier,0,fault==4?0:owner);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault>0&&fault<4));
+    if(fault==0||fault==4){auto decoded=codec::decodeProduction(value->production());const auto& snapshot=*decoded.independentItem->snapshot;REQUIRE(snapshot.carrier);CHECK(snapshot.carrier->id==1017);CHECK(snapshot.owner.has_value()==(fault==0));if(snapshot.owner){CHECK(snapshot.owner->id==988);CHECK(snapshot.owner->name=="native owner");}}
+  }
+}

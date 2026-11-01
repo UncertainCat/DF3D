@@ -35,6 +35,8 @@
 #include "df/history_event_entity_dissolvedst.h"
 #include "df/history_event_hf_gains_secret_goalst.h"
 #include "df/history_event_item_stolenst.h"
+#include "df/history_event_hist_figure_diedst.h"
+#include "df/general_ref.h"
 #include "df/artifact_record.h"
 #include "df/item_coinst.h"
 #include "df/coin_batch.h"
@@ -62,6 +64,19 @@ inline bool knowledgeArtifactInputsValid(int32_t artifact_id) {
     if(issuer_id==-1)return true;
     const auto* issuer=df::historical_entity::find(issuer_id);
     return issuer && issuer->entity_raw;
+}
+inline bool knowledgeItemArtifactInputsValid(int32_t item_id) {
+    auto* item=df::item::find(item_id);
+    if(!item || !item->flags.bits.artifact)return true;
+    for(auto* ref:item->general_refs) {
+        if(!ref)return false;
+        if(ref->getType()!=df::general_ref_type::IS_ARTIFACT)continue;
+        // Native edfc20 is a read-only artifact lookup. Stop at the first
+        // matching reference even when its target is missing, as DF does.
+        const auto* artifact=ref->getArtifact();
+        return !artifact || knowledgeArtifactInputsValid(artifact->id);
+    }
+    return true;
 }
 // The generated circumstance union has no artifact-named member. Native
 // b5a6c0 passes its raw int32 payload to b94400 for exactly these two thoughts.
@@ -93,8 +108,8 @@ inline bool eventCircumstanceArtifactInputsValid(df::history_event* event) {
     default:return true;
     }
 }
-// Direct artifact fields verified against b94400 call arguments. Agreements
-// and item-to-artifact resolution remain separate.
+// Artifact dependencies verified against b94400 call arguments. Agreement
+// payloads are handled separately below.
 inline bool directEventArtifactInputsValid(df::history_event* event) {
     switch(event->getType()) {
     case df::history_event_type::ARTIFACT_CREATED:
@@ -131,6 +146,12 @@ inline bool directEventArtifactInputsValid(df::history_event* event) {
         return knowledgeArtifactInputsValid(static_cast<df::history_event_hf_act_on_artifactst*>(event)->artifact);
     case df::history_event_type::HF_LEARNS_SECRET:
         return knowledgeArtifactInputsValid(static_cast<df::history_event_hf_learns_secretst*>(event)->artifact);
+    case df::history_event_type::ITEM_STOLEN:
+        return knowledgeItemArtifactInputsValid(static_cast<df::history_event_item_stolenst*>(event)->item);
+    case df::history_event_type::HIST_FIGURE_DIED: {
+        const auto& weapon=static_cast<df::history_event_hist_figure_diedst*>(event)->weapon;
+        return knowledgeItemArtifactInputsValid(weapon.item) && knowledgeItemArtifactInputsValid(weapon.shooter_item);
+    }
     default:return true;
     }
 }

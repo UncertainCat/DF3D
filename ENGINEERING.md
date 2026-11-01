@@ -3758,6 +3758,20 @@ FORMED's native precondition requires both parties and details; CONCLUDED
 requires only details. Neither phrase iterates later agreement details.
 This extraction does not establish arbitrary agreement-party graph validity.
 
+Death/theft artifact extraction follows the live item's artifact flag (bit18)
+and first IS_ARTIFACT general reference. HIST_FIGURE_DIED resolves weapon.item
+and weapon.shooter_item (event offsets0x38/0x48); ITEM_STOLEN resolves item
+at0x34. Missing items, an unset flag, absent references or an unresolved first
+artifact reference retain native fallback. A null reference encountered during
+the scan is rejected before native dereference. The guard calls the native
+reference getter rather than reconstructing its lookup: vtable1744810 slot40
+targets edfc20, length0x7f, FNV2dd6f4f724425f19. Its bounded binary search only
+reads the reference's artifact_id and artifact records; it has no calls or
+source writes. Shared Knowledge readiness pins that helper before validation.
+The resolved artifact then receives the same name/item/coin checks as direct
+event references. These checks cover the artifact dependencies identified in
+the19 direct-caller roots, not every other input those event phrases consume.
+
 Native b94400 selects its fallback by testing the formatted name string's
 length at b94535, after a946e0, rather than directly testing name.has_name.
 The shared diagnostic guard now calls the pinned native name helper on an
@@ -3786,28 +3800,31 @@ Batch-1 and issuer-1 retain
 their native meanings; other batch indices require an in-range nonnull record,
 and other issuer IDs require a resolved entity with an entity raw. The same
 traversal serves dance form/section events and written historical-event
-references. Death/theft item resolution and nested item
-captions remain unvalidated, so this is partial
+references. Nested item captions and other event-source graphs remain
+unvalidated, so this is partial
 source validation. Coin selector
 ca0d00 (length0x55, FNV6891982ef52f2367), issuer5be970 (length0x536,
 FNVd785ec19f3aa4618) and year52c2b0 (length0xd8, FNV38b6489e35387929)
 are pinned in both diagnostic adapters.
 
-Protected082707 on2026-11-01 with bridge
-`8b48ebb5d0e2ee0062f5241f6c6fc1cbb2faa64116b55196aa9f13b56b2709d5`
-passes43 rejection cases: negative/past-end/null batches, unresolved issuer,
+Protected083239 on2026-11-01 with bridge
+`a4505ae89e2dc769e90b851b98a7f8b3f4b174babef1f0e15bd0e7270a05fa44`
+passes49 rejection cases: negative/past-end/null batches, unresolved issuer,
 null issuer raw, null artifact item, an empty flagged name with invalid coin
 data, each additional direct event type, and an invalid second old artifact
 in a transformation, plus both artifact circumstances on all six forwarding
 event types, and bad coins/null payloads/null first details on each of the
-three artifact-bearing agreement paths. All preserve guarded source/UI state;
-malformed inputs are never submitted to the native oracle. Fourteen valid
+three artifact-bearing agreement paths, plus bad coins/null references on
+theft, death-weapon and death-launcher paths. All preserve guarded source/UI
+state; malformed inputs are never submitted to the native oracle. Seventeen valid
 cases each match native
 twice, including lost/transformed events and a flagged but empty artifact
 name and both circumstance phrases through ARTIFACT_GIVEN, alongside four
 baseline forms. Native formed theft/retrieval and concluded retrieval phrases
 also match twice; concluded retrieval uses an empty party list to verify its
-different precondition. The empty flagged name produces the same
+different precondition. Theft, weapon and launcher descriptions also match
+twice using temporary historical records; no creature is killed. The empty
+flagged name produces the same
 native coin caption as the unflagged name, establishing why the previous
 has_name-only guard was insufficient. Other event types have rejection
 coverage here, not complete native phrase/side-effect acceptance.

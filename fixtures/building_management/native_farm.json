@@ -67464,9 +67464,9 @@
         "scope": "ASSUME_IDENTITY dance descriptions with valid unit race/caste and temporary identity/event graphs. Profession/entity changes leave this native phrase unchanged; separate profession branch, agreement identities, other races and deep historical identity graphs remain unverified."
       },
       "coin_validation_reference": {
-        "source": "build/stockpile-storage-native-farm-discovery-20261101-082707",
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-083239",
         "status": "passed_with_known_issues",
-        "bridge_sha256": "8b48ebb5d0e2ee0062f5241f6c6fc1cbb2faa64116b55196aa9f13b56b2709d5",
+        "bridge_sha256": "a4505ae89e2dc769e90b851b98a7f8b3f4b174babef1f0e15bd0e7270a05fa44",
         "cases": [
           {
             "case": "negative-batch",
@@ -67624,6 +67624,36 @@
             "rejected": true
           },
           {
+            "case": "item-link-theft-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "item-link-theft-null-reference",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "item-link-death-weapon-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "item-link-death-weapon-null-reference",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "item-link-death-shooter-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "item-link-death-shooter-null-reference",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
             "case": "artifact_claim_formed-AcquireArtifact-invalid-coin",
             "guards_unchanged": true,
             "rejected": true
@@ -67731,6 +67761,21 @@
             "text_sha256": "ed0f9a0223b51d964beed858a6e19b2a245339f9d4e2c48d561137149e32ba89"
           },
           {
+            "case": "item-link-theft",
+            "text_utf8_bytes": 1780,
+            "text_sha256": "4a1d0e9f43a70beda94885869474136ffff37bb43c847edb32faf9b406cabed9"
+          },
+          {
+            "case": "item-link-death-weapon",
+            "text_utf8_bytes": 1814,
+            "text_sha256": "5d0efd187dde7c7f734f46eaf9c23db1be378610dd2b2228723489743cabb93d"
+          },
+          {
+            "case": "item-link-death-shooter",
+            "text_utf8_bytes": 1815,
+            "text_sha256": "834b17c70e78a6f50473a4247250cb6baa46ed4db4db3d2873aa3b822e5ccb0c"
+          },
+          {
             "case": "circumstance-AcquireArtifact",
             "text_utf8_bytes": 1789,
             "text_sha256": "d5697c6dac08668f5a1811c4684f8d7d618c3fcd887476f5ccd757a51b3e371e"
@@ -67756,11 +67801,11 @@
             "text_sha256": "4b19e0d83b1e39867af1e405c4bbfe717d79e071ffca1597a2a66963cdd47709"
           }
         ],
-        "valid_native_comparisons": 28,
+        "valid_native_comparisons": 34,
         "baseline_form_comparisons": 4,
         "source_unchanged": true,
         "owned_exit_unsaved": true,
-        "scope": "Shared diagnostic traversal validates direct artifact fields for 15 event types, every transformed old artifact, AcquireArtifact/GaveArtifact circumstances in six forwarding event types, and three agreement artifact paths. Native phrase comparisons cover CREATED, LOST, TRANSFORMED, both circumstances through GIVEN, empty flagged names, formed theft/retrieval agreements and concluded retrieval with no parties. Other event types have rejection coverage only. Death/theft item resolution, arbitrary agreement-party graphs, nested item graphs and production admission remain incomplete."
+        "scope": "Shared diagnostic traversal validates artifact dependencies in 19 direct-caller event roots plus AcquireArtifact/GaveArtifact circumstances. Native phrase comparisons cover CREATED, LOST, TRANSFORMED, both circumstances through GIVEN, empty flagged names, formed theft/retrieval agreements, concluded retrieval with no parties, and theft/death weapon/launcher item links. Other event types have rejection coverage only. Arbitrary event/party graphs, nested item graphs and production admission remain incomplete."
       },
       "coin_caption_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-064043",

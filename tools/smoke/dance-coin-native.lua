@@ -121,6 +121,40 @@ for _,variant in ipairs{'no-batch','no-issuer','year','no-year','ruler','missing
     df.delete(dependency);df.delete(agreement);df.delete(detail);df.delete(data);df.delete(member);df.delete(party)
     assert(dependency_ok,dependency_error)
    end
+   for _,variant in ipairs{'theft','death-weapon','death-shooter'}do
+    local theft=variant=='theft'
+    local dependency=theft and df.history_event_item_stolenst:new()or df.history_event_hist_figure_diedst:new()
+    local ref=df.general_ref_is_artifactst:new();local artifact_flag=item.flags.artifact
+    assert(#item.general_refs==0)
+    local dependency_ok,dependency_error=xpcall(function()
+     ref.artifact_id=artifact.id;item.general_refs:insert('#',ref);item.flags.artifact=true
+     dependency.id=events[#events-1].id+1;dependency.year=event.year;dependency.seconds=event.seconds
+     dependency.site=-1
+     if theft then
+      dependency.item=item.id;dependency.item_type=df.item_type.COIN;dependency.item_subtype=-1;dependency.mattype=0;dependency.matindex=0
+      dependency.entity=-1;dependency.histfig=unit.hist_figure_id;dependency.structure=-1;dependency.region=-1;dependency.layer=-1;dependency.stash_site=-1
+      dependency.reason.type=-1;dependency.circumstance.type=-1;dependency.theft_method=df.theft_method_type.Theft
+     else
+      dependency.victim_hf=unit.hist_figure_id;dependency.slayer_hf=unit.hist_figure_id;dependency.slayer_race=unit.race;dependency.slayer_caste=unit.caste
+      dependency.subregion=-1;dependency.feature_layer=-1
+      dependency.death_cause=variant=='death-shooter'and df.death_type.SHOT or df.death_type.STRUCK_DOWN
+      local weapon=dependency.weapon
+      weapon.item=-1;weapon.item_type=-1;weapon.item_subtype=-1;weapon.mattype=0;weapon.matindex=0
+      weapon.shooter_item=-1;weapon.shooter_item_type=-1;weapon.shooter_item_subtype=-1;weapon.shooter_mattype=0;weapon.shooter_matindex=0
+      if variant=='death-shooter'then weapon.shooter_item=item.id;weapon.shooter_item_type=df.item_type.COIN
+      else weapon.item=item.id;weapon.item_type=df.item_type.COIN end
+     end
+     events:insert('#',dependency);form.event=dependency.id
+     local label='item-link-'..variant
+     local text=capture('coin-'..label);assert(text==capture('coin-'..label..'-warm'))
+     results[#results+1]={case=label,text=text}
+     item.coin_batch=-2;reject(label..'-invalid-coin',{ref});item.coin_batch=index
+     item.general_refs[0]=nil;reject(label..'-null-reference',{ref});item.general_refs[0]=ref
+    end,debug.traceback)
+    form.event=event.id;item.coin_batch=index;item.flags.artifact=artifact_flag;item.general_refs:resize(0)
+    if #events>counts[1]+1 then events:erase(#events-1)end
+    df.delete(ref);df.delete(dependency);assert(dependency_ok,dependency_error)
+   end
    for _,kind in ipairs{'artifact_claim_formed','artifact_given','artifact_possessed','entity_dissolved','hf_gains_secret_goal','item_stolen'}do
     local dependency=df['history_event_'..kind..'st']:new()
     local dependency_ok,dependency_error=xpcall(function()

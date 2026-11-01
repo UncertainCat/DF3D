@@ -49,7 +49,8 @@ local function coin_artifact(id)
    if artifact then
     object(artifact);name(artifact.name);local item=assert(artifact.item);object(item)
     assert(df.item_coinst:is_instance(item),'Add guards for this artifact item')
-    vector(item.general_refs);assert(#item.general_refs==0)
+    vector(item.general_refs)
+    for _,ref in ipairs(item.general_refs)do assert(df.general_ref_is_artifactst:is_instance(ref));object(ref)end
     vector(item.improvements);assert(#item.improvements==0)
     vector(df.global.world.coin_batches.all)
     if item.coin_batch~=-1 then
@@ -77,6 +78,24 @@ local function event(id)
   figure(value.histfig);figure(value.appointer_hfid);figure(value.promise_to_hfid);entity(value.civ)
  elseif kind==df.history_event_type.CREATED_SITE or kind==df.history_event_type.CREATED_BUILDING then
   figure(value.builder_hf);entity(value.civ);entity(value.site_civ);site(value.site)
+ elseif kind==df.history_event_type.ITEM_STOLEN or kind==df.history_event_type.HIST_FIGURE_DIED then
+  local ids
+  if kind==df.history_event_type.ITEM_STOLEN then
+   ids={value.item};figure(value.histfig);entity(value.entity);site(value.site);site(value.stash_site)
+   assert(value.reason.type==-1 and value.circumstance.type==-1,'Add theft circumstance guards')
+  else
+   ids={value.weapon.item,value.weapon.shooter_item};figure(value.victim_hf);figure(value.slayer_hf);site(value.site)
+  end
+  for _,id in ipairs(ids)do
+   local item=df.item.find(id)
+   if item then
+    object(item);vector(item.general_refs)
+    for _,ref in ipairs(item.general_refs)do
+     object(ref);assert(df.general_ref_is_artifactst:is_instance(ref),'Add guards for this reference')
+     coin_artifact(ref.artifact_id)
+    end
+   end
+  end
  elseif kind==df.history_event_type.ARTIFACT_LOST or kind==df.history_event_type.ARTIFACT_TRANSFORMED or kind==df.history_event_type.ARTIFACT_GIVEN then
   if kind~=df.history_event_type.ARTIFACT_GIVEN then site(value.site)end
   local ids={}

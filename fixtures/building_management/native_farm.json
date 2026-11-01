@@ -59209,6 +59209,35 @@
           "remove_after_return": true,
           "destination_workshop_sheet_complete": false
         }
+      },
+      "location_assignment_reference": {
+        "lines": [
+          {
+            "text": "                                                             Will do available tasks anywhere",
+            "y": 20
+          },
+          {
+            "text": "                                                             Performer",
+            "y": 23
+          },
+          {
+            "text": "                                                             The White Temple",
+            "y": 24
+          }
+        ],
+        "occupations": [
+          {
+            "id": 93,
+            "location_id": 3,
+            "site_id": 651,
+            "type": 1,
+            "unit_id": 6136
+          }
+        ],
+        "unit_id": 6136,
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-111508",
+        "source_save_unchanged": true,
+        "scope": "Native populated Locations layout and actual occupation only; no edit acceptance"
       }
     },
     "unit_rooms_reference": {

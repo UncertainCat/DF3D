@@ -104,6 +104,28 @@ if os.getenv('DF3D_UNIT_LABOR_WORKSHOP')=='1'then
  profile.permitted_workers:resize(0);for _,id in ipairs(old)do profile.permitted_workers:insert('#',id)end
  assert(ok,err)
 end
+if os.getenv('DF3D_UNIT_LABOR_LOCATIONS')=='1'then
+ local target
+ for _,candidate in ipairs(df.global.world.units.active)do
+  for _,role in ipairs(candidate.occupations)do
+   if role.location_id>=0 and role.site_id==df.global.plotinfo.site_id then target=candidate;break end
+  end
+  if target then break end
+ end
+ assert(target,'Expected active creature with a local location occupation')
+ local original=sheet.active_id
+ local ok,err=xpcall(function()
+  sheet.active_id=target.id;view:render(dfhack.getTickCount())
+  select('Labor',15,16);select('Locations',17,20)
+  local data={unit_id=target.id,occupations={},lines={}}
+  for _,role in ipairs(target.occupations)do
+   data.occupations[#data.occupations+1]={id=role.id,type=role.type,location_id=role.location_id,site_id=role.site_id,unit_id=role.unit_id}
+  end
+  for y=19,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then data.lines[#data.lines+1]={y=y,text=text}end end
+  result.location_fixture=data;capture('unit-labor-location-assigned')
+ end,debug.traceback)
+ sheet.active_id=original;view:render(dfhack.getTickCount());assert(ok,err)
+end
 select('Overview',15,16)
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Labor capture advanced simulation')
 local file=assert(io.open(out..'/unit-labor-native.json','w'));file:write(json.encode(result));file:close()

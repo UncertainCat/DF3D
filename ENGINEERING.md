@@ -3297,6 +3297,26 @@ processes have only the known startup notice. This establishes navigation,
 not completeness of the destination workshop building sheet. Overflow and hover
 remain unverified; creature exposure is unchanged.
 
+The Labor Locations page iterates unit.occupations directly (native input
+1b4e16 and renderer174444), without a separate native menu list. Local location
+resolution requires a matching current site, a nonnegative location ID, and
+neither WG_RUINED nor DOES_NOT_EXIST. Native67e80 resolves the location;
+getName virtual2 and a946e0(name, owned string, true, false) supply its translated
+name. Occupation captions are the native literals selected at17496c..174c3d,
+not enum spellings. The current generic section23 still needs replacement.
+
+Protected111508 on2026-11-01 captures actual performer6136, occupation93,
+location3/site651: "Performer" above "The White Temple", a location icon and
+open-location/remove buttons. The diagnostic temporarily selects this existing
+creature and restores the original selection without changing assignments.
+`location_assignment_reference` retains the screenshot provenance and rows.
+Owned DF29604 exits unsaved; source preservation passes, and three Godot
+processes report only the known startup notice. This is a native reference,
+not acceptance of DF3D Locations rendering or edits. Native removal at
+1b53ce..1b5427 detaches the occupation via ba570, updates worker jobs through
+133bcf0 with the temporary unit flag, then clears both occupation identities.
+Its owned semantic exposure remains unfinished.
+
 ### Creature Rooms native list
 
 The creature inspection's Rooms section now receives native-valued individual

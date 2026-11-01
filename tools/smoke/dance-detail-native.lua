@@ -58,6 +58,32 @@ local function event(id)
   figure(value.histfig);figure(value.appointer_hfid);figure(value.promise_to_hfid);entity(value.civ)
  elseif kind==df.history_event_type.CREATED_SITE or kind==df.history_event_type.CREATED_BUILDING then
   figure(value.builder_hf);entity(value.civ);entity(value.site_civ);site(value.site)
+ elseif kind==df.history_event_type.ARTIFACT_LOST or kind==df.history_event_type.ARTIFACT_TRANSFORMED then
+  site(value.site)
+  local ids={}
+  if kind==df.history_event_type.ARTIFACT_TRANSFORMED then
+   ids={value.new_artifact};vector(value.old_artifact);figure(value.histfig)
+   for _,id in ipairs(value.old_artifact)do ids[#ids+1]=id end
+  else ids={value.artifact}end
+  for _,id in ipairs(ids)do
+   local artifact=df.artifact_record.find(id)
+   if artifact then
+    object(artifact);name(artifact.name);local item=assert(artifact.item);object(item)
+    assert(df.item_coinst:is_instance(item),'Add guards for this artifact item')
+    vector(item.general_refs);assert(#item.general_refs==0)
+    vector(item.improvements);assert(#item.improvements==0)
+    vector(df.global.world.coin_batches.all)
+    if item.coin_batch~=-1 then
+     local batch=assert(df.global.world.coin_batches.all[item.coin_batch]);object(batch)
+     if batch.entity~=-1 then
+      local issuer=assert(df.historical_entity.find(batch.entity));entity(batch.entity);object(assert(issuer.entity_raw))
+      local _,address=df.sizeof(issuer.entity_raw:_field('flags'))
+      guard(df.reinterpret_cast('uint64_t',address).value,df.reinterpret_cast('int32_t',address+8).value)
+      figure(batch.ruler)
+     end
+    end
+   end
+  end
  elseif kind==df.history_event_type.ARTIFACT_CREATED then
   figure(value.creator_hfid);entity(value.entity);site(value.site)
   local artifact=df.artifact_record.find(value.artifact_id)

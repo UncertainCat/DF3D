@@ -3744,12 +3744,12 @@ the neighborhoods are not a transitive dataflow proof.
 
 Native b94400 selects its fallback by testing the formatted name string's
 length at b94535, after a946e0, rather than directly testing name.has_name.
-Before general admission, establish the relationship between that output and
-the diagnostic guard's name flag, including empty/malformed names. A resolved
-artifact also needs a valid item: the fallback dereferences it at b94541,
-and formatting flag2 dereferences it earlier at b9448e even for a named
-artifact. These are outstanding validation requirements, not accepted inputs
-or permission to fabricate replacement descriptions.
+The shared diagnostic guard now calls the pinned native name helper on an
+owned name copy and validates coin dependencies when the resulting string is
+empty. A resolved artifact also requires a valid item: the fallback
+dereferences it at b94541, and formatting flag2 dereferences it earlier at
+b9448e even for a named artifact. This does not establish arbitrary name/raw
+graph validity or permit fabricated replacement descriptions.
 
 The unnamed-artifact short-caption path can dispatch coin descriptionca0d00.
 The supported executable reads the signed coin-batch index at item offset0xe8;
@@ -3762,23 +3762,33 @@ validate the batch index, selected batch, and nonnegative issuer reference/raw
 before this path runs. This is a source-validation obligation, not evidence of
 a naturally occurring native crash or authorization to change valid captions.
 
-The shared diagnostic event traversal now validates this dependency for unnamed
-coin artifacts reached through ARTIFACT_CREATED. Batch-1 and issuer-1 retain
+The shared diagnostic event traversal validates this dependency for coin
+artifacts reached through the15 event types with direct artifact fields:
+the13 ARTIFACT types listed above, HF_ACT_ON_ARTIFACT and HF_LEARNS_SECRET.
+ARTIFACT_TRANSFORMED validates the new artifact and every old artifact.
+Batch-1 and issuer-1 retain
 their native meanings; other batch indices require an in-range nonnull record,
 and other issuer IDs require a resolved entity with an entity raw. The same
 traversal serves dance form/section events and written historical-event
-references. It does not yet cover other artifact-bearing circumstances or
-nested item captions, so this remains partial source validation. Coin selector
+references. Agreement payloads, death/theft item resolution, artifact-bearing
+circumstances and nested item captions remain unvalidated, so this is partial
+source validation. Coin selector
 ca0d00 (length0x55, FNV6891982ef52f2367), issuer5be970 (length0x536,
 FNVd785ec19f3aa4618) and year52c2b0 (length0xd8, FNV38b6489e35387929)
 are pinned in both diagnostic adapters.
 
-Protected080552 on2026-11-01 with bridge
-`f4d2e44ed6abed85cd1efcec90f4cb917668c128eb457f95483e32df9b10bd02`
-rejects negative/past-end/null batches, an unresolved issuer and a null issuer
-raw before native formatting. All five preserve guarded source/UI state;
-malformed inputs are never submitted to the native oracle. The six valid
-coin cases each still match native twice, and four baseline forms pass.
+Protected081752 on2026-11-01 with bridge
+`c9eeff99a57cb3d4f5fd66edc4c504c2e635917195f1db8d99c4017ab7e20b80`
+passes22 rejection cases: negative/past-end/null batches, unresolved issuer,
+null issuer raw, null artifact item, an empty flagged name with invalid coin
+data, each additional direct event type, and an invalid second old artifact
+in a transformation. All preserve guarded source/UI state; malformed inputs
+are never submitted to the native oracle. Nine valid cases each match native
+twice, including lost/transformed events and a flagged but empty artifact
+name, alongside four baseline forms. The empty flagged name produces the same
+native coin caption as the unflagged name, establishing why the previous
+has_name-only guard was insufficient. Other event types have rejection
+coverage here, not complete native phrase/side-effect acceptance.
 `coin_validation_reference` records the bounded acceptance. The owned session
 exits unsaved with source-save preservation; all three Godot processes report
 only the known startup notice. Public Knowledge exposure remains unchanged.

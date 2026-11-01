@@ -30,7 +30,7 @@ for _,variant in ipairs{'no-batch','no-issuer','year','no-year','ruler','missing
    local index=item.coin_batch
    local function reject(label)
     local guards={}
-    for _,value in ipairs{item,batch,artifact,event,unit,issuer,df.global.game.main_interface.view_sheets,df.global.plotinfo}do
+    for _,value in ipairs{item,batch,artifact,df.history_event.find(form.event),unit,issuer,df.global.game.main_interface.view_sheets,df.global.plotinfo}do
      local size,address=df.sizeof(value);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
      guards[#guards+1]={bytes=bytes,address=address,size=size}
     end
@@ -48,6 +48,38 @@ for _,variant in ipairs{'no-batch','no-issuer','year','no-year','ruler','missing
    batches[index]=nil;reject('null-batch');batches[index]=batch
    batch.entity=2147483647;assert(not df.historical_entity.find(batch.entity));reject('missing-issuer');batch.entity=issuer.id
    issuer.entity_raw=nil;reject('missing-issuer-raw');issuer.entity_raw=raw
+   artifact.item=nil;reject('missing-artifact-item');artifact.item=item
+   artifact.name.has_name=true
+   local empty_name=capture('coin-empty-name-flag');assert(empty_name==native,'Empty name flag changed native caption')
+   assert(empty_name==capture('coin-empty-name-flag-warm'))
+   results[#results+1]={case='empty-name-flag',text=empty_name}
+   item.coin_batch=-2;reject('empty-name-flag-invalid-coin');item.coin_batch=index
+   artifact.name.has_name=false
+   local classes={'artifact_claim_formed','artifact_copied','artifact_destroyed','artifact_dropped','artifact_found','artifact_given','artifact_hidden','artifact_lost','artifact_possessed','artifact_recovered','artifact_stored','hf_act_on_artifact','hf_learns_secret','artifact_transformed'}
+   for _,kind in ipairs(classes)do
+    local dependency=df['history_event_'..kind..'st']:new()
+    local dependency_ok,dependency_error=xpcall(function()
+     dependency.id=events[#events-1].id+1;dependency.year=event.year;dependency.seconds=event.seconds
+     if kind=='artifact_transformed'then dependency.new_artifact=artifact.id
+     else dependency.artifact=artifact.id end
+     events:insert('#',dependency);form.event=dependency.id
+     item.coin_batch=-2;reject(kind..'-invalid-coin');item.coin_batch=index
+     if kind=='artifact_lost'then
+      dependency.site=-1;dependency.site_property_id=-1;dependency.subregion_id=-1;dependency.layer_id=-1
+     elseif kind=='artifact_transformed'then
+      dependency.unit=-1;dependency.histfig=-1;dependency.site=-1
+      dependency.new_artifact=-1;dependency.old_artifact:insert('#',-1);dependency.old_artifact:insert('#',artifact.id)
+      item.coin_batch=-2;reject(kind..'-old-invalid-coin');item.coin_batch=index
+     end
+     if kind=='artifact_lost'or kind=='artifact_transformed'then
+      local text=capture('coin-'..kind);assert(text==capture('coin-'..kind..'-warm'))
+      results[#results+1]={case=kind,text=text}
+     end
+    end,debug.traceback)
+    form.event=event.id;item.coin_batch=index
+    if #events>counts[1]+1 then events:erase(#events-1)end
+    df.delete(dependency);assert(dependency_ok,dependency_error)
+   end
   end
  end,debug.traceback)
  form.event=original;raw.flags.CURRENCY_BY_YEAR=flag;issuer.entity_raw=raw

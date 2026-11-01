@@ -15,11 +15,88 @@
 #include "df/entity_occasion.h"
 #include "df/entity_occasion_schedule.h"
 #include "df/history_event_artifact_createdst.h"
+#include "df/history_event_artifact_claim_formedst.h"
+#include "df/history_event_artifact_copiedst.h"
+#include "df/history_event_artifact_destroyedst.h"
+#include "df/history_event_artifact_droppedst.h"
+#include "df/history_event_artifact_foundst.h"
+#include "df/history_event_artifact_givenst.h"
+#include "df/history_event_artifact_hiddenst.h"
+#include "df/history_event_artifact_lostst.h"
+#include "df/history_event_artifact_possessedst.h"
+#include "df/history_event_artifact_recoveredst.h"
+#include "df/history_event_artifact_storedst.h"
+#include "df/history_event_artifact_transformedst.h"
+#include "df/history_event_hf_act_on_artifactst.h"
+#include "df/history_event_hf_learns_secretst.h"
 #include "df/artifact_record.h"
 #include "df/item_coinst.h"
 #include "df/coin_batch.h"
 #include <unordered_set>
 namespace df3d_creature {
+// Called only after description readiness has pinned the native name helper.
+// This closes coin dependencies, not arbitrary item-caption graphs.
+inline bool knowledgeArtifactInputsValid(int32_t artifact_id) {
+    auto* artifact=df::artifact_record::find(artifact_id);
+    if(!artifact)return true; // Native missing-artifact wording.
+    if(!artifact->item)return false;
+    if(artifact->item->getType()!=df::item_type::COIN)return true;
+    auto name=artifact->name;
+    std::string translated;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&name,&translated,true,false);
+    if(!translated.empty())return true;
+    const auto index=static_cast<df::item_coinst*>(artifact->item)->coin_batch;
+    if(index==-1)return true;
+    if(!df::global::world)return false;
+    const auto& batches=df::global::world->coin_batches.all;
+    if(index<0 || size_t(index)>=batches.size() || !batches[size_t(index)])return false;
+    const auto issuer_id=batches[size_t(index)]->entity;
+    if(issuer_id==-1)return true;
+    const auto* issuer=df::historical_entity::find(issuer_id);
+    return issuer && issuer->entity_raw;
+}
+// Direct artifact fields verified against b94400 call arguments. Agreements,
+// item-to-artifact resolution and circumstance dependencies remain separate.
+inline bool directEventArtifactInputsValid(df::history_event* event) {
+    switch(event->getType()) {
+    case df::history_event_type::ARTIFACT_CREATED:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_createdst*>(event)->artifact_id);
+    case df::history_event_type::ARTIFACT_CLAIM_FORMED:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_claim_formedst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_COPIED:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_copiedst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_DESTROYED:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_destroyedst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_DROPPED:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_droppedst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_FOUND:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_foundst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_GIVEN:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_givenst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_HIDDEN:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_hiddenst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_LOST:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_lostst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_POSSESSED:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_possessedst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_RECOVERED:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_recoveredst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_STORED:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_artifact_storedst*>(event)->artifact);
+    case df::history_event_type::ARTIFACT_TRANSFORMED: {
+        const auto* value=static_cast<df::history_event_artifact_transformedst*>(event);
+        if(!knowledgeArtifactInputsValid(value->new_artifact))return false;
+        for(const auto id:value->old_artifact)if(!knowledgeArtifactInputsValid(id))return false;
+        return true;
+    }
+    case df::history_event_type::HF_ACT_ON_ARTIFACT:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_hf_act_on_artifactst*>(event)->artifact);
+    case df::history_event_type::HF_LEARNS_SECRET:
+        return knowledgeArtifactInputsValid(static_cast<df::history_event_hf_learns_secretst*>(event)->artifact);
+    default:return true;
+    }
+}
 // A targeted diagnostic guard, not general event-graph validation. JoinParty
 // reasons2/24 reach c3a590(false), whose profession formatter treats narrowed
 // comparison race -2 as a request to read native UI state.
@@ -45,21 +122,7 @@ inline bool knowledgeEventInputsValid(int32_t event_id) {
         auto* event=df::history_event::find(event_id);if(!event)return true;
         if(!visited.insert(event_id).second)return false;
         if(!directAgreementIdentityInputsValid(event_id))return false;
-        if(event->getType()==df::history_event_type::ARTIFACT_CREATED) {
-            const auto* artifact=df::artifact_record::find(static_cast<df::history_event_artifact_createdst*>(event)->artifact_id);
-            if(artifact && !artifact->name.has_name && artifact->item && artifact->item->getType()==df::item_type::COIN) {
-                const auto index=static_cast<df::item_coinst*>(artifact->item)->coin_batch;
-                if(index!=-1) {
-                    const auto& batches=df::global::world->coin_batches.all;
-                    if(index<0 || size_t(index)>=batches.size() || !batches[size_t(index)])return false;
-                    const auto issuer_id=batches[size_t(index)]->entity;
-                    if(issuer_id!=-1) {
-                        const auto* issuer=df::historical_entity::find(issuer_id);
-                        if(!issuer || !issuer->entity_raw)return false;
-                    }
-                }
-            }
-        }
+        if(!directEventArtifactInputsValid(event))return false;
         if(event->getType()==df::history_event_type::MASTERPIECE_LOST) {
             event_id=static_cast<df::history_event_masterpiece_lostst*>(event)->creation_event;
             continue;

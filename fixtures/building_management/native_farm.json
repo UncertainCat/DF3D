@@ -67464,9 +67464,9 @@
         "scope": "ASSUME_IDENTITY dance descriptions with valid unit race/caste and temporary identity/event graphs. Profession/entity changes leave this native phrase unchanged; separate profession branch, agreement identities, other races and deep historical identity graphs remain unverified."
       },
       "coin_validation_reference": {
-        "source": "build/stockpile-storage-native-farm-discovery-20261101-080552",
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-081752",
         "status": "passed_with_known_issues",
-        "bridge_sha256": "f4d2e44ed6abed85cd1efcec90f4cb917668c128eb457f95483e32df9b10bd02",
+        "bridge_sha256": "c9eeff99a57cb3d4f5fd66edc4c504c2e635917195f1db8d99c4017ab7e20b80",
         "cases": [
           {
             "case": "negative-batch",
@@ -67492,13 +67492,145 @@
             "case": "missing-issuer-raw",
             "guards_unchanged": true,
             "rejected": true
+          },
+          {
+            "case": "missing-artifact-item",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "empty-name-flag-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_claim_formed-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_copied-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_destroyed-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_dropped-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_found-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_given-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_hidden-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_lost-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_possessed-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_recovered-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_stored-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "hf_act_on_artifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "hf_learns_secret-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_transformed-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_transformed-old-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
           }
         ],
-        "valid_native_comparisons": 12,
+        "valid_cases": [
+          {
+            "case": "no-batch",
+            "text_utf8_bytes": 1736,
+            "text_sha256": "28ef9b9ab69300e481528d1012f9b38cc000a81c0a83c521491d986d5563ecde"
+          },
+          {
+            "case": "no-issuer",
+            "text_utf8_bytes": 1736,
+            "text_sha256": "28ef9b9ab69300e481528d1012f9b38cc000a81c0a83c521491d986d5563ecde"
+          },
+          {
+            "case": "year",
+            "text_utf8_bytes": 1753,
+            "text_sha256": "1ca1a0ea2419e23fd3ec8a240d76744ad35f7b875f168db2402cc88775f6eb8f"
+          },
+          {
+            "case": "empty-name-flag",
+            "text_utf8_bytes": 1753,
+            "text_sha256": "1ca1a0ea2419e23fd3ec8a240d76744ad35f7b875f168db2402cc88775f6eb8f"
+          },
+          {
+            "case": "artifact_lost",
+            "text_utf8_bytes": 1758,
+            "text_sha256": "f4af82776fc0efa02ca04c42890c984aae16fadd040d52aa346297b160329379"
+          },
+          {
+            "case": "artifact_transformed",
+            "text_utf8_bytes": 1823,
+            "text_sha256": "05b89b3ece39ec428db9c619d5ad847dbcee231783b6b591dbb5128660663e30"
+          },
+          {
+            "case": "no-year",
+            "text_utf8_bytes": 1749,
+            "text_sha256": "4b19e0d83b1e39867af1e405c4bbfe717d79e071ffca1597a2a66963cdd47709"
+          },
+          {
+            "case": "ruler",
+            "text_utf8_bytes": 1768,
+            "text_sha256": "7d435d16ca5df8cfe4b9a09ddadf909a8f013de4d20b0fe4c8e3605ca1d86c6e"
+          },
+          {
+            "case": "missing-ruler",
+            "text_utf8_bytes": 1749,
+            "text_sha256": "4b19e0d83b1e39867af1e405c4bbfe717d79e071ffca1597a2a66963cdd47709"
+          }
+        ],
+        "valid_native_comparisons": 18,
         "baseline_form_comparisons": 4,
         "source_unchanged": true,
         "owned_exit_unsaved": true,
-        "scope": "Unnamed coin ARTIFACT_CREATED preflight on shared event traversal. Does not cover other artifact-bearing event/circumstance paths or nested item graphs."
+        "scope": "Shared diagnostic traversal validates direct artifact fields for 15 event types, including every transformed old artifact. Live native phrase comparisons cover CREATED, LOST and TRANSFORMED plus an empty flagged name. Other direct event types have rejection coverage only. Agreements, death/theft item resolution, circumstances, nested item graphs and production admission remain incomplete."
       },
       "coin_caption_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-064043",

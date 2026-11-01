@@ -66859,6 +66859,96 @@
         },
         "scope": "Native tab/Escape oracle and actual main-scene navigation with captured native text injected through the real request service. No live Knowledge request handler acceptance."
       },
+      "identity_event_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-072622",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "e0a312417cb50ecfed9753cfd4676f7922516ff60a86102da3bae09b10f5e4c0",
+        "cases": [
+          {
+            "case": "named",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "utf8_bytes": 1810,
+            "text_sha256": "098ceb9f537c6fea2eab265fa1dbbdcc080f6a6be3f4700cb73e4b49276f14be",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "unnamed",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "utf8_bytes": 1791,
+            "text_sha256": "4805ae257aff663597e74f89e0cebea5d985528ccb1d61841def13550ef09de1",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "profession",
+            "caste": 1,
+            "profession": 0,
+            "race": 572,
+            "utf8_bytes": 1810,
+            "text_sha256": "098ceb9f537c6fea2eab265fa1dbbdcc080f6a6be3f4700cb73e4b49276f14be",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "entity",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "utf8_bytes": 1810,
+            "text_sha256": "098ceb9f537c6fea2eab265fa1dbbdcc080f6a6be3f4700cb73e4b49276f14be",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "impersonated",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "utf8_bytes": 1810,
+            "text_sha256": "098ceb9f537c6fea2eab265fa1dbbdcc080f6a6be3f4700cb73e4b49276f14be",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "missing-impersonated",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "utf8_bytes": 1803,
+            "text_sha256": "5873d989c9b4c68f8514a71828f51347f783b97dc93545dfc6215d3b4ec156fd",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "missing-identity",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "utf8_bytes": 1683,
+            "text_sha256": "59cfaf3494d1574aa7c0c62b3f8216797326ae5ee8419eb85d1c8dcdac6ac2a0",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "missing-trickster",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "utf8_bytes": 1683,
+            "text_sha256": "59cfaf3494d1574aa7c0c62b3f8216797326ae5ee8419eb85d1c8dcdac6ac2a0",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          }
+        ],
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "ASSUME_IDENTITY dance descriptions with valid unit race/caste and temporary identity/event graphs. Profession/entity changes leave this native phrase unchanged; separate profession branch, agreement identities, other races and deep historical identity graphs remain unverified."
+      },
       "coin_caption_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-064043",
         "status": "passed_with_known_issues",

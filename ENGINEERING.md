@@ -3467,9 +3467,22 @@ the sentinel after narrowing (including positive values whose low16 bits are
 formatters. Supplying an argument explicitly does not alone prove independence
 from native UI state. The helper's existing length0x368/FNV5020a6b8e463a24d pin
 matches this inspection; the complete identity body is length0xcbf,
-FNV09a894440651f51f. Referenced historical-figure/name storage and controlled
-native identity-event comparisons remain outstanding; this static argument
-audit does not admit identity events to production.
+FNV09a894440651f51f. Deep historical-figure/name storage and the separate
+profession branch remain outstanding; this static argument audit does not
+admit identity events to production.
+
+Protected072622 on2026-11-01 compares eight controlled ASSUME_IDENTITY dance
+descriptions against the native Knowledge panel, twice each: named, unnamed,
+profession/entity changes, existing/missing impersonated figure, missing
+identity and missing trickster. All16 diagnostic comparisons match native
+text and preserve guarded event/identity/name/vector, referenced figure/entity,
+form, UI and random state. Temporary records are removed before the owned
+session exits unsaved; the source-save manifest is unchanged. Three Godot
+processes report only the documented renderer startup notice. The fixture's
+`identity_event_reference` retains hashes and scope. Profession/entity variants
+produce the same phrase as the named case, so they do not establish coverage
+of the distinct profession-caption branch. Other races, agreement identity
+phrases and deeper identity graphs remain unverified.
 
 The installed executable timestamp selects DFHack's `v0.53.16 win64 STEAM`
 symbol table. `event-world-construction-getters.json` resolves b93a90's virtual

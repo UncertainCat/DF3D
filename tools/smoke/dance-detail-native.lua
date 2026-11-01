@@ -91,6 +91,13 @@ local function event(id)
    for _,entry in ipairs(art.properties)do object(entry)end
    end
   end
+ elseif kind==df.history_event_type.ASSUME_IDENTITY then
+  figure(value.trickster);entity(value.target);vector(df.global.world.identities.all)
+  local identity=df.identity.find(value.identity)
+  if identity then
+   object(identity);name(identity.name);figure(identity.impersonated_hf);entity(identity.entity_id)
+   vector(identity.entity_profile);vector(identity.cultural_identity_profile)
+  end
  elseif kind==df.history_event_type.MASTERPIECE_LOST then
   figure(value.histfig);site(value.site);event(value.creation_event)
  elseif kind==df.history_event_type.PERFORMANCE then

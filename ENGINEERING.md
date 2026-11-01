@@ -3310,9 +3310,18 @@ owner/input retirement, explicitly reopens the same creature and matches those
 native resets. `close_reopen_reference` records the native and rendered outcomes.
 All three Godot processes have only the known startup notice; owned DF36888 exits
 unsaved and the source-save manifest is unchanged. The diagnostic map reselection
-restores its camera before returning to the parent oracle. Different creature
-identity, transport replacement and broader clinical variants remain required
-for Health. The creature route remains staged.
+restores its camera before returning to the parent oracle. Protected024604 disables and reenables the real bridge while the Health History
+scrollbar is being dragged. The actual main scene retires the panel, selected
+identity and gesture; producer recovery does not reopen it. After the fortress
+loader completes, explicit reopen restores75 native History lines at row zero.
+The diagnostic reuses the existing lifecycle service and restores the producer;
+`DF3D_UNIT_HEALTH_LIFECYCLE=1` selects Health evidence separately from Items.
+`lifecycle_reference` retains the bounded result. All three Godot processes have
+only the known startup notice; owned DF39292 exits unsaved and the source-save
+manifest is unchanged. This proves replacement within one paused fortress, not
+another world or deliberately delayed publication. Different creature identity
+and broader clinical variants remain required for Health. The creature route
+remains staged.
 
 The full reference run passes with only the known startup notice in each Godot
 process; root/core QA `health-pages-reference` passes. DF38684 exits unsaved and

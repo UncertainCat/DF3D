@@ -54847,6 +54847,27 @@
         },
         "source_preserved": true,
         "scope": "Native Escape then actual map reselect of same creature; DF3D Escape while dragging then explicit same-target reopen. Overview resets, Health starts Status/top. Different identity and transport replacement remain unverified for Health."
+      },
+      "lifecycle_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-024604",
+        "status": "passed_with_known_issues",
+        "native": {
+          "events": [
+            "disable",
+            "enable"
+          ],
+          "restored": true,
+          "success": true
+        },
+        "scene": {
+          "drag_retired": true,
+          "explicit_reopen": true,
+          "no_automatic_reopen": true,
+          "owner_retired": true,
+          "success": true
+        },
+        "source_preserved": true,
+        "scope": "Real bridge disable/enable within one paused fortress during Health History drag; owner/gesture retirement, no automatic reopen, explicit reopen restores75 native lines at row0. Does not cover another world, different creature identity, or deliberately delayed publication."
       }
     }
   }

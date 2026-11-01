@@ -49531,7 +49531,7 @@
         "routine": "1393900",
         "end": "1394724",
         "arguments": "unit, owned string, inventory entry",
-        "audit": "Incomplete; Pet role writes SplitMix state18adf98. Restore random state and audit callees before exposing."
+        "audit": "Native role formatter has transitive creature-cache writes and random draws; adapter must use owned creature cache vectors and restore MT plus SplitMix. Not runtime accepted."
       },
       "remaining": [
         "Nested contained rows and spatters",
@@ -49539,7 +49539,83 @@
         "Item inspection actions and return navigation",
         "Artwork, clipping, hover text, scrolling and resize",
         "Actual DF3D rendered/live parity and lifecycle"
-      ]
+      ],
+      "role_ownership_audit": {
+        "pins": [
+          {
+            "rva": "0x1393900",
+            "length": "0xe24",
+            "fnv64": "3e7908712b100d57"
+          },
+          {
+            "rva": "0x13345d0",
+            "length": "0x249",
+            "fnv64": "f4075bbdb4b3eb77"
+          },
+          {
+            "rva": "0x135edf0",
+            "length": "0x20",
+            "fnv64": "48a428d1a5aeb8dd"
+          },
+          {
+            "rva": "0x13869f0",
+            "length": "0x2f8",
+            "fnv64": "3a4c7f2fb4d241a1"
+          },
+          {
+            "rva": "0x1385b10",
+            "length": "0x816",
+            "fnv64": "d0d397ea8681b007"
+          },
+          {
+            "rva": "0x1383f50",
+            "length": "0xe82",
+            "fnv64": "bc4789871636eb21"
+          },
+          {
+            "rva": "0x1383b40",
+            "length": "0x74",
+            "fnv64": "4a98ff11e04d1ce9"
+          },
+          {
+            "rva": "0x13243b0",
+            "length": "0x56",
+            "fnv64": "c7c182f36e56f3bb"
+          },
+          {
+            "rva": "0x13ec760",
+            "length": "0x3ca",
+            "fnv64": "a85f2be064b4fe01"
+          },
+          {
+            "rva": "0xeb68b0",
+            "length": "0x1e3",
+            "fnv64": "4bcd46a418e7a7bb"
+          },
+          {
+            "rva": "0xd09a30",
+            "length": "0x52",
+            "fnv64": "a2896c40eeeb58bc"
+          }
+        ],
+        "pet_branch": "Role8 jump target13941c9 seeds SplitMix18adf98 from inventory.pet_seed; deterministic text but global write at13941f1.",
+        "weapon_branch": "Role1 jump target1393ac4 calls item.needTwoHandedWield(size_cur); when true,135edf0 calls13869f0(unit,false,null,-1).",
+        "weapon_cache_graph": [
+          "13869f0 allocates owned temporary vectors, calls1385b10, and may call MT generator eb68b0 when several grasp parts qualify.",
+          "1385b10 calls1383f50 and updates unit flags, body_part_useable vector and unit cache byte1430.",
+          "1383f50 updates body.components.body_part_status and enemy.motor_nervenet/sensory_nervenet; reads wounds, installed body plan and creature raws.",
+          "13ec760 recursively checks body-part nerve relationships; no writes identified."
+        ],
+        "adapter_requirements": [
+          "Copy source creature semantic fields into an owned constructed unit; df::unit cannot be copied wholesale because it contains a mutex.",
+          "Independently own mutable body.components and enemy cache vector storage; preserve source flags and cache byte.",
+          "Restore all MT buffers, indices, selected stream and SplitMix using the established hover-provider strategy.",
+          "Do not pre-mark caches valid: cold native cache computation must run on owned inputs.",
+          "Keep output strings and input inventory entry owned; never borrow native sheet or menu scratch.",
+          "Verify ordinary rows, Pet seeds and a two-handed weapon with cold caches; guard source unit, backing vectors, random state and native UI before calling the adapter."
+        ],
+        "remaining": "Implement context and adapter; finish reachable virtual/helper audit and validate against native. These pins are research evidence, not runtime acceptance."
+      }
     }
   }
 }

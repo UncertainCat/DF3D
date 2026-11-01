@@ -1409,7 +1409,17 @@ string, inventory entry) at169f08. The complete routine ends1394724 including
 its role jump table. It is not yet exposed: role8(Pet) derives placement text
 from pet_seed and writes the SplitMix global18adf98 at13941f1. A runtime adapter
 must preserve random state (as the hover provider already does), finish auditing
-its callees, and verify owned output against native before use. Inventory rows
+its callees, and verify owned output against native before use. The Weapon role
+also calls135edf0/13869f0 when item.needTwoHandedWield returns true. That graph
+can draw from MT and calls1385b10/1383f50 to refresh creature caches: body-part
+status, motor/sensory nerve vectors, usable-part vector, flags and cache byte1430.
+The adapter therefore needs an independently constructed unit context with owned
+mutable vectors, not just an owned output string or a shallow byte copy. Preserve
+the source's cold-cache flags and let DF compute on the owned context; do not
+skip native validation by marking caches valid. Full MT buffers, indices and
+selected stream must be restored along with SplitMix. The fixture's ownership
+audit records the function pins and required cold-cache/weapon/Pet comparisons;
+these are implementation requirements, not runtime acceptance. Inventory rows
 alone are insufficient: renderer169436 also counts contained references on
 container items, and1695c0 traverses unit-body spatters. Their descriptions,
 ordering, nested actions and artwork still need native acceptance. The Items

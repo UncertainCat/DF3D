@@ -1509,11 +1509,28 @@ from Box only in type/subtype getters; the latter shares Instrument's fd0c0.
 Each clothing subtype must match its installed semantic definition. Existing
 quality/improvement checks and native c75000 ownership remain unchanged.
 Only hood navigation is live-verified. Its native description reaches the
-snapshot, but clothing artwork and native Owner header are missing. The native
+snapshot; the native Owner header remains missing. The native
 inspected screenshot lacks body/controls, so it is not a full description pixel
 oracle. Indicators, hover, scroll/resize/lifecycle and nested navigation remain
 unfinished; the creature route stays staged. The fixture's
 `dedicated_view_reference` and `clothing_dispatch_audit` retain bounded evidence.
+
+Clothing item observations now include the existing semantic appearance record
+for HELM/ARMOR/SHOES/PANTS/GLOVES. Protected002953 verifies hood32064's artwork
+through actual Items navigation. Its32x32 icon and40x36 frame match the usable
+native header from002607 exactly (zero differing RGB pixels). This accepts only
+that artwork region, not the full sheet. The repeated pointer/render experiment
+in002953 produced a malformed native screenshot and was reverted; that image is
+excluded from acceptance. Each Godot process has only the known renderer notice;
+owned DF39712 exits unsaved with the source unchanged. Other clothing families
+still need rendered verification. `clothing_art_reference` retains the scope.
+
+The native Owner header uses cb1640(item,16) at154878, independently of the
+carrier's UNIT_HOLDER reference18. It formats the resolved unit with1330c30
+at154aaf (third argument false), prefixed with installed text15fe098, "Owner: ".
+The native header moves the item caption up one row when an owner exists.
+Owner identity/name transport and rendering remain unimplemented; the fixture's
+`owner_header_audit` records the entry points and required ownership distinction.
 
 The Overview hauling line uses native selector1324b50(unit), the same call made
 by renderer166e81, followed by the existing owned caption formatter c65450.

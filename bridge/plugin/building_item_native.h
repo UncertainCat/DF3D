@@ -489,7 +489,13 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     // Observe facts after native lazy formatting, without borrowing a UI owner.
     auto facts=itemFacts(item);if(!facts)return std::nullopt;
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
-    if(value.item.itemType==30||value.item.itemType==13){value.appearance=itemAppearance(item);if(!value.appearance)return std::nullopt;}
+    switch(item->getType()) {
+    case df::item_type::BOX:case df::item_type::INSTRUMENT:
+    case df::item_type::HELM:case df::item_type::ARMOR:case df::item_type::SHOES:
+    case df::item_type::PANTS:case df::item_type::GLOVES:
+        value.appearance=itemAppearance(item);if(!value.appearance)return std::nullopt;break;
+    default:break;
+    }
     if(holder->id>=0)value.buildingHolder=*holder;
     else {const auto carrier=itemCarrier(item);if(!carrier)return std::nullopt;if(carrier->kind)value.carrier=*carrier;}
     if(stockpile->id>=0){

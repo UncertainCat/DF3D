@@ -50304,6 +50304,49 @@
           }
         },
         "runtime_checks": "Pin every admitted table slot and getter body; subtype non-null and exact DFHack installed subtype identity; existing improvement dispatch/quality checks remain."
+      },
+      "clothing_art_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-002953",
+        "status": "passed_with_known_issues for navigation and hood artwork; full item sheet incomplete",
+        "item_id": 32064,
+        "appearance": {
+          "color_token": "GRAY",
+          "flags": 0,
+          "material_token": "PLANT:GRASS_TAIL_PIG:THREAD",
+          "stack": 1,
+          "subtype_raw": "ITEM_HELM_HOOD"
+        },
+        "native_reference": "build/stockpile-storage-native-farm-discovery-20261101-002607/unit-items-inspected.png",
+        "pixel_comparison": {
+          "icon": [
+            426,
+            66,
+            32,
+            32
+          ],
+          "frame": [
+            424,
+            64,
+            40,
+            36
+          ],
+          "differing_pixels": 0
+        },
+        "viewer_sha256": "90e643d28ba1032949f93d33fc9a8d416a3820d6fc419f7cc666f917cc01f83b",
+        "capture_limitation": "002953 repeated pointer/feed/render capture is malformed, excluded from comparison; experimental capture change reverted. Earlier native header is usable only for header/art regions.",
+        "source_save": "unchanged; owned DF39712 exits unsaved",
+        "coverage": "HELM hood live artwork verified; ARMOR/SHOES/PANTS/GLOVES appearance transport uses audited shared getters but lacks live artwork acceptance."
+      },
+      "owner_header_audit": {
+        "status": "located, not implemented",
+        "lookup": "renderer154878 calls cb1640(item,16), UNIT_ITEMOWNER; carrier uses18, UNIT_HOLDER",
+        "name": "renderer154aaf calls1330c30(unit,owned string,false)",
+        "prefix": {
+          "rva": "15fe098",
+          "text": "Owner: "
+        },
+        "layout": "Owner present: caption starts first header row; yellow owner second row; weight third row. No owner: caption second row, weight third row.",
+        "required": "Explicit owner identity/name in semantic snapshot and revision, matching codec validation; do not infer ownership from carrier. Use owned unit context where required by name formatter; verify distinct owner/carrier and absent references."
       }
     }
   }

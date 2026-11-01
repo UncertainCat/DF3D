@@ -442,6 +442,7 @@ func unit_carrier(expected: Dictionary) -> void:
 	if OS.get_environment("DF3D_UNIT_LABOR_LOCATIONS")=="1":
 		await exercise_labor_locations(inspector,target)
 	if OS.get_environment("DF3D_UNIT_LABOR_ANIMALS")=="1":await exercise_work_animals(inspector,target)
+	if OS.get_environment("DF3D_UNIT_MILITARY")=="1":await exercise_military_kills(inspector)
 	inspector.close_panel();await process_frame
 	exercised=true
 
@@ -1554,3 +1555,33 @@ func exercise_work_animals(inspector,target:int) -> void:
 
 	var evidence:=FileAccess.open(directory+"/unit-labor-animals-wire.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"success":not failed,"rows":animals}));evidence.close()
+
+func exercise_military_kills(inspector) -> void:
+	var reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-military-native.json"))
+	var results:Array=[]
+	for page in reference.pages:
+		if page.name!="Kills":continue
+		var target:=int(page.unit_id)
+		inspector.open_target(Vector3i.ZERO,1,target)
+		var deadline:=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01)
+			var state:Dictionary=world.creature_info_state(target)
+			if not state.get("loading",true) and not state.get("detail",{}).is_empty():break
+			await create_timer(0.01).timeout
+		await health_tab(inspector,"Military");await health_tab(inspector,"Kills",true)
+		await process_frame;await RenderingServer.frame_post_draw
+		var view=inspector.creature_sheet.kills_view
+		check(view.rows==page.tagged_rows,"Native Military Kills text differs")
+		inspector.redraw();await process_frame
+		check(inspector.creature_sheet.kills_view==view,"Header refresh replaced Military Kills view")
+		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+		var name:="unit-military-"+str(target)+"-kills"
+		actual.save_png(directory+"/"+name+"-scene.png")
+		var native:=Image.load_from_file(directory+"/"+name+".png");native.convert(Image.FORMAT_RGB8)
+		var rect:=Rect2i(432,208,456,528)
+		var same:=actual.get_region(rect).get_data()==native.get_region(rect).get_data()
+		check(same,"Native Military Kills pixels differ")
+		results.append({"unit_id":target,"native_text":view.rows==page.tagged_rows,"native_pixels":same})
+	var file:=FileAccess.open(directory+"/unit-military-kills-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()

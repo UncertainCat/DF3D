@@ -59547,6 +59547,187 @@
         }
       }
     },
+    "unit_military_reference": {
+      "capture": "build/stockpile-storage-native-farm-discovery-20261101-125019",
+      "date": "2026-11-01",
+      "native": {
+        "pages": [
+          {
+            "lines": [
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 17
+              },
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 18
+              },
+              {
+                "text": "                                                      No squad assigned",
+                "y": 20
+              }
+            ],
+            "name": "Squad",
+            "squad_id": -1,
+            "tagged_rows": [],
+            "unit_id": 1017
+          },
+          {
+            "lines": [
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 17
+              },
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 18
+              },
+              {
+                "text": "                                                      No squad assigned",
+                "y": 20
+              }
+            ],
+            "name": "Uniform",
+            "squad_id": -1,
+            "tagged_rows": [],
+            "unit_id": 1017
+          },
+          {
+            "lines": [
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 17
+              },
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 18
+              }
+            ],
+            "name": "Kills",
+            "squad_id": -1,
+            "tagged_rows": [],
+            "unit_id": 1017
+          },
+          {
+            "lines": [
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 17
+              },
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 18
+              },
+              {
+                "text": "                                                             The Golden Beaks",
+                "y": 20
+              },
+              {
+                "text": "                                                             Train",
+                "y": 23
+              }
+            ],
+            "name": "Squad",
+            "squad_id": 120,
+            "tagged_rows": [],
+            "unit_id": 2905
+          },
+          {
+            "lines": [
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 17
+              },
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 18
+              },
+              {
+                "text": "                                                             dwarven wine flask (steel)",
+                "y": 20
+              },
+              {
+                "text": "                                                             X(large rope reed dress)X",
+                "y": 21
+              },
+              {
+                "text": "                                                             *steel short sword*",
+                "y": 23
+              },
+              {
+                "text": "                                                             Left hand",
+                "y": 24
+              },
+              {
+                "text": "                                                              steel shield",
+                "y": 26
+              },
+              {
+                "text": "                                                             Right hand",
+                "y": 27
+              }
+            ],
+            "name": "Uniform",
+            "squad_id": 120,
+            "tagged_rows": [],
+            "unit_id": 2905
+          },
+          {
+            "lines": [
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 17
+              },
+              {
+                "text": "                                                       Squad   Uniform   Kills",
+                "y": 18
+              },
+              {
+                "text": "                                                      One Notable Kill",
+                "y": 20
+              },
+              {
+                "text": "                                                      Dostngosp Portentdoomed the goblin, d. 104",
+                "y": 22
+              },
+              {
+                "text": "                                                      One Other Kill",
+                "y": 24
+              },
+              {
+                "text": "                                                      One dog ( ) in The Cradled Prairie",
+                "y": 26
+              }
+            ],
+            "name": "Kills",
+            "squad_id": 120,
+            "tagged_rows": [
+              "[C:4:0:1]One Notable Kill[C:7:0:0][B]Dostngosp Portentdoomed the goblin, d. 104[R][B][C:4:0:1]One Other Kill[C:7:0:0][B]One dog (♀) in The Cradled Prairie[R]"
+            ],
+            "unit_id": 2905
+          }
+        ]
+      },
+      "kills_view": {
+        "cases": [
+          {
+            "native_pixels": true,
+            "native_text": true,
+            "unit_id": 1017
+          },
+          {
+            "native_pixels": true,
+            "native_text": true,
+            "unit_id": 2905
+          }
+        ],
+        "success": true
+      },
+      "plugin_sha256": "a5acace39f9a15995a09b58a72024162c1400e24787e15fe064aa3b3b5a48c05",
+      "source_save_preserved": true,
+      "owned_df_exited_unsaved": true,
+      "scope": "Native Squad/Uniform/Kills reference; only Kills has implemented native text and rendered acceptance. Empty1017 and populated2905; header redraw preserves view. Overflow and all other historical kill variants are not established."
+    },
     "unit_rooms_reference": {
       "source": "build/stockpile-storage-native-farm-discovery-20261101-095036",
       "status": "passed_with_known_issues",

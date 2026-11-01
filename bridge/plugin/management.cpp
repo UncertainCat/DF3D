@@ -85,6 +85,7 @@
 #include "creature_expel_action_native.h"
 #include "creature_health_native.h"
 #include "creature_health_pages_native.h"
+#include "creature_military_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -3440,6 +3441,11 @@ void run(color_ostream& out) {
         field(state,"x",row.position.x);field(state,"y",row.position.y);field(state,"z",row.position.z);lua_rawseti(state,-2,++index);}
       return 1;
     });lua_setfield(L,-2,"work_animal_list");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_creature::militaryKills(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!value)return luaL_error(state,"Native creature kill history unavailable");
+      lua_pushlstring(state,value->data(),value->size());return 1;
+    });lua_setfield(L,-2,"military_kills");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto values=df3d_creature::officeTitles(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!values)return luaL_error(state,"Native creature office titles unavailable");

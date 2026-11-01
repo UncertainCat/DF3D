@@ -205,6 +205,10 @@ func cancel_gesture() -> void:
 		creature_sheet.rooms_view.scrollbar.dragging=false
 		creature_sheet.rooms_view.scrollbar.hover_cell=-1
 		creature_sheet.rooms_view.scrollbar.queue_redraw()
+	if is_instance_valid(creature_sheet.kills_view):
+		creature_sheet.kills_view.scrollbar.dragging=false
+		creature_sheet.kills_view.scrollbar.hover_cell=-1
+		creature_sheet.kills_view.scrollbar.queue_redraw()
 	if is_instance_valid(creature_sheet.health_view):
 		creature_sheet.health_view.scrollbar.dragging=false
 		creature_sheet.health_view.scrollbar.hover_cell=-1
@@ -374,14 +378,16 @@ func redraw():
 	var retained_knowledge=creature_sheet.knowledge_view if retained_skills!=null and is_instance_valid(creature_sheet.knowledge_view) else null
 	var retained_rooms=creature_sheet.rooms_view if int(selected.kind)==1 and creature_sheet.tab=="Rooms" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.rooms_view) else null
 	var retained_labor=creature_sheet.labor_view if int(selected.kind)==1 and creature_sheet.tab=="Labor" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.labor_view) else null
+	var retained_kills=creature_sheet.kills_view if int(selected.kind)==1 and creature_sheet.tab=="Military" and creature_sheet.subtabs.get("Military")=="Kills" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.kills_view) else null
 	for child in body.get_children():
-		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills and child!=retained_knowledge and child!=retained_rooms and child!=retained_labor:body.remove_child(child);child.queue_free()
+		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills and child!=retained_knowledge and child!=retained_rooms and child!=retained_labor and child!=retained_kills:body.remove_child(child);child.queue_free()
 	creature_sheet.items_view=retained_items
 	creature_sheet.health_view=retained_health
 	creature_sheet.skills_view=retained_skills
 	creature_sheet.knowledge_view=retained_knowledge
 	creature_sheet.rooms_view=retained_rooms
 	creature_sheet.labor_view=retained_labor
+	creature_sheet.kills_view=retained_kills
 	customize_view=null
 	customize_button=null
 	history_button=null

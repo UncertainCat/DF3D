@@ -628,16 +628,14 @@ return function(request)
   end
  end)
  section(21,function(s)
-  if not hf or not hf.info or not hf.info.kills then return end
-  local k=hf.info.kills
-  each(s,k.killed_count,function(count,i)
-   local raw=df.global.world.raws.creatures.all[k.killed_race[i]]
-   local r=record(s,i,raw and raw.name[0] or 'Creature');fact(s,r,'count',count)
-  end)
-  each(s,k.events,function(id)
-   local event=df.history_event.find(id);local r=record(s,id,'Historical kill',id)
-   if event then fact(s,r,'year',event.year);fact(s,r,'year_tick',event.seconds)end
-  end)
+  if not request.military_kills then return end
+  local text=request.military_kills(u.id)
+  -- Raw DF text is single-byte; convert each bounded chunk once, then join in
+  -- the presentation before parsing native paragraph/color tags.
+  for first=1,#text,256 do
+   local r=record(s,(first-1)//256,'')
+   fact(s,r,'native_text',text:sub(first,first+255))
+  end
  end)
  section(22,function(s)
   if not request.workshop_list then return end

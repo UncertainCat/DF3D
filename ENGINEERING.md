@@ -3442,6 +3442,34 @@ not live-covered here. Initial121533 caught missing diagnostic camera restoratio
 after native Inspect.121729's client passed, but its completion acknowledgement
 exceeded the30s combined-lane limit; this multi-panel lane now allows60s.
 
+### Creature Military pages
+
+`creature_military_native.h` exposes the Kills formatter bba250 used by native
+47f537 with flags0. It resolves the historical figure without borrowing the
+unit lookup cache, verifies parallel kill-vector sizes, and supplies an owned
+output string. The native formatter copies kill vectors before its bba000
+filter; no native sheet state is a runtime input. Historical-material lookup
+uses the existing cache-restoration guard. The adapter pins the formatter,
+filter and naming helpers and bounds output at64KiB. Section21 transports
+ordered256-byte raw-text chunks, converted once; Godot joins them before parsing
+native color/paragraph tags. This replaces reconstructed race counts and generic
+historical-event rows. Missing native text stays blank.
+
+The Kills view uses the shared native paragraph layout. Header redraw retains
+the view; overlays retire its scrollbar gesture. Military selected-subtab text
+uses the native blue palette. Protected125019 on2026-11-01 verifies empty1017
+and soldier2905 with both notable and other kills: tagged text and all456x528
+body pixels match native. Owned DF38760 exits unsaved, source preservation
+passes, and all three Godot processes have only the known startup notice.
+`unit_military_reference` also records native Squad and Uniform pages, which
+remain unimplemented generic summaries. The soldier Uniform page lists equipped
+items and body slots, not the reconstructed specification rows currently exposed.
+Kills overflow and other historical variants remain outside this bounded evidence;
+public creature exposure stays gated. Initial124411 failed existing Expel hover
+checks;124725 exposed a freed view after header redraw despite the launcher
+reporting pass.124845 matched prose but caught selected-tab text color. These
+runs are excluded from acceptance.
+
 ### Creature Rooms native list
 
 The creature inspection's Rooms section now receives native-valued individual

@@ -15,6 +15,7 @@ var scroll: ScrollContainer
 var scroll_location := ""
 var items_view
 var health_view
+var kills_view
 var skills_view
 var knowledge_view
 var rooms_view
@@ -29,6 +30,7 @@ func reset(id: int):
  if is_instance_valid(knowledge_view):knowledge_view.first=0
  unit_id=id;tab="Overview";subtabs.clear();scrolls.clear();scroll=null;scroll_location=""
  if is_instance_valid(health_view):health_view.page_key="";health_view.first=0
+ if is_instance_valid(kills_view):kills_view.first=0;kills_view.scrollbar.dragging=false
  if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
  if is_instance_valid(rooms_view):rooms_view.first=0;rooms_view.scrollbar.dragging=false
  if is_instance_valid(labor_view):labor_view.first=0;labor_view.scrollbar.dragging=false
@@ -116,7 +118,7 @@ func tabs_at(names: Array, y: float, nested := false) -> float:
   style.set_content_margin(SIDE_TOP,0);style.set_content_margin(SIDE_BOTTOM,0)
   for state in ["normal","hover","pressed","focus"]: button.add_theme_stylebox_override(state,style)
   for state in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:
-   button.add_theme_color_override(state,(Color8(0,44,70) if nested and tab=="Labor" else Color8(70,44,0)) if selected else Color.WHITE)
+   button.add_theme_color_override(state,(Color8(0,44,70) if nested and tab in ["Labor","Military"] else Color8(70,44,0)) if selected else Color.WHITE)
   button.pressed.connect(func(): change_tab(title,nested))
   owner.body.add_child(button)
   button.size=Vector2(width,24)
@@ -461,6 +463,16 @@ func render(controller, state: Dictionary):
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
+ if tab=="Military" and subtabs.get(tab)=="Kills":
+  scroll=null
+  if not is_instance_valid(kills_view):
+   kills_view=preload("res://scripts/native_creature_paragraph_view.gd").new()
+   owner.body.add_child(kills_view);kills_view.configure(owner.world)
+   kills_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+  var native_kills:=""
+  for record in records_for("kills"):native_kills+=str(fact_value(record,"native_text",""))
+  kills_view.position=Vector2(0,y);kills_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  kills_view.present([native_kills] if not native_kills.is_empty() else [],location());return
  if tab=="Health":
   scroll=null
   var page_kind: int=["Status","Wounds","Treatment","History","Description"].find(str(subtabs.get(tab,"Status")))

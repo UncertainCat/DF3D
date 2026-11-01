@@ -123,6 +123,32 @@ if os.getenv('DF3D_UNIT_LABOR_LOCATIONS')=='1'then
   end
   for y=19,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then data.lines[#data.lines+1]={y=y,text=text}end end
   result.location_fixture=data;capture('unit-labor-location-assigned')
+  local hf=assert(df.historical_figure.find(target.hist_figure_id))
+  assert(hf.info and hf.info.skills,'Location reference requires existing profession profile')
+  local assigned={};for _,v in ipairs(target.occupations)do assigned[#assigned+1]=v end
+  local function facts()
+   local rows={};for _,v in ipairs(target.occupations)do rows[#rows+1]=v.id end
+   local holders={};for _,v in ipairs(assigned)do holders[#holders+1]={v.id,v.unit_id,v.histfig_id}end
+   local labors={};for i=0,93 do labors[#labors+1]=target.status.labors[i]end
+   return {occupations=rows,holders=holders,profession=target.profession,profession2=target.profession2,
+    hf_profession=hf.profession,profile_profession=hf.info.skills.profession,labors=labors,no_notify=target.flags2.no_notify}
+  end
+  local before=facts()
+  local function restore()
+   target.occupations:resize(0);for _,v in ipairs(assigned)do target.occupations:insert('#',v)end
+   for i,v in ipairs(assigned)do v.unit_id=before.holders[i][2];v.histfig_id=before.holders[i][3]end
+   target.profession=before.profession;target.profession2=before.profession2;hf.profession=before.hf_profession
+   hf.info.skills.profession=before.profile_profession;target.flags2.no_notify=before.no_notify
+   assert(json.encode(facts())==json.encode(before),'Location removal did not restore baseline')
+  end
+  local removed,remove_err=xpcall(function()
+   click(864,286);data.remove=facts()
+   assert(#data.remove.occupations==#before.occupations-1 and assigned[1].unit_id==-1 and assigned[1].histfig_id==-1,'Native location Remove failed')
+   capture('unit-labor-location-removed')
+  end,debug.traceback)
+  restore();assert(removed,remove_err);view:render(dfhack.getTickCount())
+  _G.df3d_labor_location_control={unit_id=target.id,facts=facts,restore=restore}
+
   local main=df.global.game.main_interface
   local zones=df.civzone_interfacest:new();zones:assign(main.civzone)
   local mode=main.bottom_mode_selected;local window={df.global.window_x,df.global.window_y,df.global.window_z}

@@ -399,6 +399,11 @@ struct CreatureWorkshopResult {
   m::CreatureWorkshopOutcome outcome=m::CreatureWorkshopOutcome::Rejected;
 };
 std::optional<CreatureWorkshopResult> creatureWorkshop;
+struct CreatureLocationResult {
+  int32_t unitId=-1,occupationId=-1;
+  m::CreatureLocationOutcome outcome=m::CreatureLocationOutcome::Rejected;
+};
+std::optional<CreatureLocationResult> creatureLocation;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -406,6 +411,7 @@ void clearResult() {
   creatureExpel.reset();
   creatureKnowledge.reset();
   creatureWorkshop.reset();
+  creatureLocation.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -806,6 +812,11 @@ void publish() {
     const auto& value=*creatureKnowledge;
     creatureKnowledgeResult=m::CreateCreatureKnowledgeState(b,value.unitId,value.kind,value.id,value.outcome,b.CreateString(value.text));
   }
+  flatbuffers::Offset<m::CreatureLocationState> creatureLocationResult;
+  if(creatureLocation) {
+    const auto& value=*creatureLocation;
+    creatureLocationResult=m::CreateCreatureLocationState(b,value.unitId,value.occupationId,value.outcome);
+  }
   flatbuffers::Offset<m::CreatureWorkshopState> creatureWorkshopResult;
   if(creatureWorkshop) {
     const auto& value=*creatureWorkshop;
@@ -819,7 +830,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -3014,6 +3025,19 @@ void run(color_ostream& out) {
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
     publish();return;
   }
+  if(r->action()==m::ManagementAction::CreatureLocationRemove) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->creature_location();
+    creatureLocation.emplace();auto& result=*creatureLocation;
+    result.unitId=query.unit_id();result.occupationId=query.occupation_id();
+    const auto outcome=df3d_creature::removeLocationAssignment(df::unit::find(result.unitId),result.occupationId,query.expected_revision());
+    using O=df3d_creature::LocationRemoveOutcome;
+    if(outcome==O::Applied) {
+      result.outcome=m::CreatureLocationOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;
+    } else if(outcome==O::Unavailable)result.outcome=m::CreatureLocationOutcome::Unavailable;
+    else if(outcome==O::Unknown){result.outcome=m::CreatureLocationOutcome::Unknown;mutated=true;}
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::CreatureWorkshopRemove) {
     message.clear();status=m::ManagementStatus::Rejected;
     const auto& query=*r->creature_workshop();
@@ -3377,6 +3401,7 @@ void run(color_ostream& out) {
         field(state,"site_id",row.siteId);field(state,"location_id",row.locationId);field(state,"location_type",row.locationType);
         field(state,"tier",row.tier);field(state,"role",row.role);field(state,"name",row.name);
         field(state,"removable",row.removable?1:0);field(state,"zone_id",row.zoneId);
+        lua_pushinteger(state,lua_Integer(row.revision));lua_setfield(state,-2,"revision");
         field(state,"x",row.x);field(state,"y",row.y);field(state,"z",row.z);lua_rawseti(state,-2,++index);}
       return 1;
     });lua_setfield(L,-2,"location_list");

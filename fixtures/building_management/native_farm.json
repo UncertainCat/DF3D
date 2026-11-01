@@ -59305,7 +59305,6 @@
         "occupation_id": 93,
         "source_save_unchanged": true,
         "unfinished": [
-          "remove action",
           "overflow and hover",
           "header/history workflow after switching creatures (112807/113009 failures; cause unresolved)"
         ],
@@ -59324,6 +59323,24 @@
           "actual_button_matches_zone_and_camera": true,
           "creature_panel_closed": true,
           "source_save_unchanged": true
+        },
+        "removal_reference": {
+          "source": "build/stockpile-storage-native-farm-discovery-20261101-115142",
+          "unit_id": 6136,
+          "occupation_id": 93,
+          "actual_button": true,
+          "native_pixels_match": true,
+          "native_effects_match": [
+            "occupation links",
+            "unit/historical-figure holder IDs",
+            "unit professions",
+            "historical figure/profile professions",
+            "no_notify",
+            "94 labor flags"
+          ],
+          "restored": true,
+          "source_save_unchanged": true,
+          "bridge_sha256": "de0f4b08738d37d045bc62ce50675791c2fb1b1d3c804dfe1d73be3c9173f735"
         }
       }
     },

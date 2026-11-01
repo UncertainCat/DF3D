@@ -160,6 +160,17 @@ func exercise_labor_locations(inspector,target: int) -> void:
 	zones.close_panel()
 	world.set_top_z(level_before);scene.camera_rig.follow_level(level_before)
 	scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
+	if OS.get_environment("DF3D_UNIT_LABOR_WORKSHOP_WIRE")=="1":
+		inspector.open_target(Vector3i.ZERO,1,actor);await drain()
+		await health_tab(inspector,"Labor");await drain();await health_tab(inspector,"Locations",true);await drain()
+		view=inspector.creature_sheet.labor_view
+		await pointer(view.get_global_transform_with_canvas()*view.workshop_button(0,2).get_center());await drain()
+		deadline=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<deadline and view.rows.size()==rows.size():
+			world.poll();actions.poll(0.01);await process_frame
+		check(inspector.labor.phase==inspector.labor.Phase.Ready and view.rows.size()==rows.size()-1,"Location Remove did not refresh assignment rows")
+		await labor_capture("location-removed")
+		await labor_observe(actor,10,"location_removed")
 	var file:=FileAccess.open(directory+"/unit-labor-locations-wire.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"unit_id":actor,"rows":rows}));file.close()
 	inspector.open_target(Vector3i.ZERO,1,target);await drain()

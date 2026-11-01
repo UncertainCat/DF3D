@@ -3338,8 +3338,8 @@ The open-location signal uses an owned zone-navigation target. Native
 location's site/ID and focuses its center, unless that center is invalid. The
 provider reproduces this inline traversal with pinned evidence; the viewer
 closes the creature panel, focuses locally and opens that zone through AreaInspect.
-Pending zone navigation is retired on close/session change. The remove signal
-is still staged and is not connected to an action.
+Pending zone navigation is retired on close/session change. Remove now submits
+a typed occupation intent and refreshes creature detail after confirmation.
 
 Protected113357 on2026-11-01 matches the populated performer panel's456x528
 pixels exactly and restores the original creature. Owned DF19128 exits unsaved;
@@ -3352,7 +3352,7 @@ cause remains unresolved. The accepted run executes the existing header/history
 workflow before Locations and does not establish that reverse sequence.
 Run113221 additionally exposed a test error: detail.complete describes bounded
 record coverage, not whether loading settled. Restoration now checks identity
-and loading. Removal, overflow and hover remain unfinished.
+and loading. Overflow and hover remain unfinished; removal evidence follows.
 
 Protected114006 on2026-11-01 exercises the native open-location button and the
 actual DF3D button. Both select the same zone and position; DF3D closes the
@@ -3361,6 +3361,24 @@ the native menu handler or write native camera state. Owned DF47280 exits
 unsaved, source preservation passes, and all three Godot processes have only
 the known startup notice. `location_panel_reference.navigation_reference`
 retains the exact zone and camera target.
+
+Locations Remove follows native input1b53ce..1b5427 (length59,
+FNV2975d60a0bef2d1d): pinned ba570 detaches the occupation from the unit,
+133bcf0 updates profession with announcements suppressed, and the inline tail
+clears both holder IDs. It retains labor flags. The safe-point handler checks
+current native eligibility, unit ownership and the displayed assignment revision;
+that revision covers the creature and its ordered occupation identities/holders.
+No menu list is a runtime input. Uncertain effects return Unknown and are not
+replayed. The existing Labor owner retires requests on close/session change.
+
+Protected115142 on2026-11-01 verifies the actual Remove button for performer6136,
+occupation93. Assignment links, both holder IDs, unit professions, historical
+figure/profile professions, announcement flag and all94 labor flags match the
+native click. Populated and empty456x528 body crops match exactly. The diagnostic
+restores the original assignment and profession facts. Owned DF45208 exits unsaved,
+source preservation passes, and all three Godot processes have only the known
+startup notice. `location_panel_reference.removal_reference` retains this scope.
+Other occupation roles and reverse-order cross-creature history remain unverified.
 
 ### Creature Rooms native list
 
@@ -4227,8 +4245,8 @@ Unknown mutations must not be replayed or treated as confirmed removal.
 Request/state defaults, required version and shared-memory region move from111
 to112. Rebuild and deploy bridge, model and viewer together. Old recordings do
 not supply assignment revisions and cannot authorize removal. The native
-handler and visible Remove action remain staged; this contract does not expose
-an unfinished creature screen.
+handler and visible Remove button are connected in the staged creature screen;
+the broader screen remains hidden until complete.
 
 ### Workshop removal request contract (management111)
 

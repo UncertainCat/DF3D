@@ -74,9 +74,14 @@ end
 local function service()
  local f=io.open(out..'/unit-labor-request.json');if not f then return end
  local request=json.decode(f:read('*a'));f:close();assert(os.remove(out..'/unit-labor-request.json'))
- assert(request.unit_id==unit.id and request.serial==#observations+1,'Invalid labor observation')
+ local location=request.stage=='location_removed' and assert(_G.df3d_labor_location_control) or nil
+ assert(request.unit_id==(location and location.unit_id or unit.id) and request.serial==#observations+1,'Invalid labor observation')
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Labor scene advanced simulation')
- if request.stage=='workshop_on' or request.stage=='workshop_off' then
+ if location then
+  local state=location.facts()
+  assert(json.encode(state)==json.encode(native.location_fixture.remove),'Location removal effects differ from native')
+  location.restore();observations[#observations+1]={stage=request.stage,state=state}
+ elseif request.stage=='workshop_on' or request.stage=='workshop_off' then
   if request.stage=='workshop_off' then
    local workers={};for _,id in ipairs(workshop_profile.permitted_workers)do workers[#workers+1]=id end
    assert(json.encode(workers)==json.encode(native.workshop_fixture.remove.remaining_workers),'Workshop remove differs from native')
@@ -94,10 +99,12 @@ local function service()
  assert(os.rename(out..'/unit-labor-ack.tmp',out..'/unit-labor-ack.json'))
 end
 local ok,err=xpcall(function()capture('farm-item-carrier-unit-scene',service)end,debug.traceback)
+if _G.df3d_labor_location_control then _G.df3d_labor_location_control.restore()end
 if exemption then exemption.flags.MENIAL_WORK_EXEMPTION=old_exemption end
 if workshop_profile then workshop_fixture(false)end
 assert(ok,err)
 local count=os.getenv('DF3D_UNIT_LABOR_WORKSHOP_WIRE')=='1' and 9 or os.getenv('DF3D_UNIT_LABOR_ELIGIBILITY')=='1' and 7 or 5
+if os.getenv('DF3D_UNIT_LABOR_LOCATIONS')=='1'then count=count+1 end
 assert(#observations==count and json.encode(snapshot())==json.encode(native.actions.before),'Labor scene did not restore baseline')
 local result={success=true,observations=observations,restored=true}
 file=assert(io.open(out..'/unit-labor-scene-native.json','w'));file:write(json.encode(result));file:close()

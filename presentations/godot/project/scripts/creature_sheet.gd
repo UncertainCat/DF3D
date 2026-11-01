@@ -372,6 +372,7 @@ func render(controller, state: Dictionary):
    labor_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
    labor_view.focus_requested.connect(func(tile):owner.close_panel();owner.focus_requested.emit(tile))
    labor_view.inspect_requested.connect(func(kind,id):owner.object_requested.emit(kind,id))
+   labor_view.location_remove_requested.connect(func(row):owner.labor.remove_location(row.id,row.revision))
    labor_view.location_requested.connect(func(row):
     if row.zone_id>=0:owner.close_panel();owner.zone_requested.emit(row.zone_id,row.tile))
   labor_view.visible=true
@@ -391,6 +392,7 @@ func render(controller, state: Dictionary):
      "site_id":int(fact_value(record,"site_id",-1)),"location_id":int(fact_value(record,"location_id",-1)),
      "type":int(fact_value(record,"location_type",-1)),"tier":int(fact_value(record,"location_tier",-1)),
      "name":str(fact_value(record,"location_name","")),"removable":int(fact_value(record,"removable",0))==1})
+    location_rows[-1]["revision"]=int(fact_value(record,"assignment_revision",0))
     location_rows[-1]["zone_id"]=int(fact_value(record,"zone_id",-1))
     location_rows[-1]["tile"]=Vector3i(int(fact_value(record,"x",0)),int(fact_value(record,"y",0)),int(fact_value(record,"z",0)))
    labor_view.present_locations(owner.labor,location_rows)

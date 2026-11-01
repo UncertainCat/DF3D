@@ -8,12 +8,27 @@
 #include "df/world_site.h"
 #include "df/building_civzonest.h"
 #include "df/buildings_other_id.h"
+#include "location_staff_mutation_native.h"
 
 namespace df3d_creature {
+inline uint64_t locationAssignmentRevision(df::unit* unit, const df::occupation* target) {
+    uint64_t hash=UINT64_C(14695981039346656037);
+    const auto add=[&](int32_t value) {
+        for(unsigned shift=0;shift<32;shift+=8){hash^=(uint32_t(value)>>shift)&255;hash*=UINT64_C(1099511628211);}
+    };
+    add(unit->id);add(unit->hist_figure_id);add(target->id);
+    for(const auto* held:unit->occupations) {
+        if(!held){add(-1);continue;}
+        add(held->id);add(int32_t(held->type));add(held->unit_id);add(held->histfig_id);
+        add(held->site_id);add(held->location_id);
+    }
+    return (hash & UINT64_C(0x1fffffffffffff)) | 1;
+}
 struct LaborLocation {
     int32_t id=-1,type=-1,siteId=-1,locationId=-1,locationType=-1,tier=-1;
     std::string role,name;
     bool removable=false;
+    uint64_t revision=0;
     int32_t zoneId=-1,x=0,y=0,z=0;
 };
 inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) {
@@ -51,6 +66,7 @@ inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) 
     for(const auto* occupation:unit->occupations) {
         if(!occupation)return std::nullopt;
         LaborLocation row;row.id=occupation->id;row.type=int32_t(occupation->type);
+        row.revision=locationAssignmentRevision(unit,occupation);
         row.siteId=occupation->site_id;row.locationId=occupation->location_id;
         if(row.type>=0 && row.type<=10 && row.type!=6)
             row.removable=row.type==3 || row.type==4 || reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(unit);
@@ -79,6 +95,40 @@ inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) 
         rows.push_back(std::move(row));
     }
     return rows;
+}
+enum class LocationRemoveOutcome { Rejected,Applied,Unavailable,Unknown };
+inline LocationRemoveOutcome removeLocationAssignment(df::unit* unit,int32_t occupationId,uint64_t revision) {
+    const auto& native=df3d_area::staffMutationFunctions();
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x8b;++i){hash^=base[0xba570+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0xade65cab95ecb0c3);
+    }();
+    if(!supported || !native)return LocationRemoveOutcome::Unavailable;
+    if(!unit)return LocationRemoveOutcome::Rejected;
+    const auto rows=laborLocations(unit);
+    if(!rows)return LocationRemoveOutcome::Unavailable;
+    const auto found=std::find_if(rows->begin(),rows->end(),[&](const auto& row){return row.id==occupationId && row.revision==revision && row.removable;});
+    if(found==rows->end())return LocationRemoveOutcome::Rejected;
+    auto* target=df::occupation::find(occupationId);
+    if(!target || target->unit_id!=unit->id ||
+       std::find(unit->occupations.begin(),unit->occupations.end(),target)==unit->occupations.end())return LocationRemoveOutcome::Rejected;
+    // Native creature input1b53ce..1b5427: detach, update profession with
+    // announcements suppressed, then clear the holder. Removal retains labors.
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    try {
+        reinterpret_cast<void (*)(df::occupation*,std::vector<df::occupation*>*)>(base+0xba570)(target,&unit->occupations);
+        unit->flags2.bits.no_notify=true;
+        native.profession(unit,false);
+        unit->flags2.bits.no_notify=false;
+        target->unit_id=-1;target->histfig_id=-1;
+        return LocationRemoveOutcome::Applied;
+    } catch(const std::exception&) {
+        unit->flags2.bits.no_notify=false;
+        return LocationRemoveOutcome::Unknown;
+    }
 }
 inline uint64_t workshopAssignmentRevision(df::unit* unit,df::building* building,df::workshop_profile* profile) {
     uint64_t hash=UINT64_C(14695981039346656037);

@@ -1,7 +1,7 @@
 extends RefCounted
 # Owned read receipts; edits are never replayed after an uncertain outcome.
 signal changed
-signal workshop_changed(unit_id: int)
+signal assignment_changed(unit_id: int)
 const C=preload("res://scripts/management_contract.gd")
 enum Phase {Closed,Reading,Ready,Applying,Rejected,Unavailable}
 var service
@@ -74,7 +74,15 @@ func remove_workshop(id: int,revision: int) -> void:
  _request({"action":C.ManagementAction.CreatureWorkshopRemove,"unit_id":unit_id,"building_id":id,"expected_revision":revision},func(value):
   if int(value.get("unit_id",-1))!=unit_id or int(value.get("building_id",-1))!=id or value.get("outcome")!=C.CreatureWorkshopOutcome.Applied:
    phase=Phase.Rejected;changed.emit();return
-  workshop_changed.emit(unit_id);refresh(),"creature_workshop","creature_workshop")
+  assignment_changed.emit(unit_id);refresh(),"creature_workshop","creature_workshop")
+ changed.emit()
+func remove_location(id: int,revision: int) -> void:
+ if phase!=Phase.Ready or id<0 or revision<=0:return
+ phase=Phase.Applying
+ _request({"action":C.ManagementAction.CreatureLocationRemove,"unit_id":unit_id,"occupation_id":id,"expected_revision":revision},func(value):
+  if int(value.get("unit_id",-1))!=unit_id or int(value.get("occupation_id",-1))!=id or value.get("outcome")!=C.CreatureLocationOutcome.Applied:
+   phase=Phase.Rejected;changed.emit();return
+  assignment_changed.emit(unit_id);refresh(),"creature_location","creature_location")
  changed.emit()
 func _invalidated() -> void:
  var active:=phase!=Phase.Closed

@@ -49531,7 +49531,7 @@
         "routine": "1393900",
         "end": "1394724",
         "arguments": "unit, owned string, inventory entry",
-        "audit": "Native role formatter has transitive creature-cache writes and random draws; adapter must use owned creature cache vectors and restore MT plus SplitMix. Not runtime accepted."
+        "audit": "Diagnostic owned-context adapter verified for baseline and Pet/cold two-handed Weapon branches; not yet wired to complete Items page."
       },
       "remaining": [
         "Nested contained rows and spatters",
@@ -49614,7 +49614,140 @@
           "Keep output strings and input inventory entry owned; never borrow native sheet or menu scratch.",
           "Verify ordinary rows, Pet seeds and a two-handed weapon with cold caches; guard source unit, backing vectors, random state and native UI before calling the adapter."
         ],
-        "remaining": "Implement context and adapter; finish reachable virtual/helper audit and validate against native. These pins are research evidence, not runtime acceptance."
+        "remaining": "Adapter implemented and guarded baseline/Pet/cold Weapon comparisons pass. Other role variants, nested rows and product transport/rendering/actions remain unverified."
+      },
+      "description_reader": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261031-235107",
+        "command": "unit-items-description-probe",
+        "reader": {
+          "guards_unchanged": true,
+          "rows": [
+            {
+              "caption": "\u2261pig tail hood\u2261",
+              "id": 32064,
+              "role": "Head"
+            },
+            {
+              "caption": "(jute sock)",
+              "id": 32625,
+              "role": "Right foot"
+            },
+            {
+              "caption": "x(naked mole dog leather shoe)x",
+              "id": 16196,
+              "role": "Right foot"
+            },
+            {
+              "caption": "(cheetah leather tunic)",
+              "id": 32590,
+              "role": "Upper body"
+            },
+            {
+              "caption": "x(hemp sock)x",
+              "id": 23171,
+              "role": "Left foot"
+            },
+            {
+              "caption": "(leopard leather trousers)",
+              "id": 32594,
+              "role": "Lower body"
+            },
+            {
+              "caption": "x(cave spider silk shoe)x",
+              "id": 16320,
+              "role": "Left foot"
+            },
+            {
+              "caption": "\u2261alpaca wool cloak\u2261",
+              "id": 39928,
+              "role": "Upper body"
+            },
+            {
+              "caption": "(pig tail thread (1%))",
+              "id": 47619,
+              "role": "Sewn into Fourth toe, left foot"
+            },
+            {
+              "caption": "(persimmon wood crutch)",
+              "id": 7477,
+              "role": "Left hand"
+            },
+            {
+              "caption": "sweet pod seeds",
+              "id": 47492,
+              "role": "Hauled"
+            }
+          ],
+          "unit_id": 1017
+        },
+        "role_cases": [
+          {
+            "guards_unchanged": true,
+            "name": "pet-0",
+            "native": "Right shoulder",
+            "reader": "Right shoulder"
+          },
+          {
+            "guards_unchanged": true,
+            "name": "pet-1",
+            "native": "Left shoulder",
+            "reader": "Left shoulder"
+          },
+          {
+            "guards_unchanged": true,
+            "name": "pet-2",
+            "native": "Left shoulder",
+            "reader": "Left shoulder"
+          },
+          {
+            "guards_unchanged": true,
+            "name": "pet-12345",
+            "native": "On head",
+            "reader": "On head"
+          },
+          {
+            "guards_unchanged": true,
+            "name": "weapon-cold-body-caches",
+            "native": "Head",
+            "reader": "Head"
+          }
+        ],
+        "ownership": "Constructed unit context with copied body/component and enemy vectors, flags, cache and inventory entries; MT and SplitMix restored. No native menu inputs.",
+        "guards": "Unit, sheet, plotinfo bytes; body-part status, motor/sensory and usable-part vector backing storage; all MT streams/indices/selector and SplitMix.",
+        "source_save": "Owned source unchanged",
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "scope": "11 ordinary inventory rows plus 4 synthetic Pet seeds and one synthetic two-handed weapon with cold cache flags. Does not validate contained objects, spatters, all role branches, or product Items layout/actions."
       }
     }
   }

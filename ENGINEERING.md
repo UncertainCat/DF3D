@@ -1406,20 +1406,26 @@ the header-wire process have only the known separate-renderer notice.
 Items renderer169d86 calls existing semantic caption formatter c65450 with an
 owned string and false/-1 arguments. Its second line calls1393900(unit, owned
 string, inventory entry) at169f08. The complete routine ends1394724 including
-its role jump table. It is not yet exposed: role8(Pet) derives placement text
+its role jump table. Role8(Pet) derives placement text
 from pet_seed and writes the SplitMix global18adf98 at13941f1. A runtime adapter
-must preserve random state (as the hover provider already does), finish auditing
-its callees, and verify owned output against native before use. The Weapon role
+preserves random state using the same strategy as the hover provider. The Weapon role
 also calls135edf0/13869f0 when item.needTwoHandedWield returns true. That graph
 can draw from MT and calls1385b10/1383f50 to refresh creature caches: body-part
 status, motor/sensory nerve vectors, usable-part vector, flags and cache byte1430.
-The adapter therefore needs an independently constructed unit context with owned
-mutable vectors, not just an owned output string or a shallow byte copy. Preserve
-the source's cold-cache flags and let DF compute on the owned context; do not
-skip native validation by marking caches valid. Full MT buffers, indices and
-selected stream must be restored along with SplitMix. The fixture's ownership
-audit records the function pins and required cold-cache/weapon/Pet comparisons;
-these are implementation requirements, not runtime acceptance. Inventory rows
+`creature_items_native.h` therefore constructs an independent unit context with
+owned body/component and enemy vectors, flags, cache and copied inventory entries.
+It preserves cold-cache flags and lets DF refresh the owned context. Full MT
+buffers, indices and selected stream are restored along with SplitMix. The
+diagnostic unit-items-description-probe returns owned captions and role text.
+Protected235107 on2026-10-31 matches all11 baseline inventory rows and four
+synthetic Pet seeds plus a synthetic two-handed weapon with cold body caches.
+Each reader invocation preserves guarded unit/sheet/plotinfo bytes, mutable
+vector backing storage and all random state. Native fixture inputs are restored,
+DF38288 exits unsaved and source-save preservation passes. Both GPU processes
+and the paired header-wire log contain only the known renderer notice. These
+checks establish the description adapter for those cases, not every role branch
+or product Items acceptance. The fixture records pins, results and omissions.
+Inventory rows
 alone are insufficient: renderer169436 also counts contained references on
 container items, and1695c0 traverses unit-body spatters. Their descriptions,
 ordering, nested actions and artwork still need native acceptance. The Items

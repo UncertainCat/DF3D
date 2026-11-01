@@ -91,6 +91,7 @@
 #include "creature_expel_action_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_health_native.h"
+#include "creature_items_native.h"
 #include "modules/Buildings.h"
 #endif
 
@@ -1671,6 +1672,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           const std::vector<int32_t> expected(values.begin()+2,values.end());
           const auto outcome=df3d_creature::applyExpel(df::unit::find(values[0]),values[1],expected);
           Json::Value result(Json::objectValue);result["outcome"]=int(outcome);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="unit-items-description-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          const auto rows=df3d_creature::inventoryDescriptions(df::unit::find(id));if(!rows)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["unit_id"]=id;result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& row:*rows) {
+            Json::Value value(Json::objectValue);value["id"]=row.id;
+            value["caption"]=DF2UTF(row.caption);value["role"]=DF2UTF(row.role);
+            result["rows"].append(value);
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="unit-expel-eligible-probe") {

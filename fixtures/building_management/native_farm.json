@@ -51412,6 +51412,201 @@
           "No new disconnect, epoch, pending-edit or late-reply acceptance.",
           "Screenshots visually inspected; no full-sheet native pixel parity claim."
         ]
+      },
+      "indicator_reference": {
+        "cases": [
+          {
+            "hover": 294,
+            "lines": [
+              "This item is part of",
+              "the creature's regular",
+              "clothing."
+            ],
+            "name": "clothing",
+            "image_sha256": "6d1a6b417aa108fcbde7e78611d2de25dd9d3b3a5e4401beece55f1c0fcba81d",
+            "indicator_rect": [
+              824,
+              208,
+              24,
+              36
+            ],
+            "indicator_rgb_sha256": "a374cfb95257001c92948d5e2514450a0a9f8f9143d51e4418913da1ad9a9d34"
+          },
+          {
+            "hover": 291,
+            "lines": [
+              "This item is part of",
+              "the assigned squad",
+              "equipment."
+            ],
+            "name": "squad",
+            "image_sha256": "3591bf5bb3192f807eff62fcd427789115113390f96afd9381c0263eadb54243",
+            "indicator_rect": [
+              824,
+              208,
+              24,
+              36
+            ],
+            "indicator_rgb_sha256": "b7dab4c34cf2641109701fa8c232785fac39315956776750812395d5d579e208"
+          },
+          {
+            "hover": 291,
+            "lines": [
+              "This item is part of",
+              "the assigned squad",
+              "equipment."
+            ],
+            "name": "squad-before-work",
+            "image_sha256": "3591bf5bb3192f807eff62fcd427789115113390f96afd9381c0263eadb54243",
+            "indicator_rect": [
+              824,
+              208,
+              24,
+              36
+            ],
+            "indicator_rgb_sha256": "b7dab4c34cf2641109701fa8c232785fac39315956776750812395d5d579e208"
+          },
+          {
+            "hover": 292,
+            "lines": [
+              "This item is a tool",
+              "assigned by a work",
+              "detail."
+            ],
+            "name": "work-before-clothing",
+            "image_sha256": "01a81bca18a15ad3561c74ba0fc21a553366d799d76b0a70d579e9bd8b8699aa",
+            "indicator_rect": [
+              824,
+              208,
+              24,
+              36
+            ],
+            "indicator_rgb_sha256": "e3242782585cb4ccdcbeae645ca629ffd30d6c77df6b380180684ccab6ca2ed6"
+          },
+          {
+            "hover": -1,
+            "lines": [],
+            "name": "unassigned",
+            "image_sha256": "cdccbd939c243f8d3288a62dfb478913ef82bffbd0bfbf2366492b27610ded95",
+            "indicator_rect": [
+              824,
+              208,
+              24,
+              36
+            ],
+            "indicator_rgb_sha256": "7d6b7409f6fafb2ae9f5d998bccd64a90458655c1a4f63cd5b26544d31618f80"
+          },
+          {
+            "hover": -1,
+            "lines": [],
+            "name": "artifact-work-without-claim",
+            "image_sha256": "cdccbd939c243f8d3288a62dfb478913ef82bffbd0bfbf2366492b27610ded95",
+            "indicator_rect": [
+              824,
+              208,
+              24,
+              36
+            ],
+            "indicator_rgb_sha256": "7d6b7409f6fafb2ae9f5d998bccd64a90458655c1a4f63cd5b26544d31618f80"
+          },
+          {
+            "hover": 293,
+            "lines": [
+              "This item is a symbol",
+              "of a noble or",
+              "administrator."
+            ],
+            "name": "artifact-position-symbol",
+            "image_sha256": "867d3d07d20442d314605dd1ed53204b4743870d4e65301fa7bad77555751efc",
+            "indicator_rect": [
+              824,
+              208,
+              24,
+              36
+            ],
+            "indicator_rgb_sha256": "8bea976b21dcbba57708848790817ffd31677efc3e71ec4528aa1a14afac5f35"
+          },
+          {
+            "hover": 291,
+            "lines": [
+              "This item is part of",
+              "the assigned squad",
+              "equipment."
+            ],
+            "name": "squad-before-symbol",
+            "image_sha256": "d2d23d3353d14aa8fddc2e4612f19aa116fb9bd32bdf4c4aa20175bd81657707",
+            "indicator_rect": [
+              824,
+              208,
+              24,
+              36
+            ],
+            "indicator_rgb_sha256": "b7dab4c34cf2641109701fa8c232785fac39315956776750812395d5d579e208"
+          },
+          {
+            "hover": -1,
+            "lines": [],
+            "name": "renounced-symbol",
+            "image_sha256": "4388161949aad6c3608dd39d1d7b904cb61ac249dd25381f9aebbccdaa7620f6",
+            "indicator_rect": [
+              824,
+              208,
+              24,
+              36
+            ],
+            "indicator_rgb_sha256": "7d6b7409f6fafb2ae9f5d998bccd64a90458655c1a4f63cd5b26544d31618f80"
+          }
+        ],
+        "limitations": "Synthetic membership/reference/claim cases; no equipment assignment or artifact claim gameplay action.",
+        "restored": true,
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-011141",
+        "status": "passed_with_known_issues",
+        "unit_id": 1017,
+        "item_id": 32064,
+        "source_save": "unchanged; owned DF6860 exited unsaved",
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "scope": "Native indicator precedence, tooltip text-cell readback and visible indicator captures; no product selector or wire/render acceptance.",
+        "native_dispatch": {
+          "range": "0x16a014..0x16a4a1",
+          "precedence": [
+            "items_assigned[item_type] via native sorted lookup b9f70 -> squad",
+            "work_weapons via b9f70 -> tool for non-artifacts; artifact requires current matching position claim -> symbol, otherwise absent",
+            "only outside work_weapons: cb1350(item,UNIT_ITEMOWNER,unit.id) -> clothing"
+          ],
+          "ownership": "Selector is inline inside the renderer, not a standalone callable API. Never call the renderer or borrow its stack/menu state. Native13b3090 resolves historical figure and writes the unit lookup cache: use owned unit input. Native cb1720 resolves artifact reference. Positive symbol depends on position entity link, assignment and non-renounced symbol claim.",
+          "remaining": "Runtime owned semantic adapter and pins, live guarded reader comparisons, fact transport, installed artwork, hover lifecycle and main-scene acceptance."
+        }
       }
     }
   }

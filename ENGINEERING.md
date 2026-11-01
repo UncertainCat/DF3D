@@ -1572,6 +1572,28 @@ has only the known renderer notice. The four native owner-reference cases also
 repeat successfully. `owner_wire_reference` retains that baseline scope;
 open-sheet refresh is covered separately below.
 
+Items indicators have an independent native reference in
+`unit_items_reference.indicator_reference`. Protected011141 on2026-11-01
+records nine controlled membership/reference/claim cases on the first inventory
+item. Squad assignment wins over work-tool and artifact-symbol status. Outside
+squad assignment, non-artifact work equipment selects Tool; artifact work
+equipment requires a current matching position claim for Symbol and otherwise
+has no indicator. Clothing ownership is tested only outside work equipment.
+The four tooltip texts are read from native cells. Visible24x36 indicator crops
+are retained as hashes; initial010828/011021 callbacks caused malformed captures
+and are not visual acceptance. The final capture omits repeated pointer rendering.
+Original equipment vectors, item flags/references and entity claims are restored;
+paused simulation and source-save preservation pass, and owned DF6860 exits
+unsaved. All three runs have only known Godot startup notices.
+
+The selector at16a014..16a4a1 is inline renderer code, not a callable semantic
+entry point. Its lookups include b9f70, cb1350, cb1720 and13b3090; the last writes
+the unit historical-figure lookup cache and requires owned input. Runtime must
+not invoke the renderer or borrow menu/stack state. The controlled references
+establish UI decisions, not equipment-assignment or artifact-claim gameplay.
+An owned semantic adapter, guarded reader comparison, transport, installed
+artwork and composed hover/lifecycle acceptance are still unfinished.
+
 The item view places the name on the first header row when owner data exists,
 with the native yellow Owner line beneath and Weight on the third row. Without
 an owner it retains the native second-row name. Protected005142's368x36 header

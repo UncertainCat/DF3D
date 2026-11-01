@@ -88,6 +88,10 @@ local ok,err=xpcall(function()
    result.role_cases=assert(loadfile(source))(unit,view,pointer,read)
   end
  end
+ if os.getenv('DF3D_UNIT_ITEMS_INDICATORS')=='1'then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-indicators-native.lua')
+  result.indicators=assert(loadfile(source))(unit,pointer,capture)
+ end
  local seen={}
  for y=208,460,12 do for x=424,888,8 do
   pointer(x,y);local hover=main.current_hover

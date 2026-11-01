@@ -3474,6 +3474,39 @@ This static evidence does not replace bounded live guards or grant acceptance
 to all 127 event types. No production formatter admission or management action
 changes are made by this audit.
 
+### Knowledge event-collection name ownership
+
+The supported symbol table resolves all 18 derived collection `getName` slots
+(slot0x30) to the bodies indexed in `event-collection-vtables.json`; the base
+class targets72250, a no-op return. `event-collection-cfg.json` traces those
+bodies plus helpers13cc50, bc6780, b94710 and circumstance formatter b5a6c0.
+Competition's nine-target table atbc7758 and site-conquest's five-target table
+atbc5b38 (110-byte remap atbc5b4c) are included. Circumstance formatting includes
+all four tables:94 targets atb5b6b4,33 atb5b82c,13 atb5b8b0 with64-byte remap,
+and29 atb5b924 with281-byte remap. All targets remain within their code bodies;
+no traversed instruction overlaps table data and no jump remains unresolved.
+
+The collection methods have no further virtual calls. Their direct stores are
+stack locals except occasion-name reset, which clears its supplied output
+string. Helper13cc50 performs a read-only collection lookup. Helperbc6780 scans
+referenced HF races without stores outside its stack. Helperb94710 formats an
+artifact name into local string storage, including its local allocated fallback
+buffer, before appending to the caller's output. Battle/war's153ae14 call is an
+import thunk to VCRUNTIME140 `memcmp`. These helpers introduce no additional
+source-write obligation; their shared name/material callees retain the existing
+separate audits and material-cache isolation requirement.
+
+This is static ownership evidence, not complete production admission. In
+particular, competition naming indexes the resolved occasion's schedule at
+bc73cd without a preceding length check. A provider must validate this source
+relationship before entering native code. Circumstance formatting also reaches
+artifact helperb94400; its unnamed-artifact branch atb94583 passes the live
+artifact item to c65450. The existing generic item-description side-effect and
+subtype audit must be applied to that call's actual arguments before claiming
+read-only Knowledge formatting for arbitrary artifact references. Root-level
+absence of stores does not discharge this transitive obligation. Live collection
+branch comparisons and source validation remain outstanding.
+
 ### Knowledge recursive event descriptions
 
 Masterpiece-lost formatter b65030 reads `creation_event`, resolves it through

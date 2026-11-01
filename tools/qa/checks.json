@@ -3868,6 +3868,11 @@
       "reason": "Protected stockpile_storage_native.ps1 FarmItemCarriers lane with DF3D_UNIT_EXPEL_EFFECT_WIRE and expel/send effect fixture; actual departure discarded on unsaved exit."
     },
     {
+      "path": "presentations/godot/project/tests/creature_expel_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 FarmItemCarriers lane with DF3D_UNIT_EXPEL_EFFECT_WIRE and DF3D_UNIT_EXPEL_EFFECT_SCENE; real main-scene chooser and departure buttons, native effects checked before unsaved exit."
+    },
+    {
       "path": "presentations/godot/project/tests/creature_header_wire_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 FarmItemCarriers lane with DF3D_UNIT_HEADER_ACTIONS and DF3D_UNIT_HEADER_WIRE; requires owned paused native fixture."

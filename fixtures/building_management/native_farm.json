@@ -48650,6 +48650,72 @@
         "diagnostics": "known startup notice only; no unclassified diagnostics",
         "source_save_unchanged": true,
         "owned_unsaved_exit": true
+      },
+      "confirmation_reference": {
+        "status": "accepted main-scene Send away and family Expel final effects",
+        "test": "presentations/godot/project/tests/creature_expel_scene_live.gd",
+        "checks": [
+          "actual inspector Expel button",
+          "owned affected group ids and names",
+          "visible destination chooser selection for Send away",
+          "confirmation region equals native",
+          "actual final button submits once",
+          "applied signal and preview retirement",
+          "unit sheet remains open",
+          "native eligibility refresh removes Expel control"
+        ],
+        "runs": [
+          {
+            "mode": "send",
+            "run": "build/stockpile-storage-native-farm-discovery-20261031-230041",
+            "native_reference": "build/stockpile-storage-native-farm-discovery-20261031-214712",
+            "unit_id": 1017,
+            "destination": 8,
+            "affected": [
+              1017
+            ],
+            "effect_fields_equal_native": [
+              "after",
+              "events",
+              "affected"
+            ],
+            "native_sheet_bytes_unchanged": true,
+            "confirmation_rgb_pixels_equal_native": 277536,
+            "effect_sha256": "3223ffa17324a160da695729d42df27a4a8490aac754fd6b52ce767bded2b59a",
+            "source_save_unchanged": true,
+            "owned_unsaved_exit": true,
+            "diagnostics": "three GPU clients and two headless clients: known startup notice only"
+          },
+          {
+            "mode": "family-expel",
+            "run": "build/stockpile-storage-native-farm-discovery-20261031-230220",
+            "native_reference": "build/stockpile-storage-native-farm-discovery-20261031-215707",
+            "unit_id": 1017,
+            "destination": -1,
+            "affected": [
+              1017,
+              2345
+            ],
+            "effect_fields_equal_native": [
+              "after",
+              "relative_after",
+              "events",
+              "affected"
+            ],
+            "native_sheet_bytes_unchanged": true,
+            "confirmation_rgb_pixels_equal_native": 277536,
+            "effect_sha256": "2dd2be5123a79c72fe4de30c44f67f05d3345de4c3496a7f292c85f00bfdef74",
+            "source_save_unchanged": true,
+            "owned_unsaved_exit": true,
+            "diagnostics": "three GPU clients and two headless clients: known startup notice only"
+          }
+        ],
+        "limitations": [
+          "active-job and squad variants",
+          "later simulation departure",
+          "long lists and resizing",
+          "pending/rejected/unknown presentation and composed lifecycle"
+        ]
       }
     }
   }

@@ -287,9 +287,16 @@ try {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $env:DF3D_EXPEL_WIRE_PHASE=$Matches[1]
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
-     $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/creature_expel_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
+     $waitMs=25000
+     if($env:DF3D_UNIT_EXPEL_EFFECT_SCENE -eq '1' -and $env:DF3D_EXPEL_WIRE_PHASE -eq 'apply') {
+      $env:DF3D_DF_PATH=$dfPath
+      $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/creature_expel_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+      $waitMs=90000
+     } else {
+      $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/creature_expel_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
+     }
      $null=$client.Handle
-     if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Unit Expel client timed out; no replay'}
+     if(-not $client.WaitForExit($waitMs)){$client.Kill();$client.WaitForExit();throw 'Unit Expel client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name.json")){throw 'Unit Expel client failed'}
     }
     if($FarmItemCarriers -and $name -eq 'unit-header-wire') {

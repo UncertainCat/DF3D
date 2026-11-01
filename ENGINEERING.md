@@ -2703,9 +2703,21 @@ Customize and repeated Expel (except while applying); its Escape priority follow
 native. unit_expel_view_reference.header_reference retains this evidence. Core,
 controller, composition and GPU checks pass in unit-expel-header, with documented
 GPU diagnostics only; the live clients have only the known startup notice.
-Final confirmation through main-scene controls, Reports while Expel is open,
-resize/scroll/hover variants, long names/animation and full failure/replacement
-lifecycle remain unfinished.
+Protected230041 (Send away) and230220 (family Expel) exercise the actual
+main-scene Expel button, destination chooser and final confirmation. Each
+confirmation region matches all277536 native RGB pixels. Applied fires once,
+the preview retires, the unit sheet remains open and refreshed native eligibility
+removes the Expel control. Full departure state and history match native214712
+and corrected family215707, including both relatives' thoughts. The closed
+native sheet remains byte-for-byte unchanged; source saves are preserved and
+owned DF27444/10140 exit unsaved. Three GPU and two headless clients per run
+have only the known startup notice. creature_expel_scene_live is selected by
+DF3D_UNIT_EXPEL_EFFECT_SCENE with the existing protected wire/effect fixture;
+unit_expel_view_reference.confirmation_reference retains bounded evidence.
+Core, controller and composition checks pass cleanly in unit-expel-scene-effects.
+Reports while Expel is open, resize/scroll/hover variants, long names/animation,
+full failure/replacement lifecycle and active-job/squad/later-departure effect
+variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
 ## Native item holder provider

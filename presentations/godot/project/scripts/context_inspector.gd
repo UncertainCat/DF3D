@@ -127,6 +127,7 @@ func choose(row: Dictionary):
 	redraw()
 
 func close_panel():
+	cancel_gesture()
 	expel.close()
 	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 	customize.close()

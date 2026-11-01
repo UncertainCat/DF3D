@@ -51851,7 +51851,7 @@
           "limitations": [
             "Controlled membership changes, not equipment assignment gameplay actions.",
             "Live artifact-symbol and unassigned transitions are not covered.",
-            "Disconnect, epoch replacement and late replies remain unverified."
+            "Producer loss/restart and explicit reopen are covered by lifecycle_reference. Different-world identity reuse and delayed old replies remain unverified."
           ]
         }
       },
@@ -52540,7 +52540,7 @@
           }
         },
         "limitations": [
-          "See live_contents_reference for actual asynchronous contents updates while dragging, and indicator_reference.live_refresh_reference for squad/tool/clothing transitions. Disconnect/epoch/late-reply lifecycle remains unverified."
+          "Producer loss/restart and explicit reopen are covered by lifecycle_reference. Different-world identity reuse and delayed old replies remain unverified."
         ]
       },
       "live_contents_reference": {
@@ -52604,7 +52604,66 @@
         "limitations": [
           "Controlled references verify display refresh, not gameplay containment actions.",
           "First row remains2, so the added contained row at index1 is validated semantically, not by visible row pixels.",
-          "Live squad/tool/clothing changes have separate indicator_reference.live_refresh_reference evidence. Disconnect, epoch changes and late replies remain unverified."
+          "Producer loss/restart and explicit reopen are covered by lifecycle_reference. Different-world identity reuse and delayed old replies remain unverified."
+        ]
+      },
+      "lifecycle_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-012019",
+        "status": "passed_with_known_issues",
+        "scope": "Actual main-scene Items at960x600 with held scrollbar drag; disable and enable the bridge producer in the owned paused clone. Loss closes inspector, clears selection, releases host input and cancels dragging; replacement does not reopen it. After normal fortress loading completes, explicit target/Items opening displays inventory.",
+        "native": {
+          "events": [
+            "disable",
+            "enable"
+          ],
+          "restored": true,
+          "success": true
+        },
+        "scene": {
+          "drag_retired": true,
+          "explicit_reopen": true,
+          "no_automatic_reopen": true,
+          "owner_retired": true,
+          "success": true
+        },
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "qa": "build/qa/items-lifecycle-final",
+        "regression": "items-close-gesture-repro failed before close_panel canceled gestures; final context_inspect_test verifies dragging and hover state are cleared.",
+        "source_save": "Owned source unchanged; DF23632 exits unsaved.",
+        "limitations": [
+          "Same world and creature after producer restart; different-world identity reuse and delayed old detail replies remain unverified.",
+          "No pending gameplay edit in this read-only Items workflow."
         ]
       }
     }

@@ -88,8 +88,10 @@ func run():
  world.creature=world.creature.duplicate(true)
  world.creature.detail.sections[-1].records=[];world.creature.generation=4;view._process(.25)
  check(sheet.items_view==items and items.rows.is_empty() and not items.scrollbar.visible and not items.scrollbar.dragging,"Empty refresh retires scrollbar gesture")
+ items.scrollbar.dragging=true;items.scrollbar.hover_cell=1
  view.close_panel()
  check(host.active==null,"Closing inspect releases its host ownership")
+ check(not items.scrollbar.dragging and items.scrollbar.hover_cell==-1,"Closing inspect retires Items gesture")
  await view.open_tile(Vector3i(2,2,2))
  world.epoch=8;view._process(.25)
  check(not view.panel.visible,"World replacement closes identity")

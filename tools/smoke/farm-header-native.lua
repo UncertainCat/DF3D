@@ -190,8 +190,9 @@ local function selection_shot(name,while_waiting)
  local health_case=os.getenv('DF3D_UNIT_HEALTH_CASE')
  local blink=name=='farm-item-carrier-unit-scene' and (health_case=='blink' or health_case=='bleeding')
  -- Live contents refresh waits for two automatic semantic publications.
- local contents_refresh=name=='farm-item-carrier-unit-scene' and os.getenv('DF3D_UNIT_ITEMS_REFRESH')=='1'
- local limit=dfhack.getTickCount()+((blink or contents_refresh) and 60000 or 30000)
+ local contents_refresh=name=='farm-item-carrier-unit-scene' and (os.getenv('DF3D_UNIT_ITEMS_REFRESH')=='1' or os.getenv('DF3D_UNIT_ITEMS_LIFECYCLE')=='1')
+ local lifecycle=name=='farm-item-carrier-unit-scene' and os.getenv('DF3D_UNIT_ITEMS_LIFECYCLE')=='1'
+ local limit=dfhack.getTickCount()+(lifecycle and 85000 or (blink or contents_refresh) and 60000 or 30000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<limit,'selection capture timeout')
   if while_waiting then while_waiting()end

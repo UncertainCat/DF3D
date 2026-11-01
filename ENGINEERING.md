@@ -1670,9 +1670,21 @@ read/display acceptance, not equipment-assignment gameplay acceptance. Original
 membership vectors and references are restored; DF40776 exits unsaved and the
 source save is unchanged. All live Godot processes have only the startup notice;
 `items-assignment-preflight` passes core, inspector and composition cleanly.
-Live artifact-symbol/unassigned transitions and disconnect/epoch/late replies
-remain unverified. Full inventory row pixels and every main-scene overflow input
-are not claimed; the route stays staged. Contained-row navigation evidence follows.
+Protected012019 on2026-11-01 verifies actual bridge producer loss/restart with
+Items open and its scrollbar held. Inspector closure now calls `cancel_gesture`,
+clearing the hidden scrollbar's dragging and hover state immediately. Loss also
+clears selection and releases the input owner. Restart leaves Items closed;
+explicit reopening after normal fortress loading displays current inventory.
+`lifecycle_reference` retains evidence. The native helper requires the scene
+result, and the viewer waits for both connection and loading readiness; a script
+error or transport readiness alone cannot establish recovery. The lifecycle
+capture allows85 seconds within the runner's90-second bound. All three final
+Godot processes have only the startup notice; `items-lifecycle-final` passes core,
+inspector and composition. DF23632 exits unsaved; source preservation passes.
+Live artifact-symbol/unassigned transitions, different-world identity reuse and
+delayed old replies remain unverified. Full inventory row pixels and every
+main-scene overflow input are not claimed; the route stays staged. Contained-row
+navigation evidence follows.
 
 Contained Items controls are recorded by
 `unit_items_reference.contained_navigation_reference`. Protected014749 on

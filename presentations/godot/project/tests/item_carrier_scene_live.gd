@@ -200,7 +200,65 @@ func unit_carrier(expected: Dictionary) -> void:
 	if FileAccess.file_exists(directory+"/unit-camera-native.json"):
 		await exercise_follow(inspector,source,int(expected.snapshot.id),target)
 	await exercise_history(inspector,source,int(expected.snapshot.id),target)
+	if OS.get_environment("DF3D_UNIT_ITEMS_LIFECYCLE")=="1":await exercise_items_lifecycle(inspector,target)
 	exercised=true
+
+func items_lifecycle_transition(operation: String) -> void:
+	var file:=FileAccess.open(directory+"/unit-items-lifecycle-request.tmp",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"op":operation}));file.close()
+	DirAccess.rename_absolute(directory+"/unit-items-lifecycle-request.tmp",directory+"/unit-items-lifecycle-request.json")
+	var deadline:=Time.get_ticks_msec()+5000
+	while not FileAccess.file_exists(directory+"/unit-items-lifecycle-ack.json") and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+	if not check(FileAccess.file_exists(directory+"/unit-items-lifecycle-ack.json"),"Items lifecycle acknowledgement timed out"):return
+	var ack: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-items-lifecycle-ack.json"))
+	DirAccess.remove_absolute(directory+"/unit-items-lifecycle-ack.json")
+	check(ack.op==operation,"Items lifecycle acknowledgement differs")
+
+func exercise_items_lifecycle(inspector,target: int) -> void:
+	var entity: Dictionary=world.inspect_entity(1,target)
+	inspector.open_target(entity.tile,1,target)
+	var deadline:=Time.get_ticks_msec()+5000
+	while inspector.creature_display.get("detail",{}).is_empty() and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(124,132))
+	root.size=Vector2i(960,600);await process_frame;await process_frame
+	var view=inspector.creature_sheet.items_view
+	if not check(is_instance_valid(view) and view.scrollbar.visible,"Lifecycle Items overflow missing"):return
+	var grip: Vector2i=view.scrollbar.thumb()
+	var point: Vector2=view.scrollbar.get_global_transform_with_canvas()*Vector2(8,(grip.x+grip.y*0.5)*12)
+	var motion:=InputEventMouseMotion.new();motion.position=point;root.push_input(motion,true)
+	var button:=InputEventMouseButton.new();button.position=point;button.button_index=MOUSE_BUTTON_LEFT;button.pressed=true;root.push_input(button,true)
+	await process_frame
+	check(view.scrollbar.dragging,"Lifecycle drag did not start")
+	await items_lifecycle_transition("disable")
+	deadline=Time.get_ticks_msec()+5000
+	while scene._ui.host.active!=null and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+	check(not inspector.panel.visible and scene._ui.host.active==null and inspector.selected.is_empty(),"Bridge loss retained Items owner")
+	check(not view.scrollbar.dragging and not view.allowed(),"Bridge loss retained Items gesture or input")
+	button=InputEventMouseButton.new();button.position=point;button.button_index=MOUSE_BUTTON_LEFT;button.pressed=false;root.push_input(button,true)
+	await items_lifecycle_transition("enable")
+	deadline=Time.get_ticks_msec()+10000
+	while (actions._transport_lost or not world.poll_management().get("transport_alive",false)) and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+	check(not actions._transport_lost and world.poll_management().get("transport_alive",false),"Replacement producer did not recover")
+	check(not inspector.panel.visible and scene._ui.host.active==null,"Replacement producer reopened retired Items")
+	deadline=Time.get_ticks_msec()+30000
+	while not scene._loader.entered and Time.get_ticks_msec()<deadline:await create_timer(0.05).timeout
+	if not check(scene._loader.entered and scene._ui.host.play_enabled,"Replacement fortress did not finish loading"):return
+	deadline=Time.get_ticks_msec()+10000
+	entity=world.inspect_entity(1,target)
+	while entity.is_empty() and Time.get_ticks_msec()<deadline:
+		await create_timer(0.02).timeout
+		entity=world.inspect_entity(1,target)
+	if not check(not entity.is_empty(),"Replacement creature identity did not arrive"):return
+	inspector.open_target(entity.tile,1,target)
+	deadline=Time.get_ticks_msec()+5000
+	while inspector.creature_display.get("detail",{}).is_empty() and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(124,132))
+	check(inspector.creature_sheet.tab=="Items" and not inspector.creature_sheet.items_view.rows.is_empty() and scene._ui.host.active==inspector,"Explicit Items reopen failed after replacement")
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/unit-items-lifecycle-reopened.png")
+	var file:=FileAccess.open(directory+"/unit-items-lifecycle-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"drag_retired":true,"owner_retired":true,"no_automatic_reopen":true,"explicit_reopen":true}));file.close()
+	inspector.close_panel();root.size=Vector2i(1200,800)
 
 func exercise_items_view(inspector,target: int) -> void:
 	if OS.get_environment("DF3D_UNIT_ITEMS_CONTAINED_SCENE")=="1":

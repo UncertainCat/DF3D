@@ -2489,5 +2489,26 @@
     "scope": "Pointer work-mode toggle/restoration keeps selector open and workshop unrestricted; subsequent assignment and removal pass. Capture is during visible-row receipt refresh, not complete indicator parity.",
     "source_preservation": "Owned source unchanged",
     "capture_sha256": "44148b88197091a880bbe7b483c3358f80cbd0ea44d6bd3c9f66a71a8a36def0"
+  },
+  "worker_indicators_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-173858",
+    "management_version": 116,
+    "plugin_sha256": "44d0868a993637e7f9ca74b914b804de5fe4aadfe1328469ee65cada0622fb89",
+    "candidate_count": 116,
+    "assignment_count": 30,
+    "native_layout": {
+      "indicator_x": 464,
+      "indicator_width": 32,
+      "padding": 0,
+      "mode_x_one": 504,
+      "mode_x_two": 536
+    },
+    "source_preservation": "Owned source unchanged",
+    "scope": "Native semantic memberships reach model unchanged; rendered work-detail and assigned workshop indicators match inspected native positions. Selector work-mode toggles, assignment/removal and Escape pass. Responsive layout, larger indicator counts and full selector parity remain incomplete.",
+    "captures": {
+      "workshop-worker-selector-live.png": "cb43248c69418c4a8911c139198fe6bbdfd93f0831646c20b6ff90c7bc816673",
+      "workshop-worker-multiple-live.png": "e3a75e79d569fd5fb10b8cb3476a8e9009b656c8496aeed29ad3b7916ea42f68",
+      "workshop-still-worker-selector-assigned.png": "cdb592557716c1bf00e8cdffb785a7992efe0d2cd2d3757833103fb6c6c365f1"
+    }
   }
 }

@@ -6657,8 +6657,30 @@ including existing delay/warm timing. It releases ownership on mouse exit, hidin
 retirement, pending actions and missing receipts. `workshop-selector-hover-wiring`
 passes main composition and hover ownership checks. The existing tooltip renderer
 and sourced copy are reused; no new live hover capture is claimed here.
-Occupation/workshop/work-detail indicators, responsive layout and public workshop
-routing remain unfinished.
+Management116 adds ordered assignment memberships to workshop candidate rows.
+The native unit reader is shared with location staff, whose location identity and
+receipt checks remain intact. It observes occupations, workshop/furnace restrictions
+and work-detail membership using semantic unit/building records and native membership
+helpers. Assignment changes participate in worker-list equality/revisions. The
+wire validates entry kinds, fields, ordering and a separate224KiB assignment budget;
+older recordings cannot supply these facts. No native menu/widget state is read.
+
+The selector reuses staff artwork and hover copy. Native constructor1429350 and
+protected173556 establish contiguous32px indicator cells at localx464, with no
+padding; the shared work-mode column advances32px for an additional indicator.
+Protected173858 on2026-11-01 verifies30 memberships across116 candidates through
+the real bridge/model, and renders the assigned dwarf's workshop-plus-work-detail
+row at the native positions. Mode toggles, assignment/removal and Escape pass.
+DF45764 exits unsaved and source preservation passes. Live logs contain only
+classified known diagnostics; `worker_indicators_reference` retains scoped evidence.
+An earlier173403 run passed worker assertions but the separate unit-header client
+reported an unclassified Godot update_end error; it is not clean whole-lane
+acceptance. The later173556 and173858 runs have no unclassified diagnostics.
+
+Root/core, extension and composition checks pass in
+`workshop-assignment-facts-fixed`; the initial attempt failed a validator helper's
+scope and is not acceptance. Selector responsive layout, larger indicator counts,
+full selector parity and public workshop routing remain unfinished.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

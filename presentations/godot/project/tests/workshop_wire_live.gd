@@ -53,6 +53,19 @@ func composed_sheet(id: int) -> void:
 	for id_value in reference.still_worker_reference.member_ids:native_ids.append(int(id_value))
 	check(ids==native_ids,"Typed worker membership differs from native selector: "+str(ids)+" / "+str(native_ids))
 	worker_evidence={"building_id":id,"candidate_ids":ids,"native_ids":native_ids,"effects":[]}
+	var assignment_count:=0
+	for row in owner.workers.rows:
+		var expected: Dictionary={}
+		for candidate in reference.still_worker_reference.rows:
+			if int(candidate.id)==row.unit_id:expected=candidate;break
+		check(not expected.is_empty() and row.assignments.size()==expected.get("assignments",[]).size(),"Worker assignment count differs from native semantic reader")
+		for index in mini(row.assignments.size(),expected.get("assignments",[]).size()):
+			var entry: Dictionary=row.assignments[index];var native: Dictionary=expected.assignments[index]
+			for key in ["kind","id","type","subtype","custom"]:check(int(entry[key])==int(native[key]),"Worker assignment identity differs")
+			for key in ["name","custom_code"]:check(entry[key]==native[key],"Worker assignment caption differs")
+		assignment_count+=row.assignments.size()
+	worker_evidence.assignment_count=assignment_count
+
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-workers-live.png")
 	var selected_id: int=-1
@@ -75,6 +88,9 @@ func composed_sheet(id: int) -> void:
 					if owner.workers.phase==owner.workers.Phase.Ready and not owner.candidate_modes.applying and owner.candidate_modes.receipts.get(selected_id,{}).get("only_assigned_jobs")==desired:break
 				check(owner.selector.visible and owner.workers.permitted_workers.is_empty() and owner.candidate_modes.receipts.get(selected_id,{}).get("only_assigned_jobs")==desired,"Selector mode click assigned worker or failed to confirm")
 				worker_evidence.selector_modes.append(desired)
+			deadline=Time.get_ticks_msec()+10000
+			while Time.get_ticks_msec()<deadline and owner.candidate_modes.receipts.size()<mini(16,owner.selector.rows.size()):
+				world.poll();service.poll(0.01);await create_timer(0.01).timeout
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/workshop-worker-selector-live.png")
 			click(Vector2(80,106))
@@ -101,6 +117,20 @@ func composed_sheet(id: int) -> void:
 				if desired:root.get_texture().get_image().save_png(directory+"/workshop-worker-specialized-live.png")
 		await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+("/workshop-worker-assigned-live.png" if assigning else "/workshop-worker-cleared-live.png"))
+		if assigning:
+			click(Vector2(448,190));await process_frame
+			deadline=Time.get_ticks_msec()+10000
+			while Time.get_ticks_msec()<deadline and owner.candidate_modes.receipts.size()<mini(16,owner.selector.rows.size()):
+				world.poll();service.poll(0.01);await create_timer(0.01).timeout
+			var native_mode_x: int=-1
+			for widget in reference.assigned_worker_selector.geometry:
+				if widget.name=="Specialization button":native_mode_x=int(widget.rect[0])*8-32;break
+			check(owner.selector.visible and owner.selector.indicator_slots(owner.selector.rows[0]).size()==2 and owner.selector.mode_rect(0).position.x==native_mode_x,"Multiple assignment indicators differ from native layout")
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/workshop-worker-multiple-live.png")
+			var escape:=InputEventKey.new();escape.keycode=KEY_ESCAPE;escape.pressed=true;root.push_input(escape,true)
+			check(not owner.selector.visible,"Worker picker Escape did not close")
+
 	owner.close_panel()
 	check(owner.state.building_id==-1 and owner.tasks.building_id==-1 and owner.workers.building_id==-1 and owner.contents.building_id==-1 and host.active==null,"Workshop close retained target authority")
 	owner.queue_free();host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame

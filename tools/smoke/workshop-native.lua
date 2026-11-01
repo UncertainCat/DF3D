@@ -36,6 +36,20 @@ local function worker_names(widget,ids,depth,visible)
  assert(finish>=first and (finish-first)%16==0 and finish-first<=65536,'Invalid native worker row children')
  for at=first,finish-1,16 do local ptr=df.reinterpret_cast('uint64_t',at).value;if ptr~=0 then worker_names(df.reinterpret_cast(df.widget,ptr),ids,depth+1,visible)end end
 end
+local function worker_geometry(widget,rows,depth)
+ assert(depth<12)
+ if (widget.flag.whole&1)==0 then return end
+ local r=widget.rect
+ if r.y1>=0 and r.y1<64 and r.y2>=r.y1 then
+  rows[#rows+1]={name=widget.name,type=tostring(widget._type),rect={r.x1,r.y1,r.x2,r.y2},depth=depth}
+  if df.widget_columns_container:is_instance(widget)then rows[#rows].padding=df.reinterpret_cast(df.widget_columns_container,widget).padding end
+ end
+ if not df.widget_container:is_instance(widget)then return end
+ local _,address=df.sizeof(df.reinterpret_cast(df.widget_container,widget).children)
+ local first=df.reinterpret_cast('uint64_t',address).value;local finish=df.reinterpret_cast('uint64_t',address+8).value
+ assert(finish>=first and (finish-first)%16==0 and finish-first<=65536)
+ for at=first,finish-1,16 do local ptr=df.reinterpret_cast('uint64_t',at).value;if ptr~=0 then worker_geometry(df.reinterpret_cast(df.widget,ptr),rows,depth+1)end end
+end
 local function lines()
  local rows={};for y=0,g.dimy-1 do
   local text={};for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;text[#text+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
@@ -64,6 +78,7 @@ local function read_worker_reference(target)
   else nonunit[#nonunit+1]={kind=entry.t,null=not entry.u}end
  end
  worker_names(list,native_ids,0,true)
+ local geometry={};worker_geometry(list,geometry,0)
  local worker_text,worker_code=dfhack.run_command_silent('df3d','workshop-workers-probe',tostring(target.id))
  assert(worker_code==0,worker_text)
  local semantic=json.decode(worker_text);local actual_ids=semantic.ids;local sorted_ids={table.unpack(native_ids)}
@@ -75,7 +90,7 @@ local function read_worker_reference(target)
  comparison:write(json.encode({native_ids=native_ids,actual_ids=actual_ids,nonunit=nonunit}));comparison:close()
  assert(#sorted_ids==#actual_ids,'Workshop native worker membership count differs: '..#sorted_ids..' native / '..#actual_ids..' semantic')
  for i,id in ipairs(sorted_ids)do assert(actual_ids[i]==id,'Workshop native worker membership differs')end
- return {building_id=target.id,native_order=native_ids,member_ids=actual_ids,skills=native_skills,rows=semantic.rows,all_equal=true}
+ return {building_id=target.id,native_order=native_ids,member_ids=actual_ids,skills=native_skills,rows=semantic.rows,geometry=geometry,all_equal=true}
 end
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
@@ -143,6 +158,8 @@ local ok,err=xpcall(function()
  worker_click(448,250)
  assert(assigned.flags4.only_do_assigned_jobs==specialized,'Native workshop specialization did not restore')
  worker_click(448,190)
+ result.assigned_worker_selector=read_worker_reference(still)
+ shot('still-worker-selector-assigned')
  worker_click(80,106)
  assert(#profile.permitted_workers==0,'Native worker reselect did not restore unrestricted profile')
  shot('still-workers-restored')

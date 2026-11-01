@@ -66609,6 +66609,94 @@
         ],
         "scope": "Test-owned MASTERPIECE_LOST and PERFORMANCE events, temporary occasion/schedule, existing CREATED_SITE leaf. Exact native description comparisons; missing reference/entity/occasion/schedule and nested performance-to-lost-to-leaf. Not natural-world occurrence, cycle handling, or blanket event acceptance."
       },
+      "coin_caption_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-064043",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "8c8c3ba6f1d5e574e2b383b09458f88a881ff1872e2eb560cab46f16245f103d",
+        "cases": [
+          {
+            "batch_index": -1,
+            "case": "no-batch",
+            "currency_by_year": false,
+            "issuer": 245,
+            "no_art_allocation": true,
+            "ruler": -1,
+            "year": 123,
+            "utf8_bytes": 1736,
+            "text_sha256": "28ef9b9ab69300e481528d1012f9b38cc000a81c0a83c521491d986d5563ecde",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "batch_index": 0,
+            "case": "no-issuer",
+            "currency_by_year": false,
+            "issuer": -1,
+            "no_art_allocation": true,
+            "ruler": -1,
+            "year": 123,
+            "utf8_bytes": 1736,
+            "text_sha256": "28ef9b9ab69300e481528d1012f9b38cc000a81c0a83c521491d986d5563ecde",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "batch_index": 0,
+            "case": "year",
+            "currency_by_year": true,
+            "issuer": 245,
+            "no_art_allocation": true,
+            "ruler": -1,
+            "year": 123,
+            "utf8_bytes": 1753,
+            "text_sha256": "1ca1a0ea2419e23fd3ec8a240d76744ad35f7b875f168db2402cc88775f6eb8f",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "batch_index": 0,
+            "case": "no-year",
+            "currency_by_year": true,
+            "issuer": 245,
+            "no_art_allocation": true,
+            "ruler": -1,
+            "year": -1,
+            "utf8_bytes": 1749,
+            "text_sha256": "4b19e0d83b1e39867af1e405c4bbfe717d79e071ffca1597a2a66963cdd47709",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "batch_index": 0,
+            "case": "ruler",
+            "currency_by_year": false,
+            "issuer": 245,
+            "no_art_allocation": true,
+            "ruler": 1217,
+            "year": 123,
+            "utf8_bytes": 1768,
+            "text_sha256": "7d435d16ca5df8cfe4b9a09ddadf909a8f013de4d20b0fe4c8e3605ca1d86c6e",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "batch_index": 0,
+            "case": "missing-ruler",
+            "currency_by_year": false,
+            "issuer": 245,
+            "no_art_allocation": true,
+            "ruler": 10563,
+            "year": 123,
+            "utf8_bytes": 1749,
+            "text_sha256": "4b19e0d83b1e39867af1e405c4bbfe717d79e071ffca1597a2a66963cdd47709",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          }
+        ],
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "Temporary unnamed inorganic coin artifact referenced by ARTIFACT_CREATED in a dance. Valid indices only. No malformed-index, other material, decoration, container or corpse acceptance."
+      },
       "artifact_initialization_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-063142",
         "status": "passed_with_known_issues",

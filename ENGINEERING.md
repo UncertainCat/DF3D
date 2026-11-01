@@ -3570,9 +3570,26 @@ container/corpse caption acceptance.
 The local `knowledge-coin-audit.json` records executable and function hashes
 for5be970 (0x536 bytes) and52c2b0 (0xd8 bytes), with disassembly retained beside
 it. No formatter admission or UI exposure changes follow from this static
-review. Add valid coin-batch/issuer/year/ruler native comparisons before
-claiming the coin path accepted; malformed indices must not be sent to native
-as an experiment.
+review. Malformed indices must not be sent to native as an experiment.
+
+Protected native064043 on2026-11-01 compares six temporary unnamed inorganic
+coin artifacts through ARTIFACT_CREATED in a dance: no batch, no issuer,
+year-based naming with year123 or absent year, and ruler-based naming with a
+present or missing figure. All twelve initial/repeated native descriptions
+match the owned formatter exactly. Guards cover the item, batch-vector backing,
+batch, issuer/name/raw flags, ruler/name and existing event/form/UI/random
+storage. No art records are allocated. The native year123 screenshot was
+inspected; the issuer, year and coin caption appear in the event sentence.
+`coin_caption_reference` retains bounded digests and scope. This verifies these
+valid branches, not malformed indices, other materials or arbitrary item graphs.
+
+The harness restores the issuer flag and form reference, removes and frees
+its temporary item/artifact/event/batch, and exits the owned session unsaved.
+Source preservation passes; DF36884 closes, and all three Godot processes have
+only the known startup notice. Initial063948 stopped on a harness-only attempt
+to guard a statue description field on a coin; it supplied no coin comparison
+acceptance and also preserved its source. Production request/UI connection and
+the remaining formatter source-validation work are still pending.
 
 ### Knowledge artifact initialization effects
 

@@ -63,17 +63,33 @@ local function event(id)
   local artifact=df.artifact_record.find(value.artifact_id)
   if artifact then
    object(artifact);name(artifact.name);local item=artifact.item;object(item)
-   assert(item and (df.item_statuest:is_instance(item) or df.item_figurinest:is_instance(item)),'Artifact probe expects a statue or figurine')
-   string_field(item,'description');vector(item.general_refs);vector(item.improvements)
+   assert(item and (df.item_statuest:is_instance(item) or df.item_figurinest:is_instance(item) or df.item_coinst:is_instance(item)),'Artifact probe expects a statue, figurine or coin')
+   vector(item.general_refs);vector(item.improvements)
    for _,ref in ipairs(item.general_refs)do object(ref)end
    for _,improvement in ipairs(item.improvements)do
     assert(df.itemimprovement_bandsst:is_instance(improvement),'Add guards for this decoration');object(improvement)
    end
+   if df.item_coinst:is_instance(item) then
+    vector(df.global.world.coin_batches.all)
+    if item.coin_batch~=-1 then
+     assert(item.coin_batch>=0 and item.coin_batch<#df.global.world.coin_batches.all,'Invalid coin batch')
+     local batch=assert(df.global.world.coin_batches.all[item.coin_batch]);object(batch)
+     if batch.entity~=-1 then
+      local issuer=assert(df.historical_entity.find(batch.entity));entity(batch.entity)
+      object(assert(issuer.entity_raw))
+      local _,address=df.sizeof(issuer.entity_raw:_field('flags'))
+      guard(df.reinterpret_cast('uint64_t',address).value,df.reinterpret_cast('int32_t',address+8).value)
+      figure(batch.ruler)
+     end
+    end
+   else
+   string_field(item,'description')
    assert(item.image.id>=0,'Artifact probe expects initialized image')
    local chunk=assert(df.art_image_chunk.find(item.image.id));local art=assert(chunk.images[item.image.subid].art_image)
    object(art);vector(art.elements);vector(art.properties);object(art.ref)
    for _,entry in ipairs(art.elements)do object(entry)end
    for _,entry in ipairs(art.properties)do object(entry)end
+   end
   end
  elseif kind==df.history_event_type.MASTERPIECE_LOST then
   figure(value.histfig);site(value.site);event(value.creation_event)

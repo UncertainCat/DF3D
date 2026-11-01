@@ -63205,6 +63205,83 @@
             }
           ]
         }
+      },
+      "written_owned_probe_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-043716",
+        "df_pid": 40852,
+        "bridge_sha256": "2613e670637543b09327211ba598697ace20a87ec84b97be0cc502d8cdbd1df5",
+        "status": "passed_with_known_issues",
+        "source_preservation": "Owned source unchanged; owned DF exited unsaved",
+        "diagnostics": "skills-diagnostics.json: three Godot processes, known startup notices only",
+        "scope": "Exact full native descriptions for all eleven cases across ten content types. Guards cover content and copied-reference sources, selected event/entity/site/occasion records, UI/random state. Embedded art-form roots are guarded here; deep art graphs have separate adapter evidence, not complete transitive coverage in this run. Diagnostic only, no production transport or rendered parity. Other reference/event types and controlled title/author cases remain.",
+        "cases": [
+          {
+            "id": 302,
+            "type": "Manual",
+            "characters": 190,
+            "guards_unchanged": true
+          },
+          {
+            "id": 0,
+            "type": "Poem",
+            "characters": 871,
+            "guards_unchanged": true
+          },
+          {
+            "id": 7,
+            "type": "Essay",
+            "characters": 257,
+            "guards_unchanged": true
+          },
+          {
+            "id": 9,
+            "type": "MusicalComposition",
+            "characters": 2594,
+            "guards_unchanged": true
+          },
+          {
+            "id": 10,
+            "type": "Choreography",
+            "characters": 2011,
+            "guards_unchanged": true
+          },
+          {
+            "id": 17,
+            "type": "Guide",
+            "characters": 173,
+            "guards_unchanged": true
+          },
+          {
+            "id": 41,
+            "type": "ShortStory",
+            "characters": 220,
+            "guards_unchanged": true
+          },
+          {
+            "id": 247,
+            "type": "Manual",
+            "characters": 180,
+            "guards_unchanged": true
+          },
+          {
+            "id": 253,
+            "type": "Novel",
+            "characters": 220,
+            "guards_unchanged": true
+          },
+          {
+            "id": 361,
+            "type": "CulturalHistory",
+            "characters": 696,
+            "guards_unchanged": true
+          },
+          {
+            "id": 416,
+            "type": "Chronicle",
+            "characters": 848,
+            "guards_unchanged": true
+          }
+        ]
       }
     }
   }

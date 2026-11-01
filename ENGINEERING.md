@@ -3329,6 +3329,24 @@ literals, with code ending ee306a and dispatch tables ending ee3554. Event refs
 initialize an owned context then call historical-event `getPhrase`, sharing the
 remaining event ownership audit. These helpers are not production providers yet.
 
+`written_detail_native.h` adds the diagnostic `written-detail-probe`. It copies
+written-content value vectors and independently instantiates/copies each reference
+through DFHack type identities; destruction uses the same identity. Paired vector
+lengths and counts are checked before native cc5d50. The native Skills title/type/
+author sequence uses pinned native literals and c0f660/a94030 name formatting.
+Poetry, music and dance append through their existing owned adapters. Runtime
+native sheet state is never an input.
+
+Protected043716 matches all eleven native descriptions exactly (173–2,594
+characters), including the embedded art forms, scholarly topics, site, histories,
+ceremony and plundering references. Content/reference, selected historical and
+occasion records, UI and random guards remain unchanged. Art-form roots are guarded
+in this comparison; deep graphs have separate adapter evidence and this run does
+not establish every transitive backing store. DF40852 exits unsaved with source
+preservation and only known Godot startup notices. `written_owned_probe_reference`
+retains the bridge hash and bounded results. Controlled title/author variants,
+other references/events, production transport and rendered Skills remain unfinished.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

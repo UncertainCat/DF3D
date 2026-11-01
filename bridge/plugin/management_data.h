@@ -55,7 +55,8 @@ struct ResidentAppearanceRecipe {
 
 // --- production ---
 struct ProductionRequirement { std::string description; int32_t quantity=0; int16_t itemType=-1; };
-struct ProductionRecipe { std::string key,name; std::vector<ProductionRequirement> requirements; };
+struct ProductionAvailability { bool available=false; std::string objection; };
+struct ProductionRecipe { std::string key,name; std::vector<ProductionRequirement> requirements; std::optional<ProductionAvailability> availability; };
 struct ProductionJob {
   int32_t id=-1,workerId=-1,completionTimer=-1;
   int16_t jobType=-1;

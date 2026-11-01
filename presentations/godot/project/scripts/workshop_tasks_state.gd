@@ -1,7 +1,7 @@
 extends RefCounted
 # Staged workshop Tasks controller. DF owns choices, captions and queue effects.
-# The legacy recipe payload lacks category/availability facts; the public picker
-# must wait for the native catalog contract rather than infer those in Godot.
+# Availability is optional native evidence. Category navigation and ordering
+# remain pending; this controller does not infer either from recipe keys.
 signal changed
 signal applied
 const C=preload("res://scripts/management_contract.gd")
@@ -51,7 +51,9 @@ func queue_task(key: String) -> void:
 	if phase!=Phase.Ready or ticket!=0:return
 	var found:=false
 	for recipe in snapshot.recipes:
-		if recipe.key==key:found=true;break
+		if recipe.key==key:
+			if recipe.has("availability") and not recipe.availability.available:return
+			found=true;break
 	if not found:return
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.ProductionQueue,"building_id":building_id,"recipe":key})

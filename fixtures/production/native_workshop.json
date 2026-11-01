@@ -364,5 +364,320 @@
     "native_queue_unchanged_after_rejection": true,
     "source_save_unchanged": true,
     "scope": "Still root reactions: exact native captions, availability and objections; real client read and unavailable-task refusal. No successful DF3D queue, categories or rendered workshop panel acceptance."
+  },
+  "availability_wire_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-152110",
+    "plugin_sha256": "196e6a6eef50f774cea6d66ea807ebf25c4851984831bcd7ef2fe882704f6416",
+    "native_reactions": {
+      "all_equal": true,
+      "building_id": 37,
+      "codes": [
+        "BREW_DRINK_FROM_PLANT",
+        "BREW_DRINK_FROM_PLANT_GROWTH",
+        "MAKE_MEAD"
+      ],
+      "rows": [
+        {
+          "available": true,
+          "caption": "Brew drink from plant",
+          "code": "BREW_DRINK_FROM_PLANT",
+          "objection": "",
+          "raw_index": 44
+        },
+        {
+          "available": false,
+          "caption": "Brew drink from fruit",
+          "code": "BREW_DRINK_FROM_PLANT_GROWTH",
+          "objection": "[Requires Unrotten fermentable leaf or fruit]",
+          "raw_index": 45
+        },
+        {
+          "available": false,
+          "caption": "Make mead",
+          "code": "MAKE_MEAD",
+          "objection": "[Requires Honey-containing item]",
+          "raw_index": 46
+        }
+      ]
+    },
+    "wire_result": {
+      "objection": "[Requires Unrotten fermentable leaf or fruit]",
+      "reaction_count": 3,
+      "rejected_code": "BREW_DRINK_FROM_PLANT_GROWTH",
+      "success": true
+    },
+    "queued_screenshot_sha256": "33ea12dee4cd5f29795f3a7cac746d4666b396b2e0d72c04961d7bcf6ba981ab",
+    "scope": "Three Still reaction availability and objection fields; native queued Make bed layout. DF3D successful queue/cancel and rendered UI remain unverified.",
+    "queued_page": {
+      "active_id": 4,
+      "active_sub_tab": 0,
+      "lines": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "",
+          "y": 3
+        },
+        {
+          "text": "",
+          "y": 4
+        },
+        {
+          "text": "",
+          "y": 5
+        },
+        {
+          "text": "                                                            Carpenter's Workshop",
+          "y": 6
+        },
+        {
+          "text": "",
+          "y": 7
+        },
+        {
+          "text": "                                                       Tasks    Workers    Work orders",
+          "y": 8
+        },
+        {
+          "text": "                                                       Tasks    Workers    Work orders",
+          "y": 9
+        },
+        {
+          "text": "",
+          "y": 10
+        },
+        {
+          "text": "",
+          "y": 11
+        },
+        {
+          "text": "                                                      Make bed",
+          "y": 12
+        },
+        {
+          "text": "",
+          "y": 13
+        },
+        {
+          "text": "",
+          "y": 14
+        },
+        {
+          "text": "                                                                                        Add new task",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "",
+          "y": 17
+        },
+        {
+          "text": "",
+          "y": 18
+        },
+        {
+          "text": "",
+          "y": 19
+        },
+        {
+          "text": "",
+          "y": 20
+        },
+        {
+          "text": "",
+          "y": 21
+        },
+        {
+          "text": "",
+          "y": 22
+        },
+        {
+          "text": "",
+          "y": 23
+        },
+        {
+          "text": "",
+          "y": 24
+        },
+        {
+          "text": "",
+          "y": 25
+        },
+        {
+          "text": "",
+          "y": 26
+        },
+        {
+          "text": "",
+          "y": 27
+        },
+        {
+          "text": "",
+          "y": 28
+        },
+        {
+          "text": "",
+          "y": 29
+        },
+        {
+          "text": "",
+          "y": 30
+        },
+        {
+          "text": "",
+          "y": 31
+        },
+        {
+          "text": "",
+          "y": 32
+        },
+        {
+          "text": "",
+          "y": 33
+        },
+        {
+          "text": "",
+          "y": 34
+        },
+        {
+          "text": "",
+          "y": 35
+        },
+        {
+          "text": "",
+          "y": 36
+        },
+        {
+          "text": "",
+          "y": 37
+        },
+        {
+          "text": "",
+          "y": 38
+        },
+        {
+          "text": "",
+          "y": 39
+        },
+        {
+          "text": "",
+          "y": 40
+        },
+        {
+          "text": "",
+          "y": 41
+        },
+        {
+          "text": "",
+          "y": 42
+        },
+        {
+          "text": "                                                            citron wood",
+          "y": 43
+        },
+        {
+          "text": "",
+          "y": 44
+        },
+        {
+          "text": "",
+          "y": 45
+        },
+        {
+          "text": "                                                            +coffee wood wheelbarrow+",
+          "y": 46
+        },
+        {
+          "text": "",
+          "y": 47
+        },
+        {
+          "text": "",
+          "y": 48
+        },
+        {
+          "text": "                                                            ≡pomelo wood wheelbarrow≡",
+          "y": 49
+        },
+        {
+          "text": "",
+          "y": 50
+        },
+        {
+          "text": "",
+          "y": 51
+        },
+        {
+          "text": "                                                             citron wood wheelbarrow",
+          "y": 52
+        },
+        {
+          "text": "",
+          "y": 53
+        },
+        {
+          "text": "",
+          "y": 54
+        },
+        {
+          "text": "                                                            ≡kumquat wood wheelbarrow≡",
+          "y": 55
+        },
+        {
+          "text": "",
+          "y": 56
+        },
+        {
+          "text": "",
+          "y": 57
+        },
+        {
+          "text": "                                                            kumquat wood wheelbarrow",
+          "y": 58
+        },
+        {
+          "text": "",
+          "y": 59
+        },
+        {
+          "text": "",
+          "y": 60
+        },
+        {
+          "text": "",
+          "y": 61
+        },
+        {
+          "text": "",
+          "y": 62
+        },
+        {
+          "text": "",
+          "y": 63
+        },
+        {
+          "text": "",
+          "y": 64
+        },
+        {
+          "text": "",
+          "y": 65
+        }
+      ],
+      "name": "queued"
+    }
   }
 }

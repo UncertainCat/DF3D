@@ -653,7 +653,11 @@ void publish() {
   std::vector<flatbuffers::Offset<m::ProductionBuilding>> pb;
   for(const auto& v:production.buildings){m::TilePos p(v.x,v.y,v.z);pb.push_back(m::CreateProductionBuilding(b,v.id,b.CreateString(v.name),b.CreateString(v.kind),&p,v.buildStage,v.maxStage,v.queueSize));}
   std::vector<flatbuffers::Offset<m::ProductionRecipe>> pr;
-  for(const auto& v:production.recipes) pr.push_back(m::CreateProductionRecipe(b,b.CreateString(v.key),b.CreateString(v.name),reqs(v.requirements)));
+  for(const auto& v:production.recipes) {
+    flatbuffers::Offset<m::ProductionAvailability> availability;
+    if(v.availability)availability=m::CreateProductionAvailability(b,v.availability->available,b.CreateString(v.availability->objection));
+    pr.push_back(m::CreateProductionRecipe(b,b.CreateString(v.key),b.CreateString(v.name),reqs(v.requirements),availability));
+  }
   std::vector<flatbuffers::Offset<m::ProductionJob>> pj;
   for(const auto& v:production.jobs) pj.push_back(m::CreateProductionJob(b,v.id,b.CreateString(v.name),v.jobType,v.repeat,v.suspended,v.workerId,b.CreateString(v.workerName),v.completionTimer,v.attachedItems,v.editable,b.CreateString(v.status),reqs(v.requirements)));
   std::vector<flatbuffers::Offset<m::FarmCrop>> pc;
@@ -4213,7 +4217,12 @@ void run(color_ostream& out) {
     auto each=[&](const char* key,size_t cap,auto fn){lua_getfield(L,-1,key);if(lua_istable(L,-1)) for(size_t i=1;i<=lua_rawlen(L,-1)&&i<=cap;++i){lua_rawgeti(L,-1,i);fn();lua_pop(L,1);}lua_pop(L,1);};
     auto reqs=[&](){std::vector<ProductionRequirement> out;each("requirements",16,[&](){out.push_back({text(L,"description"),int32_t(number(L,"quantity")),int16_t(number(L,"item_type",-1))});});return out;};
     each("buildings",64,[&](){ProductionBuilding v;v.id=int32_t(number(L,"id",-1));v.x=int32_t(number(L,"x"));v.y=int32_t(number(L,"y"));v.z=int32_t(number(L,"z"));v.name=text(L,"name");v.kind=text(L,"kind");v.buildStage=int16_t(number(L,"build_stage"));v.maxStage=int16_t(number(L,"max_stage"));v.queueSize=uint16_t(number(L,"queue_size"));production.buildings.push_back(std::move(v));});
-    each("recipes",128,[&](){production.recipes.push_back({text(L,"key"),text(L,"name"),reqs()});});
+    each("recipes",128,[&](){
+      ProductionRecipe row{text(L,"key"),text(L,"name"),reqs()};
+      lua_getfield(L,-1,"availability");
+      if(lua_istable(L,-1))row.availability=ProductionAvailability{boolean(L,"available"),text(L,"objection")};
+      lua_pop(L,1);production.recipes.push_back(std::move(row));
+    });
     each("production_jobs",64,[&](){ProductionJob v;v.id=int32_t(number(L,"id",-1));v.jobType=int16_t(number(L,"job_type",-1));v.workerId=int32_t(number(L,"worker_id",-1));v.completionTimer=int32_t(number(L,"completion_timer",-1));v.name=text(L,"name");v.workerName=text(L,"worker_name");v.status=text(L,"status");v.repeat=boolean(L,"repeat_job");v.suspended=boolean(L,"suspended");v.editable=boolean(L,"editable");v.attachedItems=uint16_t(number(L,"attached_items"));v.requirements=reqs();production.jobs.push_back(std::move(v));});
     each("crops",256,[&](){production.crops.push_back({int32_t(number(L,"id",-1)),text(L,"name"),uint8_t(number(L,"seasons")),uint32_t(number(L,"seeds"))});});
     each("seasonal_crops",4,[&](){production.seasonalCrops.push_back(int32_t(lua_tointeger(L,-1)));});

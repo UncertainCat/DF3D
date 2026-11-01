@@ -1641,7 +1641,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          v->origin()->x()<0 || v->origin()->y()<0 || v->origin()->z()<0 || v->build_stage()<0 || v->max_stage()<v->build_stage() || v->queue_size()>1024) return "invalid production building";
     }
     std::set<std::string> keys;
-    if(p->recipes()) for(const auto* v:*p->recipes()) if(!v || !textOk(v->key(),128) || !v->key()->size() || !keys.insert(v->key()->str()).second || !textOk(v->name(),512) || !requirementsOk(v->requirements())) return "invalid production recipe";
+    if(p->recipes()) for(const auto* v:*p->recipes()) if(!v || !textOk(v->key(),128) || !v->key()->size() || !keys.insert(v->key()->str()).second || !textOk(v->name(),512) || !requirementsOk(v->requirements()) || (v->availability() && (!textOk(v->availability()->objection(),4096) || (v->availability()->available() && v->availability()->objection()->size())))) return "invalid production recipe";
     ids.clear();
     if(p->jobs()) for(const auto* v:*p->jobs()) if(!v || v->id()<0 || !ids.insert(v->id()).second || v->worker_id() < -1 || v->job_type()<0 || v->completion_timer() < -1 || !textOk(v->name(),512) || !textOk(v->worker_name(),512) || !textOk(v->status(),512) || !requirementsOk(v->requirements())) return "invalid production job";
     ids.clear();
@@ -1741,7 +1741,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(!m || m->unit_id()<0 || !ids.insert(m->unit_id()).second || !textOk(m->name(),512) || !textOk(m->position(),512) || !textOk(m->job(),512) || (m->offices() && m->offices()->size()>64))return "invalid manager role";
       std::set<int32_t> offices;if(m->offices())for(auto id:*m->offices())if(id<0 || !offices.insert(id).second)return "invalid manager office";
     }
-    std::set<std::string> keys;if(w->recipes())for(const auto* r:*w->recipes())if(!r || !r->key() || !r->key()->size() || !textOk(r->key(),128) || !keys.insert(r->key()->str()).second || !textOk(r->name(),512) || (r->requirements() && r->requirements()->size()))return "invalid manager recipe";
+    std::set<std::string> keys;if(w->recipes())for(const auto* r:*w->recipes())if(!r || !r->key() || !r->key()->size() || !textOk(r->key(),128) || !keys.insert(r->key()->str()).second || !textOk(r->name(),512) || (r->requirements() && r->requirements()->size()) || r->availability())return "invalid manager recipe";
   }
   if(const auto* c=s.citizen()) {
     if((c->citizens() && c->citizens()->size()>32) || (c->details() && c->details()->size()>16) || c->selected_unit() < -1 || c->selected_detail() < -1 || c->selected_detail()>127 || (c->detail() && c->detail()->size()>2048)) return "invalid citizen state";

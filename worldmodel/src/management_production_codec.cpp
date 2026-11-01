@@ -82,8 +82,11 @@ ProductionState decodeProduction(const m::ProductionState* p) {
                              str(v->name()), str(v->kind()), v->build_stage(), v->max_stage(),
                              v->queue_size()});
   if (p->recipes())
-    for (const auto* v : *p->recipes())
-      n.recipes.push_back({str(v->key()), str(v->name()), reqs(v->requirements())});
+    for (const auto* v : *p->recipes()) {
+      ProductionRecipe row{str(v->key()), str(v->name()), reqs(v->requirements())};
+      if(const auto* a=v->availability())row.availability=ProductionAvailability{a->available(),str(a->objection())};
+      n.recipes.push_back(std::move(row));
+    }
   if (p->jobs())
     for (const auto* v : *p->jobs()) {
       ProductionJob j;

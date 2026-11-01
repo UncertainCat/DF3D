@@ -22,6 +22,7 @@ func run() -> void:
 		for recipe in before.recipes:
 			if recipe.key=="reaction:"+row.code:
 				matched=true;check(recipe.name==row.caption,"Native reaction caption changed in transport")
+				check(recipe.get("availability",{})=={"available":row.available,"objection":row.objection},"Native reaction availability changed in transport")
 		check(matched,"Native reaction missing from adapter")
 		if not row.available and unavailable.is_empty():unavailable=row
 	if not check(not unavailable.is_empty(),"Fixture lacks an unavailable reaction"):quit(1);return

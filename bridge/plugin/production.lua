@@ -149,7 +149,11 @@ local function inspect(b,rs,native_caption)
  local result={ok=true,message='Production inspected',buildings={info(b)},selected_building=b.id,
   recipes={},production_jobs={},crops={},seasonal_crops={},current_season=-1}
  if kind(b)=='FarmPlot' then local ok,err=farm_state(b,result);if not ok then return fail(err) end;return result end
- for _,r in ipairs(rs) do result.recipes[#result.recipes+1]={key=r.key,name=r.name,requirements=r.requirements} end
+ for _,r in ipairs(rs) do
+  local row={key=r.key,name=r.name,requirements=r.requirements}
+  if r.available~=nil then row.availability={available=r.available,objection=r.objection} end
+  result.recipes[#result.recipes+1]=row
+ end
  if #b.jobs>64 then return fail('Workshop queue exceeds bounded inspector') end
  for _,j in ipairs(b.jobs) do
   local worker=J.getWorker(j)

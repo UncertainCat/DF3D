@@ -6491,8 +6491,19 @@ semantic cached indices as in the existing item-position reader.
 
 The production adapter now consumes these root reaction rows for Still and
 rejects a newly unavailable reaction before queueing, retaining its native
-objection. The legacy transport still omits availability/objection fields from
-recipe choices: a dedicated catalog contract and rendered picker remain pending.
+objection. Optional `ProductionRecipe.availability` transports the native boolean
+and objection through bridge/model/Godot. Absence means unknown, preserving old
+recordings and builtin providers without availability evidence; it never implies
+available. This additive field retains management113 and is forbidden on manager
+recipes. Native categories, ordering and the rendered picker remain pending.
+Protected152110 on2026-11-01 verifies all three availability objects through
+the actual model/Godot wire, including exact native objection text. Unavailable
+fruit brewing is rejected with the native job queue unchanged. Owned DF48088
+exits unsaved with source preservation; all four Godot log groups have only the
+classified startup notice and no Unicode errors. The same run captures the native
+nonempty Make bed queue for subsequent Tasks layout implementation. Core and
+controller checks pass in `build/qa/workshop-availability-wire`. This does not
+establish rendered DF3D picker or successful DF3D queue/cancel acceptance.
 Protected150712 compares all three native Still reaction captions, availability
 and objection strings exactly. Its actual model/Godot client reads the recipes
 and requests unavailable fruit brewing; DF rejects it with the native objection,

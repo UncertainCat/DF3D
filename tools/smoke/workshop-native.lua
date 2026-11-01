@@ -39,6 +39,7 @@ local ok,err=xpcall(function()
  assert(click_label('Make bed'),'Native Make bed choice not found')
  assert(#building.jobs==#jobs+1,'Native Make bed did not create a task')
  local created=building.jobs[#building.jobs-1]
+ shot('queued')
  local text,code=dfhack.run_command_silent('df3d','workshop-requirements-probe',tostring(building.id),tostring(created.id))
  local removed=dfhack.job.removeJob(created)
  assert(removed,'Native reference task cleanup failed')

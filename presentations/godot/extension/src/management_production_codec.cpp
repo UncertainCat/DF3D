@@ -45,6 +45,11 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     row["key"] = String::utf8(v.key.c_str());
     row["name"] = String::utf8(v.name.c_str());
     row["requirements"] = reqs(v.requirements);
+    if(v.availability) {
+      Dictionary availability;availability["available"]=v.availability->available;
+      availability["objection"]=String::utf8(v.availability->objection.c_str());
+      row["availability"]=availability;
+    }
     recipes.push_back(row);
   }
   for (const auto& v : p.jobs) {

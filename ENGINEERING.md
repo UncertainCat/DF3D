@@ -3159,6 +3159,21 @@ been approved. Scrollbar hover pixels, long names/animation, this feedback gap
 and active-job/squad/later-departure effect variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
+### Native creature Skills reference
+
+`native_farm.json.unit_skills_reference` records protected032532 native Skills
+captures for Labor, Combat, Social, Other skills and Knowledge. The first four
+contain18/4/9/3 ordered skills, their levels and separate rust-adjusted values.
+Rows have36-pixel pitch; the Labor screenshot shows14 rows at1200x800. Knowledge
+renders scholarly topics and art forms. The diagnostic returns to Overview
+without advancing simulation; owned DF39556 exits unsaved with source preservation
+and only known Godot startup notices. Native label reference16d7f3 belongs to
+renderer14ef90. Its detail text uses sheet vectors1bc0/1bd8 and width1bf0.
+These are diagnostic references, never runtime inputs. The owned native builder,
+Knowledge semantic vectors, selection/details, hover and scrolling still need
+audit and verification. Godot currently categorizes/sorts generic skill records;
+that implementation is not accepted as native Skills parity.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not
@@ -3308,8 +3323,11 @@ and character colors are regression fixtures. Native ghosts omit Overview
 needs/squad summary and Expel; the rendered checks preserve those gates.
 Owned DF12700 exits unsaved with source preservation and only known Godot
 startup notices. Bridge SHA065f825fdda593547115decf9aa31f68b845f960dc89cb525043572c9c30e9a9.
-This does not establish ghost behavior, combat execution, killed-flag variants
-or every ghost artwork case. Broader appearance coverage remains open.
+Protected032358 repeats native map selection and actual carrier navigation with
+flags2.killed set alongside ghostly; all five Health crops still match. Original
+flags are restored, source preservation passes and DF37412 exits unsaved with
+known startup notices only. This does not establish ghost behavior, combat
+execution or every ghost artwork case. Broader appearance coverage remains open.
 
 `formatted_text_reference` records protected021536 native text-box output:
 53-column boxes, exact wrapped lines and per-character packed colors. Native

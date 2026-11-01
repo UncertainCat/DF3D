@@ -209,6 +209,7 @@ local ok,err=xpcall(function()
      elseif health_case=='ghost'then
       local ghost=df.unit_ghost_info:new();ghost.type=df.ghost_type.ForlornHaunt
       overview_saved.health_ghost=ghost;set(unit,'ghost_info',ghost);set(unit.flags3,'ghostly',true)
+      if os.getenv('DF3D_UNIT_GHOST_KILLED')=='1'then set(unit.flags2,'killed',true)end
      elseif health_case=='treatment'then
       local health=assert(unit.health,'treatment fixture requires health info')
       assert(#health.body_part_flags>0,'treatment fixture requires body flags')
@@ -405,6 +406,10 @@ local ok,err=xpcall(function()
      end
     end
     assert(#old.temporary==2,'Syndrome fixture needs two named installed syndromes')
+   end
+   if os.getenv('DF3D_UNIT_SKILLS_PAGES')=='1'then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-skills-native.lua')
+    linked.skills_pages=assert(loadfile(source))(unit,view,capture,out)
    end
    if os.getenv('DF3D_UNIT_HEALTH_PAGES')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-health-pages-native.lua')

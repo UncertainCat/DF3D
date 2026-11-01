@@ -57200,8 +57200,494 @@
           "native_map_selection": true,
           "bridge_sha256": "065f825fdda593547115decf9aa31f68b845f960dc89cb525043572c9c30e9a9",
           "scope": "Controlled ForlornHaunt profile on the paused specimen. Native map selection succeeds; actual carrier navigation opens the creature sheet and transports all five Health pages. All five text-body crops match native. Ghost Overview omits needs/squad summary and Expel. No ghost behavior or combat execution tested."
+        },
+        "killed_ghost_reference": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261101-032358",
+          "status": "passed_with_known_issues",
+          "result": {
+            "pages": [
+              {
+                "lines": 2,
+                "name": "Status",
+                "pixels_match": true
+              },
+              {
+                "lines": 10,
+                "name": "Wounds",
+                "pixels_match": true
+              },
+              {
+                "lines": 1,
+                "name": "Treatment",
+                "pixels_match": true
+              },
+              {
+                "lines": 25,
+                "name": "History",
+                "pixels_match": true
+              },
+              {
+                "lines": 5,
+                "name": "Description",
+                "pixels_match": true
+              }
+            ],
+            "retained_refresh": true,
+            "success": true,
+            "tab_return": true
+          },
+          "scope": "Same controlled ghost with flags2.killed=true; native map selection and actual carrier navigation succeed, all five Health crops match native. Both flags restored. No simulation advancement or death/ghost effects executed."
         }
       }
+    },
+    "unit_skills_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261101-032532",
+      "status": "passed_with_known_issues",
+      "native": {
+        "pages": [
+          {
+            "first": 0,
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      Talented Appraiser (V Rusty)",
+                "y": 20
+              },
+              {
+                "text": "                                                      Proficient Organizer (V Rusty)",
+                "y": 23
+              },
+              {
+                "text": "                                                      Proficient Record Keeper (V Rusty)",
+                "y": 26
+              },
+              {
+                "text": "                                                      Adequate Mason (Rusty)",
+                "y": 29
+              },
+              {
+                "text": "                                                      Adequate Planter",
+                "y": 32
+              },
+              {
+                "text": "                                                      Dabbling Carpenter",
+                "y": 35
+              },
+              {
+                "text": "                                                      Dabbling Engraver",
+                "y": 38
+              },
+              {
+                "text": "                                                      Dabbling Butcher",
+                "y": 41
+              },
+              {
+                "text": "                                                      Dabbling Brewer",
+                "y": 44
+              },
+              {
+                "text": "                                                      Dabbling Clothier",
+                "y": 47
+              },
+              {
+                "text": "                                                      Dabbling Miller",
+                "y": 50
+              },
+              {
+                "text": "                                                      Dabbling Thresher",
+                "y": 53
+              },
+              {
+                "text": "                                                      Dabbling Furnace Operator",
+                "y": 56
+              },
+              {
+                "text": "                                                      Dabbling Metal Crafter",
+                "y": 59
+              }
+            ],
+            "name": "Labor",
+            "rust_values": [
+              0,
+              -1,
+              -1,
+              -4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              73,
+              74,
+              75,
+              4,
+              21,
+              2,
+              3,
+              10,
+              14,
+              15,
+              16,
+              17,
+              24,
+              33,
+              61,
+              63,
+              135,
+              136
+            ],
+            "tab": 0,
+            "values": [
+              6,
+              5,
+              5,
+              2,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "first": 0,
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      Dabbling Armor User",
+                "y": 20
+              },
+              {
+                "text": "                                                      Dabbling Observer",
+                "y": 23
+              },
+              {
+                "text": "                                                      Dabbling Fighter",
+                "y": 26
+              },
+              {
+                "text": "                                                      Dabbling Dodger",
+                "y": 29
+              }
+            ],
+            "name": "Combat",
+            "rust_values": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              45,
+              87,
+              97,
+              103
+            ],
+            "tab": 1,
+            "values": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "first": 0,
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      Talented Intimidator",
+                "y": 20
+              },
+              {
+                "text": "                                                      Proficient Persuader",
+                "y": 23
+              },
+              {
+                "text": "                                                      Proficient Negotiator",
+                "y": 26
+              },
+              {
+                "text": "                                                      Proficient Judge of Intent",
+                "y": 29
+              },
+              {
+                "text": "                                                      Proficient Comedian",
+                "y": 32
+              },
+              {
+                "text": "                                                      Dabbling Conversationalist",
+                "y": 35
+              },
+              {
+                "text": "                                                      Dabbling Consoler",
+                "y": 38
+              },
+              {
+                "text": "                                                      Dabbling Pacifier",
+                "y": 41
+              },
+              {
+                "text": "                                                      Dabbling Speaker",
+                "y": 44
+              }
+            ],
+            "name": "Social",
+            "rust_values": [
+              6,
+              5,
+              5,
+              5,
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              77,
+              70,
+              71,
+              72,
+              79,
+              78,
+              81,
+              82,
+              92
+            ],
+            "tab": 2,
+            "values": [
+              6,
+              5,
+              5,
+              5,
+              5,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "first": 0,
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      Novice Crutch-walker",
+                "y": 20
+              },
+              {
+                "text": "                                                      Dabbling Student",
+                "y": 23
+              },
+              {
+                "text": "                                                      Dabbling Reader",
+                "y": 26
+              }
+            ],
+            "name": "Other skills",
+            "rust_values": [
+              1,
+              0,
+              0
+            ],
+            "skills": [
+              62,
+              84,
+              91
+            ],
+            "tab": 3,
+            "values": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "first": 0,
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      The geocentric model",
+                "y": 20
+              },
+              {
+                "text": "                                                      Astronomy",
+                "y": 21
+              },
+              {
+                "text": "                                                      Surveying",
+                "y": 23
+              },
+              {
+                "text": "                                                      Geography",
+                "y": 24
+              },
+              {
+                "text": "                                                      The Valley of Winds",
+                "y": 26
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 27
+              },
+              {
+                "text": "                                                      The Style of Prophecies",
+                "y": 29
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 30
+              },
+              {
+                "text": "                                                      The Umber Learning",
+                "y": 32
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 33
+              },
+              {
+                "text": "                                                      The Chartreuse Visionary",
+                "y": 35
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 36
+              },
+              {
+                "text": "                                                      The Truth of Poets",
+                "y": 38
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 39
+              },
+              {
+                "text": "                                                      The Desks of Convenience",
+                "y": 41
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 42
+              },
+              {
+                "text": "                                                      The South Stranger",
+                "y": 44
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 45
+              },
+              {
+                "text": "                                                      The Knowledge of Pantomiming",
+                "y": 47
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 48
+              },
+              {
+                "text": "                                                      The Intricate Joke",
+                "y": 50
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 51
+              },
+              {
+                "text": "                                                      The Suitor of Luxury",
+                "y": 53
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 54
+              },
+              {
+                "text": "                                                      The Pantomime of Festivals",
+                "y": 56
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 57
+              },
+              {
+                "text": "                                                      The Book of Quiescence",
+                "y": 59
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 60
+              }
+            ],
+            "name": "Knowledge",
+            "rust_values": [],
+            "skills": [],
+            "tab": 4,
+            "values": []
+          }
+        ],
+        "success": true,
+        "unit_id": 1017
+      },
+      "source": "Native Skills labels reference Other skills at16d7f3 in renderer14ef90; skill detail text boxes at sheet1bc0/1bd8 and width1bf0. Builder/ownership audit pending.",
+      "scope": "Read-only native five-tab capture on existing adult citizen; records native ordered skill IDs, levels, rust-adjusted values and rendered screen text. Knowledge semantic vectors, selection/details, hover, scrolling and owned builder remain unverified. No product Skills acceptance.",
+      "source_preservation": "Owned source unchanged; DF39556 exits unsaved; all three Godot processes only known startup notice."
     }
   }
 }

@@ -44,6 +44,25 @@ local function site(id)
  object(value);name(value.name);vector(value.buildings)
  for _,building in ipairs(value.buildings)do object(building)end
 end
+local function coin_artifact(id)
+   local artifact=df.artifact_record.find(id)
+   if artifact then
+    object(artifact);name(artifact.name);local item=assert(artifact.item);object(item)
+    assert(df.item_coinst:is_instance(item),'Add guards for this artifact item')
+    vector(item.general_refs);assert(#item.general_refs==0)
+    vector(item.improvements);assert(#item.improvements==0)
+    vector(df.global.world.coin_batches.all)
+    if item.coin_batch~=-1 then
+     local batch=assert(df.global.world.coin_batches.all[item.coin_batch]);object(batch)
+     if batch.entity~=-1 then
+      local issuer=assert(df.historical_entity.find(batch.entity));entity(batch.entity);object(assert(issuer.entity_raw))
+      local _,address=df.sizeof(issuer.entity_raw:_field('flags'))
+      guard(df.reinterpret_cast('uint64_t',address).value,df.reinterpret_cast('int32_t',address+8).value)
+      figure(batch.ruler)
+     end
+    end
+   end
+end
 local visited={}
 local function event(id)
  if id<0 then return end
@@ -72,25 +91,7 @@ local function event(id)
    assert(thought==df.unit_thought_type.AcquireArtifact or thought==df.unit_thought_type.GaveArtifact,'Add guards for this circumstance')
    ids[#ids+1]=value.circumstance.data.Death
   end
-  for _,id in ipairs(ids)do
-   local artifact=df.artifact_record.find(id)
-   if artifact then
-    object(artifact);name(artifact.name);local item=assert(artifact.item);object(item)
-    assert(df.item_coinst:is_instance(item),'Add guards for this artifact item')
-    vector(item.general_refs);assert(#item.general_refs==0)
-    vector(item.improvements);assert(#item.improvements==0)
-    vector(df.global.world.coin_batches.all)
-    if item.coin_batch~=-1 then
-     local batch=assert(df.global.world.coin_batches.all[item.coin_batch]);object(batch)
-     if batch.entity~=-1 then
-      local issuer=assert(df.historical_entity.find(batch.entity));entity(batch.entity);object(assert(issuer.entity_raw))
-      local _,address=df.sizeof(issuer.entity_raw:_field('flags'))
-      guard(df.reinterpret_cast('uint64_t',address).value,df.reinterpret_cast('int32_t',address+8).value)
-      figure(batch.ruler)
-     end
-    end
-   end
-  end
+  for _,id in ipairs(ids)do coin_artifact(id)end
  elseif kind==df.history_event_type.ARTIFACT_CREATED then
   figure(value.creator_hfid);entity(value.entity);site(value.site)
   local artifact=df.artifact_record.find(value.artifact_id)
@@ -137,7 +138,8 @@ local function event(id)
    for _,entry in ipairs(art.properties)do object(entry)end
    end
   end
- elseif kind==df.history_event_type.AGREEMENT_FORMED then
+ elseif kind==df.history_event_type.AGREEMENT_FORMED or kind==df.history_event_type.AGREEMENT_CONCLUDED then
+  if kind==df.history_event_type.AGREEMENT_CONCLUDED then figure(value.concluder_hf);assert(value.reason==-1)end
   vector(df.global.world.agreements.all);vector(df.global.world.identities.all)
   local agreement=df.agreement.find(value.agreement_id)
   if agreement then
@@ -148,13 +150,20 @@ local function event(id)
     for _,id in ipairs(party.entity_ids)do entity(id)end
    end
    for _,detail in ipairs(agreement.details)do
-    object(detail);assert(detail.type==df.agreement_details_type.JoinParty,'Add guards for this agreement detail')
+    object(detail)
+    if detail.type==df.agreement_details_type.RetrieveArtifact then
+     local data=assert(detail.data.RetrieveArtifact);object(data);coin_artifact(data.artifact);site(data.artifact_site);entity(data.receiving_entity)
+    elseif detail.type==df.agreement_details_type.PlotStealArtifact then
+     local data=assert(detail.data.PlotStealArtifact);object(data);coin_artifact(data.artifact_id)
+    else
+    assert(detail.type==df.agreement_details_type.JoinParty,'Add guards for this agreement detail')
     local data=assert(detail.data.JoinParty);object(data)
     assert((data.reason==24 or data.reason==2)and data.figure==-1,'Probe expects identity-bearing JoinParty')
     local identity=df.identity.find(data.entity)
     if identity then
      object(identity);name(identity.name);figure(identity.impersonated_hf);entity(identity.entity_id)
      vector(identity.entity_profile);vector(identity.cultural_identity_profile)
+    end
     end
    end
   end

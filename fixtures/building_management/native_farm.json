@@ -67464,9 +67464,9 @@
         "scope": "ASSUME_IDENTITY dance descriptions with valid unit race/caste and temporary identity/event graphs. Profession/entity changes leave this native phrase unchanged; separate profession branch, agreement identities, other races and deep historical identity graphs remain unverified."
       },
       "coin_validation_reference": {
-        "source": "build/stockpile-storage-native-farm-discovery-20261101-082156",
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-082707",
         "status": "passed_with_known_issues",
-        "bridge_sha256": "35282a241bdf779eeee8b332e01f764c670aedeb879c7c0726d92914cafb198e",
+        "bridge_sha256": "8b48ebb5d0e2ee0062f5241f6c6fc1cbb2faa64116b55196aa9f13b56b2709d5",
         "cases": [
           {
             "case": "negative-batch",
@@ -67579,6 +67579,51 @@
             "rejected": true
           },
           {
+            "case": "agreement-formed-plot-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "agreement-formed-plot-null-payload",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "agreement-formed-plot-null-detail",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "agreement-formed-retrieve-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "agreement-formed-retrieve-null-payload",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "agreement-formed-retrieve-null-detail",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "agreement-concluded-retrieve-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "agreement-concluded-retrieve-null-payload",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "agreement-concluded-retrieve-null-detail",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
             "case": "artifact_claim_formed-AcquireArtifact-invalid-coin",
             "guards_unchanged": true,
             "rejected": true
@@ -67671,6 +67716,21 @@
             "text_sha256": "05b89b3ece39ec428db9c619d5ad847dbcee231783b6b591dbb5128660663e30"
           },
           {
+            "case": "agreement-formed-plot",
+            "text_utf8_bytes": 1827,
+            "text_sha256": "eb407ca9cfc511a5a1d06435fdf2ad4a87cd4f387c130594f6ec8d81db454f64"
+          },
+          {
+            "case": "agreement-formed-retrieve",
+            "text_utf8_bytes": 1812,
+            "text_sha256": "5e8fc1bcfa066a67aac2946ecb1a4d17329b3a62aee17d94092833c169f18677"
+          },
+          {
+            "case": "agreement-concluded-retrieve",
+            "text_utf8_bytes": 1803,
+            "text_sha256": "ed0f9a0223b51d964beed858a6e19b2a245339f9d4e2c48d561137149e32ba89"
+          },
+          {
             "case": "circumstance-AcquireArtifact",
             "text_utf8_bytes": 1789,
             "text_sha256": "d5697c6dac08668f5a1811c4684f8d7d618c3fcd887476f5ccd757a51b3e371e"
@@ -67696,11 +67756,11 @@
             "text_sha256": "4b19e0d83b1e39867af1e405c4bbfe717d79e071ffca1597a2a66963cdd47709"
           }
         ],
-        "valid_native_comparisons": 22,
+        "valid_native_comparisons": 28,
         "baseline_form_comparisons": 4,
         "source_unchanged": true,
         "owned_exit_unsaved": true,
-        "scope": "Shared diagnostic traversal validates direct artifact fields for 15 event types, including every transformed old artifact, plus AcquireArtifact/GaveArtifact circumstances in six forwarding event types. Live native phrase comparisons cover CREATED, LOST, TRANSFORMED and both circumstances through GIVEN plus an empty flagged name. Other event types have rejection coverage only. Agreements, death/theft item resolution, nested item graphs and production admission remain incomplete."
+        "scope": "Shared diagnostic traversal validates direct artifact fields for 15 event types, every transformed old artifact, AcquireArtifact/GaveArtifact circumstances in six forwarding event types, and three agreement artifact paths. Native phrase comparisons cover CREATED, LOST, TRANSFORMED, both circumstances through GIVEN, empty flagged names, formed theft/retrieval agreements and concluded retrieval with no parties. Other event types have rejection coverage only. Death/theft item resolution, arbitrary agreement-party graphs, nested item graphs and production admission remain incomplete."
       },
       "coin_caption_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-064043",

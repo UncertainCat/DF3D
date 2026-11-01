@@ -4,9 +4,12 @@
 #include "df/dance_form_section.h"
 #include "df/dance_form_move.h"
 #include "df/history_event_agreement_formedst.h"
+#include "df/history_event_agreement_concludedst.h"
 #include "df/agreement.h"
 #include "df/agreement_details.h"
 #include "df/agreement_details_data_join_party.h"
+#include "df/agreement_details_data_plot_steal_artifact.h"
+#include "df/agreement_details_data_retrieve_artifact.h"
 #include "df/identity.h"
 #include "df/history_event_masterpiece_lostst.h"
 #include "df/history_event_performancest.h"
@@ -148,6 +151,27 @@ inline bool directAgreementIdentityInputsValid(int32_t event_id) {
     const auto profession=uint16_t(identity->profession);
     return profession==UINT16_C(0xffff) || profession==102 || uint16_t(identity->race)!=UINT16_C(0xfffe);
 }
+inline bool agreementArtifactInputsValid(df::history_event* event) {
+    const auto type=event->getType();
+    const bool formed=type==df::history_event_type::AGREEMENT_FORMED;
+    if(!formed && type!=df::history_event_type::AGREEMENT_CONCLUDED)return true;
+    const auto id=formed ? static_cast<df::history_event_agreement_formedst*>(event)->agreement_id
+                        : static_cast<df::history_event_agreement_concludedst*>(event)->agreement_id;
+    const auto* agreement=df::agreement::find(id);
+    // Both native phrases use only the first detail. Only FORMED requires
+    // nonempty parties before dispatching that detail.
+    if(!agreement || agreement->details.empty() || (formed && agreement->parties.empty()))return true;
+    const auto* detail=agreement->details.front();if(!detail)return false;
+    if(detail->type==df::agreement_details_type::RetrieveArtifact) {
+        const auto* data=detail->data.RetrieveArtifact;
+        return data && knowledgeArtifactInputsValid(data->artifact);
+    }
+    if(formed && detail->type==df::agreement_details_type::PlotStealArtifact) {
+        const auto* data=detail->data.PlotStealArtifact;
+        return data && knowledgeArtifactInputsValid(data->artifact_id);
+    }
+    return true;
+}
 // Both audited recursive phrase classes have at most one event successor.
 // Walk iteratively so validation itself cannot overflow on a cyclic graph.
 inline bool knowledgeEventInputsValid(int32_t event_id) {
@@ -156,6 +180,7 @@ inline bool knowledgeEventInputsValid(int32_t event_id) {
         auto* event=df::history_event::find(event_id);if(!event)return true;
         if(!visited.insert(event_id).second)return false;
         if(!directAgreementIdentityInputsValid(event_id))return false;
+        if(!agreementArtifactInputsValid(event))return false;
         if(!directEventArtifactInputsValid(event))return false;
         if(!eventCircumstanceArtifactInputsValid(event))return false;
         if(event->getType()==df::history_event_type::MASTERPIECE_LOST) {

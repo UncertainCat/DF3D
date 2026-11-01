@@ -28,9 +28,11 @@ for _,variant in ipairs{'no-batch','no-issuer','year','no-year','ruler','missing
   results[#results+1]={case=variant,text=native,batch_index=item.coin_batch,issuer=batch.entity,year=batch.year,ruler=batch.ruler,currency_by_year=raw.flags.CURRENCY_BY_YEAR,no_art_allocation=true}
   if variant=='year'then
    local index=item.coin_batch
-   local function reject(label)
+   local function reject(label,extra)
     local guards={}
-    for _,value in ipairs{item,batch,artifact,df.history_event.find(form.event),unit,issuer,df.global.game.main_interface.view_sheets,df.global.plotinfo}do
+    local values={item,batch,artifact,df.history_event.find(form.event),unit,issuer,df.global.game.main_interface.view_sheets,df.global.plotinfo}
+    for _,value in ipairs(extra or {})do values[#values+1]=value end
+    for _,value in ipairs(values)do
      local size,address=df.sizeof(value);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
      guards[#guards+1]={bytes=bytes,address=address,size=size}
     end
@@ -79,6 +81,45 @@ for _,variant in ipairs{'no-batch','no-issuer','year','no-year','ruler','missing
     form.event=event.id;item.coin_batch=index
     if #events>counts[1]+1 then events:erase(#events-1)end
     df.delete(dependency);assert(dependency_ok,dependency_error)
+   end
+   for _,variant in ipairs{'formed-plot','formed-retrieve','concluded-retrieve'}do
+    local concluded=variant=='concluded-retrieve';local plot=variant=='formed-plot'
+    local dependency=concluded and df.history_event_agreement_concludedst:new()or df.history_event_agreement_formedst:new()
+    local agreement=df.agreement:new();local detail=df.agreement_details:new()
+    local data=plot and df.agreement_details_data_plot_steal_artifact:new()or df.agreement_details_data_retrieve_artifact:new()
+    local member=df.agreement_party:new();local party=df.agreement_party:new()
+    local agreements=world.agreements.all;local agreement_count=#agreements
+    local slot=plot and 'PlotStealArtifact'or 'RetrieveArtifact'
+    local dependency_ok,dependency_error=xpcall(function()
+     agreement.id=agreement_count>0 and agreements[agreement_count-1].id+1 or 0
+     member.id=0;member.histfig_ids:insert('#',unit.hist_figure_id)
+     party.id=1;party.entity_ids:insert('#',unit.civ_id)
+     agreement.parties:insert('#',member);agreement.parties:insert('#',party)
+     detail.id=0;detail.type=df.agreement_details_type[slot];detail.data[slot]=data
+     if plot then
+      data.actor_index=0;data.influencer_index=1;data.intermediary_index=-1;data.artifact_id=artifact.id
+     else
+      data.retrieving_party=0;data.requesting_party=1;data.artifact=artifact.id;data.artifact_site=-1;data.receiving_entity=-1
+     end
+     agreement.details:insert('#',detail);agreements:insert('#',agreement)
+     dependency.id=events[#events-1].id+1;dependency.year=event.year;dependency.seconds=event.seconds;dependency.agreement_id=agreement.id
+     if concluded then dependency.subject_id=-1;dependency.reason=-1;dependency.concluder_hf=-1 end
+     events:insert('#',dependency);form.event=dependency.id
+     if concluded then agreement.parties:resize(0)end
+     local label='agreement-'..variant
+     local text=capture('coin-'..label);assert(text==capture('coin-'..label..'-warm'))
+     results[#results+1]={case=label,text=text}
+     local extra={agreement,detail,data,member,party}
+     item.coin_batch=-2;reject(label..'-invalid-coin',extra);item.coin_batch=index
+     detail.data[slot]=nil;reject(label..'-null-payload',extra);detail.data[slot]=data
+     agreement.details[0]=nil;reject(label..'-null-detail',extra);agreement.details[0]=detail
+    end,debug.traceback)
+    form.event=event.id;item.coin_batch=index
+    if #events>counts[1]+1 then events:erase(#events-1)end
+    while #agreements>agreement_count do agreements:erase(#agreements-1)end
+    agreement.parties:resize(0);agreement.details:resize(0);detail.data[slot]=nil
+    df.delete(dependency);df.delete(agreement);df.delete(detail);df.delete(data);df.delete(member);df.delete(party)
+    assert(dependency_ok,dependency_error)
    end
    for _,kind in ipairs{'artifact_claim_formed','artifact_given','artifact_possessed','entity_dissolved','hf_gains_secret_goal','item_stolen'}do
     local dependency=df['history_event_'..kind..'st']:new()

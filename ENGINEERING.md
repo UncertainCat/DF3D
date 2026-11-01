@@ -3748,6 +3748,16 @@ records call sites and instruction neighborhoods against executable SHA256
 205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7;
 the neighborhoods are not a transitive dataflow proof.
 
+Agreement artifact extraction follows the native first-detail dispatch.
+FORMED table2afde4 maps PlotStealArtifact6 to2ae859 (artifact_id at payload0xc,
+call2ae964), and RetrieveArtifact17 to2afc7d (artifact at payload8,
+call2afd7e). CONCLUDED tableb83148 maps only RetrieveArtifact17 to the
+artifact callb82f05; its PlotStealArtifact branch emits generic plot text.
+The shared guard follows these paths and rejects null first details/payloads.
+FORMED's native precondition requires both parties and details; CONCLUDED
+requires only details. Neither phrase iterates later agreement details.
+This extraction does not establish arbitrary agreement-party graph validity.
+
 Native b94400 selects its fallback by testing the formatted name string's
 length at b94535, after a946e0, rather than directly testing name.has_name.
 The shared diagnostic guard now calls the pinned native name helper on an
@@ -3776,24 +3786,28 @@ Batch-1 and issuer-1 retain
 their native meanings; other batch indices require an in-range nonnull record,
 and other issuer IDs require a resolved entity with an entity raw. The same
 traversal serves dance form/section events and written historical-event
-references. Agreement payloads, death/theft item resolution and nested item
+references. Death/theft item resolution and nested item
 captions remain unvalidated, so this is partial
 source validation. Coin selector
 ca0d00 (length0x55, FNV6891982ef52f2367), issuer5be970 (length0x536,
 FNVd785ec19f3aa4618) and year52c2b0 (length0xd8, FNV38b6489e35387929)
 are pinned in both diagnostic adapters.
 
-Protected082156 on2026-11-01 with bridge
-`35282a241bdf779eeee8b332e01f764c670aedeb879c7c0726d92914cafb198e`
-passes34 rejection cases: negative/past-end/null batches, unresolved issuer,
+Protected082707 on2026-11-01 with bridge
+`8b48ebb5d0e2ee0062f5241f6c6fc1cbb2faa64116b55196aa9f13b56b2709d5`
+passes43 rejection cases: negative/past-end/null batches, unresolved issuer,
 null issuer raw, null artifact item, an empty flagged name with invalid coin
 data, each additional direct event type, and an invalid second old artifact
 in a transformation, plus both artifact circumstances on all six forwarding
-event types. All preserve guarded source/UI state; malformed inputs
-are never submitted to the native oracle. Eleven valid cases each match native
+event types, and bad coins/null payloads/null first details on each of the
+three artifact-bearing agreement paths. All preserve guarded source/UI state;
+malformed inputs are never submitted to the native oracle. Fourteen valid
+cases each match native
 twice, including lost/transformed events and a flagged but empty artifact
 name and both circumstance phrases through ARTIFACT_GIVEN, alongside four
-baseline forms. The empty flagged name produces the same
+baseline forms. Native formed theft/retrieval and concluded retrieval phrases
+also match twice; concluded retrieval uses an empty party list to verify its
+different precondition. The empty flagged name produces the same
 native coin caption as the unflagged name, establishing why the previous
 has_name-only guard was insufficient. Other event types have rejection
 coverage here, not complete native phrase/side-effect acceptance.

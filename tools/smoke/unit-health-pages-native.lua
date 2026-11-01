@@ -95,6 +95,22 @@ local ok,err=xpcall(function()
   local sample={name=name,lines={},tagged_rows={}}
   for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
   sample.color_box_count=#sheet.unit_health_box
+  sample.formatted_boxes={}
+  for _,box in ipairs(sheet.unit_health_box)do
+   local formatted={width=box.width,lines={}}
+   for _,line in ipairs(box.line)do
+    local _,address=df.sizeof(line);local chars={};local colors={}
+    for i=0,768 do
+     local ch=df.reinterpret_cast('uint8_t',address+i).value
+     if ch==0 then break end
+     chars[#chars+1]=string.char(ch)
+     colors[#colors+1]=df.reinterpret_cast('uint8_t',address+769+i).value
+    end
+    formatted.lines[#formatted.lines+1]={text=dfhack.df2utf(table.concat(chars)),colors=colors}
+   end
+   sample.formatted_boxes[#sample.formatted_boxes+1]=formatted
+  end
+
   if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1'then probe(sample,name)end
   for y=18,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then sample.lines[#sample.lines+1]={y=y,text=text}end end
   pages[#pages+1]=sample

@@ -3256,6 +3256,16 @@ preservation and only known startup notices. `history_cases_reference` records
 exact rows; root/core QA `health-history-cases` passes. Syndrome records, mixed
 syndrome/operation ties and absent positive caregiver IDs remain unverified.
 
+`formatted_text_reference` records protected021536 native text-box output:
+53-column boxes, exact wrapped lines and per-character packed colors. Native
+input handler1b2bc4 derives width from panel columns minus7;858550 formats tagged
+strings into color_text_linest records, using8599f0 for wrapping and8598a0 for
+line emission. These copied sheet vectors are diagnostic references only.
+Ordinary word wrapping differs on Description; rendered acceptance must compare
+these native lines/colors. The capture passes with known startup notices only,
+DF37820 exits unsaved and source preservation passes. Resize and input behavior
+remain unverified for the new Health rendering work.
+
 These pages are not implemented by the current generic health renderer.
 `creature.lua` exposes observed wounds, body-part flags, treatment flags and
 operation records, explicitly noting the missing anatomical narrative. Trace

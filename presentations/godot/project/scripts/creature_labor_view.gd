@@ -190,7 +190,9 @@ func draw_animals() -> void:
   var caption:String=row.caption
   var limit:=columns-16
   if caption.length()>=limit:caption=caption.left(maxi(0,limit-4))+"..." if limit>4 else caption.left(maxi(0,limit-1))
-  draw_text(caption,top+Vector2(56,24),71)
+  # Native button cells replace caption cells even where their artwork is transparent.
+  var caption_point:=top+Vector2(56,24)
+  theme.default_font.draw_string(get_canvas_item(),caption_point,caption,HORIZONTAL_ALIGNMENT_LEFT,workshop_button(index,0).position.x-caption_point.x,12,NativeText.colors[15])
   for button in 3:
    var token:String=["STOCKS_RECENTER","STOCKS_VIEW_ITEM","BUILDING_SHEET_CLEAR_WORKER" if row.assigned else "ZONE_PICK_ANIMALS"][button]
    var texture:Texture2D=art.texture(token)

@@ -3404,9 +3404,26 @@ this scope. Earlier120129 established IDs but exposed double-converted text;
 Initial115742 used an obsolete diagnostic field;115828/115953 failed on local
 GDScript name collisions. They are not rendered acceptance.
 
-Assignment input1b4d21..1b4e11 calls native relationship routines138c120,
-13918c0/1391970, create_nemesis and name updates. Exposing those effects and
-assignment/removal is next; the visible assign/remove signal is not connected yet.
+Assignment input1b4d21..1b4e11 now backs the visible assign/remove controls.
+The safe-point action rechecks native eligibility, list membership and a displayed
+revision covering owner/following/identity facts. It calls native138c120,
+13918c0/1391970, create_nemesis138a350 and the native naming/copy routines.
+Godot refreshes the rows after a confirmed receipt; uncertain writes never replay.
+Captions stop at the native control boundary so glyphs cannot bleed through
+transparent button artwork.
+
+Protected124108 on2026-11-01 exercises actual assignment and removal buttons for
+animal6548 and unit1017. Owner, following, distance/type, historical identity,
+important-figure flag, historical links and name match native clicks. Both updated
+456x528 body crops match exactly. Owned DF38952 exits unsaved, source preservation
+passes, and all three Godot processes have only the known startup notice.
+`work_animals_provider_reference.assignment_reference` retains this scope.
+Native removal deletes relationship objects; the diagnostic recreates initial
+fixture links by value before the viewer comparison. Historical event allocation
+is confined to the unsaved clone, not rolled back. New historical figures and
+unnamed naming branches are traced but not live covered by this named animal.
+Earlier attempts exposed diagnostic setup/timing errors and four caption pixels
+beneath a transparent control; they are excluded from acceptance.
 Recenter and Inspect use the native position resolver1367430; Inspect also
 focuses the viewer camera before opening the animal sheet, matching native
 1b4b72..1b4d1c. Native menu/camera state is not a runtime input.

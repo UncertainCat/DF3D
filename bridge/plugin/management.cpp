@@ -404,6 +404,12 @@ struct CreatureLocationResult {
   m::CreatureLocationOutcome outcome=m::CreatureLocationOutcome::Rejected;
 };
 std::optional<CreatureLocationResult> creatureLocation;
+struct CreatureAnimalResult {
+  int32_t unitId=-1,animalId=-1;
+  m::CreatureAnimalOutcome outcome=m::CreatureAnimalOutcome::Rejected;
+  bool assigned=false;
+};
+std::optional<CreatureAnimalResult> creatureAnimal;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -412,6 +418,7 @@ void clearResult() {
   creatureKnowledge.reset();
   creatureWorkshop.reset();
   creatureLocation.reset();
+  creatureAnimal.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -812,6 +819,11 @@ void publish() {
     const auto& value=*creatureKnowledge;
     creatureKnowledgeResult=m::CreateCreatureKnowledgeState(b,value.unitId,value.kind,value.id,value.outcome,b.CreateString(value.text));
   }
+  flatbuffers::Offset<m::CreatureAnimalState> creatureAnimalResult;
+  if(creatureAnimal) {
+    const auto& value=*creatureAnimal;
+    creatureAnimalResult=m::CreateCreatureAnimalState(b,value.unitId,value.animalId,value.outcome,value.assigned);
+  }
   flatbuffers::Offset<m::CreatureLocationState> creatureLocationResult;
   if(creatureLocation) {
     const auto& value=*creatureLocation;
@@ -830,7 +842,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -3025,6 +3037,19 @@ void run(color_ostream& out) {
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
     publish();return;
   }
+  if(r->action()==m::ManagementAction::CreatureAnimalEdit) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->creature_animal();
+    creatureAnimal.emplace();auto& result=*creatureAnimal;
+    result.unitId=query.unit_id();result.animalId=query.animal_id();result.assigned=query.assigned();
+    const auto outcome=df3d_creature::editAnimalAssignment(df::unit::find(result.unitId),result.animalId,query.expected_revision(),result.assigned);
+    using O=df3d_creature::AnimalEditOutcome;
+    if(outcome==O::Applied) {
+      result.outcome=m::CreatureAnimalOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;
+    } else if(outcome==O::Unavailable)result.outcome=m::CreatureAnimalOutcome::Unavailable;
+    else if(outcome==O::Unknown){result.outcome=m::CreatureAnimalOutcome::Unknown;mutated=true;}
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::CreatureLocationRemove) {
     message.clear();status=m::ManagementStatus::Rejected;
     const auto& query=*r->creature_location();
@@ -3411,6 +3436,7 @@ void run(color_ostream& out) {
       lua_newtable(state);int index=0;
       for(const auto& row:*rows){lua_newtable(state);field(state,"id",row.id);field(state,"caption",row.caption);
         field(state,"assigned",row.assigned?1:0);field(state,"owner_id",row.ownerId);
+        lua_pushinteger(state,lua_Integer(row.revision));lua_setfield(state,-2,"revision");
         field(state,"x",row.position.x);field(state,"y",row.position.y);field(state,"z",row.position.z);lua_rawseti(state,-2,++index);}
       return 1;
     });lua_setfield(L,-2,"work_animal_list");

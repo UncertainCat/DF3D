@@ -84,6 +84,14 @@ func remove_location(id: int,revision: int) -> void:
    phase=Phase.Rejected;changed.emit();return
   assignment_changed.emit(unit_id);refresh(),"creature_location","creature_location")
  changed.emit()
+func set_animal(id: int,revision: int,assigned: bool) -> void:
+ if phase!=Phase.Ready or id<0 or revision<=0:return
+ phase=Phase.Applying
+ _request({"action":C.ManagementAction.CreatureAnimalEdit,"unit_id":unit_id,"animal_id":id,"expected_revision":revision,"assigned":assigned},func(value):
+  if int(value.get("unit_id",-1))!=unit_id or int(value.get("animal_id",-1))!=id or value.get("outcome")!=C.CreatureAnimalOutcome.Applied or value.get("assigned")!=assigned:
+   phase=Phase.Rejected;changed.emit();return
+  assignment_changed.emit(unit_id);refresh(),"creature_animal","creature_animal")
+ changed.emit()
 func _invalidated() -> void:
  var active:=phase!=Phase.Closed
  close()

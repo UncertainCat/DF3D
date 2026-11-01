@@ -288,8 +288,21 @@ inline std::optional<bool> laborEligible(df::unit* unit,const std::function<void
     if(eligible && collect)collect();
     return eligible;
 }
+inline uint64_t animalAssignmentRevision(df::unit* unit,df::unit* animal) {
+    uint64_t hash=UINT64_C(14695981039346656037);
+    const auto add=[&](int32_t value) {
+        for(unsigned shift=0;shift<32;shift+=8){hash^=(uint32_t(value)>>shift)&255;hash*=UINT64_C(1099511628211);}
+    };
+    add(unit->id);add(unit->hist_figure_id);add(unit->civ_id);
+    add(animal->id);add(animal->hist_figure_id);add(animal->race);add(animal->caste);
+    add(int32_t(animal->profession));add(animal->relationship_ids[df::unit_relationship_type::PetOwner]);
+    add(animal->following?animal->following->id:-1);add(int32_t(animal->owner_type));add(animal->follow_distance);
+    add(animal->name.has_name?1:0);
+    return (hash & UINT64_C(0x1fffffffffffff)) | 1;
+}
 struct LaborAnimal {
     int32_t id=-1,ownerId=-1;
+    uint64_t revision=0;
     df::coord position{-30000,-30000,-30000};
     bool assigned=false;
     std::string caption;
@@ -336,6 +349,7 @@ inline std::optional<std::vector<LaborAnimal>> laborAnimals(df::unit* unit) {
         for(const auto id:*list) {
             auto* animal=df::unit::find(id);if(!animal)return std::nullopt;
             LaborAnimal row;row.id=id;row.assigned=list==&context.assignedAnimals;
+            row.revision=animalAssignmentRevision(unit,animal);
             row.ownerId=animal->relationship_ids[df::unit_relationship_type::PetOwner];
             // Native Work animals recenter1b4af6 resolves containment here.
             reinterpret_cast<void (*)(df::unit*,int16_t*,int16_t*,int16_t*)>(base+0x1367430)(animal,&row.position.x,&row.position.y,&row.position.z);
@@ -345,5 +359,61 @@ inline std::optional<std::vector<LaborAnimal>> laborAnimals(df::unit* unit) {
         }
     }
     return rows;
+}
+enum class AnimalEditOutcome { Rejected,Applied,Unavailable,Unknown };
+inline AnimalEditOutcome editAnimalAssignment(df::unit* unit,int32_t animalId,uint64_t revision,bool assigned) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x1b4d28,0xe9,UINT64_C(0x06ae42c5aad2fa01)},
+            {0x138c120,0x17,UINT64_C(0xdfbd4def57b3f6b4)},
+            {0x13918c0,0xae,UINT64_C(0x9c94fa1548e239ee)},
+            {0x1391970,0x126,UINT64_C(0x22034be79ba5c743)},
+            {0x138a350,0x13ba,UINT64_C(0xe6251c2e132c1a41)},
+            {0x931860,0x2f9,UINT64_C(0x3f40974d82863764)},
+            {0x13b3090,0x19,UINT64_C(0x901cd2f6d41c1657)},
+            {0x14d760,0x8e,UINT64_C(0xb80187200c6ef5c9)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    if(!supported)return AnimalEditOutcome::Unavailable;
+    if(!unit)return AnimalEditOutcome::Rejected;
+    const auto rows=laborAnimals(unit);if(!rows)return AnimalEditOutcome::Unavailable;
+    const auto found=std::find_if(rows->begin(),rows->end(),[&](const auto& row){return row.id==animalId && row.revision==revision;});
+    if(found==rows->end())return AnimalEditOutcome::Rejected;
+    if(found->assigned==assigned)return AnimalEditOutcome::Applied;
+    auto* animal=df::unit::find(animalId);if(!animal)return AnimalEditOutcome::Rejected;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    try {
+        // Native creature Labor input1b4d28..1b4e11. These semantic routines
+        // own following, historical records/links, history events and naming.
+        reinterpret_cast<void (*)(df::unit*,df::unit*,int32_t,int16_t)>(base+0x138c120)(animal,assigned?unit:nullptr,2,0);
+        animal->relationship_ids[df::unit_relationship_type::PetOwner]=assigned?unit->id:-1;
+        if(!assigned) {
+            reinterpret_cast<void (*)(df::unit*,int16_t,int32_t,bool)>(base+0x13918c0)(animal,13,-1,false);
+        } else {
+            reinterpret_cast<df::nemesis_record* (*)(df::unit*,int8_t,int8_t,bool)>(base+0x138a350)(animal,0,1,false);
+            if(unit->hist_figure_id!=-1)
+                reinterpret_cast<void (*)(df::unit*,int16_t,int32_t,int16_t,bool)>(base+0x1391970)(animal,13,unit->hist_figure_id,100,true);
+            if(!animal->name.has_name) {
+                if(auto* entity=df::historical_entity::find(unit->civ_id)) {
+                    reinterpret_cast<void (*)(df::historical_entity*,df::language_name*,int16_t)>(base+0x931860)(entity,&animal->name,0);
+                    if(auto* figure=reinterpret_cast<df::historical_figure* (*)(df::unit*)>(base+0x13b3090)(animal))
+                        reinterpret_cast<void (*)(df::language_name*,df::language_name*)>(base+0x14d760)(&figure->name,&animal->name);
+                }
+            }
+        }
+        return AnimalEditOutcome::Applied;
+    } catch(const std::exception&) {
+        // Allocation can fail after relationship/history effects. Never replay.
+        return AnimalEditOutcome::Unknown;
+    }
 }
 }

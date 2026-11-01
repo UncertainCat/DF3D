@@ -373,6 +373,7 @@ func render(controller, state: Dictionary):
    labor_view.focus_requested.connect(func(tile):owner.close_panel();owner.focus_requested.emit(tile))
    labor_view.inspect_requested.connect(func(kind,id):owner.object_requested.emit(kind,id))
    labor_view.location_remove_requested.connect(func(row):owner.labor.remove_location(row.id,row.revision))
+   labor_view.animal_assignment_requested.connect(func(row):owner.labor.set_animal(row.id,row.revision,not row.assigned))
    labor_view.animal_inspect_requested.connect(func(row):owner.focus_requested.emit(row.tile);owner.object_requested.emit(1,row.id))
    labor_view.location_requested.connect(func(row):
     if row.zone_id>=0:owner.close_panel();owner.zone_requested.emit(row.zone_id,row.tile))
@@ -401,6 +402,7 @@ func render(controller, state: Dictionary):
    var animal_rows:Array=[]
    for record in records_for("work_animals"):
     animal_rows.append({"id":int(record.id),"caption":str(record.name),"assigned":int(fact_value(record,"assigned",0))==1})
+    animal_rows[-1]["revision"]=int(fact_value(record,"assignment_revision",0))
     animal_rows[-1]["tile"]=Vector3i(int(fact_value(record,"x",-30000)),int(fact_value(record,"y",-30000)),int(fact_value(record,"z",-30000)))
    labor_view.present_animals(owner.labor,animal_rows)
   else:labor_view.present_labor(owner.labor)

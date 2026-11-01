@@ -1528,5 +1528,29 @@ func exercise_work_animals(inspector,target:int) -> void:
 	world.set_top_z(level_before);scene.camera_rig.follow_level(level_before)
 	scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
 
+	inspector.open_target(Vector3i.ZERO,1,target);await drain()
+	await health_tab(inspector,"Labor");await drain();await health_tab(inspector,"Work animals",true);await drain()
+	for step in [{"stage":"animal_assigned","assigned":true,"serial":11},{"stage":"animal_removed","assigned":false,"serial":12}]:
+		view=inspector.creature_sheet.labor_view
+		var index:int=-1
+		for i in view.rows.size():
+			if int(view.rows[i].id)==int(animal_reference.available[0]):index=i;break
+		if not check(index>=0,"Editable work animal disappeared"):return
+		await pointer(view.get_global_transform_with_canvas()*view.workshop_button(index,2).get_center());await drain()
+		var refresh_deadline:=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<refresh_deadline:
+			world.poll();actions.poll(0.01)
+			var refreshed:=false
+			for animal_row in inspector.creature_sheet.labor_view.rows:
+				if int(animal_row.id)==int(animal_reference.available[0]) and animal_row.assigned==step.assigned:refreshed=true
+			if refreshed:break
+			await create_timer(0.01).timeout
+		check(inspector.labor.phase==inspector.labor.Phase.Ready,"Animal assignment did not complete")
+		await labor_observe(target,step.serial,step.stage)
+		await labor_capture(step.stage.replace("animal_","animal-"))
+		view=inspector.creature_sheet.labor_view
+		for animal_row in view.rows:
+			if int(animal_row.id)==int(animal_reference.available[0]):check(animal_row.assigned==step.assigned,"Animal button did not refresh assignment")
+
 	var evidence:=FileAccess.open(directory+"/unit-labor-animals-wire.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"success":not failed,"rows":animals}));evidence.close()

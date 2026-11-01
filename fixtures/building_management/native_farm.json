@@ -59463,6 +59463,87 @@
           "old_labor_owner_retired": true,
           "source_save_unchanged": true,
           "fixture_restored": true
+        },
+        "assignment_reference": {
+          "capture": "build/stockpile-storage-native-farm-discovery-20261101-124108",
+          "date": "2026-11-01",
+          "plugin_sha256": "ca81959342fe9236eb11e7d42fb72b42ea8dde482f3bda6ba3c627772c793837",
+          "unit_id": 1017,
+          "animal_id": 6548,
+          "native_assigned": {
+            "distance": 2,
+            "following": 1017,
+            "histfig": 10009,
+            "important": true,
+            "links": [
+              {
+                "strength": 100,
+                "target": 10007,
+                "type": 13
+              },
+              {
+                "strength": 100,
+                "target": 1217,
+                "type": 13
+              }
+            ],
+            "name": "ïngiz Lelumerush",
+            "owner": 1017,
+            "owner_type": 0
+          },
+          "native_removed": {
+            "distance": 2,
+            "following": -1,
+            "histfig": 10009,
+            "important": true,
+            "links": [],
+            "name": "ïngiz Lelumerush",
+            "owner": -1,
+            "owner_type": 0
+          },
+          "observations": [
+            {
+              "stage": "animal_assigned",
+              "state": {
+                "distance": 2,
+                "following": 1017,
+                "histfig": 10009,
+                "important": true,
+                "links": [
+                  {
+                    "strength": 100,
+                    "target": 10007,
+                    "type": 13
+                  },
+                  {
+                    "strength": 100,
+                    "target": 1217,
+                    "type": 13
+                  }
+                ],
+                "name": "ïngiz Lelumerush",
+                "owner": 1017,
+                "owner_type": 0
+              }
+            },
+            {
+              "stage": "animal_removed",
+              "state": {
+                "distance": 2,
+                "following": -1,
+                "histfig": 10009,
+                "important": true,
+                "links": [],
+                "name": "ïngiz Lelumerush",
+                "owner": -1,
+                "owner_type": 0
+              }
+            }
+          ],
+          "rendered_body_pixels_match": true,
+          "source_save_preserved": true,
+          "owned_df_exited_unsaved": true,
+          "limitations": "Named existing historical figure; historical event allocation remains confined to unsaved clone, not rolled back. New historical figures and unnamed naming branches are statically traced, not live covered."
         }
       }
     },

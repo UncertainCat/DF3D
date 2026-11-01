@@ -81,6 +81,10 @@ local function service()
   local state=location.facts()
   assert(json.encode(state)==json.encode(native.location_fixture.remove),'Location removal effects differ from native')
   location.restore();observations[#observations+1]={stage=request.stage,state=state}
+ elseif request.stage=='animal_assigned' or request.stage=='animal_removed' then
+  local state=assert(_G.df3d_labor_animal_facts)()
+  assert(json.encode(state)==json.encode(native.work_animals_fixture[request.stage]),'Animal effects differ from native: '..request.stage..' actual='..json.encode(state))
+  observations[#observations+1]={stage=request.stage,state=state}
  elseif request.stage=='workshop_on' or request.stage=='workshop_off' then
   if request.stage=='workshop_off' then
    local workers={};for _,id in ipairs(workshop_profile.permitted_workers)do workers[#workers+1]=id end
@@ -106,6 +110,7 @@ if _G.df3d_labor_animal_restore then _G.df3d_labor_animal_restore()end
 assert(ok,err)
 local count=os.getenv('DF3D_UNIT_LABOR_WORKSHOP_WIRE')=='1' and 9 or os.getenv('DF3D_UNIT_LABOR_ELIGIBILITY')=='1' and 7 or 5
 if os.getenv('DF3D_UNIT_LABOR_LOCATIONS')=='1'then count=count+1 end
+if os.getenv('DF3D_UNIT_LABOR_ANIMALS')=='1'then count=count+2 end
 assert(#observations==count and json.encode(snapshot())==json.encode(native.actions.before),'Labor scene did not restore baseline')
 local result={success=true,observations=observations,restored=true}
 file=assert(io.open(out..'/unit-labor-scene-native.json','w'));file:write(json.encode(result));file:close()

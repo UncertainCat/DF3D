@@ -185,6 +185,35 @@ if os.getenv('DF3D_UNIT_LABOR_ANIMALS')=='1'then
  assert(#data.assigned==1 and data.assigned[1]==animals[1].unit.id,'Native assigned animal fixture missing')
  assert(#data.available==1 and data.available[1]==animals[2].unit.id,'Native available animal fixture missing')
  for y=19,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then data.lines[#data.lines+1]={y=y,text=text}end end
+ local edited=animals[2].unit
+ local function animal_facts()
+  local hf=df.historical_figure.find(edited.hist_figure_id);local links={}
+  if hf then for _,link in ipairs(hf.histfig_links)do
+   links[#links+1]={type=link:getType(),target=link.target_hf,strength=link.link_strength}
+  end end
+  return {owner=edited.relationship_ids.PetOwner,following=edited.following and edited.following.id or -1,
+   distance=edited.follow_distance,owner_type=edited.owner_type,important=edited.flags1.important_historical_figure,
+   histfig=edited.hist_figure_id,links=links,name=dfhack.df2utf(dfhack.translation.translateName(edited.name))}
+ end
+ -- Genuine native effects remain confined to this unsaved clone. Fixture cleanup
+ -- restores its injected profession/owner fields, not historical event allocation.
+ data.animal_before=animal_facts()
+ click(864,322);data.animal_assigned=animal_facts()
+ assert(data.animal_assigned.owner==unit.id and data.animal_assigned.following==unit.id,'Native animal assign failed')
+ capture('unit-labor-animal-assigned')
+ click(864,322);data.animal_removed=animal_facts()
+ assert(data.animal_removed.owner==-1 and data.animal_removed.following==-1,'Native animal remove failed')
+ capture('unit-labor-animal-removed')
+ -- Native removal deletes the original links; recreate fixture values, never
+ -- reinsert deleted pointers, so the viewer starts from the same relationships.
+ local hf=assert(df.historical_figure.find(edited.hist_figure_id))
+ assert(#hf.histfig_links==0,'Unexpected surviving animal relationship')
+ for _,value in ipairs(data.animal_before.links)do
+  assert(value.type==13,'Expected pet-owner fixture links')
+  local link=df.histfig_hf_link_pet_ownerst:new()
+  link.target_hf=value.target;link.link_strength=value.strength;hf.histfig_links:insert('#',link)
+ end
+ _G.df3d_labor_animal_facts=animal_facts
  result.work_animals_fixture=data;capture('unit-labor-animals')
  local window={df.global.window_x,df.global.window_y,df.global.window_z}
  local animal=animals[1].unit;local x,y,z=dfhack.units.getPosition(animal)

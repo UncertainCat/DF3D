@@ -4,7 +4,23 @@
 #include "df/poetic_form_part.h"
 #include "df/poetic_form_perspective.h"
 #include <memory>
+#include "df/global_objects.h"
+#include "df/world.h"
+#include <type_traits>
 namespace df3d_creature {
+// Historical-material names can lazily populate this semantic cache. Keep its
+// original nodes and buckets intact while native description helpers use a copy.
+// Nested guards restore the enclosing private copy before restoring the original.
+class KnowledgeMaterialCacheRestore {
+    using Cache=decltype(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    Cache& target;
+    Cache saved;
+public:
+    explicit KnowledgeMaterialCacheRestore(Cache& cache):target(cache),saved(cache){target.swap(saved);}
+    ~KnowledgeMaterialCacheRestore(){target.swap(saved);}
+    KnowledgeMaterialCacheRestore(const KnowledgeMaterialCacheRestore&)=delete;
+    KnowledgeMaterialCacheRestore& operator=(const KnowledgeMaterialCacheRestore&)=delete;
+};
 // Native poetic-form prose with independently owned form/part/persona storage.
 // Historical and raw name helpers read world records; their mutable strings and
 // historical-format context are created by the formatter, never borrowed from UI.

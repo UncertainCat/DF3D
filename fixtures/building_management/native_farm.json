@@ -66352,6 +66352,62 @@
           "input_comparisons": 18,
           "scrolled_pixel_crops": 2
         }
+      },
+      "material_cache_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-060525",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "d2b4bead1505d4b672a32cc2399e8758e41e5c9ebdc2a0909938c3030f79cd88",
+        "cases": [
+          {
+            "kind": 14,
+            "id": 0,
+            "check": {
+              "case": "cold-material-cache",
+              "cold_insertions": 1,
+              "exception_restored": true,
+              "length": 504,
+              "nested_restored": true,
+              "original_restored": true
+            }
+          },
+          {
+            "kind": 15,
+            "id": 0,
+            "check": {
+              "case": "cold-material-cache",
+              "cold_insertions": 1,
+              "exception_restored": true,
+              "length": 3121,
+              "nested_restored": true,
+              "original_restored": true
+            }
+          },
+          {
+            "kind": 16,
+            "id": 0,
+            "check": {
+              "case": "cold-material-cache",
+              "cold_insertions": 1,
+              "exception_restored": true,
+              "length": 1659,
+              "nested_restored": true,
+              "original_restored": true
+            }
+          },
+          {
+            "kind": 17,
+            "id": 302,
+            "check": {
+              "case": "cold-material-cache",
+              "cold_insertions": 1,
+              "exception_restored": true,
+              "length": 190,
+              "nested_restored": true,
+              "original_restored": true
+            }
+          }
+        ],
+        "scope": "Forced historical-material resolver miss in a private cache, selected detail exact native text, nested guard and exception restoration; original map header/node addresses/keys/values preserved. Existing source guards and membership cases also pass. Does not broaden event/reference acceptance."
       }
     }
   }

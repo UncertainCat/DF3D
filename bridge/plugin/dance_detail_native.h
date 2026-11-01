@@ -8,6 +8,8 @@ namespace df3d_creature {
 // is tracked separately from the independently owned dance data graph.
 inline std::optional<std::string> danceDetailProbe(df::dance_form* source) {
     if(!source || !knowledgeDescriptionReady() || source->sections.size()>4096 || source->moves.size()>4096)return std::nullopt;
+    if(!df::global::world)return std::nullopt;
+    KnowledgeMaterialCacheRestore cache_restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct Pin {size_t rva,length;uint64_t hash;};
     constexpr Pin pins[]={

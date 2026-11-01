@@ -45,4 +45,12 @@ for i=#vector-1,0,-1 do if vector[i]==detail.id then vector:erase(i)end end
 ok,err=xpcall(function()probe('removed-membership',unit.id,detail.kind,detail.id,false)end,debug.traceback)
 vector:resize(0);for _,id in ipairs(original)do vector:insert('#',id)end
 assert(ok,err);probe('restored-membership',unit.id,detail.kind,detail.id,true)
+if os.getenv('DF3D_UNIT_KNOWLEDGE_CACHE')=='1'then
+ local text,status=dfhack.run_command_silent('df3d','unit-knowledge-cache-probe',tostring(unit.id),tostring(detail.kind),tostring(detail.id))
+ assert(status==0,text);local value=json.decode(text)
+ assert(value.available and value.text==detail.tagged_rows[1],'Cold-cache Knowledge text differs from native')
+ assert(value.cold_insertions>0,'Historical-material probe did not force a cache miss')
+ assert(value.nested_restored and value.exception_restored and value.original_restored,'Knowledge material cache was not restored')
+ results[#results+1]={case='cold-material-cache',cold_insertions=value.cold_insertions,nested_restored=value.nested_restored,exception_restored=value.exception_restored,original_restored=value.original_restored,length=#value.text}
+end
 return results

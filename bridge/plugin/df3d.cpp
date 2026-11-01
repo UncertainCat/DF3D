@@ -1707,7 +1707,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           Json::Value result(Json::objectValue);result["id"]=id;result["text"]=DF2UTF(*text);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
-        if(parameters[0]=="unit-knowledge-detail-probe") {
+        if(parameters[0]=="unit-knowledge-detail-probe" || parameters[0]=="unit-knowledge-cache-probe") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;
           std::array<int32_t,3> values{};
           for(size_t i=0;i<values.size();++i){
@@ -1715,6 +1715,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
           }
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          if(parameters[0]=="unit-knowledge-cache-probe") {
+            const auto probe=df3d_creature::knowledgeCacheProbe(df::unit::find(values[0]),values[1],values[2]);
+            if(!probe)return CR_FAILURE;
+            Json::Value result(Json::objectValue);result["available"]=bool(probe->text);
+            if(probe->text)result["text"]=DF2UTF(*probe->text);
+            result["cold_insertions"]=Json::UInt64(probe->coldInsertions);
+            result["nested_restored"]=probe->nestedRestored;result["exception_restored"]=probe->exceptionRestored;
+            result["original_restored"]=probe->originalRestored;
+            out.print("{}",Json::FastWriter().write(result));return CR_OK;
+          }
           const auto text=df3d_creature::selectedKnowledgeDetailProbe(df::unit::find(values[0]),values[1],values[2]);
           Json::Value result(Json::objectValue);result["available"]=bool(text);
           result["unit_id"]=values[0];result["kind"]=values[1];result["id"]=values[2];

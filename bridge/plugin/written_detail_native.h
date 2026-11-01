@@ -96,6 +96,8 @@ public:
 };
 inline std::optional<std::string> writtenDetailProbe(df::written_content* source) {
     if(!source || !writtenDescriptionReady())return std::nullopt;
+    if(!df::global::world)return std::nullopt;
+    KnowledgeMaterialCacheRestore cache_restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     WrittenDescriptionContext owned;if(!owned.prepare(*source))return std::nullopt;
     auto* content=owned.get();auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto literal=[&](size_t rva){return reinterpret_cast<const char*>(base+rva);};

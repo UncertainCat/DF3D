@@ -3443,9 +3443,10 @@ instruction overlaps its bytes. Its material-description callees 14add70,
 14add70 can populate `hist_fig_to_creature_map` through 701e70; this is a real
 semantic cache write, not an inline-table false positive. Construction and
 Stockpiles preserve the original nodes/buckets using a scoped private copy.
-The diagnostic dance/written adapters do not yet provide equivalent isolation
-for these broader event paths. Existing bounded samples do not establish that
-historical-material event formatting preserves this cache.
+The diagnostic dance/written adapters now use the same scoped private-copy
+strategy through `KnowledgeMaterialCacheRestore`. Its nested guards preserve
+the enclosing private map before restoring the original. The protected
+cache-miss evidence below establishes restoration, not broader event admission.
 
 Lookups 488990 and 152e750 only read their source collections and save registers
 to the stack; neither calls another helper. Material wrapper 14d16f0 copies a
@@ -3472,6 +3473,28 @@ cold-cache preservation still need acceptance before production admission.
 This static evidence does not replace bounded live guards or grant acceptance
 to all 127 event types. No production formatter admission or management action
 changes are made by this audit.
+
+### Knowledge material-cache isolation
+
+Dance and written-description calls isolate the historical-material cache for
+the full native formatter lifetime, including early returns and exceptions.
+The guard copies before swapping, preserving original node addresses and bucket
+storage. Written descriptions can call the dance formatter inside that scope;
+the inner guard restores the outer private cache. No native menu scratch is
+used and no formatter/event admission is broadened.
+
+Protected native060525 on2026-11-01 exercises `unit-knowledge-cache-probe` for
+all four selected detail kinds. The diagnostic invokes pinned resolver14add70
+with historical material219 and the selected unit's HF ID after clearing only
+the private copy. Each case inserts one private entry, matches native tagged
+text exactly (504/3121/1659/190 bytes), and restores the enclosing cache after
+formatting and a deliberately thrown/caught exception. Digests include map
+header bytes, node addresses, keys and values. The final original-map digest
+matches in every case. The existing36 membership cases and four source-guarded
+formatter comparisons also pass. `material_cache_reference` retains bounded
+results. DF35272 exits unsaved and source preservation passes; all three Godot
+processes contain only the known startup notice. Recursive event closure and
+broader source/branch coverage remain separate requirements.
 
 ### Selected Knowledge detail membership
 

@@ -91,6 +91,7 @@ local function probe(sample,name)
 end
 local pages={}
 local history_cases={}
+local clinical_cases={}
 local ok,err=xpcall(function()
  assert(sheet.open and sheet.active_id==unit.id,'Expected creature sheet')
  click(616,196)
@@ -128,6 +129,57 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_UNIT_HEALTH_LAYOUT')=='1'then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-health%-pages%-native.lua$','unit-health-layout-native.lua')
   assert(loadfile(source))(unit,view,capture,out)
+ end
+ if os.getenv('DF3D_UNIT_HEALTH_CLINICAL_CASES')=='1'then
+  local health=assert(unit.health);local original_flags=health.flags.whole;local body_flags={};local wounds={}
+  local blood=unit.body.blood_count;local counters={pain=unit.counters.pain,nausea=unit.counters.nausea,dizziness=unit.counters.dizziness}
+  for _,flags in ipairs(health.body_part_flags)do body_flags[#body_flags+1]=flags.whole end
+  for _,wound in ipairs(unit.body.wounds)do wounds[#wounds+1]={wound=wound,flags=wound.flags.whole}end
+  assert(#body_flags>0 and #wounds>0,'Clinical fixture needs body flags and existing wounds')
+  local function restore()
+   health.flags.whole=original_flags;unit.body.blood_count=blood
+   for key,value in pairs(counters)do unit.counters[key]=value end
+   for index,value in ipairs(body_flags)do health.body_part_flags[index-1].whole=value end
+   unit.body.wounds:resize(0)
+   for _,record in ipairs(wounds)do record.wound.flags.whole=record.flags;unit.body.wounds:insert('#',record.wound)end
+  end
+  local function select(name)
+   for y=17,20 do local first=row(y):find(name,1,true);if first then click((first-1)*8+4,y*12+10);return end end
+   error('Missing clinical tab '..name)
+  end
+  local function observe(name,page)
+   select(page=='Status'and'Treatment'or'Status');select(page)
+   local sample={name=name,page=page,tagged_rows={}}
+   for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
+   probe(sample,page);clinical_cases[#clinical_cases+1]=sample
+  end
+  local function clear_treatment()
+   health.flags.whole=0;for _,flags in ipairs(health.body_part_flags)do flags.whole=0 end
+  end
+  local clinical_ok,clinical_error=xpcall(function()
+   for _,key in ipairs{'rq_diagnosis','rq_crutch'}do
+    restore();clear_treatment();health.flags[key]=true;observe('treatment-'..key,'Treatment')
+   end
+   for _,key in ipairs{'rq_immobilize','rq_dressing','rq_cleaning','rq_surgery','rq_suture','rq_setting','rq_traction','inoperable_rot','needs_bandage','needs_cast'}do
+    restore();clear_treatment();health.body_part_flags[0][key]=true;observe('body-treatment-'..key,'Treatment')
+   end
+   restore();clear_treatment();health.flags.rq_diagnosis=true;health.flags.rq_crutch=true
+   health.body_part_flags[0].whole=1023;observe('combined-treatment','Treatment');capture('unit-health-clinical-treatment')
+   for _,case in ipairs{'empty','undiagnosed','diagnosed','infection'}do
+    restore()
+    if case=='empty'then unit.body.wounds:resize(0)
+    else for _,record in ipairs(wounds)do record.wound.flags.diagnosed=case~='undiagnosed';if case=='infection'then record.wound.flags.infection=true end end end
+    observe('wounds-'..case,'Wounds')
+   end
+   for _,value in ipairs{0,50,100}do
+    restore();unit.counters.pain=value;observe('pain-'..value,'Status')
+   end
+   for _,key in ipairs{'nausea','dizziness'}do restore();unit.counters[key]=100;observe('status-'..key,'Status')end
+   for _,ratio in ipairs{1,2,4}do
+    restore();unit.body.blood_count=math.max(0,unit.body.blood_max//ratio-1);observe('blood-below-1-over-'..ratio,'Status')
+   end
+  end,debug.traceback)
+  restore();select('Status');select('Description');assert(clinical_ok,clinical_error)
  end
  if os.getenv('DF3D_UNIT_HEALTH_HISTORY_CASES')=='1'then
   local health=assert(unit.health);local operations={};local diagnoses={};local workers={}
@@ -203,6 +255,6 @@ end,debug.traceback)
 click(464,196)
 assert(sheet.active_sub_tab==original,'Health reference did not return to Overview')
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Health reference advanced simulation')
-local result={success=ok,unit_id=unit.id,fortress_entity_global_verified=true,pages=pages,history_cases=history_cases,error=not ok and err or nil}
+local result={success=ok,unit_id=unit.id,fortress_entity_global_verified=true,pages=pages,history_cases=history_cases,clinical_cases=clinical_cases,error=not ok and err or nil}
 local file=assert(io.open(out..'/unit-health-pages-native.json','w'));file:write(json.encode(result));file:close()
 assert(ok,err);return result

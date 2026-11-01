@@ -3273,6 +3273,20 @@ owned DF40588 exits unsaved and source preservation passes. Controlled diagnosis
 records establish History formatting/ordering, not active disease effects or
 Status/Treatment coverage. No native-behavior exception was needed.
 
+`clinical_cases_reference` records protected030251:25 controlled native comparisons
+cover general diagnosis/crutch requests, each of ten body treatment flags,
+combined treatment, empty/undiagnosed/diagnosed/infected wounds, pain values,
+nausea, dizziness and three blood-count values. All tagged rows match the owned
+probe and source/UI/random guards remain unchanged. Bandage/cast flags alone
+retain native empty-treatment output; the combined case has11 rows. Original
+fields and wound pointers are restored after each diagnostic case.
+Protected030426 transports and renders the populated11-row Treatment page;
+all five Health text regions432,244,424,492 match native pixels. Its Treatment
+wrapped lines and character colors are regression fixtures. Both runs preserve
+the source save and finish unsaved, with only known Godot startup notices.
+These controlled inputs verify formatting, not execution of medical jobs or
+active disease effects. Broader clinical and Description variants remain open.
+
 `formatted_text_reference` records protected021536 native text-box output:
 53-column boxes, exact wrapped lines and per-character packed colors. Native
 input handler1b2bc4 derives width from panel columns minus7;858550 formats tagged

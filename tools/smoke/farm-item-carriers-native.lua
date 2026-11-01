@@ -205,6 +205,12 @@ local ok,err=xpcall(function()
       wound.id=2147483000;wound.attacker_unit_id=-1;wound.attacker_hist_figure_id=-1;wound.syndrome_id=-1
       part.body_part_id=0;part.layer_idx=0;part.global_layer_idx=0;part.bleeding=10
       wound.parts:insert('#',part);unit.body.wounds:insert('#',wound)
+     elseif health_case=='treatment'then
+      local health=assert(unit.health,'treatment fixture requires health info')
+      assert(#health.body_part_flags>0,'treatment fixture requires body flags')
+      set(health.flags,'whole',health.flags.whole|0x401)
+      for _,flags in ipairs(health.body_part_flags)do set(flags,'whole',0)end
+      set(health.body_part_flags[0],'whole',1023)
      elseif health_case=='injury' then set(assert(unit.health,'injury fixture requires health info').flags,'whole',2)
      else error('unknown health case')end
     end

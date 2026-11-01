@@ -56089,6 +56089,742 @@
         "limitations": [
           "Controlled diagnosis/history records using installed syndrome names; does not apply syndrome effects or verify active-syndrome Status/Treatment."
         ]
+      },
+      "clinical_cases_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-030251",
+        "status": "passed_with_known_issues",
+        "cases": [
+          {
+            "name": "treatment-rq_diagnosis",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]Diagnosis required"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Diagnosis required"
+            ]
+          },
+          {
+            "name": "treatment-rq_crutch",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]Crutch required"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Crutch required"
+            ]
+          },
+          {
+            "name": "body-treatment-rq_immobilize",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]upper body",
+                ".[C:6:0:1]Needs immobilization"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]upper body",
+              ".[C:6:0:1]Needs immobilization"
+            ]
+          },
+          {
+            "name": "body-treatment-rq_dressing",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]upper body",
+                ".[C:7:0:0]Needs dressing"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]upper body",
+              ".[C:7:0:0]Needs dressing"
+            ]
+          },
+          {
+            "name": "body-treatment-rq_cleaning",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]upper body",
+                ".[C:3:0:1]Needs cleaning"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]upper body",
+              ".[C:3:0:1]Needs cleaning"
+            ]
+          },
+          {
+            "name": "body-treatment-rq_surgery",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]upper body",
+                ".[C:4:0:1]Needs surgery"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]upper body",
+              ".[C:4:0:1]Needs surgery"
+            ]
+          },
+          {
+            "name": "body-treatment-rq_suture",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]upper body",
+                ".[C:2:0:1]Needs sutures"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]upper body",
+              ".[C:2:0:1]Needs sutures"
+            ]
+          },
+          {
+            "name": "body-treatment-rq_setting",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]upper body",
+                ".[C:6:0:1]Needs setting"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]upper body",
+              ".[C:6:0:1]Needs setting"
+            ]
+          },
+          {
+            "name": "body-treatment-rq_traction",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]upper body",
+                ".[C:6:0:1]Needs traction"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]upper body",
+              ".[C:6:0:1]Needs traction"
+            ]
+          },
+          {
+            "name": "body-treatment-inoperable_rot",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]upper body",
+                ".[C:5:0:1]Rotten -- inoperable"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]upper body",
+              ".[C:5:0:1]Rotten -- inoperable"
+            ]
+          },
+          {
+            "name": "body-treatment-needs_bandage",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:0]No treatment scheduled"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:0]No treatment scheduled"
+            ]
+          },
+          {
+            "name": "body-treatment-needs_cast",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:0]No treatment scheduled"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:0]No treatment scheduled"
+            ]
+          },
+          {
+            "name": "combined-treatment",
+            "page": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:1]Diagnosis required",
+                "[C:7:0:1]Crutch required",
+                "[C:7:0:1]upper body",
+                ".[C:5:0:1]Rotten -- inoperable",
+                ".[C:3:0:1]Needs cleaning",
+                ".[C:4:0:1]Needs surgery",
+                ".[C:2:0:1]Needs sutures",
+                ".[C:6:0:1]Needs setting",
+                ".[C:7:0:0]Needs dressing",
+                ".[C:6:0:1]Needs traction",
+                ".[C:6:0:1]Needs immobilization"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Diagnosis required",
+              "[C:7:0:1]Crutch required",
+              "[C:7:0:1]upper body",
+              ".[C:5:0:1]Rotten -- inoperable",
+              ".[C:3:0:1]Needs cleaning",
+              ".[C:4:0:1]Needs surgery",
+              ".[C:2:0:1]Needs sutures",
+              ".[C:6:0:1]Needs setting",
+              ".[C:7:0:0]Needs dressing",
+              ".[C:6:0:1]Needs traction",
+              ".[C:6:0:1]Needs immobilization"
+            ]
+          },
+          {
+            "name": "wounds-empty",
+            "page": "Wounds",
+            "probe": {
+              "page": 1,
+              "rows": [
+                "[C:7:0:0]No evaluated wounds"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:0]No evaluated wounds"
+            ]
+          },
+          {
+            "name": "wounds-undiagnosed",
+            "page": "Wounds",
+            "probe": {
+              "page": 1,
+              "rows": [
+                "[C:7:0:0]No evaluated wounds"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:0]No evaluated wounds"
+            ]
+          },
+          {
+            "name": "wounds-diagnosed",
+            "page": "Wounds",
+            "probe": {
+              "page": 1,
+              "rows": [
+                "[C:7:0:1]left foot, skin",
+                "[C:7:0:1]left foot, fat",
+                "[C:7:0:1]left foot, muscle",
+                "[C:7:0:1].Motor nerve severed",
+                "[C:7:0:1].Sensory nerve severed",
+                "[C:7:0:1]left ankle, muscle",
+                "[C:7:0:1]fourth toe, left foot, nail",
+                "[C:4:0:1].Smashed apart",
+                "[C:7:0:1]fourth toe, left foot, skin",
+                "[C:7:0:1]Has been sutured"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]left foot, skin",
+              "[C:7:0:1]left foot, fat",
+              "[C:7:0:1]left foot, muscle",
+              "[C:7:0:1].Motor nerve severed",
+              "[C:7:0:1].Sensory nerve severed",
+              "[C:7:0:1]left ankle, muscle",
+              "[C:7:0:1]fourth toe, left foot, nail",
+              "[C:4:0:1].Smashed apart",
+              "[C:7:0:1]fourth toe, left foot, skin",
+              "[C:7:0:1]Has been sutured"
+            ]
+          },
+          {
+            "name": "wounds-infection",
+            "page": "Wounds",
+            "probe": {
+              "page": 1,
+              "rows": [
+                "[C:7:0:1]left foot, skin",
+                "[C:7:0:1]left foot, fat",
+                "[C:7:0:1]left foot, muscle",
+                "[C:7:0:1].Motor nerve severed",
+                "[C:7:0:1].Sensory nerve severed",
+                "[C:7:0:1]left ankle, muscle",
+                "[C:7:0:1]fourth toe, left foot, nail",
+                "[C:4:0:1].Smashed apart",
+                "[C:7:0:1]fourth toe, left foot, skin",
+                "[C:7:0:1]Has been sutured",
+                "[C:5:0:1]Infection"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]left foot, skin",
+              "[C:7:0:1]left foot, fat",
+              "[C:7:0:1]left foot, muscle",
+              "[C:7:0:1].Motor nerve severed",
+              "[C:7:0:1].Sensory nerve severed",
+              "[C:7:0:1]left ankle, muscle",
+              "[C:7:0:1]fourth toe, left foot, nail",
+              "[C:4:0:1].Smashed apart",
+              "[C:7:0:1]fourth toe, left foot, skin",
+              "[C:7:0:1]Has been sutured",
+              "[C:5:0:1]Infection"
+            ]
+          },
+          {
+            "name": "pain-0",
+            "page": "Status",
+            "probe": {
+              "page": 0,
+              "rows": [
+                "[C:6:0:1]Ability to stand lost",
+                "[C:7:0:1]Motor nerve damage",
+                "[C:7:0:1]Sensory nerve damage"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ]
+          },
+          {
+            "name": "pain-50",
+            "page": "Status",
+            "probe": {
+              "page": 0,
+              "rows": [
+                "[C:6:0:1]Moderate pain",
+                "[C:6:0:1]Ability to stand lost",
+                "[C:7:0:1]Motor nerve damage",
+                "[C:7:0:1]Sensory nerve damage"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:6:0:1]Moderate pain",
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ]
+          },
+          {
+            "name": "pain-100",
+            "page": "Status",
+            "probe": {
+              "page": 0,
+              "rows": [
+                "[C:6:0:1]Extreme pain",
+                "[C:6:0:1]Ability to stand lost",
+                "[C:7:0:1]Motor nerve damage",
+                "[C:7:0:1]Sensory nerve damage"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:6:0:1]Extreme pain",
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ]
+          },
+          {
+            "name": "status-nausea",
+            "page": "Status",
+            "probe": {
+              "page": 0,
+              "rows": [
+                "[C:2:0:1]Nauseous",
+                "[C:6:0:1]Ability to stand lost",
+                "[C:7:0:1]Motor nerve damage",
+                "[C:7:0:1]Sensory nerve damage"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:2:0:1]Nauseous",
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ]
+          },
+          {
+            "name": "status-dizziness",
+            "page": "Status",
+            "probe": {
+              "page": 0,
+              "rows": [
+                "[C:3:0:1]Dizzy",
+                "[C:6:0:1]Ability to stand lost",
+                "[C:7:0:1]Motor nerve damage",
+                "[C:7:0:1]Sensory nerve damage"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:3:0:1]Dizzy",
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ]
+          },
+          {
+            "name": "blood-below-1-over-1",
+            "page": "Status",
+            "probe": {
+              "page": 0,
+              "rows": [
+                "[C:6:0:1]Ability to stand lost",
+                "[C:7:0:1]Motor nerve damage",
+                "[C:7:0:1]Sensory nerve damage"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ]
+          },
+          {
+            "name": "blood-below-1-over-2",
+            "page": "Status",
+            "probe": {
+              "page": 0,
+              "rows": [
+                "[C:5:0:1]Moderate blood loss",
+                "[C:6:0:1]Ability to stand lost",
+                "[C:7:0:1]Motor nerve damage",
+                "[C:7:0:1]Sensory nerve damage"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:5:0:1]Moderate blood loss",
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ]
+          },
+          {
+            "name": "blood-below-1-over-4",
+            "page": "Status",
+            "probe": {
+              "page": 0,
+              "rows": [
+                "[C:5:0:1]Severe blood loss",
+                "[C:6:0:1]Ability to stand lost",
+                "[C:7:0:1]Motor nerve damage",
+                "[C:7:0:1]Sensory nerve damage"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:5:0:1]Severe blood loss",
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ]
+          }
+        ],
+        "scope": "Controlled treatment flags, existing wound diagnosis/infection flags, symptom counters and blood values in a paused unsaved clone; original fields and wound pointers restored. No medical jobs or disease effects executed.",
+        "rendered_run": "build/stockpile-storage-native-farm-discovery-20261101-030426",
+        "rendered_result": {
+          "pages": [
+            {
+              "lines": 3,
+              "name": "Status",
+              "pixels_match": true
+            },
+            {
+              "lines": 10,
+              "name": "Wounds",
+              "pixels_match": true
+            },
+            {
+              "lines": 11,
+              "name": "Treatment",
+              "pixels_match": true
+            },
+            {
+              "lines": 25,
+              "name": "History",
+              "pixels_match": true
+            },
+            {
+              "lines": 16,
+              "name": "Description",
+              "pixels_match": true
+            }
+          ],
+          "retained_refresh": true,
+          "success": true,
+          "tab_return": true
+        },
+        "formatted_pages": [
+          {
+            "name": "Treatment",
+            "rows": [
+              "[C:7:0:1]Diagnosis required",
+              "[C:7:0:1]Crutch required",
+              "[C:7:0:1]upper body",
+              ".[C:5:0:1]Rotten -- inoperable",
+              ".[C:3:0:1]Needs cleaning",
+              ".[C:4:0:1]Needs surgery",
+              ".[C:2:0:1]Needs sutures",
+              ".[C:6:0:1]Needs setting",
+              ".[C:7:0:0]Needs dressing",
+              ".[C:6:0:1]Needs traction",
+              ".[C:6:0:1]Needs immobilization"
+            ],
+            "boxes": [
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "Diagnosis required",
+                    "color_runs": [
+                      [
+                        71,
+                        18
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "Crutch required",
+                    "color_runs": [
+                      [
+                        71,
+                        15
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "upper body",
+                    "color_runs": [
+                      [
+                        71,
+                        10
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Rotten -- inoperable",
+                    "color_runs": [
+                      [
+                        7,
+                        1
+                      ],
+                      [
+                        69,
+                        20
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Needs cleaning",
+                    "color_runs": [
+                      [
+                        7,
+                        1
+                      ],
+                      [
+                        67,
+                        14
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Needs surgery",
+                    "color_runs": [
+                      [
+                        7,
+                        1
+                      ],
+                      [
+                        68,
+                        13
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Needs sutures",
+                    "color_runs": [
+                      [
+                        7,
+                        1
+                      ],
+                      [
+                        66,
+                        13
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Needs setting",
+                    "color_runs": [
+                      [
+                        7,
+                        1
+                      ],
+                      [
+                        70,
+                        13
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Needs dressing",
+                    "color_runs": [
+                      [
+                        7,
+                        15
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Needs traction",
+                    "color_runs": [
+                      [
+                        7,
+                        1
+                      ],
+                      [
+                        70,
+                        14
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Needs immobilization",
+                    "color_runs": [
+                      [
+                        7,
+                        1
+                      ],
+                      [
+                        70,
+                        20
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "source_preservation": "Owned source unchanged in both runs; Godot diagnostics contain only the known startup notice."
       }
     }
   }

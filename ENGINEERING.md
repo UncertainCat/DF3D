@@ -3646,8 +3646,26 @@ unwind fragment/return; `corpse-caption-getters.json` records the full spans.
 The apparent corpse-caption stores atca22e3/ca2338/ca253b write the local
 description string or its allocated backing, not the corpse.
 
-Corpse captionca1aa0 still needs transitive review of132e430 and70be40. Its
-callca1dd2 passes comparison race-2 to132e0c0. In fortress mode that helper
+Body predicate70be40 (length0x294, FNV66c878d81c64d1d1) is a read-only leaf:
+212 reached instructions, no calls, no non-stack writes and no unresolved
+jumps. It indexes body-part pointers using the corpse status-vector length,
+then indexes statuses with each part's `con_part_id` (only -1 is excluded).
+The later bounds checks do not protect those earlier accesses. Source admission
+must establish matching status/body-part storage and valid parent indices;
+read-only behavior alone does not establish valid inputs.
+
+Unit caption132e430 (length0x1541, FNV4586d5154a119fe7) has1277 reached
+instructions and no unresolved jumps. At132ed09/132ed1e the fortress path
+passes the original unit's history-index field at0x1274 to b530b0. That helper
+can refresh the field, as established by the creature-header audit. Corpse
+ca1da2 passes the unit returned by caba20 directly to this caption helper,
+so the corpse graph also has a transitive unit-cache write. Its caption output
+and local-string writes do not account for that side effect. The provider
+needs ownership/preservation for the resolved unit, not just the corpse item.
+`corpse-helper-frontier.json` records both traversals; remaining helper paths
+and cold-cache native comparisons still require review.
+
+Corpse callca1dd2 passes comparison race-2 to132e0c0. In fortress mode that helper
 uses the fortress race; adventure mode can instead read current-unit state.
 The earlier direct current-unit comparison atca1b79 is also guarded by
 adventure mode. Admission must establish the fortress-mode precondition and

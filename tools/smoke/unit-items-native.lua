@@ -43,6 +43,7 @@ local ok,err=xpcall(function()
    guards[#guards+1]={bytes=bytes,address=address,size=size}
   end
   for _,object in ipairs{unit,sheet,df.global.plotinfo}do local size,address=df.sizeof(object);guard(address,size)end
+  for _,object in ipairs(unit.body.spatters)do local size,address=df.sizeof(object);guard(address,size)end
   for _,vector in ipairs{unit.body.components.body_part_status,unit.enemy.motor_nervenet,
     unit.enemy.sensory_nervenet,unit.enemy.body_part_useable}do
    local _,address=df.sizeof(vector)
@@ -69,6 +70,14 @@ local ok,err=xpcall(function()
    assert(row.id==before[i].id,'Inventory reader order')
    assert(row.caption==native[18+(i-1)*3],'Inventory caption differs at '..i)
    assert(row.role==native[19+(i-1)*3],'Inventory role differs at '..i)
+  end
+  for i,row in ipairs(result.reader.spatters)do
+   assert(row.caption==native[18+(#before+i-1)*3],'Spatter caption differs')
+   assert(row.body_part_caption==native[19+(#before+i-1)*3],'Spatter body part differs')
+  end
+  if os.getenv('DF3D_UNIT_ITEMS_SPATTERS')=='1'then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-spatters-native.lua')
+   result.spatter_cases=assert(loadfile(source))(unit,pointer,read)
   end
   if os.getenv('DF3D_UNIT_ITEMS_ROLES')=='1'then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-roles-native.lua')

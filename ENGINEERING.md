@@ -1425,10 +1425,24 @@ DF38288 exits unsaved and source-save preservation passes. Both GPU processes
 and the paired header-wire log contain only the known renderer notice. These
 checks establish the description adapter for those cases, not every role branch
 or product Items acceptance. The fixture records pins, results and omissions.
-Inventory rows
-alone are insufficient: renderer169436 also counts contained references on
-container items, and1695c0 traverses unit-body spatters. Their descriptions,
-ordering, nested actions and artwork still need native acceptance. The Items
+Inventory rows alone are insufficient: renderer169436 also counts contained
+references on container items, and1695c0 traverses unit-body spatters. The spatter
+adapter now follows the external-flag filter at16b96c and vector order, calls
+657f90 into an owned string with copied spatter_common input, and uses13345d0
+with body-part ID/0/2 for its second line. Unlike inventory role text, this body
+part is not title-cased; negative IDs have no second line. Material/name helpers
+are shared with existing item descriptions and may populate semantic historical
+material caches, but never native UI state. Diagnostic indices identify source
+vector entries only and are not persistent object IDs.
+
+Protected235524 on2026-10-31 matches the named blood-spatter baseline, sizes
+24/25/49/50, no body part and internal-contamination exclusion. Reader guards
+include spatter objects as well as unit/cache/UI/random state. All11 inventory
+rows and five Pet/Weapon cases also pass. DF12316 exits unsaved, source
+preservation passes, and both GPU logs plus paired header-wire logs contain
+only the known renderer notice. `unit_items_reference.spatter_reader` retains
+the scoped evidence. Other materials/states, contained-object and creature
+descriptions/order, nested actions and artwork still need native acceptance. The Items
 route remains staged with the rest of the incomplete creature sheet.
 
 The Overview hauling line uses native selector1324b50(unit), the same call made

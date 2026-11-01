@@ -1687,6 +1687,13 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             value["caption"]=DF2UTF(row.caption);value["role"]=DF2UTF(row.role);
             result["rows"].append(value);
           }
+          const auto spatters=df3d_creature::inventorySpatters(df::unit::find(id));if(!spatters)return CR_FAILURE;
+          result["spatters"]=Json::Value(Json::arrayValue);
+          for(const auto& row:*spatters) {
+            Json::Value value(Json::objectValue);value["source_index"]=row.sourceIndex;value["body_part"]=row.bodyPart;
+            value["caption"]=DF2UTF(row.caption);value["body_part_caption"]=DF2UTF(row.bodyPartCaption);
+            result["spatters"].append(value);
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="unit-expel-eligible-probe") {

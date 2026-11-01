@@ -1,6 +1,7 @@
 #pragma once
 #include "building_item_native.h"
 #include "df/unit_inventory_item.h"
+#include "df/unit_spatter.h"
 #include <array>
 #include <cstring>
 
@@ -74,6 +75,11 @@ inline bool inventoryDescriptionReady() {
             {0x13ec760,0x3ca,UINT64_C(0xa85f2be064b4fe01)},
             {0xeb68b0,0x1e3,UINT64_C(0x4bcd46a418e7a7bb)},
             {0xd09a30,0x52,UINT64_C(0xa2896c40eeeb58bc)},
+            {0x657f90,0x43c,UINT64_C(0x5aae53cc785d2be6)},
+            {0x14add70,0x12f,UINT64_C(0x01f897b15772d540)},
+            {0xc3a4f0,0x98,UINT64_C(0x90965a9fe84783f6)},
+            {0x72570,0x98,UINT64_C(0xa69932c0f279084a)},
+            {0xa946e0,0x7c2,UINT64_C(0xdbc3db5f052419ee)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -110,6 +116,39 @@ inline std::optional<std::vector<InventoryDescriptionRow>> inventoryDescriptions
         auto input=entry;
         reinterpret_cast<Describe>(base+0x1393900)(context.unit(),&row.role,&input);
         if(row.caption.size()>4096||row.role.size()>4096)return std::nullopt;
+        rows.push_back(std::move(row));
+    }
+    return rows;
+}
+struct InventorySpatterRow {
+    int32_t sourceIndex=-1,bodyPart=-1;
+    std::string caption,bodyPartCaption;
+};
+// Native16b96c includes external spatters only, in body.spatters vector order.
+// 16bba6 formats spatter_common;16bd5b formats the body part without title case.
+// The caption graph reads material raws and historical-figure/identity names,
+// with all string storage owned. Material lookup may lazily populate semantic
+// historical-material caches. No native sheet or rendering state is used.
+inline std::optional<std::vector<InventorySpatterRow>> inventorySpatters(const df::unit* source) {
+    if(!source||!inventoryDescriptionReady()||!source->body.body_plan||
+       source->body.spatters.size()>10000)return std::nullopt;
+    static_assert(offsetof(df::unit_spatter,body_part_id)==0x18);
+    static_assert(offsetof(df::unit_spatter,flags)==0x1a);
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    using Caption=void (*)(df::spatter_common*,std::string*);
+    using BodyPart=void (*)(const df::unit*,std::string*,int16_t,int32_t,int16_t);
+    InventoryRandomRestore restore(base);
+    std::vector<InventorySpatterRow> rows;
+    for(size_t i=0;i<source->body.spatters.size();++i) {
+        const auto* spatter=source->body.spatters[i];
+        if(!spatter)return std::nullopt;
+        if(!spatter->flags.bits.external)continue;
+        auto input=spatter->base;
+        InventorySpatterRow row;row.sourceIndex=static_cast<int32_t>(i);row.bodyPart=spatter->body_part_id;
+        reinterpret_cast<Caption>(base+0x657f90)(&input,&row.caption);
+        if(row.bodyPart>=0)
+            reinterpret_cast<BodyPart>(base+0x13345d0)(source,&row.bodyPartCaption,spatter->body_part_id,0,2);
+        if(row.caption.size()>4096||row.bodyPartCaption.size()>4096)return std::nullopt;
         rows.push_back(std::move(row));
     }
     return rows;

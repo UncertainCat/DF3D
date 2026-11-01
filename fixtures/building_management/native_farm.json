@@ -49748,6 +49748,170 @@
           }
         },
         "scope": "11 ordinary inventory rows plus 4 synthetic Pet seeds and one synthetic two-handed weapon with cold cache flags. Does not validate contained objects, spatters, all role branches, or product Items layout/actions."
+      },
+      "spatter_reader": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261031-235524",
+        "caption": {
+          "rva": "657f90",
+          "length": "43c",
+          "fnv64": "5aae53cc785d2be6",
+          "renderer": "16bba6"
+        },
+        "body_part": {
+          "rva": "13345d0",
+          "renderer": "16bd5b",
+          "arguments": "unit, owned string, body_part_id, 0, 2"
+        },
+        "selection": "external flag only, body.spatters vector order; index is diagnostic provenance, not persistent identity",
+        "baseline": [
+          {
+            "body_part": 42,
+            "body_part_caption": "left ankle",
+            "caption": "spatter of Stodir Spotseals's dwarf blood",
+            "source_index": 0
+          }
+        ],
+        "cases": [
+          {
+            "guards_unchanged": true,
+            "name": "size-24",
+            "native_body_part": "left ankle",
+            "native_caption": "spatter of Stodir Spotseals's dwarf blood",
+            "reader": {
+              "body_part": 42,
+              "body_part_caption": "left ankle",
+              "caption": "spatter of Stodir Spotseals's dwarf blood",
+              "source_index": 0
+            },
+            "reader_count": 1
+          },
+          {
+            "guards_unchanged": true,
+            "name": "size-25",
+            "native_body_part": "left ankle",
+            "native_caption": "smear of Stodir Spotseals's dwarf blood",
+            "reader": {
+              "body_part": 42,
+              "body_part_caption": "left ankle",
+              "caption": "smear of Stodir Spotseals's dwarf blood",
+              "source_index": 0
+            },
+            "reader_count": 1
+          },
+          {
+            "guards_unchanged": true,
+            "name": "size-49",
+            "native_body_part": "left ankle",
+            "native_caption": "smear of Stodir Spotseals's dwarf blood",
+            "reader": {
+              "body_part": 42,
+              "body_part_caption": "left ankle",
+              "caption": "smear of Stodir Spotseals's dwarf blood",
+              "source_index": 0
+            },
+            "reader_count": 1
+          },
+          {
+            "guards_unchanged": true,
+            "name": "size-50",
+            "native_body_part": "left ankle",
+            "native_caption": "coating of Stodir Spotseals's dwarf blood",
+            "reader": {
+              "body_part": 42,
+              "body_part_caption": "left ankle",
+              "caption": "coating of Stodir Spotseals's dwarf blood",
+              "source_index": 0
+            },
+            "reader_count": 1
+          },
+          {
+            "guards_unchanged": true,
+            "name": "no-body-part",
+            "native_body_part": "",
+            "native_caption": "spatter of Stodir Spotseals's dwarf blood",
+            "reader": {
+              "body_part": -1,
+              "body_part_caption": "",
+              "caption": "spatter of Stodir Spotseals's dwarf blood",
+              "source_index": 0
+            },
+            "reader_count": 1
+          },
+          {
+            "guards_unchanged": true,
+            "name": "internal",
+            "native_body_part": "",
+            "native_caption": "",
+            "reader_count": 0
+          }
+        ],
+        "inventory_role_regressions": [
+          {
+            "guards_unchanged": true,
+            "name": "pet-0",
+            "native": "Right shoulder",
+            "reader": "Right shoulder"
+          },
+          {
+            "guards_unchanged": true,
+            "name": "pet-1",
+            "native": "Left shoulder",
+            "reader": "Left shoulder"
+          },
+          {
+            "guards_unchanged": true,
+            "name": "pet-2",
+            "native": "Left shoulder",
+            "reader": "Left shoulder"
+          },
+          {
+            "guards_unchanged": true,
+            "name": "pet-12345",
+            "native": "On head",
+            "reader": "On head"
+          },
+          {
+            "guards_unchanged": true,
+            "name": "weapon-cold-body-caches",
+            "native": "Head",
+            "reader": "Head"
+          }
+        ],
+        "source_save": "Owned source unchanged",
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "scope": "Blood spatter with historical creature name; size24/25/49/50, absent body part, and internal exclusion. Other materials/states and public rendering/actions remain unverified.",
+        "ownership": "Copies spatter_common; owned output strings; read-only body-part formatter. Historical material lookup may populate semantic world caches. Unit, spatters, native UI and random state guards pass."
       }
     }
   }

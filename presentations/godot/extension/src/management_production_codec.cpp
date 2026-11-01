@@ -92,7 +92,9 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     const auto& c=*p.workshopWorkers;Dictionary v;Array rows,permitted;
     v["building_id"]=c.buildingId;v["profile_revision"]=int64_t(c.profileRevision);
     v["revision"]=int64_t(c.revision);v["cursor"]=int64_t(c.cursor);v["next_cursor"]=int64_t(c.nextCursor);v["total"]=int64_t(c.total);
-    v["outcome"]=int(c.outcome);v["unit_id"]=c.unitId;
+    v["outcome"]=int(c.outcome);v["unit_id"]=c.unitId;v["operation"]=int(c.operation);
+    if(c.assigned){const auto& a=*c.assigned;Dictionary assigned;assigned["id"]=a.id;assigned["caption"]=String::utf8(a.caption.c_str());
+      assigned["specialization_visible"]=a.specializationVisible;assigned["can_specialize"]=a.canSpecialize;assigned["specialized"]=a.specialized;v["assigned"]=assigned;}
     for(const auto id:c.permittedWorkers)permitted.push_back(id);
     v["permitted_workers"]=permitted;
     for(const auto& r:c.rows) {
@@ -394,7 +396,7 @@ bool validateProductionShape(const Dictionary& data, String& error) {
   if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
   if(data.has("independent_item") && data["independent_item"].get_type()!=Variant::BOOL){error="Wrong management field type: independent_item";return false;}
   if(data.has("locate_item") && data["locate_item"].get_type()!=Variant::BOOL){error="Wrong management field type: locate_item";return false;}
-  if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization", "item_id", "item_value", "worker_id", "worker_list_revision"}, error))return false;
+  if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization", "item_id", "item_value", "worker_id", "worker_list_revision", "worker_value"}, error))return false;
   if(data.has("farm_name") && data["farm_name"].get_type()!=Variant::STRING) {error="Wrong management field type: farm_name";return false;}
   if(int64_t(data.get("farm_operation",0))==3 && !data.has("farm_name")) {error="Missing management field: farm_name";return false;}
   return managementRequiredFields(data, error);
@@ -434,8 +436,8 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
   value.buildingHeader=data.get("building_header",false);
   value.workshopWorkers=data.get("workshop_workers",false);
-  value.workerId=int32_t(n("worker_id",-1,-1,INT32_MAX));value.workerListRevision=uint64_t(n("worker_list_revision",0,0,INT64_MAX));
-  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,10));
+  value.workerId=int32_t(n("worker_id",-1,-1,INT32_MAX));value.workerListRevision=uint64_t(n("worker_list_revision",0,0,INT64_MAX));value.workerValue=int8_t(n("worker_value",-1,-1,1));
+  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,12));
   value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));value.itemValue=int8_t(n("item_value",-1,-1,1));
   String farmName=data.get("farm_name",String());
   const auto nameBytes=farmName.utf8();value.farmName.assign(nameBytes.get_data(),nameBytes.length());

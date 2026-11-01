@@ -280,7 +280,7 @@ struct AreaState {
 struct ProductionRequest {
   int32_t itemId=-1;int8_t itemValue=-1;
   bool contents=false,locateItem=false,independentItem=false,buildingHeader=false,workshopWorkers=false;
-  int32_t workerId=-1;uint64_t workerListRevision=0;
+  int32_t workerId=-1;uint64_t workerListRevision=0;int8_t workerValue=-1;
   FarmOperation farmOperation=FarmOperation::Crop;
   int8_t seasonalFertilization=-1;
   std::string farmName;
@@ -370,7 +370,13 @@ struct BuildingHeaderState {
   FarmEditOutcome outcome=FarmEditOutcome::None;
   FarmOperation operation=FarmOperation::Crop;
 };
+struct WorkshopAssignedWorker {
+  int32_t id=-1;std::string caption;
+  bool specializationVisible=false,canSpecialize=false,specialized=false;
+};
 struct WorkshopWorkersState {
+  std::optional<WorkshopAssignedWorker> assigned;
+  FarmOperation operation=FarmOperation::Crop;
   int32_t buildingId=-1,unitId=-1;
   uint64_t profileRevision=0,revision=0;
   uint32_t cursor=0,nextCursor=0,total=0;

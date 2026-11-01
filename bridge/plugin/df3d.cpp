@@ -2084,6 +2084,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["revision"]=std::to_string(profile->revision);
           result["permitted_workers"]=Json::Value(Json::arrayValue);
           for(const auto worker:profile->permittedWorkers)result["permitted_workers"].append(worker);
+          if(profile->assigned) {
+            const auto& a=*profile->assigned;Json::Value value;
+            value["id"]=a.id;value["caption"]=DF2UTF(a.caption);value["specialization_visible"]=a.specializationVisible;
+            value["can_specialize"]=a.canSpecialize;value["specialized"]=a.specialized;result["assigned"]=value;
+          }
           result["skills"]=Json::Value(Json::arrayValue);result["rows"]=Json::Value(Json::arrayValue);
           for(const auto unit:*candidates)result["ids"].append(unit);
           for(const auto& [skill,weight]:*skills){Json::Value value;value["skill"]=skill;value["weight"]=weight;result["skills"].append(value);}

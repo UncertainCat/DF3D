@@ -102,26 +102,66 @@ inline std::optional<std::vector<int32_t>> workshopWorkerCandidates(df::building
     return result; // Source order only; presentation sorting is a separate read.
 }
 
+struct WorkshopAssignedWorker {
+    int32_t id=-1;
+    std::string caption;
+    bool specializationVisible=false,canSpecialize=false,specialized=false;
+};
+inline bool workshopAssignedFunctions() {
+    static const bool supported=[] {
+        if(!farmFunctions() || !df3d_area::staffOrderingFunctions() || !df3d_area::staffMutationFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x1acec5,0x1b5,UINT64_C(0x1bed26c571d967e8)},
+            {0x187739,0x95a,UINT64_C(0x00058dd3af900440)},
+            {0x14ddb0,0x57,UINT64_C(0x94222cd85df6aa22)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    return supported;
+}
 struct WorkshopWorkerProfile {
     int32_t buildingId=-1;
     uint64_t revision=0;
     std::vector<int32_t> permittedWorkers;
+    std::optional<WorkshopAssignedWorker> assigned;
 };
 // Caller owns a simulation safe point. This observes the simulation profile,
 // not the selected native building or the worker selector's retained list.
 inline std::optional<WorkshopWorkerProfile> workshopWorkerProfile(df::building* building) {
-    if(!building || !df::global::world ||
+    if(!workshopAssignedFunctions() || !building || !df::global::world ||
        (building->getType()!=df::building_type::Workshop && building->getType()!=df::building_type::Furnace))return std::nullopt;
     auto* profile=building->getWorkshopProfile();
     const auto header=observeBuildingHeader(building);
     if(!profile || !header || header->removing || header->stage!=header->maxStage)return std::nullopt;
     WorkshopWorkerProfile value;value.buildingId=building->id;value.permittedWorkers=profile->permitted_workers;
+    if(!value.permittedWorkers.empty())if(auto* unit=df::unit::find(value.permittedWorkers.front())) {
+        const auto office=df3d_creature::laborEligible(unit,{},true);if(!office)return std::nullopt;
+        auto& assigned=value.assigned.emplace();assigned.id=unit->id;
+        // Native187944/187e8d pass true to include sex/training suffixes.
+        df3d_area::staffOrderingFunctions().name(unit,&assigned.caption,true);
+        if(assigned.caption.size()>2048)return std::nullopt;
+        assigned.specializationVisible=*office;
+        assigned.canSpecialize=*office && unit->profession!=df::profession::CHILD && unit->profession!=df::profession::BABY;
+        assigned.specialized=unit->flags4.bits.only_do_assigned_jobs;
+    }
     uint64_t hash=UINT64_C(14695981039346656037);
     const auto add=[&](uint64_t part) {
         for(unsigned shift=0;shift<64;shift+=8){hash^=(part>>shift)&255;hash*=UINT64_C(1099511628211);}
     };
     add(header->revision);add(building->getSubtype());add(building->getCustomType());
     add(value.permittedWorkers.size());for(const auto id:value.permittedWorkers)add(uint32_t(id));
+    add(value.assigned.has_value());
+    if(value.assigned) {
+        add(value.assigned->id);add(value.assigned->caption.size());for(unsigned char ch:value.assigned->caption)add(ch);
+        add(value.assigned->specializationVisible);add(value.assigned->canSpecialize);add(value.assigned->specialized);
+    }
     value.revision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
     return value;
 }
@@ -168,4 +208,45 @@ inline WorkshopWorkerResult selectWorkshopWorker(int32_t buildingId,int32_t unit
     }catch(...) {} // Committed effects are never reported as safely retryable.
     return result;
 }
+// The assigned row has its own remove control. Unlike selector membership,
+// removal remains available when the first restricted worker is no longer eligible.
+inline WorkshopWorkerResult removeWorkshopWorker(int32_t buildingId,int32_t unitId,uint64_t revision) {
+    WorkshopWorkerResult result;
+    if(!workshopAssignedFunctions()){result.outcome=WorkshopWorkerOutcome::Unavailable;return result;}
+    auto* building=df::building::find(buildingId);const auto before=workshopWorkerProfile(building);
+    if(!before)return result;
+    if(!revision || revision!=before->revision){result.outcome=WorkshopWorkerOutcome::Stale;return result;}
+    if(before->permittedWorkers.empty() || before->permittedWorkers.front()!=unitId)return result;
+    auto desired=before->permittedWorkers;
+    desired.erase(std::next(std::find(desired.rbegin(),desired.rend(),unitId)).base());
+    result.outcome=WorkshopWorkerOutcome::Unknown;
+    try {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        reinterpret_cast<void (*)(df::workshop_profile*,int32_t)>(base+0x14ddb0)(building->getWorkshopProfile(),unitId);
+        auto after=workshopWorkerProfile(building);
+        if(after && after->permittedWorkers==desired){result.profile=std::move(after);result.outcome=WorkshopWorkerOutcome::Applied;}
+    }catch(...) {}
+    return result;
+}
+inline WorkshopWorkerResult specializeWorkshopWorker(int32_t buildingId,int32_t unitId,uint64_t revision,bool specialized) {
+    WorkshopWorkerResult result;
+    if(!workshopAssignedFunctions()){result.outcome=WorkshopWorkerOutcome::Unavailable;return result;}
+    auto* building=df::building::find(buildingId);const auto before=workshopWorkerProfile(building);
+    if(!before)return result;
+    if(!revision || revision!=before->revision){result.outcome=WorkshopWorkerOutcome::Stale;return result;}
+    if(!before->assigned || before->assigned->id!=unitId || !before->assigned->canSpecialize || before->assigned->specialized==specialized)return result;
+    auto* unit=df::unit::find(unitId);if(!unit)return result;
+    result.outcome=WorkshopWorkerOutcome::Unknown;
+    try {
+        // Native1ad063..1ad075: semantic flag plus DF's labor recomputation.
+        unit->flags4.bits.only_do_assigned_jobs=specialized;
+        df3d_area::staffMutationFunctions().labors(unit);
+        auto after=workshopWorkerProfile(building);
+        if(after && after->permittedWorkers==before->permittedWorkers && after->assigned && after->assigned->id==unitId && after->assigned->specialized==specialized) {
+            result.profile=std::move(after);result.outcome=WorkshopWorkerOutcome::Applied;
+        }
+    }catch(...) {}
+    return result;
+}
+
 }

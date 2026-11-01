@@ -745,7 +745,9 @@ void publish() {
           b.CreateString(r.baseName),b.CreateString(r.professionName),r.professionColor,r.legendary,
           r.sourceIndex,r.professionOrder,r.statusOrder,b.CreateVector(r.nameSortKey),b.CreateVector(r.professionSortKey)));
     }
-    workshopWorkers=m::CreateWorkshopWorkersState(b,p.buildingId,p.profileRevision,b.CreateVector(p.permittedWorkers),p.revision,p.cursor,p.nextCursor,p.total,b.CreateVector(rows),p.outcome,p.unitId);
+    flatbuffers::Offset<m::WorkshopAssignedWorker> assigned;
+    if(p.assigned){const auto& a=*p.assigned;assigned=m::CreateWorkshopAssignedWorker(b,a.id,b.CreateString(a.caption),a.specializationVisible,a.canSpecialize,a.specialized);}
+    workshopWorkers=m::CreateWorkshopWorkersState(b,p.buildingId,p.profileRevision,b.CreateVector(p.permittedWorkers),p.revision,p.cursor,p.nextCursor,p.total,b.CreateVector(rows),p.outcome,p.unitId,assigned,p.operation);
   }
   auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
@@ -2643,15 +2645,32 @@ void run(color_ostream& out) {
     message.clear();status=m::ManagementStatus::Rejected;production={};
     auto& response=production.workshopWorkers.emplace();response.buildingId=q->building_id();
     response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
+    const auto copyProfile=[&](const df3d_production::WorkshopWorkerProfile& p) {
+      response.profileRevision=p.revision;response.permittedWorkers=p.permittedWorkers;
+      if(p.assigned){const auto& a=*p.assigned;response.assigned=WorkshopAssignedWorker{a.id,DF2UTF(a.caption),a.specializationVisible,a.canSpecialize,a.specialized};}
+    };
     try {
       auto* building=df::building::find(q->building_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
       if(!tile || tile->bits.hidden){workers.invalidate();publish();return;}
+      const bool assignedEdit=editing && q->farm_operation()!=m::FarmOperation::WorkerSelect;
+      if(assignedEdit) {
+        workers.invalidate();
+        const auto result=q->farm_operation()==m::FarmOperation::WorkerRemove?
+          df3d_production::removeWorkshopWorker(q->building_id(),q->worker_id(),q->expected_revision()):
+          df3d_production::specializeWorkshopWorker(q->building_id(),q->worker_id(),q->expected_revision(),q->worker_value()!=0);
+        using O=df3d_production::WorkshopWorkerOutcome;
+        mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+        if(result.outcome==O::Applied && result.profile){response.outcome=m::FarmEditOutcome::Unknown;copyProfile(*result.profile);response.unitId=q->worker_id();response.operation=q->farm_operation();response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;}
+        else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+        else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
+        publish();return;
+      }
       workers.observe(epoch,q->building_id());
       const auto page=workers.page(epoch,q->building_id(),editing?0:q->cursor(),q->worker_list_revision());
       if(page.status==df3d_area::LocationPageStatus::Ready && page.profile) {
         if(!editing) {
-          response.profileRevision=page.profile->revision;response.permittedWorkers=page.profile->permittedWorkers;
+          copyProfile(*page.profile);
           response.revision=page.revision;response.cursor=q->cursor();response.nextCursor=page.nextCursor;response.total=page.total;response.rows=page.rows;
           status=m::ManagementStatus::Ok;
         } else {
@@ -2663,7 +2682,7 @@ void run(color_ostream& out) {
           mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
           if(result.outcome==O::Applied && result.profile) {
             response.outcome=m::FarmEditOutcome::Unknown;
-            response.profileRevision=result.profile->revision;response.permittedWorkers=result.profile->permittedWorkers;response.unitId=q->worker_id();
+            copyProfile(*result.profile);response.unitId=q->worker_id();response.operation=q->farm_operation();
             response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
           } else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
           else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;

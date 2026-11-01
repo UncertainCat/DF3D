@@ -1511,7 +1511,7 @@ table AreaState {
   location_staff_assignments:LocationStaffAssignments;
 }
 // Production recipes are opaque semantic keys revalidated against the selected building.
-enum FarmOperation : uint8 { Crop, FertilizationToggle, SeasonalFertilization, Rename, Remove, CancelRemoval, ItemForbid, ItemDump, ItemMelt, ItemHidden, WorkerSelect }
+enum FarmOperation : uint8 { Crop, FertilizationToggle, SeasonalFertilization, Rename, Remove, CancelRemoval, ItemForbid, ItemDump, ItemMelt, ItemHidden, WorkerSelect, WorkerRemove, WorkerSpecialize }
 table ProductionRequest {
   building_id:int32 = -1;
   job_id:int32 = -1;
@@ -1536,6 +1536,7 @@ table ProductionRequest {
   workshop_workers:bool;
   worker_id:int32 = -1;
   worker_list_revision:uint64;
+  worker_value:int8 = -1;
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 // Absent on legacy observations and providers without native availability evidence.
@@ -1629,10 +1630,15 @@ table BuildingHeaderState {
   outcome:FarmEditOutcome;
   operation:FarmOperation;
 }
+table WorkshopAssignedWorker {
+  id:int32 = -1; caption:string; specialization_visible:bool;
+  can_specialize:bool; specialized:bool;
+}
 table WorkshopWorkersState {
   building_id:int32 = -1; profile_revision:uint64; permitted_workers:[int32];
   revision:uint64; cursor:uint32; next_cursor:uint32; total:uint32;
   rows:[LocationStaffCandidate]; outcome:FarmEditOutcome; unit_id:int32 = -1;
+  assigned:WorkshopAssignedWorker; operation:FarmOperation;
 }
 table ProductionState {
   buildings:[ProductionBuilding]; next_cursor:uint32;
@@ -1977,7 +1983,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 114;
+  schema_version:uint32 = 115;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2029,7 +2035,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 114;
+  schema_version:uint32 = 115;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -215,7 +215,7 @@ inline WorkshopRemoveOutcome removeWorkshopAssignment(df::unit* unit,int32_t bui
 // Creature Labor input1b4580..1b45e1. DF owns caste, unit and office/spouse
 // eligibility. Its office predicate refreshes lookup indices; restore only
 // those semantic caches, without borrowing any sheet or menu state.
-inline std::optional<bool> laborEligible(df::unit* unit,const std::function<void()>& collect={}) {
+inline std::optional<bool> laborEligible(df::unit* unit,const std::function<void()>& collect={},bool officeOnly=false) {
     static const bool supported=[] {
         if(!df3d_production::farmFunctions())return false;
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -240,10 +240,14 @@ inline std::optional<bool> laborEligible(df::unit* unit,const std::function<void
     }();
     if(!supported || !df::global::plotinfo)return std::nullopt;
     if(!unit)return false;
-    if(unit->profession==df::profession::CHILD || unit->profession==df::profession::BABY)return false;
+    // Workshop assigned-row rendering calls only the office predicate. Keep
+    // that narrower native read under the same cache-restoration lifetime.
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
-    if(reinterpret_cast<bool (*)(int16_t,int16_t)>(base+0x1376500)(unit->race,unit->caste) ||
-       !reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(unit))return false;
+    if(!officeOnly) {
+        if(unit->profession==df::profession::CHILD || unit->profession==df::profession::BABY)return false;
+        if(reinterpret_cast<bool (*)(int16_t,int16_t)>(base+0x1376500)(unit->race,unit->caste) ||
+           !reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(unit))return false;
+    }
     struct CacheRestore {
         std::vector<std::pair<int32_t*,int32_t>> values;
         void keep(int32_t& value){values.emplace_back(&value,value);}

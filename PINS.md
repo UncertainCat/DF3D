@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management115 adds independent assigned-worker display facts and the native
+remove/work-mode actions. Rebuild/install both peers on
+`Local\\df3d_management_v115`. The assigned caption and work-mode authority cannot
+be inferred from a candidate row or an older recording. Other channels are unchanged.
+
 Management114 adds bounded workshop worker pages and revision-bound worker
 selection via the production channel. Rebuild/install bridge and viewer together
 on `Local\\df3d_management_v114`. Profile and candidate-list receipts are distinct;

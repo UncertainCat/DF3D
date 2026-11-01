@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 114;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v114";
+inline constexpr uint32_t kManagementVersion = 115;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v115";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -472,10 +472,10 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
          p->job_id()!=-1 || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() || p->farm_name() ||
          (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size()) ||
          p->expected_revision()>INT64_MAX || p->worker_list_revision()>INT64_MAX ||
-         (edit ? (p->worker_id()<0 || !p->expected_revision() || !p->worker_list_revision() || p->cursor() || p->farm_operation()!=FarmOperation::WorkerSelect)
-               : (p->worker_id()!=-1 || p->expected_revision() || p->farm_operation()!=FarmOperation::Crop || p->cursor()%128 || (p->cursor() && !p->worker_list_revision()))))return "invalid workshop worker intent";
+         (edit ? (p->worker_id()<0 || !p->expected_revision() || p->cursor() || p->farm_operation()<FarmOperation::WorkerSelect || p->farm_operation()>FarmOperation::WorkerSpecialize || (p->farm_operation()==FarmOperation::WorkerSelect?!p->worker_list_revision():p->worker_list_revision()!=0) || (p->farm_operation()==FarmOperation::WorkerSpecialize?(p->worker_value()<0 || p->worker_value()>1):p->worker_value()!=-1))
+               : (p->worker_id()!=-1 || p->worker_value()!=-1 || p->expected_revision() || p->farm_operation()!=FarmOperation::Crop || p->cursor()%128 || (p->cursor() && !p->worker_list_revision()))))return "invalid workshop worker intent";
     } else {
-    if(p->worker_id()!=-1 || p->worker_list_revision() || p->farm_operation()==FarmOperation::WorkerSelect)return "unexpected workshop worker intent";
+    if(p->worker_id()!=-1 || p->worker_value()!=-1 || p->worker_list_revision() || p->farm_operation()>=FarmOperation::WorkerSelect)return "unexpected workshop worker intent";
     if(p->building_header() && (p->building_id()<0 || p->independent_item() || p->locate_item() || p->contents() ||
        p->item_id()!=-1 || p->item_value()!=-1 || p->season()!=-1 || p->crop_id()!=-1 || p->seasonal_fertilization()!=-1 ||
        p->job_id()!=-1 || p->cursor() || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() ||
@@ -1508,11 +1508,16 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(ok) {
         if(!state->profile_revision() || state->profile_revision()>INT64_MAX || !state->permitted_workers() || state->permitted_workers()->size()>16384)return "invalid workshop worker profile";
         for(const auto id:*state->permitted_workers())if(id<0)return "invalid permitted worker";
+        if(const auto* a=state->assigned()) {
+          if(state->permitted_workers()->size()==0 || a->id()!=state->permitted_workers()->Get(0) || !a->caption() || a->caption()->size()>8192 ||
+             (a->can_specialize() && !a->specialization_visible()))return "invalid assigned worker";
+        }
         if(!edit) {
+          if(state->operation()!=FarmOperation::Crop)return "unexpected worker read operation";
           if(state->unit_id()!=-1)return "unexpected worker receipt";
           if(auto error=validateLocationCandidatePage(*state,148,149))return error;
-        } else if(state->unit_id()<0 || state->revision() || state->cursor() || state->next_cursor() || state->total() || (state->rows() && state->rows()->size()))return "invalid worker selection receipt";
-      } else if(state->profile_revision() || state->revision() || state->cursor() || state->next_cursor() || state->total() || state->unit_id()!=-1 ||
+        } else if(state->operation()<FarmOperation::WorkerSelect || state->operation()>FarmOperation::WorkerSpecialize || state->unit_id()<0 || state->revision() || state->cursor() || state->next_cursor() || state->total() || (state->rows() && state->rows()->size()))return "invalid worker selection receipt";
+      } else if(state->assigned() || state->operation()!=FarmOperation::Crop || state->profile_revision() || state->revision() || state->cursor() || state->next_cursor() || state->total() || state->unit_id()!=-1 ||
                 (state->permitted_workers() && state->permitted_workers()->size()) || (state->rows() && state->rows()->size()))return "unconfirmed worker authority";
     } else if(const auto* state=p->building_header()) {
       if(p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||

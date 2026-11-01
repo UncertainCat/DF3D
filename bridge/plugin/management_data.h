@@ -134,7 +134,13 @@ struct BuildingHeaderState {
   df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
   df3d::mirror::FarmOperation operation=df3d::mirror::FarmOperation::Crop;
 };
+struct WorkshopAssignedWorker {
+  int32_t id=-1;std::string caption;
+  bool specializationVisible=false,canSpecialize=false,specialized=false;
+};
 struct WorkshopWorkersState {
+  std::optional<WorkshopAssignedWorker> assigned;
+  df3d::mirror::FarmOperation operation=df3d::mirror::FarmOperation::Crop;
   int32_t buildingId=-1,unitId=-1;
   uint64_t profileRevision=0,revision=0;
   uint32_t cursor=0,nextCursor=0,total=0;

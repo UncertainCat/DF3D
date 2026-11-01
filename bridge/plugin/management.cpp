@@ -3410,7 +3410,8 @@ void run(color_ostream& out) {
       if(!rows)return luaL_error(state,"Native creature work-animal list unavailable");
       lua_newtable(state);int index=0;
       for(const auto& row:*rows){lua_newtable(state);field(state,"id",row.id);field(state,"caption",row.caption);
-        field(state,"assigned",row.assigned?1:0);field(state,"owner_id",row.ownerId);lua_rawseti(state,-2,++index);}
+        field(state,"assigned",row.assigned?1:0);field(state,"owner_id",row.ownerId);
+        field(state,"x",row.position.x);field(state,"y",row.position.y);field(state,"z",row.position.z);lua_rawseti(state,-2,++index);}
       return 1;
     });lua_setfield(L,-2,"work_animal_list");
     lua_pushcfunction(L,[](lua_State* state)->int {

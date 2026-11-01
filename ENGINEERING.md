@@ -3261,7 +3261,7 @@ method. Section22 now receives native IDs/order/captions and building type,
 subtype, custom code and coordinates through an owned Lua callback, replacing
 its reconstructed workshop/furnace traversal. Existing section truncation limits
 remain explicit. Section24 now uses the same native collector in Work animals
-mode, described below; assignment/removal and recenter remain required work.
+mode, described below; assignment/removal remain required work.
 
 Protected104754 on2026-11-01 confirms the actual main-scene creature-info
 transport for dedicated workshop3: exact native ID/order/caption and
@@ -3406,10 +3406,24 @@ GDScript name collisions. They are not rendered acceptance.
 
 Assignment input1b4d21..1b4e11 calls native relationship routines138c120,
 13918c0/1391970, create_nemesis and name updates. Exposing those effects and
-recenter is next; the visible assign/remove signal is not connected yet.
-Inspect routes to the existing creature sheet but has not been live exercised.
+assignment/removal is next; the visible assign/remove signal is not connected yet.
+Recenter and Inspect use the native position resolver1367430; Inspect also
+focuses the viewer camera before opening the animal sheet, matching native
+1b4b72..1b4d1c. Native menu/camera state is not a runtime input.
 Overflow, hover and unavailable-state rendering remain unverified. Public
 creature exposure stays gated.
+
+Protected121915 on2026-11-01 verifies both actual Work animals navigation buttons
+against native clicks for6545 at115,89,165. Recenter closes the creature panel;
+Inspect focuses the same destination and opens the animal's Overview. The old
+Labor request owner closes in both cases. The populated panel still matches
+all456x528 pixels. Owned DF39296 exits unsaved, source preservation passes, and
+three Godot processes have only the known startup notice. The animal fixture
+is restored. `work_animals_provider_reference.navigation_reference` records the
+native targets. Contained-animal navigation is traced through the native resolver,
+not live-covered here. Initial121533 caught missing diagnostic camera restoration
+after native Inspect.121729's client passed, but its completion acknowledgement
+exceeded the30s combined-lane limit; this multi-panel lane now allows60s.
 
 ### Creature Rooms native list
 

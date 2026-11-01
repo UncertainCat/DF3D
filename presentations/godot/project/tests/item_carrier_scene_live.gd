@@ -1509,5 +1509,24 @@ func exercise_work_animals(inspector,target:int) -> void:
 		check(int(inspector.creature_sheet.fact_value(animals[i],"assigned",-1))==(1 if i<animal_reference.assigned.size() else 0),"Native work animal assignment differs")
 	await health_tab(inspector,"Labor");await drain();await health_tab(inspector,"Work animals",true);await drain()
 	await labor_capture("animals")
+	var view=inspector.creature_sheet.labor_view
+	var camera_before:Vector3=scene.camera_rig.position
+	var level_before:int=world.get_top_z()
+	await pointer(view.get_global_transform_with_canvas()*view.workshop_button(0,0).get_center());await process_frame
+	var position:Array=animal_reference.recenter.target
+	check(not inspector.is_open() and inspector.labor.phase==inspector.labor.Phase.Closed,"Animal recenter retained creature owner")
+	check(is_equal_approx(scene.camera_rig.position.x,float(position[0])+0.5) and is_equal_approx(scene.camera_rig.position.z,float(position[1])+0.5) and world.get_top_z()==int(position[2]),"Animal recenter focused wrong native position")
+	world.set_top_z(level_before);scene.camera_rig.follow_level(level_before)
+	scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
+	inspector.open_target(Vector3i.ZERO,1,target);await drain()
+	await health_tab(inspector,"Labor");await drain();await health_tab(inspector,"Work animals",true);await drain()
+	view=inspector.creature_sheet.labor_view
+	await pointer(view.get_global_transform_with_canvas()*view.workshop_button(0,1).get_center());await drain()
+	check(inspector.is_open() and int(inspector.selected.kind)==1 and int(inspector.selected.id)==int(animal_reference.inspect.unit_id),"Animal inspect opened wrong creature")
+	check(inspector.labor.phase==inspector.labor.Phase.Closed,"Animal inspect retained Labor owner")
+	check(is_equal_approx(scene.camera_rig.position.x,float(position[0])+0.5) and is_equal_approx(scene.camera_rig.position.z,float(position[1])+0.5) and world.get_top_z()==int(position[2]),"Animal inspect did not focus native position")
+	world.set_top_z(level_before);scene.camera_rig.follow_level(level_before)
+	scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
+
 	var evidence:=FileAccess.open(directory+"/unit-labor-animals-wire.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"success":not failed,"rows":animals}));evidence.close()

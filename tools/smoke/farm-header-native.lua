@@ -192,7 +192,9 @@ local function selection_shot(name,while_waiting)
  -- Live contents refresh waits for two automatic semantic publications.
  local contents_refresh=name=='farm-item-carrier-unit-scene' and (os.getenv('DF3D_UNIT_ITEMS_REFRESH')=='1' or os.getenv('DF3D_UNIT_ITEMS_LIFECYCLE')=='1')
  local lifecycle=name=='farm-item-carrier-unit-scene' and (os.getenv('DF3D_UNIT_ITEMS_LIFECYCLE')=='1' or os.getenv('DF3D_UNIT_HEALTH_LIFECYCLE')=='1')
- local limit=dfhack.getTickCount()+(lifecycle and 85000 or (blink or contents_refresh) and 60000 or 30000)
+ -- Combined Labor visits multiple creature/zone sheets and waits for fresh receipts.
+ local labor_navigation=name=='farm-item-carrier-unit-scene' and os.getenv('DF3D_UNIT_LABOR_ANIMALS')=='1'
+ local limit=dfhack.getTickCount()+(lifecycle and 85000 or (blink or contents_refresh or labor_navigation) and 60000 or 30000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<limit,'selection capture timeout')
   if while_waiting then while_waiting()end

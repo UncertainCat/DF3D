@@ -186,6 +186,20 @@ if os.getenv('DF3D_UNIT_LABOR_ANIMALS')=='1'then
  assert(#data.available==1 and data.available[1]==animals[2].unit.id,'Native available animal fixture missing')
  for y=19,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then data.lines[#data.lines+1]={y=y,text=text}end end
  result.work_animals_fixture=data;capture('unit-labor-animals')
+ local window={df.global.window_x,df.global.window_y,df.global.window_z}
+ local animal=animals[1].unit;local x,y,z=dfhack.units.getPosition(animal)
+ click(804,286)
+ assert(not sheet.open and df.global.window_z==z,'Animal recenter did not close sheet/change level')
+ data.recenter={unit_id=animal.id,target={x,y,z},closed=true,window={df.global.window_x,df.global.window_y,df.global.window_z}}
+ capture('unit-labor-animal-recenter')
+ df.global.window_x=window[1];df.global.window_y=window[2];df.global.window_z=window[3]
+ sheet.open=true;view:render(dfhack.getTickCount())
+ click(828,286)
+ assert(sheet.open and sheet.active_id==animal.id,'Animal inspect did not select creature')
+ data.inspect={unit_id=sheet.active_id,target={x,y,z},window={df.global.window_x,df.global.window_y,df.global.window_z}};capture('unit-labor-animal-inspect')
+ df.global.window_x=window[1];df.global.window_y=window[2];df.global.window_z=window[3]
+ sheet.active_id=unit.id;view:render(dfhack.getTickCount());select('Labor',15,16);select('Work animals',17,20)
+
 end
 select('Overview',15,16)
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Labor capture advanced simulation')

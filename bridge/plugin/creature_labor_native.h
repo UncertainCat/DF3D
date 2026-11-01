@@ -290,6 +290,7 @@ inline std::optional<bool> laborEligible(df::unit* unit,const std::function<void
 }
 struct LaborAnimal {
     int32_t id=-1,ownerId=-1;
+    df::coord position{-30000,-30000,-30000};
     bool assigned=false;
     std::string caption;
 };
@@ -298,9 +299,21 @@ inline std::optional<std::vector<LaborAnimal>> laborAnimals(df::unit* unit) {
     static const bool supported=[] {
         if(!df3d_production::farmFunctions())return false;
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
-        uint64_t hash=UINT64_C(14695981039346656037);
-        for(size_t i=0;i<0x2ae;++i){hash^=base[0x47dfc0+i];hash*=UINT64_C(1099511628211);}
-        return hash==UINT64_C(0xe5aeb067816dc769);
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x47dfc0,0x2ae,UINT64_C(0xe5aeb067816dc769)},
+            {0x1367430,0xc6,UINT64_C(0xc0292be8a6dacf2c)},
+            {0xc8be10,0x14c,UINT64_C(0x1ba19b485a3fa56b)},
+            {0xc8baa0,0x11a,UINT64_C(0x2c62fce4a0555c66)},
+            {0xedfa60,0xbd,UINT64_C(0x2f89116df6b958cc)},
+            {0xedfb20,0x13,UINT64_C(0xa222e60f2f8301e4)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
     }();
     if(!supported)return std::nullopt;
     struct Context {
@@ -324,6 +337,8 @@ inline std::optional<std::vector<LaborAnimal>> laborAnimals(df::unit* unit) {
             auto* animal=df::unit::find(id);if(!animal)return std::nullopt;
             LaborAnimal row;row.id=id;row.assigned=list==&context.assignedAnimals;
             row.ownerId=animal->relationship_ids[df::unit_relationship_type::PetOwner];
+            // Native Work animals recenter1b4af6 resolves containment here.
+            reinterpret_cast<void (*)(df::unit*,int16_t*,int16_t*,int16_t*)>(base+0x1367430)(animal,&row.position.x,&row.position.y,&row.position.z);
             // Native renderer175e56 calls this formatter with sex/training suffixes.
             df3d_area::staffOrderingFunctions().name(animal,&row.caption,true);
             rows.push_back(std::move(row));

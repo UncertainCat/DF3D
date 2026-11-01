@@ -669,6 +669,7 @@ return function(request)
    if i>256 then s.truncated=true;result.complete=false;break end
    local r=record(s,v.id,v.caption,v.owner_id)
    fact(s,r,'animal_id',v.id);fact(s,r,'owner_id',v.owner_id);fact(s,r,'assigned',v.assigned)
+   fact(s,r,'x',v.x);fact(s,r,'y',v.y);fact(s,r,'z',v.z)
   end
  end)
  return result

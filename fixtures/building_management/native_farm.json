@@ -59422,14 +59422,48 @@
         "ids_order_assignment_match": true,
         "fixture_restored": true,
         "source_save_unchanged": true,
-        "scope": "Owned native collector, names and assigned/available state through main scene; populated Work animals rendered body exactly matches native. Assignment/removal and recenter unfinished; inspect routed but not live exercised; overflow/hover unavailable-state rendering unverified.",
+        "scope": "Owned native collector and native panel; assignment/removal unfinished, overflow/hover unavailable-state rendering unverified. Navigation accepted separately.",
         "native_panel_pixels_match": true,
         "rectangle": [
           432,
           208,
           456,
           528
-        ]
+        ],
+        "navigation_reference": {
+          "source": "build/stockpile-storage-native-farm-discovery-20261101-121915",
+          "recenter": {
+            "closed": true,
+            "target": [
+              115,
+              89,
+              165
+            ],
+            "unit_id": 6545,
+            "window": [
+              103,
+              81,
+              165
+            ]
+          },
+          "inspect": {
+            "target": [
+              115,
+              89,
+              165
+            ],
+            "unit_id": 6545,
+            "window": [
+              110,
+              81,
+              165
+            ]
+          },
+          "actual_buttons": true,
+          "old_labor_owner_retired": true,
+          "source_save_unchanged": true,
+          "fixture_restored": true
+        }
       }
     },
     "unit_rooms_reference": {

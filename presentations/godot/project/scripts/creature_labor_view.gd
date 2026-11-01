@@ -7,6 +7,7 @@ var locations:=false
 var animals:=false
 var world_source
 signal animal_assignment_requested(row:Dictionary)
+signal animal_inspect_requested(row:Dictionary)
 signal location_requested(row: Dictionary)
 signal location_remove_requested(row: Dictionary)
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
@@ -205,5 +206,6 @@ func animal_input(event:InputEventMouseButton) -> void:
  var index:=display_first()+floori((event.position.y-row_offset())/36)
  if index<display_first() or index>=mini(rows.size(),display_first()+capacity()):return
  var row:Dictionary=rows[index]
- if workshop_button(index,1).has_point(event.position):accept_event();inspect_requested.emit(1,row.id)
+ if workshop_button(index,0).has_point(event.position) and row.tile.x!=-30000:accept_event();focus_requested.emit(row.tile)
+ elif workshop_button(index,1).has_point(event.position) and row.tile.x!=-30000:accept_event();animal_inspect_requested.emit(row.duplicate(true))
  elif workshop_button(index,2).has_point(event.position):accept_event();animal_assignment_requested.emit(row.duplicate(true))

@@ -93,6 +93,7 @@
 #include "creature_health_native.h"
 #include "creature_health_pages_native.h"
 #include "creature_skills_native.h"
+#include "skills_caption_native.h"
 #include "knowledge_detail_native.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
@@ -1717,6 +1718,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           const auto append=[&](const char* key,const auto& rows){result[key]=Json::Value(Json::arrayValue);for(auto v:rows)result[key].append(v);};
           append("skills",value->skills);append("values",value->values);append("rust_values",value->rustValues);
           append("knowledge_types",value->knowledgeTypes);append("knowledge_ids",value->knowledgeIds);append("knowledge_bits",value->knowledgeBits);
+          if(!df3d_creature::skillsCaptionReady())return CR_FAILURE;
+          auto* source=df::unit::find(id);result["captions"]=Json::Value(Json::arrayValue);
+          for(size_t i=0;i<value->skills.size();++i)result["captions"].append(DF2UTF(df3d_creature::nativeSkillCaption(value->skills[i],value->values[i],source->race,source->caste)));
+          for(size_t i=0;i<value->knowledgeTypes.size();++i)result["captions"].append(DF2UTF(df3d_creature::nativeKnowledgeCaption(value->knowledgeTypes[i],value->knowledgeIds[i],value->knowledgeBits[i])));
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="unit-health-page-probe") {

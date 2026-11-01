@@ -3357,6 +3357,21 @@ unsaved with source preservation and only known Godot startup notices.
 other subjects, identities, styles and transitive art/event storage remain separate
 coverage requirements.
 
+`skills_caption_native.h` adds diagnostic primary row captions. Native7737c0
+formats the rank;774730 selects the skill noun using explicit race/caste and
+read-only raw-name helpers30cea0/30cf70. Knowledge topics use an owned scholarly
+reference with native short-name formatter ef8fb0; art forms use native translated
+names, written works use their titles or native Untitled, and52d650 applies native
+capitalization. Pins include the complete leaf dispatch tables. These helpers
+write owned output strings, never native UI buffers.
+
+Protected044455 compares all79 primary captions with actual rendered native rows,
+scrolling through all five pages:18 Labor,4 Combat,9 Social,3 Other and45 Knowledge.
+Existing source/UI/random guards remain unchanged. DF39212 exits unsaved with
+source preservation and only known Godot startup notices. `caption_reference`
+retains captions and observed rows. This does not establish secondary category
+labels, rust/hover/artwork, every race/caste, production transport or Godot parity.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

@@ -59,6 +59,19 @@ local function observe(name)
    page.probe=json.decode(text);page.probe_guards_unchanged=true;page.cold_source_cache_preserved=true
    for _,field in ipairs{'skills','values','rust_values','knowledge_types','knowledge_ids','knowledge_bits'}do assert(json.encode(page[field])==json.encode(page.probe[field]),'Skills probe differs: '..name..' '..field)end
   end
+  if page.probe and os.getenv('DF3D_UNIT_SKILLS_CAPTIONS')=='1'then
+   local captions=page.probe.captions;local count=#captions;page.caption_rows={}
+   for start=0,count-1,14 do
+    local first=math.max(0,math.min(start,count-14));sheet.scroll_position_unit_skill=first;view:render(dfhack.getTickCount())
+    for index=first,math.min(first+13,count-1)do
+     local text=dfhack.df2utf(row(20+3*(index-first))):gsub('^%s+',''):gsub('%s+$','')
+     local caption=captions[index+1]
+     assert(caption~='' and text:find(caption,1,true),'Native Skills caption differs: '..name..' row '..index..' expected '..caption..' visible '..text)
+     page.caption_rows[index+1]=text
+    end
+   end
+   sheet.scroll_position_unit_skill=page.first;view:render(dfhack.getTickCount())
+  end
   for y=17,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then page.lines[#page.lines+1]={y=y,text=text}end end
  return page
 end

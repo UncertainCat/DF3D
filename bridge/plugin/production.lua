@@ -55,7 +55,7 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements)
+local function recipes(b,native_requirements,native_caption)
  local out,keys={},{}
  local k=kind(b)
  -- Reuse pinned builtin templates only for validated initial families.
@@ -64,7 +64,7 @@ local function recipes(b,native_requirements)
   for _,entry in ipairs(source or {}) do
    local fields=utils.clone(entry.job_fields,true)
    if k=='Carpenters' then fields.material_category={wood=true} end
-   out[#out+1]={key='builtin:'..fields.job_type..':'..(fields.mat_type or -1),name=utf(entry.name),fields=fields}
+   out[#out+1]={key='builtin:'..fields.job_type..':'..(fields.mat_type or -1),fields=fields}
   end
  end
  -- Reactions use native filters, including containers, and current civilization permissions.
@@ -77,7 +77,7 @@ local function recipes(b,native_requirements)
     local matches=false
     for i,t in ipairs(r.building.type) do if t==b:getType() and r.building.subtype[i]==b:getSubtype() and (r.building.custom[i]==-1 or r.building.custom[i]==b:getCustomType()) then matches=true end end
     if matches and not r.flags.FUEL and #r.reagents<=16 then
-     out[#out+1]={key='reaction:'..r.code,name=utf(r.name),reaction=r}
+     out[#out+1]={key='reaction:'..r.code,reaction=r}
     end
    end
   end
@@ -87,10 +87,10 @@ local function recipes(b,native_requirements)
   keys[r.key]=true
   local j,err=template_job(r,b,native_requirements)
   if not j then return nil,'Unsupported native recipe: '..err end
-  local good,description=pcall(requirements,j)
+  local good,description,caption=pcall(function()return requirements(j),utf(native_caption(j))end)
   delete_template(j)
   if not good then return nil,'Native input description failed: '..tostring(description) end
-  r.requirements=description
+  r.requirements=description;r.name=caption
  end
  table.sort(out,function(a,c)return a.key<c.key end)
  if #out>128 then return nil,'Recipe catalog exceeds bounded 128 entries' end
@@ -152,7 +152,7 @@ local function farm_state(b,result)
  result.detail='Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.'
  return true
 end
-local function inspect(b,rs)
+local function inspect(b,rs,native_caption)
  local result={ok=true,message='Production inspected',buildings={info(b)},selected_building=b.id,
   recipes={},production_jobs={},crops={},seasonal_crops={},current_season=-1}
  if kind(b)=='FarmPlot' then local ok,err=farm_state(b,result);if not ok then return fail(err) end;return result end
@@ -161,7 +161,7 @@ local function inspect(b,rs)
  for _,j in ipairs(b.jobs) do
   local worker=J.getWorker(j)
   local status=j.flags.suspend and 'Suspended by native state' or (worker and 'Worker assigned' or 'Awaiting worker or inputs; native cause is not exposed')
-  result.production_jobs[#result.production_jobs+1]={id=j.id,name=utf(J.getName(j)),job_type=j.job_type,
+  result.production_jobs[#result.production_jobs+1]={id=j.id,name=utf(native_caption(j)),job_type=j.job_type,
    repeat_job=j.flags['repeat'],suspended=j.flags.suspend,worker_id=worker and worker.id or -1,
    worker_name=worker and utf(dfhack.units.getReadableName(worker)) or '',completion_timer=j.completion_timer,
    attached_items=#j.items,editable=editable(j,rs),status=status,requirements=requirements(j)}
@@ -208,8 +208,8 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements);if not rs then return fail(err) end
- if request.action==16 then return inspect(b,rs) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption);if not rs then return fail(err) end
+ if request.action==16 then return inspect(b,rs,request.workshop_caption) end
  if b:getBuildStage()~=b:getMaxBuildStage() then return fail('Building construction is unfinished') end
  local created=-1
  if request.action==17 then
@@ -245,5 +245,5 @@ return function(request)
    end
   end
  else return fail('Unsupported production action') end
- local result=inspect(b,rs);result.created_job=created;result.message='Native production change applied';return result
+ local result=inspect(b,rs,request.workshop_caption);result.created_job=created;result.message='Native production change applied';return result
 end

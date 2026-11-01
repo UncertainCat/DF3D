@@ -3740,6 +3740,12 @@ void run(color_ostream& out) {
         return luaL_error(state,"Native workshop requirements unavailable");
       return 0;
     });lua_setfield(L,-2,"workshop_requirements");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto* job=Lua::GetDFObject<df::job>(state,1);
+      const auto caption=job?df3d_production::workshopJobCaption(*job):std::nullopt;
+      if(!caption)return luaL_error(state,"Native workshop caption unavailable");
+      lua_pushlstring(state,caption->data(),caption->size());return 1;
+    });lua_setfield(L,-2,"workshop_caption");
     lua_newtable(L);field(L,"building_id",p->building_id());field(L,"job_id",p->job_id());field(L,"recipe",p->recipe()?p->recipe()->str():"");field(L,"query",p->query()?p->query()->str():"");field(L,"cursor",p->cursor());field(L,"repeat_job",p->repeat());field(L,"suspend",p->suspend());field(L,"cancel",p->cancel());field(L,"season",p->season());field(L,"crop_id",p->crop_id());lua_setfield(L,-2,"production");
   }
   if(const auto* w=r->work_order()) {

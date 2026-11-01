@@ -2097,6 +2097,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(fields(*owned.job_items.elements[i])!=fields(*source->job_items.elements[i]))equal=false;
           Json::Value result(Json::objectValue);result["equal"]=equal;
           result["requirements"]=Json::UInt(owned.job_items.elements.size());
+          const auto caption=df3d_production::workshopJobCaption(owned);if(!caption)return CR_FAILURE;
+          result["caption"]=DF2UTF(*caption);
           out.print("{}",Json::FastWriter().write(result));return equal?CR_OK:CR_FAILURE;
         }
         if(parameters[0]=="farm-contents-read") {

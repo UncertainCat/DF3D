@@ -245,5 +245,13 @@
     "Only Make bed native input requirements compared; other jobs and reactions remain unverified.",
     "Catalog choices, ordering and visible requirement descriptions still need native replacement.",
     "No DF3D workshop panel or typed production transport acceptance."
-  ]
+  ],
+  "caption_reference": {
+    "reference_run": "build/stockpile-storage-native-farm-discovery-20261101-145155",
+    "plugin_sha256": "67361eb29a38100e06f78f700b318b2355f607342bd1c3a34941a5cdb47affbf",
+    "native_visible_choice": "Make bed",
+    "semantic_caption": "Make bed",
+    "requirement_comparison_still_equal": true,
+    "source_save_unchanged": true
+  }
 }

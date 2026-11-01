@@ -119,7 +119,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption=function(j)return 'Native task '..j.job_type end}
 end
 local list=req(15,{cursor=0,query='#0'})
 assert(list.ok and #list.buildings==1 and list.buildings[1].id==0,'ID zero and numeric search')
@@ -182,7 +182,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption=function(j)return 'Native task '..j.job_type end}
 end
 local function refusal(action,p,message)
  local result=req(action,p)
@@ -279,7 +279,7 @@ need=req(16,{building_id=2}).recipes[1].requirements[1]
 assert(need.description=='native brew reagent' and need.quantity==3 and need.item_type==5)
 -- Reproduce the real Kitchen template; NONE requirement prose is a 06-B native gap.
 local kitchen_state=req(16,{building_id=1})
-assert(kitchen_state.recipes[1].key=='builtin:114:2' and kitchen_state.recipes[1].name=='prepare easy meal')
+assert(kitchen_state.recipes[1].key=='builtin:114:2' and kitchen_state.recipes[1].name=='Native task 114')
 local descriptions={'NONE, unrotten, cookable, solid','NONE, unrotten, cookable'}
 for i,need in ipairs(kitchen_state.recipes[1].requirements)do
  assert(need.description==descriptions[i] and need.quantity==1 and need.item_type==-1)

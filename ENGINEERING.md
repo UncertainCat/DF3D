@@ -6469,6 +6469,16 @@ its new-button constructor `8b1600` calls `7c5880`, which registers each button
 in those vectors. Neither is a permitted runtime API. Carpenter composition is
 inline at `8c762d..8c7ad1`; the shared reaction/category tail is `8c3fe0`.
 Native job captions delegate from `8c2310` to semantic formatter `d032b0`.
+`workshopJobCaption` calls that formatter directly with scalar job fields,
+owned reaction/output strings and no live-job pointer, matching the picker.
+It preserves random streams and the historical-material cache. Production
+recipe and queued-job captions use this callback; builtin table captions and
+raw reaction names no longer supply their visible names. Protected145155
+verifies the Make bed caption against the native picker and retains the
+requirement comparison, unsaved exit and source preservation. All three Godot
+logs have only the classified startup notice and no Unicode errors. The
+fixture's `caption_reference` scopes this evidence to that task; other task
+names and the typed production path remain unverified.
 
 `workshop_job_native.h` exposes the separate input-requirement builder `d09ca0`,
 called by the native task action through `d09b70`. The production adapter now

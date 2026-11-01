@@ -3328,7 +3328,25 @@ and translated location name The White Temple match the native capture.
 unsaved, source preservation passes, and three Godot processes report only the
 known startup notice. Initial111945 exposed an incorrect native lookup argument
 and is excluded; the corrected call takes world_site rather than plotinfo.
-The native Locations row controls and their actions remain unfinished.
+The Locations view now uses the shared Labor scope/scroll owner, native
+two-line occupation/location captions, location artwork and button layout.
+Removal visibility follows renderer1752cc's role switch and native138ed20;
+mercenaries/monster slayers bypass that predicate, unused role6 has no button.
+These semantic facts come from the bridge, not reconstructed viewer eligibility.
+Open/remove signals are staged and are not yet connected to actions.
+
+Protected113357 on2026-11-01 matches the populated performer panel's456x528
+pixels exactly and restores the original creature. Owned DF19128 exits unsaved;
+source preservation passes and all three Godot processes have only the known
+startup notice. `location_panel_reference` records rendering acceptance only.
+The native picture frame starts one character cell after the icon origin;
+initial112618 exposed that offset. Runs112807/113009 matched Locations pixels
+but failed later Customize/Combat checks after the cross-creature visit; their
+cause remains unresolved. The accepted run executes the existing header/history
+workflow before Locations and does not establish that reverse sequence.
+Run113221 additionally exposed a test error: detail.complete describes bounded
+record coverage, not whether loading settled. Restoration now checks identity
+and loading. Navigation, removal, overflow and hover remain unfinished.
 
 ### Creature Rooms native list
 

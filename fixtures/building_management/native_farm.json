@@ -59290,6 +59290,26 @@
         "native_identity_role_and_location_name_match": true,
         "source_save_unchanged": true,
         "scope": "Creature inspection transport, not visible Locations controls"
+      },
+      "location_panel_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-113357",
+        "native_pixels_match": true,
+        "rectangle": [
+          432,
+          208,
+          456,
+          528
+        ],
+        "native_removal_eligibility": true,
+        "unit_id": 6136,
+        "occupation_id": 93,
+        "source_save_unchanged": true,
+        "unfinished": [
+          "open location action",
+          "remove action",
+          "overflow and hover",
+          "header/history workflow after switching creatures (112807/113009 failures; cause unresolved)"
+        ]
       }
     },
     "unit_rooms_reference": {

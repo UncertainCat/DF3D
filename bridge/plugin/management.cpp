@@ -3375,7 +3375,8 @@ void run(color_ostream& out) {
       lua_newtable(state);int index=0;
       for(const auto& row:*rows){lua_newtable(state);field(state,"id",row.id);field(state,"type",row.type);
         field(state,"site_id",row.siteId);field(state,"location_id",row.locationId);field(state,"location_type",row.locationType);
-        field(state,"tier",row.tier);field(state,"role",row.role);field(state,"name",row.name);lua_rawseti(state,-2,++index);}
+        field(state,"tier",row.tier);field(state,"role",row.role);field(state,"name",row.name);
+        field(state,"removable",row.removable?1:0);lua_rawseti(state,-2,++index);}
       return 1;
     });lua_setfield(L,-2,"location_list");
     lua_pushcfunction(L,[](lua_State* state)->int {

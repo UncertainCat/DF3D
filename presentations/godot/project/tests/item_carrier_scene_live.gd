@@ -146,9 +146,17 @@ func exercise_labor_locations(inspector,target: int) -> void:
 		check(int(rows[0].id)==int(reference.occupations[0].id),"Location occupation identity differs")
 		check(rows[0].name==str(reference.lines[1].text).strip_edges(),"Native occupation caption differs")
 		check(inspector.creature_sheet.fact_value(rows[0],"location_name","")==str(reference.lines[2].text).strip_edges(),"Native location name differs")
+	await health_tab(inspector,"Labor");await drain();await health_tab(inspector,"Locations",true);await drain()
+	await labor_capture("location-assigned")
 	var file:=FileAccess.open(directory+"/unit-labor-locations-wire.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"unit_id":actor,"rows":rows}));file.close()
 	inspector.open_target(Vector3i.ZERO,1,target);await drain()
+	deadline=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01);await process_frame
+		var restored:Dictionary=inspector.creature_display.get("detail",{})
+		if int(restored.get("unit_id",-1))==target and not world.creature_info_state(target).get("loading",false):return
+	check(false,"Locations workflow did not restore the original creature detail")
 func result_filename() -> String:return "carrier-scene-result.json"
 func exercise(expected: Dictionary) -> void:
 	if int(expected.snapshot.carrier.kind)==2:
@@ -362,7 +370,6 @@ func unit_carrier(expected: Dictionary) -> void:
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
 	if OS.get_environment("DF3D_UNIT_ROOMS_VIEW")=="1":await exercise_rooms_view(inspector)
-	if OS.get_environment("DF3D_UNIT_LABOR_LOCATIONS")=="1":await exercise_labor_locations(inspector,target)
 	if OS.get_environment("DF3D_UNIT_LABOR_WIRE")=="1":
 		await exercise_labor_wire(target)
 		if failed:return
@@ -409,6 +416,9 @@ func unit_carrier(expected: Dictionary) -> void:
 	await exercise_history(inspector,source,int(expected.snapshot.id),target)
 	if OS.get_environment("DF3D_UNIT_HEALTH_LIFECYCLE")=="1":await exercise_items_lifecycle(inspector,target,true)
 	elif OS.get_environment("DF3D_UNIT_ITEMS_LIFECYCLE")=="1":await exercise_items_lifecycle(inspector,target)
+	if OS.get_environment("DF3D_UNIT_LABOR_LOCATIONS")=="1":
+		await exercise_labor_locations(inspector,target)
+		inspector.close_panel();await process_frame
 	exercised=true
 
 func health_tab(inspector,title: String,nested:=false) -> bool:

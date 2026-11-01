@@ -11,6 +11,7 @@ namespace df3d_creature {
 struct LaborLocation {
     int32_t id=-1,type=-1,siteId=-1,locationId=-1,locationType=-1,tier=-1;
     std::string role,name;
+    bool removable=false;
 };
 inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) {
     static const bool supported=[] {
@@ -23,6 +24,9 @@ inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) 
             {0x17496c,0x2d1,UINT64_C(0xe8556955319c4255)},
             {0x174c3d,0xd9,UINT64_C(0xf047015836ce3169)},
             {0xa946e0,0x7c2,UINT64_C(0xdbc3db5f052419ee)},
+            {0x138ed20,0xff,UINT64_C(0x430951f9f3e403c2)},
+            {0x1752cc,0x68,UINT64_C(0xd7b528da9895a0f2)},
+            {0x19f47c,0x2c,UINT64_C(0x8a9ffc4374c47f93)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -44,6 +48,8 @@ inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) 
         if(!occupation)return std::nullopt;
         LaborLocation row;row.id=occupation->id;row.type=int32_t(occupation->type);
         row.siteId=occupation->site_id;row.locationId=occupation->location_id;
+        if(row.type>=0 && row.type<=10 && row.type!=6)
+            row.removable=row.type==3 || row.type==4 || reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(unit);
         if(row.type>=0 && row.type<11 && captions[row.type])row.role=reinterpret_cast<const char*>(base+captions[row.type]);
         if(row.locationId>=0 && row.siteId==site->id) {
             auto* place=reinterpret_cast<df::abstract_building* (*)(df::world_site*,int32_t)>(base+0x67e80)(site,row.locationId);

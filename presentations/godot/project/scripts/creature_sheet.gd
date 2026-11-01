@@ -364,7 +364,7 @@ func render(controller, state: Dictionary):
  var y:=96.0
  for names in recipe.rows: y=tabs_at(names,y)
  if recipe.subtabs.has(tab): y=tabs_at(recipe.subtabs[tab].keys(),y,true)
- if tab=="Labor" and subtabs.get(tab) in ["Work details","Workshops"]:
+ if tab=="Labor" and subtabs.get(tab) in ["Work details","Workshops","Locations"]:
   scroll=null
   if not is_instance_valid(labor_view):
    labor_view=preload("res://scripts/creature_labor_view.gd").new()
@@ -382,6 +382,14 @@ func render(controller, state: Dictionary):
      "custom_code":str(fact_value(record,"custom_code","")),"revision":int(fact_value(record,"assignment_revision",0)),
      "tile":Vector3i(int(fact_value(record,"x",-1)),int(fact_value(record,"y",-1)),int(fact_value(record,"z",-1)))})
    labor_view.present_workshops(owner.labor,workshop_rows)
+  elif subtabs.get(tab)=="Locations":
+   var location_rows:Array=[]
+   for record in records_for("locations"):
+    location_rows.append({"id":int(record.id),"role":str(record.name),
+     "site_id":int(fact_value(record,"site_id",-1)),"location_id":int(fact_value(record,"location_id",-1)),
+     "type":int(fact_value(record,"location_type",-1)),"tier":int(fact_value(record,"location_tier",-1)),
+     "name":str(fact_value(record,"location_name","")),"removable":int(fact_value(record,"removable",0))==1})
+   labor_view.present_locations(owner.labor,location_rows)
   else:labor_view.present_labor(owner.labor)
   return
  if is_instance_valid(labor_view):labor_view.hide()

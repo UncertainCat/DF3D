@@ -3,14 +3,19 @@ const Icons=preload("res://scripts/location_staff_indicators.gd").WORK_DETAILS
 var state
 signal focus_requested(tile: Vector3i)
 var workshops:=false
+var locations:=false
+signal location_requested(row: Dictionary)
+signal location_remove_requested(row: Dictionary)
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 func configure(world) -> void:
  super.configure(world);picture.configure(world)
 func present_labor(model) -> void:
- workshops=false;state=model;rows=model.rows if model.citizen.get("eligible",false) else [];layout()
+ locations=false;workshops=false;state=model;rows=model.rows if model.citizen.get("eligible",false) else [];layout()
 func present_workshops(model,values: Array) -> void:
- workshops=true;state=model;rows=values;layout()
-func row_offset() -> int:return 0 if workshops and state!=null and not state.citizen.get("eligible",false) else 36
+ locations=false;workshops=true;state=model;rows=values;layout()
+func present_locations(model,values: Array) -> void:
+ locations=true;workshops=false;state=model;rows=values;layout()
+func row_offset() -> int:return 0 if (workshops or locations) and state!=null and not state.citizen.get("eligible",false) else 36
 func capacity() -> int:return maxi(0,int((size.y-row_offset()-12)/36))
 func layout() -> void:
  super.layout();scrollbar.position.y=row_offset()
@@ -19,6 +24,8 @@ func scope_rect() -> Rect2:return Rect2(8,0,32,36)
 func _draw() -> void:
  if state==null or theme==null or theme.default_font==null:return
  if state.citizen.is_empty():return
+ if locations:
+  draw_locations();return
  if workshops:
   draw_workshops();return
  if not state.citizen.get("eligible",false):
@@ -47,6 +54,8 @@ func _draw() -> void:
   if checkbox!=null:draw_texture_rect(checkbox,check_rect(index),false)
 func _gui_input(event: InputEvent) -> void:
  if not allowed() or state==null or not event is InputEventMouseButton or not event.pressed:return
+ if locations:
+  location_input(event);return
  if workshops:
   workshop_input(event);return
  if not state.citizen.get("eligible",false):return
@@ -65,11 +74,15 @@ func workshop_button(index: int,button: int) -> Rect2:
  var right:=size.x-(32 if scrollbar.visible else 16)
  return Rect2(right-[88,64,32][button],row_offset()+(index-display_first())*36,32 if button==2 else 24,36)
 func draw_workshops() -> void:
+ draw_scope()
+ draw_workshop_rows()
+func draw_scope() -> void:
  if state.citizen.get("eligible",false):
   var assigned: bool=state.citizen.only_assigned_jobs
   var scope: Texture2D=art.texture("WORKER_ONLY_DO_ASSIGNED_JOBS" if assigned else "WORKER_DO_ANY_AVAILABLE_JOB")
   if scope!=null:draw_texture_rect(scope,scope_rect(),false)
   draw_text("Will only do assigned tasks" if assigned else "Will do available tasks anywhere",Vector2(64,24),71)
+func draw_workshop_rows() -> void:
  if rows.is_empty():
   draw_text("No dedicated workshop assignments",Vector2(8,row_offset()+24),71);return
  var columns:=int((size.x-(32 if scrollbar.visible else 16))/8)
@@ -108,3 +121,41 @@ func workshop_input(event: InputEventMouseButton) -> void:
   elif button==1:inspect_requested.emit(3,row.id)
   else:state.remove_workshop(row.id,row.revision)
   return
+
+func draw_locations() -> void:
+ draw_scope()
+ if rows.is_empty():
+  draw_text("No location assignments",Vector2(8,row_offset()+24),71);return
+ var columns:=int((size.x-(32 if scrollbar.visible else 16))/8)
+ for index in range(display_first(),mini(rows.size(),display_first()+capacity())):
+  var row:Dictionary=rows[index];var top:=Vector2(8,row_offset()+(index-display_first())*36)
+  patch(top,columns)
+  var box:Texture2D=picture.texture(false)
+  if box!=null:
+   for y in 3:
+    for x in 5:
+     draw_texture_rect_region(box,Rect2(top+Vector2(8+x*8,y*12),Vector2(8,12)),Rect2(0 if x==0 else 16 if x==4 else 8,y*12,8,12))
+  var token:String={8:"ZONE_TAVERN",9:"ZONE_LIBRARY",13:"ZONE_HOSPITAL"}.get(row.type,"")
+  if row.type==2:token="ZONE_TEMPLE" if row.tier==1 else "ZONE_TEMPLE_COMPLEX" if row.tier==2 else "ZONE_SHRINE"
+  if row.type==11:token="ZONE_GUILDHALL" if row.tier==1 else "ZONE_GRAND_GUILDHALL" if row.tier==2 else "ZONE_MEETING"
+  var icon:Texture2D=art.texture(token) if not token.is_empty() else null
+  if icon!=null:draw_texture_rect(icon,Rect2(top+Vector2(2,2),Vector2(32,32)),false)
+  draw_text(clipped(row.role,columns-17),top+Vector2(56,24),71)
+  draw_text(clipped(row.name,columns-17),top+Vector2(56,36),71)
+  for button in [1,2]:
+   if (button==1 and row.type<0) or (button==2 and not row.removable):continue
+   var texture:Texture2D=art.texture("STOCKS_RECENTER" if button==1 else "BUILDING_SHEET_CLEAR_WORKER")
+   if texture!=null:draw_texture_rect(texture,workshop_button(index,button),false)
+func location_input(event:InputEventMouseButton) -> void:
+ if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+  if rows.size()>capacity() and event.position.y>=row_offset() and event.position.y<row_offset()+capacity()*36:
+   scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(capacity() if event.shift_pressed else 1));accept_event()
+  return
+ if event.button_index!=MOUSE_BUTTON_LEFT:return
+ if scope_rect().has_point(event.position) and state.citizen.get("eligible",false):
+  accept_event();state.set_scope(not state.citizen.only_assigned_jobs);return
+ var index:=display_first()+floori((event.position.y-row_offset())/36)
+ if index<display_first() or index>=mini(rows.size(),display_first()+capacity()):return
+ var row:Dictionary=rows[index]
+ if row.type>=0 and workshop_button(index,1).has_point(event.position):accept_event();location_requested.emit(row.duplicate(true))
+ elif row.removable and workshop_button(index,2).has_point(event.position):accept_event();location_remove_requested.emit(row.duplicate(true))

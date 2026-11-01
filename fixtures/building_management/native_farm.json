@@ -63282,6 +63282,286 @@
             "guards_unchanged": true
           }
         ]
+      },
+      "written_cases_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-044000",
+        "df_pid": 33236,
+        "status": "passed_with_known_issues",
+        "source_preservation": "Owned source unchanged; owned DF exited unsaved",
+        "diagnostics": "skills-diagnostics.json: three Godot processes, known startup notices only",
+        "scope": "Thirty controlled comparisons on content302: untitled, author -1, unresolved author, selected creature author, all26 written-content type prefixes with form -1. Exact text and unchanged guards. Original fields restored. Does not cover all subject refs, identities, styles or art graphs.",
+        "cases": [
+          {
+            "case": "untitled",
+            "id": 302,
+            "characters": 181,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]This is an untitled manual, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "no-author",
+            "id": 302,
+            "characters": 162,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a manual.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "missing-author",
+            "id": 302,
+            "characters": 162,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a manual.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "selected-author",
+            "id": 302,
+            "characters": 194,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a manual, authored by Stodir Tangakurvad.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-0-missing-form",
+            "id": 302,
+            "characters": 190,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a manual, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-1-missing-form",
+            "id": 302,
+            "characters": 189,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a guide, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-2-missing-form",
+            "id": 302,
+            "characters": 207,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a chronicle, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, this is a terrible compilation of information.  "
+            ]
+          },
+          {
+            "case": "type-3-missing-form",
+            "id": 302,
+            "characters": 195,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a short story, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-4-missing-form",
+            "id": 302,
+            "characters": 189,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a novel, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-5-missing-form",
+            "id": 302,
+            "characters": 193,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a biography, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-6-missing-form",
+            "id": 302,
+            "characters": 198,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is an autobiography, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-7-missing-form",
+            "id": 302,
+            "characters": 185,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a poem, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the poetry is very, very bad.  "
+            ]
+          },
+          {
+            "case": "type-8-missing-form",
+            "id": 302,
+            "characters": 188,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a play, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-9-missing-form",
+            "id": 302,
+            "characters": 190,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a letter, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-10-missing-form",
+            "id": 302,
+            "characters": 190,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is an essay, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-11-missing-form",
+            "id": 302,
+            "characters": 190,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a dialog, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-12-missing-form",
+            "id": 302,
+            "characters": 200,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a musical composition, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the composition is atrocious.  "
+            ]
+          },
+          {
+            "case": "type-13-missing-form",
+            "id": 302,
+            "characters": 198,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a choreography, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the choreography is just terrible.  "
+            ]
+          },
+          {
+            "case": "type-14-missing-form",
+            "id": 302,
+            "characters": 205,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a comparative biography, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-15-missing-form",
+            "id": 302,
+            "characters": 207,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a biographical dictionary, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-16-missing-form",
+            "id": 302,
+            "characters": 222,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a genealogy, authored by Amoya Etealisa.  It concerns the lineage of the process of surveying land.  The writing is very rigid.  Overall, this is a terrible compilation of information.  "
+            ]
+          },
+          {
+            "case": "type-17-missing-form",
+            "id": 302,
+            "characters": 197,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is an encyclopedia, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-18-missing-form",
+            "id": 302,
+            "characters": 200,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a cultural history, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-19-missing-form",
+            "id": 302,
+            "characters": 203,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a cultural comparison, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-20-missing-form",
+            "id": 302,
+            "characters": 247,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is an alternate history, authored by Amoya Etealisa.  It asks the question, \"What if the process of surveying land had unfolded differently?\"  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-21-missing-form",
+            "id": 302,
+            "characters": 219,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a treatise on technological evolution, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "case": "type-22-missing-form",
+            "id": 302,
+            "characters": 208,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a dictionary, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, this is a terrible compilation of information.  "
+            ]
+          },
+          {
+            "case": "type-23-missing-form",
+            "id": 302,
+            "characters": 208,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a star chart, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, this is a terrible compilation of information.  "
+            ]
+          },
+          {
+            "case": "type-24-missing-form",
+            "id": 302,
+            "characters": 212,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a star catalogue, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, this is a terrible compilation of information.  "
+            ]
+          },
+          {
+            "case": "type-25-missing-form",
+            "id": 302,
+            "characters": 204,
+            "guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is an atlas, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, this is a terrible compilation of information.  "
+            ]
+          }
+        ]
       }
     }
   }

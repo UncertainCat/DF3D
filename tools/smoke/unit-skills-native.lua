@@ -194,6 +194,10 @@ local ok,err=xpcall(function()
   for index,kind in ipairs(reference.knowledge_types)do
    if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1')or(kind==15 and os.getenv('DF3D_UNIT_MUSICAL_FORMS')=='1')or(kind==16 and os.getenv('DF3D_UNIT_DANCE_FORMS')=='1')or(kind==17 and written_samples[reference.knowledge_ids[index]]))then
     seen[kind]=true;local baseline=capture_detail(index,kind)
+    if kind==17 and os.getenv('DF3D_UNIT_WRITTEN_CASES')=='1'then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','written-cases-native.lua')
+     assert(loadfile(source))(unit,reference.knowledge_ids[index],function(variant)return capture_detail(index,kind,variant)end,baseline)
+    end
     if kind==14 and os.getenv('DF3D_UNIT_POETIC_CASES')=='1'then
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-cases-native.lua')
      assert(loadfile(source))(unit,reference.knowledge_ids[index],function(variant)return capture_detail(index,kind,variant)end,baseline)

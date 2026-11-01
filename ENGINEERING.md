@@ -3347,6 +3347,16 @@ preservation and only known Godot startup notices. `written_owned_probe_referenc
 retains the bridge hash and bounded results. Controlled title/author variants,
 other references/events, production transport and rendered Skills remain unfinished.
 
+Protected044000 adds thirty controlled written-work comparisons on content302:
+empty title, absent author, unresolved author, selected creature as author, and
+all26 native content-type prefixes with no referenced art form. Every full tagged
+string matches native and guards remain unchanged. Original title/author/type/form
+fields are restored after each sequence, including failure cleanup. DF33236 exits
+unsaved with source preservation and only known Godot startup notices.
+`written_cases_reference` retains each result. This closes those prefix branches;
+other subjects, identities, styles and transitive art/event storage remain separate
+coverage requirements.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

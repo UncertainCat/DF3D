@@ -70,6 +70,17 @@ local ok,err=xpcall(function()
   pages[#pages+1]=observe(name);capture('unit-skills-'..name:lower():gsub(' ','-'))
  end
  if os.getenv('DF3D_UNIT_SKILLS_DETAILS')=='1'then
+  local added={}
+  if os.getenv('DF3D_UNIT_SKILLS_ALL_FORMS')=='1'then
+   local known=assert(df.historical_figure.find(unit.hist_figure_id).info.known_info)
+   for _,entry in ipairs{{known.known_musical_forms,df.global.world.musical_forms.all},{known.known_dance_forms,df.global.world.dance_forms.all}}do
+    assert(#entry[2]>0,'Missing world art forms')
+    local id=entry[2][0].id;local exists=false
+    for _,value in ipairs(entry[1])do if value==id then exists=true end end
+    if not exists then entry[1]:insert('#',id);added[#added+1]={vector=entry[1],id=id}end
+   end
+  end
+  local details_ok,details_error=xpcall(function()
   local reference=observe('Knowledge');local seen={}
   for index,kind in ipairs(reference.knowledge_types)do
    if kind>=14 and not seen[kind]then
@@ -95,7 +106,9 @@ local ok,err=xpcall(function()
     details[#details+1]=detail;capture('unit-skills-detail-'..kind)
    end
   end
-  observe('Labor')
+  end,debug.traceback)
+  for i=#added,1,-1 do local entry=added[i];assert(entry.vector[#entry.vector-1]==entry.id);entry.vector:erase(#entry.vector-1)end
+  observe('Labor');assert(details_ok,details_error)
  end
  if os.getenv('DF3D_UNIT_SKILLS_CASES')=='1'then
   local soul=assert(unit.status.current_soul);local original={}

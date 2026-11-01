@@ -3196,14 +3196,17 @@ lists. Original pointers/fields are restored. DF38508 exits unsaved with source
 preservation and only known startup notices. `controlled_cases_reference`
 records the results; no progression or simulation effects were executed.
 
-Protected033517 captures actual Knowledge magnifier clicks for poetic form0
-and written content302, including tagged text and screen rows. DF37752 exits
+Protected033912 captures actual Knowledge magnifier clicks for poetic form0,
+musical form0, dance form0 and written content302, including tagged text and
+screen rows. Existing musical/dance IDs are temporarily appended to known-form
+lists and removed afterward; no learning effects are executed. DF35124 exits
 unsaved with source preservation and only known startup notices. Poetic details
 call e76400 at1b40bf; musical and dance branches call dd5ce0 and4ea820. Written
 content combines inline title/author assembly with cc5d50. Their transitive
 formatting/cache ownership audit remains pending; these references do not
 license calling the helpers on live records. `detail_reference` retains the
-native prose and entry points. Musical/dance examples, detail navigation,
+native prose and entry points. The musical description has3,108 characters,
+so the generic512-byte record-name field cannot carry it. Detail navigation,
 hover, scrolling, management transport and rendered Skills remain unfinished.
 Godot still categorizes/sorts generic records; it is not accepted as native parity.
 

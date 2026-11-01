@@ -57686,7 +57686,7 @@
         "unit_id": 1017
       },
       "source": "Native input1b350c calls47e270 with context and unit. Pinned root includes category dispatch tables through47f43d. Stable descending nonnegative rating insertion preserves source order for ties; rust value remains rating minus rust. Knowledge uses copied unit cache throughb530b0 and read-only historical records.",
-      "scope": "Baseline native five-tab capture and owned builder verified with controlled cases. Two Knowledge detail captures establish references only. Detail ownership, musical/dance forms, hover, scrolling, typed transport and rendered Skills remain unfinished.",
+      "scope": "Baseline native five-tab capture and owned builder verified with controlled cases. Four Knowledge detail captures establish references only. Detail ownership, hover, scrolling, typed transport and rendered Skills remain unfinished.",
       "source_preservation": "Owned source unchanged; DF39556 exits unsaved; all three Godot processes only known startup notice.",
       "owned_probe_reference": {
         "run": "build/stockpile-storage-native-farm-discovery-20261101-033035",
@@ -61017,7 +61017,7 @@
         "scope": "Paused original skill pointers/fields, soul pointer, historical ID/cache restored. Empty skills, reversed ties, negative ratings, excess rust and no soul across all five pages, plus no historical figure on Knowledge. All six vectors match native; guarded source/UI/random unchanged. No skill progression or simulation effects executed."
       },
       "detail_reference": {
-        "run": "build/stockpile-storage-native-farm-discovery-20261101-033517",
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-033912",
         "status": "passed_with_known_issues",
         "details": [
           {
@@ -61078,6 +61078,316 @@
             ]
           },
           {
+            "id": 0,
+            "kind": 15,
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      The Intricate Luxuries is a form of music used for",
+                "y": 20
+              },
+              {
+                "text": "                                                      entertainment originating in The Big Channel. The",
+                "y": 21
+              },
+              {
+                "text": "                                                      form guides musicians during improvised performances.",
+                "y": 22
+              },
+              {
+                "text": "                                                      The music is played on a ekast and a sh\u00f9rrat. The",
+                "y": 23
+              },
+              {
+                "text": "                                                      musical voices bring melody and counterpoint. The",
+                "y": 24
+              },
+              {
+                "text": "                                                      melody has long phrases, while the counterpoint has",
+                "y": 25
+              },
+              {
+                "text": "                                                      phrases of varied length throughout the form. The",
+                "y": 26
+              },
+              {
+                "text": "                                                      music repeats for as long as necessary. It is",
+                "y": 27
+              },
+              {
+                "text": "                                                      performed using the berim scale.",
+                "y": 28
+              },
+              {
+                "text": "                                                      The ekast always should be spirited.",
+                "y": 30
+              },
+              {
+                "text": "                                                      The sh\u00f9rrat always does the main melody and should",
+                "y": 32
+              },
+              {
+                "text": "                                                      stress the rhythm.",
+                "y": 33
+              },
+              {
+                "text": "                                                      The Intricate Luxuries has a well-defined",
+                "y": 35
+              },
+              {
+                "text": "                                                      multi-passage structure: a lengthy introduction, a",
+                "y": 36
+              },
+              {
+                "text": "                                                      verse and a chorus all repeated two times and a coda.",
+                "y": 37
+              },
+              {
+                "text": "                                                      The introduction is voiced by the melody of the",
+                "y": 39
+              },
+              {
+                "text": "                                                      sh\u00f9rrat and the counterpoint of the ekast. The",
+                "y": 40
+              },
+              {
+                "text": "                                                      passage is at a hurried pace, and it is to be in",
+                "y": 41
+              },
+              {
+                "text": "                                                      whispered undertones. This passage typically has some",
+                "y": 42
+              },
+              {
+                "text": "                                                      sparse chords. The passage is performed in the",
+                "y": 43
+              },
+              {
+                "text": "                                                      s\u00e1krith rhythm.",
+                "y": 44
+              },
+              {
+                "text": "                                                      The verse is voiced by the melody of the sh\u00f9rrat. The",
+                "y": 46
+              },
+              {
+                "text": "                                                      passage is extremely fast, and it is to be moderately",
+                "y": 47
+              },
+              {
+                "text": "                                                      soft. Only one pitch is ever played at a time in this",
+                "y": 48
+              },
+              {
+                "text": "                                                      passage. The passage is performed in free rhythm.",
+                "y": 49
+              },
+              {
+                "text": "                                                      The chorus is voiced by the melody of the ekast and",
+                "y": 51
+              },
+              {
+                "text": "                                                      the melody of the sh\u00f9rrat. The passage is half the",
+                "y": 52
+              },
+              {
+                "text": "                                                      tempo of the last passage, and it is to become softer",
+                "y": 53
+              },
+              {
+                "text": "                                                      and softer. This passage features only melodic tones",
+                "y": 54
+              },
+              {
+                "text": "                                                      and intervals. The passage is performed in free",
+                "y": 55
+              },
+              {
+                "text": "                                                      rhythm.",
+                "y": 56
+              },
+              {
+                "text": "                                                      The coda is voiced by the melody of the sh\u00f9rrat. The",
+                "y": 58
+              },
+              {
+                "text": "                                                      passage is slow, and it is to fade into silence. Only",
+                "y": 59
+              },
+              {
+                "text": "                                                      one pitch is ever played at a time in this passage.",
+                "y": 60
+              }
+            ],
+            "tagged_rows": [
+              "[C:7:0:1]The Intricate Luxuries is a form of music used for entertainment originating in The Big Channel.  The form guides musicians during improvised performances.  The music is played on a ekast and a sh\u00f9rrat.  The musical voices bring melody and counterpoint.  The melody has long phrases, while the counterpoint has phrases of varied length throughout the form.  The music repeats for as long as necessary.  It is performed using the berim scale.  [B]The ekast always should be spirited.  [B]The sh\u00f9rrat always does the main melody and should stress the rhythm.  [B]The Intricate Luxuries has a well-defined multi-passage structure: a lengthy introduction, a verse and a chorus all repeated two times and a coda.  [B]The introduction is voiced by the melody of the sh\u00f9rrat and the counterpoint of the ekast.  The passage is at a hurried pace, and it is to be in whispered undertones.  This passage typically has some sparse chords.  The passage is performed in the s\u00e1krith rhythm.  [B]The verse is voiced by the melody of the sh\u00f9rrat.  The passage is extremely fast, and it is to be moderately soft.  Only one pitch is ever played at a time in this passage.  The passage is performed in free rhythm.  [B]The chorus is voiced by the melody of the ekast and the melody of the sh\u00f9rrat.  The passage is half the tempo of the last passage, and it is to become softer and softer.  This passage features only melodic tones and intervals.  The passage is performed in free rhythm.  [B]The coda is voiced by the melody of the sh\u00f9rrat.  The passage is slow, and it is to fade into silence.  Only one pitch is ever played at a time in this passage.  The passage is performed in free rhythm.  [B]Scales are conceived of as two chords built using a division of the perfect fourth interval into eight notes.  The tonic note is fixed only at the time of performance.  [B]As always, the berim pentatonic scale is thought of as two disjoint chords drawn from the fundamental division of the perfect fourth.  These chords are named bidok and mabdug.  [B]The bidok trichord is the 1st, the 2nd and the 8th degrees of the fundamental perfect fourth division.  [B]The mabdug trichord is the 1st, the 5th and the 8th degrees of the fundamental perfect fourth division.  [B]The s\u00e1krith rhythm is made from two patterns: the ag\u00eak (considered the primary) and the lanlar.  The patterns are to be played over the same period of time, concluding together regardless of beat number.  [B]The ag\u00eak rhythm is a single line with thirty-two beats divided into four bars in a 8-8-8-8 pattern.  The beats are named ucat (spoken uc), ng\u00e1rak (ng\u00e1), enir (en), ugath (ug), lisig (li), et\u00e4g (et), erong (er) and osed (os).  The beat is stressed as follows:[B]| - - - - - - x - | x ! x x x x x x | - x - - x - - - | X x - x x x - x | [B]where ! marks the primary accent, X marks an accented beat, x is a beat, - is silent and | indicates a bar.  [B]The lanlar rhythm is a single line with two beats.  The beats are named udir (spoken ud) and tarmid (ta).  The beat is stressed as follows:[B]| x x | [B]where x is a beat and | indicates a bar.  "
+            ]
+          },
+          {
+            "id": 0,
+            "kind": 16,
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      The Wispy Berry is a performance partner dance",
+                "y": 20
+              },
+              {
+                "text": "                                                      originating in The Big Channel. The rules of the form",
+                "y": 21
+              },
+              {
+                "text": "                                                      are applied by choreographers to produce individual",
+                "y": 22
+              },
+              {
+                "text": "                                                      dances which can be performed. The dance is",
+                "y": 23
+              },
+              {
+                "text": "                                                      accompanied by The Intricate Luxuries. The dancers",
+                "y": 24
+              },
+              {
+                "text": "                                                      perform in a single line turning counterclockwise.",
+                "y": 25
+              },
+              {
+                "text": "                                                      This dance is a refined artform, with one special",
+                "y": 26
+              },
+              {
+                "text": "                                                      position to be mastered. The dance is punctuated by",
+                "y": 27
+              },
+              {
+                "text": "                                                      vivacious independent body movement.",
+                "y": 28
+              },
+              {
+                "text": "                                                      The dance begins with the introduction of the music.",
+                "y": 30
+              },
+              {
+                "text": "                                                      The dancers perform quickly to the s\u00e1krith rhythm.",
+                "y": 31
+              },
+              {
+                "text": "                                                      The partners dance closely, communicating intent by",
+                "y": 32
+              },
+              {
+                "text": "                                                      pulling away. This section is punctuated by the",
+                "y": 33
+              },
+              {
+                "text": "                                                      sensual spins of the lead.",
+                "y": 34
+              },
+              {
+                "text": "                                                      The dance enters a new section with the verse of the",
+                "y": 36
+              },
+              {
+                "text": "                                                      music. The dancers perform very quickly with the",
+                "y": 37
+              },
+              {
+                "text": "                                                      music. The partners rarely make contact,",
+                "y": 38
+              },
+              {
+                "text": "                                                      communicating intent through visual cues. This crude",
+                "y": 39
+              },
+              {
+                "text": "                                                      flamboyant section is punctuated by the forward bends",
+                "y": 40
+              },
+              {
+                "text": "                                                      of the lead, kicks and energetic counterclockwise",
+                "y": 41
+              },
+              {
+                "text": "                                                      eighth turns.",
+                "y": 42
+              },
+              {
+                "text": "                                                      The dance enters a new section with the chorus of the",
+                "y": 44
+              },
+              {
+                "text": "                                                      music. The dancers perform slowly with the music. The",
+                "y": 45
+              },
+              {
+                "text": "                                                      partners dance closely, communicating intent by",
+                "y": 46
+              },
+              {
+                "text": "                                                      pushing together. This intense section is punctuated",
+                "y": 47
+              },
+              {
+                "text": "                                                      by softly percussive footwork.",
+                "y": 48
+              },
+              {
+                "text": "                                                      The dance enters a new section with the coda of the",
+                "y": 50
+              },
+              {
+                "text": "                                                      music. The dancers perform slowly with the music. The",
+                "y": 51
+              },
+              {
+                "text": "                                                      partners dance closely, communicating intent by",
+                "y": 52
+              },
+              {
+                "text": "                                                      pushing together. This section is punctuated by",
+                "y": 53
+              },
+              {
+                "text": "                                                      vivacious leaps and serene counterclockwise eighth",
+                "y": 54
+              },
+              {
+                "text": "                                                      turns.",
+                "y": 55
+              },
+              {
+                "text": "                                                      The \u00e2trid the fundamental dance position. There",
+                "y": 57
+              },
+              {
+                "text": "                                                      should be a passive hand gesture from the follower",
+                "y": 58
+              },
+              {
+                "text": "                                                      with a grotesque leg lift.",
+                "y": 59
+              }
+            ],
+            "tagged_rows": [
+              "[C:7:0:1]The Wispy Berry is a performance partner dance originating in The Big Channel.  The rules of the form are applied by choreographers to produce individual dances which can be performed.  The dance is accompanied by The Intricate Luxuries.  The dancers perform in a single line turning counterclockwise.  This dance is a refined artform, with one special position to be mastered.  The dance is punctuated by vivacious independent body movement.  [B]The dance begins with the introduction of the music.  The dancers perform quickly to the s\u00e1krith rhythm.  The partners dance closely, communicating intent by pulling away.  This section is punctuated by the sensual spins of the lead.  [B]The dance enters a new section with the verse of the music.  The dancers perform very quickly with the music.  The partners rarely make contact, communicating intent through visual cues.  This crude flamboyant section is punctuated by the forward bends of the lead, kicks and energetic counterclockwise eighth turns.  [B]The dance enters a new section with the chorus of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This intense section is punctuated by softly percussive footwork.  [B]The dance enters a new section with the coda of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This section is punctuated by vivacious leaps and serene counterclockwise eighth turns.  [B]The \u00e2trid the fundamental dance position.  There should be a passive hand gesture from the follower with a grotesque leg lift.  "
+            ]
+          },
+          {
             "id": 302,
             "kind": 17,
             "lines": [
@@ -61111,7 +61421,7 @@
             ]
           }
         ],
-        "scope": "Actual native magnifier clicks for existing poetic form and written content. Captured text and screen only; no owned detail formatter or DF3D rendered-detail acceptance. Musical and dance forms remain unverified.",
+        "scope": "Actual native magnifier clicks for poetic, musical, dance and written-content details. Existing world musical/dance IDs temporarily appended to known-form lists and removed after capture. No learning or simulation effects. Native tagged text/screen references only; owned detail formatter and DF3D rendered-detail acceptance pending.",
         "entry_points": {
           "poetic_form": "e76400 from1b40bf",
           "musical_form": "dd5ce0 from1b3fe6",

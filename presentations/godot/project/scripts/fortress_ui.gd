@@ -118,7 +118,9 @@ func open_building_holder(kind: int,id: int) -> void:
 func open_item_carrier(kind: int,id: int) -> void:
 	if kind!=2 or not host.play_enabled:return
 	var target: Dictionary=world.inspect_entity(1,id)
-	if not target.is_empty():open_target(target.tile,1,id)
+	if not target.is_empty():
+		controller("inspector").creature_sheet.tab="Overview"
+		open_target(target.tile,1,id)
 
 func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
@@ -152,6 +154,9 @@ func controller(id: String):
 	if id == "inspector":
 		ensure_follow();panel.follow=creature_follow
 		panel.history_requested.connect(func(unit_id):controller("reports").open_creature_history(unit_id))
+		panel.object_requested.connect(func(kind,target_id):
+			if kind==2:controller("farm").item_owner.open_target(target_id)
+			elif kind==1:open_item_carrier(2,target_id))
 		panel.action_service = actions
 		panel.hover_help=view._fortress_hud.native_help
 	if id in ["construction", "areas"]: panel.hud = view._fortress_hud

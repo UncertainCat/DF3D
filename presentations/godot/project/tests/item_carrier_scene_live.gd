@@ -167,6 +167,9 @@ func unit_carrier(expected: Dictionary) -> void:
 	var evidence:=FileAccess.open(directory+"/unit-overview-scene.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
+	if OS.get_environment("DF3D_UNIT_ITEMS_VIEW")=="1":
+		await exercise_items_view(inspector,target)
+		if failed:return
 	if FileAccess.file_exists(directory+"/unit-customize-captions.json"):
 		await exercise_customize(inspector,int(expected.snapshot.id))
 	if overview_case=="neutral":await exercise_expel_preview(inspector,target)
@@ -197,6 +200,38 @@ func unit_carrier(expected: Dictionary) -> void:
 		await exercise_follow(inspector,source,int(expected.snapshot.id),target)
 	await exercise_history(inspector,source,int(expected.snapshot.id),target)
 	exercised=true
+
+func exercise_items_view(inspector,target: int) -> void:
+	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(124,132))
+	await process_frame;await process_frame
+	if not check(inspector.creature_sheet.tab=="Items","Items tab click did not select Items"):return
+	var view=inspector.creature_sheet.items_view
+	if not check(is_instance_valid(view) and view.is_visible_in_tree(),"Items view is not visible"):return
+	if not check(not view.rows.is_empty(),"Items view has no rows"):return
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/unit-items-scene.png")
+	var item_id:=int(view.rows[0].get("related_id",-1))
+	var item_owner=scene._ui.controller("farm").item_owner
+	var transitions: Array=[]
+	var observe: Callable=func():transitions.append({"phase":item_owner.state.phase,"id":item_owner.state.item_id,"snapshot":item_owner.state.snapshot.duplicate(true),"stack":get_stack()})
+	item_owner.state.changed.connect(observe)
+	await pointer(view.get_global_transform_with_canvas()*view.inspect_rect(0).get_center())
+	var ready:=await settle(item_owner.state)
+	item_owner.state.changed.disconnect(observe)
+	var trace:=FileAccess.open(directory+"/unit-items-navigation-trace.json",FileAccess.WRITE)
+	trace.store_string(JSON.stringify({"transitions":transitions,"phase":item_owner.state.phase,"id":item_owner.state.item_id},"  "));trace.close()
+	if not ready:return
+	check(scene._ui.host.active==item_owner and item_owner.state.item_id==item_id,"Items View did not open the selected item")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/unit-items-inspected-scene.png")
+	var snapshot:=FileAccess.open(directory+"/unit-items-inspected-scene.json",FileAccess.WRITE)
+	snapshot.store_string(JSON.stringify(item_owner.state.snapshot,"  "));snapshot.close()
+	await pointer(item_owner.panel.get_global_transform_with_canvas()*item_owner.panel.holder_rect().get_center())
+	await process_frame;await process_frame
+	check(scene._ui.host.active==inspector and inspector.selected.get("id",-1)==target,"Item carrier did not return to the creature")
+	check(inspector.creature_sheet.tab=="Overview","Item carrier did not reset to native Overview")
+	var result:=FileAccess.open(directory+"/unit-items-view-result.json",FileAccess.WRITE)
+	result.store_string(JSON.stringify({"success":not failed,"inspected_item":item_id,"creature":target}));result.close()
 
 func follow_ready() -> bool:
 	var deadline:=Time.get_ticks_msec()+5000

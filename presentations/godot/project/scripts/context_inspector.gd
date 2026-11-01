@@ -1,5 +1,6 @@
 extends Node
 signal history_requested(unit_id:int)
+signal object_requested(kind:int,id:int)
 # Local entity identity and presentation only. Queries never navigate DF screens.
 const Preferences = preload("res://scripts/presentation_settings.gd")
 const OriginalUI = preload("res://scripts/original_ui.gd")

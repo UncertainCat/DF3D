@@ -14,6 +14,16 @@
 #include "df/unit.h"
 #include "df/descriptor_color.h"
 #include "df/item_boxst.h"
+#include "df/item_helmst.h"
+#include "df/itemdef_helmst.h"
+#include "df/item_armorst.h"
+#include "df/itemdef_armorst.h"
+#include "df/item_shoesst.h"
+#include "df/itemdef_shoesst.h"
+#include "df/item_pantsst.h"
+#include "df/itemdef_pantsst.h"
+#include "df/item_glovesst.h"
+#include "df/itemdef_glovesst.h"
 #include "df/item_instrumentst.h"
 #include "df/itemdef_instrumentst.h"
 #include "df/job_skill.h"
@@ -250,13 +260,15 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
     }();
     return pinned;
 }
-// Native BOX and INSTRUMENT dispatch. Lazy art owns semantic world records, not
+// Native constructed-item dispatch. Lazy art owns semantic world records, not
 // native UI state; observations are built after those native effects.
 inline bool constructedItemDescriptionDispatch(df::item* item) {
     if(!item||!farmFunctions())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto* table=*reinterpret_cast<const void* const*>(item);
-    if(table!=base+0x1623198 && table!=base+0x16c6cf0)return false;
+    if(table!=base+0x1623198 && table!=base+0x16c6cf0 && table!=base+0x161dd98 &&
+       table!=base+0x161f840 && table!=base+0x1621b88 && table!=base+0x1624818 &&
+       table!=base+0x161edd8)return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -283,11 +295,24 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
             for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
             return value;
         };
-        for(size_t table:{size_t(0x1623198),size_t(0x16c6cf0)})for(auto pin:pins) {
+        // Clothing shares every listed constructed-item virtual except getType.
+        // c75000 has no clothing-specific branch; subtype is a semantic raw.
+        for(size_t table:{size_t(0x1623198),size_t(0x16c6cf0),size_t(0x161dd98),
+                         size_t(0x161f840),size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8)})for(auto pin:pins) {
             if(table==0x16c6cf0 && pin.slot==0)pin={0,0x673c0,6,UINT64_C(0x6470dd592ae1062b)};
+            if(pin.slot==0) {
+                if(table==0x161dd98)pin={0,0x28a840,6,UINT64_C(0x3c0e712b7d27ecd8)};
+                if(table==0x161f840)pin={0,0x7b5d0,6,UINT64_C(0x621a1caaf5147c67)};
+                if(table==0x1621b88)pin={0,0x776a0,6,UINT64_C(0x556c3b8077c6c86a)};
+                if(table==0x1624818)pin={0,0x722d0,6,UINT64_C(0xd1ead67b27153938)};
+                if(table==0x161edd8)pin={0,0x28a950,6,UINT64_C(0x2f5f1000ffd7ac5b)};
+            }
             if(*reinterpret_cast<const void* const*>(base+table+pin.slot)!=base+pin.target || hash(pin.target,pin.length)!=pin.hash)return false;
         }
-        if(*reinterpret_cast<const void* const*>(base+0x16c6cf0+8)!=base+0xfd0c0 || hash(0xfd0c0,12)!=UINT64_C(0xf68164ec06d8d50a))return false;
+        for(size_t table:{size_t(0x16c6cf0),size_t(0x161dd98),size_t(0x161f840),
+                         size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8)})
+            if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0xfd0c0)return false;
+        if(hash(0xfd0c0,12)!=UINT64_C(0xf68164ec06d8d50a))return false;
         if(hash(0x67520,0x6)!=UINT64_C(0x18580e5a3b056825))return false;
         if(hash(0x67540,0x6)!=UINT64_C(0x2505ef84b8531c22))return false;
         if(hash(0x14e1ec0,0xb68)!=UINT64_C(0x1d38184423ba8a35))return false;
@@ -328,6 +353,14 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         // native description. Both are semantic raw data, never UI scratch.
         if(!instrument->subtype || DFHack::Items::getSubtypeDef(df::item_type::INSTRUMENT,item->getSubtype())!=instrument->subtype)return false;
     }
+    const df::itemdef* clothingSubtype=nullptr;
+    if(table==base+0x161dd98)clothingSubtype=static_cast<df::item_helmst*>(item)->subtype;
+    if(table==base+0x161f840)clothingSubtype=static_cast<df::item_armorst*>(item)->subtype;
+    if(table==base+0x1621b88)clothingSubtype=static_cast<df::item_shoesst*>(item)->subtype;
+    if(table==base+0x1624818)clothingSubtype=static_cast<df::item_pantsst*>(item)->subtype;
+    if(table==base+0x161edd8)clothingSubtype=static_cast<df::item_glovesst*>(item)->subtype;
+    if(table!=base+0x1623198 && table!=base+0x16c6cf0 &&
+       (!clothingSubtype || DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype())!=clothingSubtype))return false;
     const auto* box=static_cast<df::item_constructed*>(item);
     if(int(box->quality)<0 || int(box->quality)>int(df::item_quality::Artifact))return false;
     for(const auto* improvement:box->improvements) {

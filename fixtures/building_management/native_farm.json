@@ -50238,6 +50238,72 @@
         },
         "source_save": "unchanged; owned DF32224 exited unsaved",
         "scope": "Baseline Items semantic wire and staged text consumption only; dedicated Items layout, nested wire rows, navigation, indicators and lifecycle remain unverified."
+      },
+      "dedicated_view_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-002607",
+        "status": "navigation passed_with_known_issues; presentation incomplete",
+        "unit_id": 1017,
+        "item_id": 32064,
+        "navigation": [
+          "actual Items tab click",
+          "first inventory inspect opens hood32064",
+          "carrier View returns unit1017 Overview"
+        ],
+        "description": "This is an exceptional pig tail hood.  It is made from pig tail cloth.  ",
+        "input_fix": "Consume the Items click before emitting navigation: hiding the originating panel during signal dispatch otherwise lets the press reach the map and closes the new item read.",
+        "source_save": "unchanged; owned DF17176 exits unsaved",
+        "diagnostics": "Each GPU process and paired header-wire process has only the known separate-renderer startup notice.",
+        "failed_runs": [
+          "002313 and002437: read opens then closes before native reply; no navigation acceptance",
+          "001903: first probe failure preceded provider and input fixes"
+        ],
+        "limitations": [
+          "item appearance missing from clothing snapshot",
+          "native Owner header missing",
+          "native inspected capture lacks body/controls; needs stabilized oracle before description pixel comparison",
+          "Items indicators and hover missing",
+          "scroll/resize/lifecycle and nested navigation not accepted",
+          "clothing dispatch for armor/shoes/pants/gloves audited statically but live navigation only hood"
+        ],
+        "artifacts": {
+          "unit-items-scene.png": "73f6c0f5cadf28ef9a22a7def4aaaada33409a37f9f92dfba38564062e131829",
+          "unit-items-inspected-scene.png": "d3ec18f11fad52ae7e8709cb33e7726d9439f13e6f22f65d6f616edb6425e814",
+          "unit-items-inspected.png": "a1cf979656216e3ff1b1b3288e4b09cc404955c52229adf62155dc5d588a8368",
+          "unit-items-view-result.json": "243e08553d0e36ac6e7d7d54b7dd72a6772430835e81eb6764d92face14e7bed",
+          "unit-items-inspected-scene.json": "c2d88b36060fe8db229d960c008d78f06fa6d2600569252548e502d3c5d59795"
+        }
+      },
+      "clothing_dispatch_audit": {
+        "entry": "c75000, existing full body pin",
+        "ownership": "All previously pinned constructed-item slots identical to Box except getType; subtype getter fd0c0 shared with Instrument. Native c75000 has no clothing-specific branch. Shared improvement/material semantics retain existing ownership rules; no new UI inputs.",
+        "types": {
+          "item_helmst": {
+            "table": "0x161dd98",
+            "type_getter": "0x28a840",
+            "subtype_getter": "0xfd0c0"
+          },
+          "item_armorst": {
+            "table": "0x161f840",
+            "type_getter": "0x7b5d0",
+            "subtype_getter": "0xfd0c0"
+          },
+          "item_shoesst": {
+            "table": "0x1621b88",
+            "type_getter": "0x776a0",
+            "subtype_getter": "0xfd0c0"
+          },
+          "item_pantsst": {
+            "table": "0x1624818",
+            "type_getter": "0x722d0",
+            "subtype_getter": "0xfd0c0"
+          },
+          "item_glovesst": {
+            "table": "0x161edd8",
+            "type_getter": "0x28a950",
+            "subtype_getter": "0xfd0c0"
+          }
+        },
+        "runtime_checks": "Pin every admitted table slot and getter body; subtype non-null and exact DFHack installed subtype identity; existing improvement dispatch/quality checks remain."
       }
     }
   }

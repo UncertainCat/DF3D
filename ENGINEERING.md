@@ -1493,6 +1493,28 @@ baseline wire scope. Nested wire rows, dedicated native layout, navigation,
 indicators, resize/scrolling and rendered lifecycle remain unfinished. The Items
 route remains staged with the rest of the incomplete creature sheet.
 
+The staged dedicated Items view uses native row captions/roles and inspect
+identities. `DF3D_UNIT_ITEMS_VIEW=1` enables its main-scene navigation exercise.
+Protected002607 on2026-11-01 verifies clicking Items, opening hood32064 and
+returning through its carrier link to unit1017 Overview. The source save is
+unchanged; owned DF17176 exits unsaved. Each Godot process has only the known
+renderer notice. Earlier001903/002313/002437 fail navigation; tracing shows the
+new read immediately closes before a reply. Consuming the click before emitting
+navigation prevents it reaching the map after its source panel is hidden.
+Those failed runs are not proof of native read rejection.
+
+The constructed-item description dispatcher now pins HELM/ARMOR/SHOES/PANTS/
+GLOVES tables alongside Box/Instrument. Their audited description slots differ
+from Box only in type/subtype getters; the latter shares Instrument's fd0c0.
+Each clothing subtype must match its installed semantic definition. Existing
+quality/improvement checks and native c75000 ownership remain unchanged.
+Only hood navigation is live-verified. Its native description reaches the
+snapshot, but clothing artwork and native Owner header are missing. The native
+inspected screenshot lacks body/controls, so it is not a full description pixel
+oracle. Indicators, hover, scroll/resize/lifecycle and nested navigation remain
+unfinished; the creature route stays staged. The fixture's
+`dedicated_view_reference` and `clothing_dispatch_audit` retain bounded evidence.
+
 The Overview hauling line uses native selector1324b50(unit), the same call made
 by renderer166e81, followed by the existing owned caption formatter c65450.
 The selector is a44-byte read-only leaf returning the first inventory entry in

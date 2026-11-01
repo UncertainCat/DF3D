@@ -12,6 +12,7 @@ var subtabs := {}
 var scrolls := {}
 var unit_id := -1
 var scroll: ScrollContainer
+var items_view
 var owner
 var sections := {}
 
@@ -387,6 +388,14 @@ func render(controller, state: Dictionary):
  var y:=96.0
  for names in recipe.rows: y=tabs_at(names,y)
  if recipe.subtabs.has(tab): y=tabs_at(recipe.subtabs[tab].keys(),y,true)
+ if tab=="Items":
+  scroll=null
+  items_view=preload("res://scripts/creature_items_view.gd").new()
+  items_view.position=Vector2(0,y);items_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  owner.body.add_child(items_view)
+  items_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+  items_view.inspect_requested.connect(func(kind,id):owner.object_requested.emit(kind,id))
+  items_view.configure(owner.world,records_for("inventory"));return
  y+=4
  if tab=="Overview": y-=10
  var native_prose_layout := tab in ["Thoughts","Personality"]

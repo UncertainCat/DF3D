@@ -66610,7 +66610,7 @@
         "scope": "Test-owned MASTERPIECE_LOST and PERFORMANCE events, temporary occasion/schedule, existing CREATED_SITE leaf. Exact native description comparisons; missing reference/entity/occasion/schedule and nested performance-to-lost-to-leaf. Not natural-world occurrence, cycle handling, or blanket event acceptance."
       },
       "artifact_initialization_reference": {
-        "source": "build/stockpile-storage-native-farm-discovery-20261101-062215",
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-062517",
         "status": "passed_with_known_issues",
         "bridge_sha256": "8c8c3ba6f1d5e574e2b383b09458f88a881ff1872e2eb560cab46f16245f103d",
         "cases": [
@@ -66623,16 +66623,20 @@
               "id": 4,
               "offset": 123
             },
-            "case": "native-first",
+            "case": "statue-native-first",
             "elements": 1,
             "has_source": true,
             "image": {
               "id": 4,
               "subid": 123
             },
+            "improvements": 0,
+            "mode": "native-first",
             "properties": 0,
-            "utf8_bytes": 1765,
-            "text_sha256": "ddd0335139de5c2988aa14eecd7b9ae3ccf7db948657f316ea88d5a1db9a6aa8"
+            "quality": 0,
+            "variant": "statue",
+            "utf8_bytes": 1754,
+            "text_sha256": "0b8acf3a9e57d9c42bbe6726a4eabc8b00178711cd2cdf76ec2af5ad5bd54f97"
           },
           {
             "after": {
@@ -66643,37 +66647,233 @@
               "id": 4,
               "offset": 124
             },
-            "case": "probe-first",
+            "case": "statue-probe-first",
             "elements": 1,
             "has_source": true,
             "image": {
               "id": 4,
               "subid": 124
             },
+            "improvements": 0,
+            "mode": "probe-first",
             "properties": 0,
-            "utf8_bytes": 1752,
-            "text_sha256": "2c86596b2220fedfdd4cd302499c82811e7d390e5c51a24522c9c48c41278a63"
+            "quality": 0,
+            "variant": "statue",
+            "utf8_bytes": 1760,
+            "text_sha256": "733e96bb1f02ba13098dc5597c3373e1043c8b66c82617925ed8aaa6548cfffd"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 126
+            },
+            "before": {
+              "id": 4,
+              "offset": 125
+            },
+            "case": "figurine-native-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 125
+            },
+            "improvements": 0,
+            "mode": "native-first",
+            "properties": 0,
+            "quality": 0,
+            "variant": "figurine",
+            "utf8_bytes": 1754,
+            "text_sha256": "e588ad0b97bbbbdbcb201890e23a7e105529df93352d4d665685e8d7cd41ef7b"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 127
+            },
+            "before": {
+              "id": 4,
+              "offset": 126
+            },
+            "case": "figurine-probe-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 126
+            },
+            "improvements": 0,
+            "mode": "probe-first",
+            "properties": 0,
+            "quality": 0,
+            "variant": "figurine",
+            "utf8_bytes": 1757,
+            "text_sha256": "1bd4dee2e4372d375849315a12e65de34b581011f12ab6df48be133c327a90e4"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 128
+            },
+            "before": {
+              "id": 4,
+              "offset": 127
+            },
+            "case": "statue-bands-native-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 127
+            },
+            "improvements": 1,
+            "mode": "native-first",
+            "properties": 0,
+            "quality": 5,
+            "variant": "statue-bands",
+            "utf8_bytes": 1766,
+            "text_sha256": "62c7264c289ff3f6994b45494efa8fdf943972b78123ef7aaef5cf44c2bf74b5"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 129
+            },
+            "before": {
+              "id": 4,
+              "offset": 128
+            },
+            "case": "statue-bands-probe-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 128
+            },
+            "improvements": 1,
+            "mode": "probe-first",
+            "properties": 0,
+            "quality": 5,
+            "variant": "statue-bands",
+            "utf8_bytes": 1776,
+            "text_sha256": "2a6efd90c550d4fe755295d8e2dd97815fab7ae21c2403caa284b58832e514f1"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 130
+            },
+            "before": {
+              "id": 4,
+              "offset": 129
+            },
+            "case": "figurine-bands-native-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 129
+            },
+            "improvements": 1,
+            "mode": "native-first",
+            "properties": 0,
+            "quality": 5,
+            "variant": "figurine-bands",
+            "utf8_bytes": 1775,
+            "text_sha256": "51a60b03ab735530e22443ee1daa422372633da00a021a16ba97612263f67596"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 131
+            },
+            "before": {
+              "id": 4,
+              "offset": 130
+            },
+            "case": "figurine-bands-probe-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 130
+            },
+            "improvements": 1,
+            "mode": "probe-first",
+            "properties": 0,
+            "quality": 5,
+            "variant": "figurine-bands",
+            "utf8_bytes": 1766,
+            "text_sha256": "823571f8839e7852386f98468f67e1548e2cd6625eb8dc64832c0d72cfe486ac"
           }
         ],
         "warm_checks": [
           {
-            "case": "artifact-native-first",
+            "case": "artifact-statue-native-first",
             "guards_unchanged": true
           },
           {
-            "case": "artifact-native-first-warm",
+            "case": "artifact-statue-native-first-warm",
             "guards_unchanged": true
           },
           {
-            "case": "artifact-probe-first",
+            "case": "artifact-statue-probe-first",
             "guards_unchanged": true
           },
           {
-            "case": "artifact-probe-first-warm",
+            "case": "artifact-statue-probe-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-native-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-native-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-probe-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-probe-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-statue-bands-native-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-statue-bands-native-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-statue-bands-probe-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-statue-bands-probe-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-bands-native-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-bands-native-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-bands-probe-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-bands-probe-first-warm",
             "guards_unchanged": true
           }
         ],
-        "scope": "Temporary undecorated inorganic statue, unnamed artifact and ARTIFACT_CREATED event. Native-first and independent-probe-first each allocate one native art record with a source reference; native text matches and warm descriptions allocate none. Temporary inputs removed; generated art stays in owned unsaved clone. No worldgen retirement, figurine, decoration or broader subtype acceptance."
+        "scope": "Temporary inorganic statues and figurines, plain quality0 or quality5 with one quality5 bands improvement; unnamed artifacts and ARTIFACT_CREATED events. Native-first and independent-probe-first each allocate one native art record; cold independent text matches native and leaves UI unchanged. Warm reads preserve guarded item/improvement/art/UI/random state and allocate none. Temporary inputs removed; generated art stays in owned unsaved clone. No worldgen retirement, other decorations or broader subtype acceptance."
       }
     }
   }

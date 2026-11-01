@@ -63,10 +63,13 @@ local function event(id)
   local artifact=df.artifact_record.find(value.artifact_id)
   if artifact then
    object(artifact);name(artifact.name);local item=artifact.item;object(item)
-   assert(item and df.item_statuest:is_instance(item),'Artifact probe expects a statue')
+   assert(item and (df.item_statuest:is_instance(item) or df.item_figurinest:is_instance(item)),'Artifact probe expects a statue or figurine')
    string_field(item,'description');vector(item.general_refs);vector(item.improvements)
    for _,ref in ipairs(item.general_refs)do object(ref)end
-   assert(#item.improvements==0 and item.image.id>=0,'Artifact probe expects initialized undecorated statue')
+   for _,improvement in ipairs(item.improvements)do
+    assert(df.itemimprovement_bandsst:is_instance(improvement),'Add guards for this decoration');object(improvement)
+   end
+   assert(item.image.id>=0,'Artifact probe expects initialized image')
    local chunk=assert(df.art_image_chunk.find(item.image.id));local art=assert(chunk.images[item.image.subid].art_image)
    object(art);vector(art.elements);vector(art.properties);object(art.ref)
    for _,entry in ipairs(art.elements)do object(entry)end

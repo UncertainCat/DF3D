@@ -3545,27 +3545,29 @@ No new runtime admission follows from this audit.
 
 ### Knowledge artifact initialization effects
 
-Protected native062215 on2026-11-01 tests a temporary undecorated inorganic
-statue, unnamed artifact record and ARTIFACT_CREATED event referenced by an
-existing dance form. Native-first opens the actual Knowledge detail and creates
-art image4/123, advancing the world art offset123->124. Probe-first calls the
-independent owned-form formatter before opening the panel, creates4/124 and
-advances124->125. Each record has one element and a source reference. The
-independent cold text matches the subsequent native detail exactly; repeated
-native/probe reads preserve the initialized source/item/art, UI and random
-state and do not allocate additional art. `artifact_initialization_reference`
-retains case digests and allocation facts.
+Protected native062517 on2026-11-01 tests temporary inorganic statues and
+figurines, plain at quality0 or quality5 with one quality5 bands improvement.
+Each unnamed artifact is referenced by a temporary ARTIFACT_CREATED event in
+an existing dance form. All four variants run native-first and probe-first.
+Each cold description creates exactly one art record, advancing chunk4's
+offset123->131 across the eight cases. The records have one element and a source
+reference. Independent cold text matches the subsequently opened native detail
+exactly and leaves view_sheets/plotinfo bytes unchanged. Sixteen warm native/probe
+comparisons preserve guarded item, improvement, art, UI and random state and
+allocate no additional art. `artifact_initialization_reference` retains case
+digests, quality/decoration fields and allocation facts.
 
-This resolves the effect policy for this case: native semantic initialization
-is preserved, as in the existing BOX item provider. Owned formatter inputs and
-output do not imply that all transitively reached native semantic operations
-must be rolled back. The diagnostic adapter remains staged and does not grant
-blanket item/event admission. The test removes and frees its temporary item,
-artifact and event, restores the form reference, and leaves generated art in the
-disposable session until unsaved exit; it does not attempt allocation rollback.
-The source-save manifest is unchanged and owned DF6552 exits unsaved. All three
-Godot processes have only the known startup notice. Worldgen backing retirement,
-figurines, decorated statues and other item-subtype paths remain unverified.
+Native semantic initialization is preserved, as in the existing BOX item
+provider. Owned formatter inputs and output do not imply that every transitively
+reached semantic operation must be rolled back. This evidence covers the two
+caption subtypes sharing ca0b40 and the bands predicate/quality path; the adapter
+remains staged and does not grant blanket item/event admission. The test removes
+and frees temporary items, improvements, artifacts and events and restores the
+form reference. Generated art stays in the disposable session until unsaved
+exit; the harness does not attempt allocation rollback. The source-save manifest
+is unchanged and owned DF39916 exits unsaved. All three Godot processes have only
+the known startup notice. Worldgen backing retirement, other decorations and
+other item-subtype paths remain unverified.
 
 ### Knowledge recursive event descriptions
 

@@ -93,7 +93,19 @@ local ok,err=xpcall(function()
   pointer(x,y);local hover=main.current_hover
   if hover>=0 and not seen[hover]then seen[hover]=true;result.hovers[#result.hovers+1]={id=hover,name=df.main_hover_instruction[hover],x=x,y=y}end
  end end
- assert(json.encode(inventory())==json.encode(before),'Items navigation changed inventory')
+ if os.getenv('DF3D_UNIT_ITEMS_NAVIGATION')=='1'then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-navigation-native.lua')
+  result.navigation=assert(loadfile(source))(unit,view,pointer,click,capture)
+ end
+ result.inventory_after=inventory()
+ assert(#result.inventory_after==#before,'Items navigation changed inventory length')
+ for i,row in ipairs(result.inventory_after)do
+  local expected=before[i];local flags=expected.flags
+  -- Native inspection initializes only this item's lazy weight cache.
+  if result.navigation and i==1 then flags=flags|0x20000000 end
+  assert(row.id==expected.id and row.mode==expected.mode and row.body_part_id==expected.body_part_id and row.flags==flags,
+   'Items navigation changed inventory beyond inspected weight cache')
+ end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Items navigation advanced simulation')
 end,debug.traceback)
 click(464,196);pointer(400,400)

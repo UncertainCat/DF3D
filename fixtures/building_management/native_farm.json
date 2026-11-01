@@ -50018,6 +50018,97 @@
         },
         "ownership": "Contained creature uses copied name/identity/display fields and owned body caches; same guarded random-state restoration. No native sheet inputs.",
         "scope": "Synthetic references on existing inventory items; selected creature supplies its own contained name. Mixed order, unresolved item ref, nested container non-recursion and flag gating verified. Natural cage/animal variants, rendered DF3D list and navigation remain unverified."
+      },
+      "navigation_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-000642",
+        "native": {
+          "carrier_return": {
+            "context": 0,
+            "id": 1017,
+            "kind": 0,
+            "open": true,
+            "scroll": 0,
+            "tab": 0
+          },
+          "clothing_click": {
+            "context": 0,
+            "id": 1017,
+            "kind": 0,
+            "open": true,
+            "scroll": 0,
+            "tab": 1
+          },
+          "diagnostic_restored": {
+            "context": 0,
+            "id": 1017,
+            "kind": 0,
+            "open": true,
+            "scroll": 0,
+            "tab": 1
+          },
+          "escape_from_item": {
+            "context": 0,
+            "id": 32064,
+            "kind": 1,
+            "open": false,
+            "scroll": 0,
+            "tab": -1
+          },
+          "help": [
+            {
+              "hover": 294,
+              "lines": [
+                "This item is part of",
+                "the creature's regular",
+                "clothing."
+              ],
+              "name": "clothing"
+            },
+            {
+              "hover": 295,
+              "lines": [
+                "View this item's sheet."
+              ],
+              "name": "inspect"
+            }
+          ],
+          "initial": {
+            "context": 0,
+            "id": 1017,
+            "kind": 0,
+            "open": true,
+            "scroll": 0,
+            "tab": 1
+          },
+          "inspect": {
+            "context": 0,
+            "id": 32064,
+            "kind": 1,
+            "open": true,
+            "scroll": 0,
+            "tab": -1
+          }
+        },
+        "inspection_cache_effect": {
+          "before": {
+            "body_part_id": 3,
+            "flags": 65544,
+            "id": 32064,
+            "mode": 2,
+            "weight_computed": false
+          },
+          "after": {
+            "body_part_id": 3,
+            "flags": 536936456,
+            "id": 32064,
+            "mode": 2,
+            "weight_computed": true
+          },
+          "scope": "Only inspected item weight_computed bit changes; all other inventory fields and flags unchanged. Clothing click changes nothing."
+        },
+        "source_save": "unchanged; owned DF14936 exited unsaved",
+        "diagnostics": "passed_with_known_issues: separate-renderer notice only in both GPU and paired header-wire process logs",
+        "scope": "First ordinary inventory item, clothing hover/click, inspect, Escape and carrier View. Diagnostic restoration is not a native Back outcome. Nested rows, other indicator states and public DF3D integration remain unverified."
       }
     }
   }

@@ -1458,8 +1458,23 @@ selected creature as the name input; it does not establish natural cage/animal
 coverage. All11 inventory rows, five role cases and six spatter cases also pass.
 DF37816 exits unsaved with source preservation; both GPU processes and paired
 header-wire logs have only the known renderer notice. Results are retained in
-`unit_items_reference.contents_reader`. Product transport, artwork/indicators,
-inspection navigation, resize/scrolling and rendered lifecycle remain unfinished. The Items
+`unit_items_reference.contents_reader`.
+
+Native navigation000642 on2026-11-01 verifies that the first inventory Inspect
+button replaces the creature sheet with that item's sheet. Escape closes the
+item sheet; there is no implicit return to Items. The item's carrier View link
+opens the same creature's Overview tab. Clicking the clothing indicator leaves
+selection and inventory unchanged. Native hover294 says "This item is part of
+the creature's regular clothing." and295 says "View this item's sheet."
+Inspection initializes only the inspected item's weight_computed flag in this
+fixture. Checks require exact preservation of all other inventory fields/flags;
+the earlier000321/000507 diagnostics caught this expected native lazy-cache
+effect, rather than a gameplay mutation. All three source saves are unchanged
+and their GPU/header-wire logs contain only the known renderer notice. Final
+DF14936 exits unsaved. `unit_items_reference.navigation_reference` distinguishes
+actual native outcomes from the harness's explicit diagnostic restoration.
+Nested navigation and other indicator states remain unverified. Product
+transport, artwork/indicators, resize/scrolling and rendered lifecycle remain unfinished. The Items
 route remains staged with the rest of the incomplete creature sheet.
 
 The Overview hauling line uses native selector1324b50(unit), the same call made

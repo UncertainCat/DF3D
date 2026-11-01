@@ -1725,7 +1725,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result["original_restored"]=probe->originalRestored;
             out.print("{}",Json::FastWriter().write(result));return CR_OK;
           }
-          const auto text=df3d_creature::selectedKnowledgeDetailProbe(df::unit::find(values[0]),values[1],values[2]);
+          const auto text=df3d_creature::selectedKnowledgeDetail(df::unit::find(values[0]),values[1],values[2]);
           Json::Value result(Json::objectValue);result["available"]=bool(text);
           result["unit_id"]=values[0];result["kind"]=values[1];result["id"]=values[2];
           if(text)result["text"]=DF2UTF(*text);

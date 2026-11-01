@@ -3,11 +3,11 @@
 #include "written_detail_native.h"
 #include "musical_detail_native.h"
 namespace df3d_creature {
-// Diagnostic selected-entry adapter. Native page construction revalidates
+// Safe-point selected-entry reader. Native page construction revalidates
 // membership on owned unit/soul scratch before any detail formatter runs.
-// Production admission still requires the formatter/event coverage documented
-// in ENGINEERING; this wrapper does not widen that acceptance.
-inline std::optional<std::string> selectedKnowledgeDetailProbe(df::unit* unit,int32_t kind,int32_t id) {
+// The same owned adapters serve live requests and diagnostic comparisons.
+// Unsupported or stale selections return no text; callers publish a typed result.
+inline std::optional<std::string> selectedKnowledgeDetail(df::unit* unit,int32_t kind,int32_t id) {
     if(!unit || kind<14 || kind>17 || id<0)return std::nullopt;
     const auto page=skillsPageProbe(unit,4);if(!page)return std::nullopt;
     bool found=false;
@@ -49,7 +49,7 @@ inline std::optional<KnowledgeCacheProbe> knowledgeCacheProbe(df::unit* unit,int
         reinterpret_cast<void*(*)(df::world*,int16_t,int32_t)>(base+0x14add70)(df::global::world,219,unit->hist_figure_id);
         result.coldInsertions=cache.size();
         const auto populated=digest();
-        result.text=selectedKnowledgeDetailProbe(unit,kind,id);
+        result.text=selectedKnowledgeDetail(unit,kind,id);
         result.nestedRestored=digest()==populated;
         struct ProbeException {};
         try{KnowledgeMaterialCacheRestore inner(cache);cache.clear();throw ProbeException{};}

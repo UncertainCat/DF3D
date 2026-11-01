@@ -201,6 +201,7 @@ func unit_carrier(expected: Dictionary) -> void:
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
 	if OS.get_environment("DF3D_UNIT_SKILLS_VIEW")=="1":
 		await exercise_skills_view(inspector)
+		if OS.get_environment("DF3D_UNIT_KNOWLEDGE_LIVE")=="1":await exercise_knowledge_live(inspector)
 		if OS.get_environment("DF3D_UNIT_KNOWLEDGE_VIEW")=="1":await exercise_knowledge_view(inspector)
 		if failed:return
 	if OS.get_environment("DF3D_UNIT_HEALTH_VIEW")=="1":
@@ -1154,6 +1155,46 @@ func exercise_expel_lifecycle(inspector,target:int,preview:Dictionary) -> void:
 	model.configure(actions);service.free();inspector.open_target(Vector3i.ZERO,1,target);await process_frame
 	var file:=FileAccess.open(directory+"/unit-expel-lifecycle-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"injected_expel_transport":true,"late_read":true,"pending_cancel":true,"reports_replacement":true,"overlay_retires_drag":true,"disconnect_retires_authority":true,"session_reset_releases_owner":true}));file.close()
+
+func exercise_knowledge_live(inspector) -> void:
+	check(inspector.knowledge.service==inspector.action_service,"Knowledge is not using the live action service")
+	var samples: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-skills-native.json"))
+	var results: Array=[]
+	for kind in [14,15,16,17]:
+		await health_tab(inspector,"Overview");await health_tab(inspector,"Skills");await health_tab(inspector,"Knowledge",true)
+		var sheet=inspector.creature_sheet
+		var list=sheet.skills_view
+		var sample: Dictionary={}
+		var index: int=-1
+		for candidate in samples.details:
+			if candidate.has("case"):continue
+			if int(candidate.kind)!=kind:continue
+			for i in list.rows.size():
+				if int(list.rows[i].knowledge_type)==kind and int(list.rows[i].id)==int(candidate.id):
+					sample=candidate;index=i;break
+			if index>=0:break
+		if index<0:continue # Native reference probes restore temporarily added knowledge.
+		list.first=index;list.layout()
+		await pointer(list.get_global_transform_with_canvas()*list.inspect_rect(index).get_center())
+		await drain()
+		if not check(inspector.knowledge.phase==inspector.knowledge.Phase.Ready,"Live Knowledge read failed for kind "+str(kind)):return
+		check(inspector.knowledge.text==sample.tagged_rows[0],"Live native Knowledge text differs")
+		await process_frame;await process_frame;await RenderingServer.frame_post_draw
+		var detail=sheet.knowledge_view
+		check(detail.is_visible_in_tree() and not list.visible,"Live Knowledge response did not open detail")
+		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+		actual.save_png(directory+"/unit-knowledge-live-"+str(kind)+".png")
+		var native:=Image.load_from_file(directory+"/unit-skills-detail-"+str(kind)+"-"+str(int(sample.id))+".png");native.convert(Image.FORMAT_RGB8)
+		var rect:=Rect2i(432,244,456,492)
+		var same:=actual.get_region(rect).get_data()==native.get_region(rect).get_data()
+		check(same,"Live Knowledge panel pixels differ for kind "+str(kind))
+		key(KEY_ESCAPE);await process_frame
+		check(inspector.is_open() and list.visible and not detail.visible,"Live detail Escape did not return to list")
+		results.append({"kind":kind,"id":sample.id,"native_text":true,"native_pixels":same,"escape_to_list":true})
+	await health_tab(inspector,"Overview")
+	check(not results.is_empty(),"No known native Knowledge samples exercised live")
+	var evidence:=FileAccess.open(directory+"/unit-knowledge-live-result.json",FileAccess.WRITE)
+	evidence.store_string(JSON.stringify({"success":not failed,"live_transport":true,"cases":results}));evidence.close()
 
 func exercise_knowledge_view(inspector) -> void:
 	var source=preload("res://tests/farm_state_test.gd").World.new()

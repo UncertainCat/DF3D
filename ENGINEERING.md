@@ -4000,10 +4000,23 @@ Request/state defaults, required version and region move from109to110.
 Rebuild and deploy bridge, model and viewer together. Older regions are isolated;
 no missing identity or detail is synthesized from old recordings. The action is
 classified as an inspection request, with no automatic retry policy added.
-The native safe-point handler, membership revalidation at dispatch and broader
-formatter source validation remain pending. Viewer request ownership/navigation
-are verified separately below. Creature exposure remains unchanged. Diagnostic
-formatter acceptance does not authorize a blanket native call from this domain.
+The native safe-point handler rebuilds the selected unit's Knowledge list on
+owned scratch and revalidates kind/entry membership before invoking the existing
+owned formatter. It converts native text to UTF-8 and enforces the payload bound
+before publication. Missing units return Rejected; unavailable entries or
+unsupported formatter inputs return Unavailable without text. Creature exposure
+remains unchanged; this handler does not imply complete creature-sheet support.
+
+Protected live run `stockpile-storage-native-farm-discovery-20261101-085433`
+exercises the main-scene magnifier through the real management channel for the
+creature's known poetic form0 and written content302. Both tagged descriptions
+match native text, both456x492 body crops match exactly, and Escape returns to
+the list. Music and dance use the same handler dispatch but were not known by
+this creature; their existing diagnostic and rendering coverage remains separate.
+Owned DF47180 exited unsaved and source preservation passed. Each of the three
+Godot processes reported only the known startup notice. Root/core passes in
+`knowledge-live-integration`. The earlier085246 harness omitted explicit polling
+and failed; it is not workflow acceptance.
 
 Root/core passes in `knowledge-contract-final`. `knowledge-contract-roundtrip`
 passes the real extension with an isolated fake producer: four native kinds,
@@ -4049,12 +4062,12 @@ isolated controller check.
 
 ### Selected Knowledge detail membership
 
-`creature_knowledge_native.h` adds a diagnostic selected-entry adapter. It
+`creature_knowledge_native.h` provides the shared live/diagnostic selected-entry adapter. It
 rebuilds Knowledge through the owned native Skills page helper, matches both
 kind and ID, and only then dispatches the existing owned poetic/musical/dance/
 written formatter. It neither reads sheet selection nor trusts the client's
 previous row list. `unit-knowledge-detail-probe` reports availability without
-text for rejected membership; it is not a production management action.
+text for rejected membership; production requests use `CreatureKnowledgeRead`.
 
 Protected054128 checks nine cases for each of four native magnifier details:
 known entry, missing creature, missing entry, scholarly/invalid kinds, negative

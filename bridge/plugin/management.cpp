@@ -85,6 +85,7 @@
 #include "creature_health_native.h"
 #include "creature_health_pages_native.h"
 #include "creature_skills_native.h"
+#include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
 #include "creature_items_native.h"
 #include "farm_transaction.h"
@@ -386,11 +387,18 @@ struct CreatureExpelResult {
   std::vector<ResidentAppearanceRecipe> icons;
 };
 std::optional<CreatureExpelResult> creatureExpel;
+struct CreatureKnowledgeResult {
+  int32_t unitId=-1,kind=-1,id=-1;
+  m::CreatureKnowledgeOutcome outcome=m::CreatureKnowledgeOutcome::Rejected;
+  std::string text;
+};
+std::optional<CreatureKnowledgeResult> creatureKnowledge;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
   creaturePosition.reset();
   creatureExpel.reset();
+  creatureKnowledge.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -786,6 +794,11 @@ void publish() {
     }
     creatureExpelResult=m::CreateCreatureExpelState(b,creatureExpel->outcome,preview);
   }
+  flatbuffers::Offset<m::CreatureKnowledgeState> creatureKnowledgeResult;
+  if(creatureKnowledge) {
+    const auto& value=*creatureKnowledge;
+    creatureKnowledgeResult=m::CreateCreatureKnowledgeState(b,value.unitId,value.kind,value.id,value.outcome,b.CreateString(value.text));
+  }
   if(worldHover) {
     std::vector<flatbuffers::Offset<m::WorldHoverEntry>> entries;
     for(const auto& e:*worldHover) entries.push_back(m::CreateWorldHoverEntry(b,b.CreateString(e.text),uint8_t(e.foreground),uint8_t(e.background),e.bright,e.kind,e.id));
@@ -794,7 +807,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -2987,6 +3000,24 @@ void run(color_ostream& out) {
         if(!page.truncated || !page.choices.empty()){areaPage.locationNamePage=std::move(page);status=m::ManagementStatus::Ok;}
       }
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::CreatureKnowledgeRead) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->creature_knowledge();
+    creatureKnowledge.emplace();auto& result=*creatureKnowledge;
+    result.unitId=query.unit_id();result.kind=query.kind();result.id=query.id();
+    if(auto* selected=df::unit::find(result.unitId)) {
+      result.outcome=m::CreatureKnowledgeOutcome::Unavailable;
+      const auto text=df3d_creature::selectedKnowledgeDetail(selected,result.kind,result.id);
+      if(text) {
+        auto utf8=DF2UTF(*text);
+        if(utf8.size()<=65536 && utf8.find('\0')==std::string::npos) {
+          result.text=std::move(utf8);result.outcome=m::CreatureKnowledgeOutcome::Ready;
+          status=m::ManagementStatus::Ok;
+        }
+      }
+    }
     publish();return;
   }
   if(r->action()==m::ManagementAction::CreatureExpelRead || r->action()==m::ManagementAction::CreatureExpelApply) {

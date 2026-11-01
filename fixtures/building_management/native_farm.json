@@ -49280,6 +49280,31 @@
           ],
           "probe_correction": "Gesture state is sampled before screenshot acknowledgement yields to native events; earlier231417 drag snapshots were interrupted and do not establish native drag behavior."
         }
+      },
+      "lifecycle_reference": {
+        "status": "rendered view/controller/service lifecycle accepted with injected transport; full main-scene lifecycle and failure feedback unfinished",
+        "check": "build/qa/unit-expel-lifecycle-final",
+        "script": "presentations/godot/project/tests/creature_expel_capture.gd",
+        "native_semantic_evidence": false,
+        "checks": [
+          "pending read exposes no confirmation",
+          "late read cannot restore closed controls",
+          "pending final action disables confirmation",
+          "duplicate clicks do not submit",
+          "rejected and unknown outcomes remove visible authority",
+          "late success cannot revive failed view",
+          "Cancel cancels queued or detaches sent work",
+          "replacement target waits for fresh authority",
+          "old target completion cannot affect replacement",
+          "disconnect retires authority and prevents submission",
+          "native Unknown retained as detached uncertainty by shared service"
+        ],
+        "diagnostics": "GPU: documented startup/finalize/ObjectDB only; core/controller/service/composition clean",
+        "limitations": [
+          "failed and unavailable phases still have blank body",
+          "full inspector replacement and disconnect integration",
+          "user-facing asynchronous status design"
+        ]
       }
     }
   }

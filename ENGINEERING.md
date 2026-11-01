@@ -2743,9 +2743,18 @@ wheel input. unit-expel-input matches all32 observations through actual rendered
 Godot input plus all14 pixel cases. It has only documented GPU diagnostics;
 unit-expel-input-final passes core, controller and composition checks cleanly.
 The native clients have only the known startup notice, and owned DF39076 exits
-unsaved with the source preserved. Scrollbar hover pixels, long names/animation,
-full composed failure/replacement lifecycle and active-job/squad/later-departure
-effect variants remain unfinished.
+unsaved with the source preserved. The shared semantic service classifies typed
+CreatureExpelOutcome.Unknown as detached uncertainty, matching the controller
+and preventing loss of its unresolved mutation record. Injected transport tests
+exercise the rendered view with the real controller/service: pending duplicate
+clicks, queued/sent cancellation, late read and mutation replies, failure authority
+retirement, replacement targets and disconnect. unit-expel-lifecycle-final passes
+those checks plus all14 pixel and32 input cases; only documented GPU diagnostics
+remain, while core/controller/service/composition checks are clean. This does not
+establish full main-scene disconnect/replacement acceptance or user-facing failure
+feedback: Reading/Rejected/Unknown/Unavailable still have a blank Expel body.
+Scrollbar hover pixels, long names/animation, those composed lifecycle/feedback
+gaps and active-job/squad/later-departure effect variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
 ## Native item holder provider

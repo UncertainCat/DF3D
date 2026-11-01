@@ -32,6 +32,73 @@ func input_cases(view,mode: String,reference: Dictionary) -> bool:
 	await process_frame;observe.call("STANDARDSCROLL_PAGEUP")
 	for failure in failures:push_error("Expel native input differs: "+mode+" "+failure)
 	return failures.is_empty()
+func lifecycle_cases(assets,fixture: Dictionary) -> bool:
+	var contract=preload("res://scripts/management_contract.gd")
+	var source=preload("res://tests/farm_state_test.gd").World.new()
+	var service=preload("res://scripts/semantic_action_service.gd").new();service.configure(source);service.poll()
+	var model=preload("res://scripts/creature_expel_state.gd").new();model.configure(service)
+	var view=preload("res://scripts/creature_expel_view.gd").new();view.position=Vector2(424,160);view.size=Vector2(472,588)
+	root.size=Vector2i(1200,800);root.add_child(view);view.configure(assets,model)
+	var preview:Dictionary=fixture.cases[1].preview.duplicate(true)
+	preview.unit_id=1017;preview.eligible=true;preview.reason=-1
+	preview.destinations=[]
+	for row in preview.units:
+		row.id=int(row.id);row.name_color.effect=int(row.name_color.effect)
+		for layer in row.sheet_icon.layers:
+			for i in layer.size():layer[i]=int(layer[i])
+		for key in ["color","alternate"]:
+			for i in 3:row.name_color[key][i]=int(row.name_color[key][i])
+	var failures:Array=[]
+	var check:=func(ok,message):
+		if not ok:failures.append(message)
+	var reply:=func(outcome):
+		var payload:Dictionary={"outcome":outcome}
+		if outcome==contract.CreatureExpelOutcome.Ready:payload.preview=preview.duplicate(true)
+		source.state={"world_epoch":5,"revision":source.calls.size()+1,"request_seq":source.calls.size(),"action":source.calls[-1].request.action,"status":contract.ManagementStatus.Ok if outcome in [contract.CreatureExpelOutcome.Ready,contract.CreatureExpelOutcome.Applied] else contract.ManagementStatus.Rejected,"creature_expel":payload}
+		service.poll()
+	var ready:=func():
+		model.open(1017);service.poll();reply.call(contract.CreatureExpelOutcome.Ready)
+	var click:=func(point):
+		motion(point);mouse(point,MOUSE_BUTTON_LEFT,true);mouse(point,MOUSE_BUTTON_LEFT,false)
+	var completed:Array=[];model.applied.connect(func(id):completed.append(id))
+	model.open(1017);service.poll();await process_frame
+	check.call(model.phase==model.Phase.Reading and view.get_node_or_null("ConfirmExpel")==null,"pending read grants no visible confirmation")
+	model.close();reply.call(contract.CreatureExpelOutcome.Ready);await process_frame
+	check.call(model.phase==model.Phase.Closed and view.get_node_or_null("ConfirmExpel")==null,"late read cannot restore retired controls")
+	for outcome in [contract.CreatureExpelOutcome.Rejected,contract.CreatureExpelOutcome.Unknown]:
+		ready.call();await process_frame
+		click.call(Vector2(476,730));service.poll();await process_frame
+		check.call(model.phase==model.Phase.Applying and view.get_node("ConfirmExpel").disabled,"pending mutation disables final button")
+		var count:int=source.calls.size();click.call(Vector2(476,730));service.poll()
+		check.call(source.calls.size()==count,"pending click cannot send duplicate departure")
+		reply.call(outcome);await process_frame
+		check.call(model.snapshot().is_empty() and view.get_node_or_null("ConfirmExpel")==null,"failed outcome retires visible authority")
+		click.call(Vector2(476,730));service.poll()
+		check.call(source.calls.size()==count,"click after failure cannot replay departure")
+		reply.call(contract.CreatureExpelOutcome.Applied);await process_frame
+		check.call(completed.is_empty() and view.get_node_or_null("ConfirmExpel")==null,"late success cannot revive failed view")
+	for sent in [false,true]:
+		ready.call();await process_frame;click.call(Vector2(476,730))
+		if sent:service.poll()
+		await process_frame
+		var count:int=source.calls.size();click.call(Vector2(856,730));service.poll();await process_frame
+		check.call(model.phase==model.Phase.Closed and source.calls.size()==count,"Cancel retires pending view without sending queued intent")
+		if sent:reply.call(contract.CreatureExpelOutcome.Applied)
+		check.call(completed.is_empty() and view.get_node_or_null("ConfirmExpel")==null,"cancelled late success remains detached")
+	ready.call();await process_frame;click.call(Vector2(476,730));service.poll()
+	model.open(2345);reply.call(contract.CreatureExpelOutcome.Applied);await process_frame
+	check.call(model.unit_id==2345 and model.phase==model.Phase.Reading and completed.is_empty() and view.get_node_or_null("ConfirmExpel")==null,"old departure cannot restore controls on replacement target")
+	preview.unit_id=2345;preview.units[0].id=2345;reply.call(contract.CreatureExpelOutcome.Ready);await process_frame
+	check.call(model.phase==model.Phase.Confirming and model.snapshot().unit_id==2345 and view.get_node_or_null("ConfirmExpel")!=null,"replacement renders only its fresh authority")
+	preview.unit_id=1017;preview.units[0].id=1017
+	ready.call();await process_frame;click.call(Vector2(476,730));service.poll()
+	source.state={"world_epoch":5,"revision":0,"status":0,"transport_alive":false};service.poll();await process_frame
+	check.call(model.phase==model.Phase.Unavailable and view.get_node_or_null("ConfirmExpel")==null and model.snapshot().is_empty(),"disconnect retires visible mutation authority")
+	var count:int=source.calls.size();click.call(Vector2(476,730));service.poll()
+	check.call(source.calls.size()==count and completed.is_empty(),"disconnected input cannot send or claim success")
+	view.queue_free();await process_frame;model.dispose();service.free()
+	for failure in failures:push_error("Expel rendered lifecycle: "+failure)
+	return failures.is_empty()
 func run() -> void:
 	if DisplayServer.get_name()=="headless":quit(77);return
 	root.size=Vector2i(1200,800)
@@ -74,6 +141,7 @@ func run() -> void:
 		if sample.name in ["layout-group-default","layout-destinations-default"]:
 			if not await input_cases(view,"group" if sample.phase==3 else "destinations",fixture.layout_reference.input_reference):failed=true
 		view.queue_free();background.queue_free();await process_frame
+	if not await lifecycle_cases(world,fixture):failed=true
 	world.queue_free();await process_frame
 	if not failed:print("CREATURE_EXPEL_CAPTURE_PASS")
 	quit(1 if failed else 0)

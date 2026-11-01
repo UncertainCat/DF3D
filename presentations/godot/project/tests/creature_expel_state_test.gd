@@ -38,8 +38,10 @@ func run() -> void:
 	setup_expel();model.open(86);service.poll();var ineligible:=preview();ineligible.eligible=false;ineligible.units=[];expel_reply(ineligible)
 	check(model.phase==Expel.Phase.Refused and not model.confirm(),"ineligible target cannot confirm")
 	for outcome in [C.CreatureExpelOutcome.Rejected,C.CreatureExpelOutcome.Unsupported,C.CreatureExpelOutcome.Unknown]:
-		setup_expel();ready_expel();model.confirm();service.poll();expel_reply({},outcome);service.poll()
+		setup_expel();ready_expel();model.confirm();service.poll();var pending_ticket:int=model.ticket;expel_reply({},outcome);service.poll()
 		check(model.phase==(Expel.Phase.Unknown if outcome==C.CreatureExpelOutcome.Unknown else Expel.Phase.Rejected) and model.snapshot().is_empty() and not model.confirm() and world.calls.size()==2,"failed/uncertain action never replays")
+		if outcome==C.CreatureExpelOutcome.Unknown:
+			check(service.result(pending_ticket).get("outcome")=="unknown" and not service.last_detached_mutation("creature_expel").is_empty(),"native Unknown remains detached uncertainty in shared service")
 	setup_expel();ready_expel();model.confirm();service.poll();service.poll(16.0)
 	check(model.phase==Expel.Phase.Unknown and world.calls.size()==2,"transport timeout has no automatic retry")
 	expel_reply({},C.CreatureExpelOutcome.Applied)

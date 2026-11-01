@@ -59238,6 +59238,58 @@
         "source": "build/stockpile-storage-native-farm-discovery-20261101-111508",
         "source_save_unchanged": true,
         "scope": "Native populated Locations layout and actual occupation only; no edit acceptance"
+      },
+      "location_provider_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-112154",
+        "unit_id": 6136,
+        "rows": [
+          {
+            "facts": [
+              {
+                "has_number": true,
+                "key": "location_id",
+                "number": 3,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "site_id",
+                "number": 651,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "occupation_type",
+                "number": 1,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "location_type",
+                "number": 2,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "location_tier",
+                "number": 1,
+                "text": ""
+              },
+              {
+                "has_number": false,
+                "key": "location_name",
+                "number": 0,
+                "text": "The White Temple"
+              }
+            ],
+            "id": 93,
+            "name": "Performer",
+            "related_id": 3
+          }
+        ],
+        "native_identity_role_and_location_name_match": true,
+        "source_save_unchanged": true,
+        "scope": "Creature inspection transport, not visible Locations controls"
       }
     },
     "unit_rooms_reference": {

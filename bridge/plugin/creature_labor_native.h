@@ -2,8 +2,64 @@
 #include "creature_office_native.h"
 #include "df/histfig_entity_link_positionst.h"
 #include "df/workshop_profile.h"
+#include "df/occupation.h"
+#include "df/abstract_building.h"
+#include "df/abstract_building_contents.h"
+#include "df/world_site.h"
 
 namespace df3d_creature {
+struct LaborLocation {
+    int32_t id=-1,type=-1,siteId=-1,locationId=-1,locationType=-1,tier=-1;
+    std::string role,name;
+};
+inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,size;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x67e80,0x10,UINT64_C(0x7580a2b541177a3a)},
+            {0x6ff00,0xa9,UINT64_C(0x05b714178b312b1f)},
+            {0x17496c,0x2d1,UINT64_C(0xe8556955319c4255)},
+            {0x174c3d,0xd9,UINT64_C(0xf047015836ce3169)},
+            {0xa946e0,0x7c2,UINT64_C(0xdbc3db5f052419ee)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.size;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    if(!supported || !unit || !df::global::plotinfo)return std::nullopt;
+    auto* site=df::world_site::find(df::global::plotinfo->site_id);
+    if(!site)return std::nullopt;
+    static_assert(offsetof(df::world_site,id)==0x88 && offsetof(df::world_site,buildings)==0x2b0);
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    // Native renderer iterates this simulation vector directly; no menu list.
+    // Captions are the literal strings selected by its pinned role switch.
+    constexpr size_t captions[]={0x15ffd40,0x15ffd30,0x15ffd28,0x15ffd10,0x15ffd00,0x15ffd1c,0,0x15ffcf8,0x15ffce8,0x15fff10,0x15fff00};
+    std::vector<LaborLocation> rows;rows.reserve(unit->occupations.size());
+    for(const auto* occupation:unit->occupations) {
+        if(!occupation)return std::nullopt;
+        LaborLocation row;row.id=occupation->id;row.type=int32_t(occupation->type);
+        row.siteId=occupation->site_id;row.locationId=occupation->location_id;
+        if(row.type>=0 && row.type<11 && captions[row.type])row.role=reinterpret_cast<const char*>(base+captions[row.type]);
+        if(row.locationId>=0 && row.siteId==site->id) {
+            auto* place=reinterpret_cast<df::abstract_building* (*)(df::world_site*,int32_t)>(base+0x67e80)(site,row.locationId);
+            if(place && !place->flags.is_set(df::abstract_building_flags::DOES_NOT_EXIST) && !place->flags.is_set(df::abstract_building_flags::WG_RUINED)) {
+                row.locationType=int32_t(place->getType());
+                if(const auto* contents=place->getContents())row.tier=contents->location_tier;
+                if(const auto* name=place->getName();name && name->has_name) {
+                    auto owned=*name;
+                    reinterpret_cast<void (*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&row.name,true,false);
+                }
+            }
+        }
+        rows.push_back(std::move(row));
+    }
+    return rows;
+}
 inline uint64_t workshopAssignmentRevision(df::unit* unit,df::building* building,df::workshop_profile* profile) {
     uint64_t hash=UINT64_C(14695981039346656037);
     const auto add=[&](int32_t value) {

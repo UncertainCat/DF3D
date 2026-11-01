@@ -3303,7 +3303,11 @@ resolution requires a matching current site, a nonnegative location ID, and
 neither WG_RUINED nor DOES_NOT_EXIST. Native67e80 resolves the location;
 getName virtual2 and a946e0(name, owned string, true, false) supply its translated
 name. Occupation captions are the native literals selected at17496c..174c3d,
-not enum spellings. The current generic section23 still needs replacement.
+not enum spellings. Section23 now calls `laborLocations`, which preserves this
+order and supplies native role/name, location kind/tier, site and location IDs.
+The lookup receives the current `world_site`, with statically checked ID and
+building-vector offsets; no native menu state is used. Name formatting uses an
+owned language-name copy and output string.
 
 Protected111508 on2026-11-01 captures actual performer6136, occupation93,
 location3/site651: "Performer" above "The White Temple", a location icon and
@@ -3316,6 +3320,15 @@ not acceptance of DF3D Locations rendering or edits. Native removal at
 1b53ce..1b5427 detaches the occupation via ba570, updates worker jobs through
 133bcf0 with the temporary unit flag, then clears both occupation identities.
 Its owned semantic exposure remains unfinished.
+
+Protected112154 on2026-11-01 verifies the new section23 through the actual
+main-scene creature inspection for performer6136: occupation93, role Performer,
+and translated location name The White Temple match the native capture.
+`location_provider_reference` retains the transported facts. Owned DF45280 exits
+unsaved, source preservation passes, and three Godot processes report only the
+known startup notice. Initial111945 exposed an incorrect native lookup argument
+and is excluded; the corrected call takes world_site rather than plotinfo.
+The native Locations row controls and their actions remain unfinished.
 
 ### Creature Rooms native list
 

@@ -129,6 +129,26 @@ func exercise_labor_view(inspector,target: int) -> void:
 	file.store_string(JSON.stringify({"success":not failed,"native_pixels":not failed,"actual_clicks":true,"restored":true}));file.close()
 
 func expected_filename() -> String:return "carrier-expected.json"
+func exercise_labor_locations(inspector,target: int) -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-labor-native.json")).location_fixture
+	var actor:=int(reference.unit_id)
+	inspector.open_target(Vector3i.ZERO,1,actor)
+	var rows:Array=[]
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01)
+		for section in world.creature_info_state(actor).get("detail",{}).get("sections",[]):
+			if section.key=="locations":rows=section.records
+		if rows.size()==reference.occupations.size():break
+		await create_timer(0.02).timeout
+	check(rows.size()==reference.occupations.size(),"Native location occupations did not reach viewer")
+	if not rows.is_empty():
+		check(int(rows[0].id)==int(reference.occupations[0].id),"Location occupation identity differs")
+		check(rows[0].name==str(reference.lines[1].text).strip_edges(),"Native occupation caption differs")
+		check(inspector.creature_sheet.fact_value(rows[0],"location_name","")==str(reference.lines[2].text).strip_edges(),"Native location name differs")
+	var file:=FileAccess.open(directory+"/unit-labor-locations-wire.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"unit_id":actor,"rows":rows}));file.close()
+	inspector.open_target(Vector3i.ZERO,1,target);await drain()
 func result_filename() -> String:return "carrier-scene-result.json"
 func exercise(expected: Dictionary) -> void:
 	if int(expected.snapshot.carrier.kind)==2:
@@ -342,6 +362,7 @@ func unit_carrier(expected: Dictionary) -> void:
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
 	if OS.get_environment("DF3D_UNIT_ROOMS_VIEW")=="1":await exercise_rooms_view(inspector)
+	if OS.get_environment("DF3D_UNIT_LABOR_LOCATIONS")=="1":await exercise_labor_locations(inspector,target)
 	if OS.get_environment("DF3D_UNIT_LABOR_WIRE")=="1":
 		await exercise_labor_wire(target)
 		if failed:return

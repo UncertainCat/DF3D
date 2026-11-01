@@ -652,10 +652,14 @@ return function(request)
   end
  end)
  section(23,function(s)
-  each(s,u.occupations,function(v)
-   local r=record(s,v.id,enum(df.occupation_type,v.type),v.location_id)
-   fact(s,r,'location_id',v.location_id);fact(s,r,'site_id',v.site_id);fact(s,r,'group_id',v.group_id)
-  end)
+  if not request.location_list then return end
+  for i,v in ipairs(request.location_list(u.id))do
+   if i>256 then s.truncated=true;result.complete=false;break end
+   local r=record(s,v.id,utf(v.role),v.location_id)
+   fact(s,r,'location_id',v.location_id);fact(s,r,'site_id',v.site_id)
+   fact(s,r,'occupation_type',v.type);fact(s,r,'location_type',v.location_type)
+   fact(s,r,'location_tier',v.tier);fact(s,r,'location_name',utf(v.name))
+  end
  end)
  section(24,function(s)
   local all=df.global.plotinfo.training.training_assignments;local limit=math.min(#all,512)

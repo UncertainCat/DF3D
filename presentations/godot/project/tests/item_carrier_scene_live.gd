@@ -443,6 +443,7 @@ func unit_carrier(expected: Dictionary) -> void:
 		await exercise_labor_locations(inspector,target)
 	if OS.get_environment("DF3D_UNIT_LABOR_ANIMALS")=="1":await exercise_work_animals(inspector,target)
 	if OS.get_environment("DF3D_UNIT_MILITARY")=="1":await exercise_military_kills(inspector)
+	if OS.get_environment("DF3D_UNIT_PERSONALITY")=="1":await exercise_personality(inspector)
 	if OS.get_environment("DF3D_UNIT_THOUGHTS")=="1":await exercise_thoughts(inspector)
 	if OS.get_environment("DF3D_UNIT_SOCIAL")=="1":
 		await exercise_relations(inspector)
@@ -1778,4 +1779,40 @@ func exercise_thoughts(inspector) -> void:
 		check(not view.scrollbar.dragging,"Thoughts overlay retained drag")
 		results.append({"unit_id":target,"page":page.name,"native_pixels":same,"native_circumstances":descriptions,"expected_text":expected,"actual_text":actual,"complete_text_match":expected==actual})
 	var file:=FileAccess.open(directory+"/unit-thoughts-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()
+
+func exercise_personality(inspector) -> void:
+	var reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-personality-native.json"))
+	var results:Array=[]
+	for page in reference.pages:
+		if page.name!="Values":continue
+		var target:=int(page.unit_id)
+		inspector.open_target(Vector3i.ZERO,1,target)
+		await health_tab(inspector,"Personality");await health_tab(inspector,"Values",true)
+		var deadline:=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01)
+			var shown:Dictionary=inspector.creature_display.get("detail",{})
+			if int(shown.get("unit_id",-1))==target and shown.has("sex"):break
+			await create_timer(0.01).timeout
+		if not check(int(inspector.creature_display.get("detail",{}).get("unit_id",-1))==target,"Personality detail did not settle"):return
+		await process_frame;await RenderingServer.frame_post_draw
+		var view=inspector.creature_sheet.personality_view
+		if not check(is_instance_valid(view),"Native Values view missing"):return
+		check(view.rows==page.tagged_rows,"Native Values tagged text differs: "+str(target))
+		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+		var name:="unit-personality-"+str(target)+"-values"
+		actual.save_png(directory+"/"+name+"-scene.png")
+		var native_image:=Image.load_from_file(directory+"/"+name+".png");native_image.convert(Image.FORMAT_RGB8)
+		var rect:=Rect2i(432,232,456,504)
+		var same:=actual.get_region(rect).get_data()==native_image.get_region(rect).get_data()
+		check(same,"Native Values pixels differ: "+str(target))
+		inspector.redraw();await process_frame
+		check(inspector.creature_sheet.personality_view==view,"Values refresh replaced view")
+		view.scrollbar.dragging=true;inspector.cancel_gesture()
+		check(not view.scrollbar.dragging,"Values overlay retained drag")
+		results.append({"unit_id":target,"native_text":view.rows==page.tagged_rows,"native_pixels":same,"rows":view.rows})
+		await health_tab(inspector,"Traits",true);await process_frame
+		check(not is_instance_valid(inspector.creature_sheet.personality_view),"Leaving Values retained its visible view")
+	var file:=FileAccess.open(directory+"/unit-personality-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()

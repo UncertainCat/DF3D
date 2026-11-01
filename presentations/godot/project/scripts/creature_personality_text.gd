@@ -98,63 +98,6 @@ static func facet_description(sheet, sex: int) -> Array:
  for row in rows: append_spans(result,row.text,Native.colors[15])
  return result
 
-static func value_description(sheet, sex: int) -> Array:
- var data := Thoughts.prepare(sheet.owner.world)
- if not data.has("value_base_descriptions"): return []
- var pronouns := Native.sex_pronouns(sex)
- var causes := cause_inputs(sheet)
- var personal := {};var cultural := {};var shared := {}
- var groups := [[],[]]
- for record in sheet.records_for("values"):
-  var id := int(sheet.fact_value(record,"value_id",-1))
-  if id<0: continue
-  if sheet.fact_value(record,"record_type")=="cultural_value": cultural[id]=record
-  else: personal[id]=record
- for id in cultural:
-  var strength := int(sheet.fact_value(cultural[id],"strength",0))
-  if absi(strength)<=10: continue
-  if not personal.has(id) or Native.value_bucket(strength)==Native.value_bucket(int(sheet.fact_value(personal[id],"strength",0))):
-   shared[id]=true;groups[0].append(cultural[id])
- for id in personal:
-  if shared.has(id): continue
-  var strength := int(sheet.fact_value(personal[id],"strength",0))
-  if absi(strength)<=10 and (not cultural.has(id) or absi(int(sheet.fact_value(cultural[id],"strength",0)))<=10): continue
-  groups[1].append(personal[id])
- var result := []
- var join: Dictionary=data.value_base_joiners
- for group_index in 2:
-  var clauses := []
-  for record in groups[group_index]:
-   var strength := int(sheet.fact_value(record,"strength",0))
-   var tier := 4-Native.value_bucket(strength)
-   for rule in data.value_base_descriptions:
-    if int(rule.id)!=int(sheet.fact_value(record,"value_id",-1)): continue
-    for band in rule.bands:
-     if int(band.tier)!=tier: continue
-     var clause := ""
-     for part in band.parts:
-      if part.has("pronoun"): clause+=str(pronouns[part.pronoun])
-      elif part.has("field"):
-       var term := str(sheet.fact_value(record,part.field,""))
-       clause+=str(data.craftsman_fallback.text) if term.is_empty() else term
-      else: clause+=str(part.text)
-     if group_index==1: clause+=cause(sheet,int(rule.id),"value",causes,data)
-     clauses.append({"score":2*absi(strength)+(1 if strength>0 else 0),"text":clause})
-  Native.stable_magnitude_sort(clauses)
-  if clauses.is_empty(): continue
-  var sentence: String=join.culture_prefix.text+pronouns.possessive+join.culture_connector.text+pronouns.subject+join.subject_separator.text if group_index==0 else pronouns.subject.capitalize()+join.subject_separator.text+join.personally.text
-  for i in clauses.size():
-   if i>0: sentence+=join["and"].text if i==clauses.size()-1 else join.comma.text
-   sentence+=str(clauses[i].text)
-  append_spans(result,sentence+join.suffix.text,Native.colors[7] if group_index==0 else Native.colors[11])
- for record in sheet.records_for("dreams"):
-  for rule in data.get("dream_descriptions",[]):
-   if int(rule.id)!=int(sheet.fact_value(record,"goal_type",-1)): continue
-   var sentence: String=pronouns.subject.capitalize()+" "+rule.text
-   if sheet.fact_value(record,"accomplished")=="yes": sentence+=data.dream_joiners.accomplished.text
-   result.append({"text":sentence+data.dream_joiners.suffix.text,"color":Native.colors[14]})
- return result
-
 static func mannerisms(sheet, sex: int) -> Array:
  var data := Native.load_text(sheet.owner.world)
  var pronouns := Native.sex_pronouns(sex)

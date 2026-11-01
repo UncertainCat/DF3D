@@ -19,6 +19,7 @@ var kills_view
 var relations_view
 var groups_view
 var thoughts_view
+var personality_view
 var uniform_view
 var skills_view
 var knowledge_view
@@ -38,6 +39,7 @@ func reset(id: int):
  if is_instance_valid(relations_view):relations_view.first=0;relations_view.scrollbar.dragging=false
  if is_instance_valid(groups_view):groups_view.first=0;groups_view.scrollbar.dragging=false
  if is_instance_valid(thoughts_view):thoughts_view.first=0;thoughts_view.scrollbar.dragging=false
+ if is_instance_valid(personality_view):personality_view.first=0;personality_view.scrollbar.dragging=false
  if is_instance_valid(uniform_view):uniform_view.first=0;uniform_view.scrollbar.dragging=false
  if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
  if is_instance_valid(rooms_view):rooms_view.first=0;rooms_view.scrollbar.dragging=false
@@ -126,7 +128,7 @@ func tabs_at(names: Array, y: float, nested := false) -> float:
   style.set_content_margin(SIDE_TOP,0);style.set_content_margin(SIDE_BOTTOM,0)
   for state in ["normal","hover","pressed","focus"]: button.add_theme_stylebox_override(state,style)
   for state in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:
-   button.add_theme_color_override(state,(Color8(0,44,70) if nested and tab in ["Labor","Military","Thoughts"] else Color8(70,44,0)) if selected else Color.WHITE)
+   button.add_theme_color_override(state,(Color8(0,44,70) if nested and tab in ["Labor","Military","Thoughts","Personality"] else Color8(70,44,0)) if selected else Color.WHITE)
   button.pressed.connect(func(): change_tab(title,nested))
   owner.body.add_child(button)
   button.size=Vector2(width,24)
@@ -454,6 +456,16 @@ func render(controller, state: Dictionary):
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
+ if tab=="Personality" and subtabs.get(tab)=="Values":
+  scroll=null
+  if not is_instance_valid(personality_view):
+   personality_view=preload("res://scripts/native_creature_paragraph_view.gd").new()
+   owner.body.add_child(personality_view);personality_view.configure(owner.world)
+   personality_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+  personality_view.position=Vector2(0,y);personality_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  var native_values:=""
+  for row in records_for("values"):native_values+=str(fact_value(row,"native_text",""))
+  personality_view.present([native_values] if not native_values.is_empty() else [],location());return
  if tab=="Thoughts":
   scroll=null
   if not is_instance_valid(thoughts_view):
@@ -553,8 +565,6 @@ func render(controller, state: Dictionary):
   paragraph(content,Personality.facet_description(self,int(detail.get("sex",-1))))
   paragraph(content,Personality.mannerisms(self,int(detail.get("sex",-1))))
   paragraph(content,Personality.conditions(self,int(detail.get("sex",-1))))
- elif tab=="Personality" and subtabs.get(tab)=="Values":
-  paragraph(content,Personality.value_description(self,int(detail.get("sex",-1))))
  elif tab=="Personality" and subtabs.get(tab)=="Preferences":
   paragraph(content,NativeText.preference_description(self,int(detail.get("sex",-1))))
  elif tab=="Personality" and subtabs.get(tab)=="Needs":

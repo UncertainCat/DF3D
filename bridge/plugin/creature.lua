@@ -321,6 +321,11 @@ return function(request)
    fact(s,r,'value_id',i);fact(s,r,'strength',value)
    if i==df.value_type.CRAFTSMANSHIP then fact(s,r,'craftsman_term',craftsman)end
   end)end
+  local native=request.personality_values(u.id)
+  for first=1,#native,256 do
+   local r=record(s,-1-(first-1)//256,'')
+   fact(s,r,'record_type','native_values');fact(s,r,'native_text',native:sub(first,first+255))
+  end
  end)
  section(8,function(s)
   local p=personality(s);if not p then return end

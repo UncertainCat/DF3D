@@ -3442,6 +3442,36 @@ not live-covered here. Initial121533 caught missing diagnostic camera restoratio
 after native Inspect.121729's client passed, but its completion acknowledgement
 exceeded the30s combined-lane limit; this multi-panel lane now allows60s.
 
+### Creature Personality
+
+`creature_personality_native.h` calls nativee248a0 for the entire Values page,
+using the same arguments as4815d6: an owned personality, owned unit containing
+race/sex for circumstance descriptions, soul race/sex, owned output string,
+true and flags3. The routine reads cultural/personal values, remembered causes
+and dreams, sorts owned temporary records and produces native paragraph/color
+tags. Referenced value, memory and cultural records are read-only; shared RNG
+and historical-material caches are restored. The full formatter and numeric
+formatters are pinned alongside the thought-description dependency graph.
+No native sheet state is supplied and UI wrapper47f680 is not invoked.
+
+Section7 retains scalar value facts needed by other pages and adds bounded
+256-byte raw text chunks, converted once before transport. Godot joins them and
+uses the native paragraph view. Its reconstructed Values/dream sentence builder
+has been removed. Refresh retains the Values view, overlay cancellation releases
+its scrollbar, and leaving Values retires the view.
+
+Protected141102 on2026-11-01 verifies exact native tagged strings and456x504 body
+crops for both1017 and2905, including1017's remembered spouse-decay cause and
+creative dream. Refresh, overlay cancellation and actual navigation to Traits
+pass. Owned DF49032 exits unsaved and the source save is unchanged; all three
+Godot logs contain only the documented startup notice, with no Unicode errors.
+Plugin SHA256:
+`e928c15a79d9ffb45f4b020bc4c6d558c1dcbf998857d8a6803eee85f23717e3`.
+The protected native capture also records Traits, Preferences and Needs for
+both creatures. Those pages still use reconstructed descriptions and remain
+unfinished. Values tail/resize and broader lifecycle variants remain unverified;
+Personality and the creature route are not promoted by this milestone.
+
 ### Creature Thoughts and Memories
 
 `creature_thoughts_native.h` calls nativee2c460 with an owned unit containing

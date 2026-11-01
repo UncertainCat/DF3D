@@ -3501,11 +3501,45 @@ particular, competition naming indexes the resolved occasion's schedule at
 bc73cd without a preceding length check. A provider must validate this source
 relationship before entering native code. Circumstance formatting also reaches
 artifact helperb94400; its unnamed-artifact branch atb94583 passes the live
-artifact item to c65450. The existing generic item-description side-effect and
-subtype audit must be applied to that call's actual arguments before claiming
-read-only Knowledge formatting for arbitrary artifact references. Root-level
-absence of stores does not discharge this transitive obligation. Live collection
-branch comparisons and source validation remain outstanding.
+artifact item to c65450 with false and article type1. The short-caption audit
+below identifies reachable mutations separately from the full item-sheet
+formatter. Root-level absence of stores does not discharge this transitive
+obligation. Live collection branch comparisons and source validation remain
+outstanding.
+
+### Knowledge artifact caption dependencies
+
+The unnamed-artifact fallback uses short captionc65450, not full item-sheet
+prosec75000. `item-caption-vtables.json` maps nine caption-relevant slots across
+97 supported item vtables. Slot0x5e8 has15 distinct description targets;
+slot0x5f0 has two article-prefix targets. `item-caption-cfg.json` traces the
+complete c65450 body through c65f0a and those15 description bodies, with no
+unresolved jumps. It lists transitive calls and direct stores for further
+ownership review; this is not blanket item-subtype acceptance.
+
+Common prefixc653e0 with article type1 appends the native definite article and
+returns before its stack-size virtual call. The alternate corpse prefixca0d60
+still resolves corpse figure/name data. Wear and base quality getters are field
+reads; improvement-quality getters scan improvement records, and isImproved
+may call an improvement predicate. These dependent source graphs must remain
+valid for the complete caption lifetime.
+
+Figurine and statue vtables both select descriptionca0b40. After the common
+caption, an uninitialized image ID at item offset0xe8 triggers cc84d0; a
+nonnegative world-data ID at0x50 then triggers cc83e0. Instructionca0b74 clears
+the item's from_worldgen flag. Thus short captions can reach the same image
+initialization/backing-retirement effects as full descriptions through a
+separate dispatch path. This is a confirmed static source-write path, not a
+claim that ordinary named artifacts take it. It requires owned item/image and
+backing handling before broad Knowledge formatting can be called read-only.
+
+Other remaining caption dependencies include coin issuer formatting5be970,
+corpse figure getters, container contents and nested c65450 calls in several
+item descriptions. Native b94400 avoids caption fallback for books, slabs and
+tools with use20, but that exclusion does not cover figurines or statues.
+Existing material-cache isolation covers14add70's semantic cache only; it does
+not isolate item/image mutations or establish the remaining subtype lifetimes.
+No new runtime admission follows from this audit.
 
 ### Knowledge recursive event descriptions
 

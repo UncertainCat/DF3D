@@ -63025,7 +63025,186 @@
               "[C:7:0:1]Discourse on Civilization is a chronicle, authored by Iwo Upnalimec.  It concerns The Realm of Breakfast.  Overall, the information is not compiled very well.  The work has five chapters.  The first chapter covers the rise of the ettin Ison Drivenrusset the Key of Savants as an enemy of The Realm of Breakfast in the early spring of 7.  The second chapter covers the rise of the hydra Tabmik Puslice the Hairy Breach as an enemy of The Realm of Breakfast in the midsummer of 10.  The third chapter covers the rise of the wicked horror Oce Umbratomb as an enemy of The Realm of Breakfast in the early autumn of 54.  The fourth chapter covers the defeat of The Kind Glacier and pillaging of Squashedbeached by The Realm of Breakfast in the early autumn of 60.  The fifth chapter covers by The Realm of Breakfast in the early autumn of 60.  "
             ]
           }
-        ]
+        ],
+        "target_reference": {
+          "source": "build/stockpile-storage-native-farm-discovery-20261101-043222",
+          "df_pid": 40868,
+          "status": "passed_with_known_issues",
+          "source_preservation": "Owned source unchanged; owned DF exited unsaved",
+          "diagnostics": "skills-diagnostics.json: all three processes have known startup notices only",
+          "scope": "Exact text unchanged for all eleven prior cases; actual event/site/topic target fields supplement generic getID. Native reference only, no owned written-content call.",
+          "cases": [
+            {
+              "id": 302,
+              "refs": [
+                {
+                  "description_rva": 15600800,
+                  "id": -1,
+                  "knowledge_bits": 1,
+                  "knowledge_category": 8,
+                  "role": 0,
+                  "type": 60,
+                  "type_name": "KNOWLEDGE_SCHOLAR_FLAG"
+                }
+              ]
+            },
+            {
+              "id": 7,
+              "refs": [
+                {
+                  "description_rva": 15654208,
+                  "event_id": 2171,
+                  "event_phrase_rva": 12022832,
+                  "event_type": 44,
+                  "event_type_name": "CHANGE_HF_STATE",
+                  "id": -1,
+                  "role": 0,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                }
+              ]
+            },
+            {
+              "id": 17,
+              "refs": [
+                {
+                  "description_rva": 15669104,
+                  "id": -1,
+                  "role": 0,
+                  "site_id": 114,
+                  "type": 51,
+                  "type_name": "SITE"
+                }
+              ]
+            },
+            {
+              "id": 247,
+              "refs": [
+                {
+                  "description_rva": 15600800,
+                  "id": -1,
+                  "knowledge_bits": 16384,
+                  "knowledge_category": 12,
+                  "role": 0,
+                  "type": 60,
+                  "type_name": "KNOWLEDGE_SCHOLAR_FLAG"
+                }
+              ]
+            },
+            {
+              "id": 361,
+              "refs": [
+                {
+                  "description_rva": 15684224,
+                  "id": 235,
+                  "role": 0,
+                  "type": 42,
+                  "type_name": "ENTITY"
+                },
+                {
+                  "description_rva": 15654208,
+                  "event_id": 623,
+                  "event_phrase_rva": 11967408,
+                  "event_type": 2,
+                  "event_type_name": "CREATED_SITE",
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "event_id": 3077,
+                  "event_phrase_rva": 12059680,
+                  "event_type": 4,
+                  "event_type_name": "ADD_HF_ENTITY_LINK",
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "event_id": 14421,
+                  "event_phrase_rva": 12118416,
+                  "event_type": 84,
+                  "event_type_name": "CEREMONY",
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                }
+              ]
+            },
+            {
+              "id": 416,
+              "refs": [
+                {
+                  "description_rva": 15684224,
+                  "id": 227,
+                  "role": 0,
+                  "type": 42,
+                  "type_name": "ENTITY"
+                },
+                {
+                  "description_rva": 15654208,
+                  "event_id": 2447,
+                  "event_phrase_rva": 12059680,
+                  "event_type": 4,
+                  "event_type_name": "ADD_HF_ENTITY_LINK",
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "event_id": 3134,
+                  "event_phrase_rva": 12059680,
+                  "event_type": 4,
+                  "event_type_name": "ADD_HF_ENTITY_LINK",
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "event_id": 17066,
+                  "event_phrase_rva": 12059680,
+                  "event_type": 4,
+                  "event_type_name": "ADD_HF_ENTITY_LINK",
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "event_id": 20128,
+                  "event_phrase_rva": 11953056,
+                  "event_type": 47,
+                  "event_type_name": "WAR_PLUNDERED_SITE",
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "event_id": 20129,
+                  "event_phrase_rva": 12059680,
+                  "event_type": 4,
+                  "event_type_name": "ADD_HF_ENTITY_LINK",
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                }
+              ]
+            }
+          ]
+        }
       }
     }
   }

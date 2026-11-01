@@ -143,7 +143,20 @@ local ok,err=xpcall(function()
      assert(#content.refs==#content.ref_aux and #content.styles==#content.style_strength,'Written content paired vectors differ')
      for i,ref in ipairs(content.refs)do
       local _,address=df.sizeof(ref);local vtable=df.reinterpret_cast('uint64_t',address).value
-      detail.content.refs[#detail.content.refs+1]={type=ref:getType(),type_name=df.general_ref_type[ref:getType()],id=ref:getID(),role=content.ref_aux[i],description_rva=df.reinterpret_cast('uint64_t',vtable+0x90).value-dfhack.internal.getImageBase()}
+      local record={type=ref:getType(),type_name=df.general_ref_type[ref:getType()],id=ref:getID(),role=content.ref_aux[i],description_rva=df.reinterpret_cast('uint64_t',vtable+0x90).value-dfhack.internal.getImageBase()}
+      if record.type_name=='HISTORICAL_EVENT'then
+       record.event_id=ref.event_id
+       local event=df.history_event.find(ref.event_id)
+       if event then
+        record.event_type=event:getType();record.event_type_name=df.history_event_type[record.event_type]
+        local _,event_address=df.sizeof(event);local event_vtable=df.reinterpret_cast('uint64_t',event_address).value
+        record.event_phrase_rva=df.reinterpret_cast('uint64_t',event_vtable+0xd8).value-dfhack.internal.getImageBase()
+       end
+      elseif record.type_name=='SITE'then record.site_id=ref.site_id
+      elseif record.type_name=='KNOWLEDGE_SCHOLAR_FLAG'then
+       record.knowledge_category=ref.knowledge.flag_type;record.knowledge_bits=ref.knowledge.flag_data.whole
+      end
+      detail.content.refs[#detail.content.refs+1]=record
      end
      for i,style in ipairs(content.styles)do detail.content.styles[#detail.content.styles+1]={style=style,strength=content.style_strength[i]}end
     end

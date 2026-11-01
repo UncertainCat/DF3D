@@ -3315,6 +3315,11 @@ additions are restored. Reference `id` is the virtual `getID()` result; several
 subclasses return -1 even with a valid target, so it is not target-ID evidence.
 DF30552 exits unsaved with source preservation and only known Godot startup notices.
 This is native reference coverage, not an owned written-description comparison.
+Protected043222 records actual event/site/topic fields separately and reproduces
+all eleven descriptions exactly. The histories additionally reference CEREMONY
+(event14421, phrase b8e990) and WAR_PLUNDERED_SITE (event20128, phrase b663a0).
+These are native reference evidence, not new owned event acceptance. DF40868
+exits unsaved with source preservation and only known startup notices.
 
 Written content's cc5d50 formatter dispatches `general_ref::getDescription` at
 slot0x90. Its style helper cc5520 selects literals from scalar style/strength/roll

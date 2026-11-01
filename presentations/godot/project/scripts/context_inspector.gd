@@ -162,6 +162,10 @@ func handle_escape() -> void:
 func cancel_gesture() -> void:
 	right_down = false
 	right_travel = 0.0
+	if is_instance_valid(expel_view):
+		expel_view.scrollbar.dragging=false
+		expel_view.scrollbar.hover_cell=-1
+		expel_view.scrollbar.queue_redraw()
 
 func _process(delta: float):
 	if not is_open(): return
@@ -309,12 +313,16 @@ func redraw():
 	body.position = Vector2(8,12)
 	body.size = panel.size-Vector2(16,24)
 	alternatives.position = Vector2(panel.size.x,0)
-	clear_children(body)
+	# Header receipts may arrive during an Expel drag. Keep that view attached
+	# so rebuilding unrelated header controls does not retire pointer capture.
+	var retained_expel=expel_view if expel.phase!=expel.Phase.Closed and is_instance_valid(expel_view) else null
+	for child in body.get_children():
+		if child!=retained_expel:body.remove_child(child);child.queue_free()
 	customize_view=null
 	customize_button=null
 	history_button=null
 	expel_button=null
-	expel_view=null
+	expel_view=retained_expel
 	follow_button=null
 	building_remove_button = null
 	clear_children(alternatives)
@@ -365,7 +373,8 @@ func redraw():
 			customize.observe_captions(int(detail_state.get("generation",-1)),customize_captions)
 			if customize.opened:
 				# Customize replaces all ordinary header text, retaining portrait/tabs.
-				for child in body.get_children():child.hide()
+				for child in body.get_children():
+					if child!=retained_expel:child.hide()
 				customize_view=preload("res://scripts/creature_customize_view.gd").new()
 				body.add_child(customize_view);customize_view.configure(world);customize_view.position=Vector2(104,0)
 				customize_view.input_allowed=func():return ui_host==null or ui_host.allows_panel_input(self)
@@ -411,11 +420,13 @@ func redraw():
 				portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				body.add_child(portrait)
 			if expel.phase!=expel.Phase.Closed:
-				expel_view=preload("res://scripts/creature_expel_view.gd").new()
-				expel_view.first=expel_scroll
-				expel_view.position=Vector2(0,96);expel_view.size=body.size-Vector2(0,96)
-				body.add_child(expel_view);expel_view.input_allowed=func():return ui_host==null or ui_host.allows_panel_input(self)
-				expel_view.configure(world,expel)
+				if not is_instance_valid(expel_view):
+					expel_view=preload("res://scripts/creature_expel_view.gd").new()
+					expel_view.first=expel_scroll
+					expel_view.position=Vector2(0,96);expel_view.size=body.size-Vector2(0,96)
+					body.add_child(expel_view);expel_view.input_allowed=func():return ui_host==null or ui_host.allows_panel_input(self)
+					expel_view.configure(world,expel)
+				else:expel_view.size=body.size-Vector2(0,96)
 			else:creature_sheet.render(self,detail_state)
 		2:
 			icon_at("item.icon")

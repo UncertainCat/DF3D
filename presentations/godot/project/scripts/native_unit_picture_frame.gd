@@ -7,13 +7,23 @@ var selected: Texture2D
 
 func configure(world) -> void:
 	selected=world.ui_texture("BUTTON_PICTURE_BOX_SELECTED")
+	var cells:Array[Texture2D]=[]
+	for index in 9:
+		var cell:Texture2D=world.ui_texture("BUTTON_PICTURE_BOX",index)
+		if cell==null or cell.get_size()!=Vector2(8,12):normal=null;return
+		cells.append(cell)
+	# Panels rebuild on asynchronous receipts. Keep the assembled frame with its
+	# asset owner instead of reading nine GPU textures back on every redraw.
+	# Exact source-resource identity invalidates this cache after asset replacement.
+	var cached:Dictionary=world.get_meta("df3d_unit_picture_frame",{})
+	if cached.get("cells",[])==cells:
+		normal=cached.normal;return
 	var image:=Image.create_empty(24,36,false,Image.FORMAT_RGBA8)
 	for y in 3:
 		for x in 3:
-			var cell: Texture2D=world.ui_texture("BUTTON_PICTURE_BOX",y*3+x)
-			if cell==null or cell.get_size()!=Vector2(8,12):normal=null;return
-			image.blit_rect(cell.get_image(),Rect2i(0,0,8,12),Vector2i(x*8,y*12))
+			image.blit_rect(cells[y*3+x].get_image(),Rect2i(0,0,8,12),Vector2i(x*8,y*12))
 	normal=ImageTexture.create_from_image(image)
+	world.set_meta("df3d_unit_picture_frame",{"cells":cells,"normal":normal})
 
 func texture(is_selected: bool) -> Texture2D:
 	return selected if is_selected else normal

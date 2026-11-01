@@ -86,7 +86,7 @@ func configure(source) -> void:
 func native_panel() -> StyleBox:
 	# Corners are two-dimensional layouts; straight borders are one-dimensional
 	# original named variants, in the pinned raw's ascending strip order.
-	var required := [texture("BORDER_TOP_LEFT"),texture("BORDER_TOP_RIGHT"),texture("BORDER_BOTTOM_LEFT"),texture("BORDER_BOTTOM_RIGHT")]
+	var required := [world.ui_texture("BORDER_TOP_LEFT"),world.ui_texture("BORDER_TOP_RIGHT"),world.ui_texture("BORDER_BOTTOM_LEFT"),world.ui_texture("BORDER_BOTTOM_RIGHT")]
 	for name in ["BORDER_TOP","BORDER_BOTTOM","BORDER_LEFT","BORDER_RIGHT"]:
 		for i in (3 if name in ["BORDER_TOP","BORDER_BOTTOM"] else 4):
 			required.append(world.ui_texture(name,i))
@@ -99,10 +99,12 @@ func native_panel() -> StyleBox:
 			fallback.bg_color = Color(0.04,0.04,0.04,1)
 			for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]: fallback.set_content_margin(side,10)
 			return fallback
-	var tl := texture("BORDER_TOP_LEFT").get_image()
-	var tr := texture("BORDER_TOP_RIGHT").get_image()
-	var bl := texture("BORDER_BOTTOM_LEFT").get_image()
-	var br := texture("BORDER_BOTTOM_RIGHT").get_image()
+	var cached:Dictionary=world.get_meta("df3d_native_panel",{})
+	if cached.get("sources",[])==required:return cached.style.duplicate()
+	var tl:Image=required[0].get_image()
+	var tr:Image=required[1].get_image()
+	var bl:Image=required[2].get_image()
+	var br:Image=required[3].get_image()
 	var w := tl.get_width()
 	var h := tl.get_height()
 	var image := Image.create(w * 2 + 8, h * 2 + 12, false, Image.FORMAT_RGBA8)
@@ -127,6 +129,7 @@ func native_panel() -> StyleBox:
 	style.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_TILE
 	for side in [SIDE_LEFT,SIDE_RIGHT]: style.set_content_margin(side,w)
 	for side in [SIDE_TOP,SIDE_BOTTOM]: style.set_content_margin(side,h)
+	world.set_meta("df3d_native_panel",{"sources":required,"style":style.duplicate()})
 	return style
 
 func apply(root: Node) -> void:

@@ -514,6 +514,7 @@ func exercise_history_append(reports,target:int) -> void:
 
 func exercise_expel_preview(inspector,target:int) -> void:
 	var model=inspector.expel
+	var live_preview:Dictionary={}
 	var deadline:=Time.get_ticks_msec()+5000
 	while not is_instance_valid(inspector.expel_button) and Time.get_ticks_msec()<deadline:
 		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
@@ -544,6 +545,7 @@ func exercise_expel_preview(inspector,target:int) -> void:
 			world.poll();actions.poll(0.01);await create_timer(0.01).timeout
 		if not check(model.phase==model.Phase.Confirming and model.unit_id==target,"Expel click did not show native affected group"):return
 		check(is_instance_valid(inspector.expel_view) and model.snapshot().units[0].id==target,"Expel rendered view missing current group")
+		live_preview=model.snapshot()
 		await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/unit-expel-scene.png")
 		if cancel_button:
@@ -551,7 +553,7 @@ func exercise_expel_preview(inspector,target:int) -> void:
 			await pointer(inspector.expel_button.get_global_transform_with_canvas()*Vector2(16,18));await drain()
 			check(model.generation>generation and model.phase==model.Phase.Confirming,"Repeated Expel did not refresh preview")
 			await pointer(inspector.customize_button.get_global_transform_with_canvas()*Vector2(16,18));await drain();await process_frame
-			check(inspector.customize.opened and model.phase==model.Phase.Confirming,"Expel blocked Customize or lost preview")
+			check(inspector.customize.opened and model.phase==model.Phase.Confirming and inspector.expel_view.is_visible_in_tree(),"Expel blocked Customize or lost visible preview")
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/unit-expel-customize-scene.png")
 			key(KEY_ESCAPE);await process_frame
@@ -563,6 +565,61 @@ func exercise_expel_preview(inspector,target:int) -> void:
 		check(model.phase==model.Phase.Confirming,"Settings Escape closed Expel")
 		if cancel_button:await pointer(inspector.expel_view.get_global_transform_with_canvas()*Vector2(inspector.expel_view.size.x-40,inspector.expel_view.size.y-18))
 		else:key(KEY_ESCAPE);await process_frame
-		check(model.phase==model.Phase.Closed and inspector.is_open() and scene._ui.host.active==inspector,"Expel cancellation did not return to same Overview")
+		check(model.phase==model.Phase.Closed and inspector.is_open() and scene._ui.host.active==inspector,"Expel cancellation did not return to same Overview: button=%s phase=%s open=%s owner=%s" % [cancel_button,model.phase,inspector.is_open(),scene._ui.host.active==inspector])
+	if OS.get_environment("DF3D_UNIT_EXPEL_LIFECYCLE")=="1":await exercise_expel_lifecycle(inspector,target,live_preview)
 	var file:=FileAccess.open(directory+"/unit-expel-scene-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"native_button_pixels":1152,"native_group":true,"native_help_glyph_pixels":ink_count,"overlay_blocks_confirmation":true,"cancel_and_escape_return_overview":true}));file.close()
+
+func exercise_expel_lifecycle(inspector,target:int,preview:Dictionary) -> void:
+	# Keep the real scene, inspector, host, assets and native read-only facts.
+	# Only Expel receipts are injected; no departure can reach the live bridge.
+	var source=preload("res://tests/farm_state_test.gd").World.new()
+	var service=preload("res://scripts/semantic_action_service.gd").new();service.configure(source);service.poll()
+	var model=inspector.expel;model.configure(service)
+	var receipt:=func(outcome):
+		var payload:Dictionary={"outcome":outcome}
+		if outcome==C.CreatureExpelOutcome.Ready:payload.preview=preview.duplicate(true)
+		source.state={"world_epoch":5,"revision":source.calls.size()+1,"request_seq":source.calls.size(),"action":source.calls[-1].request.action,"status":C.ManagementStatus.Ok if outcome in [C.CreatureExpelOutcome.Ready,C.CreatureExpelOutcome.Applied] else C.ManagementStatus.Rejected,"creature_expel":payload}
+		service.poll()
+	await pointer(inspector.expel_button.get_global_transform_with_canvas()*Vector2(16,18));service.poll()
+	check(model.phase==model.Phase.Reading,"Injected pending read did not reach real inspector")
+	inspector.close_panel();receipt.call(C.CreatureExpelOutcome.Ready);await process_frame
+	check(not inspector.panel.visible and scene._ui.host.active==null and model.phase==model.Phase.Closed,"Late read reopened closed main-scene panel")
+	inspector.open_target(Vector3i.ZERO,1,target);await process_frame
+	for replacement in [false,true]:
+		await pointer(inspector.expel_button.get_global_transform_with_canvas()*Vector2(16,18));service.poll();receipt.call(C.CreatureExpelOutcome.Ready);await process_frame
+		check(model.phase==model.Phase.Confirming,"Injected native preview did not render")
+		await pointer(Vector2(476,730));service.poll();await process_frame
+		check(model.phase==model.Phase.Applying,"Real final button did not queue injected action")
+		if replacement:scene._ui.controller("reports").open_creature_history(target);await drain()
+		else:key(KEY_ESCAPE);await process_frame
+		receipt.call(C.CreatureExpelOutcome.Applied);await process_frame
+		check(model.phase==model.Phase.Closed and model.snapshot().is_empty(),"Late departure revived cancelled or replaced inspector")
+		if replacement:
+			check(scene._ui.host.active==scene._ui.controller("reports") and not inspector.panel.visible,"Late departure stole Reports ownership")
+			inspector.open_target(Vector3i.ZERO,1,target);await process_frame
+		else:check(scene._ui.host.active==inspector and inspector.panel.visible,"Pending Escape did not preserve Overview")
+	await pointer(inspector.expel_button.get_global_transform_with_canvas()*Vector2(16,18));service.poll();receipt.call(C.CreatureExpelOutcome.Ready);await process_frame
+	# Rendering-only overflow list, as in the native layout oracle. No confirm.
+	var repeated:Array=[]
+	for i in 24:repeated.append(preview.units[0].duplicate(true))
+	model._preview.units=repeated;model.changed.emit();await process_frame
+	inspector.expel_view.first=7;inspector.expel_view.refresh();await process_frame
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(880,400);root.push_input(motion,true)
+	var press:=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;root.push_input(press,true);await process_frame
+	check(inspector.expel_view.scrollbar.dragging,"Main-scene scrollbar did not capture drag")
+	var dragging_view=inspector.expel_view;inspector.redraw();await process_frame
+	check(inspector.expel_view==dragging_view and inspector.expel_view.scrollbar.dragging,"Header redraw replaced active Expel drag")
+	scene._fortress_hud.toggle_settings();await process_frame
+	check(not inspector.expel_view.scrollbar.dragging,"Opening Settings retained Expel drag capture")
+	key(KEY_ESCAPE);await process_frame
+	motion=InputEventMouseMotion.new();motion.position=Vector2(880,300);root.push_input(motion,true);await process_frame
+	check(inspector.expel_view.first==7,"Closing Settings resumed retired drag")
+	press.pressed=false;press.position=motion.position;root.push_input(press,true)
+	source.state={"world_epoch":5,"revision":0,"status":0,"transport_alive":false};service.poll();await process_frame
+	check(model.phase==model.Phase.Unavailable and model.snapshot().is_empty() and inspector.expel_view.get_node_or_null("ConfirmExpel")==null,"Lost Expel connection retained main-scene authority")
+	scene._ui.host.reset_local_views();await process_frame
+	check(scene._ui.host.active==null and not inspector.panel.visible,"Session reset retained inspector ownership")
+	model.configure(actions);service.free();inspector.open_target(Vector3i.ZERO,1,target);await process_frame
+	var file:=FileAccess.open(directory+"/unit-expel-lifecycle-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"injected_expel_transport":true,"late_read":true,"pending_cancel":true,"reports_replacement":true,"overlay_retires_drag":true,"disconnect_retires_authority":true,"session_reset_releases_owner":true}));file.close()

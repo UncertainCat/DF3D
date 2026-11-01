@@ -49282,7 +49282,7 @@
         }
       },
       "lifecycle_reference": {
-        "status": "rendered view/controller/service lifecycle accepted with injected transport; full main-scene lifecycle and failure feedback unfinished",
+        "status": "rendered and main-scene lifecycle accepted with injected Expel transport; failure feedback unfinished",
         "check": "build/qa/unit-expel-lifecycle-final",
         "script": "presentations/godot/project/tests/creature_expel_capture.gd",
         "native_semantic_evidence": false,
@@ -49302,9 +49302,31 @@
         "diagnostics": "GPU: documented startup/finalize/ObjectDB only; core/controller/service/composition clean",
         "limitations": [
           "failed and unavailable phases still have blank body",
-          "full inspector replacement and disconnect integration",
           "user-facing asynchronous status design"
-        ]
+        ],
+        "main_scene": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261031-233615",
+          "script": "presentations/godot/project/tests/item_carrier_scene_live.gd",
+          "transport_scope": "real native read-only scene; only Expel receipts injected; no departure submitted",
+          "checks": [
+            "late read cannot reopen closed inspector",
+            "Escape cancels pending confirmation observation",
+            "Reports replacement keeps input ownership after late departure reply",
+            "header redraw preserves active Expel view and drag",
+            "Settings cancels drag immediately and closing it does not resume drag",
+            "Expel connection loss clears visible confirmation authority",
+            "host session reset closes inspector"
+          ],
+          "result_sha256": "9aa2958b3718568675d610c77f838d1009f49d37fa26e40156a8ec7d733eb17b",
+          "customize_native_rgb_pixels_equal": 322848,
+          "source_save_unchanged": true,
+          "owned_unsaved_exit": true,
+          "diagnostics": "two GPU clients and paired header client: known startup notice only",
+          "qa": [
+            "build/qa/unit-expel-main-lifecycle-final",
+            "build/qa/unit-expel-main-lifecycle-complete"
+          ]
+        }
       }
     }
   }

@@ -2750,11 +2750,29 @@ exercise the rendered view with the real controller/service: pending duplicate
 clicks, queued/sent cancellation, late read and mutation replies, failure authority
 retirement, replacement targets and disconnect. unit-expel-lifecycle-final passes
 those checks plus all14 pixel and32 input cases; only documented GPU diagnostics
-remain, while core/controller/service/composition checks are clean. This does not
-establish full main-scene disconnect/replacement acceptance or user-facing failure
-feedback: Reading/Rejected/Unknown/Unavailable still have a blank Expel body.
-Scrollbar hover pixels, long names/animation, those composed lifecycle/feedback
-gaps and active-job/squad/later-departure effect variants remain unfinished.
+remain, while core/controller/service/composition checks are clean. Protected
+233615 exercises the main scene with real native read-only facts and injected
+Expel receipts: closed reads stay closed, Escape detaches pending confirmation,
+Reports retains ownership after a late departure reply, and connection loss
+removes visible authority. Host reset closes the inspector. Header refreshes keep
+the open Expel view attached, preserving continuous drag; Settings immediately
+cancels that drag. Customize leaves the retained Expel view visible and matches
+all322848 native RGB pixels. No injected departure reaches DF. Owned DF38884
+exits unsaved with the source preserved; both GPU clients and the paired header
+client have only the known startup notice. unit-expel-main-lifecycle-complete
+passes core, composition and the full Expel rendered checks; the preceding final
+gate also verifies original UI and staff candidate frames.
+
+Repeated inspector redraws exposed GPU readbacks in frame assembly. The shared
+unit-picture-frame and native-panel helpers cache their assembled resources on
+the asset owner, keyed by the complete source texture identities. Native panel
+styles are duplicated for callers, so per-view styling cannot mutate the cached
+style. Asset replacement rebuilds the bounded caches; owner destruction releases
+them. This removes the observed readback warnings without changing native art.
+User-facing failure feedback remains unfinished: Reading/Rejected/Unknown/
+Unavailable still have a blank Expel body. Proposed local status wording has not
+been approved. Scrollbar hover pixels, long names/animation, this feedback gap
+and active-job/squad/later-departure effect variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
 ## Native item holder provider

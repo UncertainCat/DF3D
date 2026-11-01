@@ -54,7 +54,9 @@ local ok,err=xpcall(function()
  end
  assert(still,'Workshop reference needs a completed Still')
  select_map(still)
- assert(sheet.active_id==still.id and click_label('Add new task'),'Native Still picker did not open')
+ assert(sheet.active_id==still.id,'Native Still selection missed')
+ shot('still-jobs')
+ assert(click_label('Add new task'),'Native Still picker did not open')
  local rows={};local utils=require('utils')
  for _,button in ipairs(df.global.game.main_interface.building.button)do
   if df.interface_button_building_new_jobst:is_instance(button) and button.jobtype==df.job_type.CustomReaction then
@@ -79,6 +81,8 @@ local ok,err=xpcall(function()
  for i,row in ipairs(rows)do for key,value in pairs(row)do assert(actual[i][key]==value,'Native Still '..row.code..' '..key..' differs: '..tostring(actual[i][key])..' ~= '..tostring(value))end end
  local codes={};for _,row in ipairs(rows)do codes[#codes+1]=row.code end
  result.reaction_reference={building_id=still.id,codes=codes,rows=rows,all_equal=true}
+ local contents={};for _,held in ipairs(still.contained_items)do contents[#contents+1]={id=held.item.id,role=held.use_mode}end
+ result.sheet_reference={id=still.id,type=still:getType(),stage=still:getBuildStage(),max_stage=still:getMaxBuildStage(),custom_name=dfhack.df2utf(still.name),native_name=dfhack.df2utf(utils.call_with_string(still,'getName')),contents=contents}
  shot('still-add-task')
  local function search_text(value)
   if not sheet.entering_building_job_filter then

@@ -302,7 +302,7 @@ try {
     if($FarmItemCarriers -and $name -eq 'workshop-wire') {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
-     $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/workshop_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/workshop-wire.stdout.log" -RedirectStandardError "$out/workshop-wire.stderr.log"
+     $client=Start-Process -FilePath $engine -ArgumentList @('--path',"$repo/presentations/godot/project",'--script','res://tests/workshop_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/workshop-wire.stdout.log" -RedirectStandardError "$out/workshop-wire.stderr.log"
      $null=$client.Handle
      if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Workshop client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/workshop-wire-result.json")){throw 'Workshop client failed'}

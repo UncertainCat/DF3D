@@ -2542,14 +2542,17 @@ std::optional<FarmSnapshot> observeFarmSnapshot(int32_t buildingId,int season) {
     snapshot.revision=df3d_production::farmRevision(snapshot);
     return snapshot;
 }
-df::building_actual* contentsBuilding(int32_t id) {
+df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   auto* building=virtual_cast<df::building_actual>(df::building::find(id));
-  if(!building || (building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box))return nullptr;
+  if(!building)return nullptr;
+  const auto type=building->getType();
+  if(type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+     (editing || (type!=df::building_type::Workshop && type!=df::building_type::Furnace)))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
   return tile&&!tile->bits.hidden?building:nullptr;
 }
-std::optional<df3d_production::BuildingContentsSnapshot> observeBuildingContents(int32_t id) {
-  return df3d_production::buildingContents(contentsBuilding(id));
+std::optional<df3d_production::BuildingContentsSnapshot> observeBuildingContents(int32_t id,bool editing=false) {
+  return df3d_production::buildingContents(contentsBuilding(id,editing));
 }
 std::optional<BuildingContentsPage> contentsPage(const df3d_production::BuildingContentsSnapshot& snapshot,
                                                uint32_t cursor,uint64_t expected) {
@@ -2627,7 +2630,9 @@ void run(color_ostream& out) {
     try {
       const auto target=[&]()->df::building* {
         auto* building=df::building::find(q->building_id());
-        if(!building || building->getType()!=df::building_type::Box)return nullptr;
+        if(!building)return nullptr;
+        const auto type=building->getType();
+        if(type!=df::building_type::Box && (editing || (type!=df::building_type::Workshop && type!=df::building_type::Furnace)))return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
@@ -2713,11 +2718,11 @@ void run(color_ostream& out) {
       case m::FarmOperation::ItemHidden:action=A::Hidden;break;
       default:publish();return;
       }
-      const auto observe=[&]{return observeBuildingContents(q->building_id());};
+      const auto observe=[&]{return observeBuildingContents(q->building_id(),true);};
       const auto before=observe();
       if(before) {
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
-          auto* building=contentsBuilding(q->building_id());
+          auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;
           for(auto* held:building->contained_items)if(held&&held->item&&held->item->id==q->item_id()) {
             entered=true;return df3d_production::setBuildingItemFlag(held->item,action,q->item_value()!=0);

@@ -781,5 +781,75 @@
       "native_rgb_sha256": "1e83f753fa174a55f42bdb54fac7b98ba379debc1effb8c157685dbfc616a4da",
       "rendered_rgb_sha256": "1e83f753fa174a55f42bdb54fac7b98ba379debc1effb8c157685dbfc616a4da"
     }
+  },
+  "sheet_reference": {
+    "reference_run": "build/stockpile-storage-native-farm-discovery-20261101-160108",
+    "plugin_sha256": "3aa992bc44b7dc146ec213ac5694d3a54feb590d33f81a52e21b8a8426e6a97a",
+    "native": {
+      "contents": [
+        {
+          "id": 1016,
+          "role": 2
+        },
+        {
+          "id": 39834,
+          "role": 0
+        },
+        {
+          "id": 39751,
+          "role": 0
+        },
+        {
+          "id": 39644,
+          "role": 0
+        },
+        {
+          "id": 39633,
+          "role": 0
+        },
+        {
+          "id": 39545,
+          "role": 0
+        }
+      ],
+      "custom_name": "",
+      "id": 37,
+      "max_stage": 3,
+      "native_name": "Still",
+      "stage": 3,
+      "type": 13
+    },
+    "wire": {
+      "created_and_cancelled": 382797,
+      "full_query_bytes": 138,
+      "objection": "[Requires Unrotten fermentable leaf or fruit]",
+      "reaction_count": 3,
+      "rejected_code": "BREW_DRINK_FROM_PLANT_GROWTH",
+      "search_cases": 4,
+      "success": true,
+      "task_count": 4
+    },
+    "queue_render": {
+      "rect": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "native_rgb_sha256": "ca57b197dd4ca03abaaa078792e71058aa13debd5be0aa5d5f1896dfcbc84fc2",
+      "matching_pixels": 345504
+    },
+    "picker_contents_toggle": true,
+    "closed_all_targets": true,
+    "remaining": [
+      "picker row background artwork",
+      "furnace acceptance",
+      "header and item edits",
+      "Workers",
+      "Work orders",
+      "connections",
+      "categories and remaining builtin catalogs",
+      "main-scene exposure and complete lifecycle acceptance"
+    ]
   }
 }

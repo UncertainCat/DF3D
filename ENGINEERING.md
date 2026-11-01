@@ -6532,11 +6532,25 @@ contents view, native Tasks/Workers/Work orders tabs and connections artwork.
 The task picker hides the contents and separator and uses the remaining sheet
 height; cancelling restores the queue layout. The capture now exercises this
 composition at1200x800 against the native workshop references, including search
-input and task clicks. Header/contents use supplied models in this capture;
-workshop-specific read integration, header actions, Workers, Work orders and
-connections remain unfinished. Categories and complete builtin choices also
-remain unfinished; no public workshop route is enabled. This staged composition
-is not complete screen parity or live mutation acceptance.
+input and task clicks. `workshop_panel.gd` owns the independent header, tasks and
+contents controllers, refreshes header/contents after task effects and closes all
+three on retirement. The shared native readers accept visible workshops and
+furnaces; header and contents writes remain restricted to their previously
+accepted building types. Wood and barrel contents carry semantic appearance
+through the existing item-icon path. Management113 is unchanged.
+
+Protected160108 on2026-11-01 loads the composed Still through the actual action
+service, matches native header facts and six contents IDs/roles/order, and
+captures an exact full-sheet pixel match at1200x800 with the native queue view.
+Actual Add new task/Cancel clicks expand and restore the contents area; closing
+clears all three targets and releases the input owner. The picker retains a
+known background-art mismatch within its task rows; this is not full picker
+parity. The same lane verifies typed Extract creation/cancellation and original
+queue restoration. DF8008 exits unsaved and source-save checks pass. Four Godot
+log groups contain only classified known diagnostics, with no Unicode errors.
+`native_workshop.json.sheet_reference` retains bounded evidence. Furnace-specific
+acceptance, header/item edits, Workers, Work orders, connections, categories and
+complete builtin choices remain unfinished; no public workshop route is enabled.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

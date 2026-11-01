@@ -114,7 +114,9 @@ inline bool cancelFarmRemoval(df::building_farmplotst* farm) {
 // the first job's suspend flag and native worker predicate, not job.working.
 inline std::optional<BuildingHeader> buildingHeader(df::building* farm) {
     const auto& native=farmFunctions();
-    if(!native || !farm || (farm->getType()!=df::building_type::FarmPlot && farm->getType()!=df::building_type::Box) || farm->name.size()>512 || farm->jobs.size()>size_t(INT32_MAX))return {};
+    if(!native || !farm || farm->name.size()>512 || farm->jobs.size()>size_t(INT32_MAX))return {};
+    const auto type=farm->getType();
+    if(type!=df::building_type::FarmPlot && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return {};
     BuildingHeader value;value.customNameCp437=farm->name;farm->getName(&value.nativeNameCp437);
     if(value.nativeNameCp437.size()>512)return {};
     value.headerNameCp437=value.nativeNameCp437;native.formatName(&value.headerNameCp437);

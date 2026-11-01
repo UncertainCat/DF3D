@@ -1493,13 +1493,14 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(static_cast<uint8_t>(outcome)>4)return "invalid building header outcome";
       if(f) {
         const auto text=[](const flatbuffers::String* t,bool empty){return t && t->size()<=1536 && (empty || t->size()>0) && t->str().find('\0')==std::string::npos;};
-        if(f->id()<0 || f->type()!=10 || !f->revision() || f->revision()>INT64_MAX || f->stage()<0 || f->max_stage()<f->stage() ||
+        if(f->id()<0 || (f->type()!=10 && f->type()!=5 && f->type()!=13) || !f->revision() || f->revision()>INT64_MAX || f->stage()<0 || f->max_stage()<f->stage() ||
            !text(f->custom_name(),true) || !text(f->native_name(),false) || !text(f->header_name(),false) ||
            (!f->removing() && (f->suspended() || f->has_worker())))return "invalid building header snapshot";
       }
       if(s.action()==ManagementAction::ProductionInspect) {
         if(outcome!=FarmEditOutcome::None || op!=FarmOperation::Crop || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr)))return "invalid building header read";
       } else if(s.action()==ManagementAction::FarmEdit) {
+        if(f && f->type()!=10)return "unsupported building header edit target";
         if(outcome==FarmEditOutcome::None)return "missing building header outcome";
         if(outcome==FarmEditOutcome::Completed) {
           if(s.status()!=ManagementStatus::Ok || !f || f->stage()!=f->max_stage() || op<FarmOperation::Rename || op>FarmOperation::CancelRemoval ||

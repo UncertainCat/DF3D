@@ -3230,8 +3230,17 @@ every form (413–1,105 characters), including two- and three-part structures an
 one form with a perspective. All guards remain unchanged. DF2532 exits unsaved,
 source preservation passes, and all three Godot processes have only known
 startup notices. `poetic_forms_reference` retains IDs, structural fields and
-bounded results. Named-author and animal-persona branches still need targeted
-coverage; this does not establish production transport or rendered parity.
+bounded results. This does not establish production transport or rendered parity.
+Protected035403 adds four controlled comparisons: named author with originating
+entity absent, historical-figure subject, historical-figure persona and animal
+persona using the existing dwarf race/caste. Each changes native text and matches
+the owned probe. All original scalar fields and perspective pointers are restored;
+the temporary persona is deleted. Guards additionally cover selected raw/caste
+objects and their name backing. DF39984 exits unsaved with source preservation
+and only known Godot startup notices. `poetic_cases_reference` retains text and
+results. An earlier035237 author case retained an originating entity, so native
+preferred its name and did not exercise author formatting; it is not author-branch
+evidence. These cases do not establish every species, identity or nested persona.
 
 ### Creature Health transport contract
 

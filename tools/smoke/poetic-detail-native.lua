@@ -14,13 +14,15 @@ local function vector(value)
  local _,address=df.sizeof(value);local first=df.reinterpret_cast('uint64_t',address).value
  guard(first,df.reinterpret_cast('uint64_t',address+8).value-first)
 end
-local function name(value)
- object(value)
- for _,field in ipairs{'first_name','nickname'}do
-  local _,address=df.sizeof(value:_field(field))
+local function string_backing(address)
   local size=df.reinterpret_cast('uint64_t',address+16).value
   local capacity=df.reinterpret_cast('uint64_t',address+24).value
   if capacity>=16 then guard(df.reinterpret_cast('uint64_t',address).value,size+1)end
+end
+local function name(value)
+ object(value)
+ for _,field in ipairs{'first_name','nickname'}do
+  local _,address=df.sizeof(value:_field(field));string_backing(address)
  end
 end
 local figures={}
@@ -48,6 +50,14 @@ local ok,result=xpcall(function()
  for _,perspective in ipairs(form.perspectives)do
   object(perspective)
   if perspective.type==df.poetic_form_persona_type.Histfig then figure(perspective.subtype)end
+  if perspective.type==df.poetic_form_persona_type.Animal and perspective.subtype>=0 then
+   local raw=assert(df.global.world.raws.creatures.all[perspective.subtype]);object(raw)
+   local _,address=df.sizeof(raw:_field('name'));for i=0,2 do string_backing(address+i*32)end
+   if perspective.subtype2>=0 then
+    local caste=assert(raw.caste[perspective.subtype2]);object(caste)
+    local _,address=df.sizeof(caste:_field('caste_name'));for i=0,2 do string_backing(address+i*32)end
+   end
+  end
  end
  object(unit);object(df.global.game.main_interface.view_sheets);object(df.global.plotinfo)
  local base=dfhack.internal.getImageBase()

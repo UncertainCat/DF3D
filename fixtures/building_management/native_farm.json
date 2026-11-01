@@ -61792,6 +61792,88 @@
         "owned_df_pid": 2532,
         "source_unchanged": true,
         "exit_without_saving": true
+      },
+      "poetic_cases_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-035403",
+        "cases": [
+          {
+            "case": "named-author",
+            "text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the hunt originally devised by the dwarf Stodir Spotseals.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  ",
+            "probe": {
+              "form": {
+                "action": 9,
+                "mood": 5,
+                "original_author": 1217,
+                "parts": 1,
+                "perspectives": 0,
+                "subject": 14,
+                "subject_hf": -1
+              },
+              "guards_unchanged": true,
+              "id": 0,
+              "text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the hunt originally devised by the dwarf Stodir Spotseals.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  "
+            }
+          },
+          {
+            "case": "figure-subject",
+            "text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the dwarf Stodir Spotseals, originating in The Big Channel.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  ",
+            "probe": {
+              "form": {
+                "action": 9,
+                "mood": 5,
+                "original_author": -1,
+                "parts": 1,
+                "perspectives": 0,
+                "subject": 19,
+                "subject_hf": -1
+              },
+              "guards_unchanged": true,
+              "id": 0,
+              "text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the dwarf Stodir Spotseals, originating in The Big Channel.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  "
+            }
+          },
+          {
+            "case": "figure-persona",
+            "text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the hunt, originating in The Big Channel.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  The Valley of Winds is always written from the perspective of the dwarf Stodir Spotseals.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  ",
+            "probe": {
+              "form": {
+                "action": 9,
+                "mood": 5,
+                "original_author": -1,
+                "parts": 1,
+                "perspectives": 1,
+                "subject": 14,
+                "subject_hf": -1
+              },
+              "guards_unchanged": true,
+              "id": 0,
+              "text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the hunt, originating in The Big Channel.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  The Valley of Winds is always written from the perspective of the dwarf Stodir Spotseals.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  "
+            }
+          },
+          {
+            "case": "animal-persona",
+            "text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the hunt, originating in The Big Channel.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  The Valley of Winds is always written from the perspective of a dwarf.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  ",
+            "probe": {
+              "form": {
+                "action": 9,
+                "mood": 5,
+                "original_author": -1,
+                "parts": 1,
+                "perspectives": 1,
+                "subject": 14,
+                "subject_hf": -1
+              },
+              "guards_unchanged": true,
+              "id": 0,
+              "text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the hunt, originating in The Big Channel.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  The Valley of Winds is always written from the perspective of a dwarf.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  "
+            }
+          }
+        ],
+        "scope": "Temporary original-author without origin entity, historical-figure subject/persona, and creature/caste persona. Each changes native text, equals owned probe and preserves guarded state; original fields/pointers restored. Animal formatter uses the existing dwarf race/caste; not all species or identities.",
+        "diagnostics": "passed_with_known_issues",
+        "owned_df_pid": 39984,
+        "source_unchanged": true,
+        "exit_without_saving": true
       }
     }
   }

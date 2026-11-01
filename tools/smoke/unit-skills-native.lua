@@ -90,15 +90,14 @@ local ok,err=xpcall(function()
    end
   end
   local reference=observe('Knowledge');local seen={}
-  for index,kind in ipairs(reference.knowledge_types)do
-   if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1'))then
-    seen[kind]=true;observe('Knowledge')
+  local function capture_detail(index,kind,variant)
+    observe('Knowledge')
     sheet.scroll_position_unit_skill=index-1;view:render(dfhack.getTickCount())
     local first=sheet.scroll_position_unit_skill
     local count=#sheet.unit_knowledge_type;first=math.max(0,math.min(first,count-14))
     click(852,250+36*(index-1-first))
     assert(#sheet.skill_description_raw_str>0,'Knowledge detail did not open')
-    local detail={kind=kind,id=reference.knowledge_ids[index],tagged_rows={},lines={}}
+    local detail={kind=kind,id=reference.knowledge_ids[index],case=variant,tagged_rows={},lines={}}
     for _,value in ipairs(sheet.skill_description_raw_str)do
      if type(value)=='string'then detail.tagged_rows[#detail.tagged_rows+1]=dfhack.df2utf(value)
      else
@@ -115,7 +114,16 @@ local ok,err=xpcall(function()
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-detail-native.lua')
      detail.probe=assert(loadfile(source))(unit,detail)
     end
-    details[#details+1]=detail;capture('unit-skills-detail-'..kind..'-'..detail.id)
+    details[#details+1]=detail;capture('unit-skills-detail-'..kind..'-'..detail.id..(variant and('-'..variant)or''))
+    return detail.tagged_rows[1]
+  end
+  for index,kind in ipairs(reference.knowledge_types)do
+   if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1'))then
+    seen[kind]=true;local baseline=capture_detail(index,kind)
+    if kind==14 and os.getenv('DF3D_UNIT_POETIC_CASES')=='1'then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-cases-native.lua')
+     assert(loadfile(source))(unit,reference.knowledge_ids[index],function(variant)return capture_detail(index,kind,variant)end,baseline)
+    end
    end
   end
   end,debug.traceback)

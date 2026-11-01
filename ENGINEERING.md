@@ -3447,10 +3447,20 @@ crops exactly. Existing `creature_health_capture` also passes after extraction;
 both report only known startup/render-device shutdown/object diagnostics in
 `knowledge-detail-render`. Root/core passes in `knowledge-detail-render-core`.
 
-This verifies baseline text and scrollbar rendering only. Detail requests,
-selection/navigation state, scrolling through long details, resizing, stale
-responses and broader formatter ownership coverage remain unfinished. No
-Knowledge magnifier is connected by this renderer extraction.
+Protected054642 adds native music-detail scrolling and Escape/reopen observations.
+The text wraps to83 lines at53 columns. Standalone Godot matches18 wheel/page,
+arrow/track, drag and wheel-boundary observations, plus two scrolled RGB crops.
+`detail_input_reference` retains the native results and text; `knowledge-input-render`
+passes with known renderer diagnostics, and `knowledge-input-core` passes cleanly.
+DF34052 exits unsaved with source preservation and only known live Godot startup
+notices. Native Escape clears the detail and returns to the Knowledge list while
+keeping the creature panel open. The list retains its position16 and reopening
+the detail retains description position7; it does not reset to the first line.
+These navigation observations are not yet connected Godot workflow acceptance.
+
+Detail requests, selection/navigation state, resizing, stale responses and
+broader formatter ownership coverage remain unfinished. No Knowledge magnifier
+is connected by this renderer extraction.
 
 ### Creature Skills transport contract
 

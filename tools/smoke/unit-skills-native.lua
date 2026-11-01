@@ -233,6 +233,15 @@ local ok,err=xpcall(function()
      detail.selection_probe=assert(loadfile(source))(unit,detail)
     end
     details[#details+1]=detail;capture('unit-skills-detail-'..kind..'-'..detail.id..(variant and('-'..variant)or''))
+    if kind==15 and os.getenv('DF3D_UNIT_KNOWLEDGE_INPUT')=='1'then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','knowledge-input-native.lua')
+     assert(loadfile(source))(unit,view,capture,out,function()
+      select('Skills',15,16);observe('Knowledge')
+      sheet.scroll_position_unit_skill=index-1;view:render(dfhack.getTickCount())
+      local first=math.max(0,math.min(sheet.scroll_position_unit_skill,#sheet.unit_knowledge_type-14))
+      click(852,250+36*(index-1-first));assert(#sheet.skill_description_raw_str>0)
+     end)
+    end
     return detail.tagged_rows[1]
   end
   for index,kind in ipairs(reference.knowledge_types)do

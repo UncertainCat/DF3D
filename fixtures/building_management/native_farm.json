@@ -66082,6 +66082,276 @@
           "health_regression": "creature_health_capture passed_with_known_issues",
           "root_core": "build/qa/knowledge-detail-render-core"
         }
+      },
+      "detail_input_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-054642",
+        "observations": [
+          {
+            "dragging": false,
+            "first": 0,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "opened",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 6,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "CONTEXT_SCROLL_UP",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "CONTEXT_SCROLL_DOWN",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "CONTEXT_SCROLL_PAGEUP",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 42,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "CONTEXT_SCROLL_PAGEDOWN",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 6,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "input-up-left",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 6,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "input-up-right",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "input-down-left",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "input-down-right",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "input-track-above",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 42,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "input-track-below",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": true,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "drag-start",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": true,
+            "first": 21,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "drag-move",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 21,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "drag-release",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "wheel-body",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "wheel-top-padding",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "wheel-bottom-padding",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "wheel-footer",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "wheel-outside",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 0,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "escape",
+            "open": true,
+            "raw_count": 0,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "reopened",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          }
+        ],
+        "rows": [
+          "[C:7:0:1]The Intricate Luxuries is a form of music used for entertainment originating in The Big Channel.  The form guides musicians during improvised performances.  The music is played on a ekast and a sh\u00f9rrat.  The musical voices bring melody and counterpoint.  The melody has long phrases, while the counterpoint has phrases of varied length throughout the form.  The music repeats for as long as necessary.  It is performed using the berim scale.  [B]The ekast always should be spirited.  [B]The sh\u00f9rrat always does the main melody and should stress the rhythm.  [B]The Intricate Luxuries has a well-defined multi-passage structure: a lengthy introduction, a verse and a chorus all repeated two times and a coda.  [B]The introduction is voiced by the melody of the sh\u00f9rrat and the counterpoint of the ekast.  The passage is at a hurried pace, and it is to be in whispered undertones.  This passage typically has some sparse chords.  The passage is performed in the s\u00e1krith rhythm.  [B]The verse is voiced by the melody of the sh\u00f9rrat.  The passage is extremely fast, and it is to be moderately soft.  Only one pitch is ever played at a time in this passage.  The passage is performed in free rhythm.  [B]The chorus is voiced by the melody of the ekast and the melody of the sh\u00f9rrat.  The passage is half the tempo of the last passage, and it is to become softer and softer.  This passage features only melodic tones and intervals.  The passage is performed in free rhythm.  [B]The coda is voiced by the melody of the sh\u00f9rrat.  The passage is slow, and it is to fade into silence.  Only one pitch is ever played at a time in this passage.  The passage is performed in free rhythm.  [B]Scales are conceived of as two chords built using a division of the perfect fourth interval into eight notes.  The tonic note is fixed only at the time of performance.  [B]As always, the berim pentatonic scale is thought of as two disjoint chords drawn from the fundamental division of the perfect fourth.  These chords are named bidok and mabdug.  [B]The bidok trichord is the 1st, the 2nd and the 8th degrees of the fundamental perfect fourth division.  [B]The mabdug trichord is the 1st, the 5th and the 8th degrees of the fundamental perfect fourth division.  [B]The s\u00e1krith rhythm is made from two patterns: the ag\u00eak (considered the primary) and the lanlar.  The patterns are to be played over the same period of time, concluding together regardless of beat number.  [B]The ag\u00eak rhythm is a single line with thirty-two beats divided into four bars in a 8-8-8-8 pattern.  The beats are named ucat (spoken uc), ng\u00e1rak (ng\u00e1), enir (en), ugath (ug), lisig (li), et\u00e4g (et), erong (er) and osed (os).  The beat is stressed as follows:[B]| - - - - - - x - | x ! x x x x x x | - x - - x - - - | X x - x x x - x | [B]where ! marks the primary accent, X marks an accented beat, x is a beat, - is silent and | indicates a bar.  [B]The lanlar rhythm is a single line with two beats.  The beats are named udir (spoken ud) and tarmid (ta).  The beat is stressed as follows:[B]| x x | [B]where x is a beat and | indicates a bar.  "
+        ],
+        "rendered": [
+          {
+            "name": "drag-release",
+            "rect": [
+              432,
+              244,
+              456,
+              492
+            ],
+            "rgb_sha256": "ea795b7f2293e8ecddf036ae7f543019740188f8717e7119d8b949d7ca56a02d"
+          },
+          {
+            "name": "reopened",
+            "rect": [
+              432,
+              244,
+              456,
+              492
+            ],
+            "rgb_sha256": "a9193dfe3b64de6333782bdf7e45dfc5b982aa52890558fabc43b316dc4f9155"
+          }
+        ],
+        "scope": "Native detail scrolling and Escape/list/reopen semantics; standalone Godot input/render comparison only, no connected detail navigation.",
+        "verification": {
+          "run": "build/qa/knowledge-input-render",
+          "status": "passed_with_known_issues",
+          "source_preservation": "Owned source unchanged",
+          "native_df_pid": 34052,
+          "input_comparisons": 18,
+          "scrolled_pixel_crops": 2
+        }
       }
     }
   }

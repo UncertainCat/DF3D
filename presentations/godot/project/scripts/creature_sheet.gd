@@ -16,6 +16,7 @@ var scroll_location := ""
 var items_view
 var health_view
 var kills_view
+var relations_view
 var uniform_view
 var skills_view
 var knowledge_view
@@ -32,6 +33,7 @@ func reset(id: int):
  unit_id=id;tab="Overview";subtabs.clear();scrolls.clear();scroll=null;scroll_location=""
  if is_instance_valid(health_view):health_view.page_key="";health_view.first=0
  if is_instance_valid(kills_view):kills_view.first=0;kills_view.scrollbar.dragging=false
+ if is_instance_valid(relations_view):relations_view.first=0;relations_view.scrollbar.dragging=false
  if is_instance_valid(uniform_view):uniform_view.first=0;uniform_view.scrollbar.dragging=false
  if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
  if is_instance_valid(rooms_view):rooms_view.first=0;rooms_view.scrollbar.dragging=false
@@ -459,15 +461,16 @@ func render(controller, state: Dictionary):
   return
  if tab=="Relations":
   scroll=null
-  var view=preload("res://scripts/creature_relations_view.gd").new()
-  owner.body.add_child(view);view.configure(owner.world,records_for("relationships"))
-  view.first=int(scrolls.get("Relations/",0));view.layout()
-  view.scrollbar.row_changed.connect(func(value):scrolls["Relations/"]=value)
-  view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
-  view.inspect_requested.connect(func(kind,id):owner.object_requested.emit(kind,id))
-  view.focus_requested.connect(func(tile):owner.close_panel();owner.focus_requested.emit(tile))
-  view.position=Vector2(0,y);view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
-  return
+  if not is_instance_valid(relations_view):
+   relations_view=preload("res://scripts/creature_relations_view.gd").new()
+   owner.body.add_child(relations_view);relations_view.configure(owner.world,records_for("relationships"))
+   relations_view.first=int(scrolls.get("Relations/",0));relations_view.layout()
+   relations_view.scrollbar.row_changed.connect(func(value):scrolls["Relations/"]=value)
+   relations_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+   relations_view.inspect_relative_requested.connect(func(tile,id):owner.focus_requested.emit(tile);owner.object_requested.emit(1,id))
+   relations_view.focus_requested.connect(func(tile):owner.close_panel();owner.focus_requested.emit(tile))
+  relations_view.position=Vector2(0,y);relations_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  relations_view.present(records_for("relationships"));return
  if tab=="Military" and subtabs.get(tab,"Squad")=="Squad":
   scroll=null
   var view=preload("res://scripts/creature_squad_view.gd").new()

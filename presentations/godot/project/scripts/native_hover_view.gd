@@ -13,7 +13,8 @@ const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
 const BUILDING_HELP={"rename":["Name this building."],"remove":["Remove this building."]}
 # Native Customize instruction287, protected085935 text-cell readback.
 # Native Military instruction300, protected130217.
-const UNIT_HELP={"uniform_recenter":["Recenter on this item."],"reports":["See this creature's","combat history."],"customize":["Customize this","creature's nickname and","profession nickname."],
+const UNIT_HELP={"relations_recenter":["Recenter on this","creature."], # Native Relations133430, hover298.
+	"uniform_recenter":["Recenter on this item."],"reports":["See this creature's","combat history."],"customize":["Customize this","creature's nickname and","profession nickname."],
 	"inventory_squad":["This item is part of","the assigned squad","equipment."],
 	"inventory_clothing":["This item is part of","the creature's regular","clothing."],
 	"inventory_tool":["This item is a tool","assigned by a work","detail."],

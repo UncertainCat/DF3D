@@ -3470,8 +3470,19 @@ and controls. Owned DF44904 exits unsaved and the source save is unchanged.
 All three Godot logs contain only the documented startup notice, with no Unicode
 errors. The installed plugin SHA256 is
 `6fffe6eeb4c4dcd408497a0dc3774ad6b81c6640b73490315499eac96f4c8c2e`.
-This is row/initial-render acceptance. Scroll/tail descriptions, action clicks,
-hover help, animated name colors, resize and gesture retention still need work;
+Protected133828 verifies the first and last14 rows for both creatures, including
+native body-cell portraits (map-scaled thumbnails are unsuitable), descriptions
+and scrollbar geometry. Wheel scrolling moves one row; header redraw retains
+the same view and position; overlay cancellation retires its drag. Both timed
+help messages match native298/299. View creature opens3845 and centers the camera;
+Recenter closes the sheet and focuses128,52,165. These are actual pointer actions.
+Owned DF32908 exits unsaved, the source save is unchanged, and all three Godot logs
+contain only the known startup notice. Native capture133430 exposed incomplete
+camera cleanup in the diagnostic script; it is excluded.133625 identified the
+portrait and inspect-camera gaps, both corrected in133828.
+
+Name-color animation now schedules redraws while visible. Animated-color variants,
+resize and remaining lifecycle combinations have not received targeted acceptance;
 creature exposure remains gated. Groups retains its generic implementation.
 
 ### Creature Military pages

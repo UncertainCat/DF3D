@@ -59568,13 +59568,31 @@
       "source_preserved": true,
       "diagnostics": "passed_with_known_issues: separate rendering thread startup notice only",
       "unverified": [
-        "Scroll/tail descriptions",
-        "Navigation and recenter actions",
-        "Hover help",
-        "Animated name colors",
-        "Resize and gesture retention",
+        "Animated name-color variants",
+        "Resize",
+        "Remaining lifecycle combinations",
         "Groups implementation"
-      ]
+      ],
+      "interactions": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-133828",
+        "initial_and_tail_pixels": true,
+        "wheel_one_row": true,
+        "refresh_retains_view_and_scroll": true,
+        "overlay_cancels_drag": true,
+        "native_hover_ids": [
+          298,
+          299
+        ],
+        "inspected_unit": 3845,
+        "inspect_centers_camera": true,
+        "recenter_closes_sheet": true,
+        "target": [
+          128,
+          52,
+          165
+        ],
+        "source_preserved": true
+      }
     },
     "unit_military_reference": {
       "capture": "build/stockpile-storage-native-farm-discovery-20261101-125019",

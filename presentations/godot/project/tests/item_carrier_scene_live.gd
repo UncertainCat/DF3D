@@ -1632,5 +1632,47 @@ func exercise_relations(inspector) -> void:
 		var same:=actual.get_region(rect).get_data()==native_image.get_region(rect).get_data()
 		check(same,"Native Relations pixels differ: "+str(target))
 		results.append({"unit_id":target,"rows_match":equal,"native_pixels":same,"rows":rows})
+		var view=inspector.creature_sheet.relations_view
+		var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true
+		wheel.position=view.get_global_transform_with_canvas()*Vector2(100,40);root.push_input(wheel,true);await process_frame
+		check(view.first==1,"Relations wheel did not move one row")
+		inspector.redraw();await process_frame
+		check(inspector.creature_sheet.relations_view==view and view.first==1,"Relations refresh replaced view or reset scroll")
+		view.scrollbar.dragging=true;inspector.cancel_gesture();check(not view.scrollbar.dragging,"Relations overlay retained drag")
+		view.scrollbar.move_to(int(page.tail.first));await process_frame;await RenderingServer.frame_post_draw
+		actual=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8);actual.save_png(directory+"/"+name+"-tail-scene.png")
+		native_image=Image.load_from_file(directory+"/"+name+"-tail.png");native_image.convert(Image.FORMAT_RGB8)
+		var tail_same:=actual.get_region(rect).get_data()==native_image.get_region(rect).get_data()
+		check(tail_same,"Native Relations tail pixels differ: "+str(target));results[-1]["tail_pixels"]=tail_same
+		view.scrollbar.move_to(0);await process_frame
+		if page.has("actions"):
+			var index:=int(page.actions.index)
+			for which in 2:
+				var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*view.button_rect(index,which).get_center();root.push_input(motion,true)
+				await create_timer(0.7).timeout;await process_frame
+				var key:="relations_recenter" if which==0 else "inventory_creature"
+				check(inspector.hover_help.visible and inspector.hover_help.displayed=="unit_"+key,"Relations hover missing: "+key)
+				check(preload("res://scripts/native_hover_view.gd").UNIT_HELP[key]==page.actions.hover[which].lines,"Relations native help differs")
+			await pointer(view.get_global_transform_with_canvas()*view.button_rect(index,1).get_center());await process_frame
+			check(inspector.is_open() and int(inspector.selected.get("id",-1))==int(page.actions.unit_id),"Relations inspection targeted wrong creature")
+			var inspected_tile:Array=page.actions.tile
+			check(is_equal_approx(scene.camera_rig.position.x,float(inspected_tile[0])+0.5) and is_equal_approx(scene.camera_rig.position.z,float(inspected_tile[1])+0.5) and world.get_top_z()==int(inspected_tile[2]),"Relations inspection did not center creature")
+			inspector.open_target(Vector3i.ZERO,1,target)
+			deadline=Time.get_ticks_msec()+10000
+			while Time.get_ticks_msec()<deadline:
+				world.poll();actions.poll(0.01)
+				var state:Dictionary=world.creature_info_state(target)
+				if not state.get("loading",true) and not state.get("detail",{}).is_empty():break
+				await create_timer(0.01).timeout
+			await health_tab(inspector,"Relations");await process_frame
+			view=inspector.creature_sheet.relations_view
+			var camera_before:Vector3=scene.camera_rig.position;var level_before:int=world.get_top_z()
+			await pointer(view.get_global_transform_with_canvas()*view.button_rect(index,0).get_center());await process_frame
+			var tile:Array=page.actions.tile
+			check(not inspector.is_open(),"Relations recenter retained creature sheet")
+			check(is_equal_approx(scene.camera_rig.position.x,float(tile[0])+0.5) and is_equal_approx(scene.camera_rig.position.z,float(tile[1])+0.5) and world.get_top_z()==int(tile[2]),"Relations recenter focused wrong creature")
+			world.set_top_z(level_before);scene.camera_rig.follow_level(level_before);scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
+			results[-1]["actions"]=true
+
 	var file:=FileAccess.open(directory+"/unit-social-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()

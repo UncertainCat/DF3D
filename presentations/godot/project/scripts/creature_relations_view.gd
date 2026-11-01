@@ -1,12 +1,13 @@
 extends "res://scripts/creature_items_view.gd"
 signal focus_requested(tile:Vector3i)
+signal inspect_relative_requested(tile:Vector3i,unit_id:int)
 const NameColor=preload("res://scripts/native_name_color.gd")
 var names: Array=[]
 func present(records:Array) -> void:
 	super.present(records);names.clear();icons.clear()
 	for row in rows:
 		var unit:=int(fact(row,"unit_id",-1))
-		icons.append(world.selection_icon(1,unit) if unit>=0 else null)
+		icons.append(world.selection_icon(1,unit,true) if unit>=0 else null)
 		var decoder:=JSON.new();var color:Dictionary={}
 		if decoder.parse(str(fact(row,"name_color","{}")))==OK and decoder.data is Dictionary:
 			color=decoder.data
@@ -14,6 +15,7 @@ func present(records:Array) -> void:
 				if color.get(key) is Array:
 					for i in color[key].size():color[key][i]=int(color[key][i])
 		names.append(color)
+	set_process(is_visible_in_tree() and names.any(func(color):return int(color.get("effect",0))!=0))
 func button_rect(index:int,which:int) -> Rect2:
 	return Rect2(size.x-(88 if scrollbar.visible else 72)+which*32,(index-first)*36,24,36)
 func _draw() -> void:
@@ -47,6 +49,19 @@ func _gui_input(event:InputEvent) -> void:
 	if index<first or index>=mini(rows.size(),first+capacity()):return
 	var row:Dictionary=rows[index];var unit:=int(fact(row,"unit_id",-1))
 	if unit<0:return
-	if button_rect(index,1).has_point(event.position):accept_event();inspect_requested.emit(1,unit)
+	if button_rect(index,1).has_point(event.position):
+		accept_event();inspect_relative_requested.emit(Vector3i(int(fact(row,"x",-1)),int(fact(row,"y",-1)),int(fact(row,"z",-1))),unit)
 	elif button_rect(index,0).has_point(event.position):
 		accept_event();focus_requested.emit(Vector3i(int(fact(row,"x",-1)),int(fact(row,"y",-1)),int(fact(row,"z",-1))))
+
+func _process(_delta:float) -> void:queue_redraw()
+func _notification(what:int) -> void:
+	if what==NOTIFICATION_VISIBILITY_CHANGED:set_process(is_visible_in_tree() and names.any(func(color):return int(color.get("effect",0))!=0))
+
+func hover_kind(point:Vector2) -> String:
+	if not allowed():return ""
+	var index:=first+floori(point.y/36)
+	if index<first or index>=mini(rows.size(),first+capacity()) or int(fact(rows[index],"unit_id",-1))<0:return ""
+	if button_rect(index,0).has_point(point):return "relations_recenter"
+	if button_rect(index,1).has_point(point):return "inventory_creature"
+	return ""

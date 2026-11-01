@@ -2405,8 +2405,32 @@ The preview is inlined in input handler1aa060 at1b0a75..1b10ed. It resets its
 sheet-owned vectors, checks native role helpers13b9c00/138f4e0, expands historical
 family links and accompanying units, then filters destination sites through
 9b4e70/93ce30/9364d0/9b4e40. These are entry-point leads, not yet audited callable
-contracts. No standalone owned-preview API has been established. Sheet fields
+contracts. No single native aggregate preview API has been established; the owned group
+reader below exposes the verified semantic subset. Sheet fields
 1928..196c are prohibited runtime inputs, even though the diagnostic records them.
+
+The staged `creature_expel_native.h::expelGroup` reader implements the inlined
+refusal/group orchestration with owned output and pinned native helper calls.
+Responsibility checks use13b9c00 with an explicit entity, reaching read-only99ab70.
+Position-bit checks use factual link/entity lookup, native assignment searchb9dc0,
+and native position lookupbbe40 on an independently owned assignment. They avoid
+138f4e0/b972c0's live link and assignment cache refresh. Native13cc4d0 resolves
+relative units, and nativeb9e70 inserts into the owned sorted unique ID vector.
+Accompanying-unit selection follows the observed reverse initial-member scan.
+No view_sheets, native cursor, camera or staged menu vectors are runtime inputs.
+The header-button visibility gate and destination choices remain separate work.
+
+Protected212146 compares `df3d unit-expel-group-probe <id>` against all nine
+baseline, office and family previews. Reason codes and full ordered ID vectors
+match. Byte guards preserve selected/relative units, historical figures and
+links, office definitions/assignments, plotinfo and view_sheets. The owned source
+save is unchanged; live logs have only the known startup notice. MSVC builds and
+core QA `unit-expel-group` passes. `unit_expel_group_reader_reference` retains
+these results and bridge identity. Enable `DF3D_UNIT_EXPEL_READER=1` alongside
+REFUSALS/FAMILY diagnostic flags to repeat the comparisons. This is a semantic
+reader milestone, not complete Expel acceptance: no schema, viewer control or
+confirmation operation is added, and cold-cache and remaining group cases still
+need verification.
 
 Confirmation1b1825..1b1c26 allocates an activity, records expulsion history when
 there is no destination, invokes unit cleanup/assignment helpers, emits thoughts,

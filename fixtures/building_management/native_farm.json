@@ -44664,6 +44664,124 @@
         "Linked destinations",
         "Confirmation effects"
       ]
+    },
+    "unit_expel_group_reader_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261031-212146",
+      "cases": [
+        {
+          "name": "open",
+          "reader": {
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              1017
+            ]
+          },
+          "guarded_state_unchanged": true
+        },
+        {
+          "name": "elected",
+          "reader": {
+            "reason": 1,
+            "unit_id": 1017,
+            "units": []
+          },
+          "guarded_state_unchanged": true
+        },
+        {
+          "name": "hereditary",
+          "reader": {
+            "reason": 0,
+            "unit_id": 1017,
+            "units": []
+          },
+          "guarded_state_unchanged": true
+        },
+        {
+          "name": "both",
+          "reader": {
+            "reason": 1,
+            "unit_id": 1017,
+            "units": []
+          },
+          "guarded_state_unchanged": true
+        },
+        {
+          "name": "spouse-present",
+          "reader": {
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              1017,
+              2345
+            ]
+          },
+          "guarded_state_unchanged": true
+        },
+        {
+          "name": "spouse-absent",
+          "reader": {
+            "reason": 3,
+            "unit_id": 1017,
+            "units": [
+              1017
+            ]
+          },
+          "guarded_state_unchanged": true
+        },
+        {
+          "name": "child-present",
+          "reader": {
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              1017,
+              2345
+            ]
+          },
+          "guarded_state_unchanged": true
+        },
+        {
+          "name": "child-absent",
+          "reader": {
+            "reason": 7,
+            "unit_id": 1017,
+            "units": [
+              1017
+            ]
+          },
+          "guarded_state_unchanged": true
+        },
+        {
+          "name": "adult-child",
+          "reader": {
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              1017
+            ]
+          },
+          "guarded_state_unchanged": true
+        }
+      ],
+      "bridge_sha256": "b03d68d7cd8bb37ddc1fa677bb986007bf1dad1666fd64f5a96bf25bce7680e7",
+      "native_helpers": {
+        "responsibility": "13b9c00 -> 99ab70 (explicit entity)",
+        "assignment_find": "b9dc0",
+        "position_lookup": "bbe40 (owned assignment)",
+        "relative_unit": "13cc4d0",
+        "sorted_unique_insert": "b9e70 (owned output)"
+      },
+      "verification": "Exact native reason and unit-ID vector for nine cases. Byte guards on unit, relative, historical figures/links, office definitions/assignments, plotinfo and view_sheets unchanged. Owned source unchanged; only known Godot startup diagnostics.",
+      "qa": "build/qa/unit-expel-group",
+      "msvc_log": "build/notes/pm/unit-expel-group-msvc.log",
+      "limitations": [
+        "No destination reader, transport or viewer control yet.",
+        "No confirmation operation.",
+        "Header Expel-button visibility eligibility is separate.",
+        "Remaining family office/responsibility/missing/dead/off-site cases and accompanying-unit cases need acceptance.",
+        "No cold-cache invalidation acceptance yet."
+      ]
     }
   }
 }

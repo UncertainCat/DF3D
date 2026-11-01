@@ -40,6 +40,37 @@ local function record(name)
   expelling=sheet.unit_overview_expelling,reason=sheet.unit_overview_expel_cannot_expel_reason,
   selected_destination=sheet.unit_overview_expel_selected_dest_stid,
   destinations=vector(sheet.unit_overview_expel_dest_stid),units=vector(sheet.unit_overview_expel_total_unid),rows=rows}
+ if sheet.unit_overview_expelling and os.getenv('DF3D_UNIT_EXPEL_READER')=='1' then
+  local guards,seen={},{}
+  local function protect(object)
+   if not object then return end
+   local size,address=df.sizeof(object)
+   if seen[address]then return end;seen[address]=true
+   local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+   guards[#guards+1]={bytes=bytes,address=address,size=size}
+  end
+  protect(sheet);protect(df.global.plotinfo)
+  for _,candidate in ipairs{unit,family and family.relative or unit}do
+   protect(candidate)
+   local hf=df.historical_figure.find(candidate.hist_figure_id);protect(hf)
+   if hf then
+    for _,link in ipairs(hf.histfig_links)do protect(link)end
+    for _,link in ipairs(hf.entity_links)do protect(link)end
+   end
+   for _,office in ipairs(dfhack.units.getNoblePositions(candidate) or {})do protect(office.assignment);protect(office.position)end
+  end
+  local output,status=dfhack.run_command_silent('df3d','unit-expel-group-probe',tostring(unit.id))
+  local unchanged=true
+  for _,guard in ipairs(guards)do
+   if dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)~=0 then unchanged=false end
+   df.delete(guard.bytes)
+  end
+  assert(status==0,output);assert(unchanged,'Expel reader changed guarded unit/family/office/menu state')
+  local result=json.decode(output)
+  observations[#observations].reader=result;observations[#observations].reader_guards_unchanged=true
+  assert(result.reason==sheet.unit_overview_expel_cannot_expel_reason,'Expel reader refusal differs')
+  assert(json.encode(result.units)==json.encode(vector(sheet.unit_overview_expel_total_unid)),'Expel reader affected group differs')
+ end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Expel navigation advanced simulation')
 end
 local ok,err=xpcall(function()

@@ -3628,12 +3628,41 @@ case; do not require blanket read-only behavior or suppress that native effect.
 Worldgen-backed retirement and other source lifetimes remain separate work.
 
 Other remaining caption dependencies include coin issuer formatting5be970,
-corpse figure getters, container contents and nested c65450 calls in several
+corpse formatting, container contents and nested c65450 calls in several
 item descriptions. Native b94400 avoids caption fallback for books, slabs and
 tools with use20, but that exclusion does not cover figurines or statues.
 Existing material-cache isolation covers14add70's semantic cache only; it does
 not isolate item/image mutations or establish the remaining subtype lifetimes.
 No new runtime admission follows from this audit.
+
+Corpse/body-component vtables resolve slot0x1f8 to caba20 (full length0x121,
+FNV6db58b3f87764011) and slot0x200 to ca26b0 (full length0x110,
+FNV46b107654a2b9158). Both are leaf helpers with all branch targets inside
+the inspected bodies. The first returns race/caste and checked historical
+figure/unit lookups through caller-owned output pointers; the second returns
+the unit body plan or a bounds-checked race/caste body plan. Neither mutates
+the corpse or referenced unit. Their complete bodies extend beyond the first
+unwind fragment/return; `corpse-caption-getters.json` records the full spans.
+The apparent corpse-caption stores atca22e3/ca2338/ca253b write the local
+description string or its allocated backing, not the corpse.
+
+Corpse captionca1aa0 still needs transitive review of132e430 and70be40. Its
+callca1dd2 passes comparison race-2 to132e0c0. In fortress mode that helper
+uses the fortress race; adventure mode can instead read current-unit state.
+The earlier direct current-unit comparison atca1b79 is also guarded by
+adventure mode. Admission must establish the fortress-mode precondition and
+the remaining source ownership; the identity-event guard is not a substitute
+for auditing this independent caller.
+
+Cage captionca4420 resolves contained units through reference slot0x20 and
+calls1385b10 on the resulting unit atca4586. The already audited inventory
+helper can refresh body/component/nerve caches on that unit. Thus the cage
+path is not established read-only by its local string stores or by the
+material-cache guard. It needs owned contained-unit context or separately
+verified preservation of the native cache effects. This is distinct from
+statue/figurine artwork initialization and does not authorize suppressing
+those established semantic effects. Cold contained-unit cache comparisons,
+remaining cage virtual targets and nested-container captions remain pending.
 
 ### Knowledge coin-caption source requirements
 

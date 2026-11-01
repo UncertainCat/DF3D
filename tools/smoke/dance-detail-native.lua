@@ -58,13 +58,20 @@ local function event(id)
   figure(value.histfig);figure(value.appointer_hfid);figure(value.promise_to_hfid);entity(value.civ)
  elseif kind==df.history_event_type.CREATED_SITE or kind==df.history_event_type.CREATED_BUILDING then
   figure(value.builder_hf);entity(value.civ);entity(value.site_civ);site(value.site)
- elseif kind==df.history_event_type.ARTIFACT_LOST or kind==df.history_event_type.ARTIFACT_TRANSFORMED then
-  site(value.site)
+ elseif kind==df.history_event_type.ARTIFACT_LOST or kind==df.history_event_type.ARTIFACT_TRANSFORMED or kind==df.history_event_type.ARTIFACT_GIVEN then
+  if kind~=df.history_event_type.ARTIFACT_GIVEN then site(value.site)end
   local ids={}
   if kind==df.history_event_type.ARTIFACT_TRANSFORMED then
    ids={value.new_artifact};vector(value.old_artifact);figure(value.histfig)
    for _,id in ipairs(value.old_artifact)do ids[#ids+1]=id end
   else ids={value.artifact}end
+  if kind==df.history_event_type.ARTIFACT_GIVEN then
+   figure(value.giver_hf);entity(value.giver_entity);figure(value.receiver_hf);entity(value.receiver_entity)
+   assert(value.reason.type==-1,'Add guards for this reason')
+   local thought=value.circumstance.type
+   assert(thought==df.unit_thought_type.AcquireArtifact or thought==df.unit_thought_type.GaveArtifact,'Add guards for this circumstance')
+   ids[#ids+1]=value.circumstance.data.Death
+  end
   for _,id in ipairs(ids)do
    local artifact=df.artifact_record.find(id)
    if artifact then

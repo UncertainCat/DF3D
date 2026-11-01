@@ -29,10 +29,14 @@
 #include "df/history_event_artifact_transformedst.h"
 #include "df/history_event_hf_act_on_artifactst.h"
 #include "df/history_event_hf_learns_secretst.h"
+#include "df/history_event_entity_dissolvedst.h"
+#include "df/history_event_hf_gains_secret_goalst.h"
+#include "df/history_event_item_stolenst.h"
 #include "df/artifact_record.h"
 #include "df/item_coinst.h"
 #include "df/coin_batch.h"
 #include <unordered_set>
+#include <cstring>
 namespace df3d_creature {
 // Called only after description readiness has pinned the native name helper.
 // This closes coin dependencies, not arbitrary item-caption graphs.
@@ -56,8 +60,38 @@ inline bool knowledgeArtifactInputsValid(int32_t artifact_id) {
     const auto* issuer=df::historical_entity::find(issuer_id);
     return issuer && issuer->entity_raw;
 }
-// Direct artifact fields verified against b94400 call arguments. Agreements,
-// item-to-artifact resolution and circumstance dependencies remain separate.
+// The generated circumstance union has no artifact-named member. Native
+// b5a6c0 passes its raw int32 payload to b94400 for exactly these two thoughts.
+template<class Circumstance>
+inline bool knowledgeCircumstanceArtifactInputsValid(const Circumstance& circumstance) {
+    if(circumstance.type!=df::unit_thought_type::AcquireArtifact &&
+       circumstance.type!=df::unit_thought_type::GaveArtifact)return true;
+    int32_t artifact_id;
+    static_assert(sizeof(circumstance.data)==sizeof(artifact_id));
+    std::memcpy(&artifact_id,&circumstance.data,sizeof(artifact_id));
+    return knowledgeArtifactInputsValid(artifact_id);
+}
+inline bool eventCircumstanceArtifactInputsValid(df::history_event* event) {
+    // CHANGE_HF_MOOD and CHANGE_HF_STATE also call b5a6c0, but pass constant
+    // -1 for the circumstance rather than forwarding a stored dependency.
+    switch(event->getType()) {
+    case df::history_event_type::ARTIFACT_CLAIM_FORMED:
+        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_artifact_claim_formedst*>(event)->circumstance);
+    case df::history_event_type::ARTIFACT_GIVEN:
+        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_artifact_givenst*>(event)->circumstance);
+    case df::history_event_type::ARTIFACT_POSSESSED:
+        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_artifact_possessedst*>(event)->circumstance);
+    case df::history_event_type::ENTITY_DISSOLVED:
+        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_entity_dissolvedst*>(event)->circumstance);
+    case df::history_event_type::HF_GAINS_SECRET_GOAL:
+        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_hf_gains_secret_goalst*>(event)->circumstance);
+    case df::history_event_type::ITEM_STOLEN:
+        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_item_stolenst*>(event)->circumstance);
+    default:return true;
+    }
+}
+// Direct artifact fields verified against b94400 call arguments. Agreements
+// and item-to-artifact resolution remain separate.
 inline bool directEventArtifactInputsValid(df::history_event* event) {
     switch(event->getType()) {
     case df::history_event_type::ARTIFACT_CREATED:
@@ -123,6 +157,7 @@ inline bool knowledgeEventInputsValid(int32_t event_id) {
         if(!visited.insert(event_id).second)return false;
         if(!directAgreementIdentityInputsValid(event_id))return false;
         if(!directEventArtifactInputsValid(event))return false;
+        if(!eventCircumstanceArtifactInputsValid(event))return false;
         if(event->getType()==df::history_event_type::MASTERPIECE_LOST) {
             event_id=static_cast<df::history_event_masterpiece_lostst*>(event)->creation_event;
             continue;

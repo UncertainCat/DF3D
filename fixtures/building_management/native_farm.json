@@ -67464,9 +67464,9 @@
         "scope": "ASSUME_IDENTITY dance descriptions with valid unit race/caste and temporary identity/event graphs. Profession/entity changes leave this native phrase unchanged; separate profession branch, agreement identities, other races and deep historical identity graphs remain unverified."
       },
       "coin_validation_reference": {
-        "source": "build/stockpile-storage-native-farm-discovery-20261101-081752",
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-082156",
         "status": "passed_with_known_issues",
-        "bridge_sha256": "c9eeff99a57cb3d4f5fd66edc4c504c2e635917195f1db8d99c4017ab7e20b80",
+        "bridge_sha256": "35282a241bdf779eeee8b332e01f764c670aedeb879c7c0726d92914cafb198e",
         "cases": [
           {
             "case": "negative-batch",
@@ -67577,6 +67577,66 @@
             "case": "artifact_transformed-old-invalid-coin",
             "guards_unchanged": true,
             "rejected": true
+          },
+          {
+            "case": "artifact_claim_formed-AcquireArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_claim_formed-GaveArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_given-AcquireArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_given-GaveArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_possessed-AcquireArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "artifact_possessed-GaveArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "entity_dissolved-AcquireArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "entity_dissolved-GaveArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "hf_gains_secret_goal-AcquireArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "hf_gains_secret_goal-GaveArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "item_stolen-AcquireArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "item_stolen-GaveArtifact-invalid-coin",
+            "guards_unchanged": true,
+            "rejected": true
           }
         ],
         "valid_cases": [
@@ -67611,6 +67671,16 @@
             "text_sha256": "05b89b3ece39ec428db9c619d5ad847dbcee231783b6b591dbb5128660663e30"
           },
           {
+            "case": "circumstance-AcquireArtifact",
+            "text_utf8_bytes": 1789,
+            "text_sha256": "d5697c6dac08668f5a1811c4684f8d7d618c3fcd887476f5ccd757a51b3e371e"
+          },
+          {
+            "case": "circumstance-GaveArtifact",
+            "text_utf8_bytes": 1794,
+            "text_sha256": "84d75cca095f2d8e446c2f0cc475b9c8480a1870bac2ccb6d9a913a246bf1049"
+          },
+          {
             "case": "no-year",
             "text_utf8_bytes": 1749,
             "text_sha256": "4b19e0d83b1e39867af1e405c4bbfe717d79e071ffca1597a2a66963cdd47709"
@@ -67626,11 +67696,11 @@
             "text_sha256": "4b19e0d83b1e39867af1e405c4bbfe717d79e071ffca1597a2a66963cdd47709"
           }
         ],
-        "valid_native_comparisons": 18,
+        "valid_native_comparisons": 22,
         "baseline_form_comparisons": 4,
         "source_unchanged": true,
         "owned_exit_unsaved": true,
-        "scope": "Shared diagnostic traversal validates direct artifact fields for 15 event types, including every transformed old artifact. Live native phrase comparisons cover CREATED, LOST and TRANSFORMED plus an empty flagged name. Other direct event types have rejection coverage only. Agreements, death/theft item resolution, circumstances, nested item graphs and production admission remain incomplete."
+        "scope": "Shared diagnostic traversal validates direct artifact fields for 15 event types, including every transformed old artifact, plus AcquireArtifact/GaveArtifact circumstances in six forwarding event types. Live native phrase comparisons cover CREATED, LOST, TRANSFORMED and both circumstances through GIVEN plus an empty flagged name. Other event types have rejection coverage only. Agreements, death/theft item resolution, nested item graphs and production admission remain incomplete."
       },
       "coin_caption_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-064043",

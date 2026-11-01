@@ -80,6 +80,30 @@ for _,variant in ipairs{'no-batch','no-issuer','year','no-year','ruler','missing
     if #events>counts[1]+1 then events:erase(#events-1)end
     df.delete(dependency);assert(dependency_ok,dependency_error)
    end
+   for _,kind in ipairs{'artifact_claim_formed','artifact_given','artifact_possessed','entity_dissolved','hf_gains_secret_goal','item_stolen'}do
+    local dependency=df['history_event_'..kind..'st']:new()
+    local dependency_ok,dependency_error=xpcall(function()
+     dependency.id=events[#events-1].id+1;dependency.year=event.year;dependency.seconds=event.seconds
+     if kind:sub(1,9)=='artifact_'then dependency.artifact=-1 end
+     if kind=='artifact_given'then
+      dependency.giver_hf=-1;dependency.giver_entity=-1;dependency.receiver_hf=-1;dependency.receiver_entity=-1
+     end
+     dependency.reason.type=-1
+     events:insert('#',dependency);form.event=dependency.id
+     for _,thought in ipairs{'AcquireArtifact','GaveArtifact'}do
+      dependency.circumstance.type=df.unit_thought_type[thought];dependency.circumstance.data.Death=artifact.id
+      item.coin_batch=-2;reject(kind..'-'..thought..'-invalid-coin');item.coin_batch=index
+      if kind=='artifact_given'then
+       local label='circumstance-'..thought
+       local text=capture('coin-'..label);assert(text==capture('coin-'..label..'-warm'))
+       results[#results+1]={case=label,text=text}
+      end
+     end
+    end,debug.traceback)
+    form.event=event.id;item.coin_batch=index
+    if #events>counts[1]+1 then events:erase(#events-1)end
+    df.delete(dependency);assert(dependency_ok,dependency_error)
+   end
   end
  end,debug.traceback)
  form.event=original;raw.flags.CURRENCY_BY_YEAR=flag;issuer.entity_raw=raw

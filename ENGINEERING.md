@@ -3737,7 +3737,13 @@ artifact_id layout. Eight event roots also call circumstance helper b5a6c0.
 Its second dispatch maps unit thoughts AcquireArtifact236 and GaveArtifact239
 to b5b594/b5b5b6, then calls b94400 using the fifth argument, circumstance
 data. These are additional dependencies even when an event's primary artifact
-has already passed validation. The local artifact-event-dependencies.json
+has already passed validation. The shared diagnostic traversal checks them for
+ARTIFACT_CLAIM_FORMED, ARTIFACT_GIVEN, ARTIFACT_POSSESSED, ENTITY_DISSOLVED,
+HF_GAINS_SECRET_GOAL and ITEM_STOLEN. CHANGE_HF_MOOD/CHANGE_HF_STATE instead
+pass constant-1 for the circumstance and need no artifact extraction here.
+The generated circumstance union lacks an artifact-named member; the adapter
+copies its four-byte payload after checking the exact thought type, without
+changing DFHack's generated structures. The local artifact-event-dependencies.json
 records call sites and instruction neighborhoods against executable SHA256
 205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7;
 the neighborhoods are not a transitive dataflow proof.
@@ -3770,22 +3776,24 @@ Batch-1 and issuer-1 retain
 their native meanings; other batch indices require an in-range nonnull record,
 and other issuer IDs require a resolved entity with an entity raw. The same
 traversal serves dance form/section events and written historical-event
-references. Agreement payloads, death/theft item resolution, artifact-bearing
-circumstances and nested item captions remain unvalidated, so this is partial
+references. Agreement payloads, death/theft item resolution and nested item
+captions remain unvalidated, so this is partial
 source validation. Coin selector
 ca0d00 (length0x55, FNV6891982ef52f2367), issuer5be970 (length0x536,
 FNVd785ec19f3aa4618) and year52c2b0 (length0xd8, FNV38b6489e35387929)
 are pinned in both diagnostic adapters.
 
-Protected081752 on2026-11-01 with bridge
-`c9eeff99a57cb3d4f5fd66edc4c504c2e635917195f1db8d99c4017ab7e20b80`
-passes22 rejection cases: negative/past-end/null batches, unresolved issuer,
+Protected082156 on2026-11-01 with bridge
+`35282a241bdf779eeee8b332e01f764c670aedeb879c7c0726d92914cafb198e`
+passes34 rejection cases: negative/past-end/null batches, unresolved issuer,
 null issuer raw, null artifact item, an empty flagged name with invalid coin
 data, each additional direct event type, and an invalid second old artifact
-in a transformation. All preserve guarded source/UI state; malformed inputs
-are never submitted to the native oracle. Nine valid cases each match native
+in a transformation, plus both artifact circumstances on all six forwarding
+event types. All preserve guarded source/UI state; malformed inputs
+are never submitted to the native oracle. Eleven valid cases each match native
 twice, including lost/transformed events and a flagged but empty artifact
-name, alongside four baseline forms. The empty flagged name produces the same
+name and both circumstance phrases through ARTIFACT_GIVEN, alongside four
+baseline forms. The empty flagged name produces the same
 native coin caption as the unflagged name, establishing why the previous
 has_name-only guard was insufficient. Other event types have rejection
 coverage here, not complete native phrase/side-effect acceptance.

@@ -3332,6 +3332,12 @@ void run(color_ostream& out) {
     });
     lua_setfield(L,-2,"customize_captions");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_creature::expelEligible(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!value){lua_pushnil(state);return 1;}
+      lua_pushboolean(state,*value);return 1;
+    });
+    lua_setfield(L,-2,"expel_eligible");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto value=df3d_creature::overviewStatus(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!value)return luaL_error(state,"Native creature Overview status unavailable");
       lua_pushboolean(state,value->personality);lua_pushboolean(state,value->needs);

@@ -174,6 +174,13 @@ return function(request)
    fact(s,captions,'record_type','customize_captions')
    fact(s,captions,'name',name);fact(s,captions,'profession',profession)
   end
+  if request.expel_eligible then
+   local eligible=request.expel_eligible(u.id)
+   if eligible~=nil then
+    local controls=record(s,-11,'')
+    fact(s,controls,'record_type','expel_eligibility');fact(s,controls,'eligible',eligible and 1 or 0)
+   end
+  end
   if request.header_status then
    local text,color=request.header_status(u.id)
    local header=record(s,-7,'')

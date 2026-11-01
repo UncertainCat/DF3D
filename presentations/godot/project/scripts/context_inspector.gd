@@ -40,8 +40,18 @@ var customize_button: BaseButton
 var follow
 var follow_button: TextureButton
 var history_button: TextureButton
+var expel=preload("res://scripts/creature_expel_state.gd").new()
+var expel_button: TextureButton
+var expel_view
+var expel_scroll:=0
 
 func _ready():
+	expel.configure(action_service)
+	expel.changed.connect(_expel_changed)
+	expel.applied.connect(func(id):
+		expel.close()
+		if not selected.is_empty() and int(selected.kind)==1 and int(selected.id)==id:
+			world.demand_creature_info(-1);world.demand_creature_info(id))
 	if follow!=null:follow.changed.connect(_update_follow)
 	add_child(customize);customize.configure(action_service)
 	customize.changed.connect(func():
@@ -100,6 +110,7 @@ func open_target(tile: Vector3i, kind: int, id: int):
 	choose(target if not target.is_empty() else choices[0])
 
 func choose(row: Dictionary):
+	expel.close()
 	customize.close();customize.fallback_generation=-1;customize.fallback_valid=false
 	selected = row
 	building_removal.select(int(row.id) if int(row.kind) == 3 else -1)
@@ -115,6 +126,7 @@ func choose(row: Dictionary):
 	redraw()
 
 func close_panel():
+	expel.close()
 	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 	customize.close()
 	building_removal.select(-1)
@@ -128,6 +140,8 @@ func close_panel():
 	right_down = false
 
 func _exit_tree() -> void:
+	if expel.changed.is_connected(_expel_changed):expel.changed.disconnect(_expel_changed)
+	expel.dispose()
 	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 	building_removal.select(-1)
 
@@ -137,8 +151,12 @@ func set_play_enabled(value: bool):
 
 func is_open() -> bool: return panel != null and panel.visible
 
+func _expel_changed() -> void:
+	if is_open() and not selected.is_empty():redraw()
+
 func handle_escape() -> void:
-	if customize.opened or customize.requested:customize.close()
+	if expel.phase!=expel.Phase.Closed:expel.close()
+	elif customize.opened or customize.requested:customize.close()
 	else:close_panel()
 
 func cancel_gesture() -> void:
@@ -222,6 +240,9 @@ func _update_follow() -> void:
 
 func _update_customize_help() -> void:
 	if not is_instance_valid(hover_help):return
+	if is_instance_valid(expel_button) and expel_button.is_visible_in_tree() and not expel_button.disabled and (ui_host==null or ui_host.allows_panel_input(self)):
+		var local: Vector2=expel_button.get_global_transform_with_canvas().affine_inverse()*hover_position
+		if Rect2(Vector2.ZERO,expel_button.size).has_point(local):hover_help.enter_unit(get_instance_id(),"expel");return
 	if is_instance_valid(history_button) and history_button.is_visible_in_tree() and (ui_host==null or ui_host.allows_panel_input(self)):
 		var local: Vector2=history_button.get_global_transform_with_canvas().affine_inverse()*hover_position
 		if Rect2(Vector2.ZERO,history_button.size).has_point(local):hover_help.enter_unit(get_instance_id(),"reports");return
@@ -274,6 +295,7 @@ func icon_at(id: String):
 
 func redraw():
 	if selected.is_empty(): return
+	if is_instance_valid(expel_view):expel_scroll=expel_view.first
 	customize_presented=customize.opened;customize_requested=customize.requested
 	var view := get_viewport().get_visible_rect().size
 	var scale_factor: Vector2 = Preferences.effective_scale_vector(view)
@@ -291,6 +313,8 @@ func redraw():
 	customize_view=null
 	customize_button=null
 	history_button=null
+	expel_button=null
+	expel_view=null
 	follow_button=null
 	building_remove_button = null
 	clear_children(alternatives)
@@ -310,6 +334,7 @@ func redraw():
 			var header_activity := ""
 			var activity_color := 15
 			var customize_captions: Dictionary={}
+			var expel_eligible:=false
 			for section in detail.get("sections",[]):
 				if section.key!="identity": continue
 				for record in section.records:
@@ -319,6 +344,7 @@ func redraw():
 						header_status=facts.get("text","");header_color=int(facts.get("color","15"))
 					if facts.get("record_type","")=="header_name": header_name=facts
 					if facts.get("record_type","")=="customize_captions":customize_captions=facts
+					if facts.get("record_type","")=="expel_eligibility":expel_eligible=int(facts.get("eligible",0))==1
 					if facts.get("record_type","")=="header_activity":
 						header_activity=str(facts.get("text",""));activity_color=int(facts.get("color",15))
 					for fact in record.facts:
@@ -367,6 +393,14 @@ func redraw():
 				follow_button.pressed.connect(func():
 					if ui_host==null or ui_host.allows_panel_input(self):follow.toggle(int(selected.id)))
 				body.add_child(follow_button);_update_follow()
+			if action_service!=null and expel_eligible and not customize.opened:
+				expel_button=TextureButton.new();expel_button.name="ExpelCreature"
+				expel_button.texture_normal=world.ui_texture("UNIT_SHEET_EXPEL")
+				expel_button.position=Vector2(432,36);expel_button.size=Vector2(32,36)
+				expel_button.disabled=expel.phase!=expel.Phase.Closed
+				expel_button.pressed.connect(func():
+					if ui_host==null or ui_host.allows_panel_input(self):expel_scroll=0;expel.open(int(selected.id)))
+				body.add_child(expel_button)
 			if world.has_method("creature_portrait"):
 				var portrait := TextureRect.new()
 				portrait.texture = world.creature_portrait(int(selected.id))
@@ -376,7 +410,15 @@ func redraw():
 				portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 				portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				body.add_child(portrait)
-			creature_sheet.render(self,detail_state)
+			if expel.phase!=expel.Phase.Closed:
+				if is_instance_valid(customize_button):customize_button.disabled=true
+				if is_instance_valid(history_button):history_button.disabled=true
+				expel_view=preload("res://scripts/creature_expel_view.gd").new()
+				expel_view.first=expel_scroll
+				expel_view.position=Vector2(0,96);expel_view.size=body.size-Vector2(0,96)
+				body.add_child(expel_view);expel_view.input_allowed=func():return ui_host==null or ui_host.allows_panel_input(self)
+				expel_view.configure(world,expel)
+			else:creature_sheet.render(self,detail_state)
 		2:
 			icon_at("item.icon")
 			label_at("item.title",name_text)

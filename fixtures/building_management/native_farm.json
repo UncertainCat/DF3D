@@ -47253,6 +47253,1330 @@
         "verification": "Both owned sessions exit unsaved, preserve source saves and paused frame. Two GPU plus three paired headless logs per lane contain only known startup notices.",
         "limitations": "Controller only; no production UI caller, composed chooser/confirmation, overlay/Escape routing or rendered acceptance yet."
       }
+    },
+    "unit_expel_view_reference": {
+      "cases": [
+        {
+          "name": "family",
+          "native_run": "build/stockpile-storage-native-farm-discovery-20261031-223619",
+          "native_image": "unit-expel-effect-expel-before.png",
+          "phase": 3,
+          "destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "name_color": {
+                  "alternate": [
+                    5,
+                    0,
+                    0
+                  ],
+                  "color": [
+                    5,
+                    0,
+                    0
+                  ],
+                  "effect": 0
+                },
+                "sheet_icon": {
+                  "layers": [
+                    [
+                      0,
+                      8,
+                      0,
+                      1,
+                      1,
+                      65535,
+                      -1,
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      17,
+                      1,
+                      1,
+                      0,
+                      68,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      2,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      11,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      18,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      7,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      12,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      8,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      19,
+                      1,
+                      1,
+                      0,
+                      68,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      10,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      13,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      5,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      68,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      2,
+                      4,
+                      5,
+                      1,
+                      1,
+                      2,
+                      4,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      6,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      11,
+                      1,
+                      1,
+                      1,
+                      0,
+                      101,
+                      0,
+                      0,
+                      0
+                    ]
+                  ],
+                  "palettes": [
+                    "data/vanilla/vanilla_descriptors_graphics/graphics/images/palettes.png",
+                    "data/vanilla/vanilla_creatures_graphics/graphics/images/dwarf/dwarf_body_palettes.png",
+                    "data/vanilla/vanilla_creatures_graphics/graphics/images/dwarf/dwarf_hair_palettes.png"
+                  ],
+                  "tile_pages": [
+                    "DWARF_BODY",
+                    "DWARF_WEARABLES",
+                    "DWARF_HAIR",
+                    "WIELDABLES"
+                  ]
+                }
+              },
+              {
+                "id": 2345,
+                "name": "Leto Jamaslonel, Human Bard",
+                "name_color": {
+                  "alternate": [
+                    5,
+                    0,
+                    0
+                  ],
+                  "color": [
+                    5,
+                    0,
+                    0
+                  ],
+                  "effect": 0
+                },
+                "sheet_icon": {
+                  "layers": [
+                    [
+                      0,
+                      8,
+                      0,
+                      1,
+                      1,
+                      65535,
+                      -1,
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      1,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      15,
+                      1,
+                      1,
+                      1,
+                      50,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      2,
+                      1,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      18,
+                      1,
+                      1,
+                      1,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      7,
+                      1,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      8,
+                      1,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      19,
+                      1,
+                      1,
+                      1,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      9,
+                      1,
+                      1,
+                      1,
+                      50,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      1,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      13,
+                      1,
+                      1,
+                      1,
+                      50,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      5,
+                      1,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      16,
+                      1,
+                      1,
+                      1,
+                      50,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      5,
+                      0,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      3,
+                      1,
+                      1,
+                      2,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      2,
+                      4,
+                      3,
+                      1,
+                      1,
+                      2,
+                      3,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      6,
+                      1,
+                      1,
+                      1,
+                      0,
+                      3,
+                      0,
+                      0,
+                      0
+                    ]
+                  ],
+                  "palettes": [
+                    "data/vanilla/vanilla_creatures_graphics/graphics/images/human/human_body_palettes.png",
+                    "data/vanilla/vanilla_descriptors_graphics/graphics/images/palettes.png",
+                    "data/vanilla/vanilla_creatures_graphics/graphics/images/human/human_hair_palettes.png"
+                  ],
+                  "tile_pages": [
+                    "HUMAN_BODY",
+                    "HUMAN_WEARABLES",
+                    "HUMAN_HAIR"
+                  ]
+                }
+              }
+            ]
+          },
+          "rect": [
+            424,
+            160,
+            472,
+            588
+          ],
+          "rgb_sha256": "0dcf9b941215e28a644bfa2aa0fdfea86fc21cd9ad6f618c31ed22c396d2ee0e"
+        },
+        {
+          "name": "send",
+          "native_run": "build/stockpile-storage-native-farm-discovery-20261031-223504",
+          "native_image": "unit-expel-effect-send-before.png",
+          "phase": 3,
+          "destination": 8,
+          "preview": {
+            "destinations": [
+              {
+                "id": -1,
+                "name": ""
+              },
+              {
+                "id": 8,
+                "name": "Bandeddank the Sooty Shadow"
+              }
+            ],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "name_color": {
+                  "alternate": [
+                    5,
+                    0,
+                    0
+                  ],
+                  "color": [
+                    5,
+                    0,
+                    0
+                  ],
+                  "effect": 0
+                },
+                "sheet_icon": {
+                  "layers": [
+                    [
+                      0,
+                      8,
+                      0,
+                      1,
+                      1,
+                      65535,
+                      -1,
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      17,
+                      1,
+                      1,
+                      0,
+                      68,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      2,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      11,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      18,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      7,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      12,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      8,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      19,
+                      1,
+                      1,
+                      0,
+                      68,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      10,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      13,
+                      1,
+                      1,
+                      0,
+                      13,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      5,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      68,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      2,
+                      4,
+                      5,
+                      1,
+                      1,
+                      2,
+                      4,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      6,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      11,
+                      1,
+                      1,
+                      1,
+                      0,
+                      101,
+                      0,
+                      0,
+                      0
+                    ]
+                  ],
+                  "palettes": [
+                    "data/vanilla/vanilla_descriptors_graphics/graphics/images/palettes.png",
+                    "data/vanilla/vanilla_creatures_graphics/graphics/images/dwarf/dwarf_body_palettes.png",
+                    "data/vanilla/vanilla_creatures_graphics/graphics/images/dwarf/dwarf_hair_palettes.png"
+                  ],
+                  "tile_pages": [
+                    "DWARF_BODY",
+                    "DWARF_WEARABLES",
+                    "DWARF_HAIR",
+                    "WIELDABLES"
+                  ]
+                }
+              }
+            ]
+          },
+          "rect": [
+            424,
+            160,
+            472,
+            588
+          ],
+          "rgb_sha256": "5caf7de64e27729543a3208d28e68c90492d617b8015da6840c48a9f69ba605f"
+        },
+        {
+          "name": "chooser",
+          "native_run": "build/stockpile-storage-native-farm-discovery-20261031-214143",
+          "native_image": "unit-expel-destination-market-link.png",
+          "phase": 2,
+          "destination": -1,
+          "preview": {
+            "unit_id": 1017,
+            "eligible": true,
+            "reason": -1,
+            "units": [],
+            "destinations": [
+              {
+                "id": -1,
+                "name": ""
+              },
+              {
+                "id": 8,
+                "name": "Bandeddank the Sooty Shadow"
+              }
+            ]
+          },
+          "rect": [
+            424,
+            160,
+            472,
+            588
+          ],
+          "rgb_sha256": "45c87089bfcdf1e99f5395b8ec1b7d7e3abfdaf4b70a666e8470ece1da954256"
+        },
+        {
+          "name": "refused",
+          "native_run": "build/stockpile-storage-native-farm-discovery-20261031-211331",
+          "native_image": "unit-expel-elected.png",
+          "phase": 4,
+          "destination": -1,
+          "preview": {
+            "unit_id": 1017,
+            "eligible": true,
+            "reason": 1,
+            "units": [],
+            "destinations": []
+          },
+          "rect": [
+            424,
+            160,
+            472,
+            588
+          ],
+          "rgb_sha256": "6232b74c3a4bbefa310154bcb3e199fd1f6947851f2f6b6107971d7acaa72c8a"
+        }
+      ],
+      "status": "Baseline rendered panels and composed read/cancel workflow accepted; full Expel workflow remains staged.",
+      "hover": {
+        "cells": [
+          {
+            "ch": 83,
+            "color": 15,
+            "x": 126,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 127,
+            "y": 0
+          },
+          {
+            "ch": 110,
+            "color": 15,
+            "x": 128,
+            "y": 0
+          },
+          {
+            "ch": 100,
+            "color": 15,
+            "x": 129,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 131,
+            "y": 0
+          },
+          {
+            "ch": 104,
+            "color": 15,
+            "x": 132,
+            "y": 0
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 133,
+            "y": 0
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 134,
+            "y": 0
+          },
+          {
+            "ch": 99,
+            "color": 15,
+            "x": 136,
+            "y": 0
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 137,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 138,
+            "y": 0
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 139,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 140,
+            "y": 0
+          },
+          {
+            "ch": 117,
+            "color": 15,
+            "x": 141,
+            "y": 0
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 142,
+            "y": 0
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 143,
+            "y": 0
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 145,
+            "y": 0
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 146,
+            "y": 0
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 148,
+            "y": 0
+          },
+          {
+            "ch": 108,
+            "color": 15,
+            "x": 126,
+            "y": 1
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 127,
+            "y": 1
+          },
+          {
+            "ch": 110,
+            "color": 15,
+            "x": 128,
+            "y": 1
+          },
+          {
+            "ch": 107,
+            "color": 15,
+            "x": 129,
+            "y": 1
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 130,
+            "y": 1
+          },
+          {
+            "ch": 100,
+            "color": 15,
+            "x": 131,
+            "y": 1
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 133,
+            "y": 1
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 134,
+            "y": 1
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 135,
+            "y": 1
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 136,
+            "y": 1
+          },
+          {
+            "ch": 44,
+            "color": 15,
+            "x": 137,
+            "y": 1
+          },
+          {
+            "ch": 111,
+            "color": 15,
+            "x": 139,
+            "y": 1
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 140,
+            "y": 1
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 142,
+            "y": 1
+          },
+          {
+            "ch": 120,
+            "color": 15,
+            "x": 143,
+            "y": 1
+          },
+          {
+            "ch": 112,
+            "color": 15,
+            "x": 144,
+            "y": 1
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 145,
+            "y": 1
+          },
+          {
+            "ch": 108,
+            "color": 15,
+            "x": 146,
+            "y": 1
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 126,
+            "y": 2
+          },
+          {
+            "ch": 104,
+            "color": 15,
+            "x": 127,
+            "y": 2
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 128,
+            "y": 2
+          },
+          {
+            "ch": 115,
+            "color": 15,
+            "x": 129,
+            "y": 2
+          },
+          {
+            "ch": 99,
+            "color": 15,
+            "x": 131,
+            "y": 2
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 132,
+            "y": 2
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 133,
+            "y": 2
+          },
+          {
+            "ch": 97,
+            "color": 15,
+            "x": 134,
+            "y": 2
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 135,
+            "y": 2
+          },
+          {
+            "ch": 117,
+            "color": 15,
+            "x": 136,
+            "y": 2
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 137,
+            "y": 2
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 138,
+            "y": 2
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 140,
+            "y": 2
+          },
+          {
+            "ch": 110,
+            "color": 15,
+            "x": 141,
+            "y": 2
+          },
+          {
+            "ch": 116,
+            "color": 15,
+            "x": 142,
+            "y": 2
+          },
+          {
+            "ch": 105,
+            "color": 15,
+            "x": 143,
+            "y": 2
+          },
+          {
+            "ch": 114,
+            "color": 15,
+            "x": 144,
+            "y": 2
+          },
+          {
+            "ch": 101,
+            "color": 15,
+            "x": 145,
+            "y": 2
+          },
+          {
+            "ch": 108,
+            "color": 15,
+            "x": 146,
+            "y": 2
+          },
+          {
+            "ch": 121,
+            "color": 15,
+            "x": 147,
+            "y": 2
+          },
+          {
+            "ch": 46,
+            "color": 15,
+            "x": 148,
+            "y": 2
+          }
+        ],
+        "lines": [
+          "Send this creature to a",
+          "linked site, or expel",
+          "this creature entirely."
+        ]
+      },
+      "composed_reference": {
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261031-225005",
+        "owned_pid": 14460,
+        "result": {
+          "cancel_and_escape_return_overview": true,
+          "native_button_pixels": 1152,
+          "native_group": true,
+          "native_help_glyph_pixels": 1374,
+          "overlay_blocks_confirmation": true,
+          "success": true,
+          "unit_id": 1017
+        },
+        "body_rect": [
+          424,
+          160,
+          472,
+          588
+        ],
+        "body_pixels": 277536,
+        "body_rgb_sha256": "6beed56165b5f72129bb3f17b60687e34db2dd9b2380341b2812c9dc217dbab9",
+        "verification": "Owned unsaved exit; source preserved. Two GPU and paired header log contain only known startup notice. Native and composed body pixels identical.",
+        "qa": "build/qa/unit-expel-view-final",
+        "failures_resolved": "224540 test indentation parse failure;224634 late view refresh used freed scrollbar, fixed retired-view guard;224832 overlay test counted unrelated service tickets, corrected to Expel pending ownership. All source saves preserved."
+      },
+      "limitations": [
+        "No main-scene confirmation effects yet; controller effects have separate live acceptance",
+        "Viewport resize, large-list scroll/drag/hover and long-name/color-animation acceptance remain",
+        "Header Customize/Reports/Follow interactions during Expel must be compared with native before accepting current gating",
+        "Pending/rejected/unknown display and full replacement/disconnect lifecycle remain",
+        "Native refusal-display bug is preserved; no approval to correct Nobility text"
+      ]
     }
   }
 }

@@ -150,6 +150,7 @@ func unit_carrier(expected: Dictionary) -> void:
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
 	if FileAccess.file_exists(directory+"/unit-customize-captions.json"):
 		await exercise_customize(inspector,int(expected.snapshot.id))
+	if overview_case=="neutral":await exercise_expel_preview(inspector,target)
 	key(KEY_ESCAPE);await process_frame
 	check(scene._ui.host.active==null and not inspector.panel.visible,"Unit sheet Escape did not release input")
 	for label in health_labels:
@@ -505,3 +506,48 @@ func exercise_history_append(reports,target:int) -> void:
 	root.size=Vector2i(1200,800);await process_frame;await process_frame
 	var file:=FileAccess.open(directory+"/unit-reports-append-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"observations":evidence}));file.close()
+
+func exercise_expel_preview(inspector,target:int) -> void:
+	var model=inspector.expel
+	var deadline:=Time.get_ticks_msec()+5000
+	while not is_instance_valid(inspector.expel_button) and Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+	if not check(is_instance_valid(inspector.expel_button),"Native eligible creature lacks Expel button"):return
+	await process_frame;await RenderingServer.frame_post_draw
+	var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+	var native:=Image.load_from_file(directory+"/farm-item-carrier-unit-view.png");native.convert(Image.FORMAT_RGB8)
+	check(actual.get_region(Rect2i(856,100,32,36)).get_data()==native.get_region(Rect2i(856,100,32,36)).get_data(),"Expel header artwork differs")
+	var motion:=InputEventMouseMotion.new();motion.position=inspector.expel_button.get_global_transform_with_canvas()*Vector2(16,18);root.push_input(motion,true)
+	await create_timer(0.6).timeout;await RenderingServer.frame_post_draw
+	actual=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+	check(inspector.hover_help.visible,"Expel hover did not appear")
+	var hover:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json")).chest_header_reference.unit_expel_view_reference.hover
+	var font:=Image.load_from_file(world.ui_font_path());var ink_count:=0
+	for cell in hover.cells:
+		var ch:=int(cell.ch)
+		for y in 12:
+			for x in 8:
+				var ink:=font.get_pixel(ch%16*8+x,ch/16*12+y)
+				if ink.a<0.99 or minf(ink.r,minf(ink.g,ink.b))<0.99:continue
+				ink_count+=1
+				check(actual.get_pixel(int(cell.x)*8+x,int(cell.y)*12+4+y).is_equal_approx(preload("res://scripts/native_creature_text.gd").colors[int(cell.color)]),"Expel help glyph differs")
+	check(ink_count>0,"Expel hover missing native glyph evidence")
+	for cancel_button in [true,false]:
+		await pointer(inspector.expel_button.get_global_transform_with_canvas()*Vector2(16,18))
+		deadline=Time.get_ticks_msec()+5000
+		while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+		if not check(model.phase==model.Phase.Confirming and model.unit_id==target,"Expel click did not show native affected group"):return
+		check(is_instance_valid(inspector.expel_view) and model.snapshot().units[0].id==target,"Expel rendered view missing current group")
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/unit-expel-scene.png")
+		scene._fortress_hud.toggle_settings();await process_frame
+		await pointer(inspector.expel_view.get_global_transform_with_canvas()*Vector2(52,inspector.expel_view.size.y-18))
+		check(model.phase==model.Phase.Confirming and model.ticket==0,"Settings allowed hidden Expel confirmation")
+		key(KEY_ESCAPE);await process_frame
+		check(model.phase==model.Phase.Confirming,"Settings Escape closed Expel")
+		if cancel_button:await pointer(inspector.expel_view.get_global_transform_with_canvas()*Vector2(inspector.expel_view.size.x-40,inspector.expel_view.size.y-18))
+		else:key(KEY_ESCAPE);await process_frame
+		check(model.phase==model.Phase.Closed and inspector.is_open() and scene._ui.host.active==inspector,"Expel cancellation did not return to same Overview")
+	var file:=FileAccess.open(directory+"/unit-expel-scene-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"native_button_pixels":1152,"native_group":true,"native_help_glyph_pixels":ink_count,"overlay_blocks_confirmation":true,"cancel_and_escape_return_overview":true}));file.close()

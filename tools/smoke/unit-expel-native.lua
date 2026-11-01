@@ -202,6 +202,21 @@ local ok,err=xpcall(function()
  end if hit then break end end
  assert(hit,'Expel hitbox not found')
  observations[#observations+1]={name='hitbox',mouse=hit}
+ local deadline=dfhack.getTickCount()+650
+ while dfhack.getTickCount()<deadline do pointer(hit[1],hit[2]);require('gui.script').sleep(1,'frames')end
+ pointer(hit[1],hit[2])
+ local help={lines={},cells={}}
+ for y=0,17 do
+  local bytes={}
+  for x=g.dimx-24,g.dimx-1 do
+   local pen=dfhack.screen.readTile(x,y);bytes[#bytes+1]=pen.ch>=32 and string.char(pen.ch%256) or ' '
+   if pen.ch>=33 and pen.ch<=255 then help.cells[#help.cells+1]={x=x,y=y,ch=pen.ch,color=pen.fg+(pen.bold and 8 or 0)}end
+  end
+  help.lines[#help.lines+1]=dfhack.df2utf(table.concat(bytes)):gsub('%s+$','')
+ end
+ while #help.lines>0 and help.lines[#help.lines]==''do table.remove(help.lines)end
+ assert(main.last_displayed_hover_inst==df.main_hover_instruction.EXPEL_UNIT)
+ local file=assert(io.open(out..'/unit-expel-help.json','w'));file:write(json.encode(help));file:close()
  df.global.enabler.mouse_lbut_lift=0
  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1

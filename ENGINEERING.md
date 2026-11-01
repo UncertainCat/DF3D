@@ -2669,8 +2669,36 @@ five Godot processes per lane have only documented startup notices. Core19 and
 creature_expel_state_test pass in unit-expel-state-final; the latter covers all11
 refusals, isolation, queue retirement, target replacement, epoch change and late
 uncertain outcomes. unit_expel_wire_reference.controller_reference retains the
-bounded evidence. No production view calls this controller yet; visible controls,
-composed input/overlay behavior and rendered acceptance remain unfinished.
+bounded evidence. The staged inspector now uses this controller as described below;
+complete composed input, lifecycle and rendered acceptance remain unfinished.
+
+The staged context inspector exposes Expel only from the native expelEligible
+identity fact, collected through an independent Lua callback. Missing authority
+hides the control. The installed UNIT_SHEET_EXPEL artwork occupies body432,36;
+EXPEL_UNIT hover text is transcribed from protected224634. Fresh preview replaces
+the ordinary creature body with creature_expel_view; it retains header/portrait
+and renders the destination chooser, affected-unit rows, or native refusal.
+Rows use owned full-body candidate recipes, original picture-frame cells and
+native name colors. Fixed captions and button shapes match the captured native
+flow. Escape/Cancel retire the controller and restore Overview; Settings blocks
+its controls. A retired-view guard handles a changed-signal callback already in
+flight when the inspector replaces its child view.
+
+unit_expel_view_reference contains four independent native RGB targets and
+bounded pointer-free recipes: family Expel, site Send away, chooser and elected
+refusal. creature_expel_capture matches every472x588 region exactly using only
+installed artwork. The native Nobility refusal-renderer bug remains preserved.
+Protected225005 compares the actual composed main scene with the same-run native
+body:277536 identical RGB pixels,1152 header-icon pixels and1374 tooltip glyph
+pixels. Native group read, Cancel, Escape and Settings isolation pass. Owned
+DF14460 exits unsaved, source preservation passes, and both GPU processes plus
+the paired header client have only the known startup notice. MSVC passes;
+unit-expel-view-final records core, state, composition and rendered checks with
+known GPU shutdown diagnostics only. Earlier224634 exposed the retired-view bug
+and is not accepted despite its matching screenshot. Final confirmation through
+main-scene controls, resize/scroll/hover variants, header-control interactions,
+long names/animation and full failure/replacement lifecycle remain unfinished.
+The full unit route is still staged; these are baseline view checks.
 
 ## Native item holder provider
 

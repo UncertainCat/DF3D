@@ -78,6 +78,33 @@ local function record(name,available_destinations)
   expelling=sheet.unit_overview_expelling,reason=sheet.unit_overview_expel_cannot_expel_reason,
   selected_destination=sheet.unit_overview_expel_selected_dest_stid,
   destinations=vector(sheet.unit_overview_expel_dest_stid),units=vector(sheet.unit_overview_expel_total_unid),rows=rows}
+ if sheet.unit_overview_expelling and os.getenv('DF3D_UNIT_EXPEL_PREVIEW')=='1' then
+  local size,address=df.sizeof(sheet);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+  local output,status=dfhack.run_command_silent('df3d','unit-expel-preview-probe',tostring(unit.id))
+  local unchanged=dfhack.internal.memcmp(bytes,address,size)==0;df.delete(bytes)
+  assert(status==0,output);assert(unchanged,'Preview changed native sheet')
+  local preview=json.decode(output);observations[#observations].preview=preview
+  assert(preview.eligible and preview.reason==sheet.unit_overview_expel_cannot_expel_reason,'Preview eligibility/refusal differs')
+  local ids={};for _,row in ipairs(preview.units)do ids[#ids+1]=row.id end
+  assert(json.encode(ids)==json.encode(vector(sheet.unit_overview_expel_total_unid)),'Preview group differs')
+  ids={};for _,row in ipairs(preview.destinations)do ids[#ids+1]=row.id end
+  assert(json.encode(ids)==json.encode(available_destinations or vector(sheet.unit_overview_expel_dest_stid)),'Preview destinations differ')
+  if preview.reason==-1 then
+   local candidates=#sheet.unit_overview_expel_dest_stid>0 and preview.destinations or preview.units
+   for index,row in ipairs(candidates)do
+    local y=14+(index-1)*3
+    local expected=#sheet.unit_overview_expel_dest_stid>0 and (row.id==-1 and 'Expel' or 'Send to '..row.name) or row.name
+    local actual
+    for _,line in ipairs(rows)do if line.y==y then actual=line.text:match('^%s*(.-)%s*$')end end
+    assert(actual==expected,'Preview caption differs at '..name..': '..tostring(actual)..' vs '..expected)
+    if row.color and row.effect==0 then
+     local pen=dfhack.screen.readTile(61,y)
+     assert(pen.fg==row.color[1] and pen.bg==row.color[2] and (pen.bold and 1 or 0)==row.color[3],'Preview name color differs')
+    end
+   end
+  end
+  observations[#observations].preview_sheet_unchanged=true
+ end
  if sheet.unit_overview_expelling and os.getenv('DF3D_UNIT_EXPEL_READER')=='1' then
   local cold_seen={}
   local function invalidate(object,key)

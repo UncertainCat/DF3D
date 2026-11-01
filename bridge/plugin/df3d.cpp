@@ -89,6 +89,7 @@
 #include "creature_header_native.h"
 #include "creature_follow_native.h"
 #include "creature_expel_action_native.h"
+#include "creature_expel_preview_native.h"
 #include "creature_health_native.h"
 #include "modules/Buildings.h"
 #endif
@@ -1637,6 +1638,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
           const auto destinations=df3d_creature::expelDestinations();if(!destinations)return CR_FAILURE;
           Json::Value result(Json::arrayValue);for(auto id:*destinations)result.append(id);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="unit-expel-preview-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          const auto preview=df3d_creature::expelPreview(df::unit::find(id));if(!preview)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["unit_id"]=preview->unitId;result["eligible"]=preview->eligible;result["reason"]=preview->reason;
+          result["units"]=Json::Value(Json::arrayValue);result["destinations"]=Json::Value(Json::arrayValue);
+          for(const auto& row:preview->units) {
+            Json::Value value(Json::objectValue);value["id"]=row.id;value["name"]=DF2UTF(row.name);
+            for(auto component:row.color.color)value["color"].append(component);
+            for(auto component:row.color.alternate)value["alternate"].append(component);
+            value["effect"]=row.color.effect;value["source"]=row.color.source;result["units"].append(value);
+          }
+          for(const auto& row:preview->destinations) {Json::Value value(Json::objectValue);value["id"]=row.id;value["name"]=DF2UTF(row.name);result["destinations"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="unit-expel-apply-probe") {

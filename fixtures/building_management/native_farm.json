@@ -46371,6 +46371,713 @@
         "Active-job, squad, nondeparting-relative thought and later departure variants",
         "Typed transport, lifecycle and viewer controls"
       ]
+    },
+    "unit_expel_preview_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261031-220817",
+      "cases": [
+        {
+          "name": "open",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "spouse-present",
+          "reason": -1,
+          "units": [
+            1017,
+            2345
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              },
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 2345,
+                "name": "Leto Jamaslonel, Human Bard",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "spouse-absent",
+          "reason": 3,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": 3,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "child-present",
+          "reason": -1,
+          "units": [
+            1017,
+            2345
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              },
+              {
+                "alternate": [
+                  4,
+                  0,
+                  0
+                ],
+                "color": [
+                  4,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 2345,
+                "name": "Leto Jamaslonel, Human Child",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "child-absent",
+          "reason": 7,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": 7,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "adult-child",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "missing-spouse",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "dead-spouse",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "offsite-spouse",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "companion-active",
+          "reason": -1,
+          "units": [
+            1017,
+            2345
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              },
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 2345,
+                "name": "Leto Jamaslonel, Human Bard",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "companion-inactive",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "companion-incoming",
+          "reason": -1,
+          "units": [
+            1017,
+            2345
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              },
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 2345,
+                "name": "Leto Jamaslonel, Human Bard",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "spouse-companion",
+          "reason": -1,
+          "units": [
+            1017,
+            2345
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              },
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 2345,
+                "name": "Leto Jamaslonel, Human Bard",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "destination-market-link",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [
+            -1,
+            8
+          ],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [
+              {
+                "id": -1,
+                "name": ""
+              },
+              {
+                "id": 8,
+                "name": "Bandeddank the Sooty Shadow"
+              }
+            ],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "destination-choice-send",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": 8,
+          "preview": {
+            "destinations": [
+              {
+                "id": -1,
+                "name": ""
+              },
+              {
+                "id": 8,
+                "name": "Bandeddank the Sooty Shadow"
+              }
+            ],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "destination-choice-expel",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [
+              {
+                "id": -1,
+                "name": ""
+              },
+              {
+                "id": 8,
+                "name": "Bandeddank the Sooty Shadow"
+              }
+            ],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        },
+        {
+          "name": "destination-restored",
+          "reason": -1,
+          "units": [
+            1017
+          ],
+          "destinations": [],
+          "selected_destination": -1,
+          "preview": {
+            "destinations": [],
+            "eligible": true,
+            "reason": -1,
+            "unit_id": 1017,
+            "units": [
+              {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0,
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper",
+                "source": 0
+              }
+            ]
+          },
+          "preview_sheet_unchanged": true
+        }
+      ],
+      "verification": "All17 previews match native eligibility/refusal and ordered group/destination IDs. Visible captions and steady foreground/background/bright match native rows. Sheet bytes unchanged. Source unchanged, owned DF31440 exited unsaved; two GPU and paired header-wire logs have only known startup notice.",
+      "qa": "build/qa/unit-expel-preview",
+      "msvc_log": "build/notes/pm/unit-expel-preview-msvc.log",
+      "bridge_sha256": "071cd139c2fa51da346b5927a7242b73b86195e05382182a242310229955c3b8",
+      "remaining": [
+        "Typed transport and viewer",
+        "Full-body selector artwork composed in Expel panel",
+        "Long-name clipping, animated colors and large-list scrolling"
+      ]
     }
   }
 }

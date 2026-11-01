@@ -2596,6 +2596,28 @@ in unit_expel_action_reference. Enable DF3D_UNIT_EXPEL_EFFECT_SEMANTIC=1 with th
 effect lane. Actual active-job/squad variants, nondeparting-relative thoughts,
 later departure, typed transport, lifecycle and the viewer remain unfinished.
 
+creature_expel_preview_native.h::expelPreview combines the eligibility, refusal,
+affected-unit and destination readers into owned rows. Affected text uses native
+1330c30 with false, matching15ed96..15eda9; colors reuse the semantic owner-color
+provider with native15ed73's flags. Site names use a946e0 with true,false, matching
+15e046..15e05f. Strings retain CP437 until transport conversion. The-1 destination
+has no site name; fixed Expel/Send to captions and width fitting belong to the
+viewer. Resource guards refuse over4096 rows or512-byte names without truncation.
+No menu state supplies these rows. Formatting may refresh semantic name caches,
+as existing unit/header providers do.
+
+Protected220817 verifies17 previews through unit-expel-preview-probe: baseline,
+family absence/presence, minor/adult child, missing/dead/offsite spouse, companions,
+linked destination and both selected confirmation modes. IDs/refusals match;
+visible captions and steady foreground/background/bright match native rows.
+Native sheet bytes remain unchanged. Source preservation passes; owned DF31440
+exits unsaved. MSVC and core19 pass; live logs contain only known startup notices.
+unit_expel_preview_reference retains data and limitations. Enable
+DF3D_UNIT_EXPEL_PREVIEW=1 with the native Expel lane. Full-body selector rendering
+uses the already established flag400 provider, but its composition here is not
+yet verified. Long-name fitting, animated colors, large lists, typed transport
+and the viewer remain unfinished.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

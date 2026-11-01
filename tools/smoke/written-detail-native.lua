@@ -44,9 +44,11 @@ local function site(id)
  object(value);name(value.name);vector(value.buildings)
  for _,building in ipairs(value.buildings)do object(building)end
 end
+local visited={}
 local function event(id)
  if id<0 then return end
- local value=assert(df.history_event.find(id));object(value)
+ if visited[id]then return end;visited[id]=true
+ local value=df.history_event.find(id);if not value then return end;object(value)
  local _,address=df.sizeof(value:_field('flags'))
  guard(df.reinterpret_cast('uint64_t',address).value,df.reinterpret_cast('int32_t',address+8).value)
  local kind=value:getType()
@@ -56,6 +58,8 @@ local function event(id)
   figure(value.histfig);figure(value.appointer_hfid);figure(value.promise_to_hfid);entity(value.civ)
  elseif kind==df.history_event_type.CREATED_SITE or kind==df.history_event_type.CREATED_BUILDING then
   figure(value.builder_hf);entity(value.civ);entity(value.site_civ);site(value.site)
+ elseif kind==df.history_event_type.MASTERPIECE_LOST then
+  figure(value.histfig);site(value.site);event(value.creation_event)
  elseif kind==df.history_event_type.WAR_PLUNDERED_SITE then
   entity(value.attacker_civ);entity(value.defender_civ);entity(value.site_civ);site(value.site)
  elseif kind==df.history_event_type.CEREMONY then

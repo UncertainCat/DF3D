@@ -3361,7 +3361,9 @@ remaining event ownership audit. These helpers are not production providers yet.
 `written_detail_native.h` adds the diagnostic `written-detail-probe`. It copies
 written-content value vectors and independently instantiates/copies each reference
 through DFHack type identities; destruction uses the same identity. Paired vector
-lengths and counts are checked before native cc5d50. The native Skills title/type/
+lengths and counts are checked before native cc5d50. Historical-event references
+also pass through the shared recursive event/identity validation before their
+owned copies are made. The native Skills title/type/
 author sequence uses pinned native literals and c0f660/a94030 name formatting.
 Poetry, music and dance append through their existing owned adapters. Runtime
 native sheet state is never an input.
@@ -3507,7 +3509,10 @@ bind this interpretation. The event traversal is iterative, follows the single
 successor of each audited recursive phrase class and rejects repeated IDs.
 Missing events/entities/occasions/schedules and null schedule pointers retain
 the native fallback behavior. This is targeted validation, not complete event
-input validation; written-content references do not yet use it.
+input validation. Written HISTORICAL_EVENT references use the same check before
+reference copying; embedded choreography uses the validated dance adapter.
+Ordinary written/art-form references format names rather than recursively
+describing their content, as the pinned reference bodies establish.
 
 Protected073441 on2026-11-01 with bridge
 `4d0ebd0a7bce519268b6aec924637e24f80e898b51a90c3bcc45c2bd60a9ce05`
@@ -3530,6 +3535,17 @@ eight recursive/missing-reference cases and four baseline forms. The fixture's
 `recursive_identity_validation_reference` retains the inputs, text hash and
 scope. Source saves are unchanged, owned DF exits unsaved, and the three Godot
 processes report only known startup notices. No production handler is enabled.
+
+Protected074338 on2026-11-01 with bridge
+`48f3d5b87766f8d2caff56e8eeb167e15d6f68980488a1cde86ac5903187230b`
+verifies written historical-event references: direct CREATED_SITE, lost,
+nested lost and missing event each match native twice with guarded source/UI
+state unchanged. Self and two-event cycles reject before native formatting,
+also without changing guarded state. Four baseline form comparisons pass.
+Temporary reference/event graphs are removed before unsaved owned exit and
+the source save is unchanged; all three Godot processes report only known
+startup notices. `written_event_validation_reference` records bounded evidence.
+Other reference dependencies and full source validation remain unfinished.
 
 The installed executable timestamp selects DFHack's `v0.53.16 win64 STEAM`
 symbol table. `event-world-construction-getters.json` resolves b93a90's virtual

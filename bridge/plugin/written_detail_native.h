@@ -2,6 +2,7 @@
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
 #include "df/general_ref.h"
+#include "df/general_ref_historical_eventst.h"
 #include "df/written_content.h"
 #include "df/historical_figure.h"
 namespace df3d_creature {
@@ -13,6 +14,10 @@ inline bool writtenDescriptionReady() {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct Pin {size_t rva,length;uint64_t hash;};
     constexpr Pin pins[]={
+        {0xc3a590,0xcbf,UINT64_C(0x09a894440651f51f)},
+        {0x132e0c0,0x368,UINT64_C(0x5020a6b8e463a24d)},
+        {0xb65030,0x1b8,UINT64_C(0x6557e947120f0a0b)},
+        {0xb8c2b0,0x6db,UINT64_C(0x393d1fb27e6e1a4b)},
         {0x72280,0x16,UINT64_C(0x6cfdc4a2d0a9e45d)},
         {0xbc080,0x9a,UINT64_C(0x18dd82edba346129)},
         {0xe1560,0xab,UINT64_C(0x4df0c1e27847ffc7)},
@@ -82,6 +87,8 @@ public:
         content.refs.clear();refs.clear();
         for(auto* original:source.refs){
             if(!original)return false;
+            if(original->getType()==df::general_ref_type::HISTORICAL_EVENT &&
+               !recursiveEventIdentityInputsValid(static_cast<df::general_ref_historical_eventst*>(original)->event_id))return false;
             const auto* identity=DFHack::virtual_identity::get(original);
             if(!identity || !identity->can_instantiate())return false;
             auto* copy=static_cast<df::general_ref*>(identity->instantiate());

@@ -66859,6 +66859,54 @@
         },
         "scope": "Native tab/Escape oracle and actual main-scene navigation with captured native text injected through the real request service. No live Knowledge request handler acceptance."
       },
+      "written_event_validation_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-074338",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "48f3d5b87766f8d2caff56e8eeb167e15d6f68980488a1cde86ac5903187230b",
+        "cases": [
+          {
+            "case": "leaf",
+            "native_comparisons": 2,
+            "text_sha256": "f6c8af8b2c6d9eb0bb392544c3326fa9110cabd5667aaccc59a88a7367618723",
+            "utf8_bytes": 238,
+            "guards_unchanged": true
+          },
+          {
+            "case": "lost",
+            "native_comparisons": 2,
+            "text_sha256": "2fa8cece8f7518be660b9909283bce8fed5bffc6aae533df5e5a34a28ed77440",
+            "utf8_bytes": 272,
+            "guards_unchanged": true
+          },
+          {
+            "case": "nested-lost",
+            "native_comparisons": 2,
+            "text_sha256": "d9fb3f4dd20f6449cb72937c5ad6c69f2869b460529ae553fa41f55f77ed5959",
+            "utf8_bytes": 306,
+            "guards_unchanged": true
+          },
+          {
+            "case": "missing",
+            "native_comparisons": 2,
+            "text_sha256": "dbb6dac0da4e8ae97652b300275e2309ea176487d228578cf4d40ff05675271a",
+            "utf8_bytes": 161,
+            "guards_unchanged": true
+          },
+          {
+            "case": "self-cycle",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "two-event-cycle",
+            "guards_unchanged": true,
+            "rejected": true
+          }
+        ],
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "Written HISTORICAL_EVENT references: leaf, lost, nested lost, missing event and rejected cycles. Not complete reference/source validation or production handler acceptance."
+      },
       "recursive_identity_validation_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-073851",
         "status": "passed_with_known_issues",

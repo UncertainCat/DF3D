@@ -3307,6 +3307,23 @@ covering zero to six sections and zero to ten moves. No additional event types
 are exercised. DF33700 exits unsaved with source preservation and only known
 Godot startup notices; `dance_forms_owned_reference` records this coverage.
 
+Protected042811 captures eleven native written-work magnifier descriptions across
+all ten content types present in the sample world, including poems, compositions,
+choreography, fiction, manuals and histories. `written_contents_reference` retains
+native tagged text, styles and reference dispatch methods. Temporary known-content
+additions are restored. Reference `id` is the virtual `getID()` result; several
+subclasses return -1 even with a valid target, so it is not target-ID evidence.
+DF30552 exits unsaved with source preservation and only known Godot startup notices.
+This is native reference coverage, not an owned written-description comparison.
+
+Written content's cc5d50 formatter dispatches `general_ref::getDescription` at
+slot0x90. Its style helper cc5520 selects literals from scalar style/strength/roll
+and appends only to the supplied string; its complete18-entry table ends cc5d50.
+The scholarly reference formatter ee0ca0 clears that output and selects native
+literals, with code ending ee306a and dispatch tables ending ee3554. Event refs
+initialize an owned context then call historical-event `getPhrase`, sharing the
+remaining event ownership audit. These helpers are not production providers yet.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

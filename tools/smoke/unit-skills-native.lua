@@ -70,7 +70,7 @@ local ok,err=xpcall(function()
   pages[#pages+1]=observe(name);capture('unit-skills-'..name:lower():gsub(' ','-'))
  end
  if os.getenv('DF3D_UNIT_SKILLS_DETAILS')=='1'then
-  local added={}
+  local added={};local written_samples={}
   if os.getenv('DF3D_UNIT_SKILLS_ALL_FORMS')=='1'then
    local known=assert(df.historical_figure.find(unit.hist_figure_id).info.known_info)
    for _,entry in ipairs{{known.known_musical_forms,df.global.world.musical_forms.all},{known.known_dance_forms,df.global.world.dance_forms.all}}do
@@ -105,6 +105,18 @@ local ok,err=xpcall(function()
     if not exists then known:insert('#',form.id);added[#added+1]={vector=known,id=form.id}end
    end
   end
+  if os.getenv('DF3D_UNIT_WRITTEN_CONTENTS')=='1'then
+   local known=assert(df.historical_figure.find(unit.hist_figure_id).info.known_info).known_written_contents
+   local types={};local count=0
+   for _,content in ipairs(df.global.world.written_contents.all)do
+    if not types[content.type]then
+     types[content.type]=true;written_samples[content.id]=true;count=count+1
+     local exists=false;for _,id in ipairs(known)do if id==content.id then exists=true end end
+     if not exists then known:insert('#',content.id);added[#added+1]={vector=known,id=content.id}end
+     if count==12 then break end
+    end
+   end
+  end
   local reference=observe('Knowledge');local seen={}
   local function capture_detail(index,kind,variant)
     observe('Knowledge')
@@ -124,6 +136,16 @@ local ok,err=xpcall(function()
       local _,address=df.sizeof(event);local vtable=df.reinterpret_cast('uint64_t',address).value
       detail.form.event_phrase_rva=df.reinterpret_cast('uint64_t',vtable+0xd8).value-dfhack.internal.getImageBase()
      end
+    end
+    if kind==17 then
+     local content=assert(df.written_content.find(detail.id))
+     detail.content={type=content.type,type_name=df.written_content_type[content.type],title=dfhack.df2utf(content.title),author=content.author,author_roll=content.author_roll,poetic_form=content.poetic_form,refs={},styles={}}
+     assert(#content.refs==#content.ref_aux and #content.styles==#content.style_strength,'Written content paired vectors differ')
+     for i,ref in ipairs(content.refs)do
+      local _,address=df.sizeof(ref);local vtable=df.reinterpret_cast('uint64_t',address).value
+      detail.content.refs[#detail.content.refs+1]={type=ref:getType(),type_name=df.general_ref_type[ref:getType()],id=ref:getID(),role=content.ref_aux[i],description_rva=df.reinterpret_cast('uint64_t',vtable+0x90).value-dfhack.internal.getImageBase()}
+     end
+     for i,style in ipairs(content.styles)do detail.content.styles[#detail.content.styles+1]={style=style,strength=content.style_strength[i]}end
     end
     for _,value in ipairs(sheet.skill_description_raw_str)do
      if type(value)=='string'then detail.tagged_rows[#detail.tagged_rows+1]=dfhack.df2utf(value)
@@ -153,7 +175,7 @@ local ok,err=xpcall(function()
     return detail.tagged_rows[1]
   end
   for index,kind in ipairs(reference.knowledge_types)do
-   if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1')or(kind==15 and os.getenv('DF3D_UNIT_MUSICAL_FORMS')=='1')or(kind==16 and os.getenv('DF3D_UNIT_DANCE_FORMS')=='1'))then
+   if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1')or(kind==15 and os.getenv('DF3D_UNIT_MUSICAL_FORMS')=='1')or(kind==16 and os.getenv('DF3D_UNIT_DANCE_FORMS')=='1')or(kind==17 and written_samples[reference.knowledge_ids[index]]))then
     seen[kind]=true;local baseline=capture_detail(index,kind)
     if kind==14 and os.getenv('DF3D_UNIT_POETIC_CASES')=='1'then
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-cases-native.lua')

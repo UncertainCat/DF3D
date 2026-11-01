@@ -62678,6 +62678,354 @@
         "owned_df_pid": 33700,
         "source_unchanged": true,
         "exit_without_saving": true
+      },
+      "written_contents_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-042811",
+        "df_pid": 30552,
+        "status": "passed_with_known_issues",
+        "source_preservation": "Owned source unchanged; owned session exited unsaved",
+        "diagnostics": "skills-diagnostics.json: three Godot processes, known startup notices only",
+        "scope": "Eleven native magnifier descriptions across ten existing content types; first existing world content of each type plus original known Manual302. Temporary known-content additions restored. Native reference only: no owned written-description probe or rendered DF3D parity. Ref id is virtual getID result, not necessarily subclass target ID; -1 does not mean missing event/site/topic.",
+        "cases": [
+          {
+            "id": 302,
+            "characters": 190,
+            "content": {
+              "author": 1966,
+              "author_roll": 7,
+              "poetic_form": -1,
+              "refs": [
+                {
+                  "description_rva": 15600800,
+                  "id": -1,
+                  "role": 0,
+                  "type": 60,
+                  "type_name": "KNOWLEDGE_SCHOLAR_FLAG"
+                }
+              ],
+              "styles": [
+                {
+                  "strength": 1,
+                  "style": 3
+                }
+              ],
+              "title": "Commentary on Surveying",
+              "type": 0,
+              "type_name": "Manual"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]Commentary on Surveying is a manual, authored by Amoya Etealisa.  It concerns the process of surveying land.  The writing is very rigid.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "id": 0,
+            "characters": 871,
+            "content": {
+              "author": 723,
+              "author_roll": 13,
+              "poetic_form": 54,
+              "refs": [],
+              "styles": [
+                {
+                  "strength": 1,
+                  "style": 4
+                }
+              ],
+              "title": "The Deified Diversions",
+              "type": 7,
+              "type_name": "Poem"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]The Deified Diversions is a poem, authored by Ngokang Aronguslu.  It is an example of The Disemboweler of Punches.  The work has no particular subject.  The writing has a very serious tone.  Overall, the poetry is not awful, but not very good either.  [B]The Disemboweler of Punches is a solemn poetic form intended to renounce war, originating in The Lucid Hatred.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is a single quintain.  Use of vivid imagery is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines have similar grammatical structures.  Each line has six syllables.  Every line of the poem has an initial caesura.  The fourth line of the quintain contrasts the underlying meaning of the first line.  The rhyme scheme of the poem is ABCBB.  "
+            ]
+          },
+          {
+            "id": 7,
+            "characters": 257,
+            "content": {
+              "author": 468,
+              "author_roll": 15,
+              "poetic_form": -1,
+              "refs": [
+                {
+                  "description_rva": 15654208,
+                  "id": -1,
+                  "role": 0,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                }
+              ],
+              "styles": [
+                {
+                  "strength": 0,
+                  "style": 13
+                }
+              ],
+              "title": "The Trenches Exposed",
+              "type": 10,
+              "type_name": "Essay"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]The Trenches Exposed is an essay, authored by Stozu Lubamdostngosp.  It concerns the settling of the goblin Stozu Polishedcruelty in Helleagle in 6.  The writing is as vicious as can be.  Overall, the prose is not awful, but not very good either.  "
+            ]
+          },
+          {
+            "id": 9,
+            "characters": 2594,
+            "content": {
+              "author": 385,
+              "author_roll": 22,
+              "poetic_form": 14,
+              "refs": [],
+              "styles": [],
+              "title": "Epidemic",
+              "type": 12,
+              "type_name": "MusicalComposition"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]Epidemic is a musical composition, authored by Conibo Quitheive.  It is an example of The Plays of Fanciness.  The work has no particular subject.  Overall, the composition is passable.  [B]The Plays of Fanciness is a devotional form of music originating in The Poetic Snarls.  The rules of the form are applied by composers to produce individual pieces of music which can be performed.  The music is played on one to four eniwa.  The entire performance is to be very loud.  The melody has short phrases throughout the form.  Only one pitch is ever played at a time.  It is performed in the pama rhythm.  Throughout, when possible, composers and performers are to use grace notes, alternate tension and repose and play staccato.  [B]Each eniwa always does the main melody and should stress the rhythm.  [B]The Plays of Fanciness has the following structure: a lengthy introduction and three to four unrelated passages.  [B]The introduction slows and broadens.  The passage is performed using the thili scale.  [B]Each of the simple passages is very fast.  Each passage is performed using the fomire scale.  [B]Scales are constructed from seventeen notes dividing the octave.  In quartertones, their spacing is roughly 1xx-x-x-x-x-xxxxxx-xx-xxO, where 1 is the tonic, O marks the octave and x marks other notes.  The tonic note is fixed only at the time of performance.  [B]The thili heptatonic scale is constructed by selection of degrees from the fundamental scale.  The degrees selected are the 1st, the 5th, the 6th, the 7th, the 9th, the 10th and the 12th.  [B]The fomire pentatonic scale is constructed by selection of degrees from the fundamental scale.  The degrees selected are the 1st, the 7th, the 9th, the 12th and the 15th.  [B]The pama rhythm is made from two patterns: the tarathe (considered the primary) and the fela.  The patterns are to be played over the same period of time, concluding together regardless of beat number.  [B]The tarathe rhythm is a single line with four beats.  The beats are named cuthefi (spoken cu), cede (ce), otoga (ot) and dinade (di).  The beat is stressed as follows:[B]| - x x x | [B]where x is a beat, - is silent and | indicates a bar.  [B]The fela rhythm is a single line with thirty-two beats divided into four bars in a 8-8-8-8 pattern.  The beats are named aweme (spoken aw), fena (fe), \u00ffaniye (\u00ffa), atho (ath), datome (da), lari (la), aratha (ar) and imeri (im).  The beat is stressed as follows:[B]| - - x x x - x x | - x x x - - x x | x - - x x x x x | - x - x x x x - | [B]where x is a beat, - is silent and | indicates a bar.  "
+            ]
+          },
+          {
+            "id": 10,
+            "characters": 2011,
+            "content": {
+              "author": 416,
+              "author_roll": 32,
+              "poetic_form": 18,
+              "refs": [],
+              "styles": [],
+              "title": "The Birth of Decision",
+              "type": 13,
+              "type_name": "Choreography"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]The Birth of Decision is a choreography, authored by Smunstu Atuzusmob.  It is an example of The Skirt of Lilacs.  The work has no particular subject.  Overall, the choreography is great.  [B]The Skirt of Lilacs is a solo performance dance originating in The Wraith of Harshness.  The rules of the form are applied by choreographers to produce individual dances which can be performed.  The dance is accompanied by The Velvety Tone.  This dance is a refined artform, with three special positions to be mastered.  The dance is punctuated by low body level.  [B]The dance begins with the verse of the music.  The dancer performs very quickly to the enu rhythm.  This section is expressive and energetic.  [B]The dance enters a new section with the chorus of the music.  The dancer performs slower and slower to the ung rhythm.  This section is punctuated by loudly percussive footwork.  [B]The dance enters a new section with the bridge-passage of the music.  The dancer performs slowly with the music.  This section is elaborate.  [B]The dance enters a new section with the next verse of the music.  The dancer performs with the music.  This section is punctuated by energetic spins.  [B]The dance enters a new section with the next chorus of the music.  The dancer performs slowly to the ugas rhythm.  This section is punctuated by delicate curved walks and energetic runs.  [B]The dance enters a new section with the finale of the music.  The dancer performs to the zak rhythm.  This section is debauched.  [B]The roz is one of the fundamental dance positions.  There should be a large raised left arm with an intense left leg lift, a grotesque hand gesture and a low body level.  [B]The uxzo is one of the fundamental dance positions.  There should be a proud rightward bend with a soft hand gesture and a sharp-edged raised arm.  [B]The ostad is one of the fundamental dance positions.  There should be a raised left arm with a low body level, a jerking hand gesture and a grotesque left leg lift.  "
+            ]
+          },
+          {
+            "id": 17,
+            "characters": 173,
+            "content": {
+              "author": 538,
+              "author_roll": 2,
+              "poetic_form": -1,
+              "refs": [
+                {
+                  "description_rva": 15669104,
+                  "id": -1,
+                  "role": 0,
+                  "type": 51,
+                  "type_name": "SITE"
+                }
+              ],
+              "styles": [
+                {
+                  "strength": 2,
+                  "style": 7
+                }
+              ],
+              "title": "It Is Mellowsnake",
+              "type": 1,
+              "type_name": "Guide"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]It Is Mellowsnake is a guide, authored by Mel Ethlaluki.  It concerns the castle Mellowsnake.  The writing is forceful.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "id": 41,
+            "characters": 220,
+            "content": {
+              "author": 956,
+              "author_roll": 4,
+              "poetic_form": -1,
+              "refs": [],
+              "styles": [
+                {
+                  "strength": 0,
+                  "style": 13
+                },
+                {
+                  "strength": 2,
+                  "style": 6
+                }
+              ],
+              "title": "Glittery Leprosy",
+              "type": 3,
+              "type_name": "ShortStory"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]Glittery Leprosy is a short story, authored by Gozru Zud\u00f6lngokang.  The work has no particular subject.  The writing is as vicious as can be and it is somewhat showy.  Overall, the prose is amateurish at best.  "
+            ]
+          },
+          {
+            "id": 247,
+            "characters": 180,
+            "content": {
+              "author": 1019,
+              "author_roll": 14,
+              "poetic_form": -1,
+              "refs": [
+                {
+                  "description_rva": 15600800,
+                  "id": -1,
+                  "role": 0,
+                  "type": 60,
+                  "type_name": "KNOWLEDGE_SCHOLAR_FLAG"
+                }
+              ],
+              "styles": [],
+              "title": "Unknown Lever",
+              "type": 0,
+              "type_name": "Manual"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]Unknown Lever is a manual, authored by Ingish Ed\u00ebmnefek.  It concerns the reasons why the lever is effective.  Overall, the prose is not awful, but not very good either.  "
+            ]
+          },
+          {
+            "id": 253,
+            "characters": 220,
+            "content": {
+              "author": 2271,
+              "author_roll": 10,
+              "poetic_form": -1,
+              "refs": [],
+              "styles": [
+                {
+                  "strength": 2,
+                  "style": 4
+                },
+                {
+                  "strength": 2,
+                  "style": 7
+                }
+              ],
+              "title": "Menace Ever Onward",
+              "type": 4,
+              "type_name": "Novel"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]Menace Ever Onward is a novel, authored by Are Thal\u00fapari.  The work has no particular subject.  The writing is reasonably serious and it is forceful.  Overall, the prose is not awful, but not very good either.  "
+            ]
+          },
+          {
+            "id": 361,
+            "characters": 696,
+            "content": {
+              "author": 803,
+              "author_roll": 20,
+              "poetic_form": -1,
+              "refs": [
+                {
+                  "description_rva": 15684224,
+                  "id": 235,
+                  "role": 0,
+                  "type": 42,
+                  "type_name": "ENTITY"
+                },
+                {
+                  "description_rva": 15654208,
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                }
+              ],
+              "styles": [
+                {
+                  "strength": 2,
+                  "style": 5
+                },
+                {
+                  "strength": 2,
+                  "style": 0
+                }
+              ],
+              "title": "Explorations of the Dwarves",
+              "type": 18,
+              "type_name": "CulturalHistory"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]Explorations of the Dwarves is a cultural history, authored by Dastot Tathtatnomal.  It concerns The Banners of Ferocity.  The writing has some particularly crisp changes in topic and it takes frequent interesting tangents.  Overall, the prose is passable.  The work has three chapters.  The first chapter covers the foundation of Lullslings by The Works of Spinning of The Banners of Ferocity in 1.  The second chapter covers the rise of the roc \u00d6d Roothowls the Rapid Flier as an enemy of The Banners of Ferocity in the midspring of 10.  The third chapter covers a ceremony held by The Banners of Ferocity in Entrancegravel as part of The Brass Celebration in the early summer of 48.  "
+            ]
+          },
+          {
+            "id": 416,
+            "characters": 848,
+            "content": {
+              "author": 1735,
+              "author_roll": 12,
+              "poetic_form": -1,
+              "refs": [
+                {
+                  "description_rva": 15684224,
+                  "id": 227,
+                  "role": 0,
+                  "type": 42,
+                  "type_name": "ENTITY"
+                },
+                {
+                  "description_rva": 15654208,
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                },
+                {
+                  "description_rva": 15654208,
+                  "id": -1,
+                  "role": 5,
+                  "type": 49,
+                  "type_name": "HISTORICAL_EVENT"
+                }
+              ],
+              "styles": [],
+              "title": "Discourse on Civilization",
+              "type": 2,
+              "type_name": "Chronicle"
+            },
+            "tagged_rows": [
+              "[C:7:0:1]Discourse on Civilization is a chronicle, authored by Iwo Upnalimec.  It concerns The Realm of Breakfast.  Overall, the information is not compiled very well.  The work has five chapters.  The first chapter covers the rise of the ettin Ison Drivenrusset the Key of Savants as an enemy of The Realm of Breakfast in the early spring of 7.  The second chapter covers the rise of the hydra Tabmik Puslice the Hairy Breach as an enemy of The Realm of Breakfast in the midsummer of 10.  The third chapter covers the rise of the wicked horror Oce Umbratomb as an enemy of The Realm of Breakfast in the early autumn of 54.  The fourth chapter covers the defeat of The Kind Glacier and pillaging of Squashedbeached by The Realm of Breakfast in the early autumn of 60.  The fifth chapter covers by The Realm of Breakfast in the early autumn of 60.  "
+            ]
+          }
+        ]
       }
     }
   }

@@ -45089,6 +45089,86 @@
         "verification": "All23 reader results equal native reason and ordered IDs, including all refusal codes0..10; all guarded cold-cache values unchanged. Source save unchanged; only known startup diagnostics.",
         "qa": "build/qa/unit-expel-roles"
       }
+    },
+    "unit_expel_destination_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261031-213406",
+      "initial_capture": "build/stockpile-storage-native-farm-discovery-20261031-213118",
+      "cases": [
+        {
+          "name": "open",
+          "destinations": [],
+          "selected_destination": -1,
+          "destination_reader": [],
+          "destination_guard_count": 11853,
+          "destination_guards_unchanged": true,
+          "rows": [
+            {
+              "text": "                                                             Stodir Tangakurvad, bookkeeper",
+              "y": 14
+            },
+            {
+              "text": "                                                         Expel                                          Cancel",
+              "y": 60
+            }
+          ]
+        },
+        {
+          "name": "destination-market-link",
+          "destinations": [
+            -1,
+            8
+          ],
+          "selected_destination": -1,
+          "destination_reader": [
+            -1,
+            8
+          ],
+          "destination_guard_count": 11854,
+          "destination_guards_unchanged": true,
+          "rows": [
+            {
+              "text": "                                                      Expel",
+              "y": 14
+            },
+            {
+              "text": "                                                      Send to Bandeddank the Sooty Shadow",
+              "y": 17
+            }
+          ],
+          "fixture_site": 8,
+          "fixture_owner": 1350
+        },
+        {
+          "name": "destination-restored",
+          "destinations": [],
+          "selected_destination": -1,
+          "destination_reader": [],
+          "destination_guard_count": 11853,
+          "destination_guards_unchanged": true,
+          "rows": [
+            {
+              "text": "                                                             Stodir Tangakurvad, bookkeeper",
+              "y": 14
+            },
+            {
+              "text": "                                                         Expel                                          Cancel",
+              "y": 60
+            }
+          ]
+        }
+      ],
+      "bridge_sha256": "adfcf74100b7eeb7e102c11e3d7611c4075c23e63e233142e2b9e6f65d23e7fb",
+      "fixture": "Prepend a temporary local_market site link to owner1350, targeting the current fortress site; restore original site_links and delete new link on success/error.",
+      "verification": "Native choices and reader IDs match; all guarded world sites, entity/site links, assignments, diplomacy, parent entities, plotinfo and view_sheets unchanged. Owned source unchanged; only known startup diagnostics.",
+      "qa": "build/qa/unit-expel-destinations",
+      "msvc_log": "build/notes/pm/unit-expel-destinations-msvc.log",
+      "remaining": [
+        "Shared profile, vassal assignment and tribute/civilization branches",
+        "Multiple-site order and scrolling",
+        "Destination caption reader",
+        "Native choice selection and confirmation flow",
+        "Expel header eligibility, transport and viewer UI"
+      ]
     }
   }
 }

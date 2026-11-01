@@ -1,6 +1,10 @@
 #pragma once
 #include "creature_office_native.h"
 #include "df/world.h"
+#include "df/world_data.h"
+#include "df/world_site.h"
+#include "df/entity_site_link.h"
+#include "df/diplomacy_statest.h"
 #include "df/historical_figure_info.h"
 #include "df/state_profilest.h"
 #include "df/histfig_entity_link_positionst.h"
@@ -110,6 +114,72 @@ inline std::optional<ExpelGroup> expelGroup(df::unit* unit) {
             if((!follower->flags1.bits.inactive || follower->flags1.bits.incoming) && follower->relationship_ids[0]==member->id)add(follower->id);
         }
     }
+    return result;
+}
+// Destination orchestration1b0f02..1b10ed. Every helper reads world semantics;
+// siteLink's create argument is always false. No native menu choices are read.
+inline std::optional<std::vector<int32_t>> expelDestinations() {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x1b0f02,0x1eb,UINT64_C(0x2918e55a94180fdc)},
+            {0x9b4e70,0x5d,UINT64_C(0x8acee59abdfa33fb)},
+            {0x93ce30,0xb7,UINT64_C(0xd664ff2de27cabfb)},
+            {0x9364d0,0x1da,UINT64_C(0x65231f4d74787177)},
+            {0x9b4e40,0x2e,UINT64_C(0xdfc69385713967b3)},
+            {0xffa80,0xc,UINT64_C(0xed630f8b7614e879)},
+            {0xba0a0,0xa8,UINT64_C(0xcf6b2a7b534d3331)},
+            {0xb9dc0,0xa7,UINT64_C(0x4d8961b901732215)},
+            {0xb9e70,0xf8,UINT64_C(0x7dab880be6ec9cba)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    if(!supported || !df::global::world || !df::global::world->world_data || !df::global::plotinfo)return std::nullopt;
+    static_assert(offsetof(df::historical_entity,relations)+offsetof(df::historical_entity::T_relations,diplomacy)==0x1028);
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    const auto* plot=df::global::plotinfo;
+    auto* civ=df::historical_entity::find(plot->civ_id);
+    auto* fortress=df::historical_entity::find(plot->group_id);
+    if(!fortress)return std::nullopt;
+    std::vector<int32_t> result;if(!civ)return result;
+    using SiteLink=df::entity_site_link* (*)(df::historical_entity*,int32_t,bool);
+    using Owner=df::historical_entity* (*)(df::world_site*);
+    using Civilization=df::historical_entity* (*)(df::historical_entity*);
+    using Assignment=df::entity_position_assignment* (*)(int32_t,const std::vector<df::entity_position_assignment*>*);
+    using Diplomacy=df::diplomacy_statest* (*)(const std::vector<df::diplomacy_statest*>*,int32_t);
+    using Market=int32_t (*)(df::historical_entity*,uint32_t);
+    auto* current=reinterpret_cast<SiteLink>(base+0x9364d0)(civ,plot->site_id,false);
+    const int32_t profile=current && current->entity_id==civ->id?current->position_profile_id:-1;
+    for(auto* site:df::global::world->world_data->sites) {
+        if(!site)return std::nullopt;
+        auto* owner=reinterpret_cast<Owner>(base+0x9b4e70)(site);
+        if(!owner || owner==fortress)continue;
+        auto* ownerCiv=reinterpret_cast<Civilization>(base+0x93ce30)(owner);
+        if(!ownerCiv)return std::nullopt;
+        auto* link=reinterpret_cast<SiteLink>(base+0x9364d0)(civ,site->id,false);
+        bool allowed=false;
+        if(profile!=-1 && link) {
+            allowed=link->position_profile_id==profile;
+            if(!allowed && link->position_profile_id!=-1) {
+                auto* assignment=reinterpret_cast<Assignment>(base+0xb9dc0)(link->position_profile_id,&ownerCiv->positions.assignments);
+                allowed=assignment && assignment->vassal_of_entity_id==civ->id && assignment->vassal_of_position_profile_id==profile;
+            }
+        }
+        if(!allowed) {
+            auto* relation=reinterpret_cast<Diplomacy>(base+0xffa80)(&fortress->relations.diplomacy.state,owner->id);
+            allowed=relation && relation->relation==df::diplomacy_state_type::AcceptingTribute && ownerCiv==civ;
+        }
+        if(!allowed)allowed=reinterpret_cast<Market>(base+0x9b4e40)(owner,8)==plot->site_id;
+        if(allowed)reinterpret_cast<int32_t (*)(int32_t,std::vector<int32_t>*)>(base+0xb9e70)(site->id,&result);
+    }
+    if(!result.empty())result.insert(result.begin(),-1);
     return result;
 }
 }

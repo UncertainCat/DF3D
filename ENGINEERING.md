@@ -2418,7 +2418,8 @@ and native position lookupbbe40 on an independently owned assignment. They avoid
 relative units, and nativeb9e70 inserts into the owned sorted unique ID vector.
 Accompanying-unit selection follows the observed reverse initial-member scan.
 No view_sheets, native cursor, camera or staged menu vectors are runtime inputs.
-The header-button visibility gate and destination choices remain separate work.
+The header-button visibility gate remains separate work; destination discovery
+and its initial reader acceptance follow below.
 
 Protected212146 establishes nine baseline/office/family comparisons;212501
 extends `df3d unit-expel-group-probe <id>` acceptance to16 native previews with
@@ -2455,6 +2456,31 @@ flags to repeat it. This remains a semantic reader milestone: no schema, viewer
 control or confirmation operation is added. Existing HF without a local unit, additional child/multiple-relative cases,
 simultaneous family refusals and
 deeper accompanying-unit chains remain unverified.
+
+The separate `expelDestinations` reader follows native1b0f02..1b10ed using
+pinned site-owner9b4e70, parent-civilization93ce30, site-link9364d0, diplomacy
+ffa80 and market9b4e40 calls. Site-link creation is always false. Assignment and
+sorted unique insertion useb9dc0/b9e70. It owns the result, prepending the native
+Expel sentinel-1 only when at least one site is available. Shared position-profile,
+vassal-assignment and accepting-tribute conditions follow the native inline
+orchestration; controlled branch acceptance remains outstanding. No native menu
+or selection fields supply the result.
+
+Protected213118 captures the actual native destination chooser. A temporary
+local-market link on owner1350 makes site8 available: native choices are Expel
+and Send to Bandeddank the Sooty Shadow. The chooser appears before the affected
+unit/confirmation view; removing the link restores the no-destination flow.
+Protected213406 verifies `df3d unit-expel-destinations-probe` against empty,
+market-linked[-1,8], and restored-empty previews. All11853/11854 byte-guarded
+records remain unchanged, covering sites, site/entity links, assignments,
+diplomacy, parent entities, plotinfo and view_sheets. The diagnostic restores the
+original owner's site-link vector and deletes only its temporary link. Source
+saves are unchanged and live logs contain only known startup notices. MSVC and
+core QA `unit-expel-destinations` pass. `unit_expel_destination_reference` retains
+IDs, native text, provenance and limitations. Enable
+`DF3D_UNIT_EXPEL_DESTINATIONS=1` and `DF3D_UNIT_EXPEL_DESTINATION_READER=1` for this
+capture. Other destination branches, captions, choice selection, confirmation,
+transport and the viewer remain unfinished; neither reader exposes an Expel UI.
 
 Confirmation1b1825..1b1c26 allocates an activity, records expulsion history when
 there is no destination, invokes unit cleanup/assignment helpers, emits thoughts,

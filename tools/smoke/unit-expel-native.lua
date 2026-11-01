@@ -9,6 +9,13 @@ local frame=df.global.world.frame_counter
 local observations={}
 local changed_positions={}
 local family
+local destination_fixture
+local function restore_destination()
+ if not destination_fixture then return end
+ local fixture=destination_fixture
+ fixture.owner.site_links:resize(0);for _,link in ipairs(fixture.links)do fixture.owner.site_links:insert('#',link)end
+ fixture.created:delete();destination_fixture=nil
+end
 local meeting
 local function restore_meeting()
  if not meeting then return end
@@ -121,6 +128,42 @@ local function record(name)
   assert(result.reason==sheet.unit_overview_expel_cannot_expel_reason,'Expel reader refusal differs')
   assert(json.encode(result.units)==json.encode(vector(sheet.unit_overview_expel_total_unid)),'Expel reader affected group differs')
  end
+ if sheet.unit_overview_expelling and sheet.unit_overview_expel_cannot_expel_reason==-1 and os.getenv('DF3D_UNIT_EXPEL_DESTINATION_READER')=='1' then
+  local guards,seen={},{}
+  local function protect(object)
+   if not object then return false end
+   local size,address=df.sizeof(object);if seen[address]then return false end;seen[address]=true
+   local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+   guards[#guards+1]={bytes=bytes,address=address,size=size};return true
+  end
+  local function entity_guard(entity)
+   if not protect(entity)then return end
+   for _,link in ipairs(entity.site_links)do protect(link)end
+   for _,assignment in ipairs(entity.positions.assignments)do protect(assignment)end
+   for _,relation in ipairs(entity.relations.diplomacy.state)do protect(relation)end
+   for _,link in ipairs(entity.entity_links)do
+    protect(link)
+    if link.type==df.entity_entity_link_type.PARENT then entity_guard(df.historical_entity.find(link.target))end
+   end
+  end
+  protect(sheet);protect(df.global.plotinfo)
+  entity_guard(df.historical_entity.find(df.global.plotinfo.civ_id));entity_guard(df.historical_entity.find(df.global.plotinfo.group_id))
+  for _,site in ipairs(df.global.world.world_data.sites)do
+   protect(site)
+   for _,link in ipairs(site.entity_links)do protect(link);entity_guard(df.historical_entity.find(link.entity_id))end
+  end
+  local output,status=dfhack.run_command_silent('df3d','unit-expel-destinations-probe')
+  local unchanged=true
+  for _,guard in ipairs(guards)do
+   if dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)~=0 then unchanged=false end
+   df.delete(guard.bytes)
+  end
+  assert(status==0,output);assert(unchanged,'Destination reader changed guarded sites/entities/menu state')
+  local result=json.decode(output)
+  assert(json.encode(result)==json.encode(vector(sheet.unit_overview_expel_dest_stid)),'Destination reader differs')
+  observations[#observations].destination_reader=result;observations[#observations].destination_guard_count=#guards
+  observations[#observations].destination_guards_unchanged=true
+ end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Expel navigation advanced simulation')
 end
 local ok,err=xpcall(function()
@@ -231,7 +274,41 @@ local ok,err=xpcall(function()
   end
   restore_family()
  end
+ if os.getenv('DF3D_UNIT_EXPEL_DESTINATIONS')=='1' then
+  local selected_site,owner
+  for _,site in ipairs(df.global.world.world_data.sites)do
+   if site.id~=df.global.plotinfo.site_id then
+    for _,link in ipairs(site.entity_links)do
+     if link.flags.residence and link.type==df.entity_site_link_type.All and link.start_hr==-1 then
+      local entity=df.historical_entity.find(link.entity_id)
+      if entity and entity.id~=df.global.plotinfo.group_id then selected_site=site;owner=entity end
+      break
+     end
+    end
+   end
+   if selected_site then break end
+  end
+  assert(selected_site and owner,'Destination fixture needs an existing governed site')
+  local link=df.entity_site_link:new();link.target=df.global.plotinfo.site_id;link.entity_id=owner.id;link.flags.local_market=true
+  destination_fixture={owner=owner,links=vector(owner.site_links),created=link}
+  owner.site_links:insert(0,link)
+  pointer(856,100);df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  record('destination-market-link')
+  observations[#observations].fixture_site=selected_site.id;observations[#observations].fixture_owner=owner.id
+  local found=false;for _,id in ipairs(sheet.unit_overview_expel_dest_stid)do if id==selected_site.id then found=true end end
+  assert(found and sheet.unit_overview_expel_dest_stid[0]==-1,'Native market-linked destination absent')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  restore_destination()
+  pointer(856,100);df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  record('destination-restored');assert(#sheet.unit_overview_expel_dest_stid==0,'Restored destination fixture differs from baseline')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ end
 end,debug.traceback)
+restore_destination()
 restore_cold()
 restore_meeting()
 restore_family()

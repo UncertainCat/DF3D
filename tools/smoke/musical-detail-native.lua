@@ -101,4 +101,10 @@ end
 assert(ok,result);assert(unchanged,'Music probe changed guarded source/UI/random state')
 result.guards_unchanged=true
 result.form={passages=#form.passages,instruments=#form.instruments,melodies=#form.melodies,play_order=#form.play_order}
+result.form.passage_melodies=0;result.form.intervals=0
+for _,value in ipairs(form.melodies)do result.form.intervals=result.form.intervals+#value.intervals end
+for _,value in ipairs(form.passages)do
+ result.form.passage_melodies=result.form.passage_melodies+#value.melodies
+ for _,item in ipairs(value.melodies)do result.form.intervals=result.form.intervals+#item.intervals end
+end
 return result

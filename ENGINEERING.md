@@ -3256,6 +3256,15 @@ notices. `musical_owned_probe_reference` retains the text, structure and bridge
 hash. This is a diagnostic baseline; other musical forms and production
 transport/rendering remain unverified.
 
+Protected040120 compares the first twelve world musical forms, temporarily adding
+missing knowledge IDs and restoring them afterward. All tagged descriptions match
+native exactly (1,499–7,297 characters), with guarded state unchanged. Form2 has
+six passages, fifteen passage melodies and twelve intervals; form8 adds three
+passage melodies and two intervals. None of these samples has form-level melodies.
+DF6752 exits unsaved with source preservation and only known Godot startup notices.
+`musical_forms_reference` retains structural coverage and bounded results. This
+extends formatter evidence without establishing production Skills transport or UI.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

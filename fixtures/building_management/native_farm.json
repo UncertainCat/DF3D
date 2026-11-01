@@ -61895,6 +61895,172 @@
         "owned_df_pid": 40916,
         "source_unchanged": true,
         "exit_without_saving": true
+      },
+      "musical_forms_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-040120",
+        "cases": [
+          {
+            "id": 0,
+            "characters": 3108,
+            "form": {
+              "instruments": 2,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 4,
+              "play_order": 3
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 1,
+            "characters": 3012,
+            "form": {
+              "instruments": 1,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 4,
+              "play_order": 2
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 2,
+            "characters": 7297,
+            "form": {
+              "instruments": 3,
+              "intervals": 12,
+              "melodies": 0,
+              "passage_melodies": 15,
+              "passages": 6,
+              "play_order": 4
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 3,
+            "characters": 5190,
+            "form": {
+              "instruments": 3,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 6,
+              "play_order": 6
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 4,
+            "characters": 2117,
+            "form": {
+              "instruments": 2,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 2,
+              "play_order": 2
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 5,
+            "characters": 3216,
+            "form": {
+              "instruments": 1,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 3,
+              "play_order": 3
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 6,
+            "characters": 2313,
+            "form": {
+              "instruments": 3,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 2,
+              "play_order": 2
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 7,
+            "characters": 2855,
+            "form": {
+              "instruments": 2,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 3,
+              "play_order": 2
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 8,
+            "characters": 2700,
+            "form": {
+              "instruments": 2,
+              "intervals": 2,
+              "melodies": 0,
+              "passage_melodies": 3,
+              "passages": 1,
+              "play_order": 1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 9,
+            "characters": 3355,
+            "form": {
+              "instruments": 2,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 5,
+              "play_order": 4
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 10,
+            "characters": 1499,
+            "form": {
+              "instruments": 1,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 1,
+              "play_order": 1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 11,
+            "characters": 2125,
+            "form": {
+              "instruments": 2,
+              "intervals": 0,
+              "melodies": 0,
+              "passage_melodies": 0,
+              "passages": 3,
+              "play_order": 3
+            },
+            "guards_unchanged": true
+          }
+        ],
+        "scope": "First twelve existing world forms; temporary knowledge additions restored. Exact native text and guarded state unchanged, including passage melodies and intervals. No form-level melody or production rendering acceptance.",
+        "diagnostics": "passed_with_known_issues",
+        "owned_df_pid": 6752,
+        "source_unchanged": true,
+        "exit_without_saving": true
       }
     }
   }

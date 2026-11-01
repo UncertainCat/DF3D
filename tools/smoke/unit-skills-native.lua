@@ -89,6 +89,14 @@ local ok,err=xpcall(function()
     if not exists then known:insert('#',form.id);added[#added+1]={vector=known,id=form.id}end
    end
   end
+  if os.getenv('DF3D_UNIT_MUSICAL_FORMS')=='1'then
+   local known=assert(df.historical_figure.find(unit.hist_figure_id).info.known_info).known_musical_forms
+   for index,form in ipairs(df.global.world.musical_forms.all)do
+    if index>=12 then break end
+    local exists=false;for _,id in ipairs(known)do if id==form.id then exists=true end end
+    if not exists then known:insert('#',form.id);added[#added+1]={vector=known,id=form.id}end
+   end
+  end
   local reference=observe('Knowledge');local seen={}
   local function capture_detail(index,kind,variant)
     observe('Knowledge')
@@ -122,7 +130,7 @@ local ok,err=xpcall(function()
     return detail.tagged_rows[1]
   end
   for index,kind in ipairs(reference.knowledge_types)do
-   if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1'))then
+   if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1')or(kind==15 and os.getenv('DF3D_UNIT_MUSICAL_FORMS')=='1'))then
     seen[kind]=true;local baseline=capture_detail(index,kind)
     if kind==14 and os.getenv('DF3D_UNIT_POETIC_CASES')=='1'then
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-cases-native.lua')

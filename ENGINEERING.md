@@ -3427,10 +3427,9 @@ The traversed roots have 49 distinct direct callees and 16 non-import indirect
 call sites. All 97 outgoing direct tail edges reach the existing date formatter
 b92640. No unresolved jump remains in this root-level traversal, but callees,
 virtual targets, source aliases and transitively referenced storage are separate
-ownership obligations. In particular, masterpiece-lost b65093 invokes another
-event's phrase slot d8, performance b8c43b calls through rax, and death/theft use
-virtual slots 10/40. These sites need explicit dispatch/source ownership review
-before widening production use.
+ownership obligations. Both masterpiece-lost b65093 and performance b8c43b invoke another event's
+phrase slot d8. Their recursive event/source ownership remains a production
+admission obligation.
 
 The helper traversal in `event-helper-frontier.json` covers six additional
 bodies. Position-name selector 99a3c0 is a read-only leaf returning a source
@@ -3440,12 +3439,35 @@ and appends to the supplied output. These reuse the ownership findings in
 its selected source string through 6fa10. Formatter b85510 has a bounded
 44-entry table at b87518; all targets remain before that table and no reached
 instruction overlaps its bytes. Its material-description callees 14add70,
-14d16f0 and 14d1920, and lookup 488990, remain transitive review obligations.
-Helper b93a90 adds virtual calls at b93b2c (slot 8) and b93bdf (slot 0), plus
-lookup 152e750. Identity formatter c3a590 has no indirect dispatch; its direct
-stores target stack locals, but the shared formatting callees and argument
-aliases still require review. These findings narrow the audit; they do not
-establish safety of every transitive path.
+14d16f0 and 14d1920 reuse existing Stockpile/item formatting evidence. However,
+14add70 can populate `hist_fig_to_creature_map` through 701e70; this is a real
+semantic cache write, not an inline-table false positive. Construction and
+Stockpiles preserve the original nodes/buckets using a scoped private copy.
+The diagnostic dance/written adapters do not yet provide equivalent isolation
+for these broader event paths. Existing bounded samples do not establish that
+historical-material event formatting preserves this cache.
+
+Lookups 488990 and 152e750 only read their source collections and save registers
+to the stack; neither calls another helper. Material wrapper 14d16f0 copies a
+source name to the supplied string or calls 14d1920 with explicit zero state
+and flags. Identity formatter c3a590 has no indirect dispatch; its direct stores
+target stack locals, but shared formatting callees and argument aliases still
+require review.
+
+The installed executable timestamp selects DFHack's `v0.53.16 win64 STEAM`
+symbol table. `event-world-construction-getters.json` resolves b93a90's virtual
+slots 0/8 for road, tunnel, bridge, wall and the base construction: type getters
+return constants, name getters return the embedded name at offset 0x58 (the
+base returns null). `event-root-virtual-getters.json` checks 146 indexed derived
+getType entries across abstract buildings, general references, interaction
+effects and creature interaction effects; all are constant-return leaves.
+These cover created-building, revived and squad-versus-squad type dispatches.
+Death/theft first select `IS_ARTIFACT` through general-ref slot 0x10, then call
+slot 0x40: `general_ref_is_artifactst` resolves to edfc20, a read-only binary
+lookup with no calls. This identifies the getter targets behind 14 of the 16
+root indirect call sites; the two recursive phrase calls remain distinct.
+Referenced collection bounds, source lifetimes, recursive event closure and
+cold-cache preservation still need acceptance before production admission.
 
 This static evidence does not replace bounded live guards or grant acceptance
 to all 127 event types. No production formatter admission or management action

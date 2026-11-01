@@ -42,6 +42,31 @@ local ok,err=xpcall(function()
   local sample={name=name,lines={},tagged_rows={}}
   for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
   sample.color_box_count=#sheet.unit_health_box
+  if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1' and (name=='Status' or name=='Treatment')then
+   local guards={}
+   local function guard(address,size)
+    if size==0 then return end;assert(size>0 and size<1048576,'Invalid Health guard size')
+    local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+    guards[#guards+1]={bytes=bytes,address=address,size=size}
+   end
+   for _,object in ipairs{unit,sheet,df.global.plotinfo,unit.health}do
+    if object then local size,address=df.sizeof(object);guard(address,size)end
+   end
+   local vectors={unit.body.components.body_part_status,unit.body.wounds,unit.enemy.motor_nervenet,unit.enemy.sensory_nervenet,unit.enemy.body_part_useable}
+   if unit.health then vectors[#vectors+1]=unit.health.body_part_flags end
+   for _,vector in ipairs(vectors)do
+    local _,address=df.sizeof(vector);local first=df.reinterpret_cast('uint64_t',address).value
+    guard(first,df.reinterpret_cast('uint64_t',address+8).value-first)
+   end
+   for _,wound in ipairs(unit.body.wounds)do local size,address=df.sizeof(wound);guard(address,size)end
+   for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do guard(base+range[1],range[2])end
+   local text,status=dfhack.run_command_silent('df3d','unit-health-page-probe',tostring(unit.id),name=='Status' and '0' or '2')
+   local unchanged=true
+   for _,g in ipairs(guards)do if dfhack.internal.memcmp(g.bytes,g.address,g.size)~=0 then unchanged=false end;df.delete(g.bytes)end
+   assert(status==0,text);assert(unchanged,'Health probe changed guarded source/UI/random state')
+   sample.probe=json.decode(text);sample.probe_guards_unchanged=unchanged
+   assert(json.encode(sample.probe.rows)==json.encode(sample.tagged_rows),'Owned Health output differs: '..name)
+  end
   for y=18,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then sample.lines[#sample.lines+1]={y=y,text=text}end end
   pages[#pages+1]=sample
   capture('unit-health-page-'..name:lower())

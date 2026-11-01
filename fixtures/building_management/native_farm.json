@@ -53161,6 +53161,77 @@
           }
         },
         "scope": "Diagnostic read of native Health output vectors after actual page clicks. Reference only; these menu vectors must never be product inputs."
+      },
+      "owned_probe_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-013818",
+        "status": "passed_with_known_issues",
+        "pages": [
+          {
+            "name": "Status",
+            "probe": {
+              "page": 0,
+              "rows": [
+                "[C:6:0:1]Ability to stand lost",
+                "[C:7:0:1]Motor nerve damage",
+                "[C:7:0:1]Sensory nerve damage"
+              ],
+              "unit_id": 1017
+            },
+            "guards_unchanged": true
+          },
+          {
+            "name": "Treatment",
+            "probe": {
+              "page": 2,
+              "rows": [
+                "[C:7:0:0]No treatment scheduled"
+              ],
+              "unit_id": 1017
+            },
+            "guards_unchanged": true
+          }
+        ],
+        "bridge_sha256": "eac925c87cc5e327d62dc25e831b023bef1537156a5118b628c97039133a6e72",
+        "scope": "Diagnostic Status0/Treatment2 native builder calls with independent zeroed context and copied unit/health inputs; exact tagged rows match native reference. Guards cover unit/health structs, selected body/health vector backing, wound structs, sheet/plotinfo and random streams.",
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "source_save": "Owned source unchanged; DF37484 exits unsaved.",
+        "qa": "build/qa/health-owned-probe",
+        "limitations": [
+          "Only existing impairment Status and empty scheduled Treatment verified; no claim for all clinical conditions.",
+          "Wounds, History and Description calls rejected by diagnostic allowlist pending their ownership audit.",
+          "No management wire or Godot Health implementation; creature route remains staged."
+        ]
       }
     }
   }

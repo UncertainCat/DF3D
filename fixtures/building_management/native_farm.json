@@ -67464,7 +67464,7 @@
         "scope": "ASSUME_IDENTITY dance descriptions with valid unit race/caste and temporary identity/event graphs. Profession/entity changes leave this native phrase unchanged; separate profession branch, agreement identities, other races and deep historical identity graphs remain unverified."
       },
       "collection_validation_reference": {
-        "source": "build/stockpile-storage-native-farm-discovery-20261101-083853",
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-084428",
         "status": "passed_with_known_issues",
         "bridge_sha256": "3e7dbc1d927dce394bc12423728988de0bbeb2fad680f7b9ed88bbdeb44ba387",
         "cases": [
@@ -67477,6 +67477,71 @@
             "case": "second-foot-race",
             "text_utf8_bytes": 1787,
             "text_sha256": "7c3a4108267336ac6dacb414539184d280fb4612177d7e5d5100fd548bdc0578"
+          },
+          {
+            "case": "dance_competition",
+            "text_utf8_bytes": 1793,
+            "text_sha256": "f2a33fcb8b276927c38d646c4ab449e4eee4a9682e74559561ac483930c95640"
+          },
+          {
+            "case": "musical_competition",
+            "text_utf8_bytes": 1795,
+            "text_sha256": "e43252a530ff7e25a7ce73768ca223a5898763025f3ebf3e250957233ec7ca27"
+          },
+          {
+            "case": "poetry_competition",
+            "text_utf8_bytes": 1794,
+            "text_sha256": "1ae50f03af3a1a1139ffb1a2ec8a0c8949657f6ea14103ce1ce3d3cdf4e5c319"
+          },
+          {
+            "case": "fly_race",
+            "text_utf8_bytes": 1784,
+            "text_sha256": "88da03d73722ffe6d5344293a230880f808645f557ee39bdffad51555d675145"
+          },
+          {
+            "case": "mounted_race",
+            "text_utf8_bytes": 1786,
+            "text_sha256": "a88d43579492f5b9a3f30b1e92563f98580ff4b2bcca966386ec27cf4feace97"
+          },
+          {
+            "case": "wrestling_competition",
+            "text_utf8_bytes": 1797,
+            "text_sha256": "4d66b0fba46e3572048daf93dfe45ed8dda6546529d8f3f9617b9fe82a216344"
+          },
+          {
+            "case": "throwing_competition",
+            "text_utf8_bytes": 1807,
+            "text_sha256": "256111d5580788357fabf65115ade70cd17b7fcad97501181bcc5980dd3cf5a0"
+          },
+          {
+            "case": "gladiatory_competition",
+            "text_utf8_bytes": 1792,
+            "text_sha256": "ca17bb6b5fa2a826e497ccc29bf6d5b7a153011614e767f450b8c7d486c5e3ed"
+          },
+          {
+            "case": "mounted-missing-race",
+            "text_utf8_bytes": 1789,
+            "text_sha256": "44f3205133261c5dadd77742370d728f65ccff0f477cc418d4626aa5c41755f9"
+          },
+          {
+            "case": "mounted-past-end-race",
+            "text_utf8_bytes": 1789,
+            "text_sha256": "44f3205133261c5dadd77742370d728f65ccff0f477cc418d4626aa5c41755f9"
+          },
+          {
+            "case": "mounted-missing-caste",
+            "text_utf8_bytes": 1786,
+            "text_sha256": "a88d43579492f5b9a3f30b1e92563f98580ff4b2bcca966386ec27cf4feace97"
+          },
+          {
+            "case": "mounted-past-end-caste",
+            "text_utf8_bytes": 1786,
+            "text_sha256": "a88d43579492f5b9a3f30b1e92563f98580ff4b2bcca966386ec27cf4feace97"
+          },
+          {
+            "case": "unknown-schedule-kind",
+            "text_utf8_bytes": 1776,
+            "text_sha256": "36e9a4c05be33a854452b0b5ec0e7fdcdf5d65765f2f067fb5f07819fe25d52a"
           },
           {
             "case": "missing-collection",
@@ -67531,11 +67596,11 @@
             "rejected": true
           }
         ],
-        "valid_native_comparisons": 14,
+        "valid_native_comparisons": 40,
         "baseline_form_comparisons": 4,
         "source_unchanged": true,
         "owned_exit_unsaved": true,
-        "scope": "Competition schedule preflight via HistEventCollection circumstance through ARTIFACT_GIVEN. Foot-race/ordinal and missing-record/null-schedule native fallbacks tested. Other collection types, other competition schedule kinds and broad production admission remain incomplete."
+        "scope": "Competition schedule preflight via HistEventCollection circumstance through ARTIFACT_GIVEN. All nine competition kinds, ordinal naming, mounted missing/past-end race/caste fallbacks, unknown kind and missing-record/null-schedule fallbacks tested. Mounted uses selected creature race/caste; throwing uses inorganic iron coins. Other collection types, arbitrary raw/material graphs and broad production admission remain incomplete."
       },
       "coin_validation_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-083239",

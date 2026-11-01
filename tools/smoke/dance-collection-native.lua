@@ -23,6 +23,22 @@ local ok,err=xpcall(function()
   results[#results+1]={case=label,text=text}
  end
  compare('foot-race');collection.ordinal=2;compare('second-foot-race');collection.ordinal=1
+ for _,kind in ipairs{'DANCE_COMPETITION','MUSICAL_COMPETITION','POETRY_COMPETITION','FLY_RACE','MOUNTED_RACE','WRESTLING_COMPETITION','THROWING_COMPETITION','GLADIATORY_COMPETITION'}do
+  schedule.type=df.occasion_schedule_type[kind]
+  schedule.reference=-1;schedule.reference2=-1;schedule.reference3=-1;schedule.reference4=-1
+  if kind=='MOUNTED_RACE'then
+   assert(unit.race>=0 and unit.race<32767);schedule.reference=unit.race;schedule.reference2=unit.caste
+  elseif kind=='THROWING_COMPETITION'then
+   assert(world.raws.inorganics.all[0]);schedule.reference=df.item_type.COIN;schedule.reference3=0;schedule.reference4=0
+  end
+  compare(kind:lower())
+ end
+ schedule.type=df.occasion_schedule_type.MOUNTED_RACE;schedule.reference=-1;compare('mounted-missing-race')
+ schedule.reference=#world.raws.creatures.all;compare('mounted-past-end-race')
+ schedule.reference=unit.race;schedule.reference2=-1;compare('mounted-missing-caste')
+ schedule.reference2=#world.raws.creatures.all[unit.race].caste;compare('mounted-past-end-caste')
+ schedule.type=df.occasion_schedule_type.NONE;compare('unknown-schedule-kind')
+ schedule.type=df.occasion_schedule_type.FOOT_RACE;schedule.reference=-1;schedule.reference2=-1;schedule.reference3=-1;schedule.reference4=-1
  event.circumstance.data.HistEventCollection=2147483647;assert(not df.history_event_collection.find(2147483647));compare('missing-collection');event.circumstance.data.HistEventCollection=collection.id
  collection.civ=2147483647;assert(not df.historical_entity.find(2147483647));compare('missing-entity');collection.civ=owner.id
  owner.occasion_info=nil;compare('missing-info');owner.occasion_info=info

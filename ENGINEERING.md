@@ -3600,17 +3600,28 @@ Missing collection/entity/info/occasion and an in-range null schedule preserve
 native fallback. Competition formatterbc7270 (length0x50c,
 FNVda035ebd044b7798) is pinned by shared Knowledge readiness.
 
-Protected083853 on2026-11-01, bridge
+Protected084428 on2026-11-01, bridge
 `3e7dbc1d927dce394bc12423728988de0bbeb2fad680f7b9ed88bbdeb44ba387`,
-compares seven temporary competition cases twice through ARTIFACT_GIVEN's
-circumstance: first/second foot race, missing collection/entity/info/occasion,
-and null schedule. All14 native descriptions and four baseline forms match.
+compares20 temporary competition cases twice through ARTIFACT_GIVEN's
+circumstance. All nine competition schedule kinds are covered: dance, music,
+poetry, foot/flying/mounted races, wrestling, throwing and gladiatorial.
+The remaining cases cover ordinal naming, negative/past-end mounted race and
+caste references, an unknown schedule kind, missing collection/entity/info/
+occasion and null schedule. All40 native descriptions and four baseline forms
+match, with guarded source/UI unchanged. Mounted tests use the selected
+creature's valid race/caste; throwing uses inorganic iron coins. Guards include
+creature/caste names and inorganic material names/adjectives/prefix storage.
+Native aa3bd0 already checks narrowed race/caste bounds and falls back to race
+names; the competition caller checks the full race index before calling it.
+Throwing uses native item text a82c10 with the schedule's item/subtype/material
+fields and no live item ID. These branches introduce no replacement prose.
 Schedule-1/-2, past-end and empty schedules plus a null occasion are rejected
 before native formatting with guarded source/UI unchanged. The source save is
 unchanged and the owned session exits unsaved; all three Godot processes have
 only the known startup notice. `collection_validation_reference` records this
-scope. Other collection types and competition schedule kinds retain their
-separate source-validation obligations; this does not expose Knowledge.
+scope. Other collection types and arbitrary competition raw/material graphs
+retain their separate source-validation obligations; this does not expose
+Knowledge or establish every item/material combination for throwing.
 
 Circumstance formatting also reaches
 artifact helperb94400; its unnamed-artifact branch atb94583 passes the live

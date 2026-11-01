@@ -78,7 +78,27 @@ local function competition_collection(id)
    name(occasion.name);vector(occasion.schedule)
    assert(value.schedule>=0 and value.schedule<#occasion.schedule)
    local schedule=occasion.schedule[value.schedule];object(schedule)
-   if schedule then vector(schedule.features);assert(#schedule.features==0)end
+   if schedule then
+    vector(schedule.features);assert(#schedule.features==0)
+    local function strings(value)
+     local size,address=df.sizeof(value);local stride=size/#value
+     for i=0,#value-1 do string_backing(address+i*stride)end
+    end
+    if schedule.type==df.occasion_schedule_type.MOUNTED_RACE then
+     local raws=df.global.world.raws.creatures.all;vector(raws)
+     if schedule.reference>=0 and schedule.reference<#raws then
+      local raw=assert(raws[schedule.reference]);object(raw);strings(raw.name);vector(raw.caste)
+      if schedule.reference2>=0 and schedule.reference2<#raw.caste then
+       local caste=assert(raw.caste[schedule.reference2]);object(caste);strings(caste.caste_name)
+      end
+     end
+    elseif schedule.type==df.occasion_schedule_type.THROWING_COMPETITION then
+     assert(schedule.reference==df.item_type.COIN and schedule.reference2==-1 and schedule.reference3==0 and schedule.reference4==0,'Add throwing source guards')
+     vector(df.global.world.raws.inorganics.all);local inorganic=assert(df.global.world.raws.inorganics.all[0]);object(inorganic);object(inorganic.material)
+     strings(inorganic.material.state_name)
+     strings(inorganic.material.state_adj);string_field(inorganic.material,'prefix')
+    end
+   end
   end
  end
 end

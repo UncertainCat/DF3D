@@ -476,6 +476,10 @@ local ok,err=xpcall(function()
    assert(linked.scene.success,'unit carrier main-scene navigation failed')
    linked.focus_before=before_focus;linked.focus_after=focus_state(p)
    assert(json.encode(before_focus)==json.encode(linked.focus_after),'viewer changed live personality focus cache/timestamps')
+   if os.getenv('DF3D_UNIT_ITEMS')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-items-native.lua')
+    linked.items=assert(loadfile(source))(unit,view,capture,out)
+   end
    if os.getenv('DF3D_UNIT_EXPEL')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-expel-native.lua')
     linked.expel=assert(loadfile(source))(unit,view,capture,out)

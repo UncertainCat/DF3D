@@ -1390,6 +1390,31 @@ Owned DF164556 exits unsaved with source preservation; both GPU logs contain onl
 the known render-thread notice. QA unit-sheet-frame passes core, inspector
 lifecycle/tab checks and thought-text tests. No public routes are promoted.
 
+The Items tab's native baseline is recorded by `unit-items-native.lua`, enabled
+with DF3D_UNIT_ITEMS=1 in the protected FarmItemCarriers lane. Protected234017
+on2026-10-31 opens unit1017's Items tab and restores Overview without changing
+inventory or advancing the paused simulation. Eleven inventory entries render
+in vector order, followed by a blood-spatter row. The screen has two-line rows,
+item artwork, clothing indicators and inspect buttons; the generic inventory
+section is not an accepted replacement. The first seven rows were scanned for
+hover instructions, finding INVENTORY_IS_CLOTHING and INVENTORY_VIEW_ITEM.
+This baseline does not exercise those actions or establish overflow behavior.
+`native_farm.json.chest_header_reference.unit_items_reference` retains text and
+semantic observations. Source-save preservation passes; both GPU processes and
+the header-wire process have only the known separate-renderer notice.
+
+Items renderer169d86 calls existing semantic caption formatter c65450 with an
+owned string and false/-1 arguments. Its second line calls1393900(unit, owned
+string, inventory entry) at169f08. The complete routine ends1394724 including
+its role jump table. It is not yet exposed: role8(Pet) derives placement text
+from pet_seed and writes the SplitMix global18adf98 at13941f1. A runtime adapter
+must preserve random state (as the hover provider already does), finish auditing
+its callees, and verify owned output against native before use. Inventory rows
+alone are insufficient: renderer169436 also counts contained references on
+container items, and1695c0 traverses unit-body spatters. Their descriptions,
+ordering, nested actions and artwork still need native acceptance. The Items
+route remains staged with the rest of the incomplete creature sheet.
+
 The Overview hauling line uses native selector1324b50(unit), the same call made
 by renderer166e81, followed by the existing owned caption formatter c65450.
 The selector is a44-byte read-only leaf returning the first inventory entry in

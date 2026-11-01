@@ -49328,6 +49328,218 @@
           ]
         }
       }
+    },
+    "unit_items_reference": {
+      "source": "build/stockpile-storage-native-farm-discovery-20261031-234017",
+      "scope": "Native Items baseline only; no runtime provider or item actions accepted. Hover scan covers first seven rows only.",
+      "native": {
+        "hovers": [
+          {
+            "id": 294,
+            "name": "INVENTORY_IS_CLOTHING",
+            "x": 824,
+            "y": 208
+          },
+          {
+            "id": 295,
+            "name": "INVENTORY_VIEW_ITEM",
+            "x": 856,
+            "y": 208
+          }
+        ],
+        "inventory": [
+          {
+            "body_part_id": 3,
+            "flags": 65544,
+            "id": 32064,
+            "mode": 2
+          },
+          {
+            "body_part_id": 14,
+            "flags": 81928,
+            "id": 32625,
+            "mode": 2
+          },
+          {
+            "body_part_id": 14,
+            "flags": 81928,
+            "id": 16196,
+            "mode": 2
+          },
+          {
+            "body_part_id": 0,
+            "flags": 81928,
+            "id": 32590,
+            "mode": 2
+          },
+          {
+            "body_part_id": 15,
+            "flags": 81928,
+            "id": 23171,
+            "mode": 2
+          },
+          {
+            "body_part_id": 1,
+            "flags": 81928,
+            "id": 32594,
+            "mode": 2
+          },
+          {
+            "body_part_id": 15,
+            "flags": 81928,
+            "id": 16320,
+            "mode": 2
+          },
+          {
+            "body_part_id": 0,
+            "flags": 65544,
+            "id": 39928,
+            "mode": 2
+          },
+          {
+            "body_part_id": 66,
+            "flags": 16392,
+            "id": 47619,
+            "mode": 9
+          },
+          {
+            "body_part_id": 9,
+            "flags": 16392,
+            "id": 7477,
+            "mode": 1
+          },
+          {
+            "body_part_id": -1,
+            "flags": 536870920,
+            "id": 47492,
+            "mode": 0
+          }
+        ],
+        "items_tab": 1,
+        "original_tab": 0,
+        "restored": true,
+        "rows": [
+          {
+            "y": 18,
+            "text": "\u2261pig tail hood\u2261"
+          },
+          {
+            "y": 19,
+            "text": "Head"
+          },
+          {
+            "y": 21,
+            "text": "(jute sock)"
+          },
+          {
+            "y": 22,
+            "text": "Right foot"
+          },
+          {
+            "y": 24,
+            "text": "x(naked mole dog leather shoe)x"
+          },
+          {
+            "y": 25,
+            "text": "Right foot"
+          },
+          {
+            "y": 27,
+            "text": "(cheetah leather tunic)"
+          },
+          {
+            "y": 28,
+            "text": "Upper body"
+          },
+          {
+            "y": 30,
+            "text": "x(hemp sock)x"
+          },
+          {
+            "y": 31,
+            "text": "Left foot"
+          },
+          {
+            "y": 33,
+            "text": "(leopard leather trousers)"
+          },
+          {
+            "y": 34,
+            "text": "Lower body"
+          },
+          {
+            "y": 36,
+            "text": "x(cave spider silk shoe)x"
+          },
+          {
+            "y": 37,
+            "text": "Left foot"
+          },
+          {
+            "y": 39,
+            "text": "\u2261alpaca wool cloak\u2261"
+          },
+          {
+            "y": 40,
+            "text": "Upper body"
+          },
+          {
+            "y": 42,
+            "text": "(pig tail thread (1%))"
+          },
+          {
+            "y": 43,
+            "text": "Sewn into Fourth toe, left foot"
+          },
+          {
+            "y": 45,
+            "text": "(persimmon wood crutch)"
+          },
+          {
+            "y": 46,
+            "text": "Left hand"
+          },
+          {
+            "y": 48,
+            "text": "sweet pod seeds"
+          },
+          {
+            "y": 49,
+            "text": "Hauled"
+          },
+          {
+            "y": 51,
+            "text": "spatter of Stodir Spotseals's dwarf blood"
+          },
+          {
+            "y": 52,
+            "text": "left ankle"
+          }
+        ],
+        "success": true,
+        "unit_id": 1017
+      },
+      "source_save": "unchanged; owned session exited unsaved",
+      "diagnostics": "passed_with_known_issues: known separate-renderer startup notice only in both GPU logs and paired header-wire logs",
+      "caption_call": {
+        "renderer": "169d86",
+        "routine": "c65450",
+        "arguments": "item, owned string, false, -1"
+      },
+      "role_call": {
+        "renderer": "169f08",
+        "routine": "1393900",
+        "end": "1394724",
+        "arguments": "unit, owned string, inventory entry",
+        "audit": "Incomplete; Pet role writes SplitMix state18adf98. Restore random state and audit callees before exposing."
+      },
+      "remaining": [
+        "Nested contained rows and spatters",
+        "All role descriptions with owned output and state guards",
+        "Item inspection actions and return navigation",
+        "Artwork, clipping, hover text, scrolling and resize",
+        "Actual DF3D rendered/live parity and lifecycle"
+      ]
     }
   }
 }

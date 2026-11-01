@@ -80,6 +80,27 @@ local ok,err=xpcall(function()
  end if found then break end end
  assert(found and sheet.open and sheet.active_sheet==df.view_sheet_type.UNIT and sheet.active_id==unit.id,'Native map reopen did not select same creature')
  record('reopened');select('Health');record('reopened-health')
+ if os.getenv('DF3D_UNIT_HEALTH_IDENTITY')=='1'then
+  local other
+  for _,candidate in ipairs(df.global.world.units.active)do
+   if candidate.id~=unit.id and candidate.pos.z==unit.pos.z and dfhack.units.isCitizen(candidate)and candidate.profession~=df.profession.CHILD and candidate.profession~=df.profession.BABY and(candidate.pos.x~=unit.pos.x or candidate.pos.y~=unit.pos.y)then other=candidate;break end
+  end
+  assert(other,'Health identity needs another adult citizen')
+  local function map_select(target)
+   dfhack.gui.revealInDwarfmodeMap({x=target.pos.x+8,y=target.pos.y,z=target.pos.z},true);view:render(dfhack.getTickCount())
+   local found=false
+   for y=0,g.dimy-1 do for x=0,49 do
+    g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6
+    local p=dfhack.gui.getMousePos(true)
+    if p and p.x==target.pos.x and p.y==target.pos.y and p.z==target.pos.z then click(g.precise_mouse_x,g.precise_mouse_y);found=true;break end
+   end if found then break end end
+   assert(found and sheet.open and sheet.active_sheet==df.view_sheet_type.UNIT and sheet.active_id==target.id,'Native exposed-map selection did not select creature '..target.id)
+  end
+  select('History');sheet.scroll_position_unit_health=7
+  map_select(other);record('identity-other');select('Health');record('identity-other-health')
+  map_select(unit);record('identity-return');select('Health');record('identity-return-health')
+ end
+
 
 end,debug.traceback)
 e.mouse_lbut=0;e.mouse_lbut_down=0;e.mouse_lbut_lift=1

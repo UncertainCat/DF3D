@@ -54868,6 +54868,90 @@
         },
         "source_preserved": true,
         "scope": "Real bridge disable/enable within one paused fortress during Health History drag; owner/gesture retirement, no automatic reopen, explicit reopen restores75 native lines at row0. Does not cover another world, different creature identity, or deliberately delayed publication."
+      },
+      "identity_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-025104",
+        "status": "passed_with_known_issues",
+        "native": [
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 0,
+            "main_tab": 0,
+            "name": "identity-other",
+            "open": true,
+            "tab": 0,
+            "unit_id": 2345,
+            "width": 0
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 1,
+            "main_tab": 2,
+            "name": "identity-other-health",
+            "open": true,
+            "tab": 0,
+            "unit_id": 2345,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 0,
+            "main_tab": 0,
+            "name": "identity-return",
+            "open": true,
+            "tab": 0,
+            "unit_id": 1017,
+            "width": 0
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 3,
+            "main_tab": 2,
+            "name": "identity-return-health",
+            "open": true,
+            "tab": 0,
+            "unit_id": 1017,
+            "width": 53
+          }
+        ],
+        "scene": {
+          "old_drag_retired": true,
+          "success": true,
+          "targets": [
+            {
+              "lines": 1,
+              "native_pixels_match": true,
+              "unit_id": 2345
+            },
+            {
+              "lines": 3,
+              "native_pixels_match": true,
+              "unit_id": 1017
+            }
+          ]
+        },
+        "source_preserved": true,
+        "scope": "Native exposed-map clicks between1017 and2345 reset Overview then Health Status/top. DF3D explicit open_target selection route during drag retires prior view; both selected publication IDs and Status text pixels match. Does not test ray picking, another world or deliberately delayed replies."
       }
     }
   }

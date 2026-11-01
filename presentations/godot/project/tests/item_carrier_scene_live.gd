@@ -244,6 +244,9 @@ func exercise_health_view(inspector) -> void:
 	if OS.get_environment("DF3D_UNIT_HEALTH_OVERFLOW")=="1":
 		await exercise_health_overflow(inspector)
 		if failed:return
+	if OS.get_environment("DF3D_UNIT_HEALTH_IDENTITY")=="1":
+		await exercise_health_identity(inspector)
+		if failed:return
 	var previous=inspector.creature_sheet.health_view
 	if not await health_tab(inspector,"Overview"):return
 	check(not is_instance_valid(previous) or not previous.is_visible_in_tree(),"Health tab departure retained visible content")
@@ -304,6 +307,47 @@ func exercise_health_overflow(inspector) -> void:
 	check(inspector.creature_sheet.subtabs.Health=="Status" and inspector.creature_sheet.health_view.first==0,"Health reopen did not reset to native Status/top")
 	var evidence:=FileAccess.open(directory+"/unit-health-overflow-result.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"success":not failed,"native_drag_text":true,"refresh_during_drag":true,"overlay_blocks_input":true,"resize_retains_scroll":true,"shared_subtab_scroll":true,"close_retires_drag":true,"reopen_resets_overview":true,"health_reopens_status_top":true}));evidence.close()
+
+func exercise_health_identity(inspector) -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-health-layout-native.json"))
+	var targets: Array=[]
+	for sample in reference.observations:
+		if sample.name in ["identity-other-health","identity-return-health"]:targets.append(sample)
+	if not check(targets.size()==2,"Native Health identity reference missing"):return
+	if not await health_tab(inspector,"History"):return
+	var old_view=inspector.creature_sheet.health_view
+	if not check(old_view.scrollbar.visible,"Health identity test requires overflow"):return
+	var grip: Vector2i=old_view.scrollbar.thumb()
+	var point: Vector2=old_view.scrollbar.get_global_transform_with_canvas()*Vector2(8,(grip.x+grip.y*0.5)*12)
+	var motion:=InputEventMouseMotion.new();motion.position=point;root.push_input(motion,true)
+	var button:=InputEventMouseButton.new();button.position=point;button.button_index=MOUSE_BUTTON_LEFT;button.pressed=true;root.push_input(button,true)
+	check(old_view.scrollbar.dragging,"Health identity drag did not start")
+	var results: Array=[]
+	for sample in targets:
+		var id:=int(sample.unit_id);var entity: Dictionary=world.inspect_entity(1,id)
+		if not check(not entity.is_empty(),"Health identity target missing from world model"):return
+		inspector.open_target(entity.tile,1,id)
+		await process_frame
+		check(not is_instance_valid(old_view) or (not old_view.is_visible_in_tree() and not old_view.scrollbar.dragging),"Different creature retained old Health view or gesture")
+		button=InputEventMouseButton.new();button.position=point;button.button_index=MOUSE_BUTTON_LEFT;root.push_input(button,true)
+		check(inspector.selected.id==id and inspector.creature_sheet.tab=="Overview","Creature identity change did not reset to native Overview")
+		var deadline:=Time.get_ticks_msec()+5000
+		while int(inspector.creature_display.get("detail",{}).get("unit_id",-1))!=id and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+		if not check(int(inspector.creature_display.get("detail",{}).get("unit_id",-1))==id,"Creature detail publication retained previous identity"):return
+		if not await health_tab(inspector,"Health"):return
+		var view=inspector.creature_sheet.health_view
+		check(inspector.creature_sheet.subtabs.Health=="Status" and view.first==0,"Different creature retained old Health page or scroll")
+		await RenderingServer.frame_post_draw
+		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+		actual.save_png(directory+"/unit-health-"+sample.name+"-scene.png")
+		var native:=Image.load_from_file(directory+"/unit-health-layout-"+sample.name+".png");native.convert(Image.FORMAT_RGB8)
+		var rect:=Rect2i(432,244,424,312)
+		var matched:=actual.get_region(rect).get_data()==native.get_region(rect).get_data()
+		check(matched,"Different creature Health text differs from native")
+		results.append({"unit_id":id,"native_pixels_match":matched,"lines":view.lines.size()})
+		old_view=view
+	var file:=FileAccess.open(directory+"/unit-health-identity-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"old_drag_retired":true,"targets":results}));file.close()
 
 func items_lifecycle_transition(operation: String) -> void:
 	var file:=FileAccess.open(directory+"/unit-items-lifecycle-request.tmp",FileAccess.WRITE)

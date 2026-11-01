@@ -3319,9 +3319,16 @@ The diagnostic reuses the existing lifecycle service and restores the producer;
 `lifecycle_reference` retains the bounded result. All three Godot processes have
 only the known startup notice; owned DF39292 exits unsaved and the source-save
 manifest is unchanged. This proves replacement within one paused fortress, not
-another world or deliberately delayed publication. Different creature identity
-and broader clinical variants remain required for Health. The creature route
-remains staged.
+another world or deliberately delayed publication. Protected025104 captures native exposed-map selection from creature1017 to2345
+and back: both reset to Overview, then Health Status/top. The main scene calls
+the same explicit target-opening route used by selection while History is being
+dragged. The old view/gesture retires, each detail publication has the requested
+unit ID, and both Status text crops match native pixels (one versus three lines).
+`identity_reference` records the scope; it does not establish ray-picking or
+late-reply/other-world behavior. All three Godot processes have only the known
+startup notice; owned DF14216 exits unsaved and the source-save manifest is
+unchanged. Broader clinical variants remain required. The creature route remains
+staged.
 
 The full reference run passes with only the known startup notice in each Godot
 process; root/core QA `health-pages-reference` passes. DF38684 exits unsaved and

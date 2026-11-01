@@ -6503,6 +6503,14 @@ startup notice and no Unicode errors. The fixture's `reaction_availability_refer
 retains the result. Successful DF3D queueing, other workshops, fuel-dependent
 reactions, category navigation, ordering and the rendered panel remain unverified.
 
+`workshop_tasks_state.gd` owns staged task reads and queue/cancel/repeat/suspend
+intents through the shared semantic action service. It confirms mutations from
+DF's returned queue, never inserts optimistic jobs or replays unknown outcomes,
+and retires observers on close or session changes. Its focused controller check
+covers queue/cancel receipts and retirement; this is not live effect or rendered
+panel acceptance. The public workshop route remains gated pending the native
+catalog and complete sheet.
+
 The native workshop catalog builder `8c5680` uses global building-menu vectors;
 its new-button constructor `8b1600` calls `7c5880`, which registers each button
 in those vectors. Neither is a permitted runtime API. Carpenter composition is

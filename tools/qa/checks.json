@@ -9,6 +9,17 @@
   },
   "checks": [
     {
+      "id": "workshop_tasks_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/workshop_tasks_state_test.gd",
+      "completion": "^WORKSHOP_TASKS_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
       "id": "creature_labor_state_test",
       "lane": "core",
       "kind": "godot",

@@ -407,6 +407,9 @@ func unit_carrier(expected: Dictionary) -> void:
 	if OS.get_environment("DF3D_UNIT_ITEMS_VIEW")=="1":
 		await exercise_items_view(inspector,target)
 		if failed:return
+	if OS.get_environment("DF3D_UNIT_LABOR_LOCATIONS")=="1":
+		await exercise_labor_locations(inspector,target)
+		if failed:return
 	if FileAccess.file_exists(directory+"/unit-customize-captions.json"):
 		await exercise_customize(inspector,int(expected.snapshot.id))
 	if ghost:check(not is_instance_valid(inspector.expel_button) or not inspector.expel_button.is_visible_in_tree(),"Ghost exposed Expel absent from native")
@@ -439,8 +442,6 @@ func unit_carrier(expected: Dictionary) -> void:
 	await exercise_history(inspector,source,int(expected.snapshot.id),target)
 	if OS.get_environment("DF3D_UNIT_HEALTH_LIFECYCLE")=="1":await exercise_items_lifecycle(inspector,target,true)
 	elif OS.get_environment("DF3D_UNIT_ITEMS_LIFECYCLE")=="1":await exercise_items_lifecycle(inspector,target)
-	if OS.get_environment("DF3D_UNIT_LABOR_LOCATIONS")=="1":
-		await exercise_labor_locations(inspector,target)
 	if OS.get_environment("DF3D_UNIT_LABOR_ANIMALS")=="1":await exercise_work_animals(inspector,target)
 	if OS.get_environment("DF3D_UNIT_MILITARY")=="1":await exercise_military_kills(inspector)
 	if OS.get_environment("DF3D_UNIT_PERSONALITY")=="1":await exercise_personality(inspector)

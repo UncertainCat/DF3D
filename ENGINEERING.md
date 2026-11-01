@@ -3346,12 +3346,17 @@ source preservation passes and all three Godot processes have only the known
 startup notice. `location_panel_reference` records rendering acceptance only.
 The native picture frame starts one character cell after the icon origin;
 initial112618 exposed that offset. Runs112807/113009 matched Locations pixels
-but failed later Customize/Combat checks after the cross-creature visit; their
-cause remains unresolved. The accepted run executes the existing header/history
-workflow before Locations and does not establish that reverse sequence.
-Run113221 additionally exposed a test error: detail.complete describes bounded
-record coverage, not whether loading settled. Restoration now checks identity
-and loading. Overflow and hover remain unfinished; removal evidence follows.
+but failed later header/history checks after the cross-creature visit. Their
+restoration check used detail.complete, which describes bounded record coverage,
+not whether loading settled. Restoration now checks identity and loading.
+Protected143442 on2026-11-01 executes Locations first, including visiting6136,
+opening its zone and returning to1017, then exercises Customize, Expel preview
+and Reports/Combat. The previously failing sequence passes without a new product
+change. Owned DF35012 exits unsaved; source preservation passes and all three
+Godot logs contain only the known startup notice, with no Unicode errors.
+The existing workflow now retains this order and stops on restoration failure
+rather than producing cascading header assertions. Overflow and hover remain
+unfinished; removal evidence follows.
 
 Protected114006 on2026-11-01 exercises the native open-location button and the
 actual DF3D button. Both select the same zone and position; DF3D closes the
@@ -3377,7 +3382,8 @@ native click. Populated and empty456x528 body crops match exactly. The diagnosti
 restores the original assignment and profession facts. Owned DF45208 exits unsaved,
 source preservation passes, and all three Godot processes have only the known
 startup notice. `location_panel_reference.removal_reference` retains this scope.
-Other occupation roles and reverse-order cross-creature history remain unverified.
+Other occupation roles remain unverified; the reverse-order header/history
+workflow is covered by143442 above.
 
 Work animals section24 calls native47dfc0 with an owned page3 context and
 preallocated assigned/available vectors. Native controls eligibility, filters,

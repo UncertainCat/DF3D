@@ -59305,8 +59305,7 @@
         "occupation_id": 93,
         "source_save_unchanged": true,
         "unfinished": [
-          "overflow and hover",
-          "header/history workflow after switching creatures (112807/113009 failures; cause unresolved)"
+          "overflow and hover"
         ],
         "navigation_reference": {
           "source": "build/stockpile-storage-native-farm-discovery-20261101-114006",
@@ -59341,6 +59340,21 @@
           "restored": true,
           "source_save_unchanged": true,
           "bridge_sha256": "de0f4b08738d37d045bc62ce50675791c2fb1b1d3c804dfe1d73be3c9173f735"
+        },
+        "reverse_navigation_reference": {
+          "source": "build/stockpile-storage-native-farm-discovery-20261101-143442",
+          "sequence": [
+            "Locations on6136",
+            "open zone496",
+            "return to1017",
+            "Customize",
+            "Expel preview",
+            "Reports/Combat"
+          ],
+          "passed": true,
+          "source_save_unchanged": true,
+          "diagnostics": "known Godot startup notice only",
+          "product_changes_required": false
         }
       },
       "work_animals_provider_reference": {

@@ -20,6 +20,8 @@ func labor_observe(target: int,serial: int,stage: String) -> void:
 	check(false,"Independent native Labor observation timed out: "+stage)
 
 func exercise_labor_wire(target: int) -> void:
+	if OS.get_environment("DF3D_UNIT_LABOR_VIEW")=="1":
+		await exercise_labor_view(scene._ui.controller("inspector"),target);return
 	var serial:=0
 	for step in [{"index":0,"member":1,"stage":"miner"},{"index":1,"member":1,"stage":"woodcutter"},{"index":1,"member":0,"stage":"before"}]:
 		var before: Dictionary=await labor_request({"action":31,"detail_index":step.index,"unit_id":target})
@@ -35,6 +37,36 @@ func exercise_labor_wire(target: int) -> void:
 		if failed:return
 		serial+=1;await labor_observe(target,serial,"scope" if assigned==1 else "before")
 		if failed:return
+
+func labor_capture(stage: String) -> void:
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(300,400);root.push_input(motion,true)
+	await process_frame;await RenderingServer.frame_post_draw
+	var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+	actual.save_png(directory+"/unit-labor-scene-"+stage+".png")
+	var native:=Image.load_from_file(directory+"/unit-labor-"+("work-details" if stage=="before" else stage)+".png");native.convert(Image.FORMAT_RGB8)
+	var rect:=Rect2i(432,208,456,528)
+	check(actual.get_region(rect).get_data()==native.get_region(rect).get_data(),"Native Labor pixels differ: "+stage)
+
+func exercise_labor_view(inspector,target: int) -> void:
+	await health_tab(inspector,"Labor");await drain()
+	if not check(inspector.labor.phase==inspector.labor.Phase.Ready,"Labor list did not load"):return
+	var view=inspector.creature_sheet.labor_view
+	await labor_capture("before")
+	var serial:=0
+	for step in [{"index":0,"stage":"miner"},{"index":1,"stage":"woodcutter"},{"index":1,"stage":"before"}]:
+		await pointer(view.get_global_transform_with_canvas()*view.check_rect(step.index).get_center());await drain()
+		if not check(inspector.labor.phase==inspector.labor.Phase.Ready,"Labor checkbox did not settle"):return
+		serial+=1;await labor_observe(target,serial,step.stage)
+		await labor_capture(step.stage)
+	for stage in ["scope","before"]:
+		await pointer(view.get_global_transform_with_canvas()*view.scope_rect().get_center());await drain()
+		if not check(inspector.labor.phase==inspector.labor.Phase.Ready,"Labor scope did not settle"):return
+		serial+=1;await labor_observe(target,serial,stage);await labor_capture(stage)
+	check(view==inspector.creature_sheet.labor_view,"Labor refresh replaced the control")
+	await health_tab(inspector,"Overview")
+	check(inspector.labor.phase==inspector.labor.Phase.Closed,"Leaving Labor retained request state")
+	var file:=FileAccess.open(directory+"/unit-labor-view-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"native_pixels":not failed,"actual_clicks":true,"restored":true}));file.close()
 
 func expected_filename() -> String:return "carrier-expected.json"
 func result_filename() -> String:return "carrier-scene-result.json"

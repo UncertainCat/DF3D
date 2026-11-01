@@ -3195,7 +3195,26 @@ Initial101015 is excluded: the diagnostic acknowledgement file was not removed
 before Windows rename; no product mismatch was established by that failed run.
 Native eligibility alignment and populated workshop/location/animal providers
 remain unfinished prerequisites for full Labor exposure.
-The creature Labor view and broader Work Details launcher remain unfinished.
+The creature Work details subtab now has native icons, row backgrounds,
+checkboxes and work-scope control. Its owned state reads all detail pages and
+the citizen at one list revision, sends edits with the displayed receipt, and
+reloads all rows after confirmation so specialization exclusions become visible.
+Pending edits disable repeat input. Leaving the tab/creature retires its request;
+late replies cannot reopen it, and disconnect/reconnect never replays an edit.
+The control survives header redraws and retires scrollbar gestures with overlays.
+
+Protected102310 on2026-11-01 exercises real panel clicks for the same five
+assignment/scope changes. Each independently observed native state matches the
+native-click reference; all456x528 pixels including subtabs match at baseline,
+Miners, Woodcutters, unassigned and both scope states. Owned DF46700 exits
+unsaved, source preservation passes, and all three Godot processes have only
+the known startup notice. `work_details_panel_reference` retains this scope.
+Root/core and `creature_labor_state_test` cover request retirement, rejection,
+revision changes and reconnect without replay. Earlier captures exposed and
+corrected checkbox width, icon-frame width and selected-subtab text color.
+Overflow and hover behavior remain unverified. Native eligibility alignment,
+the other three Labor subtabs and broader Work Details launcher remain
+unfinished; creature exposure is unchanged.
 
 ### Creature Rooms native list
 

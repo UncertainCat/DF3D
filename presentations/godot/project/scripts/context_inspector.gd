@@ -47,8 +47,11 @@ var expel_button: TextureButton
 var expel_view
 var expel_scroll:=0
 var knowledge=preload("res://scripts/creature_knowledge_state.gd").new()
+var labor=preload("res://scripts/creature_labor_state.gd").new()
 
 func _ready():
+	labor.configure(action_service)
+	labor.changed.connect(_expel_changed)
 	knowledge.configure(action_service)
 	knowledge.changed.connect(_expel_changed)
 	expel.configure(action_service)
@@ -115,6 +118,7 @@ func open_target(tile: Vector3i, kind: int, id: int):
 	choose(target if not target.is_empty() else choices[0])
 
 func choose(row: Dictionary):
+	labor.close()
 	if selected.get("kind")!=row.kind or selected.get("id")!=row.id:knowledge.close()
 	expel.close()
 	customize.close();customize.fallback_generation=-1;customize.fallback_valid=false
@@ -132,6 +136,7 @@ func choose(row: Dictionary):
 	redraw()
 
 func close_panel():
+	labor.close()
 	knowledge.close()
 	cancel_gesture()
 	creature_sheet.reset(-1)
@@ -149,6 +154,8 @@ func close_panel():
 	right_down = false
 
 func _exit_tree() -> void:
+	if labor.changed.is_connected(_expel_changed):labor.changed.disconnect(_expel_changed)
+	labor.dispose()
 	if knowledge.changed.is_connected(_expel_changed):knowledge.changed.disconnect(_expel_changed)
 	knowledge.dispose()
 	if expel.changed.is_connected(_expel_changed):expel.changed.disconnect(_expel_changed)
@@ -172,6 +179,10 @@ func handle_escape() -> void:
 	else:close_panel()
 
 func cancel_gesture() -> void:
+	if is_instance_valid(creature_sheet.labor_view):
+		creature_sheet.labor_view.scrollbar.dragging=false
+		creature_sheet.labor_view.scrollbar.hover_cell=-1
+		creature_sheet.labor_view.scrollbar.queue_redraw()
 	right_down = false
 	right_travel = 0.0
 	if is_instance_valid(creature_sheet.items_view):
@@ -358,13 +369,15 @@ func redraw():
 	var retained_skills=creature_sheet.skills_view if int(selected.kind)==1 and creature_sheet.tab=="Skills" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.skills_view) else null
 	var retained_knowledge=creature_sheet.knowledge_view if retained_skills!=null and is_instance_valid(creature_sheet.knowledge_view) else null
 	var retained_rooms=creature_sheet.rooms_view if int(selected.kind)==1 and creature_sheet.tab=="Rooms" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.rooms_view) else null
+	var retained_labor=creature_sheet.labor_view if int(selected.kind)==1 and creature_sheet.tab=="Labor" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.labor_view) else null
 	for child in body.get_children():
-		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills and child!=retained_knowledge and child!=retained_rooms:body.remove_child(child);child.queue_free()
+		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills and child!=retained_knowledge and child!=retained_rooms and child!=retained_labor:body.remove_child(child);child.queue_free()
 	creature_sheet.items_view=retained_items
 	creature_sheet.health_view=retained_health
 	creature_sheet.skills_view=retained_skills
 	creature_sheet.knowledge_view=retained_knowledge
 	creature_sheet.rooms_view=retained_rooms
+	creature_sheet.labor_view=retained_labor
 	customize_view=null
 	customize_button=null
 	history_button=null

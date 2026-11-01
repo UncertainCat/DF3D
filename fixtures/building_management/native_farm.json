@@ -59036,6 +59036,30 @@
           "success": true
         },
         "coverage": "Actual main-scene semantic requests: Miners, conflicting Woodcutters, unassign, scope on/off. Independent native snapshots compare all memberships/detail flags and selected unit labor bits. First/last-member mode transitions covered by static trace and adapter checks, not this live fixture."
+      },
+      "work_details_panel_reference": {
+        "run": "stockpile-storage-native-farm-discovery-20261101-102310",
+        "result": {
+          "actual_clicks": true,
+          "native_pixels": true,
+          "restored": true,
+          "success": true
+        },
+        "compared_body": [
+          432,
+          208,
+          456,
+          528
+        ],
+        "stages": [
+          "before",
+          "miner",
+          "woodcutter",
+          "before",
+          "scope",
+          "before"
+        ],
+        "coverage": "Actual main-scene clicks, native rendering and independent native effects. Baseline eleven details and citizen1017. Overflow, native eligibility for other creatures, other Labor pages and hover behavior remain outside this capture."
       }
     },
     "unit_rooms_reference": {

@@ -18,6 +18,7 @@ var health_view
 var skills_view
 var knowledge_view
 var rooms_view
+var labor_view
 var knowledge_first:=0
 var owner
 var sections := {}
@@ -30,6 +31,7 @@ func reset(id: int):
  if is_instance_valid(health_view):health_view.page_key="";health_view.first=0
  if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
  if is_instance_valid(rooms_view):rooms_view.first=0;rooms_view.scrollbar.dragging=false
+ if is_instance_valid(labor_view):labor_view.first=0;labor_view.scrollbar.dragging=false
 
 func location() -> String: return tab+"/"+str(subtabs.get(tab,""))
 
@@ -50,6 +52,9 @@ func change_tab(value: String, nested := false):
    if is_instance_valid(knowledge_view):knowledge_view.first=0
    if is_instance_valid(skills_view):skills_view.first=0
   tab=value
+ if not nested:
+  if tab=="Labor":owner.labor.open(unit_id)
+  else:owner.labor.close()
  owner.redraw()
 
 func text(parent: Node, value: String, color := Color.WHITE) -> Label:
@@ -111,7 +116,7 @@ func tabs_at(names: Array, y: float, nested := false) -> float:
   style.set_content_margin(SIDE_TOP,0);style.set_content_margin(SIDE_BOTTOM,0)
   for state in ["normal","hover","pressed","focus"]: button.add_theme_stylebox_override(state,style)
   for state in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:
-   button.add_theme_color_override(state,Color8(70,44,0) if selected else Color.WHITE)
+   button.add_theme_color_override(state,(Color8(0,44,70) if nested and tab=="Labor" else Color8(70,44,0)) if selected else Color.WHITE)
   button.pressed.connect(func(): change_tab(title,nested))
   owner.body.add_child(button)
   button.size=Vector2(width,24)
@@ -359,6 +364,16 @@ func render(controller, state: Dictionary):
  var y:=96.0
  for names in recipe.rows: y=tabs_at(names,y)
  if recipe.subtabs.has(tab): y=tabs_at(recipe.subtabs[tab].keys(),y,true)
+ if tab=="Labor" and subtabs.get(tab)=="Work details":
+  scroll=null
+  if not is_instance_valid(labor_view):
+   labor_view=preload("res://scripts/creature_labor_view.gd").new()
+   owner.body.add_child(labor_view);labor_view.configure(owner.world)
+   labor_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+  labor_view.visible=true
+  labor_view.position=Vector2(0,y);labor_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  labor_view.present_labor(owner.labor);return
+ if is_instance_valid(labor_view):labor_view.hide()
  if tab=="Items":
   scroll=null
   if is_instance_valid(items_view):

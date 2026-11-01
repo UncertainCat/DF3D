@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "creature_labor_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/creature_labor_state_test.gd",
+      "completion": "^CREATURE_LABOR_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "creature_knowledge_state_test",
       "lane": "core",
       "kind": "godot",

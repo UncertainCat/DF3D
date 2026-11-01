@@ -3873,7 +3873,10 @@ void run(color_ostream& out) {
             row.caption=DF2UTF(df3d_creature::nativeKnowledgeCaption(row.knowledgeType,row.id,row.knowledgeBits));
             row.subtitle=DF2UTF(df3d_creature::nativeKnowledgeCategory(row.knowledgeType,row.id));
           }else{row.id=native->skills[i];row.rating=native->values[i];row.rustValue=native->rustValues[i];
-            row.caption=DF2UTF(df3d_creature::nativeSkillCaption(int16_t(row.id),row.rating,unit->race,unit->caste));}
+            row.caption=DF2UTF(df3d_creature::nativeSkillCaption(int16_t(row.id),row.rating,unit->race,unit->caste));
+            const auto color=df3d_creature::nativeSkillColor(*unit,int16_t(row.id));
+            if(!color || (*color)[0]>7 || (*color)[1]>7 || (*color)[2]>1){ok=false;break;}
+            row.captionColor=int16_t((*color)[0]|((*color)[1]<<3)|((*color)[2]<<6));}
           bytes+=row.caption.size()+row.subtitle.size();
           if(++skillRows>4096 || row.caption.size()>4096 || row.subtitle.size()>4096 || bytes>131072){ok=false;break;}
           target.rows.push_back(std::move(row));

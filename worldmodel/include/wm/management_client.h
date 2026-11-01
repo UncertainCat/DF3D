@@ -42,7 +42,7 @@ struct CreatureSection { CreatureSectionKind kind=CreatureSectionKind::Identity;
 enum class CreatureHealthPageKind : uint8_t { Status, Wounds, Treatment, History, Description };
 struct CreatureHealthPage { CreatureHealthPageKind kind=CreatureHealthPageKind::Status; std::vector<std::string> rows; };
 enum class CreatureSkillsPageKind : uint8_t { Labor, Combat, Social, Other, Knowledge };
-struct CreatureSkillRow { int32_t id=-1,knowledgeType=-1;uint32_t knowledgeBits=0;int32_t rating=0,rustValue=0;std::string caption,subtitle; };
+struct CreatureSkillRow { int32_t id=-1,knowledgeType=-1;uint32_t knowledgeBits=0;int32_t rating=0,rustValue=0;std::string caption,subtitle;int16_t captionColor=-1; };
 struct CreatureSkillsPage { CreatureSkillsPageKind kind=CreatureSkillsPageKind::Labor;std::vector<CreatureSkillRow> rows; };
 struct CreatureInfo {
   int32_t unitId=-1,age=-1,sex=-1,x=-1,y=-1,z=-1;

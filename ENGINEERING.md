@@ -3176,8 +3176,8 @@ the profession is absent. The existing `nativeZoneOwnerProfessionColor`
 adapter already reads this pinned dispatch and raw-color inputs without
 executing the global-writing drawing routine. Skills color transport should
 reuse that adapter; the Godot static skill-color table does not establish
-race/caste parity. The current typed Skills contract does not carry these
-colors yet. Rust suffix positioning, hover and actual rendering remain gaps.
+race/caste parity. Management109 carries these skill colors. Rust suffix positioning, hover and
+actual rendering remain gaps.
 
 `nativeSkillColor` now calls the pinned764a70 profession selector and shares
 `nativeZoneOwnerProfessionColor`; absent professions return native bright white.
@@ -3186,8 +3186,8 @@ including foreground, background and bold. The owned page probe's source,
 sheet and random guards stay unchanged. DF17452 exits unsaved with source
 preservation; all three Godot processes report only known startup notices.
 `color_probe_reference` retains the installed bridge hash and bounded result.
-The helper is diagnostic-only until color transport and rendering are connected;
-other race/caste branches still require their own Skills acceptance.
+Management109 uses the helper in production color transport; rendering and other
+race/caste branches still require their own Skills acceptance.
 
 `native_farm.json.unit_skills_reference` records protected032532 native Skills
 captures for Labor, Combat, Social, Other skills and Knowledge. The first four
@@ -3422,9 +3422,15 @@ and unsigned Knowledge flags. The bridge calls owned native builders and caption
 helpers; the world model copies strings and Godot publishes immutable nested data.
 Generic sections remain during the staged UI migration; no new screen is exposed.
 
-Request/state defaults, required version and management region move from107to108.
+Management109 adds skill-only `caption_color`: foreground bits0..2, background
+bits3..5 and bold bit6. Skill rows require0..127; Knowledge rows require the
+absent sentinel-1 and retain category styling. Invalid/missing skill colors and
+cross-kind values fail validation. The native profession selector/shared color
+adapter supplies the value, copied by the model and exposed read-only in Godot.
+
+Request/state defaults, required version and management region move from108to109.
 Rebuild the root clients, **standalone Godot extension**, and DFHack bridge together.
-Older replies/regions cannot satisfy108 requests; absent data is not synthesized.
+Older replies/regions cannot satisfy109 requests; absent data is not synthesized.
 Contract tests cover malformed payloads, aggregate limits and independent decoding.
 
 Protected050029 compares all79 rows across five pages through the real Godot client
@@ -3436,6 +3442,15 @@ notices. `transport_reference` retains provenance and bounded results. The initi
 carrier command; its errors remain recorded. Rebuilding the separate extension
 resolved that mismatch. Skills rendering, on-demand detail and full lifecycle
 acceptance remain unfinished.
+
+Protected051956 verifies all34 native skill colors through the actual Godot client,
+plus absent Knowledge colors across45 rows and all existing row identity/text
+checks. Source preservation passes and owned DF40544 exits unsaved. The three
+live Godot processes have only known startup notices; the standalone extension
+import is clean. `color_transport_reference` records this management109 evidence.
+Root/core checks include four additional malformed-color cases and decoding
+independence with foreground/background/bold bits. This does not verify rendered
+Skills rows or broaden the baseline race/caste sample.
 
 ### Creature Health transport contract
 

@@ -68,7 +68,11 @@ func unit_carrier(expected: Dictionary) -> void:
 				var row: Dictionary=page.rows[j]
 				check(row.is_read_only() and row.id==ids[j] and row.caption==native.probe.captions[j],"Native Skills row or caption changed")
 				if i==4:check(row.knowledge_type==native.knowledge_types[j] and row.knowledge_bits==native.knowledge_bits[j] and row.subtitle==native.probe.subtitles[j],"Knowledge semantics changed")
-				else:check(row.rating==native.values[j] and row.rust_value==native.rust_values[j],"Native skill ratings changed")
+				else:
+					check(row.rating==native.values[j] and row.rust_value==native.rust_values[j],"Native skill ratings changed")
+					var color: Array=native.probe.colors[j]
+					check(row.caption_color==(int(color[0])|(int(color[1])<<3)|(int(color[2])<<6)),"Native skill color changed")
+				if i==4:check(row.caption_color==-1,"Knowledge acquired skill color")
 		var skill_file:=FileAccess.open(directory+"/unit-skills-wire-result.json",FileAccess.WRITE)
 		skill_file.store_string(JSON.stringify({"success":not failed,"pages":skill_pages}));skill_file.close()
 	check(inspector.creature_sheet.tab=="Overview" and not source.panel.visible,"Unit destination did not start Overview")

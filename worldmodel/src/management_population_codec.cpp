@@ -39,7 +39,7 @@ CreatureInfo decodeCreature(const m::CreatureState* c) {
   }
   if(c->skills_pages())for(const auto* p:*c->skills_pages()) {
     CreatureSkillsPage page;page.kind=CreatureSkillsPageKind(p->kind());
-    for(const auto* row:*p->rows())page.rows.push_back({row->id(),row->knowledge_type(),row->knowledge_bits(),row->rating(),row->rust_value(),row->caption()->str(),row->subtitle()->str()});
+    for(const auto* row:*p->rows())page.rows.push_back({row->id(),row->knowledge_type(),row->knowledge_bits(),row->rating(),row->rust_value(),row->caption()->str(),row->subtitle()->str(),row->caption_color()});
     out.skillsPages.push_back(std::move(page));
   }
   if (c->sections())

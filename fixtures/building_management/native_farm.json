@@ -64470,6 +64470,17 @@
         "native_colors_match": true,
         "source_ui_random_guards_unchanged": true,
         "scope": "Native profession selector and shared immutable dispatch/raw adapter compared to displayed caption cells; baseline dwarf only. Not production transport or rendered Godot acceptance."
+      },
+      "color_transport_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-051956",
+        "management_version": 109,
+        "installed_bridge_sha256": "1bbea8afc9f9f05ca1501cf1244b3555de5235ad59b53ee17dc98aee9d6313da",
+        "skill_rows": 34,
+        "knowledge_rows": 45,
+        "native_skill_colors_match": true,
+        "knowledge_color_absent": true,
+        "nested_readonly": true,
+        "scope": "Actual native cells to native adapter to typed management to Godot; Skills rendering remains staged."
       }
     }
   }

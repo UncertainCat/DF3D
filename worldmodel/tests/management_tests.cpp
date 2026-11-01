@@ -1502,7 +1502,7 @@ TEST_CASE("Creature Health pages preserve long rows and reject malformed bounded
 
 TEST_CASE("Creature Skills contract rejects malformed pages and cross-kind rows") {
   namespace mm=df3d::mirror;
-  for(int bad=-1;bad<10;++bad){
+  for(int bad=-1;bad<14;++bad){
     flatbuffers::FlatBufferBuilder b;
     std::vector<flatbuffers::Offset<mm::CreatureSection>> sections;
     for(int i=0;i<25;++i)sections.push_back(mm::CreateCreatureSection(b,mm::CreatureSectionKind(i),true));
@@ -1513,7 +1513,8 @@ TEST_CASE("Creature Skills contract rejects malformed pages and cross-kind rows"
       for(size_t j=0;j<count;++j)rows.push_back(mm::CreateCreatureSkillRow(b,i==4?-1:12,
           i==4?(bad==4?18:8):(bad==5?0:-1),i==4?0x80000000u:bad==6?1:0,
           i==4?(bad==7?1:0):5,-(i==4?0:4),b.CreateString(std::string(bad==2?4097:bad==9?1024:3,'x')),
-          b.CreateString(i==4?"Native category":bad==8?"Invalid":"")));
+          b.CreateString(i==4?"Native category":bad==8?"Invalid":""),
+            i==4?(bad==13?71:-1):bad==10?-1:bad==11?-2:bad==12?128:127));
       pages.push_back(mm::CreateCreatureSkillsPage(b,mm::CreatureSkillsPageKind(bad==1?0:i),b.CreateVector(rows)));
     }
     mm::TilePos pos(1,2,3);

@@ -1921,6 +1921,9 @@ enum CreatureSkillsPageKind : uint8 { Labor, Combat, Social, Other, Knowledge }
 table CreatureSkillRow {
   id:int32 = -1; knowledge_type:int32 = -1; knowledge_bits:uint32;
   rating:int32; rust_value:int32; caption:string (required); subtitle:string (required);
+  // Native text color: foreground bits0..2, background bits3..5, bold bit6.
+  // Knowledge uses its category styling and leaves this skill-only value absent.
+  caption_color:int16 = -1;
 }
 table CreatureSkillsPage { kind:CreatureSkillsPageKind; rows:[CreatureSkillRow] (required); }
 table CreatureState {
@@ -1951,7 +1954,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 108;
+  schema_version:uint32 = 109;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1999,7 +2002,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 108;
+  schema_version:uint32 = 109;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

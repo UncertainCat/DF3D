@@ -1368,7 +1368,7 @@ TEST_CASE("management domain decoding owns nested data independently of the wire
   auto healthPage=wire::CreateCreatureHealthPage(builder,wire::CreatureHealthPageKind::Description,
       builder.CreateVector(std::vector{builder.CreateString(nativeDescription)}));
   auto healthPages=builder.CreateVector(std::vector{healthPage});
-  auto skill=wire::CreateCreatureSkillRow(builder,12,-1,0,5,-4,builder.CreateString("Native skill"),builder.CreateString(""));
+  auto skill=wire::CreateCreatureSkillRow(builder,12,-1,0,5,-4,builder.CreateString("Native skill"),builder.CreateString(""),109);
   auto knowledge=wire::CreateCreatureSkillRow(builder,-1,8,0x80000000u,0,0,builder.CreateString("Native topic"),builder.CreateString("Native category"));
   auto skillsPages=builder.CreateVector(std::vector{
       wire::CreateCreatureSkillsPage(builder,wire::CreatureSkillsPageKind::Labor,builder.CreateVector(std::vector{skill})),
@@ -1391,6 +1391,8 @@ TEST_CASE("management domain decoding owns nested data independently of the wire
   CHECK(decoded.skillsPages[0].kind==wm::CreatureSkillsPageKind::Labor);
   REQUIRE(decoded.skillsPages[0].rows.size()==1);
   CHECK(decoded.skillsPages[0].rows[0].rustValue==-4);
+  CHECK(decoded.skillsPages[0].rows[0].captionColor==109);
+  CHECK(decoded.skillsPages[1].rows[0].captionColor==-1);
   CHECK(decoded.skillsPages[0].rows[0].caption=="Native skill");
   REQUIRE(decoded.skillsPages[1].rows.size()==1);
   CHECK(decoded.skillsPages[1].rows[0].knowledgeBits==0x80000000u);

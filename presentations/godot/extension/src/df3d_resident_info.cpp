@@ -83,7 +83,7 @@ Dictionary Df3dWorld::creature_info_state(int64_t id) {
             for(const auto& page:c.skillsPages){
                 Dictionary value;Array rows;
                 for(const auto& row:page.rows){Dictionary r;r["id"]=row.id;r["knowledge_type"]=row.knowledgeType;r["knowledge_bits"]=int64_t(row.knowledgeBits);
-                    r["rating"]=row.rating;r["rust_value"]=row.rustValue;r["caption"]=String::utf8(row.caption.c_str());r["subtitle"]=String::utf8(row.subtitle.c_str());r.make_read_only();rows.push_back(r);}
+                    r["rating"]=row.rating;r["rust_value"]=row.rustValue;r["caption_color"]=row.captionColor;r["caption"]=String::utf8(row.caption.c_str());r["subtitle"]=String::utf8(row.subtitle.c_str());r.make_read_only();rows.push_back(r);}
                 rows.make_read_only();value["kind"]=int(page.kind);value["rows"]=rows;value.make_read_only();skillsPages.push_back(value);
             }
             skillsPages.make_read_only();creatureInfoRows_["skills_pages"]=skillsPages;

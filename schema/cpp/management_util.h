@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 108;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v108";
+inline constexpr uint32_t kManagementVersion = 109;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v109";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -865,10 +865,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
              !text(row->caption(),4096) || !text(row->subtitle(),4096))return "invalid creature skills row";
           if(page->kind()==CreatureSkillsPageKind::Knowledge) {
             if(row->knowledge_type()<0 || row->knowledge_type()>17 || row->id()< -1 ||
-               (row->knowledge_type()>=14 && row->id()<0) || row->rating()!=0 || row->rust_value()!=0)
+               (row->knowledge_type()>=14 && row->id()<0) || row->rating()!=0 || row->rust_value()!=0 || row->caption_color()!=-1)
               return "invalid creature knowledge row";
           } else if(row->id()<0 || row->id()>32767 || row->knowledge_type()!=-1 || row->knowledge_bits()!=0 ||
-                    row->rating()<0 || row->subtitle()->size())return "invalid creature skill values";
+                    row->rating()<0 || row->subtitle()->size() || row->caption_color()<0 || row->caption_color()>127)return "invalid creature skill values";
         }
       }
     }

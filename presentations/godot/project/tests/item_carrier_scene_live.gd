@@ -201,6 +201,7 @@ func unit_carrier(expected: Dictionary) -> void:
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
 	if OS.get_environment("DF3D_UNIT_SKILLS_VIEW")=="1":
 		await exercise_skills_view(inspector)
+		if OS.get_environment("DF3D_UNIT_KNOWLEDGE_VIEW")=="1":await exercise_knowledge_view(inspector)
 		if failed:return
 	if OS.get_environment("DF3D_UNIT_HEALTH_VIEW")=="1":
 		await exercise_health_view(inspector)
@@ -1153,3 +1154,75 @@ func exercise_expel_lifecycle(inspector,target:int,preview:Dictionary) -> void:
 	model.configure(actions);service.free();inspector.open_target(Vector3i.ZERO,1,target);await process_frame
 	var file:=FileAccess.open(directory+"/unit-expel-lifecycle-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"injected_expel_transport":true,"late_read":true,"pending_cancel":true,"reports_replacement":true,"overlay_retires_drag":true,"disconnect_retires_authority":true,"session_reset_releases_owner":true}));file.close()
+
+func exercise_knowledge_view(inspector) -> void:
+	var source=preload("res://tests/farm_state_test.gd").World.new()
+	var service=preload("res://scripts/semantic_action_service.gd").new();service.configure(source);service.poll()
+	var contract=preload("res://scripts/management_contract.gd")
+	inspector.knowledge.configure(service)
+	var sheet=inspector.creature_sheet
+	var samples: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-skills-native.json"))
+	await health_tab(inspector,"Skills");await health_tab(inspector,"Knowledge",true)
+	var list=sheet.skills_view
+	var sample: Dictionary={}
+	var index: int=-1
+	for candidate in samples.details:
+		if candidate.has("case"):continue
+		for i in list.rows.size():
+			if int(list.rows[i].knowledge_type)==int(candidate.kind) and int(list.rows[i].id)==int(candidate.id) and (sample.is_empty() or str(candidate.tagged_rows[0]).length()>str(sample.tagged_rows[0]).length()):
+				sample=candidate;index=i
+	if not check(index>=0,"Native known detail reference missing"):inspector.knowledge.configure(inspector.action_service);service.free();return
+	var open_detail=func():
+		var current=sheet.skills_view
+		current.first=index;current.layout()
+		await pointer(current.get_global_transform_with_canvas()*current.inspect_rect(index).get_center())
+		service.poll()
+	var reply_detail=func():
+		var sent: Dictionary=source.calls[-1].request
+		source.state={"world_epoch":5,"revision":source.calls.size()+1,"request_seq":source.calls.size(),"action":contract.ManagementAction.CreatureKnowledgeRead,"status":contract.ManagementStatus.Ok,"creature_knowledge":{"unit_id":sent.unit_id,"kind":sent.kind,"id":sent.id,"outcome":contract.CreatureKnowledgeOutcome.Ready,"text":sample.tagged_rows[0]}}
+		service.poll()
+	await open_detail.call();check(source.calls.size()==1,"Magnifier did not submit one detail request")
+	reply_detail.call();await process_frame;await process_frame;await RenderingServer.frame_post_draw
+	var detail=sheet.knowledge_view
+	check(is_instance_valid(detail) and detail.is_visible_in_tree() and not list.visible,"Knowledge detail did not replace list")
+	var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+	actual.save_png(directory+"/unit-knowledge-detail-scene.png")
+	var native:=Image.load_from_file(directory+"/unit-skills-detail-"+str(int(sample.kind))+"-"+str(int(sample.id))+".png");native.convert(Image.FORMAT_RGB8)
+	var rect:=Rect2i(432,244,456,492)
+	check(actual.get_region(rect).get_data()==native.get_region(rect).get_data(),"Composed Knowledge detail pixels differ")
+	detail.first=7;detail.layout();var retained_first: int=list.first
+	await health_tab(inspector,"Knowledge",true)
+	check(sheet.knowledge_view==detail and detail.visible and detail.first==7,"Active Knowledge tab cleared detail")
+	key(KEY_ESCAPE);await process_frame
+	check(inspector.is_open() and list.visible and not detail.visible and list.first==retained_first and detail.first==7,"Escape did not restore retained list/detail positions")
+	await open_detail.call();reply_detail.call();await process_frame
+	check(detail.visible and detail.first==7,"Reopening detail lost retained first")
+	await health_tab(inspector,"Labor",true)
+	check(list.visible and not detail.visible and detail.first==7,"Skills subtab did not clear detail while retaining first")
+	await health_tab(inspector,"Knowledge",true);await open_detail.call();reply_detail.call();await process_frame
+	root.size=Vector2i(1200,552);await process_frame;await process_frame;await RenderingServer.frame_post_draw
+	check(detail.scrollbar.visible,"Known detail did not overflow at minimum height")
+	var grip: Vector2i=detail.scrollbar.thumb()
+	var drag_point: Vector2=detail.scrollbar.get_global_transform_with_canvas()*Vector2(8,(grip.x+grip.y*0.5)*12)
+	var motion:=InputEventMouseMotion.new();motion.position=drag_point;root.push_input(motion,true)
+	var press:=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;root.push_input(press,true);await process_frame
+	check(detail.scrollbar.dragging,"Knowledge drag did not start")
+	inspector.redraw();await process_frame
+	check(sheet.knowledge_view==detail and detail.scrollbar.dragging,"Header redraw retired Knowledge drag")
+	scene._fortress_hud.toggle_settings();await process_frame
+	check(not detail.scrollbar.dragging,"Settings failed to retire Knowledge drag")
+	key(KEY_ESCAPE);await process_frame
+	press.pressed=false;root.push_input(press,true)
+	root.size=Vector2i(1200,800);await process_frame;await process_frame
+	await health_tab(inspector,"Overview");await health_tab(inspector,"Skills")
+	check(sheet.subtabs.Skills=="Labor" and sheet.skills_view.first==0 and sheet.knowledge_first==0,"Returning to Skills did not reset native positions")
+	await health_tab(inspector,"Knowledge",true);list=sheet.skills_view
+	await open_detail.call();key(KEY_ESCAPE);await process_frame;reply_detail.call();await process_frame
+	check(list.visible and inspector.knowledge.text.is_empty(),"Closed pending detail was revived by late reply")
+	await open_detail.call();reply_detail.call();await process_frame
+	source.state={"world_epoch":6,"revision":99,"status":0};service.poll();await process_frame
+	check(list.visible and inspector.knowledge.text.is_empty(),"Session replacement retained detail text")
+	inspector.knowledge.configure(inspector.action_service);service.free()
+	await health_tab(inspector,"Overview")
+	var evidence:=FileAccess.open(directory+"/unit-knowledge-view-result.json",FileAccess.WRITE)
+	evidence.store_string(JSON.stringify({"success":not failed,"native_pixels":true,"escape_reopen":true,"tab_retirement":true,"scroll_retention":true,"refresh_drag":true,"settings_drag_retirement":true,"late_reply":true,"session_retirement":true,"injected_transport":true}));evidence.close()

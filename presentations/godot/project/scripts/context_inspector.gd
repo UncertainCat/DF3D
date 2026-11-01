@@ -45,8 +45,11 @@ var expel=preload("res://scripts/creature_expel_state.gd").new()
 var expel_button: TextureButton
 var expel_view
 var expel_scroll:=0
+var knowledge=preload("res://scripts/creature_knowledge_state.gd").new()
 
 func _ready():
+	knowledge.configure(action_service)
+	knowledge.changed.connect(_expel_changed)
 	expel.configure(action_service)
 	expel.changed.connect(_expel_changed)
 	expel.applied.connect(func(id):
@@ -111,6 +114,7 @@ func open_target(tile: Vector3i, kind: int, id: int):
 	choose(target if not target.is_empty() else choices[0])
 
 func choose(row: Dictionary):
+	if selected.get("kind")!=row.kind or selected.get("id")!=row.id:knowledge.close()
 	expel.close()
 	customize.close();customize.fallback_generation=-1;customize.fallback_valid=false
 	selected = row
@@ -127,6 +131,7 @@ func choose(row: Dictionary):
 	redraw()
 
 func close_panel():
+	knowledge.close()
 	cancel_gesture()
 	creature_sheet.reset(-1)
 	expel.close()
@@ -143,6 +148,8 @@ func close_panel():
 	right_down = false
 
 func _exit_tree() -> void:
+	if knowledge.changed.is_connected(_expel_changed):knowledge.changed.disconnect(_expel_changed)
+	knowledge.dispose()
 	if expel.changed.is_connected(_expel_changed):expel.changed.disconnect(_expel_changed)
 	expel.dispose()
 	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
@@ -160,6 +167,7 @@ func _expel_changed() -> void:
 func handle_escape() -> void:
 	if customize.opened or customize.requested:customize.close()
 	elif expel.phase!=expel.Phase.Closed:expel.close()
+	elif knowledge.phase in [knowledge.Phase.Reading,knowledge.Phase.Ready]:knowledge.close()
 	else:close_panel()
 
 func cancel_gesture() -> void:
@@ -173,6 +181,10 @@ func cancel_gesture() -> void:
 		creature_sheet.skills_view.scrollbar.dragging=false
 		creature_sheet.skills_view.scrollbar.hover_cell=-1
 		creature_sheet.skills_view.scrollbar.queue_redraw()
+	if is_instance_valid(creature_sheet.knowledge_view):
+		creature_sheet.knowledge_view.scrollbar.dragging=false
+		creature_sheet.knowledge_view.scrollbar.hover_cell=-1
+		creature_sheet.knowledge_view.scrollbar.queue_redraw()
 	if is_instance_valid(creature_sheet.health_view):
 		creature_sheet.health_view.scrollbar.dragging=false
 		creature_sheet.health_view.scrollbar.hover_cell=-1
@@ -318,6 +330,7 @@ func icon_at(id: String):
 
 func redraw():
 	if selected.is_empty(): return
+	creature_sheet.remember_scroll()
 	if is_instance_valid(expel_view):expel_scroll=expel_view.first
 	customize_presented=customize.opened;customize_requested=customize.requested
 	var view := get_viewport().get_visible_rect().size
@@ -338,11 +351,13 @@ func redraw():
 	var retained_items=creature_sheet.items_view if int(selected.kind)==1 and creature_sheet.tab=="Items" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.items_view) else null
 	var retained_health=creature_sheet.health_view if int(selected.kind)==1 and creature_sheet.tab=="Health" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.health_view) else null
 	var retained_skills=creature_sheet.skills_view if int(selected.kind)==1 and creature_sheet.tab=="Skills" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.skills_view) else null
+	var retained_knowledge=creature_sheet.knowledge_view if retained_skills!=null and is_instance_valid(creature_sheet.knowledge_view) else null
 	for child in body.get_children():
-		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills:body.remove_child(child);child.queue_free()
+		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills and child!=retained_knowledge:body.remove_child(child);child.queue_free()
 	creature_sheet.items_view=retained_items
 	creature_sheet.health_view=retained_health
 	creature_sheet.skills_view=retained_skills
+	creature_sheet.knowledge_view=retained_knowledge
 	customize_view=null
 	customize_button=null
 	history_button=null

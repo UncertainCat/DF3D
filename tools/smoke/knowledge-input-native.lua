@@ -23,6 +23,18 @@ end
 local function reset()
  release();sheet.scroll_position_skill_description=7;sheet.scrolling_skill_description=false;pointer(400,400)
 end
+local function ensure_open()
+ if not sheet.open then
+  dfhack.gui.revealInDwarfmodeMap({x=unit.pos.x+8,y=unit.pos.y,z=unit.pos.z},true);view:render(dfhack.getTickCount())
+  local found=false
+  for y=0,g.dimy-1 do for x=0,49 do
+   g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6
+   local pos=dfhack.gui.getMousePos(true)
+   if pos and pos.x==unit.pos.x and pos.y==unit.pos.y and pos.z==unit.pos.z then click(g.precise_mouse_x,g.precise_mouse_y);found=true;break end
+  end if found then break end end
+  assert(found and sheet.open and sheet.active_id==unit.id,'Knowledge Escape reopen failed')
+ end
+end
 local ok,err=xpcall(function()
  assert(#sheet.skill_description_raw_str>0,'Expected open native Knowledge detail');record('opened')
  for _,key in ipairs{'CONTEXT_SCROLL_UP','CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_PAGEUP','CONTEXT_SCROLL_PAGEDOWN'}do
@@ -38,17 +50,28 @@ local ok,err=xpcall(function()
   reset();pointer(case[2],case[3]);gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');record('wheel-'..case[1])
  end
  reset();gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());record('escape',true)
- if not sheet.open then
-  dfhack.gui.revealInDwarfmodeMap({x=unit.pos.x+8,y=unit.pos.y,z=unit.pos.z},true);view:render(dfhack.getTickCount())
-  local found=false
-  for y=0,g.dimy-1 do for x=0,49 do
-   g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6
-   local pos=dfhack.gui.getMousePos(true)
-   if pos and pos.x==unit.pos.x and pos.y==unit.pos.y and pos.z==unit.pos.z then click(g.precise_mouse_x,g.precise_mouse_y);found=true;break end
-  end if found then break end end
-  assert(found and sheet.open and sheet.active_id==unit.id,'Knowledge Escape reopen failed')
- end
+ ensure_open()
  reopen();record('reopened',true)
+ if os.getenv('DF3D_UNIT_KNOWLEDGE_NAVIGATION')=='1'then
+  local function select(name,first,last)
+   for y=first,last do
+    local chars={};for x=0,g.dimx-1 do local cell=dfhack.screen.readTile(x,y);chars[#chars+1]=cell.ch>=32 and string.char(cell.ch%256)or' 'end
+    local x=table.concat(chars):find(name,1,true)
+    if x then click((x-1)*8+4,y*12+10);return end
+   end
+   error('Missing navigation tab '..name)
+  end
+  for _,name in ipairs{'Labor','Combat','Social','Other skills','Knowledge','Overview','Health'}do
+   reset();select(name,(name=='Overview'or name=='Health')and 15 or 17,(name=='Overview'or name=='Health')and 16 or 20)
+   record('tab-'..name,true)
+   if name=='Overview'or name=='Health'then select('Skills',15,16);record('main-return-'..name,true)end
+   reopen();record('restore-'..name)
+  end
+  reset();gui.simulateInput(view,'LEAVESCREEN');record('escape-detail')
+  gui.simulateInput(view,'LEAVESCREEN');record('escape-list',true)
+  ensure_open();reopen();record('restored-after-close')
+ end
+
 end,debug.traceback)
 release();df.global.window_x=camera.x;df.global.window_y=camera.y;df.global.window_z=camera.z;view:render(dfhack.getTickCount())
 local result={success=ok,unit_id=unit.id,observations=observations,error=not ok and err or nil}

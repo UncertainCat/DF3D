@@ -16,11 +16,15 @@ var scroll_location := ""
 var items_view
 var health_view
 var skills_view
+var knowledge_view
+var knowledge_first:=0
 var owner
 var sections := {}
 
 func reset(id: int):
  if unit_id == id: return
+ knowledge_first=0
+ if is_instance_valid(knowledge_view):knowledge_view.first=0
  unit_id=id;tab="Overview";subtabs.clear();scrolls.clear();scroll=null;scroll_location=""
  if is_instance_valid(health_view):health_view.page_key="";health_view.first=0
  if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
@@ -28,15 +32,19 @@ func reset(id: int):
 func location() -> String: return tab+"/"+str(subtabs.get(tab,""))
 
 func remember_scroll():
+ if is_instance_valid(knowledge_view):knowledge_first=knowledge_view.first
  if is_instance_valid(scroll): scrolls[scroll_location]=scroll.scroll_vertical
 
 func change_tab(value: String, nested := false):
  remember_scroll()
+ if (nested and tab=="Skills" and value!=str(subtabs.get(tab,""))) or (not nested and value!=tab):owner.knowledge.close()
  if nested: subtabs[tab]=value
  else:
   if value=="Health" and tab!="Health":subtabs["Health"]="Status"
   if value=="Skills" and tab!="Skills":
    subtabs["Skills"]="Labor"
+   knowledge_first=0
+   if is_instance_valid(knowledge_view):knowledge_view.first=0
    if is_instance_valid(skills_view):skills_view.first=0
   tab=value
  owner.redraw()
@@ -396,8 +404,19 @@ func render(controller, state: Dictionary):
    skills_view=preload("res://scripts/creature_skills_view.gd").new()
    owner.body.add_child(skills_view);skills_view.configure(owner.world)
    skills_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+   skills_view.inspect_requested.connect(func(kind,id):owner.knowledge.open(unit_id,kind,id))
   skills_view.position=Vector2(0,y);skills_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
   skills_view.present(selected_page)
+  var showing: bool=page_kind==4 and owner.knowledge.phase==owner.knowledge.Phase.Ready
+  skills_view.visible=not showing
+  if showing and not is_instance_valid(knowledge_view):
+   knowledge_view=preload("res://scripts/native_creature_paragraph_view.gd").new()
+   knowledge_view.first=knowledge_first;owner.body.add_child(knowledge_view);knowledge_view.configure(owner.world)
+   knowledge_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+  if is_instance_valid(knowledge_view):
+   knowledge_view.visible=showing
+   knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+   knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
  if tab=="Health":
   scroll=null

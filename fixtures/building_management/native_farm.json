@@ -66609,6 +66609,256 @@
         ],
         "scope": "Test-owned MASTERPIECE_LOST and PERFORMANCE events, temporary occasion/schedule, existing CREATED_SITE leaf. Exact native description comparisons; missing reference/entity/occasion/schedule and nested performance-to-lost-to-leaf. Not natural-world occurrence, cycle handling, or blanket event acceptance."
       },
+      "detail_navigation_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-070429",
+        "status": "passed_with_known_issues",
+        "observations": [
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 0,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "tab-Labor",
+            "open": true,
+            "raw_count": 0,
+            "tab": 0
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "restore-Labor",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 0,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "tab-Combat",
+            "open": true,
+            "raw_count": 0,
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "restore-Combat",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 0,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "tab-Social",
+            "open": true,
+            "raw_count": 0,
+            "tab": 2
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "restore-Social",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 0,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "tab-Other skills",
+            "open": true,
+            "raw_count": 0,
+            "tab": 3
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "restore-Other skills",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "tab-Knowledge",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "restore-Knowledge",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 0,
+            "name": "tab-Overview",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "line_count": 0,
+            "list_first": 0,
+            "main_tab": 3,
+            "name": "main-return-Overview",
+            "open": true,
+            "raw_count": 0,
+            "tab": 0
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "restore-Overview",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 2,
+            "name": "tab-Health",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "line_count": 0,
+            "list_first": 0,
+            "main_tab": 3,
+            "name": "main-return-Health",
+            "open": true,
+            "raw_count": 0,
+            "tab": 0
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "restore-Health",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 0,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "escape-detail",
+            "open": true,
+            "raw_count": 0,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "line_count": 0,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "escape-list",
+            "open": false,
+            "raw_count": 0,
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "line_count": 83,
+            "list_first": 16,
+            "main_tab": 3,
+            "name": "restored-after-close",
+            "open": true,
+            "raw_count": 1,
+            "tab": 4
+          }
+        ],
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "main_scene": {
+          "source": "build/stockpile-storage-native-farm-discovery-20261101-071501",
+          "status": "passed_with_known_issues",
+          "injected_transport": true,
+          "kind": 14,
+          "id": 63,
+          "rect": [
+            432,
+            244,
+            456,
+            492
+          ],
+          "rgb_sha256": "9fecba12a5d0259e2bc1f6dc09610452a430d3887b72f7a1f31b47fde553eaab",
+          "minimum_viewport": [
+            1200,
+            552
+          ],
+          "results": {
+            "escape_reopen": true,
+            "injected_transport": true,
+            "late_reply": true,
+            "native_pixels": true,
+            "refresh_drag": true,
+            "scroll_retention": true,
+            "session_retirement": true,
+            "settings_drag_retirement": true,
+            "success": true,
+            "tab_retirement": true
+          },
+          "source_unchanged": true,
+          "owned_exit_unsaved": true
+        },
+        "scope": "Native tab/Escape oracle and actual main-scene navigation with captured native text injected through the real request service. No live Knowledge request handler acceptance."
+      },
       "coin_caption_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-064043",
         "status": "passed_with_known_issues",

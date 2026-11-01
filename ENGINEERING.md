@@ -3693,11 +3693,10 @@ Request/state defaults, required version and region move from109to110.
 Rebuild and deploy bridge, model and viewer together. Older regions are isolated;
 no missing identity or detail is synthesized from old recordings. The action is
 classified as an inspection request, with no automatic retry policy added.
-This commit provides transport only: the native safe-point handler, membership
-revalidation at dispatch, broader formatter source validation, local navigation
-and late-reply/session retirement are not connected. Creature exposure remains
-unchanged. Diagnostic formatter acceptance does not authorize a blanket native
-call from this new domain.
+The native safe-point handler, membership revalidation at dispatch and broader
+formatter source validation remain pending. Viewer request ownership/navigation
+are verified separately below. Creature exposure remains unchanged. Diagnostic
+formatter acceptance does not authorize a blanket native call from this domain.
 
 Root/core passes in `knowledge-contract-final`. `knowledge-contract-roundtrip`
 passes the real extension with an isolated fake producer: four native kinds,
@@ -3737,10 +3736,9 @@ epoch/session/disconnect/reconnect and disposal. The final Godot log is clean.
 Earlier lifecycle testing corrected the mock's transport-loss signal and a
 NUL-check implementation that emitted Unicode parsing diagnostics; those runs
 are not clean acceptance. Byte-level NUL rejection remains independently tested
-by the wire codec. This owner is not yet attached to the creature sheet: native
-handler admission, list/detail navigation, retained scroll and actual rendered
-lifecycle verification remain pending. No UI exposure or live native request
-acceptance follows from this isolated controller check.
+by the wire codec. The owner is attached to the staged creature sheet as described
+below. No UI exposure or live native request acceptance follows from this
+isolated controller check.
 
 ### Selected Knowledge detail membership
 
@@ -3762,8 +3760,8 @@ bounded coverage. DF34564 exits unsaved with source preservation and only known
 Godot startup notices. Root/core passes in `knowledge-selection-core`.
 
 This membership wrapper does not establish new dance-event or written-reference
-formatter coverage. Production request/response identity, payload limits after
-UTF-8 conversion, cancellation/late replies and detail rendering remain pending.
+formatter coverage. The typed transport and viewer ownership checks are separate
+from native handler admission and dispatch-time UTF-8 conversion limits.
 
 ### Knowledge detail paragraph rendering
 
@@ -3787,11 +3785,50 @@ DF34052 exits unsaved with source preservation and only known live Godot startup
 notices. Native Escape clears the detail and returns to the Knowledge list while
 keeping the creature panel open. The list retains its position16 and reopening
 the detail retains description position7; it does not reset to the first line.
-These navigation observations are not yet connected Godot workflow acceptance.
+The staged main-scene navigation acceptance below uses these retained-scroll
+rules. Broader formatter ownership and native request dispatch remain unfinished.
 
-Detail requests, selection/navigation state, resizing, stale responses and
-broader formatter ownership coverage remain unfinished. No Knowledge magnifier
-is connected by this renderer extraction.
+### Knowledge sheet navigation and rendered ownership
+
+The staged creature sheet connects magnifiers to its Knowledge request owner.
+Ready text replaces the list; pending or rejected reads leave the list visible
+without invented status copy. Escape cancels a pending request or returns from
+detail to list before closing the panel. List and detail controls retain their
+independent scroll positions. Skills subtab changes clear the detail while
+retaining its first row; clicking the selected Knowledge subtab retains it.
+Leaving Skills retires its request; returning resets to Labor and both first
+positions to zero. Unit replacement, panel closure and teardown retire tickets.
+Header redraw retains the attached detail control and active drag; Settings
+immediately retires that drag. These controls remain behind creature exposure.
+
+Protected native070429 on2026-11-01 captures seven tab transitions, return from
+Overview/Health, Escape-to-list, Escape-to-close and restoration. Native keeps
+hidden detail storage on main-tab departure, but returning to Skills clears it
+and resets both positions; DF3D owns its navigation state independently.
+`detail_navigation_reference` records the observed values. Initial070312
+completed the observations but failed parent cleanup after intentionally closing
+the sheet; the corrected harness reopens it. Both sources remain unchanged.
+
+Protected071501 exercises actual main-scene pointer navigation with the real
+request service and injected replies containing captured native prose for known
+poetic form63. All224352 pixels of the456x492 detail body match native exactly.
+The five existing Skills-page body comparisons also pass. Escape/reopen,
+selected-tab retention, subtab clearing, main-tab reset, pending-close/late reply
+and session replacement checks pass. At1200x552 the poem overflows, allowing
+actual thumb capture, redraw preservation and Settings cancellation checks;
+return to1200x800 retains the correct local state. The screenshot was inspected.
+This verifies presentation/lifecycle with injected transport, not a live native
+Knowledge request handler or complete resize pixel parity.
+
+Run070851 omitted the Skills-view flag and did not run the new test. Run071025
+incorrectly chose a music form added only during diagnostic capture; run071245
+matched pixels/navigation but attempted to drag a nonexistent scrollbar at the
+full-height viewport. Final071501 uses an actually known entry and an overflowing
+viewport; earlier runs are not full workflow acceptance. Owned DF38372 exits
+unsaved with source preservation and only three known Godot startup notices.
+Root/core and owner checks pass in `knowledge-sheet`; final source gate is
+`knowledge-sheet-final`. Native handler/source validation remains required
+before exposing the creature screen.
 
 ### Creature Skills transport contract
 
@@ -3886,7 +3923,7 @@ only known startup notices. Root/core passes in `skills-panel-core`. Initial
 053445 failed on test-script type inference before the panel checks; corrected
 053541 first established all five composed pixel matches.
 
-Long-caption clipping, hover/XP, on-demand Knowledge detail navigation and
+Long-caption clipping, hover/XP, native Knowledge request dispatch and
 remaining panel/session lifecycle are unaccepted. Magnifier artwork and hitboxes
 exist, but no detail request is connected yet. Baseline captures do not cover music,
 dance or other race/caste colors. The creature route remains staged; this pixel

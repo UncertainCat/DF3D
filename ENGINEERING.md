@@ -3167,16 +3167,23 @@ negative placeholders for absent types. Collection is inline in native
 1a37ed..1a3956, so the adapter pins that block and reproduces only its traversal;
 native559610 supplies valuations and ab4f20 supplies captions. The existing
 ValuationContext owns mutable preference scratch. No sheet vectors are runtime
-inputs. Each record carries room kind/value and an existing room's coordinates.
+inputs. Each record carries room kind/value, custom name, native requirement
+text/status and an existing room's coordinates. The per-room requirement line
+remains visible when fulfilled; green/yellow/red status and original room icons
+follow native1709aa..170aa3 and171242..17135b.
 
-Protected094319 on2026-11-01 verifies the actual main-scene transport against
+Protected095036 on2026-11-01 verifies the actual main-scene transport against
 native rows1337/419/-3/-4, values344/294/0/0 and all four captions. Native capture
-also shows the Study requirement warning and recenter buttons. Rendering those
-rows, requirement artwork/text, recenter behavior and multiple-room scrolling
-remain unfinished; creature exposure is unchanged. `unit_rooms_reference`
-retains the bounded evidence. Owned DF26448 exited unsaved, source preservation
+also shows the Study requirement line and recenter buttons. The Rooms control
+replaces the simplified four-summary view, shares native row/scroll geometry
+with Skills, and retains its control on refresh. Recenter closes the sheet and
+focuses the viewer at the room's center/level, without moving native DF's camera.
+All456x528 body pixels match native; actual native and viewer recenter both close
+the sheet and target137,88,164. The capture does not exercise overflow or custom
+room names. Creature exposure is unchanged. `unit_rooms_reference` retains the
+bounded evidence. Owned DF46756 exited unsaved, source preservation
 passed, and the three Godot processes had only the known startup notice.
-Root/core passes in `creature-rooms-native-list`. Initial094007 caught using a
+Root/core passes in `creature-rooms-panel`. Initial094007 caught using a
 zero-based DF-vector iterator on a Lua array;094124 still used the old embedded
 script. Both failed runs are excluded from acceptance.
 

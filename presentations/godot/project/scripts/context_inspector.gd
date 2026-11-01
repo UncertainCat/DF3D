@@ -1,6 +1,7 @@
 extends Node
 signal history_requested(unit_id:int)
 signal object_requested(kind:int,id:int)
+signal focus_requested(tile:Vector3i)
 # Local entity identity and presentation only. Queries never navigate DF screens.
 const Preferences = preload("res://scripts/presentation_settings.gd")
 const OriginalUI = preload("res://scripts/original_ui.gd")
@@ -185,6 +186,10 @@ func cancel_gesture() -> void:
 		creature_sheet.knowledge_view.scrollbar.dragging=false
 		creature_sheet.knowledge_view.scrollbar.hover_cell=-1
 		creature_sheet.knowledge_view.scrollbar.queue_redraw()
+	if is_instance_valid(creature_sheet.rooms_view):
+		creature_sheet.rooms_view.scrollbar.dragging=false
+		creature_sheet.rooms_view.scrollbar.hover_cell=-1
+		creature_sheet.rooms_view.scrollbar.queue_redraw()
 	if is_instance_valid(creature_sheet.health_view):
 		creature_sheet.health_view.scrollbar.dragging=false
 		creature_sheet.health_view.scrollbar.hover_cell=-1
@@ -352,12 +357,14 @@ func redraw():
 	var retained_health=creature_sheet.health_view if int(selected.kind)==1 and creature_sheet.tab=="Health" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.health_view) else null
 	var retained_skills=creature_sheet.skills_view if int(selected.kind)==1 and creature_sheet.tab=="Skills" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.skills_view) else null
 	var retained_knowledge=creature_sheet.knowledge_view if retained_skills!=null and is_instance_valid(creature_sheet.knowledge_view) else null
+	var retained_rooms=creature_sheet.rooms_view if int(selected.kind)==1 and creature_sheet.tab=="Rooms" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.rooms_view) else null
 	for child in body.get_children():
-		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills and child!=retained_knowledge:body.remove_child(child);child.queue_free()
+		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills and child!=retained_knowledge and child!=retained_rooms:body.remove_child(child);child.queue_free()
 	creature_sheet.items_view=retained_items
 	creature_sheet.health_view=retained_health
 	creature_sheet.skills_view=retained_skills
 	creature_sheet.knowledge_view=retained_knowledge
+	creature_sheet.rooms_view=retained_rooms
 	customize_view=null
 	customize_button=null
 	history_button=null

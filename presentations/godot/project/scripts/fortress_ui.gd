@@ -152,6 +152,7 @@ func controller(id: String):
 	panel.interaction = view._interaction
 	panel.ui_host = host
 	if id == "inspector":
+		panel.focus_requested.connect(focus_tile)
 		ensure_follow();panel.follow=creature_follow
 		panel.history_requested.connect(func(unit_id):controller("reports").open_creature_history(unit_id))
 		panel.object_requested.connect(func(kind,target_id):

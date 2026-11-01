@@ -212,6 +212,7 @@ func unit_carrier(expected: Dictionary) -> void:
 	var evidence:=FileAccess.open(directory+"/unit-overview-scene.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
+	if OS.get_environment("DF3D_UNIT_ROOMS_VIEW")=="1":await exercise_rooms_view(inspector)
 	if OS.get_environment("DF3D_UNIT_SKILLS_VIEW")=="1":
 		await exercise_skills_view(inspector)
 		if OS.get_environment("DF3D_UNIT_KNOWLEDGE_LIVE")=="1":await exercise_knowledge_live(inspector)
@@ -1168,6 +1169,33 @@ func exercise_expel_lifecycle(inspector,target:int,preview:Dictionary) -> void:
 	model.configure(actions);service.free();inspector.open_target(Vector3i.ZERO,1,target);await process_frame
 	var file:=FileAccess.open(directory+"/unit-expel-lifecycle-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"injected_expel_transport":true,"late_read":true,"pending_cancel":true,"reports_replacement":true,"overlay_retires_drag":true,"disconnect_retires_authority":true,"session_reset_releases_owner":true}));file.close()
+
+func exercise_rooms_view(inspector) -> void:
+	var camera_before:Vector3=scene.camera_rig.position
+	var level_before:int=world.get_top_z()
+	await health_tab(inspector,"Rooms")
+	var view=inspector.creature_sheet.rooms_view
+	await process_frame;await RenderingServer.frame_post_draw
+	var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+	actual.save_png(directory+"/unit-rooms-scene.png")
+	var native:=Image.load_from_file(directory+"/unit-rooms-native.png");native.convert(Image.FORMAT_RGB8)
+	var rect:=Rect2i(432,208,456,528)
+	var same:=actual.get_region(rect).get_data()==native.get_region(rect).get_data()
+	check(same,"Native Rooms panel pixels differ")
+	inspector.redraw();await process_frame
+	check(inspector.creature_sheet.rooms_view==view,"Rooms refresh replaced view")
+	var target:int=inspector.selected.id
+	var tile:Vector3i=view.rows[0].tile
+	await pointer(view.get_global_transform_with_canvas()*view.inspect_rect(0).get_center())
+	await process_frame
+	check(not inspector.is_open() and scene._ui.host.active==null,"Room recenter retained creature panel")
+	check(is_equal_approx(scene.camera_rig.position.x,tile.x+0.5) and is_equal_approx(scene.camera_rig.position.z,tile.y+0.5) and world.get_top_z()==tile.z,"Room recenter focused wrong tile")
+	world.set_top_z(level_before);scene.camera_rig.follow_level(level_before)
+	scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
+	inspector.open_target(Vector3i.ZERO,1,target);await process_frame
+	await health_tab(inspector,"Overview")
+	var file:=FileAccess.open(directory+"/unit-rooms-view-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"pixels_match":same,"recenter":true,"target":[tile.x,tile.y,tile.z]}));file.close()
 
 func exercise_knowledge_live(inspector) -> void:
 	check(inspector.knowledge.service==inspector.action_service,"Knowledge is not using the live action service")

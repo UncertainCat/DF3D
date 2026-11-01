@@ -17,6 +17,7 @@ var items_view
 var health_view
 var skills_view
 var knowledge_view
+var rooms_view
 var knowledge_first:=0
 var owner
 var sections := {}
@@ -28,6 +29,7 @@ func reset(id: int):
  unit_id=id;tab="Overview";subtabs.clear();scrolls.clear();scroll=null;scroll_location=""
  if is_instance_valid(health_view):health_view.page_key="";health_view.first=0
  if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
+ if is_instance_valid(rooms_view):rooms_view.first=0;rooms_view.scrollbar.dragging=false
 
 func location() -> String: return tab+"/"+str(subtabs.get(tab,""))
 
@@ -40,6 +42,7 @@ func change_tab(value: String, nested := false):
  if (nested and tab=="Skills" and value!=str(subtabs.get(tab,""))) or (not nested and value!=tab):owner.knowledge.close()
  if nested: subtabs[tab]=value
  else:
+  if value=="Rooms" and tab!="Rooms" and is_instance_valid(rooms_view):rooms_view.first=0
   if value=="Health" and tab!="Health":subtabs["Health"]="Status"
   if value=="Skills" and tab!="Skills":
    subtabs["Skills"]="Labor"
@@ -346,30 +349,6 @@ func overview(parent: Node, detail: Dictionary):
  for spans in NativeText.overview_needs(self).slice(0,6): paragraph(cells[7],spans,0,false,true)
  for spans in Thoughts.recent(self,int(detail.get("sex",-1))).slice(0,8): paragraph(parent,spans,0)
 
-func room_summary(parent: Node):
- var data: Dictionary=sections.get("rooms",{})
- if not data.get("available",false) or data.get("truncated",false): return
- var native := NativeText.load_text(owner.world)
- # Per-value labels are native; multiple-room aggregation is not yet traced.
- for spec in [["office","No Study","NOBLES_OFFICE_NA"],["bedroom","No Quarters","NOBLES_BEDROOM_NA"],["dining hall","No Dining Room","NOBLES_DINING_NA"],["tomb","No Tomb","NOBLES_TOMB_NA"]]:
-  var row := Style.row(parent,owner.world)
-  Style.icon(row,owner.world.ui_texture(spec[2]))
-  var title: String=spec[1]
-  var value := 0
-  var known_value := true
-  for record in records_for("rooms"):
-   if str(fact_value(record,"zone_type")).to_lower()==spec[0]:
-    var observed = fact_value(record,"room_value",null)
-    known_value=observed!=null
-    if known_value: value=int(observed)
-    else: title=record.name
-    break
-  var kind: String={"office":"Office","bedroom":"Bedroom","dining hall":"DiningHall","tomb":"Tomb"}[spec[0]]
-  if known_value:
-   for rule in native.get("room_quality_labels",{}).get(kind,[]):
-    if value>=int(rule.minimum): title=rule.text;break
-  text(row,title)
-
 func render(controller, state: Dictionary):
  owner=controller
  remember_scroll()
@@ -394,6 +373,21 @@ func render(controller, state: Dictionary):
   items_view.configure(owner.world,records_for("inventory"))
   items_view.scrollbar.row_changed.connect(func(value):scrolls["Items/"]=value)
   return
+ if tab=="Rooms":
+  scroll=null
+  if not is_instance_valid(rooms_view):
+   rooms_view=preload("res://scripts/creature_rooms_view.gd").new()
+   owner.body.add_child(rooms_view);rooms_view.configure(owner.world)
+   rooms_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+   rooms_view.focus_requested.connect(func(tile):owner.close_panel();owner.focus_requested.emit(tile))
+  var room_rows:Array=[]
+  for record in records_for("rooms"):
+   room_rows.append({"id":record.id,"kind":int(fact_value(record,"room_kind",0)),"caption":record.name,
+    "custom_name":str(fact_value(record,"custom_name","")),"requirement":str(fact_value(record,"requirement","")),
+    "status":int(fact_value(record,"room_status",-1)),
+    "tile":Vector3i(int(fact_value(record,"x",-1)),int(fact_value(record,"y",-1)),int(fact_value(record,"z",-1)))})
+  rooms_view.position=Vector2(0,y);rooms_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  rooms_view.present({"rows":room_rows});return
  if tab=="Skills":
   scroll=null
   var page_kind: int=["Labor","Combat","Social","Other skills","Knowledge"].find(str(subtabs.get(tab,"Labor")))
@@ -464,7 +458,6 @@ func render(controller, state: Dictionary):
     var gap := Control.new();gap.custom_minimum_size.y=24;content.add_child(gap)
    paragraph(content,entry.spans,12 if entry.heading else 0)
    first=false
- elif tab=="Rooms": room_summary(content)
  elif tab=="Personality" and subtabs.get(tab)=="Traits":
   paragraph(content,NativeText.attribute_description(self,int(detail.get("sex",-1)),true))
   paragraph(content,Personality.facet_description(self,int(detail.get("sex",-1))))

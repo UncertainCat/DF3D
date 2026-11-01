@@ -57241,9 +57241,9 @@
       }
     },
     "unit_rooms_reference": {
-      "source": "build/stockpile-storage-native-farm-discovery-20261101-094319",
+      "source": "build/stockpile-storage-native-farm-discovery-20261101-095036",
       "status": "passed_with_known_issues",
-      "bridge_sha256": "f569502aec3ec536ae0bc4fd4bc6c500e924b31e729cedb06d435d0decba04e6",
+      "bridge_sha256": "096e6b488a0189a7a32843bdb8744aa0108e4fc315e68d4fd3597f36f04db110",
       "native": {
         "first": 0,
         "lines": [
@@ -57272,6 +57272,20 @@
           "scroll_position_unit_room": 7156,
           "unit_room_civzone_id": 7168,
           "unit_room_curval": 7192
+        },
+        "recenter": {
+          "closed": true,
+          "room_id": 1337,
+          "target": {
+            "x": 137,
+            "y": 88,
+            "z": 164
+          },
+          "window": {
+            "x": 125,
+            "y": 80,
+            "z": 164
+          }
         },
         "rooms": [
           1337,
@@ -57308,6 +57322,24 @@
                 "has_number": true,
                 "key": "room_value",
                 "number": 344,
+                "text": ""
+              },
+              {
+                "has_number": false,
+                "key": "custom_name",
+                "number": 0,
+                "text": ""
+              },
+              {
+                "has_number": false,
+                "key": "requirement",
+                "number": 0,
+                "text": "Needs Meager Study"
+              },
+              {
+                "has_number": true,
+                "key": "room_status",
+                "number": 0,
                 "text": ""
               },
               {
@@ -57354,6 +57386,24 @@
                 "text": ""
               },
               {
+                "has_number": false,
+                "key": "custom_name",
+                "number": 0,
+                "text": ""
+              },
+              {
+                "has_number": false,
+                "key": "requirement",
+                "number": 0,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "room_status",
+                "number": -1,
+                "text": ""
+              },
+              {
                 "has_number": true,
                 "key": "x",
                 "number": 137,
@@ -57395,6 +57445,24 @@
                 "key": "room_value",
                 "number": 0,
                 "text": ""
+              },
+              {
+                "has_number": false,
+                "key": "custom_name",
+                "number": 0,
+                "text": ""
+              },
+              {
+                "has_number": false,
+                "key": "requirement",
+                "number": 0,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "room_status",
+                "number": -1,
+                "text": ""
               }
             ],
             "id": -3,
@@ -57420,6 +57488,24 @@
                 "key": "room_value",
                 "number": 0,
                 "text": ""
+              },
+              {
+                "has_number": false,
+                "key": "custom_name",
+                "number": 0,
+                "text": ""
+              },
+              {
+                "has_number": false,
+                "key": "requirement",
+                "number": 0,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "room_status",
+                "number": -1,
+                "text": ""
               }
             ],
             "id": -4,
@@ -57429,8 +57515,18 @@
         ],
         "success": true
       },
-      "scope": "Native list IDs/order, valuation and captions transported to main scene. Rooms rendering and recenter actions remain incomplete.",
-      "source_unchanged": true
+      "scope": "Four native room rows, requirement line and icons, exact 456x528 rendered body, retained redraw and actual recenter/close. Overflow and named rooms not exercised by this capture.",
+      "source_unchanged": true,
+      "panel": {
+        "pixels_match": true,
+        "recenter": true,
+        "success": true,
+        "target": [
+          137,
+          88,
+          164
+        ]
+      }
     },
     "unit_skills_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261101-032532",

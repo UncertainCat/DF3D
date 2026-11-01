@@ -480,6 +480,7 @@ return function(request)
     if i>256 then s.truncated=true;result.complete=false;break end
     local r=record(s,v.id,v.caption,v.id>=0 and v.id or nil)
     fact(s,r,'zone_type',enum(df.civzone_type,v.subtype));fact(s,r,'room_kind',v.kind);fact(s,r,'room_value',v.value)
+    fact(s,r,'custom_name',v.name);fact(s,r,'requirement',v.requirement);fact(s,r,'room_status',v.status)
     local room=v.id>=0 and df.building.find(v.id)or nil
     if room then fact(s,r,'x',room.centerx);fact(s,r,'y',room.centery);fact(s,r,'z',room.z)end
    end

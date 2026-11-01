@@ -3326,6 +3326,7 @@ void run(color_ostream& out) {
       lua_newtable(state);int index=0;
       for(const auto& row:*rows){lua_newtable(state);field(state,"id",row.id);field(state,"kind",row.kind);
         field(state,"value",row.value);field(state,"subtype",row.subtype);field(state,"caption",row.caption);
+        field(state,"name",row.name);field(state,"requirement",row.requirement);field(state,"status",row.status);
         lua_rawseti(state,-2,++index);}
       return 1;
     });

@@ -192,7 +192,7 @@ inline std::optional<RoomWarning> roomWarning(const std::array<int32_t,4>& requi
     }
     return result;
 }
-struct IndividualRoom { int32_t id,kind,value,subtype;std::string caption; };
+struct IndividualRoom { int32_t id,kind,value,subtype;std::string caption;std::string name,requirement;int32_t status=-1; };
 inline std::optional<std::vector<IndividualRoom>> individualRooms(df::unit* source) {
     if(!df3d_room::valuationReady())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -217,7 +217,19 @@ inline std::optional<std::vector<IndividualRoom>> individualRooms(df::unit* sour
         }
         if(result.size()==first)result.push_back({-kind-1,kind,0,types[kind],{}});
     }
-    for(auto& row:result)reinterpret_cast<void(*)(std::string*,int32_t,int16_t)>(base+0xab4f20)(&row.caption,row.value,int16_t(row.kind));
+    const auto required=requiredRooms(source);if(!required)return std::nullopt;
+    for(auto& row:result){
+        using Caption=void(*)(std::string*,int32_t,int16_t);
+        reinterpret_cast<Caption>(base+0xab4f20)(&row.caption,row.value,int16_t(row.kind));
+        if(row.id>=0)if(auto* building=df::building::find(row.id))row.name=building->name;
+        // Native Rooms1709aa..170aa3 evaluates each room separately and shows
+        // the requirement even when fulfilled (green), unlike Overview.
+        if((*required)[row.kind]>0){
+            row.status=row.value>=(*required)[row.kind]?0:row.value>0?1:2;
+            reinterpret_cast<Caption>(base+0xab4f20)(&row.requirement,(*required)[row.kind],int16_t(row.kind));
+            row.requirement.insert(0,"Needs ");
+        }
+    }
     return result;
 }
 // Title collection is inline in native1a5f41..1a61d7, not a reusable semantic

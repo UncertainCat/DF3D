@@ -26,6 +26,20 @@ local _,address=df.sizeof(sheet)
 for _,field in ipairs{'unit_room_civzone_id','unit_room_curval','scroll_position_unit_room'}do local _,p=df.sizeof(sheet:_field(field));result.offsets[field]=p-address end
 for y=17,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then result.lines[#result.lines+1]={y=y,text=text}end end
 capture('unit-rooms-native')
+if os.getenv('DF3D_UNIT_ROOMS_VIEW')=='1' and result.rooms[1]>=0 then
+ local room=assert(df.building.find(result.rooms[1]))
+ local window={df.global.window_x,df.global.window_y,df.global.window_z}
+ g.precise_mouse_x=868;g.precise_mouse_y=226;g.mouse_x=108;g.mouse_y=18
+ df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ result.recenter={room_id=room.id,target={x=room.centerx,y=room.centery,z=room.z},closed=not sheet.open,
+  window={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}}
+ assert(not sheet.open and df.global.window_z==room.z,'Room recenter did not close sheet and change level')
+ capture('unit-rooms-recenter-native')
+ -- Diagnostic restoration; product recenter owns only the viewer camera.
+ df.global.window_x=window[1];df.global.window_y=window[2];df.global.window_z=window[3]
+ sheet.open=true;view:render(dfhack.getTickCount())
+end
 select('Overview')
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Rooms capture advanced simulation')
 local file=assert(io.open(out..'/unit-rooms-native.json','w'));file:write(json.encode(result));file:close()

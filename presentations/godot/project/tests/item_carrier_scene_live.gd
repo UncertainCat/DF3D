@@ -45,6 +45,19 @@ func unit_carrier(expected: Dictionary) -> void:
 		await create_timer(0.02).timeout
 	var detail: Dictionary=world.creature_info_state(target).get("detail",{})
 	check(not detail.is_empty() and detail.get("sections",[]).size()>0,"Unit destination remained a loading shell")
+	if FileAccess.file_exists(directory+"/unit-rooms-native.json"):
+		var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-rooms-native.json"))
+		var rows: Array=[]
+		for section in detail.sections:
+			if section.key=="rooms":rows=section.records
+		check(rows.size()==native.rooms.size(),"Native room row count differs")
+		for i in mini(rows.size(),native.rooms.size()):
+			check(rows[i].id==int(native.rooms[i]),"Native room order or placeholder differs")
+			check(int(inspector.creature_sheet.fact_value(rows[i],"room_value",-1))==int(native.values[i]),"Native room value differs")
+			for line in native.lines:
+				if int(line.y)==18+3*i:check(rows[i].name==str(line.text).strip_edges(),"Native room caption differs: "+rows[i].name)
+		var file:=FileAccess.open(directory+"/unit-rooms-wire-result.json",FileAccess.WRITE)
+		file.store_string(JSON.stringify({"success":not failed,"rows":rows}));file.close()
 	if FileAccess.file_exists(directory+"/unit-health-pages-native.json"):
 		var native_health: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-health-pages-native.json"))
 		var health_pages: Array=detail.get("health_pages",[])

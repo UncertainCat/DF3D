@@ -3159,6 +3159,27 @@ been approved. Scrollbar hover pixels, long names/animation, this feedback gap
 and active-job/squad/later-departure effect variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
+### Creature Rooms native list
+
+The creature inspection's Rooms section now receives native-valued individual
+rooms, grouped Office/Bedroom/DiningHall/Tomb in owned-building order, with
+negative placeholders for absent types. Collection is inline in native
+1a37ed..1a3956, so the adapter pins that block and reproduces only its traversal;
+native559610 supplies valuations and ab4f20 supplies captions. The existing
+ValuationContext owns mutable preference scratch. No sheet vectors are runtime
+inputs. Each record carries room kind/value and an existing room's coordinates.
+
+Protected094319 on2026-11-01 verifies the actual main-scene transport against
+native rows1337/419/-3/-4, values344/294/0/0 and all four captions. Native capture
+also shows the Study requirement warning and recenter buttons. Rendering those
+rows, requirement artwork/text, recenter behavior and multiple-room scrolling
+remain unfinished; creature exposure is unchanged. `unit_rooms_reference`
+retains the bounded evidence. Owned DF26448 exited unsaved, source preservation
+passed, and the three Godot processes had only the known startup notice.
+Root/core passes in `creature-rooms-native-list`. Initial094007 caught using a
+zero-based DF-vector iterator on a Lua array;094124 still used the old embedded
+script. Both failed runs are excluded from acceptance.
+
 ### Native creature Skills reference
 
 `row_cells_reference` records protected050640 character-cell observations for

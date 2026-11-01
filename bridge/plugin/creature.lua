@@ -475,6 +475,16 @@ return function(request)
   end)
  end)
  section(14,function(s)
+  if request.room_list then
+   for i,v in ipairs(request.room_list(u.id))do
+    if i>256 then s.truncated=true;result.complete=false;break end
+    local r=record(s,v.id,v.caption,v.id>=0 and v.id or nil)
+    fact(s,r,'zone_type',enum(df.civzone_type,v.subtype));fact(s,r,'room_kind',v.kind);fact(s,r,'room_value',v.value)
+    local room=v.id>=0 and df.building.find(v.id)or nil
+    if room then fact(s,r,'x',room.centerx);fact(s,r,'y',room.centery);fact(s,r,'z',room.z)end
+   end
+   return
+  end
   each(s,u.owned_buildings,function(v)
    local r=record(s,v.id,dfhack.buildings.getName(v),v.id)
    fact(s,r,'zone_type',enum(df.civzone_type,v.type));fact(s,r,'x',v.centerx);fact(s,r,'y',v.centery);fact(s,r,'z',v.z)

@@ -57240,6 +57240,198 @@
         }
       }
     },
+    "unit_rooms_reference": {
+      "source": "build/stockpile-storage-native-farm-discovery-20261101-094319",
+      "status": "passed_with_known_issues",
+      "bridge_sha256": "f569502aec3ec536ae0bc4fd4bc6c500e924b31e729cedb06d435d0decba04e6",
+      "native": {
+        "first": 0,
+        "lines": [
+          {
+            "text": "                                                              Study",
+            "y": 18
+          },
+          {
+            "text": "                                                              Needs Meager Study",
+            "y": 19
+          },
+          {
+            "text": "                                                              Quarters",
+            "y": 21
+          },
+          {
+            "text": "                                                              No Dining Room",
+            "y": 24
+          },
+          {
+            "text": "                                                              No Tomb",
+            "y": 27
+          }
+        ],
+        "offsets": {
+          "scroll_position_unit_room": 7156,
+          "unit_room_civzone_id": 7168,
+          "unit_room_curval": 7192
+        },
+        "rooms": [
+          1337,
+          419,
+          -3,
+          -4
+        ],
+        "tab": 4,
+        "unit_id": 1017,
+        "values": [
+          344,
+          294,
+          0,
+          0
+        ]
+      },
+      "transport": {
+        "rows": [
+          {
+            "facts": [
+              {
+                "has_number": false,
+                "key": "zone_type",
+                "number": 0,
+                "text": "office"
+              },
+              {
+                "has_number": true,
+                "key": "room_kind",
+                "number": 0,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "room_value",
+                "number": 344,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "x",
+                "number": 137,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "y",
+                "number": 88,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "z",
+                "number": 164,
+                "text": ""
+              }
+            ],
+            "id": 1337,
+            "name": "Study",
+            "related_id": 1337
+          },
+          {
+            "facts": [
+              {
+                "has_number": false,
+                "key": "zone_type",
+                "number": 0,
+                "text": "bedroom"
+              },
+              {
+                "has_number": true,
+                "key": "room_kind",
+                "number": 1,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "room_value",
+                "number": 294,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "x",
+                "number": 137,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "y",
+                "number": 78,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "z",
+                "number": 165,
+                "text": ""
+              }
+            ],
+            "id": 419,
+            "name": "Quarters",
+            "related_id": 419
+          },
+          {
+            "facts": [
+              {
+                "has_number": false,
+                "key": "zone_type",
+                "number": 0,
+                "text": "dining hall"
+              },
+              {
+                "has_number": true,
+                "key": "room_kind",
+                "number": 2,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "room_value",
+                "number": 0,
+                "text": ""
+              }
+            ],
+            "id": -3,
+            "name": "No Dining Room",
+            "related_id": -1
+          },
+          {
+            "facts": [
+              {
+                "has_number": false,
+                "key": "zone_type",
+                "number": 0,
+                "text": "tomb"
+              },
+              {
+                "has_number": true,
+                "key": "room_kind",
+                "number": 3,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "room_value",
+                "number": 0,
+                "text": ""
+              }
+            ],
+            "id": -4,
+            "name": "No Tomb",
+            "related_id": -1
+          }
+        ],
+        "success": true
+      },
+      "scope": "Native list IDs/order, valuation and captions transported to main scene. Rooms rendering and recenter actions remain incomplete.",
+      "source_unchanged": true
+    },
     "unit_skills_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261101-032532",
       "status": "passed_with_known_issues",

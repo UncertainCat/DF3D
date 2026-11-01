@@ -192,6 +192,34 @@ inline std::optional<RoomWarning> roomWarning(const std::array<int32_t,4>& requi
     }
     return result;
 }
+struct IndividualRoom { int32_t id,kind,value,subtype;std::string caption; };
+inline std::optional<std::vector<IndividualRoom>> individualRooms(df::unit* source) {
+    if(!df3d_room::valuationReady())return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[](const uint8_t* base) {
+        const auto hash=[&](size_t start,size_t size){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<size;++i){h^=base[start+i];h*=UINT64_C(1099511628211);}return h;};
+        return hash(0x1a37ed,0x169)==UINT64_C(0x96f2fc8fe2164340) &&
+               hash(0xab4f20,0x3b0)==UINT64_C(0x7740ba5bc0108c80);
+    }(base);
+    if(!supported)return std::nullopt;
+    df3d_room::ValuationContext context(source);if(!context.valid())return std::nullopt;
+    std::vector<IndividualRoom> result;
+    // Native list collection is inline in the sheet initializer. Preserve its
+    // four passes, owned-building order and negative placeholders; call the
+    // native valuation and caption providers on independently owned preferences.
+    constexpr int16_t types[]={0x5d,0x5c,0x50,0x61};
+    for(int32_t kind=0;kind<4;++kind){
+        const auto first=result.size();
+        for(auto* building:context.unit()->owned_buildings){
+            const int32_t value=reinterpret_cast<int32_t(*)(df::building*,df::unit*)>(base+0x559610)(building,context.unit());
+            if(building->getSubtype()==types[kind])result.push_back({building->id,kind,value,types[kind],{}});
+        }
+        if(result.size()==first)result.push_back({-kind-1,kind,0,types[kind],{}});
+    }
+    for(auto& row:result)reinterpret_cast<void(*)(std::string*,int32_t,int16_t)>(base+0xab4f20)(&row.caption,row.value,int16_t(row.kind));
+    return result;
+}
 // Title collection is inline in native1a5f41..1a61d7, not a reusable semantic
 // API. Preserve its own-link then spouse-link order; DFHack's noble collector
 // sorts by precedence. Never call the surrounding viewsheet initializer.

@@ -2510,5 +2510,31 @@
       "workshop-worker-multiple-live.png": "e3a75e79d569fd5fb10b8cb3476a8e9009b656c8496aeed29ad3b7916ea42f68",
       "workshop-still-worker-selector-assigned.png": "cdb592557716c1bf00e8cdffb785a7992efe0d2cd2d3757833103fb6c6c365f1"
     }
+  },
+  "worker_height_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-174353",
+    "management_version": 116,
+    "sizes": [
+      {
+        "width": 960,
+        "height": 600,
+        "page_rows": 11,
+        "panel_height": 516,
+        "filter_y": 468
+      },
+      {
+        "width": 1200,
+        "height": 800,
+        "page_rows": 16,
+        "panel_height": 708,
+        "filter_y": 660
+      }
+    ],
+    "source_preservation": "Owned source unchanged",
+    "scope": "Native and rendered small selector inspected; dynamic height, page step, moved filter focus/Enter and restoration before assignment flow pass. Native small outer width differs: native selector rect x2=68 vs default76; DF3D remains608px wide. Width and full selector parity remain unfinished.",
+    "captures": {
+      "workshop-worker-small-live.png": "bad5b3ca44339a4ce7bdd74d9ddaa240d957d46a41eadefd15e38b921e0ef49d",
+      "workshop-still-worker-selector-small.png": "5cc1e423a15317e64ab15c96edd0cc4e902b8baea90e4666cccdeeaa34ddedd4"
+    }
   }
 }

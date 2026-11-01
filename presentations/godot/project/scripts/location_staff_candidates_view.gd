@@ -45,12 +45,19 @@ func configure(source) -> void:
 			channels.append(float(value)/255.0)
 		colors.append(Color(channels[0],channels[1],channels[2]))
 
+func layout(view: Vector2) -> void:
+	var previous_page:=page_rows
+	super.layout(view)
+	var previous_first:=first
+	first=scrollbar.first if scrollbar!=null else first
+	if previous_page!=page_rows or previous_first!=first:update_icons()
+
 func display_rows(observed: Array, offset := 0, cursor := 0) -> void:
 	all_rows=observed.duplicate(true)
 	if all_rows.is_empty():
 		active_header=3;descending=[true,true,true,true];filter_key=PackedByteArray();filter_text=PackedByteArray();filter_focused=false
 	_rebuild_filtered_rows()
-	first=clampi(offset,0,maxi(0,rows.size()-16))
+	first=clampi(offset,0,maxi(0,rows.size()-page_rows))
 	selected=cursor
 	display(rows.size(),first,active_header,descending)
 	update_icons()
@@ -85,7 +92,7 @@ func move_selection(delta: int) -> void:
 	if rows.is_empty():return
 	selected=clampi(selected+delta,0,rows.size()-1)
 	if selected<first:first=selected
-	elif selected>=first+16:first=selected-15
+	elif selected>=first+page_rows:first=selected-page_rows+1
 	display(rows.size(),first,active_header,descending)
 	update_icons()
 
@@ -130,8 +137,8 @@ func _input(event: InputEvent) -> void:
 	match event.keycode:
 		KEY_UP,KEY_8,KEY_KP_8:delta=-1
 		KEY_DOWN,KEY_2,KEY_KP_2:delta=1
-		KEY_PAGEUP,KEY_9,KEY_KP_9:delta=-16
-		KEY_PAGEDOWN,KEY_3,KEY_KP_3:delta=16
+		KEY_PAGEUP,KEY_9,KEY_KP_9:delta=-page_rows
+		KEY_PAGEDOWN,KEY_3,KEY_KP_3:delta=page_rows
 	if delta!=0:
 		move_selection(delta)
 		get_viewport().set_input_as_handled()
@@ -139,23 +146,23 @@ func _input(event: InputEvent) -> void:
 func _gui_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index==MOUSE_BUTTON_LEFT:
-		if Rect2(24,660,312,36).has_point(event.position):
+		if Rect2(24,filter_cell()*12,312,36).has_point(event.position):
 			filter_focused=true;accept_event();return
 		for header in 4:
 			# Skills spans cells83..102, including its blank native caption.
 			var width: int=20 if header==3 else HEADER_WIDTH[header]
 			if Rect2(HEADER_X[header]*8,12,width*8,12).has_point(event.position):
 				select_sort(header);accept_event();return
-		if actions_enabled and Rect2(8,36,552+extra_columns*8,576).has_point(event.position):
+		if actions_enabled and Rect2(8,36,552+extra_columns*8,page_rows*36).has_point(event.position):
 			var index:=first+int((event.position.y-36)/36)
 			if index<rows.size():
 				unit_chosen.emit(int(rows[index].unit_id));accept_event();return
 		# A click reaching the blank panel dismisses textbox focus. Header and
 		# textbox handlers above retain it, matching the native widget dispatch.
 		filter_focused=false;queue_redraw()
-	if not Rect2(8,36,560+extra_columns*8,600).has_point(event.position):return
+	if not Rect2(8,36,560+extra_columns*8,(frame_rows-9)*12).has_point(event.position):return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-		scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(16 if event.shift_pressed else 1))
+		scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(page_rows if event.shift_pressed else 1))
 		accept_event()
 
 func select_sort(header: int) -> void:
@@ -197,7 +204,7 @@ func compare_bytes(a: PackedByteArray,b: PackedByteArray) -> int:
 func update_icons() -> void:
 	var current: Dictionary={}
 	if world!=null:
-		for index in mini(16,rows.size()-first):
+		for index in mini(page_rows,rows.size()-first):
 			var id := int(rows[first+index].get("unit_id",-1))
 			if id<0:continue
 			var icon: Texture2D=world.selection_icon(1,id,true)
@@ -222,7 +229,7 @@ func _draw() -> void:
 	var font: Font=theme.default_font
 	var ticks := ticks_override if ticks_override>=0 else Time.get_ticks_msec()
 	var glyphs: Dictionary={}
-	for index in mini(16,rows.size()-first):
+	for index in mini(page_rows,rows.size()-first):
 		var row: Dictionary=rows[first+index]
 		var top := 3+index*3
 		var token := "BUTTON_RECTANGLE_SELECTED" if first+index==selected else row_background_token
@@ -246,7 +253,7 @@ func _draw() -> void:
 				write_cells(glyphs,Vector2i(37,top+1+line),skills[line],15)
 	# Native empties the filter's text field after rows, independently of its
 	# right-hand icon. Overflow glyphs over that icon remain in the cell buffer.
-	for y in range(55,58):
+	for y in range(filter_cell(),filter_cell()+3):
 		for x in range(3,38):glyphs.erase(Vector2i(x,y))
 	# Native filter text starts atcell51,60, bright white, with byte glyphs.
 	var visible_text:=""
@@ -254,7 +261,7 @@ func _draw() -> void:
 		visible_text+=String.chr(value if value<128 else art.CP437_HIGH[value-128])
 	# widget_textbox::render RVA1419533 appends underscore while tick%1000<500.
 	if filter_focused and ticks%1000<500:visible_text+="_"
-	write_cells(glyphs,Vector2i(5,56),visible_text,15)
+	write_cells(glyphs,Vector2i(5,filter_cell()+1),visible_text,15)
 	for cell in glyphs:
 		var glyph: Array=glyphs[cell]
 		font.draw_string(get_canvas_item(),Vector2(cell.x*8,(cell.y+1)*12),glyph[0],HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[glyph[1]])

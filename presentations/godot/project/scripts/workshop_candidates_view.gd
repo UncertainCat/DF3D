@@ -20,7 +20,7 @@ func _process(delta: float) -> void:
  super._process(delta)
  if not is_instance_valid(hover_help):return
  if pointer_known and is_visible_in_tree() and modes!=null and (not input_allowed.is_valid() or input_allowed.call()):
-  for index in range(first,mini(first+16,rows.size())):
+  for index in range(first,mini(first+page_rows,rows.size())):
    if mode_rect(index).has_point(pointer_position):
     var receipt: Dictionary=modes.receipts.get(int(rows[index].unit_id),{})
     if not receipt.is_empty():
@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
  hover_help.leave(get_instance_id())
 func update_icons() -> void:
  super.update_icons()
- if modes!=null and visible:modes.display(rows.slice(first,mini(first+16,rows.size())))
+ if modes!=null and visible:modes.display(rows.slice(first,mini(first+page_rows,rows.size())))
 func indicator_slots(row: Dictionary) -> Array:
  var slots: Array=[]
  for entry in row.get("assignments",[]):
@@ -49,7 +49,7 @@ func _gui_input(event: InputEvent) -> void:
  if event is InputEventMouseMotion:pointer_position=event.position;pointer_known=true
  if input_allowed.is_valid() and not input_allowed.call():return
  if modes!=null and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
-  for index in range(first,mini(first+16,rows.size())):
+  for index in range(first,mini(first+page_rows,rows.size())):
    if mode_rect(index).has_point(event.position):
     modes.toggle(int(rows[index].unit_id));accept_event();return
  super._gui_input(event)
@@ -61,7 +61,7 @@ func clear_icon_region(index: int,region: Rect2) -> void:
 func _draw() -> void:
  super._draw()
  if modes==null:return
- for index in range(first,mini(first+16,rows.size())):
+ for index in range(first,mini(first+page_rows,rows.size())):
   var slots:=indicator_slots(rows[index])
   for slot in slots.size():
    var entry: Dictionary=slots[slot]

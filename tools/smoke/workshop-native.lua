@@ -70,6 +70,15 @@ local function click_label(label)
   return true
  end end;return false
 end
+local function resize_worker(size)
+ local script=require('gui.script')
+ local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
+ assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local limit=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<limit,'worker resize timeout');script.sleep(1,'frames')end
+ assert(os.remove(out..'/owner-input-ack'));script.sleep(2,'frames');view:render(dfhack.getTickCount())
+end
 local function read_worker_reference(target)
  local native_ids={};local nonunit={}
  local list=assert(worker_list(df.global.game.main_interface.unit_selector,0))
@@ -136,6 +145,10 @@ local ok,err=xpcall(function()
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  shot('still-worker-selector')
  result.still_worker_reference=read_worker_reference(still)
+ resize_worker('small')
+ result.small_worker_reference=read_worker_reference(still)
+ shot('still-worker-selector-small')
+ resize_worker('default')
  -- Observe the assigned row through native input, then restore the restriction.
  local function worker_click(x,y)
   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1

@@ -16,7 +16,7 @@ func configure(world,service,host,help=null) -> void:
 	super.configure(world,service,host,help)
 	panel.configure_tasks(world,tasks,"")
 	panel.configure_workers(world,workers)
-	selector=preload("res://scripts/workshop_candidates_view.gd").new();canvas.add_child(selector);selector.configure(world);selector.extra_columns=2;selector.configure_modes(candidate_modes,help);selector.hide()
+	selector=preload("res://scripts/workshop_candidates_view.gd").new();canvas.add_child(selector);selector.configure(world);selector.extra_columns=2;selector.responsive_height=true;selector.configure_modes(candidate_modes,help);selector.hide()
 	selector.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and workers.phase==workers.Phase.Ready and not candidate_modes.applying
 	selector.cancelled.connect(_close_picker)
 	selector.unit_chosen.connect(func(id):

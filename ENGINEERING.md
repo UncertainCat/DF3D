@@ -6679,8 +6679,18 @@ acceptance. The later173556 and173858 runs have no unclassified diagnostics.
 
 Root/core, extension and composition checks pass in
 `workshop-assignment-facts-fixed`; the initial attempt failed a validator helper's
-scope and is not acceptance. Selector responsive layout, larger indicator counts,
-full selector parity and public workshop routing remain unfinished.
+scope and is not acceptance. Selector height now uses the logical viewport's12px grid: outer height, complete
+row count, scrollbar, filter, page keys and visible work-mode reads resize together.
+Workshop opts into this geometry; existing location selector dimensions stay
+unchanged. Protected174353 on2026-11-01 verifies11 rows at960x600, filter focus and
+Enter, then restoration to16 rows at1200x800 before the assignment/mode/removal
+flow. Native/Godot small screenshots were inspected. DF47784 exits unsaved and
+source preservation passes; logs contain only classified known diagnostics.
+`worker_height_reference` records this scope. Native narrows its outer selector
+frame at960 pixels (unit-list rect right68 vs76 atdefault); DF3D still retains608px
+width. That width mismatch, larger indicator counts, full selector parity and
+public workshop routing remain unfinished. Composition passes in
+`workshop-selector-height`; the live flow supplies the resize/effect evidence.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

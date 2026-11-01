@@ -73,6 +73,22 @@ func composed_sheet(id: int) -> void:
 		if assigning:
 			click(Vector2(448,154));await process_frame
 			if not check(owner.selector.visible and not owner.selector.rows.is_empty(),"Worker picker did not open"):break
+			root.size=Vector2i(960,600);await process_frame;await process_frame
+			owner._process(0)
+			check(owner.selector.page_rows==11 and owner.selector.size.y==516,"Small worker picker retained fixed geometry")
+			deadline=Time.get_ticks_msec()+10000
+			while Time.get_ticks_msec()<deadline and owner.candidate_modes.receipts.size()<11:
+				world.poll();service.poll(0.01);await create_timer(0.01).timeout
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/workshop-worker-small-live.png")
+			var down:=InputEventKey.new();down.keycode=KEY_PAGEDOWN;down.pressed=true;root.push_input(down,true)
+			check(owner.selector.selected==11,"Small worker picker used fixed page step")
+			click(Vector2(80,530));check(owner.selector.filter_focused,"Resized worker filter missed pointer input")
+			var enter:=InputEventKey.new();enter.keycode=KEY_ENTER;enter.pressed=true;root.push_input(enter,true)
+			check(not owner.selector.filter_focused and owner.selector.visible,"Filter Enter selected a worker")
+			owner.selector.move_selection(-11)
+			root.size=Vector2i(1200,800);await process_frame;await process_frame;owner._process(0)
+			check(owner.selector.page_rows==16 and owner.selector.size.y==708,"Worker picker did not restore default geometry")
 			selected_id=owner.selector.rows[0].unit_id
 			deadline=Time.get_ticks_msec()+10000
 			while Time.get_ticks_msec()<deadline and owner.candidate_modes.receipts.size()<mini(16,owner.selector.rows.size()):

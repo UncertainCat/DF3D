@@ -12,6 +12,10 @@ var descending: Array = [true,true,true,true]
 var strips: Dictionary = {}
 # Workshop selector uses two additional native cells; location defaults stay74.
 var extra_columns:=0
+var responsive_height:=false
+var frame_rows:=59
+var page_rows:=16
+func filter_cell() -> int:return frame_rows-4
 
 func configure(source) -> void:
 	world=source;art.configure(source);theme=art.theme
@@ -22,8 +26,15 @@ func configure(source) -> void:
 	scrollbar.position=Vector2(568,36);scrollbar.size=Vector2(16,600);scrollbar.page=16
 
 func layout(view: Vector2) -> void:
-	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(592+extra_columns*8,708)
-	if scrollbar!=null:scrollbar.position.x=568+extra_columns*8
+	frame_rows=maxi(13,floori(view.y/12)-7) if responsive_height else 59
+	page_rows=maxi(1,int((frame_rows-9)/3))
+	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(592+extra_columns*8,frame_rows*12)
+	if scrollbar!=null:
+		var height: int=(frame_rows-9)*12
+		var changed: bool=scrollbar.size.y!=height or scrollbar.page!=page_rows
+		if changed:scrollbar.dragging=false
+		scrollbar.position.x=568+extra_columns*8;scrollbar.size.y=height;scrollbar.page=page_rows
+		if changed:scrollbar.set_rows(scrollbar.count,scrollbar.first)
 
 func display(total: int, first := 0, header := 3, directions: Array = [true,true,true,true]) -> void:
 	active_header=header;descending=directions.duplicate()
@@ -45,7 +56,7 @@ func patch(token: String, origin: Vector2i, columns: int, rows: int, source: Tex
 func _draw() -> void:
 	if world==null:return
 	# The native rendered right edge is cell119, although the widget rect ends117.
-	patch("HOVER_RECTANGLE",Vector2i.ZERO,74+extra_columns,59)
+	patch("HOVER_RECTANGLE",Vector2i.ZERO,74+extra_columns,frame_rows)
 	for header in 4:
 		var suffix: String="ACTIVE" if header==active_header else "INACTIVE"
 		# Each native header retains its direction when another header is selected.
@@ -65,4 +76,4 @@ func _draw() -> void:
 		for y in 3:
 			for x in 39:
 				var source_x:=0 if x==0 else x-33 if x>=35 else 1
-				draw_texture_rect_region(filter,Rect2((3+x)*8,(55+y)*12,8,12),Rect2(source_x*8,y*12,8,12))
+				draw_texture_rect_region(filter,Rect2((3+x)*8,(filter_cell()+y)*12,8,12),Rect2(source_x*8,y*12,8,12))

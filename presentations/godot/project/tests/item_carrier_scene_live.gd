@@ -253,6 +253,7 @@ func exercise_items_view(inspector,target: int) -> void:
 	drag_motion=InputEventMouseMotion.new();drag_motion.position=view.scrollbar.get_global_transform_with_canvas()*Vector2(8,240);root.push_input(drag_motion,true)
 	drag_button=InputEventMouseButton.new();drag_button.position=drag_motion.position;drag_button.button_index=MOUSE_BUTTON_LEFT;drag_button.pressed=false;root.push_input(drag_button,true)
 	check(view.first==2 and not view.scrollbar.dragging,"Items drag did not continue and release after redraw")
+	if OS.get_environment("DF3D_UNIT_ITEMS_ASSIGNMENT_REFRESH")=="1":await exercise_assignment_refresh(inspector,target,view)
 	scene._fortress_hud.toggle_settings();await process_frame
 	await pointer(wheel_point,MOUSE_BUTTON_WHEEL_DOWN)
 	check(view.first==2,"Settings allowed Items scrolling underneath")
@@ -322,6 +323,40 @@ func exercise_items_refresh(inspector,target: int,view) -> void:
 		root.get_texture().get_image().save_png(directory+"/unit-items-refresh-"+operation+".png")
 		observations.append({"op":operation,"rows":view.rows.size(),"first":view.first,"dragging":view.scrollbar.dragging})
 	var file:=FileAccess.open(directory+"/unit-items-refresh-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"observations":observations}));file.close()
+
+func exercise_assignment_refresh(inspector,target: int,view) -> void:
+	view.scrollbar.move_to(0)
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json")).chest_header_reference.unit_items_reference.indicator_reference
+	var observations: Array=[]
+	var serial:=2
+	for sample in [["squad",0,"squad","unit_inventory_squad"],["tool",2,"work-before-clothing","unit_inventory_tool"],["restore",1,"clothing","unit_inventory_clothing"]]:
+		serial+=1
+		var file:=FileAccess.open(directory+"/unit-items-refresh-request.tmp",FileAccess.WRITE)
+		file.store_string(JSON.stringify({"unit_id":target,"op":sample[0],"serial":serial}));file.close()
+		DirAccess.rename_absolute(directory+"/unit-items-refresh-request.tmp",directory+"/unit-items-refresh-request.json")
+		var deadline:=Time.get_ticks_msec()+10000
+		while not FileAccess.file_exists(directory+"/unit-items-refresh-ack.json") and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+		if not check(FileAccess.file_exists(directory+"/unit-items-refresh-ack.json"),"Assignment acknowledgement timed out"):return
+		var expected: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-items-refresh-ack.json"))
+		DirAccess.remove_absolute(directory+"/unit-items-refresh-ack.json")
+		check(int(expected.serial)==serial and expected.op==sample[0] and int(expected.native.rows[0].indicator)==sample[1],"Assignment native reference differs")
+		deadline=Time.get_ticks_msec()+10000
+		while int(view.fact(view.rows[0],"assignment_indicator",-1))!=sample[1] and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+		check(int(view.fact(view.rows[0],"assignment_indicator",-1))==sample[1] and inspector.creature_sheet.items_view==view,"Automatic assignment refresh missed native change")
+		var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*view.indicator_rect(0).get_center();root.push_input(motion,true)
+		await create_timer(0.65).timeout;await RenderingServer.frame_post_draw
+		check(inspector.hover_help.visible and inspector.hover_help.displayed==sample[3],"Assignment refresh retained stale tooltip")
+		var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var rect: Rect2=view.indicator_rect(0);rect.position=view.get_global_transform_with_canvas()*rect.position
+		var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_region(Rect2i(rect)).get_data())
+		var digest:=hash.finish().hex_encode()
+		var native: Dictionary=reference.cases.filter(func(row):return row.name==sample[2])[0]
+		check(digest==native.indicator_rgb_sha256,"Refreshed assignment icon differs from native")
+		image.save_png(directory+"/unit-items-assignment-"+sample[0]+".png")
+		observations.append({"op":sample[0],"indicator":sample[1],"help":inspector.hover_help.displayed,"rgb_sha256":digest})
+	view.scrollbar.move_to(2)
+	var file:=FileAccess.open(directory+"/unit-items-assignment-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"observations":observations}));file.close()
 
 func exercise_contained_items(inspector,target: int) -> void:

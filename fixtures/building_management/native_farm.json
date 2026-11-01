@@ -51774,8 +51774,8 @@
           "scope": "Nine native reader comparisons with source/backing/cache/UI/RNG guards and cold HF cache; actual main scene baseline assignment facts, clothing/View hover and non-navigating clothing click, item inspect and carrier return.",
           "qa": "build/qa/unit-items-indicator-ui: core and UI composition pass",
           "limitations": [
-            "All nine indicator art cases and four help strings covered separately by GPU component reference; full main-scene changing assignment coverage remains open.",
-            "Contained-row help/navigation, async refresh drag retention and disconnect/epoch/late replies remain unfinished.",
+            "All nine indicator art cases and four help strings covered by GPU component reference; live squad/tool/clothing changes covered by live_refresh_reference.",
+            "Contained-row help/navigation and async refresh drag evidence have separate references. Disconnect/epoch/late replies remain unfinished.",
             "No public creature route exposure."
           ],
           "source_save": "unchanged; owned DF16800 exited unsaved"
@@ -51784,6 +51784,75 @@
           "qa": "build/qa/creature-items-scroll-complete",
           "status": "passed_with_known_issues",
           "scope": "All nine native 24x36 indicator crop hashes exact; four tooltip strings rendered through installed theme; inert indicator clicks and blocked input tested. Main scene clothing remains separately verified."
+        },
+        "live_refresh_reference": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261101-011325",
+          "status": "passed_with_known_issues",
+          "scope": "Controlled native equipment memberships on hood32064: squad, work tool, then original clothing. Open main Items panel receives automatic updates without reopening; same control retained. Three visible 24x36 indicator crops exactly match recorded native hashes and active hover changes to the corresponding native tooltip.",
+          "scene": {
+            "observations": [
+              {
+                "help": "unit_inventory_squad",
+                "indicator": 0,
+                "op": "squad",
+                "rgb_sha256": "b7dab4c34cf2641109701fa8c232785fac39315956776750812395d5d579e208"
+              },
+              {
+                "help": "unit_inventory_tool",
+                "indicator": 2,
+                "op": "tool",
+                "rgb_sha256": "e3242782585cb4ccdcbeae645ca629ffd30d6c77df6b380180684ccab6ca2ed6"
+              },
+              {
+                "help": "unit_inventory_clothing",
+                "indicator": 1,
+                "op": "restore",
+                "rgb_sha256": "a374cfb95257001c92948d5e2514450a0a9f8f9143d51e4418913da1ad9a9d34"
+              }
+            ],
+            "success": true
+          },
+          "native_result_sha256": "7bfdea98cd9cc025f32605f7b65e09db8f525d2c4076157d92e949ba7d8b7fe2",
+          "restored": true,
+          "source_save": "Owned source unchanged; DF40776 exits unsaved.",
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "unit-header-wire": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          },
+          "qa": "build/qa/items-assignment-preflight",
+          "limitations": [
+            "Controlled membership changes, not equipment assignment gameplay actions.",
+            "Live artifact-symbol and unassigned transitions are not covered.",
+            "Disconnect, epoch replacement and late replies remain unverified."
+          ]
         }
       },
       "layout_reference": {
@@ -52471,7 +52540,7 @@
           }
         },
         "limitations": [
-          "See live_contents_reference for actual asynchronous contents updates while dragging. Changing assignment indicators and disconnect/epoch/late-reply lifecycle remain unverified."
+          "See live_contents_reference for actual asynchronous contents updates while dragging, and indicator_reference.live_refresh_reference for squad/tool/clothing transitions. Disconnect/epoch/late-reply lifecycle remains unverified."
         ]
       },
       "live_contents_reference": {
@@ -52535,7 +52604,7 @@
         "limitations": [
           "Controlled references verify display refresh, not gameplay containment actions.",
           "First row remains2, so the added contained row at index1 is validated semantically, not by visible row pixels.",
-          "Assignment changes, disconnect, epoch changes and late replies remain unverified."
+          "Live squad/tool/clothing changes have separate indicator_reference.live_refresh_reference evidence. Disconnect, epoch changes and late replies remain unverified."
         ]
       }
     }

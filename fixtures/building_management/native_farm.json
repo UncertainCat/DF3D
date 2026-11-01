@@ -51605,7 +51605,180 @@
             "only outside work_weapons: cb1350(item,UNIT_ITEMOWNER,unit.id) -> clothing"
           ],
           "ownership": "Selector is inline inside the renderer, not a standalone callable API. Never call the renderer or borrow its stack/menu state. Native13b3090 resolves historical figure and writes the unit lookup cache: use owned unit input. Native cb1720 resolves artifact reference. Positive symbol depends on position entity link, assignment and non-renounced symbol claim.",
-          "remaining": "Runtime owned semantic adapter and pins, live guarded reader comparisons, fact transport, installed artwork, hover lifecycle and main-scene acceptance."
+          "remaining": "Other indicator artwork/help in composed viewer, changing-assignment refresh, scroll/resize and lifecycle coverage."
+        },
+        "reader_and_view_reference": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261101-012127",
+          "status": "passed_with_known_issues",
+          "protocol": 106,
+          "native": {
+            "cases": [
+              {
+                "cold_histfig_cache": true,
+                "guards_unchanged": true,
+                "hover": 294,
+                "indicator": 1,
+                "lines": [
+                  "This item is part of",
+                  "the creature's regular",
+                  "clothing."
+                ],
+                "name": "clothing"
+              },
+              {
+                "cold_histfig_cache": true,
+                "guards_unchanged": true,
+                "hover": 291,
+                "indicator": 0,
+                "lines": [
+                  "This item is part of",
+                  "the assigned squad",
+                  "equipment."
+                ],
+                "name": "squad"
+              },
+              {
+                "cold_histfig_cache": true,
+                "guards_unchanged": true,
+                "hover": 291,
+                "indicator": 0,
+                "lines": [
+                  "This item is part of",
+                  "the assigned squad",
+                  "equipment."
+                ],
+                "name": "squad-before-work"
+              },
+              {
+                "cold_histfig_cache": true,
+                "guards_unchanged": true,
+                "hover": 292,
+                "indicator": 2,
+                "lines": [
+                  "This item is a tool",
+                  "assigned by a work",
+                  "detail."
+                ],
+                "name": "work-before-clothing"
+              },
+              {
+                "cold_histfig_cache": true,
+                "guards_unchanged": true,
+                "hover": -1,
+                "indicator": -1,
+                "lines": [],
+                "name": "unassigned"
+              },
+              {
+                "cold_histfig_cache": true,
+                "guards_unchanged": true,
+                "hover": -1,
+                "indicator": -1,
+                "lines": [],
+                "name": "artifact-work-without-claim"
+              },
+              {
+                "cold_histfig_cache": true,
+                "guards_unchanged": true,
+                "hover": 293,
+                "indicator": 3,
+                "lines": [
+                  "This item is a symbol",
+                  "of a noble or",
+                  "administrator."
+                ],
+                "name": "artifact-position-symbol"
+              },
+              {
+                "cold_histfig_cache": true,
+                "guards_unchanged": true,
+                "hover": 291,
+                "indicator": 0,
+                "lines": [
+                  "This item is part of",
+                  "the assigned squad",
+                  "equipment."
+                ],
+                "name": "squad-before-symbol"
+              },
+              {
+                "cold_histfig_cache": true,
+                "guards_unchanged": true,
+                "hover": -1,
+                "indicator": -1,
+                "lines": [],
+                "name": "renounced-symbol"
+              }
+            ],
+            "limitations": "Synthetic membership/reference/claim cases; no equipment assignment or artifact claim gameplay action.",
+            "restored": true
+          },
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "unit-header-wire": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          },
+          "pixel_reference": {
+            "native_run": "build/stockpile-storage-native-farm-discovery-20261101-011141",
+            "viewer": "unit-items-scene.png",
+            "regions": [
+              {
+                "name": "clothing",
+                "rect": [
+                  824,
+                  208,
+                  24,
+                  36
+                ],
+                "differing_rgb_pixels": 0
+              },
+              {
+                "name": "inspect",
+                "rect": [
+                  856,
+                  208,
+                  24,
+                  36
+                ],
+                "differing_rgb_pixels": 0
+              }
+            ]
+          },
+          "scope": "Nine native reader comparisons with source/backing/cache/UI/RNG guards and cold HF cache; actual main scene baseline assignment facts, clothing/View hover and non-navigating clothing click, item inspect and carrier return.",
+          "qa": "build/qa/unit-items-indicator-ui: core and UI composition pass",
+          "limitations": [
+            "Only baseline clothing and View art compared in the composed viewer; other three indicator art/help cases remain unverified there.",
+            "Assignment changes, scroll/resize, contained-row tooltips and disconnect/epoch/late-reply coverage remain unfinished.",
+            "No public creature route exposure."
+          ],
+          "source_save": "unchanged; owned DF16800 exited unsaved"
         }
       }
     }

@@ -1696,6 +1696,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto& row:*rows) {
             Json::Value value(Json::objectValue);value["id"]=row.id;
             value["caption"]=DF2UTF(row.caption);value["role"]=DF2UTF(row.role);
+            value["indicator"]=row.indicator;
             value["contents"]=Json::Value(Json::arrayValue);
             for(const auto& child:row.contents) {
               Json::Value nested(Json::objectValue);nested["kind"]=child.kind;nested["id"]=child.id;

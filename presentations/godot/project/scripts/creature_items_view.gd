@@ -2,6 +2,8 @@ extends Control
 # Native Items rows: owned semantic text/targets; local drawing and navigation.
 signal inspect_requested(kind: int,id: int)
 const NativeText=preload("res://scripts/native_creature_text.gd")
+const INDICATOR_ART=["INVENTORY_ASSIGNED_SQUAD","INVENTORY_ASSIGNED_CLOTHING","INVENTORY_ASSIGNED_TOOL","INVENTORY_ASSIGNED_SYMBOL"]
+const INDICATOR_HELP=["inventory_squad","inventory_clothing","inventory_tool","inventory_symbol"]
 var art=preload("res://scripts/original_ui.gd").new()
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var world
@@ -34,7 +36,19 @@ func layout() -> void:
 	scrollbar.count=rows.size();scrollbar.page=capacity();scrollbar.first=first
 	scrollbar.visible=capacity()>0 and rows.size()>capacity();scrollbar.queue_redraw();queue_redraw()
 func inspect_rect(index: int) -> Rect2:
-	return Rect2(size.x-(48 if scrollbar.visible else 32),(index-first)*36,24,36)
+	return Rect2(size.x-(56 if scrollbar.visible else 40),(index-first)*36,24,36)
+func indicator_rect(index: int) -> Rect2:
+	var rect:=inspect_rect(index);rect.position.x-=32;return rect
+func hover_kind(point: Vector2) -> String:
+	if not allowed():return ""
+	var index:=first+floori(point.y/36)
+	if index<first or index>=mini(rows.size(),first+capacity()):return ""
+	var row: Dictionary=rows[index]
+	if int(fact(row,"row_kind",0))!=0:return ""
+	var indicator:=int(fact(row,"assignment_indicator",-1))
+	if indicator>=0 and indicator<INDICATOR_HELP.size() and indicator_rect(index).has_point(point):return INDICATOR_HELP[indicator]
+	if int(row.get("related_id",-1))>=0 and inspect_rect(index).has_point(point):return "inventory_view"
+	return ""
 func patch(texture: Texture2D,origin: Vector2,columns: int) -> void:
 	if texture==null:return
 	for y in 3:
@@ -58,6 +72,10 @@ func _draw() -> void:
 		theme.default_font.draw_string(get_canvas_item(),top+Vector2(56+(8 if kind==2 else 0),24),caption,HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
 		theme.default_font.draw_string(get_canvas_item(),top+Vector2(56,36),role,HORIZONTAL_ALIGNMENT_LEFT,-1,12,NativeText.colors[11])
 		if kind!=3 and int(row.get("related_id",-1))>=0:
+			var indicator:=int(fact(row,"assignment_indicator",-1))
+			if kind==0 and indicator>=0 and indicator<INDICATOR_ART.size():
+				var assigned: Texture2D=art.texture(INDICATOR_ART[indicator])
+				if assigned!=null:draw_texture_rect(assigned,indicator_rect(index),false)
 			var texture: Texture2D=art.texture("STOCKS_VIEW_ITEM")
 			if texture!=null:draw_texture_rect(texture,inspect_rect(index),false)
 func _gui_input(event: InputEvent) -> void:

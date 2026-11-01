@@ -296,6 +296,7 @@ return function(request)
    local r=record(s,item_row and v.id or -i,v.caption,v.id)
    if not r then break end
    fact(s,r,'row_kind',v.kind);fact(s,r,'native_role',v.role);fact(s,r,'parent_item_id',v.parent)
+   fact(s,r,'assignment_indicator',v.indicator)
    local it=item_row and v.id>=0 and df.item.find(v.id) or nil
    if it then
    fact(s,r,'stack',it:getStackSize())

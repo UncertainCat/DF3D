@@ -53,7 +53,7 @@ func unit_carrier(expected: Dictionary) -> void:
 		var native_items: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-items-wire-expected.json"))
 		var expected_rows: Array=[]
 		for row in native_items.rows:
-			expected_rows.append({"id":row.id,"kind":0,"caption":row.caption,"role":row.role,"parent":-1})
+			expected_rows.append({"id":row.id,"kind":0,"caption":row.caption,"role":row.role,"parent":-1,"indicator":row.indicator})
 			for child in row.contents:expected_rows.append({"id":child.id,"kind":child.kind,"caption":child.caption,"role":"","parent":row.id})
 		for row in native_items.spatters:expected_rows.append({"id":-1,"kind":3,"caption":row.caption,"role":row.body_part_caption,"parent":-1})
 		var actual_rows: Array=inspector.creature_sheet.records_for("inventory")
@@ -63,6 +63,7 @@ func unit_carrier(expected: Dictionary) -> void:
 			var wanted: Dictionary=expected_rows[index]
 			check(actual.get("name","")==wanted.caption and int(actual.get("related_id",-1))==int(wanted.id),"Native Items wire caption/target differs at "+str(index))
 			check(int(inspector.creature_sheet.fact_value(actual,"row_kind",-1))==int(wanted.kind),"Native Items wire kind differs")
+			check(int(inspector.creature_sheet.fact_value(actual,"assignment_indicator",-1))==int(wanted.get("indicator",-1)),"Native Items wire assignment differs")
 			check(int(inspector.creature_sheet.fact_value(actual,"parent_item_id",-1))==int(wanted.parent),"Native Items wire parent differs")
 			check(inspector.creature_sheet.record_text(actual,"inventory")==wanted.role,"Native Items wire role differs at "+str(index))
 		var items_wire: Dictionary={"success":not failed,"expected":expected_rows,"actual":actual_rows}
@@ -210,6 +211,17 @@ func exercise_items_view(inspector,target: int) -> void:
 	if not check(not view.rows.is_empty(),"Items view has no rows"):return
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/unit-items-scene.png")
+	check(int(view.fact(view.rows[0],"assignment_indicator",-1))==1,"Baseline clothing assignment missing")
+	var hover_motion:=InputEventMouseMotion.new()
+	hover_motion.position=view.get_global_transform_with_canvas()*view.indicator_rect(0).get_center();root.push_input(hover_motion,true)
+	await create_timer(0.65).timeout;await process_frame;await RenderingServer.frame_post_draw
+	check(inspector.hover_help.visible and inspector.hover_help.displayed=="unit_inventory_clothing","Clothing help missing")
+	root.get_texture().get_image().save_png(directory+"/unit-items-clothing-help-scene.png")
+	await pointer(hover_motion.position)
+	check(scene._ui.host.active==inspector and inspector.creature_sheet.tab=="Items","Clothing indicator click navigated")
+	hover_motion=InputEventMouseMotion.new();hover_motion.position=view.get_global_transform_with_canvas()*view.inspect_rect(0).get_center();root.push_input(hover_motion,true)
+	await create_timer(0.65).timeout;await process_frame;await RenderingServer.frame_post_draw
+	check(inspector.hover_help.visible and inspector.hover_help.displayed=="unit_inventory_view","Inventory View help missing")
 	var item_id:=int(view.rows[0].get("related_id",-1))
 	var item_owner=scene._ui.controller("farm").item_owner
 	var transitions: Array=[]

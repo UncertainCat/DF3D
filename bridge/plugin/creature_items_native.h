@@ -1,6 +1,7 @@
 #pragma once
 #include "building_item_native.h"
 #include "unit_description_native.h"
+#include "creature_inventory_indicator_native.h"
 #include "df/unit_inventory_item.h"
 #include "df/unit_spatter.h"
 #include "df/general_ref.h"
@@ -13,7 +14,7 @@ struct InventoryContainedRow {
     std::string caption;
 };
 struct InventoryDescriptionRow {
-    int32_t id=-1;
+    int32_t id=-1,indicator=-1;
     std::string caption,role;
     std::vector<InventoryContainedRow> contents;
 };
@@ -37,6 +38,9 @@ inline std::optional<std::vector<InventoryDescriptionRow>> inventoryDescriptions
         auto caption=df3d_production::buildingItemCaption(entry.item);
         if(!caption)return std::nullopt;
         InventoryDescriptionRow row;row.id=entry.item->id;row.caption=std::move(*caption);
+        const auto indicator=inventoryIndicator(context.unit(),entry.item);
+        if(!indicator)return std::nullopt;
+        row.indicator=*indicator;
         auto input=entry;
         reinterpret_cast<Describe>(base+0x1393900)(context.unit(),&row.role,&input);
         if(row.caption.size()>4096||row.role.size()>4096)return std::nullopt;

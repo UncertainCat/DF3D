@@ -1591,8 +1591,27 @@ entry point. Its lookups include b9f70, cb1350, cb1720 and13b3090; the last writ
 the unit historical-figure lookup cache and requires owned input. Runtime must
 not invoke the renderer or borrow menu/stack state. The controlled references
 establish UI decisions, not equipment-assignment or artifact-claim gameplay.
-An owned semantic adapter, guarded reader comparison, transport, installed
-artwork and composed hover/lifecycle acceptance are still unfinished.
+`creature_inventory_indicator_native.h` preserves that inline branch order and
+calls the pinned native lookups with owned historical-figure cache scratch.
+It returns semantic assignment values independently of rendering. Existing
+creature facts transport `assignment_indicator`; contained/spatter rows use-1.
+No protocol change is needed for this additional generic fact. The Items view
+uses installed assignment artwork and native tooltip copy, with the View target
+corrected to native x856 at the baseline1200x800 size.
+
+Protected012127 on2026-11-01 matches all nine native cases, including a cold
+historical-figure lookup cache. Guards preserve unit/item/figure/entity/claim/
+assignment/artifact objects, relevant vector backing storage, reference/link
+objects, UI and all random streams. The actual main scene verifies baseline
+assignment facts, Clothing and View help, non-navigating Clothing clicks, item
+inspection and carrier return. Clothing and View24x36 regions match native011141
+exactly. Initial011951 failed an existing Customize comparison because its native
+image was truncated at x784; it is not accepted. The unchanged rerun passes.
+Owned DF16800 exits unsaved, the source save is unchanged, and all Godot processes
+have only the known startup notice. Core and UI composition pass in
+`build/qa/unit-items-indicator-ui`. Other three indicator artwork/help cases in
+the composed viewer, changing assignments, contained-row help, scrolling,
+resizing and lifecycle coverage remain unfinished; the route stays staged.
 
 The item view places the name on the first header row when owner data exists,
 with the native yellow Owner line beneath and Weight on the third row. Without

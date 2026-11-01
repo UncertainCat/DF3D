@@ -3365,15 +3365,16 @@ void run(color_ostream& out) {
       const auto spatters=df3d_creature::inventorySpatters(unit);
       if(!inventory||!spatters)return luaL_error(state,"Native creature Items descriptions unavailable");
       lua_newtable(state);int index=0;
-      const auto append=[&](int kind,int id,int parent,const std::string& caption,const std::string& role) {
+      const auto append=[&](int kind,int id,int parent,const std::string& caption,const std::string& role,int indicator=-1) {
         lua_newtable(state);field(state,"kind",kind);field(state,"id",id);field(state,"parent",parent);
+        field(state,"indicator",indicator);
         // The creature fact boundary converts raw DF text to UTF8 once.
         lua_pushlstring(state,caption.data(),caption.size());lua_setfield(state,-2,"caption");
         lua_pushlstring(state,role.data(),role.size());lua_setfield(state,-2,"role");
         lua_rawseti(state,-2,++index);
       };
       for(const auto& row:*inventory) {
-        append(0,row.id,-1,row.caption,row.role);
+        append(0,row.id,-1,row.caption,row.role,row.indicator);
         for(const auto& child:row.contents)append(child.kind,child.id,row.id,child.caption,"");
       }
       for(const auto& row:*spatters)append(3,-1,-1,row.caption,row.bodyPartCaption);

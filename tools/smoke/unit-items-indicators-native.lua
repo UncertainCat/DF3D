@@ -38,6 +38,36 @@ local function membership(vector,present)
  table.sort(values);replace(vector,values)
 end
 local cases={}
+local function read_indicator()
+ local guards={}
+ local function guard(address,size)
+  if size==0 then return end
+  assert(size>0 and size<1048576,'Invalid indicator guard size')
+  local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+  guards[#guards+1]={address=address,size=size,bytes=bytes}
+ end
+ for _,object in ipairs{unit,item,figure,entity,assignment,claim,artifact,artifact_ref,
+  df.global.plotinfo,df.global.game.main_interface.view_sheets}do
+  local size,address=df.sizeof(object);guard(address,size)
+ end
+ for _,vector in ipairs{assigned,work,item.general_refs,figure.entity_links,entity.artifact_claims,
+  entity.positions.assignments,unit.body.components.body_part_status,unit.enemy.motor_nervenet,
+  unit.enemy.sensory_nervenet,unit.enemy.body_part_useable}do
+  local _,address=df.sizeof(vector)
+  local first=df.reinterpret_cast('uint64_t',address).value
+  local last=df.reinterpret_cast('uint64_t',address+8).value
+  guard(first,last-first)
+ end
+ for _,ref in ipairs(item.general_refs)do local size,address=df.sizeof(ref);guard(address,size)end
+ for _,link in ipairs(figure.entity_links)do local size,address=df.sizeof(link);guard(address,size)end
+ local base=dfhack.internal.getImageBase()
+ for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do guard(base+range[1],range[2])end
+ local text,status=dfhack.run_command_silent('df3d','unit-items-description-probe',tostring(unit.id))
+ local unchanged=true
+ for _,g in ipairs(guards)do if dfhack.internal.memcmp(g.bytes,g.address,g.size)~=0 then unchanged=false end;df.delete(g.bytes)end
+ assert(status==0,text);assert(unchanged,'Indicator reader changed guarded source/UI/random state')
+ return require('json').decode(text).rows[1].indicator
+end
 local ok,err=xpcall(function()
  for _,case in ipairs{
   {'clothing',false,false,true,false,294},
@@ -69,6 +99,14 @@ local ok,err=xpcall(function()
   local main=df.global.game.main_interface
   assert(main.current_hover==case[6],case[1]..' indicator hover differs: '..main.current_hover)
   local row={name=case[1],hover=main.current_hover,lines={}}
+  if os.getenv('DF3D_UNIT_ITEMS_INDICATOR_READER')=='1'then
+   local cached=unit.enemy.histfig_vector_idx;unit.enemy.histfig_vector_idx=-1
+   local passed,value=pcall(read_indicator)
+   unit.enemy.histfig_vector_idx=cached
+   assert(passed,value);row.indicator=value;row.guards_unchanged=true;row.cold_histfig_cache=true
+   local expected=({[291]=0,[292]=2,[293]=3,[294]=1})[case[6]]or -1
+   assert(row.indicator==expected,'Native indicator reader differs for '..case[1])
+  end
   if case[6]>=0 then
    assert(main.hover_instructions_on,'Indicator help did not activate')
    local g=df.global.gps

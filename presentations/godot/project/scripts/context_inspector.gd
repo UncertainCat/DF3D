@@ -257,6 +257,10 @@ func _update_customize_help() -> void:
 	if is_instance_valid(customize_button) and customize_button.is_visible_in_tree() and not customize_button.disabled and (ui_host==null or ui_host.allows_panel_input(self)):
 		var local: Vector2=customize_button.get_global_transform_with_canvas().affine_inverse()*hover_position
 		if Rect2(Vector2.ZERO,customize_button.size).has_point(local):hover_help.enter_unit(get_instance_id(),"customize");return
+	if creature_sheet.tab=="Items" and is_instance_valid(creature_sheet.items_view):
+		var view=creature_sheet.items_view
+		var kind: String=view.hover_kind(view.get_global_transform_with_canvas().affine_inverse()*hover_position)
+		if not kind.is_empty():hover_help.enter_unit(get_instance_id(),kind);return
 	hover_help.leave(get_instance_id())
 
 func label_at(id: String, text: String, native_color: int = -1):

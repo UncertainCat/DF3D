@@ -2,7 +2,52 @@
 #include "knowledge_detail_native.h"
 #include "df/historical_figure_info.h"
 #include "df/historical_kills.h"
+#include "creature_items_native.h"
+#include "df/squad.h"
+#include "df/squad_position.h"
 namespace df3d_creature {
+struct UniformRow {
+    int32_t id=-1,itemType=-1;
+    std::optional<df3d_production::ItemInspectionAppearance> appearance;
+    bool resolved=false,carried=false;
+    std::string caption,role;
+    df::coord position{-30000,-30000,-30000};
+};
+struct UniformPage {bool hasSquad=false;std::vector<UniformRow> rows;};
+inline std::optional<UniformPage> militaryUniform(const df::unit* source) {
+    if(!source || !inventoryDescriptionReady())return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[&]{uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0xb45;++i){hash^=base[0x17bd91+i];hash*=UINT64_C(1099511628211);}return hash==UINT64_C(0x478e6b1bbf1baf1d);}();
+    if(!supported)return std::nullopt;
+    UniformPage page;
+    auto* squad=df::squad::find(source->military.squad_id);
+    if(!squad)return page;
+    const auto index=source->military.squad_position;
+    if(index<0 || size_t(index)>=squad->positions.size() || !squad->positions[index])return std::nullopt;
+    page.hasSquad=true;
+    if(!source->body.body_plan || source->inventory.size()>10000)return std::nullopt;
+    for(const auto* entry:source->inventory)if(!entry || !entry->item)return std::nullopt;
+    InventoryDescriptionContext context(*source);InventoryRandomRestore random(base);
+    // Native17bd91..17c8d6 reads assigned_items directly, preserving unresolved
+    // entries as blank rows. There is no separate native list-building routine.
+    for(const auto id:squad->positions[index]->equipment.assigned_items) {
+        UniformRow row;row.id=id;
+        if(auto* item=df::item::find(id)) {
+            row.resolved=true;row.itemType=int32_t(item->getType());
+            row.appearance=df3d_production::itemAppearance(item);if(!row.appearance)return std::nullopt;
+            auto caption=df3d_production::buildingItemCaption(item);if(!caption)return std::nullopt;
+            row.caption=std::move(*caption);
+            for(const auto& entry:context.inventory())if(entry.item==item) {
+                auto input=entry;row.carried=true;
+                reinterpret_cast<void(*)(df::unit*,std::string*,df::unit_inventory_item*)>(base+0x1393900)(context.unit(),&row.role,&input);break;
+            }
+            if(!row.carried){auto position=df3d_production::itemPosition(item);if(position)row.position=*position;}
+        }
+        page.rows.push_back(std::move(row));
+    }
+    return page;
+}
 inline std::optional<std::string> militaryKills(df::unit* unit) {
     if(!unit || !df::global::world || !knowledgeDescriptionReady())return std::nullopt;
     auto* figure=df::historical_figure::find(unit->hist_figure_id);

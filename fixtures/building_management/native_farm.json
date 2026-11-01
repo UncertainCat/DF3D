@@ -59726,7 +59726,60 @@
       "plugin_sha256": "a5acace39f9a15995a09b58a72024162c1400e24787e15fe064aa3b3b5a48c05",
       "source_save_preserved": true,
       "owned_df_exited_unsaved": true,
-      "scope": "Native Squad/Uniform/Kills reference; only Kills has implemented native text and rendered acceptance. Empty1017 and populated2905; header redraw preserves view. Overflow and all other historical kill variants are not established."
+      "scope": "Native Squad/Uniform/Kills reference. Kills and Uniform implemented; Squad remains a generic summary. Bounded page and action evidence below does not establish every historical or item variant.",
+      "uniform_reference": {
+        "capture": "build/stockpile-storage-native-farm-discovery-20261101-130457",
+        "ordinary_capture": "build/stockpile-storage-native-farm-discovery-20261101-125612",
+        "date": "2026-11-01",
+        "scene": {
+          "cases": [
+            {
+              "native_pixels": true,
+              "native_text": null,
+              "page": "Uniform",
+              "unit_id": 1017
+            },
+            {
+              "native_pixels": true,
+              "native_text": true,
+              "page": "Kills",
+              "unit_id": 1017
+            },
+            {
+              "native_pixels": true,
+              "native_text": null,
+              "page": "Uniform",
+              "unit_id": 2905
+            },
+            {
+              "native_pixels": true,
+              "native_text": true,
+              "page": "Kills",
+              "unit_id": 2905
+            }
+          ],
+          "success": true
+        },
+        "native_recenter": {
+          "closed": true,
+          "item_id": 22691,
+          "target": [
+            132,
+            70,
+            165
+          ]
+        },
+        "native_hover": {
+          "id": 300,
+          "lines": [
+            "Recenter on this item."
+          ]
+        },
+        "plugin_sha256": "52a0cf477597d248568829c2bf624d7d2248c66fe7919ead668e3570411fa23a",
+        "source_save_preserved": true,
+        "owned_df_exited_unsaved": true,
+        "scope": "No squad page and three assigned items; controlled uncarried first item restores inventory entry at cleanup. Native text/art/row pixels, header retention, recenter target and visible help accepted. Overflow and other item families remain unverified."
+      }
     },
     "unit_rooms_reference": {
       "source": "build/stockpile-storage-native-farm-discovery-20261101-095036",

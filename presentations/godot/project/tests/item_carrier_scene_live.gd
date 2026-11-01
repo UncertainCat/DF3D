@@ -1560,7 +1560,7 @@ func exercise_military_kills(inspector) -> void:
 	var reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-military-native.json"))
 	var results:Array=[]
 	for page in reference.pages:
-		if page.name!="Kills":continue
+		if page.name not in ["Kills","Uniform"]:continue
 		var target:=int(page.unit_id)
 		inspector.open_target(Vector3i.ZERO,1,target)
 		var deadline:=Time.get_ticks_msec()+10000
@@ -1569,19 +1569,33 @@ func exercise_military_kills(inspector) -> void:
 			var state:Dictionary=world.creature_info_state(target)
 			if not state.get("loading",true) and not state.get("detail",{}).is_empty():break
 			await create_timer(0.01).timeout
-		await health_tab(inspector,"Military");await health_tab(inspector,"Kills",true)
+		await health_tab(inspector,"Military");await health_tab(inspector,page.name,true)
 		await process_frame;await RenderingServer.frame_post_draw
-		var view=inspector.creature_sheet.kills_view
-		check(view.rows==page.tagged_rows,"Native Military Kills text differs")
+		var view=inspector.creature_sheet.kills_view if page.name=="Kills" else inspector.creature_sheet.uniform_view
+		if page.name=="Kills":check(view.rows==page.tagged_rows,"Native Military Kills text differs")
 		inspector.redraw();await process_frame
-		check(inspector.creature_sheet.kills_view==view,"Header refresh replaced Military Kills view")
+		check((inspector.creature_sheet.kills_view if page.name=="Kills" else inspector.creature_sheet.uniform_view)==view,"Header refresh replaced Military view")
 		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
-		var name:="unit-military-"+str(target)+"-kills"
+		var name:="unit-military-"+str(target)+"-"+str(page.name).to_lower()
 		actual.save_png(directory+"/"+name+"-scene.png")
 		var native:=Image.load_from_file(directory+"/"+name+".png");native.convert(Image.FORMAT_RGB8)
 		var rect:=Rect2i(432,208,456,528)
 		var same:=actual.get_region(rect).get_data()==native.get_region(rect).get_data()
-		check(same,"Native Military Kills pixels differ")
-		results.append({"unit_id":target,"native_text":view.rows==page.tagged_rows,"native_pixels":same})
+		check(same,"Native Military pixels differ: "+str(page.name))
+		results.append({"unit_id":target,"page":page.name,"native_text":view.rows==page.tagged_rows if page.name=="Kills" else null,"native_pixels":same})
+		if page.has("recenter"):
+			var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*view.inspect_rect(0).get_center();root.push_input(motion,true)
+			await create_timer(0.7).timeout;await process_frame
+			check(inspector.hover_help.visible and inspector.hover_help.displayed=="unit_uniform_recenter","Uniform recenter hover missing")
+			check(preload("res://scripts/native_hover_view.gd").UNIT_HELP.uniform_recenter==page.hover.lines,"Uniform recenter help differs from native")
+			var camera_before:Vector3=scene.camera_rig.position
+			var level_before:int=world.get_top_z()
+			await pointer(view.get_global_transform_with_canvas()*view.inspect_rect(0).get_center());await process_frame
+			var tile:Array=page.recenter.target
+			check(not inspector.is_open(),"Uniform recenter retained creature panel")
+			check(is_equal_approx(scene.camera_rig.position.x,float(tile[0])+0.5) and is_equal_approx(scene.camera_rig.position.z,float(tile[1])+0.5) and world.get_top_z()==int(tile[2]),"Uniform recenter focused wrong item")
+			world.set_top_z(level_before);scene.camera_rig.follow_level(level_before)
+			scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
+
 	var file:=FileAccess.open(directory+"/unit-military-kills-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()

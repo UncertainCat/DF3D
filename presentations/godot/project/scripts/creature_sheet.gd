@@ -16,6 +16,7 @@ var scroll_location := ""
 var items_view
 var health_view
 var kills_view
+var uniform_view
 var skills_view
 var knowledge_view
 var rooms_view
@@ -31,6 +32,7 @@ func reset(id: int):
  unit_id=id;tab="Overview";subtabs.clear();scrolls.clear();scroll=null;scroll_location=""
  if is_instance_valid(health_view):health_view.page_key="";health_view.first=0
  if is_instance_valid(kills_view):kills_view.first=0;kills_view.scrollbar.dragging=false
+ if is_instance_valid(uniform_view):uniform_view.first=0;uniform_view.scrollbar.dragging=false
  if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
  if is_instance_valid(rooms_view):rooms_view.first=0;rooms_view.scrollbar.dragging=false
  if is_instance_valid(labor_view):labor_view.first=0;labor_view.scrollbar.dragging=false
@@ -463,6 +465,15 @@ func render(controller, state: Dictionary):
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
+ if tab=="Military" and subtabs.get(tab)=="Uniform":
+  scroll=null
+  if not is_instance_valid(uniform_view):
+   uniform_view=preload("res://scripts/creature_uniform_view.gd").new()
+   owner.body.add_child(uniform_view);uniform_view.configure(owner.world,records_for("uniform"))
+   uniform_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+   uniform_view.focus_requested.connect(func(tile):owner.close_panel();owner.focus_requested.emit(tile))
+  uniform_view.position=Vector2(0,y);uniform_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  uniform_view.present(records_for("uniform"));return
  if tab=="Military" and subtabs.get(tab)=="Kills":
   scroll=null
   if not is_instance_valid(kills_view):

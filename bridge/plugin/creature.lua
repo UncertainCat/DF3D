@@ -603,28 +603,15 @@ return function(request)
   end)
  end)
  section(20,function(s)
-  local mode=u.uniform.cur_uniform
-  if mode>=0 then
-   each(s,u.uniform.uniforms[mode],function(id)
-    local it=df.item.find(id)
-    if not it then s.truncated=true;result.complete=false;s.reason='Some current uniform item references no longer resolve';return end
-    local r=record(s,id,dfhack.items.getDescription(it,0,true),id)
-    fact(s,r,'record_type','equipment')
-    fact(s,r,'uniform_mode',enum(df.unit_uniform_mode_type,mode));fact(s,r,'current',u.uniform.cur_uniform==mode and 'yes' or 'no')
-   end)
-  end
-  local squad=df.squad.find(u.military.squad_id)
-  local position=squad and u.military.squad_position>=0 and squad.positions[u.military.squad_position] or nil
-  if position then
-   for category=0,df.uniform_category._last_item do
-    each(s,position.equipment.uniform[category],function(v,i)
-     local r=record(s,100000+category*1000+i,enum(df.uniform_category,category),v.item)
-     fact(s,r,'record_type','specification');fact(s,r,'item_type',enum(df.item_type,v.item_type));fact(s,r,'item_subtype',v.item_subtype)
-     fact(s,r,'material_class',enum(df.entity_material_category,v.material_class))
-     if v.mattype>=0 then local material=dfhack.matinfo.decode(v.mattype,v.matindex);if material then fact(s,r,'material',material:toString())end end
-     fact(s,r,'assigned_count',#v.assigned)
-    end)
-   end
+  if not request.military_uniform then return end
+  local has_squad,rows=request.military_uniform(u.id)
+  if not has_squad then local r=record(s,-1,'');fact(s,r,'no_squad',1);return end
+  for _,value in ipairs(rows)do
+   local r=record(s,value.id,value.caption,value.id)
+   fact(s,r,'native_role',value.role);fact(s,r,'resolved',value.resolved);fact(s,r,'carried',value.carried)
+   fact(s,r,'item_type',value.item_type)
+   if value.appearance then fact(s,r,'appearance',require('json').encode(value.appearance,{pretty=false}))end
+   fact(s,r,'x',value.x);fact(s,r,'y',value.y);fact(s,r,'z',value.z)
   end
  end)
  section(21,function(s)

@@ -3461,14 +3461,48 @@ uses the native blue palette. Protected125019 on2026-11-01 verifies empty1017
 and soldier2905 with both notable and other kills: tagged text and all456x528
 body pixels match native. Owned DF38760 exits unsaved, source preservation
 passes, and all three Godot processes have only the known startup notice.
-`unit_military_reference` also records native Squad and Uniform pages, which
-remain unimplemented generic summaries. The soldier Uniform page lists equipped
-items and body slots, not the reconstructed specification rows currently exposed.
+`unit_military_reference` also records native Squad and Uniform pages. Squad
+remains a generic summary; Uniform implementation follows below.
 Kills overflow and other historical variants remain outside this bounded evidence;
 public creature exposure stays gated. Initial124411 failed existing Expel hover
 checks;124725 exposed a freed view after header redraw despite the launcher
 reporting pass.124845 matched prose but caught selected-tab text color. These
 runs are excluded from acceptance.
+
+Uniform now follows the inline assigned-item traversal17bd91..17c8d6, pinned
+as a complete block. It reads the selected squad position's assigned_items in
+native order, preserving unresolved IDs as blank rows. It calls the common
+native c65450 item-caption routine and1393900 with an owned unit/inventory
+context for carrying descriptions; the existing random-stream guard prevents
+formatter queries from advancing simulation randomness. It does not reconstruct
+uniform specification rules or borrow the native Uniform menu. An absent squad
+uses the captured "No squad assigned" label.
+
+Section20 carries the item rows, carrying state and native effective position
+for uncarried items. Bounded compact JSON in the appearance fact preserves the
+existing semantic item-appearance fields, including instrument facts, within the
+generic fact transport. This is independent of item map residency. It is compact
+because DF text conversion maps pretty-print control bytes to display glyphs.
+Godot parses these facts into the existing validated item-sheet icon API. Malformed JSON is ignored without emitting a parse diagnostic.
+
+`creature_uniform_view.gd` renders the native three-cell row pitch, item artwork,
+yellow captions and cyan carrying descriptions. Uncarried items have the native
+recenter control and instruction300, "Recenter on this item." Recenter closes the
+creature owner and focuses only the viewer camera. Header refresh retains the
+view; overlays retire its scrollbar gesture.
+
+Protected125612 verifies ordinary empty/populated Uniform pages. Final130457
+on2026-11-01 additionally removes the first assigned item's inventory entry in
+the protected clone, then restores that entry at cleanup. Item22691 retains its
+icon without a streamed inventory entry; both native and DF3D recenter to132,70,165.
+The visible tooltip matches native text and timing, and all456x528 panel pixels
+match for both Uniform pages and the existing Kills pages. Owned DF19028 exits
+unsaved; source preservation passes and three Godot processes have only the
+known startup notice. `unit_military_reference.uniform_reference` retains the
+scope. Overflow and other item families remain unverified; creature exposure
+stays gated. Earlier125751 caught the missing independent icon,130124 lost the
+diagnostic pointer during hover wait, and130217 caught encoded whitespace in
+the appearance fact; none are acceptance runs.
 
 ### Creature Rooms native list
 

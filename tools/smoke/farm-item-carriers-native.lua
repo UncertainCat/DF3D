@@ -36,6 +36,7 @@ local function erase_pointer(vector,value)
 end
 local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
+ if _G.df3d_military_restore then _G.df3d_military_restore()end
  if health_syndromes_saved then
   local old=health_syndromes_saved;unit.health.syndrome_diagnosis:resize(0)
   for _,event in ipairs(old.diagnoses)do unit.health.syndrome_diagnosis:insert('#',event)end

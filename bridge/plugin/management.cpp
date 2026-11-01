@@ -3447,6 +3447,21 @@ void run(color_ostream& out) {
       lua_pushlstring(state,value->data(),value->size());return 1;
     });lua_setfield(L,-2,"military_kills");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto page=df3d_creature::militaryUniform(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!page)return luaL_error(state,"Native creature uniform unavailable");
+      lua_pushboolean(state,page->hasSquad);lua_newtable(state);int index=0;
+      for(const auto& row:page->rows){lua_newtable(state);field(state,"id",row.id);field(state,"caption",row.caption);field(state,"role",row.role);
+        field(state,"resolved",row.resolved?1:0);field(state,"carried",row.carried?1:0);
+        field(state,"item_type",row.itemType);
+        if(row.appearance){const auto& a=*row.appearance;lua_newtable(state);
+          field(state,"material_token",a.materialToken);field(state,"subtype_raw",a.subtypeRaw);field(state,"color_token",a.colorToken);
+          field(state,"stack",a.stack);field(state,"flags",a.flags);
+          if(a.instrumentFamily>=0){lua_newtable(state);field(state,"family",a.instrumentFamily);field(state,"placed",a.instrumentPlaced);lua_setfield(state,-2,"instrument");}
+          lua_setfield(state,-2,"appearance");}
+        field(state,"x",row.position.x);field(state,"y",row.position.y);field(state,"z",row.position.z);lua_rawseti(state,-2,++index);}
+      return 2;
+    });lua_setfield(L,-2,"military_uniform");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto values=df3d_creature::officeTitles(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!values)return luaL_error(state,"Native creature office titles unavailable");
       lua_newtable(state);int index=0;

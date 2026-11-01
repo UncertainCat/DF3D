@@ -1649,10 +1649,21 @@ scrollbar and cancel dragging. `refresh_retention_reference` records this scope.
 Final QA `items-refresh-retention-final` passes core, inspector and composition;
 GPU checks have only documented diagnostics. The owned source is unchanged and
 DF33628 exits unsaved; all live Godot processes have only the startup notice.
-Actual asynchronous replies during a live held drag, changing native assignments
-and contents, and disconnect/epoch/late replies remain unverified. Full inventory
-row pixels and every main-scene overflow input are not claimed; the route stays
-staged. Contained-row help/navigation evidence follows below.
+Protected010956 on2026-11-01 adds and removes a controlled contains-item reference
+while the actual pointer holds the Items scrollbar. Both automatic semantic
+publications retain the same control, first row2 and dragging; the list changes
+from12 to13 rows and back. The added item ID/caption match the native description
+probe. Subsequent motion/release, Customize, Expel preview and Reports navigation
+pass. `live_contents_reference` records this scope: the inserted row at index1 is
+above the retained viewport, so its pixel rendering is not claimed by this run.
+The helper restores references/flags and the source save is unchanged; DF10064
+exits unsaved. Live processes have only the known startup notice; final QA
+`items-live-refresh-final` passes core, inspector and composition cleanly.
+The extended refresh workflow has a60-second capture allowance: the previous
+30-second limit expired and restored the carrier fixture before later navigation.
+Changing assignment indicators and disconnect/epoch/late replies remain
+unverified. Full inventory row pixels and every main-scene overflow input are
+not claimed; the route stays staged. Contained-row navigation evidence follows.
 
 Contained Items controls are recorded by
 `unit_items_reference.contained_navigation_reference`. Protected014749 on

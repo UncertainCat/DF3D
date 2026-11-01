@@ -464,6 +464,9 @@ local ok,err=xpcall(function()
    if os.getenv('DF3D_UNIT_ITEMS_CONTAINED_SCENE')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-items-contained-scene-native.lua')
     linked.contained_scene=assert(loadfile(source))(unit,capture,out)
+   elseif os.getenv('DF3D_UNIT_ITEMS_REFRESH')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-items-refresh-scene-native.lua')
+    linked.items_refresh=assert(loadfile(source))(unit,capture,out)
    elseif os.getenv('DF3D_ITEM_OWNER_REFRESH')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','item-owner-scene-native.lua')
     linked.owner_refresh=assert(loadfile(source))(unit,capture,out)

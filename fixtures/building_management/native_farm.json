@@ -52471,8 +52471,71 @@
           }
         },
         "limitations": [
-          "Live redraw is explicitly invoked; an actual asynchronous detail/header reply arriving during held pointer drag remains unverified.",
-          "Changing native assignments/contents and disconnect/epoch/late-reply lifecycle remain unverified."
+          "See live_contents_reference for actual asynchronous contents updates while dragging. Changing assignment indicators and disconnect/epoch/late-reply lifecycle remain unverified."
+        ]
+      },
+      "live_contents_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-010956",
+        "status": "passed_with_known_issues",
+        "scope": "Owned paused-clone contains-item reference added to hood32064 for sock32625, then removed. Open main Items panel receives both automatic semantic publications while the actual pointer holds its scrollbar; same control, first2 and dragging retained, 13 then12 rows. Added contained ID and caption match the native description probe. Motion/release and subsequent Customize, Expel preview and Reports navigation pass.",
+        "scene": {
+          "observations": [
+            {
+              "dragging": true,
+              "first": 2,
+              "op": "add",
+              "rows": 13
+            },
+            {
+              "dragging": true,
+              "first": 2,
+              "op": "restore",
+              "rows": 12
+            }
+          ],
+          "success": true
+        },
+        "native_restored": true,
+        "native_flags_unchanged_except_weight_cache": true,
+        "native_result_sha256": "6bf23ad67f4e60e96a428aefc70684e4f975eb0fb3c3e58bcfb9e5d376b5bb05",
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "qa": "build/qa/items-live-refresh-final",
+        "source_save": "Owned source unchanged; DF10064 exits unsaved.",
+        "limitations": [
+          "Controlled references verify display refresh, not gameplay containment actions.",
+          "First row remains2, so the added contained row at index1 is validated semantically, not by visible row pixels.",
+          "Assignment changes, disconnect, epoch changes and late replies remain unverified."
         ]
       }
     }

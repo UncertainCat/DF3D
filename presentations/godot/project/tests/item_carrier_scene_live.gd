@@ -247,6 +247,7 @@ func exercise_items_view(inspector,target: int) -> void:
 	var drag_button:=InputEventMouseButton.new();drag_button.position=drag_point;drag_button.button_index=MOUSE_BUTTON_LEFT;drag_button.pressed=true;root.push_input(drag_button,true)
 	await process_frame
 	check(view.scrollbar.dragging,"Items scrollbar drag did not start")
+	if OS.get_environment("DF3D_UNIT_ITEMS_REFRESH")=="1":await exercise_items_refresh(inspector,target,view)
 	inspector.redraw();await process_frame
 	check(inspector.creature_sheet.items_view==view and view.scrollbar.dragging,"Header redraw replaced the active Items drag")
 	drag_motion=InputEventMouseMotion.new();drag_motion.position=view.scrollbar.get_global_transform_with_canvas()*Vector2(8,240);root.push_input(drag_motion,true)
@@ -293,6 +294,35 @@ func exercise_items_view(inspector,target: int) -> void:
 	check(inspector.creature_sheet.tab=="Overview","Item carrier did not reset to native Overview")
 	var result:=FileAccess.open(directory+"/unit-items-view-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"inspected_item":item_id,"creature":target}));result.close()
+
+func exercise_items_refresh(inspector,target: int,view) -> void:
+	var baseline: int=view.rows.size()
+	var observations: Array=[]
+	var serial:=0
+	for operation in ["add","restore"]:
+		serial+=1
+		var file:=FileAccess.open(directory+"/unit-items-refresh-request.tmp",FileAccess.WRITE)
+		file.store_string(JSON.stringify({"unit_id":target,"op":operation,"serial":serial}));file.close()
+		DirAccess.rename_absolute(directory+"/unit-items-refresh-request.tmp",directory+"/unit-items-refresh-request.json")
+		var deadline:=Time.get_ticks_msec()+10000
+		while not FileAccess.file_exists(directory+"/unit-items-refresh-ack.json") and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+		if not check(FileAccess.file_exists(directory+"/unit-items-refresh-ack.json"),"Contents refresh acknowledgement timed out"):return
+		var expected: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-items-refresh-ack.json"))
+		DirAccess.remove_absolute(directory+"/unit-items-refresh-ack.json")
+		check(int(expected.serial)==serial and expected.op==operation,"Contents acknowledgement mismatched")
+		var count:=baseline+(1 if operation=="add" else 0)
+		deadline=Time.get_ticks_msec()+10000
+		while view.rows.size()!=count and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+		check(view.rows.size()==count,"Automatic creature refresh missed changed contents: "+operation)
+		check(inspector.creature_sheet.items_view==view and view.scrollbar.dragging and view.first==2,"Contents refresh replaced held gesture or offset")
+		if operation=="add" and view.rows.size()==count:
+			var native: Dictionary=expected.native.rows[0].contents[0]
+			check(int(view.rows[1].related_id)==int(native.id) and view.rows[1].name==native.caption,"Refreshed contained row differs from native")
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/unit-items-refresh-"+operation+".png")
+		observations.append({"op":operation,"rows":view.rows.size(),"first":view.first,"dragging":view.scrollbar.dragging})
+	var file:=FileAccess.open(directory+"/unit-items-refresh-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"observations":observations}));file.close()
 
 func exercise_contained_items(inspector,target: int) -> void:
 	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(124,132))

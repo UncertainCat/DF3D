@@ -3171,6 +3171,15 @@ and damage/repair text. Treatment reports no scheduled treatment. History uses
 dated colored event text and caregiver names; Description has anatomical prose.
 The fixture retains exact lines and panel hashes for this specimen only.
 
+Static string references identify shared builder479f40, called at1a3713 and
+1b2f9c. It selects Health pages0..4 from context+1c7c and appends tagged strings
+to context+1c88 plus allocated color-text boxes to context+1ca0. Description
+calls1380480,13cae60 and13daa50. `builder_audit` records the executable pin,
+complete candidate span hash, field mapping and unresolved ownership work.
+This is a candidate for independently owned formatter storage, not permission
+to borrow the native sheet or its populated vectors. Transitive mutation/global
+reads and native allocation cleanup still need audit before a runtime call.
+
 These pages are not implemented by the current generic health renderer.
 `creature.lua` exposes observed wounds, body-part flags, treatment flags and
 operation records, explicitly noting the missing anatomical narrative. Trace

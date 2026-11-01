@@ -53010,7 +53010,44 @@
         "Native oracle only; current DF3D generic health rows do not reproduce these pages.",
         "Semantic formatter and selection entry points still need tracing; raw wound/body-part flags are not accepted substitutes.",
         "Additional injuries, active treatment, empty history, scrolling, resize and navigation interactions remain unverified."
-      ]
+      ],
+      "builder_audit": {
+        "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+        "builder": {
+          "rva": "0x479f40",
+          "length": "0x4074",
+          "fnv1a64": "0x11442695a7629f0c",
+          "sha256": "1d5af376054ee844f1cc3da5e11cff3fa40a379364bc60da1d2d0abf2e442447",
+          "scope": "Static candidate; contains page branches and trailing dispatch data, not yet runtime-enabled."
+        },
+        "call_sites": [
+          "0x1a3713",
+          "0x1b2f9c"
+        ],
+        "arguments": {
+          "rcx": "view_sheets_interfacest-shaped context; use independent zeroed storage, never the native instance",
+          "rdx": "unit pointer; transitive mutable/cache access still requires audit"
+        },
+        "context_fields": {
+          "0x4": "context guard: value1 returns without producing rows",
+          "0x1c7c": "unit_health_active_tab:0 Status,1 Wounds,2 Treatment,3 History,4 Description",
+          "0x1c88": "unit_health_raw_str: vector<string*> output",
+          "0x1ca0": "unit_health_box: vector<color_text_boxst*> output",
+          "0x1cb8": "unit_health_width reset by callers, not yet established as builder input"
+        },
+        "description_helpers": [
+          "0x1380480",
+          "0x13cae60",
+          "0x13daa50"
+        ],
+        "allocations": "Native strings and color_text_boxst outputs; 0x14e2b0 initializes empty 0x20-byte color box with width76. Matching deletion/vector cleanup must be established.",
+        "open_audit": [
+          "Identify and validate every reachable global read; dwarf branch reads0x239a1e8, likely plotinfo.main.fortress_entity but not yet independently confirmed.",
+          "Audit transitive helpers, virtual calls and unit/body/health/history cache writes; own mutable inputs.",
+          "Verify all five outputs against native page captures, including tagged colors and History ordering.",
+          "Do not call the native sheet renderer or read its populated output/menu vectors."
+        ]
+      }
     }
   }
 }

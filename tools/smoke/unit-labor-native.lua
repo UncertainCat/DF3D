@@ -165,6 +165,28 @@ if os.getenv('DF3D_UNIT_LABOR_LOCATIONS')=='1'then
  end,debug.traceback)
  sheet.active_id=original;view:render(dfhack.getTickCount());assert(ok,err)
 end
+if os.getenv('DF3D_UNIT_LABOR_ANIMALS')=='1'then
+ local animals={}
+ for _,animal in ipairs(df.global.world.units.active)do
+  if dfhack.units.isAnimal(animal) and animal.flags1.tame and dfhack.units.isAlive(animal) then
+   animals[#animals+1]={unit=animal,profession=animal.profession,owner=animal.relationship_ids.PetOwner}
+   if #animals==2 then break end
+  end
+ end
+ assert(#animals==2,'Expected two tame animal controls')
+ for i,v in ipairs(animals)do v.unit.profession=98;v.unit.relationship_ids.PetOwner=i==1 and unit.id or -1 end
+ _G.df3d_labor_animal_restore=function()
+  for _,v in ipairs(animals)do v.unit.profession=v.profession;v.unit.relationship_ids.PetOwner=v.owner end
+ end
+ select('Labor',15,16);select('Work animals',17,20)
+ local data={assigned={},available={},lines={}}
+ for _,id in ipairs(sheet.unit_labor_assigned_animal_unid)do data.assigned[#data.assigned+1]=id end
+ for _,id in ipairs(sheet.unit_labor_assignable_animal_unid)do data.available[#data.available+1]=id end
+ assert(#data.assigned==1 and data.assigned[1]==animals[1].unit.id,'Native assigned animal fixture missing')
+ assert(#data.available==1 and data.available[1]==animals[2].unit.id,'Native available animal fixture missing')
+ for y=19,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then data.lines[#data.lines+1]={y=y,text=text}end end
+ result.work_animals_fixture=data;capture('unit-labor-animals')
+end
 select('Overview',15,16)
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Labor capture advanced simulation')
 local file=assert(io.open(out..'/unit-labor-native.json','w'));file:write(json.encode(result));file:close()

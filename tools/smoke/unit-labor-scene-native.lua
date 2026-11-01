@@ -102,6 +102,7 @@ local ok,err=xpcall(function()capture('farm-item-carrier-unit-scene',service)end
 if _G.df3d_labor_location_control then _G.df3d_labor_location_control.restore()end
 if exemption then exemption.flags.MENIAL_WORK_EXEMPTION=old_exemption end
 if workshop_profile then workshop_fixture(false)end
+if _G.df3d_labor_animal_restore then _G.df3d_labor_animal_restore()end
 assert(ok,err)
 local count=os.getenv('DF3D_UNIT_LABOR_WORKSHOP_WIRE')=='1' and 9 or os.getenv('DF3D_UNIT_LABOR_ELIGIBILITY')=='1' and 7 or 5
 if os.getenv('DF3D_UNIT_LABOR_LOCATIONS')=='1'then count=count+1 end

@@ -364,7 +364,7 @@ func render(controller, state: Dictionary):
  var y:=96.0
  for names in recipe.rows: y=tabs_at(names,y)
  if recipe.subtabs.has(tab): y=tabs_at(recipe.subtabs[tab].keys(),y,true)
- if tab=="Labor" and subtabs.get(tab) in ["Work details","Workshops","Locations"]:
+ if tab=="Labor" and subtabs.get(tab) in ["Work details","Workshops","Locations","Work animals"]:
   scroll=null
   if not is_instance_valid(labor_view):
    labor_view=preload("res://scripts/creature_labor_view.gd").new()
@@ -396,6 +396,11 @@ func render(controller, state: Dictionary):
     location_rows[-1]["zone_id"]=int(fact_value(record,"zone_id",-1))
     location_rows[-1]["tile"]=Vector3i(int(fact_value(record,"x",0)),int(fact_value(record,"y",0)),int(fact_value(record,"z",0)))
    labor_view.present_locations(owner.labor,location_rows)
+  elif subtabs.get(tab)=="Work animals":
+   var animal_rows:Array=[]
+   for record in records_for("work_animals"):
+    animal_rows.append({"id":int(record.id),"caption":str(record.name),"assigned":int(fact_value(record,"assigned",0))==1})
+   labor_view.present_animals(owner.labor,animal_rows)
   else:labor_view.present_labor(owner.labor)
   return
  if is_instance_valid(labor_view):labor_view.hide()

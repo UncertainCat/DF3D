@@ -3260,9 +3260,8 @@ building virtual49 getName for the row caption; the provider calls that same
 method. Section22 now receives native IDs/order/captions and building type,
 subtype, custom code and coordinates through an owned Lua callback, replacing
 its reconstructed workshop/furnace traversal. Existing section truncation limits
-remain explicit. Section24 still incorrectly supplies training assignments
-instead of the native assigned/assignable work-animal lists. These providers
-and their corresponding controls remain required work.
+remain explicit. Section24 now uses the same native collector in Work animals
+mode, described below; assignment/removal and recenter remain required work.
 
 Protected104754 on2026-11-01 confirms the actual main-scene creature-info
 transport for dedicated workshop3: exact native ID/order/caption and
@@ -3379,6 +3378,38 @@ restores the original assignment and profession facts. Owned DF45208 exits unsav
 source preservation passes, and all three Godot processes have only the known
 startup notice. `location_panel_reference.removal_reference` retains this scope.
 Other occupation roles and reverse-order cross-creature history remain unverified.
+
+Work animals section24 calls native47dfc0 with an owned page3 context and
+preallocated assigned/available vectors. Native controls eligibility, filters,
+assignment grouping and order; training assignments are no longer substituted.
+The collector repeats the office predicate inside the existing lookup-cache
+restoration lifetime. Native1330c30 supplies captions with sex/training suffixes,
+as renderer175e56 does. Rows carry animal ID, current owner and assigned state.
+The256-row transport cap explicitly marks truncation.
+
+Protected121046 on2026-11-01 verifies ordered IDs6545/6548 and assigned/available
+state through actual main-scene creature inspection. The controlled native page
+sets two tame animals to hunting profession98 and assigns the first to1017;
+profession/owner fields are restored at teardown. All456x528 body pixels match,
+including animal images, clipped captions, accented names, sex symbols and row
+controls. Captions pass through the Lua record's UTF-8 conversion exactly once.
+The shared Labor view owns scope/scroll state and uses resident creature artwork.
+Native literals15ffee0/15ffeb8 supply ineligible/empty labels; renderer1762bc uses
+the same artwork as ZONE_PICK_ANIMALS for the available-animal button.
+
+Owned DF38048 exits unsaved, source preservation passes, and three Godot processes
+report only the known startup notice. `work_animals_provider_reference` retains
+this scope. Earlier120129 established IDs but exposed double-converted text;
+120704 verified corrected text but caught row-origin and assignment-art mistakes.
+Initial115742 used an obsolete diagnostic field;115828/115953 failed on local
+GDScript name collisions. They are not rendered acceptance.
+
+Assignment input1b4d21..1b4e11 calls native relationship routines138c120,
+13918c0/1391970, create_nemesis and name updates. Exposing those effects and
+recenter is next; the visible assign/remove signal is not connected yet.
+Inspect routes to the existing creature sheet but has not been live exercised.
+Overflow, hover and unavailable-state rendering remain unverified. Public
+creature exposure stays gated.
 
 ### Creature Rooms native list
 

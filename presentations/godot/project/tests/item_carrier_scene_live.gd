@@ -441,7 +441,8 @@ func unit_carrier(expected: Dictionary) -> void:
 	elif OS.get_environment("DF3D_UNIT_ITEMS_LIFECYCLE")=="1":await exercise_items_lifecycle(inspector,target)
 	if OS.get_environment("DF3D_UNIT_LABOR_LOCATIONS")=="1":
 		await exercise_labor_locations(inspector,target)
-		inspector.close_panel();await process_frame
+	if OS.get_environment("DF3D_UNIT_LABOR_ANIMALS")=="1":await exercise_work_animals(inspector,target)
+	inspector.close_panel();await process_frame
 	exercised=true
 
 func health_tab(inspector,title: String,nested:=false) -> bool:
@@ -1494,3 +1495,19 @@ func exercise_knowledge_view(inspector) -> void:
 	await health_tab(inspector,"Overview")
 	var evidence:=FileAccess.open(directory+"/unit-knowledge-view-result.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"success":not failed,"native_pixels":true,"escape_reopen":true,"tab_retirement":true,"scroll_retention":true,"refresh_drag":true,"settings_drag_retirement":true,"late_reply":true,"session_retirement":true,"injected_transport":true}));evidence.close()
+
+func exercise_work_animals(inspector,target:int) -> void:
+	var animal_reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-labor-native.json")).work_animals_fixture
+	world.demand_creature_info(-1);world.demand_creature_info(target);await drain()
+	var animals:Array=[]
+	for section in world.creature_info_state(target).get("detail",{}).get("sections",[]):
+		if section.key=="work_animals":animals=section.records
+	var expected_ids:Array=animal_reference.assigned+animal_reference.available
+	check(animals.size()==expected_ids.size(),"Native work animal row count differs")
+	for i in mini(animals.size(),expected_ids.size()):
+		check(int(animals[i].id)==int(expected_ids[i]),"Native work animal order differs")
+		check(int(inspector.creature_sheet.fact_value(animals[i],"assigned",-1))==(1 if i<animal_reference.assigned.size() else 0),"Native work animal assignment differs")
+	await health_tab(inspector,"Labor");await drain();await health_tab(inspector,"Work animals",true);await drain()
+	await labor_capture("animals")
+	var evidence:=FileAccess.open(directory+"/unit-labor-animals-wire.json",FileAccess.WRITE)
+	evidence.store_string(JSON.stringify({"success":not failed,"rows":animals}));evidence.close()

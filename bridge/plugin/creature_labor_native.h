@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "creature_office_native.h"
 #include "df/histfig_entity_link_positionst.h"
 #include "df/workshop_profile.h"
@@ -8,6 +9,7 @@
 #include "df/world_site.h"
 #include "df/building_civzonest.h"
 #include "df/buildings_other_id.h"
+#include "df/unit_relationship_type.h"
 #include "location_staff_mutation_native.h"
 
 namespace df3d_creature {
@@ -213,7 +215,7 @@ inline WorkshopRemoveOutcome removeWorkshopAssignment(df::unit* unit,int32_t bui
 // Creature Labor input1b4580..1b45e1. DF owns caste, unit and office/spouse
 // eligibility. Its office predicate refreshes lookup indices; restore only
 // those semantic caches, without borrowing any sheet or menu state.
-inline std::optional<bool> laborEligible(df::unit* unit) {
+inline std::optional<bool> laborEligible(df::unit* unit,const std::function<void()>& collect={}) {
     static const bool supported=[] {
         if(!df3d_production::farmFunctions())return false;
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -280,6 +282,53 @@ inline std::optional<bool> laborEligible(df::unit* unit) {
             }
         }
     }
-    return !reinterpret_cast<bool (*)(df::unit*,int32_t)>(base+0x13b99b0)(unit,group);
+    const bool eligible=!reinterpret_cast<bool (*)(df::unit*,int32_t)>(base+0x13b99b0)(unit,group);
+    // The Work animals collector repeats this predicate. Keep its lookup-cache
+    // refresh inside the same restoration lifetime as the eligibility read.
+    if(eligible && collect)collect();
+    return eligible;
+}
+struct LaborAnimal {
+    int32_t id=-1,ownerId=-1;
+    bool assigned=false;
+    std::string caption;
+};
+inline std::optional<std::vector<LaborAnimal>> laborAnimals(df::unit* unit) {
+    if(!unit || !df::global::world || !df3d_area::staffOrderingFunctions())return std::nullopt;
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x2ae;++i){hash^=base[0x47dfc0+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0xe5aeb067816dc769);
+    }();
+    if(!supported)return std::nullopt;
+    struct Context {
+        std::array<uint8_t,0x1ac4> prefix{};
+        int32_t page=3;
+        std::array<uint8_t,8> unused{};
+        std::vector<int32_t> workshops,assignedAnimals,availableAnimals;
+    } context;
+    static_assert(offsetof(Context,assignedAnimals)==0x1ae8 && offsetof(Context,availableAnimals)==0x1b00);
+    const auto count=df::global::world->units.active.size();
+    context.assignedAnimals.reserve(count);context.availableAnimals.reserve(count);
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto eligible=laborEligible(unit,[&] {
+        reinterpret_cast<void (*)(Context*,df::unit*)>(base+0x47dfc0)(&context,unit);
+    });
+    if(!eligible)return std::nullopt;
+    std::vector<LaborAnimal> rows;
+    rows.reserve(context.assignedAnimals.size()+context.availableAnimals.size());
+    for(const auto* list:{&context.assignedAnimals,&context.availableAnimals}) {
+        for(const auto id:*list) {
+            auto* animal=df::unit::find(id);if(!animal)return std::nullopt;
+            LaborAnimal row;row.id=id;row.assigned=list==&context.assignedAnimals;
+            row.ownerId=animal->relationship_ids[df::unit_relationship_type::PetOwner];
+            // Native renderer175e56 calls this formatter with sex/training suffixes.
+            df3d_area::staffOrderingFunctions().name(animal,&row.caption,true);
+            rows.push_back(std::move(row));
+        }
+    }
+    return rows;
 }
 }

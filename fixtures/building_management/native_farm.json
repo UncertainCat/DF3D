@@ -59342,6 +59342,94 @@
           "source_save_unchanged": true,
           "bridge_sha256": "de0f4b08738d37d045bc62ce50675791c2fb1b1d3c804dfe1d73be3c9173f735"
         }
+      },
+      "work_animals_provider_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-121046",
+        "native": {
+          "assigned": [
+            6545
+          ],
+          "available": [
+            6548
+          ],
+          "lines": [
+            {
+              "text": "                                                             Will do available tasks anywhere",
+              "y": 20
+            },
+            {
+              "text": "                                                              Ral Zudenavuz, hunting Turkey Hen,   ...",
+              "y": 23
+            },
+            {
+              "text": "                                                              ïngiz Lelumerush, Stray hunting Dog, ...",
+              "y": 26
+            }
+          ]
+        },
+        "rows": [
+          {
+            "facts": [
+              {
+                "has_number": true,
+                "key": "animal_id",
+                "number": 6545,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "owner_id",
+                "number": 1017,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "assigned",
+                "number": 1,
+                "text": ""
+              }
+            ],
+            "id": 6545,
+            "name": "Ral Zudenavuz, hunting Turkey Hen, ♀ (Tame)",
+            "related_id": 1017
+          },
+          {
+            "facts": [
+              {
+                "has_number": true,
+                "key": "animal_id",
+                "number": 6548,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "owner_id",
+                "number": -1,
+                "text": ""
+              },
+              {
+                "has_number": true,
+                "key": "assigned",
+                "number": 0,
+                "text": ""
+              }
+            ],
+            "id": 6548,
+            "name": "ïngiz Lelumerush, Stray hunting Dog, ♂ (Tame)",
+            "related_id": -1
+          }
+        ],
+        "ids_order_assignment_match": true,
+        "fixture_restored": true,
+        "source_save_unchanged": true,
+        "scope": "Owned native collector, names and assigned/available state through main scene; populated Work animals rendered body exactly matches native. Assignment/removal and recenter unfinished; inspect routed but not live exercised; overflow/hover unavailable-state rendering unverified.",
+        "native_panel_pixels_match": true,
+        "rectangle": [
+          432,
+          208,
+          456,
+          528
+        ]
       }
     },
     "unit_rooms_reference": {

@@ -664,14 +664,12 @@ return function(request)
   end
  end)
  section(24,function(s)
-  local all=df.global.plotinfo.training.training_assignments;local limit=math.min(#all,512)
-  for i=0,limit-1 do local v=all[i]
-   if v.trainer_id==u.id or v.animal_id==u.id then
-    local animal=df.unit.find(v.animal_id);local r=record(s,v.animal_id,animal and U.getReadableName(animal) or 'Animal',v.trainer_id)
-    fact(s,r,'trainer_id',v.trainer_id);fact(s,r,'animal_id',v.animal_id)
-   end
+  if not request.work_animal_list then return end
+  for i,v in ipairs(request.work_animal_list(u.id))do
+   if i>256 then s.truncated=true;result.complete=false;break end
+   local r=record(s,v.id,v.caption,v.owner_id)
+   fact(s,r,'animal_id',v.id);fact(s,r,'owner_id',v.owner_id);fact(s,r,'assigned',v.assigned)
   end
-  if #all>limit then s.truncated=true;result.complete=false end
  end)
  return result
 end

@@ -3406,6 +3406,14 @@ void run(color_ostream& out) {
       return 1;
     });lua_setfield(L,-2,"location_list");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto rows=df3d_creature::laborAnimals(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!rows)return luaL_error(state,"Native creature work-animal list unavailable");
+      lua_newtable(state);int index=0;
+      for(const auto& row:*rows){lua_newtable(state);field(state,"id",row.id);field(state,"caption",row.caption);
+        field(state,"assigned",row.assigned?1:0);field(state,"owner_id",row.ownerId);lua_rawseti(state,-2,++index);}
+      return 1;
+    });lua_setfield(L,-2,"work_animal_list");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto values=df3d_creature::officeTitles(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!values)return luaL_error(state,"Native creature office titles unavailable");
       lua_newtable(state);int index=0;

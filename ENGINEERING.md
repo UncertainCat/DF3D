@@ -6630,7 +6630,13 @@ workshop capture pass; live logs contain only classified known Godot diagnostics
 capture failed because its old Assign coordinates hit the newly inserted portrait;
 that failed run is not acceptance. Selector indicators, portrait navigation,
 responsive layout and full visual parity remain unfinished. The workshop screen
-remains unexposed.
+remains unexposed. Its internal main-scene factory now connects assigned-portrait
+navigation to the existing creature Overview route and shares item navigation,
+follow ownership and session retirement with the other building panels. The
+workshop selector uses the captured76-cell width; shared location selectors retain
+74 cells. `workshop-composition-width` passes composition and the existing workshop
+capture with only known renderer diagnostics. This does not establish public
+selection routing or completed selector indicators.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

@@ -10,6 +10,8 @@ var scrollbar
 var active_header := 3
 var descending: Array = [true,true,true,true]
 var strips: Dictionary = {}
+# Workshop selector uses two additional native cells; location defaults stay74.
+var extra_columns:=0
 
 func configure(source) -> void:
 	world=source;art.configure(source);theme=art.theme
@@ -20,7 +22,8 @@ func configure(source) -> void:
 	scrollbar.position=Vector2(568,36);scrollbar.size=Vector2(16,600);scrollbar.page=16
 
 func layout(view: Vector2) -> void:
-	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(592,708)
+	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(592+extra_columns*8,708)
+	if scrollbar!=null:scrollbar.position.x=568+extra_columns*8
 
 func display(total: int, first := 0, header := 3, directions: Array = [true,true,true,true]) -> void:
 	active_header=header;descending=directions.duplicate()
@@ -42,7 +45,7 @@ func patch(token: String, origin: Vector2i, columns: int, rows: int, source: Tex
 func _draw() -> void:
 	if world==null:return
 	# The native rendered right edge is cell119, although the widget rect ends117.
-	patch("HOVER_RECTANGLE",Vector2i.ZERO,74,59)
+	patch("HOVER_RECTANGLE",Vector2i.ZERO,74+extra_columns,59)
 	for header in 4:
 		var suffix: String="ACTIVE" if header==active_header else "INACTIVE"
 		# Each native header retains its direction when another header is selected.

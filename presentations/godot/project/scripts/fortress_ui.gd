@@ -126,10 +126,11 @@ func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
-	if id in ["farm","chest"]:
+	if id in ["farm","chest","workshop"]:
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		ensure_follow()
 		panel.holder_requested.connect(open_building_holder)
+		if id=="workshop":panel.unit_requested.connect(func(unit_id):open_item_carrier(2,unit_id))
 		panel.item_owner.configure_follow(item_follow)
 		panel.item_owner.carrier_requested.connect(open_item_carrier)
 		panel.item_owner.stockpile_requested.connect(func(target):controller("areas").open_stockpile(target))

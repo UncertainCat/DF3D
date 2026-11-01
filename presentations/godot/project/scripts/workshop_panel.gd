@@ -13,7 +13,7 @@ func configure(world,service,host,help=null) -> void:
 	super.configure(world,service,host,help)
 	panel.configure_tasks(world,tasks,"")
 	panel.configure_workers(world,workers)
-	selector=preload("res://scripts/location_staff_candidates_view.gd").new();canvas.add_child(selector);selector.configure(world);selector.hide()
+	selector=preload("res://scripts/location_staff_candidates_view.gd").new();canvas.add_child(selector);selector.configure(world);selector.extra_columns=2;selector.hide()
 	selector.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and workers.phase==workers.Phase.Ready
 	selector.cancelled.connect(_close_picker)
 	selector.unit_chosen.connect(func(id):

@@ -9,6 +9,19 @@
   },
   "checks": [
     {
+      "id": "workshop_tasks_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/workshop_tasks_capture.gd",
+      "completion": "^WORKSHOP_TASKS_CAPTURE_PASS$",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
       "id": "workshop_tasks_state_test",
       "lane": "core",
       "kind": "godot",

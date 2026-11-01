@@ -6522,6 +6522,15 @@ covers queue/cancel receipts and retirement; this is not live effect or rendered
 panel acceptance. The public workshop route remains gated pending the native
 catalog and complete sheet.
 
+`workshop_tasks_view.gd` implements the staged Tasks body with original task
+icons, controller-backed repeat/suspend/cancel and task selection, and native
+availability/objection rows. `workshop_tasks_capture` renders the native Make bed
+queue and recorded Still reaction rows and exercises task/cancel hit routing.
+Priority and detail actions are signals awaiting their semantic integration.
+Search, categories, native ordering, complete builtin choices and sheet/header/
+contents composition remain unfinished; no public workshop route is enabled.
+The component capture is not complete screen parity or live mutation acceptance.
+
 The native workshop catalog builder `8c5680` uses global building-menu vectors;
 its new-button constructor `8b1600` calls `7c5880`, which registers each button
 in those vectors. Neither is a permitted runtime API. Carpenter composition is

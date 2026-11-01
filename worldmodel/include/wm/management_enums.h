@@ -2,6 +2,11 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class CreatureWorkshopOutcome : uint8_t {
+  Rejected = 0,
+  Applied = 1,
+  Unavailable = 2,
+};
 enum class CreatureKnowledgeOutcome : uint8_t {
   Rejected = 0,
   Ready = 1,
@@ -124,6 +129,7 @@ enum class ManagementAction : uint8_t {
   CreatureExpelRead = 74,
   CreatureExpelApply = 75,
   CreatureKnowledgeRead = 76,
+  CreatureWorkshopRemove = 77,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -411,11 +417,13 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::CreatureExpelRead: return true;
   case ManagementAction::CreatureExpelApply: return true;
   case ManagementAction::CreatureKnowledgeRead: return true;
+  case ManagementAction::CreatureWorkshopRemove: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::CreatureWorkshopRemove: return "creature_workshop";
   case ManagementAction::CreatureKnowledgeRead: return "creature_knowledge";
   case ManagementAction::CreatureExpelRead: return "creature_expel";
   case ManagementAction::CreatureExpelApply: return "creature_expel";

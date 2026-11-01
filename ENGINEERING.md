@@ -4130,6 +4130,20 @@ results. DF35272 exits unsaved and source preservation passes; all three Godot
 processes contain only the known startup notice. Recursive event closure and
 broader source/branch coverage remain separate requirements.
 
+### Workshop removal request contract (management111)
+
+Management111 adds `CreatureWorkshopRemove` action77 in the
+`creature_workshop` domain. The mutation carries unit ID, building ID and a
+positive expected assignment revision. Its receipt repeats both identities and
+reports Applied, Rejected or Unavailable. Applied requires Ok; the other outcomes
+require Rejected. Successful replies require the typed receipt. The viewer must
+match the receipt to its active request and must never replay uncertain edits.
+
+Request/state defaults and required version move from110to111. Rebuild and
+deploy bridge, model and viewer together; older regions remain isolated. Old
+recordings cannot supply assignment revisions and do not authorize removal.
+This contract alone does not implement the native handler or expose the control.
+
 ### Knowledge request contract (management110)
 
 Management110 adds staged `CreatureKnowledgeRead` action76 and the

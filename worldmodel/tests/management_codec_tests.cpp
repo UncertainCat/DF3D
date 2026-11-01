@@ -3921,3 +3921,32 @@ TEST_CASE("knowledge replies validate identity outcome and UTF8 byte bounds") {
     if(count==32768)CHECK(codec::decodeState(value).creatureKnowledge->text==text);
   }
 }
+
+TEST_CASE("workshop removal carries target and current membership revision") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::CreatureWorkshopRemove;
+  request.creatureWorkshop={1017,3,42};
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+  const auto* wireRequest=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+  CHECK_FALSE(wire::validateConstructionRequest(*wireRequest));
+  REQUIRE(wireRequest->creature_workshop());
+  CHECK(wireRequest->creature_workshop()->unit_id()==1017);
+  CHECK(wireRequest->creature_workshop()->building_id()==3);
+  CHECK(wireRequest->creature_workshop()->expected_revision()==42);
+  request.creatureWorkshop.expectedRevision=0;b.Clear();codec::encodeRequest(b,request,1,2,3);
+  CHECK(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())));
+}
+TEST_CASE("workshop removal acknowledges application only with a successful envelope") {
+  for(bool accepted:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto payload=wire::CreateCreatureWorkshopState(b,1017,3,wire::CreatureWorkshopOutcome::Applied);
+    wire::ManagementStateBuilder result(b);result.add_revision(1);result.add_world_epoch(3);
+    result.add_action(wire::ManagementAction::CreatureWorkshopRemove);
+    result.add_status(accepted?wire::ManagementStatus::Ok:wire::ManagementStatus::Rejected);
+    result.add_creature_workshop(payload);b.Finish(result.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==!accepted);
+    if(accepted){const auto decoded=codec::decodeState(value);REQUIRE(decoded.creatureWorkshop);
+      CHECK(decoded.creatureWorkshop->unitId==1017);CHECK(decoded.creatureWorkshop->buildingId==3);
+      CHECK(decoded.creatureWorkshop->outcome==wm::CreatureWorkshopOutcome::Applied);}
+  }
+}

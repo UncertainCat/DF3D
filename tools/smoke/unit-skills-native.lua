@@ -7,6 +7,16 @@ local function row(y)
  local text={};for x=0,g.dimx-1 do local p=dfhack.screen.readTile(x,y);text[#text+1]=p.ch>=32 and string.char(p.ch%256)or' 'end
  return table.concat(text)
 end
+-- Preserve the actual native character cells, including color and placement.
+-- Text alone cannot distinguish profession colors or rust suffix styling.
+local function cells(y)
+ local result={}
+ for x=0,g.dimx-1 do
+  local p=dfhack.screen.readTile(x,y)
+  if p.ch>=33 then result[#result+1]={x=x,ch=p.ch,fg=p.fg,bg=p.bg,bold=p.bold}end
+ end
+ return result
+end
 local function click(x,y)
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
@@ -60,7 +70,7 @@ local function observe(name)
    for _,field in ipairs{'skills','values','rust_values','knowledge_types','knowledge_ids','knowledge_bits'}do assert(json.encode(page[field])==json.encode(page.probe[field]),'Skills probe differs: '..name..' '..field)end
   end
   if page.probe and os.getenv('DF3D_UNIT_SKILLS_CAPTIONS')=='1'then
-   local captions=page.probe.captions;local count=#captions;page.caption_rows={};page.subtitle_rows={}
+   local captions=page.probe.captions;local count=#captions;page.caption_rows={};page.subtitle_rows={};page.caption_cells={};page.subtitle_cells={}
    for start=0,count-1,14 do
     local first=math.max(0,math.min(start,count-14));sheet.scroll_position_unit_skill=first;view:render(dfhack.getTickCount())
     for index=first,math.min(first+13,count-1)do
@@ -68,10 +78,12 @@ local function observe(name)
      local caption=captions[index+1]
      assert(caption~='' and text:find(caption,1,true),'Native Skills caption differs: '..name..' row '..index..' expected '..caption..' visible '..text)
      page.caption_rows[index+1]=text
+     page.caption_cells[index+1]=cells(20+3*(index-first))
      if name=='Knowledge'then
       local subtitle=dfhack.df2utf(row(21+3*(index-first))):gsub('^%s+',''):gsub('%s+$','')
       assert(subtitle==page.probe.subtitles[index+1],'Native Knowledge subtitle differs: '..index..' expected '..page.probe.subtitles[index+1]..' visible '..subtitle)
       page.subtitle_rows[index+1]=subtitle
+      page.subtitle_cells[index+1]=cells(21+3*(index-first))
      end
     end
    end

@@ -3161,6 +3161,24 @@ The full unit route is still staged; these are baseline view checks.
 
 ### Native creature Skills reference
 
+`row_cells_reference` records protected050640 character-cell observations for
+all79 baseline Skills rows, including foreground/background/bold values and
+the four visible rust suffixes. Captions start at column54 at1200x800; scholarly,
+poetic and written subtitles use palette13,11 and14 respectively. These are
+native observations, not rendered Godot acceptance. Music/dance colors and
+race/caste variants are not covered. All five typed pages still match native;
+owned DF40212 exits unsaved with source preservation and only known Godot
+startup notices (`passed_with_known_issues`).
+
+The Skills renderer16e3ee selects a profession through764a70, then calls
+13337a0 with the unit's race/caste and background0, or uses bright white when
+the profession is absent. The existing `nativeZoneOwnerProfessionColor`
+adapter already reads this pinned dispatch and raw-color inputs without
+executing the global-writing drawing routine. Skills color transport should
+reuse that adapter; the Godot static skill-color table does not establish
+race/caste parity. The current typed Skills contract does not carry these
+colors yet. Rust suffix positioning, hover and actual rendering remain gaps.
+
 `native_farm.json.unit_skills_reference` records protected032532 native Skills
 captures for Labor, Combat, Social, Other skills and Knowledge. The first four
 contain18/4/9/3 ordered skills, their levels and separate rust-adjusted values.

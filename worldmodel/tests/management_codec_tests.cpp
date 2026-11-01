@@ -1368,11 +1368,17 @@ TEST_CASE("management domain decoding owns nested data independently of the wire
   auto healthPage=wire::CreateCreatureHealthPage(builder,wire::CreatureHealthPageKind::Description,
       builder.CreateVector(std::vector{builder.CreateString(nativeDescription)}));
   auto healthPages=builder.CreateVector(std::vector{healthPage});
+  auto skill=wire::CreateCreatureSkillRow(builder,12,-1,0,5,-4,builder.CreateString("Native skill"),builder.CreateString(""));
+  auto knowledge=wire::CreateCreatureSkillRow(builder,-1,8,0x80000000u,0,0,builder.CreateString("Native topic"),builder.CreateString("Native category"));
+  auto skillsPages=builder.CreateVector(std::vector{
+      wire::CreateCreatureSkillsPage(builder,wire::CreatureSkillsPageKind::Labor,builder.CreateVector(std::vector{skill})),
+      wire::CreateCreatureSkillsPage(builder,wire::CreatureSkillsPageKind::Knowledge,builder.CreateVector(std::vector{knowledge}))});
   wire::CreatureStateBuilder creature(builder);
   creature.add_unit_id(42);
   creature.add_name(name);
   creature.add_sections(sections);
   creature.add_health_pages(healthPages);
+  creature.add_skills_pages(skillsPages);
   builder.Finish(creature.Finish());
   auto decoded =
       codec::decodeCreature(flatbuffers::GetRoot<wire::CreatureState>(builder.GetBufferPointer()));
@@ -1381,6 +1387,14 @@ TEST_CASE("management domain decoding owns nested data independently of the wire
   CHECK(decoded.unitId == 42);
   CHECK(decoded.name == "Cerol");
   CHECK(decoded.species.empty());
+  REQUIRE(decoded.skillsPages.size()==2);
+  CHECK(decoded.skillsPages[0].kind==wm::CreatureSkillsPageKind::Labor);
+  REQUIRE(decoded.skillsPages[0].rows.size()==1);
+  CHECK(decoded.skillsPages[0].rows[0].rustValue==-4);
+  CHECK(decoded.skillsPages[0].rows[0].caption=="Native skill");
+  REQUIRE(decoded.skillsPages[1].rows.size()==1);
+  CHECK(decoded.skillsPages[1].rows[0].knowledgeBits==0x80000000u);
+  CHECK(decoded.skillsPages[1].rows[0].subtitle=="Native category");
   REQUIRE(decoded.healthPages.size()==1);
   CHECK(decoded.healthPages[0].kind==wm::CreatureHealthPageKind::Description);
   REQUIRE(decoded.healthPages[0].rows.size()==1);

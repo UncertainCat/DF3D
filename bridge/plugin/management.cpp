@@ -84,6 +84,8 @@
 #include "creature_expel_action_native.h"
 #include "creature_health_native.h"
 #include "creature_health_pages_native.h"
+#include "creature_skills_native.h"
+#include "skills_caption_native.h"
 #include "creature_items_native.h"
 #include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
@@ -3858,7 +3860,27 @@ void run(color_ostream& out) {
         }
         if(ok)creature.healthPages.push_back(std::move(text));
       }
-      if(!ok){creature={};message="Native creature Health payload unavailable or exceeds contract";}
+      if(ok && !df3d_creature::skillsCaptionReady())ok=false;
+      size_t skillRows=0;
+      for(int page=0;page<5 && ok;++page){
+        const auto native=df3d_creature::skillsPageProbe(unit,page);
+        if(!native){ok=false;break;}
+        creature_data::CreatureSkillsPage target;target.kind=creature_data::CreatureSkillsPageKind(page);
+        const size_t count=page==4?native->knowledgeTypes.size():native->skills.size();
+        for(size_t i=0;i<count;++i){
+          creature_data::CreatureSkillRow row;
+          if(page==4){row.id=native->knowledgeIds[i];row.knowledgeType=native->knowledgeTypes[i];row.knowledgeBits=native->knowledgeBits[i];
+            row.caption=DF2UTF(df3d_creature::nativeKnowledgeCaption(row.knowledgeType,row.id,row.knowledgeBits));
+            row.subtitle=DF2UTF(df3d_creature::nativeKnowledgeCategory(row.knowledgeType,row.id));
+          }else{row.id=native->skills[i];row.rating=native->values[i];row.rustValue=native->rustValues[i];
+            row.caption=DF2UTF(df3d_creature::nativeSkillCaption(int16_t(row.id),row.rating,unit->race,unit->caste));}
+          bytes+=row.caption.size()+row.subtitle.size();
+          if(++skillRows>4096 || row.caption.size()>4096 || row.subtitle.size()>4096 || bytes>131072){ok=false;break;}
+          target.rows.push_back(std::move(row));
+        }
+        if(ok)creature.skillsPages.push_back(std::move(target));
+      }
+      if(!ok){creature={};message="Native creature payload unavailable or exceeds contract";}
     }
   }
 

@@ -273,7 +273,10 @@ namespace m=df3d::mirror;
 struct Fact {std::string key,text;int64_t number=0;bool hasNumber=false;};
 struct Record {int32_t id=-1,relatedId=-1;std::string name;std::vector<Fact> facts;};
 struct Section {uint8_t kind=0;bool available=false,truncated=false;std::string reason;std::vector<Record> records;};
-struct State {int32_t id=-1,age=-1,sex=-1,x=-1,y=-1,z=-1;uint64_t tick=0;bool complete=false;std::string name,species,profession,job;std::vector<Section> sections;std::vector<std::vector<std::string>> healthPages;
+enum class CreatureSkillsPageKind : uint8_t { Labor, Combat, Social, Other, Knowledge };
+struct CreatureSkillRow { int32_t id=-1,knowledgeType=-1;uint32_t knowledgeBits=0;int32_t rating=0,rustValue=0;std::string caption,subtitle; };
+struct CreatureSkillsPage { CreatureSkillsPageKind kind=CreatureSkillsPageKind::Labor;std::vector<CreatureSkillRow> rows; };
+struct State {int32_t id=-1,age=-1,sex=-1,x=-1,y=-1,z=-1;uint64_t tick=0;bool complete=false;std::string name,species,profession,job;std::vector<Section> sections;std::vector<std::vector<std::string>> healthPages;std::vector<CreatureSkillsPage> skillsPages;
  std::vector<std::string> pages,palettes;std::vector<m::AppearanceLayer> layers;};
 inline void read(lua_State* L,State& out) {
  using namespace lua_fields;
@@ -308,7 +311,13 @@ inline flatbuffers::Offset<m::CreatureState> build(flatbuffers::FlatBufferBuilde
  for(size_t i=0;i<c.healthPages.size();++i)
   healthPages.push_back(m::CreateCreatureHealthPage(b,m::CreatureHealthPageKind(i),b.CreateVectorOfStrings(c.healthPages[i])));
  m::TilePos p(c.x,c.y,c.z);
- return m::CreateCreatureState(b,c.id,c.tick,b.CreateString(c.name),b.CreateString(c.species),b.CreateString(c.profession),b.CreateString(c.job),c.age,c.sex,&p,c.complete,b.CreateVector(sections),buildSelectionAppearance(b,c.pages,c.palettes,c.layers),healthPages.empty()?0:b.CreateVector(healthPages));
+ std::vector<flatbuffers::Offset<m::CreatureSkillsPage>> skillsPages;
+ for(const auto& page:c.skillsPages){
+  std::vector<flatbuffers::Offset<m::CreatureSkillRow>> rows;
+  for(const auto& row:page.rows)rows.push_back(m::CreateCreatureSkillRow(b,row.id,row.knowledgeType,row.knowledgeBits,row.rating,row.rustValue,b.CreateString(row.caption),b.CreateString(row.subtitle)));
+  skillsPages.push_back(m::CreateCreatureSkillsPage(b,m::CreatureSkillsPageKind(page.kind),b.CreateVector(rows)));
+ }
+ return m::CreateCreatureState(b,c.id,c.tick,b.CreateString(c.name),b.CreateString(c.species),b.CreateString(c.profession),b.CreateString(c.job),c.age,c.sex,&p,c.complete,b.CreateVector(sections),buildSelectionAppearance(b,c.pages,c.palettes,c.layers),healthPages.empty()?0:b.CreateVector(healthPages),skillsPages.empty()?0:b.CreateVector(skillsPages));
 }
 }  // namespace creature_data
 

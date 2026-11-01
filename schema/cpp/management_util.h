@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 107;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v107";
+inline constexpr uint32_t kManagementVersion = 108;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v108";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -851,6 +851,24 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
            !kinds.insert(uint8_t(page->kind())).second || !page->rows())return "invalid creature health page";
         for(const auto* row:*page->rows()) {
           if(!row || !text(row,65536) || ++healthRows>4096)return "invalid creature health row";
+        }
+      }
+    }
+    if(const auto* pages=c->skills_pages()) {
+      if(pages->size()!=5)return "invalid creature skills page count";
+      std::set<uint8_t> kinds;size_t skillRows=0;
+      for(const auto* page:*pages) {
+        if(!page || page->kind()>CreatureSkillsPageKind::Knowledge ||
+           !kinds.insert(uint8_t(page->kind())).second || !page->rows())return "invalid creature skills page";
+        for(const auto* row:*page->rows()) {
+          if(!row || ++skillRows>4096 || !row->caption() || !row->subtitle() ||
+             !text(row->caption(),4096) || !text(row->subtitle(),4096))return "invalid creature skills row";
+          if(page->kind()==CreatureSkillsPageKind::Knowledge) {
+            if(row->knowledge_type()<0 || row->knowledge_type()>17 || row->id()< -1 ||
+               (row->knowledge_type()>=14 && row->id()<0) || row->rating()!=0 || row->rust_value()!=0)
+              return "invalid creature knowledge row";
+          } else if(row->id()<0 || row->id()>32767 || row->knowledge_type()!=-1 || row->knowledge_bits()!=0 ||
+                    row->rating()<0 || row->subtitle()->size())return "invalid creature skill values";
         }
       }
     }

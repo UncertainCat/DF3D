@@ -3382,6 +3382,33 @@ known Godot startup notices. `category_reference` retains the row mappings and
 controlled results. Topic categories absent from this world, other races/castes,
 hover/artwork, transport and Godot rendering retain their separate acceptance gaps.
 
+### Creature Skills transport contract
+
+Management108 adds optional `CreatureState.skills_pages`: absent means not captured;
+a present vector contains all five unique page kinds. Rows preserve native order
+and carry IDs, ratings/rust-adjusted values, Knowledge kind/bits, primary captions
+and secondary subtitles. At most4,096 rows share the existing131,072-byte creature
+text budget, with4,096-byte limits on each caption and subtitle. Validation rejects
+cross-kind fields and duplicate/missing pages while preserving negative rust values
+and unsigned Knowledge flags. The bridge calls owned native builders and caption
+helpers; the world model copies strings and Godot publishes immutable nested data.
+Generic sections remain during the staged UI migration; no new screen is exposed.
+
+Request/state defaults, required version and management region move from107to108.
+Rebuild the root clients, **standalone Godot extension**, and DFHack bridge together.
+Older replies/regions cannot satisfy108 requests; absent data is not synthesized.
+Contract tests cover malformed payloads, aggregate limits and independent decoding.
+
+Protected050029 compares all79 rows across five pages through the real Godot client
+against native snapshots, including order/identity, caption/category text, ratings,
+rust values and Knowledge flags. Nested read-only checks and existing carrier/header
+flows pass. DF37744 exits unsaved with source preservation and only known startup
+notices. `transport_reference` retains provenance and bounded results. The initial
+045754 run used an unrecompiled107 Godot extension and failed before sending a
+carrier command; its errors remain recorded. Rebuilding the separate extension
+resolved that mismatch. Skills rendering, on-demand detail and full lifecycle
+acceptance remain unfinished.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

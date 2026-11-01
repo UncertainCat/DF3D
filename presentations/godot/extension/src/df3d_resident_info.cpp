@@ -79,6 +79,14 @@ Dictionary Df3dWorld::creature_info_state(int64_t id) {
                 value.make_read_only();healthPages.push_back(value);
             }
             healthPages.make_read_only();creatureInfoRows_["health_pages"]=healthPages;
+            Array skillsPages;
+            for(const auto& page:c.skillsPages){
+                Dictionary value;Array rows;
+                for(const auto& row:page.rows){Dictionary r;r["id"]=row.id;r["knowledge_type"]=row.knowledgeType;r["knowledge_bits"]=int64_t(row.knowledgeBits);
+                    r["rating"]=row.rating;r["rust_value"]=row.rustValue;r["caption"]=String::utf8(row.caption.c_str());r["subtitle"]=String::utf8(row.subtitle.c_str());r.make_read_only();rows.push_back(r);}
+                rows.make_read_only();value["kind"]=int(page.kind);value["rows"]=rows;value.make_read_only();skillsPages.push_back(value);
+            }
+            skillsPages.make_read_only();creatureInfoRows_["skills_pages"]=skillsPages;
             sections.make_read_only();auto& out=creatureInfoRows_;
             out["unit_id"]=c.unitId;out["name"]=String::utf8(c.name.c_str());out["species"]=String::utf8(c.species.c_str());out["profession"]=String::utf8(c.profession.c_str());out["job"]=String::utf8(c.job.c_str());out["age"]=c.age;out["sex"]=c.sex;out["origin"]=Vector3i(c.x,c.y,c.z);out["captured_tick"]=int64_t(c.capturedTick);out["complete"]=c.complete;out["sections"]=sections;
         }

@@ -64158,6 +64158,28 @@
             "detail_guards_unchanged": true
           }
         ]
+      },
+      "transport_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-050029",
+        "df_pid": 37744,
+        "management_version": 108,
+        "bridge_sha256": "0a732a4646369bbea6fab6397ec23e64c83b4fc5610f8e649b953132ab3e8954",
+        "status": "passed_with_known_issues",
+        "source_preservation": "Owned source unchanged; owned DF exited unsaved",
+        "diagnostics": "skills-diagnostics.json: all three Godot processes have known startup notices only",
+        "scope": "All five pages and79 rows compared through real bridge/model/Godot transport to native snapshots: order, IDs, captions, ratings, rust values, knowledge kinds/bits/subtitles. Godot pages, arrays and row dictionaries are read-only. Existing carrier/header flows pass. Skills rendering, on-demand detail and full lifecycle acceptance remain unfinished.",
+        "row_counts": [
+          18,
+          4,
+          9,
+          3,
+          45
+        ],
+        "result": "unit-skills-wire-result.json",
+        "prior_failed_run": {
+          "source": "build/stockpile-storage-native-farm-discovery-20261101-045754",
+          "reason": "Godot extension had not been rebuilt for108; failed beforeCarriercommand. Separate extension rebuilt; no source changes required. Original save preserved; error logs retained, not waived."
+        }
       }
     }
   }

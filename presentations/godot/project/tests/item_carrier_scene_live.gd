@@ -54,6 +54,23 @@ func unit_carrier(expected: Dictionary) -> void:
 			check(health_pages[i].is_read_only() and health_pages[i].rows.is_read_only(),"Health nested publication is mutable")
 		var health_file:=FileAccess.open(directory+"/unit-health-wire-result.json",FileAccess.WRITE)
 		health_file.store_string(JSON.stringify({"success":not failed,"pages":health_pages}));health_file.close()
+	if FileAccess.file_exists(directory+"/unit-skills-native.json"):
+		var native_skills: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-skills-native.json"))
+		var skill_pages: Array=detail.get("skills_pages",[])
+		check(skill_pages.size()==5 and skill_pages.is_read_only(),"Skills transport missing or mutable")
+		for i in mini(5,skill_pages.size()):
+			var page: Dictionary=skill_pages[i]
+			var native: Dictionary=native_skills.pages[i]
+			check(page.kind==native.tab and page.is_read_only() and page.rows.is_read_only(),"Skills page identity or ownership changed")
+			var ids: Array=native.knowledge_ids if i==4 else native.skills
+			check(page.rows.size()==ids.size(),"Skills row count changed")
+			for j in mini(page.rows.size(),ids.size()):
+				var row: Dictionary=page.rows[j]
+				check(row.is_read_only() and row.id==ids[j] and row.caption==native.probe.captions[j],"Native Skills row or caption changed")
+				if i==4:check(row.knowledge_type==native.knowledge_types[j] and row.knowledge_bits==native.knowledge_bits[j] and row.subtitle==native.probe.subtitles[j],"Knowledge semantics changed")
+				else:check(row.rating==native.values[j] and row.rust_value==native.rust_values[j],"Native skill ratings changed")
+		var skill_file:=FileAccess.open(directory+"/unit-skills-wire-result.json",FileAccess.WRITE)
+		skill_file.store_string(JSON.stringify({"success":not failed,"pages":skill_pages}));skill_file.close()
 	check(inspector.creature_sheet.tab=="Overview" and not source.panel.visible,"Unit destination did not start Overview")
 	var view_deadline:=Time.get_ticks_msec()+5000
 	while inspector.creature_display.get("detail",{}).is_empty() and Time.get_ticks_msec()<view_deadline:await create_timer(0.02).timeout

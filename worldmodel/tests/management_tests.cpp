@@ -1499,3 +1499,28 @@ TEST_CASE("Creature Health pages preserve long rows and reject malformed bounded
     CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==(bad>=0));
   }
 }
+
+TEST_CASE("Creature Skills contract rejects malformed pages and cross-kind rows") {
+  namespace mm=df3d::mirror;
+  for(int bad=-1;bad<10;++bad){
+    flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<mm::CreatureSection>> sections;
+    for(int i=0;i<25;++i)sections.push_back(mm::CreateCreatureSection(b,mm::CreatureSectionKind(i),true));
+    std::vector<flatbuffers::Offset<mm::CreatureSkillsPage>> pages;
+    for(int i=0;i<(bad==0?4:5);++i){
+      std::vector<flatbuffers::Offset<mm::CreatureSkillRow>> rows;
+      const size_t count=bad==3 && i==0?4097:bad==9?32:1;
+      for(size_t j=0;j<count;++j)rows.push_back(mm::CreateCreatureSkillRow(b,i==4?-1:12,
+          i==4?(bad==4?18:8):(bad==5?0:-1),i==4?0x80000000u:bad==6?1:0,
+          i==4?(bad==7?1:0):5,-(i==4?0:4),b.CreateString(std::string(bad==2?4097:bad==9?1024:3,'x')),
+          b.CreateString(i==4?"Native category":bad==8?"Invalid":"")));
+      pages.push_back(mm::CreateCreatureSkillsPage(b,mm::CreatureSkillsPageKind(bad==1?0:i),b.CreateVector(rows)));
+    }
+    mm::TilePos pos(1,2,3);
+    auto c=mm::CreateCreatureState(b,86,0,0,0,0,0,-1,-1,&pos,true,b.CreateVector(sections),0,0,b.CreateVector(pages));
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
+    state.add_action(mm::ManagementAction::CreatureInspect);state.add_status(mm::ManagementStatus::Ok);state.add_creature(c);
+    b.Finish(state.Finish());
+    CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==(bad>=0));
+  }
+}

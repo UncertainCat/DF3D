@@ -1917,11 +1917,18 @@ table CreatureExpelPreview {
 table CreatureExpelState { outcome:CreatureExpelOutcome; preview:CreatureExpelPreview; }
 enum CreatureHealthPageKind : uint8 { Status, Wounds, Treatment, History, Description }
 table CreatureHealthPage { kind:CreatureHealthPageKind; rows:[string] (required); }
+enum CreatureSkillsPageKind : uint8 { Labor, Combat, Social, Other, Knowledge }
+table CreatureSkillRow {
+  id:int32 = -1; knowledge_type:int32 = -1; knowledge_bits:uint32;
+  rating:int32; rust_value:int32; caption:string (required); subtitle:string (required);
+}
+table CreatureSkillsPage { kind:CreatureSkillsPageKind; rows:[CreatureSkillRow] (required); }
 table CreatureState {
   unit_id:int32 = -1; captured_tick:uint64; name:string; species:string; profession:string; job:string;
   age:int32 = -1; sex:int32 = -1; origin:TilePos; complete:bool; sections:[CreatureSection];
   portrait:SelectionAppearance;
   health_pages:[CreatureHealthPage];
+  skills_pages:[CreatureSkillsPage];
 }
 // Materials orders candidates for the exact origin (rectangle minimum corner,
 // bottom level). Place requires that same origin and each filter's Materials
@@ -1944,7 +1951,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 107;
+  schema_version:uint32 = 108;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1992,7 +1999,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 107;
+  schema_version:uint32 = 108;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

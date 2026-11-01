@@ -3863,3 +3863,61 @@ TEST_CASE("independent item owner codec validates separate ownership") {
     if(fault==0||fault==4){auto decoded=codec::decodeProduction(value->production());const auto& snapshot=*decoded.independentItem->snapshot;REQUIRE(snapshot.carrier);CHECK(snapshot.carrier->id==1017);CHECK(snapshot.owner.has_value()==(fault==0));if(snapshot.owner){CHECK(snapshot.owner->id==988);CHECK(snapshot.owner->name=="native owner");}}
   }
 }
+
+TEST_CASE("knowledge requests retain complete native entry identity") {
+  for(int kind=13;kind<=18;++kind)for(int fault=0;fault<3;++fault) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::CreatureKnowledgeRead;
+    r.creatureKnowledge={fault==1?-1:86,kind,fault==2?-1:42};
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(kind<14 || kind>17 || fault!=0));
+    REQUIRE(value->creature_knowledge());CHECK(value->creature_knowledge()->unit_id()==r.creatureKnowledge.unitId);
+    CHECK(value->creature_knowledge()->kind()==kind);CHECK(value->creature_knowledge()->id()==r.creatureKnowledge.id);
+    CHECK_FALSE(value->creature());CHECK_FALSE(value->creature_expel());
+  }
+  for(bool unrelated:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;auto k=wire::CreateCreatureKnowledgeRequest(b,86,14,42);
+    wire::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(2);r.add_world_epoch(3);
+    r.add_action(unrelated?wire::ManagementAction::Catalog:wire::ManagementAction::CreatureKnowledgeRead);
+    if(unrelated)r.add_creature_knowledge(k);
+    b.Finish(r.Finish());
+    CHECK(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())).has_value());
+  }
+}
+TEST_CASE("knowledge replies validate identity outcome and UTF8 byte bounds") {
+  for(int fault=0;fault<12;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    std::string text=fault==1?std::string(65537,'x'):fault==2?std::string("x\0y",3):"[B]Native text";
+    auto k=wire::CreateCreatureKnowledgeState(b,fault==3?-1:86,fault==4?13:fault==5?18:14,
+      fault==6?-1:42,fault==7?wire::CreatureKnowledgeOutcome(255):wire::CreatureKnowledgeOutcome::Ready,b.CreateString(text));
+    wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_world_epoch(3);
+    s.add_action(fault==8?wire::ManagementAction::CreatureLocate:wire::ManagementAction::CreatureKnowledgeRead);
+    s.add_status(fault==9?wire::ManagementStatus::Rejected:fault==10?wire::ManagementStatus::Pending:wire::ManagementStatus::Ok);
+    if(fault!=11)s.add_creature_knowledge(k);
+    b.Finish(s.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto out=codec::decodeState(value);REQUIRE(out.creatureKnowledge);
+      CHECK(out.creatureKnowledge->unitId==86);CHECK(out.creatureKnowledge->kind==14);CHECK(out.creatureKnowledge->id==42);
+      CHECK(out.creatureKnowledge->text==text);CHECK(out.creatureKnowledge->outcome==wm::CreatureKnowledgeOutcome::Ready);}
+  }
+  for(auto outcome:{wire::CreatureKnowledgeOutcome::Rejected,wire::CreatureKnowledgeOutcome::Unavailable})
+  for(int fault=0;fault<3;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    auto k=wire::CreateCreatureKnowledgeState(b,86,17,42,outcome,b.CreateString(fault==1?"stale text":""));
+    wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_world_epoch(3);s.add_action(wire::ManagementAction::CreatureKnowledgeRead);
+    s.add_status(fault==2?wire::ManagementStatus::Ok:wire::ManagementStatus::Rejected);s.add_creature_knowledge(k);b.Finish(s.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto out=codec::decodeState(value);REQUIRE(out.creatureKnowledge);CHECK(out.creatureKnowledge->text.empty());}
+  }
+  for(size_t count:{size_t(32768),size_t(32769)}) {
+    std::string text;for(size_t i=0;i<count;++i)text+="\xc3\xa9";
+    flatbuffers::FlatBufferBuilder b;auto k=wire::CreateCreatureKnowledgeState(b,86,15,42,wire::CreatureKnowledgeOutcome::Ready,b.CreateString(text));
+    wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_world_epoch(3);s.add_action(wire::ManagementAction::CreatureKnowledgeRead);
+    s.add_status(wire::ManagementStatus::Ok);s.add_creature_knowledge(k);b.Finish(s.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(count==32769));
+    if(count==32768)CHECK(codec::decodeState(value).creatureKnowledge->text==text);
+  }
+}

@@ -1177,7 +1177,7 @@ table SessionCommand {
 }
 
 // Bounded fortress management channel; independently versioned from map snapshots.
-enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply }
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
 enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity, LocationNameRead, LocationNameChoices, LocationNameEdit, LocationRecognitionRead, LocationRecognize, LocationReligiousStaffRead, LocationReligiousStaffRemove, LocationReligiousCandidates, LocationReligiousAssignmentRead, LocationReligiousAssign, LocationSpecializationRead, LocationSpecializationSet, LocationStaffAssignmentsRead }
 enum LocationNameMode : uint8 { Clear, SelectWord, RandomComponent, RandomWhole }
@@ -1898,6 +1898,9 @@ table CreatureFact { key:string; text:string; number:int64; has_number:bool; }
 table CreatureRecord { id:int32 = -1; related_id:int32 = -1; name:string; facts:[CreatureFact]; }
 table CreatureSection { kind:CreatureSectionKind; available:bool; truncated:bool; reason:string; records:[CreatureRecord]; }
 table CreatureRequest { unit_id:int32 = -1; }
+enum CreatureKnowledgeOutcome : uint8 { Rejected, Ready, Unavailable }
+table CreatureKnowledgeRequest { unit_id:int32 = -1; kind:int32 = -1; id:int32 = -1; }
+table CreatureKnowledgeState { unit_id:int32 = -1; kind:int32 = -1; id:int32 = -1; outcome:CreatureKnowledgeOutcome; text:string (required); }
 table CreaturePosition { unit_id:int32 = -1; position:TilePos; }
 enum CreatureHeaderOutcome : uint8 { Rejected, Completed, Stale, Unknown }
 table CreatureHeaderRequest { unit_id:int32 = -1; profession:bool; expected_revision:uint64; name:string; }
@@ -1954,7 +1957,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 109;
+  schema_version:uint32 = 110;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1996,13 +1999,14 @@ table ConstructionRequest {
   cancel_removal:bool;
   creature_header:CreatureHeaderRequest;
   creature_expel:CreatureExpelRequest;
+  creature_knowledge:CreatureKnowledgeRequest;
 }
 // Native ordered world-hover descriptions. Missing means unavailable, never guessed.
 table WorldHoverEntry { text:string (required); foreground:uint8; background:uint8; bright:bool; kind:uint8; object_id:int32 = -1; }
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 109;
+  schema_version:uint32 = 110;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -2039,6 +2043,7 @@ table ManagementState {
   creature_header:CreatureHeaderState;
   creature_position:CreaturePosition;
   creature_expel:CreatureExpelState;
+  creature_knowledge:CreatureKnowledgeState;
 }
 
 table WorkOrderInput { index:uint16; description:string; mat_type:int16 = -1; mat_index:int32 = -1; editable:bool; }

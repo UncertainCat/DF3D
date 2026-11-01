@@ -3677,6 +3677,45 @@ results. DF35272 exits unsaved and source preservation passes; all three Godot
 processes contain only the known startup notice. Recursive event closure and
 broader source/branch coverage remain separate requirements.
 
+### Knowledge request contract (management110)
+
+Management110 adds staged `CreatureKnowledgeRead` action76 and the
+`creature_knowledge` domain. Requests carry the selected unit ID, native
+Knowledge kind14..17 and entry ID. Results repeat all three identities and
+carry a typed Ready, Unavailable or Rejected outcome. Ready requires Ok;
+Unavailable/Rejected require Rejected status and empty text. Successful replies
+require the detail payload. Native tagged prose is limited to65536 encoded
+bytes and cannot contain embedded NUL. No menu pointers or selection indices
+cross the boundary. The model and Godot dictionaries preserve identity and
+outcome; presentation must still match them against its active request/session.
+
+Request/state defaults, required version and region move from109to110.
+Rebuild and deploy bridge, model and viewer together. Older regions are isolated;
+no missing identity or detail is synthesized from old recordings. The action is
+classified as an inspection request, with no automatic retry policy added.
+This commit provides transport only: the native safe-point handler, membership
+revalidation at dispatch, broader formatter source validation, local navigation
+and late-reply/session retirement are not connected. Creature exposure remains
+unchanged. Diagnostic formatter acceptance does not authorize a blanket native
+call from this new domain.
+
+Root/core passes in `knowledge-contract-final`. `knowledge-contract-roundtrip`
+passes the real extension with an isolated fake producer: four native kinds,
+all three outcomes, local shape/type/overflow rejection, repeated response
+identity and empty refusal text. Codec tests additionally cover absent/wrong
+payloads, negative IDs, invalid kinds/outcomes, status contradictions, embedded
+NUL and the65536/65538-byte multibyte boundary. These synthetic transport tests
+are not native prose or visible-copy acceptance. Initial checks caught a
+nonexistent C++ test helper and fake-host dispatch/completion ordering mistakes;
+all were corrected before the final passes.
+
+MSVC bridge and standalone viewer extension rebuilds pass. Protected native
+065601 on2026-11-01 verifies the matched110 binaries with existing creature
+header, Skills page transport and four diagnostic Knowledge descriptions.
+Owned DF1108 exits unsaved; source preservation passes. All three Godot
+processes have only the known startup notice. This migration smoke does not
+exercise a live Knowledge request handler, which is still pending.
+
 ### Selected Knowledge detail membership
 
 `creature_knowledge_native.h` adds a diagnostic selected-entry adapter. It

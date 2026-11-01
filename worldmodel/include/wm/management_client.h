@@ -611,6 +611,8 @@ struct ConstructionInput {
   std::string description;
   uint32_t quantity = 1;
 };
+struct CreatureKnowledgeRequest { int32_t unitId=-1,kind=-1,id=-1; };
+struct CreatureKnowledgeState { int32_t unitId=-1,kind=-1,id=-1; CreatureKnowledgeOutcome outcome=CreatureKnowledgeOutcome::Rejected; std::string text; };
 struct CreaturePosition { int32_t unitId=-1; TilePos position; };
 struct CreatureExpelRequest { int32_t unitId=-1,destinationId=-1; std::vector<int32_t> expectedUnitIds; };
 struct CreatureExpelUnit { int32_t id=-1; std::string name; AreaNameColor nameColor; SelectionAppearance sheetIcon; };
@@ -653,6 +655,7 @@ struct ManagementRequest {
   int32_t creatureUnitId=-1;
   CreatureHeaderRequest creatureHeader;
   CreatureExpelRequest creatureExpel;
+  CreatureKnowledgeRequest creatureKnowledge;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -702,6 +705,7 @@ struct ManagementState {
   std::optional<CreatureHeaderState> creatureHeader;
   std::optional<CreaturePosition> creaturePosition;
   std::optional<CreatureExpelState> creatureExpel;
+  std::optional<CreatureKnowledgeState> creatureKnowledge;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

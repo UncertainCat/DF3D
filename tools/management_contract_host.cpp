@@ -821,10 +821,20 @@ int main(int argc,char** argv) {
         m::ConstructionStateBuilder c(b);c.add_building_key(key);c.add_filter(request->filter());
         c.add_filters(fs);c.add_list_revision(INT64_MAX);c.add_footprint(fp);construction=c.Finish();
       }
+      flatbuffers::Offset<m::CreatureKnowledgeState> knowledge;
+      bool knowledgeRejected=false;
+      if(request && request->action()==m::ManagementAction::CreatureKnowledgeRead) {
+        const auto* k=request->creature_knowledge();
+        require(k && k->unit_id()==86 && k->id()==42,"Knowledge complete identity");
+        knowledgeRejected=k->kind()==15 || k->kind()==16;
+        const auto outcome=k->kind()==15?m::CreatureKnowledgeOutcome::Unavailable:k->kind()==16?m::CreatureKnowledgeOutcome::Rejected:m::CreatureKnowledgeOutcome::Ready;
+        knowledge=m::CreateCreatureKnowledgeState(b,k->unit_id(),k->kind(),k->id(),outcome,b.CreateString(knowledgeRejected?"":"[B]Synthetic detail"));
+      }
       m::ManagementStateBuilder state(b);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
-      state.add_status(missing?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
+      state.add_creature_knowledge(knowledge);
+      state.add_status((missing || knowledgeRejected)?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
       state.add_building_id(2147483000);state.add_build_stage(-1);state.add_max_stage(-1);state.add_area(areas);
       auto finished=state.Finish();b.Finish(finished);
       const auto* value=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());
@@ -857,7 +867,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -1014,6 +1024,7 @@ int main(int argc,char** argv) {
         case A::TradeUpdate: {
           auto* v=r->trade();require(v && v->depot_id()==2147483000 && v->expected_revision()==epoch && v->requested()==1 && v->anyone()==-1 && v->item_id()==-1,"trade payload");break;
         }
+        case A::CreatureKnowledgeRead: break; // Full identity is checked while constructing the reply.
         default: throw std::runtime_error("unexpected action");
         }
         publish(received+1,r);

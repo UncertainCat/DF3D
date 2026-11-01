@@ -374,6 +374,25 @@ func run() -> void:
 	sequence=world.management_request("production",locate);assert(sequence>0);state=await receipt(sequence)
 	assert(state.production.item_position=={"id":47492,"position":Vector3i(123,456,17)})
 	assert(not state.production.has("item") and not state.production.has("contents") and not state.production.has("farm"))
+	assert(Contract.domain_of(A.CreatureKnowledgeRead)=="creature_knowledge" and not Contract.is_mutation(A.CreatureKnowledgeRead))
+	for bad in [{"action":A.CreatureKnowledgeRead},
+		{"action":A.CreatureKnowledgeRead,"unit_id":86.0,"kind":14,"id":42},
+		{"action":A.CreatureKnowledgeRead,"unit_id":86,"kind":13,"id":42},
+		{"action":A.CreatureKnowledgeRead,"unit_id":86,"kind":18,"id":42},
+		{"action":A.CreatureKnowledgeRead,"unit_id":-1,"kind":14,"id":42},
+		{"action":A.CreatureKnowledgeRead,"unit_id":2147483648,"kind":14,"id":42},
+		{"action":A.CreatureKnowledgeRead,"unit_id":86,"kind":14,"id":2147483648},
+		{"action":A.CreatureKnowledgeRead,"unit_id":86,"kind":14,"id":-1},
+		{"action":A.CreatureKnowledgeRead,"unit_id":86,"kind":14,"id":42,"extra":1}]:
+		assert(world.management_request("creature_knowledge",bad)==0)
+	for kind in range(14,18):
+		sequence=world.management_request("creature_knowledge",{"action":A.CreatureKnowledgeRead,"unit_id":86,"kind":kind,"id":42})
+		assert(sequence>0)
+		state=await receipt(sequence,S.Rejected if kind in [15,16] else S.Ok)
+		var knowledge: Dictionary=state.creature_knowledge
+		assert(knowledge.unit_id==86 and knowledge.kind==kind and knowledge.id==42)
+		assert(knowledge.outcome==(Contract.CreatureKnowledgeOutcome.Unavailable if kind==15 else Contract.CreatureKnowledgeOutcome.Rejected if kind==16 else Contract.CreatureKnowledgeOutcome.Ready))
+		assert(knowledge.text==("" if kind in [15,16] else "[B]Synthetic detail"))
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break

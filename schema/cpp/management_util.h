@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 109;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v109";
+inline constexpr uint32_t kManagementVersion = 110;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v110";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -326,7 +326,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::CreatureExpelApply &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::CreatureKnowledgeRead &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -382,7 +382,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CreatureExpelApply)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CreatureKnowledgeRead)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -415,6 +415,11 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       if(!selected)return "creature expel group must contain selected unit";
     }
   } else if(r.creature_expel())return "unexpected creature expel request";
+  if(r.action()==ManagementAction::CreatureKnowledgeRead) {
+    const auto* k=r.creature_knowledge();
+    if(!k || k->unit_id()<0 || k->kind()<14 || k->kind()>17 || k->id()<0)
+      return "invalid creature knowledge request";
+  } else if(r.creature_knowledge())return "unexpected creature knowledge request";
   if(r.action()==ManagementAction::Selection) {
     const auto* a=r.selection();
     if(!a || a->operation()>SelectionOperation::Back || a->index() < -1 || a->index()>255) return "invalid selection request";
@@ -753,7 +758,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CreatureExpelApply ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CreatureKnowledgeRead ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -806,6 +811,17 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     }
   } else if((s.action()==ManagementAction::CreatureExpelRead || s.action()==ManagementAction::CreatureExpelApply) &&
             s.status()==ManagementStatus::Ok)return "creature expel result required";
+  if(const auto* k=s.creature_knowledge()) {
+    if(s.action()!=ManagementAction::CreatureKnowledgeRead || k->unit_id()<0 ||
+       k->kind()<14 || k->kind()>17 || k->id()<0 || k->outcome()>CreatureKnowledgeOutcome::Unavailable ||
+       !k->text() || k->text()->size()>65536 || k->text()->str().find('\0')!=std::string::npos)
+      return "invalid creature knowledge result";
+    const bool ready=k->outcome()==CreatureKnowledgeOutcome::Ready;
+    if((ready && s.status()!=ManagementStatus::Ok) ||
+       (!ready && (s.status()!=ManagementStatus::Rejected || k->text()->size())))
+      return "invalid creature knowledge outcome";
+  } else if(s.action()==ManagementAction::CreatureKnowledgeRead && s.status()==ManagementStatus::Ok)
+    return "creature knowledge result required";
   if(s.creature() && s.action()!=ManagementAction::CreatureInspect) return "unexpected creature result";
   if(const auto* p=s.creature_position()) {
     const auto* tile=p->position();

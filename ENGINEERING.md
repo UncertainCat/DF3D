@@ -1473,8 +1473,24 @@ effect, rather than a gameplay mutation. All three source saves are unchanged
 and their GPU/header-wire logs contain only the known renderer notice. Final
 DF14936 exits unsaved. `unit_items_reference.navigation_reference` distinguishes
 actual native outcomes from the harness's explicit diagnostic restoration.
-Nested navigation and other indicator states remain unverified. Product
-transport, artwork/indicators, resize/scrolling and rendered lifecycle remain unfinished. The Items
+The creature fact producer now calls the owned native Items adapters through
+inventory_rows. It flattens each inventory entry and its immediate contents,
+then appends external spatters. Existing generic creature records carry row_kind
+(0inventory,1contained item,2contained creature,3spatter), native_role and
+parent_item_id. related_id identifies inspectable targets; item records retain
+item IDs for carried-item artwork lookup. Non-item record IDs are negative local
+ordinals. Existing section/payload limits still mark truncated data incomplete.
+Lua converts DF strings to UTF8 once. Native descriptions replace DFHack's
+reconstructed item names and locally assembled body-part/quantity text.
+
+Protected001206 on2026-11-01 verifies actual main.tscn receives all11 inventory
+rows plus the external blood spatter, matching native captions, target IDs,
+row kinds, parent IDs and second lines. DF32224 exits unsaved with source
+preservation; both GPU logs and paired header-wire logs have only the known
+renderer notice. Initial001104 failed on a new test's incorrect variable name;
+it is not accepted evidence. `unit_items_reference.wire_reference` records the
+baseline wire scope. Nested wire rows, dedicated native layout, navigation,
+indicators, resize/scrolling and rendered lifecycle remain unfinished. The Items
 route remains staged with the rest of the incomplete creature sheet.
 
 The Overview hauling line uses native selector1324b50(unit), the same call made

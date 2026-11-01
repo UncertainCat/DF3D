@@ -49,6 +49,25 @@ func unit_carrier(expected: Dictionary) -> void:
 	var view_deadline:=Time.get_ticks_msec()+5000
 	while inspector.creature_display.get("detail",{}).is_empty() and Time.get_ticks_msec()<view_deadline:await create_timer(0.02).timeout
 	check(not inspector.creature_display.get("detail",{}).is_empty(),"Creature view did not consume loaded detail")
+	if FileAccess.file_exists(directory+"/unit-items-wire-expected.json"):
+		var native_items: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-items-wire-expected.json"))
+		var expected_rows: Array=[]
+		for row in native_items.rows:
+			expected_rows.append({"id":row.id,"kind":0,"caption":row.caption,"role":row.role,"parent":-1})
+			for child in row.contents:expected_rows.append({"id":child.id,"kind":child.kind,"caption":child.caption,"role":"","parent":row.id})
+		for row in native_items.spatters:expected_rows.append({"id":-1,"kind":3,"caption":row.caption,"role":row.body_part_caption,"parent":-1})
+		var actual_rows: Array=inspector.creature_sheet.records_for("inventory")
+		check(actual_rows.size()==expected_rows.size(),"Native Items wire row count differs")
+		for index in mini(actual_rows.size(),expected_rows.size()):
+			var actual: Dictionary=actual_rows[index]
+			var wanted: Dictionary=expected_rows[index]
+			check(actual.get("name","")==wanted.caption and int(actual.get("related_id",-1))==int(wanted.id),"Native Items wire caption/target differs at "+str(index))
+			check(int(inspector.creature_sheet.fact_value(actual,"row_kind",-1))==int(wanted.kind),"Native Items wire kind differs")
+			check(int(inspector.creature_sheet.fact_value(actual,"parent_item_id",-1))==int(wanted.parent),"Native Items wire parent differs")
+			check(inspector.creature_sheet.record_text(actual,"inventory")==wanted.role,"Native Items wire role differs at "+str(index))
+		var items_wire: Dictionary={"success":not failed,"expected":expected_rows,"actual":actual_rows}
+		var items_file:=FileAccess.open(directory+"/unit-items-wire-result.json",FileAccess.WRITE)
+		items_file.store_string(JSON.stringify(items_wire,"  "));items_file.close()
 	if FileAccess.file_exists(directory+"/unit-customize-captions.json"):
 		var captions: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-customize-captions.json"))
 		var records: Array=inspector.creature_sheet.records_for("identity").filter(func(row):return inspector.creature_sheet.fact_value(row,"record_type")=="customize_captions")

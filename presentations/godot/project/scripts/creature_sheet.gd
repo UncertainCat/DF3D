@@ -106,10 +106,7 @@ func display_word(value) -> String:
 
 func record_text(record: Dictionary, section_key := "") -> String:
  if section_key=="inventory":
-  var where := str(fact_value(record,"body_part",""))
-  var mode := str(fact_value(record,"mode",""))
-  var count := int(fact_value(record,"stack",1))
-  return (where.left(1).to_upper()+where.substr(1) if not where.is_empty() else "")+("   Quantity: "+str(count) if count>1 else "")
+  return str(fact_value(record,"native_role",""))
  if section_key=="skills":
   return "Rating: %s   Experience: %s" % [fact_value(record,"rating",0),fact_value(record,"experience",0)] + ("   Rust: %s" % fact_value(record,"rusty",0) if int(fact_value(record,"rusty",0))>0 else "")
  var lines: PackedStringArray = []
@@ -172,7 +169,10 @@ func section(parent: Node, key: String, heading := true, limit := 10000):
   var row_parent: Node=parent
   if key in ["inventory","skills","relationships","groups","labors","rooms","military","knowledge"]:
    row_parent=Style.row(parent,owner.world,36)
-   if key=="inventory": Style.icon(row_parent,owner.world.selection_icon(2,int(record.get("id",-1))))
+   if key=="inventory":
+    var row_kind := int(fact_value(record,"row_kind",0))
+    var target := int(record.get("related_id",-1))
+    if target>=0 and row_kind!=3: Style.icon(row_parent,owner.world.selection_icon(1 if row_kind==2 else 2,target))
    elif key=="relationships" and int(fact_value(record,"unit_id",-1))>=0: Style.icon(row_parent,owner.world.selection_icon(1,int(fact_value(record,"unit_id",-1))))
   var row := VBoxContainer.new()
   row.add_theme_constant_override("separation",2)

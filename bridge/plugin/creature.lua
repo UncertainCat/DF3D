@@ -289,10 +289,15 @@ return function(request)
   s.reason='Observed body, wound and body-part facts; native anatomical narrative is not reproduced'
  end)
  section(4,function(s)
-  each(s,u.inventory,function(v)
-   local it=v.item;local r=record(s,it.id,dfhack.items.getDescription(it,0,true),it.id)
-   fact(s,r,'mode',enum(df.inv_item_role_type,v.mode));fact(s,r,'body_part_id',v.body_part_id)
-   if v.body_part_id>=0 then local part=u.body.body_plan.body_parts[v.body_part_id];if part then fact(s,r,'body_part',part.name_singular[0])end end
+  assert(request.inventory_rows,'Native Items provider unavailable')
+  local rows=request.inventory_rows(u.id)
+  for i,v in ipairs(rows)do
+   local item_row=v.kind==0 or v.kind==1
+   local r=record(s,item_row and v.id or -i,v.caption,v.id)
+   if not r then break end
+   fact(s,r,'row_kind',v.kind);fact(s,r,'native_role',v.role);fact(s,r,'parent_item_id',v.parent)
+   local it=item_row and v.id>=0 and df.item.find(v.id) or nil
+   if it then
    fact(s,r,'stack',it:getStackSize())
    fact(s,r,'item_type',it:getType())
    local subtype=dfhack.items.getSubtypeDef(it:getType(),it:getSubtype())
@@ -303,7 +308,8 @@ return function(request)
    fact(s,r,'color',color_id)
    local colors=df.global.world.raws.descriptors.colors
    if color_id>=0 and color_id<#colors then fact(s,r,'color_token',colors[color_id].id)end
-  end)
+   end
+  end
  end)
  section(5,function(s)
   if not hf then return absent(s,'Creature has no historical figure')end

@@ -83,6 +83,7 @@
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
 #include "creature_health_native.h"
+#include "creature_items_native.h"
 #include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
 // kernel objects) has no POSIX path yet; say so instead of failing on HANDLE.
@@ -3355,6 +3356,27 @@ void run(color_ostream& out) {
       lua_pushlstring(state,value->text.data(),value->text.size());return 2;
     });
     lua_setfield(L,-2,"hauling_summary");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto* unit=df::unit::find(int32_t(luaL_checkinteger(state,1)));
+      const auto inventory=df3d_creature::inventoryDescriptions(unit);
+      const auto spatters=df3d_creature::inventorySpatters(unit);
+      if(!inventory||!spatters)return luaL_error(state,"Native creature Items descriptions unavailable");
+      lua_newtable(state);int index=0;
+      const auto append=[&](int kind,int id,int parent,const std::string& caption,const std::string& role) {
+        lua_newtable(state);field(state,"kind",kind);field(state,"id",id);field(state,"parent",parent);
+        // The creature fact boundary converts raw DF text to UTF8 once.
+        lua_pushlstring(state,caption.data(),caption.size());lua_setfield(state,-2,"caption");
+        lua_pushlstring(state,role.data(),role.size());lua_setfield(state,-2,"role");
+        lua_rawseti(state,-2,++index);
+      };
+      for(const auto& row:*inventory) {
+        append(0,row.id,-1,row.caption,row.role);
+        for(const auto& child:row.contents)append(child.kind,child.id,row.id,child.caption,"");
+      }
+      for(const auto& row:*spatters)append(3,-1,-1,row.caption,row.bodyPartCaption);
+      return 1;
+    });
+    lua_setfield(L,-2,"inventory_rows");
   }
   field(L, "definition", r->definition() ? r->definition()->str() : "");
   if (r->origin()) {

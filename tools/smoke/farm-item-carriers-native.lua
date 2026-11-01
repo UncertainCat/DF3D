@@ -457,6 +457,10 @@ local ok,err=xpcall(function()
    assert(json.encode(linked.camera_before)==json.encode(linked.camera_after),'Unit carrier View moved native camera')
    local header_figure=df.historical_figure.find(unit.hist_figure_id)
    local header_names={unit.name.nickname,unit.custom_profession,header_figure and header_figure.name.nickname,unit.status.current_soul and unit.status.current_soul.name.nickname}
+   if os.getenv('DF3D_UNIT_ITEMS_WIRE')=='1'then
+    local text,status=dfhack.run_command_silent('df3d','unit-items-description-probe',tostring(unit.id));assert(status==0,text)
+    local file=assert(io.open(out..'/unit-items-wire-expected.json','w'));file:write(text);file:close()
+   end
    if os.getenv('DF3D_UNIT_CAMERA')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-follow-scene-native.lua')
     linked.follow_motion=assert(loadfile(source))(unit,capture,out)

@@ -1681,10 +1681,17 @@ error or transport readiness alone cannot establish recovery. The lifecycle
 capture allows85 seconds within the runner's90-second bound. All three final
 Godot processes have only the startup notice; `items-lifecycle-final` passes core,
 inspector and composition. DF23632 exits unsaved; source preservation passes.
-Live artifact-symbol/unassigned transitions, different-world identity reuse and
-delayed old replies remain unverified. Full inventory row pixels and every
-main-scene overflow input are not claimed; the route stays staged. Contained-row
-navigation evidence follows.
+`resident_info_tests.cpp` additionally verifies delayed creature publications
+through the real CreatureInfoService with an injected transport: close/reopen of
+the same ID discards its obsolete pending reply, old request sequences cannot
+publish into the new request, and an epoch change clears cached facts before
+accepting the same numeric ID in the new world. Retained immutable publications
+remain unchanged. `creature-detail-retirement` passes the root build and core
+suite. These are model-level receipt/cache checks, not a live different-world
+load or delayed-reply injection through the renderer. Those live cases and
+artifact-symbol/unassigned transitions remain unverified. Full inventory row
+pixels and every main-scene overflow input are not claimed; the route stays
+staged. Contained-row navigation evidence follows.
 
 Contained Items controls are recorded by
 `unit_items_reference.contained_navigation_reference`. Protected014749 on

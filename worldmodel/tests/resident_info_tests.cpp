@@ -202,3 +202,55 @@ TEST_CASE("creature service bounds failed identity state and clears on changed w
  CHECK(service.status(0).error.empty());CHECK(service.status(79).error=="Unavailable");
  service.update(200,0);CHECK(service.status(79).error.empty());CHECK(service.status(79).worldEpoch==0);
 }
+
+TEST_CASE("creature close and same-ID reopen discard the in-flight inventory reply") {
+ auto transport=std::make_unique<FakeResidentTransport>();auto* fake=transport.get();
+ wm::CreatureInfoService service(std::move(transport));service.demand(86);service.update(0,42);
+ fake->reply();service.update(1,42);
+ REQUIRE(fake->requests.back().action==wm::ManagementAction::CreatureInspect);
+ const auto retiredSequence=fake->sequence;
+ service.demand(-1);service.update(2,42);
+ CHECK_FALSE(service.status(86).loading);
+ service.demand(86);
+ fake->reply();fake->value.creature.unitId=86;fake->value.creature.name="Retired inventory";
+ service.update(3,42);
+ CHECK_FALSE(service.snapshot(86));
+ REQUIRE(fake->requests.back().action==wm::ManagementAction::Catalog);
+ CHECK(fake->sequence>retiredSequence);
+ fake->reply();service.update(4,42);
+ REQUIRE(fake->requests.back().action==wm::ManagementAction::CreatureInspect);
+ const auto currentSequence=fake->sequence;
+ fake->reply();fake->value.requestSeq=retiredSequence;fake->value.creature.unitId=86;
+ service.update(5,42);CHECK_FALSE(service.snapshot(86));CHECK(fake->sequence==currentSequence);
+ fake->reply();fake->value.creature.unitId=86;fake->value.creature.name="Current inventory";
+ service.update(6,42);
+ auto current=service.snapshot(86);REQUIRE(current);CHECK(current->detail.name=="Current inventory");
+ CHECK(current->captureStartedMs>=3);CHECK(current->captureCompletedMs==6);
+ service.demand(-1);fake->value.creature.name="Late mutation";service.update(7,42);
+ CHECK(service.snapshot(86)==current);CHECK(current->detail.name=="Current inventory");
+}
+
+TEST_CASE("creature world replacement cannot reuse cached or delayed same-ID facts") {
+ auto transport=std::make_unique<FakeResidentTransport>();auto* fake=transport.get();
+ wm::CreatureInfoService service(std::move(transport));service.demand(86);service.update(0,42);
+ fake->reply();service.update(1,42);fake->reply();fake->value.creature.unitId=86;
+ fake->value.creature.name="Old world";service.update(2,42);
+ const auto old=service.snapshot(86);REQUIRE(old);
+ service.update(5002,42);const auto oldSequence=fake->sequence;
+ fake->reply();fake->value.creature.unitId=86;fake->value.creature.name="Delayed old world";
+ service.update(5003,43);
+ CHECK_FALSE(service.snapshot(86));CHECK(service.status(86).worldEpoch==43);
+ CHECK(old->worldEpoch==42);CHECK(old->detail.name=="Old world");
+ fake->value={};fake->value.worldEpoch=43;service.update(10003,43);
+ REQUIRE(fake->requests.back().action==wm::ManagementAction::Catalog);
+ fake->reply();fake->value.worldEpoch=43;service.update(10004,43);
+ REQUIRE(fake->requests.back().action==wm::ManagementAction::CreatureInspect);
+ fake->reply();fake->value.worldEpoch=43;fake->value.requestSeq=oldSequence;
+ fake->value.creature.unitId=86;fake->value.creature.name="Retired receipt";
+ service.update(10005,43);CHECK_FALSE(service.snapshot(86));
+ fake->reply();fake->value.worldEpoch=43;fake->value.creature.unitId=86;
+ fake->value.creature.name="New world";service.update(10006,43);
+ const auto current=service.snapshot(86);REQUIRE(current);
+ CHECK(current->worldEpoch==43);CHECK(current->generation>old->generation);
+ CHECK(current->detail.name=="New world");CHECK(old->detail.name=="Old world");
+}

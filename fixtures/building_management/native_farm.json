@@ -61446,6 +61446,352 @@
         "owned_df_pid": 39648,
         "source_unchanged": true,
         "exit_without_saving": true
+      },
+      "poetic_forms_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-034953",
+        "cases": [
+          {
+            "id": 0,
+            "characters": 504,
+            "form": {
+              "action": 9,
+              "mood": 5,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 14,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 4,
+            "characters": 698,
+            "form": {
+              "action": -1,
+              "mood": 3,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": -1,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 15,
+            "characters": 541,
+            "form": {
+              "action": -1,
+              "mood": 5,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 6,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 23,
+            "characters": 1072,
+            "form": {
+              "action": 22,
+              "mood": 2,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 1,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 25,
+            "characters": 798,
+            "form": {
+              "action": -1,
+              "mood": 0,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 5,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 26,
+            "characters": 637,
+            "form": {
+              "action": -1,
+              "mood": 6,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 10,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 27,
+            "characters": 963,
+            "form": {
+              "action": -1,
+              "mood": -1,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 1,
+              "subject": 12,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 41,
+            "characters": 549,
+            "form": {
+              "action": 22,
+              "mood": 3,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 19,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 46,
+            "characters": 737,
+            "form": {
+              "action": -1,
+              "mood": 4,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 11,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 49,
+            "characters": 750,
+            "form": {
+              "action": -1,
+              "mood": 3,
+              "original_author": -1,
+              "parts": 2,
+              "perspectives": 0,
+              "subject": -1,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 50,
+            "characters": 674,
+            "form": {
+              "action": 8,
+              "mood": 2,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": -1,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 51,
+            "characters": 523,
+            "form": {
+              "action": 6,
+              "mood": 5,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 19,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 63,
+            "characters": 1105,
+            "form": {
+              "action": -1,
+              "mood": 3,
+              "original_author": -1,
+              "parts": 3,
+              "perspectives": 0,
+              "subject": 18,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 64,
+            "characters": 913,
+            "form": {
+              "action": -1,
+              "mood": 0,
+              "original_author": -1,
+              "parts": 3,
+              "perspectives": 0,
+              "subject": 6,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 1,
+            "characters": 531,
+            "form": {
+              "action": 4,
+              "mood": 1,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 11,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 2,
+            "characters": 665,
+            "form": {
+              "action": 8,
+              "mood": -1,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 16,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 3,
+            "characters": 625,
+            "form": {
+              "action": 2,
+              "mood": -1,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": -1,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 5,
+            "characters": 587,
+            "form": {
+              "action": 7,
+              "mood": 5,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 1,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 6,
+            "characters": 1030,
+            "form": {
+              "action": -1,
+              "mood": 3,
+              "original_author": -1,
+              "parts": 3,
+              "perspectives": 0,
+              "subject": 6,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 7,
+            "characters": 810,
+            "form": {
+              "action": -1,
+              "mood": 3,
+              "original_author": -1,
+              "parts": 2,
+              "perspectives": 0,
+              "subject": 4,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 8,
+            "characters": 636,
+            "form": {
+              "action": -1,
+              "mood": 3,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 13,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 9,
+            "characters": 599,
+            "form": {
+              "action": 2,
+              "mood": 1,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 9,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 10,
+            "characters": 554,
+            "form": {
+              "action": 3,
+              "mood": 6,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": 13,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 11,
+            "characters": 413,
+            "form": {
+              "action": 9,
+              "mood": 6,
+              "original_author": -1,
+              "parts": 1,
+              "perspectives": 0,
+              "subject": -1,
+              "subject_hf": -1
+            },
+            "guards_unchanged": true
+          }
+        ],
+        "scope": "All existing known poetic forms plus first twelve world forms, temporarily appended and restored. Native magnifier detail equals owned probe exactly. No named-author or animal-persona branch acceptance.",
+        "diagnostics": "passed_with_known_issues",
+        "owned_df_pid": 2532,
+        "source_unchanged": true,
+        "exit_without_saving": true
       }
     }
   }

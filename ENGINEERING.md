@@ -3223,6 +3223,16 @@ preservation; all three Godot processes have only known startup notices.
 Other poetic subjects/personae and raw-name branches remain unverified; the
 diagnostic is not connected to production management transport or rendering.
 
+Protected034953 expands that comparison to24 existing poetic forms: all currently
+known forms plus the first twelve world forms, with temporary knowledge-list
+additions restored afterward. Native magnifier text matches the owned probe for
+every form (413–1,105 characters), including two- and three-part structures and
+one form with a perspective. All guards remain unchanged. DF2532 exits unsaved,
+source preservation passes, and all three Godot processes have only known
+startup notices. `poetic_forms_reference` retains IDs, structural fields and
+bounded results. Named-author and animal-persona branches still need targeted
+coverage; this does not establish production transport or rendered parity.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

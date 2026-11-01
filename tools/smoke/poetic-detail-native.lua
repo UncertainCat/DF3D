@@ -65,4 +65,6 @@ for _,entry in ipairs(guards)do
 end
 assert(ok,result);assert(unchanged,'Poetic probe changed guarded source/UI/random state')
 result.guards_unchanged=true
+result.form={parts=#form.parts,perspectives=#form.perspectives,subject=form.subject,
+ mood=form.mood,action=form.action,original_author=form.original_author,subject_hf=form.subject_hf}
 return result

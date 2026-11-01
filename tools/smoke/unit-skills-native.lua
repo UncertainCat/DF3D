@@ -81,9 +81,17 @@ local ok,err=xpcall(function()
    end
   end
   local details_ok,details_error=xpcall(function()
+  if os.getenv('DF3D_UNIT_POETIC_FORMS')=='1'then
+   local known=assert(df.historical_figure.find(unit.hist_figure_id).info.known_info).known_poetic_forms
+   for index,form in ipairs(df.global.world.poetic_forms.all)do
+    if index>=12 then break end
+    local exists=false;for _,id in ipairs(known)do if id==form.id then exists=true end end
+    if not exists then known:insert('#',form.id);added[#added+1]={vector=known,id=form.id}end
+   end
+  end
   local reference=observe('Knowledge');local seen={}
   for index,kind in ipairs(reference.knowledge_types)do
-   if kind>=14 and not seen[kind]then
+   if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1'))then
     seen[kind]=true;observe('Knowledge')
     sheet.scroll_position_unit_skill=index-1;view:render(dfhack.getTickCount())
     local first=sheet.scroll_position_unit_skill
@@ -107,7 +115,7 @@ local ok,err=xpcall(function()
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-detail-native.lua')
      detail.probe=assert(loadfile(source))(unit,detail)
     end
-    details[#details+1]=detail;capture('unit-skills-detail-'..kind)
+    details[#details+1]=detail;capture('unit-skills-detail-'..kind..'-'..detail.id)
    end
   end
   end,debug.traceback)

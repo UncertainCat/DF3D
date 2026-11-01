@@ -1,0 +1,249 @@
+{
+  "native_build": "DF 53.16 Steam Windows",
+  "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+  "reference_run": "build/stockpile-storage-native-farm-discovery-20261101-144649",
+  "plugin_sha256": "9485358156dbea6484aeeff6fc946c44ec5896548999f97a4c5b4f11a0810b95",
+  "building_id": 4,
+  "building_type": "Carpenters",
+  "pages": [
+    {
+      "name": "jobs",
+      "text": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "                                                            Carpenter's Workshop",
+          "y": 6
+        },
+        {
+          "text": "                                                       Tasks    Workers    Work orders",
+          "y": 8
+        },
+        {
+          "text": "                                                       Tasks    Workers    Work orders",
+          "y": 9
+        },
+        {
+          "text": "                                                                                        Add new task",
+          "y": 12
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "                                                            citron wood",
+          "y": 43
+        },
+        {
+          "text": "                                                            +coffee wood wheelbarrow+",
+          "y": 46
+        },
+        {
+          "text": "                                                            ≡pomelo wood wheelbarrow≡",
+          "y": 49
+        },
+        {
+          "text": "                                                             citron wood wheelbarrow",
+          "y": 52
+        },
+        {
+          "text": "                                                            ≡kumquat wood wheelbarrow≡",
+          "y": 55
+        },
+        {
+          "text": "                                                            kumquat wood wheelbarrow",
+          "y": 58
+        }
+      ],
+      "screenshot_sha256": "9debde5859c8b1ebb8ecbe4cd9a111c45761ce7b8e14530174eb094852a9f3a6"
+    },
+    {
+      "name": "add-task",
+      "text": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "                                                            Carpenter's Workshop",
+          "y": 6
+        },
+        {
+          "text": "                                                       Tasks    Workers    Work orders",
+          "y": 8
+        },
+        {
+          "text": "                                                       Tasks    Workers    Work orders                 Cancel",
+          "y": 9
+        },
+        {
+          "text": "                                                        ...",
+          "y": 12
+        },
+        {
+          "text": "                                                       Make instrument piece (opens menu)",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "                                                       Make bed",
+          "y": 18
+        },
+        {
+          "text": "                                                       Make display case",
+          "y": 21
+        },
+        {
+          "text": "                                                        [Requires Window]",
+          "y": 22
+        },
+        {
+          "text": "                                                       Make enormous wooden corkscrew",
+          "y": 24
+        },
+        {
+          "text": "                                                       Make four wooden blocks",
+          "y": 27
+        },
+        {
+          "text": "                                                       Make menacing wooden spike",
+          "y": 30
+        },
+        {
+          "text": "                                                       Make spiked wooden ball",
+          "y": 33
+        },
+        {
+          "text": "                                                       Make wooden altar",
+          "y": 36
+        },
+        {
+          "text": "                                                       Make wooden animal trap",
+          "y": 39
+        },
+        {
+          "text": "                                                       Make wooden armor stand",
+          "y": 42
+        },
+        {
+          "text": "                                                       Make wooden barrel",
+          "y": 45
+        },
+        {
+          "text": "                                                       Make wooden bin",
+          "y": 48
+        },
+        {
+          "text": "                                                       Make wooden bookcase",
+          "y": 51
+        },
+        {
+          "text": "                                                       Make wooden bucket",
+          "y": 54
+        }
+      ],
+      "screenshot_sha256": "b9413526ec5e4897900769a35ef88f95df0771abf78ae2e8d91461804c44fb84"
+    },
+    {
+      "name": "restored",
+      "text": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "                                                            Carpenter's Workshop",
+          "y": 6
+        },
+        {
+          "text": "                                                       Tasks    Workers    Work orders",
+          "y": 8
+        },
+        {
+          "text": "                                                       Tasks    Workers    Work orders",
+          "y": 9
+        },
+        {
+          "text": "                                                      Make bed",
+          "y": 12
+        },
+        {
+          "text": "                                                                                        Add new task",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "                                                            citron wood",
+          "y": 43
+        },
+        {
+          "text": "                                                            +coffee wood wheelbarrow+",
+          "y": 46
+        },
+        {
+          "text": "                                                            ≡pomelo wood wheelbarrow≡",
+          "y": 49
+        },
+        {
+          "text": "                                                             citron wood wheelbarrow",
+          "y": 52
+        },
+        {
+          "text": "                                                            ≡kumquat wood wheelbarrow≡",
+          "y": 55
+        },
+        {
+          "text": "                                                            kumquat wood wheelbarrow",
+          "y": 58
+        }
+      ],
+      "screenshot_sha256": "9debde5859c8b1ebb8ecbe4cd9a111c45761ce7b8e14530174eb094852a9f3a6"
+    }
+  ],
+  "requirements_reference": {
+    "native_action": "Make bed",
+    "all_job_item_fields_equal": true,
+    "requirements": 1,
+    "temporary_task_removed": true,
+    "paused_frame_unchanged": true,
+    "source_save_unchanged": true
+  },
+  "coverage_limits": [
+    "Only Make bed native input requirements compared; other jobs and reactions remain unverified.",
+    "Catalog choices, ordering and visible requirement descriptions still need native replacement.",
+    "No DF3D workshop panel or typed production transport acceptance."
+  ]
+}

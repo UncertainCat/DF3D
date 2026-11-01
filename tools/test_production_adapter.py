@@ -100,7 +100,26 @@ lua.execute(r'''
 local seq=0
 local function req(action,p)
  seq=seq+1
- return adapter{action=action,seq=seq,production=p or {}}
+ -- Inject semantic output; this fixture tests ownership/transactions, not DF rules.
+ local function native_requirements(job,building_id)
+  assert(job.id==-1 and #job.job_items.elements==0)
+  if job.job_type==99 then
+   reaction.reagents[0]:contribute_to_job_req(job.job_items,0,0)
+   return
+  end
+  local source=recipes.jobs_workshop[building_id+1]
+  for _,entry in ipairs(source or {})do
+   if entry.job_fields.job_type==job.job_type then
+    for _,input in ipairs(entry.items)do
+     local f=df.job_item.new();f:assign(source.defaults or {});f:assign(input)
+     f.flags2.allow_artifact=false;job.job_items.elements:insert('#',f)
+    end
+    return
+   end
+  end
+  error('Missing injected requirements')
+ end
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements}
 end
 local list=req(15,{cursor=0,query='#0'})
 assert(list.ok and #list.buildings==1 and list.buildings[1].id==0,'ID zero and numeric search')
@@ -144,7 +163,26 @@ lua.execute(r"""
 local seq=1000
 local function req(action,p)
  seq=seq+1
- return adapter{action=action,seq=seq,production=p or {}}
+ -- Inject semantic output; this fixture tests ownership/transactions, not DF rules.
+ local function native_requirements(job,building_id)
+  assert(job.id==-1 and #job.job_items.elements==0)
+  if job.job_type==99 then
+   reaction.reagents[0]:contribute_to_job_req(job.job_items,0,0)
+   return
+  end
+  local source=recipes.jobs_workshop[building_id+1]
+  for _,entry in ipairs(source or {})do
+   if entry.job_fields.job_type==job.job_type then
+    for _,input in ipairs(entry.items)do
+     local f=df.job_item.new();f:assign(source.defaults or {});f:assign(input)
+     f.flags2.allow_artifact=false;job.job_items.elements:insert('#',f)
+    end
+    return
+   end
+  end
+  error('Missing injected requirements')
+ end
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements}
 end
 local function refusal(action,p,message)
  local result=req(action,p)

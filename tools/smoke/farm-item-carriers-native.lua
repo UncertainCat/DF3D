@@ -2,6 +2,10 @@
 local out,view,records,b,capture,select_map=...
 local gui=require('gui');local json=require('json')
 local g=df.global.gps;local sheet=df.global.game.main_interface.view_sheets
+if os.getenv('DF3D_WORKSHOP_NATIVE')=='1'then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','workshop-native.lua')
+ assert(loadfile(source))(out,view,records,b,capture,select_map)
+end
 local entry=assert(b.contained_items[0]);local item=entry.item
 local saved={flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z,refs={}}
 local overview_case=os.getenv('DF3D_UNIT_OVERVIEW_CASE') or 'child'

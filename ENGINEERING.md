@@ -6462,8 +6462,31 @@ building-management provider. Its Carpenters/Kitchen/WoodFurnace choices come
 from hand-maintained `dfhack.workshops` tables; Still reaction selection and
 recipe-key ordering are local reconstructions. Ordinary requirement descriptions
 combine raw enum/flag names. Native reagent and job helpers do not establish
-native parity for these surrounding choices, ordering or visible text. Locate
-the native Add task provider before extending or exposing this presentation.
+native parity for these surrounding choices, ordering or visible text. The catalog and panel remain staged until these gaps are resolved.
+
+The native workshop catalog builder `8c5680` uses global building-menu vectors;
+its new-button constructor `8b1600` calls `7c5880`, which registers each button
+in those vectors. Neither is a permitted runtime API. Carpenter composition is
+inline at `8c762d..8c7ad1`; the shared reaction/category tail is `8c3fe0`.
+Native job captions delegate from `8c2310` to semantic formatter `d032b0`.
+
+`workshop_job_native.h` exposes the separate input-requirement builder `d09ca0`,
+called by the native task action through `d09b70`. The production adapter now
+passes its unlinked owned job and explicit building to this helper instead of
+copying DFHack ingredient templates or manually adding reaction reagents. The
+builder reads installed raws, the use-dyed-cloth standing order and the building's
+`needsMagma` query; it writes only owned requirements. The historical-material
+cache is privately copied and restored. Function/table and constructor pins
+reject an incompatible executable. No native buttons or menu state are used.
+
+Protected workshop reference144649 on2026-11-01 adds Make bed through the native
+picker and compares every `job_item` field with the independently built inputs.
+The single requirement matches; the temporary job is removed, paused frame and
+source save remain unchanged, and owned DF47268 exits unsaved. All three Godot
+logs contain only the classified startup notice, with no Unicode errors.
+`fixtures/production/native_workshop.json` retains the native picker text and
+bounded evidence. This verifies the Make bed requirement call, not other job
+families, reactions, the typed production path or a finished workshop panel.
 
 Static inspection of the pinned53.16 executable (SHA256
 `205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7`)

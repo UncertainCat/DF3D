@@ -39,42 +39,32 @@ local function delete_template(j)
  for _,f in ipairs(j.job_items.elements) do f:delete() end
  j.job_items.elements:resize(0);j:delete()
 end
-local function template_job(recipe)
+local function template_job(recipe,b,native_requirements)
  local j=df.job:new()
  j.item_type=-1;j.item_subtype=-1;j.mat_type=-1;j.mat_index=-1
  local ok,err=pcall(function()
   if recipe.reaction then
    local r=recipe.reaction
    j.job_type=df.job_type.CustomReaction;j.reaction_name=r.code
-   for i,reagent in ipairs(r.reagents) do reagent:contribute_to_job_req(j.job_items,i,r.index) end
   else
    j:assign(recipe.fields)
-   for _,input in ipairs(recipe.items) do
-    local f=df.job_item:new();j.job_items.elements:insert('#',f)
-    f:assign(input);f.flags2.allow_artifact=false
-   end
   end
+  native_requirements(j,b.id)
   if #j.job_items.elements>16 then error('Recipe exceeds 16 input requirements') end
  end)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b)
+local function recipes(b,native_requirements)
  local out,keys={},{}
  local k=kind(b)
  -- Reuse pinned builtin templates only for validated initial families.
  if k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' then
   local source=(k=='WoodFurnace' and W.jobs_furnace or W.jobs_workshop)[b.type]
   for _,entry in ipairs(source or {}) do
-   local inputs={}
-   for _,item in ipairs(entry.items) do
-    local f=utils.clone(W.input_filter_defaults,true)
-    if source.defaults then utils.assign(f,source.defaults) end
-    utils.assign(f,item);inputs[#inputs+1]=f
-   end
    local fields=utils.clone(entry.job_fields,true)
    if k=='Carpenters' then fields.material_category={wood=true} end
-   out[#out+1]={key='builtin:'..fields.job_type..':'..(fields.mat_type or -1),name=utf(entry.name),fields=fields,items=inputs}
+   out[#out+1]={key='builtin:'..fields.job_type..':'..(fields.mat_type or -1),name=utf(entry.name),fields=fields}
   end
  end
  -- Reactions use native filters, including containers, and current civilization permissions.
@@ -95,7 +85,7 @@ local function recipes(b)
  for _,r in ipairs(out) do
   if keys[r.key] then return nil,'Ambiguous native recipe identity' end
   keys[r.key]=true
-  local j,err=template_job(r)
+  local j,err=template_job(r,b,native_requirements)
   if not j then return nil,'Unsupported native recipe: '..err end
   local good,description=pcall(requirements,j)
   delete_template(j)
@@ -218,7 +208,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b);if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements);if not rs then return fail(err) end
  if request.action==16 then return inspect(b,rs) end
  if b:getBuildStage()~=b:getMaxBuildStage() then return fail('Building construction is unfinished') end
  local created=-1
@@ -229,7 +219,7 @@ return function(request)
   local recipe
   for _,r in ipairs(rs) do if r.key==p.recipe then recipe=r end end
   if not recipe then return fail('Recipe is no longer available at this building') end
-  local job,error=template_job(recipe);if not job then return fail(error) end
+  local job,error=template_job(recipe,b,request.workshop_requirements);if not job then return fail(error) end
   job.pos={x=b.centerx,y=b.centery,z=b.z}
   local ref=df.general_ref_building_holderst:new();ref.building_id=b.id
   job.general_refs:insert('#',ref)

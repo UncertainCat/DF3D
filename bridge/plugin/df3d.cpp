@@ -96,6 +96,8 @@
 #include "skills_caption_native.h"
 #include "creature_knowledge_native.h"
 #include "knowledge_detail_native.h"
+#include "workshop_job_native.h"
+#include "df/job_item.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
 #include "written_detail_native.h"
@@ -2065,6 +2067,37 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           facts["can_dump"]=observed->canDump;facts["can_melt"]=observed->canMelt;
           result["facts"]=std::move(facts);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="workshop-requirements-probe") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t ids[2];
+          for(int i=0;i<2;++i) {
+            const auto& raw=parameters[i+1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),ids[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || ids[i]<0)return CR_WRONG_USAGE;
+          }
+          auto* shop=df::building::find(ids[0]);if(!shop)return CR_FAILURE;
+          df::job* source=nullptr;for(auto* job:shop->jobs)if(job && job->id==ids[1])source=job;
+          if(!source)return CR_FAILURE;
+          df::job owned;owned.id=-1;owned.list_link=nullptr;
+          owned.job_type=source->job_type;owned.item_type=source->item_type;owned.item_subtype=source->item_subtype;
+          owned.mat_type=source->mat_type;owned.mat_index=source->mat_index;owned.material_category=source->material_category;
+          owned.specflag=source->specflag;owned.specdata=source->specdata;owned.art_spec=source->art_spec;
+          owned.reaction_name=source->reaction_name;
+          struct Cleanup {df::job& job;~Cleanup(){for(auto* item:job.job_items.elements)delete item;}} cleanup{owned};
+          if(!df3d_production::workshopRequirements(owned,shop))return CR_FAILURE;
+          const auto fields=[](const df::job_item& v) {
+            return std::make_tuple(v.item_type,v.item_subtype,v.mat_type,v.mat_index,v.flags1.whole,v.quantity,
+              v.vector_id,v.flags2.whole,v.flags3.whole,v.flags4,v.flags5,v.metal_ore,v.reaction_class,
+              v.has_material_reaction_product,v.min_dimension,v.reagent_index,v.contains,v.reaction_id,
+              v.has_tool_use,v.dye_color,v.job_details_flags.whole,v.job_details_mat_type,
+              v.job_details_mat_index,v.job_details_item_flags2.whole);
+          };
+          bool equal=owned.job_items.elements.size()==source->job_items.elements.size();
+          if(equal)for(size_t i=0;i<owned.job_items.elements.size();++i)
+            if(fields(*owned.job_items.elements[i])!=fields(*source->job_items.elements[i]))equal=false;
+          Json::Value result(Json::objectValue);result["equal"]=equal;
+          result["requirements"]=Json::UInt(owned.job_items.elements.size());
+          out.print("{}",Json::FastWriter().write(result));return equal?CR_OK:CR_FAILURE;
         }
         if(parameters[0]=="farm-contents-read") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;

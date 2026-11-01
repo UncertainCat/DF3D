@@ -36,6 +36,7 @@
 #include "df/history_event_hf_gains_secret_goalst.h"
 #include "df/history_event_item_stolenst.h"
 #include "df/history_event_hist_figure_diedst.h"
+#include "df/history_event_collection_competitionst.h"
 #include "df/general_ref.h"
 #include "df/artifact_record.h"
 #include "df/item_coinst.h"
@@ -78,10 +79,27 @@ inline bool knowledgeItemArtifactInputsValid(int32_t item_id) {
     }
     return true;
 }
+inline bool knowledgeCollectionInputsValid(int32_t collection_id) {
+    auto* collection=df::history_event_collection::find(collection_id);
+    if(!collection || collection->getType()!=df::history_event_collection_type::COMPETITION)return true;
+    const auto* competition=static_cast<df::history_event_collection_competitionst*>(collection);
+    auto* owner=df::historical_entity::find(competition->civ);
+    if(!owner || !owner->occasion_info)return true;
+    const auto& occasions=owner->occasion_info->occasions;
+    for(const auto* value:occasions)if(!value)return false;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    const auto* occasion=reinterpret_cast<df::entity_occasion*(*)(int32_t,const std::vector<df::entity_occasion*>*)>(base+0xb9dc0)(competition->occasion,&occasions);
+    if(!occasion)return true;
+    // bc73cd dereferences the indexed slot without a length check. A null
+    // in-range slot has its own native fallback and remains valid.
+    return competition->schedule>=0 && size_t(competition->schedule)<occasion->schedule.size();
+}
 // The generated circumstance union has no artifact-named member. Native
 // b5a6c0 passes its raw int32 payload to b94400 for exactly these two thoughts.
 template<class Circumstance>
-inline bool knowledgeCircumstanceArtifactInputsValid(const Circumstance& circumstance) {
+inline bool knowledgeCircumstanceInputsValid(const Circumstance& circumstance) {
+    if(circumstance.type==df::unit_thought_type::HistEventCollection)
+        return knowledgeCollectionInputsValid(circumstance.data.HistEventCollection);
     if(circumstance.type!=df::unit_thought_type::AcquireArtifact &&
        circumstance.type!=df::unit_thought_type::GaveArtifact)return true;
     int32_t artifact_id;
@@ -89,22 +107,22 @@ inline bool knowledgeCircumstanceArtifactInputsValid(const Circumstance& circums
     std::memcpy(&artifact_id,&circumstance.data,sizeof(artifact_id));
     return knowledgeArtifactInputsValid(artifact_id);
 }
-inline bool eventCircumstanceArtifactInputsValid(df::history_event* event) {
+inline bool eventCircumstanceInputsValid(df::history_event* event) {
     // CHANGE_HF_MOOD and CHANGE_HF_STATE also call b5a6c0, but pass constant
     // -1 for the circumstance rather than forwarding a stored dependency.
     switch(event->getType()) {
     case df::history_event_type::ARTIFACT_CLAIM_FORMED:
-        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_artifact_claim_formedst*>(event)->circumstance);
+        return knowledgeCircumstanceInputsValid(static_cast<df::history_event_artifact_claim_formedst*>(event)->circumstance);
     case df::history_event_type::ARTIFACT_GIVEN:
-        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_artifact_givenst*>(event)->circumstance);
+        return knowledgeCircumstanceInputsValid(static_cast<df::history_event_artifact_givenst*>(event)->circumstance);
     case df::history_event_type::ARTIFACT_POSSESSED:
-        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_artifact_possessedst*>(event)->circumstance);
+        return knowledgeCircumstanceInputsValid(static_cast<df::history_event_artifact_possessedst*>(event)->circumstance);
     case df::history_event_type::ENTITY_DISSOLVED:
-        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_entity_dissolvedst*>(event)->circumstance);
+        return knowledgeCircumstanceInputsValid(static_cast<df::history_event_entity_dissolvedst*>(event)->circumstance);
     case df::history_event_type::HF_GAINS_SECRET_GOAL:
-        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_hf_gains_secret_goalst*>(event)->circumstance);
+        return knowledgeCircumstanceInputsValid(static_cast<df::history_event_hf_gains_secret_goalst*>(event)->circumstance);
     case df::history_event_type::ITEM_STOLEN:
-        return knowledgeCircumstanceArtifactInputsValid(static_cast<df::history_event_item_stolenst*>(event)->circumstance);
+        return knowledgeCircumstanceInputsValid(static_cast<df::history_event_item_stolenst*>(event)->circumstance);
     default:return true;
     }
 }
@@ -203,7 +221,7 @@ inline bool knowledgeEventInputsValid(int32_t event_id) {
         if(!directAgreementIdentityInputsValid(event_id))return false;
         if(!agreementArtifactInputsValid(event))return false;
         if(!directEventArtifactInputsValid(event))return false;
-        if(!eventCircumstanceArtifactInputsValid(event))return false;
+        if(!eventCircumstanceInputsValid(event))return false;
         if(event->getType()==df::history_event_type::MASTERPIECE_LOST) {
             event_id=static_cast<df::history_event_masterpiece_lostst*>(event)->creation_event;
             continue;

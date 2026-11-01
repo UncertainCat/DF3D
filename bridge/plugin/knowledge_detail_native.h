@@ -29,6 +29,7 @@ inline bool knowledgeDescriptionReady() {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct Pin {size_t rva,length;uint64_t hash;};
     constexpr Pin pins[]={
+        {0xbc7270,0x50c,UINT64_C(0xda035ebd044b7798)},
         {0xedfc20,0x7f,UINT64_C(0x2dd6f4f724425f19)},
         {0xe76400,0x6ac8,UINT64_C(0x42da003339c26ed2)},
         {0xe76080,0x37c,UINT64_C(0x6a5c75842832cda8)},

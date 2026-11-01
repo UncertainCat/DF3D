@@ -67463,6 +67463,80 @@
         "owned_exit_unsaved": true,
         "scope": "ASSUME_IDENTITY dance descriptions with valid unit race/caste and temporary identity/event graphs. Profession/entity changes leave this native phrase unchanged; separate profession branch, agreement identities, other races and deep historical identity graphs remain unverified."
       },
+      "collection_validation_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-083853",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "3e7dbc1d927dce394bc12423728988de0bbeb2fad680f7b9ed88bbdeb44ba387",
+        "cases": [
+          {
+            "case": "foot-race",
+            "text_utf8_bytes": 1780,
+            "text_sha256": "7ee9c754da88be43ea8c94bfd2da2458f81775d5e3556f4cde2a9de10e168e05"
+          },
+          {
+            "case": "second-foot-race",
+            "text_utf8_bytes": 1787,
+            "text_sha256": "7c3a4108267336ac6dacb414539184d280fb4612177d7e5d5100fd548bdc0578"
+          },
+          {
+            "case": "missing-collection",
+            "text_utf8_bytes": 1750,
+            "text_sha256": "aee9009894127a66b1e2609917db4d423c3f6b813392f194d443bc33f17cf686"
+          },
+          {
+            "case": "missing-entity",
+            "text_utf8_bytes": 1765,
+            "text_sha256": "9df25eff49e953ca890ae158fdcc3c85b8f3a8b9640866097dc0359b11c47ddc"
+          },
+          {
+            "case": "missing-info",
+            "text_utf8_bytes": 1765,
+            "text_sha256": "9df25eff49e953ca890ae158fdcc3c85b8f3a8b9640866097dc0359b11c47ddc"
+          },
+          {
+            "case": "missing-occasion",
+            "text_utf8_bytes": 1765,
+            "text_sha256": "9df25eff49e953ca890ae158fdcc3c85b8f3a8b9640866097dc0359b11c47ddc"
+          },
+          {
+            "case": "null-schedule",
+            "text_utf8_bytes": 1787,
+            "text_sha256": "000c5552fa4e36fdfa36c253915cc732bf6ec140ffdfcd12bb58a123c8767e2e"
+          }
+        ],
+        "rejections": [
+          {
+            "case": "minus-one-schedule",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "negative-schedule",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "past-end-schedule",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "empty-schedule",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "null-occasion",
+            "guards_unchanged": true,
+            "rejected": true
+          }
+        ],
+        "valid_native_comparisons": 14,
+        "baseline_form_comparisons": 4,
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "Competition schedule preflight via HistEventCollection circumstance through ARTIFACT_GIVEN. Foot-race/ordinal and missing-record/null-schedule native fallbacks tested. Other collection types, other competition schedule kinds and broad production admission remain incomplete."
+      },
       "coin_validation_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-083239",
         "status": "passed_with_known_issues",

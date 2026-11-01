@@ -64,6 +64,24 @@ local function coin_artifact(id)
     end
    end
 end
+local function competition_collection(id)
+ vector(df.global.world.history.event_collections.all)
+ local value=df.history_event_collection.find(id);if not value then return end
+ assert(df.history_event_collection_competitionst:is_instance(value),'Add collection source guards')
+ object(value);vector(value.events);vector(value.collections)
+ local owner=df.historical_entity.find(value.civ);if not owner then return end
+ entity(value.civ);object(owner.occasion_info);if not owner.occasion_info then return end
+ vector(owner.occasion_info.occasions)
+ for _,occasion in ipairs(owner.occasion_info.occasions)do
+  object(occasion)
+  if occasion.id==value.occasion then
+   name(occasion.name);vector(occasion.schedule)
+   assert(value.schedule>=0 and value.schedule<#occasion.schedule)
+   local schedule=occasion.schedule[value.schedule];object(schedule)
+   if schedule then vector(schedule.features);assert(#schedule.features==0)end
+  end
+ end
+end
 local visited={}
 local function event(id)
  if id<0 then return end
@@ -107,8 +125,11 @@ local function event(id)
    figure(value.giver_hf);entity(value.giver_entity);figure(value.receiver_hf);entity(value.receiver_entity)
    assert(value.reason.type==-1,'Add guards for this reason')
    local thought=value.circumstance.type
-   assert(thought==df.unit_thought_type.AcquireArtifact or thought==df.unit_thought_type.GaveArtifact,'Add guards for this circumstance')
-   ids[#ids+1]=value.circumstance.data.Death
+   if thought==df.unit_thought_type.HistEventCollection then competition_collection(value.circumstance.data.HistEventCollection)
+   else
+    assert(thought==df.unit_thought_type.AcquireArtifact or thought==df.unit_thought_type.GaveArtifact,'Add guards for this circumstance')
+    ids[#ids+1]=value.circumstance.data.Death
+   end
   end
   for _,id in ipairs(ids)do coin_artifact(id)end
  elseif kind==df.history_event_type.ARTIFACT_CREATED then

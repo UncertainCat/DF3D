@@ -3590,14 +3590,34 @@ separate audits and material-cache isolation requirement.
 
 This is static ownership evidence, not complete production admission. In
 particular, competition naming indexes the resolved occasion's schedule at
-bc73cd without a preceding length check. A provider must validate this source
-relationship before entering native code. Circumstance formatting also reaches
+bc73cd without a preceding length check. The shared diagnostic traversal now
+validates this relationship for the HistEventCollection233 circumstance.
+Its remap entry targets b5b534, which resolves the collection with13cc50 and
+calls getName atb5b576. The guard resolves competition.civ, checks occasion
+pointers, then uses pinned native b9dc0 to resolve competition.occasion.
+Only a resolved occasion requires an in-range nonnegative schedule index.
+Missing collection/entity/info/occasion and an in-range null schedule preserve
+native fallback. Competition formatterbc7270 (length0x50c,
+FNVda035ebd044b7798) is pinned by shared Knowledge readiness.
+
+Protected083853 on2026-11-01, bridge
+`3e7dbc1d927dce394bc12423728988de0bbeb2fad680f7b9ed88bbdeb44ba387`,
+compares seven temporary competition cases twice through ARTIFACT_GIVEN's
+circumstance: first/second foot race, missing collection/entity/info/occasion,
+and null schedule. All14 native descriptions and four baseline forms match.
+Schedule-1/-2, past-end and empty schedules plus a null occasion are rejected
+before native formatting with guarded source/UI unchanged. The source save is
+unchanged and the owned session exits unsaved; all three Godot processes have
+only the known startup notice. `collection_validation_reference` records this
+scope. Other collection types and competition schedule kinds retain their
+separate source-validation obligations; this does not expose Knowledge.
+
+Circumstance formatting also reaches
 artifact helperb94400; its unnamed-artifact branch atb94583 passes the live
 artifact item to c65450 with false and article type1. The short-caption audit
 below identifies reachable mutations separately from the full item-sheet
 formatter. Root-level absence of stores does not discharge this transitive
-obligation. Live collection branch comparisons and source validation remain
-outstanding.
+obligation. General collection admission remains outstanding.
 
 ### Knowledge artifact caption dependencies
 

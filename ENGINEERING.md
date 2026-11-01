@@ -3724,6 +3724,33 @@ Text, warm guards, source-save preservation and known-diagnostic checks pass.
 
 ### Knowledge coin-caption source requirements
 
+The artifact dependency is broader than ARTIFACT_CREATED. The supported
+executable's audited event roots contain22 direct calls to b94400 across19
+event types: agreement concluded/formed; artifact claim formed, copied,
+created, destroyed, dropped, found, given, hidden, lost, possessed, recovered,
+stored and transformed; HF act on artifact, HF learns secret, historical
+figure died and item stolen. ARTIFACT_TRANSFORMED formats both new_artifact
+and entries from old_artifact; validating only its first artifact is insufficient.
+Agreement detail payloads and death/theft item resolution require separate
+dependency extraction, rather than treating all these events as a common
+artifact_id layout. Eight event roots also call circumstance helper b5a6c0.
+Its second dispatch maps unit thoughts AcquireArtifact236 and GaveArtifact239
+to b5b594/b5b5b6, then calls b94400 using the fifth argument, circumstance
+data. These are additional dependencies even when an event's primary artifact
+has already passed validation. The local artifact-event-dependencies.json
+records call sites and instruction neighborhoods against executable SHA256
+205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7;
+the neighborhoods are not a transitive dataflow proof.
+
+Native b94400 selects its fallback by testing the formatted name string's
+length at b94535, after a946e0, rather than directly testing name.has_name.
+Before general admission, establish the relationship between that output and
+the diagnostic guard's name flag, including empty/malformed names. A resolved
+artifact also needs a valid item: the fallback dereferences it at b94541,
+and formatting flag2 dereferences it earlier at b9448e even for a named
+artifact. These are outstanding validation requirements, not accepted inputs
+or permission to fabricate replacement descriptions.
+
 The unnamed-artifact short-caption path can dispatch coin descriptionca0d00.
 The supported executable reads the signed coin-batch index at item offset0xe8;
 only -1 skips the lookup. Otherwise ca0d2e indexes `world.coin_batches.all`

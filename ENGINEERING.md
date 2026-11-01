@@ -4194,6 +4194,16 @@ Skills rows or broaden the baseline race/caste sample.
 
 ### Creature Skills row rendering
 
+Native row-hover reference093207 on2026-11-01 holds the pointer over the first
+caption row at500,254 for900ms on all five Skills pages. Native reports no hover
+instruction, and all five full screenshots remain pixel-identical to their
+unhovered captures. `row_hover_reference` records this bounded observation;
+an XP tooltip is not an established requirement for these rows. Other hitboxes
+are not covered by this observation. Owned DF12552 exited unsaved, source
+preservation passed, and all three Godot processes reported only the known
+startup notice. Initial093034 had invalid screenshots and omitted a harness
+probe prerequisite; it is not acceptance evidence.
+
 `creature_skills_view.gd` consumes ordered typed pages and native caption colors;
 it does not recategorize or sort skills. The standalone real-renderer check
 `creature_skills_capture` compares all five first-page bodies with native051956

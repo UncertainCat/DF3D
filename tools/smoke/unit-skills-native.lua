@@ -105,6 +105,25 @@ local ok,err=xpcall(function()
  for _,name in ipairs{'Labor','Combat','Social','Other skills','Knowledge'}do
   pages[#pages+1]=observe(name);capture('unit-skills-'..name:lower():gsub(' ','-'))
  end
+ if os.getenv('DF3D_UNIT_SKILLS_HOVER')=='1'then
+  local records={};local main=df.global.game.main_interface;local script=require('gui.script')
+  for _,name in ipairs{'Labor','Combat','Social','Other skills','Knowledge'}do
+   local page=observe(name);sheet.scroll_position_unit_skill=0
+   local deadline=dfhack.getTickCount()+900
+   repeat
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    g.precise_mouse_x=500;g.precise_mouse_y=254;g.mouse_x=62;g.mouse_y=20
+    gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+   until dfhack.getTickCount()>=deadline
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+   local record={page=name,skill=page.skills[1],hover=main.current_hover,
+    ids={main.current_hover_id1,main.current_hover_id2,main.current_hover_id3},
+    enabled=main.hover_instructions_on,lines={}}
+   for y=0,g.dimy-1 do record.lines[#record.lines+1]=dfhack.df2utf(row(y)):gsub('%s+$','')end
+   records[#records+1]=record;capture('unit-skills-hover-'..name:lower():gsub(' ','-'))
+  end
+  local file=assert(io.open(out..'/unit-skills-hover.json','w'));file:write(json.encode(records));file:close()
+ end
  if os.getenv('DF3D_UNIT_SKILLS_DETAILS')=='1'then
   local added={};local written_samples={}
   if os.getenv('DF3D_UNIT_SKILLS_ALL_FORMS')=='1'then

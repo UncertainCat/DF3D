@@ -65767,6 +65767,74 @@
         "initial_failed_run": "build/stockpile-storage-native-farm-discovery-20261101-053445",
         "initial_failure": "Test script suffix type inference, corrected to explicit String."
       },
+      "row_hover_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-093207",
+        "status": "passed_with_known_issues",
+        "mouse": [
+          500,
+          254
+        ],
+        "dwell_ms": 900,
+        "scope": "First caption row on each page; no inference about other hitboxes.",
+        "pages": [
+          {
+            "enabled": false,
+            "hover": -1,
+            "ids": [
+              -1,
+              -1,
+              -1
+            ],
+            "page": "Labor",
+            "skill": 73
+          },
+          {
+            "enabled": false,
+            "hover": -1,
+            "ids": [
+              -1,
+              -1,
+              -1
+            ],
+            "page": "Combat",
+            "skill": 45
+          },
+          {
+            "enabled": false,
+            "hover": -1,
+            "ids": [
+              -1,
+              -1,
+              -1
+            ],
+            "page": "Social",
+            "skill": 77
+          },
+          {
+            "enabled": false,
+            "hover": -1,
+            "ids": [
+              -1,
+              -1,
+              -1
+            ],
+            "page": "Other skills",
+            "skill": 62
+          },
+          {
+            "enabled": false,
+            "hover": -1,
+            "ids": [
+              -1,
+              -1,
+              -1
+            ],
+            "page": "Knowledge"
+          }
+        ],
+        "all_five_full_images_equal_before_after": true,
+        "source_unchanged": true
+      },
       "selected_detail_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-054128",
         "status": "passed_with_known_issues",

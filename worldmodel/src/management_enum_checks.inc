@@ -1,4 +1,9 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::CreatureLocationOutcome::Rejected) == static_cast<int>(df3d::mirror::CreatureLocationOutcome::Rejected));
+static_assert(static_cast<int>(wm::CreatureLocationOutcome::Applied) == static_cast<int>(df3d::mirror::CreatureLocationOutcome::Applied));
+static_assert(static_cast<int>(wm::CreatureLocationOutcome::Unavailable) == static_cast<int>(df3d::mirror::CreatureLocationOutcome::Unavailable));
+static_assert(static_cast<int>(wm::CreatureLocationOutcome::Unknown) == static_cast<int>(df3d::mirror::CreatureLocationOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesCreatureLocationOutcome()) / sizeof(df3d::mirror::CreatureLocationOutcome) == 4);
 static_assert(static_cast<int>(wm::CreatureWorkshopOutcome::Rejected) == static_cast<int>(df3d::mirror::CreatureWorkshopOutcome::Rejected));
 static_assert(static_cast<int>(wm::CreatureWorkshopOutcome::Applied) == static_cast<int>(df3d::mirror::CreatureWorkshopOutcome::Applied));
 static_assert(static_cast<int>(wm::CreatureWorkshopOutcome::Unavailable) == static_cast<int>(df3d::mirror::CreatureWorkshopOutcome::Unavailable));
@@ -119,7 +124,8 @@ static_assert(static_cast<int>(wm::ManagementAction::CreatureExpelRead) == stati
 static_assert(static_cast<int>(wm::ManagementAction::CreatureExpelApply) == static_cast<int>(df3d::mirror::ManagementAction::CreatureExpelApply));
 static_assert(static_cast<int>(wm::ManagementAction::CreatureKnowledgeRead) == static_cast<int>(df3d::mirror::ManagementAction::CreatureKnowledgeRead));
 static_assert(static_cast<int>(wm::ManagementAction::CreatureWorkshopRemove) == static_cast<int>(df3d::mirror::ManagementAction::CreatureWorkshopRemove));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 78);
+static_assert(static_cast<int>(wm::ManagementAction::CreatureLocationRemove) == static_cast<int>(df3d::mirror::ManagementAction::CreatureLocationRemove));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 79);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -404,3 +410,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureExpelRead) == df
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureExpelApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureExpelApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureKnowledgeRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureKnowledgeRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureWorkshopRemove) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureWorkshopRemove));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureLocationRemove) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureLocationRemove));

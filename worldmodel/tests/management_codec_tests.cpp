@@ -3950,3 +3950,32 @@ TEST_CASE("workshop removal acknowledges application only with a successful enve
       CHECK(decoded.creatureWorkshop->outcome==wm::CreatureWorkshopOutcome::Applied);}
   }
 }
+
+TEST_CASE("location removal carries target and current membership revision") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::CreatureLocationRemove;
+  request.creatureLocation={1017,3,42};
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+  const auto* wireRequest=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+  CHECK_FALSE(wire::validateConstructionRequest(*wireRequest));
+  REQUIRE(wireRequest->creature_location());
+  CHECK(wireRequest->creature_location()->unit_id()==1017);
+  CHECK(wireRequest->creature_location()->occupation_id()==3);
+  CHECK(wireRequest->creature_location()->expected_revision()==42);
+  request.creatureLocation.expectedRevision=0;b.Clear();codec::encodeRequest(b,request,1,2,3);
+  CHECK(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())));
+}
+TEST_CASE("location removal acknowledges application only with a successful envelope") {
+  for(bool accepted:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto payload=wire::CreateCreatureLocationState(b,1017,3,wire::CreatureLocationOutcome::Applied);
+    wire::ManagementStateBuilder result(b);result.add_revision(1);result.add_world_epoch(3);
+    result.add_action(wire::ManagementAction::CreatureLocationRemove);
+    result.add_status(accepted?wire::ManagementStatus::Ok:wire::ManagementStatus::Rejected);
+    result.add_creature_location(payload);b.Finish(result.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==!accepted);
+    if(accepted){const auto decoded=codec::decodeState(value);REQUIRE(decoded.creatureLocation);
+      CHECK(decoded.creatureLocation->unitId==1017);CHECK(decoded.creatureLocation->occupationId==3);
+      CHECK(decoded.creatureLocation->outcome==wm::CreatureLocationOutcome::Applied);}
+  }
+}

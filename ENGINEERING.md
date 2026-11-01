@@ -4215,6 +4215,21 @@ results. DF35272 exits unsaved and source preservation passes; all three Godot
 processes contain only the known startup notice. Recursive event closure and
 broader source/branch coverage remain separate requirements.
 
+### Creature location removal contract (management112)
+
+Management112 adds `CreatureLocationRemove` action78 in the `creature_location`
+domain. Requests identify a creature and occupation and carry a positive
+assignment revision. Receipts repeat both IDs and distinguish Applied,
+Rejected, Unavailable and Unknown. Applied requires an Ok envelope; other
+outcomes require Rejected. Successful replies require the typed receipt.
+Unknown mutations must not be replayed or treated as confirmed removal.
+
+Request/state defaults, required version and shared-memory region move from111
+to112. Rebuild and deploy bridge, model and viewer together. Old recordings do
+not supply assignment revisions and cannot authorize removal. The native
+handler and visible Remove action remain staged; this contract does not expose
+an unfinished creature screen.
+
 ### Workshop removal request contract (management111)
 
 Management111 adds `CreatureWorkshopRemove` action77 in the

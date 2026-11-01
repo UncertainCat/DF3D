@@ -612,7 +612,9 @@ struct ConstructionInput {
   uint32_t quantity = 1;
 };
 struct CreatureWorkshopRequest { int32_t unitId=-1,buildingId=-1; uint64_t expectedRevision=0; };
+struct CreatureLocationRequest { int32_t unitId=-1,occupationId=-1; uint64_t expectedRevision=0; };
 struct CreatureWorkshopState { int32_t unitId=-1,buildingId=-1; CreatureWorkshopOutcome outcome=CreatureWorkshopOutcome::Rejected; };
+struct CreatureLocationState { int32_t unitId=-1,occupationId=-1; CreatureLocationOutcome outcome=CreatureLocationOutcome::Rejected; };
 struct CreatureKnowledgeRequest { int32_t unitId=-1,kind=-1,id=-1; };
 struct CreatureKnowledgeState { int32_t unitId=-1,kind=-1,id=-1; CreatureKnowledgeOutcome outcome=CreatureKnowledgeOutcome::Rejected; std::string text; };
 struct CreaturePosition { int32_t unitId=-1; TilePos position; };
@@ -659,6 +661,7 @@ struct ManagementRequest {
   CreatureExpelRequest creatureExpel;
   CreatureKnowledgeRequest creatureKnowledge;
   CreatureWorkshopRequest creatureWorkshop;
+  CreatureLocationRequest creatureLocation;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -710,6 +713,7 @@ struct ManagementState {
   std::optional<CreatureExpelState> creatureExpel;
   std::optional<CreatureKnowledgeState> creatureKnowledge;
   std::optional<CreatureWorkshopState> creatureWorkshop;
+  std::optional<CreatureLocationState> creatureLocation;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

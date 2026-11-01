@@ -36,6 +36,7 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureExpel=std::move(state);
   }
   if(const auto* w=s->creature_workshop())next.creatureWorkshop=CreatureWorkshopState{w->unit_id(),w->building_id(),CreatureWorkshopOutcome(w->outcome())};
+  if(const auto* w=s->creature_location())next.creatureLocation=CreatureLocationState{w->unit_id(),w->occupation_id(),CreatureLocationOutcome(w->outcome())};
   if(const auto* k=s->creature_knowledge())next.creatureKnowledge=CreatureKnowledgeState{k->unit_id(),k->kind(),k->id(),CreatureKnowledgeOutcome(k->outcome()),k->text()->str()};
   if(const auto* p=s->creature_position())next.creaturePosition=CreaturePosition{p->unit_id(),{p->position()->x(),p->position()->y(),p->position()->z()}};
   if(const auto* h=s->creature_header()) {
@@ -154,7 +155,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::CreatureKnowledgeRequest>{},
       r.action==ManagementAction::CreatureWorkshopRemove?
           m::CreateCreatureWorkshopRequest(b,r.creatureWorkshop.unitId,r.creatureWorkshop.buildingId,r.creatureWorkshop.expectedRevision):
-          flatbuffers::Offset<m::CreatureWorkshopRequest>{});
+          flatbuffers::Offset<m::CreatureWorkshopRequest>{},
+      r.action==ManagementAction::CreatureLocationRemove?
+          m::CreateCreatureLocationRequest(b,r.creatureLocation.unitId,r.creatureLocation.occupationId,r.creatureLocation.expectedRevision):
+          flatbuffers::Offset<m::CreatureLocationRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

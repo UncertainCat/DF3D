@@ -10,6 +10,32 @@ end
 assert(building,'Native workshop reference needs a completed carpenter workshop')
 local jobs={};for _,job in ipairs(building.jobs)do jobs[#jobs+1]=job.id end
 local result={building_id=building.id,type=df.workshop_type[building.type],position={building.centerx,building.centery,building.z},jobs=jobs,pages={}}
+-- Diagnostic oracle only; runtime worker reads never traverse widgets.
+local function worker_list(container,depth)
+ assert(depth<8,'Native worker widget tree too deep')
+ if df.widget_unit_list:is_instance(container)then return df.reinterpret_cast(df.widget_unit_list,container)end
+ if not df.widget_container:is_instance(container)then return end
+ container=df.reinterpret_cast(df.widget_container,container)
+ local _,address=df.sizeof(container.children)
+ local first=df.reinterpret_cast('uint64_t',address).value
+ local finish=df.reinterpret_cast('uint64_t',address+8).value
+ assert(finish>=first and (finish-first)%16==0 and finish-first<=65536,'Invalid native worker widget children')
+ for at=first,finish-1,16 do
+  local ptr=df.reinterpret_cast('uint64_t',at).value
+  if ptr~=0 then local found=worker_list(df.reinterpret_cast(df.widget,ptr),depth+1);if found then return found end end
+ end
+end
+local function worker_names(widget,ids,depth,visible)
+ assert(depth<10);visible=visible and (widget.flag.whole&1)==1
+ if df.widget_unit_name:is_instance(widget) and visible then
+  ids[#ids+1]=df.reinterpret_cast(df.widget_unit_name,widget).u.id
+ end
+ if not df.widget_container:is_instance(widget)then return end
+ local _,address=df.sizeof(df.reinterpret_cast(df.widget_container,widget).children)
+ local first=df.reinterpret_cast('uint64_t',address).value;local finish=df.reinterpret_cast('uint64_t',address+8).value
+ assert(finish>=first and (finish-first)%16==0 and finish-first<=65536,'Invalid native worker row children')
+ for at=first,finish-1,16 do local ptr=df.reinterpret_cast('uint64_t',at).value;if ptr~=0 then worker_names(df.reinterpret_cast(df.widget,ptr),ids,depth+1,visible)end end
+end
 local function lines()
  local rows={};for y=0,g.dimy-1 do
   local text={};for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;text[#text+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
@@ -41,6 +67,22 @@ local ok,err=xpcall(function()
  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  shot('worker-selector')
+ local native_ids={};result.worker_nonunit_entries={}
+ local list=assert(worker_list(df.global.game.main_interface.unit_selector,0))
+ for _,entry in ipairs(list.entry_list)do
+  if entry.t==0 and entry.u then -- Raw source list also contains filtered-out units.
+  else result.worker_nonunit_entries[#result.worker_nonunit_entries+1]={kind=entry.t,null=not entry.u}end
+ end
+ worker_names(list,native_ids,0,true)
+ local worker_text,worker_code=dfhack.run_command_silent('df3d','workshop-workers-probe',tostring(building.id))
+ assert(worker_code==0,worker_text)
+ local actual_ids=json.decode(worker_text);local sorted_ids={table.unpack(native_ids)}
+ table.sort(sorted_ids);table.sort(actual_ids)
+ local comparison=assert(io.open(out..'/workshop-workers-comparison.json','w'))
+ comparison:write(json.encode({native_ids=native_ids,actual_ids=actual_ids,nonunit=result.worker_nonunit_entries}));comparison:close()
+ assert(#sorted_ids==#actual_ids,'Workshop native worker membership count differs: '..#sorted_ids..' native / '..#actual_ids..' semantic')
+ for i,id in ipairs(sorted_ids)do assert(actual_ids[i]==id,'Workshop native worker membership differs')end
+ result.worker_candidates_reference={building_id=building.id,native_order=native_ids,member_ids=actual_ids,all_equal=true}
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(click_label('Work orders'),'Native Work orders tab not found')
  shot('work-orders')

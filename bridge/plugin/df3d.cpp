@@ -97,6 +97,7 @@
 #include "creature_knowledge_native.h"
 #include "knowledge_detail_native.h"
 #include "workshop_catalog_native.h"
+#include "workshop_workers_native.h"
 #include "df/job_item.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
@@ -2067,6 +2068,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           facts["can_dump"]=observed->canDump;facts["can_melt"]=observed->canMelt;
           result["facts"]=std::move(facts);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="workshop-workers-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto candidates=df3d_production::workshopWorkerCandidates(df::building::find(id));
+          if(!candidates)return CR_FAILURE;
+          Json::Value rows(Json::arrayValue);for(const auto unit:*candidates)rows.append(unit);
+          out.print("{}",Json::FastWriter().write(rows));return CR_OK;
         }
         if(parameters[0]=="workshop-reactions-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;

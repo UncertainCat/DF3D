@@ -6564,6 +6564,24 @@ worker selection/addition still needs its current semantic entry points. Do not
 reuse the older staff candidate comments'233647/234933 addresses as current-build
 entry points:233647 belongs to an unrelated settings handler in the pinned binary.
 
+Current worker setup is3a53b0, called by building input1acfab after setting selector
+context8. It installs native exclusion callback3d5f60 (complete0x167-byte body,
+FNV33702827971671a0). `workshop_workers_native.h` calls that callback with an owned
+tagged unit reference and no closure state. The existing native Labor gate supplies
+the shared child/caste/office exclusions and restores unit/HF/office lookup caches
+around the call. Additional worker-specific membership and occupation rules remain
+inside DF. No native menu or widget is a runtime input.
+
+Protected161728 on2026-11-01 compares all116 native active worker rows with the
+semantic candidate reader, including rows below the scroll viewport. DF's raw
+widget source list is unsuitable as the oracle: it also contains filtered-out
+units and a nonunit entry. `worker_candidates_reference` retains both membership
+and native row traversal order; only membership is accepted here. Native selection
+callback3a8d90 reads menu identity, so it must not be called at runtime. Its
+assignment effect is inline: workshops/furnaces replace the permitted worker
+when a different dwarf is selected, or remove the existing selection. Worker
+transport, ordering, displayed skill facts and assignment writes remain pending.
+
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;
 DF's requirement builder supplies its inputs. Flat task choices retain native

@@ -19,7 +19,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Minimum-height Zones palette extends behind the bottom toolbar, partly obscuring Sand and Clay. | Retain the scrolling palette wrapper within the space above the toolbar. | Implemented under approval2026-10-28; protected main-scene195546 verifies wheel scrolling, both type selections and cancellation at960x600. `native_zone_defaults.json.palette_resize_reference`, native154748. |
 | Unit Customize retains nickname focus after clicking profession, so subsequent typing changes the nickname. | Use the last field clicked. Implemented under approval2026-10-31; composed live085513 verifies nickname then profession edits. | Protected083457 on2026-10-31 verifies both click orders, typed effects and Enter focus; nickname dispatch8bb4af takes precedence. `native_farm.json.unit_header_dual_focus_reference`. |
 | Creature Combat history scroll arrows move one row on the left half but two on the right. | Keep one-row stepping across the arrow; preserve track and drag behavior. | Implemented under approval2026-10-31. Native121006/121720 confirms first rows6/5/0/1 for left/right/track/drag from7; composed live121720 verifies6/6/0/1 and released drag capture. `native_farm.json.unit_reports_scroll_reference`; QA `unit-reports-scroll-final` passes with documented Godot diagnostics only. |
-| Relatives expelled together receive extra RelativeExpelled thoughts because native checks the obsolete unit-menu list instead of the current departing group. | Exclude the owned departing group from relative-expulsion thoughts; preserve each creature's own Expelled thought. | Implemented in semantic action under approval2026-10-31; protected220152 matches the corrected reference. Public UI remains staged. Protected215532 gives both departing spouses241+242; diagnostic215707 populates legacy list and removes only242. Native1b1ab8 reads RVA18a1988, game.main_interface.view.expel_total_list; family_reference in unit_expel_effect_reference. |
+| Relatives expelled together receive extra RelativeExpelled thoughts because native checks the obsolete unit-menu list instead of the current departing group. | Exclude the owned departing group from relative-expulsion thoughts; preserve each creature's own Expelled thought. | Implemented in semantic action under approval2026-10-31; protected220152 and typed wire223007 match the corrected reference. Public UI remains staged. Protected215532 gives both departing spouses241+242; diagnostic215707 populates legacy list and removes only242. Native1b1ab8 reads RVA18a1988, game.main_interface.view.expel_total_list; family_reference in unit_expel_effect_reference. |
 | Expel shows Nobility for elected-office and absent-family refusals despite distinct native reason codes. | No correction approved or implemented. | Controlled native211331 on2026-10-31 records elected/hereditary/both reason1/0/1 but identical Nobility text. Renderer15d7c8 loads global18a19c0 for its message switch instead of sheet reason192c. `native_farm.json.unit_expel_refusal_reference`; family211652 also renders Nobility for spouse-absent3 and child-absent7. |
 | Overview evaluates pain twice and can show duplicate Pain rows with different colors. | No correction authorized or implemented. | Confirmed native165937 on2026-10-30: pain50 displays palette6 then14. Reference branches165cfe and1662aa; `native_farm.json.unit_health_reference`. Preserve native behavior pending a separate maintainer decision. |
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
@@ -2497,8 +2497,8 @@ saves are unchanged and live logs contain only known startup notices. MSVC and
 core QA `unit-expel-destinations` pass. `unit_expel_destination_reference` retains
 IDs, native text, provenance and limitations. Enable
 `DF3D_UNIT_EXPEL_DESTINATIONS=1` and `DF3D_UNIT_EXPEL_DESTINATION_READER=1` for this
-capture. Captions, confirmation effects,
-transport and the viewer remain unfinished; neither reader exposes an Expel UI.
+capture. Captions, confirmation effects and transport are described below;
+neither reader exposes an Expel UI.
 
 Protected213902 verifies shared-profile and subordinate-assignment eligibility,
 wrong entity/profile and absent current-profile rejection, accepting tribute from
@@ -2522,7 +2522,7 @@ all guards remain unchanged. No frames advance and no final action is submitted.
 The Send away screenshot was inspected. Enable `DF3D_UNIT_EXPEL_CHOICES=1` with
 the destination flags above. Source preservation and core19 pass; live logs have
 only known startup notices. `unit_expel_destination_reference.choice_reference`
-retains the native rows and state transitions. Runtime confirmation remains absent.
+retains the native rows and state transitions. Viewer confirmation remains absent.
 
 Confirmation1b1825..1b1c26 allocates an army controller with MOVE_TO_SITE goal,
 records expulsion history when there is no destination, invokes cleanup and
@@ -2547,8 +2547,8 @@ DF38428/32360 unsaved; screenshots were inspected and live logs contain only
 known startup notices. Core19 passes in unit-expel-effects. Effects are discarded
 by process exit, not structure rollback. Family/relative thoughts, active jobs,
 squad cleanup and later simulation remain unverified. The semantic action below
-implements these effects; transport and viewer remain unfinished, with no normal
-Expel control exposed.
+implements these effects; transport is described below. The viewer remains
+unfinished, with no normal Expel control exposed.
 
 Protected215532 adds reciprocal spouses1017/2345 to native Expel. Both share one
 controller and receive their own expulsion history and thought241, plus an extra
@@ -2570,7 +2570,8 @@ current eligibility, family/office refusal, exact expected group and destination
 before mutation. Its caller must enforce epoch/save admission. Unsupported and
 Rejected occur before mutation; exceptions after mutation return Unknown and must
 never be replayed. The diagnostic command is unit-expel-apply-probe with selected
-ID, destination ID and expected departing IDs. Normal transport is not connected.
+ID, destination ID and expected departing IDs. Management105 connects this action
+through the independent transport described below.
 
 The action follows1b1825..1b1c26 with pinned semantic helpers:13e720/fe960 create
 the army controller/goal;14dec0 creates and registers history;1349f20 retires
@@ -2594,7 +2595,7 @@ also rejected. Source preservation passes and owned processes exit unsaved.
 MSVC and core19 pass; live logs have only known startup notices. Evidence resides
 in unit_expel_action_reference. Enable DF3D_UNIT_EXPEL_EFFECT_SEMANTIC=1 with the
 effect lane. Actual active-job/squad variants, nondeparting-relative thoughts,
-later departure, typed transport, lifecycle and the viewer remain unfinished.
+later departure, controller lifecycle and the viewer remain unfinished.
 
 creature_expel_preview_native.h::expelPreview combines the eligibility, refusal,
 affected-unit and destination readers into owned rows. Affected text uses native
@@ -2615,8 +2616,38 @@ exits unsaved. MSVC and core19 pass; live logs contain only known startup notice
 unit_expel_preview_reference retains data and limitations. Enable
 DF3D_UNIT_EXPEL_PREVIEW=1 with the native Expel lane. Full-body selector rendering
 uses the already established flag400 provider, but its composition here is not
-yet verified. Long-name fitting, animated colors, large lists, typed transport
-and the viewer remain unfinished.
+yet verified. Long-name fitting, animated colors, large lists and the viewer
+remain unfinished.
+
+
+Management105 exposes CreatureExpelRead and CreatureExpelApply in the typed
+creature_expel domain. Reads carry eligibility, native refusal code, sorted
+unit rows with UTF-8 names/colors/full-body recipes, and sorted destination rows.
+Apply carries the selected unit, destination and exact ordered group shown to
+the player. The bridge enforces epoch/save admission and invokes the native
+transaction's fresh group/destination validation. Ready and Applied are distinct;
+Rejected/Unsupported provide no preview, and Unknown must never be replayed.
+Requests reject duplicates, unordered/negative IDs and groups missing the
+selected unit. Preview validation bounds rows, names, colors, artwork references
+and total payload; absent full-body recipes fail closed before serialization.
+The renderer remains responsible for layout and animation, not gameplay choices.
+
+unit_expel_wire_reference records protected223007 (two relatives expelled) and
+222853 (Send away to site8). The matched bridge/model/Godot connection preserves
+native preview values, rejects malformed local requests and stale semantic
+intents, applies once and rejects a subsequent request for the departing unit.
+Full post-state/emotions, history and affected IDs match215707 and214712 exactly.
+Both tests close native unit sheets before asynchronous requests; complete sheet
+bytes and paused frame remain unchanged. Open-sheet diagnostic222615 matched
+effects but observed native redraw/cache changes while awaiting replies; it is
+not byte-guard acceptance. Source saves are preserved and owned sessions exit
+unsaved. Both final lanes have only documented startup notices across two GPU
+and three paired headless processes. Earlier222741 has unclassified header-client
+renderer diagnostics and is not accepted as a passing lane despite matching effects.
+MSVC, core19 and management_contract_test pass; QA unit-expel-wire-final records
+the offline gate. Enable DF3D_UNIT_EXPEL_EFFECT_WIRE=1 with either effect mode;
+DF3D_UNIT_EXPEL_EFFECT_FAMILY=1 adds the reciprocal spouse fixture. Chooser,
+confirmation controls, rendered composition and lifecycle remain staged.
 
 ## Native item holder provider
 

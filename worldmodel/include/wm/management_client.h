@@ -603,6 +603,14 @@ struct ConstructionInput {
   uint32_t quantity = 1;
 };
 struct CreaturePosition { int32_t unitId=-1; TilePos position; };
+struct CreatureExpelRequest { int32_t unitId=-1,destinationId=-1; std::vector<int32_t> expectedUnitIds; };
+struct CreatureExpelUnit { int32_t id=-1; std::string name; AreaNameColor nameColor; SelectionAppearance sheetIcon; };
+struct CreatureExpelDestination { int32_t id=-1; std::string name; };
+struct CreatureExpelPreview {
+  int32_t unitId=-1; bool eligible=false; int32_t reason=-1;
+  std::vector<CreatureExpelUnit> units; std::vector<CreatureExpelDestination> destinations;
+};
+struct CreatureExpelState { CreatureExpelOutcome outcome=CreatureExpelOutcome::Rejected; std::optional<CreatureExpelPreview> preview; };
 struct CreatureHeaderRequest { int32_t unitId=-1; bool profession=false; uint64_t expectedRevision=0; std::string name; };
 struct CreatureHeaderSnapshot {
   int32_t unitId=-1,historicalFigureId=-1; bool hasFigure=false; uint64_t revision=0;
@@ -635,6 +643,7 @@ struct ManagementRequest {
   SelectionRequest selection;
   int32_t creatureUnitId=-1;
   CreatureHeaderRequest creatureHeader;
+  CreatureExpelRequest creatureExpel;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -683,6 +692,7 @@ struct ManagementState {
   CreatureInfo creature;
   std::optional<CreatureHeaderState> creatureHeader;
   std::optional<CreaturePosition> creaturePosition;
+  std::optional<CreatureExpelState> creatureExpel;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

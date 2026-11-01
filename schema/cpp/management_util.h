@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 104;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v104";
+inline constexpr uint32_t kManagementVersion = 105;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v105";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -326,7 +326,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::CreatureLocate &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::CreatureExpelApply &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -382,7 +382,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CreatureLocate)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CreatureExpelApply)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -400,6 +400,21 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       if(h->profession() || h->expected_revision() || h->name()->size())return "unexpected creature header read intent";
     } else if(!h->expected_revision() || h->expected_revision()>INT64_MAX)return "creature header revision required";
   } else if(r.creature_header())return "unexpected creature header request";
+  if(r.action()==ManagementAction::CreatureExpelRead || r.action()==ManagementAction::CreatureExpelApply) {
+    const auto* e=r.creature_expel();
+    if(!e || e->unit_id()<0 || e->destination_id() < -1 || !e->expected_unit_ids() ||
+       e->expected_unit_ids()->size()>4096)return "invalid creature expel request";
+    if(r.action()==ManagementAction::CreatureExpelRead) {
+      if(e->destination_id()!=-1 || e->expected_unit_ids()->size())return "unexpected creature expel read intent";
+    } else {
+      int32_t previous=-1;bool selected=false;
+      for(auto id:*e->expected_unit_ids()) {
+        if(id<=previous)return "invalid creature expel group";
+        previous=id;selected|=id==e->unit_id();
+      }
+      if(!selected)return "creature expel group must contain selected unit";
+    }
+  } else if(r.creature_expel())return "unexpected creature expel request";
   if(r.action()==ManagementAction::Selection) {
     const auto* a=r.selection();
     if(!a || a->operation()>SelectionOperation::Back || a->index() < -1 || a->index()>255) return "invalid selection request";
@@ -738,7 +753,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CreatureLocate ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CreatureExpelApply ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -756,6 +771,41 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(bytes>320*1024) return "hover text too large";
   }
   if(s.action()==ManagementAction::CreatureInspect && s.status()==ManagementStatus::Ok && !s.creature()) return "creature result required";
+  if(const auto* e=s.creature_expel()) {
+    const bool read=s.action()==ManagementAction::CreatureExpelRead,apply=s.action()==ManagementAction::CreatureExpelApply;
+    const auto outcome=e->outcome();
+    if((!read && !apply) || outcome>CreatureExpelOutcome::Unknown ||
+       (outcome==CreatureExpelOutcome::Ready && !read) ||
+       ((outcome==CreatureExpelOutcome::Applied || outcome==CreatureExpelOutcome::Unknown) && !apply) ||
+       ((outcome==CreatureExpelOutcome::Ready || outcome==CreatureExpelOutcome::Applied)!=(s.status()==ManagementStatus::Ok)) ||
+       (outcome==CreatureExpelOutcome::Ready)!=(e->preview()!=nullptr))return "invalid creature expel outcome";
+    if(const auto* p=e->preview()) {
+      if(p->unit_id()<0 || p->reason() < -1 || p->reason()>10 || !p->units() || !p->destinations() ||
+         p->units()->size()>4096 || p->destinations()->size()>4096 ||
+         (!p->eligible() && (p->reason()!=-1 || p->units()->size() || p->destinations()->size())) ||
+         (p->reason()!=-1 && p->destinations()->size()))return "invalid creature expel preview";
+      size_t bytes=128;int32_t previous=-1;bool selected=false;
+      for(const auto* row:*p->units()) {
+        if(!row || row->id()<=previous || !row->name() || row->name()->size()>1536 ||
+           row->name()->str().find('\0')!=std::string::npos || !row->name_color() || !row->sheet_icon())return "invalid creature expel unit";
+        previous=row->id();selected|=row->id()==p->unit_id();bytes+=128+row->name()->size();
+        const auto* c=row->name_color();
+        if(c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 ||
+           c->alternate_background()>7 || c->alternate_bright()>1 || c->effect()>3)return "invalid creature expel color";
+        if(auto error=validateOwnerAppearance(*row->sheet_icon(),bytes))return error;
+      }
+      if(p->eligible() && p->reason()==-1 && !selected)return "creature expel selected unit missing";
+      previous=-2;
+      for(const auto* row:*p->destinations()) {
+        if(!row || row->id() < -1 || row->id()<=previous || !row->name() || row->name()->size()>1536 ||
+           row->name()->str().find('\0')!=std::string::npos || (row->id()==-1 && row->name()->size()))return "invalid creature expel destination";
+        previous=row->id();bytes+=64+row->name()->size();
+      }
+      if(p->destinations()->size() && (p->destinations()->size()<2 || p->destinations()->Get(0)->id()!=-1))return "invalid creature expel destination choices";
+      if(bytes>320*1024)return "creature expel preview too large";
+    }
+  } else if((s.action()==ManagementAction::CreatureExpelRead || s.action()==ManagementAction::CreatureExpelApply) &&
+            s.status()==ManagementStatus::Ok)return "creature expel result required";
   if(s.creature() && s.action()!=ManagementAction::CreatureInspect) return "unexpected creature result";
   if(const auto* p=s.creature_position()) {
     const auto* tile=p->position();

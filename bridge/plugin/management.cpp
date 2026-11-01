@@ -80,6 +80,8 @@
 #include "creature_office_native.h"
 #include "creature_header_native.h"
 #include "creature_follow_native.h"
+#include "creature_expel_preview_native.h"
+#include "creature_expel_action_native.h"
 #include "creature_health_native.h"
 #include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
@@ -374,10 +376,17 @@ bool valid = false, removing = false;
 std::optional<std::vector<df3d_hover::Description>> worldHover;
 std::optional<df3d_creature::HeaderEditResult> creatureHeader;
 std::optional<std::pair<int32_t,df::coord>> creaturePosition;
+struct CreatureExpelResult {
+  m::CreatureExpelOutcome outcome=m::CreatureExpelOutcome::Rejected;
+  std::optional<df3d_creature::ExpelPreview> preview;
+  std::vector<ResidentAppearanceRecipe> icons;
+};
+std::optional<CreatureExpelResult> creatureExpel;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
   creaturePosition.reset();
+  creatureExpel.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -754,6 +763,23 @@ void publish() {
     creatureHeaderResult=m::CreateCreatureHeaderState(b,m::CreatureHeaderOutcome(creatureHeader->outcome),creatureHeader->mutated,receipt);
   }
   flatbuffers::Offset<m::WorldHover> terrainResult;
+  flatbuffers::Offset<m::CreatureExpelState> creatureExpelResult;
+  if(creatureExpel) {
+    flatbuffers::Offset<m::CreatureExpelPreview> preview;
+    if(creatureExpel->preview) {
+      const auto& p=*creatureExpel->preview;
+      std::vector<flatbuffers::Offset<m::CreatureExpelUnit>> units;
+      std::vector<flatbuffers::Offset<m::CreatureExpelDestination>> destinations;
+      for(size_t i=0;i<p.units.size();++i) {
+        const auto& row=p.units[i];const auto& c=row.color;
+        auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
+        units.push_back(m::CreateCreatureExpelUnit(b,row.id,b.CreateString(DF2UTF(row.name)),color,creatureExpel->icons[i].build(b)));
+      }
+      for(const auto& row:p.destinations)destinations.push_back(m::CreateCreatureExpelDestination(b,row.id,b.CreateString(DF2UTF(row.name))));
+      preview=m::CreateCreatureExpelPreview(b,p.unitId,p.eligible,p.reason,b.CreateVector(units),b.CreateVector(destinations));
+    }
+    creatureExpelResult=m::CreateCreatureExpelState(b,creatureExpel->outcome,preview);
+  }
   if(worldHover) {
     std::vector<flatbuffers::Offset<m::WorldHoverEntry>> entries;
     for(const auto& e:*worldHover) entries.push_back(m::CreateWorldHoverEntry(b,b.CreateString(e.text),uint8_t(e.foreground),uint8_t(e.background),e.bright,e.kind,e.id));
@@ -762,7 +788,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -2954,6 +2980,35 @@ void run(color_ostream& out) {
         if(!page.truncated || !page.choices.empty()){areaPage.locationNamePage=std::move(page);status=m::ManagementStatus::Ok;}
       }
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::CreatureExpelRead || r->action()==m::ManagementAction::CreatureExpelApply) {
+    message.clear();status=m::ManagementStatus::Rejected;creatureExpel.emplace();
+    const auto& request=*r->creature_expel();auto* selected=df::unit::find(request.unit_id());
+    if(r->action()==m::ManagementAction::CreatureExpelRead) {
+      auto preview=df3d_creature::expelPreview(selected);
+      if(preview && preview->unitId>=0) {
+        bool complete=true;
+        for(const auto& row:preview->units) {
+          ResidentAppearanceRecipe icon;icon.collect(df::unit::find(row.id),true);
+          if(icon.layers.empty()){complete=false;break;}
+          creatureExpel->icons.push_back(std::move(icon));
+        }
+        if(complete) {
+          creatureExpel->preview=std::move(preview);creatureExpel->outcome=m::CreatureExpelOutcome::Ready;
+          status=m::ManagementStatus::Ok;
+        } else {creatureExpel->icons.clear();creatureExpel->outcome=m::CreatureExpelOutcome::Unsupported;}
+      } else if(!preview)creatureExpel->outcome=m::CreatureExpelOutcome::Unsupported;
+    } else {
+      const std::vector<int32_t> expected(request.expected_unit_ids()->begin(),request.expected_unit_ids()->end());
+      const auto outcome=df3d_creature::applyExpel(selected,request.destination_id(),expected);
+      switch(outcome) {
+        case df3d_creature::ExpelOutcome::Unsupported:creatureExpel->outcome=m::CreatureExpelOutcome::Unsupported;break;
+        case df3d_creature::ExpelOutcome::Rejected:break;
+        case df3d_creature::ExpelOutcome::Applied:creatureExpel->outcome=m::CreatureExpelOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;break;
+        case df3d_creature::ExpelOutcome::Unknown:creatureExpel->outcome=m::CreatureExpelOutcome::Unknown;mutated=true;break;
+      }
+    }
     publish();return;
   }
   if(r->action()==m::ManagementAction::CreatureLocate) {

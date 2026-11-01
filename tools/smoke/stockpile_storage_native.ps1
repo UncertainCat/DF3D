@@ -283,6 +283,15 @@ try {
      if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Unit follow client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/unit-follow-wire-result.json")){throw 'Unit follow client failed'}
     }
+    if($FarmItemCarriers -and $name -match '^unit-expel-wire-(preview|apply)$') {
+     $env:DF3D_CARRIER_DIRECTORY=$out
+     $env:DF3D_EXPEL_WIRE_PHASE=$Matches[1]
+     $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
+     $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/creature_expel_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
+     $null=$client.Handle
+     if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Unit Expel client timed out; no replay'}
+     if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name.json")){throw 'Unit Expel client failed'}
+    }
     if($FarmItemCarriers -and $name -eq 'unit-header-wire') {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'

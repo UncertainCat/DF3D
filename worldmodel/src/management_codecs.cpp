@@ -15,6 +15,26 @@ ManagementState decodeState(const m::ManagementState* s) {
   decodeConstruction(s, next);
   next.area = decodeArea(s->area());
   next.creature = decodeCreature(s->creature());
+  if(const auto* e=s->creature_expel()) {
+    CreatureExpelState state;state.outcome=CreatureExpelOutcome(e->outcome());
+    if(const auto* p=e->preview()) {
+      state.preview.emplace();auto& out=*state.preview;
+      out.unitId=p->unit_id();out.eligible=p->eligible();out.reason=p->reason();
+      for(const auto* v:*p->units()) {
+        CreatureExpelUnit row;row.id=v->id();row.name=v->name()->str();const auto* c=v->name_color();
+        row.nameColor={{c->foreground(),c->background(),c->bright()},
+          {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+        const auto* icon=v->sheet_icon();
+        for(const auto* t:*icon->tile_pages())row.sheetIcon.tilePages.push_back(t->str());
+        for(const auto* t:*icon->palettes())row.sheetIcon.palettes.push_back(t->str());
+        for(const auto* l:*icon->layers())row.sheetIcon.layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
+          l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
+        out.units.push_back(std::move(row));
+      }
+      for(const auto* v:*p->destinations())out.destinations.push_back({v->id(),v->name()->str()});
+    }
+    next.creatureExpel=std::move(state);
+  }
   if(const auto* p=s->creature_position())next.creaturePosition=CreaturePosition{p->unit_id(),{p->position()->x(),p->position()->y(),p->position()->z()}};
   if(const auto* h=s->creature_header()) {
     CreatureHeaderState header;header.outcome=CreatureHeaderOutcome(h->outcome());header.mutated=h->mutated();
@@ -123,7 +143,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           r.pressurePlate->trackMin,r.pressurePlate->trackMax):flatbuffers::Offset<m::PressurePlateOptions>{},connectedTrack,r.materialAnchor ? &materialAnchor : nullptr,r.cancelRemoval,
       (r.action==ManagementAction::CreatureHeaderRead || r.action==ManagementAction::CreatureHeaderEdit)?
           m::CreateCreatureHeaderRequest(b,r.creatureHeader.unitId,r.creatureHeader.profession,r.creatureHeader.expectedRevision,b.CreateString(r.creatureHeader.name)):
-          flatbuffers::Offset<m::CreatureHeaderRequest>{});
+          flatbuffers::Offset<m::CreatureHeaderRequest>{},
+      (r.action==ManagementAction::CreatureExpelRead || r.action==ManagementAction::CreatureExpelApply)?
+          m::CreateCreatureExpelRequest(b,r.creatureExpel.unitId,r.creatureExpel.destinationId,b.CreateVector(r.creatureExpel.expectedUnitIds)):
+          flatbuffers::Offset<m::CreatureExpelRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

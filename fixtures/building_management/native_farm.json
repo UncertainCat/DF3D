@@ -47078,6 +47078,131 @@
         "Full-body selector artwork composed in Expel panel",
         "Long-name clipping, animated colors and large-list scrolling"
       ]
+    },
+    "unit_expel_wire_reference": {
+      "date": "2026-10-31",
+      "protocol": 105,
+      "cases": [
+        {
+          "run": "build/stockpile-storage-native-farm-discovery-20261031-223007",
+          "owned_pid": 32720,
+          "mode": "expel",
+          "destination": -1,
+          "affected": [
+            1017,
+            2345
+          ],
+          "units": [
+            {
+              "id": 1017,
+              "name": "Stodir Tangakurvad, bookkeeper",
+              "name_color": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0
+              },
+              "appearance_layers": 21,
+              "appearance_sha256": "913295e1b2b0a907dfb6b0230d3fbd1b449fe52e7c05794af2f47596f7788a33"
+            },
+            {
+              "id": 2345,
+              "name": "Leto Jamaslonel, Human Bard",
+              "name_color": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0
+              },
+              "appearance_layers": 19,
+              "appearance_sha256": "96c1233101d7bb3319db618670b2e8f4f2955a9b92c3d3963795999a398d21bc"
+            }
+          ],
+          "destinations": [],
+          "native_reference": "215707",
+          "exact_effect_fields": [
+            "after",
+            "events",
+            "affected",
+            "relative_after"
+          ],
+          "sheet_bytes_unchanged": true,
+          "effects_sha256": "145bf40f879bc8ae699f7567de1aa9272598eb8ce126359c519feab365cd0008"
+        },
+        {
+          "run": "build/stockpile-storage-native-farm-discovery-20261031-222853",
+          "owned_pid": 17784,
+          "mode": "send",
+          "destination": 8,
+          "affected": [
+            1017
+          ],
+          "units": [
+            {
+              "id": 1017,
+              "name": "Stodir Tangakurvad, bookkeeper",
+              "name_color": {
+                "alternate": [
+                  5,
+                  0,
+                  0
+                ],
+                "color": [
+                  5,
+                  0,
+                  0
+                ],
+                "effect": 0
+              },
+              "appearance_layers": 21,
+              "appearance_sha256": "913295e1b2b0a907dfb6b0230d3fbd1b449fe52e7c05794af2f47596f7788a33"
+            }
+          ],
+          "destinations": [
+            {
+              "id": -1,
+              "name": ""
+            },
+            {
+              "id": 8,
+              "name": "Bandeddank the Sooty Shadow"
+            }
+          ],
+          "native_reference": "214712",
+          "exact_effect_fields": [
+            "after",
+            "events",
+            "affected"
+          ],
+          "sheet_bytes_unchanged": true,
+          "effects_sha256": "3467b26f4af96ed3d6d9956ffe286d240f93d99f93fea16e5c9985d196b6e829"
+        }
+      ],
+      "contract": "CreatureExpelRead is read-only. CreatureExpelApply requires selected ID, destination and exact sorted departing IDs. Fresh native group/destination validation precedes mutation. Unknown is not replayable. Missing artwork fails closed.",
+      "checks": [
+        "Exact native eligibility/refusal/group/name/color/destination preview values; full-body recipes present",
+        "Fractional IDs, extraneous read fields, non-integer/duplicate/empty expected groups rejected locally",
+        "Changed expected group, absent destination and missing selected unit rejected without changing selected snapshot",
+        "Confirmed apply, explicit subsequent request rejected, fresh read reports ineligible",
+        "Closed native sheet unchanged byte-for-byte; paused frame unchanged; source manifests unchanged; owned unsaved exits"
+      ],
+      "diagnostics": "Final cases passed_with_known_issues: two GPU and three paired headless logs per lane contain only documented startup notice. 222741 effects matched but header client had two unclassified !F update_end errors; retained as failed diagnostics, superseded by223007. 222310 failed numeric JSON array comparison before effects; test fixed. 222436 guard observed native open-sheet redraw/cache changes; diagnostic222615 confirmed exact effects. Final tests close native sheet before async requests.",
+      "build": "MSVC unit-expel-wire-msvc.log; core19 and management_contract_test in build/qa/unit-expel-wire-final",
+      "limitations": "Transport acceptance only. No chooser/confirmation UI, rendered Expel composition, scrolling/long names/color animation, controller lifecycle or later arrival acceptance."
     }
   }
 }

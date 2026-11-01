@@ -99,7 +99,31 @@ local ok,err=xpcall(function()
   result.legacy_diagnostic_group=true
  end
  capture('unit-expel-effect-'..mode..'-before')
- if os.getenv('DF3D_UNIT_EXPEL_EFFECT_SEMANTIC')=='1' then
+ if os.getenv('DF3D_UNIT_EXPEL_EFFECT_WIRE')=='1' then
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  assert(not sheet.unit_overview_expelling)
+  -- Async wire waits permit native redraws. Retire the native sheet so its
+  -- own render/cache updates cannot be confused with bridge scratch writes.
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  assert(not sheet.open,'Native unit sheet must be closed during wire acceptance')
+  local output,status=dfhack.run_command_silent('df3d','unit-expel-preview-probe',tostring(unit.id))
+  assert(status==0,output);local expected=json.decode(output);expected.destination=destination
+  local file=assert(io.open(out..'/unit-expel-wire-expected.json','w'));file:write(json.encode(expected));file:close()
+  local size,address=df.sizeof(sheet);local bytes=df.new('uint8_t',size)
+  dfhack.internal.memmove(bytes,address,size)
+  capture('unit-expel-wire-preview')
+  file=assert(io.open(out..'/unit-expel-wire-preview.json'));result.wire_preview=json.decode(file:read('*a'));file:close()
+  assert(result.wire_preview.success,'Expel wire preview/rejections failed')
+  assert(json.encode(snapshot())==json.encode(result.before),'Wire preview/rejections changed creature')
+  capture('unit-expel-wire-apply')
+  file=assert(io.open(out..'/unit-expel-wire-apply.json'));result.wire_apply=json.decode(file:read('*a'));file:close()
+  result.sheet_unchanged=dfhack.internal.memcmp(bytes,address,size)==0
+  local observed=df.new('uint8_t',size);dfhack.internal.memmove(observed,address,size)
+  result.sheet_changes={}
+  for i=0,size-1 do if bytes[i]~=observed[i] then result.sheet_changes[#result.sheet_changes+1]={offset=i,before=bytes[i],after=observed[i]}end end
+  df.delete(observed);df.delete(bytes)
+  assert(result.wire_apply.success and result.sheet_unchanged,'Expel wire apply/sheet guard failed')
+ elseif os.getenv('DF3D_UNIT_EXPEL_EFFECT_SEMANTIC')=='1' then
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   assert(not sheet.unit_overview_expelling)
   local size,address=df.sizeof(sheet);local bytes=df.new('uint8_t',size)

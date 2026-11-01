@@ -3770,3 +3770,57 @@ TEST_CASE("creature header result requires confirmed bounded authority") {
     if(!fault){auto decoded=codec::decodeState(value);REQUIRE(decoded.creatureHeader);REQUIRE(decoded.creatureHeader->snapshot);CHECK(decoded.creatureHeader->snapshot->revision==9007199254740993ULL);CHECK(decoded.creatureHeader->snapshot->nickname=="Nick");}
   }
 }
+
+TEST_CASE("creature expel requests require an exact ordered selected group") {
+  for(bool apply:{false,true})for(int fault=0;fault<7;++fault) {
+    CAPTURE(apply);CAPTURE(fault);
+    wm::ManagementRequest r;r.action=apply?wm::ManagementAction::CreatureExpelApply:wm::ManagementAction::CreatureExpelRead;
+    r.creatureExpel={86,-1,apply?std::vector<int32_t>{86,102}:std::vector<int32_t>{}};
+    if(fault==1)r.creatureExpel.unitId=-1;
+    if(fault==2)r.creatureExpel.destinationId=apply?-2:1;
+    if(fault==3)r.creatureExpel.expectedUnitIds={102};
+    if(fault==4)r.creatureExpel.expectedUnitIds={86,86};
+    if(fault==5)r.creatureExpel.expectedUnitIds={102,86};
+    if(fault==6)r.creatureExpel.expectedUnitIds={-1,86};
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    REQUIRE(value->creature_expel());CHECK(value->creature_expel()->unit_id()==r.creatureExpel.unitId);
+  }
+}
+TEST_CASE("creature expel preview rejects malformed authority and decodes native rows") {
+  for(int fault=0;fault<12;++fault) {
+    CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<flatbuffers::String>> names{b.CreateString("PAGE")},palettes;
+    std::vector<wire::AppearanceLayer> layers;
+    auto icon=wire::CreateSelectionAppearance(b,b.CreateVector(names),b.CreateVector(palettes),b.CreateVectorOfStructs(layers));
+    auto color=wire::CreateAreaNameColor(b,fault==1?8:7,0,1,7,0,1,0);
+    auto row=wire::CreateCreatureExpelUnit(b,fault==2?-1:86,b.CreateString(fault==3?std::string(1537,'x'):"Urist"),color,icon);
+    std::vector<flatbuffers::Offset<wire::CreatureExpelUnit>> units{row};if(fault==4)units.push_back(row);
+    std::vector<flatbuffers::Offset<wire::CreatureExpelDestination>> sites;
+    sites.push_back(wire::CreateCreatureExpelDestination(b,-1,b.CreateString(fault==5?"bad":"")));
+    sites.push_back(wire::CreateCreatureExpelDestination(b,8,b.CreateString("Site")));
+    auto preview=wire::CreateCreatureExpelPreview(b,86,fault!=6,fault==7?11:-1,b.CreateVector(units),b.CreateVector(sites));
+    auto result=wire::CreateCreatureExpelState(b,fault==8?wire::CreatureExpelOutcome::Applied:wire::CreatureExpelOutcome::Ready,fault==9?0:preview);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(7);
+    state.add_action(fault==10?wire::ManagementAction::CreatureExpelApply:wire::ManagementAction::CreatureExpelRead);
+    state.add_status(fault==11?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);state.add_creature_expel(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault) {const auto decoded=codec::decodeState(value);REQUIRE(decoded.creatureExpel);REQUIRE(decoded.creatureExpel->preview);
+      const auto& p=*decoded.creatureExpel->preview;CHECK(p.unitId==86);CHECK(p.units[0].name=="Urist");CHECK(p.units[0].sheetIcon.tilePages[0]=="PAGE");CHECK(p.destinations[1].id==8);}
+  }
+}
+TEST_CASE("creature expel result outcomes cannot invent successful previews or replay authority") {
+  for(bool read:{false,true})for(auto outcome:{wire::CreatureExpelOutcome::Rejected,wire::CreatureExpelOutcome::Ready,
+      wire::CreatureExpelOutcome::Applied,wire::CreatureExpelOutcome::Unsupported,wire::CreatureExpelOutcome::Unknown}) {
+    flatbuffers::FlatBufferBuilder b;auto result=wire::CreateCreatureExpelState(b,outcome);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(read?wire::ManagementAction::CreatureExpelRead:wire::ManagementAction::CreatureExpelApply);
+    state.add_status(outcome==wire::CreatureExpelOutcome::Applied?wire::ManagementStatus::Ok:wire::ManagementStatus::Rejected);
+    state.add_creature_expel(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=outcome==wire::CreatureExpelOutcome::Ready || (read && (outcome==wire::CreatureExpelOutcome::Applied || outcome==wire::CreatureExpelOutcome::Unknown));
+    CHECK(bool(wire::validateManagementState(*value))==invalid);
+  }
+}

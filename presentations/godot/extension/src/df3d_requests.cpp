@@ -136,6 +136,30 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     { PerfScope profile("management.convert_construction", nullptr, df3d::profiling::detailed()); management::writeConstruction(result, s); }
     management::writeArea(result, s.area);
     management::writeProduction(result, s.production);
+    if(s.creatureExpel) {
+        Dictionary expel;expel["outcome"]=int(s.creatureExpel->outcome);
+        if(s.creatureExpel->preview) {
+            const auto& p=*s.creatureExpel->preview;Dictionary preview;Array units,destinations;
+            preview["unit_id"]=p.unitId;preview["eligible"]=p.eligible;preview["reason"]=p.reason;
+            for(const auto& v:p.units) {
+                Dictionary row,color,icon;Array primary,alternate,pages,palettes,layers;
+                row["id"]=v.id;row["name"]=String::utf8(v.name.c_str());
+                for(auto c:v.nameColor.color)primary.push_back(int(c));
+                for(auto c:v.nameColor.alternate)alternate.push_back(int(c));
+                color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(v.nameColor.effect);row["name_color"]=color;
+                for(const auto& name:v.sheetIcon.tilePages)pages.push_back(String::utf8(name.c_str()));
+                for(const auto& name:v.sheetIcon.palettes)palettes.push_back(String::utf8(name.c_str()));
+                for(const auto& l:v.sheetIcon.layers) {Array layer;
+                    for(int value:{int(l.page),int(l.tileX),int(l.tileY),int(l.cellsX),int(l.cellsY),int(l.palette),int(l.paletteRow),int(l.paletteKeyRow),int(l.offsetX),int(l.offsetY)})layer.push_back(value);
+                    layers.push_back(layer);
+                }
+                icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;row["sheet_icon"]=icon;units.push_back(row);
+            }
+            for(const auto& v:p.destinations) {Dictionary row;row["id"]=v.id;row["name"]=String::utf8(v.name.c_str());destinations.push_back(row);}
+            preview["units"]=units;preview["destinations"]=destinations;expel["preview"]=preview;
+        }
+        result["creature_expel"]=expel;
+    }
     if(s.creaturePosition) {
         const auto& p=*s.creaturePosition;Dictionary value;
         value["unit_id"]=p.unitId;value["position"]=Vector3i(p.position.x,p.position.y,p.position.z);
@@ -222,6 +246,33 @@ bool readCreatureHeader(const Dictionary& data,wm::ManagementRequest& request,St
     request.creatureHeader={int32_t(id),bool(data.get("profession",false)),uint64_t(revision),std::string(utf8.get_data(),utf8.length())};
     return true;
 }
+bool validateCreatureExpel(const Dictionary& data,String& error) {
+    const bool apply=int64_t(data["action"])==int64_t(wm::ManagementAction::CreatureExpelApply);
+    if(data.size()!=(apply?4:2) || !data.has("unit_id") || data["unit_id"].get_type()!=Variant::INT ||
+       (apply && (!data.has("destination_id") || data["destination_id"].get_type()!=Variant::INT ||
+                  !data.has("expected_unit_ids") || data["expected_unit_ids"].get_type()!=Variant::ARRAY))) {
+        error="Invalid creature expel fields";return false;
+    }
+    return true;
+}
+bool readCreatureExpel(const Dictionary& data,wm::ManagementRequest& request,String& error) {
+    const int64_t id=data["unit_id"],destination=data.get("destination_id",-1);
+    if(id<0 || id>INT32_MAX || destination < -1 || destination>INT32_MAX) {error="Invalid creature expel identity";return false;}
+    request.action=wm::ManagementAction(int64_t(data["action"]));
+    auto& e=request.creatureExpel;e.unitId=int32_t(id);e.destinationId=int32_t(destination);
+    if(request.action==wm::ManagementAction::CreatureExpelApply) {
+        const Array ids=data["expected_unit_ids"];int64_t previous=-1;bool selected=false;
+        if(ids.is_empty() || ids.size()>4096) {error="Invalid creature expel group size";return false;}
+        for(int i=0;i<ids.size();++i) {
+            if(ids[i].get_type()!=Variant::INT) {error="Invalid creature expel group type";return false;}
+            const int64_t member=ids[i];
+            if(member<=previous || member>INT32_MAX) {error="Invalid creature expel group order";return false;}
+            previous=member;selected|=member==id;e.expectedUnitIds.push_back(int32_t(member));
+        }
+        if(!selected) {error="Creature expel selected unit missing";return false;}
+    }
+    return true;
+}
 struct ManagementCodec {
     const char* domain;
     bool (*validate)(const Dictionary&, String&);
@@ -239,6 +290,7 @@ const ManagementCodec managementCodecs[] = {
     {"hover", validateHover, readHover},
     {"creature_header",validateCreatureHeader,readCreatureHeader},
     {"creature_follow",validateCreatureFollow,readCreatureFollow},
+    {"creature_expel",validateCreatureExpel,readCreatureExpel},
 };
 }
 
@@ -249,7 +301,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CreatureLocate)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CreatureExpelApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

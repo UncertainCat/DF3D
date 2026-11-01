@@ -6,10 +6,11 @@ import argparse
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-ENUMS = ("CreatureHeaderOutcome", "ConstructionOutcome", "FarmEditOutcome", "FarmOperation", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
+ENUMS = ("CreatureExpelOutcome", "CreatureHeaderOutcome", "ConstructionOutcome", "FarmEditOutcome", "FarmOperation", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
+    "creature_expel": ("CreatureExpelRead", "CreatureExpelApply"),
     "creature_follow": ("CreatureLocate", "CreatureLocate"),
     "creature_header": ("CreatureHeaderRead", "CreatureHeaderEdit"),
     "hover": ("WorldHover", "WorldHover"),
@@ -52,7 +53,7 @@ def outputs():
         checks += "".join(f"static_assert(static_cast<int>(wm::{name}::{n}) == static_cast<int>(df3d::mirror::{name}::{n}));\n" for n,v in rows)
         checks += f"static_assert(sizeof(df3d::mirror::EnumValues{name}()) / sizeof(df3d::mirror::{name}) == {len(rows)});\n"
     # Semantic mutation policy is centralized here and emitted with named values.
-    mutations=("CreatureHeaderEdit","Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
+    mutations=("CreatureExpelApply","CreatureHeaderEdit","Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
         "ProductionQueue","ProductionJobEdit","FarmEdit","WorkOrderCreate","WorkOrderUpdate",
         "WorkOrderDelete","WorkOrderCondition","WorkDetailMembership","WorkDetailMode","WorkDetailCreate","WorkDetailDelete",
         "WorkDetailEdit","CitizenWorkScope","DismissAlert","TradeUpdate","TradeBring")

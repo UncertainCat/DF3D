@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management105 adds independent CreatureExpelRead and CreatureExpelApply commands.
+Preview carries native eligibility, refusal code, ordered group, names, colors,
+full-body appearance recipes and destinations. Apply requires the exact ordered
+departing group and revalidates it before mutation; Unknown must never be replayed.
+Rebuild both endpoints on `Local\\df3d_management_v105`; management104 is
+incompatible. Older captures have no Expel authority. The unit UI remains staged.
+
 Management104 adds CreatureLocate, an independent native follow-position read
 with a stable unit ID and confirmed tile. Rebuild both endpoints on
 `Local\\df3d_management_v104`; management103 is incompatible. Older captures

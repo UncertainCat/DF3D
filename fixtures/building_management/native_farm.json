@@ -52341,9 +52341,94 @@
           "status": "passed_with_known_issues",
           "scope": "Two 384x36 native caption/View-control crops exact, contained row indentation, distinct help strings, typed target signals, unresolved row blankness and non-navigation. All previous indicator/scrollbar checks also pass.",
           "limitations": [
-            "Full icon/frame artwork is outside these crop comparisons.",
-            "Full composed nested transport/navigation, natural cage/animal cases and session lifecycle remain unverified."
+            "Component uses no object artwork; full row artwork for the controlled live case is covered by main_scene_reference.",
+            "Natural cage/animal cases and broader session lifecycle remain unverified."
           ]
+        },
+        "main_scene_reference": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261101-015319",
+          "status": "passed_with_known_issues",
+          "native": {
+            "child_id": 32625,
+            "parent_id": 32064,
+            "restored": true,
+            "success": true,
+            "unit_id": 1017
+          },
+          "scene": {
+            "carrier_return": true,
+            "child_id": 32625,
+            "creature_overview": true,
+            "success": true,
+            "unit_id": 1017,
+            "unresolved_inert": true
+          },
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "unit-header-wire": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          },
+          "pixel_regions": [
+            {
+              "name": "item",
+              "rect": [
+                432,
+                244,
+                440,
+                36
+              ],
+              "differing_rgb_pixels": 0,
+              "rgb_sha256": "e3ffd10d054c63a2da6afec2ffb471b5e4d5ffd7362ffe4e54f199c165ccdba3"
+            },
+            {
+              "name": "creature",
+              "rect": [
+                432,
+                280,
+                440,
+                36
+              ],
+              "differing_rgb_pixels": 0,
+              "rgb_sha256": "d35d1381b4bc84a6d6c8a0bf919f64cabdf2c0858f12565e3ebcf2c4e800500a"
+            }
+          ],
+          "native_image": "build/stockpile-storage-native-farm-discovery-20261101-014749/unit-items-contained-rows.png",
+          "viewer_image": "build/stockpile-storage-native-farm-discovery-20261101-015319/unit-items-contained-scene.png",
+          "qa": "build/qa/creature-items-contained-scene; core, inspector, composition and GPU checks passed (GPU known issues)",
+          "scope": "Real main-scene wire rows and pointer navigation for controlled item/self-creature/unresolved references: distinct help, item sheet, carrier return, creature Overview; full row art including icons/frames/indentation matches native.",
+          "limitations": [
+            "Controlled references do not establish physical containment or gameplay assignment semantics.",
+            "Creature target is the selected unit; unrelated natural cage/animal targets remain unverified.",
+            "Changing contents/assignment refresh, asynchronous drag retention and disconnect/epoch/late-reply coverage remain unfinished."
+          ],
+          "source_save": "unchanged; owned DF4176 exited unsaved"
         }
       }
     }

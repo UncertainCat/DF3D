@@ -203,6 +203,8 @@ func unit_carrier(expected: Dictionary) -> void:
 	exercised=true
 
 func exercise_items_view(inspector,target: int) -> void:
+	if OS.get_environment("DF3D_UNIT_ITEMS_CONTAINED_SCENE")=="1":
+		await exercise_contained_items(inspector,target);return
 	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(124,132))
 	await process_frame;await process_frame
 	if not check(inspector.creature_sheet.tab=="Items","Items tab click did not select Items"):return
@@ -280,6 +282,40 @@ func exercise_items_view(inspector,target: int) -> void:
 	check(inspector.creature_sheet.tab=="Overview","Item carrier did not reset to native Overview")
 	var result:=FileAccess.open(directory+"/unit-items-view-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"inspected_item":item_id,"creature":target}));result.close()
+
+func exercise_contained_items(inspector,target: int) -> void:
+	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(124,132))
+	var view=inspector.creature_sheet.items_view
+	if not check(is_instance_valid(view) and view.rows.size()==15,"Contained Items rows did not reach the view"):return
+	var child:=int(view.rows[1].get("related_id",-1))
+	check(int(view.fact(view.rows[1],"row_kind",-1))==1 and child>=0,"Contained item target absent")
+	check(int(view.fact(view.rows[2],"row_kind",-1))==2 and int(view.rows[2].related_id)==target,"Contained creature target absent")
+	check(int(view.rows[3].related_id)==-1,"Unresolved contained row absent")
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/unit-items-contained-scene.png")
+	await pointer(view.get_global_transform_with_canvas()*view.inspect_rect(3).get_center())
+	check(scene._ui.host.active==inspector and inspector.creature_sheet.tab=="Items","Unresolved contained click navigated")
+	for sample in [[1,"unit_inventory_view"],[2,"unit_inventory_creature"]]:
+		var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*view.inspect_rect(sample[0]).get_center();root.push_input(motion,true)
+		await create_timer(0.65).timeout;await process_frame
+		check(inspector.hover_help.visible and inspector.hover_help.displayed==sample[1],"Contained hover missing: "+sample[1])
+	await pointer(view.get_global_transform_with_canvas()*view.inspect_rect(1).get_center())
+	var item_owner=scene._ui.controller("farm").item_owner
+	if not await settle(item_owner.state):return
+	check(scene._ui.host.active==item_owner and item_owner.state.item_id==child,"Contained item View selected wrong sheet")
+	check(item_owner.state.snapshot.get("carrier",{}).get("id",-1)==target,"Controlled contained item lost its actual carrier")
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/unit-items-contained-item-scene.png")
+	await pointer(item_owner.panel.get_global_transform_with_canvas()*item_owner.panel.holder_rect().get_center())
+	await process_frame;await process_frame
+	check(scene._ui.host.active==inspector and inspector.creature_sheet.tab=="Overview","Contained item carrier did not open Overview")
+	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(124,132))
+	view=inspector.creature_sheet.items_view
+	await pointer(view.get_global_transform_with_canvas()*view.inspect_rect(2).get_center())
+	await process_frame;await process_frame
+	check(scene._ui.host.active==inspector and int(inspector.selected.get("id",-1))==target and inspector.creature_sheet.tab=="Overview","Contained creature View did not open native Overview")
+	var file:=FileAccess.open(directory+"/unit-items-contained-scene-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"unit_id":target,"child_id":child,"unresolved_inert":true,"carrier_return":true,"creature_overview":true}));file.close()
 
 func exercise_owner_refresh(item_owner,item_id: int,carrier_id: int) -> void:
 	var observations: Array=[]

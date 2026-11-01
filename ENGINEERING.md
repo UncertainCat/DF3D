@@ -1661,8 +1661,7 @@ crops exactly, checks target signals and blank/inert missing rows, and retains
 all indicator/scrollbar comparisons. It passes with only documented engine
 diagnostics; core, inspector and UI composition checks pass separately in
 `creature-items-contained`. That initial GPU attempt had a test-lambda parse
-error, corrected before the passing GPU run. Frame/icon regions and full composed
-nested transport/navigation are outside this acceptance.
+error, corrected before the passing GPU run. Frame/icon regions and composed navigation are covered separately below.
 
 The first native014509 attempt caught weight_computed changing on a nested shoe
 while inspecting its containing sock. The corrected diagnostic accepts only that
@@ -1672,6 +1671,24 @@ this does not claim that cached weight values were unchanged. Both source saves
 are preserved; owned DF35880 exits unsaved and every Godot process has only the
 known startup notice. Natural cage/animal containment and broader lifecycle
 coverage remain unfinished.
+
+Protected015319 on2026-11-01 verifies the actual main-scene contained-row
+workflow. Temporary item/self-creature/unresolved refs are added before the
+viewer reads fresh creature facts and restored after it exits. Fifteen wire
+rows match the native reader. Pointer hover shows distinct item/creature help;
+View opens item32625, its actual carrier returns to Overview, and the contained
+creature View opens1017's Overview. Clicking the missing target stays on Items.
+Two440x36 row regions, including indentation, icons, frames, captions and View
+controls, match native014749 exactly. Both native and viewer results retain
+explicit target IDs and restoration status. This controlled self-creature case
+does not establish natural cage/animal containment or gameplay assignment.
+
+Source-save preservation passes; owned DF4176 exits unsaved. Each live Godot
+process has only the known startup notice. QA `creature-items-contained-scene`
+passes core, inspector and UI composition; GPU retains all native indicator,
+scrollbar and contained-caption comparisons with only known engine diagnostics.
+Changing contents/assignments, asynchronous drag retention and broader session
+lifecycle coverage remain unfinished. The full creature route stays staged.
 
 The item view places the name on the first header row when owner data exists,
 with the native yellow Owner line beneath and Weight on the third row. Without

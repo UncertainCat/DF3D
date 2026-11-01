@@ -8,6 +8,13 @@
 #include "df/agreement_details.h"
 #include "df/agreement_details_data_join_party.h"
 #include "df/identity.h"
+#include "df/history_event_masterpiece_lostst.h"
+#include "df/history_event_performancest.h"
+#include "df/historical_entity.h"
+#include "df/entity_occasion_info.h"
+#include "df/entity_occasion.h"
+#include "df/entity_occasion_schedule.h"
+#include <unordered_set>
 namespace df3d_creature {
 // A targeted diagnostic guard, not general event-graph validation. JoinParty
 // reasons2/24 reach c3a590(false), whose profession formatter treats narrowed
@@ -26,14 +33,42 @@ inline bool directAgreementIdentityInputsValid(int32_t event_id) {
     const auto profession=uint16_t(identity->profession);
     return profession==UINT16_C(0xffff) || profession==102 || uint16_t(identity->race)!=UINT16_C(0xfffe);
 }
+// Both audited recursive phrase classes have at most one event successor.
+// Walk iteratively so validation itself cannot overflow on a cyclic graph.
+inline bool recursiveEventIdentityInputsValid(int32_t event_id) {
+    std::unordered_set<int32_t> visited;
+    while(event_id>=0) {
+        auto* event=df::history_event::find(event_id);if(!event)return true;
+        if(!visited.insert(event_id).second)return false;
+        if(!directAgreementIdentityInputsValid(event_id))return false;
+        if(event->getType()==df::history_event_type::MASTERPIECE_LOST) {
+            event_id=static_cast<df::history_event_masterpiece_lostst*>(event)->creation_event;
+            continue;
+        }
+        if(event->getType()!=df::history_event_type::PERFORMANCE)return true;
+        const auto* performance=static_cast<df::history_event_performancest*>(event);
+        const auto* entity=df::historical_entity::find(performance->entity);
+        if(!entity || !entity->occasion_info)return true;
+        const df::entity_occasion* occasion=nullptr;
+        for(const auto* candidate:entity->occasion_info->occasions) {
+            if(!candidate)return false;
+            if(candidate->id==performance->occasion){occasion=candidate;break;}
+        }
+        if(!occasion || performance->schedule<0 || size_t(performance->schedule)>=occasion->schedule.size())return true;
+        const auto* schedule=occasion->schedule[size_t(performance->schedule)];
+        if(!schedule || int32_t(schedule->type)!=3)return true;
+        event_id=schedule->reference;
+    }
+    return true;
+}
 // Diagnostic formatter, not yet a production provider. Event-type acceptance
 // is tracked separately from the independently owned dance data graph.
 inline std::optional<std::string> danceDetailProbe(df::dance_form* source) {
     if(!source || !knowledgeDescriptionReady() || source->sections.size()>4096 || source->moves.size()>4096)return std::nullopt;
     if(!df::global::world)return std::nullopt;
-    if(!directAgreementIdentityInputsValid(source->event))return std::nullopt;
+    if(!recursiveEventIdentityInputsValid(source->event))return std::nullopt;
     for(const auto* section:source->sections)
-        if(!section || !directAgreementIdentityInputsValid(section->acts_out_event))return std::nullopt;
+        if(!section || !recursiveEventIdentityInputsValid(section->acts_out_event))return std::nullopt;
     KnowledgeMaterialCacheRestore cache_restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct Pin {size_t rva,length;uint64_t hash;};

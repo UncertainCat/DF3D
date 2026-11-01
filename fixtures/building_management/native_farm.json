@@ -66859,6 +66859,94 @@
         },
         "scope": "Native tab/Escape oracle and actual main-scene navigation with captured native text injected through the real request service. No live Knowledge request handler acceptance."
       },
+      "recursive_identity_validation_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-073851",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "995139c5b9e96ec58a382db4704087616484f62abfdb7119c8ee8c0e390c20ab",
+        "identity_rejections": [
+          {
+            "case": "profession",
+            "inputs": [
+              {
+                "nested": false,
+                "race": -2
+              },
+              {
+                "nested": true,
+                "race": -2
+              },
+              {
+                "nested": false,
+                "race": 65534
+              },
+              {
+                "nested": true,
+                "race": 65534
+              },
+              {
+                "nested": false,
+                "race": 131070
+              },
+              {
+                "nested": true,
+                "race": 131070
+              }
+            ]
+          },
+          {
+            "case": "unnamed-profession",
+            "inputs": [
+              {
+                "nested": false,
+                "race": -2
+              },
+              {
+                "nested": true,
+                "race": -2
+              },
+              {
+                "nested": false,
+                "race": 65534
+              },
+              {
+                "nested": true,
+                "race": 65534
+              },
+              {
+                "nested": false,
+                "race": 131070
+              },
+              {
+                "nested": true,
+                "race": 131070
+              }
+            ]
+          }
+        ],
+        "cycles": [
+          {
+            "case": "lost-self",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "performance-self",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "performance-lost-cycle",
+            "guards_unchanged": true,
+            "rejected": true
+          }
+        ],
+        "nested_text_sha256": "1170c8d3392b120c881e324659ae7a0725b4ee5b02e68f53652f9f5a29eb5cc7",
+        "valid_comparisons": 28,
+        "guards_unchanged": true,
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "Dance event/section preflight follows MASTERPIECE_LOST and PERFORMANCE storytelling successors. Written references and full event input validation remain unfinished."
+      },
       "identity_validation_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-073441",
         "status": "passed_with_known_issues",

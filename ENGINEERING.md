@@ -3497,13 +3497,17 @@ startup notice. Other races, agreement detail types and deeper identity graphs
 remain unverified. These tests do not provide production source validation or
 license arbitrary agreement graphs.
 
-The diagnostic dance adapter now checks direct form/section agreement events
-before formatting. For the JoinParty identity branches it rejects a narrowed
+The diagnostic dance adapter checks form/section agreement events before
+formatting, including those reached through masterpiece-lost and performance
+storytelling event successors. For the JoinParty identity branches it rejects a narrowed
 comparison race0xfffe only when a non-impersonated identity has a profession
 other than -1 or102, the two native profession-suppression values. Missing
 records retain native fallback behavior. The c3a590 and132e0c0 full-body pins
-bind this interpretation. This is a targeted guard, not complete validation:
-recursive event paths and written-content references do not yet use it.
+bind this interpretation. The event traversal is iterative, follows the single
+successor of each audited recursive phrase class and rejects repeated IDs.
+Missing events/entities/occasions/schedules and null schedule pointers retain
+the native fallback behavior. This is targeted validation, not complete event
+input validation; written-content references do not yet use it.
 
 Protected073441 on2026-11-01 with bridge
 `4d0ebd0a7bce519268b6aec924637e24f80e898b51a90c3bcc45c2bd60a9ce05`
@@ -3514,6 +3518,18 @@ comparisons and four baseline forms still match native text with source guards
 unchanged. Source-save preservation, unsaved owned exit and the three known
 Godot startup notices are recorded in `identity_validation_reference`. This
 does not enable the production Knowledge handler or change public exposure.
+
+Protected073851 on2026-11-01 with bridge
+`995139c5b9e96ec58a382db4704087616484f62abfdb7119c8ee8c0e390c20ab`
+extends the evidence to nested agreements and cycles. Twelve direct/nested
+identity sentinel inputs and three cycles (lost self-reference, performance
+self-reference, performance/lost pair) reject with guarded state unchanged.
+The native oracle is never invoked on those invalid graphs. All28 valid
+comparisons pass: seven agreements twice, a nested profession agreement twice,
+eight recursive/missing-reference cases and four baseline forms. The fixture's
+`recursive_identity_validation_reference` retains the inputs, text hash and
+scope. Source saves are unchanged, owned DF exits unsaved, and the three Godot
+processes report only known startup notices. No production handler is enabled.
 
 The installed executable timestamp selects DFHack's `v0.53.16 win64 STEAM`
 symbol table. `event-world-construction-getters.json` resolves b93a90's virtual

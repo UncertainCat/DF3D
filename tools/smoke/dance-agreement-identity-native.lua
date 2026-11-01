@@ -5,6 +5,7 @@ local world=df.global.world;local events=world.history.events;local identities=w
 local original=form.event;local counts={#events,#identities,#agreements};local results={}
 for _,variant in ipairs{'named','unnamed','profession','unnamed-profession','entity','reason-two','missing-identity'}do
  local identity=df.identity:new();local event=df.history_event_agreement_formedst:new()
+ local lost=df.history_event_masterpiece_lostst:new()
  local agreement=df.agreement:new();local detail=df.agreement_details:new();local data=df.agreement_details_data_join_party:new()
  local member=df.agreement_party:new();local party=df.agreement_party:new()
  local ok,err=xpcall(function()
@@ -27,13 +28,23 @@ for _,variant in ipairs{'named','unnamed','profession','unnamed-profession','ent
   agreement.details:insert('#',detail);agreements:insert('#',agreement)
   event.id=events[#events-1].id+1;event.year=df.global.cur_year;event.seconds=df.global.cur_year_tick
   event.agreement_id=agreement.id;events:insert('#',event);form.event=event.id
+  lost.id=event.id+1;lost.year=event.year;lost.seconds=event.seconds;lost.creation_event=event.id;lost.histfig=-1;lost.site=-1;lost.method=0
+  events:insert('#',lost)
   local text=capture('agreement-identity-'..variant);local repeated=capture('agreement-identity-'..variant..'-warm')
   assert(text==repeated,'Repeated agreement identity description differs')
+  local nested_text
+  if variant=='profession'then
+   form.event=lost.id;nested_text=capture('agreement-identity-nested-profession')
+   assert(nested_text==capture('agreement-identity-nested-profession-warm'),'Repeated nested identity description differs')
+   form.event=event.id
+  end
   local rejected={}
   if variant=='profession'or variant=='unnamed-profession'then
    local race=identity.race
    for _,invalid in ipairs{-2,65534,131070}do
     identity.race=invalid
+    for _,root in ipairs{event.id,lost.id}do
+    form.event=root
     local guards={}
     for _,value in ipairs{identity,unit,df.global.game.main_interface.view_sheets,df.global.plotinfo}do
      local size,address=df.sizeof(value);local bytes=df.new('uint8_t',size)
@@ -47,18 +58,20 @@ for _,variant in ipairs{'named','unnamed','profession','unnamed-profession','ent
     end
     assert(status~=0,'UI-dependent identity race was accepted: '..invalid..' '..output)
     assert(unchanged,'Rejected identity probe changed source/UI state')
-    rejected[#rejected+1]=invalid
+    rejected[#rejected+1]={race=invalid,nested=root==lost.id}
+    end
    end
+   form.event=event.id
    identity.race=race
   end
-  results[#results+1]={case=variant,text=text,reason=data.reason,race=identity.race,caste=identity.caste,profession=identity.profession,rejected_ui_races=rejected}
+  results[#results+1]={case=variant,text=text,nested_text=nested_text,reason=data.reason,race=identity.race,caste=identity.caste,profession=identity.profession,rejected_ui_races=rejected}
  end,debug.traceback)
  form.event=original
  while #events>counts[1]do events:erase(#events-1)end
  while #identities>counts[2]do identities:erase(#identities-1)end
  while #agreements>counts[3]do agreements:erase(#agreements-1)end
  agreement.parties:resize(0);agreement.details:resize(0);detail.data.JoinParty=nil
- df.delete(event);df.delete(agreement);df.delete(detail);df.delete(data);df.delete(member);df.delete(party);df.delete(identity)
+ df.delete(lost);df.delete(event);df.delete(agreement);df.delete(detail);df.delete(data);df.delete(member);df.delete(party);df.delete(identity)
  assert(ok,err)
 end
 local f=assert(io.open(out..'/knowledge-agreement-identity-native.json','w'));f:write(json.encode(results));f:close()

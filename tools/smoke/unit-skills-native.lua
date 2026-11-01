@@ -273,7 +273,7 @@ local ok,err=xpcall(function()
     end
     if kind==16 and os.getenv('DF3D_UNIT_DANCE_RECURSION')=='1'then
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','dance-recursion-native.lua')
-     assert(loadfile(source))(reference.knowledge_ids[index],function(variant)return capture_detail(index,kind,variant)end)
+     assert(loadfile(source))(reference.knowledge_ids[index],function(variant)return capture_detail(index,kind,variant)end,out)
     end
     if kind==16 and os.getenv('DF3D_UNIT_DANCE_EVENTS')=='1'then
      local form=assert(df.dance_form.find(reference.knowledge_ids[index]));local original=form.event

@@ -1,6 +1,7 @@
 -- Controlled recursive references in an owned, paused clone; always restored.
 -- Synthetic events establish formatter coverage, not natural-world occurrence.
-local form_id,capture=...
+local form_id,capture,out=...
+local rejections={}
 local form=assert(df.dance_form.find(form_id))
 local leaf
 for _,value in ipairs(df.global.world.history.events)do
@@ -32,10 +33,30 @@ local ok,err=xpcall(function()
  performance.entity=2147483647;capture('performance-missing-entity');performance.entity=owner.id
  performance.occasion=2147483647;capture('performance-missing-occasion');performance.occasion=0
  performance.schedule=2147483647;capture('performance-missing-schedule')
+ performance.schedule=0
+ local function reject(label)
+  local guards={}
+  for _,value in ipairs{form,lost,performance,schedule,df.global.game.main_interface.view_sheets,df.global.plotinfo}do
+   local size,address=df.sizeof(value);local bytes=df.new('uint8_t',size)
+   dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={bytes=bytes,address=address,size=size}
+  end
+  local text,status=dfhack.run_command_silent('df3d','dance-detail-probe',tostring(form.id))
+  local unchanged=true
+  for _,guard in ipairs(guards)do
+   if dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)~=0 then unchanged=false end
+   df.delete(guard.bytes)
+  end
+  assert(status~=0,'Recursive cycle accepted: '..label..' '..text);assert(unchanged,'Rejected cycle changed guarded state')
+  rejections[#rejections+1]={case=label,rejected=true,guards_unchanged=true}
+ end
+ form.event=lost.id;lost.creation_event=lost.id;reject('lost-self')
+ form.event=performance.id;schedule.reference=performance.id;reject('performance-self')
+ schedule.reference=lost.id;lost.creation_event=performance.id;reject('performance-lost-cycle')
 end,debug.traceback)
 form.event=original_event;owner.occasion_info=original_info
 while #events>count do events:erase(#events-1)end
 occasion.schedule:resize(0);info.occasions:resize(0)
 df.delete(schedule);df.delete(occasion);df.delete(info);df.delete(performance);df.delete(lost)
 assert(ok,err)
+local f=assert(io.open(out..'/knowledge-recursion-validation.json','w'));f:write(require('json').encode(rejections));f:close()
 return true

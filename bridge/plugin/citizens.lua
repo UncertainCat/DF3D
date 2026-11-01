@@ -1,5 +1,6 @@
 -- Fixed citizen/work-detail domain. Native labor recalculation is authoritative.
 local U,J=dfhack.units,dfhack.job
+local native_eligible
 local steps,budget,list_revision=0,0,0
 local recalc={active=false,cursor=0,unit_id=nil,done=0,total=0,error=''}
 local function spend() if steps>=budget then return false end;steps=steps+1;return true end
@@ -19,11 +20,11 @@ local function details()return df.global.plotinfo.labor_info.work_details end
 local function external()return df.global.game.external_flag.automatic_professions_disabled end
 local function citizen(u)return u and U.isCitizen(u,true) and U.isActive(u) and not U.isDead(u)end
 local function eligibility(u)
- if not citizen(u) then return false,'Not an active surviving citizen' end
- if not U.isAlive(u) then return false,'Citizen is outside the supported living labor-assignment scope' end
- if not U.isCitizen(u) then return false,'Citizen is not eligible for ordinary labor' end
- if not U.isAdult(u) then return false,'Labor assignment requires an adult citizen' end
- return true,''
+ if not u then return false,'Citizen no longer available' end
+ if not native_eligible then return false,'Native labor eligibility unavailable' end
+ local ok,allowed=pcall(native_eligible,u.id)
+ if not ok then return false,'Native labor eligibility unavailable' end
+ return allowed,allowed and '' or 'Citizen is not eligible for ordinary labor'
 end
 local function caption(id)
  local attr=df.unit_labor.attrs[id]
@@ -251,11 +252,12 @@ local function inspect_detail(index,unit_id,rev)
  local out=result();out.details={row};out.selected_detail=index
  if unit_id and unit_id>=0 then
   local u=df.unit.find(unit_id)
-  if citizen(u) then local row,e=citizen_info(u,true,index);if not row then return fail(e) end;out.citizens={row};out.selected_unit=unit_id end
+  if u then local row,e=citizen_info(u,true,index);if not row then return fail(e) end;out.citizens={row};out.selected_unit=unit_id end
  end
  return out
 end
 return function(request)
+ native_eligible=request.labor_eligible
  steps=0;budget=request.step or request.step_budget or 2048
  if request.restart_recalc then queue_recalc() end
  if request.step then
@@ -284,7 +286,7 @@ return function(request)
   if i<#all then out.next_cursor=all[i].id end
   return finish(out)
  elseif action==29 then
-  local u=df.unit.find(p.unit_id);if not citizen(u) then return fail('Citizen no longer available') end
+  local u=df.unit.find(p.unit_id);if not u then return fail('Citizen no longer available') end
   local row,e=citizen_info(u,true);if not row then return fail(e) end;out.citizens={row};out.selected_unit=u.id;return finish(out)
  elseif action==30 then
   if p.cursor>0 and (p.expected_list_revision or 0)~=rev then return fail('List changed; refresh') end
@@ -365,7 +367,7 @@ return function(request)
   -- Read-only inspection still returns a bounded error row, and rename can repair a detail.
   if (action==32 or action==33) and p.unit_id and p.unit_id>=0 then
    local u=df.unit.find(p.unit_id)
-   if citizen(u) then
+   if u then
     local c=citizen_info(u,true)
     if c.row_error=='Row exceeds roles cap' then return fail('Citizen has too many roles for this inspector') end
     if c.row_error=='Row exceeds offices cap' then return fail('Citizen office list exceeds 64 entries') end

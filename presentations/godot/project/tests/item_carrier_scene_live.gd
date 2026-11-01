@@ -8,8 +8,9 @@ func labor_request(data: Dictionary) -> Dictionary:
 	return received[0].get("citizen",{})
 
 func labor_observe(target: int,serial: int,stage: String) -> void:
-	var file:=FileAccess.open(directory+"/unit-labor-request.json",FileAccess.WRITE)
+	var file:=FileAccess.open(directory+"/unit-labor-request.tmp",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"unit_id":target,"serial":serial,"stage":stage}));file.close()
+	DirAccess.rename_absolute(directory+"/unit-labor-request.tmp",directory+"/unit-labor-request.json")
 	var deadline:=Time.get_ticks_msec()+10000
 	while Time.get_ticks_msec()<deadline:
 		if FileAccess.file_exists(directory+"/unit-labor-ack.json"):
@@ -63,6 +64,13 @@ func exercise_labor_view(inspector,target: int) -> void:
 		if not check(inspector.labor.phase==inspector.labor.Phase.Ready,"Labor scope did not settle"):return
 		serial+=1;await labor_observe(target,serial,stage);await labor_capture(stage)
 	check(view==inspector.creature_sheet.labor_view,"Labor refresh replaced the control")
+	if OS.get_environment("DF3D_UNIT_LABOR_ELIGIBILITY")=="1":
+		await labor_observe(target,6,"eligibility_on")
+		var exempt: Dictionary=await labor_request({"action":29,"unit_id":target})
+		check(not exempt.citizens[0].eligible,"Native office exemption did not disable Labor")
+		await labor_observe(target,7,"eligibility_off")
+		var restored: Dictionary=await labor_request({"action":29,"unit_id":target})
+		check(restored.citizens[0].eligible,"Restored office did not enable Labor")
 	await health_tab(inspector,"Overview")
 	check(inspector.labor.phase==inspector.labor.Phase.Closed,"Leaving Labor retained request state")
 	var file:=FileAccess.open(directory+"/unit-labor-view-result.json",FileAccess.WRITE)

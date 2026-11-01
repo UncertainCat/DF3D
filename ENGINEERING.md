@@ -3193,8 +3193,8 @@ Godot processes have only the known startup notice. Root/core and the citizen
 adapter checks pass. `semantic_membership_reference` retains the observations.
 Initial101015 is excluded: the diagnostic acknowledgement file was not removed
 before Windows rename; no product mismatch was established by that failed run.
-Native eligibility alignment and populated workshop/location/animal providers
-remain unfinished prerequisites for full Labor exposure.
+Populated workshop/location/animal providers remain unfinished prerequisites
+for full Labor exposure.
 The creature Work details subtab now has native icons, row backgrounds,
 checkboxes and work-scope control. Its owned state reads all detail pages and
 the citizen at one list revision, sends edits with the displayed receipt, and
@@ -3212,9 +3212,33 @@ the known startup notice. `work_details_panel_reference` retains this scope.
 Root/core and `creature_labor_state_test` cover request retirement, rejection,
 revision changes and reconnect without replay. Earlier captures exposed and
 corrected checkbox width, icon-frame width and selected-subtab text color.
-Overflow and hover behavior remain unverified. Native eligibility alignment,
-the other three Labor subtabs and broader Work Details launcher remain
+Overflow and hover behavior remain unverified. The other three Labor subtabs
+and broader Work Details launcher remain
 unfinished; creature exposure is unchanged.
+
+`creature_labor_native.h` supplies eligibility through the native caste1376500,
+unit138ed20 and office/spouse13b99b0 predicates, following input1b4580..1b45e1.
+All are pinned together with their lookup helpers. The office predicate's unit
+histfig index, position-link entity/assignment indices and assignment position
+indices are snapshotted before calling DF and restored afterward. No native
+sheet state is a runtime input. Direct unit inspection can return noncitizens;
+DF decides their eligibility, while the citizen roster retains its own scope.
+Lua reads and mutations use this callback rather than reconstructing eligibility
+from DFHack citizen/adult/alive classifications. Unavailable predicates disable
+editing without a guessed fallback.
+
+Protected103247 on2026-11-01 retains the ordinary panel/effect checks and adds a
+controlled local-office MENIAL_WORK_EXEMPTION. Native displays "Cannot assign
+work details" and ignores the scope click; the actual semantic inspection
+reports ineligible, then eligible after restoration. Selected-unit/office lookup
+caches remain unchanged by the query. Owned DF47120 exits unsaved, source
+preservation passes, and three Godot processes report only the known startup
+notice. `eligibility_reference` retains the evidence. Root/core, Labor lifecycle
+and citizen adapter checks pass. Spouse/caste branches are statically traced
+and pinned, not live-covered here. Exempt panel rendering remains unfinished;
+the view currently disables writes but has not adopted the native refusal layout.
+Initial103049 is excluded: the diagnostic read a partially written request;
+the harness now publishes that file by rename.
 
 ### Creature Rooms native list
 

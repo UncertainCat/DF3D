@@ -3,6 +3,20 @@ from pathlib import Path
 from lupa import LuaRuntime
 
 
+def adapter_source():
+    source = Path('bridge/plugin/citizens.lua').read_text(encoding='utf-8')
+    # Inject a semantic predicate; the adapter must not reconstruct it.
+    return "local impl=(function()\n" + source + "\nend)()\n" + r'''
+return function(request)
+ request.labor_eligible=function(id)
+  local u=df.unit.find(id)
+  return u and u.citizen and u.active and not u.dead and u.alive and u.sane and u.adult
+ end
+ return impl(request)
+end
+'''
+
+
 def main():
     lua = LuaRuntime(unpack_returned_tuples=True)
     lua.execute((Path(__file__).resolve().parent / "qa/lua_test_prelude.lua").read_text(encoding="utf-8"))
@@ -42,7 +56,7 @@ def main():
      return {action=action,citizen=c}
     end
     ''')
-    helper=lua.execute(Path('bridge/plugin/citizens.lua').read_text())
+    helper=lua.execute(adapter_source())
     def call(action, **fields):
         return helper(lua.globals().request(action,lua.table_from(fields)))
     def observed(index=0):
@@ -77,10 +91,10 @@ def main():
     count=len(lua.globals().calls)
     assert edit(unit_id=0,member=0)['ok'] and len(lua.globals().calls)==count
     assert list(observed()['assigned_units'].values())==[4]
-    for id, message in [(8,'Labor assignment requires an adult citizen'),
+    for id, message in [(8,'Citizen is not eligible for ordinary labor'),
                         (12,'Citizen is not eligible for ordinary labor'),
-                        (16,'Citizen is outside the supported living labor-assignment scope'),
-                        (99,'Not an active surviving citizen')]:
+                        (16,'Citizen is not eligible for ordinary labor'),
+                        (99,'Citizen no longer available')]:
         refused(edit(unit_id=id,member=1), message)
     assert observed(1)['editable'] and observed(1)['mode_editable']
     assert edit(index=1,unit_id=0,member=1)['ok']
@@ -210,7 +224,7 @@ def extended_work_details(lua):
       df.global.pause_state=false
     end
     ''')
-    source = Path('bridge/plugin/citizens.lua').read_text()
+    source = adapter_source()
     def reset(n=2, d=1):
         lua.globals().reset_fixture(n, d)
         return lua.execute(source)
@@ -356,7 +370,7 @@ def extended_work_details(lua):
         assert lua.globals().calls[n+1]['only_assigned'] == bool(toggle)
         refused(call(67, unit_id=0, only_assigned=toggle, expected_revision=before), 'Citizen changed; inspect again')
     lua.execute('citizens[0].adult=false')
-    refused(call(67, unit_id=0, only_assigned=1, expected_revision=1), 'Labor assignment requires an adult citizen')
+    refused(call(67, unit_id=0, only_assigned=1, expected_revision=1), 'Citizen is not eligible for ordinary labor')
     helper = reset()
     lua.execute('wd[0].assigned_units=vec{0};citizens[0].status.current_soul.skills=vec{{id=2,rating=15},{id=1,rating=15}}')
     for icon in (-1, 0, 18):
@@ -388,9 +402,9 @@ def extended_work_details(lua):
     for kind in ('resident', 'visitor', 'merchant', 'diplomat'):
         lua.execute(f'citizens[1].citizen=false;citizens[1].{kind}=true')
         assert len(ok(call(28))['citizens']) == 1
-        refused(call(29, unit_id=1), 'Citizen no longer available')
-        refused(edit(32, unit_id=1, member=1), 'Not an active surviving citizen')
-        refused(call(67, unit_id=1, only_assigned=1, expected_revision=1), 'Not an active surviving citizen')
+        assert not ok(call(29, unit_id=1))['citizens'][1]['eligible']
+        refused(edit(32, unit_id=1, member=1), 'Citizen is not eligible for ordinary labor')
+        refused(call(67, unit_id=1, only_assigned=1, expected_revision=1), 'Citizen is not eligible for ordinary labor')
     helper = reset(d=17)
     r = ok(call(30, expected_list_revision=0));assert len(r['details']) == 16
     rev = r['detail_list_revision'];assert ok(call(30))['detail_list_revision'] == rev

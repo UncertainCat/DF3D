@@ -78,6 +78,7 @@
 #include "building_item_native.h"
 #include "creature_overview_native.h"
 #include "creature_office_native.h"
+#include "creature_labor_native.h"
 #include "creature_header_native.h"
 #include "creature_follow_native.h"
 #include "creature_expel_preview_native.h"
@@ -3281,6 +3282,11 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaOwnerDisplay);lua_setfield(L,-2,"owner_display");
   }
   if(citizenAction(action)) {
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto eligible=df3d_creature::laborEligible(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!eligible)return luaL_error(state,"Native labor eligibility unavailable");
+      lua_pushboolean(state,*eligible);return 1;
+    });lua_setfield(L,-2,"labor_eligible");
     field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());
     citizenHelperGeneration=helpers.generation();
   }
@@ -4129,7 +4135,14 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
       lua_pushcfunction(L,areaOwnerOrderFacts);lua_setfield(L,-2,"owner_order_facts");
       lua_pushcfunction(L,areaOwnerDisplay);lua_setfield(L,-2,"owner_display");
     }
-    if(kind==4){field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());citizenHelperGeneration=helpers.generation();}
+    if(kind==4){
+      field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());citizenHelperGeneration=helpers.generation();
+      lua_pushcfunction(L,[](lua_State* state)->int {
+        const auto eligible=df3d_creature::laborEligible(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+        if(!eligible)return luaL_error(state,"Native labor eligibility unavailable");
+        lua_pushboolean(state,*eligible);return 1;
+      });lua_setfield(L,-2,"labor_eligible");
+    }
     uint32_t used=0;
     if(Lua::SafeCall(out,L,1,1) && lua_istable(L,-1)) {
       const auto workError=areaAction(entry.action) ? areaWorkResultError(L,share) : std::string{};

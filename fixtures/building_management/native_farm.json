@@ -59060,6 +59060,25 @@
           "before"
         ],
         "coverage": "Actual main-scene clicks, native rendering and independent native effects. Baseline eleven details and citizen1017. Overflow, native eligibility for other creatures, other Labor pages and hover behavior remain outside this capture."
+      },
+      "eligibility_reference": {
+        "run": "stockpile-storage-native-farm-discovery-20261101-103247",
+        "bridge_sha256": "119f17c7592a459f28698beac1e18b7c8fc8d6e26fe9d70f1f9426085a0a1e70",
+        "observations": [
+          {
+            "native_scope": "                                                      Cannot assign work details                                                                      ",
+            "stage": "eligibility_on"
+          },
+          {
+            "native_scope": "                                                             Will do available tasks anywhere                                                         ",
+            "stage": "eligibility_off"
+          }
+        ],
+        "cache_preservation": true,
+        "native_exempt_scope_click_ignored": true,
+        "semantic_eligibility_matches": true,
+        "restored": true,
+        "coverage": "Local office MENIAL_WORK_EXEMPTION toggled in paused owned clone; actual native scope gating and semantic CitizenInspect agree. Selected unit and office lookup caches preserved. Spouse/caste branches statically traced and pinned, not exercised by this capture. Exempt panel rendering not yet matched."
       }
     },
     "unit_rooms_reference": {

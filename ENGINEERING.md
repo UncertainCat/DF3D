@@ -3195,25 +3195,32 @@ to borrow the native sheet or its populated vectors. Transitive mutation/global
 reads and native allocation cleanup still need audit before a runtime call.
 
 `unit-health-page-probe <unit> <page>` is a diagnostic adapter, currently
-allowing Status0, Wounds1 and Treatment2. It calls479f40 using independent zeroed
+allowing Status0, Wounds1, Treatment2 and Description4. It calls479f40 using independent zeroed
 formatter storage and copied unit/status/counters/health data, then returns
 pointer-free tagged strings and destroys native output allocations. It never
 reads the live sheet or its output vectors. Other page paths are rejected until
 their additional input and helper ownership requirements are established.
-Protected014146 verifies exact native output for existing standing/nerve damage,
-ten diagnosed tissue-wound rows and no scheduled treatment. Wounds owns copies
-of each wound, tissue layer and value-vector effect array. Guards preserve the
-source structs and nested parts/effect backing, sheet/plotinfo and random streams.
-`owned_probe_reference` records the scope and bridge hash. MSVC and root/core QA
-`health-wounds-probe` pass; all three live Godot processes have only the startup
-notice. DF33000 exits unsaved and source preservation passes. This does not yet
-establish all clinical states, management transport or rendered Health behavior.
+Protected014925 verifies exact native output for existing standing/nerve damage,
+ten diagnosed tissue-wound rows, no scheduled treatment and the complete tagged
+Description paragraph. Wounds owns each wound, tissue layer and effect array.
+Description additionally copies appearance/modifier vectors, birth year/time,
+curse attribute arrays and ghost data. Compile-time offsets confirm the input
+layout; normal-race and historical-figure cache fields belong to copied enemy data.
+Native13cae60 creates its own appearance descriptor;70f070 populates temporary
+records,712370 formats them and5c0b20 destroys their pointees before vector cleanup.
+Its indirect sorting call is the qsort import over an owned descriptor vector.
+Guards preserve source structs, wound/appearance/modifier backing, sheet/plotinfo
+and random streams. `owned_probe_reference` records scope and bridge hash.
+MSVC and root/core QA `health-description-probe` pass; all three live Godot
+processes have only the startup notice. DF18812 exits unsaved; source preservation
+passes. This specimen does not establish all clinical, curse, ghost or appearance
+variants, management transport or rendered Health behavior.
 
 History remains excluded: builder47ae79..47aed2 resolves caregivers from the
 world and calls1330c30, which passes their unit+1274 cache to b530b0. Copying
 only the patient cannot own those writes. Resolve this dependency without
 substituting global world pointers or borrowing native UI storage before enabling
-History. Description also needs its additional appearance/helper ownership audit.
+History.
 
 These pages are not implemented by the current generic health renderer.
 `creature.lua` exposes observed wounds, body-part flags, treatment flags and

@@ -53163,7 +53163,7 @@
         "scope": "Diagnostic read of native Health output vectors after actual page clicks. Reference only; these menu vectors must never be product inputs."
       },
       "owned_probe_reference": {
-        "run": "build/stockpile-storage-native-farm-discovery-20261101-014146",
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-014925",
         "status": "passed_with_known_issues",
         "pages": [
           {
@@ -53209,10 +53209,21 @@
               "unit_id": 1017
             },
             "guards_unchanged": true
+          },
+          {
+            "name": "Description",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna mixed with gray.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+              ],
+              "unit_id": 1017
+            },
+            "guards_unchanged": true
           }
         ],
-        "bridge_sha256": "a2facd626f6b6678bc5ff310d65915306e6902985ebbb80da1a71d1462ab6a08",
-        "scope": "Diagnostic Status0/Wounds1/Treatment2 calls using independent formatter context, copied unit/health inputs and deep-copied wound records, layers and effect arrays. Exact native tagged rows match; guards additionally cover all source wound parts and effect-vector backing.",
+        "bridge_sha256": "731c17794eab41f35f4813514c8b1578c1a747294e8efdebbb84cc55639c9348",
+        "scope": "Diagnostic Status0/Wounds1/Treatment2/Description4 with independently owned formatter context and copied semantic unit, health, wound, appearance, age, curse-attribute and ghost inputs. Exact tagged rows match native; guards include wound layers/effects and appearance/modifier vector backing.",
         "diagnostics": {
           "farm-item-carrier-unit-scene.godot.log": {
             "known_engine": [
@@ -53245,12 +53256,12 @@
             "unclassified": []
           }
         },
-        "source_save": "Owned source unchanged; DF33000 exits unsaved.",
-        "qa": "build/qa/health-wounds-probe",
+        "source_save": "Owned source unchanged; DF18812 exits unsaved.",
+        "qa": "build/qa/health-description-probe",
         "limitations": [
-          "Only existing standing/nerve impairments, diagnosed tissue wounds and empty scheduled Treatment verified; no claim for all clinical conditions.",
-          "History and Description calls rejected pending ownership audit. History resolves live caregiver units and its name helper writes their historical-figure cache; copying only the patient is insufficient.",
-          "No management wire or Godot Health implementation; creature route remains staged."
+          "One living citizen with existing impairment, diagnosed wounds, empty scheduled treatment and populated description; no acceptance of all clinical, curse, ghost, age or appearance variants.",
+          "History remains rejected: global caregiver lookup and name cache writes require a separate owned solution.",
+          "No management wire or rendered Godot Health implementation; creature route remains staged."
         ]
       }
     }

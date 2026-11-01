@@ -42,7 +42,7 @@ local ok,err=xpcall(function()
   local sample={name=name,lines={},tagged_rows={}}
   for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
   sample.color_box_count=#sheet.unit_health_box
-  if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1' and (name=='Status' or name=='Wounds' or name=='Treatment')then
+  if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1' and name~='History'then
    local guards={}
    local function guard(address,size)
     if size==0 then return end;assert(size>0 and size<1048576,'Invalid Health guard size')
@@ -53,6 +53,13 @@ local ok,err=xpcall(function()
     if object then local size,address=df.sizeof(object);guard(address,size)end
    end
    local vectors={unit.body.components.body_part_status,unit.body.wounds,unit.enemy.motor_nervenet,unit.enemy.sensory_nervenet,unit.enemy.body_part_useable}
+   for _,vector in ipairs{unit.appearance.body_modifiers,unit.appearance.bp_modifiers,
+    unit.appearance.tissue_style,unit.appearance.tissue_style_civ_id,unit.appearance.tissue_style_id,
+    unit.appearance.tissue_style_type,unit.appearance.tissue_length,unit.appearance.colors,
+    unit.uwss_body_modifier,unit.uwss_bp_modifer}do vectors[#vectors+1]=vector end
+   for _,field in ipairs{'uwss_att_change','ghost_info'}do
+    if unit[field]then local size,address=df.sizeof(unit[field]);guard(address,size)end
+   end
    if unit.health then vectors[#vectors+1]=unit.health.body_part_flags end
    for _,vector in ipairs(vectors)do
     local _,address=df.sizeof(vector);local first=df.reinterpret_cast('uint64_t',address).value
@@ -71,7 +78,7 @@ local ok,err=xpcall(function()
     end
    end
    for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do guard(base+range[1],range[2])end
-   local text,status=dfhack.run_command_silent('df3d','unit-health-page-probe',tostring(unit.id),name=='Status' and '0' or name=='Wounds' and '1' or '2')
+   local text,status=dfhack.run_command_silent('df3d','unit-health-page-probe',tostring(unit.id),name=='Status' and '0' or name=='Wounds' and '1' or name=='Treatment' and '2' or '4')
    local unchanged=true
    for _,g in ipairs(guards)do if dfhack.internal.memcmp(g.bytes,g.address,g.size)~=0 then unchanged=false end;df.delete(g.bytes)end
    assert(status==0,text);assert(unchanged,'Health probe changed guarded source/UI/random state')

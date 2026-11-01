@@ -1532,6 +1532,23 @@ The native header moves the item caption up one row when an owner exists.
 Owner identity/name transport and rendering remain unimplemented; the fixture's
 `owner_header_audit` records the entry points and required ownership distinction.
 
+`item_owner_native.h` now exposes that lookup through diagnostic
+`df3d item-owner-probe <item>`. The name is formatted with the owned unit context
+and RNG restoration already used by inventory descriptions. Protected003620
+on2026-11-01 compares exact native header cells for original owner1017,
+owner988 while carrier remains1017, no owner reference and unresolved owner ID.
+The latter two return absent owner and no Owner line. Source unit structures and
+view_sheets/plotinfo stay byte-identical; native reference cached_index updates
+are semantic lookup effects and outside that unchanged claim. Source saves stay
+unchanged; owned DF39228 exits unsaved. Godot logs have only the known notice.
+
+The earlier003427 probe found a missing owned-context input: native named988 a
+Dwarven Child, while the adapter's default profession produced Peasant. The shared
+context now copies profession/profession2 and cultural_identity;003620 matches
+both the child and bookkeeper. This also corrects those inputs for contained
+creature captions. The fixture's `owner_reader_reference` records cases and
+limitations. No item-owner snapshot field or rendered owner header exists yet.
+
 The Overview hauling line uses native selector1324b50(unit), the same call made
 by renderer166e81, followed by the existing owned caption formatter c65450.
 The selector is a44-byte read-only leaf returning the first inventory entry in

@@ -44,6 +44,8 @@ public:
     explicit InventoryDescriptionContext(const df::unit& source) {
         owned.race=source.race;owned.caste=source.caste;
         owned.id=source.id;owned.name=source.name;owned.custom_profession=source.custom_profession;
+        owned.profession=source.profession;owned.profession2=source.profession2;
+        owned.cultural_identity=source.cultural_identity;
         owned.hist_figure_id=source.hist_figure_id;owned.civ_id=source.civ_id;
         owned.sex=source.sex;owned.training_level=source.training_level;
         owned.relationship_ids=source.relationship_ids;

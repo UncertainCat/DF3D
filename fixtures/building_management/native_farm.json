@@ -50338,7 +50338,7 @@
         "coverage": "HELM hood live artwork verified; ARMOR/SHOES/PANTS/GLOVES appearance transport uses audited shared getters but lacks live artwork acceptance."
       },
       "owner_header_audit": {
-        "status": "located, not implemented",
+        "status": "native reader implemented and verified; snapshot transport and viewer header pending",
         "lookup": "renderer154878 calls cb1640(item,16), UNIT_ITEMOWNER; carrier uses18, UNIT_HOLDER",
         "name": "renderer154aaf calls1330c30(unit,owned string,false)",
         "prefix": {
@@ -50347,6 +50347,78 @@
         },
         "layout": "Owner present: caption starts first header row; yellow owner second row; weight third row. No owner: caption second row, weight third row.",
         "required": "Explicit owner identity/name in semantic snapshot and revision, matching codec validation; do not infer ownership from carrier. Use owned unit context where required by name formatter; verify distinct owner/carrier and absent references."
+      },
+      "owner_reader_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-003620",
+        "status": "passed_with_known_issues",
+        "cases": [
+          {
+            "carrier": 1017,
+            "case": "original",
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "owner": {
+              "id": 1017,
+              "name": "Stodir Tangakurvad, bookkeeper"
+            },
+            "source_and_ui_unchanged": true
+          },
+          {
+            "carrier": 1017,
+            "case": "different-carrier",
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: \u00eeton Unibmamot, Dwarven Child",
+              "Weight: <1\u0393"
+            ],
+            "owner": {
+              "id": 988,
+              "name": "\u00eeton Unibmamot, Dwarven Child"
+            },
+            "source_and_ui_unchanged": true
+          },
+          {
+            "carrier": 1017,
+            "case": "absent",
+            "header": [
+              "",
+              "\u2261pig tail hood\u2261",
+              "Weight: <1\u0393"
+            ],
+            "owner": {
+              "id": -1,
+              "name": ""
+            },
+            "source_and_ui_unchanged": true
+          },
+          {
+            "carrier": 1017,
+            "case": "unresolved",
+            "header": [
+              "",
+              "\u2261pig tail hood\u2261",
+              "Weight: <1\u0393"
+            ],
+            "owner": {
+              "id": -1,
+              "name": ""
+            },
+            "source_and_ui_unchanged": true
+          }
+        ],
+        "adapter": "item_owner_native.h itemOwnerDescription uses pinned cb1640(item,16) and1330c30(owned unit,string,false); inventory context and all RNG state guards reused",
+        "ownership": "source unit structures and view_sheets/plotinfo checked byte-for-byte; general-reference lookup may populate its semantic cached_index, which is not included in the unchanged claim",
+        "context_fix": "003427 exposes missing profession: native child988 is Dwarven Child but owned context returned Peasant. Copy profession/profession2 and cultural_identity; final003620 matches. Shared contained-creature formatter also uses this context.",
+        "source_save": "unchanged; owned DF39228 exits unsaved",
+        "limitations": [
+          "diagnostic reader only; no owner field in wire or item UI",
+          "source body-vector backing arrays and RNG not independently byte-compared in this owner probe; implementation uses previously verified owned context/RAII guards",
+          "long names, other species, curses and other professional-name branches require further evidence"
+        ],
+        "evidence_sha256": "8bdb6c95c0c607805d3a03a8b160d04131c7add5f2f7b3aac07adce5ad567d62"
       }
     }
   }

@@ -66859,6 +66859,85 @@
         },
         "scope": "Native tab/Escape oracle and actual main-scene navigation with captured native text injected through the real request service. No live Knowledge request handler acceptance."
       },
+      "corpse_caption_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-080134",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "48f3d5b87766f8d2caff56e8eeb167e15d6f68980488a1cde86ac5903187230b",
+        "cases": [
+          {
+            "body_parts": 89,
+            "case": "named-native-first",
+            "histfig_index": 1217,
+            "mode": "native-first",
+            "variant": "named",
+            "text_sha256": "43cef5c92933736e33e6c72e4494ca87e9662c45a0898589e7b4f1c5e310645f",
+            "utf8_bytes": 1750,
+            "warm_native_comparisons": 2,
+            "warm_guards_unchanged": true
+          },
+          {
+            "body_parts": 89,
+            "case": "named-probe-first",
+            "cold_probe_index": -1,
+            "histfig_index": 1217,
+            "mode": "probe-first",
+            "variant": "named",
+            "text_sha256": "43cef5c92933736e33e6c72e4494ca87e9662c45a0898589e7b4f1c5e310645f",
+            "utf8_bytes": 1750,
+            "warm_native_comparisons": 2,
+            "warm_guards_unchanged": true
+          },
+          {
+            "body_parts": 89,
+            "case": "unnamed-native-first",
+            "histfig_index": 1217,
+            "mode": "native-first",
+            "variant": "unnamed",
+            "text_sha256": "6a7642949a4a3b5dcdab065f0e6b14b3f35a23901f2e1147ad9a44b8fbb03b4d",
+            "utf8_bytes": 1744,
+            "warm_native_comparisons": 2,
+            "warm_guards_unchanged": true
+          },
+          {
+            "body_parts": 89,
+            "case": "unnamed-probe-first",
+            "cold_probe_index": 1217,
+            "histfig_index": 1217,
+            "mode": "probe-first",
+            "variant": "unnamed",
+            "text_sha256": "6a7642949a4a3b5dcdab065f0e6b14b3f35a23901f2e1147ad9a44b8fbb03b4d",
+            "utf8_bytes": 1744,
+            "warm_native_comparisons": 2,
+            "warm_guards_unchanged": true
+          },
+          {
+            "body_parts": 89,
+            "case": "unresolved-unit-native-first",
+            "histfig_index": 1217,
+            "mode": "native-first",
+            "variant": "unresolved-unit",
+            "text_sha256": "00336eed625f008c613760cabe9524de51a0dfa6716b84e403bfac4459546df5",
+            "utf8_bytes": 1741,
+            "warm_native_comparisons": 2,
+            "warm_guards_unchanged": true
+          },
+          {
+            "body_parts": 89,
+            "case": "unresolved-unit-probe-first",
+            "cold_probe_index": -1,
+            "histfig_index": 1217,
+            "mode": "probe-first",
+            "variant": "unresolved-unit",
+            "text_sha256": "00336eed625f008c613760cabe9524de51a0dfa6716b84e403bfac4459546df5",
+            "utf8_bytes": 1741,
+            "warm_native_comparisons": 2,
+            "warm_guards_unchanged": true
+          }
+        ],
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "Synthetic intact dwarf corpse with 89 copied body parts: named, unnamed and unresolved unit captions. Cold bridge history index measured before native UI. No general corpse/body-graph admission."
+      },
       "cage_caption_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-075605",
         "status": "passed_with_known_issues",

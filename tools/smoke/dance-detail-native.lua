@@ -63,13 +63,20 @@ local function event(id)
   local artifact=df.artifact_record.find(value.artifact_id)
   if artifact then
    object(artifact);name(artifact.name);local item=artifact.item;object(item)
-   assert(item and (df.item_statuest:is_instance(item) or df.item_figurinest:is_instance(item) or df.item_coinst:is_instance(item) or df.item_cagest:is_instance(item)),'Add guards for this artifact item')
-   vector(item.general_refs);vector(item.improvements)
+   local corpse=item and df.item_corpsest:is_instance(item)
+   assert(item and (corpse or df.item_statuest:is_instance(item) or df.item_figurinest:is_instance(item) or df.item_coinst:is_instance(item) or df.item_cagest:is_instance(item)),'Add guards for this artifact item')
+   vector(item.general_refs)
    for _,ref in ipairs(item.general_refs)do object(ref)end
-   for _,improvement in ipairs(item.improvements)do
+   if not corpse then vector(item.improvements);for _,improvement in ipairs(item.improvements)do
     assert(df.itemimprovement_bandsst:is_instance(improvement),'Add guards for this decoration');object(improvement)
-   end
-   if df.item_cagest:is_instance(item) then
+   end end
+   if corpse then
+    figure(item.hist_figure_id);figure(item.hist_figure_id2)
+    local owner=df.unit.find(item.unit_id);object(owner)
+    if owner then name(owner.name);figure(owner.hist_figure_id)end
+    vector(item.body.wounds);assert(#item.body.wounds==0,'Add corpse wound guards')
+    for _,field in ipairs{'body_part_status','numbered_masks','nonsolid_remaining','layer_status','layer_wound_area','layer_cut_fraction','layer_dent_fraction','layer_effect_fraction'}do vector(item.body.components[field])end
+   elseif df.item_cagest:is_instance(item) then
     for _,ref in ipairs(item.general_refs)do
      assert(df.general_ref_contains_unitst:is_instance(ref),'Cage probe expects contained unit')
      local contained=assert(df.unit.find(ref.unit_id));object(contained)

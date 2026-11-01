@@ -3672,6 +3672,22 @@ adventure mode. Admission must establish the fortress-mode precondition and
 the remaining source ownership; the identity-event guard is not a substitute
 for auditing this independent caller.
 
+Protected080134 on2026-11-01 compares a temporary intact dwarf corpse with
+89 copied body-part statuses and validated parent indices. Named, unnamed and
+unresolved unit references each run native-first and bridge-first, with two
+native/diagnostic comparisons per sequence. All12 match; warm corpse/component,
+referenced unit/name/history, UI and random guards remain unchanged. The cold
+bridge read, measured before native UI rendering, leaves histfig_vector_idx-1
+for named and unresolved-unit captions but refreshes it to1217 for the unnamed
+unit. Native sheet rendering can warm that cache independently, so the final
+post-panel index alone is not evidence that the caption reached the helper.
+`corpse_caption_reference` retains the branch observations and text hashes.
+The helper restores the unit name flag/index and removes temporary records;
+DF exits unsaved with the source save unchanged. Four baseline forms pass and
+the three Godot processes report only known startup notices. Wounded, partial,
+custom-body and other-race corpses, and exact cold byte-delta parity remain
+unverified; this does not establish general corpse admission.
+
 Cage captionca4420 resolves contained units through reference slot0x20 and
 calls1385b10 on the resulting unit atca4586. The already audited inventory
 helper can refresh body/component/nerve caches on that unit. Thus the cage

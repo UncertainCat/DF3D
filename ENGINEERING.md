@@ -1569,16 +1569,15 @@ passes core, item-state and UI composition checks. Protected005142 verifies the
 original owner through actual main-scene Items inspection and carrier return,
 with unchanged source save and owned DF35476 exiting unsaved. Each Godot process
 has only the known renderer notice. The four native owner-reference cases also
-repeat successfully, but composed changing/absent owner refresh is not yet
-accepted. `owner_wire_reference` retains the current scope.
+repeat successfully. `owner_wire_reference` retains that baseline scope;
+open-sheet refresh is covered separately below.
 
 The item view places the name on the first header row when owner data exists,
 with the native yellow Owner line beneath and Weight on the third row. Without
 an owner it retains the native second-row name. Protected005142's368x36 header
 region at424,64 matches the usable native002607 header exactly, including hood
 artwork and all three text rows (zero differing RGB pixels). This accepts the
-short original-owner header only. Long-name clipping is covered separately below. Composed owner changes and the
-rest of the sheet remain unfinished; the public route stays staged.
+short original-owner header only. Long-name clipping is covered separately below. The rest of the sheet remains unfinished; the public route stays staged.
 
 Protected005804 on2026-11-01 records64 native header text cases: sixteen lengths
 for item captions and owner names, each with/without a temporary in_job flag.
@@ -1595,6 +1594,19 @@ Names, item definition and in_job flag are restored; source saves remain unchang
 and owned DF38452 exits unsaved. Each native-lane Godot process has only the known
 startup notice. `header_clipping_reference` retains cases and scope; other widths,
 non-ASCII boundaries and long unowned names still need evidence.
+
+The `owner_refresh_reference` fixture records protected010343 on2026-11-01.
+The actual open item sheet automatically refreshes after controlled UNIT_ITEMOWNER
+reference changes to another citizen, no reference, an unresolved ID, and the
+original owner. Native owner captions and exact snapshot revisions agree with
+viewer state; the carrier remains1017 throughout. Absent and unresolved owners
+have the same semantic revision. Screenshots show the Owner line disappearing
+and the item caption moving to the native second row. Carrier View returns to
+Overview. This is reference-change refresh evidence, not gameplay reassignment
+semantics or full-sheet native pixel parity. Original references are restored,
+only the allowed weight-cache flag may change, and the source save is unchanged;
+the owned session exits unsaved. Every Godot process has only the known startup
+notice. Disconnect, epoch, pending-edit and late-reply acceptance remain open.
 
 The Overview hauling line uses native selector1324b50(unit), the same call made
 by renderer166e81, followed by the existing owned caption formatter c65450.

@@ -50446,10 +50446,10 @@
           "viewer_sha256": "e0a3e8144f4a71a347a8ac567adadfc6c4f147e5651524ac4ee6ccb7743733c1"
         },
         "limitations": [
-          "long owner/item names need native clipping",
-          "composed changing/absent/unresolved owner refresh and lifecycle not verified",
-          "full sheet native screenshot remains unsuitable; only stable header region accepted",
-          "Items indicators, hover, scroll/resize/lifecycle and remaining creature screens unfinished"
+          "Header clipping covered separately by header_clipping_reference; other widths and non-ASCII boundaries remain unverified.",
+          "Open-sheet owner refresh covered separately by owner_refresh_reference; disconnect/epoch/late replies remain unverified.",
+          "Full sheet native screenshot remains unsuitable; only stable header region accepted.",
+          "Items indicators, hover, scroll/resize/lifecycle and remaining creature screens unfinished."
         ]
       },
       "header_clipping_reference": {
@@ -51265,6 +51265,153 @@
         "limitations": "Clipping strings accepted at default panel width; other widths, no-owner long names, non-ASCII boundaries and full long-header pixel comparison remain unverified.",
         "qa": "build/qa/item-header-clipping-final: core passed, item_sheet_capture passed_with_known_issues; all64 clipped strings match native cells and existing full-panel item reference pixel checks remain green",
         "rendering": "Long owner/item screenshots with/without job inspected; rendering-only fixture coerces JSON appearance stack/flags to integers. No full long-header native screenshot pixel equivalence claimed."
+      },
+      "owner_refresh_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-010343",
+        "status": "passed_with_known_issues",
+        "protocol": 106,
+        "item_id": 32064,
+        "scope": "Automatic refresh of the same open item sheet after controlled owner-reference changes: different citizen, absent reference, unresolved reference, original owner restored. Carrier stays 1017; carrier View returns to Overview.",
+        "native": {
+          "flags_unchanged_except_weight_cache": true,
+          "observations": [
+            {
+              "carrier_id": 1017,
+              "op": "other",
+              "owner": {
+                "id": 988,
+                "name": "\u00eeton Unibmamot, Dwarven Child"
+              },
+              "revision": "2422450783416018027",
+              "serial": 1
+            },
+            {
+              "carrier_id": 1017,
+              "op": "none",
+              "owner": {
+                "id": -1,
+                "name": ""
+              },
+              "revision": "4700681800120067976",
+              "serial": 2
+            },
+            {
+              "carrier_id": 1017,
+              "op": "unresolved",
+              "owner": {
+                "id": -1,
+                "name": ""
+              },
+              "revision": "4700681800120067976",
+              "serial": 3
+            },
+            {
+              "carrier_id": 1017,
+              "op": "restore",
+              "owner": {
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper"
+              },
+              "revision": "2051833344436003715",
+              "serial": 4
+            }
+          ],
+          "restored": true,
+          "success": true
+        },
+        "scene": {
+          "observations": [
+            {
+              "carrier": {
+                "id": 1017,
+                "item_type": -1,
+                "kind": 2,
+                "name": "Stodir Tangakurvad, bookkeeper"
+              },
+              "op": "other",
+              "owner": {
+                "id": 988,
+                "name": "\u00eeton Unibmamot, Dwarven Child"
+              },
+              "revision": "2422450783416018027"
+            },
+            {
+              "carrier": {
+                "id": 1017,
+                "item_type": -1,
+                "kind": 2,
+                "name": "Stodir Tangakurvad, bookkeeper"
+              },
+              "op": "none",
+              "owner": {},
+              "revision": "4700681800120067976"
+            },
+            {
+              "carrier": {
+                "id": 1017,
+                "item_type": -1,
+                "kind": 2,
+                "name": "Stodir Tangakurvad, bookkeeper"
+              },
+              "op": "unresolved",
+              "owner": {},
+              "revision": "4700681800120067976"
+            },
+            {
+              "carrier": {
+                "id": 1017,
+                "item_type": -1,
+                "kind": 2,
+                "name": "Stodir Tangakurvad, bookkeeper"
+              },
+              "op": "restore",
+              "owner": {
+                "id": 1017,
+                "name": "Stodir Tangakurvad, bookkeeper"
+              },
+              "revision": "2051833344436003715"
+            }
+          ],
+          "success": true
+        },
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "source_save": "unchanged; owned session exited without saving",
+        "limitations": [
+          "Controlled reference changes do not establish gameplay ownership reassignment semantics.",
+          "No new disconnect, epoch, pending-edit or late-reply acceptance.",
+          "Screenshots visually inspected; no full-sheet native pixel parity claim."
+        ]
       }
     }
   }

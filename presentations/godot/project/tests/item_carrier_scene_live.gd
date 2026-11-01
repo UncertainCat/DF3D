@@ -228,12 +228,44 @@ func exercise_items_view(inspector,target: int) -> void:
 	root.get_texture().get_image().save_png(directory+"/unit-items-inspected-scene.png")
 	var snapshot:=FileAccess.open(directory+"/unit-items-inspected-scene.json",FileAccess.WRITE)
 	snapshot.store_string(JSON.stringify(item_owner.state.snapshot,"  "));snapshot.close()
+	if OS.get_environment("DF3D_ITEM_OWNER_REFRESH")=="1":await exercise_owner_refresh(item_owner,item_id,target)
 	await pointer(item_owner.panel.get_global_transform_with_canvas()*item_owner.panel.holder_rect().get_center())
 	await process_frame;await process_frame
 	check(scene._ui.host.active==inspector and inspector.selected.get("id",-1)==target,"Item carrier did not return to the creature")
 	check(inspector.creature_sheet.tab=="Overview","Item carrier did not reset to native Overview")
 	var result:=FileAccess.open(directory+"/unit-items-view-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"inspected_item":item_id,"creature":target}));result.close()
+
+func exercise_owner_refresh(item_owner,item_id: int,carrier_id: int) -> void:
+	var observations: Array=[]
+	var serial:=0
+	for operation in ["other","none","unresolved","restore"]:
+		serial+=1
+		var file:=FileAccess.open(directory+"/item-owner-request.tmp",FileAccess.WRITE)
+		file.store_string(JSON.stringify({"item_id":item_id,"op":operation,"serial":serial}));file.close()
+		DirAccess.rename_absolute(directory+"/item-owner-request.tmp",directory+"/item-owner-request.json")
+		var deadline:=Time.get_ticks_msec()+5000
+		while not FileAccess.file_exists(directory+"/item-owner-ack.json") and Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+		if not check(FileAccess.file_exists(directory+"/item-owner-ack.json"),"Owner refresh acknowledgement timed out"):return
+		var expected: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/item-owner-ack.json"))
+		DirAccess.remove_absolute(directory+"/item-owner-ack.json")
+		check(int(expected.serial)==serial and expected.op==operation,"Owner refresh acknowledgement mismatched")
+		deadline=Time.get_ticks_msec()+5000
+		while item_owner.state.snapshot.get("revision",0)!=int(expected.revision) and Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+		check(item_owner.state.phase==item_owner.state.Phase.Ready and item_owner.state.snapshot.get("revision",0)==int(expected.revision),"Automatic item refresh missed owner change: "+operation)
+		var value: Dictionary=item_owner.state.snapshot
+		check(value.get("owner",{}).get("id",-1)==int(expected.owner.id),"Owner refresh identity differs")
+		check(value.get("owner",{}).get("name","")==expected.owner.name,"Owner refresh native caption differs")
+		check(value.get("carrier",{}).get("id",-1)==carrier_id,"Owner refresh changed carrier")
+		check(scene._ui.host.active==item_owner and item_owner.panel.visible,"Owner refresh retired the item panel")
+		check(item_owner.panel.snapshot.get("owner",{})==value.get("owner",{}),"Rendered header retained stale ownership")
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/item-owner-refresh-"+operation+".png")
+		observations.append({"op":operation,"owner":value.get("owner",{}),"revision":str(value.get("revision",0)),"carrier":value.get("carrier",{})})
+	var file:=FileAccess.open(directory+"/item-owner-refresh-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"observations":observations},"  "));file.close()
 
 func follow_ready() -> bool:
 	var deadline:=Time.get_ticks_msec()+5000

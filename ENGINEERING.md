@@ -3474,6 +3474,34 @@ This static evidence does not replace bounded live guards or grant acceptance
 to all 127 event types. No production formatter admission or management action
 changes are made by this audit.
 
+### Knowledge recursive event descriptions
+
+Masterpiece-lost formatter b65030 reads `creation_event`, resolves it through
+7da30, and calls phrase slot d8 with the caller's owned output/context.
+Performance formatter b8c2b0 resolves the entity's occasion and schedule;
+when schedule type is 3, it resolves `reference` as a history event and calls
+phrase slot d8 with a fresh stack context initialized by72080 and a local
+string. Entity/occasion/schedule lookup and index checks precede the call.
+These are semantic world references, not native menu state. Both formatter
+bodies, including the masterpiece-loss switch table, are pinned in the
+ diagnostic dance adapter.
+
+Protected native061054 on2026-11-01 verifies eight controlled cases through
+the actual native Knowledge panel and diagnostic owned dance formatter:
+existing/missing creation event, existing/missing storytelling event, nested
+performance-to-masterpiece-loss-to-CREATED_SITE, and missing performance
+entity/occasion/schedule. All descriptions match exactly; source/event/occasion,
+UI and random guards remain unchanged. `recursive_event_reference` retains
+case identities and text digests. The test allocates two temporary events and
+an occasion/schedule, restores the original form and entity pointers, removes
+the events and frees its allocations. It does not claim naturally occurring
+recursive examples or acceptance for arbitrary referenced event classes.
+The initial060946 run stopped because the fortress lacked suitable existing
+records; it performed no recursive comparison. Both sources remain unchanged
+and both owned sessions exit unsaved. Final DF35456 has only the three known
+Godot startup notices. Cyclic references, other leaf event types and the
+remaining shared-helper ownership obligations are not covered.
+
 ### Knowledge material-cache isolation
 
 Dance and written-description calls isolate the historical-material cache for

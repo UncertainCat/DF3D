@@ -66408,6 +66408,206 @@
           }
         ],
         "scope": "Forced historical-material resolver miss in a private cache, selected detail exact native text, nested guard and exception restoration; original map header/node addresses/keys/values preserved. Existing source guards and membership cases also pass. Does not broaden event/reference acceptance."
+      },
+      "recursive_event_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-061054",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "6dd748fde4082fa9c4e3b89c66874361bfef35b0087fbc57a7e3750a08ef982b",
+        "cases": [
+          {
+            "case": "lost-existing-event",
+            "kind": 16,
+            "id": 0,
+            "form": {
+              "event": 64037,
+              "event_phrase_rva": 11948080,
+              "event_type": 43,
+              "event_type_name": "MASTERPIECE_LOST",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "utf8_bytes": 1809,
+            "text_sha256": "892a5f6b0c417d5b9722e3dbe13d78e1557bbde0b0920082abf656f37bbb8fde",
+            "guards_unchanged": true
+          },
+          {
+            "case": "lost-missing-event",
+            "kind": 16,
+            "id": 0,
+            "form": {
+              "event": 64037,
+              "event_phrase_rva": 11948080,
+              "event_type": 43,
+              "event_type_name": "MASTERPIECE_LOST",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "utf8_bytes": 1745,
+            "text_sha256": "24ceeaf5a260b4dfd9383d0eeeb695cd109dc503e91057838354cd7c59237fec",
+            "guards_unchanged": true
+          },
+          {
+            "case": "performance-existing-event",
+            "kind": 16,
+            "id": 0,
+            "form": {
+              "event": 64038,
+              "event_phrase_rva": 12108464,
+              "event_type": 81,
+              "event_type_name": "PERFORMANCE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "utf8_bytes": 1787,
+            "text_sha256": "b6f8b4d9469f62761350722d635821b28abe7effd5faa0c634fba2da06fbb8c1",
+            "guards_unchanged": true
+          },
+          {
+            "case": "performance-missing-event",
+            "kind": 16,
+            "id": 0,
+            "form": {
+              "event": 64038,
+              "event_phrase_rva": 12108464,
+              "event_type": 81,
+              "event_type_name": "PERFORMANCE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "utf8_bytes": 1712,
+            "text_sha256": "0d5925cff337992ea18b5413793eafcca7ac2255cb935ad1b1a9e215a59fb4a2",
+            "guards_unchanged": true
+          },
+          {
+            "case": "performance-nested-lost-event",
+            "kind": 16,
+            "id": 0,
+            "form": {
+              "event": 64038,
+              "event_phrase_rva": 12108464,
+              "event_type": 81,
+              "event_type_name": "PERFORMANCE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "utf8_bytes": 1836,
+            "text_sha256": "51b48f922c831c2b5c74ef0dd40f60da3351a16c0c2370146ebfed16cd59c60b",
+            "guards_unchanged": true
+          },
+          {
+            "case": "performance-missing-entity",
+            "kind": 16,
+            "id": 0,
+            "form": {
+              "event": 64038,
+              "event_phrase_rva": 12108464,
+              "event_type": 81,
+              "event_type_name": "PERFORMANCE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "utf8_bytes": 1703,
+            "text_sha256": "765412ab636eeff0011456bf9696f9eba6a3725165922a83708efa90a64cc10c",
+            "guards_unchanged": true
+          },
+          {
+            "case": "performance-missing-occasion",
+            "kind": 16,
+            "id": 0,
+            "form": {
+              "event": 64038,
+              "event_phrase_rva": 12108464,
+              "event_type": 81,
+              "event_type_name": "PERFORMANCE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "utf8_bytes": 1703,
+            "text_sha256": "765412ab636eeff0011456bf9696f9eba6a3725165922a83708efa90a64cc10c",
+            "guards_unchanged": true
+          },
+          {
+            "case": "performance-missing-schedule",
+            "kind": 16,
+            "id": 0,
+            "form": {
+              "event": 64038,
+              "event_phrase_rva": 12108464,
+              "event_type": 81,
+              "event_type_name": "PERFORMANCE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "utf8_bytes": 1703,
+            "text_sha256": "765412ab636eeff0011456bf9696f9eba6a3725165922a83708efa90a64cc10c",
+            "guards_unchanged": true
+          }
+        ],
+        "scope": "Test-owned MASTERPIECE_LOST and PERFORMANCE events, temporary occasion/schedule, existing CREATED_SITE leaf. Exact native description comparisons; missing reference/entity/occasion/schedule and nested performance-to-lost-to-leaf. Not natural-world occurrence, cycle handling, or blanket event acceptance."
       }
     }
   }

@@ -16,6 +16,8 @@ inline std::optional<std::string> danceDetailProbe(df::dance_form* source) {
         {0x4ea820,0x42e8,UINT64_C(0x9cb7bc42be4693f7)},
         {0x4e99f0,0xe24,UINT64_C(0xbe3650a1c5ba887e)},
         {0x7da30,0xb3,UINT64_C(0xa91f2722090923d0)},
+        {0xb65030,0x1b8,UINT64_C(0x6557e947120f0a0b)},
+        {0xb8c2b0,0x6db,UINT64_C(0x393d1fb27e6e1a4b)},
         {0xb69bb0,0x17e,UINT64_C(0x770b7c3e1cfbf0a6)},
         {0xb69d30,0x1c9,UINT64_C(0x8f89c4f250e5b86b)},
         {0xb77430,0x2e7,UINT64_C(0x68e110a467cb9073)},

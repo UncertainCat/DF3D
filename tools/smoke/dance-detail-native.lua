@@ -44,9 +44,11 @@ local function site(id)
  object(value);name(value.name);vector(value.buildings)
  for _,building in ipairs(value.buildings)do object(building)end
 end
+local visited={}
 local function event(id)
  if id<0 then return end
- local value=assert(df.history_event.find(id));object(value)
+ if visited[id]then return end;visited[id]=true
+ local value=df.history_event.find(id);if not value then return end;object(value)
  local _,address=df.sizeof(value:_field('flags'))
  guard(df.reinterpret_cast('uint64_t',address).value,df.reinterpret_cast('int32_t',address+8).value)
  local kind=value:getType()
@@ -56,6 +58,25 @@ local function event(id)
   figure(value.histfig);figure(value.appointer_hfid);figure(value.promise_to_hfid);entity(value.civ)
  elseif kind==df.history_event_type.CREATED_SITE or kind==df.history_event_type.CREATED_BUILDING then
   figure(value.builder_hf);entity(value.civ);entity(value.site_civ);site(value.site)
+ elseif kind==df.history_event_type.MASTERPIECE_LOST then
+  figure(value.histfig);site(value.site);event(value.creation_event)
+ elseif kind==df.history_event_type.PERFORMANCE then
+  entity(value.entity);site(value.site)
+  local owner=df.historical_entity.find(value.entity)
+  if owner and owner.occasion_info then
+   object(owner.occasion_info);vector(owner.occasion_info.occasions)
+   for _,occasion in ipairs(owner.occasion_info.occasions)do
+    if occasion.id==value.occasion then
+     object(occasion);name(occasion.name);vector(occasion.schedule)
+     if value.schedule>=0 and value.schedule<#occasion.schedule then
+      local schedule=occasion.schedule[value.schedule];object(schedule)
+      assert(schedule.type==3,'Recursive performance probe expects storytelling')
+      event(schedule.reference)
+     end
+     break
+    end
+   end
+  end
  else error('Add source guards before probing this event type')end
 end
 local ok,result=xpcall(function()

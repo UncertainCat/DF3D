@@ -9,10 +9,18 @@ local frame=df.global.world.frame_counter
 local observations={}
 local changed_positions={}
 local family
+local cold_saved={}
+local function restore_cold()
+ for _,v in ipairs(cold_saved)do v.object[v.key]=v.value end
+ cold_saved={}
+end
 local function restore_family()
  if not family then return end
  family.relative.flags1.whole=family.flags
  family.relative.profession=family.profession
+ family.relative.relationship_ids[0]=family.owner
+ family.related_hf.died_year=family.died_year
+ if family.where then family.where.state=family.where_state;family.where.site_id=family.where_site end
  family.hf.histfig_links:resize(0)
  for _,link in ipairs(family.links)do family.hf.histfig_links:insert('#',link)end
  for _,link in ipairs(family.created)do link:delete()end
@@ -41,6 +49,23 @@ local function record(name)
   selected_destination=sheet.unit_overview_expel_selected_dest_stid,
   destinations=vector(sheet.unit_overview_expel_dest_stid),units=vector(sheet.unit_overview_expel_total_unid),rows=rows}
  if sheet.unit_overview_expelling and os.getenv('DF3D_UNIT_EXPEL_READER')=='1' then
+  local cold_seen={}
+  local function invalidate(object,key)
+   local _,address=df.sizeof(object);local identity=tostring(address)..key
+   if cold_seen[identity]then return end;cold_seen[identity]=true
+   cold_saved[#cold_saved+1]={object=object,key=key,value=object[key]};object[key]=-1
+  end
+  if os.getenv('DF3D_UNIT_EXPEL_COLD')=='1' then
+   for _,candidate in ipairs{unit,family and family.relative or unit}do
+    invalidate(candidate.enemy,'histfig_vector_idx')
+    local hf=df.historical_figure.find(candidate.hist_figure_id)
+    if hf then for _,link in ipairs(hf.entity_links)do
+     invalidate(link,'entity_vector_idx')
+     if link:getType()==df.histfig_entity_link_type.POSITION then invalidate(link,'assignment_vector_idx')end
+    end end
+    for _,office in ipairs(dfhack.units.getNoblePositions(candidate) or {})do invalidate(office.assignment,'position_vector_idx')end
+   end
+  end
   local guards,seen={},{}
   local function protect(object)
    if not object then return end
@@ -65,6 +90,8 @@ local function record(name)
    if dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)~=0 then unchanged=false end
    df.delete(guard.bytes)
   end
+  local cold_count=#cold_saved;restore_cold()
+  observations[#observations].cold_cache_count=cold_count
   assert(status==0,output);assert(unchanged,'Expel reader changed guarded unit/family/office/menu state')
   local result=json.decode(output)
   observations[#observations].reader=result;observations[#observations].reader_guards_unchanged=true
@@ -116,12 +143,22 @@ local ok,err=xpcall(function()
   assert(relative,'Family fixture needs another adult citizen without office')
   local hf=assert(df.historical_figure.find(unit.hist_figure_id))
   local related_hf=assert(df.historical_figure.find(relative.hist_figure_id))
-  family={hf=hf,relative=relative,flags=relative.flags1.whole,profession=relative.profession,links=vector(hf.histfig_links),created={}}
+  family={hf=hf,relative=relative,flags=relative.flags1.whole,profession=relative.profession,owner=relative.relationship_ids[0],related_hf=related_hf,died_year=related_hf.died_year,where=related_hf.info and related_hf.info.whereabouts,links=vector(hf.histfig_links),created={}}
+  if family.where then family.where_state=family.where.state;family.where_site=family.where.site_id end
   local spouse=df.histfig_hf_link_spousest:new();family.created[#family.created+1]=spouse
   local child=df.histfig_hf_link_childst:new();family.created[#family.created+1]=child
   for _,link in ipairs(family.created)do link.target_hf=related_hf.id;link.link_strength=100 end
-  for _,case in ipairs{{'spouse-present',spouse,false,false,-1,true},{'spouse-absent',spouse,true,false,3,false},{'child-present',child,false,true,-1,true},{'child-absent',child,true,true,7,false},{'adult-child',child,false,false,-1,false}}do
+  for _,case in ipairs{{'spouse-present',spouse,false,false,-1,true},{'spouse-absent',spouse,true,false,3,false},{'child-present',child,false,true,-1,true},{'child-absent',child,true,true,7,false},{'adult-child',child,false,false,-1,false},{'missing-spouse',spouse,false,false,-1,false,'missing'},{'dead-spouse',spouse,false,false,-1,false,'dead'},{'offsite-spouse',spouse,false,false,-1,false,'offsite'},{'companion-active',spouse,false,false,-1,true,'companion'},{'companion-inactive',spouse,true,false,-1,false,'companion'},{'companion-incoming',spouse,true,false,-1,true,'incoming'},{'spouse-companion',spouse,false,false,-1,true,'duplicate'}}do
    hf.histfig_links:resize(0);hf.histfig_links:insert('#',case[2])
+   spouse.target_hf=related_hf.id;related_hf.died_year=family.died_year
+   relative.flags1.whole=family.flags;relative.relationship_ids[0]=family.owner
+   if family.where then family.where.state=family.where_state;family.where.site_id=family.where_site end
+   if case[7]=='missing' then spouse.target_hf=-1 end
+   if case[7]=='dead' then related_hf.died_year=0 end
+   if case[7]=='offsite' then assert(family.where,'Expected relative whereabouts');family.where.state=df.whereabouts_type.settler;family.where.site_id=-1 end
+   if case[7]=='companion' or case[7]=='incoming' then hf.histfig_links:resize(0)end
+   if case[7]=='companion' or case[7]=='incoming' or case[7]=='duplicate' then relative.relationship_ids[0]=unit.id end
+   if case[7]=='incoming' then relative.flags1.incoming=true end
    relative.flags1.inactive=case[3];relative.profession=case[4] and df.profession.CHILD or family.profession
    pointer(856,100);df.global.enabler.mouse_lbut_lift=0
    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
@@ -136,6 +173,7 @@ local ok,err=xpcall(function()
   restore_family()
  end
 end,debug.traceback)
+restore_cold()
 restore_family()
 restore_positions()
 if sheet.unit_overview_expelling then gui.simulateInput(view,'LEAVESCREEN')end

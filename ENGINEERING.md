@@ -2420,17 +2420,28 @@ Accompanying-unit selection follows the observed reverse initial-member scan.
 No view_sheets, native cursor, camera or staged menu vectors are runtime inputs.
 The header-button visibility gate and destination choices remain separate work.
 
-Protected212146 compares `df3d unit-expel-group-probe <id>` against all nine
-baseline, office and family previews. Reason codes and full ordered ID vectors
-match. Byte guards preserve selected/relative units, historical figures and
-links, office definitions/assignments, plotinfo and view_sheets. The owned source
-save is unchanged; live logs have only the known startup notice. MSVC builds and
-core QA `unit-expel-group` passes. `unit_expel_group_reader_reference` retains
-these results and bridge identity. Enable `DF3D_UNIT_EXPEL_READER=1` alongside
-REFUSALS/FAMILY diagnostic flags to repeat the comparisons. This is a semantic
-reader milestone, not complete Expel acceptance: no schema, viewer control or
-confirmation operation is added, and cold-cache and remaining group cases still
-need verification.
+Protected212146 establishes nine baseline/office/family comparisons;212501
+extends `df3d unit-expel-group-probe <id>` acceptance to16 native previews with
+cold caches. Each call invalidates the selected/relative unit's historical-figure
+index, historical position links' entity/assignment indexes, and position
+assignment indexes before snapshotting guards. All9 or18 invalidated values stay
+unchanged, then the diagnostic restores them. Reason codes and full ordered ID
+vectors match native in every case. Additional cases omit a missing historical
+spouse, dead spouse and spouse recorded at another site. Active and incoming
+owned units accompany their owner; inactive non-incoming ones do not. A spouse
+also linked through ownership is included once. Fixtures restore original family
+links, death/whereabouts values, profession, flags and owner ID after use.
+
+Byte guards preserve selected/relative units, historical figures and links,
+office definitions/assignments, plotinfo and view_sheets. Both owned source saves
+are unchanged; live logs have only known startup notices. MSVC and core QA
+`unit-expel-group`/`unit-expel-cold-family` pass. The existing
+`unit_expel_group_reader_reference` now includes the cold-case evidence. Enable
+`DF3D_UNIT_EXPEL_READER=1` and `DF3D_UNIT_EXPEL_COLD=1` alongside REFUSALS/FAMILY
+flags to repeat it. This remains a semantic reader milestone: no schema, viewer
+control or confirmation operation is added. Family office/responsibility cases,
+existing HF without a local unit, additional child/multiple-relative cases and
+deeper accompanying-unit chains remain unverified.
 
 Confirmation1b1825..1b1c26 allocates an activity, records expulsion history when
 there is no destination, invokes unit cleanup/assignment helpers, emits thoughts,

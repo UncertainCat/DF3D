@@ -66860,7 +66860,7 @@
         "scope": "Native tab/Escape oracle and actual main-scene navigation with captured native text injected through the real request service. No live Knowledge request handler acceptance."
       },
       "cage_caption_reference": {
-        "source": "build/stockpile-storage-native-farm-discovery-20261101-075256",
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-075605",
         "status": "passed_with_known_issues",
         "bridge_sha256": "48f3d5b87766f8d2caff56e8eeb167e15d6f68980488a1cde86ac5903187230b",
         "cases": [
@@ -66869,6 +66869,79 @@
             "calculated_bodyparts": true,
             "calculated_nerves": true,
             "case": "native-first",
+            "effects": [
+              {
+                "changes": [
+                  [
+                    276,
+                    64,
+                    112
+                  ]
+                ],
+                "range": "unit"
+              },
+              {
+                "changes": [
+                  [
+                    12,
+                    255,
+                    4
+                  ],
+                  [
+                    13,
+                    255,
+                    0
+                  ],
+                  [
+                    14,
+                    255,
+                    0
+                  ],
+                  [
+                    15,
+                    255,
+                    0
+                  ]
+                ],
+                "range": "reference"
+              },
+              {
+                "changes": [],
+                "range": "item"
+              },
+              {
+                "changes": [],
+                "range": "body-vector-1"
+              },
+              {
+                "changes": [],
+                "range": "body-vector-2"
+              },
+              {
+                "changes": [],
+                "range": "body-vector-3"
+              },
+              {
+                "changes": [],
+                "range": "body-vector-4"
+              },
+              {
+                "changes": [],
+                "range": "random-1"
+              },
+              {
+                "changes": [],
+                "range": "random-2"
+              },
+              {
+                "changes": [],
+                "range": "random-3"
+              },
+              {
+                "changes": [],
+                "range": "random-4"
+              }
+            ],
             "text_sha256": "2a091c08f6cd09edfa462dcffb8840ffbf62275b0a2e9eeac1337b151d1a25e7",
             "utf8_bytes": 1750,
             "warm_native_comparisons": 2,
@@ -66884,6 +66957,79 @@
               "calculated_bodyparts": true,
               "calculated_nerves": true
             },
+            "effects": [
+              {
+                "changes": [
+                  [
+                    276,
+                    64,
+                    112
+                  ]
+                ],
+                "range": "unit"
+              },
+              {
+                "changes": [
+                  [
+                    12,
+                    255,
+                    4
+                  ],
+                  [
+                    13,
+                    255,
+                    0
+                  ],
+                  [
+                    14,
+                    255,
+                    0
+                  ],
+                  [
+                    15,
+                    255,
+                    0
+                  ]
+                ],
+                "range": "reference"
+              },
+              {
+                "changes": [],
+                "range": "item"
+              },
+              {
+                "changes": [],
+                "range": "body-vector-1"
+              },
+              {
+                "changes": [],
+                "range": "body-vector-2"
+              },
+              {
+                "changes": [],
+                "range": "body-vector-3"
+              },
+              {
+                "changes": [],
+                "range": "body-vector-4"
+              },
+              {
+                "changes": [],
+                "range": "random-1"
+              },
+              {
+                "changes": [],
+                "range": "random-2"
+              },
+              {
+                "changes": [],
+                "range": "random-3"
+              },
+              {
+                "changes": [],
+                "range": "random-4"
+              }
+            ],
             "text_sha256": "2a091c08f6cd09edfa462dcffb8840ffbf62275b0a2e9eeac1337b151d1a25e7",
             "utf8_bytes": 1750,
             "warm_native_comparisons": 2,
@@ -66892,7 +67038,9 @@
         ],
         "source_unchanged": true,
         "owned_exit_unsaved": true,
-        "scope": "Cold cage caption effects on one contained dwarf: native/probe text match and warm guard preservation. Cold source cache writes are observed, not isolated or admitted to production."
+        "scope": "One contained dwarf with stale cache flags: exact native/probe cold byte deltas, text parity and warm preservation. Body vectors already contain valid data. Not general cage/source admission.",
+        "cold_effects_match": true,
+        "random_state_unchanged": true
       },
       "written_event_validation_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-074338",

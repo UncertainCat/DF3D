@@ -3696,6 +3696,16 @@ The helper restores recorded flags/cache/vector contents and removes temporary
 records. Owned DF exits unsaved, the source save is unchanged, and the three
 Godot processes report only the known startup notice.
 
+Protected075605 extends this comparison to exact cold byte deltas. Native-first
+and bridge-first change only unit offset0x114 from0x40 to0x70 and the contained
+reference's four-byte cached index at0x0c from-1 to4. Cage object bytes, all four
+body/nerve vector backings and all guarded MT/SplitMix buffers/indices remain
+unchanged. The vectors already contain valid data; only their calculated flags
+were cleared. `cage_caption_reference` retains both equal delta sets. This
+establishes preservation of those native cache effects for the tested path,
+not general mutation isolation or acceptance of other contained-unit graphs.
+Text, warm guards, source-save preservation and known-diagnostic checks pass.
+
 ### Knowledge coin-caption source requirements
 
 The unnamed-artifact short-caption path can dispatch coin descriptionca0d00.

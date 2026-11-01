@@ -59682,7 +59682,7 @@
         "composition": "Godot sourced emotion grammar and grouping; native circumstance strings"
       },
       "personality_reference": {
-        "native_run": "build/stockpile-storage-native-farm-discovery-20261101-142009",
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261101-142451",
         "native_pages": [
           "Traits",
           "Values",
@@ -59698,15 +59698,18 @@
         "header_refresh_retains_view": true,
         "overlay_retires_drag": true,
         "source_save_unchanged": true,
-        "plugin_sha256": "29ea6e72f16edd5e51ff77e4d56ec4ceff2853d729a762f36a1cc135125b9b61",
+        "plugin_sha256": "62d16437ec745826c4522f1cc0497b9392c20c9288c14a930f94afdcf11e87b3",
         "omissions": [
-          "Preferences/Needs native producer integration",
-          "Traits/Values tail scrolling and resize",
+          "Needs native producer integration",
+          "all preference types and food classes",
+          "tail scrolling and resize",
           "broader lifecycle variants"
         ],
         "traits_native_tagged_text_match": true,
         "traits_body_pixels_match": true,
-        "leaving_traits_values_retires_view": true
+        "preferences_native_tagged_text_match": true,
+        "preferences_body_pixels_match": true,
+        "leaving_native_paragraph_pages_retires_view": true
       }
     },
     "unit_military_reference": {

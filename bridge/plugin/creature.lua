@@ -8,16 +8,6 @@ local function utf(s)
 end
 local function enum(e,id)return tostring(e[id] or id):gsub('(%l)(%u)','%1 %2'):gsub('_',' '):lower()end
 local function fail(s)return {ok=false,message=s}end
--- Preference reasons use this local seeded hash, matching the native creature
--- sheet formatter in DF 53.16. Do not call the native helpers: they reseed
--- DF's shared random generator.
-local function preference_reason(raw,seed)
- if not raw or #raw.prefstring==0 then return nil end
- local z=(seed&0xffffffff)+0x9e3779b97f4a7c15
- z=(z~(z>>30))*0xbf58476d1ce4e5b9
- z=(z~(z>>27))*0x94d049bb133111eb
- return raw.prefstring[((z>>32)~(z>>63))%#raw.prefstring]
-end
 return function(request)
  local u=df.unit.find(request.unit_id)
  if not u or not U.isActive(u) then return fail('Creature is no longer active') end
@@ -359,46 +349,11 @@ return function(request)
  end)
  section(11,function(s)
   if not soul then return absent(s,'Creature has no current soul')end
-  each(s,soul.preferences,function(v,i)
-   local r=record(s,i,enum(df.unitpref_type,v.type))
-   fact(s,r,'material_type',v.mattype);fact(s,r,'material_index',v.matindex)
-   fact(s,r,'preference_type',v.type);fact(s,r,'visible',v.flags.visible and 'yes' or 'no')
-   fact(s,r,'item_type',v.item_type);fact(s,r,'item_subtype',v.item_subtype)
-   fact(s,r,'creature_name',dfhack.translation.translateName(U.getVisibleName(u)))
-   local subject,reason,complete=nil,nil,true
-   if v.type==df.unitpref_type.LikeMaterial or v.type==df.unitpref_type.LikeFood then
-    local mat=dfhack.matinfo.decode(v.mattype,v.matindex)
-    if mat and mat.material then
-     -- Matches the native creature sheet formatter in DF 53.16: food is routed
-     -- through item naming, and DRINK and LIQUID_MISC pass Liquid rather than
-     -- the preference's mat_state.
-     local state=v.mat_state
-     if v.type==df.unitpref_type.LikeFood and (v.item_type==df.item_type.DRINK or v.item_type==df.item_type.LIQUID_MISC)then state=df.matter_state.Liquid end
-     subject=mat.material.state_name[state]
-     if mat.material.prefix~='' then subject=mat.material.prefix..' '..subject end
-     if v.type==df.unitpref_type.LikeMaterial and v.mat_state==df.matter_state.Solid and mat.mode=='plant' then
-      if mat.material.flags.WOOD then fact(s,r,'material_suffix','wood')
-      elseif mat.material.flags.THREAD_PLANT then fact(s,r,'material_suffix','fabric')end
-     end
-    end
-    -- Other food item classes use native item-description rules not yet traced.
-    if v.type==df.unitpref_type.LikeFood and v.item_type~=df.item_type.DRINK and v.item_type~=df.item_type.LIQUID_MISC then complete=false end
-   elseif v.type==df.unitpref_type.LikeCreature or v.type==df.unitpref_type.HateCreature then local raw=df.global.world.raws.creatures.all[v.creature_id];subject=raw and raw.name[1];if v.type==df.unitpref_type.LikeCreature then reason=preference_reason(raw,v.prefstring_seed)end
-   elseif v.type==df.unitpref_type.LikePlant or v.type==df.unitpref_type.LikeTree then local raw=df.global.world.raws.plants.all[v.plant_id];subject=raw and raw.name_plural;reason=preference_reason(raw,v.prefstring_seed)
-   elseif v.type==df.unitpref_type.LikeItem then
-    local raw=dfhack.items.getSubtypeDef(v.item_type,v.item_subtype)
-    if raw then local ok,name=pcall(function()return raw.name_plural end);if ok then subject=name end end
-    if not subject then subject=enum(df.item_type,v.item_type);complete=false end
-   elseif v.type==df.unitpref_type.LikeColor then local raw=df.global.world.raws.descriptors.colors[v.color_id];subject=raw and raw.name
-   elseif v.type==df.unitpref_type.LikeShape then local raw=df.global.world.raws.descriptors.shapes[v.shape_id];subject=raw and raw.name_plural
-   elseif v.type==df.unitpref_type.LikePoeticForm then local form=df.poetic_form.find(v.poetic_form_id);subject=form and dfhack.translation.translateName(form.name,true)
-   elseif v.type==df.unitpref_type.LikeMusicalForm then local form=df.musical_form.find(v.musical_form_id);subject=form and dfhack.translation.translateName(form.name,true)
-   elseif v.type==df.unitpref_type.LikeDanceForm then local form=df.dance_form.find(v.dance_form_id);subject=form and dfhack.translation.translateName(form.name,true)
-   end
-   if reason then fact(s,r,'reason',reason)end
-   fact(s,r,'native_subject_complete',complete and 'yes' or 'no')
-   if subject then fact(s,r,'subject',subject)else s.truncated=true;result.complete=false;s.reason='Some preference subjects could not be resolved'end
-  end)
+  local native=request.personality_preferences(u.id)
+  for first=1,#native,256 do
+   local r=record(s,-1-(first-1)//256,'')
+   fact(s,r,'record_type','native_preferences');fact(s,r,'native_text',native:sub(first,first+255))
+  end
  end)
  section(12,function(s)
   if not request.military_squad then return end

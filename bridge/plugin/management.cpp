@@ -91,6 +91,7 @@
 #include "creature_groups_native.h"
 #include "creature_thoughts_native.h"
 #include "creature_personality_native.h"
+#include "creature_preferences_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -3499,6 +3500,11 @@ void run(color_ostream& out) {
       if(!text)return luaL_error(state,"Native personality traits unavailable");
       lua_pushlstring(state,text->data(),text->size());return 1;
     });lua_setfield(L,-2,"personality_traits");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto text=df3d_creature::personalityPreferences(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!text)return luaL_error(state,"Native personality preferences unavailable");
+      lua_pushlstring(state,text->data(),text->size());return 1;
+    });lua_setfield(L,-2,"personality_preferences");
     lua_pushcfunction(L,([](lua_State* state)->int {
       const auto page=df3d_creature::militarySquad(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!page)return luaL_error(state,"Native creature squad unavailable");

@@ -455,7 +455,7 @@ func render(controller, state: Dictionary):
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
- if tab=="Personality" and subtabs.get(tab) in ["Traits","Values"]:
+ if tab=="Personality" and subtabs.get(tab) in ["Traits","Values","Preferences"]:
   scroll=null
   if not is_instance_valid(personality_view):
    personality_view=preload("res://scripts/native_creature_paragraph_view.gd").new()
@@ -463,7 +463,7 @@ func render(controller, state: Dictionary):
    personality_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
   personality_view.position=Vector2(0,y);personality_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
   var native_values:=""
-  for row in records_for("personality" if subtabs.get(tab)=="Traits" else "values"):native_values+=str(fact_value(row,"native_text",""))
+  for row in records_for({"Traits":"personality","Values":"values","Preferences":"preferences"}[subtabs.get(tab)]):native_values+=str(fact_value(row,"native_text",""))
   var paragraphs:Array=[]
   if not native_values.is_empty():
    if subtabs.get(tab)=="Traits":
@@ -569,8 +569,6 @@ func render(controller, state: Dictionary):
  inset.add_child(content)
  if detail.is_empty(): return
  if tab=="Overview": overview(content,detail)
- elif tab=="Personality" and subtabs.get(tab)=="Preferences":
-  paragraph(content,NativeText.preference_description(self,int(detail.get("sex",-1))))
  elif tab=="Personality" and subtabs.get(tab)=="Needs":
   var summary := NativeText.overall(self,int(detail.get("sex",-1)))
   if not summary.is_empty():

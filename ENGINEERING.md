@@ -3463,8 +3463,8 @@ are separated by[B]; the view restores their separate paragraph boundaries,
 blank rows and default colors. Godot's Traits and Values sentence builders have
 been removed. Refresh retains the native paragraph view; tab changes reset
 scrolling, overlay cancellation releases drag, and leaving Traits/Values retires
-it. Preferences and Needs still use reconstructed descriptions and remain
-unfinished. Personality and the creature route remain staged.
+it. Needs still uses reconstructed descriptions and remains unfinished.
+Personality and the creature route remain staged.
 
 Protected142009 on2026-11-01 verifies exact native tagged rows and456x504 body
 crops for Traits and Values on both1017 and2905. These include remembered causes,
@@ -3477,6 +3477,27 @@ The earlier141824 comparison caught mannerisms inheriting the previous paragraph
 color; separate paragraph rendering fixes that mismatch. Tail/resize and broader
 lifecycle variants remain unverified. Native captures include Preferences/Needs
 for the next implementation steps.
+
+`creature_preferences_native.h` supplies Preferences. Page composition is inline
+in native4800b2..48149c, so the bridge reproduces its three ordered groups and
+punctuation with pinned installed literals. Nativea82c10 formats item and food
+subjects;14d1920 formats materials; native creature/plant/descriptor/name routines
+supply the remaining subjects. e35c70/e35d60 select preference reasons, with the
+shared split RNG restored afterward. Historical material caches are restored;
+visible-name lookup uses an owned unit and mutable lookup index. Preferences
+are copied and raw/name records are read-only. No native sheet wrapper is called.
+The Lua seeded-hash and incomplete food/subtype naming, and Godot's sentence
+assembly, are removed. Section11 now carries native text chunks, rendered by
+the shared paragraph view; navigating to Needs retires this view.
+
+Protected142451 on2026-11-01 matches exact tagged text and456x504 body crops for
+Traits, Values and Preferences on1017/2905. Preferences covers native materials,
+items, creature/plant reasons, food choices, dislikes and all three art-form
+prefixes across these subjects. This is not coverage of every preference type
+or food class. Refresh/overlay/navigation checks pass; owned DF46468 exits
+unsaved, source preservation passes and all three Godot logs have only the known
+startup notice, with no Unicode errors. Plugin SHA256:
+`62d16437ec745826c4522f1cc0497b9392c20c9288c14a930f94afdcf11e87b3`.
 
 ### Creature Thoughts and Memories
 

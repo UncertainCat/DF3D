@@ -412,6 +412,10 @@ local ok,err=xpcall(function()
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-labor-native.lua')
     linked.labor=assert(loadfile(source))(unit,view,capture,out)
    end
+   if os.getenv('DF3D_UNIT_SOCIAL')=='1'then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-social-native.lua')
+    linked.social=assert(loadfile(source))(unit,view,capture,out)
+   end
    if os.getenv('DF3D_UNIT_MILITARY')=='1'then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-military-native.lua')
     linked.military=assert(loadfile(source))(unit,view,capture,out)

@@ -87,6 +87,7 @@
 #include "creature_health_pages_native.h"
 #include "creature_military_native.h"
 #include "creature_squad_native.h"
+#include "creature_relations_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -3447,6 +3448,25 @@ void run(color_ostream& out) {
       if(!value)return luaL_error(state,"Native creature kill history unavailable");
       lua_pushlstring(state,value->data(),value->size());return 1;
     });lua_setfield(L,-2,"military_kills");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto rows=df3d_creature::nativeRelations(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!rows)return luaL_error(state,"Native creature relations unavailable");
+      lua_newtable(state);int index=0;
+      for(const auto& row:*rows) {
+        lua_newtable(state);field(state,"hf_id",row.historicalFigureId);field(state,"unit_id",row.unitId);
+        field(state,"caption",row.caption);field(state,"description",row.description);field(state,"description_color",row.descriptionColor);
+        field(state,"family_type",row.familyType);field(state,"social_type",row.socialType);field(state,"priority",row.priority);
+        if(auto* target=df::unit::find(row.unitId)){field(state,"x",target->pos.x);field(state,"y",target->pos.y);field(state,"z",target->pos.z);}
+        if(row.nameColor) {
+          lua_newtable(state);
+          lua_newtable(state);for(int i=0;i<3;++i){lua_pushinteger(state,row.nameColor->color[i]);lua_rawseti(state,-2,i+1);}lua_setfield(state,-2,"color");
+          lua_newtable(state);for(int i=0;i<3;++i){lua_pushinteger(state,row.nameColor->alternate[i]);lua_rawseti(state,-2,i+1);}lua_setfield(state,-2,"alternate");
+          field(state,"effect",int(row.nameColor->effect));field(state,"source",int(row.nameColor->source));lua_setfield(state,-2,"name_color");
+        }
+        lua_rawseti(state,-2,++index);
+      }
+      return 1;
+    });lua_setfield(L,-2,"relations");
     lua_pushcfunction(L,([](lua_State* state)->int {
       const auto page=df3d_creature::militarySquad(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!page)return luaL_error(state,"Native creature squad unavailable");

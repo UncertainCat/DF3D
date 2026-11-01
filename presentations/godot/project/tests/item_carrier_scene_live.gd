@@ -443,6 +443,7 @@ func unit_carrier(expected: Dictionary) -> void:
 		await exercise_labor_locations(inspector,target)
 	if OS.get_environment("DF3D_UNIT_LABOR_ANIMALS")=="1":await exercise_work_animals(inspector,target)
 	if OS.get_environment("DF3D_UNIT_MILITARY")=="1":await exercise_military_kills(inspector)
+	if OS.get_environment("DF3D_UNIT_SOCIAL")=="1":await exercise_relations(inspector)
 	inspector.close_panel();await process_frame
 	exercised=true
 
@@ -1598,4 +1599,38 @@ func exercise_military_kills(inspector) -> void:
 			scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
 
 	var file:=FileAccess.open(directory+"/unit-military-kills-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()
+
+func exercise_relations(inspector) -> void:
+	var reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-social-native.json"))
+	var results:Array=[]
+	for page in reference.pages:
+		if page.name!="Relations":continue
+		var target:=int(page.unit_id)
+		inspector.open_target(Vector3i.ZERO,1,target)
+		var deadline:=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01)
+			var state:Dictionary=world.creature_info_state(target)
+			if not state.get("loading",true) and not state.get("detail",{}).is_empty():break
+			await create_timer(0.01).timeout
+		await health_tab(inspector,"Relations")
+		await process_frame;await RenderingServer.frame_post_draw
+		var rows:Array=inspector.creature_sheet.records_for("relationships")
+		var equal:bool=rows.size()==page.rows.size()
+		for i in mini(rows.size(),page.rows.size()):
+			var row:Dictionary=rows[i];var native:Dictionary=page.rows[i]
+			equal=equal and int(row.related_id)==int(native.hf_id) and str(row.name)==str(native.caption)
+			for mapping in [["unit_id","unit_id"],["family_type","flags"],["social_type","relation"],["priority","value"]]:
+				equal=equal and int(inspector.creature_sheet.fact_value(row,mapping[0],-999))==int(native[mapping[1]])
+		check(equal,"Native Relations rows/order differ: "+str(target))
+		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+		var name:="unit-social-"+str(target)+"-relations"
+		actual.save_png(directory+"/"+name+"-scene.png")
+		var native_image:=Image.load_from_file(directory+"/"+name+".png");native_image.convert(Image.FORMAT_RGB8)
+		var rect:=Rect2i(432,208,456,528)
+		var same:=actual.get_region(rect).get_data()==native_image.get_region(rect).get_data()
+		check(same,"Native Relations pixels differ: "+str(target))
+		results.append({"unit_id":target,"rows_match":equal,"native_pixels":same,"rows":rows})
+	var file:=FileAccess.open(directory+"/unit-social-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()

@@ -59547,6 +59547,35 @@
         }
       }
     },
+    "unit_social_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261101-133050",
+      "plugin_sha256": "6fffe6eeb4c4dcd408497a0dc3774ad6b81c6640b73490315499eac96f4c8c2e",
+      "native_reference_sha256": "f1d4efeee5814219039516522fb9221f2186fcd292dcd1ed6020ffa2180c25d7",
+      "relations": [
+        {
+          "unit_id": 1017,
+          "rows": 116,
+          "native_rows_match": true,
+          "native_body_pixels": true
+        },
+        {
+          "unit_id": 2905,
+          "rows": 144,
+          "native_rows_match": true,
+          "native_body_pixels": true
+        }
+      ],
+      "source_preserved": true,
+      "diagnostics": "passed_with_known_issues: separate rendering thread startup notice only",
+      "unverified": [
+        "Scroll/tail descriptions",
+        "Navigation and recenter actions",
+        "Hover help",
+        "Animated name colors",
+        "Resize and gesture retention",
+        "Groups implementation"
+      ]
+    },
     "unit_military_reference": {
       "capture": "build/stockpile-storage-native-farm-discovery-20261101-125019",
       "date": "2026-11-01",

@@ -3442,6 +3442,38 @@ not live-covered here. Initial121533 caught missing diagnostic camera restoratio
 after native Inspect.121729's client passed, but its completion acknowledgement
 exceeded the30s combined-lane limit; this multi-panel lane now allows60s.
 
+### Creature Relations
+
+`creature_relations_native.h` calls nativebb37d0 with a historical figure and
+owned ID/type/flag vectors, bypassing unit13b2cb0's mutable HF lookup cache.
+Native75a580 and52d650 supply family descriptions and capitalization. Native2bf110
+classifies visual social profiles and returns the native ordering priority,
+replacing reconstructed love thresholds. The inline initializer1a3979..1a4c9e
+merges family, non-family links, active pets and positive-meet visual profiles.
+DF3D preserves its first-seen deduplication and stable descending priorities;
+historical-only social profiles do not create extra rows. The initializer and
+renderer switch tables are pinned alongside the semantic functions. No native
+sheet, selection or menu state is a runtime input.
+
+Active-creature names use1330c30 with an owned description context; historical
+names usea94030 with an owned language name. Renderer176deb..178b92 supplies
+family colors and social labels, including rank-specific friendships/rivalries,
+love-dependent variants and deity/force wording. Native owner-name color facts
+supply the active creature's palette. Existing section5 transports ordered rows,
+descriptions, colors and semantic navigation targets; Godot no longer re-sorts
+relationships or assigns reconstructed labels.
+
+Protected133050 on2026-11-01 compares all116 rows for1017 and144 for2905 against
+native names, HF/unit IDs, family/social types, priorities and order. Both initial
+456x528 body crops match native exactly, including2905's active father portrait
+and controls. Owned DF44904 exits unsaved and the source save is unchanged.
+All three Godot logs contain only the documented startup notice, with no Unicode
+errors. The installed plugin SHA256 is
+`6fffe6eeb4c4dcd408497a0dc3774ad6b81c6640b73490315499eac96f4c8c2e`.
+This is row/initial-render acceptance. Scroll/tail descriptions, action clicks,
+hover help, animated name colors, resize and gesture retention still need work;
+creature exposure remains gated. Groups retains its generic implementation.
+
 ### Creature Military pages
 
 `creature_military_native.h` exposes the Kills formatter bba250 used by native

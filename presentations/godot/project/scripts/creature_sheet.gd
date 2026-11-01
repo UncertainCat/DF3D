@@ -152,14 +152,6 @@ func record_text(record: Dictionary, section_key := "") -> String:
  return "   ".join(lines)
 
 func filtered_records(key: String, records: Array) -> Array:
- if key=="relationships":
-  var sorted := records.duplicate()
-  var rank := {"spouse":0,"lover":1,"deity":2,"child":3,"mother":4,"father":4,"kindred spirit":5,"close friend":6,"friend":7,"acquaintance":8}
-  sorted.sort_custom(func(a,b):
-   var ar: int=rank.get(str(fact_value(a,"relationship")).to_lower(),9)
-   var br: int=rank.get(str(fact_value(b,"relationship")).to_lower(),9)
-   return ar<br if ar!=br else int(a.id)<int(b.id))
-  return sorted
  if tab=="Overview" and key=="health": return records.filter(func(row): return str(fact_value(row,"record_type"))=="overview_health")
  return records
 
@@ -464,6 +456,17 @@ func render(controller, state: Dictionary):
    knowledge_view.visible=showing
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
+  return
+ if tab=="Relations":
+  scroll=null
+  var view=preload("res://scripts/creature_relations_view.gd").new()
+  owner.body.add_child(view);view.configure(owner.world,records_for("relationships"))
+  view.first=int(scrolls.get("Relations/",0));view.layout()
+  view.scrollbar.row_changed.connect(func(value):scrolls["Relations/"]=value)
+  view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+  view.inspect_requested.connect(func(kind,id):owner.object_requested.emit(kind,id))
+  view.focus_requested.connect(func(tile):owner.close_panel();owner.focus_requested.emit(tile))
+  view.position=Vector2(0,y);view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
   return
  if tab=="Military" and subtabs.get(tab,"Squad")=="Squad":
   scroll=null

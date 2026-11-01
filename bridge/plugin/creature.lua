@@ -313,44 +313,15 @@ return function(request)
   end
  end)
  section(5,function(s)
-  if not hf then return absent(s,'Creature has no historical figure')end
-  local seen={}
-  local function relation_record(id,other,target)
-   local active=other and df.unit.find(other.unit_id)
-   local subject=active or other
-   local r=record(s,id,subject and U.getReadableName(subject) or '',target)
-   if other then
-    fact(s,r,'unit_id',active and active.id or -1)
-    fact(s,r,'profession_id',subject.profession)
-    fact(s,r,'translated_name',dfhack.translation.translateName(subject.name,true))
-   end
-   return r
+  if not request.relations then return end
+  for i,value in ipairs(request.relations(u.id))do
+   local r=record(s,i-1,value.caption,value.hf_id)
+   fact(s,r,'unit_id',value.unit_id);fact(s,r,'native_description',value.description)
+   fact(s,r,'description_color',value.description_color);fact(s,r,'family_type',value.family_type)
+   fact(s,r,'social_type',value.social_type);fact(s,r,'priority',value.priority)
+   if value.x then fact(s,r,'x',value.x);fact(s,r,'y',value.y);fact(s,r,'z',value.z)end
+   if value.name_color then fact(s,r,'name_color',require('json').encode(value.name_color,{pretty=false}))end
   end
-  each(s,hf.histfig_links,function(v,i)
-   local other=df.historical_figure.find(v.target_hf)
-   local r=relation_record(i,other,v.target_hf)
-   fact(s,r,'relationship',enum(df.histfig_hf_link_type,v:getType()));fact(s,r,'strength',v.link_strength)
-   seen[v.target_hf]=true
-  end)
-  -- Social ties are not histfig_links: they live in the historical figure's
-  -- persistent relationship profiles, independently of the selected sheet.
-  local rel=hf.info and hf.info.relationships
-  if not rel then return end
-  local function social(v,i,source)
-   if seen[v.histfig_id] then return end
-   seen[v.histfig_id]=true
-   local other=df.historical_figure.find(v.histfig_id)
-   if not other then return end
-   local love=v.core.love
-   -- Thresholds and labels documented in df.history_figure.xml/core_hf_relationshipst.
-   local label=love<=-100 and 'Pure hate' or love<=-75 and 'Hated' or love<=-50 and 'Disliked'
-    or love<=49 and 'Acquaintance' or love<=74 and 'Friend' or love<=99 and 'Close friend' or 'Kindred spirit'
-   local r=relation_record(1000+#s.records,other,v.histfig_id)
-   fact(s,r,'relationship',label);fact(s,r,'love',love);fact(s,r,'source',source)
-   if source=='visual' then fact(s,r,'meet_count',v.meet_count);fact(s,r,'rank',v.rank)end
-  end
-  each(s,rel.hf_visual,function(v,i)social(v,i,'visual')end)
-  each(s,rel.hf_historical,function(v,i)social(v,i,'historical')end)
  end)
  section(6,function(s)
   local p=personality(s);if not p then return end

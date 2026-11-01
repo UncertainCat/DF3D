@@ -75,7 +75,8 @@ local function record(name,available_destinations)
   if text~=''then rows[#rows+1]={y=y,text=text}end
  end
  observations[#observations+1]={name=name,open=sheet.open,active_id=sheet.active_id,
-  expelling=sheet.unit_overview_expelling,reason=sheet.unit_overview_expel_cannot_expel_reason,
+  expelling=sheet.unit_overview_expelling,customizing=sheet.unit_overview_customizing,
+  follow_unit=df.global.plotinfo.follow_unit,reason=sheet.unit_overview_expel_cannot_expel_reason,
   selected_destination=sheet.unit_overview_expel_selected_dest_stid,
   destinations=vector(sheet.unit_overview_expel_dest_stid),units=vector(sheet.unit_overview_expel_total_unid),rows=rows}
  if sheet.unit_overview_expelling and os.getenv('DF3D_UNIT_EXPEL_PREVIEW')=='1' then
@@ -222,6 +223,31 @@ local ok,err=xpcall(function()
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  assert(sheet.unit_overview_expelling,'Expel did not open')
  record('open')
+ if os.getenv('DF3D_UNIT_EXPEL_HEADER')=='1' then
+  local function click(x,y)
+   pointer(x,y);df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  end
+  click(856,100);record('header-expel-repeat')
+  assert(sheet.unit_overview_expelling,'Repeated Expel closed preview')
+  local following=df.global.plotinfo.follow_unit
+  click(856,64);record('header-follow')
+  assert(sheet.unit_overview_expelling and df.global.plotinfo.follow_unit~=following,'Follow was blocked by Expel')
+  click(856,64);record('header-follow-restored')
+  assert(df.global.plotinfo.follow_unit==following,'Follow toggle failed to restore baseline')
+  click(824,64);record('header-customize')
+  assert(sheet.unit_overview_customizing,'Customize was blocked by Expel')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  record('header-customize-escape')
+  -- Observe native Escape priority without assuming that Customize retires Expel.
+  for _=1,2 do
+   if not sheet.unit_overview_customizing and not sheet.unit_overview_expelling then break end
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  end
+  assert(not sheet.unit_overview_customizing and not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Header navigation lost unit sheet')
+  click(856,100)
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Expel cancel did not restore Overview')
  record('cancel')

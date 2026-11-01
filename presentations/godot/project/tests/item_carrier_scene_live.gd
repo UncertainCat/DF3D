@@ -541,6 +541,16 @@ func exercise_expel_preview(inspector,target:int) -> void:
 		check(is_instance_valid(inspector.expel_view) and model.snapshot().units[0].id==target,"Expel rendered view missing current group")
 		await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/unit-expel-scene.png")
+		if cancel_button:
+			var generation:int=model.generation
+			await pointer(inspector.expel_button.get_global_transform_with_canvas()*Vector2(16,18));await drain()
+			check(model.generation>generation and model.phase==model.Phase.Confirming,"Repeated Expel did not refresh preview")
+			await pointer(inspector.customize_button.get_global_transform_with_canvas()*Vector2(16,18));await drain();await process_frame
+			check(inspector.customize.opened and model.phase==model.Phase.Confirming,"Expel blocked Customize or lost preview")
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/unit-expel-customize-scene.png")
+			key(KEY_ESCAPE);await process_frame
+			check(not inspector.customize.opened and model.phase==model.Phase.Confirming,"Escape did not close Customize before Expel")
 		scene._fortress_hud.toggle_settings();await process_frame
 		await pointer(inspector.expel_view.get_global_transform_with_canvas()*Vector2(52,inspector.expel_view.size.y-18))
 		check(model.phase==model.Phase.Confirming and model.ticket==0,"Settings allowed hidden Expel confirmation")

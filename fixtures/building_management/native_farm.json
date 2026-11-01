@@ -48576,7 +48576,81 @@
         "Header Customize/Reports/Follow interactions during Expel must be compared with native before accepting current gating",
         "Pending/rejected/unknown display and full replacement/disconnect lifecycle remain",
         "Native refusal-display bug is preserved; no approval to correct Nobility text"
-      ]
+      ],
+      "header_reference": {
+        "native_and_composed_run": "build/stockpile-storage-native-farm-discovery-20261031-225810",
+        "status": "accepted repeated Expel, Customize coexistence and Escape priority; native Follow toggles; Reports remains unverified",
+        "observations": [
+          {
+            "active_id": 1017,
+            "customizing": false,
+            "expelling": true,
+            "follow_unit": -1,
+            "name": "header-expel-repeat",
+            "open": true,
+            "reason": -1,
+            "selected_destination": -1
+          },
+          {
+            "active_id": 1017,
+            "customizing": false,
+            "expelling": true,
+            "follow_unit": 1017,
+            "name": "header-follow",
+            "open": true,
+            "reason": -1,
+            "selected_destination": -1
+          },
+          {
+            "active_id": 1017,
+            "customizing": false,
+            "expelling": true,
+            "follow_unit": -1,
+            "name": "header-follow-restored",
+            "open": true,
+            "reason": -1,
+            "selected_destination": -1
+          },
+          {
+            "active_id": 1017,
+            "customizing": true,
+            "expelling": true,
+            "follow_unit": -1,
+            "name": "header-customize",
+            "open": true,
+            "reason": -1,
+            "selected_destination": -1
+          },
+          {
+            "active_id": 1017,
+            "customizing": false,
+            "expelling": true,
+            "follow_unit": -1,
+            "name": "header-customize-escape",
+            "open": true,
+            "reason": -1,
+            "selected_destination": -1
+          }
+        ],
+        "composed_checks": [
+          "repeated Expel requests fresh preview",
+          "Customize retains affected group",
+          "first Escape closes Customize and retains Expel",
+          "second Escape closes Expel",
+          "Settings blocks final confirmation"
+        ],
+        "customize_region": [
+          424,
+          64,
+          472,
+          684
+        ],
+        "customize_identical_rgb_pixels": 322848,
+        "native_source_sha256": "4d37ed1613b94b7015e3d533eb8fd365893633d061b7fc506d0abed706b183ab",
+        "diagnostics": "known startup notice only; no unclassified diagnostics",
+        "source_save_unchanged": true,
+        "owned_unsaved_exit": true
+      }
     }
   }
 }

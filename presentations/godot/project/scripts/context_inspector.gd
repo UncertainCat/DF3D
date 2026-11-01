@@ -155,8 +155,8 @@ func _expel_changed() -> void:
 	if is_open() and not selected.is_empty():redraw()
 
 func handle_escape() -> void:
-	if expel.phase!=expel.Phase.Closed:expel.close()
-	elif customize.opened or customize.requested:customize.close()
+	if customize.opened or customize.requested:customize.close()
+	elif expel.phase!=expel.Phase.Closed:expel.close()
 	else:close_panel()
 
 func cancel_gesture() -> void:
@@ -397,7 +397,7 @@ func redraw():
 				expel_button=TextureButton.new();expel_button.name="ExpelCreature"
 				expel_button.texture_normal=world.ui_texture("UNIT_SHEET_EXPEL")
 				expel_button.position=Vector2(432,36);expel_button.size=Vector2(32,36)
-				expel_button.disabled=expel.phase!=expel.Phase.Closed
+				expel_button.disabled=expel.phase==expel.Phase.Applying
 				expel_button.pressed.connect(func():
 					if ui_host==null or ui_host.allows_panel_input(self):expel_scroll=0;expel.open(int(selected.id)))
 				body.add_child(expel_button)
@@ -411,7 +411,6 @@ func redraw():
 				portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				body.add_child(portrait)
 			if expel.phase!=expel.Phase.Closed:
-				if is_instance_valid(customize_button):customize_button.disabled=true
 				if is_instance_valid(history_button):history_button.disabled=true
 				expel_view=preload("res://scripts/creature_expel_view.gd").new()
 				expel_view.first=expel_scroll

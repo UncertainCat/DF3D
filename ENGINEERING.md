@@ -2695,9 +2695,17 @@ DF14460 exits unsaved, source preservation passes, and both GPU processes plus
 the paired header client have only the known startup notice. MSVC passes;
 unit-expel-view-final records core, state, composition and rendered checks with
 known GPU shutdown diagnostics only. Earlier224634 exposed the retired-view bug
-and is not accepted despite its matching screenshot. Final confirmation through
-main-scene controls, resize/scroll/hover variants, header-control interactions,
-long names/animation and full failure/replacement lifecycle remain unfinished.
+and is not accepted despite its matching screenshot. Protected225810 verifies repeated Expel refresh, Customize coexisting with the
+affected group, and Escape closing Customize before Expel. The entire472x684
+Customize-and-Expel region matches native pixel-for-pixel. Native Follow remains
+usable and toggles back without leaving Expel. The main-scene header now allows
+Customize and repeated Expel (except while applying); its Escape priority follows
+native. unit_expel_view_reference.header_reference retains this evidence. Core,
+controller, composition and GPU checks pass in unit-expel-header, with documented
+GPU diagnostics only; the live clients have only the known startup notice.
+Final confirmation through main-scene controls, Reports while Expel is open,
+resize/scroll/hover variants, long names/animation and full failure/replacement
+lifecycle remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
 ## Native item holder provider

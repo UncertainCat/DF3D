@@ -45,6 +45,7 @@ func _draw() -> void:
    theme.default_font.draw_string(get_canvas_item(),point,str(line.text)[column],HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
 func _gui_input(event: InputEvent) -> void:
  if not allowed() or lines.size()<=capacity() or not event is InputEventMouseButton or not event.pressed:return
+ if event.position.y<12 or event.position.y>=12+capacity()*12:return
  if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
   scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(capacity() if event.shift_pressed else 1))
   accept_event()

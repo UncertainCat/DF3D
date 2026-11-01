@@ -26,6 +26,7 @@ local description_case=os.getenv('DF3D_BOX_DESCRIPTION_CASE') or 'none'
 assert(description_case=='none' or description_case=='image' or description_case=='masterpiece','unknown box description case')
 local extra_image,box_saved
 local overview_saved
+local health_operations_saved
 local function focus_state(p)
  return {flags=p.flags.whole,current=p.current_focus,baseline=p.undistracted_focus,year=p.slack_end_year,tick=p.slack_end_year_tick}
 end
@@ -34,6 +35,10 @@ local function erase_pointer(vector,value)
 end
 local ref,reciprocal,inventory,detached,prior_revision
 local function restore()
+ if health_operations_saved then
+  unit.health.op_history:resize(0);for _,event in ipairs(health_operations_saved)do unit.health.op_history:insert('#',event)end
+  health_operations_saved=nil
+ end
  if overview_saved then
   local old=overview_saved;local p=unit.status.current_soul.personality
   for i=#(old.health_fields or {}),1,-1 do local saved=old.health_fields[i];saved.object[saved.key]=saved.value end
@@ -358,6 +363,12 @@ local ok,err=xpcall(function()
    if os.getenv('DF3D_UNIT_HEALTH_THRESHOLDS')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-health-thresholds-native.lua')
     linked.health_thresholds=assert(loadfile(source))(unit,view)
+   end
+   if os.getenv('DF3D_UNIT_HEALTH_OVERFLOW')=='1'then
+    assert(unit.health and #unit.health.op_history>0,'Health overflow needs existing operations')
+    health_operations_saved={};for _,event in ipairs(unit.health.op_history)do health_operations_saved[#health_operations_saved+1]=event end
+    unit.health.op_history:resize(0)
+    for i=1,33 do unit.health.op_history:insert('#',health_operations_saved[(i-1)%#health_operations_saved+1])end
    end
    if os.getenv('DF3D_UNIT_HEALTH_PAGES')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-health-pages-native.lua')

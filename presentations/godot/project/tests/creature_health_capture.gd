@@ -43,6 +43,25 @@ func run() -> void:
   event.shift_pressed=str(sample.name).contains("PAGE");root.push_input(event,true)
   event.pressed=false;root.push_input(event,true)
   if view.first!=int(sample.first):push_error("Native Health wheel differs: "+sample.name);failures+=1
+ var expected: Dictionary={}
+ for sample in layout.input:expected[sample.name]=sample
+ var observe:=func(name):return view.first==int(expected[name].first) and view.scrollbar.dragging==expected[name].dragging
+ for sample in [["up-left",874,250],["up-right",880,250],["down-left",874,730],["down-right",880,730],["track-above",880,270],["track-below",880,680]]:
+  view.first=7;view.layout();click(Vector2(sample[1],sample[2]))
+  if not observe.call("input-"+sample[0]):push_error("Health native scrollbar click differs: "+sample[0]);failures+=1
+ view.first=7;view.layout()
+ var motion:=InputEventMouseMotion.new();motion.position=Vector2(880,400);root.push_input(motion,true)
+ var press:=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;root.push_input(press,true)
+ if not observe.call("drag-start"):push_error("Health native drag start differs");failures+=1
+ motion=InputEventMouseMotion.new();motion.position=Vector2(880,500);motion.button_mask=MOUSE_BUTTON_MASK_LEFT;root.push_input(motion,true)
+ if not observe.call("drag-move"):push_error("Health native drag move differs");failures+=1
+ press=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;root.push_input(press,true)
+ if not observe.call("drag-release"):push_error("Health native drag release differs");failures+=1
+ for sample in [["body",600,400],["top-padding",600,238],["bottom-padding",600,746],["footer",600,770],["outside",400,400]]:
+  view.first=7;view.layout()
+  var wheel:=InputEventMouseButton.new();wheel.position=Vector2(sample[1],sample[2]);wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true;root.push_input(wheel,true)
+  wheel.pressed=false;root.push_input(wheel,true)
+  if not observe.call("wheel-"+sample[0]):push_error("Health native wheel boundary differs: "+sample[0]);failures+=1
  view.first=7;view.present(fixture.owned_probe_reference.pages[0].probe.rows,"Status")
  await process_frame;await RenderingServer.frame_post_draw
  var short_page:=root.get_texture().get_image();short_page.convert(Image.FORMAT_RGB8)

@@ -54372,7 +54372,7 @@
         ]
       },
       "layout_reference": {
-        "native_run": "build/stockpile-storage-native-farm-discovery-20261101-022944",
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261101-023443",
         "status": "passed_with_known_issues",
         "diagnostic_repeated_operations": 33,
         "line_count": 75,
@@ -54513,6 +54513,174 @@
           },
           {
             "dragging": false,
+            "first": 6,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "input-up-left",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 6,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "input-up-right",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "input-down-left",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "input-down-right",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "input-track-above",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 34,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "input-track-below",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": true,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "drag-start",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": true,
+            "first": 17,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "drag-move",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 17,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "drag-release",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "wheel-body",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "wheel-top-padding",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "wheel-bottom-padding",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "wheel-footer",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "wheel-outside",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
             "first": 7,
             "grid": [
               150,
@@ -54560,7 +54728,8 @@
             "width": 53
           }
         ],
-        "scope": "Viewport geometry, scrollbar crops, wheel/page steps and tab reset. Arrow, track and drag inputs remain unverified."
+        "scope": "Viewport geometry, scrollbar crops, arrows/track/drag, wheel boundaries, page steps and tab reset.",
+        "drag_text_rgb_sha256": "27edbc88a1f6e99aa8f227797b9cf86573b3147b8d62e556d5a63bc3378241ad"
       },
       "main_scene_reference": {
         "run": "build/stockpile-storage-native-farm-discovery-20261101-023214",
@@ -54599,6 +54768,21 @@
         },
         "source_preserved": true,
         "scope": "Actual tab clicks, five text-body crops, retained redraw control and reset to Status on returning to Health. No scrollbar drag or disconnect acceptance."
+      },
+      "overflow_scene_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-023710",
+        "status": "passed_with_known_issues",
+        "result": {
+          "gesture_cancellation": true,
+          "native_drag_text": true,
+          "overlay_blocks_input": true,
+          "refresh_during_drag": true,
+          "resize_retains_scroll": true,
+          "shared_subtab_scroll": true,
+          "success": true
+        },
+        "source_preserved": true,
+        "scope": "Repeated33 existing operation pointers in owned paused clone, restored after client. Actual transport/rendering, wheel, drag through header redraw, scrolled native text pixels, Settings gate, resize, shared subtab scroll and explicit gesture cancellation. Close/reopen, disconnect and identity changes remain unverified."
       }
     }
   }

@@ -3289,9 +3289,22 @@ Health subtabs share a scroll position; a page without overflow draws from its
 beginning while retaining that position. Leaving Health and returning resets to
 Status at zero. Native input1b2da4 skips wheel handling without overflow; the
 component test preserves the shared position in that case. QA `health-layout-view`
-passes root/core, composition and GPU with documented diagnostics. Arrow/track/
-drag inputs, composed overflow interaction, disconnect/identity lifecycle and
-broader clinical variants remain required. The creature route remains staged.
+passes root/core, composition and GPU with documented diagnostics. Protected023443 additionally captures both halves of each arrow, track clicks,
+dragging and wheel boundaries. Native first rows from7 are6/6/8/8 for arrows,
+0/34 for track clicks and17 after dragging to y500; padding/footer/outside wheel
+input leaves7 unchanged. `creature_health_capture` verifies those events through
+Godot input. The Health view limits wheel handling to the native text-row span.
+
+Protected023710 keeps33 repeated existing operation pointers in the owned paused
+clone for the real management client, then restores the original vector. The
+main scene verifies75 wrapped History lines, wheel movement, dragging across a
+header redraw, exact native scrolled text pixels, Settings blocking input,
+resize retention, shared Health-subtab scroll and explicit gesture cancellation.
+`overflow_scene_reference` records this bounded evidence. All three Godot
+processes have only the known startup notice; owned DF28904 exits unsaved and
+the source-save manifest is unchanged. Actual close/reopen, disconnect/identity
+lifecycle and broader clinical variants remain required. The creature route
+remains staged.
 
 The full reference run passes with only the known startup notice in each Godot
 process; root/core QA `health-pages-reference` passes. DF38684 exits unsaved and

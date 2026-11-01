@@ -240,6 +240,9 @@ func exercise_health_view(inspector) -> void:
 		inspector.redraw();await process_frame;await process_frame
 		check(inspector.creature_sheet.health_view==view and view.lines==before,"Health refresh replaced control or changed native text: "+name)
 		samples.append({"name":name,"lines":view.lines.size(),"pixels_match":actual.get_region(rect).get_data()==expected.get_region(rect).get_data()})
+	if OS.get_environment("DF3D_UNIT_HEALTH_OVERFLOW")=="1":
+		await exercise_health_overflow(inspector)
+		if failed:return
 	var previous=inspector.creature_sheet.health_view
 	if not await health_tab(inspector,"Overview"):return
 	check(not is_instance_valid(previous) or not previous.is_visible_in_tree(),"Health tab departure retained visible content")
@@ -248,6 +251,49 @@ func exercise_health_view(inspector) -> void:
 	if not await health_tab(inspector,"Overview"):return
 	var evidence:=FileAccess.open(directory+"/unit-health-view-result.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"success":not failed,"pages":samples,"retained_refresh":true,"tab_return":true}));evidence.close()
+
+func exercise_health_overflow(inspector) -> void:
+	if not await health_tab(inspector,"History"):return
+	var view=inspector.creature_sheet.health_view
+	if not check(view.lines.size()==75 and view.scrollbar.visible,"Health History overflow missing"):return
+	var wheel_point: Vector2=view.get_global_transform_with_canvas()*Vector2(120,100)
+	for _i in 7:await pointer(wheel_point,MOUSE_BUTTON_WHEEL_DOWN)
+	check(view.first==7,"Composed Health wheel differs")
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(880,400);root.push_input(motion,true)
+	var press:=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;root.push_input(press,true)
+	check(view.scrollbar.dragging,"Composed Health drag did not start")
+	inspector.redraw();await process_frame
+	check(inspector.creature_sheet.health_view==view and view.scrollbar.dragging,"Health redraw retired active drag")
+	motion=InputEventMouseMotion.new();motion.position=Vector2(880,500);motion.button_mask=MOUSE_BUTTON_MASK_LEFT;root.push_input(motion,true)
+	press=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;root.push_input(press,true)
+	check(view.first==17 and not view.scrollbar.dragging,"Composed Health drag differs from native")
+	var away:=InputEventMouseMotion.new();away.position=Vector2(400,400);root.push_input(away,true)
+	await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8);image.save_png(directory+"/unit-health-drag-scene.png")
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json")).chest_header_reference.unit_health_pages_reference.layout_reference
+	var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_region(Rect2i(432,244,424,492)).get_data())
+	check(hash.finish().hex_encode()==reference.drag_text_rgb_sha256,"Composed scrolled Health text differs from native")
+	scene._fortress_hud.toggle_settings();await process_frame
+	await pointer(wheel_point,MOUSE_BUTTON_WHEEL_DOWN)
+	check(view.first==17,"Settings allowed Health input underneath")
+	scene._fortress_hud.toggle_settings();await process_frame
+	root.size=Vector2i(960,600);await process_frame;await process_frame
+	check(inspector.creature_sheet.health_view==view and view.capacity()==25 and view.first==17,"Health resize lost position or control")
+	root.size=Vector2i(1200,800);await process_frame;await process_frame
+	check(view.capacity()==41 and view.first==17,"Health resize return differs")
+	if not await health_tab(inspector,"Status"):return
+	check(inspector.creature_sheet.health_view==view and view.first==17,"Health subtab lost shared scroll")
+	if not await health_tab(inspector,"History"):return
+	check(view.first==17,"Health History return lost shared scroll")
+	var grip: Vector2i=view.scrollbar.thumb()
+	motion=InputEventMouseMotion.new();motion.position=view.scrollbar.get_global_transform_with_canvas()*Vector2(8,(grip.x+grip.y*0.5)*12);root.push_input(motion,true)
+	press=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;root.push_input(press,true)
+	check(view.scrollbar.dragging,"Health close test drag missing")
+	inspector.cancel_gesture()
+	check(not view.scrollbar.dragging,"Health gesture cancellation retained drag")
+	press=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;root.push_input(press,true)
+	var evidence:=FileAccess.open(directory+"/unit-health-overflow-result.json",FileAccess.WRITE)
+	evidence.store_string(JSON.stringify({"success":not failed,"native_drag_text":true,"refresh_during_drag":true,"overlay_blocks_input":true,"resize_retains_scroll":true,"shared_subtab_scroll":true,"gesture_cancellation":true}));evidence.close()
 
 func items_lifecycle_transition(operation: String) -> void:
 	var file:=FileAccess.open(directory+"/unit-items-lifecycle-request.tmp",FileAccess.WRITE)

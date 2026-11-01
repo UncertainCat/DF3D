@@ -30,7 +30,7 @@ local function resize(size)
   assert(dfhack.getTickCount()<deadline,'Health resize acknowledgement timed out');script.sleep(1,'frames')end
  assert(os.remove(out..'/owner-input-ack'));view:render(dfhack.getTickCount());script.sleep(2,'frames')
 end
-local function record(name)
+local function record(name,skip_capture)
  view:render(dfhack.getTickCount());local rows={};local count=0
  for _,box in ipairs(sheet.unit_health_box)do count=count+#box.line end
  for y=0,g.dimy-1 do
@@ -38,7 +38,7 @@ local function record(name)
   text=dfhack.df2utf(table.concat(text)):gsub('%s+$','');if text~=''then rows[#rows+1]={y=y,text=text}end
  end
  observations[#observations+1]={name=name,grid={g.dimx,g.dimy},first=sheet.scroll_position_unit_health,dragging=sheet.scrolling_unit_health,tab=sheet.unit_health_active_tab,width=sheet.unit_health_width,line_count=count,rows=rows}
- capture('unit-health-layout-'..name)
+ if not skip_capture then capture('unit-health-layout-'..name)end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Health layout advanced simulation')
 end
 local ok,err=xpcall(function()
@@ -47,6 +47,22 @@ local ok,err=xpcall(function()
  for _,size in ipairs{'small','medium','wide','default'}do resize(size);pointer(400,400);record(size)end
  for _,key in ipairs{'CONTEXT_SCROLL_UP','CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_PAGEUP','CONTEXT_SCROLL_PAGEDOWN'}do
   sheet.scroll_position_unit_health=7;pointer(600,400);gui.simulateInput(view,key);record(key)
+ end
+ local function release()
+  e.mouse_lbut=0;e.mouse_lbut_down=0;e.mouse_lbut_lift=1;gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+ end
+ local function reset()
+  release();sheet.scroll_position_unit_health=7;sheet.scrolling_unit_health=false;pointer(400,400)
+ end
+ for _,case in ipairs{{'up-left',874,250},{'up-right',880,250},{'down-left',874,730},{'down-right',880,730},{'track-above',880,270},{'track-below',880,680}}do
+  reset();click(case[2],case[3]);record('input-'..case[1])
+ end
+ reset();pointer(880,400);e.mouse_lbut_lift=0
+ gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'});view:render(dfhack.getTickCount());record('drag-start',true)
+ g.precise_mouse_y=500;g.mouse_y=(500-4)//12;gui.simulateInput(view,{'_MOUSE_L_DOWN'});view:render(dfhack.getTickCount());record('drag-move',true)
+ release();record('drag-release')
+ for _,case in ipairs{{'body',600,400},{'top-padding',600,238},{'bottom-padding',600,746},{'footer',600,770},{'outside',400,400}}do
+  reset();pointer(case[2],case[3]);gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');record('wheel-'..case[1])
  end
  sheet.scroll_position_unit_health=7;select('Status');record('status-after-scroll');select('History');record('history-return')
  sheet.scroll_position_unit_health=7;select('Overview');record('overview');select('Health');record('health-return')

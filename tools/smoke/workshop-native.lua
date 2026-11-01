@@ -34,6 +34,17 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ assert(click_label('Workers'),'Native Workers tab not found')
+ shot('workers')
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+ g.precise_mouse_x=448;g.precise_mouse_y=154;g.mouse_x=56;g.mouse_y=12
+ df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ shot('worker-selector')
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
+ assert(click_label('Work orders'),'Native Work orders tab not found')
+ shot('work-orders')
+ assert(click_label('Tasks'),'Native Tasks tab not found')
  assert(click_label('Add new task'),'Native Add new task control not found')
  shot('add-task')
  assert(click_label('Make bed'),'Native Make bed choice not found')

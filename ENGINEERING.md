@@ -6552,6 +6552,18 @@ log groups contain only classified known diagnostics, with no Unicode errors.
 acceptance, header/item edits, Workers, Work orders, connections, categories and
 complete builtin choices remain unfinished; no public workshop route is enabled.
 
+The native Workers and Work orders references are retained in
+`native_workshop.json.management_tabs_reference` (protected160546 on2026-11-01).
+An unrestricted workshop shows the assignment button and “This workshop is free
+for anybody to use.” Its worker selector uses the shared unit-list layout with
+portraits, profession/category sorting, relevant skills, assignment indicators
+and search. Work orders shows its manager requirement and general-order limit
+controls. These captures establish layout and copy, not assignment eligibility
+or effects. Existing creature Labor removal calls native profile routine14ddb0;
+worker selection/addition still needs its current semantic entry points. Do not
+reuse the older staff candidate comments'233647/234933 addresses as current-build
+entry points:233647 belongs to an unrelated settings handler in the pinned binary.
+
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;
 DF's requirement builder supplies its inputs. Flat task choices retain native

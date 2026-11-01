@@ -3461,13 +3461,35 @@ uses the native blue palette. Protected125019 on2026-11-01 verifies empty1017
 and soldier2905 with both notable and other kills: tagged text and all456x528
 body pixels match native. Owned DF38760 exits unsaved, source preservation
 passes, and all three Godot processes have only the known startup notice.
-`unit_military_reference` also records native Squad and Uniform pages. Squad
-remains a generic summary; Uniform implementation follows below.
+`unit_military_reference` also records native Squad and Uniform pages; their
+implementations follow below.
 Kills overflow and other historical variants remain outside this bounded evidence;
 public creature exposure stays gated. Initial124411 failed existing Expel hover
 checks;124725 exposed a freed view after header redraw despite the launcher
 reporting pass.124845 matched prose but caught selected-tab text color. These
 runs are excluded from acceptance.
+
+Squad uses `creature_squad_native.h`: native13cc1d0 resolves the current order
+from position orders, squad orders and the current simulation schedule. It reads
+world facts, not sheet state. The adapter validates schedule pointers before
+entry and checks supported order vtables and their inactive predicate. Native
+clone/getDescription provides an owned formatting context because Kill historical
+figure and Kill list descriptions cache their captions. The live order remains
+unchanged by formatting. Resolver, clone, type and description bodies are pinned.
+Squad names and saved banner colors reuse the zone semantic helpers; nativeede350
+provides the alternate caption used before viewport truncation. Section12 carries
+these facts through the existing generic section contract without a version change.
+
+The Squad view renders the native six-cell background, saved banner, caption and
+colored current order. Protected131808 on2026-11-01 verifies absent squad1017 and
+soldier2905 in squad120 with Train: both456x528 body crops match native, including
+a header redraw. Uniform and Kills remain exact for both creatures. Owned DF45016
+exits unsaved and the source manifest is unchanged; all three Godot processes have
+only the documented startup notice. Plugin SHA256 is
+`13c9dc3d77c4ef2138e0ffcd34e555660b4a31508a12247eb464afd7a51c0abb`.
+Other order descriptions, no-order squads and narrow caption truncation have not
+received rendered acceptance. Public creature exposure remains gated. Initial
+131352 identified only a two-pixel banner offset and is excluded from acceptance.
 
 Uniform now follows the inline assigned-item traversal17bd91..17c8d6, pinned
 as a complete block. It reads the selected squad position's assigned_items in

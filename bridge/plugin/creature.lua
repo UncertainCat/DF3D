@@ -458,10 +458,12 @@ return function(request)
   end)
  end)
  section(12,function(s)
-  local squad=df.squad.find(u.military.squad_id)
-  local r=record(s,u.military.squad_id,squad and dfhack.translation.translateName(squad.name,true) or 'No squad',u.military.squad_id)
-  fact(s,r,'squad_id',u.military.squad_id);fact(s,r,'squad_position',u.military.squad_position)
-  s.reason='Current squad assignment; uniforms and kills have separate sections'
+  if not request.military_squad then return end
+  local value=request.military_squad(u.id)
+  local r=record(s,value.id,value.caption,value.id)
+  for _,key in ipairs{'short_name','order','order_color','symbol','foreground_r','foreground_g','foreground_b','background_r','background_g','background_b'}do
+   fact(s,r,key,value[key])
+  end
  end)
  section(13,function(s)
   -- Match ordinary labor eligibility; "everybody" is not every creature.

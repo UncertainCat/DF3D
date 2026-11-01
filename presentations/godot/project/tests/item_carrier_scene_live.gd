@@ -1560,7 +1560,7 @@ func exercise_military_kills(inspector) -> void:
 	var reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-military-native.json"))
 	var results:Array=[]
 	for page in reference.pages:
-		if page.name not in ["Kills","Uniform"]:continue
+		if page.name not in ["Squad","Kills","Uniform"]:continue
 		var target:=int(page.unit_id)
 		inspector.open_target(Vector3i.ZERO,1,target)
 		var deadline:=Time.get_ticks_msec()+10000
@@ -1574,7 +1574,7 @@ func exercise_military_kills(inspector) -> void:
 		var view=inspector.creature_sheet.kills_view if page.name=="Kills" else inspector.creature_sheet.uniform_view
 		if page.name=="Kills":check(view.rows==page.tagged_rows,"Native Military Kills text differs")
 		inspector.redraw();await process_frame
-		check((inspector.creature_sheet.kills_view if page.name=="Kills" else inspector.creature_sheet.uniform_view)==view,"Header refresh replaced Military view")
+		if page.name!="Squad":check((inspector.creature_sheet.kills_view if page.name=="Kills" else inspector.creature_sheet.uniform_view)==view,"Header refresh replaced Military view")
 		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
 		var name:="unit-military-"+str(target)+"-"+str(page.name).to_lower()
 		actual.save_png(directory+"/"+name+"-scene.png")

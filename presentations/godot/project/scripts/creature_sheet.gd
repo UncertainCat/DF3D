@@ -465,6 +465,12 @@ func render(controller, state: Dictionary):
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
+ if tab=="Military" and subtabs.get(tab,"Squad")=="Squad":
+  scroll=null
+  var view=preload("res://scripts/creature_squad_view.gd").new()
+  owner.body.add_child(view);view.configure(owner.world)
+  view.position=Vector2(0,y);view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  view.present(records_for("military"));return
  if tab=="Military" and subtabs.get(tab)=="Uniform":
   scroll=null
   if not is_instance_valid(uniform_view):

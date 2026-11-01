@@ -59779,6 +59779,26 @@
         "source_save_preserved": true,
         "owned_df_exited_unsaved": true,
         "scope": "No squad page and three assigned items; controlled uncarried first item restores inventory entry at cleanup. Native text/art/row pixels, header retention, recenter target and visible help accepted. Overflow and other item families remain unverified."
+      },
+      "squad_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-131808",
+        "plugin_sha256": "13c9dc3d77c4ef2138e0ffcd34e555660b4a31508a12247eb464afd7a51c0abb",
+        "units": [
+          1017,
+          2905
+        ],
+        "squad": 120,
+        "order": "Train",
+        "native_body_pixels": true,
+        "header_redraw": true,
+        "uniform_and_kills_regression": true,
+        "source_preserved": true,
+        "diagnostics": "passed_with_known_issues: separate rendering thread startup notice only",
+        "unverified": [
+          "Other order descriptions",
+          "No-order squad",
+          "Narrow caption truncation"
+        ]
       }
     },
     "unit_rooms_reference": {

@@ -86,6 +86,7 @@
 #include "creature_health_native.h"
 #include "creature_health_pages_native.h"
 #include "creature_military_native.h"
+#include "creature_squad_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -3446,6 +3447,14 @@ void run(color_ostream& out) {
       if(!value)return luaL_error(state,"Native creature kill history unavailable");
       lua_pushlstring(state,value->data(),value->size());return 1;
     });lua_setfield(L,-2,"military_kills");
+    lua_pushcfunction(L,([](lua_State* state)->int {
+      const auto page=df3d_creature::militarySquad(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!page)return luaL_error(state,"Native creature squad unavailable");
+      lua_newtable(state);field(state,"id",page->id);field(state,"caption",page->caption);
+      field(state,"short_name",page->shortName);field(state,"order",page->order);field(state,"order_color",page->color);
+      const char* keys[]={"symbol","foreground_r","foreground_g","foreground_b","background_r","background_g","background_b"};
+      for(size_t i=0;i<7;++i)field(state,keys[i],int(page->symbol[i]));return 1;
+    }));lua_setfield(L,-2,"military_squad");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto page=df3d_creature::militaryUniform(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!page)return luaL_error(state,"Native creature uniform unavailable");

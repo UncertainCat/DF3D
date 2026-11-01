@@ -59619,6 +59619,38 @@
           "overflow scrolling",
           "resize"
         ]
+      },
+      "thoughts_native_discovery": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-135453",
+        "pages": [
+          {
+            "unit_id": 1017,
+            "name": "Recent thoughts",
+            "native_tagged_rows": 65,
+            "tagged_rows_sha256": "0650e11cbe4548c10ce6f10c98183dedac507698891a212ef199211506067ed1"
+          },
+          {
+            "unit_id": 1017,
+            "name": "Memories",
+            "native_tagged_rows": 59,
+            "tagged_rows_sha256": "98f5df84a1bcfa6ba565d09900687f446a37b8b1d708c12c886e4bd667d8a55e"
+          },
+          {
+            "unit_id": 2905,
+            "name": "Recent thoughts",
+            "native_tagged_rows": 59,
+            "tagged_rows_sha256": "5ab986000e58b29a7056de3bb7eea4d5bad1b05176451a163c6cd078c7dcc148"
+          },
+          {
+            "unit_id": 2905,
+            "name": "Memories",
+            "native_tagged_rows": 42,
+            "tagged_rows_sha256": "6a4e2b8c522fcf9d7befecb6327be6cda7ef3cdc58fd1b386c96c33111dacc9d"
+          }
+        ],
+        "overview_before_unit_switch": true,
+        "source_save_unchanged": true,
+        "acceptance": "Native reference only; bridge formatter and rendered Thoughts parity are not implemented."
       }
     },
     "unit_military_reference": {

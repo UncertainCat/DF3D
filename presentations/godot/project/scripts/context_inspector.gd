@@ -163,6 +163,10 @@ func handle_escape() -> void:
 func cancel_gesture() -> void:
 	right_down = false
 	right_travel = 0.0
+	if is_instance_valid(creature_sheet.items_view):
+		creature_sheet.items_view.scrollbar.dragging=false
+		creature_sheet.items_view.scrollbar.hover_cell=-1
+		creature_sheet.items_view.scrollbar.queue_redraw()
 	if is_instance_valid(expel_view):
 		expel_view.scrollbar.dragging=false
 		expel_view.scrollbar.hover_cell=-1
@@ -321,8 +325,10 @@ func redraw():
 	# Header receipts may arrive during an Expel drag. Keep that view attached
 	# so rebuilding unrelated header controls does not retire pointer capture.
 	var retained_expel=expel_view if expel.phase!=expel.Phase.Closed and is_instance_valid(expel_view) else null
+	var retained_items=creature_sheet.items_view if int(selected.kind)==1 and creature_sheet.tab=="Items" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.items_view) else null
 	for child in body.get_children():
-		if child!=retained_expel:body.remove_child(child);child.queue_free()
+		if child!=retained_expel and child!=retained_items:body.remove_child(child);child.queue_free()
+	creature_sheet.items_view=retained_items
 	customize_view=null
 	customize_button=null
 	history_button=null

@@ -72,6 +72,22 @@ func run():
  first=view.body.get_child(0)
  world.creature.generation=2;world.creature.detail.captured_tick=2;view._process(.25)
  check(view.body.get_child(0)==first,"Publication-only changes preserve controls")
+ var inventory: Array=[]
+ for index in 24: inventory.append({"id":100+index,"related_id":100+index,"name":"Item "+str(index),"facts":[]})
+ world.creature.detail.sections.append({"key":"inventory","available":true,"records":inventory})
+ sheet.change_tab("Items")
+ var items=sheet.items_view
+ items.scrollbar.move_to(3);items.scrollbar.dragging=true
+ world.creature=world.creature.duplicate(true)
+ world.creature.detail.sections[-1].records[0].name="Changed item";world.creature.generation=3;view._process(.25)
+ check(sheet.items_view==items and items.scrollbar.dragging and items.first==3,"Detail refresh preserves Items gesture and offset")
+ check(items.rows[0].name=="Changed item" and items.icons.size()==24,"Retained Items view consumes fresh rows")
+ host.set_overlay_blocked(true)
+ check(not items.scrollbar.dragging,"Overlay immediately cancels Items drag")
+ host.set_overlay_blocked(false);items.scrollbar.dragging=true
+ world.creature=world.creature.duplicate(true)
+ world.creature.detail.sections[-1].records=[];world.creature.generation=4;view._process(.25)
+ check(sheet.items_view==items and items.rows.is_empty() and not items.scrollbar.visible and not items.scrollbar.dragging,"Empty refresh retires scrollbar gesture")
  view.close_panel()
  check(host.active==null,"Closing inspect releases its host ownership")
  await view.open_tile(Vector3i(2,2,2))

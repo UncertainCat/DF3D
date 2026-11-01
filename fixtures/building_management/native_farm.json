@@ -52223,8 +52223,8 @@
             }
           },
           "limitations": [
-            "Changing assignment refresh, contained-row help/navigation and disconnect/epoch/late replies remain open.",
-            "Drag retention across asynchronous header/detail refresh and other main-scene overflow inputs need coverage."
+            "Changing assignment refresh and disconnect/epoch/late replies remain open.",
+            "See refresh_retention_reference for drag coverage and contained_navigation_reference for contained-row help/navigation. Other main-scene overflow inputs need coverage."
           ]
         }
       },
@@ -52430,6 +52430,50 @@
           ],
           "source_save": "unchanged; owned DF4176 exited unsaved"
         }
+      },
+      "refresh_retention_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-015918",
+        "status": "passed_with_known_issues",
+        "scope": "Actual main-scene pointer press, explicit inspector redraw while held, motion and release retain the same Items control and finish at row2. Existing resize, tab-return, overlay blocking and item navigation checks pass.",
+        "snapshot_regression": "context_inspect_test publishes fresh immutable detail snapshots: changed rows update without replacing the control, offset or active drag; overlay opening cancels drag immediately; empty rows hide the scrollbar and cancel drag.",
+        "qa": "build/qa/items-refresh-retention-final",
+        "source_save": "Owned source unchanged; owned DF33628 exits unsaved.",
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "limitations": [
+          "Live redraw is explicitly invoked; an actual asynchronous detail/header reply arriving during held pointer drag remains unverified.",
+          "Changing native assignments/contents and disconnect/epoch/late-reply lifecycle remain unverified."
+        ]
       }
     }
   }

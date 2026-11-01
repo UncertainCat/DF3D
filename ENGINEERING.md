@@ -1639,11 +1639,20 @@ exits unsaved. Each final live Godot process has only the known startup notice.
 Final QA `creature-items-scroll-complete` passes core, UI composition and inspector
 checks; GPU compares four full scrollbar crops and native input outcomes, plus
 all indicator cases, with only documented engine diagnostics. The inspector test
-double now accepts the existing optional texture-cell argument. Remaining work
-includes changing assignments, contained-row help/navigation, drag retention
-during asynchronous refresh, and disconnect/epoch/late replies. Full inventory
+double now accepts the existing optional texture-cell argument. Items controls
+remain attached during inspector redraws and receive fresh rows through `present`;
+opening an overlay cancels dragging immediately. Protected015918 on2026-11-01
+verifies actual pointer press, explicit redraw while held, motion and release on
+the same control. Fresh immutable detail snapshots are covered separately by
+`context_inspect_test`, including changed rows and empty results that hide the
+scrollbar and cancel dragging. `refresh_retention_reference` records this scope.
+Final QA `items-refresh-retention-final` passes core, inspector and composition;
+GPU checks have only documented diagnostics. The owned source is unchanged and
+DF33628 exits unsaved; all live Godot processes have only the startup notice.
+Actual asynchronous replies during a live held drag, changing native assignments
+and contents, and disconnect/epoch/late replies remain unverified. Full inventory
 row pixels and every main-scene overflow input are not claimed; the route stays
-staged.
+staged. Contained-row help/navigation evidence follows below.
 
 Contained Items controls are recorded by
 `unit_items_reference.contained_navigation_reference`. Protected014749 on

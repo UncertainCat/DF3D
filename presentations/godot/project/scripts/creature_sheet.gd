@@ -391,6 +391,9 @@ func render(controller, state: Dictionary):
  if recipe.subtabs.has(tab): y=tabs_at(recipe.subtabs[tab].keys(),y,true)
  if tab=="Items":
   scroll=null
+  if is_instance_valid(items_view):
+   items_view.position=Vector2(0,y);items_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+   items_view.present(records_for("inventory"));return
   items_view=preload("res://scripts/creature_items_view.gd").new()
   items_view.first=int(scrolls.get("Items/",0))
   items_view.position=Vector2(0,y);items_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)

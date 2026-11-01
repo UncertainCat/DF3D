@@ -241,6 +241,17 @@ func exercise_items_view(inspector,target: int) -> void:
 	scroll_rows.store_string(JSON.stringify(view.rows,"  "));scroll_rows.close()
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/unit-items-tab-return-scene.png")
+	var grip: Vector2i=view.scrollbar.thumb()
+	var drag_point: Vector2=view.scrollbar.get_global_transform_with_canvas()*Vector2(8,(grip.x+grip.y*0.5)*12)
+	var drag_motion:=InputEventMouseMotion.new();drag_motion.position=drag_point;root.push_input(drag_motion,true)
+	var drag_button:=InputEventMouseButton.new();drag_button.position=drag_point;drag_button.button_index=MOUSE_BUTTON_LEFT;drag_button.pressed=true;root.push_input(drag_button,true)
+	await process_frame
+	check(view.scrollbar.dragging,"Items scrollbar drag did not start")
+	inspector.redraw();await process_frame
+	check(inspector.creature_sheet.items_view==view and view.scrollbar.dragging,"Header redraw replaced the active Items drag")
+	drag_motion=InputEventMouseMotion.new();drag_motion.position=view.scrollbar.get_global_transform_with_canvas()*Vector2(8,240);root.push_input(drag_motion,true)
+	drag_button=InputEventMouseButton.new();drag_button.position=drag_motion.position;drag_button.button_index=MOUSE_BUTTON_LEFT;drag_button.pressed=false;root.push_input(drag_button,true)
+	check(view.first==2 and not view.scrollbar.dragging,"Items drag did not continue and release after redraw")
 	scene._fortress_hud.toggle_settings();await process_frame
 	await pointer(wheel_point,MOUSE_BUTTON_WHEEL_DOWN)
 	check(view.first==2,"Settings allowed Items scrolling underneath")

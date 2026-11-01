@@ -18,16 +18,19 @@ func fact(row: Dictionary,key: String,fallback=null):
 		if value.key==key:return value.number if value.has_number else value.text
 	return fallback
 func configure(source,records: Array) -> void:
-	world=source;rows=records;art.configure(source);picture.configure(source);theme=art.theme
+	world=source;art.configure(source);picture.configure(source);theme=art.theme
 	NativeText.load_text(source);texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
 	mouse_filter=Control.MOUSE_FILTER_STOP;clip_contents=true
 	scrollbar.configure(source);scrollbar.use_standalone_sheet=false;add_child(scrollbar)
 	scrollbar.input_allowed=allowed
 	scrollbar.row_changed.connect(func(value):first=value;queue_redraw())
+	resized.connect(layout);present(records)
+func present(records: Array) -> void:
+	rows=records;icons.clear()
 	for row in rows:
 		var kind:=int(fact(row,"row_kind",0));var target:=int(row.get("related_id",-1))
 		icons.append(world.selection_icon(1 if kind==2 else 2,target) if target>=0 and kind!=3 else null)
-	resized.connect(layout);layout()
+	layout()
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
 func capacity() -> int:return maxi(0,int((size.y-12)/36))
 func layout() -> void:

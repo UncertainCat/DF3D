@@ -2364,6 +2364,29 @@ passes core19/19, context and thought-text checks. The98-case matrix itself is
 native-versus-reader acceptance, not98 Godot pixel comparisons. Missing soul or
 health data, reopening, resize and stale identity still need separate coverage.
 
+Unit Expel navigation and semantic discovery remain staged. Protected121954 on
+2026-10-31 opens the installed Expel icon at856,100 for adult1017. Native shows
+one affected unit, no linked destinations, reasonNONE(-1), destination-1, and
+Expel/Cancel buttons. Escape returns to the same Overview without advancing the
+paused frame. The source save is unchanged; owned DF exits unsaved. The two GPU
+logs and paired header-wire log contain only the known startup notice. Core QA
+`unit-expel-reference` passes. `unit_expel_navigation_reference` retains the
+bounded oracle; `DF3D_UNIT_EXPEL=1` enables the maintained diagnostic probe.
+
+The preview is inlined in input handler1aa060 at1b0a75..1b10ed. It resets its
+sheet-owned vectors, checks native role helpers13b9c00/138f4e0, expands historical
+family links and accompanying units, then filters destination sites through
+9b4e70/93ce30/9364d0/9b4e40. These are entry-point leads, not yet audited callable
+contracts. No standalone owned-preview API has been established. Sheet fields
+1928..196c are prohibited runtime inputs, even though the diagnostic records them.
+
+Confirmation1b1825..1b1c26 allocates an activity, records expulsion history when
+there is no destination, invokes unit cleanup/assignment helpers, emits thoughts,
+and associates every departing unit with that activity. It is not equivalent to
+setting a departure flag. These effects, refusal cases, family expansion and
+linked destinations still need native acceptance before implementation can be
+exposed. The current probe never confirms expulsion; no runtime control is added.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

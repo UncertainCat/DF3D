@@ -6652,8 +6652,13 @@ button without assigning them or closing the selector, then performs the existin
 assignment, assigned-row mode and removal flow. DF46836 closes unsaved; source
 preservation passes. `selector_work_mode_reference` records effects and capture
 scope. Composition passes and live logs contain only classified known diagnostics.
-Occupation/workshop/work-detail indicators, mode tooltips, responsive layout and
-public workshop routing remain unfinished.
+Selector mode hover uses the shared native specialization tooltip (callback1433d40),
+including existing delay/warm timing. It releases ownership on mouse exit, hiding,
+retirement, pending actions and missing receipts. `workshop-selector-hover-wiring`
+passes main composition and hover ownership checks. The existing tooltip renderer
+and sourced copy are reused; no new live hover capture is claimed here.
+Occupation/workshop/work-detail indicators, responsive layout and public workshop
+routing remain unfinished.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

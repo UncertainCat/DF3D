@@ -86,6 +86,16 @@ func run():
 	ui.host.set_play_enabled(true)
 	workshop.open_workshop(37,"BUILDING_ICON_WORKSHOP_STILL")
 	check(ui.host.active==workshop and workshop.state.building_id==37,"composed workshop owns its target")
+	workshop.workers.phase=workshop.workers.Phase.Ready
+	workshop.selector.rows=[{"unit_id":7}]
+	workshop.candidate_modes.ids=[7]
+	workshop.candidate_modes.receipts={7:{"only_assigned_jobs":true}}
+	workshop.selector.show()
+	var mode_hover:=InputEventMouseMotion.new();mode_hover.position=Vector2(520,54)
+	workshop.selector._gui_input(mode_hover);workshop.selector._process(0)
+	check(hud.native_help.state.key=="specialization_1","selector mode hover uses native specialization tooltip")
+	workshop.selector.hide()
+	check(hud.native_help.state.key.is_empty(),"closing selector releases tooltip ownership")
 	ui.actions.session_changed.emit()
 	check(ui.host.active==null and workshop.state.building_id==-1 and workshop.workers.building_id==-1,"session change retires composed workshop")
 	print("ui_composition_test: ", "PASS" if failures == 0 else "FAIL", " failures=", failures)

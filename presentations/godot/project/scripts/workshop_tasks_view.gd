@@ -149,7 +149,7 @@ func _draw() -> void:
 		var rows: Array=state.recipes()
 		for index in mini(scrollbar.page,rows.size()-first):
 			var row: Dictionary=rows[first+index];var y:=72+index*36
-			patch("BUTTON_RECTANGLE_DARK",Rect2(8,y,size.x-16,36))
+			patch("BUTTON_RECTANGLE",Rect2(0,y,size.x-8,36))
 			var known: bool=row.has("availability")
 			var enabled: bool=known and row.availability.available
 			caption(row.name,Vector2(8,y+18),15 if enabled else 12)

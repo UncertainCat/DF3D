@@ -6558,9 +6558,8 @@ An unrestricted workshop shows the assignment button and “This workshop is fre
 for anybody to use.” Its worker selector uses the shared unit-list layout with
 portraits, profession/category sorting, relevant skills, assignment indicators
 and search. Work orders shows its manager requirement and general-order limit
-controls. These captures establish layout and copy, not assignment eligibility
-or effects. Existing creature Labor removal calls native profile routine14ddb0;
-worker selection/addition still needs its current semantic entry points. Do not
+controls. These captures establish layout and copy, not assignment effects.
+Existing creature Labor removal calls native profile routine14ddb0. Do not
 reuse the older staff candidate comments'233647/234933 addresses as current-build
 entry points:233647 belongs to an unrelated settings handler in the pinned binary.
 
@@ -6579,8 +6578,40 @@ units and a nonunit entry. `worker_candidates_reference` retains both membership
 and native row traversal order; only membership is accepted here. Native selection
 callback3a8d90 reads menu identity, so it must not be called at runtime. Its
 assignment effect is inline: workshops/furnaces replace the permitted worker
-when a different dwarf is selected, or remove the existing selection. Worker
-transport, ordering, displayed skill facts and assignment writes remain pending.
+when a different dwarf is selected, or remove the last matching selection.
+`selectWorkshopWorker` composes this inline effect with independently owned
+storage, guarded by the complete handler's byte fingerprint. It checks a current
+profile revision and native eligibility before mutation, then observes the result;
+an unconfirmed committed effect is Unknown and cannot be retried automatically.
+The native handler itself is never called. The profile and selection implementation
+are exposed through management114 with separate profile/list revisions. Reads
+use bounded128-row pages; selection returns confirmed membership or an explicit
+Rejected/Stale/Unknown outcome. Retired or unknown actions are not replayed.
+
+Worker skill weights use owned native inline configuration from3a54cc..3a5716,
+with reaction matches from5b0a00 and job skills fromd082e0. Candidate names use
+the native creature name formatters and shared staff sorting keys. Protected
+162539 on2026-11-01 matches116 eligible candidates and skill weights for Carpenter
+(skill2, weight1) and Still (skill14, weight1). That comparison does not establish
+rendered candidate text, sorting, or assignment effects. The staged paging owner
+reuses bounded staff pages with separate profile/list revisions.
+
+The staged workshop owner now connects Workers to this channel and the shared
+staff selector. Protected164826 on2026-11-01 exercises actual tab/picker clicks,
+all116 native candidate IDs, assignment of5573 and removal by selecting5573 again.
+Fresh semantic observations confirm each effect; the native harness independently
+confirms restoration of the original profile. Owned DF36296 exits unsaved and the
+source manifest is unchanged. `worker_workflow_reference` retains scope, IDs and
+capture hashes. Root/core and the existing workshop capture pass; live Godot logs
+contain only the known startup and renderer-shutdown signatures.
+
+The Tasks body's overlapping rectangle now passes unhandled tab clicks to its
+parent sheet. The first live attempt164550 exposed that input defect;164700 then
+completed both worker effects but failed a JSON numeric-type comparison in the
+harness. Neither failed run is acceptance. The final run normalizes reference IDs
+before exact membership comparison. Worker selector assignment indicators,
+assigned-row artwork, responsive layout and broader lifecycle acceptance remain
+unfinished; the overall workshop screen remains unexposed.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

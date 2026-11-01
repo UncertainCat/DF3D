@@ -1,25 +1,34 @@
 extends "res://scripts/chest_sheet_view.gd"
 # Native workshop shell, workshop-queued / workshop-still-add-task references.
-# Staged until Workers, Work orders, connections and header edits are integrated.
+# Staged until worker artwork, Work orders, connections and header edits are complete.
 signal tab_requested(index: int)
 signal connections_requested
 const TABS=["Tasks","Workers","Work orders"]
 var tasks
+var workers
 var selected_tab:=0
 
 func configure_tasks(source,model,icon: String) -> void:
 	building_icon=icon
 	tasks=preload("res://scripts/workshop_tasks_view.gd").new();add_child(tasks)
 	tasks.configure(source,model);tasks.position=Vector2(16,54)
+	# The native tab strip overlaps the top of the Tasks body's rectangle.
+	# Let unhandled tab clicks reach the sheet; task actions still consume theirs.
+	tasks.mouse_filter=Control.MOUSE_FILTER_PASS
 	tasks.input_allowed=tasks_allowed
 	tasks.picker_changed.connect(_layout_body)
 	refresh()
 
+func configure_workers(source,model) -> void:
+	workers=preload("res://scripts/workshop_workers_view.gd").new();add_child(workers)
+	workers.configure(source,model);workers.position=Vector2(16,84);workers.size=Vector2(464,360)
+	workers.input_allowed=tasks_allowed;_layout_body()
+
 func tasks_allowed() -> bool:
-	return allowed() and not removing and state.phase==state.Phase.Ready and state.ticket==0 and (contents==null or contents.state.phase!=contents.state.Phase.Applying)
+	return allowed() and not removing and state.phase==state.Phase.Ready and state.ticket==0 and (workers==null or workers.state.phase!=workers.state.Phase.Applying) and (contents==null or contents.state.phase!=contents.state.Phase.Applying)
 
 func contents_allowed() -> bool:
-	return super.contents_allowed() and (tasks==null or tasks.state.phase!=tasks.state.Phase.Applying)
+	return super.contents_allowed() and (workers==null or workers.state.phase!=workers.state.Phase.Applying) and (tasks==null or tasks.state.phase!=tasks.state.Phase.Applying)
 
 func show_contents_separator() -> bool:return tasks==null or not tasks.picking
 
@@ -36,6 +45,7 @@ func refresh() -> void:
 
 func _layout_body() -> void:
 	if tasks==null:return
+	if workers!=null:workers.visible=not removing and selected_tab==1 and not state.snapshot.is_empty()
 	tasks.visible=not removing and selected_tab==0 and not state.snapshot.is_empty()
 	var expanded: bool=tasks.picking or int(size.y/12)<45
 	tasks.size=Vector2(464,maxf(0,size.y-66 if expanded else 390))

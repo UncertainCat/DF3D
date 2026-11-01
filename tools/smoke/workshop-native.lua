@@ -56,6 +56,27 @@ local function click_label(label)
   return true
  end end;return false
 end
+local function read_worker_reference(target)
+ local native_ids={};local nonunit={}
+ local list=assert(worker_list(df.global.game.main_interface.unit_selector,0))
+ for _,entry in ipairs(list.entry_list)do
+  if entry.t==0 and entry.u then -- Raw source list also contains filtered-out units.
+  else nonunit[#nonunit+1]={kind=entry.t,null=not entry.u}end
+ end
+ worker_names(list,native_ids,0,true)
+ local worker_text,worker_code=dfhack.run_command_silent('df3d','workshop-workers-probe',tostring(target.id))
+ assert(worker_code==0,worker_text)
+ local semantic=json.decode(worker_text);local actual_ids=semantic.ids;local sorted_ids={table.unpack(native_ids)}
+ local native_skills={}
+ for skill=0,df.job_skill._last_item do if list.skills[skill]~=0 then native_skills[#native_skills+1]={skill=skill,weight=list.skills[skill]}end end
+ assert(json.encode(native_skills)==json.encode(semantic.skills),'Workshop native skill weights differ')
+ table.sort(sorted_ids);table.sort(actual_ids)
+ local comparison=assert(io.open(out..'/workshop-workers-comparison-'..target.id..'.json','w'))
+ comparison:write(json.encode({native_ids=native_ids,actual_ids=actual_ids,nonunit=nonunit}));comparison:close()
+ assert(#sorted_ids==#actual_ids,'Workshop native worker membership count differs: '..#sorted_ids..' native / '..#actual_ids..' semantic')
+ for i,id in ipairs(sorted_ids)do assert(actual_ids[i]==id,'Workshop native worker membership differs')end
+ return {building_id=target.id,native_order=native_ids,member_ids=actual_ids,skills=native_skills,rows=semantic.rows,all_equal=true}
+end
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -67,22 +88,7 @@ local ok,err=xpcall(function()
  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  shot('worker-selector')
- local native_ids={};result.worker_nonunit_entries={}
- local list=assert(worker_list(df.global.game.main_interface.unit_selector,0))
- for _,entry in ipairs(list.entry_list)do
-  if entry.t==0 and entry.u then -- Raw source list also contains filtered-out units.
-  else result.worker_nonunit_entries[#result.worker_nonunit_entries+1]={kind=entry.t,null=not entry.u}end
- end
- worker_names(list,native_ids,0,true)
- local worker_text,worker_code=dfhack.run_command_silent('df3d','workshop-workers-probe',tostring(building.id))
- assert(worker_code==0,worker_text)
- local actual_ids=json.decode(worker_text);local sorted_ids={table.unpack(native_ids)}
- table.sort(sorted_ids);table.sort(actual_ids)
- local comparison=assert(io.open(out..'/workshop-workers-comparison.json','w'))
- comparison:write(json.encode({native_ids=native_ids,actual_ids=actual_ids,nonunit=result.worker_nonunit_entries}));comparison:close()
- assert(#sorted_ids==#actual_ids,'Workshop native worker membership count differs: '..#sorted_ids..' native / '..#actual_ids..' semantic')
- for i,id in ipairs(sorted_ids)do assert(actual_ids[i]==id,'Workshop native worker membership differs')end
- result.worker_candidates_reference={building_id=building.id,native_order=native_ids,member_ids=actual_ids,all_equal=true}
+ result.worker_candidates_reference=read_worker_reference(building)
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(click_label('Work orders'),'Native Work orders tab not found')
  shot('work-orders')
@@ -108,6 +114,15 @@ local ok,err=xpcall(function()
  assert(still,'Workshop reference needs a completed Still')
  select_map(still)
  assert(sheet.active_id==still.id,'Native Still selection missed')
+ assert(click_label('Workers'),'Native Still Workers tab not found')
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+ g.precise_mouse_x=448;g.precise_mouse_y=154;g.mouse_x=56;g.mouse_y=12
+ df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ shot('still-worker-selector')
+ result.still_worker_reference=read_worker_reference(still)
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(still)
+ assert(click_label('Tasks'),'Native Still Tasks tab not found')
  shot('still-jobs')
  assert(click_label('Add new task'),'Native Still picker did not open')
  local rows={};local utils=require('utils')
@@ -162,7 +177,11 @@ local ok,err=xpcall(function()
  search_text('');gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
  local file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
  local before_jobs={};for _,job in ipairs(still.jobs)do before_jobs[#before_jobs+1]=job.id end
+ local original_workers={};for _,id in ipairs(still:getWorkshopProfile().permitted_workers)do original_workers[#original_workers+1]=id end
  capture('workshop-wire')
+ local restored=still:getWorkshopProfile().permitted_workers
+ assert(#restored==#original_workers,'Worker workflow did not restore native restriction')
+ for i,id in ipairs(original_workers)do assert(restored[i-1]==id,'Worker workflow changed native restriction')end
  assert(#still.jobs==#before_jobs,'Rejected workshop task changed native queue size')
  for i,id in ipairs(before_jobs)do assert(still.jobs[i-1].id==id,'Rejected workshop task changed native queue order')end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())

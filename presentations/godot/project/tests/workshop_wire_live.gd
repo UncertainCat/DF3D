@@ -1,5 +1,7 @@
 extends "res://tests/item_carrier_wire_live.gd"
 
+var worker_evidence: Dictionary={}
+
 class Interaction:
 	extends RefCounted
 	var construction_active:=false
@@ -36,8 +38,42 @@ func composed_sheet(id: int) -> void:
 	check(not owner.panel.contents.visible,"Workshop picker retained contents")
 	click(Vector2(848,118))
 	check(owner.panel.contents.visible and not owner.panel.tasks.picking,"Workshop Cancel did not restore contents")
+	# Exercise the rendered Workers route through the real action service.
+	click(Vector2(536,112))
+	deadline=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline and owner.workers.phase==owner.workers.Phase.Reading:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	if not check(owner.workers.phase==owner.workers.Phase.Ready and owner.workers.permitted_workers.is_empty(),"Worker fixture must start unrestricted: "+str(owner.workers.phase)):
+		owner.close_panel();return
+	var ids: Array=[]
+	for row in owner.workers.rows:ids.append(row.unit_id)
+	ids.sort()
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/workshop-native.json"))
+	var native_ids: Array=[]
+	for id_value in reference.still_worker_reference.member_ids:native_ids.append(int(id_value))
+	check(ids==native_ids,"Typed worker membership differs from native selector: "+str(ids)+" / "+str(native_ids))
+	worker_evidence={"building_id":id,"candidate_ids":ids,"native_ids":native_ids,"effects":[]}
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-workers-live.png")
+	var selected_id: int=-1
+	for assigning in [true,false]:
+		click(Vector2(448,154));await process_frame
+		if not check(owner.selector.visible and not owner.selector.rows.is_empty(),"Worker picker did not open"):break
+		if assigning:selected_id=owner.selector.rows[0].unit_id
+		check(owner.selector.rows[0].unit_id==selected_id,"Worker ordering changed after assignment")
+		await RenderingServer.frame_post_draw
+		if assigning:root.get_texture().get_image().save_png(directory+"/workshop-worker-selector-live.png")
+		click(Vector2(80,106))
+		deadline=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<deadline and owner.workers.phase in [owner.workers.Phase.Applying,owner.workers.Phase.Reading]:
+			world.poll();service.poll(0.01);await create_timer(0.01).timeout
+		check(owner.workers.phase==owner.workers.Phase.Ready and owner.workers.permitted_workers==([selected_id] if assigning else []),"Worker selection did not confirm native restriction: "+str(owner.workers.phase))
+		check(not owner.selector.visible,"Worker selection retained picker")
+		worker_evidence.effects.append({"selected_id":selected_id,"permitted_workers":owner.workers.permitted_workers.duplicate(),"phase":owner.workers.phase})
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+("/workshop-worker-assigned-live.png" if assigning else "/workshop-worker-cleared-live.png"))
 	owner.close_panel()
-	check(owner.state.building_id==-1 and owner.tasks.building_id==-1 and owner.contents.building_id==-1 and host.active==null,"Workshop close retained target authority")
+	check(owner.state.building_id==-1 and owner.tasks.building_id==-1 and owner.workers.building_id==-1 and owner.contents.building_id==-1 and host.active==null,"Workshop close retained target authority")
 	owner.queue_free();host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
 
 func run() -> void:
@@ -109,6 +145,6 @@ func run() -> void:
 	check(restored.get("production",{}).get("jobs")==before.jobs,"Queue/cancel failed to restore original jobs")
 	await composed_sheet(int(expected.building_id))
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"reaction_count":expected.rows.size(),"task_count":before.recipes.size(),"search_cases":reference.search_reference.cases.size(),"full_query_bytes":full_query.to_utf8_buffer().size(),"created_and_cancelled":created,"rejected_code":unavailable.code,"objection":rejected.get("message")}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"workers":worker_evidence,"reaction_count":expected.rows.size(),"task_count":before.recipes.size(),"search_cases":reference.search_reference.cases.size(),"full_query_bytes":full_query.to_utf8_buffer().size(),"created_and_cancelled":created,"rejected_code":unavailable.code,"objection":rejected.get("message")}));file.close()
 	world.detach_live();world.queue_free();await process_frame
 	quit(1 if failed else 0)

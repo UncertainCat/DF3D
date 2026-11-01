@@ -3411,6 +3411,46 @@ known Godot startup notices. `category_reference` retains the row mappings and
 controlled results. Topic categories absent from this world, other races/castes,
 hover/artwork, transport and Godot rendering retain their separate acceptance gaps.
 
+### Knowledge event formatter control-flow audit
+
+The supported executable's 127 indexed history-event phrase classes were
+retraced from instruction entries instead of linearly decoding inline switch
+data. `build/notes/pm/event-cfg-expanded.json` records reachable instructions and
+calls; `event-cfg-tables.json` records 37 dispatch tables, including three nested
+agreement dispatches. Their index bounds, optional byte remaps and target RVAs
+were checked against the enclosing indexed bodies. No traversed instruction
+intersects those table ranges. All eight candidate writes in the older
+`event-write-candidates.json` fall inside dispatch data, including the apparent
+`movsb` at b76544; they are not evidence of source mutation.
+
+The traversed roots have 49 distinct direct callees and 16 non-import indirect
+call sites. All 97 outgoing direct tail edges reach the existing date formatter
+b92640. No unresolved jump remains in this root-level traversal, but callees,
+virtual targets, source aliases and transitively referenced storage are separate
+ownership obligations. In particular, masterpiece-lost b65093 invokes another
+event's phrase slot d8, performance b8c43b calls through rax, and death/theft use
+virtual slots 10/40. These sites need explicit dispatch/source ownership review
+before widening production use.
+
+The helper traversal in `event-helper-frontier.json` covers six additional
+bodies. Position-name selector 99a3c0 is a read-only leaf returning a source
+string; land-title formatter 9bdfb0 uses the already pinned site/name helpers
+and appends to the supplied output. These reuse the ownership findings in
+`creature_office_native.h`. Leaf b93c60 has no stores or calls and tail-appends
+its selected source string through 6fa10. Formatter b85510 has a bounded
+44-entry table at b87518; all targets remain before that table and no reached
+instruction overlaps its bytes. Its material-description callees 14add70,
+14d16f0 and 14d1920, and lookup 488990, remain transitive review obligations.
+Helper b93a90 adds virtual calls at b93b2c (slot 8) and b93bdf (slot 0), plus
+lookup 152e750. Identity formatter c3a590 has no indirect dispatch; its direct
+stores target stack locals, but the shared formatting callees and argument
+aliases still require review. These findings narrow the audit; they do not
+establish safety of every transitive path.
+
+This static evidence does not replace bounded live guards or grant acceptance
+to all 127 event types. No production formatter admission or management action
+changes are made by this audit.
+
 ### Selected Knowledge detail membership
 
 `creature_knowledge_native.h` adds a diagnostic selected-entry adapter. It

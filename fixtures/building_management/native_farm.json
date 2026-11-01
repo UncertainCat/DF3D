@@ -62465,6 +62465,219 @@
         "owned_df_pid": 19192,
         "source_unchanged": true,
         "exit_without_saving": true
+      },
+      "dance_forms_owned_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-042122",
+        "cases": [
+          {
+            "id": 0,
+            "characters": 1657,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 1,
+            "characters": 1429,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 6
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 2,
+            "characters": 871,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1
+              ],
+              "sections": 2
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 3,
+            "characters": 1021,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 4,
+            "characters": 2485,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 3,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 6
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 5,
+            "characters": 815,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 6,
+            "characters": 900,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 7,
+            "characters": 462,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 8,
+            "characters": 1917,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 10,
+              "race": -1,
+              "section_events": [],
+              "sections": 0
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 9,
+            "characters": 280,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [],
+              "sections": 0
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 10,
+            "characters": 912,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            },
+            "guards_unchanged": true
+          },
+          {
+            "id": 11,
+            "characters": 683,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            },
+            "guards_unchanged": true
+          }
+        ],
+        "scope": "Exact native text and guarded state for twelve existing forms including empty sections/moves and multiple moves. No new event-type acceptance. Diagnostic only.",
+        "diagnostics": "passed_with_known_issues",
+        "owned_df_pid": 33700,
+        "source_unchanged": true,
+        "exit_without_saving": true
       }
     }
   }

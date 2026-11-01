@@ -3301,6 +3301,12 @@ the bounded result and bridge hash. Other event types, all nested referenced
 storage, and production transport/rendering remain unfinished; the adapter is
 not a production provider.
 
+Protected042122 extends the owned dance comparison to all twelve forms in the
+native reference. Every description matches exactly, with guarded state unchanged,
+covering zero to six sections and zero to ten moves. No additional event types
+are exercised. DF33700 exits unsaved with source preservation and only known
+Godot startup notices; `dance_forms_owned_reference` records this coverage.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

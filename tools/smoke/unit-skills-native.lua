@@ -17,12 +17,8 @@ local function select(name,first,last)
  for y=first,last do local x=row(y):find(name,1,true);if x then click((x-1)*8+4,y*12+10);return end end
  error('Missing native Skills tab '..name)
 end
-local pages={}
-local ok,err=xpcall(function()
- assert(sheet.open and sheet.active_id==unit.id,'Expected creature sheet')
- select('Skills',15,16)
- for _,name in ipairs{'Labor','Combat','Social','Other skills','Knowledge'}do
-  select(name,17,20)
+local function observe(name)
+  select(name=='Labor'and'Combat'or'Labor',17,20);select(name,17,20)
   local page={name=name,tab=sheet.unit_skill_active_tab,first=sheet.scroll_position_unit_skill,skills={},values={},rust_values={},lines={}}
   for _,v in ipairs(sheet.unit_skill)do page.skills[#page.skills+1]=v end
   for _,v in ipairs(sheet.unit_skill_val)do page.values[#page.values+1]=v end
@@ -64,11 +60,76 @@ local ok,err=xpcall(function()
    for _,field in ipairs{'skills','values','rust_values','knowledge_types','knowledge_ids','knowledge_bits'}do assert(json.encode(page[field])==json.encode(page.probe[field]),'Skills probe differs: '..name..' '..field)end
   end
   for y=17,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then page.lines[#page.lines+1]={y=y,text=text}end end
-  pages[#pages+1]=page;capture('unit-skills-'..name:lower():gsub(' ','-'))
+ return page
+end
+local pages={};local cases={};local details={}
+local ok,err=xpcall(function()
+ assert(sheet.open and sheet.active_id==unit.id,'Expected creature sheet')
+ select('Skills',15,16)
+ for _,name in ipairs{'Labor','Combat','Social','Other skills','Knowledge'}do
+  pages[#pages+1]=observe(name);capture('unit-skills-'..name:lower():gsub(' ','-'))
+ end
+ if os.getenv('DF3D_UNIT_SKILLS_DETAILS')=='1'then
+  local reference=observe('Knowledge');local seen={}
+  for index,kind in ipairs(reference.knowledge_types)do
+   if kind>=14 and not seen[kind]then
+    seen[kind]=true;observe('Knowledge')
+    sheet.scroll_position_unit_skill=index-1;view:render(dfhack.getTickCount())
+    local first=sheet.scroll_position_unit_skill
+    local count=#sheet.unit_knowledge_type;first=math.max(0,math.min(first,count-14))
+    click(852,250+36*(index-1-first))
+    assert(#sheet.skill_description_raw_str>0,'Knowledge detail did not open')
+    local detail={kind=kind,id=reference.knowledge_ids[index],tagged_rows={},lines={}}
+    for _,value in ipairs(sheet.skill_description_raw_str)do
+     if type(value)=='string'then detail.tagged_rows[#detail.tagged_rows+1]=dfhack.df2utf(value)
+     else
+      local _,address=df.sizeof(value);local size=df.reinterpret_cast('uint64_t',address+16).value
+      local capacity=df.reinterpret_cast('uint64_t',address+24).value
+      assert(size>=0 and size<=65536 and capacity>=size)
+      local data=capacity<16 and address or df.reinterpret_cast('uint64_t',address).value
+      local chars={};for i=0,size-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',data+i).value)end
+      detail.tagged_rows[#detail.tagged_rows+1]=dfhack.df2utf(table.concat(chars))
+     end
+    end
+    for y=17,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then detail.lines[#detail.lines+1]={y=y,text=text}end end
+    details[#details+1]=detail;capture('unit-skills-detail-'..kind)
+   end
+  end
+  observe('Labor')
+ end
+ if os.getenv('DF3D_UNIT_SKILLS_CASES')=='1'then
+  local soul=assert(unit.status.current_soul);local original={}
+  local hf_id,cache=unit.hist_figure_id,unit.enemy.histfig_vector_idx
+  for _,skill in ipairs(soul.skills)do original[#original+1]={skill=skill,rating=skill.rating,rusty=skill.rusty}end
+  local function restore()
+   unit.status.current_soul=soul;unit.hist_figure_id=hf_id;unit.enemy.histfig_vector_idx=cache
+   soul.skills:resize(0)
+   for _,record in ipairs(original)do record.skill.rating=record.rating;record.skill.rusty=record.rusty;soul.skills:insert('#',record.skill)end
+  end
+  local cases_ok,cases_error=xpcall(function()
+   for _,variant in ipairs{'empty-skills','reversed-ties','negative-ratings','excess-rust','no-soul'}do
+    restore()
+    if variant=='empty-skills'then soul.skills:resize(0)
+    elseif variant=='no-soul'then unit.status.current_soul=nil
+    else
+     for _,record in ipairs(original)do
+      record.skill.rating=variant=='negative-ratings'and-2 or 5
+      record.skill.rusty=variant=='excess-rust'and 9 or 0
+     end
+     if variant=='reversed-ties'then soul.skills:resize(0);for i=#original,1,-1 do soul.skills:insert('#',original[i].skill)end end
+    end
+    for _,name in ipairs{'Labor','Combat','Social','Other skills','Knowledge'}do
+     local sample=observe(name);sample.case=variant;sample.lines=nil;cases[#cases+1]=sample
+    end
+   end
+   restore();unit.hist_figure_id=-1;unit.enemy.histfig_vector_idx=-1
+   local sample=observe('Knowledge');sample.case='no-historical-figure';sample.lines=nil;cases[#cases+1]=sample
+  end,debug.traceback)
+  restore();observe('Labor');assert(cases_ok,cases_error)
  end
 end,debug.traceback)
 select('Overview',15,16)
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Skills reference advanced simulation')
-local result={success=ok,unit_id=unit.id,pages=pages,error=not ok and err or nil}
+local result={success=ok,unit_id=unit.id,pages=pages,cases=cases,details=details,error=not ok and err or nil}
 local f=assert(io.open(out..'/unit-skills-native.json','w'));f:write(json.encode(result));f:close()
 assert(ok,err);return result

@@ -3186,10 +3186,26 @@ starts with the original unit's historical cache cleared after oracle capture;
 that cold cache stays unchanged and is restored afterward. DF26744 exits unsaved,
 source preservation passes and all three Godot processes have only known startup
 notices. `owned_probe_reference` retains the rows and installed bridge hash.
-The `unit-skills-page-probe` command is diagnostic only. Empty/no-soul and
-controlled tie/negative-rating cases, detail text, hover, scrolling, management
-transport and rendered Skills remain unfinished. Godot still categorizes/sorts
-generic skill records; that implementation is not accepted as native parity.
+The `unit-skills-page-probe` command is diagnostic only. Protected033323 adds26
+controlled comparisons: empty skills, reversed equal-rating pointers, negative
+ratings, excess rust and no soul across all five pages, plus no historical figure
+on Knowledge. All six vectors match native and guards remain unchanged. Ties
+retain source order; negative displayed ratings clamp to zero while rust-adjusted
+values remain negative. No soul produces empty Knowledge as well as empty skill
+lists. Original pointers/fields are restored. DF38508 exits unsaved with source
+preservation and only known startup notices. `controlled_cases_reference`
+records the results; no progression or simulation effects were executed.
+
+Protected033517 captures actual Knowledge magnifier clicks for poetic form0
+and written content302, including tagged text and screen rows. DF37752 exits
+unsaved with source preservation and only known startup notices. Poetic details
+call e76400 at1b40bf; musical and dance branches call dd5ce0 and4ea820. Written
+content combines inline title/author assembly with cc5d50. Their transitive
+formatting/cache ownership audit remains pending; these references do not
+license calling the helpers on live records. `detail_reference` retains the
+native prose and entry points. Musical/dance examples, detail navigation,
+hover, scrolling, management transport and rendered Skills remain unfinished.
+Godot still categorizes/sorts generic records; it is not accepted as native parity.
 
 ### Creature Health transport contract
 

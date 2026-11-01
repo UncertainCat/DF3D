@@ -3545,29 +3545,36 @@ No new runtime admission follows from this audit.
 
 ### Knowledge artifact initialization effects
 
-Protected native062517 on2026-11-01 tests temporary inorganic statues and
-figurines, plain at quality0 or quality5 with one quality5 bands improvement.
+Protected native062834 on2026-11-01 tests temporary inorganic statues and
+figurines in three states: plain quality0, quality5 with one quality5 bands
+improvement, and worldgen-marked with an existing temporary world-object record.
 Each unnamed artifact is referenced by a temporary ARTIFACT_CREATED event in
-an existing dance form. All four variants run native-first and probe-first.
-Each cold description creates exactly one art record, advancing chunk4's
-offset123->131 across the eight cases. The records have one element and a source
-reference. Independent cold text matches the subsequently opened native detail
-exactly and leaves view_sheets/plotinfo bytes unchanged. Sixteen warm native/probe
-comparisons preserve guarded item, improvement, art, UI and random state and
-allocate no additional art. `artifact_initialization_reference` retains case
-digests, quality/decoration fields and allocation facts.
+an existing dance form. All six variants run native-first and probe-first.
+Each cold description creates exactly one art record. Independent cold text
+matches the subsequently opened native detail exactly and leaves native UI
+bytes unchanged. Twenty-four warm comparisons preserve guarded item,
+improvement, art, UI and random state and allocate no additional art.
+`artifact_initialization_reference` retains case digests and allocation facts.
 
-Native semantic initialization is preserved, as in the existing BOX item
-provider. Owned formatter inputs and output do not imply that every transitively
-reached semantic operation must be rolled back. This evidence covers the two
-caption subtypes sharing ca0b40 and the bands predicate/quality path; the adapter
-remains staged and does not grant blanket item/event admission. The test removes
-and frees temporary items, improvements, artifacts and events and restores the
-form reference. Generated art stays in the disposable session until unsaved
-exit; the harness does not attempt allocation rollback. The source-save manifest
-is unchanged and owned DF39916 exits unsaved. All three Godot processes have only
-the known startup notice. Worldgen backing retirement, other decorations and
-other item-subtype paths remain unverified.
+In all four worldgen-marker cases, nativecc83e0 retains the world-object record,
+inserts sub-ID37 into its `altered_items` ledger once, sets item.world_data_id
+to -1 and preserves item.world_data_subid. The caption clears from_worldgen.
+Repeated reads leave the ledger with one entry. Static10aab0 is the read-only
+world-object lookup; 10a990 allocates/registers a record on a miss. Nativeb9e70
+performs sorted unique insertion, not backing-record deletion. This corrects
+older descriptions of the retirement operation. The missing-record allocation
+branch and contained-item/building recursion are not covered by this test.
+
+Native semantic initialization and marker retirement are preserved, as in the
+existing BOX item provider. Owned formatter inputs/output do not imply that
+every transitively reached semantic operation must be rolled back. The adapter
+remains staged; this is not blanket item/event admission. The test removes and
+frees its temporary world-object records, items, improvements, artifacts and
+events and restores the form reference. Generated art remains in the disposable
+session until unsaved exit; the harness does not roll back art allocations.
+Source preservation passes and owned DF37868 exits unsaved. All three Godot
+processes contain only the known startup notice. Natural offloaded-item graphs,
+other decorations and other item-subtype paths remain unverified.
 
 ### Knowledge recursive event descriptions
 
@@ -4411,7 +4418,8 @@ Static inspection found semantic side effects in the general routine: the branch
 at c7576b can call cc84d0 to initialize art-image state, cc83e0 to retire
 world-data backing, and clear from_worldgen. Slot0x230 is getImageRef, not an
 artifact-reference getter. cc83e0 reads world_data_id/subid at item offsets
-0x50/0x54, removes the backing entry and sets world_data_id to -1. Direct global
+0x50/0x54, inserts the sub-ID into the world object's sorted `altered_items`
+ledger and sets world_data_id to -1. It retains the world-object record. Direct global
 references include world/material/raw data and display settings; the c75000 body does not directly reference the native sheet.
 The supported seed vtable16d06e0 slot0x230 points to75f60, whose nine bytes
 33c0488902498900c3 write null to both caller-owned image-reference outputs.

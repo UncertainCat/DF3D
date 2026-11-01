@@ -2649,6 +2649,29 @@ the offline gate. Enable DF3D_UNIT_EXPEL_EFFECT_WIRE=1 with either effect mode;
 DF3D_UNIT_EXPEL_EFFECT_FAMILY=1 adds the reciprocal spouse fixture. Chooser,
 confirmation controls, rendered composition and lifecycle remain staged.
 
+creature_expel_state.gd owns asynchronous Expel navigation and confirmation.
+An eligible preview with destinations enters Choosing; selecting a native row
+enters Confirming. With no destinations it enters Confirming directly. Refusal
+and ineligibility retain the native preview for display but grant no mutation.
+Display snapshots are copies; confirmation uses the independently retained exact
+group. Applying blocks duplicate input. Applied emits the selected ID and clears
+authority; rejection or uncertainty cannot authorize another confirmation.
+Closing cancels unsent queue entries and detaches sent work. Generation/ticket
+checks keep old replies out of replacement targets. World changes retire state;
+timeouts do not replay, and late success cannot reopen an uncertain controller.
+
+Protected223504 (site8) and223619 (two relatives expelled) run the controller
+through the actual semantic service and bridge. Controller preview equals the
+independent typed read, destination selection and one-shot confirmation complete,
+and full effects still match214712/215707. Native sheet bytes and paused frame
+remain unchanged, sources are preserved, and owned sessions exit unsaved. All
+five Godot processes per lane have only documented startup notices. Core19 and
+creature_expel_state_test pass in unit-expel-state-final; the latter covers all11
+refusals, isolation, queue retirement, target replacement, epoch change and late
+uncertain outcomes. unit_expel_wire_reference.controller_reference retains the
+bounded evidence. No production view calls this controller yet; visible controls,
+composed input/overlay behavior and rendered acceptance remain unfinished.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

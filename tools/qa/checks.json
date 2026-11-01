@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "creature_expel_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/creature_expel_state_test.gd",
+      "completion": "^CREATURE_EXPEL_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "item_follow_test",
       "lane": "core",
       "kind": "godot",

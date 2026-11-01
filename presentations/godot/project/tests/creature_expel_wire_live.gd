@@ -1,4 +1,14 @@
 extends "res://tests/item_carrier_wire_live.gd"
+const Expel=preload("res://scripts/creature_expel_state.gd")
+
+func wait_controller(model,service,applying: bool) -> bool:
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();service.poll()
+		if model.phase not in [Expel.Phase.Reading,Expel.Phase.Applying]:
+			return check(model.phase==Expel.Phase.Completed if applying else model.phase in [Expel.Phase.Choosing,Expel.Phase.Confirming],"Expel controller result differs")
+		await create_timer(0.01).timeout
+	return check(false,"Expel controller outcome unknown; no replay")
 
 func expel(intent: Dictionary, outcome: int) -> Dictionary:
 	var reply:=await request("creature_expel",intent)
@@ -57,8 +67,17 @@ func run() -> void:
 		check(final==initial,"Rejected Expel changed preview")
 	elif phase=="apply":
 		if failed:quit(1);return
-		await expel(apply,C.CreatureExpelOutcome.Applied)
-		if failed:quit(1);return
+		var service=preload("res://scripts/semantic_action_service.gd").new()
+		root.add_child(service);service.configure(world,true)
+		var model=Expel.new();model.configure(service);model.open(id)
+		if not await wait_controller(model,service,false):quit(1);return
+		check(model.snapshot()==initial,"Controller preview changed transported authority")
+		if model.phase==Expel.Phase.Choosing:check(model.choose(int(expected.destination)),"Controller rejected native destination")
+		var completed: Array=[];model.applied.connect(func(target):completed.append(target))
+		check(model.confirm() and not model.confirm(),"Controller did not submit exactly one intent")
+		if not await wait_controller(model,service,true):quit(1);return
+		check(completed==[id] and model.snapshot().is_empty(),"Controller did not retire confirmed authority")
+		model.dispose();service.queue_free();await process_frame
 		await expel(apply,C.CreatureExpelOutcome.Rejected)
 		var after:=await expel(read,C.CreatureExpelOutcome.Ready)
 		check(not after.eligible and after.units.is_empty(),"Departing unit retained Expel eligibility")

@@ -2477,5 +2477,17 @@
       "workshop-worker-specialized-live.png": "a0218deda2e075e0d35109f78a6f3b3306d13c4cb0424bb8cf6d07bf77edefe9",
       "workshop-worker-cleared-live.png": "b41002b6fe61d4f81c32abc19aa062e7ebadf253bc8b391c5e1508fe4cbc3c1d"
     }
+  },
+  "selector_work_mode_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-171842",
+    "management_version": 115,
+    "unit_id": 5573,
+    "modes": [
+      true,
+      false
+    ],
+    "scope": "Pointer work-mode toggle/restoration keeps selector open and workshop unrestricted; subsequent assignment and removal pass. Capture is during visible-row receipt refresh, not complete indicator parity.",
+    "source_preservation": "Owned source unchanged",
+    "capture_sha256": "44148b88197091a880bbe7b483c3358f80cbd0ea44d6bd3c9f66a71a8a36def0"
   }
 }

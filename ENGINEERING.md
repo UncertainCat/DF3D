@@ -6638,6 +6638,23 @@ workshop selector uses the captured76-cell width; shared location selectors reta
 capture with only known renderer diagnostics. This does not establish public
 selection routing or completed selector indicators.
 
+The worker selector's work-mode buttons reuse CitizenInspect and CitizenWorkScope
+with current per-unit receipts. Native widget constructor14290b0 installs renderer
+1431b20 and click1431c60; the click changes only the specialization flag and calls
+4390d0 labor recalculation. The existing citizen service uses that native labor
+path; no widget callback runs in DF3D. Visible rows are read serially, retired
+requests detach, and unknown/rejected edits are never replayed. Successful edits
+refresh worker/profile authority while retaining the open selector and its local
+filter/sort/scroll state. Mode reads temporarily disappear while refreshed.
+
+Protected171842 on2026-11-01 toggles candidate5573 on/off through the visible mode
+button without assigning them or closing the selector, then performs the existing
+assignment, assigned-row mode and removal flow. DF46836 closes unsaved; source
+preservation passes. `selector_work_mode_reference` records effects and capture
+scope. Composition passes and live logs contain only classified known diagnostics.
+Occupation/workshop/work-detail indicators, mode tooltips, responsive layout and
+public workshop routing remain unfinished.
+
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;
 DF's requirement builder supplies its inputs. Flat task choices retain native

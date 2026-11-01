@@ -61,6 +61,20 @@ func composed_sheet(id: int) -> void:
 			click(Vector2(448,154));await process_frame
 			if not check(owner.selector.visible and not owner.selector.rows.is_empty(),"Worker picker did not open"):break
 			selected_id=owner.selector.rows[0].unit_id
+			deadline=Time.get_ticks_msec()+10000
+			while Time.get_ticks_msec()<deadline and owner.candidate_modes.receipts.size()<mini(16,owner.selector.rows.size()):
+				world.poll();service.poll(0.01);await create_timer(0.01).timeout
+			if not check(owner.candidate_modes.receipts.has(selected_id),"Selector work-mode receipt missing"):break
+			var selector_original: bool=owner.candidate_modes.receipts[selected_id].only_assigned_jobs
+			worker_evidence.selector_modes=[]
+			for desired in [not selector_original,selector_original]:
+				click(Vector2(552,106))
+				deadline=Time.get_ticks_msec()+10000
+				while Time.get_ticks_msec()<deadline:
+					world.poll();service.poll(0.01);await create_timer(0.01).timeout
+					if owner.workers.phase==owner.workers.Phase.Ready and not owner.candidate_modes.applying and owner.candidate_modes.receipts.get(selected_id,{}).get("only_assigned_jobs")==desired:break
+				check(owner.selector.visible and owner.workers.permitted_workers.is_empty() and owner.candidate_modes.receipts.get(selected_id,{}).get("only_assigned_jobs")==desired,"Selector mode click assigned worker or failed to confirm")
+				worker_evidence.selector_modes.append(desired)
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/workshop-worker-selector-live.png")
 			click(Vector2(80,106))

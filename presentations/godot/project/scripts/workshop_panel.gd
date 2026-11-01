@@ -2,6 +2,8 @@ extends "res://scripts/farm_panel.gd"
 # Staged workshop owner; the caller supplies the installed subtype icon.
 signal unit_requested(id: int)
 var workers=preload("res://scripts/workshop_workers_state.gd").new()
+var candidate_modes=preload("res://scripts/workshop_candidate_modes.gd").new()
+var refreshing_modes:=false
 var selector
 var tasks=preload("res://scripts/workshop_tasks_state.gd").new()
 
@@ -9,12 +11,13 @@ func _init() -> void:
 	state=preload("res://scripts/building_header_state.gd").new()
 
 func configure(world,service,host,help=null) -> void:
-	tasks.configure(service);workers.configure(service)
+	tasks.configure(service);workers.configure(service);candidate_modes.configure(service)
+	candidate_modes.applied.connect(func():refreshing_modes=true;candidate_modes.clear();workers.refresh())
 	super.configure(world,service,host,help)
 	panel.configure_tasks(world,tasks,"")
 	panel.configure_workers(world,workers)
-	selector=preload("res://scripts/location_staff_candidates_view.gd").new();canvas.add_child(selector);selector.configure(world);selector.extra_columns=2;selector.hide()
-	selector.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and workers.phase==workers.Phase.Ready
+	selector=preload("res://scripts/workshop_candidates_view.gd").new();canvas.add_child(selector);selector.configure(world);selector.extra_columns=2;selector.configure_modes(candidate_modes);selector.hide()
+	selector.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and workers.phase==workers.Phase.Ready and not candidate_modes.applying
 	selector.cancelled.connect(_close_picker)
 	selector.unit_chosen.connect(func(id):
 		if workers.phase==workers.Phase.Ready:_close_picker();workers.select_worker(id))
@@ -48,7 +51,7 @@ func close_panel() -> void:
 	_close_picker();workers.close();tasks.close();super.close_panel()
 
 func _exit_tree() -> void:
-	workers.dispose();tasks.dispose();super._exit_tree()
+	candidate_modes.dispose();workers.dispose();tasks.dispose();super._exit_tree()
 
 func _select_tab(index: int) -> void:
 	if index not in [0,1] or not panel.tasks_allowed() or tasks.phase==tasks.Phase.Applying:return
@@ -57,10 +60,16 @@ func _select_tab(index: int) -> void:
 	panel.refresh()
 func _open_picker() -> void:
 	if workers.phase!=workers.Phase.Ready or not panel.tasks_allowed():return
-	selector.active_header=1;selector.display_rows(workers.rows);selector.actions_enabled=true;selector.show()
+	selector.active_header=1;selector.display_rows(workers.rows);selector.actions_enabled=true;selector.show();selector.update_icons()
 func _close_picker() -> void:
+	refreshing_modes=false;candidate_modes.clear()
 	if selector!=null:selector.hide();selector.actions_enabled=false;selector.display_rows([])
 func _workers_changed() -> void:
+	if refreshing_modes and selector!=null and selector.visible:
+		if workers.phase==workers.Phase.Ready:
+			refreshing_modes=false;selector.display_rows(workers.rows,selector.first,selector.selected)
+		elif workers.phase!=workers.Phase.Reading:_close_picker()
+		return
 	if selector!=null and selector.visible and workers.phase!=workers.Phase.Ready:_close_picker()
 func _process(delta: float) -> void:
 	super._process(delta)

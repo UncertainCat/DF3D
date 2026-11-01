@@ -92,6 +92,7 @@ end
 local pages={}
 local history_cases={}
 local clinical_cases={}
+local description_cases={}
 local ok,err=xpcall(function()
  assert(sheet.open and sheet.active_id==unit.id,'Expected creature sheet')
  click(616,196)
@@ -129,6 +130,36 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_UNIT_HEALTH_LAYOUT')=='1'then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-health%-pages%-native.lua$','unit-health-layout-native.lua')
   assert(loadfile(source))(unit,view,capture,out)
+ end
+ if os.getenv('DF3D_UNIT_HEALTH_DESCRIPTION_CASES')=='1'then
+  local original_ghost=unit.ghost_info;local original_flags=unit.flags3.whole
+  local birth_year,birth_time=unit.birth_year,unit.birth_time
+  local ghost=df.unit_ghost_info:new()
+  local function restore()
+   unit.ghost_info=original_ghost;unit.flags3.whole=original_flags
+   unit.birth_year=birth_year;unit.birth_time=birth_time
+  end
+  local function select(name)
+   for y=17,20 do local first=row(y):find(name,1,true);if first then click((first-1)*8+4,y*12+10);return end end
+   error('Missing Description tab '..name)
+  end
+  local function observe(name)
+   select('Status');select('Description')
+   local sample={name=name,tagged_rows={}}
+   for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
+   probe(sample,'Description');description_cases[#description_cases+1]=sample
+  end
+  local description_ok,description_error=xpcall(function()
+   unit.flags3.ghostly=true;unit.ghost_info=nil;observe('ghost-no-profile')
+   unit.ghost_info=ghost
+   for kind=0,10 do ghost.type=kind;observe('ghost-'..df.ghost_type[kind])end
+   capture('unit-health-description-ghost')
+   for _,age in ipairs{0,1,12,150}do
+    restore();unit.birth_year=df.global.cur_year-age;unit.birth_time=0
+    observe('age-'..age)
+   end
+  end,debug.traceback)
+  restore();df.delete(ghost);select('Status');select('Description');assert(description_ok,description_error)
  end
  if os.getenv('DF3D_UNIT_HEALTH_CLINICAL_CASES')=='1'then
   local health=assert(unit.health);local original_flags=health.flags.whole;local body_flags={};local wounds={}
@@ -255,6 +286,6 @@ end,debug.traceback)
 click(464,196)
 assert(sheet.active_sub_tab==original,'Health reference did not return to Overview')
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Health reference advanced simulation')
-local result={success=ok,unit_id=unit.id,fortress_entity_global_verified=true,pages=pages,history_cases=history_cases,clinical_cases=clinical_cases,error=not ok and err or nil}
+local result={success=ok,unit_id=unit.id,fortress_entity_global_verified=true,pages=pages,history_cases=history_cases,clinical_cases=clinical_cases,description_cases=description_cases,error=not ok and err or nil}
 local file=assert(io.open(out..'/unit-health-pages-native.json','w'));file:write(json.encode(result));file:close()
 assert(ok,err);return result

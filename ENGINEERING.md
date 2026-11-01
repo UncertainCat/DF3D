@@ -3287,6 +3287,17 @@ the source save and finish unsaved, with only known Godot startup notices.
 These controlled inputs verify formatting, not execution of medical jobs or
 active disease effects. Broader clinical and Description variants remain open.
 
+`description_cases_reference` records protected031055:16 controlled Description
+comparisons cover a ghost flag without a profile, all eleven ghost types and
+birth ages0/1/12/150. Native479f40 selects13daa50 at47a0fe for ghosts; living
+appearance reads birth fields at13cb382..13cb3f6. All tagged rows match the owned
+formatter, with source/UI/random guards unchanged. The diagnostic restores the
+original ghost pointer, flags and birth fields and deletes its temporary profile.
+Owned DF31896 exits unsaved with source preservation; all three Godot processes
+have only the known startup notice. These cases establish formatting, not ghost
+spawning/behavior or rendered parity for the variants. Curse-attribute variants
+and broader appearance coverage remain unverified.
+
 `formatted_text_reference` records protected021536 native text-box output:
 53-column boxes, exact wrapped lines and per-character packed colors. Native
 input handler1b2bc4 derives width from panel columns minus7;858550 formats tagged

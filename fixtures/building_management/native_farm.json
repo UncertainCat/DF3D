@@ -56825,6 +56825,239 @@
           }
         ],
         "source_preservation": "Owned source unchanged in both runs; Godot diagnostics contain only the known startup notice."
+      },
+      "description_cases_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-031055",
+        "status": "passed_with_known_issues",
+        "cases": [
+          {
+            "name": "ghost-no-profile",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]"
+            ]
+          },
+          {
+            "name": "ghost-MurderousGhost",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A murderous ghost.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A murderous ghost.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-SadisticGhost",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A sadistic ghost.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A sadistic ghost.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-SecretivePoltergeist",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A secretive poltergeist.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A secretive poltergeist.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-EnergeticPoltergeist",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]An energetic poltergeist.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]An energetic poltergeist.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-AngryGhost",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]An angry ghost.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]An angry ghost.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-ViolentGhost",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A violent ghost.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A violent ghost.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-MoaningSpirit",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A moaning spirit returned from the dead.  It will generally trouble one unfortunate at a time.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A moaning spirit returned from the dead.  It will generally trouble one unfortunate at a time.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-HowlingSpirit",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A howling spirit.  The ceaseless noise is making sleep difficult.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A howling spirit.  The ceaseless noise is making sleep difficult.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-TroublesomePoltergeist",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A troublesome poltergeist.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A troublesome poltergeist.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-RestlessHaunt",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A restless haunt, generally troubling past acquaintances and relatives.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A restless haunt, generally troubling past acquaintances and relatives.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "ghost-ForlornHaunt",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A forlorn haunt, seeking out known locations or drifting around the place of death.  This spirit has not been properly memorialized or buried."
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:5:0:1]A forlorn haunt, seeking out known locations or drifting around the place of death.  This spirit has not been properly memorialized or buried."
+            ]
+          },
+          {
+            "name": "age-0",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+            ]
+          },
+          {
+            "name": "age-1",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+            ]
+          },
+          {
+            "name": "age-12",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+            ]
+          },
+          {
+            "name": "age-150",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is white.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is white.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+            ]
+          }
+        ],
+        "scope": "Paused formatter inputs: ghost flag with null profile, all eleven native ghost types, and birth ages0/1/12/150. Original ghost pointer, flags and birth fields restored; temporary profile deleted. No ghost spawning or simulation advancement. No rendered-view acceptance for these variants.",
+        "source": "Native479f40 branches at47a0fe to13daa50 for ghost descriptions; living Description calls13cae60, which reads birth fields at13cb382..13cb3f6. Product copies those inputs.",
+        "source_preservation": "Owned source unchanged; all three Godot processes have only the known startup notice."
       }
     }
   }

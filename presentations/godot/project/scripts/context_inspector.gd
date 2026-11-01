@@ -52,6 +52,9 @@ var labor=preload("res://scripts/creature_labor_state.gd").new()
 func _ready():
 	labor.configure(action_service)
 	labor.changed.connect(_expel_changed)
+	labor.workshop_changed.connect(func(id):
+		if not selected.is_empty() and int(selected.kind)==1 and int(selected.id)==id:
+			world.demand_creature_info(-1);world.demand_creature_info(id))
 	knowledge.configure(action_service)
 	knowledge.changed.connect(_expel_changed)
 	expel.configure(action_service)

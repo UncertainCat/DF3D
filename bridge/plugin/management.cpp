@@ -394,12 +394,18 @@ struct CreatureKnowledgeResult {
   std::string text;
 };
 std::optional<CreatureKnowledgeResult> creatureKnowledge;
+struct CreatureWorkshopResult {
+  int32_t unitId=-1,buildingId=-1;
+  m::CreatureWorkshopOutcome outcome=m::CreatureWorkshopOutcome::Rejected;
+};
+std::optional<CreatureWorkshopResult> creatureWorkshop;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
   creaturePosition.reset();
   creatureExpel.reset();
   creatureKnowledge.reset();
+  creatureWorkshop.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -800,6 +806,11 @@ void publish() {
     const auto& value=*creatureKnowledge;
     creatureKnowledgeResult=m::CreateCreatureKnowledgeState(b,value.unitId,value.kind,value.id,value.outcome,b.CreateString(value.text));
   }
+  flatbuffers::Offset<m::CreatureWorkshopState> creatureWorkshopResult;
+  if(creatureWorkshop) {
+    const auto& value=*creatureWorkshop;
+    creatureWorkshopResult=m::CreateCreatureWorkshopState(b,value.unitId,value.buildingId,value.outcome);
+  }
   if(worldHover) {
     std::vector<flatbuffers::Offset<m::WorldHoverEntry>> entries;
     for(const auto& e:*worldHover) entries.push_back(m::CreateWorldHoverEntry(b,b.CreateString(e.text),uint8_t(e.foreground),uint8_t(e.background),e.bright,e.kind,e.id));
@@ -808,7 +819,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -3003,6 +3014,17 @@ void run(color_ostream& out) {
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
     publish();return;
   }
+  if(r->action()==m::ManagementAction::CreatureWorkshopRemove) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->creature_workshop();
+    creatureWorkshop.emplace();auto& result=*creatureWorkshop;
+    result.unitId=query.unit_id();result.buildingId=query.building_id();
+    const auto outcome=df3d_creature::removeWorkshopAssignment(df::unit::find(result.unitId),result.buildingId,query.expected_revision());
+    if(outcome==df3d_creature::WorkshopRemoveOutcome::Applied) {
+      result.outcome=m::CreatureWorkshopOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;
+    } else if(outcome==df3d_creature::WorkshopRemoveOutcome::Unavailable)result.outcome=m::CreatureWorkshopOutcome::Unavailable;
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::CreatureKnowledgeRead) {
     message.clear();status=m::ManagementStatus::Rejected;
     const auto& query=*r->creature_knowledge();
@@ -3343,7 +3365,8 @@ void run(color_ostream& out) {
       lua_newtable(state);int index=0;
       for(const auto& row:*rows){lua_newtable(state);field(state,"id",row.id);field(state,"type",row.type);
         field(state,"subtype",row.subtype);field(state,"custom",row.custom);field(state,"caption",row.caption);
-        field(state,"x",row.x);field(state,"y",row.y);field(state,"z",row.z);lua_rawseti(state,-2,++index);}
+        field(state,"x",row.x);field(state,"y",row.y);field(state,"z",row.z);
+        lua_pushinteger(state,lua_Integer(row.revision));lua_setfield(state,-2,"revision");lua_rawseti(state,-2,++index);}
       return 1;
     });lua_setfield(L,-2,"workshop_list");
     lua_pushcfunction(L,[](lua_State* state)->int {

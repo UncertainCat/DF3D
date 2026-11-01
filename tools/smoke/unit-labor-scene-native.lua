@@ -77,6 +77,11 @@ local function service()
  assert(request.unit_id==unit.id and request.serial==#observations+1,'Invalid labor observation')
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Labor scene advanced simulation')
  if request.stage=='workshop_on' or request.stage=='workshop_off' then
+  if request.stage=='workshop_off' then
+   local workers={};for _,id in ipairs(workshop_profile.permitted_workers)do workers[#workers+1]=id end
+   assert(json.encode(workers)==json.encode(native.workshop_fixture.remove.remaining_workers),'Workshop remove differs from native')
+   assert(json.encode(snapshot())==json.encode(native.actions.before),'Workshop remove changed labor assignments')
+  end
   workshop_fixture(request.stage=='workshop_on');observations[#observations+1]={stage=request.stage}
  elseif request.stage=='eligibility_on' or request.stage=='eligibility_off' then
   observations[#observations+1]={stage=request.stage,native_scope=exemption_probe(request.stage=='eligibility_on')}

@@ -94,6 +94,16 @@ func exercise_labor_view(inspector,target: int) -> void:
 			for axis in 3:check(int(inspector.creature_sheet.fact_value(rows[index],["x","y","z"][axis],-1))==int(position[axis]),"Workshop coordinates differ")
 		var evidence:=FileAccess.open(directory+"/unit-labor-workshop-wire.json",FileAccess.WRITE)
 		evidence.store_string(JSON.stringify({"success":not failed,"rows":rows}));evidence.close()
+		await health_tab(inspector,"Workshops",true);await drain()
+		await labor_capture("workshop-assigned")
+		view=inspector.creature_sheet.labor_view
+		if not check(view.workshops and view.rows.size()==rows.size(),"Workshop controls did not receive rows"):return
+		await pointer(view.get_global_transform_with_canvas()*view.workshop_button(0,2).get_center());await drain()
+		deadline=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<deadline and not view.rows.is_empty():
+			world.poll();actions.poll(0.01);await process_frame
+		check(inspector.labor.phase==inspector.labor.Phase.Ready and view.rows.is_empty(),"Workshop remove did not refresh native assignments")
+		await labor_capture("workshop-removed")
 		await labor_observe(target,9,"workshop_off")
 		world.demand_creature_info(-1);world.demand_creature_info(target)
 	await health_tab(inspector,"Overview")

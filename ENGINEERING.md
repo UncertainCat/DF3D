@@ -3272,10 +3272,23 @@ processes have only the known startup notice. `workshop_provider_reference`
 retains this bounded evidence. Initial104512 is excluded from acceptance because
 the auxiliary header client logged an unclassified DummyMesh RID leak and
 render-storage update_end diagnostic at shutdown. The repeated run has neither.
-Workshops rendering and editing remain unfinished.
-The native remove button calls14ddb0(profile,unit_id), removing the last matching
-worker entry; the surrounding input1b58b1..1b5913 separately retires the native
-menu row. Expose the semantic routine without borrowing that menu state.
+The Workshops view renders native building icons, captions and controls.
+Its Remove button calls pinned14ddb0(profile,unit_id), removing the last matching
+worker entry. The handler revalidates native list membership and a revision of
+the unit/building identity and complete permitted-worker list at the safe point.
+The revision is limited to53bits for exact generic Lua fact transport. The
+surrounding native input1b58b1..1b5913 retires menu rows; DF3D instead refreshes
+its owned creature detail after a matching Applied receipt. Unknown edits are
+not replayed. Recenter/inspect use viewer-owned navigation.
+
+Protected110840 on2026-11-01 verifies the visible Remove button through
+management111. The populated and empty456x528 panel crops match native exactly;
+the resulting worker list and unchanged labor assignments match independent
+native observations. Owned DF34924 exits unsaved, source preservation passes,
+and all three Godot processes have only the known startup notice.
+`workshop_panel_reference` records the scope. Initial110632 exposed incorrect
+remove artwork and a two-pixel building-icon inset; both are corrected.
+Recenter/inspect navigation, overflow and hover still need live acceptance.
 
 ### Creature Rooms native list
 
@@ -4142,7 +4155,8 @@ match the receipt to its active request and must never replay uncertain edits.
 Request/state defaults and required version move from110to111. Rebuild and
 deploy bridge, model and viewer together; older regions remain isolated. Old
 recordings cannot supply assignment revisions and do not authorize removal.
-This contract alone does not implement the native handler or expose the control.
+The native handler and staged Workshops control implement this contract; their
+bounded acceptance is recorded in the Creature Labor workflow reference.
 
 ### Knowledge request contract (management110)
 

@@ -92,6 +92,14 @@ if os.getenv('DF3D_UNIT_LABOR_WORKSHOP')=='1'then
   assert(#data.ids>0,'Native workshop list omitted dedicated worker')
   for y=19,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then data.lines[#data.lines+1]={y=y,text=text}end end
   result.workshop_fixture=data;capture('unit-labor-workshop-assigned')
+  local labors={};for i=0,93 do labors[#labors+1]=unit.status.labors[i]end
+  click(864,286)
+  for _,id in ipairs(profile.permitted_workers)do assert(id~=unit.id,'Native workshop Remove retained selected worker')end
+  for _,id in ipairs(sheet.unit_workshop_id)do assert(id~=building.id,'Native workshop Remove retained row')end
+  for i=0,93 do assert(unit.status.labors[i]==labors[i+1],'Native workshop Remove changed labor flags')end
+  data.remove={worker_removed=true,row_removed=true,labors_unchanged=true,remaining_workers={}}
+  for _,id in ipairs(profile.permitted_workers)do data.remove.remaining_workers[#data.remove.remaining_workers+1]=id end
+  capture('unit-labor-workshop-removed')
  end,debug.traceback)
  profile.permitted_workers:resize(0);for _,id in ipairs(old)do profile.permitted_workers:insert('#',id)end
  assert(ok,err)

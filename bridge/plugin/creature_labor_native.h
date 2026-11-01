@@ -1,11 +1,23 @@
 #pragma once
 #include "creature_office_native.h"
 #include "df/histfig_entity_link_positionst.h"
+#include "df/workshop_profile.h"
 
 namespace df3d_creature {
+inline uint64_t workshopAssignmentRevision(df::unit* unit,df::building* building,df::workshop_profile* profile) {
+    uint64_t hash=UINT64_C(14695981039346656037);
+    const auto add=[&](int32_t value) {
+        for(unsigned shift=0;shift<32;shift+=8){hash^=(uint32_t(value)>>shift)&255;hash*=UINT64_C(1099511628211);}
+    };
+    add(unit->id);add(building->id);add(int32_t(building->getType()));add(building->getSubtype());
+    for(const auto id:profile->permitted_workers)add(id);
+    // Generic creature facts pass through Lua numbers; preserve exact integers.
+    return (hash & UINT64_C(0x1fffffffffffff)) | 1;
+}
 struct LaborWorkshop {
     int32_t id=-1,type=-1,subtype=-1,custom=-1,x=0,y=0,z=0;
     std::string caption;
+    uint64_t revision=0;
 };
 // Native47dfc0's Workshops branch touches only these owned vectors and reads
 // simulation building profiles. It never receives the live creature sheet.
@@ -40,9 +52,37 @@ inline std::optional<std::vector<LaborWorkshop>> laborWorkshops(df::unit* unit) 
         auto* building=df::building::find(id);if(!building)return std::nullopt;
         LaborWorkshop row;row.id=id;row.type=int32_t(building->getType());row.subtype=building->getSubtype();row.custom=building->getCustomType();
         row.x=building->centerx;row.y=building->centery;row.z=building->z;
+        auto* profile=building->getWorkshopProfile();if(!profile)return std::nullopt;
+        row.revision=workshopAssignmentRevision(unit,building,profile);
         building->getName(&row.caption);rows.push_back(std::move(row));
     }
     return rows;
+}
+enum class WorkshopRemoveOutcome { Rejected,Applied,Unavailable };
+inline WorkshopRemoveOutcome removeWorkshopAssignment(df::unit* unit,int32_t buildingId,uint64_t revision) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x57;++i){hash^=base[0x14ddb0+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x94222cd85df6aa22);
+    }();
+    if(!supported)return WorkshopRemoveOutcome::Unavailable;
+    if(!unit)return WorkshopRemoveOutcome::Rejected;
+    const auto rows=laborWorkshops(unit);
+    if(!rows)return WorkshopRemoveOutcome::Unavailable;
+    const auto found=std::find_if(rows->begin(),rows->end(),[&](const auto& row){return row.id==buildingId && row.revision==revision;});
+    if(found==rows->end())return WorkshopRemoveOutcome::Rejected;
+    auto* building=df::building::find(buildingId);
+    auto* profile=building?building->getWorkshopProfile():nullptr;
+    if(!profile)return WorkshopRemoveOutcome::Rejected;
+    const auto& workers=profile->permitted_workers;
+    if(std::find(workers.begin(),workers.end(),unit->id)==workers.end())return WorkshopRemoveOutcome::Rejected;
+    // Native Labor remove input1b58b1 calls this semantic routine. The rest of
+    // its handler only updates menu rows, which are owned by the presentation.
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    reinterpret_cast<void (*)(df::workshop_profile*,int32_t)>(base+0x14ddb0)(profile,unit->id);
+    return WorkshopRemoveOutcome::Applied;
 }
 // Creature Labor input1b4580..1b45e1. DF owns caste, unit and office/spouse
 // eligibility. Its office predicate refreshes lookup indices; restore only

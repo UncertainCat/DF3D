@@ -59173,6 +59173,35 @@
           "success": true
         },
         "coverage": "Native owned collector and building virtual name through actual main-scene creature info; controlled assignment restored. One populated ordinary workshop. Workshop view/actions remain unfinished."
+      },
+      "workshop_panel_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-110840",
+        "management_version": 111,
+        "unit_id": 1017,
+        "building_id": 3,
+        "actual_remove_click": true,
+        "native_panel_pixels": {
+          "assigned": true,
+          "removed": true,
+          "rectangle": [
+            432,
+            208,
+            456,
+            528
+          ]
+        },
+        "native_effects": {
+          "remaining_workers_match": true,
+          "labor_assignments_unchanged": true
+        },
+        "source_save_unchanged": true,
+        "owned_exit_unsaved": true,
+        "diagnostics": "three Godot processes: known startup notice only",
+        "unverified": [
+          "recenter and inspect navigation",
+          "overflow",
+          "hover"
+        ]
       }
     },
     "unit_rooms_reference": {

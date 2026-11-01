@@ -645,6 +645,7 @@ return function(request)
    if i>256 then s.truncated=true;result.complete=false;break end
    local r=record(s,v.id,utf(v.caption),v.id)
    fact(s,r,'building_type',v.type);fact(s,r,'building_subtype',v.subtype)
+   fact(s,r,'assignment_revision',v.revision)
    fact(s,r,'x',v.x);fact(s,r,'y',v.y);fact(s,r,'z',v.z)
    local raw=v.custom>=0 and df.global.world.raws.buildings.all[v.custom] or nil
    if raw then fact(s,r,'custom_code',raw.code)end

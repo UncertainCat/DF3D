@@ -364,15 +364,26 @@ func render(controller, state: Dictionary):
  var y:=96.0
  for names in recipe.rows: y=tabs_at(names,y)
  if recipe.subtabs.has(tab): y=tabs_at(recipe.subtabs[tab].keys(),y,true)
- if tab=="Labor" and subtabs.get(tab)=="Work details":
+ if tab=="Labor" and subtabs.get(tab) in ["Work details","Workshops"]:
   scroll=null
   if not is_instance_valid(labor_view):
    labor_view=preload("res://scripts/creature_labor_view.gd").new()
    owner.body.add_child(labor_view);labor_view.configure(owner.world)
    labor_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+   labor_view.focus_requested.connect(func(tile):owner.close_panel();owner.focus_requested.emit(tile))
+   labor_view.inspect_requested.connect(func(kind,id):owner.object_requested.emit(kind,id))
   labor_view.visible=true
   labor_view.position=Vector2(0,y);labor_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
-  labor_view.present_labor(owner.labor);return
+  if subtabs.get(tab)=="Workshops":
+   var workshop_rows:Array=[]
+   for record in records_for("workshops"):
+    workshop_rows.append({"id":int(record.id),"caption":str(record.name),
+     "type":int(fact_value(record,"building_type",-1)),"subtype":int(fact_value(record,"building_subtype",-1)),
+     "custom_code":str(fact_value(record,"custom_code","")),"revision":int(fact_value(record,"assignment_revision",0)),
+     "tile":Vector3i(int(fact_value(record,"x",-1)),int(fact_value(record,"y",-1)),int(fact_value(record,"z",-1)))})
+   labor_view.present_workshops(owner.labor,workshop_rows)
+  else:labor_view.present_labor(owner.labor)
+  return
  if is_instance_valid(labor_view):labor_view.hide()
  if tab=="Items":
   scroll=null

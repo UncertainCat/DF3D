@@ -66859,6 +66859,93 @@
         },
         "scope": "Native tab/Escape oracle and actual main-scene navigation with captured native text injected through the real request service. No live Knowledge request handler acceptance."
       },
+      "agreement_identity_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-073012",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "e0a312417cb50ecfed9753cfd4676f7922516ff60a86102da3bae09b10f5e4c0",
+        "cases": [
+          {
+            "case": "named",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "reason": 24,
+            "utf8_bytes": 1816,
+            "text_sha256": "202ae7ad93a77cfa26edfc87457793bd82624f752f8c54b96f4707e1b0ca3d59",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "unnamed",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "reason": 24,
+            "utf8_bytes": 1795,
+            "text_sha256": "9cde8215ea7f43539622c0fe957b54d1dad1d2835400a69cd2cfbc854b2878e7",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "profession",
+            "caste": 1,
+            "profession": 0,
+            "race": 572,
+            "reason": 24,
+            "utf8_bytes": 1826,
+            "text_sha256": "9284d265b3bd1efa5dbd3030589d956bd3c651b0835deb4e8aee14b214b4282e",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "unnamed-profession",
+            "caste": 1,
+            "profession": 0,
+            "race": 572,
+            "reason": 24,
+            "utf8_bytes": 1801,
+            "text_sha256": "1f40d12c07714bce9969742d2e6ac6ddfd0b9ad8d9210753af1801d202e7c37b",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "entity",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "reason": 24,
+            "utf8_bytes": 1838,
+            "text_sha256": "bfe015241c44129a902e3788a46f775f8cffcb019c41fb557e5c5f58cb766c56",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "reason-two",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "reason": 2,
+            "utf8_bytes": 1820,
+            "text_sha256": "ada6569f8cbfbe9fafd33e810ebb0081dd916b066fbca209cacce50c9385bc99",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          },
+          {
+            "case": "missing-identity",
+            "caste": 1,
+            "profession": -1,
+            "race": 572,
+            "reason": 24,
+            "utf8_bytes": 1805,
+            "text_sha256": "1cf1037c5514814e9707f41f327d3749f7cd60c856d58893db2deaf507d438a5",
+            "native_comparisons": 2,
+            "guards_unchanged": true
+          }
+        ],
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "JoinParty reasons24/2 with explicit valid dwarf race/caste, named/unnamed profession, entity affiliation and missing identity. All seven captions distinct. Other agreement details, races and deep identity graphs remain unverified."
+      },
       "identity_event_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-072622",
         "status": "passed_with_known_issues",

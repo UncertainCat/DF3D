@@ -91,6 +91,27 @@ local function event(id)
    for _,entry in ipairs(art.properties)do object(entry)end
    end
   end
+ elseif kind==df.history_event_type.AGREEMENT_FORMED then
+  vector(df.global.world.agreements.all);vector(df.global.world.identities.all)
+  local agreement=df.agreement.find(value.agreement_id)
+  if agreement then
+   object(agreement);vector(agreement.parties);vector(agreement.details)
+   for _,party in ipairs(agreement.parties)do
+    object(party);vector(party.histfig_ids);vector(party.entity_ids);vector(party.complaint)
+    for _,id in ipairs(party.histfig_ids)do figure(id)end
+    for _,id in ipairs(party.entity_ids)do entity(id)end
+   end
+   for _,detail in ipairs(agreement.details)do
+    object(detail);assert(detail.type==df.agreement_details_type.JoinParty,'Add guards for this agreement detail')
+    local data=assert(detail.data.JoinParty);object(data)
+    assert((data.reason==24 or data.reason==2)and data.figure==-1,'Probe expects identity-bearing JoinParty')
+    local identity=df.identity.find(data.entity)
+    if identity then
+     object(identity);name(identity.name);figure(identity.impersonated_hf);entity(identity.entity_id)
+     vector(identity.entity_profile);vector(identity.cultural_identity_profile)
+    end
+   end
+  end
  elseif kind==df.history_event_type.ASSUME_IDENTITY then
   figure(value.trickster);entity(value.target);vector(df.global.world.identities.all)
   local identity=df.identity.find(value.identity)

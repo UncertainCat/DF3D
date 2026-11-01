@@ -64462,6 +64462,14 @@
           }
         ],
         "scope": "Actual native character cells for all 79 baseline rows. No music/dance, race/caste variants, hover or rendered Godot acceptance."
+      },
+      "color_probe_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-051040",
+        "installed_bridge_sha256": "d238fd4985b09ab464797dfb526f79c3c5666795d137bcd79f805ec1095abb23",
+        "skill_count": 34,
+        "native_colors_match": true,
+        "source_ui_random_guards_unchanged": true,
+        "scope": "Native profession selector and shared immutable dispatch/raw adapter compared to displayed caption cells; baseline dwarf only. Not production transport or rendered Godot acceptance."
       }
     }
   }

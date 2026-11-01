@@ -3179,6 +3179,16 @@ reuse that adapter; the Godot static skill-color table does not establish
 race/caste parity. The current typed Skills contract does not carry these
 colors yet. Rust suffix positioning, hover and actual rendering remain gaps.
 
+`nativeSkillColor` now calls the pinned764a70 profession selector and shares
+`nativeZoneOwnerProfessionColor`; absent professions return native bright white.
+Protected051040 compares all34 baseline skill colors with actual caption cells,
+including foreground, background and bold. The owned page probe's source,
+sheet and random guards stay unchanged. DF17452 exits unsaved with source
+preservation; all three Godot processes report only known startup notices.
+`color_probe_reference` retains the installed bridge hash and bounded result.
+The helper is diagnostic-only until color transport and rendering are connected;
+other race/caste branches still require their own Skills acceptance.
+
 `native_farm.json.unit_skills_reference` records protected032532 native Skills
 captures for Labor, Combat, Social, Other skills and Knowledge. The first four
 contain18/4/9/3 ordered skills, their levels and separate rust-adjusted values.

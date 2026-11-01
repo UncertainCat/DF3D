@@ -1720,7 +1720,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           append("knowledge_types",value->knowledgeTypes);append("knowledge_ids",value->knowledgeIds);append("knowledge_bits",value->knowledgeBits);
           if(!df3d_creature::skillsCaptionReady())return CR_FAILURE;
           auto* source=df::unit::find(id);result["captions"]=Json::Value(Json::arrayValue);
-          for(size_t i=0;i<value->skills.size();++i)result["captions"].append(DF2UTF(df3d_creature::nativeSkillCaption(value->skills[i],value->values[i],source->race,source->caste)));
+          result["colors"]=Json::Value(Json::arrayValue);
+          for(size_t i=0;i<value->skills.size();++i){
+            result["captions"].append(DF2UTF(df3d_creature::nativeSkillCaption(value->skills[i],value->values[i],source->race,source->caste)));
+            const auto color=df3d_creature::nativeSkillColor(*source,value->skills[i]);if(!color)return CR_FAILURE;
+            Json::Value channels(Json::arrayValue);for(auto channel:*color)channels.append(channel);result["colors"].append(channels);
+          }
           for(size_t i=0;i<value->knowledgeTypes.size();++i)result["captions"].append(DF2UTF(df3d_creature::nativeKnowledgeCaption(value->knowledgeTypes[i],value->knowledgeIds[i],value->knowledgeBits[i])));
           result["subtitles"]=Json::Value(Json::arrayValue);
           for(size_t i=0;i<value->knowledgeTypes.size();++i)result["subtitles"].append(DF2UTF(df3d_creature::nativeKnowledgeCategory(value->knowledgeTypes[i],value->knowledgeIds[i])));

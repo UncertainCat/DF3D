@@ -1,5 +1,6 @@
 #pragma once
 #include "knowledge_detail_native.h"
+#include "zone_native.h"
 #include "df/general_ref_knowledge_scholar_flagst.h"
 #include "df/musical_form.h"
 #include "df/dance_form.h"
@@ -21,6 +22,15 @@ inline bool skillsCaptionReady() {
     };
     for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
     return true;
+}
+// Requires skillsCaptionReady, including the complete profession-selector pin.
+// Renderer16e3ee uses this selector and13337a0 with background0. The shared
+// adapter reads its immutable dispatch/raw inputs without touching graphics.
+inline std::optional<std::array<uint8_t,3>> nativeSkillColor(const df::unit& unit,int16_t skill) {
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    const auto profession=reinterpret_cast<int16_t(*)(int16_t)>(base+0x764a70)(skill);
+    if(profession==-1)return std::array<uint8_t,3>{7,0,1};
+    return df3d_area::nativeZoneOwnerProfessionColor(unit,profession);
 }
 inline std::string nativeSkillCaption(int16_t skill,int32_t rating,int16_t race,int16_t caste) {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));

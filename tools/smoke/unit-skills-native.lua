@@ -79,6 +79,12 @@ local function observe(name)
      assert(caption~='' and text:find(caption,1,true),'Native Skills caption differs: '..name..' row '..index..' expected '..caption..' visible '..text)
      page.caption_rows[index+1]=text
      page.caption_cells[index+1]=cells(20+3*(index-first))
+     if name~='Knowledge'then
+      local expected=assert(page.probe.colors[index+1],'Missing native Skills color')
+      local observed=dfhack.screen.readTile(54,20+3*(index-first))
+      assert(observed.fg==expected[1] and observed.bg==expected[2] and (observed.bold and 1 or 0)==expected[3],
+       'Native Skills color differs: '..name..' row '..index)
+     end
      if name=='Knowledge'then
       local subtitle=dfhack.df2utf(row(21+3*(index-first))):gsub('^%s+',''):gsub('%s+$','')
       assert(subtitle==page.probe.subtitles[index+1],'Native Knowledge subtitle differs: '..index..' expected '..page.probe.subtitles[index+1]..' visible '..subtitle)

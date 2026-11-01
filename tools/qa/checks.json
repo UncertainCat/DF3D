@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "creature_knowledge_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/creature_knowledge_state_test.gd",
+      "completion": "^CREATURE_KNOWLEDGE_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "creature_knowledge_capture",
       "lane": "gpu",
       "kind": "godot",

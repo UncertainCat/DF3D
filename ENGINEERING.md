@@ -3716,6 +3716,32 @@ Owned DF1108 exits unsaved; source preservation passes. All three Godot
 processes have only the known startup notice. This migration smoke does not
 exercise a live Knowledge request handler, which is still pending.
 
+### Knowledge detail request ownership
+
+`creature_knowledge_state.gd` owns one on-demand detail ticket. Pending duplicate
+selection shares that ticket; a different unit, native kind or entry cancels
+queued work or detaches sent work and immediately clears old text. Callbacks
+must match the owner's generation, ticket and complete response/request
+identity. Ready requires the successful envelope and bounded tagged text;
+Rejected/Unavailable never retain text. Closing, disposal, epoch changes,
+same-epoch session replacement and confirmed transport loss retire authority.
+Timeout consumes the observer without retry; a later success cannot reopen the
+detail. Reconnection may let the shared service claim a catalog, but never
+replays the retired detail request. No new player-visible status copy is added.
+
+`knowledge-owner-final` passes root/core and the headless owner test using the
+real semantic request service with an injected transport. It covers all four
+native kinds, queued/sent close, duplicate/replacement selection, late replies,
+malformed identity/types, contradictory outcomes, UTF-8 byte limits, timeout,
+epoch/session/disconnect/reconnect and disposal. The final Godot log is clean.
+Earlier lifecycle testing corrected the mock's transport-loss signal and a
+NUL-check implementation that emitted Unicode parsing diagnostics; those runs
+are not clean acceptance. Byte-level NUL rejection remains independently tested
+by the wire codec. This owner is not yet attached to the creature sheet: native
+handler admission, list/detail navigation, retained scroll and actual rendered
+lifecycle verification remain pending. No UI exposure or live native request
+acceptance follows from this isolated controller check.
+
 ### Selected Knowledge detail membership
 
 `creature_knowledge_native.h` adds a diagnostic selected-entry adapter. It

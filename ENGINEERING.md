@@ -3225,8 +3225,15 @@ caregiver is resolved read-only and copied before native1330c30 formats the name
 the prefix comes from the installed native literal16402c0. No global lookup table
 or UI state is substituted. The internal event path rejects non-neutralized IDs.
 Protected015330 compares all22 resulting rows and guards the original history
-records and caregiver unit structs. Empty history, missing caregivers, syndrome
-records, equal-date sorting and cold caregiver caches need separate coverage.
+records and caregiver unit structs. `DF3D_UNIT_HEALTH_HISTORY_CASES=1` additionally
+runs controlled variants and restores event pointers/fields and caregiver caches.
+Protected015633 matches native empty history (1row), caregiver IDs set to-1
+(11rows), equal operation timestamps (22rows), and cold caregiver caches (22rows).
+The last case clears caches after collecting native text and guards the cleared
+values across the owned probe. All guards pass; DF31712 exits unsaved with source
+preservation and only known startup notices. `history_cases_reference` records
+exact rows; root/core QA `health-history-cases` passes. Syndrome records, mixed
+syndrome/operation ties and absent positive caregiver IDs remain unverified.
 
 These pages are not implemented by the current generic health renderer.
 `creature.lua` exposes observed wounds, body-part flags, treatment flags and

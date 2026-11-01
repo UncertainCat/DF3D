@@ -53292,8 +53292,213 @@
         "qa": "build/qa/health-history-probe",
         "limitations": [
           "One living citizen with impairment, diagnosed wounds, empty scheduled treatment, 22 history rows and populated description; clinical, curse, ghost, age and appearance variants remain.",
-          "History empty/missing-caregiver/syndrome/equal-date ordering and cold caregiver-cache variants still need controlled native comparison.",
+          "Controlled empty/missing-caregiver/equal-date/cold-cache operation cases verified separately in history_cases_reference; syndrome and mixed-record cases remain.",
           "No management wire or rendered Godot Health implementation; creature route remains staged."
+        ]
+      },
+      "history_cases_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-015633",
+        "status": "passed_with_known_issues",
+        "cases": [
+          {
+            "name": "empty",
+            "probe": {
+              "page": 3,
+              "rows": [
+                "[C:7:0:0]No medical history"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:7:0:0]No medical history"
+            ]
+          },
+          {
+            "name": "missing-caregivers",
+            "probe": {
+              "page": 3,
+              "rows": [
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+                "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]10th Hematite, 106: [C:3:0:1]Cleaned[R]",
+                "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]11th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+                "[C:2:0:1]12th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]12th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+                "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+                "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+              "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]10th Hematite, 106: [C:3:0:1]Cleaned[R]",
+              "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]11th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+              "[C:2:0:1]12th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]12th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+              "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+              "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]"
+            ]
+          },
+          {
+            "name": "equal-timestamps",
+            "probe": {
+              "page": 3,
+              "rows": [
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:3:0:1]Cleaned[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+                "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Olon Arzesnil, Miner",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+                "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:3:0:1]Cleaned[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+              "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Olon Arzesnil, Miner",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+              "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+            ]
+          },
+          {
+            "name": "cold-caregiver-caches",
+            "probe": {
+              "page": 3,
+              "rows": [
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]10th Hematite, 106: [C:3:0:1]Cleaned[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]11th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+                "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+                "[C:2:0:1]12th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]12th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+                "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Olon Arzesnil, Miner",
+                "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+                "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]10th Hematite, 106: [C:3:0:1]Cleaned[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]11th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+              "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+              "[C:2:0:1]12th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]12th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+              "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Olon Arzesnil, Miner",
+              "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+              "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+            ]
+          }
+        ],
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "source_save": "Owned source unchanged; DF31712 exits unsaved. Diagnostic records and caches restored.",
+        "qa": "build/qa/health-history-cases",
+        "limitations": [
+          "Controlled existing operation records only; no syndrome records in this specimen.",
+          "Missing caregivers use -1; absent positive IDs and mixed syndrome/operation timestamp ties remain.",
+          "Diagnostic semantic comparison only; no rendered DF3D Health acceptance."
         ]
       }
     }

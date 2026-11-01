@@ -28,21 +28,7 @@ local function native_string(value)
  local text={};for i=0,size-1 do text[#text+1]=string.char(bytes[i])end;df.delete(bytes)
  return dfhack.df2utf(table.concat(text))
 end
-local pages={}
-local ok,err=xpcall(function()
- assert(sheet.open and sheet.active_id==unit.id,'Expected creature sheet')
- click(616,196)
- for _,name in ipairs{'Status','Wounds','Treatment','History','Description'}do
-  local found=false
-  for y=17,20 do
-   local first,last=row(y):find(name,1,true)
-   if first then click((first-1)*8+4,y*12+10);found=true;break end
-  end
-  assert(found,'Missing Health tab '..name)
-  local sample={name=name,lines={},tagged_rows={}}
-  for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
-  sample.color_box_count=#sheet.unit_health_box
-  if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1'then
+local function probe(sample,name)
    local guards={}
    local function guard(address,size)
     if size==0 then return end;assert(size>0 and size<1048576,'Invalid Health guard size')
@@ -93,15 +79,75 @@ local ok,err=xpcall(function()
    assert(status==0,text);assert(unchanged,'Health probe changed guarded source/UI/random state')
    sample.probe=json.decode(text);sample.probe_guards_unchanged=unchanged
    assert(json.encode(sample.probe.rows)==json.encode(sample.tagged_rows),'Owned Health output differs: '..name)
+end
+local pages={}
+local history_cases={}
+local ok,err=xpcall(function()
+ assert(sheet.open and sheet.active_id==unit.id,'Expected creature sheet')
+ click(616,196)
+ for _,name in ipairs{'Status','Wounds','Treatment','History','Description'}do
+  local found=false
+  for y=17,20 do
+   local first,last=row(y):find(name,1,true)
+   if first then click((first-1)*8+4,y*12+10);found=true;break end
   end
+  assert(found,'Missing Health tab '..name)
+  local sample={name=name,lines={},tagged_rows={}}
+  for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
+  sample.color_box_count=#sheet.unit_health_box
+  if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1'then probe(sample,name)end
   for y=18,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then sample.lines[#sample.lines+1]={y=y,text=text}end end
   pages[#pages+1]=sample
   capture('unit-health-page-'..name:lower())
+ end
+ if os.getenv('DF3D_UNIT_HEALTH_HISTORY_CASES')=='1'then
+  local health=assert(unit.health);local operations={};local diagnoses={};local workers={}
+  for _,event in ipairs(health.op_history)do
+   operations[#operations+1]={event=event,year=event.year,time=event.year_time,worker=event.doctor_id}
+  end
+  for _,event in ipairs(health.syndrome_diagnosis)do
+   diagnoses[#diagnoses+1]={event=event,year=event.year,time=event.season_count,worker=event.worker_unid}
+  end
+  for _,records in ipairs{operations,diagnoses}do for _,record in ipairs(records)do
+   local worker=df.unit.find(record.worker)
+   if worker and not workers[worker.id]then workers[worker.id]={unit=worker,cache=worker.enemy.histfig_vector_idx}end
+  end end
+  local function restore()
+   health.op_history:resize(0);health.syndrome_diagnosis:resize(0)
+   for _,r in ipairs(operations)do r.event.year=r.year;r.event.year_time=r.time;r.event.doctor_id=r.worker;health.op_history:insert('#',r.event)end
+   for _,r in ipairs(diagnoses)do r.event.year=r.year;r.event.season_count=r.time;r.event.worker_unid=r.worker;health.syndrome_diagnosis:insert('#',r.event)end
+   for _,r in pairs(workers)do r.unit.enemy.histfig_vector_idx=r.cache end
+  end
+  local function select(name)
+   for y=17,20 do local first=row(y):find(name,1,true);if first then click((first-1)*8+4,y*12+10);return end end
+   error('Missing Health case tab '..name)
+  end
+  local cases_ok,cases_error=xpcall(function()
+   assert(#operations>1,'History variants require multiple operations')
+   for _,case in ipairs{'empty','missing-caregivers','equal-timestamps','cold-caregiver-caches'}do
+    restore()
+    if case=='empty'then health.op_history:resize(0);health.syndrome_diagnosis:resize(0)
+    elseif case=='missing-caregivers'then
+     for _,r in ipairs(operations)do r.event.doctor_id=-1 end
+     for _,r in ipairs(diagnoses)do r.event.worker_unid=-1 end
+    elseif case=='equal-timestamps'then
+     for _,r in ipairs(operations)do r.event.year=operations[1].year;r.event.year_time=operations[1].time end
+     for _,r in ipairs(diagnoses)do r.event.year=operations[1].year;r.event.season_count=operations[1].time end
+    end
+    select('Status');select('History')
+    local sample={name=case,tagged_rows={}}
+    for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
+    if case=='cold-caregiver-caches'then for _,r in pairs(workers)do r.unit.enemy.histfig_vector_idx=-1 end end
+    probe(sample,'History');history_cases[#history_cases+1]=sample
+   end
+  end,debug.traceback)
+  restore();select('Status');select('History')
+  assert(cases_ok,cases_error)
  end
 end,debug.traceback)
 click(464,196)
 assert(sheet.active_sub_tab==original,'Health reference did not return to Overview')
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Health reference advanced simulation')
-local result={success=ok,unit_id=unit.id,fortress_entity_global_verified=true,pages=pages,error=not ok and err or nil}
+local result={success=ok,unit_id=unit.id,fortress_entity_global_verified=true,pages=pages,history_cases=history_cases,error=not ok and err or nil}
 local file=assert(io.open(out..'/unit-health-pages-native.json','w'));file:write(json.encode(result));file:close()
 assert(ok,err);return result

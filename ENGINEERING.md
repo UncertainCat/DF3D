@@ -1572,6 +1572,14 @@ has only the known renderer notice. The four native owner-reference cases also
 repeat successfully, but composed changing/absent owner refresh is not yet
 accepted. `owner_wire_reference` retains the current scope.
 
+The item view places the name on the first header row when owner data exists,
+with the native yellow Owner line beneath and Weight on the third row. Without
+an owner it retains the native second-row name. Protected005142's368x36 header
+region at424,64 matches the usable native002607 header exactly, including hood
+artwork and all three text rows (zero differing RGB pixels). This accepts the
+short original-owner header only. Long-name clipping, composed owner changes,
+and the rest of the sheet remain unfinished; the public route stays staged.
+
 The Overview hauling line uses native selector1324b50(unit), the same call made
 by renderer166e81, followed by the existing owned caption formatter c65450.
 The selector is a44-byte read-only leaf returning the first inventory entry in

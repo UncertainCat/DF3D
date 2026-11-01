@@ -223,6 +223,7 @@ func exercise_items_view(inspector,target: int) -> void:
 	if not ready:return
 	check(scene._ui.host.active==item_owner and item_owner.state.item_id==item_id,"Items View did not open the selected item")
 	check(item_owner.state.snapshot.has("appearance") and item_owner.panel.icon!=null,"Clothing sheet lost semantic artwork")
+	check(item_owner.state.snapshot.get("owner",{}).get("id",-1)==target,"Clothing wire lost native owner identity")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/unit-items-inspected-scene.png")
 	var snapshot:=FileAccess.open(directory+"/unit-items-inspected-scene.json",FileAccess.WRITE)

@@ -50338,7 +50338,7 @@
         "coverage": "HELM hood live artwork verified; ARMOR/SHOES/PANTS/GLOVES appearance transport uses audited shared getters but lacks live artwork acceptance."
       },
       "owner_header_audit": {
-        "status": "native reader implemented and verified; snapshot transport and viewer header pending",
+        "status": "native reader and protocol106 snapshot implemented; baseline owner header rendered; variant lifecycle/long names pending",
         "lookup": "renderer154878 calls cb1640(item,16), UNIT_ITEMOWNER; carrier uses18, UNIT_HOLDER",
         "name": "renderer154aaf calls1330c30(unit,owned string,false)",
         "prefix": {
@@ -50419,6 +50419,38 @@
           "long names, other species, curses and other professional-name branches require further evidence"
         ],
         "evidence_sha256": "8bdb6c95c0c607805d3a03a8b160d04131c7add5f2f7b3aac07adce5ad567d62"
+      },
+      "owner_wire_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-005142",
+        "status": "passed_with_known_issues",
+        "protocol": 106,
+        "owner": {
+          "id": 1017,
+          "name": "Stodir Tangakurvad, bookkeeper"
+        },
+        "item_id": 32064,
+        "scope": "Actual main scene Items->hood->carrier Overview; original owner transported and rendered. Native four-case oracle repeats; alternative owner cases are native-reader evidence, not composed refresh acceptance.",
+        "authority": "Owner presence/ID/name included in item revision; stale ownership prevents edits. Schema/model/Godot reject malformed ID/name; owner may coexist with a different carrier or building holder.",
+        "source_save": "unchanged; owned DF35476 exits unsaved",
+        "qa": "build/qa/item-owner-wire; core, item_sheet_state_test, ui_composition_test and builds passed",
+        "pixel_reference": {
+          "native": "build/stockpile-storage-native-farm-discovery-20261101-002607/unit-items-inspected.png",
+          "viewer": "build/stockpile-storage-native-farm-discovery-20261101-005142/unit-items-inspected-scene.png",
+          "region": [
+            424,
+            64,
+            368,
+            36
+          ],
+          "differing_rgb_pixels": 0,
+          "viewer_sha256": "e0a3e8144f4a71a347a8ac567adadfc6c4f147e5651524ac4ee6ccb7743733c1"
+        },
+        "limitations": [
+          "long owner/item names need native clipping",
+          "composed changing/absent/unresolved owner refresh and lifecycle not verified",
+          "full sheet native screenshot remains unsuitable; only stable header region accepted",
+          "Items indicators, hover, scroll/resize/lifecycle and remaining creature screens unfinished"
+        ]
       }
     }
   }

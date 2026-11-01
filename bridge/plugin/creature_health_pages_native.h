@@ -1,13 +1,16 @@
 #pragma once
 #include "unit_description_native.h"
 #include "df/unit_health_info.h"
+#include "df/unit_wound.h"
+#include "df/unit_wound_layerst.h"
+#include <memory>
 #include "df/game_mode.h"
 #include <cstddef>
 namespace df3d_creature {
 // Diagnostic-only first entry into the shared Health text builder. Other page
 // paths require additional ownership auditing before expanding this allowlist.
 inline std::optional<std::vector<std::string>> healthPageProbe(df::unit* source,int page) {
-    if(!source || (page!=0 && page!=2) || !df::global::gamemode || *df::global::gamemode!=df::game_mode::DWARF)return std::nullopt;
+    if(!source || (page<0 || page>2) || !df::global::gamemode || *df::global::gamemode!=df::game_mode::DWARF)return std::nullopt;
     if(!inventoryDescriptionReady())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct Pin {size_t rva,length;uint64_t hash;};
@@ -38,6 +41,25 @@ inline std::optional<std::vector<std::string>> healthPageProbe(df::unit* source,
     unit.unit()->counters=source->counters;unit.unit()->counters2=source->counters2;
     struct OwnedHealth final:df::unit_health_info {OwnedHealth():df::unit_health_info(){}} health;
     if(source->health){static_cast<df::unit_health_info&>(health)=*source->health;unit.unit()->health=&health;}
+    // Wounds traverses diagnosed wounds and their tissue/effect vectors. Own
+    // those records and backing arrays as well as the unit's pointer list.
+    struct OwnedWound final:df::unit_wound {OwnedWound():df::unit_wound(){}};
+    struct OwnedLayer final:df::unit_wound_layerst {OwnedLayer():df::unit_wound_layerst(){}};
+    std::vector<std::unique_ptr<OwnedWound>> wounds;
+    std::vector<std::unique_ptr<OwnedLayer>> layers;
+    unit.unit()->body.wounds.clear();
+    for(const auto* sourceWound:source->body.wounds){
+        if(!sourceWound)return std::nullopt;
+        auto wound=std::make_unique<OwnedWound>();
+        static_cast<df::unit_wound&>(*wound)=*sourceWound;wound->parts.clear();
+        for(const auto* sourceLayer:sourceWound->parts){
+            if(!sourceLayer)return std::nullopt;
+            auto layer=std::make_unique<OwnedLayer>();
+            static_cast<df::unit_wound_layerst&>(*layer)=*sourceLayer;
+            wound->parts.push_back(layer.get());layers.push_back(std::move(layer));
+        }
+        unit.unit()->body.wounds.push_back(wound.get());wounds.push_back(std::move(wound));
+    }
     InventoryRandomRestore random(base);
     reinterpret_cast<void(*)(void*,df::unit*)>(base+0x479f40)(&context,unit.unit());
     if(context.strings.size()!=context.boxes.size() || context.strings.size()>4096)return std::nullopt;

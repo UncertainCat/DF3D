@@ -3195,18 +3195,25 @@ to borrow the native sheet or its populated vectors. Transitive mutation/global
 reads and native allocation cleanup still need audit before a runtime call.
 
 `unit-health-page-probe <unit> <page>` is a diagnostic adapter, currently
-allowing only Status0 and Treatment2. It calls479f40 using independent zeroed
+allowing Status0, Wounds1 and Treatment2. It calls479f40 using independent zeroed
 formatter storage and copied unit/status/counters/health data, then returns
 pointer-free tagged strings and destroys native output allocations. It never
 reads the live sheet or its output vectors. Other page paths are rejected until
 their additional input and helper ownership requirements are established.
-Protected013818 verifies exact native output for existing standing/nerve damage
-and no scheduled treatment. Guards preserve unit/health structs, selected body
-and health vector backing, wound structs, sheet/plotinfo and random streams.
+Protected014146 verifies exact native output for existing standing/nerve damage,
+ten diagnosed tissue-wound rows and no scheduled treatment. Wounds owns copies
+of each wound, tissue layer and value-vector effect array. Guards preserve the
+source structs and nested parts/effect backing, sheet/plotinfo and random streams.
 `owned_probe_reference` records the scope and bridge hash. MSVC and root/core QA
-`health-owned-probe` pass; all three live Godot processes have only the startup
-notice. DF37484 exits unsaved and source preservation passes. This does not yet
+`health-wounds-probe` pass; all three live Godot processes have only the startup
+notice. DF33000 exits unsaved and source preservation passes. This does not yet
 establish all clinical states, management transport or rendered Health behavior.
+
+History remains excluded: builder47ae79..47aed2 resolves caregivers from the
+world and calls1330c30, which passes their unit+1274 cache to b530b0. Copying
+only the patient cannot own those writes. Resolve this dependency without
+substituting global world pointers or borrowing native UI storage before enabling
+History. Description also needs its additional appearance/helper ownership audit.
 
 These pages are not implemented by the current generic health renderer.
 `creature.lua` exposes observed wounds, body-part flags, treatment flags and

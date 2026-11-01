@@ -42,7 +42,7 @@ local ok,err=xpcall(function()
   local sample={name=name,lines={},tagged_rows={}}
   for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
   sample.color_box_count=#sheet.unit_health_box
-  if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1' and (name=='Status' or name=='Treatment')then
+  if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1' and (name=='Status' or name=='Wounds' or name=='Treatment')then
    local guards={}
    local function guard(address,size)
     if size==0 then return end;assert(size>0 and size<1048576,'Invalid Health guard size')
@@ -58,9 +58,20 @@ local ok,err=xpcall(function()
     local _,address=df.sizeof(vector);local first=df.reinterpret_cast('uint64_t',address).value
     guard(first,df.reinterpret_cast('uint64_t',address+8).value-first)
    end
-   for _,wound in ipairs(unit.body.wounds)do local size,address=df.sizeof(wound);guard(address,size)end
+   for _,wound in ipairs(unit.body.wounds)do
+    local size,address=df.sizeof(wound);guard(address,size)
+    local _,vector_address=df.sizeof(wound.parts);local first=df.reinterpret_cast('uint64_t',vector_address).value
+    guard(first,df.reinterpret_cast('uint64_t',vector_address+8).value-first)
+    for _,part in ipairs(wound.parts)do
+     size,address=df.sizeof(part);guard(address,size)
+     for _,vector in ipairs{part.effect_perc1,part.effect_perc2,part.effect_type}do
+      local _,va=df.sizeof(vector);local start=df.reinterpret_cast('uint64_t',va).value
+      guard(start,df.reinterpret_cast('uint64_t',va+8).value-start)
+     end
+    end
+   end
    for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do guard(base+range[1],range[2])end
-   local text,status=dfhack.run_command_silent('df3d','unit-health-page-probe',tostring(unit.id),name=='Status' and '0' or '2')
+   local text,status=dfhack.run_command_silent('df3d','unit-health-page-probe',tostring(unit.id),name=='Status' and '0' or name=='Wounds' and '1' or '2')
    local unchanged=true
    for _,g in ipairs(guards)do if dfhack.internal.memcmp(g.bytes,g.address,g.size)~=0 then unchanged=false end;df.delete(g.bytes)end
    assert(status==0,text);assert(unchanged,'Health probe changed guarded source/UI/random state')

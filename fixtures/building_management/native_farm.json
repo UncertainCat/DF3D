@@ -66859,6 +66859,41 @@
         },
         "scope": "Native tab/Escape oracle and actual main-scene navigation with captured native text injected through the real request service. No live Knowledge request handler acceptance."
       },
+      "cage_caption_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-075256",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "48f3d5b87766f8d2caff56e8eeb167e15d6f68980488a1cde86ac5903187230b",
+        "cases": [
+          {
+            "cached_index": 4,
+            "calculated_bodyparts": true,
+            "calculated_nerves": true,
+            "case": "native-first",
+            "text_sha256": "2a091c08f6cd09edfa462dcffb8840ffbf62275b0a2e9eeac1337b151d1a25e7",
+            "utf8_bytes": 1750,
+            "warm_native_comparisons": 2,
+            "warm_guards_unchanged": true
+          },
+          {
+            "cached_index": 4,
+            "calculated_bodyparts": true,
+            "calculated_nerves": true,
+            "case": "probe-first",
+            "cold_probe_state": {
+              "cached_index": 4,
+              "calculated_bodyparts": true,
+              "calculated_nerves": true
+            },
+            "text_sha256": "2a091c08f6cd09edfa462dcffb8840ffbf62275b0a2e9eeac1337b151d1a25e7",
+            "utf8_bytes": 1750,
+            "warm_native_comparisons": 2,
+            "warm_guards_unchanged": true
+          }
+        ],
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "Cold cage caption effects on one contained dwarf: native/probe text match and warm guard preservation. Cold source cache writes are observed, not isolated or admitted to production."
+      },
       "written_event_validation_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-074338",
         "status": "passed_with_known_issues",

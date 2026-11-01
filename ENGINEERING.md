@@ -3679,8 +3679,22 @@ path is not established read-only by its local string stores or by the
 material-cache guard. It needs owned contained-unit context or separately
 verified preservation of the native cache effects. This is distinct from
 statue/figurine artwork initialization and does not authorize suppressing
-those established semantic effects. Cold contained-unit cache comparisons,
-remaining cage virtual targets and nested-container captions remain pending.
+those established semantic effects. Remaining cage virtual targets, owned
+contained-unit/cache handling and nested-container captions remain pending.
+
+Protected075256 on2026-11-01 compares a temporary unnamed cage artifact
+containing the selected dwarf, first through native Knowledge and then with
+the diagnostic formatter first. Both sequences start with calculated_nerves
+and calculated_bodyparts false and contained-unit reference cached_index-1.
+The bridge-first read sets both flags true and cached_index4 before native
+rendering. Its text matches native; four subsequent native/diagnostic
+comparisons preserve guarded item/reference/unit/vector/UI/random state.
+The four baseline form comparisons also pass. `cage_caption_reference`
+records this observed cold mutation separately from warm preservation; it is
+not evidence of owned cold-cache handling or general cage admission.
+The helper restores recorded flags/cache/vector contents and removes temporary
+records. Owned DF exits unsaved, the source save is unchanged, and the three
+Godot processes report only the known startup notice.
 
 ### Knowledge coin-caption source requirements
 

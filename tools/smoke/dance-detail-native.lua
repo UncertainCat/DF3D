@@ -63,13 +63,19 @@ local function event(id)
   local artifact=df.artifact_record.find(value.artifact_id)
   if artifact then
    object(artifact);name(artifact.name);local item=artifact.item;object(item)
-   assert(item and (df.item_statuest:is_instance(item) or df.item_figurinest:is_instance(item) or df.item_coinst:is_instance(item)),'Artifact probe expects a statue, figurine or coin')
+   assert(item and (df.item_statuest:is_instance(item) or df.item_figurinest:is_instance(item) or df.item_coinst:is_instance(item) or df.item_cagest:is_instance(item)),'Add guards for this artifact item')
    vector(item.general_refs);vector(item.improvements)
    for _,ref in ipairs(item.general_refs)do object(ref)end
    for _,improvement in ipairs(item.improvements)do
     assert(df.itemimprovement_bandsst:is_instance(improvement),'Add guards for this decoration');object(improvement)
    end
-   if df.item_coinst:is_instance(item) then
+   if df.item_cagest:is_instance(item) then
+    for _,ref in ipairs(item.general_refs)do
+     assert(df.general_ref_contains_unitst:is_instance(ref),'Cage probe expects contained unit')
+     local contained=assert(df.unit.find(ref.unit_id));object(contained)
+     for _,value in ipairs{contained.body.components.body_part_status,contained.enemy.motor_nervenet,contained.enemy.sensory_nervenet,contained.enemy.body_part_useable}do vector(value)end
+    end
+   elseif df.item_coinst:is_instance(item) then
     vector(df.global.world.coin_batches.all)
     if item.coin_batch~=-1 then
      assert(item.coin_batch>=0 and item.coin_batch<#df.global.world.coin_batches.all,'Invalid coin batch')

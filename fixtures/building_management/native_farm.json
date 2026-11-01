@@ -59198,10 +59198,17 @@
         "owned_exit_unsaved": true,
         "diagnostics": "three Godot processes: known startup notice only",
         "unverified": [
-          "recenter and inspect navigation",
           "overflow",
           "hover"
-        ]
+        ],
+        "navigation_reference": {
+          "source": "build/stockpile-storage-native-farm-discovery-20261101-111154",
+          "recenter_closes_and_focuses_tile": true,
+          "inspect_opens_building_id": 3,
+          "inspect_retires_creature_requests": true,
+          "remove_after_return": true,
+          "destination_workshop_sheet_complete": false
+        }
       }
     },
     "unit_rooms_reference": {

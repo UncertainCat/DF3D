@@ -157,7 +157,10 @@ func controller(id: String):
 		panel.history_requested.connect(func(unit_id):controller("reports").open_creature_history(unit_id))
 		panel.object_requested.connect(func(kind,target_id):
 			if kind==2:controller("farm").item_owner.open_target(target_id)
-			elif kind==1:open_item_carrier(2,target_id))
+			elif kind==1:open_item_carrier(2,target_id)
+			elif kind==3:
+				var target: Dictionary=world.inspect_entity(3,target_id)
+				if not target.is_empty():open_target(target.tile,3,target_id))
 		panel.action_service = actions
 		panel.hover_help=view._fortress_hud.native_help
 	if id in ["construction", "areas"]: panel.hud = view._fortress_hud

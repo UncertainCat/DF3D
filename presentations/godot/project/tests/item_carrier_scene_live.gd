@@ -98,6 +98,23 @@ func exercise_labor_view(inspector,target: int) -> void:
 		await labor_capture("workshop-assigned")
 		view=inspector.creature_sheet.labor_view
 		if not check(view.workshops and view.rows.size()==rows.size(),"Workshop controls did not receive rows"):return
+		var camera_before:Vector3=scene.camera_rig.position
+		var level_before:int=world.get_top_z()
+		var workshop:Dictionary=view.rows[0].duplicate(true)
+		await pointer(view.get_global_transform_with_canvas()*view.workshop_button(0,0).get_center());await process_frame
+		check(not inspector.is_open() and scene._ui.host.active==null,"Workshop recenter retained creature panel")
+		check(is_equal_approx(scene.camera_rig.position.x,workshop.tile.x+0.5) and is_equal_approx(scene.camera_rig.position.z,workshop.tile.y+0.5) and world.get_top_z()==workshop.tile.z,"Workshop recenter focused wrong tile")
+		world.set_top_z(level_before);scene.camera_rig.follow_level(level_before)
+		scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
+		inspector.open_target(Vector3i.ZERO,1,target);await drain()
+		await health_tab(inspector,"Labor");await drain();await health_tab(inspector,"Workshops",true);await drain()
+		view=inspector.creature_sheet.labor_view
+		await pointer(view.get_global_transform_with_canvas()*view.workshop_button(0,1).get_center());await drain()
+		check(inspector.is_open() and int(inspector.selected.kind)==3 and int(inspector.selected.id)==workshop.id,"Workshop inspect did not open selected building")
+		check(inspector.labor.phase==inspector.labor.Phase.Closed,"Workshop inspect retained creature request owner")
+		inspector.open_target(Vector3i.ZERO,1,target);await drain()
+		await health_tab(inspector,"Labor");await drain();await health_tab(inspector,"Workshops",true);await drain()
+		view=inspector.creature_sheet.labor_view
 		await pointer(view.get_global_transform_with_canvas()*view.workshop_button(0,2).get_center());await drain()
 		deadline=Time.get_ticks_msec()+10000
 		while Time.get_ticks_msec()<deadline and not view.rows.is_empty():

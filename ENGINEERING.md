@@ -3288,7 +3288,14 @@ native observations. Owned DF34924 exits unsaved, source preservation passes,
 and all three Godot processes have only the known startup notice.
 `workshop_panel_reference` records the scope. Initial110632 exposed incorrect
 remove artwork and a two-pixel building-icon inset; both are corrected.
-Recenter/inspect navigation, overflow and hover still need live acceptance.
+Protected111154 on2026-11-01 additionally exercises Recenter and Inspect.
+Recenter closes the creature panel and focuses the workshop's exact tile;
+Inspect routes building kind3 to the existing building inspector and retires
+the creature request owner. Returning to the creature still permits removal.
+Owned DF45224 exits unsaved, source preservation passes, and all three Godot
+processes have only the known startup notice. This establishes navigation,
+not completeness of the destination workshop building sheet. Overflow and hover
+remain unverified; creature exposure is unchanged.
 
 ### Creature Rooms native list
 

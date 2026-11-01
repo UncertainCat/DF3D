@@ -56827,7 +56827,7 @@
         "source_preservation": "Owned source unchanged in both runs; Godot diagnostics contain only the known startup notice."
       },
       "description_cases_reference": {
-        "run": "build/stockpile-storage-native-farm-discovery-20261101-031055",
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-031315",
         "status": "passed_with_known_issues",
         "cases": [
           {
@@ -57053,11 +57053,59 @@
             "tagged_rows": [
               "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is white.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
             ]
+          },
+          {
+            "name": "curse-attributes-neutral",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna mixed with gray.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna mixed with gray.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+            ]
+          },
+          {
+            "name": "curse-attributes-reduced",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:4:0:0]He is very slow to heal, totally clumsy, stunningly susceptible to disease, truly quick to tire, shockingly fragile and unfathomably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna mixed with gray.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:4:0:0]He is very slow to heal, totally clumsy, stunningly susceptible to disease, truly quick to tire, shockingly fragile and unfathomably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna mixed with gray.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+            ]
+          },
+          {
+            "name": "curse-attributes-increased",
+            "probe": {
+              "page": 4,
+              "rows": [
+                "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is possessed of amazing recuperative powers, amazingly agile, virtually never sick, absolutely inexhaustible, basically unbreakable and unbelievably strong.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna mixed with gray.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is possessed of amazing recuperative powers, amazingly agile, virtually never sick, absolutely inexhaustible, basically unbreakable and unbelievably strong.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna mixed with gray.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+            ]
           }
         ],
-        "scope": "Paused formatter inputs: ghost flag with null profile, all eleven native ghost types, and birth ages0/1/12/150. Original ghost pointer, flags and birth fields restored; temporary profile deleted. No ghost spawning or simulation advancement. No rendered-view acceptance for these variants.",
+        "scope": "Paused formatter inputs: ghost flag with null profile, eleven ghost types, birth ages0/1/12/150, and neutral/reduced/increased curse attribute percentages and additions. Original pointers/flags/birth fields restored; temporary profiles deleted. No curse application, ghost spawning or simulation advancement. Rendered ghost variant remains unaccepted.",
         "source": "Native479f40 branches at47a0fe to13daa50 for ghost descriptions; living Description calls13cae60, which reads birth fields at13cb382..13cb3f6. Product copies those inputs.",
-        "source_preservation": "Owned source unchanged; all three Godot processes have only the known startup notice."
+        "source_preservation": "Owned source unchanged; all three Godot processes have only the known startup notice.",
+        "rendered_ghost_gap": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261101-031429",
+          "status": "failed",
+          "finding": "Carrier navigation cannot resolve ghost because bridge collectUnits filters Units::isDead, which includes ghostly. inspect_entity requires the mirrored unit position. Health view was not reached. Native owned formatter passes.",
+          "source_preservation": "Owned source unchanged; owned DF40208 exited unsaved."
+        }
       }
     }
   }

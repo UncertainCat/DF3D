@@ -135,9 +135,10 @@ local ok,err=xpcall(function()
   local original_ghost=unit.ghost_info;local original_flags=unit.flags3.whole
   local birth_year,birth_time=unit.birth_year,unit.birth_time
   local ghost=df.unit_ghost_info:new()
+  local original_attributes=unit.uwss_att_change;local attributes=df.curse_attr_change:new()
   local function restore()
    unit.ghost_info=original_ghost;unit.flags3.whole=original_flags
-   unit.birth_year=birth_year;unit.birth_time=birth_time
+   unit.birth_year=birth_year;unit.birth_time=birth_time;unit.uwss_att_change=original_attributes
   end
   local function select(name)
    for y=17,20 do local first=row(y):find(name,1,true);if first then click((first-1)*8+4,y*12+10);return end end
@@ -158,8 +159,18 @@ local ok,err=xpcall(function()
     restore();unit.birth_year=df.global.cur_year-age;unit.birth_time=0
     observe('age-'..age)
    end
+   for _,case in ipairs{{name='neutral',percent=100,add=0},{name='reduced',percent=50,add=-500},{name='increased',percent=200,add=2000}}do
+    restore();unit.uwss_att_change=attributes
+    for _,field in ipairs{'phys_att_perc','ment_att_perc'}do
+     for index,_ in ipairs(attributes[field])do attributes[field][index]=case.percent end
+    end
+    for _,field in ipairs{'phys_att_add','ment_att_add'}do
+     for index,_ in ipairs(attributes[field])do attributes[field][index]=case.add end
+    end
+    observe('curse-attributes-'..case.name)
+   end
   end,debug.traceback)
-  restore();df.delete(ghost);select('Status');select('Description');assert(description_ok,description_error)
+  restore();df.delete(ghost);df.delete(attributes);select('Status');select('Description');assert(description_ok,description_error)
  end
  if os.getenv('DF3D_UNIT_HEALTH_CLINICAL_CASES')=='1'then
   local health=assert(unit.health);local original_flags=health.flags.whole;local body_flags={};local wounds={}

@@ -51,6 +51,7 @@ local function restore()
   local old=overview_saved;local p=unit.status.current_soul.personality
   for i=#(old.health_fields or {}),1,-1 do local saved=old.health_fields[i];saved.object[saved.key]=saved.value end
   if old.header_job then df.delete(old.header_job)end
+  if old.health_ghost then df.delete(old.health_ghost)end
   if old.health_wound then
    erase_pointer(unit.body.wounds,old.health_wound)
    old.health_wound.parts:erase(0);df.delete(old.health_part);df.delete(old.health_wound)
@@ -205,6 +206,9 @@ local ok,err=xpcall(function()
       wound.id=2147483000;wound.attacker_unit_id=-1;wound.attacker_hist_figure_id=-1;wound.syndrome_id=-1
       part.body_part_id=0;part.layer_idx=0;part.global_layer_idx=0;part.bleeding=10
       wound.parts:insert('#',part);unit.body.wounds:insert('#',wound)
+     elseif health_case=='ghost'then
+      local ghost=df.unit_ghost_info:new();ghost.type=df.ghost_type.ForlornHaunt
+      overview_saved.health_ghost=ghost;set(unit,'ghost_info',ghost);set(unit.flags3,'ghostly',true)
      elseif health_case=='treatment'then
       local health=assert(unit.health,'treatment fixture requires health info')
       assert(#health.body_part_flags>0,'treatment fixture requires body flags')

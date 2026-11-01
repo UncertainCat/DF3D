@@ -12,6 +12,11 @@ local saved={units=vector(sheet.unit_overview_expel_total_unid),destinations=vec
  reason=sheet.unit_overview_expel_cannot_expel_reason,destination=sheet.unit_overview_expel_selected_dest_stid,
  first=sheet.scroll_position_unit_overview_expel,drag=sheet.scrolling_unit_overview_expel}
 local function fill(v,values)v:resize(0);for _,id in ipairs(values)do v:insert('#',id)end end
+local function pointer(x,y)
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+ gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+end
 local function resize(size)
  local file=assert(io.open(out..'/owner-input-request.tmp','w'));file:write('name-resize-'..size);file:close()
  assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
@@ -20,8 +25,8 @@ local function resize(size)
   assert(dfhack.getTickCount()<deadline,'Expel resize acknowledgement timed out');script.sleep(1,'frames')end
  assert(os.remove(out..'/owner-input-ack'));view:render(dfhack.getTickCount());script.sleep(2,'frames')
 end
-local function record(name)
- view:render(dfhack.getTickCount());capture('unit-expel-layout-'..name)
+local function record(name,skip_capture)
+ view:render(dfhack.getTickCount())
  local rows={}
  for y=0,g.dimy-1 do
   local chars={}
@@ -31,6 +36,7 @@ local function record(name)
  end
  observations[#observations+1]={name=name,grid={g.dimx,g.dimy},first=sheet.scroll_position_unit_overview_expel,
   dragging=sheet.scrolling_unit_overview_expel,rows=rows}
+ if not skip_capture then capture('unit-expel-layout-'..name)end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Layout oracle advanced simulation')
 end
 local ok,err=xpcall(function()
@@ -47,6 +53,36 @@ local ok,err=xpcall(function()
   sheet.scroll_position_unit_overview_expel=23;record(mode..'-tail')
   for _,key in ipairs{'CONTEXT_SCROLL_UP','CURSOR_UP','STANDARDSCROLL_PAGEUP'}do
    gui.simulateInput(view,key);view:render(dfhack.getTickCount());record(mode..'-'..key)
+  end
+  if os.getenv('DF3D_UNIT_EXPEL_INPUT')=='1' then
+   local e=df.global.enabler
+   local function reset()
+    e.mouse_lbut=0;e.mouse_lbut_down=0;e.mouse_lbut_lift=0
+    sheet.scroll_position_unit_overview_expel=7;sheet.scrolling_unit_overview_expel=false;pointer(400,400)
+   end
+   local function release()
+    e.mouse_lbut=0;e.mouse_lbut_down=0;e.mouse_lbut_lift=1
+    gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+   end
+   local bottom=mode=='group' and 694 or 730
+   for _,case in ipairs{{'up-left',874,166},{'up-right',880,166},{'down-left',874,bottom},{'down-right',880,bottom},{'track',880,200}}do
+    reset();pointer(case[2],case[3]);e.mouse_lbut_lift=0
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());release();record(mode..'-input-'..case[1])
+   end
+   reset();pointer(880,400);e.mouse_lbut_lift=0
+   -- Capture acknowledgement yields to native events and releases synthetic
+   -- held buttons. Observe the continuous gesture before any such yield.
+   gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'});view:render(dfhack.getTickCount());record(mode..'-input-drag-start',true)
+   g.precise_mouse_y=300;g.mouse_y=(300-4)//12
+   gui.simulateInput(view,{'_MOUSE_L_DOWN'});view:render(dfhack.getTickCount());record(mode..'-input-drag-move',true)
+   release();record(mode..'-input-drag-release')
+   for _,key in ipairs{'CONTEXT_SCROLL_UP','CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_PAGEUP','CONTEXT_SCROLL_PAGEDOWN','STANDARDSCROLL_PAGEUP'}do
+    reset();pointer(880,400);gui.simulateInput(view,key);view:render(dfhack.getTickCount());record(mode..'-input-'..key)
+   end
+   for _,case in ipairs{{'body',600,400},{'footer',600,730},{'outside',400,400}}do
+    reset();pointer(case[2],case[3]);gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');record(mode..'-input-wheel-'..case[1])
+   end
+   release();pointer(400,400)
   end
  end
 end,debug.traceback)

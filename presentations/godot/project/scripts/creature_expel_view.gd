@@ -46,10 +46,13 @@ func button(text: String,rect: Rect2,token: String,action: Callable) -> Button:
 	add_child(value);value.size=rect.size;return value
 func refresh() -> void:
 	if world==null or retired:return
-	if scrollbar.get_parent()==self:remove_child(scrollbar)
-	for child in get_children():remove_child(child);child.queue_free()
+	# Retain the scrollbar's tree membership and pointer capture while its own
+	# row_changed signal redraws the list during a continuous drag.
+	for child in get_children():
+		if child!=scrollbar:remove_child(child);child.queue_free()
 	rows.clear();colors.clear()
 	var snapshot: Dictionary=state.snapshot()
+	if state.phase not in [State.Phase.Choosing,State.Phase.Confirming,State.Phase.Applying]:scrollbar.hide()
 	if state.phase==State.Phase.Refused:
 		# Preserve the recorded native refusal-renderer bug pending approval.
 		var yellow: Color=preload("res://scripts/native_creature_text.gd").colors[14]
@@ -86,9 +89,18 @@ func refresh() -> void:
 		accept.name="ConfirmExpel";accept.disabled=state.phase!=State.Phase.Confirming
 		button("Cancel",Rect2(size.x-72,size.y-36,64,36),"HORIZONTAL_OPTION_REMOVE",state.close).name="CancelExpel"
 	if overflow:
-		add_child(scrollbar);scrollbar.position=Vector2(size.x-24,0);scrollbar.size=Vector2(16,capacity*36)
+		if scrollbar.get_parent()==null:add_child(scrollbar)
+		scrollbar.show();scrollbar.position=Vector2(size.x-24,0);scrollbar.size=Vector2(16,capacity*36)
 		scrollbar.count=rows.size();scrollbar.page=capacity;scrollbar.first=first;scrollbar.queue_redraw()
+	else:scrollbar.hide()
 	_process(0)
+func _gui_input(event: InputEvent) -> void:
+	if not _allowed() or state.phase not in [State.Phase.Choosing,State.Phase.Confirming]:return
+	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		var height:=size.y-(36 if state.phase==State.Phase.Confirming else 0)
+		if scrollbar.visible and event.position.y>=0 and event.position.y<height:
+			scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(scrollbar.page if event.shift_pressed else 1))
+		accept_event()
 func _process(_delta: float) -> void:
 	for row in colors:
 		var color:=NameColor.choose(row.color,Time.get_ticks_msec(),randi_range(0,1))

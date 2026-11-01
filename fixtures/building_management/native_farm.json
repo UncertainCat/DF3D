@@ -48763,7 +48763,7 @@
         ]
       },
       "layout_reference": {
-        "status": "accepted exact rendered regions at four sizes and tail; pointer scrolling/dragging not accepted",
+        "status": "accepted rendered regions and recorded pointer/wheel/drag behavior; hover pixels and further lifecycle cases remain",
         "run": "build/stockpile-storage-native-farm-discovery-20261031-230908",
         "diagnostic_repeated_real_ids": true,
         "count": 24,
@@ -49093,6 +49093,192 @@
           "1200x720": 14,
           "1600x900": 19,
           "1200x800": 16
+        },
+        "input_reference": {
+          "status": "accepted all 32 native input observations through rendered Godot controls",
+          "run": "build/stockpile-storage-native-farm-discovery-20261031-231650",
+          "initial_first": 7,
+          "native_sha256": "424c4df9b740346fd133db1e2c3237d5b1a462dffaaa73225c595e7e45a548f4",
+          "observations": [
+            {
+              "dragging": false,
+              "first": 6,
+              "name": "group-input-up-left"
+            },
+            {
+              "dragging": false,
+              "first": 6,
+              "name": "group-input-up-right"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "group-input-down-left"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "group-input-down-right"
+            },
+            {
+              "dragging": false,
+              "first": 0,
+              "name": "group-input-track"
+            },
+            {
+              "dragging": true,
+              "first": 7,
+              "name": "group-input-drag-start"
+            },
+            {
+              "dragging": true,
+              "first": 2,
+              "name": "group-input-drag-move"
+            },
+            {
+              "dragging": false,
+              "first": 2,
+              "name": "group-input-drag-release"
+            },
+            {
+              "dragging": false,
+              "first": 6,
+              "name": "group-input-CONTEXT_SCROLL_UP"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "group-input-CONTEXT_SCROLL_DOWN"
+            },
+            {
+              "dragging": false,
+              "first": 0,
+              "name": "group-input-CONTEXT_SCROLL_PAGEUP"
+            },
+            {
+              "dragging": false,
+              "first": 9,
+              "name": "group-input-CONTEXT_SCROLL_PAGEDOWN"
+            },
+            {
+              "dragging": false,
+              "first": 7,
+              "name": "group-input-STANDARDSCROLL_PAGEUP"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "group-input-wheel-body"
+            },
+            {
+              "dragging": false,
+              "first": 7,
+              "name": "group-input-wheel-footer"
+            },
+            {
+              "dragging": false,
+              "first": 7,
+              "name": "group-input-wheel-outside"
+            },
+            {
+              "dragging": false,
+              "first": 6,
+              "name": "destinations-input-up-left"
+            },
+            {
+              "dragging": false,
+              "first": 6,
+              "name": "destinations-input-up-right"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "destinations-input-down-left"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "destinations-input-down-right"
+            },
+            {
+              "dragging": false,
+              "first": 0,
+              "name": "destinations-input-track"
+            },
+            {
+              "dragging": true,
+              "first": 7,
+              "name": "destinations-input-drag-start"
+            },
+            {
+              "dragging": true,
+              "first": 1,
+              "name": "destinations-input-drag-move"
+            },
+            {
+              "dragging": false,
+              "first": 1,
+              "name": "destinations-input-drag-release"
+            },
+            {
+              "dragging": false,
+              "first": 6,
+              "name": "destinations-input-CONTEXT_SCROLL_UP"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "destinations-input-CONTEXT_SCROLL_DOWN"
+            },
+            {
+              "dragging": false,
+              "first": 0,
+              "name": "destinations-input-CONTEXT_SCROLL_PAGEUP"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "destinations-input-CONTEXT_SCROLL_PAGEDOWN"
+            },
+            {
+              "dragging": false,
+              "first": 7,
+              "name": "destinations-input-STANDARDSCROLL_PAGEUP"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "destinations-input-wheel-body"
+            },
+            {
+              "dragging": false,
+              "first": 8,
+              "name": "destinations-input-wheel-footer"
+            },
+            {
+              "dragging": false,
+              "first": 7,
+              "name": "destinations-input-wheel-outside"
+            }
+          ],
+          "gpu_check": "build/qa/unit-expel-input",
+          "core_state_composition": "build/qa/unit-expel-input-final",
+          "source_save_unchanged": true,
+          "owned_unsaved_exit": true,
+          "diagnostics": "native clients: known startup only; GPU: documented startup/finalize/ObjectDB only",
+          "scope": [
+            "both arrow halves step one row",
+            "track above thumb pages up",
+            "continuous drag remains captured during list redraw",
+            "release ends drag",
+            "wheel over bar and list",
+            "shift-wheel page changes",
+            "group footer ignored",
+            "destination list bottom scrolls",
+            "outside ignored",
+            "PageUp key ignored"
+          ],
+          "probe_correction": "Gesture state is sampled before screenshot acknowledgement yields to native events; earlier231417 drag snapshots were interrupted and do not establish native drag behavior."
         }
       }
     }

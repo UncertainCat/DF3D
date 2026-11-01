@@ -1,5 +1,37 @@
 extends SceneTree
 func _initialize() -> void:call_deferred("run")
+func motion(point: Vector2) -> void:
+	var event:=InputEventMouseMotion.new();event.position=point;root.push_input(event,true)
+func mouse(point: Vector2,button: int,pressed: bool,shift:=false) -> void:
+	var event:=InputEventMouseButton.new();event.position=point;event.button_index=button;event.pressed=pressed;event.shift_pressed=shift;root.push_input(event,true)
+func input_cases(view,mode: String,reference: Dictionary) -> bool:
+	var expected:Dictionary={}
+	for row in reference.observations:expected[row.name]=row
+	var failures:Array=[]
+	var observe:=func(name):
+		var native:Dictionary=expected[mode+"-input-"+name]
+		if view.first!=int(native.first) or view.scrollbar.dragging!=native.dragging:failures.append(name+": first="+str(view.first)+", dragging="+str(view.scrollbar.dragging))
+	var reset:=func():
+		view.scrollbar.dragging=false;motion(Vector2(400,400));view.first=7;view.refresh()
+	var bottom:=694 if mode=="group" else 730
+	for sample in [["up-left",874,166],["up-right",880,166],["down-left",874,bottom],["down-right",880,bottom],["track",880,200]]:
+		reset.call();await process_frame
+		var point:=Vector2(sample[1],sample[2]);motion(point);mouse(point,MOUSE_BUTTON_LEFT,true);mouse(point,MOUSE_BUTTON_LEFT,false)
+		await process_frame;observe.call(sample[0])
+	reset.call();await process_frame
+	motion(Vector2(880,400));mouse(Vector2(880,400),MOUSE_BUTTON_LEFT,true);await process_frame;observe.call("drag-start")
+	motion(Vector2(880,300));await process_frame;observe.call("drag-move")
+	mouse(Vector2(880,300),MOUSE_BUTTON_LEFT,false);await process_frame;observe.call("drag-release")
+	for sample in [["CONTEXT_SCROLL_UP",MOUSE_BUTTON_WHEEL_UP,false,880,400],["CONTEXT_SCROLL_DOWN",MOUSE_BUTTON_WHEEL_DOWN,false,880,400],["CONTEXT_SCROLL_PAGEUP",MOUSE_BUTTON_WHEEL_UP,true,880,400],["CONTEXT_SCROLL_PAGEDOWN",MOUSE_BUTTON_WHEEL_DOWN,true,880,400],["wheel-body",MOUSE_BUTTON_WHEEL_DOWN,false,600,400],["wheel-footer",MOUSE_BUTTON_WHEEL_DOWN,false,600,730],["wheel-outside",MOUSE_BUTTON_WHEEL_DOWN,false,400,400]]:
+		reset.call();await process_frame
+		var point:=Vector2(sample[3],sample[4]);motion(point);mouse(point,sample[1],true,sample[2]);mouse(point,sample[1],false,sample[2])
+		await process_frame;observe.call(sample[0])
+	reset.call();await process_frame;motion(Vector2(880,400))
+	for pressed in [true,false]:
+		var event:=InputEventKey.new();event.keycode=KEY_PAGEUP;event.pressed=pressed;root.push_input(event,true)
+	await process_frame;observe.call("STANDARDSCROLL_PAGEUP")
+	for failure in failures:push_error("Expel native input differs: "+mode+" "+failure)
+	return failures.is_empty()
 func run() -> void:
 	if DisplayServer.get_name()=="headless":quit(77);return
 	root.size=Vector2i(1200,800)
@@ -39,6 +71,8 @@ func run() -> void:
 		DirAccess.make_dir_recursive_absolute(directory);image.save_png(directory+"/"+sample.name+".png")
 		var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(image.get_region(region).get_data())
 		if hash.finish().hex_encode()!=sample.rgb_sha256:push_error("Expel native pixels differ: "+sample.name);failed=true
+		if sample.name in ["layout-group-default","layout-destinations-default"]:
+			if not await input_cases(view,"group" if sample.phase==3 else "destinations",fixture.layout_reference.input_reference):failed=true
 		view.queue_free();background.queue_free();await process_frame
 	world.queue_free();await process_frame
 	if not failed:print("CREATURE_EXPEL_CAPTURE_PASS")

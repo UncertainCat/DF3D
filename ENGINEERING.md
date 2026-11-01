@@ -2731,10 +2731,21 @@ clamps the visible first row to keep the last page filled. Ten complete viewport
 and tail regions match native exactly in unit-expel-layout-art, alongside the
 four baseline cases. GPU diagnostics are the documented startup/shutdown issues;
 unit-expel-layout-final passes core, controller and composition checks cleanly.
-unit_expel_view_reference.layout_reference retains hashes and scope. Actual
-scrollbar pointer/wheel/drag behavior, long names/animation, full composed
-failure/replacement lifecycle and active-job/squad/later-departure effect variants
-remain unfinished.
+unit_expel_view_reference.layout_reference retains hashes and scope. Protected
+231650 adds32 input observations across both lists: both arrow halves step one
+row, track clicks page, continuous dragging moves group first7 to2 and chooser
+first7 to1, and release ends capture. Wheel input works over the bar and rows;
+page-wheel changes by a page, the group footer and outside area are ignored,
+and the PageUp key does not scroll. Gesture snapshots precede any screenshot
+acknowledgement yield, which otherwise releases synthetic held buttons.
+The view retains the scrollbar in the tree during redraw and handles list-area
+wheel input. unit-expel-input matches all32 observations through actual rendered
+Godot input plus all14 pixel cases. It has only documented GPU diagnostics;
+unit-expel-input-final passes core, controller and composition checks cleanly.
+The native clients have only the known startup notice, and owned DF39076 exits
+unsaved with the source preserved. Scrollbar hover pixels, long names/animation,
+full composed failure/replacement lifecycle and active-job/squad/later-departure
+effect variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
 ## Native item holder provider

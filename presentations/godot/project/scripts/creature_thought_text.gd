@@ -46,6 +46,8 @@ static func literal_parts(parts: Array) -> String:
  return text
 
 static func circumstance(sheet, row: Dictionary, recalled: bool, sex := -1) -> String:
+ var native_text=sheet.fact_value(row,"native_recalled_circumstance" if recalled else "native_circumstance",null)
+ if native_text!=null:return str(native_text)
  var id := int(sheet.fact_value(row,"thought_id",-1))
  var sub := int(sheet.fact_value(row,"subthought_id",-1))
  var severity := int(sheet.fact_value(row,"severity",-1))
@@ -206,4 +208,23 @@ static func memories(sheet) -> Array:
   var spans: Array=[];append_source(spans,text,Native.colors[15])
   if not spans.is_empty(): spans[0].text=spans[0].text.left(1).to_upper()+spans[0].text.substr(1)
   result.append({"heading":false,"spans":spans})
+ return result
+
+static func tagged_spans(spans:Array) -> String:
+ var result:=""
+ for span in spans:
+  var palette:=Native.colors.find(span.color)
+  if palette<0:palette=15
+  result+="[C:%d:0:%d]"%[palette%8,palette/8]+str(span.text)
+ return result
+
+static func page_text(sheet,memories_page:bool,sex:int) -> Array:
+ var result:Array=[]
+ if not memories_page:
+  for spans in recent(sheet,sex):result.append(tagged_spans(spans))
+ else:
+  for entry in memories(sheet):
+   if entry.heading and not result.is_empty():result.append("");result.append("")
+   result.append(tagged_spans(entry.spans))
+   if entry.heading:result.append("")
  return result

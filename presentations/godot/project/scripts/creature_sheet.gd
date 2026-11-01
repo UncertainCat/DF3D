@@ -18,6 +18,7 @@ var health_view
 var kills_view
 var relations_view
 var groups_view
+var thoughts_view
 var uniform_view
 var skills_view
 var knowledge_view
@@ -36,6 +37,7 @@ func reset(id: int):
  if is_instance_valid(kills_view):kills_view.first=0;kills_view.scrollbar.dragging=false
  if is_instance_valid(relations_view):relations_view.first=0;relations_view.scrollbar.dragging=false
  if is_instance_valid(groups_view):groups_view.first=0;groups_view.scrollbar.dragging=false
+ if is_instance_valid(thoughts_view):thoughts_view.first=0;thoughts_view.scrollbar.dragging=false
  if is_instance_valid(uniform_view):uniform_view.first=0;uniform_view.scrollbar.dragging=false
  if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
  if is_instance_valid(rooms_view):rooms_view.first=0;rooms_view.scrollbar.dragging=false
@@ -124,7 +126,7 @@ func tabs_at(names: Array, y: float, nested := false) -> float:
   style.set_content_margin(SIDE_TOP,0);style.set_content_margin(SIDE_BOTTOM,0)
   for state in ["normal","hover","pressed","focus"]: button.add_theme_stylebox_override(state,style)
   for state in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:
-   button.add_theme_color_override(state,(Color8(0,44,70) if nested and tab in ["Labor","Military"] else Color8(70,44,0)) if selected else Color.WHITE)
+   button.add_theme_color_override(state,(Color8(0,44,70) if nested and tab in ["Labor","Military","Thoughts"] else Color8(70,44,0)) if selected else Color.WHITE)
   button.pressed.connect(func(): change_tab(title,nested))
   owner.body.add_child(button)
   button.size=Vector2(width,24)
@@ -452,6 +454,16 @@ func render(controller, state: Dictionary):
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
+ if tab=="Thoughts":
+  scroll=null
+  if not is_instance_valid(thoughts_view):
+   thoughts_view=preload("res://scripts/native_creature_paragraph_view.gd").new()
+   owner.body.add_child(thoughts_view);thoughts_view.configure(owner.world)
+   thoughts_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+   thoughts_view.scrollbar.row_changed.connect(func(value):scrolls[thoughts_view.page_key]=value)
+  if thoughts_view.page_key!=location():thoughts_view.first=int(scrolls.get(location(),0))
+  thoughts_view.position=Vector2(0,y);thoughts_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  thoughts_view.present(Thoughts.page_text(self,subtabs.get(tab)=="Memories",int(detail.get("sex",-1))),location());return
  if tab=="Groups":
   scroll=null
   if not is_instance_valid(groups_view):
@@ -536,15 +548,6 @@ func render(controller, state: Dictionary):
  inset.add_child(content)
  if detail.is_empty(): return
  if tab=="Overview": overview(content,detail)
- elif tab=="Thoughts" and subtabs.get(tab)=="Recent thoughts":
-  for spans in Thoughts.recent(self,int(detail.get("sex",-1))): paragraph(content,spans,0)
- elif tab=="Thoughts" and subtabs.get(tab)=="Memories":
-  var first := true
-  for entry in Thoughts.memories(self):
-   if entry.heading and not first:
-    var gap := Control.new();gap.custom_minimum_size.y=24;content.add_child(gap)
-   paragraph(content,entry.spans,12 if entry.heading else 0)
-   first=false
  elif tab=="Personality" and subtabs.get(tab)=="Traits":
   paragraph(content,NativeText.attribute_description(self,int(detail.get("sex",-1)),true))
   paragraph(content,Personality.facet_description(self,int(detail.get("sex",-1))))

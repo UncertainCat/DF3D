@@ -443,6 +443,7 @@ func unit_carrier(expected: Dictionary) -> void:
 		await exercise_labor_locations(inspector,target)
 	if OS.get_environment("DF3D_UNIT_LABOR_ANIMALS")=="1":await exercise_work_animals(inspector,target)
 	if OS.get_environment("DF3D_UNIT_MILITARY")=="1":await exercise_military_kills(inspector)
+	if OS.get_environment("DF3D_UNIT_THOUGHTS")=="1":await exercise_thoughts(inspector)
 	if OS.get_environment("DF3D_UNIT_SOCIAL")=="1":
 		await exercise_relations(inspector)
 		await exercise_groups(inspector)
@@ -1716,4 +1717,65 @@ func exercise_groups(inspector) -> void:
 		check(not view.scrollbar.dragging,"Groups overlay retained drag")
 		results.append({"unit_id":target,"rows_match":equal,"native_pixels":same,"rows":rows})
 	var file:=FileAccess.open(directory+"/unit-groups-scene.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()
+
+func exercise_thoughts(inspector) -> void:
+	var reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-thoughts-native.json"))
+	var results:Array=[]
+	var grammar=preload("res://scripts/creature_thought_text.gd")
+	var palette:=RegEx.new();palette.compile("\\[C:[0-9]+:[0-9]+:[0-9]+\\]")
+	for page in reference.pages:
+		var target:=int(page.unit_id)
+		inspector.open_target(Vector3i.ZERO,1,target)
+		var deadline:=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01)
+			var state:Dictionary=world.creature_info_state(target)
+			if not state.get("loading",true) and not state.get("detail",{}).is_empty():break
+			await create_timer(0.01).timeout
+		await health_tab(inspector,"Thoughts");await health_tab(inspector,page.name,true)
+		deadline=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<deadline:
+			world.poll();actions.poll(0.01)
+			var shown:Dictionary=inspector.creature_display.get("detail",{})
+			if int(shown.get("unit_id",-1))==target and shown.has("sex"):break
+			await create_timer(0.01).timeout
+		if not check(int(inspector.creature_display.get("detail",{}).get("unit_id",-1))==target and inspector.creature_display.get("detail",{}).has("sex"),"Thoughts detail did not settle"):return
+		await process_frame;await RenderingServer.frame_post_draw
+		var sheet=inspector.creature_sheet
+		var records:Array=sheet.records_for("emotions" if page.name=="Recent thoughts" else "memories")
+		var descriptions:Array=[]
+		for row in records:
+			if sheet.fact_value(row,"record_type","")=="memory_effect":continue
+			var text=sheet.fact_value(row,"native_recalled_circumstance",null)
+			check(text!=null,"Missing native thought circumstance: "+str(target))
+			descriptions.append(text)
+		var expected:Array=[]
+		for line in page.tagged_rows:
+			var text:=palette.sub(str(line),"",true).strip_edges()
+			while text.contains("  "):text=text.replace("  "," ")
+			if not text.is_empty():expected.append(text)
+		var actual:Array=[]
+		var spans:Array=grammar.recent(sheet,int(inspector.creature_display.detail.sex)) if page.name=="Recent thoughts" else grammar.memories(sheet)
+		for entry in spans:
+			var text:=""
+			for part in entry if page.name=="Recent thoughts" else entry.spans:text+=str(part.text)
+			text=text.strip_edges()
+			while text.contains("  "):text=text.replace("  "," ")
+			if not text.is_empty():actual.append(text)
+		check(expected==actual,"Native Thoughts sentences/order differ: "+str(target)+" "+str(page.name))
+		var screenshot:=root.get_texture().get_image()
+		screenshot.save_png(directory+"/unit-thoughts-"+str(target)+"-"+str(page.name).to_lower().replace(" ","-")+"-scene.png")
+		var native_image:=Image.load_from_file(directory+"/unit-thoughts-"+str(target)+"-"+str(page.name).to_lower().replace(" ","-")+".png")
+		screenshot.convert(Image.FORMAT_RGB8);native_image.convert(Image.FORMAT_RGB8)
+		var rect:=Rect2i(432,232,456,504)
+		var same:=screenshot.get_region(rect).get_data()==native_image.get_region(rect).get_data()
+		check(same,"Native Thoughts pixels differ: "+str(target)+" "+str(page.name))
+		var view=sheet.thoughts_view
+		inspector.redraw();await process_frame
+		check(sheet.thoughts_view==view,"Thoughts header refresh replaced view")
+		view.scrollbar.dragging=true;inspector.cancel_gesture()
+		check(not view.scrollbar.dragging,"Thoughts overlay retained drag")
+		results.append({"unit_id":target,"page":page.name,"native_pixels":same,"native_circumstances":descriptions,"expected_text":expected,"actual_text":actual,"complete_text_match":expected==actual})
+	var file:=FileAccess.open(directory+"/unit-thoughts-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()

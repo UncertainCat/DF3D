@@ -3442,26 +3442,46 @@ not live-covered here. Initial121533 caught missing diagnostic camera restoratio
 after native Inspect.121729's client passed, but its completion acknowledgement
 exceeded the30s combined-lane limit; this multi-panel lane now allows60s.
 
-### Creature Thoughts native reference
+### Creature Thoughts and Memories
 
-Protected135453 on2026-11-01 captures Recent thoughts and Memories for1017 and
-2905, including native tagged strings and rendered pages. The counts are65/59
-and59/42 respectively. Diagnostic navigation visits Overview before changing
-creature: Recent thoughts is populated there, so changing the sheet ID while
-Memories is active retains the preceding creature's recent strings. This is a
-capture sequencing constraint, not a runtime workaround or approved UI change.
-Owned DF11984 exits unsaved, the source save is unchanged, and all three Godot
-logs contain only the documented startup notice with no Unicode parsing errors.
+`creature_thoughts_native.h` calls nativee2c460 with an owned unit containing
+only race and sex, an owned string, thought/subthought/severity, and the native
+normal/recalled flag. The unit pointer is not passed downstream. World lookups
+supply names, items, materials and historical-event collections; their formatters
+write output strings. The knowledge-description material cache and native RNG
+are restored after each call. Pins cover the complete circumstance formatter,
+knowledge descriptors (including leaf switch tails), history collection name
+implementations, and item/name helpers. Native sheet initializer1a5b70 and
+Memories wrapper481f00 are not runtime inputs or invoked APIs.
 
-Nativee2c460 accepts(unit, owned string, thought type, subthought, severity,
-normal-versus-recalled flag). Call sites1a7d0d/1a7eba establish the ABI. Its unit
-reads are race and sex; names, items, materials and historical-event collections
-are resolved through semantic world records. The indirect call for thought233
-is history_event_collection::getName. Shared lookup/cache ownership still needs
-verification before runtime invocation. The surrounding1a5b70 initializer writes
-native sheet vectors and is not an eligible runtime API. Current Godot Thought
-and Memory grammar remains reconstructed and omits untraced circumstances;
-these captures do not establish rendered DF3D parity or complete this screen.
+Existing emotion/memory facts carry native circumstance strings. The old Lua
+subject-name reconstruction is removed, including its incomplete historical
+identity handling. Godot's sourced emotion grammar and memory grouping consume
+these strings; native recollections now also supply Personality cause clauses.
+The previous circumstance recipes remain as a fallback for older/synthetic
+records, not the current bridge path. Whole sentence composition and ordering
+remain in Godot; this is not a native whole-page producer. Existing1024-byte
+fact and120KiB detail bounds still apply and report truncation explicitly.
+
+Thoughts and Memories use the shared native paragraph view, original scrollbar,
+season spacing and blue selected subtab. The view survives header redraw and
+releases drag capture on overlay cancellation. Protected140441 on2026-11-01
+compares all65 recent thoughts and28 nonblank memory entries for1017, and59/20
+for2905: normalized text and order match native. All four456x504 body crops match
+exactly. Header refresh and overlay drag retirement pass. Owned DF33084 exits
+unsaved; the source save is unchanged. All three Godot logs contain only the
+known startup notice and no Unicode errors. Plugin SHA256:
+`44c0c231ba27aff98dca398b53e6f9e6456472b7a7beb321eb66b652ee2dded3`.
+
+Native discovery135453 captures tagged rows and pages for the same creatures.
+Diagnostic navigation visits Overview before changing creature: Recent thoughts
+is populated there, so changing the sheet ID while Memories is active retains
+the preceding creature's recent strings. This is a capture sequencing constraint,
+not a runtime workaround or approved UI change.140312 is excluded from acceptance:
+the harness accessed detail before the refreshed panel had settled. Remaining
+acceptance includes tail scrolling, resize, pending/stale/disconnect lifecycle,
+and circumstances not present in the sampled creatures. The creature route stays
+staged; these results do not establish completion of the management backlog.
 
 ### Creature Groups
 

@@ -59651,6 +59651,35 @@
         "overview_before_unit_switch": true,
         "source_save_unchanged": true,
         "acceptance": "Native reference only; bridge formatter and rendered Thoughts parity are not implemented."
+      },
+      "thoughts_implementation": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-140441",
+        "native_formatter": "e2c460",
+        "plugin_sha256": "44c0c231ba27aff98dca398b53e6f9e6456472b7a7beb321eb66b652ee2dded3",
+        "subjects": [
+          {
+            "unit_id": 1017,
+            "recent_rows": 65,
+            "nonblank_memory_rows": 28
+          },
+          {
+            "unit_id": 2905,
+            "recent_rows": 59,
+            "nonblank_memory_rows": 20
+          }
+        ],
+        "all_text_and_order_match": true,
+        "all_four_body_crops_match": true,
+        "header_refresh_retains_view": true,
+        "overlay_retires_drag": true,
+        "source_save_unchanged": true,
+        "omissions": [
+          "tail scrolling",
+          "resize",
+          "pending/stale/disconnect lifecycle",
+          "unsampled circumstances"
+        ],
+        "composition": "Godot sourced emotion grammar and grouping; native circumstance strings"
       }
     },
     "unit_military_reference": {

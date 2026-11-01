@@ -64,45 +64,6 @@ return function(request)
   local number=type(value)=='number'
   row.facts[#row.facts+1]={key=key,text=number and '' or bounded(value,1024,section),number=number and value or 0,has_number=number}
  end
- local function thought_subject(s,r,v)
-   if v.thought==df.unit_thought_type.NeedsUnfulfilled and v.subthought==2 and v.severity>=0 then
-    local deity=df.historical_figure.find(v.severity)
-    if deity then fact(s,r,'thought_subject',dfhack.translation.translateName(deity.name,true))end
-   elseif v.thought==df.unit_thought_type.Syndrome and v.subthought>=0 then
-    local syndromes=df.global.world.raws.mat_table.syndromes.all
-    local syndrome=v.subthought<#syndromes and syndromes[v.subthought] or nil
-    if syndrome then fact(s,r,'thought_subject',syndrome.syn_name)end
-   elseif v.thought==df.unit_thought_type.Perform or v.thought==df.unit_thought_type.WatchPerform then
-    -- Both native branches resolve this incident's performance event.
-    local incident=df.incident.find(v.subthought)
-    local performance=incident and incident.data.Performance
-    fact(s,r,'performance_event',performance and performance.performance_event or -1)
-   elseif v.thought==df.unit_thought_type.DefendedSiteAgainstInvaders then
-    local entity=df.historical_entity.find(v.subthought)
-    local site=df.world_site.find(v.severity)
-    if entity then fact(s,r,'thought_subject',dfhack.translation.translateName(entity.name,true))end
-    if site then fact(s,r,'thought_location',dfhack.translation.translateName(site.name,true))end
-   elseif v.thought==df.unit_thought_type.SawDeadBody then
-    local incident=df.incident.find(v.subthought)
-    if incident then
-     local hf=df.historical_figure.find(incident.victim_hf.hfid)
-     if not hf and incident.victim_race>=0 then
-      local raw=df.global.world.raws.creatures.all[incident.victim_race]
-      local victim_caste=raw and raw.caste[incident.victim_caste]
-      if victim_caste then fact(s,r,'thought_subject',victim_caste.caste_name[0]);fact(s,r,'thought_subject_kind','anonymous_species')end
-     elseif hf then
-      -- Matches the native creature sheet formatter in DF 53.16: historical id,
-      -- otherwise first witnessed identity. Same-race named cases need no race-title prefix.
-      local name_id=incident.victim_hf.historical_hfid
-      if name_id<0 and #incident.victim_hf.all_witnessed_ident>0 then name_id=incident.victim_hf.all_witnessed_ident[0]end
-      local known=df.historical_figure.find(name_id)
-      if hf.race==u.race and known and known.name.has_name then
-       fact(s,r,'thought_subject',dfhack.translation.translateName(known.name,true));fact(s,r,'thought_subject_kind','named_same_species')
-      else fact(s,r,'thought_subject_kind','unresolved_historical_identity')end
-     end
-    else fact(s,r,'thought_subject_kind','unknown')end
-   end
- end
  local function section(kind,fn)
   local s={kind=kind,available=true,truncated=false,reason='',records={}}
   result.sections[#result.sections+1]=s
@@ -381,9 +342,10 @@ return function(request)
    fact(s,r,'emotion_id',v.type);fact(s,r,'thought_id',v.thought);fact(s,r,'mood_flags',v.flags.whole)
    fact(s,r,'thought',enum(df.unit_thought_type,v.thought));fact(s,r,'strength',v.strength);fact(s,r,'relative_strength',v.relative_strength)
    fact(s,r,'severity',v.severity);fact(s,r,'year',v.year);fact(s,r,'year_tick',v.year_tick);fact(s,r,'subthought_id',v.subthought)
-   thought_subject(s,r,v)
+   fact(s,r,'native_circumstance',request.thought_circumstance(u.id,v.thought,v.subthought,v.severity,true))
+   fact(s,r,'native_recalled_circumstance',request.thought_circumstance(u.id,v.thought,v.subthought,v.severity,false))
   end)
-  s.reason='Native base emotion recipes use numeric facts; historical identity and causal modifiers remain partial'
+  s.reason='Native circumstance descriptions with observed emotion facts'
  end)
  section(11,function(s)
   if not soul then return absent(s,'Creature has no current soul')end
@@ -484,7 +446,7 @@ return function(request)
    fact(s,r,'year',v.year);fact(s,r,'year_tick',v.year_tick)
    fact(s,r,'created_year',v.created_year);fact(s,r,'created_tick',v.created_tick)
    fact(s,r,'has_remembered',v.flags.has_remembered and 'yes' or 'no')
-   thought_subject(s,r,v)
+   fact(s,r,'native_recalled_circumstance',request.thought_circumstance(u.id,v.thought,v.subthought,v.severity,false))
   end
   for i=0,7 do if memories.shortterm[i].year>=0 then memory(memories.shortterm[i],i,'short term') end end
   for i=0,7 do if memories.longterm[i].year>=0 then memory(memories.longterm[i],8+i,'long term') end end

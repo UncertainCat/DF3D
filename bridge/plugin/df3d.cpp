@@ -92,6 +92,7 @@
 #include "creature_expel_preview_native.h"
 #include "creature_health_native.h"
 #include "creature_health_pages_native.h"
+#include "creature_skills_native.h"
 #include "creature_items_native.h"
 #include "item_owner_native.h"
 #include "modules/Buildings.h"
@@ -1684,6 +1685,20 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
           const auto owner=df3d_production::itemOwnerDescription(df::item::find(id));if(!owner)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["id"]=owner->id;result["name"]=DF2UTF(owner->name);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="unit-skills-page-probe") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t id=-1,page=-1;
+          const auto a=std::from_chars(parameters[1].data(),parameters[1].data()+parameters[1].size(),id);
+          const auto b=std::from_chars(parameters[2].data(),parameters[2].data()+parameters[2].size(),page);
+          if(a.ec!=std::errc{}||a.ptr!=parameters[1].data()+parameters[1].size()||b.ec!=std::errc{}||b.ptr!=parameters[2].data()+parameters[2].size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          const auto value=df3d_creature::skillsPageProbe(df::unit::find(id),page);if(!value)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["unit_id"]=id;result["page"]=page;
+          const auto append=[&](const char* key,const auto& rows){result[key]=Json::Value(Json::arrayValue);for(auto v:rows)result[key].append(v);};
+          append("skills",value->skills);append("values",value->values);append("rust_values",value->rustValues);
+          append("knowledge_types",value->knowledgeTypes);append("knowledge_ids",value->knowledgeIds);append("knowledge_bits",value->knowledgeBits);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="unit-health-page-probe") {

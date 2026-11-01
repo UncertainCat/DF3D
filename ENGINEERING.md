@@ -3169,10 +3169,27 @@ renders scholarly topics and art forms. The diagnostic returns to Overview
 without advancing simulation; owned DF39556 exits unsaved with source preservation
 and only known Godot startup notices. Native label reference16d7f3 belongs to
 renderer14ef90. Its detail text uses sheet vectors1bc0/1bd8 and width1bf0.
-These are diagnostic references, never runtime inputs. The owned native builder,
-Knowledge semantic vectors, selection/details, hover and scrolling still need
-audit and verification. Godot currently categorizes/sorts generic skill records;
-that implementation is not accepted as native Skills parity.
+These are diagnostic references, never runtime inputs. Native input1b350c calls
+47e270(context,unit); its category tables are included in the pinned0x11cd-byte
+body. The builder performs stable descending insertion by nonnegative rating,
+preserves source order for ties, and separately returns rating minus rust.
+Knowledge enumerates native topic bits and art/content IDs. Its b530b0 lookup
+writes unit+1274, so `creature_skills_native.h` supplies a copied unit/cache,
+owned soul/skill records and six independent output vectors. Historical records
+are read-only inputs. Vector growth helpers70e20/71040 are pinned; their moves
+use the VCRUNTIME memmove import. No native sheet or selection is borrowed.
+
+Protected033035 compares all six vectors for all five pages against native:
+18/4/9/3 skills and45 Knowledge entries. Guards preserve source unit/soul/skill
+records, historical knowledge, sheet/plotinfo and random streams. Each probe
+starts with the original unit's historical cache cleared after oracle capture;
+that cold cache stays unchanged and is restored afterward. DF26744 exits unsaved,
+source preservation passes and all three Godot processes have only known startup
+notices. `owned_probe_reference` retains the rows and installed bridge hash.
+The `unit-skills-page-probe` command is diagnostic only. Empty/no-soul and
+controlled tie/negative-rating cases, detail text, hover, scrolling, management
+transport and rendered Skills remain unfinished. Godot still categorizes/sorts
+generic skill records; that implementation is not accepted as native parity.
 
 ### Creature Health transport contract
 

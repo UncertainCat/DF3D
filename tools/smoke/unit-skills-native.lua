@@ -27,6 +27,42 @@ local ok,err=xpcall(function()
   for _,v in ipairs(sheet.unit_skill)do page.skills[#page.skills+1]=v end
   for _,v in ipairs(sheet.unit_skill_val)do page.values[#page.values+1]=v end
   for _,v in ipairs(sheet.unit_skill_val_w_rust)do page.rust_values[#page.rust_values+1]=v end
+  page.knowledge_types={};page.knowledge_ids={};page.knowledge_bits={}
+  for _,v in ipairs(sheet.unit_knowledge_type)do page.knowledge_types[#page.knowledge_types+1]=v end
+  for _,v in ipairs(sheet.unit_knowledge_id)do page.knowledge_ids[#page.knowledge_ids+1]=v end
+  for _,v in ipairs(sheet.unit_knowledge_bits)do page.knowledge_bits[#page.knowledge_bits+1]=v end
+  if os.getenv('DF3D_UNIT_SKILLS_PROBE')=='1'then
+   local guards={}
+   local function guard(address,size)
+    if size==0 then return end;assert(size>0 and size<1048576)
+    local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+    guards[#guards+1]={bytes=bytes,address=address,size=size}
+   end
+   local function object(value)if value then local size,address=df.sizeof(value);guard(address,size)end end
+   local function vector(value)
+    local _,address=df.sizeof(value);local first=df.reinterpret_cast('uint64_t',address).value
+    guard(first,df.reinterpret_cast('uint64_t',address+8).value-first)
+   end
+   local original_cache=unit.enemy.histfig_vector_idx;unit.enemy.histfig_vector_idx=-1
+   object(unit);object(sheet);object(df.global.plotinfo)
+   local soul=unit.status.current_soul;object(soul)
+   if soul then vector(soul.skills);for _,skill in ipairs(soul.skills)do object(skill)end end
+   local hf=df.historical_figure.find(unit.hist_figure_id);object(hf)
+   if hf then object(hf.info);if hf.info then
+    local known=hf.info.known_info;object(known)
+    if known then object(known.knowledge);for _,field in ipairs{'known_poetic_forms','known_musical_forms','known_dance_forms','known_written_contents'}do vector(known[field])end end
+   end end
+   for _,field in ipairs{'unit_skill','unit_skill_val','unit_skill_val_w_rust','unit_knowledge_type','unit_knowledge_id','unit_knowledge_bits'}do vector(sheet[field])end
+   local base=dfhack.internal.getImageBase()
+   for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do guard(base+range[1],range[2])end
+   local text,status=dfhack.run_command_silent('df3d','unit-skills-page-probe',tostring(unit.id),tostring(page.tab))
+   local unchanged=true
+   for _,g in ipairs(guards)do if dfhack.internal.memcmp(g.bytes,g.address,g.size)~=0 then unchanged=false end;df.delete(g.bytes)end
+   unit.enemy.histfig_vector_idx=original_cache
+   assert(status==0,text);assert(unchanged,'Skills probe changed source/UI/random state')
+   page.probe=json.decode(text);page.probe_guards_unchanged=true;page.cold_source_cache_preserved=true
+   for _,field in ipairs{'skills','values','rust_values','knowledge_types','knowledge_ids','knowledge_bits'}do assert(json.encode(page[field])==json.encode(page.probe[field]),'Skills probe differs: '..name..' '..field)end
+  end
   for y=17,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then page.lines[#page.lines+1]={y=y,text=text}end end
   pages[#pages+1]=page;capture('unit-skills-'..name:lower():gsub(' ','-'))
  end

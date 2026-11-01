@@ -57685,9 +57685,918 @@
         "success": true,
         "unit_id": 1017
       },
-      "source": "Native Skills labels reference Other skills at16d7f3 in renderer14ef90; skill detail text boxes at sheet1bc0/1bd8 and width1bf0. Builder/ownership audit pending.",
-      "scope": "Read-only native five-tab capture on existing adult citizen; records native ordered skill IDs, levels, rust-adjusted values and rendered screen text. Knowledge semantic vectors, selection/details, hover, scrolling and owned builder remain unverified. No product Skills acceptance.",
-      "source_preservation": "Owned source unchanged; DF39556 exits unsaved; all three Godot processes only known startup notice."
+      "source": "Native input1b350c calls47e270 with context and unit. Pinned root includes category dispatch tables through47f43d. Stable descending nonnegative rating insertion preserves source order for ties; rust value remains rating minus rust. Knowledge uses copied unit cache throughb530b0 and read-only historical records.",
+      "scope": "Native five-tab baseline and owned probe accepted for the captured specimen. Empty/no-soul and controlled ordering cases, detail text, hover, scrolling, transport and rendered Skills remain unverified.",
+      "source_preservation": "Owned source unchanged; DF39556 exits unsaved; all three Godot processes only known startup notice.",
+      "owned_probe_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-033035",
+        "status": "passed_with_known_issues",
+        "pages": [
+          {
+            "cold_source_cache_preserved": true,
+            "first": 0,
+            "knowledge_bits": [],
+            "knowledge_ids": [],
+            "knowledge_types": [],
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      Talented Appraiser (V Rusty)",
+                "y": 20
+              },
+              {
+                "text": "                                                      Proficient Organizer (V Rusty)",
+                "y": 23
+              },
+              {
+                "text": "                                                      Proficient Record Keeper (V Rusty)",
+                "y": 26
+              },
+              {
+                "text": "                                                      Adequate Mason (Rusty)",
+                "y": 29
+              },
+              {
+                "text": "                                                      Adequate Planter",
+                "y": 32
+              },
+              {
+                "text": "                                                      Dabbling Carpenter",
+                "y": 35
+              },
+              {
+                "text": "                                                      Dabbling Engraver",
+                "y": 38
+              },
+              {
+                "text": "                                                      Dabbling Butcher",
+                "y": 41
+              },
+              {
+                "text": "                                                      Dabbling Brewer",
+                "y": 44
+              },
+              {
+                "text": "                                                      Dabbling Clothier",
+                "y": 47
+              },
+              {
+                "text": "                                                      Dabbling Miller",
+                "y": 50
+              },
+              {
+                "text": "                                                      Dabbling Thresher",
+                "y": 53
+              },
+              {
+                "text": "                                                      Dabbling Furnace Operator",
+                "y": 56
+              },
+              {
+                "text": "                                                      Dabbling Metal Crafter",
+                "y": 59
+              }
+            ],
+            "name": "Labor",
+            "probe": {
+              "knowledge_bits": [],
+              "knowledge_ids": [],
+              "knowledge_types": [],
+              "page": 0,
+              "rust_values": [
+                0,
+                -1,
+                -1,
+                -4,
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "skills": [
+                73,
+                74,
+                75,
+                4,
+                21,
+                2,
+                3,
+                10,
+                14,
+                15,
+                16,
+                17,
+                24,
+                33,
+                61,
+                63,
+                135,
+                136
+              ],
+              "unit_id": 1017,
+              "values": [
+                6,
+                5,
+                5,
+                2,
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            "probe_guards_unchanged": true,
+            "rust_values": [
+              0,
+              -1,
+              -1,
+              -4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              73,
+              74,
+              75,
+              4,
+              21,
+              2,
+              3,
+              10,
+              14,
+              15,
+              16,
+              17,
+              24,
+              33,
+              61,
+              63,
+              135,
+              136
+            ],
+            "tab": 0,
+            "values": [
+              6,
+              5,
+              5,
+              2,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "cold_source_cache_preserved": true,
+            "first": 0,
+            "knowledge_bits": [],
+            "knowledge_ids": [],
+            "knowledge_types": [],
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      Dabbling Armor User",
+                "y": 20
+              },
+              {
+                "text": "                                                      Dabbling Observer",
+                "y": 23
+              },
+              {
+                "text": "                                                      Dabbling Fighter",
+                "y": 26
+              },
+              {
+                "text": "                                                      Dabbling Dodger",
+                "y": 29
+              }
+            ],
+            "name": "Combat",
+            "probe": {
+              "knowledge_bits": [],
+              "knowledge_ids": [],
+              "knowledge_types": [],
+              "page": 1,
+              "rust_values": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "skills": [
+                45,
+                87,
+                97,
+                103
+              ],
+              "unit_id": 1017,
+              "values": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            "probe_guards_unchanged": true,
+            "rust_values": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              45,
+              87,
+              97,
+              103
+            ],
+            "tab": 1,
+            "values": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "cold_source_cache_preserved": true,
+            "first": 0,
+            "knowledge_bits": [],
+            "knowledge_ids": [],
+            "knowledge_types": [],
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      Talented Intimidator",
+                "y": 20
+              },
+              {
+                "text": "                                                      Proficient Persuader",
+                "y": 23
+              },
+              {
+                "text": "                                                      Proficient Negotiator",
+                "y": 26
+              },
+              {
+                "text": "                                                      Proficient Judge of Intent",
+                "y": 29
+              },
+              {
+                "text": "                                                      Proficient Comedian",
+                "y": 32
+              },
+              {
+                "text": "                                                      Dabbling Conversationalist",
+                "y": 35
+              },
+              {
+                "text": "                                                      Dabbling Consoler",
+                "y": 38
+              },
+              {
+                "text": "                                                      Dabbling Pacifier",
+                "y": 41
+              },
+              {
+                "text": "                                                      Dabbling Speaker",
+                "y": 44
+              }
+            ],
+            "name": "Social",
+            "probe": {
+              "knowledge_bits": [],
+              "knowledge_ids": [],
+              "knowledge_types": [],
+              "page": 2,
+              "rust_values": [
+                6,
+                5,
+                5,
+                5,
+                5,
+                0,
+                0,
+                0,
+                0
+              ],
+              "skills": [
+                77,
+                70,
+                71,
+                72,
+                79,
+                78,
+                81,
+                82,
+                92
+              ],
+              "unit_id": 1017,
+              "values": [
+                6,
+                5,
+                5,
+                5,
+                5,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            "probe_guards_unchanged": true,
+            "rust_values": [
+              6,
+              5,
+              5,
+              5,
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              77,
+              70,
+              71,
+              72,
+              79,
+              78,
+              81,
+              82,
+              92
+            ],
+            "tab": 2,
+            "values": [
+              6,
+              5,
+              5,
+              5,
+              5,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "cold_source_cache_preserved": true,
+            "first": 0,
+            "knowledge_bits": [],
+            "knowledge_ids": [],
+            "knowledge_types": [],
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      Novice Crutch-walker",
+                "y": 20
+              },
+              {
+                "text": "                                                      Dabbling Student",
+                "y": 23
+              },
+              {
+                "text": "                                                      Dabbling Reader",
+                "y": 26
+              }
+            ],
+            "name": "Other skills",
+            "probe": {
+              "knowledge_bits": [],
+              "knowledge_ids": [],
+              "knowledge_types": [],
+              "page": 3,
+              "rust_values": [
+                1,
+                0,
+                0
+              ],
+              "skills": [
+                62,
+                84,
+                91
+              ],
+              "unit_id": 1017,
+              "values": [
+                1,
+                0,
+                0
+              ]
+            },
+            "probe_guards_unchanged": true,
+            "rust_values": [
+              1,
+              0,
+              0
+            ],
+            "skills": [
+              62,
+              84,
+              91
+            ],
+            "tab": 3,
+            "values": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "cold_source_cache_preserved": true,
+            "first": 0,
+            "knowledge_bits": [
+              256,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "knowledge_ids": [
+              -1,
+              -1,
+              0,
+              4,
+              15,
+              23,
+              25,
+              26,
+              27,
+              41,
+              46,
+              49,
+              50,
+              51,
+              63,
+              64,
+              302,
+              617,
+              660,
+              973,
+              1023,
+              1083,
+              1131,
+              1141,
+              1144,
+              1165,
+              1241,
+              1312,
+              1351,
+              1411,
+              1417,
+              1445,
+              1449,
+              1509,
+              1585,
+              1615,
+              1632,
+              1640,
+              1738,
+              1754,
+              1760,
+              1766,
+              1770,
+              1836,
+              1892
+            ],
+            "knowledge_types": [
+              5,
+              8,
+              14,
+              14,
+              14,
+              14,
+              14,
+              14,
+              14,
+              14,
+              14,
+              14,
+              14,
+              14,
+              14,
+              14,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17,
+              17
+            ],
+            "lines": [
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 17
+              },
+              {
+                "text": "                                                       Labor   Combat   Social   Other skills   Knowledge",
+                "y": 18
+              },
+              {
+                "text": "                                                      The geocentric model",
+                "y": 20
+              },
+              {
+                "text": "                                                      Astronomy",
+                "y": 21
+              },
+              {
+                "text": "                                                      Surveying",
+                "y": 23
+              },
+              {
+                "text": "                                                      Geography",
+                "y": 24
+              },
+              {
+                "text": "                                                      The Valley of Winds",
+                "y": 26
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 27
+              },
+              {
+                "text": "                                                      The Style of Prophecies",
+                "y": 29
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 30
+              },
+              {
+                "text": "                                                      The Umber Learning",
+                "y": 32
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 33
+              },
+              {
+                "text": "                                                      The Chartreuse Visionary",
+                "y": 35
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 36
+              },
+              {
+                "text": "                                                      The Truth of Poets",
+                "y": 38
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 39
+              },
+              {
+                "text": "                                                      The Desks of Convenience",
+                "y": 41
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 42
+              },
+              {
+                "text": "                                                      The South Stranger",
+                "y": 44
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 45
+              },
+              {
+                "text": "                                                      The Knowledge of Pantomiming",
+                "y": 47
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 48
+              },
+              {
+                "text": "                                                      The Intricate Joke",
+                "y": 50
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 51
+              },
+              {
+                "text": "                                                      The Suitor of Luxury",
+                "y": 53
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 54
+              },
+              {
+                "text": "                                                      The Pantomime of Festivals",
+                "y": 56
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 57
+              },
+              {
+                "text": "                                                      The Book of Quiescence",
+                "y": 59
+              },
+              {
+                "text": "                                                      Poetic form",
+                "y": 60
+              }
+            ],
+            "name": "Knowledge",
+            "probe": {
+              "knowledge_bits": [
+                256,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "knowledge_ids": [
+                -1,
+                -1,
+                0,
+                4,
+                15,
+                23,
+                25,
+                26,
+                27,
+                41,
+                46,
+                49,
+                50,
+                51,
+                63,
+                64,
+                302,
+                617,
+                660,
+                973,
+                1023,
+                1083,
+                1131,
+                1141,
+                1144,
+                1165,
+                1241,
+                1312,
+                1351,
+                1411,
+                1417,
+                1445,
+                1449,
+                1509,
+                1585,
+                1615,
+                1632,
+                1640,
+                1738,
+                1754,
+                1760,
+                1766,
+                1770,
+                1836,
+                1892
+              ],
+              "knowledge_types": [
+                5,
+                8,
+                14,
+                14,
+                14,
+                14,
+                14,
+                14,
+                14,
+                14,
+                14,
+                14,
+                14,
+                14,
+                14,
+                14,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17,
+                17
+              ],
+              "page": 4,
+              "rust_values": [],
+              "skills": [],
+              "unit_id": 1017,
+              "values": []
+            },
+            "probe_guards_unchanged": true,
+            "rust_values": [],
+            "skills": [],
+            "tab": 4,
+            "values": []
+          }
+        ],
+        "bridge_sha256": "5edf276e2a30bf2e4288fb9b539c671ba5fcb34d4fcd14c835a80e3aaa299aea",
+        "scope": "All six vectors match native for five pages on one existing adult citizen. Independently owned output context, copied unit cache and soul skills; cold original cache unchanged. Guards cover source/unit/soul/skills/HF/knowledge/UI/random data. No management transport or rendered Skills acceptance."
+      }
     }
   }
 }

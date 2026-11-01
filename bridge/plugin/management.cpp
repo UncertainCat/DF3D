@@ -83,6 +83,7 @@
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
 #include "creature_health_native.h"
+#include "creature_health_pages_native.h"
 #include "creature_items_native.h"
 #include "farm_transaction.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
@@ -3838,7 +3839,28 @@ void run(color_ostream& out) {
     each("caravans",[&](){TradeCaravan c;c.id=int32_t(number(L,"id"));c.name=text(L,"name");c.state=text(L,"state");c.daysRemaining=int32_t(number(L,"days_remaining"));trade.caravans.push_back(std::move(c));});
     each("goods",[&](){TradeGood g;g.id=int32_t(number(L,"id",-1));g.description=text(L,"description");g.quantity=uint32_t(number(L,"quantity",1));g.selected=boolean(L,"selected");g.selectable=boolean(L,"selectable");g.reason=text(L,"reason");trade.goods.push_back(std::move(g));});
   }
-  if(action==m::ManagementAction::CreatureInspect) creature_data::read(L,creature);
+  if(action==m::ManagementAction::CreatureInspect) {
+    creature_data::read(L,creature);
+    if(ok && creature.id>=0) {
+      auto* unit=df::unit::find(creature.id);
+      size_t bytes=creature.name.size()+creature.species.size()+creature.profession.size()+creature.job.size(),rows=0;
+      for(const auto& section:creature.sections){bytes+=section.reason.size();for(const auto& record:section.records){bytes+=record.name.size();for(const auto& fact:record.facts)bytes+=fact.key.size()+fact.text.size();}}
+      for(const auto& page:creature.pages)bytes+=page.size();
+      for(const auto& palette:creature.palettes)bytes+=palette.size();
+      for(int page=0;page<5 && ok;++page) {
+        const auto native=df3d_creature::healthPageProbe(unit,page);
+        if(!native){ok=false;break;}
+        std::vector<std::string> text;
+        for(const auto& row:*native){
+          auto value=DF2UTF(row);bytes+=value.size();
+          if(value.size()>65536 || ++rows>4096 || bytes>131072){ok=false;break;}
+          text.push_back(std::move(value));
+        }
+        if(ok)creature.healthPages.push_back(std::move(text));
+      }
+      if(!ok){creature={};message="Native creature Health payload unavailable or exceeds contract";}
+    }
+  }
 
   if(action>=m::ManagementAction::AgreementList && action<=m::ManagementAction::AgreementInspect) {
     agreements.nextBeforeId=int32_t(number(L,"next_before_id",-1));agreements.pendingOnly=boolean(L,"pending_only");agreements.detail=text(L,"detail");

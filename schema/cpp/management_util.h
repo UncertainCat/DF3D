@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 106;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v106";
+inline constexpr uint32_t kManagementVersion = 107;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v107";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -841,6 +841,18 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       for(const auto* t:*p->tile_pages())if(!text(t,256))return "invalid creature portrait page";
       for(const auto* t:*p->palettes())if(!text(t,512))return "invalid creature portrait palette";
       for(const auto* l:*p->layers())if(l->page()>=p->tile_pages()->size() || !l->cells_x() || !l->cells_y() || (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid creature portrait layer";
+    }
+    if(const auto* pages=c->health_pages()) {
+      if(pages->size()!=5)return "invalid creature health page count";
+      std::set<uint8_t> kinds;
+      size_t healthRows=0;
+      for(const auto* page:*pages) {
+        if(!page || page->kind()>CreatureHealthPageKind::Description ||
+           !kinds.insert(uint8_t(page->kind())).second || !page->rows())return "invalid creature health page";
+        for(const auto* row:*page->rows()) {
+          if(!row || !text(row,65536) || ++healthRows>4096)return "invalid creature health row";
+        }
+      }
     }
     std::set<uint8_t> sections;
     for(const auto* section:*c->sections()) {

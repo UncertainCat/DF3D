@@ -53500,6 +53500,58 @@
           "Missing caregivers use -1; absent positive IDs and mixed syndrome/operation timestamp ties remain.",
           "Diagnostic semantic comparison only; no rendered DF3D Health acceptance."
         ]
+      },
+      "transport_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-020932",
+        "status": "passed_with_known_issues",
+        "protocol": 107,
+        "bridge_sha256": "903962ce31bb31d3b6a658e1105afc6a96af1f47d02d30ebbc6f09df54b4e965",
+        "row_counts": [
+          3,
+          10,
+          1,
+          22,
+          1
+        ],
+        "exact_native_rows": true,
+        "immutable_godot_pages": true,
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "source_save": "Owned source unchanged; DF37496 exits unsaved.",
+        "limitations": [
+          "Native-page payload verified through actual main-scene model; Health still uses legacy rendering.",
+          "Broader clinical and mixed-syndrome cases remain unverified."
+        ]
       }
     }
   }

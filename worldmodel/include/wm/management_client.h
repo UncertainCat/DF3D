@@ -39,12 +39,15 @@ struct SelectionState {
 struct CreatureFact { std::string key,text; int64_t number=0; bool hasNumber=false; };
 struct CreatureRecord { int32_t id=-1,relatedId=-1; std::string name; std::vector<CreatureFact> facts; };
 struct CreatureSection { CreatureSectionKind kind=CreatureSectionKind::Identity; bool available=false,truncated=false; std::string reason; std::vector<CreatureRecord> records; };
+enum class CreatureHealthPageKind : uint8_t { Status, Wounds, Treatment, History, Description };
+struct CreatureHealthPage { CreatureHealthPageKind kind=CreatureHealthPageKind::Status; std::vector<std::string> rows; };
 struct CreatureInfo {
   int32_t unitId=-1,age=-1,sex=-1,x=-1,y=-1,z=-1;
   uint64_t capturedTick=0;
   std::string name,species,profession,job;
   bool complete=false;
   std::vector<CreatureSection> sections;
+  std::vector<CreatureHealthPage> healthPages;
   SelectionAppearance portrait;
 };
 struct AreaSpan { int16_t y=0,x=0; uint16_t length=0; };

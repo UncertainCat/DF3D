@@ -71,6 +71,14 @@ Dictionary Df3dWorld::creature_info_state(int64_t id) {
                 }
                 records.make_read_only();section["kind"]=int(s.kind);section["key"]=String(keys[int(s.kind)]);section["available"]=s.available;section["truncated"]=s.truncated;section["reason"]=String::utf8(s.reason.c_str());section["records"]=records;section.make_read_only();sections.push_back(section);
             }
+            Array healthPages;
+            for(const auto& page:c.healthPages) {
+                Dictionary value;Array rows;
+                for(const auto& text:page.rows)rows.push_back(String::utf8(text.c_str()));
+                rows.make_read_only();value["kind"]=int(page.kind);value["rows"]=rows;
+                value.make_read_only();healthPages.push_back(value);
+            }
+            healthPages.make_read_only();creatureInfoRows_["health_pages"]=healthPages;
             sections.make_read_only();auto& out=creatureInfoRows_;
             out["unit_id"]=c.unitId;out["name"]=String::utf8(c.name.c_str());out["species"]=String::utf8(c.species.c_str());out["profession"]=String::utf8(c.profession.c_str());out["job"]=String::utf8(c.job.c_str());out["age"]=c.age;out["sex"]=c.sex;out["origin"]=Vector3i(c.x,c.y,c.z);out["captured_tick"]=int64_t(c.capturedTick);out["complete"]=c.complete;out["sections"]=sections;
         }

@@ -1915,10 +1915,13 @@ table CreatureExpelPreview {
   units:[CreatureExpelUnit] (required); destinations:[CreatureExpelDestination] (required);
 }
 table CreatureExpelState { outcome:CreatureExpelOutcome; preview:CreatureExpelPreview; }
+enum CreatureHealthPageKind : uint8 { Status, Wounds, Treatment, History, Description }
+table CreatureHealthPage { kind:CreatureHealthPageKind; rows:[string] (required); }
 table CreatureState {
   unit_id:int32 = -1; captured_tick:uint64; name:string; species:string; profession:string; job:string;
   age:int32 = -1; sex:int32 = -1; origin:TilePos; complete:bool; sections:[CreatureSection];
   portrait:SelectionAppearance;
+  health_pages:[CreatureHealthPage];
 }
 // Materials orders candidates for the exact origin (rectangle minimum corner,
 // bottom level). Place requires that same origin and each filter's Materials
@@ -1941,7 +1944,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 106;
+  schema_version:uint32 = 107;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1989,7 +1992,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 106;
+  schema_version:uint32 = 107;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -273,7 +273,7 @@ namespace m=df3d::mirror;
 struct Fact {std::string key,text;int64_t number=0;bool hasNumber=false;};
 struct Record {int32_t id=-1,relatedId=-1;std::string name;std::vector<Fact> facts;};
 struct Section {uint8_t kind=0;bool available=false,truncated=false;std::string reason;std::vector<Record> records;};
-struct State {int32_t id=-1,age=-1,sex=-1,x=-1,y=-1,z=-1;uint64_t tick=0;bool complete=false;std::string name,species,profession,job;std::vector<Section> sections;
+struct State {int32_t id=-1,age=-1,sex=-1,x=-1,y=-1,z=-1;uint64_t tick=0;bool complete=false;std::string name,species,profession,job;std::vector<Section> sections;std::vector<std::vector<std::string>> healthPages;
  std::vector<std::string> pages,palettes;std::vector<m::AppearanceLayer> layers;};
 inline void read(lua_State* L,State& out) {
  using namespace lua_fields;
@@ -304,8 +304,11 @@ inline flatbuffers::Offset<m::CreatureState> build(flatbuffers::FlatBufferBuilde
    for(const auto& f:r.facts)facts.push_back(m::CreateCreatureFact(b,b.CreateString(f.key),b.CreateString(f.text),f.number,f.hasNumber));
    rows.push_back(m::CreateCreatureRecord(b,r.id,r.relatedId,b.CreateString(r.name),b.CreateVector(facts)));}
   sections.push_back(m::CreateCreatureSection(b,m::CreatureSectionKind(s.kind),s.available,s.truncated,b.CreateString(s.reason),b.CreateVector(rows)));}
+ std::vector<flatbuffers::Offset<m::CreatureHealthPage>> healthPages;
+ for(size_t i=0;i<c.healthPages.size();++i)
+  healthPages.push_back(m::CreateCreatureHealthPage(b,m::CreatureHealthPageKind(i),b.CreateVectorOfStrings(c.healthPages[i])));
  m::TilePos p(c.x,c.y,c.z);
- return m::CreateCreatureState(b,c.id,c.tick,b.CreateString(c.name),b.CreateString(c.species),b.CreateString(c.profession),b.CreateString(c.job),c.age,c.sex,&p,c.complete,b.CreateVector(sections),buildSelectionAppearance(b,c.pages,c.palettes,c.layers));
+ return m::CreateCreatureState(b,c.id,c.tick,b.CreateString(c.name),b.CreateString(c.species),b.CreateString(c.profession),b.CreateString(c.job),c.age,c.sex,&p,c.complete,b.CreateVector(sections),buildSelectionAppearance(b,c.pages,c.palettes,c.layers),healthPages.empty()?0:b.CreateVector(healthPages));
 }
 }  // namespace creature_data
 

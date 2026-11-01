@@ -3159,6 +3159,27 @@ been approved. Scrollbar hover pixels, long names/animation, this feedback gap
 and active-job/squad/later-departure effect variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
+### Creature Health transport contract
+
+Management107 adds optional `CreatureState.health_pages`: either absent (not
+captured), or all five unique semantic page kinds with native tagged rows.
+Rows may contain up to65,536 UTF-8 bytes; at most4,096 rows are allowed across
+pages, sharing the existing131,072-byte creature text budget. This avoids the
+512-byte generic record-name and1,024-byte fact limits truncating Description.
+The world model owns strings independently of the wire buffer; Godot receives
+immutable page dictionaries and row arrays. No absent page content is inferred.
+CreatureInspect populates all pages from the owned native formatter, converts
+CP437 to UTF-8 and rejects the whole result if collection or aggregate bounds fail.
+Protected020932 verifies exact3/10/1/22/1 rows through the actual main-scene model
+and immutable Godot publication. DF37496 exits unsaved with source preservation;
+all three Godot processes have only the known startup notice. The fixture records
+this separately as `transport_reference`. The Health view still uses legacy
+rendering, so this does not establish rendered Health acceptance.
+
+Migration: both management defaults, version guard and shared-memory region
+move from106to107. Rebuild and install bridge/viewer together before live use.
+Older management packets are rejected; fortress saves need no migration.
+
 ### Native creature Health page reference
 
 `native_farm.json.unit_health_pages_reference` records protected012626 on

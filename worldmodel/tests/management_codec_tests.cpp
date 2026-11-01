@@ -1364,10 +1364,15 @@ TEST_CASE("management domain decoding owns nested data independently of the wire
                                              false, {}, builder.CreateVector(std::vector{record}));
   const auto sections = builder.CreateVector(std::vector{section});
   const auto name = builder.CreateString("Cerol");
+  const std::string nativeDescription(2048,'x');
+  auto healthPage=wire::CreateCreatureHealthPage(builder,wire::CreatureHealthPageKind::Description,
+      builder.CreateVector(std::vector{builder.CreateString(nativeDescription)}));
+  auto healthPages=builder.CreateVector(std::vector{healthPage});
   wire::CreatureStateBuilder creature(builder);
   creature.add_unit_id(42);
   creature.add_name(name);
   creature.add_sections(sections);
+  creature.add_health_pages(healthPages);
   builder.Finish(creature.Finish());
   auto decoded =
       codec::decodeCreature(flatbuffers::GetRoot<wire::CreatureState>(builder.GetBufferPointer()));
@@ -1376,6 +1381,10 @@ TEST_CASE("management domain decoding owns nested data independently of the wire
   CHECK(decoded.unitId == 42);
   CHECK(decoded.name == "Cerol");
   CHECK(decoded.species.empty());
+  REQUIRE(decoded.healthPages.size()==1);
+  CHECK(decoded.healthPages[0].kind==wm::CreatureHealthPageKind::Description);
+  REQUIRE(decoded.healthPages[0].rows.size()==1);
+  CHECK(decoded.healthPages[0].rows[0]==nativeDescription);
   REQUIRE(decoded.sections.size() == 1);
   REQUIRE(decoded.sections[0].records.size() == 1);
   const auto& row = decoded.sections[0].records[0];

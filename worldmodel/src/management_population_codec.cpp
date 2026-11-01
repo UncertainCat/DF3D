@@ -32,6 +32,11 @@ CreatureInfo decodeCreature(const m::CreatureState* c) {
     out.y = c->origin()->y();
     out.z = c->origin()->z();
   }
+  if(c->health_pages())for(const auto* p:*c->health_pages()) {
+    CreatureHealthPage page;page.kind=CreatureHealthPageKind(p->kind());
+    for(const auto* row:*p->rows())page.rows.push_back(row->str());
+    out.healthPages.push_back(std::move(page));
+  }
   if (c->sections())
     for (const auto* v : *c->sections()) {
       CreatureSection section;

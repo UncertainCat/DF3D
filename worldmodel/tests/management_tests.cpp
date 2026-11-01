@@ -1477,3 +1477,25 @@ TEST_CASE("older-version construction replies cannot resolve a current materials
   CHECK(c->state().revision==4);CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
 }
 #endif
+
+TEST_CASE("Creature Health pages preserve long rows and reject malformed bounded payloads") {
+  namespace mm=df3d::mirror;
+  for(int bad=-1;bad<6;++bad) {
+    flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<mm::CreatureSection>> sections;
+    for(int i=0;i<25;++i)sections.push_back(mm::CreateCreatureSection(b,mm::CreatureSectionKind(i),true));
+    std::vector<flatbuffers::Offset<mm::CreatureHealthPage>> pages;
+    for(int i=0;i<(bad==0?4:5);++i) {
+      std::vector<flatbuffers::Offset<flatbuffers::String>> rows;
+      const size_t count=bad==4 && i==0?4097:1;
+      for(size_t j=0;j<count;++j)rows.push_back(b.CreateString(std::string(bad==3?65537:bad==5?30000:2048,'x')));
+      pages.push_back(mm::CreateCreatureHealthPage(b,mm::CreatureHealthPageKind(bad==1?0:bad==2?5:i),b.CreateVector(rows)));
+    }
+    mm::TilePos pos(1,2,3);
+    auto c=mm::CreateCreatureState(b,86,0,0,0,0,0,-1,-1,&pos,true,b.CreateVector(sections),0,b.CreateVector(pages));
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
+    state.add_action(mm::ManagementAction::CreatureInspect);state.add_status(mm::ManagementStatus::Ok);state.add_creature(c);
+    b.Finish(state.Finish());
+    CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==(bad>=0));
+  }
+}

@@ -45,6 +45,15 @@ func unit_carrier(expected: Dictionary) -> void:
 		await create_timer(0.02).timeout
 	var detail: Dictionary=world.creature_info_state(target).get("detail",{})
 	check(not detail.is_empty() and detail.get("sections",[]).size()>0,"Unit destination remained a loading shell")
+	if FileAccess.file_exists(directory+"/unit-health-pages-native.json"):
+		var native_health: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-health-pages-native.json"))
+		var health_pages: Array=detail.get("health_pages",[])
+		check(health_pages.size()==5 and health_pages.is_read_only(),"Health page transport missing or mutable")
+		for i in mini(5,health_pages.size()):
+			check(health_pages[i].kind==i and health_pages[i].rows==native_health.pages[i].tagged_rows,"Native Health rows changed in transport: "+str(i))
+			check(health_pages[i].is_read_only() and health_pages[i].rows.is_read_only(),"Health nested publication is mutable")
+		var health_file:=FileAccess.open(directory+"/unit-health-wire-result.json",FileAccess.WRITE)
+		health_file.store_string(JSON.stringify({"success":not failed,"pages":health_pages}));health_file.close()
 	check(inspector.creature_sheet.tab=="Overview" and not source.panel.visible,"Unit destination did not start Overview")
 	var view_deadline:=Time.get_ticks_msec()+5000
 	while inspector.creature_display.get("detail",{}).is_empty() and Time.get_ticks_msec()<view_deadline:await create_timer(0.02).timeout

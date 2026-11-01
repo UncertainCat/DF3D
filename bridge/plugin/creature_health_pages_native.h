@@ -11,8 +11,8 @@
 #include "df/game_mode.h"
 #include <cstddef>
 namespace df3d_creature {
-// Diagnostic-only first entry into the shared Health text builder. Other page
-// paths require additional ownership auditing before expanding this allowlist.
+// Owned native Health text shared by diagnostic probes and management capture.
+// History decomposes event formatting and caregiver naming to isolate caches.
 inline std::optional<std::vector<std::string>> healthPageProbe(df::unit* source,int page,bool historyEvent=false) {
     if(!source || (page<0 || page>4) || !df::global::gamemode || *df::global::gamemode!=df::game_mode::DWARF)return std::nullopt;
     if(!inventoryDescriptionReady())return std::nullopt;

@@ -8,8 +8,8 @@ namespace df3d_creature {
 // Native poetic-form prose with independently owned form/part/persona storage.
 // Historical and raw name helpers read world records; their mutable strings and
 // historical-format context are created by the formatter, never borrowed from UI.
-inline std::optional<std::string> poeticDetailProbe(df::poetic_form* source) {
-    if(!source || !inventoryDescriptionReady() || source->parts.size()>4096 || source->perspectives.size()>4096)return std::nullopt;
+inline bool knowledgeDescriptionReady() {
+    if(!inventoryDescriptionReady())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct Pin {size_t rva,length;uint64_t hash;};
     constexpr Pin pins[]={
@@ -32,7 +32,12 @@ inline std::optional<std::string> poeticDetailProbe(df::poetic_form* source) {
         {0x7daf0,0x25,UINT64_C(0xe08224475d4dff6a)},
         {0xba0a0,0xa8,UINT64_C(0xcf6b2a7b534d3331)},
     };
-    for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return std::nullopt;}
+    for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
+    return true;
+}
+inline std::optional<std::string> poeticDetailProbe(df::poetic_form* source) {
+    if(!source || !knowledgeDescriptionReady() || source->parts.size()>4096 || source->perspectives.size()>4096)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct OwnedForm final:df::poetic_form {OwnedForm():df::poetic_form(){}} form;
     struct OwnedPart final:df::poetic_form_part {OwnedPart():df::poetic_form_part(){}};
     struct OwnedPerspective final:df::poetic_form_perspective {OwnedPerspective():df::poetic_form_perspective(){}};

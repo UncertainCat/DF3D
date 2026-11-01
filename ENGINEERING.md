@@ -3202,7 +3202,7 @@ screen rows. Existing musical/dance IDs are temporarily appended to known-form
 lists and removed afterward; no learning effects are executed. DF35124 exits
 unsaved with source preservation and only known startup notices. Poetic details
 call e76400 at1b40bf; musical and dance branches call dd5ce0 and4ea820. Written
-content combines inline title/author assembly with cc5d50. Musical, dance and
+content combines inline title/author assembly with cc5d50. Dance and
 written transitive formatting/cache ownership audits remain pending; these
 references do not license calling the helpers on live records. `detail_reference` retains the
 native prose and entry points. The musical description has3,108 characters,
@@ -3241,6 +3241,20 @@ and only known Godot startup notices. `poetic_cases_reference` retains text and
 results. An earlier035237 author case retained an originating entity, so native
 preferred its name and did not exercise author formatting; it is not author-branch
 evidence. These cases do not establish every species, identity or nested persona.
+
+`musical_detail_native.h` supplies independently owned passages, instruments,
+melodies/intervals and play-order records to dd5ce0. Native working sets and
+iterators are local; referenced poetic/written names, instrument definitions,
+scales and rhythms are read-only. Additional pins cover the full music formatter,
+timbre dispatch tables and its local vector helpers. Protected035837 compares
+musical form0's3,108-character tagged description with native exactly. It has
+four passages, two instrument entries and three play-order entries. Guards cover
+the form graph, referenced definitions/name backing, unit/sheet/plotinfo and
+random streams. Poetry's baseline comparison also passes after sharing helper
+pins. DF40916 exits unsaved with source preservation and only known Godot startup
+notices. `musical_owned_probe_reference` retains the text, structure and bridge
+hash. This is a diagnostic baseline; other musical forms and production
+transport/rendering remain unverified.
 
 ### Creature Health transport contract
 

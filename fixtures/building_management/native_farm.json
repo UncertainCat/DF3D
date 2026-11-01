@@ -61874,6 +61874,27 @@
         "owned_df_pid": 39984,
         "source_unchanged": true,
         "exit_without_saving": true
+      },
+      "musical_owned_probe_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-035837",
+        "form_id": 0,
+        "probe": {
+          "form": {
+            "instruments": 2,
+            "melodies": 0,
+            "passages": 4,
+            "play_order": 3
+          },
+          "guards_unchanged": true,
+          "id": 0,
+          "text": "[C:7:0:1]The Intricate Luxuries is a form of music used for entertainment originating in The Big Channel.  The form guides musicians during improvised performances.  The music is played on a ekast and a sh\u00f9rrat.  The musical voices bring melody and counterpoint.  The melody has long phrases, while the counterpoint has phrases of varied length throughout the form.  The music repeats for as long as necessary.  It is performed using the berim scale.  [B]The ekast always should be spirited.  [B]The sh\u00f9rrat always does the main melody and should stress the rhythm.  [B]The Intricate Luxuries has a well-defined multi-passage structure: a lengthy introduction, a verse and a chorus all repeated two times and a coda.  [B]The introduction is voiced by the melody of the sh\u00f9rrat and the counterpoint of the ekast.  The passage is at a hurried pace, and it is to be in whispered undertones.  This passage typically has some sparse chords.  The passage is performed in the s\u00e1krith rhythm.  [B]The verse is voiced by the melody of the sh\u00f9rrat.  The passage is extremely fast, and it is to be moderately soft.  Only one pitch is ever played at a time in this passage.  The passage is performed in free rhythm.  [B]The chorus is voiced by the melody of the ekast and the melody of the sh\u00f9rrat.  The passage is half the tempo of the last passage, and it is to become softer and softer.  This passage features only melodic tones and intervals.  The passage is performed in free rhythm.  [B]The coda is voiced by the melody of the sh\u00f9rrat.  The passage is slow, and it is to fade into silence.  Only one pitch is ever played at a time in this passage.  The passage is performed in free rhythm.  [B]Scales are conceived of as two chords built using a division of the perfect fourth interval into eight notes.  The tonic note is fixed only at the time of performance.  [B]As always, the berim pentatonic scale is thought of as two disjoint chords drawn from the fundamental division of the perfect fourth.  These chords are named bidok and mabdug.  [B]The bidok trichord is the 1st, the 2nd and the 8th degrees of the fundamental perfect fourth division.  [B]The mabdug trichord is the 1st, the 5th and the 8th degrees of the fundamental perfect fourth division.  [B]The s\u00e1krith rhythm is made from two patterns: the ag\u00eak (considered the primary) and the lanlar.  The patterns are to be played over the same period of time, concluding together regardless of beat number.  [B]The ag\u00eak rhythm is a single line with thirty-two beats divided into four bars in a 8-8-8-8 pattern.  The beats are named ucat (spoken uc), ng\u00e1rak (ng\u00e1), enir (en), ugath (ug), lisig (li), et\u00e4g (et), erong (er) and osed (os).  The beat is stressed as follows:[B]| - - - - - - x - | x ! x x x x x x | - x - - x - - - | X x - x x x - x | [B]where ! marks the primary accent, X marks an accented beat, x is a beat, - is silent and | indicates a bar.  [B]The lanlar rhythm is a single line with two beats.  The beats are named udir (spoken ud) and tarmid (ta).  The beat is stressed as follows:[B]| x x | [B]where x is a beat and | indicates a bar.  "
+        },
+        "bridge_sha256": "b6c3bd33f659aee0b277ec9899013c2d198ae50419d725486acf890267a8efb0",
+        "scope": "One existing musical form; exact native tagged text and guarded form graph, referenced definitions, unit/UI/random state. Diagnostic only, not production transport or UI acceptance.",
+        "diagnostics": "passed_with_known_issues",
+        "owned_df_pid": 40916,
+        "source_unchanged": true,
+        "exit_without_saving": true
       }
     }
   }

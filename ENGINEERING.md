@@ -3452,8 +3452,24 @@ Lookups 488990 and 152e750 only read their source collections and save registers
 to the stack; neither calls another helper. Material wrapper 14d16f0 copies a
 source name to the supplied string or calls 14d1920 with explicit zero state
 and flags. Identity formatter c3a590 has no indirect dispatch; its direct stores
-target stack locals, but shared formatting callees and argument aliases still
-require review.
+target stack locals. Its b9d10 string wrapper (length0x13,
+FNV5ad8171f894aa0c8) reads the source string's length/storage and tail-appends
+through 6fa10. Both identity call sites supply a stack-local race caption as
+the source and the caller's owned result as the destination.
+
+The identity profession calls c3ae59/c3b184 pass the low16 bits of
+`identity.race` as both the race argument and the final comparison-race
+argument to 132e0c0. That helper's UI-dependent fallback is selected by **-2**,
+not -1: comparison132e10d branches around global mode/current-unit reads when
+the final argument differs from -2. Production source validation must exclude
+the sentinel after narrowing (including positive values whose low16 bits are
+0xfffe), as well as establish valid race/caste/profession inputs for the shared
+formatters. Supplying an argument explicitly does not alone prove independence
+from native UI state. The helper's existing length0x368/FNV5020a6b8e463a24d pin
+matches this inspection; the complete identity body is length0xcbf,
+FNV09a894440651f51f. Referenced historical-figure/name storage and controlled
+native identity-event comparisons remain outstanding; this static argument
+audit does not admit identity events to production.
 
 The installed executable timestamp selects DFHack's `v0.53.16 win64 STEAM`
 symbol table. `event-world-construction-getters.json` resolves b93a90's virtual

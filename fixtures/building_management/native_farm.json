@@ -62061,6 +62061,207 @@
         "owned_df_pid": 6752,
         "source_unchanged": true,
         "exit_without_saving": true
+      },
+      "dance_forms_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-040649",
+        "cases": [
+          {
+            "id": 0,
+            "characters": 1657,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            }
+          },
+          {
+            "id": 1,
+            "characters": 1429,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 6
+            }
+          },
+          {
+            "id": 2,
+            "characters": 871,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1
+              ],
+              "sections": 2
+            }
+          },
+          {
+            "id": 3,
+            "characters": 1021,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            }
+          },
+          {
+            "id": 4,
+            "characters": 2485,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 3,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 6
+            }
+          },
+          {
+            "id": 5,
+            "characters": 815,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            }
+          },
+          {
+            "id": 6,
+            "characters": 900,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            }
+          },
+          {
+            "id": 7,
+            "characters": 462,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            }
+          },
+          {
+            "id": 8,
+            "characters": 1917,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 10,
+              "race": -1,
+              "section_events": [],
+              "sections": 0
+            }
+          },
+          {
+            "id": 9,
+            "characters": 280,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [],
+              "sections": 0
+            }
+          },
+          {
+            "id": 10,
+            "characters": 912,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            }
+          },
+          {
+            "id": 11,
+            "characters": 683,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 0,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 3
+            }
+          }
+        ],
+        "scope": "Native magnifier captures for twelve existing dance forms; temporary knowledge additions restored. No owned adapter call or event branch evidence.",
+        "diagnostics": "passed_with_known_issues",
+        "owned_df_pid": 34116,
+        "source_unchanged": true,
+        "exit_without_saving": true
       }
     }
   }

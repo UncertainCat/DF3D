@@ -97,6 +97,14 @@ local ok,err=xpcall(function()
     if not exists then known:insert('#',form.id);added[#added+1]={vector=known,id=form.id}end
    end
   end
+  if os.getenv('DF3D_UNIT_DANCE_FORMS')=='1'then
+   local known=assert(df.historical_figure.find(unit.hist_figure_id).info.known_info).known_dance_forms
+   for index,form in ipairs(df.global.world.dance_forms.all)do
+    if index>=12 then break end
+    local exists=false;for _,id in ipairs(known)do if id==form.id then exists=true end end
+    if not exists then known:insert('#',form.id);added[#added+1]={vector=known,id=form.id}end
+   end
+  end
   local reference=observe('Knowledge');local seen={}
   local function capture_detail(index,kind,variant)
     observe('Knowledge')
@@ -106,6 +114,16 @@ local ok,err=xpcall(function()
     click(852,250+36*(index-1-first))
     assert(#sheet.skill_description_raw_str>0,'Knowledge detail did not open')
     local detail={kind=kind,id=reference.knowledge_ids[index],case=variant,tagged_rows={},lines={}}
+    if kind==16 then
+     local form=assert(df.dance_form.find(detail.id))
+     detail.form={sections=#form.sections,moves=#form.moves,event=form.event,hfid=form.hfid,race=form.race,section_events={}}
+     for _,section in ipairs(form.sections)do detail.form.section_events[#detail.form.section_events+1]=section.acts_out_event end
+     if form.event>=0 then
+      local event=assert(df.history_event.find(form.event));detail.form.event_type=event:getType()
+      local _,address=df.sizeof(event);local vtable=df.reinterpret_cast('uint64_t',address).value
+      detail.form.event_phrase_rva=df.reinterpret_cast('uint64_t',vtable+0xd8).value-dfhack.internal.getImageBase()
+     end
+    end
     for _,value in ipairs(sheet.skill_description_raw_str)do
      if type(value)=='string'then detail.tagged_rows[#detail.tagged_rows+1]=dfhack.df2utf(value)
      else
@@ -130,7 +148,7 @@ local ok,err=xpcall(function()
     return detail.tagged_rows[1]
   end
   for index,kind in ipairs(reference.knowledge_types)do
-   if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1')or(kind==15 and os.getenv('DF3D_UNIT_MUSICAL_FORMS')=='1'))then
+   if kind>=14 and (not seen[kind]or(kind==14 and os.getenv('DF3D_UNIT_POETIC_FORMS')=='1')or(kind==15 and os.getenv('DF3D_UNIT_MUSICAL_FORMS')=='1')or(kind==16 and os.getenv('DF3D_UNIT_DANCE_FORMS')=='1'))then
     seen[kind]=true;local baseline=capture_detail(index,kind)
     if kind==14 and os.getenv('DF3D_UNIT_POETIC_CASES')=='1'then
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-cases-native.lua')

@@ -3265,6 +3265,17 @@ DF6752 exits unsaved with source preservation and only known Godot startup notic
 `musical_forms_reference` retains structural coverage and bounded results. This
 extends formatter evidence without establishing production Skills transport or UI.
 
+Protected040649 captures native magnifier descriptions for twelve existing dance
+forms (280–2,485 characters), with zero to six sections and zero to ten moves.
+Missing knowledge IDs are temporarily appended and restored. All sampled root
+and section event IDs are absent; these captures do not exercise event phrases.
+The root dance formatter4ea820 resolves an event through7da30 and calls its
+virtual `history_event::getPhrase` at slot0xd8 with an independently initialized
+72080 context. That transitive ownership audit is unfinished, and no dance
+adapter is called. `dance_forms_reference` records the sample's limits. DF34116
+exits unsaved with source preservation and only known Godot startup notices;
+the existing poetry and music baseline probes also pass.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

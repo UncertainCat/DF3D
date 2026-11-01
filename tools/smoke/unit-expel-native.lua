@@ -9,6 +9,21 @@ local frame=df.global.world.frame_counter
 local observations={}
 local changed_positions={}
 local family
+local meeting
+local function restore_meeting()
+ if not meeting then return end
+ local list=meeting.entity.assignments_by_type[df.entity_position_responsibility.MEET_WORKERS]
+ list:resize(0);for _,value in ipairs(meeting.original)do list:insert('#',value)end
+end
+local function set_meeting(assignment)
+ if not meeting then
+  local entity=assert(df.historical_entity.find(df.global.plotinfo.group_id))
+  meeting={entity=entity,original={}}
+  for _,value in ipairs(entity.assignments_by_type[df.entity_position_responsibility.MEET_WORKERS])do meeting.original[#meeting.original+1]=value end
+ end
+ restore_meeting()
+ if assignment then meeting.entity.assignments_by_type[df.entity_position_responsibility.MEET_WORKERS]:insert('#',assignment)end
+end
 local cold_saved={}
 local function restore_cold()
  for _,v in ipairs(cold_saved)do v.object[v.key]=v.value end
@@ -16,6 +31,14 @@ local function restore_cold()
 end
 local function restore_family()
  if not family then return end
+ restore_meeting()
+ if family.office then
+  local office=family.office
+  family.related_hf.entity_links:resize(0);for _,link in ipairs(office.links)do family.related_hf.entity_links:insert('#',link)end
+  office.entity.positions.assignments:resize(office.assignment_count)
+  office.entity.positions.own:resize(office.position_count)
+  office.link:delete();office.assignment:delete();office.position:delete()
+ end
  family.relative.flags1.whole=family.flags
  family.relative.profession=family.profession
  family.relative.relationship_ids[0]=family.owner
@@ -133,6 +156,16 @@ local ok,err=xpcall(function()
    assert(not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Refusal cancel lost unit')
   end
   restore_positions()
+  if os.getenv('DF3D_UNIT_EXPEL_ROLES')=='1' then
+   set_meeting(positions[1].assignment)
+   pointer(856,100);df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   record('meeting-workers')
+   assert(sheet.unit_overview_expel_cannot_expel_reason==2,'Native meeting-worker refusal differs')
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   restore_meeting()
+  end
  end
  if os.getenv('DF3D_UNIT_EXPEL_FAMILY')=='1' then
   local relative
@@ -170,10 +203,37 @@ local ok,err=xpcall(function()
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    assert(not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Family cancel lost unit')
   end
+  if os.getenv('DF3D_UNIT_EXPEL_ROLES')=='1' then
+   relative.flags1.whole=family.flags;relative.relationship_ids[0]=family.owner
+   related_hf.died_year=family.died_year;spouse.target_hf=related_hf.id
+   if family.where then family.where.state=family.where_state;family.where.site_id=family.where_site end
+   local entity=assert(df.historical_entity.find(df.global.plotinfo.group_id))
+   local position=df.entity_position:new();local assignment=df.entity_position_assignment:new();local link=df.histfig_entity_link_positionst:new()
+   family.office={entity=entity,position=position,assignment=assignment,link=link,links=vector(related_hf.entity_links),position_count=#entity.positions.own,assignment_count=#entity.positions.assignments}
+   position.id=entity.positions.own[#entity.positions.own-1].id+1
+   assignment.id=entity.positions.assignments[#entity.positions.assignments-1].id+1
+   assignment.histfig=related_hf.id;assignment.position_id=position.id
+   link.entity_id=entity.id;link.assignment_id=assignment.id;link.link_strength=100
+   entity.positions.own:insert('#',position);entity.positions.assignments:insert('#',assignment);related_hf.entity_links:insert('#',link)
+   for _,case in ipairs{{'spouse-elected',spouse,false,true,false,false,5},{'spouse-hereditary',spouse,false,false,true,false,4},{'spouse-meeting',spouse,false,false,false,true,6},{'child-elected',child,true,true,false,false,9},{'child-hereditary',child,true,false,true,false,8},{'child-meeting',child,true,false,false,true,10}}do
+    hf.histfig_links:resize(0);hf.histfig_links:insert('#',case[2])
+    relative.profession=case[3] and df.profession.CHILD or family.profession
+    position.flags.ELECTED=case[4];position.flags.SUCCESSION_BY_HEIR=case[5]
+    set_meeting(case[6] and assignment or nil)
+    pointer(856,100);df.global.enabler.mouse_lbut_lift=0
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+    df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+    record(case[1]);observations[#observations].relative_id=relative.id
+    assert(sheet.unit_overview_expelling and sheet.unit_overview_expel_cannot_expel_reason==case[7],'Native family office refusal differs: '..case[1])
+    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+    assert(not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Family office cancel lost unit')
+   end
+  end
   restore_family()
  end
 end,debug.traceback)
 restore_cold()
+restore_meeting()
 restore_family()
 restore_positions()
 if sheet.unit_overview_expelling then gui.simulateInput(view,'LEAVESCREEN')end

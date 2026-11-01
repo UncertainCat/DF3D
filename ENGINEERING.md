@@ -2432,6 +2432,19 @@ owned units accompany their owner; inactive non-incoming ones do not. A spouse
 also linked through ownership is included once. Fixtures restore original family
 links, death/whereabouts values, profession, flags and owner ID after use.
 
+Protected212802 extends the comparison to23 previews and covers every native
+refusal code0..10. It adds selected-unit MEET_WORKERS plus spouse/child elected,
+hereditary and MEET_WORKERS cases. The diagnostic uses the actual entity
+assignments_by_type list for responsibility checks and temporary position,
+assignment and historical link records for family offices. It restores all
+original lists and deletes only its allocated records. Native and reader results
+match, including partial group[1017] for family refusals and an empty group for
+selected-unit refusals. Guarded cold caches remain unchanged, including21 fields
+for the relative-with-office cases. Enable `DF3D_UNIT_EXPEL_ROLES=1` with the
+existing refusal/family/reader/cold flags. Core QA `unit-expel-roles` passes;
+source preservation and known-only live diagnostics hold. The reader fixture's
+role_reference retains this coverage; no reader change was needed.
+
 Byte guards preserve selected/relative units, historical figures and links,
 office definitions/assignments, plotinfo and view_sheets. Both owned source saves
 are unchanged; live logs have only known startup notices. MSVC and core QA
@@ -2439,8 +2452,8 @@ are unchanged; live logs have only known startup notices. MSVC and core QA
 `unit_expel_group_reader_reference` now includes the cold-case evidence. Enable
 `DF3D_UNIT_EXPEL_READER=1` and `DF3D_UNIT_EXPEL_COLD=1` alongside REFUSALS/FAMILY
 flags to repeat it. This remains a semantic reader milestone: no schema, viewer
-control or confirmation operation is added. Family office/responsibility cases,
-existing HF without a local unit, additional child/multiple-relative cases and
+control or confirmation operation is added. Existing HF without a local unit, additional child/multiple-relative cases,
+simultaneous family refusals and
 deeper accompanying-unit chains remain unverified.
 
 Confirmation1b1825..1b1c26 allocates an activity, records expulsion history when

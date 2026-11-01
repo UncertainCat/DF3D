@@ -44778,8 +44778,8 @@
       "limitations": [
         "No destination reader, transport, viewer control or confirmation yet.",
         "Header Expel-button eligibility is separate.",
-        "Family office/responsibility cases, existing HF without a local unit, child dead/off-site and multiple distinct relatives need acceptance.",
-        "Companion fixtures cover one owned unit, not a deeper ownership chain."
+        "Existing HF without a local unit, additional child dead/off-site and multiple distinct relatives need acceptance.",
+        "Multiple simultaneous family refusals and deeper ownership-chain behavior remain unverified."
       ],
       "cold_family_reference": {
         "native_run": "build/stockpile-storage-native-farm-discovery-20261031-212501",
@@ -44984,6 +44984,110 @@
         ],
         "verification": "Invalidate9 selected-unit caches or18 selected/relative caches before guarded reader call, compare against native preview, then restore. All16 reads retain invalidated cache values and return exact native reason and ordered IDs. No source save changes; only known startup diagnostics.",
         "qa": "build/qa/unit-expel-cold-family"
+      },
+      "role_reference": {
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261031-212802",
+        "total_reader_cases": 23,
+        "cases": [
+          {
+            "name": "meeting-workers",
+            "reader": {
+              "reason": 2,
+              "unit_id": 1017,
+              "units": []
+            },
+            "cold_cache_count": 9,
+            "guarded_state_unchanged": true
+          },
+          {
+            "name": "spouse-elected",
+            "reader": {
+              "reason": 5,
+              "unit_id": 1017,
+              "units": [
+                1017
+              ]
+            },
+            "cold_cache_count": 21,
+            "guarded_state_unchanged": true
+          },
+          {
+            "name": "spouse-hereditary",
+            "reader": {
+              "reason": 4,
+              "unit_id": 1017,
+              "units": [
+                1017
+              ]
+            },
+            "cold_cache_count": 21,
+            "guarded_state_unchanged": true
+          },
+          {
+            "name": "spouse-meeting",
+            "reader": {
+              "reason": 6,
+              "unit_id": 1017,
+              "units": [
+                1017
+              ]
+            },
+            "cold_cache_count": 21,
+            "guarded_state_unchanged": true
+          },
+          {
+            "name": "child-elected",
+            "reader": {
+              "reason": 9,
+              "unit_id": 1017,
+              "units": [
+                1017
+              ]
+            },
+            "cold_cache_count": 21,
+            "guarded_state_unchanged": true
+          },
+          {
+            "name": "child-hereditary",
+            "reader": {
+              "reason": 8,
+              "unit_id": 1017,
+              "units": [
+                1017
+              ]
+            },
+            "cold_cache_count": 21,
+            "guarded_state_unchanged": true
+          },
+          {
+            "name": "child-meeting",
+            "reader": {
+              "reason": 10,
+              "unit_id": 1017,
+              "units": [
+                1017
+              ]
+            },
+            "cold_cache_count": 21,
+            "guarded_state_unchanged": true
+          }
+        ],
+        "refusal_codes_covered": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "fixture": "Temporarily append assignment to native entity.assignments_by_type[MEET_WORKERS]. Add owned diagnostic position/assignment/link to relative2345 for family office cases. Restore original responsibility/position/assignment/link vectors and delete only allocated records.",
+        "verification": "All23 reader results equal native reason and ordered IDs, including all refusal codes0..10; all guarded cold-cache values unchanged. Source save unchanged; only known startup diagnostics.",
+        "qa": "build/qa/unit-expel-roles"
       }
     }
   }

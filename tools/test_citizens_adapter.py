@@ -452,9 +452,24 @@ def extended_work_details(lua):
     lua.execute('local ids={};for i=2,1024 do ids[#ids+1]=i end;wd[0].assigned_units=vec(ids)')
     call_count = len(lua.globals().calls)
     ok(edit(32, unit_id=0, member=1))
-    assert len(lua.globals().calls) == call_count+1
+    assert len(lua.globals().calls) == call_count+lua.eval('#df.global.world.units.active')
     assert len(observed()['assigned_units']) == 1024
     refused(edit(32, unit_id=1, member=1), 'Work-detail membership is full')
+    # Native creature Labor reference: a conflicting specialized assignment
+    # replaces the previous one; every active unit is recalculated.
+    helper = reset(2, 2)
+    lua.execute('wd[1].allowed_labors[0]=false;wd[1].allowed_labors[10]=true')
+    ok(edit(32, index=0, unit_id=0, member=1))
+    ok(edit(32, index=1, unit_id=0, member=1))
+    assert values(observed(0)['assigned_units']) == []
+    assert values(observed(1)['assigned_units']) == [0]
+    assert len(lua.globals().calls) == 4
+    # The native inline first/last-member mode transitions do not apply to
+    # conflicting details removed as a side effect.
+    helper = reset(2)
+    lua.execute('wd[0].flags.mode=1')
+    assert ok(edit(32, unit_id=0, member=1))['details'][1]['mode'] == 3
+    assert ok(edit(32, unit_id=0, member=0))['details'][1]['mode'] == 1
     # Captured default sets, with fixture-local enum assignments except the picker exclusions.
     defaults = [ ['MINE'], ['CUTWOOD'], ['HUNT'], ['PLANT'], ['FISH'], ['HERBALIST'],
                  ['STONECUTTER'], ['ENGRAVER'],

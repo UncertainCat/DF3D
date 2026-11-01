@@ -1,4 +1,41 @@
 extends "res://tests/chest_scene_live.gd"
+func labor_request(data: Dictionary) -> Dictionary:
+	var received: Array=[]
+	actions.submit("citizens",data,func(_ticket,state,_request):received.append(state))
+	await drain()
+	if not check(received.size()==1,"Labor request did not complete"):return {}
+	if not check(int(received[0].status)==actions.Status.Ok,"Labor request rejected: "+str(received[0])):return {}
+	return received[0].get("citizen",{})
+
+func labor_observe(target: int,serial: int,stage: String) -> void:
+	var file:=FileAccess.open(directory+"/unit-labor-request.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"unit_id":target,"serial":serial,"stage":stage}));file.close()
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		if FileAccess.file_exists(directory+"/unit-labor-ack.json"):
+			var ack: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-labor-ack.json"))
+			if int(ack.serial)==serial:
+				DirAccess.remove_absolute(directory+"/unit-labor-ack.json");return
+		world.poll();actions.poll(0.01);await create_timer(0.02).timeout
+	check(false,"Independent native Labor observation timed out: "+stage)
+
+func exercise_labor_wire(target: int) -> void:
+	var serial:=0
+	for step in [{"index":0,"member":1,"stage":"miner"},{"index":1,"member":1,"stage":"woodcutter"},{"index":1,"member":0,"stage":"before"}]:
+		var before: Dictionary=await labor_request({"action":31,"detail_index":step.index,"unit_id":target})
+		if failed:return
+		await labor_request({"action":32,"detail_index":step.index,"unit_id":target,"member":step.member,"expected_revision":before.details[0].revision})
+		if failed:return
+		serial+=1;await labor_observe(target,serial,step.stage)
+		if failed:return
+	for assigned in [1,0]:
+		var before: Dictionary=await labor_request({"action":29,"unit_id":target})
+		if failed:return
+		await labor_request({"action":67,"unit_id":target,"only_assigned":assigned,"expected_revision":before.citizens[0].revision})
+		if failed:return
+		serial+=1;await labor_observe(target,serial,"scope" if assigned==1 else "before")
+		if failed:return
+
 func expected_filename() -> String:return "carrier-expected.json"
 func result_filename() -> String:return "carrier-scene-result.json"
 func exercise(expected: Dictionary) -> void:
@@ -213,6 +250,9 @@ func unit_carrier(expected: Dictionary) -> void:
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
 	if OS.get_environment("DF3D_UNIT_ROOMS_VIEW")=="1":await exercise_rooms_view(inspector)
+	if OS.get_environment("DF3D_UNIT_LABOR_WIRE")=="1":
+		await exercise_labor_wire(target)
+		if failed:return
 	if OS.get_environment("DF3D_UNIT_SKILLS_VIEW")=="1":
 		await exercise_skills_view(inspector)
 		if OS.get_environment("DF3D_UNIT_KNOWLEDGE_LIVE")=="1":await exercise_knowledge_live(inspector)

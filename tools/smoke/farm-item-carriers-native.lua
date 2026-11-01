@@ -545,6 +545,9 @@ local ok,err=xpcall(function()
    elseif os.getenv('DF3D_UNIT_REPORTS_LIVE')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-reports-scene-native.lua')
     linked.reports_live=assert(loadfile(source))(unit,capture,out)
+   elseif os.getenv('DF3D_UNIT_LABOR_WIRE')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-labor-scene-native.lua')
+    linked.labor_wire=assert(loadfile(source))(unit,capture,out)
    else capture('farm-item-carrier-unit-scene')end
    local final_names={unit.name.nickname,unit.custom_profession,header_figure and header_figure.name.nickname,unit.status.current_soul and unit.status.current_soul.name.nickname}
    assert(json.encode(header_names)==json.encode(final_names),'unit editor did not restore native names')

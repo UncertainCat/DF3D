@@ -3174,14 +3174,27 @@ only_do_assigned_jobs, recalculates labor, and toggles back to the same snapshot
 unsaved, source preservation passes, and all three Godot processes report only
 the known startup notice. Root/core passes in `creature-labor-native-reference`.
 
-The old semantic membership handler is incomplete: it edits one list and
-recalculates one unit. Native1b5c53..1b5f25 also removes conflicting specialized
-assignments, changes Everybody/OnlySelected mode on certain first/last-member
-transitions, and invokes4390d0 for every active unit. The mode transitions are
-statically traced but not exercised by this capture. Scope uses the inline
+The semantic membership handler follows inline native1b5c53..1b5f25: it removes
+conflicting specialized assignments, changes Everybody/OnlySelected mode on
+first/last-member transitions, and invokes4390d0 for every active unit. It
+preserves membership/mode snapshots for rollback if native recalculation fails.
+The mode transitions are statically traced and adapter-tested but not exercised
+by this live capture. Scope uses the inline
 flag toggle at1b4644 followed by4390d0. DFHack's setAutomaticProfessions calls
 the exported native function; its name alone does not cover the missing
-membership effects. Complete this semantic path before exposing the checkboxes.
+membership effects.
+
+Protected101155 on2026-11-01 exercises the actual main-scene semantic service:
+Miners, conflicting Woodcutters, unassignment, then scope on/off. Independent
+native observations match all detail memberships/flags and the selected unit's
+94 labor bits against the native-click reference at each step; baseline is
+restored. Owned DF45368 exits unsaved and source preservation passes. All three
+Godot processes have only the known startup notice. Root/core and the citizen
+adapter checks pass. `semantic_membership_reference` retains the observations.
+Initial101015 is excluded: the diagnostic acknowledgement file was not removed
+before Windows rename; no product mismatch was established by that failed run.
+Native eligibility alignment and populated workshop/location/animal providers
+remain unfinished prerequisites for full Labor exposure.
 The creature Labor view and broader Work Details launcher remain unfinished.
 
 ### Creature Rooms native list

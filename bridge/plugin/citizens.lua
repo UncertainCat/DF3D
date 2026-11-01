@@ -175,6 +175,46 @@ local defaults={
 local function queue_recalc()
  recalc={active=true,cursor=0,unit_id=nil,done=0,total=#df.global.world.units.all,error=''}
 end
+-- Creature Labor1b5c53..1b5f25 has no standalone assignment entry point.
+-- Keep its inline membership/mode operations here; native automatic-profession
+-- calculation remains authoritative for every active unit after the edit.
+local function change_membership(u,d,member)
+ local all=details();local saved={}
+ for _,entry in ipairs(all)do
+  local ids={};for _,id in ipairs(entry.assigned_units)do ids[#ids+1]=id end
+  saved[#saved+1]={detail=entry,mode=entry.flags.mode,ids=ids}
+ end
+ local function remove(entry)
+  for i,id in ipairs(entry.assigned_units)do if id==u.id then entry.assigned_units:erase(i);return end end
+ end
+ if member then
+  local at=0;while at<#d.assigned_units and d.assigned_units[at]<u.id do at=at+1 end
+  d.assigned_units:insert(at,u.id)
+  if d.allowed_labors[0] or d.allowed_labors[10] or d.allowed_labors[44] then
+   for _,other in ipairs(all)do
+    if other~=d and (other.allowed_labors[0] or other.allowed_labors[10] or other.allowed_labors[44]) and
+       (other.allowed_labors[0]~=d.allowed_labors[0] or other.allowed_labors[10]~=d.allowed_labors[10] or other.allowed_labors[44]~=d.allowed_labors[44])then remove(other)end
+   end
+  end
+  if d.flags.mode==1 and #d.assigned_units==1 then d.flags.mode=3 end
+ else
+  remove(d)
+  if d.flags.mode==3 and #d.assigned_units==0 and not d.flags.cannot_be_everybody then d.flags.mode=1 end
+ end
+ local function refresh()
+  for _,active in ipairs(df.global.world.units.active)do U.setAutomaticProfessions(active)end
+ end
+ local ok=pcall(refresh)
+ if ok then return true end
+ for _,old in ipairs(saved)do
+  local ids=old.detail.assigned_units
+  while #ids>0 do ids:erase(#ids-1)end
+  for _,id in ipairs(old.ids)do ids:insert('#',id)end
+  old.detail.flags.mode=old.mode
+ end
+ local restored=pcall(refresh)
+ return false,restored and 'Native recalculation failed; membership restored' or 'Native recalculation failed; membership restored but labor refresh failed'
+end
 local function advance(rollback)
  local all=df.global.world.units.all
  local lo,hi=0,#all
@@ -340,16 +380,10 @@ return function(request)
     local at=0;while at<#d.assigned_units and d.assigned_units[at]<u.id do at=at+1 end
     local present=at<#d.assigned_units and d.assigned_units[at]==u.id
     if present==(p.member==1) then return finish(inspect_detail(p.detail_index,p.unit_id,rev)) end
-    if p.member==1 then
-     if #d.assigned_units>=1024 then return fail('Work-detail membership is full') end
-     d.assigned_units:insert(at,u.id)
-    else d.assigned_units:erase(at) end
+    if p.member==1 and #d.assigned_units>=1024 then return fail('Work-detail membership is full') end
     spend()
-    if not pcall(U.setAutomaticProfessions,u) then
-     if present then d.assigned_units:insert(at,u.id) else d.assigned_units:erase(at) end
-     spend();local restored=pcall(U.setAutomaticProfessions,u)
-     return fail(restored and 'Native recalculation failed; membership restored' or 'Native recalculation failed; membership restored but labor refresh failed')
-    end
+    local changed,reason=change_membership(u,d,p.member==1)
+    if not changed then return fail(reason)end
    elseif action==33 then
     if not row.mode_editable then return fail('Native work-detail mode is protected') end
     if p.mode==1 and d.flags.cannot_be_everybody then return fail('This work detail cannot be assigned to everybody') end

@@ -58118,7 +58118,925 @@
         "unit_id": 1017
       },
       "source_unchanged": true,
-      "scope": "Native reference only. Four baseline pages and native membership exclusivity/scope effects with restoration; no semantic Labor action acceptance."
+      "scope": "Native reference only. Four baseline pages and native membership exclusivity/scope effects with restoration; no semantic Labor action acceptance.",
+      "semantic_membership_reference": {
+        "run": "stockpile-storage-native-farm-discovery-20261101-101155",
+        "bridge_sha256": "0b394c72563618e864e0fef5f5f86ea705072c2c5d202a3f48d91240b5274321",
+        "effects": {
+          "observations": [
+            {
+              "stage": "miner",
+              "state": {
+                "details": [
+                  {
+                    "assigned": [
+                      1017,
+                      5572,
+                      5573,
+                      5578,
+                      5697,
+                      6135,
+                      6392,
+                      6973,
+                      7204
+                    ],
+                    "flags": 15,
+                    "name": "Miners"
+                  },
+                  {
+                    "assigned": [
+                      5574,
+                      5575,
+                      5577,
+                      5814,
+                      5984,
+                      5985
+                    ],
+                    "flags": 15,
+                    "name": "Woodcutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Hunters"
+                  },
+                  {
+                    "assigned": [
+                      6277
+                    ],
+                    "flags": 5,
+                    "name": "Planters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Fisherdwarves"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Plant gatherers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Stonecutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Engravers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Haulers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Orderlies"
+                  },
+                  {
+                    "assigned": [
+                      5813,
+                      5981,
+                      5982
+                    ],
+                    "flags": 4,
+                    "name": "Metalworks"
+                  }
+                ],
+                "labors": [
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  false,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "only_assigned": false
+              }
+            },
+            {
+              "stage": "woodcutter",
+              "state": {
+                "details": [
+                  {
+                    "assigned": [
+                      5572,
+                      5573,
+                      5578,
+                      5697,
+                      6135,
+                      6392,
+                      6973,
+                      7204
+                    ],
+                    "flags": 15,
+                    "name": "Miners"
+                  },
+                  {
+                    "assigned": [
+                      1017,
+                      5574,
+                      5575,
+                      5577,
+                      5814,
+                      5984,
+                      5985
+                    ],
+                    "flags": 15,
+                    "name": "Woodcutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Hunters"
+                  },
+                  {
+                    "assigned": [
+                      6277
+                    ],
+                    "flags": 5,
+                    "name": "Planters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Fisherdwarves"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Plant gatherers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Stonecutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Engravers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Haulers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Orderlies"
+                  },
+                  {
+                    "assigned": [
+                      5813,
+                      5981,
+                      5982
+                    ],
+                    "flags": 4,
+                    "name": "Metalworks"
+                  }
+                ],
+                "labors": [
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  false,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "only_assigned": false
+              }
+            },
+            {
+              "stage": "before",
+              "state": {
+                "details": [
+                  {
+                    "assigned": [
+                      5572,
+                      5573,
+                      5578,
+                      5697,
+                      6135,
+                      6392,
+                      6973,
+                      7204
+                    ],
+                    "flags": 15,
+                    "name": "Miners"
+                  },
+                  {
+                    "assigned": [
+                      5574,
+                      5575,
+                      5577,
+                      5814,
+                      5984,
+                      5985
+                    ],
+                    "flags": 15,
+                    "name": "Woodcutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Hunters"
+                  },
+                  {
+                    "assigned": [
+                      6277
+                    ],
+                    "flags": 5,
+                    "name": "Planters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Fisherdwarves"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Plant gatherers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Stonecutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Engravers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Haulers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Orderlies"
+                  },
+                  {
+                    "assigned": [
+                      5813,
+                      5981,
+                      5982
+                    ],
+                    "flags": 4,
+                    "name": "Metalworks"
+                  }
+                ],
+                "labors": [
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  false,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "only_assigned": false
+              }
+            },
+            {
+              "stage": "scope",
+              "state": {
+                "details": [
+                  {
+                    "assigned": [
+                      5572,
+                      5573,
+                      5578,
+                      5697,
+                      6135,
+                      6392,
+                      6973,
+                      7204
+                    ],
+                    "flags": 15,
+                    "name": "Miners"
+                  },
+                  {
+                    "assigned": [
+                      5574,
+                      5575,
+                      5577,
+                      5814,
+                      5984,
+                      5985
+                    ],
+                    "flags": 15,
+                    "name": "Woodcutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Hunters"
+                  },
+                  {
+                    "assigned": [
+                      6277
+                    ],
+                    "flags": 5,
+                    "name": "Planters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Fisherdwarves"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Plant gatherers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Stonecutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Engravers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Haulers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Orderlies"
+                  },
+                  {
+                    "assigned": [
+                      5813,
+                      5981,
+                      5982
+                    ],
+                    "flags": 4,
+                    "name": "Metalworks"
+                  }
+                ],
+                "labors": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "only_assigned": true
+              }
+            },
+            {
+              "stage": "before",
+              "state": {
+                "details": [
+                  {
+                    "assigned": [
+                      5572,
+                      5573,
+                      5578,
+                      5697,
+                      6135,
+                      6392,
+                      6973,
+                      7204
+                    ],
+                    "flags": 15,
+                    "name": "Miners"
+                  },
+                  {
+                    "assigned": [
+                      5574,
+                      5575,
+                      5577,
+                      5814,
+                      5984,
+                      5985
+                    ],
+                    "flags": 15,
+                    "name": "Woodcutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Hunters"
+                  },
+                  {
+                    "assigned": [
+                      6277
+                    ],
+                    "flags": 5,
+                    "name": "Planters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 15,
+                    "name": "Fisherdwarves"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Plant gatherers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Stonecutters"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Engravers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Haulers"
+                  },
+                  {
+                    "assigned": [],
+                    "flags": 5,
+                    "name": "Orderlies"
+                  },
+                  {
+                    "assigned": [
+                      5813,
+                      5981,
+                      5982
+                    ],
+                    "flags": 4,
+                    "name": "Metalworks"
+                  }
+                ],
+                "labors": [
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  false,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  false,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "only_assigned": false
+              }
+            }
+          ],
+          "restored": true,
+          "success": true
+        },
+        "coverage": "Actual main-scene semantic requests: Miners, conflicting Woodcutters, unassign, scope on/off. Independent native snapshots compare all memberships/detail flags and selected unit labor bits. First/last-member mode transitions covered by static trace and adapter checks, not this live fixture."
+      }
     },
     "unit_rooms_reference": {
       "source": "build/stockpile-storage-native-farm-discovery-20261101-095036",

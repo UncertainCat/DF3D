@@ -45,47 +45,6 @@ static func focus_tier(focus: int) -> int:
  if focus<=-1000: return -1
  return 0
 
-static func need(sheet, record: Dictionary, sex: int) -> Dictionary:
- var data := load_text(sheet.owner.world)
- if data.is_empty(): return {}
- var id := int(sheet.fact_value(record,"need_id",-1))
- if id<0 or id>=data.needs.size(): return {}
- var tier := focus_tier(int(sheet.fact_value(record,"focus",0)))
- var level: Dictionary=data.tiers[3-tier]
- var rule: Dictionary=data.needs[id]
- var clause: String
- if id==2:
-  var deity := int(sheet.fact_value(record,"deity_id",-1))
-  var name := str(sheet.fact_value(record,"deity_name",""))
-  if deity>=0 and name.is_empty(): return {}
-  if tier>0: clause=rule.positive_no_deity.text if deity<0 else rule.positive_deity.text+name
-  else: clause=rule.negative.text+(rule.negative_deity_connector.text+name if deity>=0 else "")
- else: clause=rule.positive.text if tier>0 else rule.negative.text
- var pronoun: String={0:"She",1:"He"}.get(sex,"It")
- return {"text":pronoun+data.sentence_joiner.text+level.text+" "+clause+data.sentence_suffix.text,"color":colors[int(level.color[0])+int(level.color[2])*8]}
-
-static func overall(sheet, sex: int) -> Dictionary:
- var data := load_text(sheet.owner.world)
- if data.is_empty(): return {}
- for record in sheet.records_for("identity"):
-  if sheet.fact_value(record,"record_type")!="focus": continue
-  var current := int(sheet.fact_value(record,"current_focus",0))
-  var baseline := int(sheet.fact_value(record,"undistracted_focus",0))
-  var percent := int(float(current)*100/baseline) if baseline>0 else 100
-  var index := 6
-  var tier := 0
-  if percent>=140: index=0;tier=3
-  elif percent>=120: index=1;tier=2
-  elif current>baseline: index=2;tier=1
-  elif percent<=60: index=3;tier=-3
-  elif percent<=80: index=4;tier=-2
-  elif current!=baseline and baseline>0: index=5;tier=-1
-  if current==baseline or baseline<=0: tier=0
-  var level: Dictionary=data.tiers[3-tier]
-  return {"text":data.overall_prefix.text+{0:"she",1:"he"}.get(sex,"it")+data.sentence_joiner.text+data.overall[index].text+data.sentence_suffix.text,"color":colors[int(level.color[0])+int(level.color[2])*8]}
- return {}
-
-
 static func attributes(sheet) -> Array:
  var data := load_text(sheet.owner.world)
  if data.is_empty() or not data.has("overview_attribute_labels"): return []

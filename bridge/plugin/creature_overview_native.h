@@ -9,7 +9,7 @@
 namespace df3d_creature {
 // Native14d720 refreshes focus caches through e2c090. Supply independent
 // personality storage and copied needs; all cache/timestamp writes stay owned.
-inline std::optional<int32_t> focusPercent(const df::unit_personality& source) {
+inline std::optional<int32_t> focusPercent(const df::unit_personality& source,int32_t* current=nullptr,int32_t* undistracted=nullptr) {
     static const bool supported=[] {
         if(!df3d_production::farmFunctions())return false;
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -38,7 +38,10 @@ inline std::optional<int32_t> focusPercent(const df::unit_personality& source) {
     owned.current_focus=source.current_focus;owned.undistracted_focus=source.undistracted_focus;
     owned.slack_end_year=source.slack_end_year;owned.slack_end_year_tick=source.slack_end_year_tick;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
-    return reinterpret_cast<int32_t (*)(df::unit_personality*)>(base+0x14d720)(&owned);
+    const auto percent=reinterpret_cast<int32_t (*)(df::unit_personality*)>(base+0x14d720)(&owned);
+    if(current)*current=owned.current_focus;
+    if(undistracted)*undistracted=owned.undistracted_focus;
+    return percent;
 }
 inline std::optional<int16_t> overviewSkillProfession(int16_t skill) {
     static const bool supported=[] {

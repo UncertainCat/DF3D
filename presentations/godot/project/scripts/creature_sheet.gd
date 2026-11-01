@@ -455,24 +455,24 @@ func render(controller, state: Dictionary):
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
- if tab=="Personality" and subtabs.get(tab) in ["Traits","Values","Preferences"]:
+ if tab=="Personality" and subtabs.get(tab) in ["Traits","Values","Preferences","Needs"]:
   scroll=null
   if not is_instance_valid(personality_view):
    personality_view=preload("res://scripts/native_creature_paragraph_view.gd").new()
    owner.body.add_child(personality_view);personality_view.configure(owner.world)
    personality_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
   personality_view.position=Vector2(0,y);personality_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
-  var native_values:=""
-  for row in records_for({"Traits":"personality","Values":"values","Preferences":"preferences"}[subtabs.get(tab)]):native_values+=str(fact_value(row,"native_text",""))
+  var native_text:=""
+  for row in records_for({"Traits":"personality","Values":"values","Preferences":"preferences","Needs":"needs"}[subtabs.get(tab)]):native_text+=str(fact_value(row,"native_text",""))
   var paragraphs:Array=[]
-  if not native_values.is_empty():
-   if subtabs.get(tab)=="Traits":
-    # The bridge separates the native Traits formatter outputs with [B].
+  if not native_text.is_empty():
+   if subtabs.get(tab) in ["Traits","Needs"]:
+    # The bridge separates the native Traits/Needs formatter outputs with [B].
     # Each native output starts with its own default color, including mannerisms.
-    for part in native_values.split("[B]"):
+    for part in native_text.split("[B]"):
      if not paragraphs.is_empty():paragraphs.append("")
      paragraphs.append(part)
-   else:paragraphs.append(native_values)
+   else:paragraphs.append(native_text)
   if personality_view.page_key!=location():personality_view.first=0
   personality_view.present(paragraphs,location());return
  if tab=="Thoughts":
@@ -569,16 +569,6 @@ func render(controller, state: Dictionary):
  inset.add_child(content)
  if detail.is_empty(): return
  if tab=="Overview": overview(content,detail)
- elif tab=="Personality" and subtabs.get(tab)=="Needs":
-  var summary := NativeText.overall(self,int(detail.get("sex",-1)))
-  if not summary.is_empty():
-   text(content,summary.text,summary.color)
-   var gap := Control.new();gap.custom_minimum_size.y=12;content.add_child(gap)
-  for record in records_for("needs"):
-   var line := NativeText.need(self,record,int(detail.get("sex",-1)))
-   if line.is_empty(): continue
-   text(content,line.text,line.color)
-   var gap := Control.new();gap.custom_minimum_size.y=12;content.add_child(gap)
  else:
   var keys: Array=recipe.subtabs[tab][subtabs[tab]] if recipe.subtabs.has(tab) else recipe.sections.get(tab,[])
   for key in keys: section(content,key,keys.size()>1)

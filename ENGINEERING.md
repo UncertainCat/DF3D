@@ -3444,60 +3444,52 @@ exceeded the30s combined-lane limit; this multi-panel lane now allows60s.
 
 ### Creature Personality
 
-`creature_personality_native.h` calls nativee248a0 for Values, with the same
-arguments as4815d6: an owned personality, owned unit race/sex, soul race/sex,
-owned output, true and flags3. DF supplies cultural/personal values, remembered
-causes and dreams. Traits calls13811b0 for mental attributes, e26ca0 for facets
-and their causes/conflicts, and10e3280 for mannerisms. Its unit owns the soul,
-optional curse attribute changes and the identity lookup's mutable historical
-figure index. Referenced personality records, identities and creature raws are
-read-only. Shared RNG and historical-material caches are restored. Complete
-formatter bodies and the identity/caste lookup helpers are pinned. UI wrapper
-47f680 is never called and no native sheet state is supplied.
+All four Personality tabs use native semantic text and the shared native
+paragraph renderer. `creature_personality_native.h` calls13811b0 for mental
+attributes, e26ca0 for facets/causes/conflicts,10e3280 for mannerisms and e248a0
+for Values/dreams. Inputs include an owned personality/soul, owned unit and
+optional curse attribute changes. Identity lookup's mutable unit index is owned;
+referenced personality, identity and raw records are read-only. Traits conditions
+are inline in4818ee..481c71: the bridge reproduces their scalar composition with
+pinned installed literals and native pronouns. No native sheet wrapper is called.
 
-Traits conditions have no independent formatter: the bridge reproduces the
-scalar composition in4818ee..481c71 with pinned installed literals and native
-pronouns. Sections6/7 retain scalar facts used by other pages and carry bounded
-256-byte native-text chunks, converted once before transport. Traits outputs
-are separated by[B]; the view restores their separate paragraph boundaries,
-blank rows and default colors. Godot's Traits and Values sentence builders have
-been removed. Refresh retains the native paragraph view; tab changes reset
-scrolling, overlay cancellation releases drag, and leaving Traits/Values retires
-it. Needs still uses reconstructed descriptions and remains unfinished.
-Personality and the creature route remain staged.
+`creature_preferences_native.h` reproduces the inline4800b2..48149c three-group
+composition using pinned literals. Nativea82c10 formats items and food;14d1920
+formats materials; native raw/name routines supply the remaining subjects.
+e35c70/e35d60 select preference reasons. Preferences are copied and visible-name
+lookup uses an owned unit/index. The Lua reason hash and incomplete food/subtype
+naming are removed, along with Godot's Traits/Values/Preferences sentence builders.
 
-Protected142009 on2026-11-01 verifies exact native tagged rows and456x504 body
-crops for Traits and Values on both1017 and2905. These include remembered causes,
-value conflicts, a creative dream and distinct mannerisms. Header refresh,
-overlay cancellation and navigation to Preferences pass. Owned DF41700 exits
-unsaved; the source save is unchanged. All three Godot logs contain only the
-known startup notice, with no Unicode errors. Plugin SHA256:
-`29ea6e72f16edd5e51ff77e4d56ec4ceff2853d729a762f36a1cc135125b9b61`.
-The earlier141824 comparison caught mannerisms inheriting the previous paragraph's
-color; separate paragraph rendering fixes that mismatch. Tail/resize and broader
-lifecycle variants remain unverified. Native captures include Preferences/Needs
-for the next implementation steps.
+`creature_needs_native.h` reproduces the inline47f74b..4800ad Needs composition.
+The existing14d720 focus provider now also returns its owned refreshed current
+and undistracted totals, without changing live personality caches/timestamps.
+Source need order, focus tiers, colors and positive/nonpositive clauses are
+preserved. Nativeb92f10 formats deity names with an independently initialized
+0xc8-byte history context. No live context or sheet scratch is supplied. The
+native soldier-mood/insanity gates and baby/child individual-row exclusion are
+preserved; Godot's Needs sentence builder is removed.
 
-`creature_preferences_native.h` supplies Preferences. Page composition is inline
-in native4800b2..48149c, so the bridge reproduces its three ordered groups and
-punctuation with pinned installed literals. Nativea82c10 formats item and food
-subjects;14d1920 formats materials; native creature/plant/descriptor/name routines
-supply the remaining subjects. e35c70/e35d60 select preference reasons, with the
-shared split RNG restored afterward. Historical material caches are restored;
-visible-name lookup uses an owned unit and mutable lookup index. Preferences
-are copied and raw/name records are read-only. No native sheet wrapper is called.
-The Lua seeded-hash and incomplete food/subtype naming, and Godot's sentence
-assembly, are removed. Section11 now carries native text chunks, rendered by
-the shared paragraph view; navigating to Needs retires this view.
+All formatters restore shared RNG and historical-material caches. Complete
+formatter bodies, required lookup helpers and inline literal sources are pinned.
+Sections6/7/8 retain scalar facts needed by Overview and add bounded256-byte
+native text chunks, converted once before transport; section11 carries native
+Preferences text. Traits/Needs paragraph boundaries use[B] and are rendered as
+independent native rows with blank separators and default colors. Refresh retains
+the view, page changes reset scrolling, overlay cancellation releases drag, and
+leaving Personality retires it. The creature route remains staged.
 
-Protected142451 on2026-11-01 matches exact tagged text and456x504 body crops for
-Traits, Values and Preferences on1017/2905. Preferences covers native materials,
-items, creature/plant reasons, food choices, dislikes and all three art-form
-prefixes across these subjects. This is not coverage of every preference type
-or food class. Refresh/overlay/navigation checks pass; owned DF46468 exits
-unsaved, source preservation passes and all three Godot logs have only the known
+Protected143033 on2026-11-01 matches exact native tagged rows and456x504 body
+crops for all four tabs on1017/2905. Each Needs page matches all53 source rows,
+including deity clauses; the crop covers only the initial visible portion.
+The subjects also cover remembered causes, value conflicts, dreams, distinct
+mannerisms, food/dislikes and all three art-form prefixes. Refresh, overlay
+cancellation and actual navigation to Overview pass. Owned DF34408 exits unsaved;
+source preservation passes and all three Godot logs have only the documented
 startup notice, with no Unicode errors. Plugin SHA256:
-`62d16437ec745826c4522f1cc0497b9392c20c9288c14a930f94afdcf11e87b3`.
+`a2955b01b8d207299f8944414ca3b3017a07cf0f8be07401cd06dde7035a0645`.
+Tail scrolling, resize, other eligibility states, every preference/food class
+and broader lifecycle variants remain unverified. This milestone does not
+promote the whole creature route or complete the management backlog.
 
 ### Creature Thoughts and Memories
 

@@ -330,6 +330,11 @@ return function(request)
    local deity=v.deity_id>=0 and df.historical_figure.find(v.deity_id)
    if deity then fact(s,r,'deity_name',dfhack.translation.translateName(deity.name,true))end
   end)
+  local native=request.personality_needs(u.id)
+  for first=1,#native,256 do
+   local r=record(s,-1-(first-1)//256,'')
+   fact(s,r,'record_type','native_needs');fact(s,r,'native_text',native:sub(first,first+255))
+  end
  end)
  section(9,function(s)
   local p=personality(s);if not p then return end

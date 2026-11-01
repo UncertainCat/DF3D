@@ -1785,7 +1785,7 @@ func exercise_personality(inspector) -> void:
 	var reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-personality-native.json"))
 	var results:Array=[]
 	for page in reference.pages:
-		if page.name not in ["Traits","Values","Preferences"]:continue
+		if page.name not in ["Traits","Values","Preferences","Needs"]:continue
 		var target:=int(page.unit_id)
 		inspector.open_target(Vector3i.ZERO,1,target)
 		await health_tab(inspector,"Personality");await health_tab(inspector,page.name,true)
@@ -1813,7 +1813,7 @@ func exercise_personality(inspector) -> void:
 		view.scrollbar.dragging=true;inspector.cancel_gesture()
 		check(not view.scrollbar.dragging,"Personality overlay retained drag")
 		results.append({"unit_id":target,"page":page.name,"native_text":view.rows==expected,"native_pixels":same,"rows":view.rows})
-		await health_tab(inspector,"Needs",true);await process_frame
+		await health_tab(inspector,"Overview");await process_frame
 		check(not is_instance_valid(inspector.creature_sheet.personality_view),"Leaving native paragraphs retained its visible view")
 	var file:=FileAccess.open(directory+"/unit-personality-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()

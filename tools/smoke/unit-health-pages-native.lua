@@ -38,6 +38,15 @@ local function probe(sample,name)
    for _,object in ipairs{unit,sheet,df.global.plotinfo,unit.health}do
     if object then local size,address=df.sizeof(object);guard(address,size)end
    end
+   if unit.health then
+    local raws=df.global.world.raws.mat_table.syndromes.all
+    local _,vector_address=df.sizeof(raws)
+    assert(df.reinterpret_cast('uint64_t',base+0x24f9608).value==df.reinterpret_cast('uint64_t',vector_address).value,'Health syndrome global differs')
+    for _,event in ipairs(unit.health.syndrome_diagnosis)do
+     local raw=raws[event.syndrome_ind]
+     if raw then local size,address=df.sizeof(raw);guard(address,size)end
+    end
+   end
    local vectors={unit.body.components.body_part_status,unit.body.wounds,unit.enemy.motor_nervenet,unit.enemy.sensory_nervenet,unit.enemy.body_part_useable}
    for _,vector in ipairs{unit.appearance.body_modifiers,unit.appearance.bp_modifiers,
     unit.appearance.tissue_style,unit.appearance.tissue_style_civ_id,unit.appearance.tissue_style_id,
@@ -142,9 +151,19 @@ local ok,err=xpcall(function()
    for y=17,20 do local first=row(y):find(name,1,true);if first then click((first-1)*8+4,y*12+10);return end end
    error('Missing Health case tab '..name)
   end
+  local temporary={}
   local cases_ok,cases_error=xpcall(function()
    assert(#operations>1,'History variants require multiple operations')
-   for _,case in ipairs{'empty','missing-caregivers','equal-timestamps','cold-caregiver-caches'}do
+   for index,raw in ipairs(df.global.world.raws.mat_table.syndromes.all)do
+    if raw and raw.syn_name~=''then
+     local event=df.unit_patient_profile_syndrome_diagnosisst:new()
+     event.syndrome_ind=index;event.year=operations[1].year;event.season_count=operations[1].time;event.worker_unid=operations[1].worker
+     temporary[#temporary+1]=event
+     if #temporary==2 then break end
+    end
+   end
+   assert(#temporary==2,'History variants require two named installed syndromes')
+   for _,case in ipairs{'empty','missing-caregivers','equal-timestamps','cold-caregiver-caches','syndrome-only','mixed-syndrome-ties','absent-positive-caregivers','mixed-cold-caregiver-caches'}do
     restore()
     if case=='empty'then health.op_history:resize(0);health.syndrome_diagnosis:resize(0)
     elseif case=='missing-caregivers'then
@@ -154,14 +173,30 @@ local ok,err=xpcall(function()
      for _,r in ipairs(operations)do r.event.year=operations[1].year;r.event.year_time=operations[1].time end
      for _,r in ipairs(diagnoses)do r.event.year=operations[1].year;r.event.season_count=operations[1].time end
     end
+    if case=='syndrome-only'or case=='mixed-syndrome-ties'or case=='mixed-cold-caregiver-caches'then
+     for _,event in ipairs(temporary)do health.syndrome_diagnosis:insert('#',event)end
+     if case=='syndrome-only'then health.op_history:resize(0)
+     else
+      for _,r in ipairs(operations)do r.event.year=operations[1].year;r.event.year_time=operations[1].time end
+     end
+    elseif case=='absent-positive-caregivers'then
+     assert(not df.unit.find(2147483647),'Absent caregiver ID unexpectedly resolves')
+     for _,r in ipairs(operations)do r.event.doctor_id=2147483647 end
+     for _,r in ipairs(diagnoses)do r.event.worker_unid=2147483647 end
+    end
     select('Status');select('History')
     local sample={name=case,tagged_rows={}}
+    if #health.syndrome_diagnosis>0 then
+     sample.diagnoses={}
+     for _,event in ipairs(health.syndrome_diagnosis)do sample.diagnoses[#sample.diagnoses+1]={syndrome=event.syndrome_ind,year=event.year,time=event.season_count,worker=event.worker_unid}end
+    end
     for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
-    if case=='cold-caregiver-caches'then for _,r in pairs(workers)do r.unit.enemy.histfig_vector_idx=-1 end end
+    if case=='cold-caregiver-caches'or case=='mixed-cold-caregiver-caches'then for _,r in pairs(workers)do r.unit.enemy.histfig_vector_idx=-1 end end
     probe(sample,'History');history_cases[#history_cases+1]=sample
    end
   end,debug.traceback)
-  restore();select('Status');select('History')
+  restore();for _,event in ipairs(temporary)do df.delete(event)end
+  select('Status');select('History')
   assert(cases_ok,cases_error)
  end
 end,debug.traceback)

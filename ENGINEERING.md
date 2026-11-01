@@ -3248,13 +3248,30 @@ or UI state is substituted. The internal event path rejects non-neutralized IDs.
 Protected015330 compares all22 resulting rows and guards the original history
 records and caregiver unit structs. `DF3D_UNIT_HEALTH_HISTORY_CASES=1` additionally
 runs controlled variants and restores event pointers/fields and caregiver caches.
-Protected015633 matches native empty history (1row), caregiver IDs set to-1
-(11rows), equal operation timestamps (22rows), and cold caregiver caches (22rows).
-The last case clears caches after collecting native text and guards the cleared
-values across the owned probe. All guards pass; DF31712 exits unsaved with source
-preservation and only known startup notices. `history_cases_reference` records
-exact rows; root/core QA `health-history-cases` passes. Syndrome records, mixed
-syndrome/operation ties and absent positive caregiver IDs remain unverified.
+Protected025443 matches eight native variants: empty history (1row), caregiver
+IDs-1 (11rows), equal operation timestamps (22rows), cold caregiver caches
+(22rows), syndrome-only (4rows), mixed syndrome/operation timestamp ties
+(26rows), absent positive caregiver IDs (11rows), and mixed cold-cache records
+(26rows). Cold-cache cases clear caches after the native oracle and preserve
+those cleared values across the owned probe. Temporary diagnosis records use
+two installed syndrome definitions and are removed/deleted after comparison;
+no syndrome is applied. The diagnosis branch47adc1..47ae74 reads the installed
+syndrome vector atRVA24f9608 and appends its name using existing string helpers.
+The probe verifies that global against mat_table.syndromes.all and guards the
+referenced syndrome objects as well as original event/caregiver/UI/random state.
+All guards pass; DF36148 exits unsaved with source preservation and only known
+startup notices. `history_cases_reference` records the exact rows.
+
+Protected025843 transports and renders a mixed case with26 semantic History
+rows and29 wrapped lines. All five Health text regions432,244,424,492 match
+native pixels. This exposed and corrected a presentation parser bug: native
+syndrome copy uses [C:7:0:0:] with a trailing colon, which must set gray just
+like the three-value tag. `syndrome_history_reference` stores native wrapped
+lines/colors and the successful main-scene result; the layout regression checks
+every character. All three Godot processes have only the known startup notice;
+owned DF40588 exits unsaved and source preservation passes. Controlled diagnosis
+records establish History formatting/ordering, not active disease effects or
+Status/Treatment coverage. No native-behavior exception was needed.
 
 `formatted_text_reference` records protected021536 native text-box output:
 53-column boxes, exact wrapped lines and per-character packed colors. Native

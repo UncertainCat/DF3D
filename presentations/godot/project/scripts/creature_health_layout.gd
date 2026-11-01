@@ -35,7 +35,7 @@ func build(source: String, columns: int) -> Array:
     var tag:=source.substr(index+1,end-index-1)
     if tag.begins_with("C:"):
      var values:=tag.split(":")
-     if values.size()==4:color=int(values[1])+8*int(values[2])+64*int(values[3])
+     if values.size()>=4:color=int(values[1])+8*int(values[2])+64*int(values[3])
      index=end+1;continue
     if tag in ["B","P","R"]:
      flush_word();emit_line()

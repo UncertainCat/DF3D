@@ -53297,7 +53297,7 @@
         ]
       },
       "history_cases_reference": {
-        "run": "build/stockpile-storage-native-farm-discovery-20261101-015633",
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-025443",
         "status": "passed_with_known_issues",
         "cases": [
           {
@@ -53459,6 +53459,230 @@
               "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
               "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
             ]
+          },
+          {
+            "diagnoses": [
+              {
+                "syndrome": 0,
+                "time": 111079,
+                "worker": 6592,
+                "year": 106
+              },
+              {
+                "syndrome": 1,
+                "time": 111079,
+                "worker": 6592,
+                "year": 106
+              }
+            ],
+            "name": "syndrome-only",
+            "probe": {
+              "page": 3,
+              "rows": [
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter"
+            ]
+          },
+          {
+            "diagnoses": [
+              {
+                "syndrome": 0,
+                "time": 111079,
+                "worker": 6592,
+                "year": 106
+              },
+              {
+                "syndrome": 1,
+                "time": 111079,
+                "worker": 6592,
+                "year": 106
+              }
+            ],
+            "name": "mixed-syndrome-ties",
+            "probe": {
+              "page": 3,
+              "rows": [
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:3:0:1]Cleaned[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+                "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Olon Arzesnil, Miner",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+                "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:3:0:1]Cleaned[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+              "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Olon Arzesnil, Miner",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+              "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+            ]
+          },
+          {
+            "name": "absent-positive-caregivers",
+            "probe": {
+              "page": 3,
+              "rows": [
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+                "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]10th Hematite, 106: [C:3:0:1]Cleaned[R]",
+                "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]11th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+                "[C:2:0:1]12th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]12th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+                "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+                "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+              "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]10th Hematite, 106: [C:3:0:1]Cleaned[R]",
+              "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]11th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+              "[C:2:0:1]12th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]12th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+              "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+              "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]"
+            ]
+          },
+          {
+            "diagnoses": [
+              {
+                "syndrome": 0,
+                "time": 111079,
+                "worker": 6592,
+                "year": 106
+              },
+              {
+                "syndrome": 1,
+                "time": 111079,
+                "worker": 6592,
+                "year": 106
+              }
+            ],
+            "name": "mixed-cold-caregiver-caches",
+            "probe": {
+              "page": 3,
+              "rows": [
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:3:0:1]Cleaned[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+                "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Olon Arzesnil, Miner",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+                "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+              ],
+              "unit_id": 1017
+            },
+            "probe_guards_unchanged": true,
+            "tagged_rows": [
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:3:0:1]Cleaned[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+              "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Olon Arzesnil, Miner",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+              "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+            ]
           }
         ],
         "diagnostics": {
@@ -53493,12 +53717,11 @@
             "unclassified": []
           }
         },
-        "source_save": "Owned source unchanged; DF31712 exits unsaved. Diagnostic records and caches restored.",
-        "qa": "build/qa/health-history-cases",
+        "source_save": "Owned source unchanged; DF36148 exits unsaved. Diagnostic records and caches restored.",
+        "qa": "build/qa/health-syndrome-final",
         "limitations": [
-          "Controlled existing operation records only; no syndrome records in this specimen.",
-          "Missing caregivers use -1; absent positive IDs and mixed syndrome/operation timestamp ties remain.",
-          "Diagnostic semantic comparison only; no rendered DF3D Health acceptance."
+          "Eight controlled History variants; the rendered mixed case is recorded separately in syndrome_history_reference.",
+          "Diagnosis records do not apply disease effects or establish active-syndrome Status/Treatment coverage."
         ]
       },
       "transport_reference": {
@@ -54952,6 +55175,920 @@
         },
         "source_preserved": true,
         "scope": "Native exposed-map clicks between1017 and2345 reset Overview then Health Status/top. DF3D explicit open_target selection route during drag retires prior view; both selected publication IDs and Status text pixels match. Does not test ray picking, another world or deliberately delayed replies."
+      },
+      "syndrome_history_reference": {
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261101-025622",
+        "probe_run": "build/stockpile-storage-native-farm-discovery-20261101-025443",
+        "probe_status": "passed_with_known_issues",
+        "source": "Native479f40 syndrome branch47adc1..47ae74 reads installed mat_table.syndromes.all atRVA24f9608 and appends the native name. Raw/global identity and source objects guarded by probe.",
+        "formatted_pages": [
+          {
+            "name": "Status",
+            "rows": [
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ],
+            "boxes": [
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "Ability to stand lost",
+                    "color_runs": [
+                      [
+                        70,
+                        21
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "Motor nerve damage",
+                    "color_runs": [
+                      [
+                        71,
+                        18
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "Sensory nerve damage",
+                    "color_runs": [
+                      [
+                        71,
+                        20
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Wounds",
+            "rows": [
+              "[C:7:0:1]left foot, skin",
+              "[C:7:0:1]left foot, fat",
+              "[C:7:0:1]left foot, muscle",
+              "[C:7:0:1].Motor nerve severed",
+              "[C:7:0:1].Sensory nerve severed",
+              "[C:7:0:1]left ankle, muscle",
+              "[C:7:0:1]fourth toe, left foot, nail",
+              "[C:4:0:1].Smashed apart",
+              "[C:7:0:1]fourth toe, left foot, skin",
+              "[C:7:0:1]Has been sutured"
+            ],
+            "boxes": [
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "left foot, skin",
+                    "color_runs": [
+                      [
+                        71,
+                        15
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "left foot, fat",
+                    "color_runs": [
+                      [
+                        71,
+                        14
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "left foot, muscle",
+                    "color_runs": [
+                      [
+                        71,
+                        17
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Motor nerve severed",
+                    "color_runs": [
+                      [
+                        71,
+                        20
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Sensory nerve severed",
+                    "color_runs": [
+                      [
+                        71,
+                        22
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "left ankle, muscle",
+                    "color_runs": [
+                      [
+                        71,
+                        18
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "fourth toe, left foot, nail",
+                    "color_runs": [
+                      [
+                        71,
+                        27
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": ".Smashed apart",
+                    "color_runs": [
+                      [
+                        68,
+                        14
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "fourth toe, left foot, skin",
+                    "color_runs": [
+                      [
+                        71,
+                        27
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "Has been sutured",
+                    "color_runs": [
+                      [
+                        71,
+                        16
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Treatment",
+            "rows": [
+              "[C:7:0:0]No treatment scheduled"
+            ],
+            "boxes": [
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "No treatment scheduled",
+                    "color_runs": [
+                      [
+                        7,
+                        22
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "History",
+            "rows": [
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:0:]Diagnosed with inebriation[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:3:0:1]Cleaned[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+              "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Olon Arzesnil, Miner",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+              "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+            ],
+            "boxes": [
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Diagnosed with inebriation",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        7,
+                        27
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Melbil Cattenlush\u00f4n, Planter",
+                    "color_runs": [
+                      [
+                        64,
+                        30
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Diagnosed with inebriation",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        7,
+                        27
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Melbil Cattenlush\u00f4n, Planter",
+                    "color_runs": [
+                      [
+                        64,
+                        30
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Brought to rest in Bed",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        71,
+                        23
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Melbil Cattenlush\u00f4n, Planter",
+                    "color_runs": [
+                      [
+                        64,
+                        30
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Evaluated",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        71,
+                        10
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Rith Suluslogem, chief medical dwarf",
+                    "color_runs": [
+                      [
+                        64,
+                        38
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Cleaned",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        67,
+                        8
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Urvad Kad\u00f4lbisek, Diagnostician",
+                    "color_runs": [
+                      [
+                        64,
+                        33
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Evaluated",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        71,
+                        10
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Urvad Kad\u00f4lbisek, Diagnostician",
+                    "color_runs": [
+                      [
+                        64,
+                        33
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Compound fracture of fourth toe,",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        68,
+                        33
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "left foot repaired",
+                    "color_runs": [
+                      [
+                        68,
+                        18
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- \u00e8rith Mamotavuz, Surgeon",
+                    "color_runs": [
+                      [
+                        64,
+                        26
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Evaluated",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        71,
+                        10
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Rith Suluslogem, chief medical dwarf",
+                    "color_runs": [
+                      [
+                        64,
+                        38
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Received pig tail sutures on",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        68,
+                        29
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "fourth toe, left foot",
+                    "color_runs": [
+                      [
+                        68,
+                        21
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Rig\u00f2th Shinat\u00edr, sacred call",
+                    "color_runs": [
+                      [
+                        64,
+                        30
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Evaluated",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        71,
+                        10
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Rith Suluslogem, chief medical dwarf",
+                    "color_runs": [
+                      [
+                        64,
+                        38
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Received cave spider silk dressing",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        71,
+                        35
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "on fourth toe, left foot",
+                    "color_runs": [
+                      [
+                        71,
+                        24
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Olon Arzesnil, Miner",
+                    "color_runs": [
+                      [
+                        64,
+                        22
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Evaluated",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        71,
+                        10
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Rith Suluslogem, chief medical dwarf",
+                    "color_runs": [
+                      [
+                        64,
+                        38
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "9th Hematite, 106: Received persimmon wood crutch",
+                    "color_runs": [
+                      [
+                        66,
+                        18
+                      ],
+                      [
+                        71,
+                        31
+                      ]
+                    ]
+                  }
+                ]
+              },
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "- Rovod Gusiletes, Leatherworker",
+                    "color_runs": [
+                      [
+                        64,
+                        32
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Description",
+            "rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna mixed with gray.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+            ],
+            "boxes": [
+              {
+                "width": 53,
+                "lines": [
+                  {
+                    "text": "A short, sturdy creature fond of drink and industry.",
+                    "color_runs": [
+                      [
+                        7,
+                        52
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "color_runs": []
+                  },
+                  {
+                    "text": "He is incredibly quick to heal, but he is quick to",
+                    "color_runs": [
+                      [
+                        2,
+                        31
+                      ],
+                      [
+                        4,
+                        19
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "tire, very flimsy and unquestionably weak.",
+                    "color_runs": [
+                      [
+                        4,
+                        42
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "color_runs": []
+                  },
+                  {
+                    "text": "His fourth toe, left foot is broken. His fourth toe,",
+                    "color_runs": [
+                      [
+                        68,
+                        52
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "left foot is smashed open.",
+                    "color_runs": [
+                      [
+                        68,
+                        26
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "His medium-length beard is neatly combed. His",
+                    "color_runs": [
+                      [
+                        71,
+                        45
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "long sideburns are braided. His very long moustache",
+                    "color_runs": [
+                      [
+                        71,
+                        51
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "is neatly combed. His hair is clean-shaven. He has a",
+                    "color_runs": [
+                      [
+                        71,
+                        52
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "round chin. His nose is short. He has a low voice.",
+                    "color_runs": [
+                      [
+                        71,
+                        50
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "His somewhat splayed out ears are somewhat narrow.",
+                    "color_runs": [
+                      [
+                        71,
+                        50
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "His ochre eyes are slightly close-set. His lips are",
+                    "color_runs": [
+                      [
+                        71,
+                        51
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "thin. His hair is burnt sienna mixed with gray. His",
+                    "color_runs": [
+                      [
+                        71,
+                        51
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "skin is pale chestnut. His left foot bears a massive",
+                    "color_runs": [
+                      [
+                        71,
+                        22
+                      ],
+                      [
+                        7,
+                        30
+                      ]
+                    ]
+                  },
+                  {
+                    "text": "jagged scar.",
+                    "color_runs": [
+                      [
+                        7,
+                        12
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "rendered_run": "build/stockpile-storage-native-farm-discovery-20261101-025843",
+        "rendered_status": "passed_with_known_issues",
+        "rendered_text_rect": [
+          432,
+          244,
+          424,
+          492
+        ],
+        "scene": {
+          "pages": [
+            {
+              "lines": 3,
+              "name": "Status",
+              "pixels_match": true
+            },
+            {
+              "lines": 10,
+              "name": "Wounds",
+              "pixels_match": true
+            },
+            {
+              "lines": 1,
+              "name": "Treatment",
+              "pixels_match": true
+            },
+            {
+              "lines": 29,
+              "name": "History",
+              "pixels_match": true
+            },
+            {
+              "lines": 16,
+              "name": "Description",
+              "pixels_match": true
+            }
+          ],
+          "retained_refresh": true,
+          "success": true,
+          "tab_return": true
+        },
+        "source_preserved": true,
+        "limitations": [
+          "Controlled diagnosis/history records using installed syndrome names; does not apply syndrome effects or verify active-syndrome Status/Treatment."
+        ]
       }
     }
   }

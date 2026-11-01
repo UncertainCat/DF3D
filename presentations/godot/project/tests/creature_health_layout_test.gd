@@ -16,5 +16,16 @@ func _initialize() -> void:
      for _j in int(run[1]):colors.append(int(run[0]))
     if actual[i].text!=expected.lines[i].text or actual[i].colors!=colors:
      push_error("Health native text/color differs: %s box%d line%d: %s" % [reference.name,box_index,i,actual[i].text]);failures+=1
+ for reference in fixture.syndrome_history_reference.formatted_pages:
+  for box_index in reference.boxes.size():
+   var expected: Dictionary=reference.boxes[box_index]
+   var actual: Array=Layout.new().build(reference.rows[box_index],int(expected.width))
+   if actual.size()!=expected.lines.size():push_error("Syndrome Health line count differs: "+reference.name);failures+=1;continue
+   for i in actual.size():
+    var colors:=PackedInt32Array()
+    for run in expected.lines[i].color_runs:
+     for _j in int(run[1]):colors.append(int(run[0]))
+    if actual[i].text!=expected.lines[i].text or actual[i].colors!=colors:
+     push_error("Syndrome Health native text/color differs: %s box%d line%d" % [reference.name,box_index,i]);failures+=1
  if failures==0:print("CREATURE_HEALTH_LAYOUT_PASS")
  quit(1 if failures else 0)

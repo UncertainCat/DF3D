@@ -235,7 +235,7 @@ func exercise_health_view(inspector) -> void:
 		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
 		actual.save_png(directory+"/unit-health-"+name.to_lower()+"-scene.png")
 		var expected:=Image.load_from_file(directory+"/unit-health-page-"+name.to_lower()+".png");expected.convert(Image.FORMAT_RGB8)
-		var rect:=Rect2i(432,244,424,312)
+		var rect:=Rect2i(432,244,424,492)
 		check(actual.get_region(rect).get_data()==expected.get_region(rect).get_data(),"Composed native Health text pixels differ: "+name)
 		var before: Array=view.lines.duplicate(true)
 		inspector.redraw();await process_frame;await process_frame
@@ -341,7 +341,7 @@ func exercise_health_identity(inspector) -> void:
 		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
 		actual.save_png(directory+"/unit-health-"+sample.name+"-scene.png")
 		var native:=Image.load_from_file(directory+"/unit-health-layout-"+sample.name+".png");native.convert(Image.FORMAT_RGB8)
-		var rect:=Rect2i(432,244,424,312)
+		var rect:=Rect2i(432,244,424,492)
 		var matched:=actual.get_region(rect).get_data()==native.get_region(rect).get_data()
 		check(matched,"Different creature Health text differs from native")
 		results.append({"unit_id":id,"native_pixels_match":matched,"lines":view.lines.size()})

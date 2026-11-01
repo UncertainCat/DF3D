@@ -20,12 +20,13 @@ func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_val
 func present(page: Dictionary) -> void:
  kind=int(page.get("kind",0));rows=page.get("rows",[]);layout()
 func capacity() -> int:return maxi(0,int((size.y-12)/36))
+func display_first() -> int:return clampi(first,0,maxi(0,rows.size()-capacity()))
 func layout() -> void:
  first=maxi(0,first)
  scrollbar.position=Vector2(size.x-24,0);scrollbar.size=Vector2(16,capacity()*36)
- scrollbar.count=rows.size();scrollbar.page=capacity();scrollbar.first=first
+ scrollbar.count=rows.size();scrollbar.page=capacity();scrollbar.first=display_first()
  scrollbar.visible=capacity()>0 and rows.size()>capacity();scrollbar.queue_redraw();queue_redraw()
-func inspect_rect(index: int) -> Rect2:return Rect2(size.x-(56 if scrollbar.visible else 40),(index-first)*36,24,36)
+func inspect_rect(index: int) -> Rect2:return Rect2(size.x-(56 if scrollbar.visible else 40),(index-display_first())*36,24,36)
 func patch(origin: Vector2,columns: int) -> void:
  var texture: Texture2D=art.texture("BUTTON_RECTANGLE")
  if texture==null:return
@@ -44,8 +45,8 @@ func draw_text(value: String,point: Vector2,packed: int) -> void:
 func _draw() -> void:
  if theme==null or theme.default_font==null:return
  var columns:=int((size.x-(32 if scrollbar.visible else 16))/8)
- for index in range(first,mini(rows.size(),first+capacity())):
-  var row: Dictionary=rows[index];var top:=Vector2(8,(index-first)*36)
+ for index in range(display_first(),mini(rows.size(),display_first()+capacity())):
+  var row: Dictionary=rows[index];var top:=Vector2(8,(index-display_first())*36)
   patch(top,columns)
   var caption:=clipped(str(row.caption),columns)
   draw_text(caption,top+Vector2(0,24),71 if kind==4 else int(row.caption_color))
@@ -63,10 +64,11 @@ func _draw() -> void:
 func _gui_input(event: InputEvent) -> void:
  if not allowed() or not event is InputEventMouseButton or not event.pressed:return
  if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+  if rows.size()<=capacity() or event.position.y<0 or event.position.y>=capacity()*36:return
   scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(capacity() if event.shift_pressed else 1));accept_event();return
  if kind!=4 or event.button_index!=MOUSE_BUTTON_LEFT:return
- var index:=first+floori(event.position.y/36)
- if index<first or index>=mini(rows.size(),first+capacity()):return
+ var index:=display_first()+floori(event.position.y/36)
+ if index<display_first() or index>=mini(rows.size(),display_first()+capacity()):return
  var row: Dictionary=rows[index]
  if int(row.knowledge_type)>=14 and inspect_rect(index).has_point(event.position):
   accept_event();inspect_requested.emit(int(row.knowledge_type),int(row.id))

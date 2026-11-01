@@ -65358,6 +65358,250 @@
           "initial_failed_run": "build/qa/skills-render-initial",
           "correction": "Native row background starts one character cell after caption origin; all five complete crops now match."
         }
+      },
+      "input_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-052649",
+        "observations": [
+          {
+            "dragging": false,
+            "first": 6,
+            "main_tab": 3,
+            "name": "CONTEXT_SCROLL_UP",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "main_tab": 3,
+            "name": "CONTEXT_SCROLL_DOWN",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "main_tab": 3,
+            "name": "CONTEXT_SCROLL_PAGEUP",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 21,
+            "main_tab": 3,
+            "name": "CONTEXT_SCROLL_PAGEDOWN",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 6,
+            "main_tab": 3,
+            "name": "input-up-left",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 6,
+            "main_tab": 3,
+            "name": "input-up-right",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "main_tab": 3,
+            "name": "input-down-left",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "main_tab": 3,
+            "name": "input-down-right",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "main_tab": 3,
+            "name": "input-track-above",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 21,
+            "main_tab": 3,
+            "name": "input-track-below",
+            "tab": 4
+          },
+          {
+            "dragging": true,
+            "first": 7,
+            "main_tab": 3,
+            "name": "drag-start",
+            "tab": 4
+          },
+          {
+            "dragging": true,
+            "first": 16,
+            "main_tab": 3,
+            "name": "drag-move",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 16,
+            "main_tab": 3,
+            "name": "drag-release",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "main_tab": 3,
+            "name": "wheel-body",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "main_tab": 3,
+            "name": "wheel-top",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "main_tab": 3,
+            "name": "wheel-bottom-padding",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "main_tab": 3,
+            "name": "wheel-footer",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "main_tab": 3,
+            "name": "wheel-outside",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "main_tab": 3,
+            "name": "labor-after-scroll",
+            "tab": 0
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "main_tab": 3,
+            "name": "knowledge-return",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "main_tab": 3,
+            "name": "combat-after-scroll",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "main_tab": 3,
+            "name": "knowledge-from-combat",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "main_tab": 0,
+            "name": "overview",
+            "tab": 4
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "main_tab": 3,
+            "name": "skills-return",
+            "tab": 0
+          }
+        ],
+        "rendered": [
+          {
+            "name": "drag-release",
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "0f4c8afce63b07bd714ec3eca67d993481b5cc2cbe16478dea680def2836f228"
+          },
+          {
+            "name": "labor-after-scroll",
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "dd151d0c8009032e86d6afc6b288dd729f35bdb060cf0b8eb2df67140d4af5af"
+          },
+          {
+            "name": "knowledge-return",
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "fd1fa4ae6f6d74a5399572d07df765f04563188d563dcd88e398851067d2015e"
+          },
+          {
+            "name": "combat-after-scroll",
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "f4f24188f03eba40314941806f068c7efb7a782214ad1346736bc203a283b3b9"
+          },
+          {
+            "name": "knowledge-from-combat",
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "fd1fa4ae6f6d74a5399572d07df765f04563188d563dcd88e398851067d2015e"
+          },
+          {
+            "name": "skills-return",
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "3b80cb050ea74008f9af92d9402de018e1910e4790e4810a3fd79aaa359dac10"
+          }
+        ],
+        "scope": "Native1200x800 input and tab scroll retention; standalone Godot18 input comparisons and five scrolled RGB crops. Main-tab reentry is native evidence only; no resize or lifecycle acceptance.",
+        "verification": {
+          "live_status": "passed_with_known_issues",
+          "render_run": "build/qa/skills-input-render",
+          "render_status": "passed_with_known_issues",
+          "source_preservation": "Owned source unchanged",
+          "initial_failed_run": "build/stockpile-storage-native-farm-discovery-20261101-052601",
+          "initial_failure": "Diagnostic matched main Labor tab instead of Skills Labor subtab; corrected row range."
+        }
       }
     }
   }

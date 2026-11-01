@@ -294,6 +294,10 @@ local ok,err=xpcall(function()
   end,debug.traceback)
   restore();observe('Labor');assert(cases_ok,cases_error)
  end
+ if os.getenv('DF3D_UNIT_SKILLS_INPUT')=='1'then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','unit-skills-input-native.lua')
+  assert(loadfile(source))(unit,view,capture,out)
+ end
 end,debug.traceback)
 select('Overview',15,16)
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Skills reference advanced simulation')

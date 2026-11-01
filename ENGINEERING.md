@@ -3466,9 +3466,23 @@ retained in `build/qa/skills-render-initial`; `skills-render-corrected` passes
 with known startup/render-device shutdown/object diagnostics. Root/core passes
 separately in `skills-render-core`.
 
-This view is not yet connected to `creature_sheet.gd`. Native scrolling/tab
-retention, resize/clipping, hover/XP, on-demand Knowledge detail navigation and
-panel/session lifecycle remain unaccepted. Baseline captures do not cover music,
+Protected052649 captures18 wheel/page/arrow/track/drag/boundary observations
+and native tab changes. `input_reference` retains these observations and six
+native RGB crops. Subtabs retain one shared scroll value; displayed rows and
+the scrollbar clamp that value locally for shorter lists without overwriting
+it. Native returning from Overview resets Skills to Labor/first0. The standalone
+Godot check matches all18 inputs and five scrolled page crops, including Labor
+and Combat with retained first7. Wheel input ignores the bottom padding. Main-tab
+reentry is native evidence only until panel integration. The initial052601 run
+failed because the diagnostic selected the main Labor tab instead of the Skills
+subtab; its failed evidence is retained. Both owned sessions exit unsaved with
+source preservation. Final live logs contain only known startup notices;
+`skills-input-render` passes with known renderer diagnostics and
+`skills-input-core` passes cleanly.
+
+This view is not yet connected to `creature_sheet.gd`. Resize/clipping,
+hover/XP, on-demand Knowledge detail navigation and panel/session lifecycle
+remain unaccepted. Baseline captures do not cover music,
 dance or other race/caste colors. The creature route remains staged; this pixel
 check is a rendering milestone, not complete Skills acceptance.
 

@@ -52666,6 +52666,351 @@
           "No pending gameplay edit in this read-only Items workflow."
         ]
       }
+    },
+    "unit_health_pages_reference": {
+      "pages": [
+        {
+          "lines": [
+            {
+              "text": "                                                       Status   Wounds   Treatment   History   Description",
+              "y": 18
+            },
+            {
+              "text": "                                                      Ability to stand lost",
+              "y": 20
+            },
+            {
+              "text": "                                                      Motor nerve damage",
+              "y": 21
+            },
+            {
+              "text": "                                                      Sensory nerve damage",
+              "y": 22
+            }
+          ],
+          "name": "Status",
+          "image_sha256": "1379c72dca26fef59cbdd3df3fc29e4655d42dee440dfc575cb014efddaa83cc",
+          "panel_rect": [
+            416,
+            52,
+            488,
+            708
+          ],
+          "panel_rgb_sha256": "f0944710c147d181d2834c636e35021ab4394fc0913eaa09a8e9029d1a9fc4e7"
+        },
+        {
+          "lines": [
+            {
+              "text": "                                                       Status   Wounds   Treatment   History   Description",
+              "y": 18
+            },
+            {
+              "text": "                                                      left foot, skin",
+              "y": 20
+            },
+            {
+              "text": "                                                      left foot, fat",
+              "y": 21
+            },
+            {
+              "text": "                                                      left foot, muscle",
+              "y": 22
+            },
+            {
+              "text": "                                                      .Motor nerve severed",
+              "y": 23
+            },
+            {
+              "text": "                                                      .Sensory nerve severed",
+              "y": 24
+            },
+            {
+              "text": "                                                      left ankle, muscle",
+              "y": 25
+            },
+            {
+              "text": "                                                      fourth toe, left foot, nail",
+              "y": 26
+            },
+            {
+              "text": "                                                      .Smashed apart",
+              "y": 27
+            },
+            {
+              "text": "                                                      fourth toe, left foot, skin",
+              "y": 28
+            },
+            {
+              "text": "                                                      Has been sutured",
+              "y": 29
+            }
+          ],
+          "name": "Wounds",
+          "image_sha256": "02953f0e8866417f5c0b93a14138a478778561fdc26a5ff748a96ad7fcbff362",
+          "panel_rect": [
+            416,
+            52,
+            488,
+            708
+          ],
+          "panel_rgb_sha256": "af7271b74463713f72931d37c0e976a8b73db4438cc3cbaf01d0acf1a8ce3e2f"
+        },
+        {
+          "lines": [
+            {
+              "text": "                                                       Status   Wounds   Treatment   History   Description",
+              "y": 18
+            },
+            {
+              "text": "                                                      No treatment scheduled",
+              "y": 20
+            }
+          ],
+          "name": "Treatment",
+          "image_sha256": "97ad8db943e40601e5e663a53367fd4ebbb13fd1d3d651bcc8c2b1267e6932ae",
+          "panel_rect": [
+            416,
+            52,
+            488,
+            708
+          ],
+          "panel_rgb_sha256": "21b967113942c4481bde5d3baf6fc2e6c880b28d3ee096bee665e0282a0b20ca"
+        },
+        {
+          "lines": [
+            {
+              "text": "                                                       Status   Wounds   Treatment   History   Description",
+              "y": 18
+            },
+            {
+              "text": "                                                      9th Hematite, 106: Brought to rest in Bed",
+              "y": 20
+            },
+            {
+              "text": "                                                      - Melbil Cattenlush\u00f4n, Planter",
+              "y": 21
+            },
+            {
+              "text": "                                                      10th Hematite, 106: Evaluated",
+              "y": 22
+            },
+            {
+              "text": "                                                      - Rith Suluslogem, chief medical dwarf",
+              "y": 23
+            },
+            {
+              "text": "                                                      10th Hematite, 106: Cleaned",
+              "y": 24
+            },
+            {
+              "text": "                                                      - Urvad Kad\u00f4lbisek, Diagnostician",
+              "y": 25
+            },
+            {
+              "text": "                                                      10th Hematite, 106: Evaluated",
+              "y": 26
+            },
+            {
+              "text": "                                                      - Urvad Kad\u00f4lbisek, Diagnostician",
+              "y": 27
+            },
+            {
+              "text": "                                                      11th Hematite, 106: Compound fracture of fourth toe,",
+              "y": 28
+            },
+            {
+              "text": "                                                      left foot repaired",
+              "y": 29
+            },
+            {
+              "text": "                                                      - \u00e8rith Mamotavuz, Surgeon",
+              "y": 30
+            },
+            {
+              "text": "                                                      12th Hematite, 106: Evaluated",
+              "y": 31
+            },
+            {
+              "text": "                                                      - Rith Suluslogem, chief medical dwarf",
+              "y": 32
+            },
+            {
+              "text": "                                                      12th Hematite, 106: Received pig tail sutures on",
+              "y": 33
+            },
+            {
+              "text": "                                                      fourth toe, left foot",
+              "y": 34
+            },
+            {
+              "text": "                                                      - Rig\u00f2th Shinat\u00edr, sacred call",
+              "y": 35
+            },
+            {
+              "text": "                                                      13th Hematite, 106: Evaluated",
+              "y": 36
+            },
+            {
+              "text": "                                                      - Rith Suluslogem, chief medical dwarf",
+              "y": 37
+            },
+            {
+              "text": "                                                      13th Hematite, 106: Received cave spider silk",
+              "y": 38
+            },
+            {
+              "text": "                                                      dressing on fourth toe, left foot",
+              "y": 39
+            },
+            {
+              "text": "                                                      - Olon Arzesnil, Miner",
+              "y": 40
+            },
+            {
+              "text": "                                                      14th Hematite, 106: Evaluated",
+              "y": 41
+            },
+            {
+              "text": "                                                      - Rith Suluslogem, chief medical dwarf",
+              "y": 42
+            },
+            {
+              "text": "                                                      14th Hematite, 106: Received persimmon wood crutch",
+              "y": 43
+            },
+            {
+              "text": "                                                      - Rovod Gusiletes, Leatherworker",
+              "y": 44
+            }
+          ],
+          "name": "History",
+          "image_sha256": "a42d75ac9b40b2ed72a2a44389e374ad0002931cf72856ab0d4c60dcad3e5ed7",
+          "panel_rect": [
+            416,
+            52,
+            488,
+            708
+          ],
+          "panel_rgb_sha256": "d7dea04c5d6e11f030976a43cc19cb03fc5c8aa2539f4e425abf109aa90d7e40"
+        },
+        {
+          "lines": [
+            {
+              "text": "                                                       Status   Wounds   Treatment   History   Description",
+              "y": 18
+            },
+            {
+              "text": "                                                      A short, sturdy creature fond of drink and industry.",
+              "y": 20
+            },
+            {
+              "text": "                                                      He is incredibly quick to heal, but he is quick to",
+              "y": 22
+            },
+            {
+              "text": "                                                      tire, very flimsy and unquestionably weak.",
+              "y": 23
+            },
+            {
+              "text": "                                                      His fourth toe, left foot is broken. His fourth toe,",
+              "y": 25
+            },
+            {
+              "text": "                                                      left foot is smashed open.",
+              "y": 26
+            },
+            {
+              "text": "                                                      His medium-length beard is neatly combed. His",
+              "y": 27
+            },
+            {
+              "text": "                                                      long sideburns are braided. His very long moustache",
+              "y": 28
+            },
+            {
+              "text": "                                                      is neatly combed. His hair is clean-shaven. He has a",
+              "y": 29
+            },
+            {
+              "text": "                                                      round chin. His nose is short. He has a low voice.",
+              "y": 30
+            },
+            {
+              "text": "                                                      His somewhat splayed out ears are somewhat narrow.",
+              "y": 31
+            },
+            {
+              "text": "                                                      His ochre eyes are slightly close-set. His lips are",
+              "y": 32
+            },
+            {
+              "text": "                                                      thin. His hair is burnt sienna mixed with gray. His",
+              "y": 33
+            },
+            {
+              "text": "                                                      skin is pale chestnut. His left foot bears a massive",
+              "y": 34
+            },
+            {
+              "text": "                                                      jagged scar.",
+              "y": 35
+            }
+          ],
+          "name": "Description",
+          "image_sha256": "065f87d5ea862c673ff33d45dfc6043adb5403244d8159dd51e03347fedc0fb8",
+          "panel_rect": [
+            416,
+            52,
+            488,
+            708
+          ],
+          "panel_rgb_sha256": "dd98086eb7b97de258eb72f4c02dcc4c2abd5d3712786b80d8ab895211467ef0"
+        }
+      ],
+      "success": true,
+      "unit_id": 1017,
+      "run": "build/stockpile-storage-native-farm-discovery-20261101-012626",
+      "status": "passed_with_known_issues",
+      "scope": "Native Health Status, Wounds, Treatment, History and Description pages for existing injured citizen1017; actual native clicks and screen text, full panel screenshot hashes. Returns to Overview without advancing paused simulation.",
+      "source_save": "Owned source unchanged; DF38684 exits unsaved.",
+      "diagnostics": {
+        "farm-item-carrier-unit-scene.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "farm-item-carrier-unit-wire.godot.log": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        },
+        "unit-header-wire": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            }
+          ],
+          "unclassified": []
+        }
+      },
+      "qa": "build/qa/health-pages-reference",
+      "limitations": [
+        "Native oracle only; current DF3D generic health rows do not reproduce these pages.",
+        "Semantic formatter and selection entry points still need tracing; raw wound/body-part flags are not accepted substitutes.",
+        "Additional injuries, active treatment, empty history, scrolling, resize and navigation interactions remain unverified."
+      ]
     }
   }
 }

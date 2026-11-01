@@ -359,6 +359,10 @@ local ok,err=xpcall(function()
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-health-thresholds-native.lua')
     linked.health_thresholds=assert(loadfile(source))(unit,view)
    end
+   if os.getenv('DF3D_UNIT_HEALTH_PAGES')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-health-pages-native.lua')
+    linked.health_pages=assert(loadfile(source))(unit,view,capture,out)
+   end
    if os.getenv('DF3D_UNIT_HEADER_REFERENCE')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-header-native.lua')
     linked.header_reference=assert(loadfile(source))(unit,view)

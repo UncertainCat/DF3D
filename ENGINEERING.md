@@ -3159,6 +3159,30 @@ been approved. Scrollbar hover pixels, long names/animation, this feedback gap
 and active-job/squad/later-departure effect variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
+### Native creature Health page reference
+
+`native_farm.json.unit_health_pages_reference` records protected012626 on
+2026-11-01. `DF3D_UNIT_HEALTH_PAGES=1` selects an owned diagnostic oracle that
+clicks Health and all five subtabs, captures native screen text and full-panel
+images, then returns to Overview without advancing simulation. Citizen1017 has
+lost standing ability, motor/sensory nerve damage, repaired tissue and sutures.
+Status lists the three functional impairments; Wounds groups affected tissues
+and damage/repair text. Treatment reports no scheduled treatment. History uses
+dated colored event text and caregiver names; Description has anatomical prose.
+The fixture retains exact lines and panel hashes for this specimen only.
+
+These pages are not implemented by the current generic health renderer.
+`creature.lua` exposes observed wounds, body-part flags, treatment flags and
+operation records, explicitly noting the missing anatomical narrative. Trace
+native semantic formatters and their owned input requirements before extending
+Godot; raw fields do not establish native wording, order or grouping. Additional
+injury/treatment cases, empty history, overflow and interaction coverage remain.
+
+The full reference run passes with only the known startup notice in each Godot
+process; root/core QA `health-pages-reference` passes. DF38684 exits unsaved and
+the source save is unchanged. This is native reference evidence, not rendered
+DF3D Health acceptance or authorization to expose the creature route.
+
 ## Native item holder provider
 
 The diagnostic header and description readers return an optional holder object

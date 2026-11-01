@@ -53040,13 +53040,127 @@
           "0x13cae60",
           "0x13daa50"
         ],
-        "allocations": "Native strings and color_text_boxst outputs; 0x14e2b0 initializes empty 0x20-byte color box with width76. Matching deletion/vector cleanup must be established.",
+        "allocations": "Native caller1a3676 clears raw string pointers with bb9b0, deletes each color box with14ed20, then clears vector length with6f290.14ed20 calls14e330,66b70 and sized delete1539680(size0x20). Independent vector backing still needs correct ownership/cleanup in adapter.",
         "open_audit": [
-          "Identify and validate every reachable global read; dwarf branch reads0x239a1e8, likely plotinfo.main.fortress_entity but not yet independently confirmed.",
+          "Audit remaining reachable globals, all transitive helper writes and virtual calls; fortress entity global confirmed in protected013335.",
           "Audit transitive helpers, virtual calls and unit/body/health/history cache writes; own mutable inputs.",
           "Verify all five outputs against native page captures, including tagged colors and History ordering.",
           "Do not call the native sheet renderer or read its populated output/menu vectors."
-        ]
+        ],
+        "confirmed_globals": {
+          "0x239a1e8": "plotinfo.main.fortress_entity; protected013335 compares actual pointer identity"
+        },
+        "confirmed_mutation": {
+          "0x13b3030": "Historical-figure lookup passes unit+0x1274 as mutable cached index to b530b0; copy this unit cache before invoking Description helpers."
+        }
+      },
+      "tagged_output_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-013335",
+        "status": "passed_with_known_issues",
+        "fortress_entity_global_verified": true,
+        "pages": [
+          {
+            "name": "Status",
+            "tagged_rows": [
+              "[C:6:0:1]Ability to stand lost",
+              "[C:7:0:1]Motor nerve damage",
+              "[C:7:0:1]Sensory nerve damage"
+            ],
+            "color_box_count": 3
+          },
+          {
+            "name": "Wounds",
+            "tagged_rows": [
+              "[C:7:0:1]left foot, skin",
+              "[C:7:0:1]left foot, fat",
+              "[C:7:0:1]left foot, muscle",
+              "[C:7:0:1].Motor nerve severed",
+              "[C:7:0:1].Sensory nerve severed",
+              "[C:7:0:1]left ankle, muscle",
+              "[C:7:0:1]fourth toe, left foot, nail",
+              "[C:4:0:1].Smashed apart",
+              "[C:7:0:1]fourth toe, left foot, skin",
+              "[C:7:0:1]Has been sutured"
+            ],
+            "color_box_count": 10
+          },
+          {
+            "name": "Treatment",
+            "tagged_rows": [
+              "[C:7:0:0]No treatment scheduled"
+            ],
+            "color_box_count": 1
+          },
+          {
+            "name": "History",
+            "tagged_rows": [
+              "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+              "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+              "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]10th Hematite, 106: [C:3:0:1]Cleaned[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+              "[C:2:0:1]11th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+              "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+              "[C:2:0:1]12th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]12th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+              "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+              "[C:0:0:1]-                       Olon Arzesnil, Miner",
+              "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Evaluated[R]",
+              "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+              "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+              "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+            ],
+            "color_box_count": 22
+          },
+          {
+            "name": "Description",
+            "tagged_rows": [
+              "A short, sturdy creature fond of drink and industry.[B][C:2:0:0]He is incredibly quick to heal, [C:4:0:0]but he is quick to tire, very flimsy and unquestionably weak.  [B][C:7:0:1][C:4:0:1]His fourth toe, left foot is broken.  His fourth toe, left foot is smashed open.  [P][C:7:0:1]His medium-length beard is neatly combed.  His long sideburns are braided.  His very long moustache is neatly combed.  His hair is clean-shaven.  He has a round chin.  His nose is short.  He has a low voice.  His somewhat splayed out ears are somewhat narrow.  His ochre eyes are slightly close-set.  His lips are thin.  His hair is burnt sienna mixed with gray.  His skin is pale chestnut.  [C:7:0:0]His left foot bears a massive jagged scar.  [C:7:0:1]"
+            ],
+            "color_box_count": 1
+          }
+        ],
+        "source_save": "Owned source unchanged; DF35232 exits unsaved.",
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "scope": "Diagnostic read of native Health output vectors after actual page clicks. Reference only; these menu vectors must never be product inputs."
       }
     }
   }

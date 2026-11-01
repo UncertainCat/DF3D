@@ -3176,6 +3176,20 @@ Static string references identify shared builder479f40, called at1a3713 and
 to context+1c88 plus allocated color-text boxes to context+1ca0. Description
 calls1380480,13cae60 and13daa50. `builder_audit` records the executable pin,
 complete candidate span hash, field mapping and unresolved ownership work.
+Protected013335 confirms global239a1e8 is `plotinfo.main.fortress_entity`
+by pointer identity and records exact tagged output in `tagged_output_reference`:
+Status3, Wounds10, Treatment1, History22 and Description1 strings, each paired
+with a native color-text box. History includes date/color tags, `[R]` and native
+caregiver lines; Description includes `[B]`/`[P]`, attributes, wounds, appearance
+and scars. These vectors are read only by the diagnostic oracle, never product
+code. All final Godot logs have only the startup notice; DF35232 exits unsaved
+and source preservation passes.
+
+Native caller cleanup uses bb9b0 for string pointers and14ed20 for each color
+box, then6f290 to clear the pointer vector.14ed20 destroys box contents and frees
+its0x20-byte allocation. Description helper13b3030 passes unit+1274 to b530b0
+as a mutable historical-figure lookup cache; a copied unit must own that cache.
+Further transitive writes and independent vector cleanup remain under audit.
 This is a candidate for independently owned formatter storage, not permission
 to borrow the native sheet or its populated vectors. Transitive mutation/global
 reads and native allocation cleanup still need audit before a runtime call.

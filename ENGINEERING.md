@@ -2715,9 +2715,14 @@ have only the known startup notice. creature_expel_scene_live is selected by
 DF3D_UNIT_EXPEL_EFFECT_SCENE with the existing protected wire/effect fixture;
 unit_expel_view_reference.confirmation_reference retains bounded evidence.
 Core, controller and composition checks pass cleanly in unit-expel-scene-effects.
-Reports while Expel is open, resize/scroll/hover variants, long names/animation,
-full failure/replacement lifecycle and active-job/squad/later-departure effect
-variants remain unfinished.
+Protected230640 verifies Reports while Expel is open: native closes the sheet
+and clears Expel before opening direct Combat history; Back leaves the map.
+The inspector preserves this navigation and retires its confirmation authority.
+The composed flow, existing Reports resize/overlay checks and native assertions
+pass; two GPU clients and the paired header client report only the known startup
+notice. unit-expel-reports passes core, controller and composition checks cleanly.
+Resize/scroll/hover variants, long names/animation, full failure/replacement
+lifecycle and active-job/squad/later-departure effect variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
 ## Native item holder provider

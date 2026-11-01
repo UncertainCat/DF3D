@@ -411,7 +411,6 @@ func redraw():
 				portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				body.add_child(portrait)
 			if expel.phase!=expel.Phase.Closed:
-				if is_instance_valid(history_button):history_button.disabled=true
 				expel_view=preload("res://scripts/creature_expel_view.gd").new()
 				expel_view.first=expel_scroll
 				expel_view.position=Vector2(0,96);expel_view.size=body.size-Vector2(0,96)

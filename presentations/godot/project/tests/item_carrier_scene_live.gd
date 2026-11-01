@@ -403,11 +403,16 @@ func exercise_history(inspector,source,source_id:int,target:int) -> void:
 				ink_count+=1
 				check(image.get_pixel(int(cell.x)*8+x,int(cell.y)*12+4+y).is_equal_approx(preload("res://scripts/native_creature_text.gd").colors[int(cell.color)]),"Reports help glyph differs")
 	check(ink_count>0,"Reports hover missing native glyph evidence")
+	if OS.get_environment("DF3D_UNIT_REPORTS_FROM_EXPEL")=="1":
+		await pointer(inspector.expel_button.get_global_transform_with_canvas()*Vector2(16,18));await drain()
+		check(inspector.expel.phase==inspector.expel.Phase.Confirming,"Reports fixture did not open Expel")
+		check(not inspector.history_button.disabled,"Expel disabled native Reports navigation")
 	await pointer(inspector.history_button.get_global_transform_with_canvas()*Vector2(16,18))
 	var reports=scene._ui.controller("reports")
 	var model=reports.controller.state
 	await drain()
 	check(scene._ui.host.active==reports and reports.panel.visible and not inspector.panel.visible,"Reports click did not replace unit sheet")
+	check(inspector.expel.phase==inspector.expel.Phase.Closed and inspector.expel.snapshot().is_empty(),"Reports retained Expel confirmation authority")
 	check(model.direct_unit_entry and model.unit_id==target and model.unit_category==0 and not model.log_initial_needed,"Reports click did not load direct Combat history")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/unit-reports-scene.png")

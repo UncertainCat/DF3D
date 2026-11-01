@@ -48579,7 +48579,7 @@
       ],
       "header_reference": {
         "native_and_composed_run": "build/stockpile-storage-native-farm-discovery-20261031-225810",
-        "status": "accepted repeated Expel, Customize coexistence and Escape priority; native Follow toggles; Reports remains unverified",
+        "status": "accepted repeated Expel, Customize coexistence, Escape priority and Reports transition; native Follow toggles",
         "observations": [
           {
             "active_id": 1017,
@@ -48649,7 +48649,52 @@
         "native_source_sha256": "4d37ed1613b94b7015e3d533eb8fd365893633d061b7fc506d0abed706b183ab",
         "diagnostics": "known startup notice only; no unclassified diagnostics",
         "source_save_unchanged": true,
-        "owned_unsaved_exit": true
+        "owned_unsaved_exit": true,
+        "reports": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261031-230640",
+          "observations": [
+            {
+              "expelling": false,
+              "name": "before",
+              "sheet_id": 1017,
+              "sheet_open": true
+            },
+            {
+              "expelling": true,
+              "name": "expel-before-reports",
+              "sheet_id": 1017,
+              "sheet_open": true
+            },
+            {
+              "expelling": false,
+              "name": "opened",
+              "popup": {
+                "category": 0,
+                "last_length": 19,
+                "pause_on_new": true,
+                "unit_id": 1017
+              },
+              "sheet_id": -1,
+              "sheet_open": false
+            },
+            {
+              "expelling": false,
+              "name": "back",
+              "sheet_id": -1,
+              "sheet_open": false
+            }
+          ],
+          "composed_checks": [
+            "Reports remains enabled during Expel",
+            "Reports opens Combat and closes creature sheet",
+            "Expel confirmation authority retired",
+            "Back leaves map active"
+          ],
+          "native_sha256": "d23653f54096c427b640875be75955ffb758ec3f505ef98af5e477928e9c962d",
+          "source_save_unchanged": true,
+          "owned_unsaved_exit": true,
+          "diagnostics": "known startup notice only"
+        }
       },
       "confirmation_reference": {
         "status": "accepted main-scene Send away and family Expel final effects",

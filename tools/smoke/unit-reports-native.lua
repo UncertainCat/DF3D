@@ -50,6 +50,7 @@ end
 local function record(label)
  local widget=popup(main.announcements.stack)
  local row={name=label,sheet_open=sheet.open,sheet_id=sheet.active_id,
+  expelling=sheet.unit_overview_expelling,
   alert_open=alert.open,unit_id=alert.viewing_unit and alert.viewing_unit.id or -1,
   category=alert.viewing_unit_uac,scroll=alert.scroll_position_uac,list_size=alert.uac_list_size,
   report_lines={},log_counts={},valid_combat_ids={},popup=widget and {unit_id=widget.unid,category=widget.uac,pause_on_new=widget.pause_on_new,last_length=widget.last_length} or nil}
@@ -94,6 +95,14 @@ local ok,err=xpcall(function()
  while #help.lines>0 and help.lines[#help.lines]==''do table.remove(help.lines)end
  assert(main.last_displayed_hover_inst==df.main_hover_instruction.UNIT_SHEET_REPORTS)
  local f=assert(io.open(out..'/unit-reports-help.json','w'));f:write(json.encode(help));f:close()
+ if os.getenv('DF3D_UNIT_REPORTS_FROM_EXPEL')=='1' then
+  pointer(872,118);df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  assert(sheet.unit_overview_expelling,'Expel did not open before Reports')
+  record('expel-before-reports');pointer(808,82)
+  df.global.enabler.mouse_lbut_lift=0
+ end
  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());script.sleep(2,'frames');pointer(400,400)
  record('opened')
  local widget=assert(popup(main.announcements.stack),'unit report popup absent')

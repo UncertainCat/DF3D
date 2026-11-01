@@ -3452,6 +3452,26 @@ Root/core checks include four additional malformed-color cases and decoding
 independence with foreground/background/bold bits. This does not verify rendered
 Skills rows or broaden the baseline race/caste sample.
 
+### Creature Skills row rendering
+
+`creature_skills_view.gd` consumes ordered typed pages and native caption colors;
+it does not recategorize or sort skills. The standalone real-renderer check
+`creature_skills_capture` compares all five first-page bodies with native051956
+at1200x800, using RGB crops432,232,456,504. These include row artwork, captions,
+rust suffixes, Knowledge subtitles/magnifiers and visible scrollbars. The
+`rendered_rows_reference` fixture preserves the exact typed rows and native
+crop hashes. Native16e21c begins the background one cell after the caption
+origin; correcting this made all five crops exact. Initial failed evidence is
+retained in `build/qa/skills-render-initial`; `skills-render-corrected` passes
+with known startup/render-device shutdown/object diagnostics. Root/core passes
+separately in `skills-render-core`.
+
+This view is not yet connected to `creature_sheet.gd`. Native scrolling/tab
+retention, resize/clipping, hover/XP, on-demand Knowledge detail navigation and
+panel/session lifecycle remain unaccepted. Baseline captures do not cover music,
+dance or other race/caste colors. The creature route remains staged; this pixel
+check is a rendering milestone, not complete Skills acceptance.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

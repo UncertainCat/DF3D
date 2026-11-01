@@ -64481,6 +64481,883 @@
         "knowledge_color_absent": true,
         "nested_readonly": true,
         "scope": "Actual native cells to native adapter to typed management to Godot; Skills rendering remains staged."
+      },
+      "rendered_rows_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-051956",
+        "scope": "Native RGB crops compared exactly with standalone Godot Skills view: first14 rows (or fewer) of all five pages at1200x800. No panel integration, input, resizing, hover, detail navigation or lifecycle acceptance.",
+        "cases": [
+          {
+            "name": "labor",
+            "page": {
+              "kind": 0,
+              "rows": [
+                {
+                  "caption": "Talented Appraiser",
+                  "caption_color": 5,
+                  "id": 73,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 6,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Proficient Organizer",
+                  "caption_color": 5,
+                  "id": 74,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 5,
+                  "rust_value": -1,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Proficient Record Keeper",
+                  "caption_color": 5,
+                  "id": 75,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 5,
+                  "rust_value": -1,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Adequate Mason",
+                  "caption_color": 71,
+                  "id": 4,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 2,
+                  "rust_value": -4,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Adequate Planter",
+                  "caption_color": 6,
+                  "id": 21,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 2,
+                  "rust_value": 2,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Carpenter",
+                  "caption_color": 70,
+                  "id": 2,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Engraver",
+                  "caption_color": 71,
+                  "id": 3,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Butcher",
+                  "caption_color": 6,
+                  "id": 10,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Brewer",
+                  "caption_color": 6,
+                  "id": 14,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Clothier",
+                  "caption_color": 65,
+                  "id": 15,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Miller",
+                  "caption_color": 6,
+                  "id": 16,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Thresher",
+                  "caption_color": 6,
+                  "id": 17,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Furnace Operator",
+                  "caption_color": 64,
+                  "id": 24,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Metal Crafter",
+                  "caption_color": 64,
+                  "id": 33,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Suturer",
+                  "caption_color": 5,
+                  "id": 61,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Wood Burner",
+                  "caption_color": 6,
+                  "id": 63,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Stonecutter",
+                  "caption_color": 71,
+                  "id": 135,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Stone Carver",
+                  "caption_color": 71,
+                  "id": 136,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                }
+              ]
+            },
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "3b80cb050ea74008f9af92d9402de018e1910e4790e4810a3fd79aaa359dac10"
+          },
+          {
+            "name": "combat",
+            "page": {
+              "kind": 1,
+              "rows": [
+                {
+                  "caption": "Dabbling Armor User",
+                  "caption_color": 71,
+                  "id": 45,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Observer",
+                  "caption_color": 71,
+                  "id": 87,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Fighter",
+                  "caption_color": 71,
+                  "id": 97,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Dodger",
+                  "caption_color": 71,
+                  "id": 103,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                }
+              ]
+            },
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "f4f24188f03eba40314941806f068c7efb7a782214ad1346736bc203a283b3b9"
+          },
+          {
+            "name": "social",
+            "page": {
+              "kind": 2,
+              "rows": [
+                {
+                  "caption": "Talented Intimidator",
+                  "caption_color": 71,
+                  "id": 77,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 6,
+                  "rust_value": 6,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Proficient Persuader",
+                  "caption_color": 71,
+                  "id": 70,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 5,
+                  "rust_value": 5,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Proficient Negotiator",
+                  "caption_color": 71,
+                  "id": 71,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 5,
+                  "rust_value": 5,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Proficient Judge of Intent",
+                  "caption_color": 71,
+                  "id": 72,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 5,
+                  "rust_value": 5,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Proficient Comedian",
+                  "caption_color": 71,
+                  "id": 79,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 5,
+                  "rust_value": 5,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Conversationalist",
+                  "caption_color": 71,
+                  "id": 78,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Consoler",
+                  "caption_color": 71,
+                  "id": 81,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Pacifier",
+                  "caption_color": 71,
+                  "id": 82,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Speaker",
+                  "caption_color": 71,
+                  "id": 92,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                }
+              ]
+            },
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "bfd157b66f2c929e81e7ee4777d8362785f5bc2f3ed7018b7182486b78ec1eea"
+          },
+          {
+            "name": "other-skills",
+            "page": {
+              "kind": 3,
+              "rows": [
+                {
+                  "caption": "Novice Crutch-walker",
+                  "caption_color": 71,
+                  "id": 62,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 1,
+                  "rust_value": 1,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Student",
+                  "caption_color": 71,
+                  "id": 84,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                },
+                {
+                  "caption": "Dabbling Reader",
+                  "caption_color": 71,
+                  "id": 91,
+                  "knowledge_bits": 0,
+                  "knowledge_type": -1,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": ""
+                }
+              ]
+            },
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "73667e6f1d19722f30a770ce698d1ccd821044002c1b26469f924c37ab7da9ed"
+          },
+          {
+            "name": "knowledge",
+            "page": {
+              "kind": 4,
+              "rows": [
+                {
+                  "caption": "The geocentric model",
+                  "caption_color": -1,
+                  "id": -1,
+                  "knowledge_bits": 256,
+                  "knowledge_type": 5,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Astronomy"
+                },
+                {
+                  "caption": "Surveying",
+                  "caption_color": -1,
+                  "id": -1,
+                  "knowledge_bits": 1,
+                  "knowledge_type": 8,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Geography"
+                },
+                {
+                  "caption": "The Valley of Winds",
+                  "caption_color": -1,
+                  "id": 0,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Style of Prophecies",
+                  "caption_color": -1,
+                  "id": 4,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Umber Learning",
+                  "caption_color": -1,
+                  "id": 15,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Chartreuse Visionary",
+                  "caption_color": -1,
+                  "id": 23,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Truth of Poets",
+                  "caption_color": -1,
+                  "id": 25,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Desks of Convenience",
+                  "caption_color": -1,
+                  "id": 26,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The South Stranger",
+                  "caption_color": -1,
+                  "id": 27,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Knowledge of Pantomiming",
+                  "caption_color": -1,
+                  "id": 41,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Intricate Joke",
+                  "caption_color": -1,
+                  "id": 46,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Suitor of Luxury",
+                  "caption_color": -1,
+                  "id": 49,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Pantomime of Festivals",
+                  "caption_color": -1,
+                  "id": 50,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Book of Quiescence",
+                  "caption_color": -1,
+                  "id": 51,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Flowery Truth",
+                  "caption_color": -1,
+                  "id": 63,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "The Russet Luxuries",
+                  "caption_color": -1,
+                  "id": 64,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 14,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poetic form"
+                },
+                {
+                  "caption": "Commentary on Surveying",
+                  "caption_color": -1,
+                  "id": 302,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Manual"
+                },
+                {
+                  "caption": "Crushers and the Oblivion",
+                  "caption_color": -1,
+                  "id": 617,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Denial: Problems And Solutions",
+                  "caption_color": -1,
+                  "id": 660,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Essay"
+                },
+                {
+                  "caption": "Sacrifices Slick",
+                  "caption_color": -1,
+                  "id": 973,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "Baths and the Malicious Families",
+                  "caption_color": -1,
+                  "id": 1023,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "Suddenly The Wise Know",
+                  "caption_color": -1,
+                  "id": 1083,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Past Foretells In The Beginning",
+                  "caption_color": -1,
+                  "id": 1131,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Birth of Pranks",
+                  "caption_color": -1,
+                  "id": 1141,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "Larvae Feverish",
+                  "caption_color": -1,
+                  "id": 1144,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "Suddenly It Can Say There",
+                  "caption_color": -1,
+                  "id": 1165,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Phantom and Evisceration",
+                  "caption_color": -1,
+                  "id": 1241,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Threat and Amethyst",
+                  "caption_color": -1,
+                  "id": 1312,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Chasms and Sports",
+                  "caption_color": -1,
+                  "id": 1351,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "Banded Floor",
+                  "caption_color": -1,
+                  "id": 1411,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "Sandals Ever Onward",
+                  "caption_color": -1,
+                  "id": 1417,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "Perfection and the Nourishing Naughtiness",
+                  "caption_color": -1,
+                  "id": 1445,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Child and Miseries",
+                  "caption_color": -1,
+                  "id": 1449,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Doomed Pattern",
+                  "caption_color": -1,
+                  "id": 1509,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "Slowly The Wind Can Say",
+                  "caption_color": -1,
+                  "id": 1585,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Birth of Trance",
+                  "caption_color": -1,
+                  "id": 1615,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "My Friend Thunders",
+                  "caption_color": -1,
+                  "id": 1632,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "My Friend Cut",
+                  "caption_color": -1,
+                  "id": 1640,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Sun Sets on Gleam",
+                  "caption_color": -1,
+                  "id": 1738,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Day Mourns",
+                  "caption_color": -1,
+                  "id": 1754,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "Nobody Knows",
+                  "caption_color": -1,
+                  "id": 1760,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "It Must Have Been Larvae",
+                  "caption_color": -1,
+                  "id": 1766,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "It Must Have Been Flax",
+                  "caption_color": -1,
+                  "id": 1770,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Birth of Jades",
+                  "caption_color": -1,
+                  "id": 1836,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Poem"
+                },
+                {
+                  "caption": "The Study of the Moving Sun",
+                  "caption_color": -1,
+                  "id": 1892,
+                  "knowledge_bits": 0,
+                  "knowledge_type": 17,
+                  "rating": 0,
+                  "rust_value": 0,
+                  "subtitle": "Manual"
+                }
+              ]
+            },
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "3130114d978a707e97bf1b3e862e45a85a0fd6bace2df0112e96fdc19d7ff535"
+          }
+        ],
+        "verification": {
+          "run": "build/qa/skills-render-corrected",
+          "status": "passed_with_known_issues",
+          "initial_failed_run": "build/qa/skills-render-initial",
+          "correction": "Native row background starts one character cell after caption origin; all five complete crops now match."
+        }
       }
     }
   }

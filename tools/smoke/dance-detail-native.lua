@@ -58,6 +58,20 @@ local function event(id)
   figure(value.histfig);figure(value.appointer_hfid);figure(value.promise_to_hfid);entity(value.civ)
  elseif kind==df.history_event_type.CREATED_SITE or kind==df.history_event_type.CREATED_BUILDING then
   figure(value.builder_hf);entity(value.civ);entity(value.site_civ);site(value.site)
+ elseif kind==df.history_event_type.ARTIFACT_CREATED then
+  figure(value.creator_hfid);entity(value.entity);site(value.site)
+  local artifact=df.artifact_record.find(value.artifact_id)
+  if artifact then
+   object(artifact);name(artifact.name);local item=artifact.item;object(item)
+   assert(item and df.item_statuest:is_instance(item),'Artifact probe expects a statue')
+   string_field(item,'description');vector(item.general_refs);vector(item.improvements)
+   for _,ref in ipairs(item.general_refs)do object(ref)end
+   assert(#item.improvements==0 and item.image.id>=0,'Artifact probe expects initialized undecorated statue')
+   local chunk=assert(df.art_image_chunk.find(item.image.id));local art=assert(chunk.images[item.image.subid].art_image)
+   object(art);vector(art.elements);vector(art.properties);object(art.ref)
+   for _,entry in ipairs(art.elements)do object(entry)end
+   for _,entry in ipairs(art.properties)do object(entry)end
+  end
  elseif kind==df.history_event_type.MASTERPIECE_LOST then
   figure(value.histfig);site(value.site);event(value.creation_event)
  elseif kind==df.history_event_type.PERFORMANCE then

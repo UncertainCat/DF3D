@@ -255,6 +255,10 @@ local ok,err=xpcall(function()
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-cases-native.lua')
      assert(loadfile(source))(unit,reference.knowledge_ids[index],function(variant)return capture_detail(index,kind,variant)end,baseline)
     end
+    if kind==16 and os.getenv('DF3D_UNIT_DANCE_ARTIFACT')=='1'then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','dance-artifact-native.lua')
+     assert(loadfile(source))(unit,reference.knowledge_ids[index],function(variant)return capture_detail(index,kind,variant)end,out)
+    end
     if kind==16 and os.getenv('DF3D_UNIT_DANCE_RECURSION')=='1'then
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','dance-recursion-native.lua')
      assert(loadfile(source))(reference.knowledge_ids[index],function(variant)return capture_detail(index,kind,variant)end)

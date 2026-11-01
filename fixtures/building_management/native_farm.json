@@ -66608,6 +66608,72 @@
           }
         ],
         "scope": "Test-owned MASTERPIECE_LOST and PERFORMANCE events, temporary occasion/schedule, existing CREATED_SITE leaf. Exact native description comparisons; missing reference/entity/occasion/schedule and nested performance-to-lost-to-leaf. Not natural-world occurrence, cycle handling, or blanket event acceptance."
+      },
+      "artifact_initialization_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-062215",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "8c8c3ba6f1d5e574e2b383b09458f88a881ff1872e2eb560cab46f16245f103d",
+        "cases": [
+          {
+            "after": {
+              "id": 4,
+              "offset": 124
+            },
+            "before": {
+              "id": 4,
+              "offset": 123
+            },
+            "case": "native-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 123
+            },
+            "properties": 0,
+            "utf8_bytes": 1765,
+            "text_sha256": "ddd0335139de5c2988aa14eecd7b9ae3ccf7db948657f316ea88d5a1db9a6aa8"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 125
+            },
+            "before": {
+              "id": 4,
+              "offset": 124
+            },
+            "case": "probe-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 124
+            },
+            "properties": 0,
+            "utf8_bytes": 1752,
+            "text_sha256": "2c86596b2220fedfdd4cd302499c82811e7d390e5c51a24522c9c48c41278a63"
+          }
+        ],
+        "warm_checks": [
+          {
+            "case": "artifact-native-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-native-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-probe-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-probe-first-warm",
+            "guards_unchanged": true
+          }
+        ],
+        "scope": "Temporary undecorated inorganic statue, unnamed artifact and ARTIFACT_CREATED event. Native-first and independent-probe-first each allocate one native art record with a source reference; native text matches and warm descriptions allocate none. Temporary inputs removed; generated art stays in owned unsaved clone. No worldgen retirement, figurine, decoration or broader subtype acceptance."
       }
     }
   }

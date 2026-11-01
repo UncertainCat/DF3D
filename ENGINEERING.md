@@ -3530,8 +3530,10 @@ nonnegative world-data ID at0x50 then triggers cc83e0. Instructionca0b74 clears
 the item's from_worldgen flag. Thus short captions can reach the same image
 initialization/backing-retirement effects as full descriptions through a
 separate dispatch path. This is a confirmed static source-write path, not a
-claim that ordinary named artifacts take it. It requires owned item/image and
-backing handling before broad Knowledge formatting can be called read-only.
+claim that ordinary named artifacts take it. The native Knowledge comparison
+below establishes initialization as a semantic effect for the tested statue
+case; do not require blanket read-only behavior or suppress that native effect.
+Worldgen-backed retirement and other source lifetimes remain separate work.
 
 Other remaining caption dependencies include coin issuer formatting5be970,
 corpse figure getters, container contents and nested c65450 calls in several
@@ -3540,6 +3542,30 @@ tools with use20, but that exclusion does not cover figurines or statues.
 Existing material-cache isolation covers14add70's semantic cache only; it does
 not isolate item/image mutations or establish the remaining subtype lifetimes.
 No new runtime admission follows from this audit.
+
+### Knowledge artifact initialization effects
+
+Protected native062215 on2026-11-01 tests a temporary undecorated inorganic
+statue, unnamed artifact record and ARTIFACT_CREATED event referenced by an
+existing dance form. Native-first opens the actual Knowledge detail and creates
+art image4/123, advancing the world art offset123->124. Probe-first calls the
+independent owned-form formatter before opening the panel, creates4/124 and
+advances124->125. Each record has one element and a source reference. The
+independent cold text matches the subsequent native detail exactly; repeated
+native/probe reads preserve the initialized source/item/art, UI and random
+state and do not allocate additional art. `artifact_initialization_reference`
+retains case digests and allocation facts.
+
+This resolves the effect policy for this case: native semantic initialization
+is preserved, as in the existing BOX item provider. Owned formatter inputs and
+output do not imply that all transitively reached native semantic operations
+must be rolled back. The diagnostic adapter remains staged and does not grant
+blanket item/event admission. The test removes and frees its temporary item,
+artifact and event, restores the form reference, and leaves generated art in the
+disposable session until unsaved exit; it does not attempt allocation rollback.
+The source-save manifest is unchanged and owned DF6552 exits unsaved. All three
+Godot processes have only the known startup notice. Worldgen backing retirement,
+figurines, decorated statues and other item-subtype paths remain unverified.
 
 ### Knowledge recursive event descriptions
 

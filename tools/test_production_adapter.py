@@ -119,7 +119,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption=function(j)return 'Native task '..j.job_type end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local list=req(15,{cursor=0,query='#0'})
 assert(list.ok and #list.buildings==1 and list.buildings[1].id==0,'ID zero and numeric search')
@@ -144,6 +144,10 @@ assert(req(18,{building_id=0,job_id=j.id,repeat_job=1,suspend=1}).ok and removed
 assert(req(18,{building_id=0,job_id=j.id,cancel=true}).ok and #carp.jobs==0,'native cancellation')
 local still_state=req(16,{building_id=2})
 assert(still_state.ok and #still_state.recipes==1 and native_filter_calls==1,'permitted reaction uses native input generation')
+unavailable_reaction=true
+local unavailable=req(17,{building_id=2,recipe=still_state.recipes[1].key})
+assert(not unavailable.ok and unavailable.message=='[Requires fixture reagent]' and #still.jobs==0,'native unavailable choice cannot queue')
+unavailable_reaction=false
 local kitchen_state=req(16,{building_id=1})
 assert(kitchen_state.ok and #kitchen_state.recipes[1].requirements==2,'all kitchen ingredients retained')
 local crops=req(16,{building_id=3})
@@ -182,7 +186,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption=function(j)return 'Native task '..j.job_type end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local function refusal(action,p,message)
  local result=req(action,p)

@@ -1,8 +1,37 @@
 #pragma once
 #include "farm_native.h"
 #include "knowledge_detail_native.h"
+#include "df/historical_entity.h"
+#include "df/reaction.h"
 
 namespace df3d_production {
+// Native8c3f30 reads only fortress_entity from its context. Keep that input
+// explicit and owned; entity/raw permission vectors are read-only simulation
+// records. This includes fortress-acquired and FORTRESS_MODE_ENABLED reactions.
+inline std::optional<bool> workshopReactionAllowed(int32_t index) {
+    static const bool ready=[] {
+        if(!farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        return hash(0x8c3f30,0xa7)==UINT64_C(0xae908ba6dee6e0fd) &&
+            hash(0xbabe0,0xab)==UINT64_C(0x1bd318997a061458);
+    }();
+    if(!ready || !df::global::world || !df::global::plotinfo)return std::nullopt;
+    const auto& reactions=df::global::world->raws.reactions.reactions;
+    if(index<0 || size_t(index)>=reactions.size() || !reactions[index])return std::nullopt;
+    auto* entity=df::global::plotinfo->main.fortress_entity;
+    if(!entity || !entity->entity_raw)return false;
+    struct Context {std::array<uint8_t,0x8fb8> unused{};df::historical_entity* entity;};
+    static_assert(offsetof(df::plotinfost,main.fortress_entity)==offsetof(Context,entity));
+    Context owned{{},entity};
+    using Allowed=bool (*)(const Context*,int32_t);
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    return reinterpret_cast<Allowed>(base+0x8c3f30)(&owned,index);
+}
 // Native button text8c2310 supplies these scalar fields to d032b0. The first
 // argument is unused; the optional live-job argument is null in the picker.
 // Copy the reaction string and own the output, without allocating any widgets.

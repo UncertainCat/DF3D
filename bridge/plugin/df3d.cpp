@@ -96,7 +96,7 @@
 #include "skills_caption_native.h"
 #include "creature_knowledge_native.h"
 #include "knowledge_detail_native.h"
-#include "workshop_job_native.h"
+#include "workshop_catalog_native.h"
 #include "df/job_item.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
@@ -2067,6 +2067,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           facts["can_dump"]=observed->canDump;facts["can_melt"]=observed->canMelt;
           result["facts"]=std::move(facts);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="workshop-reactions-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          auto* shop=df::building::find(id);if(!shop)return CR_FAILURE;
+          const auto choices=df3d_production::workshopReactionRows(shop,"");if(!choices)return CR_FAILURE;
+          Json::Value rows(Json::arrayValue);
+          for(const auto& choice:*choices) {
+            Json::Value row(Json::objectValue);row["raw_index"]=choice.rawIndex;row["code"]=DF2UTF(choice.code);
+            row["caption"]=DF2UTF(choice.caption);row["objection"]=DF2UTF(choice.objection);row["available"]=choice.available;
+            rows.append(std::move(row));
+          }
+          out.print("{}",Json::FastWriter().write(rows));return CR_OK;
         }
         if(parameters[0]=="workshop-requirements-probe") {
           if(parameters.size()!=3)return CR_WRONG_USAGE;

@@ -253,5 +253,116 @@
     "semantic_caption": "Make bed",
     "requirement_comparison_still_equal": true,
     "source_save_unchanged": true
+  },
+  "reaction_permission_reference": {
+    "all_equal": true,
+    "building_id": 37,
+    "codes": [
+      "BREW_DRINK_FROM_PLANT",
+      "BREW_DRINK_FROM_PLANT_GROWTH",
+      "MAKE_MEAD"
+    ],
+    "reference_run": "build/stockpile-storage-native-farm-discovery-20261101-145604",
+    "plugin_sha256": "29ca341ac662b7663e56b5706a7d461a9e7dfabf7d554ad4f7f5849247fbc943",
+    "screenshot_sha256": "77c5f0d300cd82871cda423b4696089a24b470dc50d69d1aa0cd4a206b54801e",
+    "text": [
+      {
+        "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+        "y": 0
+      },
+      {
+        "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+        "y": 1
+      },
+      {
+        "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+        "y": 2
+      },
+      {
+        "text": "                                                            Still",
+        "y": 6
+      },
+      {
+        "text": "                                                       Tasks    Workers    Work orders",
+        "y": 8
+      },
+      {
+        "text": "                                                       Tasks    Workers    Work orders                 Cancel",
+        "y": 9
+      },
+      {
+        "text": "                                                        ...",
+        "y": 12
+      },
+      {
+        "text": "                                                       Brew drink from fruit",
+        "y": 15
+      },
+      {
+        "text": "                                                        [Requires Unrotten fermentable leaf or fruit]                               Elevation 36",
+        "y": 16
+      },
+      {
+        "text": "                                                       Brew drink from plant",
+        "y": 18
+      },
+      {
+        "text": "                                                       Extract from plants",
+        "y": 21
+      },
+      {
+        "text": "                                                       Make mead",
+        "y": 24
+      },
+      {
+        "text": "                                                        [Requires Honey-containing item]",
+        "y": 25
+      }
+    ],
+    "source_save_unchanged": true,
+    "scope": "Three root-category Still reactions match native button membership; builtins, availability and ordering are separate."
+  },
+  "reaction_availability_reference": {
+    "all_equal": true,
+    "building_id": 37,
+    "codes": [
+      "BREW_DRINK_FROM_PLANT",
+      "BREW_DRINK_FROM_PLANT_GROWTH",
+      "MAKE_MEAD"
+    ],
+    "rows": [
+      {
+        "available": true,
+        "caption": "Brew drink from plant",
+        "code": "BREW_DRINK_FROM_PLANT",
+        "objection": "",
+        "raw_index": 44
+      },
+      {
+        "available": false,
+        "caption": "Brew drink from fruit",
+        "code": "BREW_DRINK_FROM_PLANT_GROWTH",
+        "objection": "[Requires Unrotten fermentable leaf or fruit]",
+        "raw_index": 45
+      },
+      {
+        "available": false,
+        "caption": "Make mead",
+        "code": "MAKE_MEAD",
+        "objection": "[Requires Honey-containing item]",
+        "raw_index": 46
+      }
+    ],
+    "reference_run": "build/stockpile-storage-native-farm-discovery-20261101-150712",
+    "plugin_sha256": "23e57d0fcc5cdcea0cc27edc5b1cb67326736658fed27a50cf6e20902381e1f3",
+    "wire": {
+      "objection": "[Requires Unrotten fermentable leaf or fruit]",
+      "reaction_count": 3,
+      "rejected_code": "BREW_DRINK_FROM_PLANT_GROWTH",
+      "success": true
+    },
+    "native_queue_unchanged_after_rejection": true,
+    "source_save_unchanged": true,
+    "scope": "Still root reactions: exact native captions, availability and objections; real client read and unavailable-task refusal. No successful DF3D queue, categories or rendered workshop panel acceptance."
   }
 }

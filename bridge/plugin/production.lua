@@ -55,7 +55,7 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements,native_caption)
+local function recipes(b,native_requirements,native_caption,native_reactions)
  local out,keys={},{}
  local k=kind(b)
  -- Reuse pinned builtin templates only for validated initial families.
@@ -67,19 +67,12 @@ local function recipes(b,native_requirements,native_caption)
    out[#out+1]={key='builtin:'..fields.job_type..':'..(fields.mat_type or -1),fields=fields}
   end
  end
- -- Reactions use native filters, including containers, and current civilization permissions.
+ -- Root reaction choices and current objections come from the native reader.
  if k=='Still' then
-  local entity=df.historical_entity.find(df.global.plotinfo.civ_id)
-  local allowed={}
-  if entity then for _,id in ipairs(entity.entity_raw.workshops.permitted_reaction_id) do allowed[id]=true end end
-  for index,r in ipairs(df.global.world.raws.reactions.reactions) do
-   if allowed[index] or (entity and r.source_enid==entity.id) then
-    local matches=false
-    for i,t in ipairs(r.building.type) do if t==b:getType() and r.building.subtype[i]==b:getSubtype() and (r.building.custom[i]==-1 or r.building.custom[i]==b:getCustomType()) then matches=true end end
-    if matches and not r.flags.FUEL and #r.reagents<=16 then
-     out[#out+1]={key='reaction:'..r.code,reaction=r}
-    end
-   end
+  for _,row in ipairs(native_reactions(b.id)) do
+   local r=df.global.world.raws.reactions.reactions[row.raw_index]
+   if not r or r.code~=row.code then return nil,'Native reaction identity changed' end
+   out[#out+1]={key='reaction:'..r.code,reaction=r,available=row.available,objection=utf(row.objection)}
   end
  end
  for _,r in ipairs(out) do
@@ -208,7 +201,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption);if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions);if not rs then return fail(err) end
  if request.action==16 then return inspect(b,rs,request.workshop_caption) end
  if b:getBuildStage()~=b:getMaxBuildStage() then return fail('Building construction is unfinished') end
  local created=-1
@@ -219,6 +212,7 @@ return function(request)
   local recipe
   for _,r in ipairs(rs) do if r.key==p.recipe then recipe=r end end
   if not recipe then return fail('Recipe is no longer available at this building') end
+  if recipe.available==false then return fail(recipe.objection) end
   local job,error=template_job(recipe,b,request.workshop_requirements);if not job then return fail(error) end
   job.pos={x=b.centerx,y=b.centery,z=b.z}
   local ref=df.general_ref_building_holderst:new();ref.building_id=b.id

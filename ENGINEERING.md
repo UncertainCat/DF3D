@@ -6459,10 +6459,49 @@ tick. Fertilizer transport is verified above; lifecycle faults and viewer contro
 
 The existing `bridge/plugin/production.lua` adapter is not a complete native
 building-management provider. Its Carpenters/Kitchen/WoodFurnace choices come
-from hand-maintained `dfhack.workshops` tables; Still reaction selection and
-recipe-key ordering are local reconstructions. Ordinary requirement descriptions
+from hand-maintained `dfhack.workshops` tables; recipe-key ordering and the
+restricted reaction catalog remain incomplete. Ordinary requirement descriptions
 combine raw enum/flag names. Native reagent and job helpers do not establish
 native parity for these surrounding choices, ordering or visible text. The catalog and panel remain staged until these gaps are resolved.
+
+Reaction permission now calls native `8c3f30` with an owned context containing
+only the explicit fortress entity. The helper reads the entity raw's permitted
+reaction IDs, fortress-acquired reaction IDs and FORTRESS_MODE_ENABLED; it does
+not use the old adapter's source-entity shortcut. Building type/subtype/custom
+matching follows native exact comparisons, without a custom-type wildcard.
+Protected145604 on2026-11-01 compares all three root-category Still reaction
+codes with native picker buttons. They match; the native screen also includes
+the builtin Extract from plants, which the current adapter still lacks. It
+shows missing-reagent objections for fruit brewing and mead. The fixture's
+`reaction_permission_reference` retains this bounded evidence. Owned DF44732
+exits unsaved, source remains unchanged, and all three Godot logs have only the
+classified startup notice with no Unicode errors. This is permission evidence,
+not complete Still catalog or availability acceptance.
+
+`workshop_catalog_native.h` adds owned reaction availability. Native inventory
+collect/find routines `a29630`/`a26990` receive independent `job_item_filter`
+objects initialized by `1fb050`, copied source pointer vectors and independent
+result/burrow storage. The common catalog's inline inorganic/ore/reaction-class
+precalculation preserves the per-inorganic100-item cap and reverse traversal.
+Native reagent `have_enough_from_precalc_info` and `getDescription` provide
+availability and missing-reagent wording; fuel and bracket text come from pinned
+installed literals. Random streams and the historical-material cache are
+preserved; native menu state is never an input. Reference getters may initialize
+semantic cached indices as in the existing item-position reader.
+
+The production adapter now consumes these root reaction rows for Still and
+rejects a newly unavailable reaction before queueing, retaining its native
+objection. The legacy transport still omits availability/objection fields from
+recipe choices: a dedicated catalog contract and rendered picker remain pending.
+Protected150712 compares all three native Still reaction captions, availability
+and objection strings exactly. Its actual model/Godot client reads the recipes
+and requests unavailable fruit brewing; DF rejects it with the native objection,
+and independent native observation verifies unchanged job IDs/order. Native Make
+bed caption/requirement comparisons still pass. Owned DF34368 exits unsaved and
+source preservation passes; all four Godot log groups have only the classified
+startup notice and no Unicode errors. The fixture's `reaction_availability_reference`
+retains the result. Successful DF3D queueing, other workshops, fuel-dependent
+reactions, category navigation, ordering and the rendered panel remain unverified.
 
 The native workshop catalog builder `8c5680` uses global building-menu vectors;
 its new-button constructor `8b1600` calls `7c5880`, which registers each button

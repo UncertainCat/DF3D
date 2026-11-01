@@ -93,7 +93,7 @@
 #include "creature_personality_native.h"
 #include "creature_preferences_native.h"
 #include "creature_needs_native.h"
-#include "workshop_job_native.h"
+#include "workshop_catalog_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -3746,6 +3746,24 @@ void run(color_ostream& out) {
       if(!caption)return luaL_error(state,"Native workshop caption unavailable");
       lua_pushlstring(state,caption->data(),caption->size());return 1;
     });lua_setfield(L,-2,"workshop_caption");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto allowed=df3d_production::workshopReactionAllowed(int32_t(luaL_checkinteger(state,1)));
+      if(!allowed)return luaL_error(state,"Native reaction permission unavailable");
+      lua_pushboolean(state,*allowed);return 1;
+    });lua_setfield(L,-2,"workshop_reaction_allowed");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      auto* shop=df::building::find(int32_t(luaL_checkinteger(state,1)));
+      const auto rows=df3d_production::workshopReactionRows(shop,"");
+      if(!rows)return luaL_error(state,"Native workshop reaction choices unavailable");
+      lua_newtable(state);int index=0;
+      for(const auto& row:*rows) {
+        lua_newtable(state);field(state,"raw_index",row.rawIndex);field(state,"code",row.code);
+        field(state,"caption",row.caption);field(state,"objection",row.objection);
+        lua_pushboolean(state,row.available);lua_setfield(state,-2,"available");
+        lua_rawseti(state,-2,++index);
+      }
+      return 1;
+    });lua_setfield(L,-2,"workshop_reactions");
     lua_newtable(L);field(L,"building_id",p->building_id());field(L,"job_id",p->job_id());field(L,"recipe",p->recipe()?p->recipe()->str():"");field(L,"query",p->query()?p->query()->str():"");field(L,"cursor",p->cursor());field(L,"repeat_job",p->repeat());field(L,"suspend",p->suspend());field(L,"cancel",p->cancel());field(L,"season",p->season());field(L,"crop_id",p->crop_id());lua_setfield(L,-2,"production");
   }
   if(const auto* w=r->work_order()) {

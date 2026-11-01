@@ -111,6 +111,13 @@ func patch(texture: Texture2D,rect: Rect2,rows:=3) -> void:
 func text_at(value: String,point: Vector2,color:=Color.WHITE) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
 
+func header_text(value: String) -> String:
+	# Native154937/154ad7: panel cell span minus22, with three cells for a job.
+	var columns:=maxi(0,floori(size.x/8)-23-(3 if snapshot.get("in_job",false) else 0))
+	if value.length()<columns:return value
+	var clipped:=value.left(maxi(0,columns-1))
+	return clipped.left(columns-4)+"..." if columns>4 else clipped
+
 static func description_lines(value: String) -> PackedStringArray:
 	# Native item renderer 155565 uses panel column span minus six (54 here).
 	# Preserve sentence spacing, but discard spaces at a wrapped line's start.
@@ -130,8 +137,8 @@ func _draw() -> void:
 	patch(art.texture("HOVER_RECTANGLE"),Rect2(Vector2.ZERO,size))
 	patch(picture.texture(false),Rect2(8,12,40,36))
 	if icon!=null:draw_texture_rect(icon,Rect2(10,14,32,32),false)
-	text_at(snapshot.get("name",""),Vector2(56,24 if snapshot.has("owner") else 36))
-	if snapshot.has("owner"):text_at("Owner: "+snapshot.owner.name,Vector2(56,36),colors[14])
+	text_at(header_text(snapshot.get("name","")),Vector2(56,24 if snapshot.has("owner") else 36))
+	if snapshot.has("owner"):text_at(header_text("Owner: "+snapshot.owner.name),Vector2(56,36),colors[14])
 	if not snapshot.get("weight","").is_empty():text_at("Weight: "+snapshot.weight,Vector2(56,48),colors[14])
 	var lines:=description_lines(snapshot.get("description",""))
 	for index in mini(8,lines.size()-description_scroll.first):text_at(lines[description_scroll.first+index],Vector2(16,84+index*12))

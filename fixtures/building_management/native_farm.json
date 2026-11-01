@@ -50451,6 +50451,820 @@
           "full sheet native screenshot remains unsuitable; only stable header region accepted",
           "Items indicators, hover, scroll/resize/lifecycle and remaining creature screens unfinished"
         ]
+      },
+      "header_clipping_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-005804",
+        "snapshot": {
+          "appearance": {
+            "color_token": "GRAY",
+            "flags": 0,
+            "material_token": "PLANT:GRASS_TAIL_PIG:THREAD",
+            "stack": 1,
+            "subtype_raw": "ITEM_HELM_HOOD"
+          },
+          "can_dump": true,
+          "can_melt": false,
+          "carrier": {
+            "id": 1017,
+            "item_type": -1,
+            "kind": 2,
+            "name": "Stodir Tangakurvad, bookkeeper"
+          },
+          "description": "This is an exceptional pig tail hood.  It is made from pig tail cloth.  ",
+          "dump": false,
+          "forbid": false,
+          "hidden": false,
+          "id": 32064,
+          "in_building": false,
+          "in_job": false,
+          "item_type": 28,
+          "material_token": "PLANT:GRASS_TAIL_PIG:THREAD",
+          "melt": false,
+          "name": "\u2261pig tail hood\u2261",
+          "owner": {
+            "id": 1017,
+            "name": "Stodir Tangakurvad, bookkeeper"
+          },
+          "revision": 2051833344436003715,
+          "stockpile_categories": -1,
+          "subtype_raw": "ITEM_HELM_HOOD",
+          "weight": "<1\u0393"
+        },
+        "cases": [
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPPP",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 8,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPPPPP",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 10,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 11,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 12,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 13,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 24,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 25,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 26,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 27,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 28,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 29,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 30,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 31,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 32,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 40,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPPPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "owner",
+            "length": 80,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 8,
+            "name": "\u2261pig tail NNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 10,
+            "name": "\u2261pig tail NNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 11,
+            "name": "\u2261pig tail NNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 12,
+            "name": "\u2261pig tail NNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 13,
+            "name": "\u2261pig tail NNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 24,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 25,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 26,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 27,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 28,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 29,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 30,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 31,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 32,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 40,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, bookkeeper",
+              "Weight: <1\u0393"
+            ],
+            "in_job": false,
+            "kind": "item",
+            "length": 80,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 8,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 10,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 11,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 12,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 13,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 24,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 25,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 26,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 27,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 28,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 29,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 30,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 31,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 32,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 40,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail hood\u2261",
+              "Owner: Stodir Tangakurvad, PPPP...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "owner",
+            "length": 80,
+            "name": "\u2261pig tail hood\u2261",
+            "owner": "Stodir Tangakurvad, PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 8,
+            "name": "\u2261pig tail NNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 10,
+            "name": "\u2261pig tail NNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 11,
+            "name": "\u2261pig tail NNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 12,
+            "name": "\u2261pig tail NNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNN\u2261",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 13,
+            "name": "\u2261pig tail NNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 24,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 25,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 26,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 27,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 28,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 29,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 30,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 31,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 32,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 40,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          },
+          {
+            "header": [
+              "\u2261pig tail NNNNNNNNNNNNNNNNNNNNN...",
+              "Owner: Stodir Tangakurvad, book...",
+              "Weight: <1\u0393"
+            ],
+            "in_job": true,
+            "kind": "item",
+            "length": 80,
+            "name": "\u2261pig tail NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\u2261",
+            "owner": "Stodir Tangakurvad, bookkeeper"
+          }
+        ],
+        "rule": "At488px panel width clip length>=38 to34characters+ellipsis; with in_job clip length>=35 to31+ellipsis. Both caption and Owner-prefixed name use the same rule. Full semantic strings remain intact.",
+        "scope": "64 native cell-text comparisons: sixteen lengths each for item/owner, with/without temporary in_job flag. No job or write action submitted. Names/raw definition/in_job restored; source unchanged, owned DF38452 exits unsaved.",
+        "limitations": "Clipping strings accepted at default panel width; other widths, no-owner long names, non-ASCII boundaries and full long-header pixel comparison remain unverified.",
+        "qa": "build/qa/item-header-clipping-final: core passed, item_sheet_capture passed_with_known_issues; all64 clipped strings match native cells and existing full-panel item reference pixel checks remain green",
+        "rendering": "Long owner/item screenshots with/without job inspected; rendering-only fixture coerces JSON appearance stack/flags to integers. No full long-header native screenshot pixel equivalence claimed."
       }
     }
   }

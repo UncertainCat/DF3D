@@ -128,5 +128,16 @@ func run() -> void:
 	view.pending=false;view.input_allowed=func():return false;click(view.holder_rect().get_center())
 	view.input_allowed=Callable();view.present({});click(view.camera_rect().get_center())
 	if not calls.is_empty() or view.visible or view.icon!=null:fail("Item sheet retained retired input/artwork");return
+	var clipping: Dictionary=fixture.chest_header_reference.unit_items_reference.header_clipping_reference
+	for sample in clipping.cases:
+		var state: Dictionary=clipping.snapshot.duplicate(true)
+		state.id=int(state.id);state.item_type=int(state.item_type);state.owner.id=int(state.owner.id)
+		state.appearance.stack=int(state.appearance.stack);state.appearance.flags=int(state.appearance.flags)
+		state.name=sample.name;state.owner.name=sample.owner;state.in_job=sample.in_job
+		view.present(state)
+		if view.header_text(state.name)!=sample.header[0] or view.header_text("Owner: "+state.owner.name)!=sample.header[1]:fail("Native header clipping differs: "+sample.kind+str(sample.length)+str(sample.in_job));return
+		if int(sample.length)==80:
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/item-header-long-"+sample.kind+"-"+str(sample.in_job)+".png"))
 	view.queue_free();help.queue_free();world.queue_free();await process_frame
 	print("ITEM_SHEET_CAPTURE_PASS");quit(0)

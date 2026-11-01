@@ -1577,8 +1577,24 @@ with the native yellow Owner line beneath and Weight on the third row. Without
 an owner it retains the native second-row name. Protected005142's368x36 header
 region at424,64 matches the usable native002607 header exactly, including hood
 artwork and all three text rows (zero differing RGB pixels). This accepts the
-short original-owner header only. Long-name clipping, composed owner changes,
-and the rest of the sheet remain unfinished; the public route stays staged.
+short original-owner header only. Long-name clipping is covered separately below. Composed owner changes and the
+rest of the sheet remain unfinished; the public route stays staged.
+
+Protected005804 on2026-11-01 records64 native header text cases: sixteen lengths
+for item captions and owner names, each with/without a temporary in_job flag.
+At the488-pixel panel width, native clips length>=38 to34characters plus "...";
+a job indicator reduces these values to35and31. Both rows use that same rule.
+`item_sheet_view.header_text` applies the native cell-span calculation without
+truncating semantic snapshot strings. The GPU item-sheet test compares every
+captured native string and retains all existing full-panel pixel references;
+long header captures were visually inspected. This is not a full native pixel
+comparison for long names. Final QA `item-header-clipping-final` passes core and
+GPU with only the documented engine diagnostics. The initial005509 probe omitted
+the full item caption due to a diagnostic key typo; corrected005804 records it.
+Names, item definition and in_job flag are restored; source saves remain unchanged
+and owned DF38452 exits unsaved. Each native-lane Godot process has only the known
+startup notice. `header_clipping_reference` retains cases and scope; other widths,
+non-ASCII boundaries and long unowned names still need evidence.
 
 The Overview hauling line uses native selector1324b50(unit), the same call made
 by renderer166e81, followed by the existing owned caption formatter c65450.

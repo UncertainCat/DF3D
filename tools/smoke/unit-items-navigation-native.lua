@@ -87,6 +87,30 @@ local ok,err=xpcall(function()
   restore_refs();df.delete(temp);pointer(400,400);assert(passed,reason)
  end
 
+ if os.getenv('DF3D_ITEM_HEADER_LONG')=='1'then
+  local item=unit.inventory[0].item;local definition=item.subtype
+  local original_profession=unit.custom_profession;local original_name=definition.name;local original_job=item.flags.in_job
+  result.header_lengths={}
+  local passed,reason=xpcall(function()
+   for _,in_job in ipairs{false,true}do for _,kind in ipairs{'owner','item'}do for _,length in ipairs{8,10,11,12,13,24,25,26,27,28,29,30,31,32,40,80}do
+    item.flags.in_job=in_job
+    unit.custom_profession=kind=='owner'and string.rep('P',length)or original_profession
+    definition.name=kind=='item'and string.rep('N',length)or original_name
+    local text,status=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(item.id));assert(status==0,text)
+    local snapshot=require('json').decode(text).snapshot;assert(type(snapshot.caption)=='string')
+    local owner_text,owner_status=dfhack.run_command_silent('df3d','item-owner-probe',tostring(item.id));assert(owner_status==0,owner_text)
+    local owner=require('json').decode(owner_text);pointer(400,400)
+    local lines={}
+    for y=5,7 do local chars={};for x=59,98 do local pen=dfhack.screen.readTile(x,y);chars[#chars+1]=pen.ch>=32 and string.char(pen.ch%256)or' 'end
+     lines[#lines+1]=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
+    end
+    result.header_lengths[#result.header_lengths+1]={kind=kind,length=length,in_job=in_job,name=snapshot.caption,owner=owner.name,header=lines}
+   end end end
+  end,debug.traceback)
+  item.flags.in_job=original_job
+  unit.custom_profession=original_profession;definition.name=original_name;pointer(400,400);assert(passed,reason)
+ end
+
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  result.escape_from_item=state();capture('unit-items-inspected-escape')
  restore();click(868,226);pointer(400,400)

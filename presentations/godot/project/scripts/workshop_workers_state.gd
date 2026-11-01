@@ -9,6 +9,7 @@ var phase:=Phase.Closed
 var building_id: int=-1
 var rows: Array=[]
 var permitted_workers: Array=[]
+var assigned: Dictionary={}
 var profile_revision:=0
 var revision:=0
 var ticket:=0
@@ -29,7 +30,7 @@ func close() -> void:
 	if service!=null and previous!=0:service.detach(previous)
 	building_id=-1;_clear();phase=Phase.Closed;changed.emit()
 func _clear() -> void:
-	rows=[];permitted_workers=[];profile_revision=0;revision=0;_pending=[];_total=0
+	rows=[];permitted_workers=[];assigned={};profile_revision=0;revision=0;_pending=[];_total=0
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open(id: int) -> void:
@@ -50,6 +51,18 @@ func select_worker(id: int) -> void:
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.FarmEdit,"workshop_workers":true,"building_id":building_id,"farm_operation":C.FarmOperation.WorkerSelect,
 		"worker_id":id,"expected_revision":profile_revision,"worker_list_revision":revision})
+func remove_worker() -> void:
+	if phase!=Phase.Ready or ticket!=0 or permitted_workers.is_empty():return
+	_assigned_edit(C.FarmOperation.WorkerRemove)
+func set_specialized(value: bool) -> void:
+	if phase!=Phase.Ready or ticket!=0 or not assigned.get("can_specialize",false) or assigned.get("specialized")==value:return
+	_assigned_edit(C.FarmOperation.WorkerSpecialize,int(value))
+func _assigned_edit(operation: int,value: int=-1) -> void:
+	phase=Phase.Applying
+	var intent: Dictionary={"action":C.ManagementAction.FarmEdit,"workshop_workers":true,"building_id":building_id,"farm_operation":operation,
+		"worker_id":permitted_workers[0],"expected_revision":profile_revision}
+	if value>=0:intent.worker_value=value
+	_send(intent)
 func _send(intent: Dictionary) -> void:
 	if service==null:_fail(Phase.Unavailable);return
 	var owner:=generation
@@ -69,18 +82,21 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		_fail(Phase.Unknown if editing else Phase.Rejected);return
 	if editing:
 		var expected:=permitted_workers.duplicate()
-		var index:=expected.rfind(sent.worker_id)
-		if index>=0:expected.remove_at(index)
-		else:expected=[sent.worker_id]
-		if value.get("outcome",0)!=C.FarmEditOutcome.Completed or value.get("unit_id",-1)!=sent.worker_id or value.permitted_workers!=expected:
+		if sent.farm_operation!=C.FarmOperation.WorkerSpecialize:
+			var index:=expected.rfind(sent.worker_id)
+			if index>=0:expected.remove_at(index)
+			else:expected=[sent.worker_id]
+		elif value.get("assigned",{}).get("id",-1)!=sent.worker_id or value.get("assigned",{}).get("specialized")!=bool(sent.worker_value):
+			_fail(Phase.Unknown);return
+		if value.get("operation",-1)!=sent.farm_operation or value.get("outcome",0)!=C.FarmEditOutcome.Completed or value.get("unit_id",-1)!=sent.worker_id or value.permitted_workers!=expected:
 			_fail(Phase.Unknown);return
 		# Retire the old list after a confirmed change; never replay a selection.
 		applied.emit();refresh();return
 	if value.get("outcome",-1)!=C.FarmEditOutcome.None or value.get("revision",0)<=0 or value.get("cursor",-1)!=sent.cursor or not value.get("rows") is Array:
 		_fail(Phase.Rejected);return
 	if sent.cursor==0:
-		revision=value.revision;profile_revision=value.profile_revision;permitted_workers=value.permitted_workers.duplicate();_total=value.total
-	elif value.revision!=revision or value.profile_revision!=profile_revision or value.permitted_workers!=permitted_workers or value.total!=_total:
+		revision=value.revision;profile_revision=value.profile_revision;permitted_workers=value.permitted_workers.duplicate();assigned=value.get("assigned",{}).duplicate(true);_total=value.total
+	elif value.revision!=revision or value.profile_revision!=profile_revision or value.permitted_workers!=permitted_workers or value.get("assigned",{})!=assigned or value.total!=_total:
 		_fail(Phase.Rejected);return
 	if sent.cursor!=_pending.size() or value.rows.size()!=mini(128,_total-sent.cursor):_fail(Phase.Rejected);return
 	_pending.append_array(value.rows.duplicate(true))

@@ -121,6 +121,31 @@ local ok,err=xpcall(function()
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  shot('still-worker-selector')
  result.still_worker_reference=read_worker_reference(still)
+ -- Observe the assigned row through native input, then restore the restriction.
+ local function worker_click(x,y)
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=math.floor(x/8);g.mouse_y=math.floor(y/12)
+  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ end
+ local profile=still:getWorkshopProfile()
+ assert(#profile.permitted_workers==0,'Native worker reference must start unrestricted')
+ worker_click(80,106)
+ assert(#profile.permitted_workers==1,'Native worker click did not assign')
+ result.assigned_worker_reference={building_id=still.id,unit_id=profile.permitted_workers[0]}
+ shot('still-worker-assigned')
+ local assigned=df.unit.find(profile.permitted_workers[0]);local specialized=assigned.flags4.only_do_assigned_jobs
+ local text,code=dfhack.run_command_silent('df3d','workshop-workers-probe',tostring(still.id))
+ assert(code==0,text);result.assigned_worker_reference.semantic=json.decode(text).assigned
+ worker_click(448,250)
+ assert(assigned.flags4.only_do_assigned_jobs~=specialized,'Native workshop specialization did not toggle')
+ shot('still-worker-specialized')
+ worker_click(448,250)
+ assert(assigned.flags4.only_do_assigned_jobs==specialized,'Native workshop specialization did not restore')
+ worker_click(448,190)
+ worker_click(80,106)
+ assert(#profile.permitted_workers==0,'Native worker reselect did not restore unrestricted profile')
+ shot('still-workers-restored')
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(still)
  assert(click_label('Tasks'),'Native Still Tasks tab not found')
  shot('still-jobs')

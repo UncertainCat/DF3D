@@ -1,5 +1,6 @@
 extends "res://scripts/farm_panel.gd"
 # Staged workshop owner; the caller supplies the installed subtype icon.
+signal unit_requested(id: int)
 var workers=preload("res://scripts/workshop_workers_state.gd").new()
 var selector
 var tasks=preload("res://scripts/workshop_tasks_state.gd").new()
@@ -18,6 +19,7 @@ func configure(world,service,host,help=null) -> void:
 	selector.unit_chosen.connect(func(id):
 		if workers.phase==workers.Phase.Ready:_close_picker();workers.select_worker(id))
 	panel.workers.choose_requested.connect(_open_picker)
+	panel.workers.unit_requested.connect(func(id):unit_requested.emit(id))
 	panel.tab_requested.connect(_select_tab)
 	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not selector.visible
 	workers.changed.connect(_workers_changed)

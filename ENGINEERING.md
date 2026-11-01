@@ -6609,9 +6609,28 @@ The Tasks body's overlapping rectangle now passes unhandled tab clicks to its
 parent sheet. The first live attempt164550 exposed that input defect;164700 then
 completed both worker effects but failed a JSON numeric-type comparison in the
 harness. Neither failed run is acceptance. The final run normalizes reference IDs
-before exact membership comparison. Worker selector assignment indicators,
-assigned-row artwork, responsive layout and broader lifecycle acceptance remain
-unfinished; the overall workshop screen remains unexposed.
+before exact membership comparison.
+
+Management115 adds an independently resolved assigned worker, including DF's name
+with sex/training suffix and work-mode visibility/eligibility. The assigned row
+renders its portrait, remove control and work-mode toggle. Removal calls native
+14ddb0 without requiring current candidate eligibility; work-mode changes compose
+native1ad063..1ad075 (semantic flag plus4390d0 labor recomputation). Native office
+eligibility13b99b0 runs with restored lookup caches. Profile revisions include
+assigned facts, edits require current receipts, and unconfirmed effects stay
+Unknown. Renderer187739 and input1acec5 fingerprints guard the recovered inline
+behavior; neither renderer nor input handler is called at runtime.
+
+Protected170840 on2026-11-01 exercises assignment, work-mode toggle/restoration and
+the separate remove button through actual Godot pointer input. Fresh semantic
+observations confirm all effects; native independently confirms the original
+profile. DF35800 exits unsaved and the source remains unchanged. Root/core and
+workshop capture pass; live logs contain only classified known Godot diagnostics.
+`assigned_worker_reference` retains captures and effects. The earlier165239 native
+capture failed because its old Assign coordinates hit the newly inserted portrait;
+that failed run is not acceptance. Selector indicators, portrait navigation,
+responsive layout and full visual parity remain unfinished. The workshop screen
+remains unexposed.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

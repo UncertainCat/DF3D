@@ -57,19 +57,34 @@ func composed_sheet(id: int) -> void:
 	root.get_texture().get_image().save_png(directory+"/workshop-workers-live.png")
 	var selected_id: int=-1
 	for assigning in [true,false]:
-		click(Vector2(448,154));await process_frame
-		if not check(owner.selector.visible and not owner.selector.rows.is_empty(),"Worker picker did not open"):break
-		if assigning:selected_id=owner.selector.rows[0].unit_id
-		check(owner.selector.rows[0].unit_id==selected_id,"Worker ordering changed after assignment")
-		await RenderingServer.frame_post_draw
-		if assigning:root.get_texture().get_image().save_png(directory+"/workshop-worker-selector-live.png")
-		click(Vector2(80,106))
+		if assigning:
+			click(Vector2(448,154));await process_frame
+			if not check(owner.selector.visible and not owner.selector.rows.is_empty(),"Worker picker did not open"):break
+			selected_id=owner.selector.rows[0].unit_id
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/workshop-worker-selector-live.png")
+			click(Vector2(80,106))
+		else:click(Vector2(864,154))
 		deadline=Time.get_ticks_msec()+10000
 		while Time.get_ticks_msec()<deadline and owner.workers.phase in [owner.workers.Phase.Applying,owner.workers.Phase.Reading]:
 			world.poll();service.poll(0.01);await create_timer(0.01).timeout
 		check(owner.workers.phase==owner.workers.Phase.Ready and owner.workers.permitted_workers==([selected_id] if assigning else []),"Worker selection did not confirm native restriction: "+str(owner.workers.phase))
 		check(not owner.selector.visible,"Worker selection retained picker")
 		worker_evidence.effects.append({"selected_id":selected_id,"permitted_workers":owner.workers.permitted_workers.duplicate(),"phase":owner.workers.phase})
+		if assigning:
+			check(owner.workers.assigned.get("id",-1)==selected_id and owner.workers.assigned.get("can_specialize",false),"Assigned worker facts absent")
+			worker_evidence.assigned=owner.workers.assigned.duplicate(true)
+			var original_mode: bool=owner.workers.assigned.get("specialized",false)
+			worker_evidence.modes=[]
+			for desired in [not original_mode,original_mode]:
+				click(Vector2(448,250))
+				deadline=Time.get_ticks_msec()+10000
+				while Time.get_ticks_msec()<deadline and owner.workers.phase in [owner.workers.Phase.Applying,owner.workers.Phase.Reading]:
+					world.poll();service.poll(0.01);await create_timer(0.01).timeout
+				check(owner.workers.phase==owner.workers.Phase.Ready and owner.workers.assigned.get("specialized")==desired,"Native workshop work mode did not confirm")
+				worker_evidence.modes.append(owner.workers.assigned.duplicate(true))
+				await process_frame;await RenderingServer.frame_post_draw
+				if desired:root.get_texture().get_image().save_png(directory+"/workshop-worker-specialized-live.png")
 		await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+("/workshop-worker-assigned-live.png" if assigning else "/workshop-worker-cleared-live.png"))
 	owner.close_panel()

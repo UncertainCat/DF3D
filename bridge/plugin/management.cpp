@@ -3759,6 +3759,14 @@ void run(color_ostream& out) {
       lua_pushboolean(state,*less);return 1;
     });lua_setfield(L,-2,"workshop_caption_less");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      size_t captionSize=0;size_t querySize=0;
+      const char* caption=luaL_checklstring(state,1,&captionSize);
+      const char* query=luaL_checklstring(state,2,&querySize);
+      const auto matches=df3d_production::workshopCaptionMatches(std::string(caption,captionSize),std::string(query,querySize));
+      if(!matches)return luaL_error(state,"Native workshop search unavailable");
+      lua_pushboolean(state,*matches);return 1;
+    });lua_setfield(L,-2,"workshop_caption_matches");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto allowed=df3d_production::workshopReactionAllowed(int32_t(luaL_checkinteger(state,1)));
       if(!allowed)return luaL_error(state,"Native reaction permission unavailable");
       lua_pushboolean(state,*allowed);return 1;

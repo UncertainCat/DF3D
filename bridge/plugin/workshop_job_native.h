@@ -6,6 +6,22 @@
 #include "location_staff_order_native.h"
 
 namespace df3d_production {
+// Native1a87e0..1a8814 searches normalized caption bytes. Both strings and
+// their normalization storage belong to this call; the search has no globals.
+inline std::optional<bool> workshopCaptionMatches(std::string caption,std::string query) {
+    const auto& text=df3d_area::staffOrderingFunctions();
+    if(!text || !farmFunctions())return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool ready=[&] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0xc7;++i){hash^=base[0xe1990+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x1c45e5635f4ffde2);
+    }();
+    if(!ready)return std::nullopt;
+    text.normalize(&caption);text.normalize(&query);
+    using Find=size_t (*)(const char*,size_t,size_t,const char*,size_t);
+    return reinterpret_cast<Find>(base+0xe1990)(caption.data(),caption.size(),0,query.data(),query.size())!=size_t(-1);
+}
 // Native1adc50..1adc91 formats then normalizes each owned caption; the
 // equal-priority/alpha-order branch1a8c06..1a8c51 compares those strings.
 // Current flat task choices all retain constructor priority1000/alpha_order0.

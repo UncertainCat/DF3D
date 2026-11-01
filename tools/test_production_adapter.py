@@ -77,7 +77,7 @@ end})
 df.global={plotinfo={civ_id=7},cur_season=0,cur_season_tick=9000,world={buildings={all=vec{carp,kitchen,still,farm}},
  raws={reactions={reactions=vec{reaction}},plants={all=vec{{name='allseason',growdur=100,flags={SEED=true,BIOME_SUBTERRANEAN_WATER=true,SPRING=true,SUMMER=true,AUTUMN=true,WINTER=true}},
  {name='spring only',growdur=200,flags={SEED=true,BIOME_SUBTERRANEAN_WATER=true,SPRING=true}}}}},items={other={SEEDS=vec()}}}}
-dfhack={df2utf=function(s)return s end,buildings={getName=function(b)return (df.workshop_type[b.type] or 'Farm') end},
+dfhack={utf2df=function(s)return s end,df2utf=function(s)return s end,buildings={getName=function(b)return (df.workshop_type[b.type] or 'Farm') end},
  maps={getTileFlags=function()return {subterranean=true}end},units={getReadableName=function()return 'Worker'end},matinfo={decode=function()return nil end},job={}}
 local J=dfhack.job
 J.getName=function(j)return 'job '..j.id end
@@ -120,7 +120,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local list=req(15,{cursor=0,query='#0'})
 assert(list.ok and #list.buildings==1 and list.buildings[1].id==0,'ID zero and numeric search')
@@ -188,7 +188,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local function refusal(action,p,message)
  local result=req(action,p)

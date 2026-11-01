@@ -1,6 +1,6 @@
 extends Control
 # Staged Tasks body, native_workshop.json. The sheet owns header/tabs/contents.
-# Category/search, priority and task-detail integration remain unfinished.
+# Categories, priority and task-detail integration remain unfinished.
 signal details_requested(job_id: int)
 signal priority_requested(job_id: int)
 var art=preload("res://scripts/original_ui.gd").new()
@@ -11,6 +11,10 @@ var picking:=false
 var first:=0
 var target: int=-1
 var scrollbar
+var query_bytes:=PackedByteArray()
+var search_focused:=false
+var blink:=-1
+var search_label: Label
 
 func configure(world,model) -> void:
 	state=model;art.configure(world);theme=art.theme
@@ -21,6 +25,9 @@ func configure(world,model) -> void:
 	scrollbar.use_standalone_sheet=false;add_child(scrollbar);scrollbar.configure(world)
 	scrollbar.input_allowed=available
 	scrollbar.row_changed.connect(func(value):first=value;queue_redraw())
+	search_label=Label.new();search_label.position=Vector2(16,42);search_label.size=Vector2(368,12)
+	search_label.add_theme_font_size_override("font_size",12);search_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	add_child(search_label)
 	state.changed.connect(refresh);resized.connect(refresh);refresh()
 
 func available() -> bool:
@@ -29,7 +36,8 @@ func available() -> bool:
 func refresh() -> void:
 	if state==null:return
 	if target!=state.building_id:
-		target=state.building_id;picking=false;first=0;scrollbar.dragging=false
+		target=state.building_id;picking=false;first=0;scrollbar.dragging=false;query_bytes.clear();search_focused=false
+	search_label.visible=picking
 	var rows: Array=state.recipes() if picking else state.jobs()
 	scrollbar.position=Vector2(size.x-24,72)
 	scrollbar.size=Vector2(16,maxi(36,floori((size.y-72)/36)*36))
@@ -40,7 +48,37 @@ func refresh() -> void:
 	queue_redraw()
 
 func choose_mode(value: bool) -> void:
-	picking=value;first=0;refresh()
+	picking=value;first=0;query_bytes.clear();search_focused=false
+	state.set_query("");refresh()
+
+func query_text() -> String:
+	var text:=""
+	for byte in query_bytes:text+=String.chr(byte if byte<128 else art.CP437_HIGH[byte-128])
+	return text
+
+func search_allowed() -> bool:
+	return picking and state.phase in [state.Phase.Ready,state.Phase.Reading] and (not input_allowed.is_valid() or input_allowed.call())
+
+func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree() or not search_allowed() or not search_focused or not event is InputEventKey or not event.pressed:return
+	if event.ctrl_pressed or event.alt_pressed or event.meta_pressed or event.keycode==KEY_ESCAPE:return
+	if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:
+		if not event.echo and not event.shift_pressed:search_focused=false;queue_redraw()
+		get_viewport().set_input_as_handled();return
+	var before:=query_bytes.duplicate()
+	if event.keycode==KEY_BACKSPACE:
+		if not query_bytes.is_empty():query_bytes.resize(query_bytes.size()-1)
+	elif event.unicode>=32:
+		for byte in String.chr(event.unicode).to_utf8_buffer():
+			if query_bytes.size()>=46:break
+			query_bytes.append(byte)
+	if before!=query_bytes:first=0;state.set_query(query_text());queue_redraw()
+	get_viewport().set_input_as_handled()
+
+func _process(_delta: float) -> void:
+	if not picking or not is_visible_in_tree():return
+	var next:=int(Time.get_ticks_msec()%1000<500)
+	if next!=blink:blink=next;queue_redraw()
 
 func add_rect() -> Rect2:
 	return Rect2(264,state.jobs().size()*36+36,112,24)
@@ -48,6 +86,9 @@ func add_rect() -> Rect2:
 func cancel_rect() -> Rect2:return Rect2(size.x-88,0,80,24)
 
 func _gui_input(event: InputEvent) -> void:
+	if search_allowed() and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
+		if cancel_rect().has_point(event.position):choose_mode(false);accept_event();return
+		if Rect2(0,30,size.x-8,36).has_point(event.position):search_focused=not search_focused;queue_redraw();accept_event();return
 	if not available() or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and picking:
 		scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));accept_event();return
@@ -89,9 +130,21 @@ func caption(text: String, point: Vector2, color: int) -> void:
 		theme.default_font.draw_string(get_canvas_item(),point,text,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color])
 
 func _draw() -> void:
-	if state==null or state.snapshot.is_empty():return
+	if state==null:return
 	if picking:
 		patch("HORIZONTAL_OPTION_ACTIVE",Rect2(cancel_rect().position-Vector2(0,6),cancel_rect().size+Vector2(0,12)));caption("Cancel",cancel_rect().position+Vector2(16,18),12)
+		var texture: Texture2D=art.texture("BUTTON_FILTER")
+		var columns:=int((size.x-8)/8)
+		if texture!=null:
+			for y in 3:
+				for x in columns:
+					var sx:=0 if x==0 else x-(columns-6) if x>=columns-4 else 1
+					draw_texture_rect_region(texture,Rect2(x*8,30+y*12,8,12),Rect2(sx*8,y*12,8,12))
+		var text:=query_text()
+		if search_focused and blink==1:text+="_"
+		elif text.is_empty() and not search_focused:text="..."
+		search_label.text=text
+		if colors.size()==16:search_label.add_theme_color_override("font_color",colors[15 if search_focused or not query_bytes.is_empty() else 8])
 		var rows: Array=state.recipes()
 		for index in mini(scrollbar.page,rows.size()-first):
 			var row: Dictionary=rows[first+index];var y:=72+index*36
@@ -101,6 +154,7 @@ func _draw() -> void:
 			caption(row.name,Vector2(8,y+18),15 if enabled else 12)
 			if known and not enabled:caption(row.availability.objection,Vector2(16,y+30),4)
 		return
+	if state.snapshot.is_empty():return
 	var jobs: Array=state.jobs()
 	for index in jobs.size():
 		var job: Dictionary=jobs[index];var y:=36+index*36

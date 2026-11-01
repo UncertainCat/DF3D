@@ -729,5 +729,57 @@
       "task_count": 4
     },
     "scope": "Four Still root task choices/order/availability and actual typed extraction queue/cancel; other workshops/categories remain incomplete."
+  },
+  "search_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-154345",
+    "plugin_sha256": "bd51006f71465f164d00cc69283ffa2851a8138f4bc752c5b0ceac87468e9c2a",
+    "native": {
+      "cases": [
+        {
+          "names": [
+            "Brew drink from fruit",
+            "Brew drink from plant"
+          ],
+          "query": "BREW"
+        },
+        {
+          "names": [
+            "Brew drink from fruit"
+          ],
+          "query": "fruit"
+        },
+        {
+          "names": [],
+          "query": "Requires"
+        },
+        {
+          "names": [],
+          "query": "zzzzz"
+        }
+      ],
+      "enter_releases_focus": true,
+      "max_bytes": 46
+    },
+    "wire_result": {
+      "created_and_cancelled": 382797,
+      "full_query_bytes": 138,
+      "objection": "[Requires Unrotten fermentable leaf or fruit]",
+      "reaction_count": 3,
+      "rejected_code": "BREW_DRINK_FROM_PLANT_GROWTH",
+      "search_cases": 4,
+      "success": true,
+      "task_count": 4
+    },
+    "screenshot_sha256": "6f51d5bb2fa453e2f93e1efd826e66aa0391e79ccaa1faf4c578bbf7f9963221",
+    "field_render": {
+      "rect": [
+        432,
+        136,
+        456,
+        36
+      ],
+      "native_rgb_sha256": "1e83f753fa174a55f42bdb54fac7b98ba379debc1effb8c157685dbfc616a4da",
+      "rendered_rgb_sha256": "1e83f753fa174a55f42bdb54fac7b98ba379debc1effb8c157685dbfc616a4da"
+    }
   }
 }

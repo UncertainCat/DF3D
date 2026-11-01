@@ -80,6 +80,30 @@ local ok,err=xpcall(function()
  local codes={};for _,row in ipairs(rows)do codes[#codes+1]=row.code end
  result.reaction_reference={building_id=still.id,codes=codes,rows=rows,all_equal=true}
  shot('still-add-task')
+ local function search_text(value)
+  if not sheet.entering_building_job_filter then
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=600;g.precise_mouse_y=154;g.mouse_x=75;g.mouse_y=12
+  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  end
+  assert(sheet.entering_building_job_filter,'Native workshop search did not focus')
+  for i=1,#sheet.building_job_filter_str do gui.simulateInput(view,'STRING_A000')end
+  for i=1,#value do gui.simulateInput(view,('STRING_A%03d'):format(value:byte(i)))end
+  view:render(dfhack.getTickCount())
+ end
+ result.search_reference={cases={}}
+ for _,query in ipairs{'BREW','fruit','Requires','zzzzz'}do
+  search_text(query)
+  local names={};for _,button in ipairs(df.global.game.main_interface.building.filtered_button)do names[#names+1]=dfhack.df2utf(utils.call_with_string(button,'text'))end
+  result.search_reference.cases[#result.search_reference.cases+1]={query=query,names=names}
+ end
+ search_text(string.rep('x',100));result.search_reference.max_bytes=#sheet.building_job_filter_str
+ search_text('BREW');gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+ result.search_reference.enter_releases_focus=not sheet.entering_building_job_filter
+ shot('still-search')
+ search_text('');gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+ local file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
  local before_jobs={};for _,job in ipairs(still.jobs)do before_jobs[#before_jobs+1]=job.id end
  capture('workshop-wire')
  assert(#still.jobs==#before_jobs,'Rejected workshop task changed native queue size')

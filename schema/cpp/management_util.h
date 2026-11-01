@@ -462,7 +462,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* p=r.production();
     if (!p || p->building_id() < -1 || p->job_id() < -1 || p->crop_id() < -1 || p->crop_id()>32767 ||
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
-        p->season() < -1 || p->season()>3 || (p->query() && p->query()->size()>128) ||
+        p->season() < -1 || p->season()>3 || (p->query() && p->query()->size()>(r.action()==ManagementAction::ProductionInspect?138:128)) ||
         (p->recipe() && p->recipe()->size()>128)) return "invalid production request";
     if(p->building_header() && (p->building_id()<0 || p->independent_item() || p->locate_item() || p->contents() ||
        p->item_id()!=-1 || p->item_value()!=-1 || p->season()!=-1 || p->crop_id()!=-1 || p->seasonal_fertilization()!=-1 ||

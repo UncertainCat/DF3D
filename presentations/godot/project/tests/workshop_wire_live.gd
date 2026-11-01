@@ -21,6 +21,14 @@ func run() -> void:
 	for i in mini(before.recipes.size(),reference.task_reference.rows.size()):
 		var actual: Dictionary=before.recipes[i];var native: Dictionary=reference.task_reference.rows[i]
 		check(actual.key==native.key and actual.name==native.name and actual.get("availability",{})==native.availability,"Native Still task order/availability differs")
+	for sample in reference.search_reference.cases:
+		var searched:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_id":int(expected.building_id),"query":sample.query})
+		var names: Array=[]
+		for row in searched.get("production",{}).get("recipes",[]):names.append(row.name)
+		check(searched.get("status")==C.ManagementStatus.Ok and names==sample.names,"Native workshop search differs for "+sample.query)
+	var full_query:=String.chr(0x2592).repeat(46)
+	var bounded:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_id":int(expected.building_id),"query":full_query})
+	check(full_query.to_utf8_buffer().size()==138 and bounded.get("status")==C.ManagementStatus.Ok and bounded.get("production",{}).get("recipes",[]).is_empty(),"Full native-byte query rejected by transport")
 	var unavailable: Dictionary={}
 	for row in expected.rows:
 		var matched:=false
@@ -48,6 +56,6 @@ func run() -> void:
 	var restored:=await request("production",intent)
 	check(restored.get("production",{}).get("jobs")==before.jobs,"Queue/cancel failed to restore original jobs")
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"reaction_count":expected.rows.size(),"task_count":before.recipes.size(),"created_and_cancelled":created,"rejected_code":unavailable.code,"objection":rejected.get("message")}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"reaction_count":expected.rows.size(),"task_count":before.recipes.size(),"search_cases":reference.search_reference.cases.size(),"full_query_bytes":full_query.to_utf8_buffer().size(),"created_and_cancelled":created,"rejected_code":unavailable.code,"objection":rejected.get("message")}));file.close()
 	world.detach_live();world.queue_free();await process_frame
 	quit(1 if failed else 0)

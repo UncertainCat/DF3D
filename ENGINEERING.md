@@ -6527,7 +6527,7 @@ icons, controller-backed repeat/suspend/cancel and task selection, and native
 availability/objection rows. `workshop_tasks_capture` renders the native Make bed
 queue and recorded Still reaction rows and exercises task/cancel hit routing.
 Priority and detail actions are signals awaiting their semantic integration.
-Search, categories, native ordering, complete builtin choices and sheet/header/
+Categories, complete builtin choices and sheet/header/
 contents composition remain unfinished; no public workshop route is enabled.
 The component capture is not complete screen parity or live mutation acceptance.
 
@@ -6548,6 +6548,32 @@ and all four Godot log groups have only the classified startup notice with no
 Unicode errors. `native_workshop.json.still_tasks_reference` retains evidence.
 Core `workshop-task-order` and the adapter check pass. This establishes typed
 queue/cancel effects, not rendered/live workshop-sheet acceptance.
+
+Workshop task search calls native `52cee0` normalization and `e1990` substring
+matching on owned strings (native caller `1a87e0..1a8814`). Filtering applies only
+to inspected choices, never to edit validation or the building's job queue.
+The staged field owns 46 input bytes, click-to-toggle focus and Enter release;
+its byte glyphs are encoded losslessly as UTF-8 for transport and recovered by
+the bridge. ProductionInspect permits138 bytes (46 three-byte glyphs); other
+production query limits remain128. Superseded reads lose their observer and
+cannot replace newer query results. No mutation is replayed by search changes.
+
+Protected153733 on2026-11-01 compares native and typed-wire results for BREW,
+fruit, Requires and an absent query: caption normalization matches, objections
+are excluded and empty results stay empty. It records the46-byte limit and
+Enter focus release. The earlier153637 probe toggled an already-focused field
+off; its failure is not search acceptance. Final owned DF45724 exits unsaved,
+source preservation passes, and queue/cancel still restores the original jobs.
+`native_workshop.json.search_reference` retains the bounded evidence. This
+covers ASCII native input and matching. Current-build protected154345 additionally
+accepts the full138-byte encoded query, preserving all46 byte glyphs, while
+repeating native search and queue/cancel acceptance. Owned DF39820 exits unsaved
+with source preservation and classified startup-only Godot logs. The rendered
+field uses a child Label over native filter artwork; the capture exercises typed
+BREW, Enter and task selection. Its456x36 search-field crop matches native pixels
+exactly. Core/controller checks pass in workshop-task-search; final core/GPU
+verification is workshop-search-final.
+Non-ASCII keyboard input remains unverified against native SDL delivery.
 
 The native workshop catalog builder `8c5680` uses global building-menu vectors;
 its new-button constructor `8b1600` calls `7c5880`, which registers each button

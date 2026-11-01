@@ -27,6 +27,22 @@ func run() -> void:
 	view.choose_mode(true)
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/workshop-tasks-picker.png"))
+	click(Vector2(600,154))
+	for letter in "BREW":
+		var key:=InputEventKey.new();key.unicode=letter.unicode_at(0);key.pressed=true;root.push_input(key,true)
+	if service.intent.get("query")!="BREW":fail("Workshop search input did not reach native request");return
+	var enter:=InputEventKey.new();enter.keycode=KEY_ENTER;enter.pressed=true;root.push_input(enter,true)
+	if view.search_focused:fail("Workshop Enter retained search focus");return
+	state.ticket=0;state.phase=state.Phase.Ready
+	state.snapshot={"jobs":[],"recipes":fixture.still_tasks_reference.tasks.rows.slice(0,2)}
+	state.changed.emit()
+	await process_frame;await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/workshop-tasks-search.png"))
+	var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
+	var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256)
+	hash.update(rendered.get_region(Rect2i(432,136,456,36)).get_data())
+	if hash.finish().hex_encode()!=fixture.search_reference.field_render.native_rgb_sha256:fail("Workshop search field differs from native capture");return
 	click(Vector2(600,226))
 	if service.intent.get("recipe")!=state.snapshot.recipes[1].key:fail("Workshop recipe click missed selected task");return
 	state.ticket=0;state.service=null

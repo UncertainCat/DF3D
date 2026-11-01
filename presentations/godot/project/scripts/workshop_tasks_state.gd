@@ -1,7 +1,7 @@
 extends RefCounted
 # Staged workshop Tasks controller. DF owns choices, captions and queue effects.
-# Availability is optional native evidence. Category navigation and ordering
-# remain pending; this controller does not infer either from recipe keys.
+# Availability and ordering are native evidence; category navigation remains
+# pending. This controller never derives choices from recipe keys.
 signal changed
 signal applied
 const C=preload("res://scripts/management_contract.gd")
@@ -12,6 +12,7 @@ var building_id: int=-1
 var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
+var query:=""
 
 func configure(source) -> void:
 	dispose();service=source
@@ -26,7 +27,7 @@ func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	building_id=-1;snapshot={};phase=Phase.Closed;changed.emit()
+	building_id=-1;snapshot={};query="";phase=Phase.Closed;changed.emit()
 
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
@@ -39,7 +40,14 @@ func open(id: int) -> void:
 func refresh() -> void:
 	if building_id<0 or ticket!=0:return
 	snapshot={};phase=Phase.Reading
-	_send({"action":C.ManagementAction.ProductionInspect,"building_id":building_id})
+	_send({"action":C.ManagementAction.ProductionInspect,"building_id":building_id,"query":query})
+
+func set_query(value: String) -> void:
+	if value==query or building_id<0 or phase not in [Phase.Ready,Phase.Reading]:return
+	generation+=1
+	var previous:=ticket;ticket=0
+	if service!=null and previous!=0:service.detach(previous)
+	query=value;refresh()
 
 func jobs() -> Array:
 	return snapshot.get("jobs",[]).duplicate(true)

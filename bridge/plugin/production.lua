@@ -216,7 +216,17 @@ return function(request)
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
  local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less);if not rs then return fail(err) end
- if request.action==16 then return inspect(b,rs,request.workshop_caption) end
+ if request.action==16 then
+  local result=inspect(b,rs,request.workshop_caption)
+  if kind(b)~='FarmPlot' and p.query and p.query~='' then
+   local query=dfhack.utf2df(p.query);local filtered={}
+   for i,recipe in ipairs(rs) do
+    if request.workshop_caption_matches(recipe.native_caption,query) then filtered[#filtered+1]=result.recipes[i] end
+   end
+   result.recipes=filtered
+  end
+  return result
+ end
  if b:getBuildStage()~=b:getMaxBuildStage() then return fail('Building construction is unfinished') end
  local created=-1
  if request.action==17 then

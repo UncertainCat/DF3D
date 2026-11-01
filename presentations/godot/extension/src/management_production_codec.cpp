@@ -428,7 +428,7 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   if (value.recipe.size() > 128) valid = false;
   String query = data.get("query", String());
   value.query = query.utf8().get_data();
-  if (value.query.size() > 128) valid = false;
+  if (value.query.size() > (r.action==Action::ProductionInspect?138:128)) valid = false;
   value.cancel = data.get("cancel", false);
   if (!valid) { error = "Invalid bounded production request"; return false; }
   return true;

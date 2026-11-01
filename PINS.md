@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management114 adds bounded workshop worker pages and revision-bound worker
+selection via the production channel. Rebuild/install bridge and viewer together
+on `Local\\df3d_management_v114`. Profile and candidate-list receipts are distinct;
+legacy recordings cannot synthesize candidates or assignment authority. Map,
+grid and session versions are unchanged.
+
 Management105 adds independent CreatureExpelRead and CreatureExpelApply commands.
 Preview carries native eligibility, refusal code, ordered group, names, colors,
 full-body appearance recipes and destinations. Apply requires the exact ordered

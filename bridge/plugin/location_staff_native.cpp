@@ -1,5 +1,7 @@
 #include "location_staff_native.h"
 #include "location_staff_order_native.h"
+#include "workshop_workers_native.h"
+#include "creature_header_native.h"
 #include "location_staff_mutation_native.h"
 #include "location_religious_candidates_native.h"
 #include "modules/Maps.h"
@@ -120,7 +122,8 @@ bool staffCandidateProfession(df::profession profession) {
   }
 }
 std::optional<LocationStaffCandidate> candidateRow(df::unit* unit,int32_t sourceIndex,
-    const std::vector<std::pair<int32_t,int32_t>>& weights,const StaffOrderingFunctions& order) {
+    const std::vector<std::pair<int32_t,int32_t>>& weights,const StaffOrderingFunctions& order,
+    const df3d_creature::HeaderName* nativeNames=nullptr) {
     LocationStaffCandidate row;row.unitId=unit->id;row.histfigId=unit->hist_figure_id;
     row.sourceIndex=sourceIndex;
     std::string nameKey,professionKey;
@@ -131,10 +134,11 @@ std::optional<LocationStaffCandidate> candidateRow(df::unit* unit,int32_t source
     std::array<int32_t,2> category{};const StaffUnitReference reference{unit};
     order.category(&category,&reference);
     row.professionOrder=category[0];row.statusOrder=category[1];
-    const auto baseName=DFHack::Translation::translateName(DFHack::Units::getVisibleName(unit));
-    const auto readable=readableStaffName(unit);
+    const auto baseName=nativeNames?nativeNames->name:DFHack::Translation::translateName(DFHack::Units::getVisibleName(unit));
+    const auto readable=nativeNames?nativeNames->combined:readableStaffName(unit);
     row.name=DF2UTF(readable);row.baseName=DF2UTF(baseName);
-    if(baseName.empty())row.professionName=row.name;
+    if(nativeNames)row.professionName=DF2UTF(nativeNames->profession);
+    else if(baseName.empty())row.professionName=row.name;
     else if(readable==baseName)row.professionName.clear();
     else if(readable.compare(0,baseName.size()+2,baseName+", ")==0)
       row.professionName=DF2UTF(readable.substr(baseName.size()+2));
@@ -168,6 +172,22 @@ LocationStaffRow row(const df::occupation* value) {
   out.histfigId=value->histfig_id;out.unitId=value->unit_id;out.locationId=value->location_id;
   out.siteId=value->site_id;out.groupId=value->group_id;out.names=names(value->unit_id,value->histfig_id);return out;
 }
+}
+std::optional<std::vector<LocationStaffCandidate>> observeNativeWorkshopWorkerRows(int32_t buildingId) {
+  auto* building=df::building::find(buildingId);
+  const auto ids=df3d_production::workshopWorkerCandidates(building);
+  const auto weights=df3d_production::workshopWorkerSkills(building);
+  const auto& order=staffOrderingFunctions();
+  if(!ids || !weights || !order)return std::nullopt;
+  std::vector<LocationStaffCandidate> result;result.reserve(ids->size());
+  for(const auto id:*ids) {
+    auto* unit=df::unit::find(id);if(!unit)return std::nullopt;
+    const auto names=df3d_creature::headerName(unit);if(!names)return std::nullopt;
+    auto value=candidateRow(unit,int32_t(result.size()),*weights,order,&*names);
+    if(!value)return std::nullopt;
+    result.push_back(std::move(*value));
+  }
+  return result;
 }
 std::optional<LocationStaffCandidates> observeNativeLocationStaffCandidates(
     int32_t siteId,int32_t locationId,int32_t occupationId) {

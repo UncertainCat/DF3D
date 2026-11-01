@@ -24,6 +24,21 @@ ProductionState decodeProduction(const m::ProductionState* p) {
   n.selectedBuilding = p->selected_building();
   n.createdJob = p->created_job();
   n.detail = str(p->detail());
+  if(const auto* c=p->workshop_workers()) {
+    auto& v=n.workshopWorkers.emplace();v.buildingId=c->building_id();v.profileRevision=c->profile_revision();
+    v.revision=c->revision();v.cursor=c->cursor();v.nextCursor=c->next_cursor();v.total=c->total();
+    v.outcome=static_cast<FarmEditOutcome>(c->outcome());v.unitId=c->unit_id();
+    if(c->permitted_workers())v.permittedWorkers.assign(c->permitted_workers()->begin(),c->permitted_workers()->end());
+    if(c->rows())for(const auto* r:*c->rows()) {
+      LocationStaffCandidate row;row.unitId=r->unit_id();row.histfigId=r->histfig_id();row.name=str(r->name());row.score=r->score();
+      row.baseName=str(r->base_name());row.professionName=str(r->profession_name());row.professionColor=r->profession_color();row.legendary=r->legendary();
+      row.sourceIndex=r->source_index();row.professionOrder=r->profession_order();row.statusOrder=r->status_order();
+      if(r->name_sort_key())row.nameSortKey.assign(r->name_sort_key()->begin(),r->name_sort_key()->end());
+      if(r->profession_sort_key())row.professionSortKey.assign(r->profession_sort_key()->begin(),r->profession_sort_key()->end());
+      if(r->skills())for(const auto* skill:*r->skills())row.skills.push_back({skill->id(),skill->rating(),skill->experience(),skill->weight()});
+      v.rows.push_back(std::move(row));
+    }
+  }
   if(const auto* source=p->building_header()) {
     auto& state=n.buildingHeader.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());
     state.operation=static_cast<FarmOperation>(source->operation());
@@ -216,7 +231,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
                                     p.cancel, p.season, p.cropId, p.expectedRevision,static_cast<m::FarmOperation>(p.farmOperation),p.seasonalFertilization,
-                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader);
+                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision);
 }
 
 flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBufferBuilder& b,

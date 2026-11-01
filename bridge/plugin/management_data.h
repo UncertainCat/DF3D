@@ -1,6 +1,7 @@
 #pragma once
 #include "lua_fields.h"
 #include "appearance.h"
+#include "location_staff_native.h"
 #include "df/unit.h"
 #include "mirror_generated.h"
 #include <algorithm>
@@ -133,7 +134,16 @@ struct BuildingHeaderState {
   df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
   df3d::mirror::FarmOperation operation=df3d::mirror::FarmOperation::Crop;
 };
+struct WorkshopWorkersState {
+  int32_t buildingId=-1,unitId=-1;
+  uint64_t profileRevision=0,revision=0;
+  uint32_t cursor=0,nextCursor=0,total=0;
+  std::vector<int32_t> permittedWorkers;
+  std::vector<df3d_area::LocationStaffCandidate> rows;
+  df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
+};
 struct ProductionState {
+  std::optional<WorkshopWorkersState> workshopWorkers;
   std::optional<BuildingHeaderState> buildingHeader;
   std::optional<IndependentItemState> independentItem;
   std::optional<ItemPosition> itemPosition;

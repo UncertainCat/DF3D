@@ -62,6 +62,7 @@ enum class FarmOperation : uint8_t {
   ItemDump = 7,
   ItemMelt = 8,
   ItemHidden = 9,
+  WorkerSelect = 10,
 };
 enum class ManagementAction : uint8_t {
   Catalog = 0,

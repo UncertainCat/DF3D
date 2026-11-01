@@ -60,6 +60,7 @@ enum FarmOperation {
 	ItemDump = 7,
 	ItemMelt = 8,
 	ItemHidden = 9,
+	WorkerSelect = 10,
 }
 enum ManagementAction {
 	Catalog = 0,

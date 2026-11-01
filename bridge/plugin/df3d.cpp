@@ -2076,8 +2076,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
           const auto candidates=df3d_production::workshopWorkerCandidates(df::building::find(id));
           if(!candidates)return CR_FAILURE;
-          Json::Value rows(Json::arrayValue);for(const auto unit:*candidates)rows.append(unit);
-          out.print("{}",Json::FastWriter().write(rows));return CR_OK;
+          const auto skills=df3d_production::workshopWorkerSkills(df::building::find(id));
+          const auto rows=df3d_area::observeNativeWorkshopWorkerRows(id);
+          const auto profile=df3d_production::workshopWorkerProfile(df::building::find(id));
+          if(!skills || !rows || !profile)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);
+          result["revision"]=std::to_string(profile->revision);
+          result["permitted_workers"]=Json::Value(Json::arrayValue);
+          for(const auto worker:profile->permittedWorkers)result["permitted_workers"].append(worker);
+          result["skills"]=Json::Value(Json::arrayValue);result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto unit:*candidates)result["ids"].append(unit);
+          for(const auto& [skill,weight]:*skills){Json::Value value;value["skill"]=skill;value["weight"]=weight;result["skills"].append(value);}
+          for(const auto& row:*rows){Json::Value value;value["id"]=row.unitId;value["name"]=row.name;value["score"]=row.score;result["rows"].append(value);}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="workshop-reactions-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;

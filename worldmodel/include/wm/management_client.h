@@ -279,7 +279,8 @@ struct AreaState {
 };
 struct ProductionRequest {
   int32_t itemId=-1;int8_t itemValue=-1;
-  bool contents=false,locateItem=false,independentItem=false,buildingHeader=false;
+  bool contents=false,locateItem=false,independentItem=false,buildingHeader=false,workshopWorkers=false;
+  int32_t workerId=-1;uint64_t workerListRevision=0;
   FarmOperation farmOperation=FarmOperation::Crop;
   int8_t seasonalFertilization=-1;
   std::string farmName;
@@ -369,7 +370,16 @@ struct BuildingHeaderState {
   FarmEditOutcome outcome=FarmEditOutcome::None;
   FarmOperation operation=FarmOperation::Crop;
 };
+struct WorkshopWorkersState {
+  int32_t buildingId=-1,unitId=-1;
+  uint64_t profileRevision=0,revision=0;
+  uint32_t cursor=0,nextCursor=0,total=0;
+  std::vector<int32_t> permittedWorkers;
+  std::vector<LocationStaffCandidate> rows;
+  FarmEditOutcome outcome=FarmEditOutcome::None;
+};
 struct ProductionState {
+  std::optional<WorkshopWorkersState> workshopWorkers;
   std::optional<BuildingHeaderState> buildingHeader;
   std::optional<IndependentItemState> independentItem;
   std::optional<ItemPosition> itemPosition;

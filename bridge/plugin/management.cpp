@@ -94,6 +94,7 @@
 #include "creature_preferences_native.h"
 #include "creature_needs_native.h"
 #include "workshop_catalog_native.h"
+#include "workshop_workers_page.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -733,7 +734,20 @@ void publish() {
     }
     buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation);
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader);
+  flatbuffers::Offset<m::WorkshopWorkersState> workshopWorkers;
+  if(production.workshopWorkers) {
+    const auto& p=*production.workshopWorkers;
+    std::vector<flatbuffers::Offset<m::LocationStaffCandidate>> rows;
+    for(const auto& r:p.rows) {
+      std::vector<flatbuffers::Offset<m::LocationStaffSkill>> skills;
+      for(const auto& s:r.skills)skills.push_back(m::CreateLocationStaffSkill(b,s.id,s.rating,s.experience,s.weight));
+      rows.push_back(m::CreateLocationStaffCandidate(b,r.unitId,r.histfigId,b.CreateString(r.name),r.score,b.CreateVector(skills),
+          b.CreateString(r.baseName),b.CreateString(r.professionName),r.professionColor,r.legendary,
+          r.sourceIndex,r.professionOrder,r.statusOrder,b.CreateVector(r.nameSortKey),b.CreateVector(r.professionSortKey)));
+    }
+    workshopWorkers=m::CreateWorkshopWorkersState(b,p.buildingId,p.profileRevision,b.CreateVector(p.permittedWorkers),p.revision,p.cursor,p.nextCursor,p.total,b.CreateVector(rows),p.outcome,p.unitId);
+  }
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -2623,6 +2637,45 @@ std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_produc
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->production() && r->production()->workshop_workers()) {
+    static df3d_production::WorkshopWorkerSnapshot workers;
+    const auto* q=r->production();const bool editing=r->action()==m::ManagementAction::FarmEdit;
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    auto& response=production.workshopWorkers.emplace();response.buildingId=q->building_id();
+    response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
+    try {
+      auto* building=df::building::find(q->building_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!tile || tile->bits.hidden){workers.invalidate();publish();return;}
+      workers.observe(epoch,q->building_id());
+      const auto page=workers.page(epoch,q->building_id(),editing?0:q->cursor(),q->worker_list_revision());
+      if(page.status==df3d_area::LocationPageStatus::Ready && page.profile) {
+        if(!editing) {
+          response.profileRevision=page.profile->revision;response.permittedWorkers=page.profile->permittedWorkers;
+          response.revision=page.revision;response.cursor=q->cursor();response.nextCursor=page.nextCursor;response.total=page.total;response.rows=page.rows;
+          status=m::ManagementStatus::Ok;
+        } else {
+          // Native eligibility is rechecked by the action at this same safe point.
+          // The current full list revision also rejects retired picker authority.
+          workers.invalidate();
+          const auto result=df3d_production::selectWorkshopWorker(q->building_id(),q->worker_id(),q->expected_revision());
+          using O=df3d_production::WorkshopWorkerOutcome;
+          mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+          if(result.outcome==O::Applied && result.profile) {
+            response.outcome=m::FarmEditOutcome::Unknown;
+            response.profileRevision=result.profile->revision;response.permittedWorkers=result.profile->permittedWorkers;response.unitId=q->worker_id();
+            response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
+          } else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+          else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
+        }
+      } else if(editing && page.status==df3d_area::LocationPageStatus::Stale)response.outcome=m::FarmEditOutcome::Stale;
+    } catch(...) {
+      response={};response.buildingId=q->building_id();
+      response.outcome=editing?(mutated?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected):m::FarmEditOutcome::None;
+      status=m::ManagementStatus::Rejected;workers.invalidate();
+    }
+    publish();return;
+  }
   if(r->production() && r->production()->building_header()) {
     const auto* q=r->production();message.clear();status=m::ManagementStatus::Rejected;production={};
     auto& response=production.buildingHeader.emplace();const bool editing=r->action()==m::ManagementAction::FarmEdit;

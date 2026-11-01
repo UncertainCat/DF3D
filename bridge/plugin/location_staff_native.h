@@ -41,6 +41,8 @@ struct LocationStaffCandidate {
         std::tie(other.unitId,other.histfigId,other.score,other.name,other.baseName,other.professionName,other.professionColor,other.legendary,other.skills,other.sourceIndex,other.professionOrder,other.statusOrder,other.nameSortKey,other.professionSortKey);
   }
 };
+// Reuse native name/category keys and semantic skill facts for workshop rows.
+std::optional<std::vector<LocationStaffCandidate>> observeNativeWorkshopWorkerRows(int32_t buildingId);
 // Private receipt dependencies: assignment may clear occupations elsewhere even
 // when displayed candidate facts are unchanged. Never serialized as UI state.
 struct LocationStaffAssignmentBinding {

@@ -7,7 +7,7 @@
 #include <string>
 
 namespace df3d::mirror {
-template<class Page> inline std::optional<std::string> validateLocationCandidatePage(const Page& c) {
+template<class Page> inline std::optional<std::string> validateLocationCandidatePage(const Page& c,int32_t maxSkill=128,size_t maxSkills=10) {
   const size_t count=c.rows()?c.rows()->size():0;
   if(!c.revision() || c.revision()>INT64_MAX ||
       c.total()>INT32_MAX || c.cursor()%128 || c.cursor()>c.total() || (c.cursor() && c.cursor()==c.total()) ||
@@ -23,7 +23,7 @@ template<class Page> inline std::optional<std::string> validateLocationCandidate
         !r->name() || r->name()->size()>2048 || !r->base_name() || r->base_name()->size()>2048 ||
         !r->profession_name() || r->profession_name()->size()>2048 ||
         r->profession_color()<0 || r->profession_color()>15 || r->score()<0 || r->score()>previousScore ||
-        (r->skills() && r->skills()->size()>10))return "invalid staff candidate";
+        (r->skills() && r->skills()->size()>maxSkills))return "invalid staff candidate";
     if(r->source_index()<0 || uint32_t(r->source_index())>=c.total() || !sourceIndexes.insert(r->source_index()).second ||
         r->profession_order()<0 || r->status_order()<0 || !r->name_sort_key() || !r->profession_sort_key() ||
         r->name_sort_key()->size()>2048 || r->profession_sort_key()->size()>2048 ||
@@ -32,7 +32,7 @@ template<class Page> inline std::optional<std::string> validateLocationCandidate
     previousScore=r->score();payload+=128+r->name()->size()+r->base_name()->size()+r->profession_name()->size();
     std::set<int32_t> skills;int64_t score=0;
     if(r->skills())for(const auto* s:*r->skills()) {
-      if(!s || s->id()<0 || s->id()>128 || !skills.insert(s->id()).second || s->rating()<0 ||
+      if(!s || s->id()<0 || s->id()>maxSkill || !skills.insert(s->id()).second || s->rating()<0 ||
           s->experience()<0 || s->weight()<1 || s->weight()>5)return "invalid staff candidate skill";
       score+=int64_t(s->rating())*s->weight();payload+=48;
     }

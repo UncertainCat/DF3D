@@ -26,13 +26,14 @@ func reset(id: int):
 func location() -> String: return tab+"/"+str(subtabs.get(tab,""))
 
 func remember_scroll():
- if is_instance_valid(health_view): scrolls[health_view.page_key]=health_view.first
  if is_instance_valid(scroll): scrolls[scroll_location]=scroll.scroll_vertical
 
 func change_tab(value: String, nested := false):
  remember_scroll()
  if nested: subtabs[tab]=value
- else: tab=value
+ else:
+  if value=="Health" and tab!="Health":subtabs["Health"]="Status"
+  tab=value
  owner.redraw()
 
 func text(parent: Node, value: String, color := Color.WHITE) -> Label:
@@ -404,7 +405,7 @@ func render(controller, state: Dictionary):
    owner.body.add_child(health_view);health_view.configure(owner.world)
    health_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
   health_view.position=Vector2(0,y);health_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
-  health_view.present(page_rows,location(),int(scrolls.get(location(),0)))
+  health_view.present(page_rows,location())
   return
  y+=4
  if tab=="Overview": y-=10

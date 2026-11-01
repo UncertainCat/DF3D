@@ -3276,8 +3276,22 @@ at1200x800 against protected021536. QA `health-view-component` passes root/core,
 UI composition and real-renderer capture with documented Godot diagnostics only;
 the layout test also matches every captured line and color byte. These component
 checks exclude scrollbar artwork/input, resizing and the composed live Health
-workflow. Those remain required before acceptance, along with broader clinical
-variants and lifecycle coverage. The creature route remains staged.
+workflow. Protected023214 verifies actual main-scene tab clicks, all five native text-body
+crops, control retention on redraw and returning to Status after leaving Health.
+All three Godot processes have only the known startup notice; owned DF38540 exits
+unsaved and source preservation passes. `main_scene_reference` retains the scope.
+
+Protected022944 uses33 repeated operation pointers only in the paused diagnostic
+clone, restores them, and captures75 wrapped lines. `layout_reference` records
+native capacities25/35/50/41 at600/720/900/800-pixel window heights and exact
+scrollbar crops. The GPU check matches these crops and native wheel/page steps.
+Health subtabs share a scroll position; a page without overflow draws from its
+beginning while retaining that position. Leaving Health and returning resets to
+Status at zero. Native input1b2da4 skips wheel handling without overflow; the
+component test preserves the shared position in that case. QA `health-layout-view`
+passes root/core, composition and GPU with documented diagnostics. Arrow/track/
+drag inputs, composed overflow interaction, disconnect/identity lifecycle and
+broader clinical variants remain required. The creature route remains staged.
 
 The full reference run passes with only the known startup notice in each Godot
 process; root/core QA `health-pages-reference` passes. DF38684 exits unsaved and

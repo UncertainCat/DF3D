@@ -116,6 +116,10 @@ local ok,err=xpcall(function()
   pages[#pages+1]=sample
   capture('unit-health-page-'..name:lower())
  end
+ if os.getenv('DF3D_UNIT_HEALTH_LAYOUT')=='1'then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-health%-pages%-native.lua$','unit-health-layout-native.lua')
+  assert(loadfile(source))(unit,view,capture,out)
+ end
  if os.getenv('DF3D_UNIT_HEALTH_HISTORY_CASES')=='1'then
   local health=assert(unit.health);local operations={};local diagnoses={};local workers={}
   for _,event in ipairs(health.op_history)do

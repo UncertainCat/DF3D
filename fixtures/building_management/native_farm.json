@@ -54370,6 +54370,235 @@
             "sha256": "9108ea93cef509c613ce6721b796dc3ff781892f408cc3c567603c7986b1fb03"
           }
         ]
+      },
+      "layout_reference": {
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261101-022944",
+        "status": "passed_with_known_issues",
+        "diagnostic_repeated_operations": 33,
+        "line_count": 75,
+        "cases": [
+          {
+            "name": "small",
+            "viewport": [
+              960,
+              600
+            ],
+            "view_rect": [
+              184,
+              228,
+              472,
+              324
+            ],
+            "capacity": 25,
+            "scrollbar_rect": [
+              632,
+              240,
+              16,
+              300
+            ],
+            "rgb_sha256": "14ac5debefa90fc911395aec2a50d3637014045a930668b0a5faccd97bf493e2"
+          },
+          {
+            "name": "medium",
+            "viewport": [
+              1200,
+              720
+            ],
+            "view_rect": [
+              424,
+              228,
+              472,
+              444
+            ],
+            "capacity": 35,
+            "scrollbar_rect": [
+              872,
+              240,
+              16,
+              420
+            ],
+            "rgb_sha256": "6cdb8b9c7051afb8ed7337569dc2f9ccc089aff87a0293dae38f7d114c13b331"
+          },
+          {
+            "name": "wide",
+            "viewport": [
+              1600,
+              900
+            ],
+            "view_rect": [
+              824,
+              228,
+              472,
+              624
+            ],
+            "capacity": 50,
+            "scrollbar_rect": [
+              1272,
+              240,
+              16,
+              600
+            ],
+            "rgb_sha256": "d695c592489a5b14e28a88dece88cdd8be541fe4e141981656123a98b18d1baa"
+          },
+          {
+            "name": "default",
+            "viewport": [
+              1200,
+              800
+            ],
+            "view_rect": [
+              424,
+              232,
+              472,
+              516
+            ],
+            "capacity": 41,
+            "scrollbar_rect": [
+              872,
+              244,
+              16,
+              492
+            ],
+            "rgb_sha256": "9c6e1ac3733f2fffc448c91f06a6e29fa4b3bdd42d1aa97f7fd81231cf79145f"
+          }
+        ],
+        "input": [
+          {
+            "dragging": false,
+            "first": 6,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "CONTEXT_SCROLL_UP",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "CONTEXT_SCROLL_DOWN",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "CONTEXT_SCROLL_PAGEUP",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 34,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "CONTEXT_SCROLL_PAGEDOWN",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 3,
+            "name": "status-after-scroll",
+            "tab": 0,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "history-return",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "name": "overview",
+            "tab": 3,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 3,
+            "name": "health-return",
+            "tab": 0,
+            "width": 53
+          }
+        ],
+        "scope": "Viewport geometry, scrollbar crops, wheel/page steps and tab reset. Arrow, track and drag inputs remain unverified."
+      },
+      "main_scene_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-023214",
+        "status": "passed_with_known_issues",
+        "result": {
+          "pages": [
+            {
+              "lines": 3,
+              "name": "Status",
+              "pixels_match": true
+            },
+            {
+              "lines": 10,
+              "name": "Wounds",
+              "pixels_match": true
+            },
+            {
+              "lines": 1,
+              "name": "Treatment",
+              "pixels_match": true
+            },
+            {
+              "lines": 25,
+              "name": "History",
+              "pixels_match": true
+            },
+            {
+              "lines": 16,
+              "name": "Description",
+              "pixels_match": true
+            }
+          ],
+          "retained_refresh": true,
+          "success": true,
+          "tab_return": true
+        },
+        "source_preserved": true,
+        "scope": "Actual tab clicks, five text-body crops, retained redraw control and reset to Status on returning to Health. No scrollbar drag or disconnect acceptance."
       }
     }
   }

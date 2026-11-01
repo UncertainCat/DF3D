@@ -177,6 +177,9 @@ func unit_carrier(expected: Dictionary) -> void:
 	var evidence:=FileAccess.open(directory+"/unit-overview-scene.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
+	if OS.get_environment("DF3D_UNIT_HEALTH_VIEW")=="1":
+		await exercise_health_view(inspector)
+		if failed:return
 	if OS.get_environment("DF3D_UNIT_ITEMS_VIEW")=="1":
 		await exercise_items_view(inspector,target)
 		if failed:return
@@ -211,6 +214,40 @@ func unit_carrier(expected: Dictionary) -> void:
 	await exercise_history(inspector,source,int(expected.snapshot.id),target)
 	if OS.get_environment("DF3D_UNIT_ITEMS_LIFECYCLE")=="1":await exercise_items_lifecycle(inspector,target)
 	exercised=true
+
+func health_tab(inspector,title: String) -> bool:
+	for child in inspector.body.get_children():
+		if child is Button and child.text==title:
+			await pointer(child.get_global_transform_with_canvas()*(child.size*0.5))
+			await process_frame;await process_frame
+			return true
+	return check(false,"Missing creature tab: "+title)
+
+func exercise_health_view(inspector) -> void:
+	if not await health_tab(inspector,"Health"):return
+	var samples: Array=[]
+	for name in ["Status","Wounds","Treatment","History","Description"]:
+		if not await health_tab(inspector,name):return
+		var view=inspector.creature_sheet.health_view
+		if not check(is_instance_valid(view) and view.is_visible_in_tree(),"Health view missing: "+name):return
+		await RenderingServer.frame_post_draw
+		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+		actual.save_png(directory+"/unit-health-"+name.to_lower()+"-scene.png")
+		var expected:=Image.load_from_file(directory+"/unit-health-page-"+name.to_lower()+".png");expected.convert(Image.FORMAT_RGB8)
+		var rect:=Rect2i(432,244,424,312)
+		check(actual.get_region(rect).get_data()==expected.get_region(rect).get_data(),"Composed native Health text pixels differ: "+name)
+		var before: Array=view.lines.duplicate(true)
+		inspector.redraw();await process_frame;await process_frame
+		check(inspector.creature_sheet.health_view==view and view.lines==before,"Health refresh replaced control or changed native text: "+name)
+		samples.append({"name":name,"lines":view.lines.size(),"pixels_match":actual.get_region(rect).get_data()==expected.get_region(rect).get_data()})
+	var previous=inspector.creature_sheet.health_view
+	if not await health_tab(inspector,"Overview"):return
+	check(not is_instance_valid(previous) or not previous.is_visible_in_tree(),"Health tab departure retained visible content")
+	if not await health_tab(inspector,"Health"):return
+	check(inspector.creature_sheet.subtabs.Health=="Status" and is_instance_valid(inspector.creature_sheet.health_view),"Health tab return did not reset to native Status")
+	if not await health_tab(inspector,"Overview"):return
+	var evidence:=FileAccess.open(directory+"/unit-health-view-result.json",FileAccess.WRITE)
+	evidence.store_string(JSON.stringify({"success":not failed,"pages":samples,"retained_refresh":true,"tab_return":true}));evidence.close()
 
 func items_lifecycle_transition(operation: String) -> void:
 	var file:=FileAccess.open(directory+"/unit-items-lifecycle-request.tmp",FileAccess.WRITE)

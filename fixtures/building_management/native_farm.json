@@ -67463,6 +67463,43 @@
         "owned_exit_unsaved": true,
         "scope": "ASSUME_IDENTITY dance descriptions with valid unit race/caste and temporary identity/event graphs. Profession/entity changes leave this native phrase unchanged; separate profession branch, agreement identities, other races and deep historical identity graphs remain unverified."
       },
+      "coin_validation_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-080552",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "f4d2e44ed6abed85cd1efcec90f4cb917668c128eb457f95483e32df9b10bd02",
+        "cases": [
+          {
+            "case": "negative-batch",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "past-end-batch",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "null-batch",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "missing-issuer",
+            "guards_unchanged": true,
+            "rejected": true
+          },
+          {
+            "case": "missing-issuer-raw",
+            "guards_unchanged": true,
+            "rejected": true
+          }
+        ],
+        "valid_native_comparisons": 12,
+        "baseline_form_comparisons": 4,
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "Unnamed coin ARTIFACT_CREATED preflight on shared event traversal. Does not cover other artifact-bearing event/circumstance paths or nested item graphs."
+      },
       "coin_caption_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-064043",
         "status": "passed_with_known_issues",

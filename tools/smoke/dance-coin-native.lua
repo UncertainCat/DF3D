@@ -5,7 +5,7 @@ local world=df.global.world;local events=world.history.events;local artifacts=wo
 local issuer=assert(df.historical_entity.find(unit.civ_id));local raw=assert(issuer.entity_raw)
 local flag=raw.flags.CURRENCY_BY_YEAR;local original=form.event
 local counts={#events,#artifacts,#items,#batches};assert(#batches<32767)
-local results={}
+local results={};local rejections={}
 for _,variant in ipairs{'no-batch','no-issuer','year','no-year','ruler','missing-ruler'}do
  local item=df.item_coinst:new();local batch=df.coin_batch:new();local artifact=df.artifact_record:new();local event=df.history_event_artifact_createdst:new()
  local ok,err=xpcall(function()
@@ -26,8 +26,31 @@ for _,variant in ipairs{'no-batch','no-issuer','year','no-year','ruler','missing
   assert(native==warm,'Repeated coin description differs')
   assert(before.id==world.worldgen.next_art_image_chunk_id and before.offset==world.worldgen.next_art_image_chunk_offset,'Coin caption allocated art')
   results[#results+1]={case=variant,text=native,batch_index=item.coin_batch,issuer=batch.entity,year=batch.year,ruler=batch.ruler,currency_by_year=raw.flags.CURRENCY_BY_YEAR,no_art_allocation=true}
+  if variant=='year'then
+   local index=item.coin_batch
+   local function reject(label)
+    local guards={}
+    for _,value in ipairs{item,batch,artifact,event,unit,issuer,df.global.game.main_interface.view_sheets,df.global.plotinfo}do
+     local size,address=df.sizeof(value);local bytes=df.new('uint8_t',size);dfhack.internal.memmove(bytes,address,size)
+     guards[#guards+1]={bytes=bytes,address=address,size=size}
+    end
+    local text,status=dfhack.run_command_silent('df3d','dance-detail-probe',tostring(form.id))
+    local unchanged=true
+    for _,guard in ipairs(guards)do
+     if dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)~=0 then unchanged=false end
+     df.delete(guard.bytes)
+    end
+    assert(status~=0,'Malformed coin source accepted: '..label..' '..text);assert(unchanged,'Rejected coin changed source/UI')
+    rejections[#rejections+1]={case=label,rejected=true,guards_unchanged=true}
+   end
+   item.coin_batch=-2;reject('negative-batch')
+   item.coin_batch=#batches;reject('past-end-batch');item.coin_batch=index
+   batches[index]=nil;reject('null-batch');batches[index]=batch
+   batch.entity=2147483647;assert(not df.historical_entity.find(batch.entity));reject('missing-issuer');batch.entity=issuer.id
+   issuer.entity_raw=nil;reject('missing-issuer-raw');issuer.entity_raw=raw
+  end
  end,debug.traceback)
- form.event=original;raw.flags.CURRENCY_BY_YEAR=flag
+ form.event=original;raw.flags.CURRENCY_BY_YEAR=flag;issuer.entity_raw=raw
  while #events>counts[1]do events:erase(#events-1)end
  while #artifacts>counts[2]do artifacts:erase(#artifacts-1)end
  while #items>counts[3]do items:erase(#items-1)end
@@ -36,4 +59,5 @@ for _,variant in ipairs{'no-batch','no-issuer','year','no-year','ruler','missing
  assert(ok,err)
 end
 local f=assert(io.open(out..'/knowledge-coin-native.json','w'));f:write(json.encode(results));f:close()
+local f=assert(io.open(out..'/knowledge-coin-validation.json','w'));f:write(json.encode(rejections));f:close()
 return true

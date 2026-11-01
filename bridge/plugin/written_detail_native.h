@@ -14,6 +14,9 @@ inline bool writtenDescriptionReady() {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct Pin {size_t rva,length;uint64_t hash;};
     constexpr Pin pins[]={
+        {0xca0d00,0x55,UINT64_C(0x6891982ef52f2367)},
+        {0x5be970,0x536,UINT64_C(0xd785ec19f3aa4618)},
+        {0x52c2b0,0xd8,UINT64_C(0x38b6489e35387929)},
         {0xc3a590,0xcbf,UINT64_C(0x09a894440651f51f)},
         {0x132e0c0,0x368,UINT64_C(0x5020a6b8e463a24d)},
         {0xb65030,0x1b8,UINT64_C(0x6557e947120f0a0b)},
@@ -88,7 +91,7 @@ public:
         for(auto* original:source.refs){
             if(!original)return false;
             if(original->getType()==df::general_ref_type::HISTORICAL_EVENT &&
-               !recursiveEventIdentityInputsValid(static_cast<df::general_ref_historical_eventst*>(original)->event_id))return false;
+               !knowledgeEventInputsValid(static_cast<df::general_ref_historical_eventst*>(original)->event_id))return false;
             const auto* identity=DFHack::virtual_identity::get(original);
             if(!identity || !identity->can_instantiate())return false;
             auto* copy=static_cast<df::general_ref*>(identity->instantiate());

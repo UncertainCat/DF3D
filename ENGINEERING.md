@@ -3735,6 +3735,27 @@ validate the batch index, selected batch, and nonnegative issuer reference/raw
 before this path runs. This is a source-validation obligation, not evidence of
 a naturally occurring native crash or authorization to change valid captions.
 
+The shared diagnostic event traversal now validates this dependency for unnamed
+coin artifacts reached through ARTIFACT_CREATED. Batch-1 and issuer-1 retain
+their native meanings; other batch indices require an in-range nonnull record,
+and other issuer IDs require a resolved entity with an entity raw. The same
+traversal serves dance form/section events and written historical-event
+references. It does not yet cover other artifact-bearing circumstances or
+nested item captions, so this remains partial source validation. Coin selector
+ca0d00 (length0x55, FNV6891982ef52f2367), issuer5be970 (length0x536,
+FNVd785ec19f3aa4618) and year52c2b0 (length0xd8, FNV38b6489e35387929)
+are pinned in both diagnostic adapters.
+
+Protected080552 on2026-11-01 with bridge
+`f4d2e44ed6abed85cd1efcec90f4cb917668c128eb457f95483e32df9b10bd02`
+rejects negative/past-end/null batches, an unresolved issuer and a null issuer
+raw before native formatting. All five preserve guarded source/UI state;
+malformed inputs are never submitted to the native oracle. The six valid
+coin cases each still match native twice, and four baseline forms pass.
+`coin_validation_reference` records the bounded acceptance. The owned session
+exits unsaved with source-save preservation; all three Godot processes report
+only the known startup notice. Public Knowledge exposure remains unchanged.
+
 Issuer formatting uses owned local strings and appends to the caller's output.
 The direct non-stack stores in5be970 write terminators/spaces into those local
 string buffers. CURRENCY_BY_YEAR (raw flag10) selects batch.year and52c2b0,

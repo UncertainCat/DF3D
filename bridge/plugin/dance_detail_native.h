@@ -14,6 +14,10 @@
 #include "df/entity_occasion_info.h"
 #include "df/entity_occasion.h"
 #include "df/entity_occasion_schedule.h"
+#include "df/history_event_artifact_createdst.h"
+#include "df/artifact_record.h"
+#include "df/item_coinst.h"
+#include "df/coin_batch.h"
 #include <unordered_set>
 namespace df3d_creature {
 // A targeted diagnostic guard, not general event-graph validation. JoinParty
@@ -35,12 +39,27 @@ inline bool directAgreementIdentityInputsValid(int32_t event_id) {
 }
 // Both audited recursive phrase classes have at most one event successor.
 // Walk iteratively so validation itself cannot overflow on a cyclic graph.
-inline bool recursiveEventIdentityInputsValid(int32_t event_id) {
+inline bool knowledgeEventInputsValid(int32_t event_id) {
     std::unordered_set<int32_t> visited;
     while(event_id>=0) {
         auto* event=df::history_event::find(event_id);if(!event)return true;
         if(!visited.insert(event_id).second)return false;
         if(!directAgreementIdentityInputsValid(event_id))return false;
+        if(event->getType()==df::history_event_type::ARTIFACT_CREATED) {
+            const auto* artifact=df::artifact_record::find(static_cast<df::history_event_artifact_createdst*>(event)->artifact_id);
+            if(artifact && !artifact->name.has_name && artifact->item && artifact->item->getType()==df::item_type::COIN) {
+                const auto index=static_cast<df::item_coinst*>(artifact->item)->coin_batch;
+                if(index!=-1) {
+                    const auto& batches=df::global::world->coin_batches.all;
+                    if(index<0 || size_t(index)>=batches.size() || !batches[size_t(index)])return false;
+                    const auto issuer_id=batches[size_t(index)]->entity;
+                    if(issuer_id!=-1) {
+                        const auto* issuer=df::historical_entity::find(issuer_id);
+                        if(!issuer || !issuer->entity_raw)return false;
+                    }
+                }
+            }
+        }
         if(event->getType()==df::history_event_type::MASTERPIECE_LOST) {
             event_id=static_cast<df::history_event_masterpiece_lostst*>(event)->creation_event;
             continue;
@@ -66,13 +85,16 @@ inline bool recursiveEventIdentityInputsValid(int32_t event_id) {
 inline std::optional<std::string> danceDetailProbe(df::dance_form* source) {
     if(!source || !knowledgeDescriptionReady() || source->sections.size()>4096 || source->moves.size()>4096)return std::nullopt;
     if(!df::global::world)return std::nullopt;
-    if(!recursiveEventIdentityInputsValid(source->event))return std::nullopt;
+    if(!knowledgeEventInputsValid(source->event))return std::nullopt;
     for(const auto* section:source->sections)
-        if(!section || !recursiveEventIdentityInputsValid(section->acts_out_event))return std::nullopt;
+        if(!section || !knowledgeEventInputsValid(section->acts_out_event))return std::nullopt;
     KnowledgeMaterialCacheRestore cache_restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct Pin {size_t rva,length;uint64_t hash;};
     constexpr Pin pins[]={
+        {0xca0d00,0x55,UINT64_C(0x6891982ef52f2367)},
+        {0x5be970,0x536,UINT64_C(0xd785ec19f3aa4618)},
+        {0x52c2b0,0xd8,UINT64_C(0x38b6489e35387929)},
         {0xc3a590,0xcbf,UINT64_C(0x09a894440651f51f)},
         {0x132e0c0,0x368,UINT64_C(0x5020a6b8e463a24d)},
         {0x4ea820,0x42e8,UINT64_C(0x9cb7bc42be4693f7)},

@@ -103,6 +103,10 @@ local ok,err=xpcall(function()
      end
     end
     for y=17,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then detail.lines[#detail.lines+1]={y=y,text=text}end end
+    if kind==14 and os.getenv('DF3D_UNIT_POETIC_PROBE')=='1'then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-detail-native.lua')
+     detail.probe=assert(loadfile(source))(unit,detail)
+    end
     details[#details+1]=detail;capture('unit-skills-detail-'..kind)
    end
   end

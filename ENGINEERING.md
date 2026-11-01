@@ -3202,13 +3202,26 @@ screen rows. Existing musical/dance IDs are temporarily appended to known-form
 lists and removed afterward; no learning effects are executed. DF35124 exits
 unsaved with source preservation and only known startup notices. Poetic details
 call e76400 at1b40bf; musical and dance branches call dd5ce0 and4ea820. Written
-content combines inline title/author assembly with cc5d50. Their transitive
-formatting/cache ownership audit remains pending; these references do not
-license calling the helpers on live records. `detail_reference` retains the
+content combines inline title/author assembly with cc5d50. Musical, dance and
+written transitive formatting/cache ownership audits remain pending; these
+references do not license calling the helpers on live records. `detail_reference` retains the
 native prose and entry points. The musical description has3,108 characters,
 so the generic512-byte record-name field cannot carry it. Detail navigation,
 hover, scrolling, management transport and rendered Skills remain unfinished.
 Godot still categorizes/sorts generic records; it is not accepted as native parity.
+
+`knowledge_detail_native.h` adds a diagnostic poetic adapter for e76400. It copies
+the form and independently owns every part, perspective and value-vector backing.
+Historical-name formatting creates its own temporary context; source historical
+and raw records remain read-only inputs. Semantic helper pins include complete
+leaf routines and their dispatch tables. Protected034724 compares poetic form0
+with the actual native magnifier detail: all504 tagged characters match. Guards
+cover form/part/perspective storage, name backing, referenced historical records,
+unit/sheet/plotinfo and random streams. DF39648 exits unsaved with source
+preservation; all three Godot processes have only known startup notices.
+`poetic_owned_probe_reference` retains this bounded result and bridge hash.
+Other poetic subjects/personae and raw-name branches remain unverified; the
+diagnostic is not connected to production management transport or rendering.
 
 ### Creature Health transport contract
 

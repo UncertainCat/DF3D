@@ -93,6 +93,7 @@
 #include "creature_health_native.h"
 #include "creature_health_pages_native.h"
 #include "creature_skills_native.h"
+#include "knowledge_detail_native.h"
 #include "creature_items_native.h"
 #include "item_owner_native.h"
 #include "modules/Buildings.h"
@@ -1685,6 +1686,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
           const auto owner=df3d_production::itemOwnerDescription(df::item::find(id));if(!owner)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["id"]=owner->id;result["name"]=DF2UTF(owner->name);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="poetic-detail-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          const auto text=df3d_creature::poeticDetailProbe(df::poetic_form::find(id));if(!text)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["id"]=id;result["text"]=DF2UTF(*text);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="unit-skills-page-probe") {

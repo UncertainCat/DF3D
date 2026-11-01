@@ -61429,6 +61429,23 @@
           "written_content": "cc5d50 plus inline title/author assembly at1b395c..1b3e54"
         },
         "ownership": "Transitive formatting/cache audit pending; do not call these helpers on live records in the product."
+      },
+      "poetic_owned_probe_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-034724",
+        "unit_id": 1017,
+        "form_id": 0,
+        "native_tagged_text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the hunt, originating in The Big Channel.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  ",
+        "probe": {
+          "guards_unchanged": true,
+          "id": 0,
+          "text": "[C:7:0:1]The Valley of Winds is a light poetic form intended to teach a moral lesson concerning the hunt, originating in The Big Channel.  The rules of the form are applied by poets to produce individual poems which can be recited.  The poem is four sexains.  Use of consonance and metaphor is characteristic of the form.  A form of parallelism is common throughout the poem, in that certain lines reverse grammatical structures.  Each line has three syllables.  The rhyme scheme of the poem is AAAABA.  "
+        },
+        "bridge_sha256": "da56a3e266a45ecc70173f1970c58edefe53d07c15831c4e91186dd925fea8fd",
+        "scope": "One existing poetic form; exact native text and guarded source/form parts/perspectives/name backing/referenced records/UI/random preservation. Diagnostic only; other forms, raw-name branches, production transport and rendering remain unverified.",
+        "diagnostics": "passed_with_known_issues",
+        "owned_df_pid": 39648,
+        "source_unchanged": true,
+        "exit_without_saving": true
       }
     }
   }

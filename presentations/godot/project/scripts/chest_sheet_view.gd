@@ -19,6 +19,12 @@ var name_entry
 var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
+var building_icon:="BUILDING_ICON_BOX"
+
+func show_contents_separator() -> bool:return true
+
+func header_art() -> Array:
+	return [[building_icon,Vector2(10,14),Vector2(32,32)],["UNIT_SHEET_CUSTOMIZE",Vector2(368,12),Vector2(32,36)],["BUILDING_SHEET_REMOVE",Vector2(400,12),Vector2(32,36)]]
 
 func configure(source,model,help=null,contents_model=null) -> void:
 	state=model;hover_help=help;art.configure(source);theme=art.theme
@@ -114,14 +120,14 @@ func _draw() -> void:
 			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2(0 if x==0 else 16 if x==60 else 8,0 if y==0 else 24 if y==lines-1 else 12,8,12))
 	var border: Texture2D=art.texture("INTERIOR_BORDER_W_E")
 	# Native 17f5f2..17f619: bottom (grid rows - 4) minus top (4) >= 44.
-	if border!=null and lines>=45:
+	if border!=null and lines>=45 and show_contents_separator():
 		for x in range(1,60):draw_texture(border,Vector2(x*8,444))
 	var picture_texture: Texture2D=picture.texture(false)
 	if picture_texture!=null:
 		for y in 3:
 			for x in 5:draw_texture_rect_region(picture_texture,Rect2(8+x*8,12+y*12,8,12),Rect2(0 if x==0 else 16 if x==4 else 8,y*12,8,12))
-	for entry in [["BUILDING_ICON_BOX",Vector2(10,14),Vector2(32,32)],["UNIT_SHEET_CUSTOMIZE",Vector2(368,12),Vector2(32,36)],["BUILDING_SHEET_REMOVE",Vector2(400,12),Vector2(32,36)]]:
-		if removing and entry[0]!="BUILDING_ICON_BOX":continue
+	for entry in header_art():
+		if removing and entry[0]!=building_icon:continue
 		var texture: Texture2D=art.texture(entry[0])
 		if texture!=null:draw_texture_rect(texture,Rect2(entry[1],entry[2]),false)
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),Vector2(64,36),name_entry.text if name_entry.editing else title,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)

@@ -15,8 +15,14 @@ func run() -> void:
 	var service:=Service.new();state.service=service
 	state.building_id=4;state.phase=state.Phase.Ready
 	state.snapshot={"jobs":[{"id":42,"name":"Make bed","repeat":false,"suspended":false,"editable":true}],"recipes":[]}
-	var view=preload("res://scripts/workshop_tasks_view.gd").new();root.add_child(view)
-	view.configure(world,state);view.position=Vector2(432,106);view.size=Vector2(464,564)
+	var header=preload("res://scripts/building_header_state.gd").new()
+	header.building_id=4;header.phase=header.Phase.Ready
+	header.snapshot={"header_name":"Carpenter's Workshop","custom_name":"","removing":false}
+	var contents=preload("res://scripts/building_contents_state.gd").new()
+	var sheet=preload("res://scripts/workshop_sheet_view.gd").new();root.add_child(sheet)
+	sheet.configure(world,header,null,contents)
+	sheet.configure_tasks(world,state,"BUILDING_ICON_WORKSHOP_CARPENTER");sheet.layout(Vector2(1200,800))
+	var view=sheet.tasks
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/workshop-tasks-queue.png"))
 	click(Vector2(868,154))
@@ -24,7 +30,9 @@ func run() -> void:
 	state.ticket=0;state.phase=state.Phase.Ready;service.intent={}
 	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_workshop.json"))
 	state.snapshot.recipes=fixture.still_tasks_reference.tasks.rows.duplicate(true)
+	header.snapshot.header_name="Still";sheet.building_icon="BUILDING_ICON_WORKSHOP_STILL";header.changed.emit()
 	view.choose_mode(true)
+	if sheet.contents.visible or view.size.y!=642:fail("Workshop picker did not expand over contents");return
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/workshop-tasks-picker.png"))
 	click(Vector2(600,154))
@@ -46,5 +54,7 @@ func run() -> void:
 	click(Vector2(600,226))
 	if service.intent.get("recipe")!=state.snapshot.recipes[1].key:fail("Workshop recipe click missed selected task");return
 	state.ticket=0;state.service=null
-	view.queue_free();world.queue_free();background.queue_free();await process_frame
+	view.choose_mode(false)
+	if not sheet.contents.visible or view.size.y!=390:fail("Workshop queue did not restore contents");return
+	sheet.queue_free();world.queue_free();background.queue_free();await process_frame
 	print("WORKSHOP_TASKS_CAPTURE_PASS");quit(0)

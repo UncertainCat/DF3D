@@ -6527,9 +6527,16 @@ icons, controller-backed repeat/suspend/cancel and task selection, and native
 availability/objection rows. `workshop_tasks_capture` renders the native Make bed
 queue and recorded Still reaction rows and exercises task/cancel hit routing.
 Priority and detail actions are signals awaiting their semantic integration.
-Categories, complete builtin choices and sheet/header/
-contents composition remain unfinished; no public workshop route is enabled.
-The component capture is not complete screen parity or live mutation acceptance.
+`workshop_sheet_view.gd` composes this body with the shared building header and
+contents view, native Tasks/Workers/Work orders tabs and connections artwork.
+The task picker hides the contents and separator and uses the remaining sheet
+height; cancelling restores the queue layout. The capture now exercises this
+composition at1200x800 against the native workshop references, including search
+input and task clicks. Header/contents use supplied models in this capture;
+workshop-specific read integration, header actions, Workers, Work orders and
+connections remain unfinished. Categories and complete builtin choices also
+remain unfinished; no public workshop route is enabled. This staged composition
+is not complete screen parity or live mutation acceptance.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

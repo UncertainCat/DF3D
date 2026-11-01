@@ -3,6 +3,7 @@ extends Control
 # Categories, priority and task-detail integration remain unfinished.
 signal details_requested(job_id: int)
 signal priority_requested(job_id: int)
+signal picker_changed
 var art=preload("res://scripts/original_ui.gd").new()
 var state
 var colors: Array[Color]=[]
@@ -49,7 +50,7 @@ func refresh() -> void:
 
 func choose_mode(value: bool) -> void:
 	picking=value;first=0;query_bytes.clear();search_focused=false
-	state.set_query("");refresh()
+	state.set_query("");refresh();picker_changed.emit()
 
 func query_text() -> String:
 	var text:=""

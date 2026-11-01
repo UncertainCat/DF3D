@@ -3979,3 +3979,33 @@ TEST_CASE("location removal acknowledges application only with a successful enve
       CHECK(decoded.creatureLocation->outcome==wm::CreatureLocationOutcome::Applied);}
   }
 }
+
+TEST_CASE("work animal edit carries target and current membership revision") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::CreatureAnimalEdit;
+  request.creatureAnimal={1017,3,42,true};
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+  const auto* wireRequest=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+  CHECK_FALSE(wire::validateConstructionRequest(*wireRequest));
+  REQUIRE(wireRequest->creature_animal());
+  CHECK(wireRequest->creature_animal()->unit_id()==1017);
+  CHECK(wireRequest->creature_animal()->animal_id()==3);
+  CHECK(wireRequest->creature_animal()->expected_revision()==42);
+  CHECK(wireRequest->creature_animal()->assigned());
+  request.creatureAnimal.expectedRevision=0;b.Clear();codec::encodeRequest(b,request,1,2,3);
+  CHECK(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())));
+}
+TEST_CASE("work animal edit acknowledges application only with a successful envelope") {
+  for(bool accepted:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto payload=wire::CreateCreatureAnimalState(b,1017,3,wire::CreatureAnimalOutcome::Applied,true);
+    wire::ManagementStateBuilder result(b);result.add_revision(1);result.add_world_epoch(3);
+    result.add_action(wire::ManagementAction::CreatureAnimalEdit);
+    result.add_status(accepted?wire::ManagementStatus::Ok:wire::ManagementStatus::Rejected);
+    result.add_creature_animal(payload);b.Finish(result.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==!accepted);
+    if(accepted){const auto decoded=codec::decodeState(value);REQUIRE(decoded.creatureAnimal);
+      CHECK(decoded.creatureAnimal->unitId==1017);CHECK(decoded.creatureAnimal->animalId==3);CHECK(decoded.creatureAnimal->assigned);
+      CHECK(decoded.creatureAnimal->outcome==wm::CreatureAnimalOutcome::Applied);}
+  }
+}

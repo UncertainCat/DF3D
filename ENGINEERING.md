@@ -4278,6 +4278,17 @@ results. DF35272 exits unsaved and source preservation passes; all three Godot
 processes contain only the known startup notice. Recursive event closure and
 broader source/branch coverage remain separate requirements.
 
+### Work animal assignment contract (management113)
+
+Management113 adds CreatureAnimalEdit action79 in the creature_animal domain.
+Requests carry creature/animal IDs, the displayed assignment revision and an
+explicit assigned boolean. Receipts repeat both IDs and desired state with
+Applied, Rejected, Unavailable or Unknown. Only Applied has an Ok envelope;
+unknown effects must not be replayed. Old recordings lack this intent and
+cannot authorize edits. Rebuild/deploy bridge, model and viewer together:
+required version, request/state defaults and shared-memory region move112 to113.
+The native handler and visible assignment button remain staged.
+
 ### Creature location removal contract (management112)
 
 Management112 adds `CreatureLocationRemove` action78 in the `creature_location`

@@ -170,6 +170,11 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         value["unit_id"]=w.unitId;value["occupation_id"]=w.occupationId;value["outcome"]=int(w.outcome);
         result["creature_location"]=value;
     }
+    if(s.creatureAnimal) {
+        const auto& w=*s.creatureAnimal;Dictionary value;
+        value["unit_id"]=w.unitId;value["animal_id"]=w.animalId;value["outcome"]=int(w.outcome);value["assigned"]=w.assigned;
+        result["creature_animal"]=value;
+    }
     if(s.creatureKnowledge) {
         const auto& k=*s.creatureKnowledge;Dictionary value;
         value["unit_id"]=k.unitId;value["kind"]=k.kind;value["id"]=k.id;
@@ -258,6 +263,21 @@ bool validateCreatureLocation(const Dictionary& data,String& error) {
 bool readCreatureLocation(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::CreatureLocationRemove;
     request.creatureLocation={int32_t(int64_t(data["unit_id"])),int32_t(int64_t(data["occupation_id"])),uint64_t(int64_t(data["expected_revision"]))};return true;
+}
+bool validateCreatureAnimal(const Dictionary& data,String& error) {
+    if(data.size()!=5 || !data.has("assigned") || data["assigned"].get_type()!=Variant::BOOL || !data.has("unit_id") || !data.has("animal_id") || !data.has("expected_revision") ||
+       data["unit_id"].get_type()!=Variant::INT || data["animal_id"].get_type()!=Variant::INT || data["expected_revision"].get_type()!=Variant::INT) {
+        error="Invalid creature animal fields";return false;
+    }
+    const int64_t unit=data["unit_id"],occupation=data["animal_id"],revision=data["expected_revision"];
+    if(unit<0 || unit>INT32_MAX || occupation<0 || occupation>INT32_MAX || revision<=0) {
+        error="Invalid creature animal identity or revision";return false;
+    }
+    return true;
+}
+bool readCreatureAnimal(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::CreatureAnimalEdit;
+    request.creatureAnimal={int32_t(int64_t(data["unit_id"])),int32_t(int64_t(data["animal_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["assigned"])};return true;
 }
 bool validateCreatureKnowledge(const Dictionary& data,String& error) {
     if(data.size()!=4 || !data.has("unit_id") || !data.has("kind") || !data.has("id") ||
@@ -353,6 +373,7 @@ const ManagementCodec managementCodecs[] = {
     {"creature_follow",validateCreatureFollow,readCreatureFollow},
     {"creature_workshop",validateCreatureWorkshop,readCreatureWorkshop},
     {"creature_location",validateCreatureLocation,readCreatureLocation},
+    {"creature_animal",validateCreatureAnimal,readCreatureAnimal},
     {"creature_knowledge",validateCreatureKnowledge,readCreatureKnowledge},
     {"creature_expel",validateCreatureExpel,readCreatureExpel},
 };
@@ -365,7 +386,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CreatureLocationRemove)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CreatureAnimalEdit)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

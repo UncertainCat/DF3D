@@ -38,6 +38,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       if(r->name_sort_key())row.nameSortKey.assign(r->name_sort_key()->begin(),r->name_sort_key()->end());
       if(r->profession_sort_key())row.professionSortKey.assign(r->profession_sort_key()->begin(),r->profession_sort_key()->end());
       if(r->skills())for(const auto* skill:*r->skills())row.skills.push_back({skill->id(),skill->rating(),skill->experience(),skill->weight()});
+      if(r->assignments())for(const auto* e:*r->assignments())row.assignments.push_back({static_cast<LocationStaffAssignmentKind>(e->kind()),e->id(),e->type(),e->subtype(),e->custom(),str(e->name()),str(e->custom_code())});
       v.rows.push_back(std::move(row));
     }
   }

@@ -2092,7 +2092,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["skills"]=Json::Value(Json::arrayValue);result["rows"]=Json::Value(Json::arrayValue);
           for(const auto unit:*candidates)result["ids"].append(unit);
           for(const auto& [skill,weight]:*skills){Json::Value value;value["skill"]=skill;value["weight"]=weight;result["skills"].append(value);}
-          for(const auto& row:*rows){Json::Value value;value["id"]=row.unitId;value["name"]=row.name;value["score"]=row.score;result["rows"].append(value);}
+          for(const auto& row:*rows){Json::Value value;value["id"]=row.unitId;value["name"]=row.name;value["score"]=row.score;
+            value["assignments"]=Json::Value(Json::arrayValue);
+            for(const auto& a:row.assignments){Json::Value entry;entry["kind"]=int(a.kind);entry["id"]=a.id;entry["type"]=a.type;
+              entry["subtype"]=a.subtype;entry["custom"]=a.custom;entry["name"]=a.name;entry["custom_code"]=a.customCode;value["assignments"].append(entry);}
+            result["rows"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="workshop-reactions-probe") {

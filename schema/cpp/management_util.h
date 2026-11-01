@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 115;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v115";
+inline constexpr uint32_t kManagementVersion = 116;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v116";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1516,6 +1516,23 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           if(state->operation()!=FarmOperation::Crop)return "unexpected worker read operation";
           if(state->unit_id()!=-1)return "unexpected worker receipt";
           if(auto error=validateLocationCandidatePage(*state,148,149))return error;
+          const auto textSize=[](const flatbuffers::String* value)->size_t{return value?value->size():0;};
+          if(!state->rows())return "missing worker rows";
+          size_t assignmentBytes=0;
+          for(const auto* row:*state->rows()) {
+            if(!row->assignments() || row->assignments()->size()>512)return "invalid worker assignment list";
+            auto previous=LocationStaffAssignmentKind::Occupation;
+            for(const auto* e:*row->assignments()) {
+              if(!e || e->kind()>LocationStaffAssignmentKind::WorkDetail || e->kind()<previous || e->id()<0 ||
+                 e->type()<-1 || e->subtype()<-1 || e->custom()<-1 || !e->name() || textSize(e->name())>4096)return "invalid worker assignment";
+              const bool building=e->kind()==LocationStaffAssignmentKind::Workshop || e->kind()==LocationStaffAssignmentKind::Furnace;
+              if(!building && (e->subtype()!=-1 || e->custom()!=-1))return "foreign worker assignment fields";
+              if(e->kind()!=LocationStaffAssignmentKind::WorkDetail && textSize(e->name()))return "foreign worker assignment name";
+              if(textSize(e->custom_code())>64 || ((building && e->custom()>=0)!=(textSize(e->custom_code())>0)))return "invalid worker assignment code";
+              assignmentBytes+=64+textSize(e->name())+textSize(e->custom_code());previous=e->kind();
+            }
+          }
+          if(assignmentBytes>224*1024)return "worker assignment payload exceeds budget";
         } else if(state->operation()<FarmOperation::WorkerSelect || state->operation()>FarmOperation::WorkerSpecialize || state->unit_id()<0 || state->revision() || state->cursor() || state->next_cursor() || state->total() || (state->rows() && state->rows()->size()))return "invalid worker selection receipt";
       } else if(state->assigned() || state->operation()!=FarmOperation::Crop || state->profile_revision() || state->revision() || state->cursor() || state->next_cursor() || state->total() || state->unit_id()!=-1 ||
                 (state->permitted_workers() && state->permitted_workers()->size()) || (state->rows() && state->rows()->size()))return "unconfirmed worker authority";

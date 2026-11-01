@@ -741,9 +741,12 @@ void publish() {
     for(const auto& r:p.rows) {
       std::vector<flatbuffers::Offset<m::LocationStaffSkill>> skills;
       for(const auto& s:r.skills)skills.push_back(m::CreateLocationStaffSkill(b,s.id,s.rating,s.experience,s.weight));
+      std::vector<flatbuffers::Offset<m::LocationStaffAssignment>> assignments;
+      for(const auto& e:r.assignments)assignments.push_back(m::CreateLocationStaffAssignment(b,
+          static_cast<m::LocationStaffAssignmentKind>(e.kind),e.id,e.type,e.subtype,e.custom,b.CreateString(e.name),b.CreateString(e.customCode)));
       rows.push_back(m::CreateLocationStaffCandidate(b,r.unitId,r.histfigId,b.CreateString(r.name),r.score,b.CreateVector(skills),
           b.CreateString(r.baseName),b.CreateString(r.professionName),r.professionColor,r.legendary,
-          r.sourceIndex,r.professionOrder,r.statusOrder,b.CreateVector(r.nameSortKey),b.CreateVector(r.professionSortKey)));
+          r.sourceIndex,r.professionOrder,r.statusOrder,b.CreateVector(r.nameSortKey),b.CreateVector(r.professionSortKey),b.CreateVector(assignments)));
     }
     flatbuffers::Offset<m::WorkshopAssignedWorker> assigned;
     if(p.assigned){const auto& a=*p.assigned;assigned=m::CreateWorkshopAssignedWorker(b,a.id,b.CreateString(a.caption),a.specializationVisible,a.canSpecialize,a.specialized);}

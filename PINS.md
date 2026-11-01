@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management116 adds native assignment membership to each workshop candidate row.
+Rebuild/install both peers on `Local\\df3d_management_v116`. Older rows cannot
+synthesize occupation/workshop/furnace/work-detail indicators; no recording is
+migrated by inventing these facts. Other channels are unchanged.
+
 Management115 adds independent assigned-worker display facts and the native
 remove/work-mode actions. Rebuild/install both peers on
 `Local\\df3d_management_v115`. The assigned caption and work-mode authority cannot

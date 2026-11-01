@@ -28,6 +28,17 @@ struct LocationStaffSkill {
     return std::tie(id,rating,experience,weight)==std::tie(other.id,other.rating,other.experience,other.weight);
   }
 };
+enum class LocationStaffAssignmentKind : uint8_t { Occupation, Workshop, Furnace, WorkDetail };
+struct LocationStaffAssignment {
+  LocationStaffAssignmentKind kind=LocationStaffAssignmentKind::Occupation;
+  int32_t id=-1,type=-1,subtype=-1,custom=-1;
+  std::string name,customCode;
+  bool operator==(const LocationStaffAssignment& other) const {
+    return std::tie(kind,id,type,subtype,custom,name,customCode)==std::tie(other.kind,other.id,other.type,other.subtype,other.custom,other.name,other.customCode);
+  }
+};
+// Semantic unit memberships in native occupation/workshop/furnace/detail order.
+std::optional<std::vector<LocationStaffAssignment>> observeNativeUnitAssignments(int32_t unitId);
 struct LocationStaffCandidate {
   int32_t unitId=-1,histfigId=-1,score=0;
   std::string name,baseName,professionName;
@@ -36,9 +47,10 @@ struct LocationStaffCandidate {
   int32_t sourceIndex=-1,professionOrder=-1,statusOrder=-1;
   std::vector<uint8_t> nameSortKey,professionSortKey;
   std::vector<LocationStaffSkill> skills;
+  std::vector<LocationStaffAssignment> assignments;
   bool operator==(const LocationStaffCandidate& other) const {
-    return std::tie(unitId,histfigId,score,name,baseName,professionName,professionColor,legendary,skills,sourceIndex,professionOrder,statusOrder,nameSortKey,professionSortKey)==
-        std::tie(other.unitId,other.histfigId,other.score,other.name,other.baseName,other.professionName,other.professionColor,other.legendary,other.skills,other.sourceIndex,other.professionOrder,other.statusOrder,other.nameSortKey,other.professionSortKey);
+    return std::tie(unitId,histfigId,score,name,baseName,professionName,professionColor,legendary,skills,sourceIndex,professionOrder,statusOrder,nameSortKey,professionSortKey,assignments)==
+        std::tie(other.unitId,other.histfigId,other.score,other.name,other.baseName,other.professionName,other.professionColor,other.legendary,other.skills,other.sourceIndex,other.professionOrder,other.statusOrder,other.nameSortKey,other.professionSortKey,other.assignments);
   }
 };
 // Reuse native name/category keys and semantic skill facts for workshop rows.
@@ -73,12 +85,6 @@ struct LocationStaffSpecializationReceipt {
   int32_t unitId=-1,histfigId=-1;
   uint64_t revision=0;
   bool eligible=false,specialized=false;
-};
-enum class LocationStaffAssignmentKind : uint8_t { Occupation, Workshop, Furnace, WorkDetail };
-struct LocationStaffAssignment {
-  LocationStaffAssignmentKind kind=LocationStaffAssignmentKind::Occupation;
-  int32_t id=-1,type=-1,subtype=-1,custom=-1;
-  std::string name,customCode;
 };
 struct LocationStaffAssignments {
   int32_t siteId=-1,locationId=-1,occupationId=-1,entityId=-1,assignmentId=-1;

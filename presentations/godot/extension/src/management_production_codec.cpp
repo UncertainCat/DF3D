@@ -106,6 +106,10 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
       for(auto byte:r.professionSortKey)professionKey.push_back(byte);
       row["name_sort_key"]=nameKey;row["profession_sort_key"]=professionKey;
       for(const auto& s:r.skills) {Dictionary skill;skill["id"]=s.id;skill["rating"]=s.rating;skill["experience"]=s.experience;skill["weight"]=s.weight;skills.push_back(skill);}
+      Array assignments;
+      for(const auto& e:r.assignments) {Dictionary entry;entry["kind"]=int(e.kind);entry["id"]=e.id;entry["type"]=e.type;
+        entry["subtype"]=e.subtype;entry["custom"]=e.custom;entry["name"]=String::utf8(e.name.c_str());entry["custom_code"]=String::utf8(e.customCode.c_str());assignments.push_back(entry);}
+      row["assignments"]=assignments;
       row["skills"]=skills;rows.push_back(row);
     }
     v["rows"]=rows;prod["workshop_workers"]=v;

@@ -169,12 +169,17 @@ struct LocationStaffRow {
   std::optional<LocationStaffNames> names;
 };
 struct LocationStaffSkill { int32_t id=-1,rating=0,experience=0,weight=0; };
+struct LocationStaffAssignment {
+  LocationStaffAssignmentKind kind=LocationStaffAssignmentKind::Occupation;
+  int32_t id=-1,type=-1,subtype=-1,custom=-1;std::string name,customCode;
+};
 struct LocationStaffCandidate {
   int32_t unitId=-1,histfigId=-1,score=0,professionColor=-1;
   std::string name,baseName,professionName; bool legendary=false;
   int32_t sourceIndex=-1,professionOrder=-1,statusOrder=-1;
   std::vector<uint8_t> nameSortKey,professionSortKey;
   std::vector<LocationStaffSkill> skills;
+  std::vector<LocationStaffAssignment> assignments;
 };
 struct LocationStaffCandidates {
   int32_t siteId=-1,locationId=-1,occupationId=-1,role=-1;
@@ -230,10 +235,6 @@ struct LocationReligiousAssignment {
 struct LocationSpecialization {
   int32_t siteId=-1,locationId=-1,occupationId=-1,entityId=-1,assignmentId=-1,unitId=-1,histfigId=-1;
   int64_t revision=0;bool eligible=false,specialized=false;
-};
-struct LocationStaffAssignment {
-  LocationStaffAssignmentKind kind=LocationStaffAssignmentKind::Occupation;
-  int32_t id=-1,type=-1,subtype=-1,custom=-1;std::string name,customCode;
 };
 struct LocationStaffAssignments {
   int32_t siteId=-1,locationId=-1,occupationId=-1,entityId=-1,assignmentId=-1,unitId=-1,histfigId=-1;

@@ -1368,6 +1368,8 @@ table LocationStaffCandidate {
   source_index:int32 = -1; profession_order:int32 = -1; status_order:int32 = -1;
   // Semantic native CP437 comparison keys, not visible text or UI state.
   name_sort_key:[uint8]; profession_sort_key:[uint8];
+  // Workshop rows carry ordered semantic assignment indicators.
+  assignments:[LocationStaffAssignment];
 }
 // Native default skill order. Receipt binds epoch, site, location, occupation and all rows.
 table LocationStaffCandidates {
@@ -1983,7 +1985,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 115;
+  schema_version:uint32 = 116;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2035,7 +2037,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 115;
+  schema_version:uint32 = 116;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

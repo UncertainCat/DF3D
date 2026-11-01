@@ -92,6 +92,10 @@ local ok,err=xpcall(function()
   local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-indicators-native.lua')
   result.indicators=assert(loadfile(source))(unit,pointer,capture)
  end
+ if os.getenv('DF3D_UNIT_ITEMS_LAYOUT')=='1'then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-layout-native.lua')
+  result.layout=assert(loadfile(source))(unit,view,capture,out)
+ end
  local seen={}
  for y=208,460,12 do for x=424,888,8 do
   pointer(x,y);local hover=main.current_hover

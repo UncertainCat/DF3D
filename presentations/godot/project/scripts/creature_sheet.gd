@@ -12,18 +12,19 @@ var subtabs := {}
 var scrolls := {}
 var unit_id := -1
 var scroll: ScrollContainer
+var scroll_location := ""
 var items_view
 var owner
 var sections := {}
 
 func reset(id: int):
  if unit_id == id: return
- unit_id=id;tab="Overview";subtabs.clear();scrolls.clear();scroll=null
+ unit_id=id;tab="Overview";subtabs.clear();scrolls.clear();scroll=null;scroll_location=""
 
 func location() -> String: return tab+"/"+str(subtabs.get(tab,""))
 
 func remember_scroll():
- if is_instance_valid(scroll): scrolls[location()]=scroll.scroll_vertical
+ if is_instance_valid(scroll): scrolls[scroll_location]=scroll.scroll_vertical
 
 func change_tab(value: String, nested := false):
  remember_scroll()
@@ -391,15 +392,19 @@ func render(controller, state: Dictionary):
  if tab=="Items":
   scroll=null
   items_view=preload("res://scripts/creature_items_view.gd").new()
+  items_view.first=int(scrolls.get("Items/",0))
   items_view.position=Vector2(0,y);items_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
   owner.body.add_child(items_view)
   items_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
   items_view.inspect_requested.connect(func(kind,id):owner.object_requested.emit(kind,id))
-  items_view.configure(owner.world,records_for("inventory"));return
+  items_view.configure(owner.world,records_for("inventory"))
+  items_view.scrollbar.row_changed.connect(func(value):scrolls["Items/"]=value)
+  return
  y+=4
  if tab=="Overview": y-=10
  var native_prose_layout := tab in ["Thoughts","Personality"]
  scroll=ScrollContainer.new()
+ scroll_location=location()
  scroll.position=Vector2(0,y+(6 if native_prose_layout else 0))
  scroll.size=Vector2(owner.body.size.x-(8 if native_prose_layout else 0),owner.body.size.y-y-(18 if native_prose_layout else 0))
  scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED

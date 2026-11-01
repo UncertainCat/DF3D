@@ -1609,9 +1609,41 @@ exactly. Initial011951 failed an existing Customize comparison because its nativ
 image was truncated at x784; it is not accepted. The unchanged rerun passes.
 Owned DF16800 exits unsaved, the source save is unchanged, and all Godot processes
 have only the known startup notice. Core and UI composition pass in
-`build/qa/unit-items-indicator-ui`. Other three indicator artwork/help cases in
-the composed viewer, changing assignments, contained-row help, scrolling,
-resizing and lifecycle coverage remain unfinished; the route stays staged.
+`build/qa/unit-items-indicator-ui`. The GPU `creature_items_capture` check now
+compares all nine indicator crop hashes and renders all four native help texts.
+It verifies inert indicator clicks and blocked View input. Initial indicator QA
+used a captured scalar in its test gate; a shared dictionary corrected the test.
+This component evidence does not establish main-scene changing assignments.
+
+`unit_items_reference.layout_reference` records native overflow with33 repeated
+existing entries plus one spatter in an owned paused clone. Protected012940
+establishes capacities9/12/14/17 at960x600/1200x720/1200x800/1600x900. Items reserves
+one12px cell before fitting complete36px rows. The scrollbar occupies those rows,
+not the remaining bottom padding; wheel input still works over that padding.
+Arrows move one row across both halves, page input moves by capacity, dragging
+matches the shared native scrollbar, and outside wheel input does nothing.
+Native preserves the first row on tab return and resizing, including a shorter
+tail after widening. Original inventory pointers, tab and scroll state are restored.
+
+The Items view follows that capacity, input and retention behavior. Generic
+scroll containers now save under the tab that created them: saving an old
+Overview container under the newly selected Items key previously erased the
+Items offset. Protected013242 caught that bug; corrected014123 verifies actual
+small-window scrolling, tab return, Settings input blocking, resize restoration,
+item inspection and carrier return. Native clothing crop hashes remain exact
+after resize, tab return and Settings. The scaled screenshot preview initially
+looked blank, but direct pixel comparisons of all captures ruled out missing
+artwork; no artwork fix was needed. Source saves are unchanged and owned DF39416
+exits unsaved. Each final live Godot process has only the known startup notice.
+
+Final QA `creature-items-scroll-complete` passes core, UI composition and inspector
+checks; GPU compares four full scrollbar crops and native input outcomes, plus
+all indicator cases, with only documented engine diagnostics. The inspector test
+double now accepts the existing optional texture-cell argument. Remaining work
+includes changing assignments, contained-row help/navigation, drag retention
+during asynchronous refresh, and disconnect/epoch/late replies. Full inventory
+row pixels and every main-scene overflow input are not claimed; the route stays
+staged.
 
 The item view places the name on the first header row when owner data exists,
 with the native yellow Owner line beneath and Weight on the third row. Without

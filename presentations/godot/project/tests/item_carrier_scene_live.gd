@@ -222,6 +222,39 @@ func exercise_items_view(inspector,target: int) -> void:
 	hover_motion=InputEventMouseMotion.new();hover_motion.position=view.get_global_transform_with_canvas()*view.inspect_rect(0).get_center();root.push_input(hover_motion,true)
 	await create_timer(0.65).timeout;await process_frame;await RenderingServer.frame_post_draw
 	check(inspector.hover_help.visible and inspector.hover_help.displayed=="unit_inventory_view","Inventory View help missing")
+	root.size=Vector2i(960,600);await process_frame;await process_frame
+	view=inspector.creature_sheet.items_view
+	check(view.capacity()==9 and view.scrollbar.visible,"Small Items viewport did not show native overflow")
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/unit-items-resized-scene.png")
+	var wheel_point: Vector2=view.get_global_transform_with_canvas()*Vector2(120,100)
+	await pointer(wheel_point,MOUSE_BUTTON_WHEEL_DOWN);await pointer(wheel_point,MOUSE_BUTTON_WHEEL_DOWN)
+	check(view.first==2,"Items wheel did not advance one row")
+	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(40,132))
+	await pointer(inspector.body.get_global_transform_with_canvas()*Vector2(124,132))
+	view=inspector.creature_sheet.items_view
+	check(inspector.creature_sheet.tab=="Items" and view.first==2,"Items tab return lost scroll position")
+	check(int(view.fact(view.rows[view.first],"assignment_indicator",-1))==1,"Items tab return lost clothing assignment facts")
+	var scroll_rows:=FileAccess.open(directory+"/unit-items-scroll-rows.json",FileAccess.WRITE)
+	scroll_rows.store_string(JSON.stringify(view.rows,"  "));scroll_rows.close()
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/unit-items-tab-return-scene.png")
+	scene._fortress_hud.toggle_settings();await process_frame
+	await pointer(wheel_point,MOUSE_BUTTON_WHEEL_DOWN)
+	check(view.first==2,"Settings allowed Items scrolling underneath")
+	scene._fortress_hud.toggle_settings();await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/unit-items-scroll-small-scene.png")
+	var small_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json")).chest_header_reference.unit_items_reference.layout_reference
+	for name in ["unit-items-resized-scene","unit-items-tab-return-scene","unit-items-scroll-small-scene"]:
+		var sample:=Image.load_from_file(directory+"/"+name+".png");sample.convert(Image.FORMAT_RGB8)
+		var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(sample.get_region(Rect2i(568,204,24,36)).get_data())
+		check(digest.finish().hex_encode()==small_reference.small_clothing_rgb_sha256,"Items clothing pixels changed after resize/tab/overlay: "+name)
+	await pointer(wheel_point,MOUSE_BUTTON_WHEEL_UP);await pointer(wheel_point,MOUSE_BUTTON_WHEEL_UP)
+	check(view.first==0,"Items scroll did not return to the first row")
+	root.size=Vector2i(1200,800);await process_frame;await process_frame
+	view=inspector.creature_sheet.items_view
+	check(view.capacity()==14 and view.first==0 and not view.scrollbar.visible,"Items resize did not restore baseline layout")
 	var item_id:=int(view.rows[0].get("related_id",-1))
 	var item_owner=scene._ui.controller("farm").item_owner
 	var transitions: Array=[]

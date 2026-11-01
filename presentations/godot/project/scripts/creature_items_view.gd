@@ -29,9 +29,10 @@ func configure(source,records: Array) -> void:
 		icons.append(world.selection_icon(1 if kind==2 else 2,target) if target>=0 and kind!=3 else null)
 	resized.connect(layout);layout()
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
-func capacity() -> int:return maxi(0,int(size.y/36))
+func capacity() -> int:return maxi(0,int((size.y-12)/36))
 func layout() -> void:
-	first=clampi(first,0,maxi(0,rows.size()-capacity()))
+	# Native retains its first row across resizing, including a now-short tail.
+	first=maxi(0,first)
 	scrollbar.position=Vector2(size.x-24,0);scrollbar.size=Vector2(16,capacity()*36)
 	scrollbar.count=rows.size();scrollbar.page=capacity();scrollbar.first=first
 	scrollbar.visible=capacity()>0 and rows.size()>capacity();scrollbar.queue_redraw();queue_redraw()
@@ -81,7 +82,8 @@ func _draw() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-		scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));accept_event();return
+		scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(capacity() if event.shift_pressed else 1))
+		accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	var index:=first+floori(event.position.y/36)
 	if index<first or index>=mini(rows.size(),first+capacity()) or not inspect_rect(index).has_point(event.position):return

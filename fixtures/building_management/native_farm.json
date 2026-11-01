@@ -51605,7 +51605,7 @@
             "only outside work_weapons: cb1350(item,UNIT_ITEMOWNER,unit.id) -> clothing"
           ],
           "ownership": "Selector is inline inside the renderer, not a standalone callable API. Never call the renderer or borrow its stack/menu state. Native13b3090 resolves historical figure and writes the unit lookup cache: use owned unit input. Native cb1720 resolves artifact reference. Positive symbol depends on position entity link, assignment and non-renounced symbol claim.",
-          "remaining": "Other indicator artwork/help in composed viewer, changing-assignment refresh, scroll/resize and lifecycle coverage."
+          "remaining": "Changing-assignment refresh, contained-row navigation/help and broader main-scene lifecycle coverage."
         },
         "reader_and_view_reference": {
           "run": "build/stockpile-storage-native-farm-discovery-20261101-012127",
@@ -51774,11 +51774,458 @@
           "scope": "Nine native reader comparisons with source/backing/cache/UI/RNG guards and cold HF cache; actual main scene baseline assignment facts, clothing/View hover and non-navigating clothing click, item inspect and carrier return.",
           "qa": "build/qa/unit-items-indicator-ui: core and UI composition pass",
           "limitations": [
-            "Only baseline clothing and View art compared in the composed viewer; other three indicator art/help cases remain unverified there.",
-            "Assignment changes, scroll/resize, contained-row tooltips and disconnect/epoch/late-reply coverage remain unfinished.",
+            "All nine indicator art cases and four help strings covered separately by GPU component reference; full main-scene changing assignment coverage remains open.",
+            "Contained-row help/navigation, async refresh drag retention and disconnect/epoch/late replies remain unfinished.",
             "No public creature route exposure."
           ],
           "source_save": "unchanged; owned DF16800 exited unsaved"
+        },
+        "gpu_reference": {
+          "qa": "build/qa/creature-items-scroll-complete",
+          "status": "passed_with_known_issues",
+          "scope": "All nine native 24x36 indicator crop hashes exact; four tooltip strings rendered through installed theme; inert indicator clicks and blocked input tested. Main scene clothing remains separately verified."
+        }
+      },
+      "layout_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-012940",
+        "scope": "Controlled native overflow with 33 repeated existing inventory entries plus one external spatter, restored before exit; no gameplay equip action.",
+        "raw_sha256": "b5722c0f460c78e14a69bf40c0883e1acad8a16016cca84da8b904f45961dc88",
+        "count": 34,
+        "cases": [
+          {
+            "name": "small",
+            "viewport": [
+              960,
+              600
+            ],
+            "view_rect": [
+              184,
+              204,
+              472,
+              348
+            ],
+            "capacity": 9,
+            "scrollbar_rect": [
+              632,
+              204,
+              16,
+              324
+            ],
+            "scrollbar_rgb_sha256": "15dd7a1201b0e1ae68a825c2c9befefd0bc5ea7df9091083bdddb1a1676584d8"
+          },
+          {
+            "name": "medium",
+            "viewport": [
+              1200,
+              720
+            ],
+            "view_rect": [
+              424,
+              204,
+              472,
+              468
+            ],
+            "capacity": 12,
+            "scrollbar_rect": [
+              872,
+              204,
+              16,
+              432
+            ],
+            "scrollbar_rgb_sha256": "97b6b85d2d84723eb7d3ffbdad6496fc1bb1098aded87c82b931fbcba644f889"
+          },
+          {
+            "name": "wide",
+            "viewport": [
+              1600,
+              900
+            ],
+            "view_rect": [
+              824,
+              204,
+              472,
+              648
+            ],
+            "capacity": 17,
+            "scrollbar_rect": [
+              1272,
+              204,
+              16,
+              612
+            ],
+            "scrollbar_rgb_sha256": "23660210675fad70d6d67e3a7bc18999e1e239fe7c67eb34f13e52e52427719c"
+          },
+          {
+            "name": "default",
+            "viewport": [
+              1200,
+              800
+            ],
+            "view_rect": [
+              424,
+              208,
+              472,
+              540
+            ],
+            "capacity": 14,
+            "scrollbar_rect": [
+              872,
+              208,
+              16,
+              504
+            ],
+            "scrollbar_rgb_sha256": "bbf93039885963d14113daee1fbf32af1cfb3c76ebea5a91a19c32937f54c96f"
+          }
+        ],
+        "input": [
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              120,
+              50
+            ],
+            "name": "small",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              60
+            ],
+            "name": "medium",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              200,
+              75
+            ],
+            "name": "wide",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "default",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 100,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "tail",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 6,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "input-up-left",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 6,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "input-up-right",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "input-down-left",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "input-down-right",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "input-track",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 20,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "input-track-below",
+            "tab": 1
+          },
+          {
+            "dragging": true,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "drag-start",
+            "tab": 1
+          },
+          {
+            "dragging": true,
+            "first": 3,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "drag-move",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 3,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "drag-release",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 6,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "CONTEXT_SCROLL_UP",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "CONTEXT_SCROLL_DOWN",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "CONTEXT_SCROLL_PAGEUP",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 20,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "CONTEXT_SCROLL_PAGEDOWN",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "STANDARDSCROLL_PAGEUP",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "CURSOR_UP",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "wheel-body",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 8,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "wheel-padding",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "wheel-footer",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "wheel-outside",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 14,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "page-from-zero",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 20,
+            "grid": [
+              200,
+              75
+            ],
+            "name": "tail-wide",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "overview",
+            "tab": 0
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "return-items",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              120,
+              50
+            ],
+            "name": "scrolled-small",
+            "tab": 1
+          },
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "scrolled-default",
+            "tab": 1
+          }
+        ],
+        "small_clothing_rgb_sha256": "a374cfb95257001c92948d5e2514450a0a9f8f9143d51e4418913da1ad9a9d34",
+        "status": "passed_with_known_issues",
+        "source_save": "unchanged; native DF18064 and final viewer DF39416 exit unsaved",
+        "gpu_reference": {
+          "qa": "build/qa/creature-items-scroll-complete",
+          "scope": "Four viewport capacities and complete native scrollbar crop hashes; arrow halves, track, drag, wheel/page, padding/outside and retained tail input comparisons. Synthetic component rows; no full inventory-row pixel claim."
+        },
+        "main_scene_reference": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261101-014123",
+          "status": "passed_with_known_issues",
+          "scope": "Actual main sheet at 960x600: wheel to row2, Overview/Items return retains2, Settings blocks wheel, return to row0 and 1200x800 restores baseline. Clothing facts retained; native clothing crop exact after resize, tab return and Settings. Item inspect/carrier navigation passes.",
+          "diagnostics": {
+            "farm-item-carrier-unit-scene.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "farm-item-carrier-unit-wire.godot.log": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            },
+            "unit-header-wire": {
+              "known_engine": [
+                {
+                  "id": "godot-separate-thread-notice",
+                  "count": 1,
+                  "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+                }
+              ],
+              "unclassified": []
+            }
+          },
+          "limitations": [
+            "Changing assignment refresh, contained-row help/navigation and disconnect/epoch/late replies remain open.",
+            "Drag retention across asynchronous header/detail refresh and other main-scene overflow inputs need coverage."
+          ]
         }
       }
     }

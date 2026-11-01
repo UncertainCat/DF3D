@@ -13,7 +13,7 @@ class World extends RefCounted:
  var creature := {}
  var rows: Array = [{"kind":1,"id":1,"name":"Urist","tile":Vector3i(2,2,2),"age":25,"summary_available":true},{"kind":2,"id":2,"name":"Chair","tile":Vector3i(2,2,2),"stack":1},{"kind":3,"id":3,"name":"Throne","tile":Vector3i(2,2,2),"complete":true}]
  func is_live(): return true
- func ui_texture(_name): return null
+ func ui_texture(_name,_cell=-1): return null
  func selection_icon(_kind,_id): return null
  func resident_info_state(): return {"world_epoch":epoch}
  func demand_resident_info(value): demand=value

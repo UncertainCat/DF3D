@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "creature_items_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/creature_items_capture.gd",
+      "completion": "CREATURE_ITEMS_CAPTURE_PASS",
+      "timeout": 60,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "creature_expel_capture",
       "lane": "gpu",
       "kind": "godot",

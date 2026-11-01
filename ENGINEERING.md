@@ -3497,6 +3497,24 @@ startup notice. Other races, agreement detail types and deeper identity graphs
 remain unverified. These tests do not provide production source validation or
 license arbitrary agreement graphs.
 
+The diagnostic dance adapter now checks direct form/section agreement events
+before formatting. For the JoinParty identity branches it rejects a narrowed
+comparison race0xfffe only when a non-impersonated identity has a profession
+other than -1 or102, the two native profession-suppression values. Missing
+records retain native fallback behavior. The c3a590 and132e0c0 full-body pins
+bind this interpretation. This is a targeted guard, not complete validation:
+recursive event paths and written-content references do not yet use it.
+
+Protected073441 on2026-11-01 with bridge
+`4d0ebd0a7bce519268b6aec924637e24f80e898b51a90c3bcc45c2bd60a9ce05`
+rejects -2,65534 and131070 for named and unnamed profession identities before
+native formatting. Each rejection preserves guarded identity/unit/UI state;
+invalid inputs are never sent to the native UI oracle. All30 valid identity
+comparisons and four baseline forms still match native text with source guards
+unchanged. Source-save preservation, unsaved owned exit and the three known
+Godot startup notices are recorded in `identity_validation_reference`. This
+does not enable the production Knowledge handler or change public exposure.
+
 The installed executable timestamp selects DFHack's `v0.53.16 win64 STEAM`
 symbol table. `event-world-construction-getters.json` resolves b93a90's virtual
 slots 0/8 for road, tunnel, bridge, wall and the base construction: type getters

@@ -29,7 +29,29 @@ for _,variant in ipairs{'named','unnamed','profession','unnamed-profession','ent
   event.agreement_id=agreement.id;events:insert('#',event);form.event=event.id
   local text=capture('agreement-identity-'..variant);local repeated=capture('agreement-identity-'..variant..'-warm')
   assert(text==repeated,'Repeated agreement identity description differs')
-  results[#results+1]={case=variant,text=text,reason=data.reason,race=identity.race,caste=identity.caste,profession=identity.profession}
+  local rejected={}
+  if variant=='profession'or variant=='unnamed-profession'then
+   local race=identity.race
+   for _,invalid in ipairs{-2,65534,131070}do
+    identity.race=invalid
+    local guards={}
+    for _,value in ipairs{identity,unit,df.global.game.main_interface.view_sheets,df.global.plotinfo}do
+     local size,address=df.sizeof(value);local bytes=df.new('uint8_t',size)
+     dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={bytes=bytes,address=address,size=size}
+    end
+    local output,status=dfhack.run_command_silent('df3d','dance-detail-probe',tostring(form.id))
+    local unchanged=true
+    for _,guard in ipairs(guards)do
+     if dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)~=0 then unchanged=false end
+     df.delete(guard.bytes)
+    end
+    assert(status~=0,'UI-dependent identity race was accepted: '..invalid..' '..output)
+    assert(unchanged,'Rejected identity probe changed source/UI state')
+    rejected[#rejected+1]=invalid
+   end
+   identity.race=race
+  end
+  results[#results+1]={case=variant,text=text,reason=data.reason,race=identity.race,caste=identity.caste,profession=identity.profession,rejected_ui_races=rejected}
  end,debug.traceback)
  form.event=original
  while #events>counts[1]do events:erase(#events-1)end

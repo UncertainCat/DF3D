@@ -66859,6 +66859,35 @@
         },
         "scope": "Native tab/Escape oracle and actual main-scene navigation with captured native text injected through the real request service. No live Knowledge request handler acceptance."
       },
+      "identity_validation_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-073441",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "4d0ebd0a7bce519268b6aec924637e24f80e898b51a90c3bcc45c2bd60a9ce05",
+        "rejected": [
+          {
+            "case": "profession",
+            "races": [
+              -2,
+              65534,
+              131070
+            ]
+          },
+          {
+            "case": "unnamed-profession",
+            "races": [
+              -2,
+              65534,
+              131070
+            ]
+          }
+        ],
+        "valid_identity_comparisons": 30,
+        "baseline_form_comparisons": 4,
+        "guards_unchanged": true,
+        "source_unchanged": true,
+        "owned_exit_unsaved": true,
+        "scope": "Direct dance agreement profession captions reject narrowed UI sentinel. Not recursive event/written-reference validation or production handler acceptance."
+      },
       "agreement_identity_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-073012",
         "status": "passed_with_known_issues",

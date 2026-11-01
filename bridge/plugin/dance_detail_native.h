@@ -3,16 +3,43 @@
 #include "df/dance_form.h"
 #include "df/dance_form_section.h"
 #include "df/dance_form_move.h"
+#include "df/history_event_agreement_formedst.h"
+#include "df/agreement.h"
+#include "df/agreement_details.h"
+#include "df/agreement_details_data_join_party.h"
+#include "df/identity.h"
 namespace df3d_creature {
+// A targeted diagnostic guard, not general event-graph validation. JoinParty
+// reasons2/24 reach c3a590(false), whose profession formatter treats narrowed
+// comparison race -2 as a request to read native UI state.
+inline bool directAgreementIdentityInputsValid(int32_t event_id) {
+    auto* event=df::history_event::find(event_id);
+    if(!event || event->getType()!=df::history_event_type::AGREEMENT_FORMED)return true;
+    const auto* agreement=df::agreement::find(static_cast<const df::history_event_agreement_formedst*>(event)->agreement_id);
+    if(!agreement || agreement->parties.empty() || agreement->details.empty())return true;
+    const auto* detail=agreement->details.front();if(!detail)return false;
+    if(detail->type!=df::agreement_details_type::JoinParty)return true;
+    const auto* data=detail->data.JoinParty;if(!data)return false;
+    if((int32_t(data->reason)!=2 && int32_t(data->reason)!=24) || data->figure!=-1)return true;
+    const auto* identity=df::identity::find(data->entity);
+    if(!identity || identity->impersonated_hf!=-1)return true;
+    const auto profession=uint16_t(identity->profession);
+    return profession==UINT16_C(0xffff) || profession==102 || uint16_t(identity->race)!=UINT16_C(0xfffe);
+}
 // Diagnostic formatter, not yet a production provider. Event-type acceptance
 // is tracked separately from the independently owned dance data graph.
 inline std::optional<std::string> danceDetailProbe(df::dance_form* source) {
     if(!source || !knowledgeDescriptionReady() || source->sections.size()>4096 || source->moves.size()>4096)return std::nullopt;
     if(!df::global::world)return std::nullopt;
+    if(!directAgreementIdentityInputsValid(source->event))return std::nullopt;
+    for(const auto* section:source->sections)
+        if(!section || !directAgreementIdentityInputsValid(section->acts_out_event))return std::nullopt;
     KnowledgeMaterialCacheRestore cache_restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     struct Pin {size_t rva,length;uint64_t hash;};
     constexpr Pin pins[]={
+        {0xc3a590,0xcbf,UINT64_C(0x09a894440651f51f)},
+        {0x132e0c0,0x368,UINT64_C(0x5020a6b8e463a24d)},
         {0x4ea820,0x42e8,UINT64_C(0x9cb7bc42be4693f7)},
         {0x4e99f0,0xe24,UINT64_C(0xbe3650a1c5ba887e)},
         {0x7da30,0xb3,UINT64_C(0xa91f2722090923d0)},

@@ -199,6 +199,9 @@ func unit_carrier(expected: Dictionary) -> void:
 	var evidence:=FileAccess.open(directory+"/unit-overview-scene.json",FileAccess.WRITE)
 	evidence.store_string(JSON.stringify({"detail":detail,"panel_position":[inspector.panel.position.x,inspector.panel.position.y],"panel_size":[inspector.panel.size.x,inspector.panel.size.y]}));evidence.close()
 	check(scene.camera_rig.position==camera_before,"Unit carrier unexpectedly moved camera")
+	if OS.get_environment("DF3D_UNIT_SKILLS_VIEW")=="1":
+		await exercise_skills_view(inspector)
+		if failed:return
 	if OS.get_environment("DF3D_UNIT_HEALTH_VIEW")=="1":
 		await exercise_health_view(inspector)
 		if failed:return
@@ -239,13 +242,59 @@ func unit_carrier(expected: Dictionary) -> void:
 	elif OS.get_environment("DF3D_UNIT_ITEMS_LIFECYCLE")=="1":await exercise_items_lifecycle(inspector,target)
 	exercised=true
 
-func health_tab(inspector,title: String) -> bool:
+func health_tab(inspector,title: String,nested:=false) -> bool:
 	for child in inspector.body.get_children():
-		if child is Button and child.text==title:
+		if child is Button and child.text==title and (not nested or child.position.y>=144):
 			await pointer(child.get_global_transform_with_canvas()*(child.size*0.5))
 			await process_frame;await process_frame
 			return true
 	return check(false,"Missing creature tab: "+title)
+
+func exercise_skills_view(inspector) -> void:
+	if not await health_tab(inspector,"Skills"):return
+	var samples: Array=[]
+	for name in ["Labor","Combat","Social","Other skills","Knowledge"]:
+		if not await health_tab(inspector,name,true):return
+		var view=inspector.creature_sheet.skills_view
+		if not check(is_instance_valid(view) and view.is_visible_in_tree(),"Skills view missing: "+name):return
+		await RenderingServer.frame_post_draw
+		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+		var suffix: String=name.to_lower().replace(" ","-")
+		actual.save_png(directory+"/unit-skills-"+suffix+"-scene.png")
+		var native:=Image.load_from_file(directory+"/unit-skills-"+suffix+".png");native.convert(Image.FORMAT_RGB8)
+		var rect:=Rect2i(432,232,456,504)
+		var same:=actual.get_region(rect).get_data()==native.get_region(rect).get_data()
+		check(same,"Composed native Skills pixels differ: "+name)
+		var before: Array=view.rows.duplicate(true)
+		inspector.redraw();await process_frame;await process_frame
+		check(inspector.creature_sheet.skills_view==view and view.rows==before,"Skills refresh replaced control or changed native rows")
+		samples.append({"name":name,"rows":view.rows.size(),"pixels_match":same})
+	var view=inspector.creature_sheet.skills_view
+	view.first=7;view.layout()
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(880,400);root.push_input(motion,true)
+	var press:=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;root.push_input(press,true);await process_frame
+	check(view.scrollbar.dragging,"Skills scrollbar did not capture drag")
+	inspector.redraw();await process_frame
+	check(inspector.creature_sheet.skills_view==view and view.scrollbar.dragging,"Skills redraw retired active drag")
+	scene._fortress_hud.toggle_settings();await process_frame
+	check(not view.scrollbar.dragging,"Settings retained Skills drag capture")
+	key(KEY_ESCAPE);await process_frame
+	motion=InputEventMouseMotion.new();motion.position=Vector2(880,500);root.push_input(motion,true);await process_frame
+	check(view.first==7,"Closing Settings resumed retired Skills drag")
+	press=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;root.push_input(press,true)
+	if not await health_tab(inspector,"Labor",true):return
+	check(inspector.creature_sheet.skills_view==view and view.first==7 and view.display_first()==4,"Skills subtab lost shared position")
+	if not await health_tab(inspector,"Knowledge",true):return
+	check(view.first==7 and view.display_first()==7,"Knowledge return lost position")
+	inspector.redraw();await process_frame
+	check(inspector.creature_sheet.skills_view==view and view.first==7,"Skills refresh lost scroll")
+	if not await health_tab(inspector,"Overview"):return
+	check(not is_instance_valid(view) or not view.is_visible_in_tree(),"Skills departure retained visible content")
+	if not await health_tab(inspector,"Skills"):return
+	check(inspector.creature_sheet.subtabs.Skills=="Labor" and inspector.creature_sheet.skills_view.first==0,"Skills return did not reset Labor/top")
+	if not await health_tab(inspector,"Overview"):return
+	var evidence:=FileAccess.open(directory+"/unit-skills-view-result.json",FileAccess.WRITE)
+	evidence.store_string(JSON.stringify({"success":not failed,"pages":samples,"retained_refresh":true,"subtab_scroll":true,"main_tab_reset":true,"refresh_retains_drag":true,"overlay_retires_drag":true}));evidence.close()
 
 func exercise_health_view(inspector) -> void:
 	if not await health_tab(inspector,"Health"):return

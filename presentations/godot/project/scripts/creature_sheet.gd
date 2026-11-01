@@ -15,6 +15,7 @@ var scroll: ScrollContainer
 var scroll_location := ""
 var items_view
 var health_view
+var skills_view
 var owner
 var sections := {}
 
@@ -22,6 +23,7 @@ func reset(id: int):
  if unit_id == id: return
  unit_id=id;tab="Overview";subtabs.clear();scrolls.clear();scroll=null;scroll_location=""
  if is_instance_valid(health_view):health_view.page_key="";health_view.first=0
+ if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
 
 func location() -> String: return tab+"/"+str(subtabs.get(tab,""))
 
@@ -33,6 +35,9 @@ func change_tab(value: String, nested := false):
  if nested: subtabs[tab]=value
  else:
   if value=="Health" and tab!="Health":subtabs["Health"]="Status"
+  if value=="Skills" and tab!="Skills":
+   subtabs["Skills"]="Labor"
+   if is_instance_valid(skills_view):skills_view.first=0
   tab=value
  owner.redraw()
 
@@ -136,19 +141,6 @@ func filtered_records(key: String, records: Array) -> Array:
    return ar<br if ar!=br else int(a.id)<int(b.id))
   return sorted
  if tab=="Overview" and key=="health": return records.filter(func(row): return str(fact_value(row,"record_type"))=="overview_health")
- if tab=="Skills" and key=="skills":
-  var sub := str(subtabs.get(tab,"Labor"))
-  var found: Array = []
-  for row in records:
-   var category := skill_category(row)
-   if sub==category: found.append(row)
-  found.sort_custom(func(a,b):
-   var ar := int(fact_value(a,"rating",0))
-   var br := int(fact_value(b,"rating",0))
-   if ar!=br: return ar>br
-   return int(a.get("id",0))<int(b.get("id",0))
-  )
-  return found
  return records
 
 func section(parent: Node, key: String, heading := true, limit := 10000):
@@ -393,6 +385,19 @@ func render(controller, state: Dictionary):
   items_view.inspect_requested.connect(func(kind,id):owner.object_requested.emit(kind,id))
   items_view.configure(owner.world,records_for("inventory"))
   items_view.scrollbar.row_changed.connect(func(value):scrolls["Items/"]=value)
+  return
+ if tab=="Skills":
+  scroll=null
+  var page_kind: int=["Labor","Combat","Social","Other skills","Knowledge"].find(str(subtabs.get(tab,"Labor")))
+  var selected_page: Dictionary={"kind":page_kind,"rows":[]}
+  for page in detail.get("skills_pages",[]):
+   if int(page.kind)==page_kind:selected_page=page;break
+  if not is_instance_valid(skills_view):
+   skills_view=preload("res://scripts/creature_skills_view.gd").new()
+   owner.body.add_child(skills_view);skills_view.configure(owner.world)
+   skills_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+  skills_view.position=Vector2(0,y);skills_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  skills_view.present(selected_page)
   return
  if tab=="Health":
   scroll=null

@@ -65724,6 +65724,48 @@
           "source_preservation": "Owned source unchanged",
           "native_df_pid": 39672
         }
+      },
+      "panel_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-053726",
+        "status": "passed_with_known_issues",
+        "result": {
+          "main_tab_reset": true,
+          "overlay_retires_drag": true,
+          "pages": [
+            {
+              "name": "Labor",
+              "pixels_match": true,
+              "rows": 18
+            },
+            {
+              "name": "Combat",
+              "pixels_match": true,
+              "rows": 4
+            },
+            {
+              "name": "Social",
+              "pixels_match": true,
+              "rows": 9
+            },
+            {
+              "name": "Other skills",
+              "pixels_match": true,
+              "rows": 3
+            },
+            {
+              "name": "Knowledge",
+              "pixels_match": true,
+              "rows": 45
+            }
+          ],
+          "refresh_retains_drag": true,
+          "retained_refresh": true,
+          "subtab_scroll": true,
+          "success": true
+        },
+        "scope": "Actual main-scene Skills tab clicks, native body pixels, readonly native rows, refresh/scroll/overlay drag behavior. Knowledge detail actions and hover remain incomplete; creature route stays staged.",
+        "initial_failed_run": "build/stockpile-storage-native-farm-discovery-20261101-053445",
+        "initial_failure": "Test script suffix type inference, corrected to explicit String."
       }
     }
   }

@@ -3236,7 +3236,8 @@ references do not license calling the helpers on live records. `detail_reference
 native prose and entry points. The musical description has3,108 characters,
 so the generic512-byte record-name field cannot carry it. Detail navigation,
 hover, scrolling, management transport and rendered Skills remain unfinished.
-Godot still categorizes/sorts generic records; it is not accepted as native parity.
+Godot Skills now consumes typed native pages; its remaining acceptance gaps are
+recorded in the Skills transport and row-rendering sections below.
 
 `knowledge_detail_native.h` adds a diagnostic poetic adapter for e76400. It copies
 the form and independently owns every part, perspective and value-vector backing.
@@ -3490,9 +3491,22 @@ notices. `skills-resize-core` passes cleanly. DF39672 exits unsaved with source
 preservation; all three live Godot logs have only known startup notices. The
 panel width remains fixed, so this does not exercise long-caption clipping.
 
-This view is not yet connected to `creature_sheet.gd`. Long-caption clipping,
-hover/XP, on-demand Knowledge detail navigation and panel/session lifecycle
-remain unaccepted. Baseline captures do not cover music,
+`creature_sheet.gd` now uses this view for Skills. Its former generic-record
+category/sort path is removed; Overview keeps its existing generic records.
+The inspector retains Skills across same-panel redraws and retires its drag
+when an overlay takes input. Main entry resets to Labor/top, while subtabs
+share their scroll value. Protected053726 opens all five tabs through actual
+main-scene buttons and compares full body pixels to native, then checks retained
+refresh/scroll, active-drag survival during redraw, Settings drag retirement,
+subtab return and main-tab reset. `panel_reference` records the passing results.
+DF33268 exits unsaved with source preservation; all three Godot processes have
+only known startup notices. Root/core passes in `skills-panel-core`. Initial
+053445 failed on test-script type inference before the panel checks; corrected
+053541 first established all five composed pixel matches.
+
+Long-caption clipping, hover/XP, on-demand Knowledge detail navigation and
+remaining panel/session lifecycle are unaccepted. Magnifier artwork and hitboxes
+exist, but no detail request is connected yet. Baseline captures do not cover music,
 dance or other race/caste colors. The creature route remains staged; this pixel
 check is a rendering milestone, not complete Skills acceptance.
 

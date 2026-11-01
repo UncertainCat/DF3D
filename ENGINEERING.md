@@ -3285,6 +3285,22 @@ native descriptions and dispatch addresses. DF38300 exits unsaved with source
 preservation and only known Godot startup notices. This locates concrete event
 paths; it does not establish their owned-adapter or in-memory state preservation.
 
+`dance_detail_native.h` now provides a diagnostic adapter with independently
+owned form, sections, moves, strings and value vectors. Native4ea820 creates its
+own historical formatting context and output strings. The profession-name helper
+132e0c0 is already audited for continuing agreements; event callers pass the
+historical figure's race explicitly, bypassing its UI-mode fallback. Circumstance
+helper b5a6c0's indirect slot0x30 is historical-event-collection `getName`, with
+local output storage. This does not imply acceptance of every event phrase path.
+Protected041856 compares form0's baseline and the four captured event cases
+against native exactly, with dance graph, referenced event/HF/entity/site/building
+objects, UI and random guards unchanged. DF19192 exits unsaved with source
+preservation; all three Godot processes have only known startup notices. Poetry
+and music baseline comparisons also pass. `dance_owned_probe_reference` retains
+the bounded result and bridge hash. Other event types, all nested referenced
+storage, and production transport/rendering remain unfinished; the adapter is
+not a production provider.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

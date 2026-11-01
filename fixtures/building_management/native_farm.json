@@ -62352,6 +62352,119 @@
         "owned_df_pid": 38300,
         "source_unchanged": true,
         "exit_without_saving": true
+      },
+      "dance_owned_probe_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-041856",
+        "cases": [
+          {
+            "case": "baseline",
+            "characters": 1657,
+            "form": {
+              "event": -1,
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "guards_unchanged": true
+          },
+          {
+            "case": "event-44",
+            "characters": 1770,
+            "form": {
+              "event": 0,
+              "event_phrase_rva": 12022832,
+              "event_type": 44,
+              "event_type_name": "CHANGE_HF_STATE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "guards_unchanged": true
+          },
+          {
+            "case": "event-4",
+            "characters": 1776,
+            "form": {
+              "event": 311,
+              "event_phrase_rva": 12059680,
+              "event_type": 4,
+              "event_type_name": "ADD_HF_ENTITY_LINK",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "guards_unchanged": true
+          },
+          {
+            "case": "event-2",
+            "characters": 1758,
+            "form": {
+              "event": 324,
+              "event_phrase_rva": 11967408,
+              "event_type": 2,
+              "event_type_name": "CREATED_SITE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "guards_unchanged": true
+          },
+          {
+            "case": "event-30",
+            "characters": 1810,
+            "form": {
+              "event": 325,
+              "event_phrase_rva": 11967792,
+              "event_type": 30,
+              "event_type_name": "CREATED_BUILDING",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "guards_unchanged": true
+          }
+        ],
+        "bridge_sha256": "3619a670cd40ee46bd3007cbb208f645800ed144c4c4168556f5e86612443748",
+        "scope": "Exact native text for baseline and four event cases, with guarded dance graph, referenced event/HF/entity/site/building objects, UI and random state unchanged. Does not prove all event types or all nested referenced storage. Diagnostic only.",
+        "diagnostics": "passed_with_known_issues",
+        "owned_df_pid": 19192,
+        "source_unchanged": true,
+        "exit_without_saving": true
       }
     }
   }

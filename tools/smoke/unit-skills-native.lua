@@ -145,6 +145,10 @@ local ok,err=xpcall(function()
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','musical-detail-native.lua')
      detail.probe=assert(loadfile(source))(unit,detail)
     end
+    if kind==16 and os.getenv('DF3D_UNIT_DANCE_PROBE')=='1'then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','dance-detail-native.lua')
+     detail.probe=assert(loadfile(source))(unit,detail)
+    end
     details[#details+1]=detail;capture('unit-skills-detail-'..kind..'-'..detail.id..(variant and('-'..variant)or''))
     return detail.tagged_rows[1]
   end
